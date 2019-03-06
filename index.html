@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
+	<script type="module">
+		window.WebComponents = window.WebComponents || {
+			waitFor(cb){ addEventListener('WebComponentsReady', cb) }
+		}
+		WebComponents.waitFor(async () => {
+			import('./components/d2l-hello-world.js');
+		});
+	</script>
+	<title>core sample</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<h1>Sample</h1>
+
+	<d2l-hello-world message="Hello world."></d2l-hello-world>
+
+</body>
+</html>
