@@ -1,0 +1,20 @@
+{
+  "name": "d2l-core-ui",
+  "version": "0.0.1",
+  "description": "Brightspace core UI components.",
+  "repository": "https://github.com/BrightspaceUI/core.git",
+  "main": "index.html",
+  "scripts": {
+    "lint": "exit 0",
+    "test": "npm run lint"
+  },
+  "author": "D2L Corporation",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "polymer-cli": "latest"
+  },
+  "dependencies": {
+    "@webcomponents/webcomponentsjs": "latest",
+    "lit-element": "latest"
+  }
+}
