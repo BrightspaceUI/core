@@ -5,12 +5,17 @@
   "repository": "https://github.com/BrightspaceUI/core.git",
   "main": "index.html",
   "scripts": {
-    "lint": "exit 0",
+    "lint": "eslint . --ext .js,.html",
     "test": "npm run lint"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
+    "babel-eslint": "latest",
+    "eslint": "latest",
+    "eslint-config-brightspace": "latest",
+    "eslint-plugin-html": "latest",
+    "eslint-plugin-lit": "latest",
     "polymer-cli": "latest"
   },
   "dependencies": {
