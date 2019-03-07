@@ -4,9 +4,9 @@
 	<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
 	<script type="module">
 		window.WebComponents = window.WebComponents || {
-			waitFor(cb){ addEventListener('WebComponentsReady', cb) }
-		}
-		WebComponents.waitFor(async () => {
+			waitFor(cb) { addEventListener('WebComponentsReady', cb); }
+		};
+		window.WebComponents.waitFor(async() => {
 			import('./components/d2l-hello-world.js');
 		});
 	</script>
