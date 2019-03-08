@@ -16,8 +16,13 @@ export class D2LHelloWorld extends LitElement {
 	render() {
 		return html`
 			<style>
-				:host { display: block; }
-				:host([hidden]) { display: none; }
+				:host {
+					display: block;
+					color: var(--d2l-color-celestine);
+				}
+				:host([hidden]) {
+					display: none;
+				}
 			</style>
 			<p>${this.message} Sincerely, LitElement!</p>
 		`;
