@@ -7,6 +7,7 @@
 			waitFor(cb) { addEventListener('WebComponentsReady', cb); }
 		};
 		window.WebComponents.waitFor(async() => {
+			import('./components/d2l-colors/d2l-colors.js');
 			import('./components/d2l-hello-world.js');
 		});
 	</script>

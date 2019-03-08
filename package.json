@@ -19,6 +19,7 @@
     "polymer-cli": "latest"
   },
   "dependencies": {
+    "@webcomponents/shadycss": "latest",
     "@webcomponents/webcomponentsjs": "latest",
     "lit-element": "latest"
   }
