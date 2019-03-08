@@ -3,12 +3,18 @@
 <head>
 	<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
 	<script type="module">
+		document.body.style.opacity = 0;
 		window.WebComponents = window.WebComponents || {
 			waitFor(cb) { addEventListener('WebComponentsReady', cb); }
 		};
 		window.WebComponents.waitFor(async() => {
-			import('./components/colors/colors.js');
-			import('./components/hello-world/hello-world.js');
+			return Promise.all([
+				import('./components/colors/colors.js'),
+				import('./components/typography/typography.js'),
+				import('./components/hello-world/hello-world.js')
+			]).then(() => {
+				document.body.style.opacity = 1;
+			});
 		});
 	</script>
 	<title>core sample</title>
@@ -16,7 +22,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
 </head>
-<body>
+<body class="d2l-typography">
 
 	<h1>Sample</h1>
 
