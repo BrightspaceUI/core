@@ -1,3 +1,4 @@
+import { ifDefined } from 'lit-html/directives/if-defined';
 import { LitElement, html } from 'lit-element';
 import { D2LButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
@@ -5,7 +6,6 @@ import { buttonStyles } from './button-styles.js';
 /* TODO: deal with icons */
 /* TODO: figure out best way to render icon in template if no icon defined */
 /* TODO: implement focusable mixin, or just implement in the button mixin */
-/* TODO: figure out how to prevent "undefined" values from being rendered on underlying button */
 /* TODO: check to make sure nothing was missed */
 
 export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
@@ -30,19 +30,19 @@ export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
 	render() {
 		return html`
 			<button
-				aria-expanded="${this.ariaExpanded}"
-				aria-haspopup="${this.ariaHaspopup}"
-				aria-label="${this.ariaLabel}"
-				?autofocus="${this.autofocus}"
+				aria-expanded="${ifDefined(this.ariaExpanded)}"
+				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
+				aria-label="${ifDefined(this.ariaLabel)}"
+				?autofocus="${ifDefined(this.autofocus)}"
 				class="d2l-focusable"
 				?disabled="${this.disabled}"
-				form="${this.form}"
-				formaction="${this.formaction}"
-				formenctype="${this.formenctype}"
-				formmethod="${this.formmethod}"
-				formnovalidate="${this.formnovalidate}"
-				formtarget="${this.formtarget}"
-				name="${this.name}"
+				form="${ifDefined(this.form)}"
+				formaction="${ifDefined(this.formaction)}"
+				formenctype="${ifDefined(this.formenctype)}"
+				formmethod="${ifDefined(this.formmethod)}"
+				formnovalidate="${ifDefined(this.formnovalidate)}"
+				formtarget="${ifDefined(this.formtarget)}"
+				name="${ifDefined(this.name)}"
 				type="${this.type}">
 				<d2l-icon icon="[[icon]]" class="d2l-button-subtle-icon"></d2l-icon>
 				<span class="d2l-button-subtle-content">${this.text}</span>
