@@ -1,5 +1,5 @@
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { LitElement, html } from 'lit-element';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LitElement, html } from 'lit-element/lit-element.js';
 import { D2LButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
 
