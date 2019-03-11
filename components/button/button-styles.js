@@ -1,4 +1,4 @@
-import {css} from 'lit-element/lit-element.js';
+import { css } from 'lit-element/lit-element.js';
 
 /* TODO: copy fresh styles and figure out what to do with button mixins and typography mixin
 /* TODO: cleanup these styles / dedupe */

@@ -19,6 +19,7 @@
     "polymer-cli": "latest"
   },
   "dependencies": {
+    "d2l-icons": "BrightspaceUI/icons#semver:^6",
     "@webcomponents/shadycss": "latest",
     "@webcomponents/webcomponentsjs": "latest",
     "lit-element": "latest"
