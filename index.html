@@ -11,8 +11,7 @@
 			return Promise.all([
 				import('./components/button/button-subtle.js'),
 				import('./components/colors/colors.js'),
-				import('./components/typography/typography.js'),
-				import('./components/hello-world/hello-world.js')
+				import('./components/typography/typography.js')
 			]).then(() => {
 				document.body.style.opacity = 1;
 			});
