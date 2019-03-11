@@ -2,9 +2,11 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LitElement, html } from 'lit-element/lit-element.js';
 import { D2LButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import 'd2l-icons/d2l-icon.js';
+import 'd2l-icons/tier1-icons.js';
 
-/* TODO: deal with icons */
-/* TODO: figure out best way to render icon in template if no icon defined */
+/* TODO: convert icons to Lit and update these imports */
+/* TODO: move tier1-icons.js out of here and figure out correct path for it */
 /* TODO: implement focusable mixin, or just implement in the button mixin */
 /* TODO: check to make sure nothing was missed */
 
@@ -44,7 +46,7 @@ export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
 				formtarget="${ifDefined(this.formtarget)}"
 				name="${ifDefined(this.name)}"
 				type="${this.type}">
-				<d2l-icon icon="[[icon]]" class="d2l-button-subtle-icon"></d2l-icon>
+				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-subtle-icon"></d2l-icon>
 				<span class="d2l-button-subtle-content">${this.text}</span>
 				<slot></slot>
 		</button>
