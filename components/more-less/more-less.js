@@ -69,7 +69,7 @@ export class D2LMoreLess extends localize(i18next)(LitElement)  {
 		`;
 	}
 
-	updated(changedProperties) {
+	updated() {
 		this.text = this.__computeText();
 		this.icon = this.__computeIcon();
 	}

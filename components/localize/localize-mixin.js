@@ -8,7 +8,7 @@ let _i18nextInitialized = false;
 export const localize = i18next => baseElement => class extends baseElement {
 	connectedCallback() {
 		if (!_i18nextInitialized) {
-			i18next.on('initialized', options => {
+			i18next.on('initialized', () => {
 				_i18nextInitialized = true;
 				if (super.connectedCallback) {
 					super.connectedCallback();

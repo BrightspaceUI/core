@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import LngDetector from 'i18next-browser-languagedetector';
-import FetchBackend from 'i18next-fetch-backend';
+import Backend from 'i18next-xhr-backend';
 
 var langDetectionOptions = {
 	// order and from where user language should be detected
@@ -36,4 +36,4 @@ var initOptions = {
 	}
 };
 
-export const i18next = i18n.use(LngDetector).use(FetchBackend).init(initOptions);
+export const i18next = i18n.use(LngDetector).use(Backend).init(initOptions);
