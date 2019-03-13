@@ -11,7 +11,8 @@
 			return Promise.all([
 				import('./components/button/button-subtle.js'),
 				import('./components/colors/colors.js'),
-				import('./components/typography/typography.js')
+				import('./components/typography/typography.js'),
+				import('./components/more-less/more-less.js')
 			]).then(() => {
 				document.body.style.opacity = 1;
 			});
@@ -27,6 +28,8 @@
 	<h1>Sample</h1>
 
 	<d2l-button-subtle text="Do not press this button!" icon="d2l-tier1:gear"></d2l-button-subtle>
+
+	<d2l-more-less></d2l-more-less>
 
 	<script>
 		document.querySelector('d2l-button-subtle').addEventListener('click', () => {

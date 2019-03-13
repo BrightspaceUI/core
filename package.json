@@ -19,9 +19,12 @@
     "polymer-cli": "latest"
   },
   "dependencies": {
-    "d2l-icons": "BrightspaceUI/icons#semver:^6",
     "@webcomponents/shadycss": "latest",
     "@webcomponents/webcomponentsjs": "latest",
+    "d2l-icons": "BrightspaceUI/icons#semver:^6",
+    "i18next": "^12.0.0",
+    "i18next-browser-languagedetector": "^3.0.1",
+    "i18next-fetch-backend": "^2.2.0",
     "lit-element": "latest"
   }
 }
