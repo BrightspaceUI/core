@@ -1,12 +1,11 @@
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LitElement, html, css } from 'lit-element/lit-element.js';
-import { i18next } from '../localize/i18next.js';
-import { localize } from '../localize/localize-mixin.js';
+import { AppLocalizeBehavior } from '../localize/localize-mixin.js';
 import '../button/button-subtle.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 
-export class D2LMoreLess extends localize(i18next)(LitElement)  {
+export class D2LMoreLess extends AppLocalizeBehavior(LitElement)  {
 
 	static get properties() {
 		return {
@@ -52,6 +51,56 @@ export class D2LMoreLess extends localize(i18next)(LitElement)  {
 		super();
 		this.text = this.__computeText();
 		this.icon = this.__computeIcon();
+		this.resources = {
+			'ar': {
+				more: 'المزيد',
+				less: 'أقل'
+			},
+			'en': {
+				more: 'more',
+				less: 'less'
+			},
+			'es': {
+				more: 'más',
+				less: 'menos'
+			},
+			'fr': {
+				more: 'plus',
+				less: 'moins'
+			},
+			'ja': {
+				more: 'より多い',
+				less: 'より少ない'
+			},
+			'ko': {
+				more: '더 보기',
+				less: '축소'
+			},
+			'nl': {
+				more: 'meer',
+				less: 'minder'
+			},
+			'pt': {
+				more: 'mais',
+				less: 'menos'
+			},
+			'sv': {
+				more: 'mer',
+				less: 'mindre'
+			},
+			'tr': {
+				more: 'diğer',
+				less: 'daha az'
+			},
+			'zh': {
+				more: '更多',
+				less: '更少'
+			},
+			'zh-tw': {
+				more: '較多',
+				less: '較少'
+			}
+		};
 	}
 
 	render() {
@@ -63,7 +112,7 @@ export class D2LMoreLess extends localize(i18next)(LitElement)  {
 				icon="${ifDefined(this.icon)}"
 				aria-hidden="true"
 				@click="${this.__toggleOnClick}"
-				text="${i18next.t(`more-less:${this.text}`)}"
+				text="${this.localize(this.text)}"
 				h-align="${ifDefined(this.hAlign)}">
 			</d2l-button-subtle>
 		`;
