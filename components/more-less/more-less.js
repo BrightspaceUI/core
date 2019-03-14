@@ -1,19 +1,15 @@
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LitElement, html, css } from 'lit-element/lit-element.js';
-import { AppLocalizeBehavior } from '../localize/localize-mixin.js';
+import { D2LLocalizeMixin } from '../localize/localize-mixin.js';
 import '../button/button-subtle.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 
-export class D2LMoreLess extends AppLocalizeBehavior(LitElement)  {
+export class D2LMoreLess extends D2LLocalizeMixin(LitElement)  {
 
 	static get properties() {
 		return {
-			height: { type: String, value: '4em' },
-			expanded: { type: Boolean, value: false, reflect: true },
-			inactive: { type: Boolean, value: false, reflect: true },
-			blurColor: { type: String },
-			hAlign: { type: String, reflect: true },
+			expanded: { type: Boolean, reflect: true },
 			icon: { type: String, reflect: true },
 			text: { type: String, reflect: true }
 		};
@@ -23,35 +19,12 @@ export class D2LMoreLess extends AppLocalizeBehavior(LitElement)  {
 		return css`
 			:host {
 				display: block;
-			}
-			.more-less-content {
-				overflow: hidden;
-			}
-			.more-less-transition {
-				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
-			}
-			.more-less-blur {
-				display: none;
-			}
-			:host(:not([expanded]):not([inactive])) .more-less-blur {
-				display: block;
-				content: "";
-				position: relative;
-				height: 1em;
-				bottom: 1em;
-				margin-bottom: -0.75em;
-				background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
-			}
-			:host([inactive]) .more-less-toggle {
-				display: none;
 			}`;
 	}
 
 	constructor() {
 		super();
-		this.text = this.__computeText();
-		this.icon = this.__computeIcon();
-		this.resources = {
+		this.langResources = {
 			'ar': {
 				more: 'المزيد',
 				less: 'أقل'
@@ -101,6 +74,8 @@ export class D2LMoreLess extends AppLocalizeBehavior(LitElement)  {
 				less: '較少'
 			}
 		};
+
+		this.expanded = false;
 	}
 
 	render() {
@@ -112,19 +87,23 @@ export class D2LMoreLess extends AppLocalizeBehavior(LitElement)  {
 				icon="${ifDefined(this.icon)}"
 				aria-hidden="true"
 				@click="${this.__toggleOnClick}"
-				text="${this.localize(this.text)}"
+				text="${this.text}"
 				h-align="${ifDefined(this.hAlign)}">
 			</d2l-button-subtle>
 		`;
 	}
 
-	updated() {
-		this.text = this.__computeText();
-		this.icon = this.__computeIcon();
+	updated(changedProperties) {
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === 'expanded') {
+				this.text = this.__computeText();
+				this.icon = this.__computeIcon();
+			}
+		});
 	}
 
 	__computeText() {
-		return this.expanded ? 'less' : 'more';
+		return this.localize(this.expanded ? 'less' : 'more');
 	}
 
 	__computeIcon() {

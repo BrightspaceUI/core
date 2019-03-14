@@ -1,31 +1,12 @@
 import IntlMessageFormat from 'intl-messageformat/src/main.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
-// 	 Internal singleton cache. This is the private implementation of the
-// 	 behaviour; don't interact with it directly.
-var __localizationCache = {
-	requests: {}, /* One iron-request per unique resources path. */
-	messages: {}, /* Unique localized strings. Invalidated when the language,
-					formats or resources change. */
-	ajax: null		/* Global iron-ajax object used to request resource files. */
-};
-
-export const AppLocalizeBehavior = superclass => class extends superclass {
-
-	/**
-	Fired after the resources have been loaded.
-	@event app-localize-resources-loaded
-	*/
-
-	/**
-	Fired when the resources cannot be loaded due to an error.
-	@event app-localize-resources-error
-	*/
+export const D2LLocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
 			language: {type: String},
-			resources: {type: Object},
+			langResources: { type: Object },
 			formats: {
 				type: Object,
 				value: function() {
@@ -34,7 +15,8 @@ export const AppLocalizeBehavior = superclass => class extends superclass {
 				}
 			},
 			useKeyIfMissing: {type: Boolean, value: false},
-			bubbleEvent: {type: Boolean, value: false}
+			__documentLanguage: { type: String },
+			__documentLanguageFallback: { type: String }
 		}
 	}
 
@@ -46,22 +28,98 @@ export const AppLocalizeBehavior = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this.language = 'en';
+		this.__documentLanguage = window.document.getElementsByTagName('html')[0].getAttribute('lang');
+		this.__documentLanguageFallback = window.document.getElementsByTagName('html')[0].getAttribute('data-lang-default');
+		this._startObserver();
+	}
+
+	firstUpdated(changedProperties) {
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === 'langResources') {
+				this._computeLanguage();
+			}
+		});
+	}
+
+	updated(changedProperties) {
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === 'language') {
+				this._languageChange();
+			}
+			// to do: add __timezoneObject which calls _timezoneChange()
+		});
 	}
 
 	localize(key) {
-		return this.__computeLocalize(this.language, this.resources, key);
+		return this._computeLocalize(this.language, this.langResources, key);
 	}
 
-	__computeLocalize(language, resources, key) {
+	_startObserver() {
+		var htmlElem = window.document.getElementsByTagName('html')[0];
+
+		this._observer = new MutationObserver(function(mutations) {
+			for (var i = 0; i < mutations.length; i++) {
+				var mutation = mutations[i];
+				if (mutation.attributeName === 'lang') {
+					this.__documentLanguage = htmlElem.getAttribute('lang');
+				} else if (mutation.attributeName === 'data-lang-default') {
+					this.__documentLanguageFallback = htmlElem.getAttribute('data-lang-default');
+				} else if (mutation.attributeName === 'data-intl-overrides') {
+					this.__overrides = this._tryParseHtmlElemAttr('data-intl-overrides', {});
+				} else if (mutation.attributeName === 'data-timezone') {
+					this.__timezoneObject = this._tryParseHtmlElemAttr('data-timezone', {name: '', identifier: ''});
+				}
+			}
+		}.bind(this));
+		this._observer.observe(htmlElem, { attributes: true });
+	}
+
+	_computeLanguage() {
+		this.language = this._tryResolve(this.langResources, this.__documentLanguage)
+			|| this._tryResolve(this.langResources, this.__documentLanguageFallback)
+			|| this._tryResolve(this.langResources, 'en-us');
+	}
+
+	_tryResolve(resources, val) {
+
+		if (val === null) return null;
+		val = val.toLowerCase();
+		var baseLang = val.split('-')[0];
+
+		var foundBaseLang = null;
+		for (var key in resources) {
+			var keyLower = key.toLowerCase();
+			if (keyLower.toLowerCase() === val) {
+				return key;
+			} else if (keyLower === baseLang) {
+				foundBaseLang = key;
+			}
+		}
+
+		if (foundBaseLang) {
+			return foundBaseLang;
+		}
+
+		return null;
+	}
+
+	_languageChange() {
+		this.fire('d2l-localize-behavior-language-changed');
+	}
+
+	// _timezoneChange() {
+	// 	this.fire('d2l-localize-behavior-timezone-changed');
+	// }
+
+	_computeLocalize(language, resources, key) {
 		var proto = this.constructor.prototype;
 
 		// Check if localCache exist just in case.
-		this.__checkLocalizationCache(proto);
+		this._checkLocalizationCache(proto);
 
 		// Everytime any of the parameters change, invalidate the strings cache.
 		if (!proto.__localizationCache) {
-			proto['__localizationCache'] = {requests: {}, messages: {}, ajax: null};
+			proto['__localizationCache'] = {messages: {}};
 		}
 		proto.__localizationCache.messages = {};
 
@@ -95,14 +153,14 @@ export const AppLocalizeBehavior = superclass => class extends superclass {
 		}.bind(this)();
 	}
 
-	__checkLocalizationCache(proto) {
+	_checkLocalizationCache(proto) {
 		// do nothing if proto is undefined.
 		if (proto === undefined)
 			return;
 
 		// In the event proto not have __localizationCache object, create it.
 		if (proto['__localizationCache'] === undefined) {
-			proto['__localizationCache'] = {requests: {}, messages: {}, ajax: null};
+			proto['__localizationCache'] = {messages: {}};
 		}
 	}
 };
