@@ -9,9 +9,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	static get properties() {
 		return {
-			expanded: { type: Boolean, reflect: true },
-			icon: { type: String, reflect: true },
-			text: { type: String, reflect: true }
+			expanded: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -84,22 +82,13 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 			<div class="more-less-blur"></div>
 			<d2l-button-subtle
 				class="more-less-toggle"
-				icon="${ifDefined(this.icon)}"
+				icon="${this.__computeIcon()}"
 				aria-hidden="true"
 				@click="${this.__toggleOnClick}"
-				text="${this.text}"
+				text="${this.__computeText()}"
 				h-align="${ifDefined(this.hAlign)}">
 			</d2l-button-subtle>
 		`;
-	}
-
-	updated(changedProperties) {
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'expanded') {
-				this.text = this.__computeText();
-				this.icon = this.__computeIcon();
-			}
-		});
 	}
 
 	__computeText() {

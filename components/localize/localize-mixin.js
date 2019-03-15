@@ -13,9 +13,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	connectedCallback() {
-		if (super.connectedCallback) {
-			super.connectedCallback();
-		}
+		super.connectedCallback();
 	}
 
 	constructor() {
@@ -96,7 +94,9 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	_languageChange() {
-		this.fire('d2l-localize-behavior-language-changed');
+		this.dispatchEvent(new CustomEvent(
+			'd2l-localize-behavior-language-changed', { bubbles: true, composed: true }
+		));
 	}
 
 	// _timezoneChange() {
