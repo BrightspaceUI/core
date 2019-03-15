@@ -1,11 +1,11 @@
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LitElement, html, css } from 'lit-element/lit-element.js';
-import { D2LLocalizeMixin } from '../localize/localize-mixin.js';
+import { LocalizeMixin } from '../localize/localize-mixin.js';
 import '../button/button-subtle.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 
-export class D2LMoreLess extends D2LLocalizeMixin(LitElement)  {
+export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	static get properties() {
 		return {

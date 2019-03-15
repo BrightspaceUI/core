@@ -1,23 +1,15 @@
 import IntlMessageFormat from 'intl-messageformat/src/main.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
-export const D2LLocalizeMixin = superclass => class extends superclass {
+export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
 			language: {type: String},
 			langResources: { type: Object },
-			formats: {
-				type: Object,
-				value: function() {
-					return {
-					}
-				}
-			},
-			useKeyIfMissing: {type: Boolean, value: false},
 			__documentLanguage: { type: String },
 			__documentLanguageFallback: { type: String }
-		}
+		};
 	}
 
 	connectedCallback() {
@@ -132,7 +124,7 @@ export const D2LLocalizeMixin = superclass => class extends superclass {
 			var translatedValue = resources[language][key];
 
 			if (!translatedValue) {
-				return this.useKeyIfMissing ? key : '';
+				return '';
 			}
 
 			var messageKey = key + translatedValue;
@@ -140,7 +132,7 @@ export const D2LLocalizeMixin = superclass => class extends superclass {
 
 			if (!translatedMessage) {
 				translatedMessage =
-						new IntlMessageFormat(translatedValue, language, this.formats);
+						new IntlMessageFormat(translatedValue, language);
 				proto.__localizationCache.messages[messageKey] = translatedMessage;
 			}
 
