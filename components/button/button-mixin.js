@@ -24,6 +24,11 @@ export const D2LButtonMixin = superclass => class extends superclass {
 		this.type = 'button';
 	}
 
+	focus() {
+		const button = this.shadowRoot.querySelector('button');
+		if (button) button.focus();
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('click', this._handleClick, true);
