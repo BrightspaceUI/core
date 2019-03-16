@@ -7,7 +7,6 @@ import 'd2l-icons/tier1-icons.js';
 
 /* TODO: convert icons to Lit and update these imports */
 /* TODO: move tier1-icons.js out of here and figure out correct path for it */
-/* TODO: implement focusable mixin, or just implement in the button mixin */
 /* TODO: check to make sure nothing was missed */
 
 export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
