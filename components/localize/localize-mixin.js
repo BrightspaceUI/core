@@ -3,13 +3,13 @@ window.IntlMessageFormat = IntlMessageFormat;
 
 var assign =
 	Object.assign ? Object.assign.bind(Object) : function(destination, source) {
-	  for (var prop in source) {
-		if (source.hasOwnProperty(prop)) {
-		  destination[prop] = source[prop];
+		for (var prop in source) {
+			if (source.hasOwnProperty(prop)) {
+				destination[prop] = source[prop];
+			}
 		}
-	  }
 
-	  return destination;
+		return destination;
 	};
 
 export const LocalizeMixin = superclass => class extends superclass {
@@ -43,7 +43,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 			} else if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
 				this._computeLanguage();
 				if (this.baseUrl) {
-					this.loadResources(this.baseUrl)
+					this.loadResources(this.baseUrl);
 				}
 			}
 			// to do: add __timezoneObject which calls _timezoneChange()
@@ -62,12 +62,18 @@ export const LocalizeMixin = superclass => class extends superclass {
 		var proto = this.constructor.prototype;
 		this._checkLocalizationCache(proto);
 
+		if (proto.__localizationCache.requests[path]) {
+			return;
+		}
+
 		var self = this;
 		fetch(path)
 			.then((res) => {
 				if (res.status !== 200) {
 					return;
 				}
+
+				proto.__localizationCache.requests[path] = true;
 
 				res.json().then((data) => {
 					self._onRequestResponse(data, language);
@@ -125,13 +131,13 @@ export const LocalizeMixin = superclass => class extends superclass {
 		}
 
 		if (locales) {
-			for(var i = 0; i < locales.length; i++ ) {
-				var key = locales[i];
-				var keyLower = locales[i].toLowerCase();
-				if ( keyLower === val ) {
-					return key;
-				} else if (keyLower === baseLang) {
-					foundBaseLang = key;
+			for (var i = 0; i < locales.length; i++) {
+				var localesKey = locales[i];
+				var localesKeyLower = locales[i].toLowerCase();
+				if (localesKeyLower === val) {
+					return localesKey;
+				} else if (localesKeyLower === baseLang) {
+					foundBaseLang = localesKey;
 				}
 			}
 		}
@@ -159,8 +165,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 		propertyUpdates.resources[language] =
 				assign(propertyUpdates.resources[language] || {}, newResources);
 		this.resources = propertyUpdates.resources;
-		// also test case for more-less having an update() function
-		// also there is a flicker of "undefined" before this loads, so fix that
 	}
 
 	_computeLocalize(language, resources, key) {
@@ -212,7 +216,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 		// In the event proto not have __localizationCache object, create it.
 		if (proto['__localizationCache'] === undefined) {
-			proto['__localizationCache'] = {messages: {}};
+			proto['__localizationCache'] = {messages: {}, requests: {}};
 		}
 	}
 };

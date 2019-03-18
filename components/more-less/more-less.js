@@ -22,7 +22,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	constructor() {
 		super();
-		this.langResources = {
+		this.resources = {
 			'ar': {
 				more: 'المزيد',
 				less: 'أقل'
@@ -72,7 +72,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 				less: '較少'
 			}
 		};
-
 	}
 
 	render() {
