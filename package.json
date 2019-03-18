@@ -12,6 +12,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "babel-eslint": "latest",
+    "demo-transfigurator": "dbatiste/demo-transfigurator",
     "eslint": "latest",
     "eslint-config-brightspace": "latest",
     "eslint-plugin-html": "latest",
