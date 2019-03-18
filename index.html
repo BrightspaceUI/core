@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js" defer></script>
+	<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script type="module">
 		document.body.style.opacity = 0;
+	</script>
+	<script type="module">
+		import './components/colors/colors.js';
+		import './components/typography/typography.js';
+		import './components/button/button-subtle.js';
+		import './components/more-less/more-less.js';
 		window.WebComponents = window.WebComponents || {
 			waitFor(cb) { addEventListener('WebComponentsReady', cb); }
 		};
 		window.WebComponents.waitFor(async() => {
-			return Promise.all([
-				import('./components/button/button-subtle.js'),
-				import('./components/colors/colors.js'),
-				import('./components/typography/typography.js'),
-				import('./components/more-less/more-less.js')
-			]).then(() => {
-				document.body.style.opacity = 1;
-			});
+			document.body.style.opacity = 1;
 		});
 	</script>
 	<title>core sample</title>
