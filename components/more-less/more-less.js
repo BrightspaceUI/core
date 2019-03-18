@@ -73,7 +73,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 			}
 		};
 
-		this.expanded = false;
 	}
 
 	render() {

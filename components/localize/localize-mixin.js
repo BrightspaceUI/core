@@ -1,12 +1,23 @@
 import IntlMessageFormat from 'intl-messageformat/src/main.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
+var assign =
+	Object.assign ? Object.assign.bind(Object) : function(destination, source) {
+	  for (var prop in source) {
+		if (source.hasOwnProperty(prop)) {
+		  destination[prop] = source[prop];
+		}
+	  }
+
+	  return destination;
+	};
+
 export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			language: {type: String},
-			langResources: { type: Object },
+			language: { type: String },
+			resources: { type: Object },
 			__documentLanguage: { type: String },
 			__documentLanguageFallback: { type: String }
 		};
@@ -23,9 +34,22 @@ export const LocalizeMixin = superclass => class extends superclass {
 		this._startObserver();
 	}
 
+	loadResources(path, language, merge) {
+		var proto = this.constructor.prototype;
+		this._checkLocalizationCache(proto);
+
+		function onRequestResponse(event) {
+			event.json().then((data) => {
+				this.__onRequestResponse(data, language, merge);
+			});
+		}
+
+		fetch(path).then(onRequestResponse.bind(this));
+	}
+
 	firstUpdated(changedProperties) {
 		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'langResources') {
+			if (propName === 'resources') {
 				this._computeLanguage();
 			}
 		});
@@ -35,13 +59,15 @@ export const LocalizeMixin = superclass => class extends superclass {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'language') {
 				this._languageChange();
+			} else if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
+				this._computeLanguage();
 			}
 			// to do: add __timezoneObject which calls _timezoneChange()
 		});
 	}
 
 	localize(key) {
-		return this._computeLocalize(this.language, this.langResources, key);
+		return this._computeLocalize(this.language, this.resources, key);
 	}
 
 	_startObserver() {
@@ -65,9 +91,9 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	_computeLanguage() {
-		this.language = this._tryResolve(this.langResources, this.__documentLanguage)
-			|| this._tryResolve(this.langResources, this.__documentLanguageFallback)
-			|| this._tryResolve(this.langResources, 'en-us');
+		this.language = this._tryResolve(this.resources, this.__documentLanguage)
+			|| this._tryResolve(this.resources, this.__documentLanguageFallback)
+			|| this._tryResolve(this.resources, 'en-us');
 	}
 
 	_tryResolve(resources, val) {
@@ -102,6 +128,28 @@ export const LocalizeMixin = superclass => class extends superclass {
 	// _timezoneChange() {
 	// 	this.fire('d2l-localize-behavior-timezone-changed');
 	// }
+
+	__onRequestResponse(newResources, language, merge) {
+		var propertyUpdates = {};
+		if (merge) {
+			if (language) {
+				propertyUpdates.resources = assign({}, this.resources || {});
+				propertyUpdates.resources[language] =
+						assign(propertyUpdates.resources[language] || {}, newResources);
+			} else {
+				propertyUpdates.resources = assign(this.resources, newResources);
+			}
+		} else {
+			if (language) {
+				propertyUpdates.resources = {};
+				propertyUpdates.resources[language] = newResources;
+			} else {
+				propertyUpdates.resources = newResources;
+			}
+		}
+		this.resources = propertyUpdates.resources;
+		this._computeLanguage();
+	}
 
 	_computeLocalize(language, resources, key) {
 		var proto = this.constructor.prototype;
