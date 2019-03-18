@@ -16,8 +16,10 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			baseUrl: { type: String },
 			language: { type: String },
-			resources: { type: Object },
+			locales: { type: Array }, /* array of each locale file that exists, e.g., en.json */
+			resources: { type: Object }, /* object containing all localizations, e.g., { "en": { "more": "more " } } */
 			__documentLanguage: { type: String },
 			__documentLanguageFallback: { type: String }
 		};
@@ -34,36 +36,43 @@ export const LocalizeMixin = superclass => class extends superclass {
 		this._startObserver();
 	}
 
-	loadResources(path, language, merge) {
-		var proto = this.constructor.prototype;
-		this._checkLocalizationCache(proto);
-
-		function onRequestResponse(event) {
-			event.json().then((data) => {
-				this.__onRequestResponse(data, language, merge);
-			});
-		}
-
-		fetch(path).then(onRequestResponse.bind(this));
-	}
-
-	firstUpdated(changedProperties) {
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'resources') {
-				this._computeLanguage();
-			}
-		});
-	}
-
 	updated(changedProperties) {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'language') {
 				this._languageChange();
 			} else if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
 				this._computeLanguage();
+				if (this.baseUrl) {
+					this.loadResources(this.baseUrl)
+				}
 			}
 			// to do: add __timezoneObject which calls _timezoneChange()
 		});
+	}
+
+	loadResources(baseUrl) {
+		var language = this.language;
+
+		if (!baseUrl || !language) {
+			return;
+		}
+
+		var path = `${baseUrl}/${language}.json`;
+
+		var proto = this.constructor.prototype;
+		this._checkLocalizationCache(proto);
+
+		var self = this;
+		fetch(path)
+			.then((res) => {
+				if (res.status !== 200) {
+					return;
+				}
+
+				res.json().then((data) => {
+					self._onRequestResponse(data, language);
+				});
+			});
 	}
 
 	localize(key) {
@@ -91,13 +100,12 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	_computeLanguage() {
-		this.language = this._tryResolve(this.resources, this.__documentLanguage)
-			|| this._tryResolve(this.resources, this.__documentLanguageFallback)
-			|| this._tryResolve(this.resources, 'en-us');
+		this.language = this._tryResolve(this.resources, this.locales, this.__documentLanguage)
+			|| this._tryResolve(this.resources, this.locales, this.__documentLanguageFallback)
+			|| this._tryResolve(this.resources, this.locales, 'en-us');
 	}
 
-	_tryResolve(resources, val) {
-
+	_tryResolve(resources, locales, val) {
 		if (val === null) return null;
 		val = val.toLowerCase();
 		var baseLang = val.split('-')[0];
@@ -109,6 +117,22 @@ export const LocalizeMixin = superclass => class extends superclass {
 				return key;
 			} else if (keyLower === baseLang) {
 				foundBaseLang = key;
+			}
+		}
+
+		if (foundBaseLang) {
+			return foundBaseLang;
+		}
+
+		if (locales) {
+			for(var i = 0; i < locales.length; i++ ) {
+				var key = locales[i];
+				var keyLower = locales[i].toLowerCase();
+				if ( keyLower === val ) {
+					return key;
+				} else if (keyLower === baseLang) {
+					foundBaseLang = key;
+				}
 			}
 		}
 
@@ -129,26 +153,14 @@ export const LocalizeMixin = superclass => class extends superclass {
 	// 	this.fire('d2l-localize-behavior-timezone-changed');
 	// }
 
-	__onRequestResponse(newResources, language, merge) {
+	_onRequestResponse(newResources, language) {
 		var propertyUpdates = {};
-		if (merge) {
-			if (language) {
-				propertyUpdates.resources = assign({}, this.resources || {});
-				propertyUpdates.resources[language] =
-						assign(propertyUpdates.resources[language] || {}, newResources);
-			} else {
-				propertyUpdates.resources = assign(this.resources, newResources);
-			}
-		} else {
-			if (language) {
-				propertyUpdates.resources = {};
-				propertyUpdates.resources[language] = newResources;
-			} else {
-				propertyUpdates.resources = newResources;
-			}
-		}
+		propertyUpdates.resources = assign({}, this.resources || {});
+		propertyUpdates.resources[language] =
+				assign(propertyUpdates.resources[language] || {}, newResources);
 		this.resources = propertyUpdates.resources;
-		this._computeLanguage();
+		// also test case for more-less having an update() function
+		// also there is a flicker of "undefined" before this loads, so fix that
 	}
 
 	_computeLocalize(language, resources, key) {
