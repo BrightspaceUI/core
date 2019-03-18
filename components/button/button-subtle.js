@@ -35,7 +35,6 @@ export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${ifDefined(this.autofocus)}"
-				class="d2l-focusable"
 				?disabled="${this.disabled}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
