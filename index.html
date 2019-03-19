@@ -11,7 +11,7 @@
 		window.WebComponents = window.WebComponents || {
 			waitFor(cb) { addEventListener('WebComponentsReady', cb); }
 		};
-		window.WebComponents.waitFor(async() => {
+		window.WebComponents.waitFor(() => {
 			document.body.removeAttribute('unresolved');
 		});
 	</script>
