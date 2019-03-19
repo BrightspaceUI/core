@@ -1,4 +1,5 @@
 {
   "npm": true,
-  "moduleResolution": "node"
+  "moduleResolution": "node",
+  "sources": ["components/more-less/locales/**"]
 }
