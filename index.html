@@ -8,12 +8,6 @@
 		import './components/typography/typography.js';
 		import './components/button/button-subtle.js';
 		import './components/more-less/more-less.js';
-		window.WebComponents = window.WebComponents || {
-			waitFor(cb) { addEventListener('WebComponentsReady', cb); }
-		};
-		window.WebComponents.waitFor(() => {
-			document.body.removeAttribute('unresolved');
-		});
 	</script>
 	<title>core sample</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
