@@ -13,7 +13,7 @@ export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
 
 	static get properties() {
 		return {
-			hAlign: { type: String, reflect: true },
+			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 			icon: { type: String, reflect: true },
 			iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
 			text: { type: String, reflect: true }
@@ -35,7 +35,6 @@ export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${ifDefined(this.autofocus)}"
-				class="d2l-focusable"
 				?disabled="${this.disabled}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
