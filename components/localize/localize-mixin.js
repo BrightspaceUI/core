@@ -16,9 +16,9 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			baseUrl: { type: String },
+			component: { type: String }, /* name of component being localized */
 			language: { type: String },
-			locales: { type: Array }, /* array of each locale file that exists, e.g., en.json */
+			locales: { type: Array }, /* array of each locale file that exists, e.g., en.js */
 			resources: { type: Object }, /* object containing all localizations, e.g., { "en": { "more": "more " } } */
 			__documentLanguage: { type: String },
 			__documentLanguageFallback: { type: String }
@@ -42,22 +42,16 @@ export const LocalizeMixin = superclass => class extends superclass {
 				this._languageChange();
 			} else if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
 				this._computeLanguage();
-				if (this.baseUrl) {
-					this.loadResources(this.baseUrl);
+				if (this.getResources) {
+					this.loadResources();
 				}
 			}
 			// to do: add __timezoneObject which calls _timezoneChange()
 		});
 	}
 
-	loadResources(baseUrl) {
-		var language = this.language;
-
-		if (!baseUrl || !language) {
-			return;
-		}
-
-		var path = `${baseUrl}/${language}.json`;
+	loadResources() {
+		var path = `${this.component}:${this.language}`;
 
 		var proto = this.constructor.prototype;
 		this._checkLocalizationCache(proto);
@@ -66,18 +60,10 @@ export const LocalizeMixin = superclass => class extends superclass {
 			return;
 		}
 
-		var self = this;
-		fetch(path)
+		this.getResources(this.language)
 			.then((res) => {
-				if (res.status !== 200) {
-					return;
-				}
-
 				proto.__localizationCache.requests[path] = true;
-
-				res.json().then((data) => {
-					self._onRequestResponse(data, language);
-				});
+				this._onRequestResponse(res.val, this.language);
 			});
 	}
 
