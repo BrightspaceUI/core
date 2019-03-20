@@ -22,13 +22,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	constructor() {
 		super();
-
-		this.component = 'more-less';
-		this.getResources = function(language) {
-			var path = `./locales/${language}.js`;
-			return import(path);
-		};
-		this.locales = ['en', 'ar'];
 	}
 
 	render() {
@@ -44,6 +37,54 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 				h-align="${ifDefined(this.hAlign)}">
 			</d2l-button-subtle>
 		`;
+	}
+
+	getLanguage(lang, backupLang) {
+		return this._tryGetResources(lang)
+			|| this._tryGetResources(backupLang)
+			|| this._tryGetResources('en-us');
+	}
+
+	async getLangResources(lang) {
+		var proto = this.constructor.prototype;
+		this.checkLocalizationCache(proto);
+
+		var namespace = `more-less:${lang}`;
+
+		if (proto.__localizationCache.requests[namespace]) {
+			return;
+		}
+
+		const translations = await import(`./locales/${lang}.js`)
+		proto.__localizationCache.requests[namespace] = true;
+		return translations.val;
+	}
+
+	_tryGetResources(val) {
+		var locales = ['ar', 'en'];
+
+		if (val === null) return null;
+		val = val.toLowerCase();
+		var baseLang = val.split('-')[0];
+		var foundBaseLang = null;
+
+		if (locales) {
+			for (var i = 0; i < locales.length; i++) {
+				var localesKey = locales[i];
+				var localesKeyLower = locales[i].toLowerCase();
+				if (localesKeyLower === val) {
+					return localesKey;
+				} else if (localesKeyLower === baseLang) {
+					foundBaseLang = localesKey;
+				}
+			}
+		}
+
+		if (foundBaseLang) {
+			return foundBaseLang;
+		}
+
+		return null;
 	}
 
 	__computeText() {
