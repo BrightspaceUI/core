@@ -37,7 +37,8 @@ export const LocalizeMixin = superclass => class extends superclass {
 	updated(changedProperties) {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
-				this.__language = this.getLanguage(this.__documentLanguage, this.__documentLanguageFallback);
+				var possibleLanguages = this._generatePossibleLanguages(this.__documentLanguage, this.__documentLanguageFallback);
+				this.__language = this.getLanguage(possibleLanguages);
 			} else if (propName === '__language') {
 				this._languageChange();
 
@@ -92,6 +93,34 @@ export const LocalizeMixin = superclass => class extends superclass {
 			}
 		}.bind(this));
 		this._observer.observe(htmlElem, { attributes: true });
+	}
+
+	_generatePossibleLanguages(docLang, docFallbackLang) {
+		var langs = [];
+
+		if (docLang) {
+			docLang = docLang.toLowerCase();
+			langs.push(docLang);
+
+			if (docLang.indexOf('-') !== -1) {
+				var baseDocLang = docLang.split('-')[0];
+				langs.push(baseDocLang);
+			}
+		}
+
+		if (docFallbackLang) {
+			docFallbackLang = docFallbackLang.toLowerCase();
+			langs.push(docFallbackLang);
+
+			if (docFallbackLang.indexOf('-') !== -1) {
+				var baseDocFallbackLang = docFallbackLang.split('-')[0];
+				langs.push(baseDocFallbackLang);
+			}
+		}
+
+		langs.push('en-us', 'en');
+
+		return langs;
 	}
 
 	_languageChange() {

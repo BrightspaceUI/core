@@ -91,10 +91,14 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 		`;
 	}
 
-	getLanguage(lang, backupLang) {
-		return this._tryGetResources(lang)
-			|| this._tryGetResources(backupLang)
-			|| this._tryGetResources('en-us');
+	getLanguage(langs) {
+		for (var i = 0; i < langs.length; i++) {
+			if (this.__langResources[langs[i]]) {
+				return langs[i];
+			}
+		}
+
+		return null;
 	}
 
 	async getLangResources(lang) {
@@ -109,28 +113,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 		proto.__localizationCache.requests[namespace] = true;
 		return this.__langResources[lang];
-	}
-
-	_tryGetResources(val) {
-		if (val === null) return null;
-		val = val.toLowerCase();
-		var baseLang = val.split('-')[0];
-		var foundBaseLang = null;
-
-		for (var key in this.__langResources) {
-			var keyLower = key.toLowerCase();
-			if (keyLower.toLowerCase() === val) {
-				return key;
-			} else if (keyLower === baseLang) {
-				foundBaseLang = key;
-			}
-		}
-
-		if (foundBaseLang) {
-			return foundBaseLang;
-		}
-
-		return null;
 	}
 
 	__computeText() {
