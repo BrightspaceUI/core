@@ -9,7 +9,8 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	static get properties() {
 		return {
-			expanded: { type: Boolean, reflect: true }
+			expanded: { type: Boolean, reflect: true },
+			__langResources: { type: Object }
 		};
 	}
 
@@ -22,6 +23,57 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	constructor() {
 		super();
+
+		this.__langResources = {
+			'ar': {
+				more: 'المزيد',
+				less: 'أقل'
+			},
+			'en': {
+				more: 'more',
+				less: 'less'
+			},
+			'es': {
+				more: 'más',
+				less: 'menos'
+			},
+			'fr': {
+				more: 'plus',
+				less: 'moins'
+			},
+			'ja': {
+				more: 'より多い',
+				less: 'より少ない'
+			},
+			'ko': {
+				more: '더 보기',
+				less: '축소'
+			},
+			'nl': {
+				more: 'meer',
+				less: 'minder'
+			},
+			'pt': {
+				more: 'mais',
+				less: 'menos'
+			},
+			'sv': {
+				more: 'mer',
+				less: 'mindre'
+			},
+			'tr': {
+				more: 'diğer',
+				less: 'daha az'
+			},
+			'zh': {
+				more: '更多',
+				less: '更少'
+			},
+			'zh-tw': {
+				more: '較多',
+				less: '較少'
+			}
+		};
 	}
 
 	render() {
@@ -55,28 +107,22 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 			return;
 		}
 
-		const translations = await import(`./locales/${lang}.js`)
 		proto.__localizationCache.requests[namespace] = true;
-		return translations.val;
+		return this.__langResources[lang];
 	}
 
 	_tryGetResources(val) {
-		var locales = ['ar', 'en'];
-
 		if (val === null) return null;
 		val = val.toLowerCase();
 		var baseLang = val.split('-')[0];
 		var foundBaseLang = null;
 
-		if (locales) {
-			for (var i = 0; i < locales.length; i++) {
-				var localesKey = locales[i];
-				var localesKeyLower = locales[i].toLowerCase();
-				if (localesKeyLower === val) {
-					return localesKey;
-				} else if (localesKeyLower === baseLang) {
-					foundBaseLang = localesKey;
-				}
+		for (var key in this.__langResources) {
+			var keyLower = key.toLowerCase();
+			if (keyLower.toLowerCase() === val) {
+				return key;
+			} else if (keyLower === baseLang) {
+				foundBaseLang = key;
 			}
 		}
 
