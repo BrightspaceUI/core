@@ -9,7 +9,8 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	static get properties() {
 		return {
-			expanded: { type: Boolean, reflect: true }
+			expanded: { type: Boolean, reflect: true },
+			__langResources: { type: Object }
 		};
 	}
 
@@ -22,7 +23,8 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	constructor() {
 		super();
-		this.langResources = {
+
+		this.__langResources = {
 			'ar': {
 				more: 'المزيد',
 				less: 'أقل'
@@ -72,8 +74,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 				less: '較少'
 			}
 		};
-
-		this.expanded = false;
 	}
 
 	render() {
@@ -89,6 +89,30 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 				h-align="${ifDefined(this.hAlign)}">
 			</d2l-button-subtle>
 		`;
+	}
+
+	getLanguage(langs) {
+		for (var i = 0; i < langs.length; i++) {
+			if (this.__langResources[langs[i]]) {
+				return langs[i];
+			}
+		}
+
+		return null;
+	}
+
+	async getLangResources(lang) {
+		var proto = this.constructor.prototype;
+		this.checkLocalizationCache(proto);
+
+		var namespace = `more-less:${lang}`;
+
+		if (proto.__localizationCache.requests[namespace]) {
+			return;
+		}
+
+		proto.__localizationCache.requests[namespace] = true;
+		return this.__langResources[lang];
 	}
 
 	__computeText() {
