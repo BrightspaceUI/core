@@ -23,6 +23,7 @@
     "@webcomponents/shadycss": "latest",
     "@webcomponents/webcomponentsjs": "latest",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
+    "d2l-intl": "^2.0.0",
     "intl-messageformat": "^2.2.0",
     "lit-element": "latest"
   }
