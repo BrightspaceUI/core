@@ -1,4 +1,6 @@
+import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { styleMap} from 'lit-html/directives/style-map.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { LitElement, html, css } from 'lit-element/lit-element.js';
 import { getComposedChildren, isComposedAncestor } from '../helpers/d2l-dom.js';
@@ -17,7 +19,10 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 			hAlign: { type: String, attribute: 'h-align' }, // The h-align property of the more-less button.
 			height: { type: String }, // The maximum height of the content when in "less" state.
 			inactive: { type: Boolean, reflect: true }, // Whether the component is active or inactive.
-			__langResources: { type: Object }
+			__blurBackground: { type: String },
+			__contentHeight: { type:String },
+			__langResources: { type: Object },
+			__transitionAdded: { type: Boolean }
 		};
 	}
 
@@ -43,7 +48,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 				height: 1em;
 				bottom: 1em;
 				margin-bottom: -0.75em;
-				background: linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
 			}
 			:host([inactive]) .more-less-toggle {
 				display: none;
@@ -53,6 +57,8 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	constructor() {
 		super();
 
+		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
+		this.__transitionAdded = false;
 		this.__langResources = {
 			'ar': {
 				more: 'المزيد',
@@ -112,7 +118,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 		this.__contentSlot = null;
 		this.__autoExpanded = false;
 		this.__shift = false;
-		this.__transitionAdded = false;
 		this.__bound_reactToChanges = null;
 		this.__bound_reactToMutationChanges = null;
 	}
@@ -154,9 +159,16 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	render() {
+		var contentClasses = {
+			'more-less-content': true,
+			'more-less-transition': this.__transitionAdded
+		};
+
 		return html`
-			<div class="more-less-content"><slot></slot></div>
-			<div class="more-less-blur"></div>
+			<div class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
+				<slot></slot>
+			</div>
+			<div class="more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
 			<d2l-button-subtle
 				class="more-less-toggle"
 				icon="${this.__computeIcon()}"
@@ -195,7 +207,8 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	__init_setBaseHeight() {
-		this.__content.style.height = this.height;
+		this.__contentHeight = this.height;
+
 		fastdom.measure(this.__init_measureBaseHeight, this);
 	}
 
@@ -231,7 +244,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 		var g = (bigint >> 8) & 255;
 		var b = bigint & 255;
 
-		this.shadowRoot.querySelector('.more-less-blur').style.background =
+		this.__blurBackground =
 			'linear-gradient(rgba(' + r + ',' + g + ',' + b + ',0) 0%, rgb(' + r + ',' + g + ',' + b + ') 100%)';
 	}
 
@@ -264,14 +277,14 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	__shrink() {
-		this.__addTransition();
-		this.__content.style.height = this.height;
+		this.__transitionAdded = true;
+		this.__contentHeight = this.height;
 		this.expanded = false;
 	}
 
 	__expand() {
-		this.__addTransition();
-		this.__content.style.height = this.__content.scrollHeight + 'px';
+		this.__transitionAdded = true;
+		this.__contentHeight = this.__content.scrollHeight + 'px';
 		this.expanded = true;
 	}
 
@@ -294,13 +307,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 		this.__shrink();
 		this.__autoExpanded = false;
-	}
-
-	__addTransition() {
-		if (!this.__transitionAdded) {
-			this.__content.classList.add('more-less-transition');
-			this.__transitionAdded = true;
-		}
 	}
 
 	__adjustToContent() {
@@ -332,16 +338,16 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	__adjustToContent_makeInactive() {
 		this.inactive = true;
 		this.expanded = false;
-		this.__content.style.height = null;
+		this.__contentHeight = null;
 	}
 
 	__adjustToContent_resize(contentHeight) {
-		this.__content.style.height = contentHeight + 'px';
+		this.__contentHeight = contentHeight + 'px';
 	}
 
 	__adjustToContent_makeActive() {
 		this.inactive = false;
-		this.__content.style.height = this.height;
+		this.__contentHeight = this.height;
 	}
 
 	__reactToMutationChanges(mutations) {
@@ -364,7 +370,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	__reactToChanges_setupTransition() {
-		this.__addTransition();
+		this.__transitionAdded = true;
 
 		fastdom.measure(this.__adjustToContent, this);
 	}
