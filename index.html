@@ -37,13 +37,46 @@
 	</demo-transfigurator>
 
 	<demo-transfigurator>
-		<d2l-more-less></d2l-more-less>
+		<d2l-more-less>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</d2l-more-less>
+	</demo-transfigurator>
+
+	<demo-transfigurator>
+		<d2l-more-less height="6em">
+			<p id="img-target">Hi everybody! <a href="">Hi!</a></p>
+		</d2l-more-less>
+	</demo-transfigurator>
+
+	<demo-transfigurator>
+		<d2l-more-less expanded="">
+			<p id="clone-target">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum venenatis arcu sit amet varius. Maecenas posuere magna arcu, quis maximus odio fringilla ac. Integer ligula lorem, faucibus sit amet cursus vel, pellentesque a justo. Aliquam urna metus, molestie at tempor eget, vestibulum a purus. Donec aliquet rutrum mi. Duis ornare congue tempor. Nullam sed massa fermentum, tincidunt leo eu, vestibulum orci. Sed ultrices est in lacus venenatis, posuere suscipit arcu scelerisque. In aliquam ipsum rhoncus, lobortis ligula ut, molestie orci. Proin scelerisque tempor posuere. Phasellus consequat, lorem quis hendrerit tempor, sem lectus sagittis nunc, in tristique dui arcu non arcu. Nunc aliquam nisi et sapien commodo lacinia. <a href="">Quisque</a> iaculis orci vel odio varius porta. Fusce tincidunt dolor enim, vitae sollicitudin purus suscipit eu.</p>
+		</d2l-more-less>
+	</demo-transfigurator>
+
+
+	<demo-transfigurator>
+		<d2l-more-less blur-color="#f00">
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum venenatis arcu sit amet varius. Maecenas posuere magna arcu, quis maximus odio fringilla ac. Integer ligula lorem, faucibus sit amet cursus vel, pellentesque a justo. Aliquam urna metus, molestie at tempor eget, vestibulum a purus. Donec aliquet rutrum mi. Duis ornare congue tempor. Nullam sed massa fermentum, tincidunt leo eu, vestibulum orci. Sed ultrices est in lacus venenatis, posuere suscipit arcu scelerisque. In aliquam ipsum rhoncus, lobortis ligula ut, molestie orci. Proin scelerisque tempor posuere. Phasellus consequat, lorem quis hendrerit tempor, sem lectus sagittis nunc, in tristique dui arcu non arcu. Nunc aliquam nisi et sapien commodo lacinia. <a href="">Quisque</a> iaculis orci vel odio varius porta. Fusce tincidunt dolor enim, vitae sollicitudin purus suscipit eu.</p>
+		</d2l-more-less>
 	</demo-transfigurator>
 
 	<script>
 		document.querySelector('d2l-button-subtle').addEventListener('click', () => {
 			// eslint-disable-next-line no-console
 			console.log('You are a risk taker.');
+		});
+
+		window.requestAnimationFrame(function() {
+			setTimeout(function() {
+				var p = document.getElementById('clone-target');
+				p.parentNode.appendChild(p.cloneNode(true));
+				setTimeout(function() {
+					p.textContent = 'cats';
+				}, 4000);
+			}, 10000);
 		});
 	</script>
 </body>

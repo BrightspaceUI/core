@@ -60,7 +60,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 				this.getLangResources(this.__language)
 					.then((res) => {
 						if (!res) {
-							// case where request was cached
 							return;
 						}
 						this._onRequestResponse(res, this.__language);
