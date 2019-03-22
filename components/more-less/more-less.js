@@ -181,7 +181,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	getLanguage(langs) {
-		for (var i = 0; i < langs.length; i++) {
+		for (let i = 0; i < langs.length; i++) {
 			if (this.__langResources[langs[i]]) {
 				return langs[i];
 			}
@@ -191,16 +191,16 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	async getLangResources(lang) {
-		var proto = this.constructor.prototype;
+		const proto = this.constructor.prototype;
 		this.checkLocalizationCache(proto);
 
-		var namespace = `more-less:${lang}`;
+		const namespace = `more-less:${lang}`;
 
 		if (proto.__localizationCache.requests[namespace]) {
 			return proto.__localizationCache.requests[namespace];
 		}
 
-		var result = this.__langResources[lang];
+		const result = this.__langResources[lang];
 
 		proto.__localizationCache.requests[namespace] = result;
 		return result;
@@ -229,20 +229,20 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 			return;
 		}
 
-		var hex = this.blurColor.substring(1);
+		let hex = this.blurColor.substring(1);
 
 		// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
 		if (hex.length === 3) {
-			var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+			const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
 			hex = hex.replace(shorthandRegex, function(m, r, g, b) {
 				return r + r + g + g + b + b;
 			});
 		}
 
-		var bigint = parseInt(hex, 16);
-		var r = (bigint >> 16) & 255;
-		var g = (bigint >> 8) & 255;
-		var b = bigint & 255;
+		const bigint = parseInt(hex, 16);
+		const r = (bigint >> 16) & 255;
+		const g = (bigint >> 8) & 255;
+		const b = bigint & 255;
 
 		this.__blurBackground =
 			`linear-gradient(rgba(${r}, ${g}, ${b}, 0) 0%, rgb(${r}, ${g}, ${b}) 100%)`;
@@ -315,8 +315,8 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 			return;
 		}
 
-		var contentHeight = this.__content.scrollHeight;
-		var currentHeight = this.__content.offsetHeight;
+		const contentHeight = this.__content.scrollHeight;
+		const currentHeight = this.__content.offsetHeight;
 
 		if (contentHeight <= this.__baseHeight) {
 			if (!this.inactive) {
@@ -389,8 +389,8 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 		this.__mutationObserver.disconnect();
 
 		if (this.__contentSlot) {
-			var children = getComposedChildren(this.__contentSlot);
-			for (var i = 0; i < children.length; ++i) {
+			const children = getComposedChildren(this.__contentSlot);
+			for (let i = 0; i < children.length; ++i) {
 				this.__resizeObserver.observe(children[i]);
 				this.__mutationObserver.observe(children[i], {
 					childList: true,
