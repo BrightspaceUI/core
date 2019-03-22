@@ -159,7 +159,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	render() {
-		var contentClasses = {
+		const contentClasses = {
 			'more-less-content': true,
 			'more-less-transition': this.__transitionAdded
 		};
@@ -245,7 +245,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 		var b = bigint & 255;
 
 		this.__blurBackground =
-			'linear-gradient(rgba(' + r + ',' + g + ',' + b + ',0) 0%, rgb(' + r + ',' + g + ',' + b + ') 100%)';
+			`linear-gradient(rgba(${r}, ${g}, ${b}, 0) 0%, rgb(${r}, ${g}, ${b}) 100%)`;
 	}
 
 	__init_setupListeners() {
