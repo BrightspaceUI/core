@@ -1,7 +1,5 @@
 import '@webcomponents/shadycss/custom-style-interface.min.js';
 
-/* TODO: deal with the mixins. */
-
 const importUrl = 'https://s.brightspace.com/lib/fonts/0.4.0/assets/';
 
 const head = document.getElementsByTagName('head')[0];
@@ -55,31 +53,38 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			font-size: 0.95rem;
 			font-weight: 400;
 			line-height: 1.4rem;
-			/*@apply --d2l-font-custom;*/
 		}
 
-		/*
 		.d2l-typography .d2l-body-standard {
-			@apply --d2l-body-standard-text;
+			font-size: 0.95rem;
+			font-weight: 400;
+			line-height: 1.4rem;
 		}
 
 		.d2l-typography .d2l-body-compact {
-			@apply --d2l-body-compact-text;
+			font-size: 0.8rem;
+			font-weight: 400;
+			line-height: 1.2rem;
 		}
 
 		.d2l-typography .d2l-body-small {
-			@apply --d2l-body-small-text;
+			color: var(--d2l-color-tungsten);
+			font-size: 0.7rem;
+			font-weight: 400;
+			line-height: 1rem;
+			margin: auto;
 		}
 
 		.d2l-typography .d2l-label-text {
-			@apply --d2l-label-text;
+			font-size: 0.7rem;
+			line-height: 1rem;
+			font-weight: 700;
+			letter-spacing: 0.2px;
 		}
-		*/
 
 		.d2l-typography p,
 		.vui-typography p {
 			margin: 1rem 0;
-			/*@apply --d2l-font-paragraph-custom;*/
 		}
 
 		.d2l-typography.d2l-dyslexic,
@@ -88,7 +93,6 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 		.vui-typography .vui-dyslexic {
 			font-family: 'Open Dyslexic', sans-serif;
 			font-weight: 400;
-			/*@apply --d2l-font-dyslexic-custom;*/
 		}
 
 		.d2l-typography:lang(ar),
@@ -119,31 +123,37 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			font-family: 'Hiragino Kaku Gothic Pro', 'Meiyro', sans-serif;
 		}
 
-		/*
 		.vui-typography .vui-heading-1,
 		.d2l-typography .d2l-heading-1 {
-			@apply --d2l-heading-1;
-			@apply --d2l-heading-1-custom;
+			font-size: 2rem;
+			font-weight: 400;
+			line-height: 2.4rem;
+			margin: 1.5rem 0 1.5rem 0;
 		}
 
 		.vui-typography .vui-heading-2,
 		.d2l-typography .d2l-heading-2 {
-			@apply --d2l-heading-2;
-			@apply --d2l-heading-2-custom;
+			font-size: 1.5rem;
+			font-weight: 400;
+			line-height: 1.8rem;
+			margin: 1.5rem 0 1.5rem 0;
 		}
 
 		.vui-typography .vui-heading-3,
 		.d2l-typography .d2l-heading-3 {
-			@apply --d2l-heading-3;
-			@apply --d2l-heading-3-custom;
+			font-size: 1rem;
+			font-weight: 700;
+			line-height: 1.5rem;
+			margin: 1.5rem 0 1.5rem 0;
 		}
 
 		.vui-typography .vui-heading-4,
 		.d2l-typography .d2l-heading-4 {
-			@apply --d2l-heading-4;
-			@apply --d2l-heading-4-custom;
+			font-size: 0.8rem;
+			font-weight: 700;
+			line-height: 1.2rem;
+			margin: 1.5rem 0 1.5rem 0;
 		}
-		*/
 
 		@media (max-width: 615px) {
 			.d2l-typography .d2l-heading-1,
