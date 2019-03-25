@@ -1,6 +1,6 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const buttonSubtle = css`
+export const buttonSubtleStyles = css`
 	:host {
 		display: inline-block;
 	}

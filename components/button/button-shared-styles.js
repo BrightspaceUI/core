@@ -1,6 +1,6 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const button = css`
+export const buttonSharedStyles = css`
 	button {
 		border-radius: 0.3rem;
 		border-style: solid;
