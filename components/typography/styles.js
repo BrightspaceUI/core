@@ -1,6 +1,6 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const bodyStandardStyles = css`
+export const bodyStandard = css`
 	.d2l-body-standard {
 		font-size: 0.95rem;
 		font-weight: 400;
@@ -14,7 +14,7 @@ export const bodyStandardStyles = css`
 	}
 `;
 
-export const bodyCompactStyles = css`
+export const bodyCompact = css`
 	.d2l-body-compact {
 		font-size: 0.8rem;
 		font-weight: 400;
@@ -22,7 +22,7 @@ export const bodyCompactStyles = css`
 	}
 `;
 
-export const bodySmallStyles = css`
+export const bodySmall = css`
 	.d2l-body-small {
 		color: var(--d2l-color-tungsten);
 		font-size: 0.7rem;
@@ -38,7 +38,7 @@ export const bodySmallStyles = css`
 	}
 `;
 
-export const heading1Styles = css`
+export const heading1 = css`
 	.d2l-heading-1 {
 		font-size: 2rem;
 		font-weight: 400;
@@ -53,7 +53,7 @@ export const heading1Styles = css`
 	}
 `;
 
-export const heading2Styles = css`
+export const heading2 = css`
 	.d2l-heading-2 {
 		font-size: 1.5rem;
 		font-weight: 400;
@@ -69,7 +69,7 @@ export const heading2Styles = css`
 	}
 `;
 
-export const heading3Styles = css`
+export const heading3 = css`
 	.d2l-heading-3 {
 		font-size: 1rem;
 		font-weight: 700;
@@ -84,7 +84,7 @@ export const heading3Styles = css`
 	}
 `;
 
-export const heading4Styles = css`
+export const heading4 = css`
 	.d2l-heading-4 {
 		font-size: 0.8rem;
 		font-weight: 700;
@@ -93,7 +93,7 @@ export const heading4Styles = css`
 	}
 `;
 
-export const labelStyles = css`
+export const label = css`
 	.d2l-label-text {
 		font-size: 0.7rem;
 		line-height: 1rem;
