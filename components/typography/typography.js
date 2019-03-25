@@ -44,8 +44,7 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			src: local('Open Dyslexic Bold Italic'), local('OpenDyslexic-BoldItalic'), url(${new URL('OpenDyslexic-700-Italic.woff', importUrl)}) format('woff'), url(${new URL('OpenDyslexic-700-Italic.ttf', importUrl)}) format('truetype');
 		}
 
-		.d2l-typography,
-		.vui-typography {
+		.d2l-typography {
 			color: var(--d2l-color-ferrite);
 			display: block;
 			font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
@@ -82,48 +81,36 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			letter-spacing: 0.2px;
 		}
 
-		.d2l-typography p,
-		.vui-typography p {
+		.d2l-typography p {
 			margin: 1rem 0;
 		}
 
 		.d2l-typography.d2l-dyslexic,
-		.d2l-typography .d2l-dyslexic,
-		.vui-typography.vui-dyslexic,
-		.vui-typography .vui-dyslexic {
+		.d2l-typography .d2l-dyslexic {
 			font-family: 'Open Dyslexic', sans-serif;
 			font-weight: 400;
 		}
 
 		.d2l-typography:lang(ar),
-		.d2l-typography :lang(ar),
-		.vui-typography:lang(ar),
-		.vui-typography :lang(ar) {
+		.d2l-typography :lang(ar) {
 			font-family: 'Arabic Transparent', 'Arabic Typesetting', 'Geeza Pro', sans-serif;
 		}
 
 		.d2l-typography:lang(zh),
-		.d2l-typography :lang(zh),
-		.vui-typography:lang(zh),
-		.vui-typography :lang(zh) {
+		.d2l-typography :lang(zh) {
 			font-family: 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
 		}
 
 		.d2l-typography:lang(ko),
-		.d2l-typography :lang(ko),
-		.vui-typography:lang(ko),
-		.vui-typography :lang(ko) {
+		.d2l-typography :lang(ko) {
 			font-family: 'Apple SD Gothic Neo', Dotum, sans-serif;
 		}
 
 		.d2l-typography:lang(ja),
-		.d2l-typography :lang(ja),
-		.vui-typography:lang(ja),
-		.vui-typography :lang(ja) {
+		.d2l-typography :lang(ja) {
 			font-family: 'Hiragino Kaku Gothic Pro', 'Meiyro', sans-serif;
 		}
 
-		.vui-typography .vui-heading-1,
 		.d2l-typography .d2l-heading-1 {
 			font-size: 2rem;
 			font-weight: 400;
@@ -131,7 +118,6 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			margin: 1.5rem 0 1.5rem 0;
 		}
 
-		.vui-typography .vui-heading-2,
 		.d2l-typography .d2l-heading-2 {
 			font-size: 1.5rem;
 			font-weight: 400;
@@ -139,7 +125,6 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			margin: 1.5rem 0 1.5rem 0;
 		}
 
-		.vui-typography .vui-heading-3,
 		.d2l-typography .d2l-heading-3 {
 			font-size: 1rem;
 			font-weight: 700;
@@ -147,7 +132,6 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			margin: 1.5rem 0 1.5rem 0;
 		}
 
-		.vui-typography .vui-heading-4,
 		.d2l-typography .d2l-heading-4 {
 			font-size: 0.8rem;
 			font-weight: 700;
@@ -156,42 +140,38 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 		}
 
 		@media (max-width: 615px) {
-			.d2l-typography .d2l-heading-1,
-			.d2l-typography .vui-heading-1 {
-				font-size: 1.5rem;
-				font-weight: 400;
-				line-height: 1.8rem;
-			}
-			.d2l-typography .d2l-heading-2,
-			.d2l-typography .vui-heading-2 {
-				font-size: 1rem;
-				font-weight: 700;
-				line-height: 1.5rem;
-			}
-			.d2l-typography .d2l-heading-3,
-			.d2l-typography .vui-heading-3,
-			.d2l-typography .d2l-heading-4,
-			.d2l-typography .vui-heading-4 {
-				font-size: 0.8rem;
-				font-weight: 700;
-				line-height: 1.2rem;
-			}
+
 			.d2l-typography .d2l-body-standard {
 				font-size: 0.8rem;
 				line-height: 1.2rem;
 			}
-			.d2l-typography .d2l-body-compact {
-				font-size: 0.8rem;
-				line-height: 1.2rem;
-			}
+
 			.d2l-typography .d2l-body-small {
 				font-size: 0.6rem;
 				line-height: 0.9rem;
 			}
+
+			.d2l-typography .d2l-heading-1 {
+				font-size: 1.5rem;
+				line-height: 1.8rem;
+			}
+
+			.d2l-typography .d2l-heading-2 {
+				font-size: 1rem;
+				font-weight: 700;
+				line-height: 1.5rem;
+			}
+
+			.d2l-typography .d2l-heading-3 {
+				font-size: 0.8rem;
+				line-height: 1.2rem;
+			}
+
 			.d2l-typography .d2l-label-text {
 				font-size: 0.6rem;
 				line-height: 0.9rem;
 			}
+
 		}
 	`;
 	head.appendChild(style);
