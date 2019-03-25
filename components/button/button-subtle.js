@@ -1,7 +1,9 @@
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LitElement, html } from 'lit-element/lit-element.js';
-import { D2LButtonMixin } from './button-mixin.js';
-import { buttonStyles } from './button-styles.js';
+import { label } from '../typography/styles.js';
+import { buttonSubtle } from './button-subtle-styles.js';
+import { button } from './styles.js';
+import { D2LButtonMixin } from './mixin.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 
@@ -21,7 +23,7 @@ export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ buttonStyles ];
+		return [ label, button, buttonSubtle ];
 	}
 
 	constructor() {
@@ -35,6 +37,7 @@ export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${ifDefined(this.autofocus)}"
+				class="d2l-label-text"
 				?disabled="${this.disabled}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
