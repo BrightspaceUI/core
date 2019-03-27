@@ -17,7 +17,8 @@ export function getComposedChildren(node) {
 		return null;
 	}
 
-	var nodes, children = [];
+	let nodes;
+	const children = [];
 
 	if (node.tagName === 'CONTENT') {
 		nodes = node.getDistributedNodes();
@@ -30,7 +31,7 @@ export function getComposedChildren(node) {
 		nodes = node.children || node.childNodes;
 	}
 
-	for (var i = 0; i < nodes.length; i++) {
+	for (let i = 0; i < nodes.length; i++) {
 		if (nodes[i].nodeType === 1) {
 			children.push(nodes[i]);
 		}
@@ -43,7 +44,7 @@ export function getComposedChildren(node) {
 export function getComposedParent(node) {
 
 	if (node.getDestinationInsertionPoints) {
-		var insertionPoints = node.getDestinationInsertionPoints();
+		const insertionPoints = node.getDestinationInsertionPoints();
 		if (insertionPoints && insertionPoints.length > 0) {
 			return insertionPoints[0];
 		}
@@ -64,7 +65,7 @@ export function getComposedParent(node) {
 }
 
 export function isComposedAncestor(ancestorNode, node) {
-	return findComposedAncestor(node, function(node) {
+	return findComposedAncestor(node, (node) => {
 		return (node === ancestorNode);
 	}) !== null;
 }
