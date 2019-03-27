@@ -51,11 +51,11 @@
 	</demo-transfigurator>
 
 	<script>
-		window.requestAnimationFrame(function() {
-			setTimeout(function() {
-				var p = document.getElementById('clone-target');
+		window.requestAnimationFrame(() => {
+			setTimeout(() => {
+				const p = document.getElementById('clone-target');
 				p.parentNode.appendChild(p.cloneNode(true));
-				setTimeout(function() {
+				setTimeout(() => {
 					p.textContent = 'cats';
 				}, 4000);
 			}, 10000);
