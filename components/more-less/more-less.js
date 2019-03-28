@@ -1,14 +1,14 @@
-import { classMap} from 'lit-html/directives/class-map.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { styleMap} from 'lit-html/directives/style-map.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { LitElement, html, css } from 'lit-element/lit-element.js';
-import { getComposedChildren, isComposedAncestor } from '../helpers/d2l-dom.js';
-import { LocalizeMixin } from '../localize/localize-mixin.js';
 import '../button/button-subtle.js';
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'fastdom/fastdom.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getComposedChildren, isComposedAncestor } from '../helpers/d2l-dom.js';
+import { classMap} from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LocalizeMixin } from '../localize/localize-mixin.js';
+import { ResizeObserver } from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+import { styleMap} from 'lit-html/directives/style-map.js';
 
 export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
@@ -234,7 +234,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 		// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
 		if (hex.length === 3) {
 			const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-			hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+			hex = hex.replace(shorthandRegex, (m, r, g, b) => {
 				return r + r + g + g + b + b;
 			});
 		}
@@ -284,7 +284,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 	__expand() {
 		this.__transitionAdded = true;
-		this.__contentHeight = this.__content.scrollHeight + 'px';
+		this.__contentHeight = `${this.__content.scrollHeight}px`;
 		this.expanded = true;
 	}
 
@@ -342,7 +342,7 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	__adjustToContent_resize(contentHeight) {
-		this.__contentHeight = contentHeight + 'px';
+		this.__contentHeight = `${contentHeight}px`;
 	}
 
 	__adjustToContent_makeActive() {

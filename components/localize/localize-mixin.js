@@ -2,9 +2,9 @@ import d2lIntl from 'd2l-intl';
 import IntlMessageFormat from 'intl-messageformat/src/main.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
-var assign =
+const assign =
 	Object.assign ? Object.assign.bind(Object) : function(destination, source) {
-		for (var prop in source) {
+		for (const prop in source) {
 			if (source.hasOwnProperty(prop)) {
 				destination[prop] = source[prop];
 			}
@@ -47,13 +47,13 @@ export const LocalizeMixin = superclass => class extends superclass {
 	updated(changedProperties) {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
-				var possibleLanguages = this._generatePossibleLanguages(this.__documentLanguage, this.__documentLanguageFallback);
+				const possibleLanguages = this._generatePossibleLanguages(this.__documentLanguage, this.__documentLanguageFallback);
 				this.__language = this.getLanguage(possibleLanguages);
 			} else if (propName === '__language') {
 				this._languageChange();
 
 				// Everytime language or resources change, invalidate the messages cache.
-				var proto = this.constructor.prototype;
+				const proto = this.constructor.prototype;
 				this.checkLocalizationCache(proto);
 				proto.__localizationCache.messages = {};
 
@@ -93,7 +93,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 		opts = opts || {};
 		opts.locale = this.__overrides;
 		opts.timezone = opts.timezone || this.__timezone;
-		var formatter = new d2lIntl.DateTimeFormat(this.__language, opts);
+		const formatter = new d2lIntl.DateTimeFormat(this.__language, opts);
 		return formatter.format(val);
 	}
 
@@ -101,19 +101,19 @@ export const LocalizeMixin = superclass => class extends superclass {
 		opts = opts || {};
 		opts.locale = this.__overrides;
 		opts.timezone = opts.timezone || this.__timezone;
-		var formatter = new d2lIntl.DateTimeFormat(this.__language, opts);
+		const formatter = new d2lIntl.DateTimeFormat(this.__language, opts);
 		return formatter.formatDate(val);
 	}
 
 	formatFileSize(val) {
-		var formatter = new d2lIntl.FileSizeFormat(this.__language);
+		const formatter = new d2lIntl.FileSizeFormat(this.__language);
 		return formatter.format(val);
 	}
 
 	formatNumber(val, opts) {
 		opts = opts || {};
 		opts.locale = this.__overrides;
-		var formatter = new d2lIntl.NumberFormat(this.__language, opts);
+		const formatter = new d2lIntl.NumberFormat(this.__language, opts);
 		return formatter.format(val);
 	}
 
@@ -121,12 +121,12 @@ export const LocalizeMixin = superclass => class extends superclass {
 		opts = opts || {};
 		opts.locale = this.__overrides;
 		opts.timezone = opts.timezone || this.__timezone;
-		var formatter = new d2lIntl.DateTimeFormat(this.__language, opts);
+		const formatter = new d2lIntl.DateTimeFormat(this.__language, opts);
 		return formatter.formatTime(val);
 	}
 
 	parseDate(val) {
-		var parser = new d2lIntl.DateTimeParse(
+		const parser = new d2lIntl.DateTimeParse(
 			this.__language,
 			{ locale: this.__overrides }
 		);
@@ -136,21 +136,21 @@ export const LocalizeMixin = superclass => class extends superclass {
 	parseNumber(val, opts) {
 		opts = opts || {};
 		opts.locale = this.__overrides;
-		var parser = new d2lIntl.NumberParse(this.__language, opts);
+		const parser = new d2lIntl.NumberParse(this.__language, opts);
 		return parser.parse(val);
 	}
 
 	parseTime(val) {
-		var parser = new d2lIntl.DateTimeParse(this.__language);
+		const parser = new d2lIntl.DateTimeParse(this.__language);
 		return parser.parseTime(val);
 	}
 
 	_startObserver() {
-		var htmlElem = window.document.getElementsByTagName('html')[0];
+		const htmlElem = window.document.getElementsByTagName('html')[0];
 
-		this._observer = new MutationObserver(function(mutations) {
-			for (var i = 0; i < mutations.length; i++) {
-				var mutation = mutations[i];
+		this._observer = new MutationObserver((mutations) => {
+			for (let i = 0; i < mutations.length; i++) {
+				const mutation = mutations[i];
 				if (mutation.attributeName === 'lang') {
 					this.__documentLanguage = htmlElem.getAttribute('lang');
 				} else if (mutation.attributeName === 'data-lang-default') {
@@ -161,19 +161,19 @@ export const LocalizeMixin = superclass => class extends superclass {
 					this.__timezoneObject = this._tryParseHtmlElemAttr('data-timezone', {name: '', identifier: ''});
 				}
 			}
-		}.bind(this));
+		});
 		this._observer.observe(htmlElem, { attributes: true });
 	}
 
 	_generatePossibleLanguages(docLang, docFallbackLang) {
-		var langs = [];
+		const langs = [];
 
 		if (docLang) {
 			docLang = docLang.toLowerCase();
 			langs.push(docLang);
 
 			if (docLang.indexOf('-') !== -1) {
-				var baseDocLang = docLang.split('-')[0];
+				const baseDocLang = docLang.split('-')[0];
 				langs.push(baseDocLang);
 			}
 		}
@@ -183,7 +183,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 			langs.push(docFallbackLang);
 
 			if (docFallbackLang.indexOf('-') !== -1) {
-				var baseDocFallbackLang = docFallbackLang.split('-')[0];
+				const baseDocFallbackLang = docFallbackLang.split('-')[0];
 				langs.push(baseDocFallbackLang);
 			}
 		}
@@ -210,7 +210,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	_onRequestResponse(newResources, language) {
-		var propertyUpdates = {};
+		const propertyUpdates = {};
 		propertyUpdates.resources = assign({}, this.__resources || {});
 		propertyUpdates.resources[language] =
 				assign(propertyUpdates.resources[language] || {}, newResources);
@@ -218,7 +218,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	_computeLocalize(language, resources, key) {
-		var proto = this.constructor.prototype;
+		const proto = this.constructor.prototype;
 		this.checkLocalizationCache(proto);
 
 		if (!key || !resources || !language || !resources[language])
@@ -226,14 +226,14 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 		// Cache the key/value pairs for the same language, so that we don't
 		// do extra work if we're just reusing strings across an application.
-		var translatedValue = resources[language][key];
+		const translatedValue = resources[language][key];
 
 		if (!translatedValue) {
 			return '';
 		}
 
-		var messageKey = key + translatedValue;
-		var translatedMessage = proto.__localizationCache.messages[messageKey];
+		const messageKey = key + translatedValue;
+		let translatedMessage = proto.__localizationCache.messages[messageKey];
 
 		if (!translatedMessage) {
 			translatedMessage =
@@ -241,8 +241,8 @@ export const LocalizeMixin = superclass => class extends superclass {
 			proto.__localizationCache.messages[messageKey] = translatedMessage;
 		}
 
-		var args = {};
-		for (var i = 1; i < arguments.length; i += 2) {
+		const args = {};
+		for (let i = 1; i < arguments.length; i += 2) {
 			args[arguments[i]] = arguments[i + 1];
 		}
 
@@ -250,7 +250,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	_tryParseHtmlElemAttr(attrName, defaultValue) {
-		var htmlElems = window.document.getElementsByTagName('html');
+		const htmlElems = window.document.getElementsByTagName('html');
 		if (htmlElems.length === 1 && htmlElems[0].hasAttribute(attrName)) {
 			try {
 				return JSON.parse(htmlElems[0].getAttribute(attrName));
