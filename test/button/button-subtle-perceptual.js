@@ -22,14 +22,20 @@ visualDiff.run((ctx) => {
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('disabled', async function() {
-				const rect = await ctx.puppeteer.getRect(page, '#disabled');
+			it('mouse', async function() {
+				await page.hover('#normal');
+				const rect = await ctx.puppeteer.getRect(page, '#normal');
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('focus', async function() {
 				await page.click('#normal');
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
+				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('disabled', async function() {
+				const rect = await ctx.puppeteer.getRect(page, '#disabled');
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
