@@ -59,56 +59,6 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
 		this.__transitionAdded = false;
-		this.__langResources = {
-			'ar': {
-				more: 'المزيد',
-				less: 'أقل'
-			},
-			'en': {
-				more: 'more',
-				less: 'less'
-			},
-			'es': {
-				more: 'más',
-				less: 'menos'
-			},
-			'fr': {
-				more: 'plus',
-				less: 'moins'
-			},
-			'ja': {
-				more: 'より多い',
-				less: 'より少ない'
-			},
-			'ko': {
-				more: '더 보기',
-				less: '축소'
-			},
-			'nl': {
-				more: 'meer',
-				less: 'minder'
-			},
-			'pt': {
-				more: 'mais',
-				less: 'menos'
-			},
-			'sv': {
-				more: 'mer',
-				less: 'mindre'
-			},
-			'tr': {
-				more: 'diğer',
-				less: 'daha az'
-			},
-			'zh': {
-				more: '更多',
-				less: '更少'
-			},
-			'zh-tw': {
-				more: '較多',
-				less: '較少'
-			}
-		};
 
 		this.height = '4em';
 
@@ -181,8 +131,9 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	getLanguage(langs) {
+		const locales = ['en', 'ar'];
 		for (let i = 0; i < langs.length; i++) {
-			if (this.__langResources[langs[i]]) {
+			if (locales.indexOf(langs[i]) !== -1) {
 				return langs[i];
 			}
 		}
@@ -200,7 +151,18 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 			return proto.__localizationCache.requests[namespace];
 		}
 
-		const result = this.__langResources[lang];
+		let translations;
+
+		switch (lang) {
+			case 'en':
+				translations = await import('./locales/en.js');
+				break;
+			case 'ar':
+				translations = await import('./locales/ar.js');
+				break;
+		}
+
+		const result = translations.val;
 
 		proto.__localizationCache.requests[namespace] = result;
 		return result;
