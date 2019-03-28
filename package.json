@@ -6,7 +6,9 @@
   "main": "index.html",
   "scripts": {
     "lint": "eslint . --ext .js,.html",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "diff": "mocha ./test/button/button-subtle-perceptual.js",
+    "diff:golden": "mocha ./test/button/button-subtle-perceptual.js --golden"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
@@ -17,7 +19,10 @@
     "eslint-config-brightspace": "latest",
     "eslint-plugin-html": "latest",
     "eslint-plugin-lit": "latest",
-    "polymer-cli": "latest"
+    "mocha": "latest",
+    "polymer-cli": "latest",
+    "puppeteer": "latest",
+    "visual-diff": "dbatiste/visual-diff"
   },
   "dependencies": {
     "@webcomponents/shadycss": "latest",

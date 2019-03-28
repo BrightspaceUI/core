@@ -1,0 +1,12 @@
+{
+  "extends": "brightspace/lit-config",
+  "env": {
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "rules": {
+    "no-invalid-this": 0,
+    "prefer-arrow-callback": 0
+  }
+}
