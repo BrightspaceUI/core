@@ -7,8 +7,8 @@
   "scripts": {
     "lint": "eslint . --ext .js,.html",
     "test": "npm run lint",
-    "diff": "mocha ./test/button/button-subtle-perceptual.js",
-    "diff:golden": "mocha ./test/button/button-subtle-perceptual.js --golden"
+    "diff": "mocha ./test/button/button-subtle-perceptual.js --timeout 10000",
+    "diff:golden": "mocha ./test/button/button-subtle-perceptual.js --timeout 10000 --golden"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",

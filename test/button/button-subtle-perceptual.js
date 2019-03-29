@@ -5,7 +5,6 @@ visualDiff.run((ctx) => {
 
 	describe('d2l-button-subtle', function() {
 
-		this.timeout(10000);
 		let browser, page;
 
 		before(async() => {
