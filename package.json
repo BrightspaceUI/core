@@ -6,7 +6,7 @@
   "main": "index.html",
   "scripts": {
     "lint": "eslint . --ext .js,.html",
-    "test": "npm run lint",
+    "test": "npm run lint && npm run diff",
     "diff": "mocha ./test/button/button-subtle-perceptual.js --timeout 10000",
     "diff:golden": "mocha ./test/button/button-subtle-perceptual.js --timeout 10000 --golden"
   },
