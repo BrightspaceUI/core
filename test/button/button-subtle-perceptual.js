@@ -48,7 +48,7 @@ visualDiff.run((ctx) => {
 		describe('wide', function() {
 
 			beforeEach(async function() {
-				await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+				await page.setViewport({width: 800, height: 800});
 				await page.goto(`${ctx.serverInfo().baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
 			});
 
@@ -59,7 +59,7 @@ visualDiff.run((ctx) => {
 		describe('narrow', function() {
 
 			beforeEach(async function() {
-				await page.setViewport({width: 600, height: 800, deviceScaleFactor: 2});
+				await page.setViewport({width: 600, height: 800});
 				await page.goto(`${ctx.serverInfo().baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
 			});
 
