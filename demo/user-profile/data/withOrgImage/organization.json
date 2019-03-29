@@ -1,0 +1,7 @@
+{
+	"entities": [{
+		"href": "data/withOrgImage/orgImage.json",
+		"rel": ["bar"],
+		"class": ["course-image"]
+	}]
+}

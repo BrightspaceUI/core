@@ -1,0 +1,12 @@
+{
+	"links": [{
+		"rel": ["https://folio.api.brightspace.com/rels/folio"],
+		"href": "data/withFolio/folio.json"
+	}],
+	"entities": [{
+		"rel": ["https://api.brightspace.com/rels/display-name"],
+		"properties": {
+			"name": "Jane Has-a-Folio Smith"
+		}
+	}]
+}

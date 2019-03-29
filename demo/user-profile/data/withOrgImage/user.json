@@ -1,0 +1,12 @@
+{
+	"links": [{
+		"rel": ["https://api.brightspace.com/rels/my-enrollments"],
+		"href": "data/withOrgImage/enrollments.json"
+	}],
+	"entities": [{
+		"rel": ["https://api.brightspace.com/rels/display-name"],
+		"properties": {
+			"name": "Jane Has-An-Org-Image Smith"
+		}
+	}]
+}

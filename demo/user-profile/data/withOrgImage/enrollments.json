@@ -1,0 +1,9 @@
+{
+	"entities": [{
+		"rel": ["https://api.brightspace.com/rels/user-enrollment"],
+		"links": [{
+			"rel": ["https://api.brightspace.com/rels/organization"],
+			"href": "data/withOrgImage/organization.json"
+		}]
+	}]
+}

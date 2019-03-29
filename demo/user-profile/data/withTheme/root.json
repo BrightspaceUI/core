@@ -1,0 +1,6 @@
+{
+	"links": [{
+		"rel": ["https://api.brightspace.com/rels/organization"],
+		"href": "data/withTheme/organization.json"
+	}]
+}

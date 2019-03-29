@@ -1,0 +1,12 @@
+{
+	"entities": [{
+		"rel": ["https://folio.api.brightspace.com/rels/Evidence"],
+		"entities": [{
+			"rel": ["https://folio.api.brightspace.com/rels/Content"],
+			"properties": {
+				"type": "Png",
+				"url": "data/logo-image.png"
+			}
+		}]
+	}]
+}

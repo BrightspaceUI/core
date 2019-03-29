@@ -22,11 +22,14 @@
   "dependencies": {
     "@webcomponents/shadycss": "latest",
     "@webcomponents/webcomponentsjs": "latest",
+    "d2l-fetch": "Brightspace/d2l-fetch.git#semver:^2",
+    "d2l-hypermedia-constants": "^6.13.0",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
     "d2l-intl": "^2.0.0",
     "fastdom": "^1.0.9",
     "intl-messageformat": "^2.2.0",
     "lit-element": "latest",
-    "resize-observer-polyfill": "^1.5.1"
+    "resize-observer-polyfill": "^1.5.1",
+    "siren-parser": "^8.0.0"
   }
 }

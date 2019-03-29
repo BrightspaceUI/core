@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../styles.css" type="text/css">
+	<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import 'demo-transfigurator/demo-transfigurator.js';
+		import '../../components/colors/colors.js';
+		import '../../components/typography/typography.js';
+		import './consumer-element.js';
+	</script>
+	<title>user-profile mixin demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body class="d2l-typography">
+
+	<p>consumer-element is an example of usage of the UserProfileMixin.</p>
+
+	<h3>User with Folio</h3>
+
+	<demo-transfigurator>
+		<consumer-element type="withFolio"></consumer-element>
+	</demo-transfigurator>
+
+	<h3>User with Org Image</h3>
+
+	<demo-transfigurator>
+		<consumer-element type="withOrgImage"></consumer-element>
+	</demo-transfigurator>
+
+	<h3>User with Theme</h3>
+
+	<demo-transfigurator>
+		<consumer-element type="withTheme"></consumer-element>
+	</demo-transfigurator>
+</body>
+</html>

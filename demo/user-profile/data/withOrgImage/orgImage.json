@@ -1,0 +1,7 @@
+{
+	"links": [{
+		"rel": ["alternate"],
+		"class": ["wide", "min", "high-density"],
+		"href": "data/logo-image.png"
+	}]
+}
