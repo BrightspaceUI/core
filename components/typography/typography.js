@@ -48,7 +48,7 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			color: var(--d2l-color-ferrite);
 			display: block;
 			font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
-			letter-spacing: 0.01rem;
+			/*letter-spacing: 0.01rem;*/
 			font-size: 0.95rem;
 			font-weight: 400;
 			line-height: 1.4rem;
@@ -78,7 +78,7 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 			font-size: 0.7rem;
 			line-height: 1rem;
 			font-weight: 700;
-			letter-spacing: 0.2px;
+			/*letter-spacing: 0.2px;*/
 		}
 
 		.d2l-typography p {

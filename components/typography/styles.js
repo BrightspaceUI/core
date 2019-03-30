@@ -98,7 +98,7 @@ export const labelStyles = css`
 		font-size: 0.7rem;
 		line-height: 1rem;
 		font-weight: 700;
-		letter-spacing: 0.2px;
+		/*letter-spacing: 0.2px;*/
 	}
 	@media (max-width: 615px) {
 		.d2l-label-text {
