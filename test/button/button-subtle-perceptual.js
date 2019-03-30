@@ -18,8 +18,8 @@ visualDiff.run((ctx) => {
 
 			it('normal', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				rect.width = 180;
-				rect.height = 70;
+				//rect.width = 180;
+				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -28,8 +28,8 @@ visualDiff.run((ctx) => {
 			it('mouse', async function() {
 				await page.hover('#normal');
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				rect.width = 180;
-				rect.height = 70;
+				//rect.width = 180;
+				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -38,8 +38,8 @@ visualDiff.run((ctx) => {
 			it('focus', async function() {
 				await page.click('#normal');
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				rect.width = 180;
-				rect.height = 70;
+				//rect.width = 180;
+				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -47,8 +47,8 @@ visualDiff.run((ctx) => {
 
 			it('disabled', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#disabled');
-				rect.width = 180;
-				rect.height = 70;
+				//rect.width = 180;
+				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -56,8 +56,8 @@ visualDiff.run((ctx) => {
 
 			it('with-icon', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#with-icon');
-				rect.width = 180;
-				rect.height = 70;
+				//rect.width = 180;
+				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
