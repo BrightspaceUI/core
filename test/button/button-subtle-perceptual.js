@@ -8,7 +8,7 @@ visualDiff.run((ctx) => {
 		let browser, page;
 
 		before(async() => {
-			browser = await puppeteer.launch({headless: false, args: [ '--no-sandbox', '--disable-setuid-sandbox' ]});
+			browser = await puppeteer.launch();
 			page = await browser.newPage();
 		});
 
