@@ -17,11 +17,6 @@ visualDiff.run((ctx) => {
 		const runTests = () => {
 
 			it('normal', async function() {
-				const r = await page.evaluate(async() => {
-					return window.devicePixelRatio;
-				});
-				// eslint-disable-next-line no-console
-				console.log(`ratio ${r}`);
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
