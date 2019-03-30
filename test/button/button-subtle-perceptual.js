@@ -18,28 +18,38 @@ visualDiff.run((ctx) => {
 
 			it('normal', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
+				// eslint-disable-next-line no-console
+				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('mouse', async function() {
 				await page.hover('#normal');
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
+				// eslint-disable-next-line no-console
+				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('focus', async function() {
 				await page.click('#normal');
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
+				// eslint-disable-next-line no-console
+				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('disabled', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#disabled');
+				// eslint-disable-next-line no-console
+				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('with-icon', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#with-icon');
+				// eslint-disable-next-line no-console
+				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
