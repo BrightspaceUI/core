@@ -1,90 +1,74 @@
 const puppeteer = require('puppeteer');
 const visualDiff = require('visual-diff');
 
-visualDiff.run((ctx) => {
+before(async() => {
+	await visualDiff.initialize({
+		name: 'button', dir: __dirname, port: 8081
+	});
+});
 
-	describe('d2l-button-subtle', function() {
+describe('d2l-button-subtle', function() {
 
-		let browser, page;
+	let browser, page;
 
-		before(async() => {
-			browser = await puppeteer.launch();
-			page = await browser.newPage();
+	before(async() => {
+		browser = await puppeteer.launch();
+		page = await browser.newPage();
+	});
+
+	after(() => browser.close());
+
+	const runTests = () => {
+
+		it('normal', async function() {
+			const rect = await visualDiff.puppeteer.getRect(page, '#normal');
+			await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		after(() => browser.close());
-
-		const runTests = () => {
-
-			it('normal', async function() {
-				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				// eslint-disable-next-line no-console
-				console.log(`width: ${rect.width}; height: ${rect.height}`);
-				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-
-			it('mouse', async function() {
-				await page.hover('#normal');
-				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				// eslint-disable-next-line no-console
-				console.log(`width: ${rect.width}; height: ${rect.height}`);
-				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-
-			it('focus', async function() {
-				await page.click('#normal');
-				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				// eslint-disable-next-line no-console
-				console.log(`width: ${rect.width}; height: ${rect.height}`);
-				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-
-			it('disabled', async function() {
-				const rect = await ctx.puppeteer.getRect(page, '#disabled');
-				// eslint-disable-next-line no-console
-				console.log(`width: ${rect.width}; height: ${rect.height}`);
-				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-
-			it('with-icon', async function() {
-				const rect = await ctx.puppeteer.getRect(page, '#with-icon');
-				// eslint-disable-next-line no-console
-				console.log(`width: ${rect.width}; height: ${rect.height}`);
-				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-
-		};
-
-		describe('wide', function() {
-
-			beforeEach(async function() {
-				await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
-				await page.goto(`${ctx.serverInfo().baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
-			});
-
-			runTests();
-
+		it('mouse', async function() {
+			await page.hover('#normal');
+			const rect = await visualDiff.puppeteer.getRect(page, '#normal');
+			await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		describe('narrow', function() {
-
-			beforeEach(async function() {
-				await page.setViewport({width: 600, height: 800, deviceScaleFactor: 2});
-				await page.goto(`${ctx.serverInfo().baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
-			});
-
-			runTests();
-
+		it('focus', async function() {
+			await page.click('#normal');
+			const rect = await visualDiff.puppeteer.getRect(page, '#normal');
+			await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+
+		it('disabled', async function() {
+			const rect = await visualDiff.puppeteer.getRect(page, '#disabled');
+			await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('with-icon', async function() {
+			const rect = await visualDiff.puppeteer.getRect(page, '#with-icon');
+			await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	};
+
+	describe('wide', function() {
+
+		beforeEach(async function() {
+			await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+			await page.goto(`${visualDiff.baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
+		});
+
+		runTests();
 
 	});
 
-}, {name: 'button', dir: __dirname, port: 8081, upload: {
-	key: 'S3',
-	target: 'visualdiff.gaudi.d2l/screenshots',
-	region: 'ca-central-1',
-	creds: {
-		accessKeyId: process.env['S3ID'],
-		secretAccessKey: process.env['S3KEY']
-	}
-}});
+	describe('narrow', function() {
+
+		beforeEach(async function() {
+			await page.setViewport({width: 600, height: 800, deviceScaleFactor: 2});
+			await page.goto(`${visualDiff.baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
+		});
+
+		runTests();
+
+	});
+
+});
