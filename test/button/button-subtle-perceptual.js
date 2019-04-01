@@ -18,8 +18,6 @@ visualDiff.run((ctx) => {
 
 			it('normal', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				//rect.width = 180;
-				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -28,8 +26,6 @@ visualDiff.run((ctx) => {
 			it('mouse', async function() {
 				await page.hover('#normal');
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				//rect.width = 180;
-				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -38,8 +34,6 @@ visualDiff.run((ctx) => {
 			it('focus', async function() {
 				await page.click('#normal');
 				const rect = await ctx.puppeteer.getRect(page, '#normal');
-				//rect.width = 180;
-				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -47,8 +41,6 @@ visualDiff.run((ctx) => {
 
 			it('disabled', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#disabled');
-				//rect.width = 180;
-				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -56,8 +48,6 @@ visualDiff.run((ctx) => {
 
 			it('with-icon', async function() {
 				const rect = await ctx.puppeteer.getRect(page, '#with-icon');
-				//rect.width = 180;
-				//rect.height = 70;
 				// eslint-disable-next-line no-console
 				console.log(`width: ${rect.width}; height: ${rect.height}`);
 				await ctx.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -89,4 +79,12 @@ visualDiff.run((ctx) => {
 
 	});
 
-}, {dir: __dirname, port: 8081});
+}, {name: 'button', dir: __dirname, port: 8081, upload: {
+	key: 'S3',
+	target: 'visualdiff.gaudi.d2l/screenshots',
+	region: 'ca-central-1',
+	creds: {
+		accessKeyId: process.env['S3ID'],
+		secretAccessKey: process.env['S3KEY']
+	}
+}});
