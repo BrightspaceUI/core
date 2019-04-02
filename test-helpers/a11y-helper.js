@@ -12,29 +12,29 @@ import 'axe-core/axe.min.js';
 * }
 * Rule ids can be found here: https://github.com/dequelabs/axe-core/blob/master/doc/rule-descriptions.md
 */
-export function runAxe(element, callback, options) {
-	axe.run(element, options || {}).then((results) => {
-		const violations = results.violations;
+export async function runAxe(element, callback, options) {
+	const results = await axe.run(element, options || {});
 
-		console.log('Inapplicable Tests:', results.inapplicable.length);
-		console.log('Passed Tests:', results.passes.length);
-		console.log('Failed Tests:', results.violations.length);
+	const violations = results.violations;
 
-		if (!violations.length) {
-			callback();
-		} else {
-			const errorMessage = ['Accessibility Violations', '---'];
-			for (const violation of violations) {
-				errorMessage.push(violation.help);
-				for (const node of violation.nodes) {
-					if (node.failureSummary) {
-						errorMessage.push(node.failureSummary);
-					}
-					errorMessage.push(node.html);
+	console.log('Inapplicable Tests:', results.inapplicable.length);
+	console.log('Passed Tests:', results.passes.length);
+	console.log('Failed Tests:', results.violations.length);
+
+	if (!violations.length) {
+		callback();
+	} else {
+		const errorMessage = ['Accessibility Violations', '---'];
+		for (const violation of violations) {
+			errorMessage.push(violation.help);
+			for (const node of violation.nodes) {
+				if (node.failureSummary) {
+					errorMessage.push(node.failureSummary);
 				}
-				errorMessage.push('---');
+				errorMessage.push(node.html);
 			}
-			callback(new Error(errorMessage.join('\n')));
+			errorMessage.push('---');
 		}
-	});
+		callback(new Error(errorMessage.join('\n')));
+	}
 }
