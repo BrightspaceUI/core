@@ -6,7 +6,9 @@
   "main": "index.html",
   "scripts": {
     "lint": "eslint . --ext .js,.html",
-    "test": "npm run lint"
+    "test": "npm run lint && npm run test:local",
+    "test:local": "polymer test --skip-plugin sauce",
+    "test:sauce": "polymer test --skip-plugin local"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
