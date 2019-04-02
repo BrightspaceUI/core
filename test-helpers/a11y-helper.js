@@ -13,7 +13,7 @@ import 'axe-core/axe.min.js';
 * Rule ids can be found here: https://github.com/dequelabs/axe-core/blob/master/doc/rule-descriptions.md
 */
 export async function runAxe(element, options) {
-	const results = await axe.run(element, options || {});
+	const results = await axe.run(element, options);
 
 	const violations = results.violations;
 

@@ -34,23 +34,23 @@
 		<script type="module">
 			import { runAxe } from '../../test-helpers/a11y-helper.js';
 
-			suite('subtle button', () => {
+			describe('subtle button', () => {
 				let button;
-				suite('basic', () => {
-					setup(async() => {
+				describe('basic', () => {
+					beforeEach(async() => {
 						button = fixture('basic');
 						await button.updateComplete;
 					});
-					test('should execute onclick when clicked', async() => {
+					it('should execute onclick when clicked', async() => {
 						return new Promise(resolve => {
 							button.addEventListener('click', resolve, {once: true});
 							button.click();
 						});
 					});
-					test('should pass all axe tests', async() => {
+					it('should pass all axe tests', async() => {
 						await runAxe(button);
 					});
-					test('should pass all axe tests when focussed', async() => {
+					it('should pass all axe tests when focussed', async() => {
 						return new Promise((resolve, reject) => {
 							button.addEventListener('focus', async() => {
 								try {
@@ -65,21 +65,21 @@
 					});
 				});
 
-				suite('with icon', () => {
-					setup(async() => {
+				describe('with icon', () => {
+					beforeEach(async() => {
 						button = fixture('with-icon');
 						await button.updateComplete;
 					});
-					test('should execute onclick when clicked', async() => {
+					it('should execute onclick when clicked', async() => {
 						return new Promise(resolve => {
 							button.addEventListener('click', resolve, {once: true});
 							button.click();
 						});
 					});
-					test('should pass all axe tests', async() => {
+					it('should pass all axe tests', async() => {
 						await runAxe(button);
 					});
-					test('should pass all axe tests when focussed', async() => {
+					it('should pass all axe tests when focussed', async() => {
 						return new Promise((resolve, reject) => {
 							button.addEventListener('focus', async() => {
 								try {
@@ -94,12 +94,12 @@
 					});
 				});
 
-				suite('disabled', () => {
-					setup(async() => {
+				describe('disabled', () => {
+					beforeEach(async() => {
 						button = fixture('disabled');
 						await button.updateComplete;
 					});
-					test('should pass all axe tests', async() => {
+					it('should pass all axe tests', async() => {
 						await runAxe(button);
 					});
 				});
