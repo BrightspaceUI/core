@@ -37,11 +37,9 @@
 			suite('subtle button', function() {
 				let button;
 				suite('basic', function() {
-					setup(function(done) {
+					setup(async function() {
 						button = fixture('basic');
-						requestAnimationFrame(function() {
-							done();
-						});
+						await button.updateComplete;
 					});
 					test('should execute onclick when clicked', function(done) {
 						button.addEventListener('click', function() {
@@ -61,11 +59,9 @@
 				});
 
 				suite('with icon', function() {
-					setup(function(done) {
+					setup(async function() {
 						button = fixture('with-icon');
-						requestAnimationFrame(function() {
-							done();
-						});
+						await button.updateComplete;
 					});
 					test('should execute onclick when clicked', function(done) {
 						button.addEventListener('click', function() {
@@ -85,11 +81,9 @@
 				});
 
 				suite('disabled', function() {
-					setup(function(done) {
+					setup(async function() {
 						button = fixture('disabled');
-						requestAnimationFrame(function() {
-							done();
-						});
+						await button.updateComplete;
 					});
 					test('should pass all axe tests', function(done) {
 						runAxe(button, done);
