@@ -23,18 +23,17 @@ export async function runAxe(element, options) {
 
 	if (!violations.length) {
 		return Promise.resolve();
-	} else {
-		const errorMessage = ['Accessibility Violations', '---'];
-		for (const violation of violations) {
-			errorMessage.push(violation.help);
-			for (const node of violation.nodes) {
-				if (node.failureSummary) {
-					errorMessage.push(node.failureSummary);
-				}
-				errorMessage.push(node.html);
-			}
-			errorMessage.push('---');
-		}
-		return Promise.reject(new Error(errorMessage.join('\n')));
 	}
+	const errorMessage = ['Accessibility Violations', '---'];
+	for (const violation of violations) {
+		errorMessage.push(violation.help);
+		for (const node of violation.nodes) {
+			if (node.failureSummary) {
+				errorMessage.push(node.failureSummary);
+			}
+			errorMessage.push(node.html);
+		}
+		errorMessage.push('---');
+	}
+	return Promise.reject(new Error(errorMessage.join('\n')));
 }

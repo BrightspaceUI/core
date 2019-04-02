@@ -55,6 +55,7 @@
 							button.addEventListener('focus', async() => {
 								try {
 									await runAxe(button);
+									resolve();
 								} catch (e) {
 									reject(e);
 								}
@@ -83,6 +84,7 @@
 							button.addEventListener('focus', async() => {
 								try {
 									await runAxe(button);
+									resolve();
 								} catch (e) {
 									reject(e);
 								}
