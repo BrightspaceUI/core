@@ -34,25 +34,25 @@
 		<script type="module">
 			import { runAxe } from '../../test-helpers/a11y-helper.js';
 
-			suite('subtle button', function() {
+			suite('subtle button', () => {
 				let button;
-				suite('basic', function() {
-					setup(async function() {
+				suite('basic', () => {
+					setup(async() => {
 						button = fixture('basic');
 						await button.updateComplete;
 					});
-					test('should execute onclick when clicked', async function() {
-						return new Promise(function(resolve) {
+					test('should execute onclick when clicked', async() => {
+						return new Promise(resolve => {
 							button.addEventListener('click', resolve, {once: true});
 							button.click();
 						});
 					});
-					test('should pass all axe tests', async function() {
+					test('should pass all axe tests', async() => {
 						await runAxe(button);
 					});
-					test('should pass all axe tests when focussed', async function() {
-						return new Promise(function(resolve, reject) {
-							button.addEventListener('focus', async function() {
+					test('should pass all axe tests when focussed', async() => {
+						return new Promise((resolve, reject) => {
+							button.addEventListener('focus', async() => {
 								try {
 									await runAxe(button);
 								} catch (e) {
@@ -64,23 +64,23 @@
 					});
 				});
 
-				suite('with icon', function() {
-					setup(async function() {
+				suite('with icon', () => {
+					setup(async() => {
 						button = fixture('with-icon');
 						await button.updateComplete;
 					});
-					test('should execute onclick when clicked', async function() {
-						return new Promise(function(resolve) {
+					test('should execute onclick when clicked', async() => {
+						return new Promise(resolve => {
 							button.addEventListener('click', resolve, {once: true});
 							button.click();
 						});
 					});
-					test('should pass all axe tests', async function() {
+					test('should pass all axe tests', async() => {
 						await runAxe(button);
 					});
-					test('should pass all axe tests when focussed', async function() {
-						return new Promise(function(resolve, reject) {
-							button.addEventListener('focus', async function() {
+					test('should pass all axe tests when focussed', async() => {
+						return new Promise((resolve, reject) => {
+							button.addEventListener('focus', async() => {
 								try {
 									await runAxe(button);
 								} catch (e) {
@@ -92,12 +92,12 @@
 					});
 				});
 
-				suite('disabled', function() {
-					setup(async function() {
+				suite('disabled', () => {
+					setup(async() => {
 						button = fixture('disabled');
 						await button.updateComplete;
 					});
-					test('should pass all axe tests', async function() {
+					test('should pass all axe tests', async() => {
 						await runAxe(button);
 					});
 				});
