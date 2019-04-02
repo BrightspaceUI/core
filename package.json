@@ -11,13 +11,18 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@polymer/test-fixture": "latest",
+    "axe-core": "latest",
     "babel-eslint": "latest",
+    "chai": "latest",
     "demo-transfigurator": "dbatiste/demo-transfigurator",
     "eslint": "latest",
     "eslint-config-brightspace": "latest",
     "eslint-plugin-html": "latest",
     "eslint-plugin-lit": "latest",
-    "polymer-cli": "latest"
+    "mocha": "^5.0.0",
+    "polymer-cli": "latest",
+    "wct-mocha": "^1.0.0"
   },
   "dependencies": {
     "@webcomponents/shadycss": "latest",

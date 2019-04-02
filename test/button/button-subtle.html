@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+		<title>subtle button tests</title>
+
+		<script src="../../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="../../../mocha/mocha.js"></script>
+		<script src="../../../chai/chai.js"></script>
+		<script src="../../../@polymer/test-fixture/test-fixture.js"></script>
+		<script src="../../../wct-mocha/wct-mocha.js"></script>
+
+		<script type="module" src="../../components/button/button-subtle.js"></script>
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>
+			</template>
+		</test-fixture>
+		<test-fixture id="with-icon">
+			<template>
+				<d2l-button-subtle text="Subtle Button with Icon" icon="d2l-tier1:gear"></d2l-button-subtle>
+			</template>
+		</test-fixture>
+		<test-fixture id="disabled">
+			<template>
+				<d2l-button-subtle disabled text="Disabled Subtle Button"></d2l-button-subtle>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../test-helpers/a11y-helper.js';
+
+			suite('subtle button', function() {
+				let button;
+				suite('basic', function() {
+					setup(function(done) {
+						button = fixture('basic');
+						requestAnimationFrame(function() {
+							done();
+						});
+					});
+					test('should execute onclick when clicked', function(done) {
+						button.addEventListener('click', function() {
+							done();
+						});
+						button.click();
+					});
+					test('should pass all axe tests', function(done) {
+						runAxe(button, done);
+					});
+					test('should pass all axe tests when focussed', function(done) {
+						button.addEventListener('focus', function() {
+							runAxe(button, done);
+						});
+						button.shadowRoot.querySelector('button').focus();
+					});
+				});
+
+				suite('with icon', function() {
+					setup(function(done) {
+						button = fixture('with-icon');
+						requestAnimationFrame(function() {
+							done();
+						});
+					});
+					test('should execute onclick when clicked', function(done) {
+						button.addEventListener('click', function() {
+							done();
+						});
+						button.click();
+					});
+					test('should pass all axe tests', function(done) {
+						runAxe(button, done);
+					});
+					test('should pass all axe tests when focussed', function(done) {
+						button.addEventListener('focus', function() {
+							runAxe(button, done);
+						});
+						button.shadowRoot.querySelector('button').focus();
+					});
+				});
+
+				suite('disabled', function() {
+					setup(function(done) {
+						button = fixture('disabled');
+						requestAnimationFrame(function() {
+							done();
+						});
+						test('should pass all axe tests', function(done) {
+							runAxe(button, done);
+						});
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
