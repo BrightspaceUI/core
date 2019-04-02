@@ -12,7 +12,7 @@ import 'axe-core/axe.min.js';
 * }
 * Rule ids can be found here: https://github.com/dequelabs/axe-core/blob/master/doc/rule-descriptions.md
 */
-export async function runAxe(element, callback, options) {
+export async function runAxe(element, options) {
 	const results = await axe.run(element, options || {});
 
 	const violations = results.violations;
@@ -22,7 +22,7 @@ export async function runAxe(element, callback, options) {
 	console.log('Failed Tests:', results.violations.length);
 
 	if (!violations.length) {
-		callback();
+		return Promise.resolve();
 	} else {
 		const errorMessage = ['Accessibility Violations', '---'];
 		for (const violation of violations) {
@@ -35,6 +35,6 @@ export async function runAxe(element, callback, options) {
 			}
 			errorMessage.push('---');
 		}
-		callback(new Error(errorMessage.join('\n')));
+		return Promise.reject(new Error(errorMessage.join('\n')));
 	}
 }

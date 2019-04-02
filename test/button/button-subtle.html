@@ -41,20 +41,26 @@
 						button = fixture('basic');
 						await button.updateComplete;
 					});
-					test('should execute onclick when clicked', function(done) {
-						button.addEventListener('click', function() {
-							done();
+					test('should execute onclick when clicked', async function() {
+						return new Promise(function(resolve) {
+							button.addEventListener('click', resolve, {once: true});
+							button.click();
 						});
-						button.click();
 					});
-					test('should pass all axe tests', function(done) {
-						runAxe(button, done);
+					test('should pass all axe tests', async function() {
+						await runAxe(button);
 					});
-					test('should pass all axe tests when focussed', function(done) {
-						button.addEventListener('focus', function() {
-							runAxe(button, done);
+					test('should pass all axe tests when focussed', async function() {
+						return new Promise(function(resolve, reject) {
+							button.addEventListener('focus', async function() {
+								try {
+									await runAxe(button);
+								} catch (e) {
+									reject(e);
+								}
+							});
+							button.shadowRoot.querySelector('button').focus();
 						});
-						button.shadowRoot.querySelector('button').focus();
 					});
 				});
 
@@ -63,20 +69,26 @@
 						button = fixture('with-icon');
 						await button.updateComplete;
 					});
-					test('should execute onclick when clicked', function(done) {
-						button.addEventListener('click', function() {
-							done();
+					test('should execute onclick when clicked', async function() {
+						return new Promise(function(resolve) {
+							button.addEventListener('click', resolve, {once: true});
+							button.click();
 						});
-						button.click();
 					});
-					test('should pass all axe tests', function(done) {
-						runAxe(button, done);
+					test('should pass all axe tests', async function() {
+						await runAxe(button);
 					});
-					test('should pass all axe tests when focussed', function(done) {
-						button.addEventListener('focus', function() {
-							runAxe(button, done);
+					test('should pass all axe tests when focussed', async function() {
+						return new Promise(function(resolve, reject) {
+							button.addEventListener('focus', async function() {
+								try {
+									await runAxe(button);
+								} catch (e) {
+									reject(e);
+								}
+							});
+							button.shadowRoot.querySelector('button').focus();
 						});
-						button.shadowRoot.querySelector('button').focus();
 					});
 				});
 
@@ -85,8 +97,8 @@
 						button = fixture('disabled');
 						await button.updateComplete;
 					});
-					test('should pass all axe tests', function(done) {
-						runAxe(button, done);
+					test('should pass all axe tests', async function() {
+						await runAxe(button);
 					});
 				});
 			});
