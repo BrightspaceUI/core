@@ -50,4 +50,9 @@ describe('d2l-button-subtle', function() {
 		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('icon-right', async function() {
+		const rect = await visualDiff.puppeteer.getRect(page, '#icon-right');
+		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 });
