@@ -4,9 +4,9 @@ addons:
   chrome: stable
 script:
 - npm run lint
-- npm run test:diff
 - |
   if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
+    npm run test:diff;
     echo "Pull request with secure environment variables, running Sauce tests...";
     npm run test:sauce || travis_terminate 1;
   else
