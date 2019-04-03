@@ -28,7 +28,7 @@ describe('d2l-button-subtle', function() {
 		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('mouse', async function() {
+	it('mouse-hover', async function() {
 		await page.hover('#normal');
 		const rect = await visualDiff.puppeteer.getRect(page, '#normal');
 		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
