@@ -1,3 +1,6 @@
+html {
+	font-size: 20px;
+}
 body[unresolved] {
 	opacity: 0;
 }
