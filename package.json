@@ -39,5 +39,10 @@
     "intl-messageformat": "^2.2.0",
     "lit-element": "latest",
     "resize-observer-polyfill": "^1.5.1"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "mocha"
+    ]
   }
 }
