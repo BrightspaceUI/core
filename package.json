@@ -7,8 +7,8 @@
   "scripts": {
     "lint": "eslint . --ext .js,.html",
     "test": "npm run lint && npm run test:local && npm run test:diff",
-    "test:diff": "mocha ./test/button/button-subtle-visual-diff.js --timeout 10000",
-    "test:diff:golden": "mocha ./test/button/button-subtle-visual-diff.js --timeout 10000 --golden",
+    "test:diff": "mocha './test/**/*.visual-diff.js' -t 10000 -s 1000",
+    "test:diff:golden": "mocha './test/**/*.visual-diff.js' -t 10000 -s 1000 --golden",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sauce": "polymer test --skip-plugin local"
   },
