@@ -6,7 +6,9 @@
   "main": "index.html",
   "scripts": {
     "lint": "eslint . --ext .js,.html",
-    "test": "npm run lint && npm run test:local",
+    "test": "npm run lint && npm run test:local && npm run test:diff",
+    "test:diff": "mocha ./test/button/button-subtle-visual-diff.js --timeout 10000",
+    "test:diff:golden": "mocha ./test/button/button-subtle-visual-diff.js --timeout 10000 --golden",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sauce": "polymer test --skip-plugin local"
   },
@@ -24,6 +26,8 @@
     "eslint-plugin-lit": "latest",
     "mocha": "^5.0.0",
     "polymer-cli": "latest",
+    "puppeteer": "latest",
+    "visual-diff": "dbatiste/visual-diff",
     "wct-mocha": "^1.0.0"
   },
   "dependencies": {
