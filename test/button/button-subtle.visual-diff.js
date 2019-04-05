@@ -39,9 +39,7 @@ describe('d2l-button-subtle', function() {
 		await page.evaluate(() => {
 			const promise = new Promise((resolve) => {
 				const elem = document.querySelector('#normal');
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', () => {
-					resolve();
-				});
+				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
 				elem.focus();
 			});
 			return promise;
