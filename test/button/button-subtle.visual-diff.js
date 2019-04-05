@@ -3,7 +3,7 @@ const visualDiff = require('visual-diff');
 
 before(async() => {
 	await visualDiff.initialize({
-		name: 'button', dir: __dirname, port: 8081
+		name: 'button', dir: __dirname
 	});
 });
 
