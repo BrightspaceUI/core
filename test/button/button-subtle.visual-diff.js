@@ -21,6 +21,7 @@ describe('d2l-button-subtle', function() {
 	beforeEach(async function() {
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
+		await page.bringToFront();
 	});
 
 	it('normal', async function() {
@@ -35,7 +36,16 @@ describe('d2l-button-subtle', function() {
 	});
 
 	it('focus', async function() {
-		await page.click('#normal');
+		await page.evaluate(() => {
+			const promise = new Promise((resolve) => {
+				const elem = document.querySelector('#normal');
+				elem.shadowRoot.querySelector('button').addEventListener('transitionend', () => {
+					resolve();
+				});
+				elem.focus();
+			});
+			return promise;
+		});
 		const rect = await visualDiff.puppeteer.getRect(page, '#normal');
 		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
