@@ -3,7 +3,7 @@ const visualDiff = require('visual-diff');
 
 before(async() => {
 	await visualDiff.initialize({
-		name: 'button', dir: __dirname, port: 8081
+		name: 'button', dir: __dirname
 	});
 });
 
@@ -14,14 +14,12 @@ describe('d2l-button-subtle', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
+		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+		await page.goto(`${visualDiff.baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
+		await page.bringToFront();
 	});
 
 	after(() => browser.close());
-
-	beforeEach(async function() {
-		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
-		await page.goto(`${visualDiff.baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
-	});
 
 	it('normal', async function() {
 		const rect = await visualDiff.puppeteer.getRect(page, '#normal');
@@ -35,7 +33,14 @@ describe('d2l-button-subtle', function() {
 	});
 
 	it('focus', async function() {
-		await page.click('#normal');
+		await page.evaluate(() => {
+			const promise = new Promise((resolve) => {
+				const elem = document.querySelector('#normal');
+				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
+				elem.focus();
+			});
+			return promise;
+		});
 		const rect = await visualDiff.puppeteer.getRect(page, '#normal');
 		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
