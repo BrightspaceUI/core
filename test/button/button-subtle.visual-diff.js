@@ -1,13 +1,9 @@
 const puppeteer = require('puppeteer');
-const visualDiff = require('visual-diff');
-
-before(async() => {
-	await visualDiff.initialize({
-		name: 'button', dir: __dirname
-	});
-});
+const VisualDiff = require('visual-diff');
 
 describe('d2l-button-subtle', function() {
+
+	const visualDiff = new VisualDiff({name: 'button', dir: __dirname});
 
 	let browser, page;
 
@@ -15,21 +11,21 @@ describe('d2l-button-subtle', function() {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
-		await page.goto(`${visualDiff.baseUrl}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
+		await page.goto(`${visualDiff.getBaseUrl()}/demo/button/button-subtle.html`, {waitUntil: ['networkidle2', 'load']});
 		await page.bringToFront();
 	});
 
 	after(() => browser.close());
 
 	it('normal', async function() {
-		const rect = await visualDiff.puppeteer.getRect(page, '#normal');
-		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		const rect = await visualDiff.getRect(page, '#normal');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('mouse-hover', async function() {
 		await page.hover('#normal');
-		const rect = await visualDiff.puppeteer.getRect(page, '#normal');
-		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		const rect = await visualDiff.getRect(page, '#normal');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('focus', async function() {
@@ -41,23 +37,23 @@ describe('d2l-button-subtle', function() {
 			});
 			return promise;
 		});
-		const rect = await visualDiff.puppeteer.getRect(page, '#normal');
-		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		const rect = await visualDiff.getRect(page, '#normal');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('disabled', async function() {
-		const rect = await visualDiff.puppeteer.getRect(page, '#disabled');
-		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		const rect = await visualDiff.getRect(page, '#disabled');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('with-icon', async function() {
-		const rect = await visualDiff.puppeteer.getRect(page, '#with-icon');
-		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		const rect = await visualDiff.getRect(page, '#with-icon');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('icon-right', async function() {
-		const rect = await visualDiff.puppeteer.getRect(page, '#icon-right');
-		await visualDiff.puppeteer.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		const rect = await visualDiff.getRect(page, '#icon-right');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 });
