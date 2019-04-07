@@ -3,7 +3,7 @@ const VisualDiff = require('visual-diff');
 
 describe('d2l-button-subtle', function() {
 
-	const visualDiff = new VisualDiff({name: 'button', dir: __dirname});
+	const visualDiff = new VisualDiff('button', __dirname);
 
 	let browser, page;
 
