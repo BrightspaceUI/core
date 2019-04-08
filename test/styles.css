@@ -1,6 +1,9 @@
 html {
 	font-size: 20px;
 }
-.visual-diff {
+body {
 	padding: 30px;
+}
+.visual-diff {
+	margin-bottom: 30px;
 }
