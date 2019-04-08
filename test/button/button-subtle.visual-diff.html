@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../styles.css" type="text/css">
+	<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../components/colors/colors.js';
+		import '../../components/typography/typography.js';
+		import '../../components/button/button-subtle.js';
+	</script>
+	<title>d2l-button-subtle</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-button-subtle id="normal" text="Subtle Button"></d2l-button-subtle>
+	</div>
+	<div class="visual-diff">
+		<d2l-button-subtle id="disabled" text="Subtle Button" disabled></d2l-button-subtle>
+	</div>
+	<div class="visual-diff">
+		<d2l-button-subtle id="with-icon" icon="d2l-tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>
+	</div>
+	<div class="visual-diff">
+		<d2l-button-subtle id="icon-right" icon="d2l-tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>
+	</div>
+</body>
+</html>
