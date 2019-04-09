@@ -8,7 +8,8 @@ export const RtlMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this._dir = document.documentElement.getAttribute('dir');
+		const dir = document.documentElement.getAttribute('dir');
+		if (dir) this._dir = dir;
 	}
 
 };
