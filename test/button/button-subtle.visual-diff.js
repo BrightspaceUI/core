@@ -51,8 +51,18 @@ describe('d2l-button-subtle', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('with-icon-rtl', async function() {
+		const rect = await visualDiff.getRect(page, '#with-icon-rtl');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	it('icon-right', async function() {
 		const rect = await visualDiff.getRect(page, '#icon-right');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('icon-right-rtl', async function() {
+		const rect = await visualDiff.getRect(page, '#icon-right-rtl');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
