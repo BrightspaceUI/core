@@ -8,9 +8,9 @@ import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeMixin } from '../localize/localize-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { styleMap} from 'lit-html/directives/style-map.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
-export class D2LMoreLess extends LocalizeMixin(LitElement)  {
+class MoreLess extends LocalizeMixin(LitElement)  {
 
 	static get properties() {
 		return {
@@ -411,4 +411,4 @@ export class D2LMoreLess extends LocalizeMixin(LitElement)  {
 
 }
 
-customElements.define('d2l-more-less', D2LMoreLess);
+customElements.define('d2l-more-less', MoreLess);

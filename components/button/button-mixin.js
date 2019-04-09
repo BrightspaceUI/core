@@ -1,4 +1,4 @@
-export const D2LButtonMixin = superclass => class extends superclass {
+export const ButtonMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
