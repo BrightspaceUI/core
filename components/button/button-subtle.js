@@ -1,9 +1,9 @@
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import { ButtonMixin } from './button-mixin.js';
 import { buttonSharedStyles } from './button-shared-styles.js';
 import { buttonSubtleStyles } from './button-subtle-styles.js';
-import { D2LButtonMixin } from './button-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
 import { RtlMixin } from '../localize/rtl-mixin.js';
@@ -12,7 +12,7 @@ import { RtlMixin } from '../localize/rtl-mixin.js';
 /* TODO: move tier1-icons.js out of here and figure out correct path for it */
 /* TODO: check to make sure nothing was missed */
 
-export class D2LButtonSubtle extends D2LButtonMixin(RtlMixin(LitElement)) {
+class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -53,4 +53,4 @@ export class D2LButtonSubtle extends D2LButtonMixin(RtlMixin(LitElement)) {
 
 }
 
-customElements.define('d2l-button-subtle', D2LButtonSubtle);
+customElements.define('d2l-button-subtle', ButtonSubtle);
