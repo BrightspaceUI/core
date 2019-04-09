@@ -19,8 +19,7 @@ export const buttonSubtleStyles = css`
 	:host([h-align="text"]) button {
 		left: -0.6rem;
 	}
-	:host(:dir(rtl)):host([h-align="text"]) button,
-	:host(:dir(rtl))[h-align="text"] button {
+	:host([dir="rtl"][h-align="text"]) button {
 		left: 0;
 		right: -0.6rem;
 	}
@@ -52,14 +51,12 @@ export const buttonSubtleStyles = css`
 		padding-right: 1.2rem;
 	}
 
-	:host(:dir(rtl)):host([icon]) .d2l-button-subtle-content,
-	:host(:dir(rtl))[icon] .d2l-button-subtle-content {
+	:host([dir="rtl"][icon]) .d2l-button-subtle-content {
 		padding-left: 0;
 		padding-right: 1.2rem;
 	}
 
-	:host(:dir(rtl)):host([icon]):host([icon-right]) .d2l-button-subtle-content,
-	:host(:dir(rtl))[icon][icon-right] .d2l-button-subtle-content {
+	:host([dir="rtl"][icon][icon-right]) .d2l-button-subtle-content {
 		padding-left: 1.2rem;
 		padding-right: 0;
 	}
@@ -79,8 +76,7 @@ export const buttonSubtleStyles = css`
 	:host([icon][icon-right]) d2l-icon.d2l-button-subtle-icon {
 		right: 0.6rem;
 	}
-	:host([dir="rtl"][icon][icon-right]) d2l-icon.d2l-button-subtle-icon,
-	:host(:dir(rtl))[icon][icon-right] d2l-icon.d2l-button-subtle-icon {
+	:host([dir="rtl"][icon][icon-right]) d2l-icon.d2l-button-subtle-icon {
 		left: 0.6rem;
 		right: auto;
 	}

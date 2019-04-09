@@ -6,12 +6,13 @@ import { buttonSubtleStyles } from './button-subtle-styles.js';
 import { D2LButtonMixin } from './button-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
+import { RtlMixin } from '../localize/rtl-mixin.js';
 
 /* TODO: convert icons to Lit and update these imports */
 /* TODO: move tier1-icons.js out of here and figure out correct path for it */
 /* TODO: check to make sure nothing was missed */
 
-export class D2LButtonSubtle extends D2LButtonMixin(LitElement) {
+export class D2LButtonSubtle extends D2LButtonMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
