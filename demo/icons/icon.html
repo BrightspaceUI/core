@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../styles.css" type="text/css">
+		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import 'whatwg-fetch';
+			import 'demo-transfigurator/demo-transfigurator.js';
+			import '../../components/colors/colors.js';
+			import '../../components/typography/typography.js';
+			import '../../components/icons/icon.js';
+		</script>
+		<title>d2l-icon demo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<style>
+		.color-override d2l-icon {
+			color: var(--d2l-color-celestine-minus-1);
+		}
+		.size-override d2l-icon {
+			--d2l-icon-height: 50px;
+			--d2l-icon-width: 50px;
+		}
+		</style>
+	</head>
+	<body class="d2l-typography">
+
+		<h3>Preset (icon attribute)</h3>
+		<demo-transfigurator>
+			<d2l-icon icon="d2l-tier1:gear"></d2l-icon>
+			<d2l-icon icon="d2l-tier2:gear"></d2l-icon>
+			<d2l-icon icon="d2l-tier3:gear"></d2l-icon>
+		</demo-transfigurator>
+
+		<h3>Custom SVG (src attribute)</h3>
+		<demo-transfigurator>
+			<d2l-icon src="../../components/icons/images/tier1/gear.svg" size="tier1"></d2l-icon>
+			<d2l-icon src="../../components/icons/images/tier2/gear.svg" size="tier2"></d2l-icon>
+			<d2l-icon src="../../components/icons/images/tier3/gear.svg" size="tier3"></d2l-icon>
+		</demo-transfigurator>
+
+		<h3>Custom non-SVG (src attribute)</h3>
+		<demo-transfigurator>
+			<d2l-icon src="calendar-tier1.png" size="tier1"></d2l-icon>
+			<d2l-icon src="calendar-tier2.png" size="tier2"></d2l-icon>
+			<d2l-icon src="calendar-tier3.png" size="tier3"></d2l-icon>
+		</demo-transfigurator>
+
+		<h3>Color Override</h3>
+		<demo-transfigurator>
+			<div class="color-override">
+				<d2l-icon icon="d2l-tier3:gear"></d2l-icon>
+				<d2l-icon src="../../components/icons/images/tier3/gear.svg" size="tier3"></d2l-icon>
+			</div>
+		</demo-transfigurator>
+
+		<h3>Size Override</h3>
+		<demo-transfigurator>
+			<div class="size-override">
+				<d2l-icon icon="d2l-tier3:gear"></d2l-icon>
+				<d2l-icon src="../../components/icons/images/tier3/gear.svg" size="tier3"></d2l-icon>
+				<d2l-icon src="calendar-tier3.png" size="tier3"></d2l-icon>
+			</div>
+		</demo-transfigurator>
+
+		<h3>RTL</h3>
+		<demo-transfigurator>
+			<d2l-icon icon="d2l-tier2:share" dir="rtl"></d2l-icon>
+			<d2l-icon src="../../components/icons/images/tier2/share.svg" size="tier2" dir="rtl"></d2l-icon>
+		</demo-transfigurator>
+
+	</body>
+</html>
