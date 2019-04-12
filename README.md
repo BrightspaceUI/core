@@ -10,7 +10,19 @@ Coming soon!
 
 ## Usage
 
-Coming soon!
+### Structure
+
+`/components/` - Web components for use in your composite components or application (ex. buttons, links, etc)
+
+`/demo/` - Demos for components and mixins
+
+`/helpers/` - Helpers for use in your web components or mixins (ex. composed DOM helpers)
+
+`/mixins/` - Mixins for use in your web components (ex. localize, RTL, etc)
+
+`/test/` - Unit and Visual-Diff tests
+
+`/tools/` - Development tools for building, testing, etc. (this code does not get shipped)
 
 ## Developing, Testing and Contributing
 
