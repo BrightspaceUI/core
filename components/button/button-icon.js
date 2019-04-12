@@ -1,9 +1,9 @@
 import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import { buttonIconStyles } from './button-icon-styles.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonSharedStyles } from './button-shared-styles.js';
-import { buttonIconStyles } from './button-icon-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../localize/rtl-mixin.js';
 
