@@ -3,7 +3,7 @@ import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import 'fastdom/fastdom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getComposedChildren, isComposedAncestor } from '../helpers/d2l-dom.js';
+import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeMixin } from '../../mixins/localize-mixin.js';
