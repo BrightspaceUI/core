@@ -14,15 +14,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
-		<style>
-		.color-override d2l-icon {
-			color: var(--d2l-color-celestine-minus-1);
-		}
-		.size-override d2l-icon {
-			--d2l-icon-height: 50px;
-			--d2l-icon-width: 50px;
-		}
-		</style>
+		<script type="module">
+			import { addCustomStyle } from '../../custom-style-helper.js'
+			addCustomStyle(`
+				.color-override d2l-icon {
+					color: var(--d2l-color-citrine);
+				}
+				.size-override d2l-icon {
+					--d2l-icon-height: 50px;
+					--d2l-icon-width: 50px;
+				}
+			`);
+		</script>
 	</head>
 	<body class="d2l-typography">
 
