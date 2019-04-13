@@ -9,6 +9,7 @@
 			import '../../components/colors/colors.js';
 			import '../../components/typography/typography.js';
 			import '../../components/icons/icon.js';
+			import '../../custom-style.js';
 		</script>
 		<title>d2l-icon demo</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,6 +26,18 @@
 		</style>
 	</head>
 	<body class="d2l-typography">
+
+		<d2l-custom-style>
+			<style>
+				.color-override d2l-icon {
+					color: var(--d2l-color-cinnabar);
+				}
+				.size-override d2l-icon {
+					--d2l-icon-height: 50px;
+					--d2l-icon-width: 50px;
+				}
+			</style>
+		</d2l-custom-style>
 
 		<h3>Preset (icon attribute)</h3>
 		<demo-transfigurator>
