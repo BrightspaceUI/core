@@ -10,4 +10,4 @@ export const addCustomStyle = (style) => {
 			return elem;
 		}
 	});
-}
+};
