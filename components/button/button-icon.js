@@ -5,9 +5,10 @@ import { buttonIconStyles } from './button-icon-styles.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonSharedStyles } from './button-shared-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { RtlMixin } from '../localize/rtl-mixin.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
 
-class ButtonIcon extends ButtonMixin(RtlMixin(LitElement)) {
+class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -19,7 +20,7 @@ class ButtonIcon extends ButtonMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ buttonSharedStyles, buttonIconStyles ];
+		return [ buttonSharedStyles, buttonIconStyles, visibleOnAncestorStyles ];
 	}
 
 	render() {
