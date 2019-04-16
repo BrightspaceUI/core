@@ -49,26 +49,26 @@ describe('d2l-button-icon', function() {
 	describe('visible-on-ancestor', function() {
 
 		it('normal', async function() {
-			const rect = await visualDiff.getRect(page, '.ancestor-container');
+			const rect = await visualDiff.getRect(page, '#voa');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('mouse-hover', async function() {
-			await page.hover('.ancestor-container');
-			const rect = await visualDiff.getRect(page, '.ancestor-container');
+			await page.hover('#voa-hover');
+			const rect = await visualDiff.getRect(page, '#voa-hover');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('focus', async function() {
 			await page.evaluate(() => {
 				const promise = new Promise((resolve) => {
-					const elem = document.querySelector('#voaDisabled');
+					const elem = document.querySelector('#voa-focus > #voaDisabled');
 					elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
 					elem.focus();
 				});
 				return promise;
 			});
-			const rect = await visualDiff.getRect(page, '.ancestor-container');
+			const rect = await visualDiff.getRect(page, '#voa-focus');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
@@ -77,21 +77,21 @@ describe('d2l-button-icon', function() {
 	describe('translucent', function() {
 
 		it('normal', async function() {
-			const rect = await visualDiff.getRect(page, '.translucent-container');
+			const rect = await visualDiff.getRect(page, '#translucent');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('mouse-hover', async function() {
 			const p = page.evaluate(() => {
 				const promise = new Promise((resolve) => {
-					const elem = document.querySelector('#translucent');
+					const elem = document.querySelector('#translucent-hover > d2l-button-icon');
 					elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
 				});
 				return promise;
 			});
-			await page.hover('#translucent');
+			await page.hover('#translucent-hover > d2l-button-icon');
 			await p;
-			const rect = await visualDiff.getRect(page, '.translucent-container');
+			const rect = await visualDiff.getRect(page, '#translucent-hover');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
