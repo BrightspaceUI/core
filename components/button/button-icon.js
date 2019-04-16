@@ -28,7 +28,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 			<button
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-				aria-label="${ifDefined(this.ariaLabel)}"
+				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
 				?autofocus="${ifDefined(this.autofocus)}"
 				class="d2l-label-text"
 				?disabled="${this.disabled}"
