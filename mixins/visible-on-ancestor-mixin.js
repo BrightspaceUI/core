@@ -1,5 +1,5 @@
-import { css } from 'lit-element/lit-element.js';
 import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
+import { css } from 'lit-element/lit-element.js';
 
 export const visibleOnAncestorStyles = css`
 
@@ -39,7 +39,6 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 
 	attributeChangedCallback(name, oldval, newval) {
 		if (name === 'visible-on-ancestor' && this.__voaAttached) {
-			console.log('here', oldval, newval);
 			if (newval) this.__voaInit();
 			else this.__voaUninit();
 		}
@@ -102,7 +101,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 
 		if (!this.visibleOnAncestor) return;
 
-		this.__voaTarget = findComposedAncestor(this, function(node) {
+		this.__voaTarget = findComposedAncestor(this, (node) => {
 			if (!node || node.nodeType !== 1) return false;
 			return (node.classList.contains('d2l-visible-on-ancestor-target'));
 		});
