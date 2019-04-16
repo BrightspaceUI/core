@@ -3,7 +3,7 @@ const VisualDiff = require('visual-diff');
 
 describe('d2l-button-subtle', function() {
 
-	const visualDiff = new VisualDiff('button', __dirname);
+	const visualDiff = new VisualDiff('button-subtle', __dirname);
 
 	let browser, page;
 
@@ -22,7 +22,7 @@ describe('d2l-button-subtle', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('mouse-hover', async function() {
+	it('hover', async function() {
 		await page.hover('#normal');
 		const rect = await visualDiff.getRect(page, '#normal');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
