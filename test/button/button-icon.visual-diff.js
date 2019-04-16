@@ -10,12 +10,18 @@ describe('d2l-button-icon', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
+		//await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+		//await page.goto(`${visualDiff.getBaseUrl()}/test/button/button-icon.visual-diff.html`, {waitUntil: ['networkidle2', 'load']});
+		//await page.bringToFront();
+	});
+
+	after(() => browser.close());
+
+	beforeEach(async() => {
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/test/button/button-icon.visual-diff.html`, {waitUntil: ['networkidle2', 'load']});
 		await page.bringToFront();
 	});
-
-	after(() => browser.close());
 
 	it('normal', async function() {
 		const rect = await visualDiff.getRect(page, '#normal');
