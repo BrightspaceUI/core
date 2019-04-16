@@ -3,7 +3,7 @@ const VisualDiff = require('visual-diff');
 
 describe('d2l-button-icon', function() {
 
-	const visualDiff = new VisualDiff('button', __dirname);
+	const visualDiff = new VisualDiff('button-icon', __dirname);
 
 	let browser, page;
 
