@@ -13,23 +13,6 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
 	<style>
-		.ancestor-container {
-			padding: 0.5rem;
-			position: relative;
-			width: 180px;
-		}
-		.ancestor-container::before {
-			box-sizing: border-box;
-			content: 'target';
-			font-size: 0.7rem;
-			height: 100%;
-			left:0;
-			padding: 0.5rem;
-			position: absolute;;
-			text-align: right;
-			top: 0;
-			width: 100%;
-		}
 		.translucent-container {
 			position: relative;
 			width: 200px;
@@ -56,39 +39,15 @@
 		<d2l-button-icon id="disabled" icon="d2l-tier1:gear" text="Icon Button" disabled></d2l-button-icon>
 	</div>
 	<div class="visual-diff">
-		<div class="ancestor-container d2l-visible-on-ancestor-target" id="voa">
-			<d2l-button-icon id="voaDisabled" icon="d2l-tier1:home" text="Home"></d2l-button-icon>
-			<d2l-button-icon id="voaEnabled" icon="d2l-tier1:gear" text="Gear" visible-on-ancestor></d2l-button-icon>
-		</div>
-	</div>
-	<div class="visual-diff">
-		<div class="ancestor-container d2l-visible-on-ancestor-target" id="voa-hover">
-			<d2l-button-icon id="voaDisabled" icon="d2l-tier1:home" text="Home"></d2l-button-icon>
-			<d2l-button-icon id="voaEnabled" icon="d2l-tier1:gear" text="Gear" visible-on-ancestor></d2l-button-icon>
-		</div>
-	</div>
-	<div class="visual-diff">
-		<div class="ancestor-container d2l-visible-on-ancestor-target" id="voa-focus">
-			<d2l-button-icon id="voaDisabled" icon="d2l-tier1:home" text="Home"></d2l-button-icon>
-			<d2l-button-icon id="voaEnabled" icon="d2l-tier1:gear" text="Gear" visible-on-ancestor></d2l-button-icon>
-		</div>
-	</div>
-	<div class="visual-diff">
-		<div class="translucent-container" id="translucent">
+		<div class="translucent-container" id="translucent-enabled">
 			<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
 			<d2l-button-icon icon="d2l-tier1:gear" text="Icon Button" translucent></d2l-button-icon>
 		</div>
 	</div>
 	<div class="visual-diff">
-		<div class="translucent-container" id="translucent-hover">
+		<div class="translucent-container" id="translucent-disabled">
 			<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
-			<d2l-button-icon icon="d2l-tier1:gear" text="Icon Button" translucent></d2l-button-icon>
-		</div>
-	</div>
-	<div class="visual-diff">
-		<div class="translucent-container" id="translucent-focus">
-			<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
-			<d2l-button-icon icon="d2l-tier1:gear" text="Icon Button" translucent></d2l-button-icon>
+			<d2l-button-icon icon="d2l-tier1:gear" text="Icon Button" disabled translucent></d2l-button-icon>
 		</div>
 	</div>
 </body>

@@ -22,7 +22,7 @@ describe('d2l-button-subtle', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('mouse-hover', async function() {
+	it('hover', async function() {
 		await page.hover('#normal');
 		const rect = await visualDiff.getRect(page, '#normal');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -51,23 +51,19 @@ describe('d2l-button-subtle', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('with-icon-rtl', async function() {
+		const rect = await visualDiff.getRect(page, '#with-icon-rtl');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	it('icon-right', async function() {
 		const rect = await visualDiff.getRect(page, '#icon-right');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	describe('rtl', function() {
-
-		it('with-icon-rtl', async function() {
-			const rect = await visualDiff.getRect(page, '#with-icon-rtl');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('icon-right-rtl', async function() {
-			const rect = await visualDiff.getRect(page, '#icon-right-rtl');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
+	it('icon-right-rtl', async function() {
+		const rect = await visualDiff.getRect(page, '#icon-right-rtl');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 });
