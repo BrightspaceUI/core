@@ -2,7 +2,7 @@ import 'd2l-icons/d2l-icon.js';
 import 'd2l-icons/tier1-icons.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from './button-mixin.js';
-import { buttonSharedStyles } from './button-shared-styles.js';
+import { buttonStyles } from './button-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -19,7 +19,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ labelStyles, buttonSharedStyles,
+		return [ labelStyles, buttonStyles,
 			css`
 				:host {
 					display: inline-block;
