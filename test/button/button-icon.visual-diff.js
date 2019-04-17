@@ -35,7 +35,9 @@ describe('d2l-button-icon', function() {
 		});
 
 		it('focus', async function() {
-			await focus(page, '#normal');
+			await page.evaluate(() => D2L.TestHelpers.focus(
+				'#normal', { waitFor: { selector: ['#normal', 'button'], eventName: 'transitionend' } }
+			));
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -55,7 +57,9 @@ describe('d2l-button-icon', function() {
 		});
 
 		it('focus', async function() {
-			await focus(page, '#translucent-enabled > d2l-button-icon');
+			await page.evaluate(() => D2L.TestHelpers.focus(
+				'#translucent-enabled > d2l-button-icon', { waitFor: { selector: ['#translucent-enabled > d2l-button-icon', 'button'], eventName: 'transitionend' } }
+			));
 			const rect = await visualDiff.getRect(page, '#translucent-enabled');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -72,15 +76,5 @@ describe('d2l-button-icon', function() {
 		});
 
 	});
-
-	const focus = async(page, selector) => {
-		return page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
-				elem.focus();
-			});
-		}, selector);
-	};
 
 });
