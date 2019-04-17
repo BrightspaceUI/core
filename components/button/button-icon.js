@@ -3,7 +3,7 @@ import 'd2l-icons/tier1-icons.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
-import { buttonSharedStyles } from './button-shared-styles.js';
+import { buttonStyles } from './button-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -19,7 +19,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 	}
 
 	static get styles() {
-		return [ buttonSharedStyles, visibleOnAncestorStyles,
+		return [ buttonStyles, visibleOnAncestorStyles,
 			css`
 				:host {
 					display: inline-block;
