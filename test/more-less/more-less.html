@@ -3,18 +3,16 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-
-		<title>more-less tests</title>
-
+		<title>d2l-more-less unit tests</title>
 		<script src="../../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script src="../../../mocha/mocha.js"></script>
 		<script src="../../../chai/chai.js"></script>
 		<script src="../../../@polymer/test-fixture/test-fixture.js"></script>
 		<script src="../../../wct-mocha/wct-mocha.js"></script>
-
 		<script type="module" src="../../components/more-less/more-less.js"></script>
 	</head>
 	<body>
+
 		<test-fixture id="basic">
 			<template>
 				<d2l-more-less>
@@ -30,6 +28,7 @@
 				</d2l-more-less>
 			</template>
 		</test-fixture>
+
 		<test-fixture id="expanded-dynamic">
 			<template>
 				<d2l-more-less expanded>
@@ -41,7 +40,7 @@
 		<script type="module">
 			import { runAxe } from '../../tools/a11y-test-helper.js';
 
-			describe('more-less', () => {
+			describe('d2l-more-less', () => {
 				let moreless, content;
 
 				function waitForInitialization(callback) {
@@ -55,6 +54,7 @@
 				}
 
 				describe('basic', () => {
+
 					beforeEach(async() => {
 						moreless = fixture('basic');
 						await moreless.updateComplete;
@@ -63,13 +63,16 @@
 							waitForInitialization(resolve);
 						});
 					});
+
 					// TODO: come up with a different solution for hiding the button from the screenreader
 					it.skip('should pass all axe tests', async() => {
 						await runAxe(moreless);
 					});
+
 				});
 
 				describe('expanded', () => {
+
 					beforeEach(async() => {
 						moreless = fixture('expanded-dynamic');
 						await moreless.updateComplete;
@@ -78,10 +81,12 @@
 							waitForInitialization(resolve);
 						});
 					});
+
 					// TODO: come up with a different solution for hiding the button from the screenreader
 					it.skip('should pass all axe tests when expanded', async() => {
 						await runAxe(moreless);
 					});
+
 					it('should expand when more content is dynamically added', async() => {
 						const previousContentHeight = content.scrollHeight;
 						expect(moreless.offsetHeight).to.be.above(content.scrollHeight);
@@ -97,7 +102,9 @@
 							});
 						});
 					});
+
 				});
+
 			});
 		</script>
 	</body>
