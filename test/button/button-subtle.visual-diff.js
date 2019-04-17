@@ -11,7 +11,7 @@ describe('d2l-button-subtle', function() {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
-		await page.goto(`${visualDiff.getBaseUrl()}/test/button/button-subtle.visual-diff.html`, {waitUntil: ['networkidle2', 'load']});
+		await page.goto(`${visualDiff.getBaseUrl()}/test/button/button-subtle.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
@@ -29,14 +29,7 @@ describe('d2l-button-subtle', function() {
 	});
 
 	it('focus', async function() {
-		await page.evaluate(() => {
-			const promise = new Promise((resolve) => {
-				const elem = document.querySelector('#normal');
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
-				elem.focus();
-			});
-			return promise;
-		});
+		await focus(page, '#normal');
 		const rect = await visualDiff.getRect(page, '#normal');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -65,5 +58,15 @@ describe('d2l-button-subtle', function() {
 		const rect = await visualDiff.getRect(page, '#icon-right-rtl');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
+
+	const focus = async(page, selector) => {
+		return page.evaluate((selector) => {
+			return new Promise((resolve) => {
+				const elem = document.querySelector(selector);
+				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
+				elem.focus();
+			});
+		}, selector);
+	};
 
 });
