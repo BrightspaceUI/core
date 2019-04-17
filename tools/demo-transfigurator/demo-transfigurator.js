@@ -101,7 +101,7 @@ export class DemoTransfigurator extends LitElement {
 	_updateCode(slot) {
 		const nodes = slot.assignedNodes();
 		if (nodes.length === 0) {
-			this.shadowRoot.querySelector('code.language-html').innerHTML = '';
+			this._codeHTML = '';
 			return;
 		}
 		const tempContainer = document.createElement('div');
