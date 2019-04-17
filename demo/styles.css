@@ -4,6 +4,10 @@ html {
 body[unresolved] {
 	opacity: 0;
 }
+h3 {
+	margin-top: 36px;
+	margin-bottom: 18px;
+}
 demo-transfigurator {
-	margin-bottom: 24px;
+	margin-bottom: 36px;
 }
