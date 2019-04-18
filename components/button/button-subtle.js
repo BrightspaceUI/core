@@ -110,6 +110,8 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
+		const icon = this.icon ?
+			html`<d2l-icon icon="${this.icon}" class="d2l-button-subtle-icon"></d2l-icon>` : '';
 		return html`
 			<button
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
@@ -126,7 +128,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				formtarget="${ifDefined(this.formtarget)}"
 				name="${ifDefined(this.name)}"
 				type="${this.type}">
-				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-subtle-icon"></d2l-icon>
+				${icon}
 				<span class="d2l-button-subtle-content">${this.text}</span>
 				<slot></slot>
 		</button>
