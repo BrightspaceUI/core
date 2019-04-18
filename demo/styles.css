@@ -1,9 +1,18 @@
 html {
 	font-size: 20px;
 }
+body {
+	background-color: #f2f3f5;
+	margin: 30px;
+}
 body[unresolved] {
 	opacity: 0;
 }
-demo-transfigurator {
-	margin-bottom: 24px;
+h3 {
+	font-size: 1rem;
+	margin-top: 36px;
+	margin-bottom: 18px;
+}
+d2l-demo-snippet {
+	margin-bottom: 36px;
 }

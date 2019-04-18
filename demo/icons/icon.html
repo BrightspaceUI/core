@@ -5,7 +5,7 @@
 		<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import 'whatwg-fetch';
-			import 'demo-transfigurator/demo-transfigurator.js';
+			import '../../components/demo-snippet/demo-snippet.js';
 			import '../../components/colors/colors.js';
 			import '../../components/typography/typography.js';
 			import '../../components/icons/icon.js';
@@ -27,48 +27,48 @@
 	<body class="d2l-typography">
 
 		<h3>Preset (icon attribute)</h3>
-		<demo-transfigurator>
+		<d2l-demo-snippet>
 			<d2l-icon icon="d2l-tier1:gear"></d2l-icon>
 			<d2l-icon icon="d2l-tier2:gear"></d2l-icon>
 			<d2l-icon icon="d2l-tier3:gear"></d2l-icon>
-		</demo-transfigurator>
+		</d2l-demo-snippet>
 
 		<h3>Custom SVG (src attribute)</h3>
-		<demo-transfigurator>
+		<d2l-demo-snippet>
 			<d2l-icon src="../../components/icons/images/tier1/gear.svg" size="tier1"></d2l-icon>
 			<d2l-icon src="../../components/icons/images/tier2/gear.svg" size="tier2"></d2l-icon>
 			<d2l-icon src="../../components/icons/images/tier3/gear.svg" size="tier3"></d2l-icon>
-		</demo-transfigurator>
+		</d2l-demo-snippet>
 
 		<h3>Custom non-SVG (src attribute)</h3>
-		<demo-transfigurator>
+		<d2l-demo-snippet>
 			<d2l-icon src="calendar-tier1.png" size="tier1"></d2l-icon>
 			<d2l-icon src="calendar-tier2.png" size="tier2"></d2l-icon>
 			<d2l-icon src="calendar-tier3.png" size="tier3"></d2l-icon>
-		</demo-transfigurator>
+		</d2l-demo-snippet>
 
 		<h3>Color Override</h3>
-		<demo-transfigurator>
+		<d2l-demo-snippet>
 			<div class="color-override">
 				<d2l-icon icon="d2l-tier3:gear"></d2l-icon>
 				<d2l-icon src="../../components/icons/images/tier3/gear.svg" size="tier3"></d2l-icon>
 			</div>
-		</demo-transfigurator>
+		</d2l-demo-snippet>
 
 		<h3>Size Override</h3>
-		<demo-transfigurator>
+		<d2l-demo-snippet>
 			<div class="size-override">
 				<d2l-icon icon="d2l-tier3:gear"></d2l-icon>
 				<d2l-icon src="../../components/icons/images/tier3/gear.svg" size="tier3"></d2l-icon>
 				<d2l-icon src="calendar-tier3.png" size="tier3"></d2l-icon>
 			</div>
-		</demo-transfigurator>
+		</d2l-demo-snippet>
 
 		<h3>RTL</h3>
-		<demo-transfigurator>
+		<d2l-demo-snippet>
 			<d2l-icon icon="d2l-tier2:share" dir="rtl"></d2l-icon>
 			<d2l-icon src="../../components/icons/images/tier2/share.svg" size="tier2" dir="rtl"></d2l-icon>
-		</demo-transfigurator>
+		</d2l-demo-snippet>
 
 	</body>
 </html>
