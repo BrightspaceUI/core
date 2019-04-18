@@ -9,7 +9,8 @@ export class DemoTransfigurator extends LitElement {
 	static get properties() {
 		return {
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
-			_codeHTML: { type: String }
+			_codeHTML: { type: String },
+			_dirButton: { type: String }
 		};
 	}
 
@@ -22,11 +23,16 @@ export class DemoTransfigurator extends LitElement {
 
 	constructor() {
 		super();
+		this._dir = document.documentElement.dir;
+		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
 	}
 
 	render() {
 		return html`
-			<div class="demo-transfigurator-demo">
+			<div class="demo-transfigurator-demo" dir="${this._dir}">
+				<div class="demo-transfigurator-actions">
+					<button @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
+				</div>
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 			</div>
 			<div class="demo-transfigurator-code">${this._codeTemplate}</div>
@@ -88,6 +94,25 @@ export class DemoTransfigurator extends LitElement {
 		}).join('\n');
 	}
 
+	_handleDirChange() {
+		this._dir = this._dir === 'rtl' ? 'ltr' : 'rtl';
+		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
+		const nodes = this.shadowRoot.querySelector('slot').assignedNodes();
+		if (nodes.length === 0) return;
+		const applyDir = (nodes) => {
+			for (let i = 0; i < nodes.length; i++) {
+				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
+					nodes[i].setAttribute('dir', this._dir);
+					if (nodes[i].shadowRoot) {
+						applyDir(nodes[i].shadowRoot.children);
+					}
+					applyDir(nodes[i].children);
+				}
+			}
+		};
+		applyDir(nodes);
+	}
+
 	_handleSlotChange(e) {
 		this._updateCode(e.target);
 	}
@@ -112,7 +137,7 @@ export class DemoTransfigurator extends LitElement {
 		const html = Prism.highlight(
 			this._fixCodeWhitespace(tempContainer.innerHTML)
 				.replace(/ class=""/g, '') // replace empty class attributes (class="")
-				.replace(/_[^=]*="[^"]*"/, '') // replace private reflected attributes (_attr="value")
+				.replace(/_[^=]*="[^"]*"/, '') // replace private reflected properties (_attr="value")
 				.replace(/=""/g, ''), // replace empty strings for boolean attributes (="")
 			Prism.languages.html, 'html'
 		);
