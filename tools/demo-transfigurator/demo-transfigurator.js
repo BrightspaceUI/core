@@ -109,7 +109,14 @@ export class DemoTransfigurator extends LitElement {
 			tempContainer.appendChild(nodes[i].cloneNode(true));
 		}
 
-		const html = Prism.highlight(this._fixCodeWhitespace(tempContainer.innerHTML), Prism.languages.html, 'html');
+		const html = Prism.highlight(
+			this._fixCodeWhitespace(tempContainer.innerHTML)
+				.replace(/ class=""/g, '') // replace empty class attributes (class="")
+				.replace(/_[^=]*="[^"]*"/, '') // replace private reflected attributes (_attr="value")
+				.replace(/=""/g, ''), // replace empty strings for boolean attributes (="")
+			Prism.languages.html, 'html'
+		);
+
 		this._codeHTML = html;
 	}
 
