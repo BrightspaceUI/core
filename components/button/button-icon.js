@@ -1,5 +1,4 @@
-import 'd2l-icons/d2l-icon.js';
-import 'd2l-icons/tier1-icons.js';
+import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
