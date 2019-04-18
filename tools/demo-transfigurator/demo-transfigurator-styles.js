@@ -13,6 +13,8 @@ export const demoTransfiguratorStyles = css`
 		display: none;
 	}
 	:host .demo-transfigurator-demo {
+		background-color: white;
+		border-radius: 5px;
 		padding: 18px;
 	}
 	:host([no-padding]) .demo-transfigurator-demo {
