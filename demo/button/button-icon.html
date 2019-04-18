@@ -27,12 +27,15 @@
 			content: 'visible-on-ancestor-target';
 			font-size: 0.7rem;
 			height: 100%;
-			left:0;
+			left: 0;
 			padding: 0.5rem;
 			position: absolute;;
 			text-align: right;
 			top: 0;
 			width: 100%;
+		}
+		[dir="rtl"].ancestor-container::before {
+			text-align: left;
 		}
 		.translucent-container {
 			position: relative;
@@ -48,27 +51,30 @@
 			width: 300px;
 		}
 		.translucent-container > d2l-button-icon {
-			padding-right: 0;
 			margin-top: 12px;
 			margin-left: 12px;
+		}
+		[dir="rtl"].translucent-container > d2l-button-icon {
+			margin-left: 0;
+			margin-right: 12px;
 		}
 	</style>
 </head>
 <body class="d2l-typography" unresolved="unresolved">
 
-	<h3>Icon</h3>
+	<h3>Icon Button</h3>
 
 	<demo-transfigurator>
 		<d2l-button-icon id="normal" icon="d2l-tier1:gear" text="Icon Button"></d2l-button-icon>
 	</demo-transfigurator>
 
-	<h3>Icon (Disabled)</h3>
+	<h3>Icon Button Disabled</h3>
 
 	<demo-transfigurator>
 		<d2l-button-icon id="disabled" icon="d2l-tier1:gear" text="Icon Button" disabled></d2l-button-icon>
 	</demo-transfigurator>
 
-	<h3>Icon (Translucent)</h3>
+	<h3>Icon Button Translucent</h3>
 
 	<demo-transfigurator>
 		<div class="translucent-container">
@@ -77,7 +83,7 @@
 		</div>
 	</demo-transfigurator>
 
-	<h3>Icon (Horizontal Align)</h3>
+	<h3>Icon Button with Horizontal Align</h3>
 
 	<demo-transfigurator>
 		<d2l-button-icon icon="d2l-tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
@@ -85,7 +91,7 @@
 		<d2l-button-icon icon="d2l-tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-icon>
 	</demo-transfigurator>
 
-	<h3>Icon (Visible on Ancestor)</h3>
+	<h3>Icon Button with Visible on Ancestor</h3>
 
 	<demo-transfigurator>
 		<div class="ancestor-container d2l-visible-on-ancestor-target">
@@ -95,7 +101,7 @@
 		</div>
 	</demo-transfigurator>
 
-	<h3>Icon (Translucent + Visible on Ancestor)</h3>
+	<h3>Icon Button with Translucent + Visible on Ancestor</h3>
 
 	<demo-transfigurator>
 		<div class="translucent-container d2l-visible-on-ancestor-target">
