@@ -1,8 +1,8 @@
-import { LitElement, html } from 'lit-element/lit-element.js';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
-import { demoTransfiguratorStyles } from './demo-transfigurator-styles.js';
-import { demoTransfiguratorCodeStyles } from './demo-transfigurator-code-dark-plus-styles.js';
 import 'prismjs/prism.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
+import { demoTransfiguratorCodeStyles } from './demo-transfigurator-code-dark-plus-styles.js';
+import { demoTransfiguratorStyles } from './demo-transfigurator-styles.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 export class DemoTransfigurator extends LitElement {
 
@@ -52,14 +52,14 @@ export class DemoTransfigurator extends LitElement {
 		if (!text) return text;
 
 		// fix script whitespace (for some reason brower keeps <script> indent but not the rest)
-		let lines = text.replace(/\t/g, '  ').replace(/<\/script>/g,'\n</script>').replace(/<script>/g,'<script>\n').split('\n');
+		let lines = text.replace(/\t/g, '  ').replace(/<\/script>/g, '\n</script>').replace(/<script>/g, '<script>\n').split('\n');
 		let scriptIndent = 0;
 		lines = lines.map((l) => {
 			if (l.indexOf('<script>') > -1) {
 				scriptIndent = l.match(/^(\s*)/)[0].length;
 				return l;
 			} else if (l.indexOf('</script>') > -1) {
-				let nl = this._repeat(' ', scriptIndent) + l ;
+				const nl = this._repeat(' ', scriptIndent) + l ;
 				scriptIndent = 0;
 				return nl;
 			} else if (scriptIndent) {
@@ -72,12 +72,12 @@ export class DemoTransfigurator extends LitElement {
 		// Shift indent left if possible, modified from:
 		// https://github.com/PolymerElements/marked-element/blob/master/marked-element.js#L340-359
 
-		var indent = lines.reduce(function(prev, line) {
+		const indent = lines.reduce((prev, line) => {
 
 			// completely ignore blank lines
 			if (/^\s*$/.test(line)) return prev;
 
-			var lineIndent = line.match(/^(\s*)/)[0].length;
+			const lineIndent = line.match(/^(\s*)/)[0].length;
 			if (prev === null) return lineIndent;
 			return lineIndent < prev ? lineIndent : prev;
 
@@ -89,7 +89,7 @@ export class DemoTransfigurator extends LitElement {
 			return true;
 		});
 
-		return lines.map(function(l) {
+		return lines.map((l) => {
 			return l.substr(indent);
 		}).join('\n');
 	}
@@ -130,7 +130,7 @@ export class DemoTransfigurator extends LitElement {
 			return;
 		}
 		const tempContainer = document.createElement('div');
-		for (var i = 0; i < nodes.length; i++) {
+		for (let i = 0; i < nodes.length; i++) {
 			tempContainer.appendChild(nodes[i].cloneNode(true));
 		}
 
