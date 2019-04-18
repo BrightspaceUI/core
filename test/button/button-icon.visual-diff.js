@@ -12,6 +12,13 @@ describe('d2l-button-icon', function() {
 		page = await browser.newPage();
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/test/button/button-icon.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+		await page.addScriptTag({
+			type: 'module',
+			content: `
+				import { focus } from '../../tools/test-helpers/helpers.js';
+				window.MyCustomFocus = focus;
+			`
+		});
 		await page.bringToFront();
 	});
 
@@ -35,9 +42,7 @@ describe('d2l-button-icon', function() {
 		});
 
 		it('focus', async function() {
-			await page.evaluate(() => D2L.TestHelpers.focus(
-				'#normal', { waitFor: { selector: ['#normal', 'button'], eventName: 'transitionend' } }
-			));
+			await page.evaluate(async() => window.MyCustomFocus('#normal', { waitFor: { selector: ['#normal', 'button'], eventName: 'transitionend' } }));
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
