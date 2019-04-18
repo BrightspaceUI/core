@@ -1,6 +1,6 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const demoTransfiguratorCodeStyles = css`
+export const codeStyles = css`
 	/**
 	 * prism.js VSCode's Dark+ theme for JavaScript, CSS and HTML
 	 * Modelled after https://github.com/dunstontc/atom-vscode-syntax

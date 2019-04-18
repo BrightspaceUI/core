@@ -1,10 +1,10 @@
 import 'prismjs/prism.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { demoTransfiguratorCodeStyles } from './demo-transfigurator-code-dark-plus-styles.js';
-import { demoTransfiguratorStyles } from './demo-transfigurator-styles.js';
+import { codeStyles } from './code-dark-plus-styles.js';
+import { styles } from './styles.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-class DemoTransfigurator extends LitElement {
+class DemoSnippet extends LitElement {
 
 	static get properties() {
 		return {
@@ -15,10 +15,7 @@ class DemoTransfigurator extends LitElement {
 	}
 
 	static get styles() {
-		return [
-			demoTransfiguratorCodeStyles,
-			demoTransfiguratorStyles
-		];
+		return [ codeStyles, styles ];
 	}
 
 	constructor() {
@@ -29,13 +26,13 @@ class DemoTransfigurator extends LitElement {
 
 	render() {
 		return html`
-			<div class="demo-transfigurator-demo" dir="${this._dir}">
-				<div class="demo-transfigurator-actions">
+			<div class="d2l-demo-snippet-demo" dir="${this._dir}">
+				<div class="d2l-demo-snippet-actions">
 					<button @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
 				</div>
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 			</div>
-			<div class="demo-transfigurator-code">${this._codeTemplate}</div>
+			<div class="d2l-demo-snippet-code">${this._codeTemplate}</div>
 		`;
 	}
 
@@ -147,4 +144,4 @@ class DemoTransfigurator extends LitElement {
 
 }
 
-customElements.define('demo-transfigurator', DemoTransfigurator);
+customElements.define('d2l-demo-snippet', DemoSnippet);

@@ -1,6 +1,6 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const demoTransfiguratorStyles = css`
+export const styles = css`
 	:host {
 		border: 1px solid #72777a;
 		border-radius: 6px;
@@ -12,15 +12,15 @@ export const demoTransfiguratorStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-	:host .demo-transfigurator-demo {
+	:host .d2l-demo-snippet-demo {
 		background-color: white;
 		border-radius: 5px;
 		padding: 18px;
 	}
-	:host([no-padding]) .demo-transfigurator-demo {
+	:host([no-padding]) .d2l-demo-snippet-demo {
 		padding: 0;
 	}
-	:host .demo-transfigurator-actions {
+	:host .d2l-demo-snippet-actions {
 		background-color: #f2f3f5;
 		border-bottom: 1px solid #72777a;
 		border-left: 1px solid #72777a;
@@ -34,10 +34,10 @@ export const demoTransfiguratorStyles = css`
 		top: 0;
 		z-index: 1;
 	}
-	:host .demo-transfigurator-actions button {
+	:host .d2l-demo-snippet-actions button {
 		cursor: pointer;
 	}
-	:host .demo-transfigurator-code {
+	:host .d2l-demo-snippet-code {
 		font-size: 14px;
 	}
 	pre[class*="language-"] {

@@ -1,6 +1,6 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const demoTransfiguratorCodeStyles = css`
+export const codeStyles = css`
 	/**
 	 * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
 	 * Based on https://github.com/chriskempson/tomorrow-theme
