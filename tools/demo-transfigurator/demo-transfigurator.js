@@ -4,7 +4,7 @@ import { demoTransfiguratorCodeStyles } from './demo-transfigurator-code-dark-pl
 import { demoTransfiguratorStyles } from './demo-transfigurator-styles.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-export class DemoTransfigurator extends LitElement {
+class DemoTransfigurator extends LitElement {
 
 	static get properties() {
 		return {
