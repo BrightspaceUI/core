@@ -5,7 +5,9 @@
   "repository": "https://github.com/BrightspaceUI/core.git",
   "main": "index.html",
   "scripts": {
+    "build:icons": "node ./cli/icon-generator.js",
     "lint": "eslint . --ext .js,.html",
+    "postinstall": "npm run build:icons",
     "test": "npm run lint && npm run test:local && npm run test:diff",
     "test:diff": "mocha './test/**/*.visual-diff.js' -t 10000",
     "test:diff:golden": "mocha './test/**/*.visual-diff.js' -t 10000 --golden",
@@ -28,7 +30,8 @@
     "prismjs": "latest",
     "puppeteer": "latest",
     "visual-diff": "dbatiste/visual-diff",
-    "wct-mocha": "^1.0.0"
+    "wct-mocha": "^1.0.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "dependencies": {
     "@webcomponents/shadycss": "latest",
