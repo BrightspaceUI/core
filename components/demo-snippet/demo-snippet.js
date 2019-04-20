@@ -96,18 +96,23 @@ class DemoSnippet extends LitElement {
 		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
 		const nodes = this.shadowRoot.querySelector('slot').assignedNodes();
 		if (nodes.length === 0) return;
-		const applyDir = (nodes) => {
+		const applyDir = (nodes, isRoot) => {
 			for (let i = 0; i < nodes.length; i++) {
 				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
-					nodes[i].setAttribute('dir', this._dir);
-					if (nodes[i].shadowRoot) {
-						applyDir(nodes[i].shadowRoot.children);
+					/* only sprout dir on root or custom element so devs don't think that
+					[dir="rtl"].some-class will work. they must use :host([dir="rtl"]) in their
+					custom element's CSS since RTLMixin only sprouts [dir="rtl"] on host */
+					if (isRoot || nodes[i].tagName.indexOf('-') !== -1) {
+						nodes[i].setAttribute('dir', this._dir);
 					}
-					applyDir(nodes[i].children);
+					if (nodes[i].shadowRoot) {
+						applyDir(nodes[i].shadowRoot.children, false);
+					}
+					applyDir(nodes[i].children, false);
 				}
 			}
 		};
-		applyDir(nodes);
+		applyDir(nodes, true);
 	}
 
 	_handleSlotChange(e) {
