@@ -1,5 +1,6 @@
 import 'prismjs/prism.js';
 import 'prismjs/components/prism-json.min.js';
+import 'prismjs/components/prism-bash.min.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { styles } from './code-view-styles.js';
 import { themeStyles } from './code-dark-plus-styles.js';
@@ -72,11 +73,13 @@ class CodeView extends LitElement {
 
 	_getPrismGrammar(language) {
 		switch (language) {
+			case 'bash': return Prism.languages.bash;
 			case 'css': return Prism.languages.css;
 			case 'html': return Prism.languages.html;
 			case 'javascript': return Prism.languages.javascript;
 			case 'js': return Prism.languages.javascript;
 			case 'json': return Prism.languages.json;
+			case 'shell': return Prism.languages.bash;
 			default: return Prism.languages.html;
 		}
 	}
