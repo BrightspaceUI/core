@@ -37,12 +37,4 @@ export const styles = css`
 	:host .d2l-demo-snippet-actions button {
 		cursor: pointer;
 	}
-	:host .d2l-demo-snippet-code {
-		font-size: 14px;
-	}
-	pre[class*="language-"] {
-		border-radius: 5px;
-		margin: 0;
-		padding: 18px;
-	}
 `;

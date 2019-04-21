@@ -1,21 +1,19 @@
-import 'prismjs/prism.js';
+import './code-view.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { codeStyles } from './code-dark-plus-styles.js';
-import { styles } from './styles.js';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { styles } from './demo-snippet-styles.js';
 
 class DemoSnippet extends LitElement {
 
 	static get properties() {
 		return {
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
-			_codeHTML: { type: String },
+			_code: { type: String },
 			_dirButton: { type: String }
 		};
 	}
 
 	static get styles() {
-		return [ codeStyles, styles ];
+		return [ styles ];
 	}
 
 	constructor() {
@@ -32,7 +30,7 @@ class DemoSnippet extends LitElement {
 				</div>
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 			</div>
-			<div class="d2l-demo-snippet-code">${this._codeTemplate}</div>
+			<d2l-code-view language="html" hide-language>${this._code}</d2l-code-view>
 		`;
 	}
 
@@ -40,11 +38,7 @@ class DemoSnippet extends LitElement {
 		this._updateCode(this.shadowRoot.querySelector('slot'));
 	}
 
-	get _codeTemplate() {
-		return html`<pre class="language-html"><code class="language-html">${unsafeHTML(this._codeHTML)}</code></pre>`;
-	}
-
-	_fixCodeWhitespace(text) {
+	_formatCode(text) {
 
 		if (!text) return text;
 
@@ -66,29 +60,10 @@ class DemoSnippet extends LitElement {
 			}
 		});
 
-		// Shift indent left if possible, modified from:
-		// https://github.com/PolymerElements/marked-element/blob/master/marked-element.js#L340-359
-
-		const indent = lines.reduce((prev, line) => {
-
-			// completely ignore blank lines
-			if (/^\s*$/.test(line)) return prev;
-
-			const lineIndent = line.match(/^(\s*)/)[0].length;
-			if (prev === null) return lineIndent;
-			return lineIndent < prev ? lineIndent : prev;
-
-		}, null);
-
-		// remove leading or trailing blank lines
-		lines = lines.filter((line, index) => {
-			if (index === 0 || index === lines.length - 1) return !/^\s*$/.test(line);
-			return true;
-		});
-
-		return lines.map((l) => {
-			return l.substr(indent);
-		}).join('\n');
+		return lines.join('\n')
+			.replace(/ class=""/g, '')      // replace empty class attributes (class="")
+			.replace(/_[^=]*="[^"]*"/, '')  // replace private reflected properties (_attr="value")
+			.replace(/=""/g, '');           // replace empty strings for boolean attributes (="")
 	}
 
 	_handleDirChange() {
@@ -128,23 +103,15 @@ class DemoSnippet extends LitElement {
 	_updateCode(slot) {
 		const nodes = slot.assignedNodes();
 		if (nodes.length === 0) {
-			this._codeHTML = '';
+			this._code = '';
 			return;
 		}
 		const tempContainer = document.createElement('div');
 		for (let i = 0; i < nodes.length; i++) {
 			tempContainer.appendChild(nodes[i].cloneNode(true));
 		}
-
-		const html = Prism.highlight(
-			this._fixCodeWhitespace(tempContainer.innerHTML)
-				.replace(/ class=""/g, '') // replace empty class attributes (class="")
-				.replace(/_[^=]*="[^"]*"/, '') // replace private reflected properties (_attr="value")
-				.replace(/=""/g, ''), // replace empty strings for boolean attributes (="")
-			Prism.languages.html, 'html'
-		);
-
-		this._codeHTML = html;
+		const textNode = document.createTextNode(this._formatCode(tempContainer.innerHTML));
+		this._code = textNode.textContent;
 	}
 
 }
