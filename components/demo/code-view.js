@@ -81,7 +81,7 @@ class CodeView extends LitElement {
 	}
 
 	_getLanguage(language) {
-		const aliases = {shell: "bash"};
+		const aliases = {shell: 'bash'};
 		return aliases[language] ? aliases[language] : language;
 	}
 
@@ -113,7 +113,7 @@ class CodeView extends LitElement {
 			code = Prism.highlight(code, this._getPrismGrammar(this.language), this.language);
 			this._code = code;
 
-		}).catch((reason) => {
+		}).catch(() => {
 			this._code = code;
 		});
 
