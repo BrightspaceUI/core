@@ -101,6 +101,7 @@ function generate() {
 
 	console.log('Clearing output directory...');
 	cleanDir(outputRoot);
+	fs.mkdirSync(outputRoot, {recursive: true});
 	fs.mkdirSync(outputPath, {recursive: true});
 
 	const svgs = getSvgs();
