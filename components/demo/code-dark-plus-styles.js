@@ -1,10 +1,9 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const codeStyles = css`
+export const themeStyles = css`
 	/**
-	 * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
-	 * Based on https://github.com/chriskempson/tomorrow-theme
-	 * @author Rose Pritchard
+	 * prism.js VSCode's Dark+ theme for JavaScript, CSS and HTML
+	 * Modelled after https://github.com/dunstontc/atom-vscode-syntax
 	 */
 
 	code[class*="language-"],
@@ -54,57 +53,56 @@ export const codeStyles = css`
 	.token.prolog,
 	.token.doctype,
 	.token.cdata {
-		color: #999;
+		color: #808080;
 	}
 
-	.token.punctuation {
-		color: #ccc;
+	.token.punctuation,
+	.token.number,
+	.token.url,
+	.token.operator {
+		color: #D4D4D4;
+	}
+
+	.token.interpolation,
+	.token.attr-name,
+	.token.constant,
+	.token.property {
+		color: #9CDCFE;
 	}
 
 	.token.tag,
-	.token.attr-name,
-	.token.namespace,
-	.token.deleted {
-		color: #e2777a;
-	}
-
-	.token.function-name {
-		color: #6196cc;
-	}
-
 	.token.boolean,
-	.token.number,
+	.token.entity,
+	.token.interpolation-punctuation {
+		color: #569CD6;
+	}
+
 	.token.function {
-		color: #f08d49;
+		color: #DCDCAA;
 	}
 
-	.token.property,
-	.token.class-name,
-	.token.constant,
-	.token.symbol {
-		color: #f8c555;
+	.token.class-name {
+		color: #4EC9B0;
 	}
 
-	.token.selector,
-	.token.important,
-	.token.atrule,
 	.token.keyword,
-	.token.builtin {
-		color: #cc99cd;
+	.token.atrule {
+		color: #C586C0;
+	}
+
+	.token.selector {
+		color: #D7BA7D;
+	}
+
+	.token.important,
+	.token.regex {
+		color: #D16969;
 	}
 
 	.token.string,
 	.token.char,
-	.token.attr-value,
-	.token.regex,
-	.token.variable {
-		color: #7ec699;
-	}
-
-	.token.operator,
-	.token.entity,
-	.token.url {
-		color: #67cdcc;
+	.token.attr-value {
+		color: #CE9178;
 	}
 
 	.token.important,
