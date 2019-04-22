@@ -1,6 +1,4 @@
 import 'prismjs/prism.js';
-import 'prismjs/components/prism-json.min.js';
-import 'prismjs/components/prism-bash.min.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { styles } from './code-view-styles.js';
 import { themeStyles } from './code-dark-plus-styles.js';
@@ -23,6 +21,7 @@ class CodeView extends LitElement {
 	constructor() {
 		super();
 		this.language = 'html';
+		this._dependenciesPromise = Promise.resolve();
 	}
 
 	render() {
@@ -32,8 +31,19 @@ class CodeView extends LitElement {
 		`;
 	}
 
-	firstUpdated() {
-		this._updateCode(this.shadowRoot.querySelector('slot'));
+	attributeChangedCallback(name, oldval, newval) {
+		if (name !== 'language' || oldval === newval) return;
+		const language = this._getLanguage(newval);
+		if (Prism.languages[language]) {
+			this._dependenciesPromise = Promise.resolve();
+		} else {
+			/* Current, Polymer dev server does not appear to convert non-relative dynamic imports
+			for FF, Edge, IE11.  Use of non-default languages is limited to dev with this approach.
+			https://github.com/Polymer/tools/issues/3402 */
+			this._dependenciesPromise = import(`/node_modules/prismjs/components/prism-${language}.min.js`);
+			this._updateCode(this.shadowRoot.querySelector('slot'));
+		}
+		super.attributeChangedCallback(name, oldval, newval);
 	}
 
 	get _codeTemplate() {
@@ -48,7 +58,6 @@ class CodeView extends LitElement {
 
 		// Shift indent left if possible, modified from:
 		// https://github.com/PolymerElements/marked-element/blob/master/marked-element.js#L340-359
-
 		const indent = lines.reduce((prev, line) => {
 
 			// completely ignore blank lines
@@ -71,17 +80,15 @@ class CodeView extends LitElement {
 		}).join('\n');
 	}
 
+	_getLanguage(language) {
+		const aliases = {shell: "bash"};
+		return aliases[language] ? aliases[language] : language;
+	}
+
 	_getPrismGrammar(language) {
-		switch (language) {
-			case 'bash': return Prism.languages.bash;
-			case 'css': return Prism.languages.css;
-			case 'html': return Prism.languages.html;
-			case 'javascript': return Prism.languages.javascript;
-			case 'js': return Prism.languages.javascript;
-			case 'json': return Prism.languages.json;
-			case 'shell': return Prism.languages.bash;
-			default: return Prism.languages.html;
-		}
+		language = this._getLanguage(language);
+		if (Prism.languages[language]) return Prism.languages[language];
+		else return Prism.languages.html;
 	}
 
 	_handleSlotChange(e) {
@@ -89,17 +96,29 @@ class CodeView extends LitElement {
 	}
 
 	_updateCode(slot) {
+
+		if (!slot) return;
+
 		const nodes = slot.assignedNodes();
 		if (nodes.length === 0) {
 			this._code = '';
 			return;
 		}
-		const code = Prism.highlight(
-			this._formatCode(nodes[0].textContent),
-			this._getPrismGrammar(this.language), this.language
-		);
-		this._code = code;
+
+		let code = this._formatCode(nodes.reduce((code, node) => code + node.textContent, ''));
+
+		this._dependenciesPromise.then(() => {
+
+			// Edge & IE11 there may be more than one node so concat textContent
+			code = Prism.highlight(code, this._getPrismGrammar(this.language), this.language);
+			this._code = code;
+
+		}).catch((reason) => {
+			this._code = code;
+		});
+
 	}
+
 }
 
 customElements.define('d2l-code-view', CodeView);

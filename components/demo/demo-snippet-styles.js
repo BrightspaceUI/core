@@ -37,4 +37,7 @@ export const styles = css`
 	:host .d2l-demo-snippet-actions button {
 		cursor: pointer;
 	}
+	:host d2l-code-view {
+		margin: 0;
+	}
 `;
