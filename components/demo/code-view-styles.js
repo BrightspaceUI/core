@@ -29,7 +29,7 @@ export const styles = css`
 	:host([hide-language]) .d2l-code-view-code::before {
 		display: none;
 	}
-	:host slot {
+	:host .d2l-code-view-src {
 		display: none;
 	}
 	pre[class*="language-"] {

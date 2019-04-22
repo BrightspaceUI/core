@@ -27,7 +27,7 @@ class CodeView extends LitElement {
 
 	render() {
 		return html`
-			<slot @slotchange="${this._handleSlotChange}"></slot>
+			<div class="d2l-code-view-src"><slot @slotchange="${this._handleSlotChange}"></slot></div>
 			<div language="${this.language}" class="d2l-code-view-code">${this._codeTemplate}</div>
 		`;
 	}
