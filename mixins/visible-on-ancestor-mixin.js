@@ -3,24 +3,24 @@ import { css } from 'lit-element/lit-element.js';
 
 export const visibleOnAncestorStyles = css`
 
-	:host([__voaState="hidden"]),
-	:host([__voaState="hiding"]) {
+	:host([__voa-state="hidden"]),
+	:host([__voa-state="hiding"]) {
 		opacity: 0 !important;
 		transform: translateY(-10px) !important;
 	}
-	:host([__voaState="showing"]),
-	:host([__voaState="hiding"]) {
+	:host([__voa-state="showing"]),
+	:host([__voa-state="hiding"]) {
 		transition: transform 200ms ease-out, opacity 200ms ease-out !important;
 	}
 
 	@media only screen and (hover: none), only screen and (-moz-touch-enabled: 1) {
-		:host([__voaState="hidden"]),
-		:host([__voaState="hiding"]) {
+		:host([__voa-state="hidden"]),
+		:host([__voa-state="hiding"]) {
 			opacity: 1 !important;
 			transform: translateY(0px) !important;
 		}
-		:host([__voaState="hidden"][d2l-visible-on-ancestor-no-hover-hide]),
-		:host([__voaState="hiding"][d2l-visible-on-ancestor-no-hover-hide]) {
+		:host([__voa-state="hidden"][d2l-visible-on-ancestor-no-hover-hide]),
+		:host([__voa-state="hiding"][d2l-visible-on-ancestor-no-hover-hide]) {
 			opacity: 0 !important;
 			transform: translateY(-10px) !important;
 		}
@@ -33,7 +33,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			visibleOnAncestor: { type: Boolean, reflect: true, attribute: 'visible-on-ancestor' },
-			__voaState: { type: String, reflect: true }
+			__voaState: { type: String, reflect: true, attribute: '__voa-state' }
 		};
 	}
 
