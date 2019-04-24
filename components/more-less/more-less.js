@@ -1,6 +1,4 @@
 import '../button/button-subtle.js';
-import 'd2l-icons/d2l-icon.js';
-import 'd2l-icons/tier1-icons.js';
 import 'fastdom/fastdom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';

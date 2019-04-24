@@ -14,24 +14,9 @@
 					"version": ""
 				},
 				{
-					"browserName": "firefox",
-					"platform": "OS X 10.13",
-					"version": ""
-				},
-				{
 					"browserName": "safari",
 					"platform": "OS X 10.13",
 					"version": ""
-				},
-				{
-					"browserName": "microsoftedge",
-					"platform": "Windows 10",
-					"version": ""
-				},
-				{
-					"browserName": "internet explorer",
-					"platform": "Windows 10",
-					"version": "11"
 				}
 			]
 		}
