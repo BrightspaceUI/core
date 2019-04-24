@@ -9,20 +9,13 @@
 			import '../../components/colors/colors.js';
 			import '../../components/typography/typography.js';
 			import '../../components/icons/icon.js';
+			import './icon-color-override.js';
+			import './icon-size-override.js';
 		</script>
 		<title>d2l-icon demo</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
-		<style>
-		.color-override d2l-icon {
-			color: var(--d2l-color-celestine-minus-1);
-		}
-		.size-override d2l-icon {
-			--d2l-icon-height: 50px;
-			--d2l-icon-width: 50px;
-		}
-		</style>
 	</head>
 	<body class="d2l-typography">
 
@@ -49,25 +42,25 @@
 
 		<h3>Color Override</h3>
 		<d2l-demo-snippet>
-			<div class="color-override">
+			<d2l-icon-demo-color-override>
 				<d2l-icon icon="d2l-tier3:calendar"></d2l-icon>
 				<d2l-icon src="../../components/icons/images/tier3/calendar.svg" size="tier3"></d2l-icon>
-			</div>
+			</d2l-icon-demo-color-override>
 		</d2l-demo-snippet>
 
 		<h3>Size Override</h3>
 		<d2l-demo-snippet>
-			<div class="size-override">
+			<d2l-icon-demo-size-override>
 				<d2l-icon icon="d2l-tier3:calendar"></d2l-icon>
 				<d2l-icon src="../../components/icons/images/tier3/calendar.svg" size="tier3"></d2l-icon>
 				<d2l-icon src="calendar-tier3.png" size="tier3"></d2l-icon>
-			</div>
+			</d2l-icon-demo-size-override>
 		</d2l-demo-snippet>
 
 		<h3>RTL</h3>
 		<d2l-demo-snippet>
-			<d2l-icon icon="d2l-tier2:share" dir="rtl"></d2l-icon>
-			<d2l-icon src="../../components/icons/images/tier2/share.svg" size="tier2" dir="rtl"></d2l-icon>
+			<d2l-icon icon="d2l-tier2:share"></d2l-icon>
+			<d2l-icon src="../../components/icons/images/tier2/share.svg" size="tier2"></d2l-icon>
 		</d2l-demo-snippet>
 
 	</body>
