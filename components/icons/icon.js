@@ -20,8 +20,8 @@ class Icon extends RtlMixin(LitElement) {
 				type: String,
 				reflect: true
 			},
-			__imgSrc: { type: String },
-			__svg: { type: Object }
+			_imgSrc: { type: String },
+			_svg: { type: Object }
 		};
 	}
 
@@ -88,48 +88,48 @@ class Icon extends RtlMixin(LitElement) {
 
 	attributeChangedCallback(name, oldval, newval) {
 		if (name === 'icon') {
-			this.__fetchSvg(newval);
+			this._fetchSvg(newval);
 		} else if (name === 'src') {
 			if (newval && newval.substr(newval.length - 4) === '.svg') {
-				this.__fetchSrcSvg(newval);
+				this._fetchSrcSvg(newval);
 			} else {
-				this.__svg = undefined;
-				this.__imgSrc = newval;
+				this._svg = undefined;
+				this._imgSrc = newval;
 			}
 		}
 		super.attributeChangedCallback(name, oldval, newval);
 	}
 
 	shouldUpdate(changedProperties) {
-		const shouldUpdate = changedProperties.has('__svg')
-			|| changedProperties.has('__imgSrc');
+		const shouldUpdate = changedProperties.has('_svg')
+			|| changedProperties.has('_imgSrc');
 		return shouldUpdate;
 	}
 
 	render() {
-		if (this.__svg) {
-			return this.__svg;
+		if (this._svg) {
+			return this._svg;
 		}
-		if (this.__imgSrc) {
+		if (this._imgSrc) {
 			return html`<img src="${this.src}" alt="">`;
 		}
 	}
 
-	async __fetchSvg(icon) {
+	async _fetchSvg(icon) {
 		const svg = await loadSvg(icon);
-		this.__svg = this.__fixSvg(svg ? svg.val : undefined);
+		this._svg = this._fixSvg(svg ? svg.val : undefined);
 	}
 
-	async __fetchSrcSvg(src) {
+	async _fetchSrcSvg(src) {
 		const response = await fetch(src);
 		if (!response.ok) {
-			this.__svg = undefined;
+			this._svg = undefined;
 			return;
 		}
-		this.__svg = this.__fixSvg(await response.text());
+		this._svg = this._fixSvg(await response.text());
 	}
 
-	__fixSvg(svgStr) {
+	_fixSvg(svgStr) {
 
 		if (svgStr === undefined) {
 			return undefined;
