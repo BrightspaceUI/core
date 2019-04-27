@@ -37,12 +37,12 @@ class CodeView extends LitElement {
 		if (Prism.languages[language]) {
 			this._dependenciesPromise = Promise.resolve();
 		} else {
-			/* Current, Polymer dev server does not appear to convert non-relative dynamic imports
+			/* Current, non-relative imports don't appear to work with Polymer dev server
 			for FF, Edge, IE11.  Use of non-default languages is limited to dev with this approach.
 			https://github.com/Polymer/tools/issues/3402 */
 			this._dependenciesPromise = import(`/node_modules/prismjs/components/prism-${language}.min.js`);
-			this._updateCode(this.shadowRoot.querySelector('slot'));
 		}
+		this._updateCode(this.shadowRoot.querySelector('slot'));
 		super.attributeChangedCallback(name, oldval, newval);
 	}
 
@@ -95,7 +95,7 @@ class CodeView extends LitElement {
 		this._updateCode(e.target);
 	}
 
-	_updateCode(slot) {
+	async _updateCode(slot) {
 
 		if (!slot) return;
 
@@ -105,17 +105,18 @@ class CodeView extends LitElement {
 			return;
 		}
 
+		// Edge & IE11 there may be more than one node so concat textContent
 		let code = this._formatCode(nodes.reduce((code, node) => code + node.textContent, ''));
 
-		this._dependenciesPromise.then(() => {
-
-			// Edge & IE11 there may be more than one node so concat textContent
+		try {
+			await this._dependenciesPromise;
 			code = Prism.highlight(code, this._getPrismGrammar(this.language), this.language);
+		} catch (ex) {
+			// eslint-disable-next-line no-console
+			console.log(ex);
+		} finally {
 			this._code = code;
-
-		}).catch(() => {
-			this._code = code;
-		});
+		}
 
 	}
 
