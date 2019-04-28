@@ -4,6 +4,7 @@ html {
 body {
 	background-color: #f2f3f5;
 	margin: 30px;
+	transition: opacity 0.2s ease-in-out;
 }
 body[unresolved] {
 	opacity: 0;
