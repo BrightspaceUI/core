@@ -1,7 +1,6 @@
 import '@webcomponents/shadycss/custom-style-interface.min.js';
 
-const head = document.getElementsByTagName('head')[0];
-if (!head.querySelector('#d2l-colors')) {
+if (!document.head.querySelector('#d2l-colors')) {
 	const style = document.createElement('style');
 	style.id = 'd2l-colors';
 	style.textContent = `
@@ -125,6 +124,6 @@ if (!head.querySelector('#d2l-colors')) {
 			--d2l-color-zircon-light-2: var(--d2l-color-zircon-plus-2);
 		}
 	`;
-	head.appendChild(style);
+	document.head.appendChild(style);
 	window.ShadyCSS.CustomStyleInterface.addCustomStyle(style);
 }
