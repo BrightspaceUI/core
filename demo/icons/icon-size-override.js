@@ -7,15 +7,15 @@ class IconSizeOverride extends LitElement {
 			:host {
 				display: inline-block;
 			}
-			::slotted(d2l-icon) {
-				--d2l-icon-height: 100px;
-				--d2l-icon-width: 100px;
+			.d2l-icon-size-override-container > ::slotted(d2l-icon) {
+				height: 100px;
+				width: 100px;
 			}
 		`;
 	}
 
 	render() {
-		return html`<slot></slot>`;
+		return html`<div class="d2l-icon-size-override-container"><slot></slot></div>`;
 	}
 
 }
