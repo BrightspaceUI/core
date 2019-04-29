@@ -17,18 +17,23 @@ function getSvgsInDir(dir) {
 		.filter((file) => {
 			return (path.extname(file) === '.svg');
 		}).map((file) => {
-			return {category: dir, name: file.substr(0, file.length - 4)};
+			return file.substr(0, file.length - 4);
 		});
 	return svgs;
 
 }
 
 function getSvgs() {
-	let svgs = [];
+	const svgs = [];
 	const dirs = fs.readdirSync(imagePath);
 	dirs.forEach((dir) => {
 		const newSvgs = getSvgsInDir(dir);
-		svgs = svgs.concat(newSvgs);
+		if (newSvgs.length > 0) {
+			svgs.push({
+				name: dir,
+				svgs: newSvgs
+			});
+		}
 	});
 	return svgs;
 }
@@ -52,11 +57,11 @@ function cleanDir(dirPath) {
 
 }
 
-function createSvg(entry) {
+function createSvg(category, name) {
 
-	const categoryPath = path.join(outputPath, entry.category);
-	const sourcePath = path.join(imagePath, entry.category, `${entry.name}.svg`);
-	const destPath = path.join(outputPath, entry.category, `${entry.name}.js`);
+	const categoryPath = path.join(outputPath, category);
+	const sourcePath = path.join(imagePath, category, `${name}.svg`);
+	const destPath = path.join(outputPath, category, `${name}.js`);
 
 	if (!fs.existsSync(categoryPath)) {
 		fs.mkdirSync(categoryPath);
@@ -70,27 +75,98 @@ function createSvg(entry) {
 
 }
 
-function createSvgs(svgs) {
-	svgs.forEach((entry) => {
-		createSvg(entry);
+function createSvgs(categories) {
+	categories.forEach((category) => {
+		category.svgs.forEach((name) => {
+			createSvg(category.name, name);
+		});
 	});
 }
 
-function createLoader(svgs) {
+function createLoader(categories) {
 
 	let template = '// auto-generated\n' +
 		'export async function loadSvg(icon) {\n' +
 		'\tswitch (icon) {\n';
-	svgs.forEach((svg) => {
-		template += `\t\tcase 'd2l-${svg.category}:${svg.name}':
-			return await import('./${svg.category}/${svg.name}.js');\n`;
+	categories.forEach((category) => {
+		category.svgs.forEach((name) => {
+			template += `\t\tcase 'd2l-${category.name}:${name}':
+				return await import('./${category.name}/${name}.js');\n`;
+		});
 	});
+
 	template += '\t}\n' +
 		'\treturn undefined;\n' +
 		'}';
 	const filePath = path.join(outputPath, 'presetIconLoader.js');
 
 	fs.writeFileSync(filePath, template);
+
+}
+
+function createCatalogue(categories) {
+
+	let output = '# Preset Icon Catalogue\n\n';
+
+	categories.forEach((category) => {
+
+		let size = 18;
+		if (category.name === 'tier2') {
+			size = 24;
+		} else if (category.name === 'tier3') {
+			size = 30;
+		}
+		output += `## ${category.name}\n\n` +
+			'Size: `' + size + 'px` x `' + size + '`px\n\n';
+
+		const numCols = 3;
+		const numPerCol = Math.ceil(category.svgs.length / numCols);
+
+		for (let c = 0; c < numCols; c++) {
+			output += '| Icon | Name |';
+			if (c === numCols - 1) {
+				output += '\n';
+			} else {
+				output += ' ';
+			}
+		}
+		for (let d = 0; d < numCols; d++) {
+			output += '| :---: | :--- |';
+			if (d === numCols - 1) {
+				output += '\n';
+			} else {
+				output += ' --- ';
+			}
+		}
+
+		for (let i = 0; i < numPerCol; i++) {
+
+			for (let j = 0; j < numCols; j++) {
+
+				const index = i + j * numPerCol;
+				if (index > category.svgs.length - 1) {
+					output += '| &nbsp; | &nbsp; |';
+				} else {
+					const iconName = category.svgs[index];
+					output += `| ![](https://raw.githubusercontent.com/BrightspaceUI/core/master/components/icons/images/${category.name}/${iconName}.svg?sanitize=true) | ${iconName} |`;
+				}
+
+				if (j === numCols - 1) {
+					output += '\n';
+				} else {
+					output += ' ';
+				}
+
+			}
+
+		}
+
+		output += '\n';
+
+	});
+
+	const outputPath = path.join(__dirname, '../components/icons/catalogue.md');
+	fs.writeFileSync(outputPath, output);
 
 }
 
@@ -104,13 +180,16 @@ function generate() {
 	fs.mkdirSync(outputRoot, {recursive: true});
 	fs.mkdirSync(outputPath, {recursive: true});
 
-	const svgs = getSvgs();
-	console.log(`Found ${svgs.length} SVGs, generating output...`);
+	const categories = getSvgs();
+	console.log('Found SVGs, generating output...');
 
-	createLoader(svgs);
+	createLoader(categories);
 	console.log('"presetIconLoader.js" generated.');
 
-	createSvgs(svgs);
+	createCatalogue(categories);
+	console.log('"catalogue.md" generated.');
+
+	createSvgs(categories);
 	console.log('SVG imports generated.');
 	console.groupEnd();
 
