@@ -1,52 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="../styles.css" type="text/css">
-	<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-	<script type="module">
-		import '../../components/demo/demo-snippet.js';
-		import '../../components/colors/colors.js';
-		import '../../components/typography/typography.js';
-		import '../../components/button/button-subtle.js';
-	</script>
-	<title>d2l-button-subtle demo</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../styles.css" type="text/css">
+	<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../components/demo/demo-page.js';
+		import '../../components/button/button-subtle.js';
+	</script>
 </head>
-<body class="d2l-typography">
+<body unresolved>
 
-	<h3>Subtle Button with Text Only</h3>
+	<d2l-demo-page title="d2l-button-subtle">
 
-	<d2l-demo-snippet>
-		<d2l-button-subtle id="normal" text="Subtle Button"></d2l-button-subtle>
-	</d2l-demo-snippet>
+		<h2>Subtle Button with Text Only</h2>
 
-	<h3>Subtle Button Disabled</h3>
+		<d2l-demo-snippet>
+			<d2l-button-subtle id="normal" text="Subtle Button"></d2l-button-subtle>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<d2l-button-subtle id="disabled" text="Subtle Button" disabled></d2l-button-subtle>
-	</d2l-demo-snippet>
+		<h2>Subtle Button Disabled</h2>
 
-	<h3>Subtle Button with Text and Icon</h3>
+		<d2l-demo-snippet>
+			<d2l-button-subtle id="disabled" text="Subtle Button" disabled></d2l-button-subtle>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<d2l-button-subtle id="with-icon" icon="d2l-tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>
-	</d2l-demo-snippet>
+		<h2>Subtle Button with Text and Icon</h2>
 
-	<h3>Subtle Button with Text and Icon on the Right</h3>
+		<d2l-demo-snippet>
+			<d2l-button-subtle id="with-icon" icon="d2l-tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<d2l-button-subtle id="icon-right" icon="d2l-tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>
-	</d2l-demo-snippet>
+		<h2>Subtle Button with Text and Icon on the Right</h2>
 
-	<h3>Subtle Button with Horizontal Align</h3>
+		<d2l-demo-snippet>
+			<d2l-button-subtle id="icon-right" icon="d2l-tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<d2l-button-subtle icon="d2l-tier1:gear" text="Button Edge Aligned (default)"></d2l-button-subtle>
-		<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
-		<d2l-button-subtle icon="d2l-tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-subtle>
-	</d2l-demo-snippet>
+		<h2>Subtle Button with Horizontal Align</h2>
+
+		<d2l-demo-snippet>
+			<d2l-button-subtle icon="d2l-tier1:gear" text="Button Edge Aligned (default)"></d2l-button-subtle>
+			<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+			<d2l-button-subtle icon="d2l-tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-subtle>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
 
 	<script>
 		document.querySelector('d2l-button-subtle').addEventListener('click', () => {

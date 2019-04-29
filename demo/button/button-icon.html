@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="../styles.css" type="text/css">
-	<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-	<script type="module">
-		import '../../components/demo/demo-snippet.js';
-		import '../../components/colors/colors.js';
-		import '../../components/typography/typography.js';
-		import '../../components/button/button-icon.js';
-	</script>
-	<title>d2l-button-icon demo</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../styles.css" type="text/css">
+	<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../components/demo/demo-page.js';
+		import '../../components/button/button-icon.js';
+	</script>
 	<style>
 		.ancestor-container {
 			padding: 0.5rem;
@@ -57,55 +54,59 @@
 		}
 	</style>
 </head>
-<body class="d2l-typography">
+<body unresolved>
 
-	<h3>Icon Button</h3>
+	<d2l-demo-page title="d2l-button-icon">
 
-	<d2l-demo-snippet>
-		<d2l-button-icon id="normal" icon="d2l-tier1:gear" text="Icon Button"></d2l-button-icon>
-	</d2l-demo-snippet>
+		<h2>Icon Button</h2>
 
-	<h3>Icon Button Disabled</h3>
+		<d2l-demo-snippet>
+			<d2l-button-icon id="normal" icon="d2l-tier1:gear" text="Icon Button"></d2l-button-icon>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<d2l-button-icon id="disabled" icon="d2l-tier1:gear" text="Icon Button" disabled></d2l-button-icon>
-	</d2l-demo-snippet>
+		<h2>Icon Button Disabled</h2>
 
-	<h3>Icon Button Translucent</h3>
+		<d2l-demo-snippet>
+			<d2l-button-icon id="disabled" icon="d2l-tier1:gear" text="Icon Button" disabled></d2l-button-icon>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<div class="translucent-container">
-			<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
-			<d2l-button-icon id="translucent" icon="d2l-tier1:gear" text="Icon Button" translucent></d2l-button-icon>
-		</div>
-	</d2l-demo-snippet>
+		<h2>Icon Button Translucent</h2>
 
-	<h3>Icon Button with Horizontal Align</h3>
+		<d2l-demo-snippet>
+			<div class="translucent-container">
+				<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
+				<d2l-button-icon id="translucent" icon="d2l-tier1:gear" text="Icon Button" translucent></d2l-button-icon>
+			</div>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<d2l-button-icon icon="d2l-tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
-		<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
-		<d2l-button-icon icon="d2l-tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-icon>
-	</d2l-demo-snippet>
+		<h2>Icon Button with Horizontal Align</h2>
 
-	<h3>Icon Button with Visible on Ancestor</h3>
+		<d2l-demo-snippet>
+			<d2l-button-icon icon="d2l-tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
+			<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+			<d2l-button-icon icon="d2l-tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-icon>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<div class="ancestor-container d2l-visible-on-ancestor-target">
-			<d2l-button-icon icon="d2l-tier1:home" text="Home"></d2l-button-icon>
-			<d2l-button-icon icon="d2l-tier1:bookmark-hollow" text="Bookmark"></d2l-button-icon>
-			<d2l-button-icon icon="d2l-tier1:gear" text="Gear" visible-on-ancestor></d2l-button-icon>
-		</div>
-	</d2l-demo-snippet>
+		<h2>Icon Button with Visible on Ancestor</h2>
 
-	<h3>Icon Button with Translucent + Visible on Ancestor</h3>
+		<d2l-demo-snippet>
+			<div class="ancestor-container d2l-visible-on-ancestor-target">
+				<d2l-button-icon icon="d2l-tier1:home" text="Home"></d2l-button-icon>
+				<d2l-button-icon icon="d2l-tier1:bookmark-hollow" text="Bookmark"></d2l-button-icon>
+				<d2l-button-icon icon="d2l-tier1:gear" text="Gear" visible-on-ancestor></d2l-button-icon>
+			</div>
+		</d2l-demo-snippet>
 
-	<d2l-demo-snippet>
-		<div class="translucent-container d2l-visible-on-ancestor-target">
-			<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
-			<d2l-button-icon icon="d2l-tier1:gear" text="Settings" translucent visible-on-ancestor></d2l-button-icon>
-		</div>
-	</d2l-demo-snippet>
+		<h2>Icon Button with Translucent + Visible on Ancestor</h2>
+
+		<d2l-demo-snippet>
+			<div class="translucent-container d2l-visible-on-ancestor-target">
+				<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
+				<d2l-button-icon icon="d2l-tier1:gear" text="Settings" translucent visible-on-ancestor></d2l-button-icon>
+			</div>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
 
 	<script>
 		document.querySelector('d2l-button-icon').addEventListener('click', () => {
