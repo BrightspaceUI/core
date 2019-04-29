@@ -15,10 +15,6 @@ describe('d2l-icon', function() {
 		await page.bringToFront();
 	});
 
-	beforeEach(async() => {
-		await visualDiff.resetFocus(page);
-	});
-
 	after(() => browser.close());
 
 	[
