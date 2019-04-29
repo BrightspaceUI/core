@@ -27,7 +27,7 @@ class DemoPage extends LitElement {
 	static get styles() {
 		return [ heading2Styles, css`
 			:host {
-				background-color: #f2f3f5;
+				background-color: var(--d2l-color-sylvite);
 				display: block;
 				padding: 30px;
 			}
