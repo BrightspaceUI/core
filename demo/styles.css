@@ -2,19 +2,10 @@ html {
 	font-size: 20px;
 }
 body {
-	background-color: #f2f3f5;
-	margin: 30px;
+	margin: 0;
+	padding: 0;
 	transition: opacity 0.2s ease-in-out;
 }
 body[unresolved] {
 	opacity: 0;
-}
-h3 {
-	font-size: 1rem;
-	margin-top: 36px;
-	margin-bottom: 18px;
-}
-d2l-code-view,
-d2l-demo-snippet {
-	margin-bottom: 36px;
 }
