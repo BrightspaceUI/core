@@ -2,8 +2,7 @@ import '@webcomponents/shadycss/custom-style-interface.min.js';
 
 const importUrl = 'https://s.brightspace.com/lib/fonts/0.4.0/assets/';
 
-const head = document.getElementsByTagName('head')[0];
-if (!head.querySelector('#d2l-typography-font-face')) {
+if (!document.head.querySelector('#d2l-typography-font-face')) {
 	const style = document.createElement('style');
 	style.id = 'd2l-typography-font-face';
 	style.textContent = `
@@ -174,6 +173,6 @@ if (!head.querySelector('#d2l-typography-font-face')) {
 
 		}
 	`;
-	head.appendChild(style);
+	document.head.appendChild(style);
 	window.ShadyCSS.CustomStyleInterface.addCustomStyle(style);
 }
