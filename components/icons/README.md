@@ -85,7 +85,7 @@ Here's a sample of a properly formatted SVG:
 
 ### Auto-generated files
 
-The `d2l-icons.md` catalogue file is automatically generated. When making icon modifications, re-generate this file by running `npm run build:icons`.
+The `catalogue.md` catalogue file is automatically generated. When making icon modifications, re-generate this file by running `npm run build:icons`.
 
 ### Bidirectionality
 
