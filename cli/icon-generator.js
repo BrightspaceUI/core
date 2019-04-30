@@ -86,12 +86,12 @@ function createSvgs(categories) {
 function createLoader(categories) {
 
 	let template = '// auto-generated\n' +
-		'export async function loadSvg(icon) {\n' +
+		'export function loadSvg(icon) {\n' +
 		'\tswitch (icon) {\n';
 	categories.forEach((category) => {
 		category.svgs.forEach((name) => {
 			template += `\t\tcase 'd2l-${category.name}:${name}':
-				return await import('./${category.name}/${name}.js');\n`;
+				return import('./${category.name}/${name}.js');\n`;
 		});
 	});
 
