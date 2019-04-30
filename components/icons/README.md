@@ -10,7 +10,7 @@ For preset icons, import and use the `<d2l-icon>` web component with the `icon` 
 
 ```html
 <script type="module">
-	import '@d2l/brightspace-core/components/icons/icon.js';
+	import 'd2l-core-ui/components/icons/icon.js';
 </script>
 <d2l-icon icon="d2l-tier1:gear"></d2l-icon>
 ```
