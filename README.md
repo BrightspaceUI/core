@@ -8,6 +8,14 @@ A collection of core UI components.
 
 Coming soon!
 
+## Components
+
+* [Buttons](components/button/): normal, primary, icon and subtle buttons
+* [Colors](components/colors/): color palette
+* [Icons](components/icons/): iconography SVGs and web components
+* [More/less](components/more-less/): constrain long bits of content
+* [Typography](components/typography/): typography styles and components
+
 ## Usage
 
 ### Structure
