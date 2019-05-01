@@ -29,7 +29,7 @@
     "polymer-cli": "latest",
     "prismjs": "latest",
     "puppeteer": "latest",
-    "visual-diff": "dbatiste/visual-diff",
+    "visual-diff": "BrightspaceUI/visual-diff",
     "wct-mocha": "^1.0.0",
     "whatwg-fetch": "^3.0.0"
   },
