@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const VisualDiff = require('visual-diff');
+const VisualDiff = require('../../tools/visual-diff/visual-diff.js');
 
 describe('d2l-button-icon', function() {
 
