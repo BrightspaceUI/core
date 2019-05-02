@@ -1,8 +1,11 @@
 {
-  "name": "d2l-core-ui",
+  "name": "@brightspace-ui/core",
   "version": "0.0.1",
   "description": "Brightspace core UI components.",
   "repository": "https://github.com/BrightspaceUI/core.git",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "index.html",
   "scripts": {
     "build:icons": "node ./cli/icon-generator.js",
@@ -17,6 +20,7 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@brightspace-ui/visual-diff": "latest",
     "@polymer/test-fixture": "latest",
     "axe-core": "latest",
     "babel-eslint": "latest",
@@ -29,7 +33,6 @@
     "polymer-cli": "latest",
     "prismjs": "latest",
     "puppeteer": "latest",
-    "visual-diff": "BrightspaceUI/visual-diff",
     "wct-mocha": "^1.0.0",
     "whatwg-fetch": "^3.0.0"
   },
