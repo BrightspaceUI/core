@@ -17,6 +17,7 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@brightspace-ui/visual-diff": "latest",
     "@polymer/test-fixture": "latest",
     "axe-core": "latest",
     "babel-eslint": "latest",
@@ -29,7 +30,6 @@
     "polymer-cli": "latest",
     "prismjs": "latest",
     "puppeteer": "latest",
-    "visual-diff": "BrightspaceUI/visual-diff",
     "wct-mocha": "^1.0.0",
     "whatwg-fetch": "^3.0.0"
   },
