@@ -1,8 +1,11 @@
 {
-  "name": "d2l-core-ui",
+  "name": "@brightspace-ui/core",
   "version": "0.0.1",
   "description": "Brightspace core UI components.",
   "repository": "https://github.com/BrightspaceUI/core.git",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "index.html",
   "scripts": {
     "build:icons": "node ./cli/icon-generator.js",
