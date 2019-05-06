@@ -6,14 +6,14 @@ if (!document.head.querySelector('#d2l-colors')) {
 	style.textContent = `
 		html {
 			/* basic grays (lightest to darkest) */
-			--d2l-color-regolith: #f9fafb;
-			--d2l-color-sylvite: #f2f3f5;
-			--d2l-color-gypsum: #e6eaf0;
-			--d2l-color-mica: #d3d9e3;
-			--d2l-color-corundum: #b9c2d0;
-			--d2l-color-galena: #7c8695;
-			--d2l-color-tungsten: #72777a;
-			--d2l-color-ferrite: #565a5c;
+			--d2l-color-regolith: #f9fbff;
+			--d2l-color-sylvite: #f1f5fb;
+			--d2l-color-gypsum: #e3e9f1;
+			--d2l-color-mica: #cdd5dc;
+			--d2l-color-corundum: #b5bdc2;
+			--d2l-color-galena: #868c8f;
+			--d2l-color-tungsten: #6e7376;
+			--d2l-color-ferrite: #494c4e;
 
 			/* zircon */
 			--d2l-color-zircon-plus-2: #bbf1fa;
