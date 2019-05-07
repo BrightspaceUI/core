@@ -49,12 +49,12 @@
 							await meter.updateComplete;
 						});
 
-						it('Check calculations for ' + testData.title, () => {
+						it(`Check calculations for ${testData.title}`, () => {
 							const progress = meter._computeProgressBarWidth(meter.units, meter.outOf, meter._actualWidth);
 							expect(progress).to.equal(testData.expectedWidth);
 						});
 
-						it('should pass all axe tests for ' + testData.title, async() => {
+						it(`should pass all axe tests for ${testData.title}`, async() => {
 							await runAxe(meter);
 						});
 
