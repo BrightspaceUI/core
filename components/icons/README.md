@@ -71,7 +71,7 @@ When contributing changes to icons, the SVG files should be properly formatted. 
   - not contain negative values
 - there should be no `<title>` element
 - there should be no inline `<style>` -- all style for line fills should be applied directly to the SVG elements
-- color of SVG elements should be "ferrite" (`#565a5c`)
+- color of SVG elements should be "ferrite" (`#494c4e`)
 
 The best way to have most of these rules applied for you automatically is to put the icon through [SVGOMG](https://jakearchibald.github.io/svgomg/) with the "remove title" and "prettify code" options selected.
 
