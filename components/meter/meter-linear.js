@@ -11,7 +11,7 @@ class MeterLinear extends RtlMixin(LitElement)  {
 		return html `
 			<svg class="loadingBar" viewBox="-5 -4.5 ${this.width} 9" width="${this.width}">
 				<path class="full-bar" d="M0,0 h ${this._actualWidth}" />
-				<path class="progress-bar" d="M0,0 h ${this._computeProgressBarWidth(this.units, this.outOf, this._actualWidth)}" />
+				<path class="progress-bar" d="M0,0 h ${this._computeProgressBarWidth(this.units, this.outOf, this._actualWidth)}" visibility="${this.units ? 'visable' : 'hidden'}"/>
 			</svg>
 		`;
 	}
