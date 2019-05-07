@@ -9,9 +9,9 @@ class MeterLinear extends RtlMixin(LitElement)  {
 
 	render() {
 		return html `
-			<svg class="loadingBar" viewBox="-5 -4.5 ${this.width} 9" width="${this.width}">
-				<path class="full-bar" d="M0,0 h ${this._actualWidth}" />
-				<path class="progress-bar" d="M0,0 h ${this._computeProgressBarWidth(this.units, this.outOf, this._actualWidth)}" visibility="${this.units ? 'visable' : 'hidden'}"/>
+			<svg viewBox="-5 -4.5 ${this.width} 9" width="${this.width}">
+				<path class="d2l-meter-full-bar" d="M0,0 h ${this._actualWidth}" />
+				<path class="d2l-meter-progress-bar" d="M0,0 h ${this._computeProgressBarWidth(this.units, this.outOf, this._actualWidth)}" visibility="${this.units ? 'visable' : 'hidden'}"/>
 			</svg>
 		`;
 	}
