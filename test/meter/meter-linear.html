@@ -15,19 +15,19 @@
 
 		<test-fixture id="no-progress">
 			<template>
-				<d2l-meter-linear units="0" out-of="10"></d2l-meter-linear>
+				<d2l-meter-linear value="0" max="10"></d2l-meter-linear>
 			</template>
 		</test-fixture>
 
 		<test-fixture id="has-progress">
 			<template>
-				<d2l-meter-linear units="3" out-of="10" width="210"></d2l-meter-linear>
+				<d2l-meter-linear value="3" max="10" width="210"></d2l-meter-linear>
 			</template>
 		</test-fixture>
 
 		<test-fixture id="completed">
 			<template>
-				<d2l-meter-linear units="10" out-of="10" width="210"></d2l-meter-linear>
+				<d2l-meter-linear value="10" max="10" width="210"></d2l-meter-linear>
 			</template>
 		</test-fixture>
 
@@ -37,9 +37,9 @@
 			describe('d2l-meter-linear', () => {
 
 				[
-					{ title: 'Meter with No Progress', fixture: 'no-progress', expectedWidth: 0 },
-					{ title: 'Meter with Progress', fixture: 'has-progress', expectedWidth: 60 },
-					{ title: 'Meter completed', fixture: 'completed', expectedWidth: 200 }
+					{ title: 'Meter with No Progress', fixture: 'no-progress'},
+					{ title: 'Meter with Progress', fixture: 'has-progress'},
+					{ title: 'Meter completed', fixture: 'completed'}
 				].forEach((testData) => {
 					let meter;
 					describe(testData.title, () => {
@@ -47,11 +47,6 @@
 						beforeEach(async() => {
 							meter = fixture(testData.fixture);
 							await meter.updateComplete;
-						});
-
-						it(`Check calculations for ${testData.title}`, () => {
-							const progress = meter._computeProgressBarWidth(meter.units, meter.outOf, meter._actualWidth);
-							expect(progress).to.equal(testData.expectedWidth);
 						});
 
 						it(`should pass all axe tests for ${testData.title}`, async() => {
