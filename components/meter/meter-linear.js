@@ -1,20 +1,40 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
-import { meterStyles } from './meter-styles.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class MeterLinear extends RtlMixin(LitElement)  {
 	static get styles() {
-		return [ meterStyles ];
+		return [ css`
+			.container {
+				position: relative;
+			}
+
+			.d2l-meter-full-bar, .d2l-meter-inner-bar {
+				border-radius: 32px;
+				height: 9px;
+				left: 0;
+				position: absolute;
+				top: 0;
+				width: 100%;
+			}
+
+			.d2l-meter-full-bar {
+				background-color: var(--d2l-color-gypsum);
+			}
+
+			.d2l-meter-inner-bar {
+				background-color: var(--d2l-color-celestine);
+			}
+		`];
 	}
 
 	render() {
-		const barWidth = this.width - 10;
-		const progressBarWidth = this.value / this.max * barWidth;
+		const progressBarWidth = this.value / this.max * 100;
 		return html `
-			<svg viewBox="-5 -4.5 ${this.width} 9" width="${this.width}">
-				<path class="d2l-meter-full-bar" d="M0,0 h ${barWidth}" />
-				<path class="d2l-meter-progress-bar" d="M0,0 h ${progressBarWidth}" visibility="${this.value ? 'visable' : 'hidden'}"/>
-			</svg>
+			<div class="container">
+				<div class="d2l-meter-full-bar">
+					<div class="d2l-meter-inner-bar" style="width:${progressBarWidth}%;"></div>
+				</div>
+			</div>
 		`;
 	}
 
@@ -23,8 +43,7 @@ class MeterLinear extends RtlMixin(LitElement)  {
 			value: { type: Number, reflect: true },
 			max: { type: Number, reflect: true },
 			primary: { type: String, reflect: true },
-			secondary: { type: String, reflect: true },
-			width: { type: Number }
+			secondary: { type: String, reflect: true }
 		};
 	}
 
@@ -32,7 +51,6 @@ class MeterLinear extends RtlMixin(LitElement)  {
 		super();
 		this.value = 0;
 		this.max = 100;
-		this.width = 150;
 	}
 }
 
