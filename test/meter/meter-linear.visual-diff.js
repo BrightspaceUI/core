@@ -18,9 +18,9 @@ describe('d2l-meter-linear', function() {
 	after(() => browser.close());
 
 	[
-		{ title: 'Meter with no progress', fixture: '#no-progress'},
-		{ title: 'Meter with progress', fixture: '#has-progress'},
-		{ title: 'Meter completed', fixture: '#completed'}
+		{ title: 'no-progress', fixture: '#no-progress'},
+		{ title: 'has-progress', fixture: '#has-progress'},
+		{ title: 'completed', fixture: '#completed'}
 	].forEach((testData) => {
 		it(testData.title, async function() {
 			const rect = await visualDiff.getRect(page, testData.fixture);
