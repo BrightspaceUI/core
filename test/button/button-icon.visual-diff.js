@@ -77,7 +77,9 @@ describe('d2l-button-icon', function() {
 		const p = page.evaluate((selector) => {
 			return new Promise((resolve) => {
 				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
+				elem.shadowRoot.querySelector('button').addEventListener('transitionend', (e) => {
+					if (e.propertyName === 'background-color') resolve();
+				});
 			});
 		}, selector);
 		page.hover(selector);
