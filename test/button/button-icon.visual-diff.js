@@ -84,7 +84,7 @@ describe('d2l-button-icon', function() {
 		}, selector);
 		page.hover(selector);
 		return p;
-	}
+	};
 
 	const focus = (page, selector) => {
 		return page.evaluate((selector) => {
