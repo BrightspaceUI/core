@@ -1,8 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { heading4Styles } from '../typography/styles.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class MeterRadial extends RtlMixin(LitElement) {
+class MeterRadial extends LitElement {
 	static get styles() {
 		return [ heading4Styles, css`
 		:host {

@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class MeterLinear extends RtlMixin(LitElement)  {
+class MeterLinear extends LitElement  {
 	static get styles() {
 		return [ css`
 			:host {
