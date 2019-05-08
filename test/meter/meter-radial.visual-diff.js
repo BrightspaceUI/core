@@ -17,19 +17,15 @@ describe('d2l-meter-radial', function() {
 
 	after(() => browser.close());
 
-	it('no-progress', async function() {
-		const rect = await visualDiff.getRect(page, '#no-progress');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('has-progress', async function() {
-		const rect = await visualDiff.getRect(page, '#has-progress');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('completed', async function() {
-		const rect = await visualDiff.getRect(page, '#completed');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	[
+		{ title: 'Meter with no progress', fixture: '#no-progress'},
+		{ title: 'Meter with progress', fixture: '#has-progress'},
+		{ title: 'Meter completed', fixture: '#completed'}
+	].forEach((testData) => {
+		it(testData.title, async function() {
+			const rect = await visualDiff.getRect(page, testData.fixture);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 });
