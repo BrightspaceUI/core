@@ -5,6 +5,7 @@ class MeterLinear extends RtlMixin(LitElement)  {
 	static get styles() {
 		return [ css`
 			:host {
+				display: block;
 				position: relative;
 			}
 
