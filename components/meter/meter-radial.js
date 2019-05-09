@@ -40,13 +40,15 @@ class MeterRadial extends LitElement {
 		return html `
 			<svg viewBox="0 0 86 52" >
 				<g transform="translate(5 47)">
-					<path class="d2l-meter-radial-full-bar" d="M0,0 a 38 35 0 0 1 76 0" />
+					<path class="d2l-meter-radial-full-bar" d="M5 47a38 35 0 0 1 76 0" />
 					<path
 						class="d2l-meter-radial-progress-bar"
-						d="M0,0 a 38 35 0 0 1 76 0"
+						d="M5 47a38 35 0 0 1 76 0"
 						stroke-dasharray="${progressFill} ${lengthOfLine}"
 						visibility="${this.value ? 'visible' : 'hidden'}" />
-					<text class="d2l-heading-4 d2l-meter-radial-text" x="38" y="2" text-anchor="middle">${this.value}/${this.max}</text>
+					<text class="d2l-heading-4 d2l-meter-radial-text" x="38" y="2" text-anchor="middle"  transform="translate(5 47)">
+						${this.value}/${this.max}
+					</text>
 				</g>
 			</svg>
 		`;
