@@ -14,7 +14,7 @@ class MeterRadial extends LitElement {
 		return [ heading4Styles, css`
 		:host {
 			display: inline-block;
-			width: 86px;
+			width: 4.3rem;
 		}
 		.d2l-meter-radial-full-bar,
 		.d2l-meter-radial-progress-bar {
