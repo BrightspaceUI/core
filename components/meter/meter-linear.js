@@ -19,9 +19,6 @@ class MeterLinear extends LitElement  {
 			.d2l-meter-linear-full-bar, .d2l-meter-linear-inner-bar {
 				border-radius: 32px;
 				height: 9px;
-				left: 0;
-				position: absolute;
-				top: 0;
 				width: 100%;
 			}
 
@@ -31,6 +28,9 @@ class MeterLinear extends LitElement  {
 
 			.d2l-meter-linear-inner-bar {
 				background-color: var(--d2l-color-celestine);
+				left: 0;
+				position: absolute;
+				top: 0;
 			}
 		`];
 	}
