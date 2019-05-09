@@ -11,6 +11,7 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-gypsum: #e3e9f1;
 			--d2l-color-mica: #cdd5dc;
 			--d2l-color-corundum: #b5bdc2;
+			--d2l-color-chromite: #9ea5a9;
 			--d2l-color-galena: #868c8f;
 			--d2l-color-tungsten: #6e7376;
 			--d2l-color-ferrite: #494c4e;
