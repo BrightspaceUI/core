@@ -29,7 +29,7 @@ class MeterRadial extends LitElement {
 			stroke: var(--d2l-color-celestine);
 		}
 		.d2l-meter-radial-text {
-			color: var(--d2l-color-ferrite);
+			fill: var(--d2l-color-ferrite);
 		}
 	` ];
 	}
