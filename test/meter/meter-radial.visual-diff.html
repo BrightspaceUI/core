@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../styles.css" type="text/css">
+	<script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../components/colors/colors.js';
+		import '../../components/typography/typography.js';
+		import '../../components/meter/meter-radial.js';
+	</script>
+	<title>d2l-meter-radial</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff" style="width: 90px;">
+		<d2l-meter-radial id="no-progress" value="0" max="10" style="display: block;"></d2l-meter-radial>
+	</div>
+	<div class="visual-diff" style="width: 90px;">
+		<d2l-meter-radial id="has-progress" value="16" max="47" style="display: block;"></d2l-meter-radial>
+	</div>
+	<div class="visual-diff" style="width: 90px;">
+		<d2l-meter-radial id="completed" value="256" max="256" style="display: block;"></d2l-meter-radial>
+	</div>
+	<!-- Test scaled versions-->
+	<div class="visual-diff" style="width: 170px;">
+		<d2l-meter-radial id="no-progress-scaled" value="0" max="10"  style="width: 300%;"></d2l-meter-radial>
+	</div>
+	<div class="visual-diff" style="width: 170px;">
+		<d2l-meter-radial id="has-progress-scaled" value="7" max="10"  style="width: 450%;"></d2l-meter-radial>
+	</div>
+	<div class="visual-diff" style="width: 170px;">
+		<d2l-meter-radial id="completed-scaled" value="10" max="10"  style="width: 30%;"></d2l-meter-radial>
+	</div>
+</body>
+</html>

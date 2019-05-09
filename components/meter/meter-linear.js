@@ -1,7 +1,14 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class MeterLinear extends RtlMixin(LitElement)  {
+class MeterLinear extends LitElement  {
+	static get properties() {
+		return {
+			value: { type: Number },
+			max: { type: Number },
+			primary: { type: String },
+			secondary: { type: String }
+		};
+	}
 	static get styles() {
 		return [ css`
 			:host {
@@ -28,6 +35,12 @@ class MeterLinear extends RtlMixin(LitElement)  {
 		`];
 	}
 
+	constructor() {
+		super();
+		this.value = 0;
+		this.max = 100;
+	}
+
 	render() {
 		const progressBarWidth = this.value / this.max * 100;
 		return html `
@@ -35,21 +48,6 @@ class MeterLinear extends RtlMixin(LitElement)  {
 				<div class="d2l-meter-linear-inner-bar" style="width:${progressBarWidth}%;"></div>
 			</div>
 		`;
-	}
-
-	static get properties() {
-		return {
-			value: { type: Number, reflect: true },
-			max: { type: Number, reflect: true },
-			primary: { type: String, reflect: true },
-			secondary: { type: String, reflect: true }
-		};
-	}
-
-	constructor() {
-		super();
-		this.value = 0;
-		this.max = 100;
 	}
 }
 
