@@ -29,7 +29,7 @@ Coming soon!
 
 `/mixins/` - Mixins for use in your web components (ex. localize, RTL, etc)
 
-`/screenshots/` - Screenshots of for the readme file. (this code does not get shipped)
+`/screenshots/` - Screenshots for the readme files. (this code does not get shipped)
 
 `/test/` - Unit and Visual-Diff tests
 
