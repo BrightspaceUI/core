@@ -13,6 +13,7 @@ Coming soon!
 * [Buttons](components/button/): normal, primary, icon and subtle buttons
 * [Colors](components/colors/): color palette
 * [Icons](components/icons/): iconography SVGs and web components
+* [Meter](components/meter/): linear, radial, circle meter web components.
 * [More/less](components/more-less/): constrain long bits of content
 * [Typography](components/typography/): typography styles and components
 
@@ -28,9 +29,11 @@ Coming soon!
 
 `/mixins/` - Mixins for use in your web components (ex. localize, RTL, etc)
 
+`/screenshots/` - Screenshots of for the readme file. (this code does not get shipped)
+
 `/test/` - Unit and Visual-Diff tests
 
-`/tools/` - Development tools for building, testing, etc. (this code does not get shipped)
+`/tools/` - Development tools for building, testing, etc.
 
 ## Developing, Testing and Contributing
 
