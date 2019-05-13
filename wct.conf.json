@@ -3,7 +3,7 @@
     "local": {
       "browsers": ["chrome"],
       "browserOptions": {
-        "chrome": ["disable-gpu", "no-sandbox"]
+        "chrome": ["headless", "disable-gpu", "no-sandbox"]
       }
     },
 		"sauce": {
