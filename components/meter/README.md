@@ -47,3 +47,26 @@ Then add the `d2l-meter-radial`, provide values for the properties, `value` and 
 
 * `value` (required): The current number of units that have been marked as completed. Should be a positive, non-zero number that is less than or equal to `max`
 * `max` (required): Max number of units that is being measured by this meter. For results this should be a positive, non-zero number
+
+## d2l-meter-circle
+![Circle meter with no progress.](../../screenshots/meter/d2l-meter-circle-no-progress.png?raw=true)
+![Circle meter with no progress.](../../screenshots/meter/d2l-meter-circle-has-progress.png?raw=true)
+![Circle meter with no progress.](../../screenshots/meter/d2l-meter-circle-completed.png?raw=true)
+
+### Usage
+
+Import
+```js
+import '@brightspace-ui/core/components/meter/meter-circle.js';
+```
+
+Then add the `d2l-meter-circle`, provide values for the properties, `value` and `max`.
+
+```html
+<d2l-meter-circle value="30" max="100"></d2l-meter-circle>
+```
+
+***Properties:***
+
+* `value` (required): The current number of units that have been marked as completed. Should be a positive, non-zero number that is less than or equal to `max`
+* `max` (required): Max number of units that is being measured by this meter. For results this should be a positive, non-zero number
