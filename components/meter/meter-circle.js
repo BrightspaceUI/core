@@ -16,19 +16,19 @@ class MeterCircle extends LitElement {
 			display: inline-block;
 			width: 2.4rem;
 		}
-		.d2l-meter-radial-full-bar,
-		.d2l-meter-radial-progress-bar {
+		.d2l-meter-circle-full-bar,
+		.d2l-meter-circle-progress-bar {
 			fill: none;
 			stroke-linecap: round;
 			stroke-width: 6;
 		}
-		.d2l-meter-radial-full-bar {
+		.d2l-meter-circle-full-bar {
 			stroke: var(--d2l-color-gypsum);
 		}
-		.d2l-meter-radial-progress-bar {
+		.d2l-meter-circle-progress-bar {
 			stroke: var(--d2l-color-celestine);
 		}
-		.d2l-meter-radial-text {
+		.d2l-meter-circle-text {
 			fill: var(--d2l-color-ferrite);
 			font-size: 0.6rem;
 			line-height: 0;
@@ -37,20 +37,20 @@ class MeterCircle extends LitElement {
 	}
 
 	render() {
-		const lengthOfLine = 21 * 3.14 * 2; // approximation perimeter of circle
+		const lengthOfLine = 21 * Math.PI * 2; // approximation perimeter of circle
 		const progressFill = this.value / this.max * lengthOfLine;
 		const space = lengthOfLine - progressFill;
-		const dashOffset = 7 * 3.14 * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
+		const dashOffset = 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
 		return html `
 			<svg viewBox="0 0 48 48" >
-				<circle class="d2l-meter-radial-full-bar" cx="24" cy="24" r="21"/>
+				<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"/>
 				<circle
-					class="d2l-meter-radial-progress-bar"
+					class="d2l-meter-circle-progress-bar"
 					cx="24" cy="24" r="21"
 					stroke-dasharray="${progressFill} ${space}"
 					stroke-dashoffset="${dashOffset}"
 					visibility="${this.value ? 'visible' : 'hidden'}" />
-				<text class="d2l-body-standard d2l-meter-radial-text" x="24" y="25" text-anchor="middle" dominant-baseline="middle">
+				<text class="d2l-body-standard d2l-meter-circle-text" x="24" y="25" text-anchor="middle" dominant-baseline="middle">
 					${this.value}/${this.max}
 				</text>
 			</svg>
