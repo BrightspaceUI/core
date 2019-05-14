@@ -15,7 +15,8 @@
     "test:diff": "mocha './test/**/*.visual-diff.js' -t 10000",
     "test:diff:golden": "mocha './test/**/*.visual-diff.js' -t 10000 --golden",
     "test:local": "polymer test --skip-plugin sauce",
-    "test:sauce": "polymer test --skip-plugin local"
+    "test:sauce": "polymer test --skip-plugin local",
+    "test:travis": "polymer test --config-file wct.conf-travis.json"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
