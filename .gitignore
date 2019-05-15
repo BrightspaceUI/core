@@ -1,5 +1,5 @@
 .generated
 node_modules/
 package-lock.json
-test/*/screenshots/current/
-test/*/screenshots/golden/
+components/*/test/screenshots/current/
+components/*/test/screenshots/golden/

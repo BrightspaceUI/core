@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../meter-linear.js';
+			import '../meter-radial.js';
+			import '../meter-circle.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page title="Meter Components">
+
+			<h2>Meter Linear</h2>
+
+			<d2l-demo-snippet>
+				<d2l-meter-linear value="30" max="100" style="width: 150px"></d2l-meter-linear>
+			</d2l-demo-snippet>
+
+			<h2>Meter Radial</h2>
+
+			<d2l-demo-snippet>
+				<d2l-meter-radial value="5" max="13"></d2l-meter-radial>
+				<d2l-meter-radial value="10" max="10"></d2l-meter-radial>
+				<d2l-meter-radial value="0" max="10"></d2l-meter-radial>
+				<d2l-meter-radial value="19" max="26" style="width:25%"></d2l-meter-radial>
+			</d2l-demo-snippet>
+
+			<h2>Meter Circle</h2>
+
+			<d2l-demo-snippet>
+				<d2l-meter-circle value="1" max="13"></d2l-meter-circle>
+				<d2l-meter-circle value="10" max="10"></d2l-meter-circle>
+				<d2l-meter-circle value="0" max="10"></d2l-meter-circle>
+				<d2l-meter-circle value="19" max="26" style="width:25%"></d2l-meter-circle>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
