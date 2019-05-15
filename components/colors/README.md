@@ -1,6 +1,6 @@
 # Colors
 
-Importing `colors` will add the color palette to the document and polyfill for IE11 usinf [shadyCSS](https://github.com/webcomponents/shadycss). Run the demo page to see the full palette.
+Importing `colors` will add the color palette to the document and polyfill for IE11 usinf [shadyCSS](https://github.com/webcomponents/shadycss). Run the demo page to see the full palette. See [colors.js](colors.js) for the variable names (i.e. `--d2l-color-*`).
 
 ### Usage
 
