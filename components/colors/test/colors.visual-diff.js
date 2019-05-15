@@ -15,10 +15,6 @@ describe('colors', function() {
 		await page.bringToFront();
 	});
 
-	beforeEach(async() => {
-		await visualDiff.resetFocus(page);
-	});
-
 	after(() => browser.close());
 
 	it('palette', async function() {
