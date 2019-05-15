@@ -20,7 +20,8 @@ describe('d2l-meter-linear', function() {
 	[
 		{ title: 'no-progress', fixture: '#no-progress'},
 		{ title: 'has-progress', fixture: '#has-progress'},
-		{ title: 'completed', fixture: '#completed'}
+		{ title: 'completed', fixture: '#completed'},
+		{ title: 'max-zero', fixture: '#max-zero'}
 	].forEach((testData) => {
 		it(testData.title, async function() {
 			const rect = await visualDiff.getRect(page, testData.fixture);
