@@ -44,4 +44,4 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 * `text` (required): Accessibly text for the button
 * `icon` (required): Icon for the button (ex. `d2l-tier1:gear`)
 * `h-align` (optional): `text` aligns the leading edge of text
-* `translucent` (optional): Indicated to display translucent (ex. on rich backgrounds)
+* `translucent` (optional): Indicates to display translucent (ex. on rich backgrounds)
