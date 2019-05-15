@@ -2,8 +2,6 @@
 
 ## d2l-button-subtle
 ![Subtle Button](./screenshots/button-subtle.png?raw=true)
-![Hovered Subtle Button](./screenshots/button-subtle-hover.png?raw=true)
-![Focused Subtle Button](./screenshots/button-subtle-focus.png?raw=true)
 
 ### Usage
 
