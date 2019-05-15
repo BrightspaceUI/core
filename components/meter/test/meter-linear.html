@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-meter-linear unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../meter-linear.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="no-progress">
+			<template>
+				<d2l-meter-linear value="0" max="10"></d2l-meter-linear>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="has-progress">
+			<template>
+				<d2l-meter-linear value="3" max="10"></d2l-meter-linear>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="completed">
+			<template>
+				<d2l-meter-linear value="10" max="10"></d2l-meter-linear>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-meter-linear', () => {
+
+				[
+					{ title: 'Meter with No Progress', fixture: 'no-progress'},
+					{ title: 'Meter with Progress', fixture: 'has-progress'},
+					{ title: 'Meter completed', fixture: 'completed'}
+				].forEach((testData) => {
+					let meter;
+					describe(testData.title, () => {
+
+						beforeEach(async() => {
+							meter = fixture(testData.fixture);
+							await meter.updateComplete;
+						});
+
+						it(`should pass all axe tests for ${testData.title}`, async() => {
+							await runAxe(meter);
+						});
+
+					});
+				});
+
+			});
+		</script>
+	</body>
+</html>

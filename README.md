@@ -23,15 +23,11 @@ Coming soon!
 
 `/components/` - Web components for use in your composite components or application (ex. buttons, links, etc)
 
-`/demo/` - Demos for components and mixins
-
 `/helpers/` - Helpers for use in your web components or mixins (ex. composed DOM helpers)
 
 `/mixins/` - Mixins for use in your web components (ex. localize, RTL, etc)
 
-`/screenshots/` - Screenshots for the readme files. (this code does not get shipped)
-
-`/test/` - Unit and Visual-Diff tests
+`/test/` - Index and shared styles for unit tests
 
 `/tools/` - Development tools for building, testing, etc.
 

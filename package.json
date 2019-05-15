@@ -12,12 +12,22 @@
     "lint": "eslint . --ext .js,.html",
     "postinstall": "npm run build:icons",
     "test": "npm run lint && npm run test:local && npm run test:diff",
-    "test:diff": "mocha './test/**/*.visual-diff.js' -t 10000",
-    "test:diff:golden": "mocha './test/**/*.visual-diff.js' -t 10000 --golden",
+    "test:diff": "mocha './**/*.visual-diff.js' -t 10000",
+    "test:diff:golden": "mocha './**/*.visual-diff.js' -t 10000 --golden",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sauce": "polymer test --skip-plugin local",
     "test:travis": "polymer test --config-file wct.conf-travis.json"
   },
+  "files": [
+     "/components",
+     "/helpers",
+     "/mixins",
+     "/tools",
+     "!demo",
+     "!test",
+     "/components/demo",
+     "!/components/demo/demo"
+  ],
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {

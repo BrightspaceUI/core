@@ -10,7 +10,7 @@ For preset icons, import and use the `<d2l-icon>` web component with the `icon` 
 
 ```html
 <script type="module">
-	import 'd2l-core-ui/components/icons/icon.js';
+  import '@brightspace-ui/core/components/icons/icon.js';
 </script>
 <d2l-icon icon="d2l-tier1:gear"></d2l-icon>
 ```
@@ -79,7 +79,7 @@ Here's a sample of a properly formatted SVG:
 
 ```svg
 <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-  <path fill="#565a5c" d="..."/>
+  <path fill="#494c4e" d="..."/>
 </svg>
 ```
 
