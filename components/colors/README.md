@@ -1,8 +1,6 @@
 # Colors
 
-## d2l-colors
-
-Importing `d2l-colors` will add the color palette to the document and polyfill for IE11 usinf [shadyCSS](https://github.com/webcomponents/shadycss). Run the demo page to see the full palette.
+Importing `colors` will add the color palette to the document and polyfill for IE11 usinf [shadyCSS](https://github.com/webcomponents/shadycss). Run the demo page to see the full palette.
 
 ### Usage
 
