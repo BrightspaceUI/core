@@ -30,7 +30,7 @@ Used for labels. Its font size/line spacing is relative to the root font and res
 
 ### Headings
 
-There are four available heading styles. These are typically be applied to the <h1>, <h2>, <h3> and <h4> HTML elements, though it's not a requirement.
+There are four available heading styles. These are typically be applied to the `h1`, `h2`, `h3` and `h4` HTML elements, though it's not a requirement.
 
 ![Headings](./screenshots/headings.png?raw=true)
 
@@ -48,7 +48,7 @@ Import [typography.js](typography.js), add the `d2l-typography` class to the `bo
 </head>
 <body class="d2l-typography">
 
-  <h1 class="d2l-heading-2"></h1>
+  <h1 class="d2l-heading-2"> ... </h1>
 
 </body>
 ```
