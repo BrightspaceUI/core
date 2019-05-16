@@ -38,7 +38,7 @@ There are four available heading styles. These are typically be applied to the `
 
 ### App
 
-Import [typography.js](typography.js), add the `d2l-typography` class to the `body`, and add other classes as needed. *Note:* `d2l-typography` only needs to be imported applied to the document once.
+Import [typography.js](typography.js), add the `d2l-typography` class to the `body`, and add other classes as needed. *Note:* `typography.js` only needs to be imported once. Similarly, the `d2l-typography` class should only be added once, typically to the `body`.
 
 ```html
 <head>
