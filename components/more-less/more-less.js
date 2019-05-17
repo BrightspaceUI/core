@@ -206,9 +206,9 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 	__init_setBaseHeight() {
 		this.__contentHeight = this.height;
 
-		requestAnimationFrame(function() {
+		requestAnimationFrame(() => {
 			this.__init_measureBaseHeight();
-		}.bind(this));
+		});
 	}
 
 	__init_measureBaseHeight() {
