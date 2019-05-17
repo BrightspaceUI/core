@@ -1,5 +1,4 @@
 import '../button/button-subtle.js';
-import 'fastdom/fastdom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap} from 'lit-html/directives/class-map.js';
@@ -126,9 +125,9 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		this.__content = this.shadowRoot.querySelector('.more-less-content');
 		this.__contentSlot = this.shadowRoot.querySelector('.more-less-content slot');
 		if (this.__content.offsetParent !== null) {
-			fastdom.mutate(this.__init_setBaseHeight, this);
+			this.__init_setBaseHeight();
 		}
-		fastdom.mutate(this.__init_setupBlurColour, this);
+		this.__init_setupBlurColour();
 		this.__init_setupListeners();
 	}
 
@@ -207,7 +206,9 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 	__init_setBaseHeight() {
 		this.__contentHeight = this.height;
 
-		fastdom.measure(this.__init_measureBaseHeight, this);
+		requestAnimationFrame(function() {
+			this.__init_measureBaseHeight();
+		}.bind(this));
 	}
 
 	__init_measureBaseHeight() {
@@ -309,7 +310,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 
 	__adjustToContent() {
 		if (this.__baseHeight === 0) {
-			fastdom.mutate(this.__init_setBaseHeight, this);
+			this.__init_setBaseHeight();
 			return;
 		}
 
@@ -318,18 +319,18 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 
 		if (contentHeight <= this.__baseHeight) {
 			if (!this.inactive) {
-				fastdom.mutate(this.__adjustToContent_makeInactive, this);
+				this.__adjustToContent_makeInactive();
 			}
 			return;
 		}
 
 		if (this.expanded && contentHeight !== currentHeight) {
-			fastdom.mutate(this.__adjustToContent_resize.bind(this, contentHeight));
+			this.__adjustToContent_resize.bind(this, contentHeight)();
 			return;
 		}
 
 		if (this.inactive) {
-			fastdom.mutate(this.__adjustToContent_makeActive, this);
+			this.__adjustToContent_makeActive();
 		}
 	}
 
@@ -361,16 +362,15 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 
 	__reactToChanges() {
 		if (!this.__transitionAdded) {
-			fastdom.mutate(this.__reactToChanges_setupTransition, this);
+			this.__reactToChanges_setupTransition();
 		} else {
-			fastdom.measure(this.__adjustToContent, this);
+			this.__adjustToContent();
 		}
 	}
 
 	__reactToChanges_setupTransition() {
 		this.__transitionAdded = true;
-
-		fastdom.measure(this.__adjustToContent, this);
+		this.__adjustToContent();
 	}
 
 	__isOwnMutation(mutation) {
