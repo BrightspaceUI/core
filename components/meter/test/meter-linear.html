@@ -50,7 +50,13 @@
 						});
 
 						it(`should pass all axe tests for ${testData.title}`, async() => {
-							await runAxe(meter);
+							await runAxe(meter, {
+								rules: {
+									// Skipping because progressBar role and attributes are not excepted.
+									'aria-allowed-attr': { enabled: false },
+									'aria-roles': { enabled: false }
+								}
+							});
 						});
 
 					});
