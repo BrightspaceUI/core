@@ -27,14 +27,14 @@ describe('d2l-more-less', function() {
 	});
 
 	it('expanded by click', async function() {
-		await click(page, '#expands');
-		const rect = await visualDiff.getRect(page, '#expands');
+		await click(page, '#collapsed');
+		const rect = await visualDiff.getRect(page, '#collapsed');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('collapsed by click', async function() {
-		await click(page, '#collapses');
-		const rect = await visualDiff.getRect(page, '#collapses');
+		await click(page, '#expanded');
+		const rect = await visualDiff.getRect(page, '#expanded');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
