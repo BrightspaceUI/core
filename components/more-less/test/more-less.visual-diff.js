@@ -17,10 +17,6 @@ describe('d2l-more-less', function() {
 
 	after(() => browser.close());
 
-	describe('normal', function() {
-
-	});
-
 	it('collapsed', async function() {
 		const rect = await visualDiff.getRect(page, '#collapsed');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
