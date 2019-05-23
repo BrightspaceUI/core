@@ -51,7 +51,7 @@
     "@webcomponents/shadycss": "latest",
     "@webcomponents/webcomponentsjs": "latest",
     "d2l-intl": "^2.0.0",
-    "intl-messageformat": "3.0.0",
+    "intl-messageformat": "^3.0.0",
     "lit-element": "latest",
     "resize-observer-polyfill": "^1.5.1"
   },
