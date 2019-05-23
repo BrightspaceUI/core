@@ -1,5 +1,5 @@
 import d2lIntl from 'd2l-intl';
-import IntlMessageFormat from 'intl-messageformat/src/main.js';
+import IntlMessageFormat from 'intl-messageformat/lib/index.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
 const assign =
