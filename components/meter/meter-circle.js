@@ -31,7 +31,6 @@ class MeterCircle extends LitElement {
 		.d2l-meter-circle-text {
 			fill: var(--d2l-color-ferrite);
 			font-size: 0.6rem;
-			line-height: 0;
 		}
 	` ];
 	}
@@ -42,7 +41,7 @@ class MeterCircle extends LitElement {
 		const space = lengthOfLine - progressFill;
 		const dashOffset = 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
 		return html `
-			<svg viewBox="0 0 48 48" >
+			<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision">
 				<circle class="d2l-meter-circle-full-bar" cx="24" cy="24" r="21"/>
 				<circle
 					class="d2l-meter-circle-progress-bar"
@@ -50,8 +49,8 @@ class MeterCircle extends LitElement {
 					stroke-dasharray="${progressFill} ${space}"
 					stroke-dashoffset="${dashOffset}"
 					visibility="${this.value ? 'visible' : 'hidden'}" />
-				<text class="d2l-body-standard d2l-meter-circle-text" x="24" y="25" text-anchor="middle" dominant-baseline="middle">
-					${this.value}/${this.max}
+				<text class="d2l-body-standard d2l-meter-circle-text" x="24" y="28" text-anchor="middle">
+						${this.value}/${this.max}
 				</text>
 			</svg>
 		`;
