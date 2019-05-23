@@ -19,14 +19,14 @@
     "test:travis": "polymer test --config-file wct.conf-travis.json"
   },
   "files": [
-     "/components",
-     "/helpers",
-     "/mixins",
-     "/tools",
-     "!demo",
-     "!test",
-     "/components/demo",
-     "!/components/demo/demo"
+    "/components",
+    "/helpers",
+    "/mixins",
+    "/tools",
+    "!demo",
+    "!test",
+    "/components/demo",
+    "!/components/demo/demo"
   ],
   "author": "D2L Corporation",
   "license": "Apache-2.0",
@@ -51,7 +51,7 @@
     "@webcomponents/shadycss": "latest",
     "@webcomponents/webcomponentsjs": "latest",
     "d2l-intl": "^2.0.0",
-    "intl-messageformat": "^3.0.0",
+    "intl-messageformat": "3.0.0",
     "lit-element": "latest",
     "resize-observer-polyfill": "^1.5.1"
   },
