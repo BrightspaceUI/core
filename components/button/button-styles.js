@@ -23,7 +23,6 @@ export const buttonStyles = css`
 		width: auto;
 	}
 	button:focus {
-		border-color: rgba(0, 111, 191, 0.4);
-		box-shadow: 0 0 0 4px rgba(0, 111, 191, 0.3);
+		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
 	}
 `;
