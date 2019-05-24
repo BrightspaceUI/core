@@ -100,10 +100,4 @@ export const labelStyles = css`
 		font-weight: 700;
 		letter-spacing: 0.2px;
 	}
-	@media (max-width: 615px) {
-		.d2l-label-text {
-			font-size: 0.6rem;
-			line-height: 0.9rem;
-		}
-	}
 `;
