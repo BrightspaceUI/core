@@ -166,11 +166,6 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 				line-height: 1.2rem;
 			}
 
-			.d2l-typography .d2l-label-text {
-				font-size: 0.6rem;
-				line-height: 0.9rem;
-			}
-
 		}
 	`;
 	document.head.appendChild(style);
