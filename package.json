@@ -19,6 +19,7 @@
     "test:travis": "polymer test --config-file wct.conf-travis.json"
   },
   "files": [
+    "/cli",
     "/components",
     "/helpers",
     "/mixins",
