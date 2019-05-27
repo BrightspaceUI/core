@@ -2,7 +2,7 @@ const fs = require('fs'),
 	path = require('path');
 
 const imagePath = path.join(__dirname, '../components/icons/images');
-const outputRoot = path.join(__dirname, '../.generated');
+const outputRoot = path.join(__dirname, '../generated');
 const outputPath = path.join(outputRoot, 'icons');
 
 function getSvgsInDir(dir) {

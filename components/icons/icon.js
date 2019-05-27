@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { loadSvg } from '../../.generated/icons/presetIconLoader.js';
+import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
