@@ -69,7 +69,7 @@ function createSvg(category, name) {
 
 	const data = fs.readFileSync(sourcePath);
 	const output = '// auto-generated\n' +
-		'export const val = `' + data + '`;';
+		'export const val = `' + data + '`;\n';
 
 	fs.writeFileSync(destPath, output);
 
@@ -91,13 +91,13 @@ function createLoader(categories) {
 	categories.forEach((category) => {
 		category.svgs.forEach((name) => {
 			template += `\t\tcase 'd2l-${category.name}:${name}':
-				return import('./${category.name}/${name}.js');\n`;
+			return import('./${category.name}/${name}.js');\n`;
 		});
 	});
 
 	template += '\t}\n' +
 		'\treturn undefined;\n' +
-		'}';
+		'}\n';
 	const filePath = path.join(outputPath, 'presetIconLoader.js');
 
 	fs.writeFileSync(filePath, template);
