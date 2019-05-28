@@ -1,14 +1,5 @@
 # Mixins
 
-## LocalizeMixin
-
-### Usage
-
-```js
-  import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
-
-```
-
 ## RtlMixin
 
 The `RtlMixin` creates `dir` attributes on host elements based on the document's `dir`, enabling components to define RTL styles for elements within their shadow-DOMs via `:host([dir="rtl"])`. It is possible to opt-out our this behavior by explicitly setting a `dir` attribute (ex. for testing).
