@@ -17,6 +17,14 @@ Coming soon!
 * [More/less](components/more-less/): constrain long bits of content
 * [Typography](components/typography/): typography styles and components
 
+## Helpers
+
+* [Helpers](helpers/): helpers for composed DOM, unique ids, etc.
+
+## Mixins
+
+* [Mixins](mixins/): mixins for localization, RTL styles, etc.
+
 ## Usage
 
 ### Structure
