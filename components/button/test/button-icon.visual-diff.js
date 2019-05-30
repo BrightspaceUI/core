@@ -73,6 +73,27 @@ describe('d2l-button-icon', function() {
 
 	});
 
+	describe('custom', function() {
+
+		it('normal', async function() {
+			const rect = await visualDiff.getRect(page, '#custom');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('hover', async function() {
+			await page.hover('#custom');
+			const rect = await visualDiff.getRect(page, '#custom');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focus', async function() {
+			await focus(page, '#custom');
+			const rect = await visualDiff.getRect(page, '#custom');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
 	const hover = (page, selector) => {
 		const p = page.evaluate((selector) => {
 			return new Promise((resolve) => {
