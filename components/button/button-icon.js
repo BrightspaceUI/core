@@ -23,6 +23,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				:host {
 					display: inline-block;
 					--d2l-button-icon-border-radius: 0.3rem;
+					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
@@ -38,6 +39,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 					border-radius: var(--d2l-button-icon-border-radius);
 					min-height: var(--d2l-button-icon-min-height);
 					min-width: var(--d2l-button-icon-min-width);
+					padding: 0;
 					position: relative;
 				}
 
@@ -62,6 +64,9 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				button:focus,
 				:host([active]) button {
 					background-color: var(--d2l-color-gypsum);
+				}
+				button:focus {
+					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 
 				.d2l-button-icon {

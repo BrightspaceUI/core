@@ -30,6 +30,12 @@
 			margin-top: 12px;
 			margin-left: 12px;
 		}
+		#custom {
+			--d2l-button-icon-min-height: 1.5rem;
+			--d2l-button-icon-min-width: 1.5rem;
+			--d2l-button-icon-border-radius: 4px;
+			--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #006fbf;
+		}
 	</style>
 </head>
 <body class="d2l-typography">
@@ -48,6 +54,9 @@
 		<div class="translucent-container" id="translucent-disabled">
 			<d2l-button-icon icon="d2l-tier1:gear" text="Icon Button" disabled translucent></d2l-button-icon>
 		</div>
+	</div>
+	<div class="visual-diff">
+		<d2l-button-icon id="custom" icon="d2l-tier1:gear" text="Icon Button"></d2l-button-icon>
 	</div>
 </body>
 </html>
