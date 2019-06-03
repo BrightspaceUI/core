@@ -141,7 +141,7 @@ class Icon extends RtlMixin(LitElement) {
 		const svg = elem.firstChild;
 		const paths = svg.querySelectorAll('path[fill]');
 		paths.forEach((path) => {
-			path.removeAttribute('fill');
+			if (path.getAttribute('fill') !== 'none') path.removeAttribute('fill');
 		});
 		svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 		svg.setAttribute('focusable', 'false');
