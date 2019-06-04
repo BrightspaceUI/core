@@ -33,12 +33,12 @@
 		</d2l-demo-page>
 
 		<script>
-			var id = setInterval(function() {
-				var buttons = document.querySelectorAll('d2l-button');
+			const id = setInterval(() => {
+				const buttons = document.querySelectorAll('d2l-button');
 				if (buttons.length === 4) {
 					clearInterval(id);
-					for (var i = 0; i < buttons.length; i++) {
-						buttons[i].addEventListener('click', function(e) {
+					for (let i = 0; i < buttons.length; i++) {
+						buttons[i].addEventListener('click', (e) => {
 							// eslint-disable-next-line no-console
 							console.log('Button Clicked', e);
 						});
