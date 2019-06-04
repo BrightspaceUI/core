@@ -1,7 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '../typography/styles.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 class MeterLinear extends LitElement  {
 	static get properties() {
@@ -56,8 +54,11 @@ class MeterLinear extends LitElement  {
 				color: var(--d2l-color-ferrite);
 				display: flex;
 				flex-direction: row;
-				justify-content: space-between;
 				margin: 0 6px;
+			}
+
+			.d2l-meter-linear-text-space-between {
+				justify-content: space-between;
 			}
 
 			.d2l-meter-linear-secondary {
@@ -75,25 +76,20 @@ class MeterLinear extends LitElement  {
 	}
 
 	render() {
-		const primaryTextId = getUniqueId();
-		const secondaryTextId = getUniqueId();
-
 		const percentage = this.max > 0 ? this.value / this.max * 100 : 0;
 		const primary = this.percent ? `${Math.floor(percentage)}%` : `${this.value}/${this.max}`;
 		const secondaryText = this._formatContext(this.text, this.value, this.max);
-		const secondaryTextElement = secondaryText ? html`<div id="${secondaryTextId}" class="d2l-meter-linear-secondary">${secondaryText}</div>` : html``;
+		const addSpace = !this.textInline && secondaryText !== this.text ? 'd2l-meter-linear-text-space-between' : '';
+		const secondaryTextElement = secondaryText ? html`<div class="d2l-meter-linear-secondary">${secondaryText}</div>` : html``;
 		return html `
 			<div
-				role="progressBar"
-				aria-valuenow="${this.value}"
-				aria-valuemax="${this.max}"
-				aria-valuetext="${ifDefined(secondaryText)}"
-				aria-describedby="${primaryTextId} ${secondaryTextId}">
+				role="img"
+				aria-label="${secondaryText}, ${primary}, progress indicator">
 				<div class="d2l-meter-linear-full-bar">
 					<div class="d2l-meter-linear-inner-bar" style="width:${percentage}%;"></div>
 				</div>
-				<div class="d2l-body-small d2l-meter-linear-text">
-					<div id="${primaryTextId}" class="d2l-meter-linear-primary">${primary}&nbsp;</div>
+				<div class="d2l-body-small d2l-meter-linear-text ${addSpace}">
+					<div class="d2l-meter-linear-primary">${primary}&nbsp;</div>
 					${secondaryTextElement}
 				</div>
 			</div>
