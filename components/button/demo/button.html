@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../button.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page title="d2l-button">
+			<h3>Button</h3>
+			<d2l-demo-snippet>
+				<d2l-button>Normal Button</d2l-button>
+			</d2l-demo-snippet>
+			<h3>Button (Primary)</h3>
+			<d2l-demo-snippet>
+				<d2l-button primary="">Primary Button</d2l-button>
+			</d2l-demo-snippet>
+			<h3>Button (Disabled)</h3>
+			<d2l-demo-snippet>
+				<d2l-button disabled="">Disabled Button</d2l-button>
+			</d2l-demo-snippet>
+			<h3>Button (Primary and Disabled)</h3>
+			<d2l-demo-snippet>
+				<d2l-button disabled="" primary="">Disabled Primary Button</d2l-button>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+
+		<script>
+			var id = setInterval(function() {
+				var buttons = document.querySelectorAll('d2l-button');
+				if (buttons.length === 4) {
+					clearInterval(id);
+					for (var i = 0; i < buttons.length; i++) {
+						buttons[i].addEventListener('click', function(e) {
+							// eslint-disable-next-line no-console
+							console.log('Button Clicked', e);
+						});
+					}
+				}
+			}, 50);
+		</script>
+	</body>
+</html>
