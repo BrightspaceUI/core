@@ -63,7 +63,7 @@ describe('d2l-button', function() {
 		});
 
 		it('disabled', async function() {
-			const rect = await visualDiff.getRect(page, '#primaryDisabled');
+			const rect = await visualDiff.getRect(page, '#primary-disabled');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

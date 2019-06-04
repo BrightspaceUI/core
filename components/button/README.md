@@ -12,7 +12,7 @@ The `d2l-button` element can be used just like the native button element, but al
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
 </script>
-<d2l-button text="My Button" icon="d2l-tier1:gear"></d2l-button>
+<d2l-button>My Button</d2l-button>
 ```
 
 ## d2l-button-subtle
