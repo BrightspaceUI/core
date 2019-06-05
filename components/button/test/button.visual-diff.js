@@ -17,59 +17,28 @@ describe('d2l-button', function() {
 
 	after(() => browser.close());
 
-	describe('normal', function() {
+	[
+		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},
+		{category: 'primary', tests: ['normal', 'hover', 'focus', 'primary-disabled']},
+	].forEach((entry) => {
+		describe(entry.category, () => {
+			entry.tests.forEach((name) => {
+				it(name, async function() {
+					if (name === 'hover') {
+						await page.hover(`#${entry.category}`);
+					} else if (name === 'focus') {
+						await focus(page, `#${entry.category}`);
+					}
 
-		it('normal', async function() {
-			const rect = await visualDiff.getRect(page, '#normal');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					const rectId = ( name.indexOf( 'disabled' ) !== -1 ) ? name : entry.category;
+					const rect = await visualDiff.getRect(page, `#${rectId}`);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+			});
 		});
-
-		it('hover', async function() {
-			await page.hover('#normal');
-			const rect = await visualDiff.getRect(page, '#normal');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('focus', async function() {
-			await focus(page, '#normal');
-			const rect = await visualDiff.getRect(page, '#normal');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('disabled', async function() {
-			const rect = await visualDiff.getRect(page, '#disabled');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
 	});
 
-	describe('primary', function() {
-
-		it('normal', async function() {
-			const rect = await visualDiff.getRect(page, '#primary');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('hover', async function() {
-			await page.hover('#primary');
-			const rect = await visualDiff.getRect(page, '#primary');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('focus', async function() {
-			await focus(page, '#primary');
-			const rect = await visualDiff.getRect(page, '#primary');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('disabled', async function() {
-			const rect = await visualDiff.getRect(page, '#primary-disabled');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-	});
-
-	const focus = async(page, selector) => {
+	const focus = (page, selector) => {
 		return page.evaluate((selector) => {
 			return new Promise((resolve) => {
 				const elem = document.querySelector(selector);

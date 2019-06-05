@@ -17,46 +17,26 @@ describe('d2l-button-subtle', function() {
 
 	after(() => browser.close());
 
-	it('normal', async function() {
-		const rect = await visualDiff.getRect(page, '#normal');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
+	[
+		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},
+		{category: 'icon', tests: ['with-icon', 'with-icon-rtl', 'icon-right', 'icon-right-rtl']},
 
-	it('hover', async function() {
-		await page.hover('#normal');
-		const rect = await visualDiff.getRect(page, '#normal');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
+	].forEach((entry) => {
+		describe(entry.category, () => {
+			entry.tests.forEach((name) => {
+				it(name, async function() {
+					if (name === 'hover') {
+						await page.hover(`#${entry.category}`);
+					} else if (name === 'focus') {
+						await focus(page, `#${entry.category}`);
+					}
 
-	it('focus', async function() {
-		await focus(page, '#normal');
-		const rect = await visualDiff.getRect(page, '#normal');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('disabled', async function() {
-		const rect = await visualDiff.getRect(page, '#disabled');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('with-icon', async function() {
-		const rect = await visualDiff.getRect(page, '#with-icon');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('with-icon-rtl', async function() {
-		const rect = await visualDiff.getRect(page, '#with-icon-rtl');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('icon-right', async function() {
-		const rect = await visualDiff.getRect(page, '#icon-right');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('icon-right-rtl', async function() {
-		const rect = await visualDiff.getRect(page, '#icon-right-rtl');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					const rectId = ( name.indexOf( 'disabled' ) !== -1 || name.indexOf( 'icon' ) !== -1 ) ? name : entry.category;
+					const rect = await visualDiff.getRect(page, `#${rectId}`);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+			});
+		});
 	});
 
 	const focus = async(page, selector) => {

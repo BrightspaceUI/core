@@ -23,23 +23,56 @@ describe('d2l-button-icon', function() {
 
 	[
 		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},
-		{category: 'primary', tests: ['normal', 'hover', 'focus', 'primary-disabled']},
+		{category: 'translucent-enabled', tests: ['normal', 'focus', 'hover', 'disabled']},
+		{category: 'custom', tests: ['normal', 'hover', 'focus']}
 	].forEach((entry) => {
 		describe(entry.category, () => {
 			entry.tests.forEach((name) => {
 				it(name, async function() {
+
 					if (name === 'hover') {
-						await page.hover(`#${entry.category}`);
+						if(entry.category === 'translucent-enabled') {
+							await hover(page, '#translucent-enabled > d2l-button-icon');
+						} else {
+							await page.hover(`#${entry.category}`);
+						}
 					} else if (name === 'focus') {
-						await focus(page, `#${entry.category}`);
+						if(entry.category === 'translucent-enabled') {
+							await focus(page, '#translucent-enabled > d2l-button-icon');
+						} else {
+							await focus(page, `#${entry.category}`);
+						}
 					}
 
-					const rectId = name.contains('disabled') ? name : entry.category;
+					const rectId = ( name.indexOf( 'disabled' ) !== -1 ) ? name : entry.category;
 					const rect = await visualDiff.getRect(page, `#${rectId}`);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 			});
 		});
 	});
+
+	const hover = (page, selector) => {
+		const p = page.evaluate((selector) => {
+			return new Promise((resolve) => {
+				const elem = document.querySelector(selector);
+				elem.shadowRoot.querySelector('button').addEventListener('transitionend', (e) => {
+					if (e.propertyName === 'background-color') resolve();
+				});
+			});
+		}, selector);
+		page.hover(selector);
+		return p;
+	};
+
+	const focus = (page, selector) => {
+		return page.evaluate((selector) => {
+			return new Promise((resolve) => {
+				const elem = document.querySelector(selector);
+				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
+				elem.focus();
+			});
+		}, selector);
+	};
 
 });
