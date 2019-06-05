@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 
 class MeterLinear extends LitElement  {
 	static get properties() {
@@ -79,7 +80,11 @@ class MeterLinear extends LitElement  {
 		const percentage = this.max > 0 ? this.value / this.max * 100 : 0;
 		const primary = this.percent ? `${Math.floor(percentage)}%` : `${this.value}/${this.max}`;
 		const secondaryText = this._formatContext(this.text, this.value, this.max);
-		const addSpace = !this.textInline && secondaryText !== this.text ? 'd2l-meter-linear-text-space-between' : '';
+		const textClasses =  {
+			'd2l-meter-linear-text-space-between': !this.textInline && secondaryText !== this.text,
+			'd2l-body-small': true,
+			'd2l-meter-linear-text': true
+		};
 		const secondaryTextElement = secondaryText ? html`<div class="d2l-meter-linear-secondary">${secondaryText}</div>` : html``;
 		return html `
 			<div
@@ -88,7 +93,7 @@ class MeterLinear extends LitElement  {
 				<div class="d2l-meter-linear-full-bar">
 					<div class="d2l-meter-linear-inner-bar" style="width:${percentage}%;"></div>
 				</div>
-				<div class="d2l-body-small d2l-meter-linear-text ${addSpace}">
+				<div class=${classMap(textClasses)}>
 					<div class="d2l-meter-linear-primary">${primary}&nbsp;</div>
 					${secondaryTextElement}
 				</div>
