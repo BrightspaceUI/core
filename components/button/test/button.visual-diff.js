@@ -30,7 +30,7 @@ describe('d2l-button', function() {
 						await focus(page, `#${entry.category}`);
 					}
 
-					const rectId = ( name.indexOf( 'disabled' ) !== -1 ) ? name : entry.category;
+					const rectId = (name.indexOf('disabled') !== -1) ? name : entry.category;
 					const rect = await visualDiff.getRect(page, `#${rectId}`);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});

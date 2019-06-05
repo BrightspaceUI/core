@@ -31,20 +31,20 @@ describe('d2l-button-icon', function() {
 				it(name, async function() {
 
 					if (name === 'hover') {
-						if(entry.category === 'translucent-enabled') {
+						if (entry.category === 'translucent-enabled') {
 							await hover(page, '#translucent-enabled > d2l-button-icon');
 						} else {
 							await page.hover(`#${entry.category}`);
 						}
 					} else if (name === 'focus') {
-						if(entry.category === 'translucent-enabled') {
+						if (entry.category === 'translucent-enabled') {
 							await focus(page, '#translucent-enabled > d2l-button-icon');
 						} else {
 							await focus(page, `#${entry.category}`);
 						}
 					}
 
-					const rectId = ( name.indexOf( 'disabled' ) !== -1 ) ? name : entry.category;
+					const rectId = (name.indexOf('disabled') !== -1) ? name : entry.category;
 					const rect = await visualDiff.getRect(page, `#${rectId}`);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
