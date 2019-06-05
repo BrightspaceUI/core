@@ -17,8 +17,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 			height: { type: String }, // The maximum height of the content when in "less" state.
 			inactive: { type: Boolean, reflect: true }, // Whether the component is active or inactive.
 			__blurBackground: { type: String },
-			__contentHeight: { type:String },
-			__langResources: { type: Object },
+			__contentHeight: { type: String },
 			__transitionAdded: { type: Boolean }
 		};
 	}
@@ -56,6 +55,19 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 
 		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
 		this.__transitionAdded = false;
+
+		this.height = '4em';
+		this.namespaceBase = 'more-less';
+
+		this.__baseHeight = 0;
+		this.__resizeObserver = null;
+		this.__content = null;
+		this.__contentSlot = null;
+		this.__autoExpanded = false;
+		this.__shift = false;
+		this.__bound_reactToChanges = null;
+		this.__bound_reactToMutationChanges = null;
+
 		this.__langResources = {
 			'ar': {
 				more: 'المزيد',
@@ -106,17 +118,6 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 				less: '較少'
 			}
 		};
-
-		this.height = '4em';
-
-		this.__baseHeight = 0;
-		this.__resizeObserver = null;
-		this.__content = null;
-		this.__contentSlot = null;
-		this.__autoExpanded = false;
-		this.__shift = false;
-		this.__bound_reactToChanges = null;
-		this.__bound_reactToMutationChanges = null;
 	}
 
 	firstUpdated() {
@@ -188,19 +189,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	async getLangResources(lang) {
-		const proto = this.constructor.prototype;
-		this.checkLocalizationCache(proto);
-
-		const namespace = `more-less:${lang}`;
-
-		if (proto.__localizationCache.requests[namespace]) {
-			return proto.__localizationCache.requests[namespace];
-		}
-
-		const result = this.__langResources[lang];
-
-		proto.__localizationCache.requests[namespace] = result;
-		return result;
+		return this.__langResources[lang];
 	}
 
 	__init_setBaseHeight() {
