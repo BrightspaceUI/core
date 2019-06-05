@@ -2,17 +2,6 @@ import d2lIntl from 'd2l-intl';
 import IntlMessageFormat from 'intl-messageformat/lib/index.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
-const assign =
-	Object.assign ? Object.assign.bind(Object) : function(destination, source) {
-		for (const prop in source) {
-			if (source.hasOwnProperty(prop)) {
-				destination[prop] = source[prop];
-			}
-		}
-
-		return destination;
-	};
-
 export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
