@@ -21,77 +21,35 @@ describe('d2l-button-icon', function() {
 
 	after(() => browser.close());
 
-	describe('normal', function() {
+	[
+		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},
+		{category: 'translucent-enabled', tests: ['normal', 'focus', 'hover', 'disabled']},
+		{category: 'custom', tests: ['normal', 'hover', 'focus']}
+	].forEach((entry) => {
+		describe(entry.category, () => {
+			entry.tests.forEach((name) => {
+				it(name, async function() {
 
-		it('normal', async function() {
-			const rect = await visualDiff.getRect(page, '#normal');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					if (name === 'hover') {
+						if (entry.category === 'translucent-enabled') {
+							await hover(page, '#translucent-enabled > d2l-button-icon');
+						} else {
+							await page.hover(`#${entry.category}`);
+						}
+					} else if (name === 'focus') {
+						if (entry.category === 'translucent-enabled') {
+							await focus(page, '#translucent-enabled > d2l-button-icon');
+						} else {
+							await focus(page, `#${entry.category}`);
+						}
+					}
+
+					const rectId = (name.indexOf('disabled') !== -1) ? name : entry.category;
+					const rect = await visualDiff.getRect(page, `#${rectId}`);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+			});
 		});
-
-		it('hover', async function() {
-			await page.hover('#normal');
-			const rect = await visualDiff.getRect(page, '#normal');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('focus', async function() {
-			await focus(page, '#normal');
-			const rect = await visualDiff.getRect(page, '#normal');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('disabled', async function() {
-			const rect = await visualDiff.getRect(page, '#disabled');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-	});
-
-	describe('translucent', function() {
-
-		it('normal', async function() {
-			const rect = await visualDiff.getRect(page, '#translucent-enabled');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('focus', async function() {
-			await focus(page, '#translucent-enabled > d2l-button-icon');
-			const rect = await visualDiff.getRect(page, '#translucent-enabled');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('hover', async function() {
-			await hover(page, '#translucent-enabled > d2l-button-icon');
-			const rect = await visualDiff.getRect(page, '#translucent-enabled');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('disabled', async function() {
-			const rect = await visualDiff.getRect(page, '#translucent-disabled');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-	});
-
-	describe('custom', function() {
-
-		it('normal', async function() {
-			const rect = await visualDiff.getRect(page, '#custom');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('hover', async function() {
-			await page.hover('#custom');
-			const rect = await visualDiff.getRect(page, '#custom');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('focus', async function() {
-			await focus(page, '#custom');
-			const rect = await visualDiff.getRect(page, '#custom');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
 	});
 
 	const hover = (page, selector) => {
