@@ -43,7 +43,6 @@
     "eslint-plugin-lit": "latest",
     "mocha": "^5.0.0",
     "polymer-cli": "latest",
-    "prismjs": "latest",
     "puppeteer": "latest",
     "wct-mocha": "^1.0.0",
     "whatwg-fetch": "^3.0.0"
@@ -54,6 +53,7 @@
     "d2l-intl": "^2.0.0",
     "intl-messageformat": "^4.0.0",
     "lit-element": "latest",
+    "prismjs": "latest",
     "resize-observer-polyfill": "^1.5.1"
   },
   "greenkeeper": {
