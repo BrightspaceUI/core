@@ -32,19 +32,5 @@
 			</d2l-demo-snippet>
 		</d2l-demo-page>
 
-		<script>
-			const id = setInterval(() => {
-				const buttons = document.querySelectorAll('d2l-button');
-				if (buttons.length === 4) {
-					clearInterval(id);
-					for (let i = 0; i < buttons.length; i++) {
-						buttons[i].addEventListener('click', (e) => {
-							// eslint-disable-next-line no-console
-							console.log('Button Clicked', e);
-						});
-					}
-				}
-			}, 50);
-		</script>
 	</body>
 </html>
