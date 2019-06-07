@@ -31,31 +31,37 @@ class MeterLinear extends LitElement  {
 				flex-direction: row;
 			}
 
-			.d2l-meter-linear-full-bar, .d2l-meter-linear-inner-bar {
+			:host([text-inline]) .d2l-meter-linear-full-bar  {
+				margin-bottom: 0;
+				margin-right: 9px;
+			}
+
+			.d2l-meter-linear-full-bar,
+			.d2l-meter-linear-inner-bar {
 				border-radius: 32px;
 				flex-grow: 1;
 				flex-shrink: 1;
 				height: 9px;
-				position: relative;
 			}
 
 			.d2l-meter-linear-full-bar {
+				position: relative;
 				background-color: var(--d2l-color-gypsum);
-				margin: 0 6px;
+				margin-bottom: 9px;
 			}
 
 			.d2l-meter-linear-inner-bar {
-				background-color: var(--d2l-color-celestine);
-				left: 0;
 				position: absolute;
+				left: 0;
 				top: 0;
+				background-color: var(--d2l-color-celestine);
 			}
 
 			.d2l-meter-linear-text {
 				color: var(--d2l-color-ferrite);
 				display: flex;
 				flex-direction: row;
-				margin: 0 6px;
+				line-height: 1em;
 			}
 
 			.d2l-meter-linear-text-space-between {
