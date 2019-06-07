@@ -57,7 +57,6 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		this.__transitionAdded = false;
 
 		this.height = '4em';
-		this.namespaceBase = 'more-less';
 
 		this.__baseHeight = 0;
 		this.__resizeObserver = null;
@@ -67,57 +66,6 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		this.__shift = false;
 		this.__bound_reactToChanges = null;
 		this.__bound_reactToMutationChanges = null;
-
-		this.__langResources = {
-			'ar': {
-				more: 'المزيد',
-				less: 'أقل'
-			},
-			'en': {
-				more: 'more',
-				less: 'less'
-			},
-			'es': {
-				more: 'más',
-				less: 'menos'
-			},
-			'fr': {
-				more: 'plus',
-				less: 'moins'
-			},
-			'ja': {
-				more: 'より多い',
-				less: 'より少ない'
-			},
-			'ko': {
-				more: '더 보기',
-				less: '축소'
-			},
-			'nl': {
-				more: 'meer',
-				less: 'minder'
-			},
-			'pt': {
-				more: 'mais',
-				less: 'menos'
-			},
-			'sv': {
-				more: 'mer',
-				less: 'mindre'
-			},
-			'tr': {
-				more: 'diğer',
-				less: 'daha az'
-			},
-			'zh': {
-				more: '更多',
-				less: '更少'
-			},
-			'zh-tw': {
-				more: '較多',
-				less: '較少'
-			}
-		};
 	}
 
 	firstUpdated() {
@@ -178,18 +126,67 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		`;
 	}
 
-	getLanguage(langs) {
+	async getLocalizeResources(langs) {
+		const langResources = {
+			'ar': {
+				more: 'المزيد',
+				less: 'أقل'
+			},
+			'en': {
+				more: 'more',
+				less: 'less'
+			},
+			'es': {
+				more: 'más',
+				less: 'menos'
+			},
+			'fr': {
+				more: 'plus',
+				less: 'moins'
+			},
+			'ja': {
+				more: 'より多い',
+				less: 'より少ない'
+			},
+			'ko': {
+				more: '더 보기',
+				less: '축소'
+			},
+			'nl': {
+				more: 'meer',
+				less: 'minder'
+			},
+			'pt': {
+				more: 'mais',
+				less: 'menos'
+			},
+			'sv': {
+				more: 'mer',
+				less: 'mindre'
+			},
+			'tr': {
+				more: 'diğer',
+				less: 'daha az'
+			},
+			'zh': {
+				more: '更多',
+				less: '更少'
+			},
+			'zh-tw': {
+				more: '較多',
+				less: '較少'
+			}
+		};
+
 		for (let i = 0; i < langs.length; i++) {
-			if (this.__langResources[langs[i]]) {
-				return langs[i];
+			if (langResources[langs[i]]) {
+				return {
+					[langs[i]]: langResources[langs[i]]
+				};
 			}
 		}
 
 		return null;
-	}
-
-	async getLangResources(lang) {
-		return this.__langResources[lang];
 	}
 
 	__init_setBaseHeight() {

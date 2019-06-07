@@ -6,11 +6,11 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			namespaceBase: { type: String },
 			__documentLanguage: { type: String },
 			__documentLanguageFallback: { type: String },
 			__language: { type: String },
 			__overrides: { type: Object },
+			__resources: { type: Object },
 			__timezoneObject: { type: Object },
 			__timezone: { type: String }
 		};
@@ -37,30 +37,16 @@ export const LocalizeMixin = superclass => class extends superclass {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
 				const possibleLanguages = this._generatePossibleLanguages(this.__documentLanguage, this.__documentLanguageFallback);
-				this.__language = this.getLanguage(possibleLanguages);
-			} else if (propName === '__language') {
-				this._languageChange();
 
-				// Everytime language or resources change, invalidate the messages cache.
-				const proto = this.constructor.prototype;
-				this._initLocalizationCache(proto);
-				proto.__localizationCache.messages = {};
-
-				this.__namespace = `${this.__namespaceBase}:${this.__language}`;
-				const hasResources = this._checkLocalizationCache(proto, this.__namespace);
-
-				if (hasResources) {
-					this.requestUpdate();
-				} else {
-					this.getLangResources(this.__language)
-						.then((res) => {
-							if (!res) {
-								return;
-							}
-							proto.__localizationCache.resources[this.__namespace] = res;
-							this.requestUpdate();
-						});
-				}
+				this.getLocalizeResources(possibleLanguages)
+					.then((res) => {
+						if (!res) {
+							return;
+						}
+						this.__language = Object.keys(res)[0];
+						this.__resources = {};
+						this.__resources[this.__language] = res[this.__language];
+					});
 			} else if (propName === '__timezoneObject') {
 				this._timezoneChange();
 			}
@@ -68,7 +54,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	localize(key) {
-		return this._computeLocalize(this.__language, this.__namespace, key);
+		return this._computeLocalize(this.__language, this.__resources, key);
 	}
 
 	getTimezone() {
@@ -179,25 +165,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 		return langs;
 	}
 
-	_initLocalizationCache(proto) {
-		// do nothing if proto is undefined.
-		if (proto === undefined)
-			return;
-
-		// In the event proto not have __localizationCache object, create it.
-		if (proto['__localizationCache'] === undefined) {
-			proto['__localizationCache'] = {messages: {}, resources: {}};
-		}
-	}
-
-	_checkLocalizationCache(proto) {
-		if (proto.__localizationCache.resources[this.__namespace]) {
-			return true;
-		}
-
-		return false;
-	}
-
 	_computeTimezone() {
 		return this.__timezoneObject && this.__timezoneObject.name;
 	}
@@ -214,30 +181,16 @@ export const LocalizeMixin = superclass => class extends superclass {
 		));
 	}
 
-	_computeLocalize(language, namespace, key) {
-		const proto = this.constructor.prototype;
-		this._initLocalizationCache(proto);
-
-		const resources = proto.__localizationCache.resources[namespace];
-
-		if (!key || !resources || !language)
+	_computeLocalize(language, resources, key) {
+		if (!key || !resources || !language || !resources[language])
 			return;
 
-		// Cache the key/value pairs for the same language, so that we don't
-		// do extra work if we're just reusing strings across an application.
-		const translatedValue = resources[key];
+		const translatedValue = resources[language][key];
 		if (!translatedValue) {
 			return '';
 		}
 
-		const messageKey = key + translatedValue;
-		let translatedMessage = proto.__localizationCache.messages[messageKey];
-
-		if (!translatedMessage) {
-			translatedMessage =
-					new IntlMessageFormat(translatedValue, language);
-			proto.__localizationCache.messages[messageKey] = translatedMessage;
-		}
+		const translatedMessage = new IntlMessageFormat(translatedValue, language);
 
 		const args = {};
 		for (let i = 1; i < arguments.length; i += 2) {
