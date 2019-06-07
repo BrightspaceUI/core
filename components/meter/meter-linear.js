@@ -33,21 +33,21 @@ class MeterLinear extends LitElement  {
 
 			:host([text-inline]) .d2l-meter-linear-full-bar  {
 				margin-bottom: 0;
-				margin-right: 9px;
+				margin-right: .45rem;
 			}
 
 			.d2l-meter-linear-full-bar,
 			.d2l-meter-linear-inner-bar {
-				border-radius: 32px;
+				border-radius: .225rem;
 				flex-grow: 1;
 				flex-shrink: 1;
-				height: 9px;
+				height: .45rem;
 			}
 
 			.d2l-meter-linear-full-bar {
 				position: relative;
 				background-color: var(--d2l-color-gypsum);
-				margin-bottom: 9px;
+				margin-bottom: 0.45rem;
 			}
 
 			.d2l-meter-linear-inner-bar {
