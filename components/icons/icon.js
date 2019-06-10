@@ -100,12 +100,6 @@ class Icon extends RtlMixin(LitElement) {
 		super.attributeChangedCallback(name, oldval, newval);
 	}
 
-	shouldUpdate(changedProperties) {
-		const shouldUpdate = changedProperties.has('_svg')
-			|| changedProperties.has('_imgSrc');
-		return shouldUpdate;
-	}
-
 	render() {
 		if (this._svg) {
 			return this._svg;
