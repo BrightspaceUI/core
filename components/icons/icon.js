@@ -25,11 +25,6 @@ class Icon extends RtlMixin(LitElement) {
 		};
 	}
 
-	constructor() {
-		super();
-		this.size = 'tier1';
-	}
-
 	static get styles() {
 		return css`
 			:host {
