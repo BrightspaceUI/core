@@ -53,6 +53,7 @@
     "d2l-intl": "^2.0.0",
     "intl-messageformat": "^4.0.0",
     "lit-element": "latest",
+    "lit-media-query": "^1.0.7",
     "prismjs": "latest",
     "resize-observer-polyfill": "^1.5.1"
   },
