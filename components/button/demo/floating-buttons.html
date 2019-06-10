@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../button.js';
+			import '../floating-buttons.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page title="d2l-floating-buttons">
+			<h2>Floating Buttons</h2>
+
+			<d2l-button id="btn-remove-floating">Remove Floating Buttons</d2l-button>
+			<d2l-button id="btn-append-floating">Append Floating Buttons</d2l-button>
+			<d2l-button id="btn-append-new">Append New Button</d2l-button>
+			<d2l-button id="btn-remove-last">Remove Last Button</d2l-button>
+			<d2l-button id="btn-insert-content-above">Insert Content</d2l-button>
+			<d2l-button id="btn-remove-content-above">Remove Content</d2l-button>
+
+			<d2l-demo-snippet>
+				<div class="content">
+					<p>I love beer!</p>
+				</div>
+				<d2l-floating-buttons id="wc-buttons">
+					<d2l-button id="btn-make-more">Make more Beer!</d2l-button>
+				</d2l-floating-buttons>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+		<script type="module">
+			let page_buttonCount = 0;
+			let page_floatingButtons;
+			function appendButton() {
+				const floatingButtons = document.getElementById('wc-buttons');
+				if (floatingButtons) {
+					page_buttonCount += 1;
+					const newButton = document.createElement('button');
+					newButton.textContent = `Beer ${page_buttonCount}`;
+					floatingButtons.appendChild(newButton);
+				}
+			}
+			window.requestAnimationFrame(() => {
+				document.getElementById('btn-append-floating').addEventListener('click', () => {
+					if (page_floatingButtons) {
+						document.body.appendChild(page_floatingButtons);
+					}
+				});
+
+				document.getElementById('btn-remove-floating').addEventListener('click', () => {
+					const floatingButtons = document.getElementById('wc-buttons');
+					if (floatingButtons) {
+						page_floatingButtons = floatingButtons;
+						floatingButtons.parentNode.removeChild(floatingButtons);
+					}
+				});
+
+				document.getElementById('btn-append-new').addEventListener('click', appendButton);
+				document.getElementById('btn-remove-last').addEventListener('click', () => {
+					const floatingButtons = document.getElementById('wc-buttons');
+					if (floatingButtons.lastChild) {
+						floatingButtons.removeChild(
+							floatingButtons.lastChild
+						);
+					}
+				});
+
+				document.getElementById('btn-insert-content-above').addEventListener('click', () => {
+					const newContent = document.createElement('p');
+					newContent.textContent = 'I love beer!';
+					document.body.querySelector('.content').appendChild(newContent);
+				});
+
+				document.getElementById('btn-remove-content-above').addEventListener('click', () => {
+					const content = document.body.querySelector('.content');
+					if (content.lastChild) {
+						content.removeChild(content.lastChild);
+					}
+				});
+
+				document.getElementById('btn-make-more').addEventListener('click', () => {
+					appendButton();
+				});
+
+			});
+		</script>
+	</body>
+</html>

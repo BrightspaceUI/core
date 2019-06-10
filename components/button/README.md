@@ -60,3 +60,21 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 * `icon` (required): Icon for the button (ex. `d2l-tier1:gear`)
 * `h-align` (optional): `text` aligns the leading edge of text
 * `translucent` (optional): Indicates to display translucent (ex. on rich backgrounds)
+
+## d2l-floating-button
+
+Floating workflow buttons behavior can be added by using the `<d2l-floating-buttons>` custom element. When the normal position of the workflow buttons is below the bottom edge of the view-port, they'll dock at the bottom edge. When the normal position becomes visible, they'll undock.
+
+![Icon Button](./screenshots/floating-buttons.png?raw=true)
+
+### Usage
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/floating-button.js';
+</script>
+<d2l-floating-buttons>
+	<d2l-button primary>Save</d2l-button>
+	<d2l-button>Cancel</d2l-button>
+</d2l-floating-buttons>
+```

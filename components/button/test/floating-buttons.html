@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>d2l-floating-buttons basic tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../button.js"></script>
+		<script type="module" src="../floating-buttons.js"></script>
+	</head>
+	<body>
+		<test-fixture id="floating-buttons-fixture">
+			<template>
+				<d2l-floating-buttons>
+					<d2l-button id="btn-make-more">Make more Beer, on a phone!</d2l-button>
+				</d2l-floating-buttons>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+			const isMobileHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) <= 500;
+
+			describe('d2l-floating-buttons', () => {
+				let floatingButtons;
+
+				describe('floating-buttons-fixture', () => {
+
+					beforeEach(async() => {
+						floatingButtons = fixture('floating-buttons-fixture');
+						await floatingButtons.updateComplete;
+					});
+
+					it('should pass all axe tests', async() => {
+						await runAxe(floatingButtons);
+					});
+
+					it('does not float buttons above fold', () => {
+						expect(floatingButtons.isFloating()).to.be.false;
+					});
+
+					it('floats when buttons move below the fold and not mobile', () => {
+
+						const content = document.createElement('div');
+						floatingButtons.parentNode.insertBefore(content, floatingButtons);
+
+						content.style.height = '10000px';
+						floatingButtons._reposition();
+
+						expect(floatingButtons.isFloating()).to.equal(!isMobileHeight);
+
+					});
+
+					it('does not float when buttons move above the fold', () => {
+
+						const content = document.createElement('div');
+						floatingButtons.parentNode.insertBefore(content, floatingButtons);
+
+						content.style.height = '10000px';
+						floatingButtons._reposition();
+
+						content.style.height = '100px';
+						floatingButtons._reposition();
+
+						expect(floatingButtons.isFloating()).to.be.false;
+
+					});
+
+					it('repositions as a result of resize event and not mobile', () => {
+
+						const content = document.createElement('div');
+						floatingButtons.parentNode.insertBefore(content, floatingButtons);
+
+						content.style.height = '10000px';
+						window.dispatchEvent(new Event('resize'));
+
+						expect(floatingButtons.isFloating()).to.equal(!isMobileHeight);
+
+					});
+
+					it('repositions as a result of scroll event and not mobile', () => {
+
+						const content = document.createElement('div');
+						floatingButtons.parentNode.insertBefore(content, floatingButtons);
+
+						content.style.height = '10000px';
+						window.dispatchEvent(new Event('scroll'));
+
+						expect(floatingButtons.isFloating()).to.equal(!isMobileHeight);
+
+					});
+
+					it('distributes its children', () => {
+						const buttons = floatingButtons.children;
+						expect(buttons.length).to.equal(1);
+						expect(buttons[0]).to.equal(floatingButtons.querySelector('d2l-button'));
+					});
+
+					it('does not float when min height is smaller than viewport', () => {
+						const content = document.createElement('div');
+						floatingButtons.setAttribute('min-height', '10px');
+						floatingButtons.parentNode.insertBefore(content, floatingButtons);
+
+						expect(floatingButtons.isFloating()).to.be.false;
+						floatingButtons.setAttribute('min-height', '500px');
+					});
+
+					it('floats if buttons are above fold when always-float is set to true', () => {
+						floatingButtons.setAttribute('always-float', 'true');
+						window.dispatchEvent(new Event('resize'));
+						expect(floatingButtons.isFloating()).to.be.true;
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../button.js';
+			import '../floating-buttons.js';
+		</script>
+		<title>floating-buttons-fixture</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div class="visual-diff">
+			<test-fixture id="floating-buttons-fixture">
+				<d2l-floating-buttons>
+					<d2l-button id="normal">Make more Beer, on a phone!</d2l-button>
+				</d2l-floating-buttons>
+			</test-fixture>
+		</div>
+	</body>
+</html>
