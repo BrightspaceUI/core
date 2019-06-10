@@ -81,6 +81,27 @@ class Icon extends RtlMixin(LitElement) {
 		`;
 	}
 
+	set icon(val) {
+		this._icon = val;
+		this.setAttribute('icon', this._icon);
+	}
+
+	get icon() { return this._icon; }
+
+	set size(val) {
+		this._size = val;
+		this.setAttribute('size', this._size);
+	}
+
+	get size() { return this._size; }
+
+	set src(val) {
+		this._src = val;
+		this.setAttribute('src', this._src);
+	}
+
+	get src() { return this._src; }
+
 	attributeChangedCallback(name, oldval, newval) {
 		if (name === 'icon') {
 			this._fetchSvg(newval);
