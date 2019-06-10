@@ -21,6 +21,7 @@
   "files": [
     "/cli",
     "/components",
+    "/directives",
     "/helpers",
     "/mixins",
     "/tools",
