@@ -5,15 +5,6 @@ import { buttonStyles } from './button-styles.js';
 import { labelStyles } from '../typography/styles.js';
 
 class FloatingButtons extends ButtonMixin(LitElement) {
-
-	constructor() {
-		super();
-		this._container = null;
-		this._isRTL = false;
-		this._spacer = null;
-		this.minHeight = '500px';
-	}
-
 	static get properties() {
 		return {
 			/**
@@ -33,7 +24,7 @@ class FloatingButtons extends ButtonMixin(LitElement) {
 			minHeight: {
 				reflect: true,
 				type: String,
-				attribute: 'minheight'
+				attribute: 'min-height'
 			},
 
 			_viewportIsAtLeastMinHeight: {
@@ -41,104 +32,6 @@ class FloatingButtons extends ButtonMixin(LitElement) {
 				type: Boolean
 			}
 		};
-	}
-
-	firstUpdated() {
-		this._reposition = this._reposition.bind(this);
-		this.updateComplete.then(() => {
-
-			this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
-			this._spacer = this.shadowRoot.querySelector('.d2l-floating-buttons-spacer');
-
-			window.addEventListener('resize', this._reposition);
-			window.addEventListener('scroll', this._reposition);
-
-			this._isRTL = (getComputedStyle(this._container).direction === 'rtl');
-			this.updateComplete.then(() => {
-				this._reposition();
-				let prevDocumentHeight = document.body.offsetHeight;
-				setInterval(() => {
-					const documentHeight = document.body.offsetHeight;
-					if (prevDocumentHeight !== documentHeight) {
-						this._reposition();
-					}
-					prevDocumentHeight = documentHeight;
-				}, 100);
-			});
-		});
-	}
-
-	disconnectedCallback() {
-		window.removeEventListener('resize', this._reposition);
-		window.removeEventListener('scroll', this._reposition);
-	}
-
-	/**
-	 * Whether or not the buttons are floating.
-	 */
-	isFloating() {
-		return this._container.classList.contains('d2l-floating-buttons-floating');
-	}
-
-	_reposition() {
-		const containerRect = this._container.getBoundingClientRect();
-		this._spacer.style.height = `${containerRect.height}px`;
-
-		const spacerRect = this._spacer.getBoundingClientRect();
-
-		let containerTop;
-		const bodyScrollTop = document.body.scrollTop;
-		const isFloating = this._container.classList.contains('d2l-floating-buttons-floating');
-
-		if (isFloating) {
-			containerTop = spacerRect.top + bodyScrollTop;
-		} else {
-			containerTop = containerRect.top + bodyScrollTop;
-		}
-
-		const viewBottom = bodyScrollTop + window.innerHeight;
-		const innerContainer = this._container.querySelector('div');
-
-		if (!this.alwaysFloat &&
-			(this._viewportIsAtLeastMinHeight || ((containerTop + containerRect.height) <= viewBottom))) {
-
-			if (!isFloating) {
-				return;
-			}
-
-			this._container.classList.remove('d2l-floating-buttons-floating');
-			if (!this._isRTL) {
-				innerContainer.style.left = `${0}px`;
-			} else {
-				innerContainer.style.right = `${0}px`;
-			}
-
-			this._spacer.style.display = 'none';
-			innerContainer.style.width = 'auto';
-
-		} else {
-
-			this._container.classList.add('d2l-floating-buttons-floating');
-			this._spacer.style.display = 'block';
-
-			const updateWithRect = isFloating ? spacerRect : containerRect;
-			if (!this._isRTL) {
-				if (Math.abs(innerContainer.style.left.replace('px', '') - updateWithRect.left) > 1) {
-					innerContainer.style.left = `${updateWithRect.left}px`;
-				}
-			} else {
-				if (Math.abs(innerContainer.style.right.replace('px', '') - updateWithRect.left) > 1) {
-					innerContainer.style.right = `${updateWithRect.left}px`;
-				}
-			}
-			if (Math.abs(innerContainer.style.width.replace('px', '') - updateWithRect.width) > 1) {
-				innerContainer.style.width = `${updateWithRect.width}px`;
-			}
-		}
-	}
-
-	_handleMediaQuery(event) {
-		this._viewportIsAtLeastMinHeight = event.detail.value;
 	}
 
 	static get styles() {
@@ -218,6 +111,20 @@ class FloatingButtons extends ButtonMixin(LitElement) {
 		];
 	}
 
+	constructor() {
+		super();
+		this._container = null;
+		this._isRTL = false;
+		this._spacer = null;
+		this.minHeight = '500px';
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('resize', this._reposition);
+		window.removeEventListener('scroll', this._reposition);
+	}
+
 	render() {
 		return html`
 			<lit-media-query
@@ -231,6 +138,99 @@ class FloatingButtons extends ButtonMixin(LitElement) {
 			</div>
 			<div class="d2l-floating-buttons-spacer"></div>
 		`;
+	}
+
+	firstUpdated() {
+		this._reposition = this._reposition.bind(this);
+		this.updateComplete.then(() => {
+
+			this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
+			this._spacer = this.shadowRoot.querySelector('.d2l-floating-buttons-spacer');
+
+			window.addEventListener('resize', this._reposition);
+			window.addEventListener('scroll', this._reposition);
+
+			this._isRTL = (getComputedStyle(this._container).direction === 'rtl');
+			this.updateComplete.then(() => {
+				this._reposition();
+				let prevDocumentHeight = document.body.offsetHeight;
+				setInterval(() => {
+					const documentHeight = document.body.offsetHeight;
+					if (prevDocumentHeight !== documentHeight) {
+						this._reposition();
+					}
+					prevDocumentHeight = documentHeight;
+				}, 100);
+			});
+		});
+	}
+
+	/**
+	 * Whether or not the buttons are floating.
+	 */
+	isFloating() {
+		return this._container.classList.contains('d2l-floating-buttons-floating');
+	}
+
+	_reposition() {
+		const containerRect = this._container.getBoundingClientRect();
+		this._spacer.style.height = `${containerRect.height}px`;
+
+		const spacerRect = this._spacer.getBoundingClientRect();
+
+		let containerTop;
+		const bodyScrollTop = document.body.scrollTop;
+		const isFloating = this._container.classList.contains('d2l-floating-buttons-floating');
+
+		if (isFloating) {
+			containerTop = spacerRect.top + bodyScrollTop;
+		} else {
+			containerTop = containerRect.top + bodyScrollTop;
+		}
+
+		const viewBottom = bodyScrollTop + window.innerHeight;
+		const innerContainer = this._container.querySelector('div');
+
+		if (!this.alwaysFloat &&
+			(this._viewportIsAtLeastMinHeight || ((containerTop + containerRect.height) <= viewBottom))) {
+
+			if (!isFloating) {
+				return;
+			}
+
+			this._container.classList.remove('d2l-floating-buttons-floating');
+			if (!this._isRTL) {
+				innerContainer.style.left = `${0}px`;
+			} else {
+				innerContainer.style.right = `${0}px`;
+			}
+
+			this._spacer.style.display = 'none';
+			innerContainer.style.width = 'auto';
+
+		} else {
+
+			this._container.classList.add('d2l-floating-buttons-floating');
+			this._spacer.style.display = 'block';
+
+			const updateWithRect = isFloating ? spacerRect : containerRect;
+			if (!this._isRTL) {
+				if (Math.abs(innerContainer.style.left.replace('px', '') - updateWithRect.left) > 1) {
+					innerContainer.style.left = `${updateWithRect.left}px`;
+				}
+			} else {
+				if (Math.abs(innerContainer.style.right.replace('px', '') - updateWithRect.left) > 1) {
+					innerContainer.style.right = `${updateWithRect.left}px`;
+				}
+			}
+			if (Math.abs(innerContainer.style.width.replace('px', '') - updateWithRect.width) > 1) {
+				innerContainer.style.width = `${updateWithRect.width}px`;
+			}
+		}
+	}
+
+	_handleMediaQuery(event) {
+		this._viewportIsAtLeastMinHeight = event.detail.value;
 	}
 }
 customElements.define('d2l-floating-buttons', FloatingButtons);
