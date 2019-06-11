@@ -8,9 +8,16 @@ The user's language, timezone and any D2L locale overrides are automatically fet
 
 ## Usage
 
-To use `LocalizeMixin`, apply the mixin then define the namespace base (e.g., `my-component`) in the `constructor()` and implement the following functions (examples in "Language Resources"):
-* `getLanguage(langs)`: returns the page's language based upon `langs`, an array of possible languages determined by `LocalizeMixin` (e.g., `['ar-dz', 'ar', 'en']`)
-* `async getLangResources(lang)`: retrieves the available language resources for `lang`
+To use `LocalizeMixin` implement the following within your component (examples in "Language Resources"):
+* `static async getLocalizeResources(langs)`:
+	* `langs`: array of possible languages based upon `__documentLanguage` and `__documentLanguageFallback`. For example `['ar-dz', 'ar', 'en-us', 'en']`
+	* Returns object containing `language` (the first language in the array that had resources available) and `resources` (the localization resources for that language). For example:
+		```
+		{
+			"language":"ar",
+			"resources":{"more":"المزيد","less":"أقل"}
+		}
+		```
 
 Consume your web component in a page which has the lang attribute set on the <html> element:
 ```html
@@ -36,18 +43,14 @@ If the language of the page changes (via an update to the `lang` attribute on `<
 
 ### Resources in an Object Example
 
-In this example the language resources for `ar` and `en` are stored in the `__langResources` object.
+In this example the language resources for `ar` and `en` are stored in the `langResources` const within `getLocalizeResources`.
 
 ```javascript
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 class MyComponent extends LocalizeMixin(LitElement) {
 
-	constructor() {
-		super();
-
-		this.namespaceBase = 'my-component';
-
-		this.__langResources = {
+	static async getLocalizeResources(langs) {
+		const langResources = {
 			'ar': {
 				more: 'المزيد',
 				less: 'أقل'
@@ -57,24 +60,17 @@ class MyComponent extends LocalizeMixin(LitElement) {
 				less: 'less'
 			}
 		};
-	}
 
-	/*
-	* Gets the current language based upon resources in __langResources
-	* Checks each language in `langs` (e.g., ['ar-dz', 'ar', 'en']) and returns the first language with resources
-	*/
-	getLanguage(langs) {
 		for (let i = 0; i < langs.length; i++) {
-			if (this.__langResources[langs[i]]) {
-				return langs[i];
+			if (langResources[langs[i]]) {
+				return {
+					language: langs[i],
+					resources: langResources[langs[i]]
+				};
 			}
 		}
 
 		return null;
-	}
-
-	async getLangResources(lang) {
-		return this.__langResources[lang];
 	}
 
 	render() {
@@ -99,43 +95,31 @@ component:
 ```javascript
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 class MyComponent extends LocalizeMixin(LitElement) {
-
-	constructor() {
-		super();
-
-		this.namespaceBase = 'my-component';
-	}
-
 	/*
-	 * Gets the current language based upon locales that there are files for, specified here in the locales array.
-	 * Checks each language in langs (e.g., ['ar-dz', 'ar', 'en']) and returns the first language with resources
-	*/
-	getLanguage(langs) {
-		const locales = ['en', 'ar']; // the locales that there are language resource files for
-		for (let i = 0; i < langs.length; i++) {
-			if (locales.indexOf(langs[i]) !== -1) {
-				return langs[i];
-			}
-		}
-
-		return null;
-	}
-
-	/*
-	* Retrieves the language resources for lang from a file.
+	* Retrieves the localization resources for language from a file.
 	* Note that using "translations = await import(`./locales/${lang}.js`);)" does not work
 	*/
-	async getLangResources(lang) {
-		let translations;
-		switch (lang) {
-			case 'en':
-				translations = await import('./locales/en.js');
-				break;
-			case 'ar':
-				translations = await import('./locales/ar.js');
-				break;
+	static async getLocalizeResources(langs) {
+		for await (const lang of langs) {
+			let translations;
+			switch (lang) {
+				case 'en':
+					translations = await import('./locales/en.js');
+					break;
+				case 'ar':
+					translations = await import('./locales/ar.js');
+					break;
+			}
+
+			if (translations && translations.val) {
+				return {
+					language: lang,
+					resources: translations.val
+				};
+			}
 		}
-		return translations.val;
+		
+		return null;
 	}
 
 	render() {
