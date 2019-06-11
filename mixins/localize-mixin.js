@@ -16,10 +16,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 		};
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-	}
-
 	constructor() {
 		super();
 
