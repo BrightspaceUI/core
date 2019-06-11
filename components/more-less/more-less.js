@@ -50,6 +50,69 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 			}`;
 	}
 
+	static async getLocalizeResources(langs) {
+		const langResources = {
+			'ar': {
+				more: 'المزيد',
+				less: 'أقل'
+			},
+			'en': {
+				more: 'more',
+				less: 'less'
+			},
+			'es': {
+				more: 'más',
+				less: 'menos'
+			},
+			'fr': {
+				more: 'plus',
+				less: 'moins'
+			},
+			'ja': {
+				more: 'より多い',
+				less: 'より少ない'
+			},
+			'ko': {
+				more: '더 보기',
+				less: '축소'
+			},
+			'nl': {
+				more: 'meer',
+				less: 'minder'
+			},
+			'pt': {
+				more: 'mais',
+				less: 'menos'
+			},
+			'sv': {
+				more: 'mer',
+				less: 'mindre'
+			},
+			'tr': {
+				more: 'diğer',
+				less: 'daha az'
+			},
+			'zh': {
+				more: '更多',
+				less: '更少'
+			},
+			'zh-tw': {
+				more: '較多',
+				less: '較少'
+			}
+		};
+
+		for (let i = 0; i < langs.length; i++) {
+			if (langResources[langs[i]]) {
+				return {
+					[langs[i]]: langResources[langs[i]]
+				};
+			}
+		}
+
+		return null;
+	}
+
 	constructor() {
 		super();
 
@@ -124,69 +187,6 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 				h-align="${ifDefined(this.hAlign)}">
 			</d2l-button-subtle>
 		`;
-	}
-
-	async getLocalizeResources(langs) {
-		const langResources = {
-			'ar': {
-				more: 'المزيد',
-				less: 'أقل'
-			},
-			'en': {
-				more: 'more',
-				less: 'less'
-			},
-			'es': {
-				more: 'más',
-				less: 'menos'
-			},
-			'fr': {
-				more: 'plus',
-				less: 'moins'
-			},
-			'ja': {
-				more: 'より多い',
-				less: 'より少ない'
-			},
-			'ko': {
-				more: '더 보기',
-				less: '축소'
-			},
-			'nl': {
-				more: 'meer',
-				less: 'minder'
-			},
-			'pt': {
-				more: 'mais',
-				less: 'menos'
-			},
-			'sv': {
-				more: 'mer',
-				less: 'mindre'
-			},
-			'tr': {
-				more: 'diğer',
-				less: 'daha az'
-			},
-			'zh': {
-				more: '更多',
-				less: '更少'
-			},
-			'zh-tw': {
-				more: '較多',
-				less: '較少'
-			}
-		};
-
-		for (let i = 0; i < langs.length; i++) {
-			if (langResources[langs[i]]) {
-				return {
-					[langs[i]]: langResources[langs[i]]
-				};
-			}
-		}
-
-		return null;
 	}
 
 	__init_setBaseHeight() {

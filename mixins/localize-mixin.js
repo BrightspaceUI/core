@@ -38,7 +38,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 			if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
 				const possibleLanguages = this._generatePossibleLanguages(this.__documentLanguage, this.__documentLanguageFallback);
 
-				this.getLocalizeResources(possibleLanguages)
+				this.constructor.getLocalizeResources(possibleLanguages)
 					.then((res) => {
 						if (!res) {
 							return;
