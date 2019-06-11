@@ -114,12 +114,14 @@ class Icon extends RtlMixin(LitElement) {
 			const svg = await loadSvg(this.icon);
 			return this._fixSvg(svg ? svg.val : undefined);
 		}
-		if (this.src && this.src.substr(this.src.length - 4) === '.svg') {
-			const response = await fetch(this.src);
-			if (!response.ok) return;
-			return this._fixSvg(await response.text());
-		} else {
-			return html`<img src="${this.src}" alt="">`;
+		if (this.src) {
+			if (this.src.substr(this.src.length - 4) === '.svg' && this.src.startsWith('https://s.brightspace.com/')) {
+				const response = await fetch(this.src);
+				if (!response.ok) return;
+				return this._fixSvg(await response.text());
+			} else {
+				return html`<img src="${this.src}" alt="">`;
+			}
 		}
 	}
 
