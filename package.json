@@ -39,7 +39,7 @@
     "babel-eslint": "latest",
     "chai": "latest",
     "eslint": "latest",
-    "eslint-config-brightspace": "^0.5.3",
+    "eslint-config-brightspace": "^0.6.1",
     "eslint-plugin-html": "latest",
     "eslint-plugin-lit": "latest",
     "mocha": "^5.0.0",
