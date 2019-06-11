@@ -86,17 +86,6 @@ class Icon extends RtlMixin(LitElement) {
 		})}`;
 	}
 
-	async _fetchSvg(icon) {
-		const svg = await loadSvg(icon);
-		return this._fixSvg(svg ? svg.val : undefined);
-	}
-
-	async _fetchSrcSvg(src) {
-		const response = await fetch(src);
-		if (!response.ok) return;
-		return this._fixSvg(await response.text());
-	}
-
 	_fixSvg(svgStr) {
 
 		if (svgStr === undefined) {
@@ -121,9 +110,14 @@ class Icon extends RtlMixin(LitElement) {
 	}
 
 	async _getIcon() {
-		if (this.icon) return this._fetchSvg(this.icon);
+		if (this.icon) {
+			const svg = await loadSvg(this.icon);
+			return this._fixSvg(svg ? svg.val : undefined);
+		}
 		if (this.src && this.src.substr(this.src.length - 4) === '.svg') {
-			return this._fetchSrcSvg(this.src);
+			const response = await fetch(this.src);
+			if (!response.ok) return;
+			return this._fixSvg(await response.text());
 		} else {
 			return html`<img src="${this.src}" alt="">`;
 		}
