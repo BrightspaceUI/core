@@ -105,7 +105,8 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		for (let i = 0; i < langs.length; i++) {
 			if (langResources[langs[i]]) {
 				return {
-					[langs[i]]: langResources[langs[i]]
+					language: langs[i],
+					resources: langResources[langs[i]]
 				};
 			}
 		}

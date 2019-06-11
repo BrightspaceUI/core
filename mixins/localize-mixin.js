@@ -43,8 +43,8 @@ export const LocalizeMixin = superclass => class extends superclass {
 						if (!res) {
 							return;
 						}
-						this.__language = Object.keys(res)[0];
-						this.__resources = res[this.__language];
+						this.__language = res.language;
+						this.__resources = res.resources;
 					});
 			} else if (propName === '__timezoneObject') {
 				this._timezoneChange();
