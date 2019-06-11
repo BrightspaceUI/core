@@ -102,15 +102,15 @@
 
 					it('does not float when min height is smaller than viewport', () => {
 						const content = document.createElement('div');
-						floatingButtons.setAttribute('min-height', '10px');
+						floatingButtons.minHeight = '10px';
 						floatingButtons.parentNode.insertBefore(content, floatingButtons);
 
 						expect(floatingButtons.isFloating()).to.be.false;
-						floatingButtons.setAttribute('min-height', '500px');
+						floatingButtons.minHeight = '500px';
 					});
 
 					it('floats if buttons are above fold when always-float is set to true', () => {
-						floatingButtons.setAttribute('always-float', 'true');
+						floatingButtons.alwaysFloat = true;
 						window.dispatchEvent(new Event('resize'));
 						expect(floatingButtons.isFloating()).to.be.true;
 					});

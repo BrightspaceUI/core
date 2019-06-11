@@ -45,49 +45,48 @@
 					floatingButtons.appendChild(newButton);
 				}
 			}
-			window.requestAnimationFrame(() => {
-				document.getElementById('btn-append-floating').addEventListener('click', () => {
-					if (page_floatingButtons) {
-						document.body.appendChild(page_floatingButtons);
-					}
-				});
 
-				document.getElementById('btn-remove-floating').addEventListener('click', () => {
-					const floatingButtons = document.getElementById('wc-buttons');
-					if (floatingButtons) {
-						page_floatingButtons = floatingButtons;
-						floatingButtons.parentNode.removeChild(floatingButtons);
-					}
-				});
-
-				document.getElementById('btn-append-new').addEventListener('click', appendButton);
-				document.getElementById('btn-remove-last').addEventListener('click', () => {
-					const floatingButtons = document.getElementById('wc-buttons');
-					if (floatingButtons.lastChild) {
-						floatingButtons.removeChild(
-							floatingButtons.lastChild
-						);
-					}
-				});
-
-				document.getElementById('btn-insert-content-above').addEventListener('click', () => {
-					const newContent = document.createElement('p');
-					newContent.textContent = 'I love beer!';
-					document.body.querySelector('.content').appendChild(newContent);
-				});
-
-				document.getElementById('btn-remove-content-above').addEventListener('click', () => {
-					const content = document.body.querySelector('.content');
-					if (content.lastChild) {
-						content.removeChild(content.lastChild);
-					}
-				});
-
-				document.getElementById('btn-make-more').addEventListener('click', () => {
-					appendButton();
-				});
-
+			document.getElementById('btn-append-floating').addEventListener('click', () => {
+				if (page_floatingButtons) {
+					document.body.appendChild(page_floatingButtons);
+				}
 			});
+
+			document.getElementById('btn-remove-floating').addEventListener('click', () => {
+				const floatingButtons = document.getElementById('wc-buttons');
+				if (floatingButtons) {
+					page_floatingButtons = floatingButtons;
+					floatingButtons.parentNode.removeChild(floatingButtons);
+				}
+			});
+
+			document.getElementById('btn-append-new').addEventListener('click', appendButton);
+			document.getElementById('btn-remove-last').addEventListener('click', () => {
+				const floatingButtons = document.getElementById('wc-buttons');
+				if (floatingButtons.lastChild) {
+					floatingButtons.removeChild(
+						floatingButtons.lastChild
+					);
+				}
+			});
+
+			document.getElementById('btn-insert-content-above').addEventListener('click', () => {
+				const newContent = document.createElement('p');
+				newContent.textContent = 'I love beer!';
+				document.body.querySelector('.content').appendChild(newContent);
+			});
+
+			document.getElementById('btn-remove-content-above').addEventListener('click', () => {
+				const content = document.body.querySelector('.content');
+				if (content.lastChild) {
+					content.removeChild(content.lastChild);
+				}
+			});
+
+			document.getElementById('btn-make-more').addEventListener('click', () => {
+				appendButton();
+			});
+
 		</script>
 	</body>
 </html>

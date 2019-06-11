@@ -4,7 +4,6 @@ const VisualDiff = require('@brightspace-ui/visual-diff');
 describe('d2l-floating-buttons', function() {
 
 	const visualDiff = new VisualDiff('floating-buttons', __dirname);
-
 	let browser, page;
 
 	before(async() => {
@@ -18,31 +17,28 @@ describe('d2l-floating-buttons', function() {
 	after(() => browser.close());
 
 	[
-		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},
+		{category: 'normal-screen-size', tests: ['isFloating']},
+		{category: 'mobile-screen-size', tests: ['isFloating']},
+		{category: 'normal-screen-size-rtl', tests: ['isFloating']}
 	].forEach((entry) => {
 		describe(entry.category, () => {
-			entry.tests.forEach((name) => {
-				it(name, async function() {
-					if (name === 'hover') {
-						await page.hover(`#${entry.category}`);
-					} else if (name === 'focus') {
-						await focus(page, `#${entry.category}`);
-					}
-					const rect = await visualDiff.getRect(page, `#${entry.category}`);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
+
+			it('isFloating', async function() {
+				setAlwaysFloat(page, 'floating-button');
+				const rect = await visualDiff.getRect(page, `#${entry.category}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
+
 		});
 	});
 
-	const focus = (page, selector) => {
+	const setAlwaysFloat = (page, selector) => {
 		return page.evaluate((selector) => {
 			return new Promise((resolve) => {
 				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
-				elem.focus();
+				elem.parentNode.alwaysFloat = true;
+				resolve();
 			});
 		}, selector);
 	};
-
 });
