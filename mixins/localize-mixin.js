@@ -2,17 +2,6 @@ import d2lIntl from 'd2l-intl';
 import IntlMessageFormat from 'intl-messageformat/lib/index.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
-const assign =
-	Object.assign ? Object.assign.bind(Object) : function(destination, source) {
-		for (const prop in source) {
-			if (source.hasOwnProperty(prop)) {
-				destination[prop] = source[prop];
-			}
-		}
-
-		return destination;
-	};
-
 export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -25,10 +14,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 			__timezoneObject: { type: Object },
 			__timezone: { type: String }
 		};
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
 	}
 
 	constructor() {
@@ -48,21 +33,14 @@ export const LocalizeMixin = superclass => class extends superclass {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === '__documentLanguage' || propName === '__documentLanguageFallback') {
 				const possibleLanguages = this._generatePossibleLanguages(this.__documentLanguage, this.__documentLanguageFallback);
-				this.__language = this.getLanguage(possibleLanguages);
-			} else if (propName === '__language') {
-				this._languageChange();
 
-				// Everytime language or resources change, invalidate the messages cache.
-				const proto = this.constructor.prototype;
-				this.checkLocalizationCache(proto);
-				proto.__localizationCache.messages = {};
-
-				this.getLangResources(this.__language)
+				this.constructor.getLocalizeResources(possibleLanguages)
 					.then((res) => {
 						if (!res) {
 							return;
 						}
-						this._onRequestResponse(res, this.__language);
+						this.__language = res.language;
+						this.__resources = res.resources;
 					});
 			} else if (propName === '__timezoneObject') {
 				this._timezoneChange();
@@ -72,17 +50,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	localize(key) {
 		return this._computeLocalize(this.__language, this.__resources, key);
-	}
-
-	checkLocalizationCache(proto) {
-		// do nothing if proto is undefined.
-		if (proto === undefined)
-			return;
-
-		// In the event proto not have __localizationCache object, create it.
-		if (proto['__localizationCache'] === undefined) {
-			proto['__localizationCache'] = {messages: {}, requests: {}};
-		}
 	}
 
 	getTimezone() {
@@ -209,37 +176,16 @@ export const LocalizeMixin = superclass => class extends superclass {
 		));
 	}
 
-	_onRequestResponse(newResources, language) {
-		const propertyUpdates = {};
-		propertyUpdates.resources = assign({}, this.__resources || {});
-		propertyUpdates.resources[language] =
-				assign(propertyUpdates.resources[language] || {}, newResources);
-		this.__resources = propertyUpdates.resources;
-	}
-
 	_computeLocalize(language, resources, key) {
-		const proto = this.constructor.prototype;
-		this.checkLocalizationCache(proto);
-
-		if (!key || !resources || !language || !resources[language])
+		if (!key || !resources || !language)
 			return;
 
-		// Cache the key/value pairs for the same language, so that we don't
-		// do extra work if we're just reusing strings across an application.
-		const translatedValue = resources[language][key];
-
+		const translatedValue = resources[key];
 		if (!translatedValue) {
 			return '';
 		}
 
-		const messageKey = key + translatedValue;
-		let translatedMessage = proto.__localizationCache.messages[messageKey];
-
-		if (!translatedMessage) {
-			translatedMessage =
-					new IntlMessageFormat(translatedValue, language);
-			proto.__localizationCache.messages[messageKey] = translatedMessage;
-		}
+		const translatedMessage = new IntlMessageFormat(translatedValue, language);
 
 		const args = {};
 		for (let i = 1; i < arguments.length; i += 2) {
