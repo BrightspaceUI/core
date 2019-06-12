@@ -16,32 +16,46 @@
 		<d2l-demo-page title="d2l-floating-buttons">
 			<h2>Floating Buttons</h2>
 
-			<d2l-button id="btn-remove-floating">Remove Floating Buttons</d2l-button>
-			<d2l-button id="btn-append-floating">Append Floating Buttons</d2l-button>
-			<d2l-button id="btn-append-new">Append New Button</d2l-button>
-			<d2l-button id="btn-remove-last">Remove Last Button</d2l-button>
-			<d2l-button id="btn-insert-content-above">Insert Content</d2l-button>
-			<d2l-button id="btn-remove-content-above">Remove Content</d2l-button>
+			<d2l-code-view id="demo-codeview" language="html" hide-language>
+			</d2l-code-view>
 
-			<d2l-demo-snippet>
-				<div class="content">
-					<p>I love beer!</p>
-				</div>
-				<d2l-floating-buttons id="wc-buttons">
-					<d2l-button id="btn-make-more">Make more Beer!</d2l-button>
-				</d2l-floating-buttons>
-			</d2l-demo-snippet>
+			<d2l-button id="btn-remove-floating">Remove Floating Buttons</d2l-button>
+			<br><br>
+			<d2l-button id="btn-append-floating">Append Floating Buttons</d2l-button>
+			<br><br>
+			<d2l-button id="btn-append-new">Append New Button</d2l-button>
+			<br><br>
+			<d2l-button id="btn-remove-last">Remove Last Button</d2l-button>
+			<br><br>
+			<d2l-button id="btn-insert-content-above">Insert Content</d2l-button>
+			<br><br>
+			<d2l-button id="btn-remove-content-above">Remove Content</d2l-button>
+			<br><br>
+			<div class="content">
+				<p>I love Coffee!</p>
+			</div>
+
+			<d2l-floating-buttons id="wc-buttons">
+				<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
+			</d2l-floating-buttons>
 
 		</d2l-demo-page>
 		<script type="module">
+			const sampleHTML = `
+				<d2l-floating-buttons id="wc-buttons">
+					<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
+				</d2l-floating-buttons>`;
+
+			document.getElementById('demo-codeview').textContent = `${sampleHTML}`;
+
 			let page_buttonCount = 0;
 			let page_floatingButtons;
 			function appendButton() {
 				const floatingButtons = document.getElementById('wc-buttons');
 				if (floatingButtons) {
 					page_buttonCount += 1;
-					const newButton = document.createElement('button');
-					newButton.textContent = `Beer ${page_buttonCount}`;
+					const newButton = document.createElement('d2l-button');
+					newButton.textContent = `Coffee #${page_buttonCount}`;
 					floatingButtons.appendChild(newButton);
 				}
 			}
@@ -72,7 +86,7 @@
 
 			document.getElementById('btn-insert-content-above').addEventListener('click', () => {
 				const newContent = document.createElement('p');
-				newContent.textContent = 'I love beer!';
+				newContent.textContent = 'I love Coffee!';
 				document.body.querySelector('.content').appendChild(newContent);
 			});
 
