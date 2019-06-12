@@ -13,14 +13,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			 * (ex. phones).
 			 */
 			alwaysFloat: {
-				type: Boolean
+				type: Boolean,
+				attribute: 'always-float'
 			},
 
 			/**
 			 * Minimum height of view-port in order for buttons to float.
 			 */
 			minHeight: {
-				type: String
+				type: String,
+				attribute: 'min-height'
 			},
 
 			_viewportIsAtLeastMinHeight: {
@@ -28,8 +30,12 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				type: Boolean
 			},
 
-			_containerClasses :{
+			_containerClasses: {
 				type: Object
+			},
+
+			_floatingButtonsFloating: {
+				type: Boolean,
 			},
 
 			_innerContainerStyle: {
@@ -122,43 +128,29 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this._container = null;
-		this._isRTL = false;
-		this._spacer = null;
 		this.minHeight = '500px';
+		this._buttonSpacerStyle = {};
+		this._container = null;
 		this._containerClasses = {
 			'd2l-floating-buttons-container': true,
-			'd2l-floating-buttons-floating': false
+			'd2l-floating-buttons-floating': this._floatingButtonsFloating
 		};
-		this._innerContainerStyle = {
-			left: '',
-			right: '',
-			width: ''
-		};
-		this._buttonSpacerStyle = {
-			height: '',
-			display: ''
-		};
+		this._floatingButtonsFloating = false;
+		this._innerContainerStyle = {};
+		this._reposition = this._reposition.bind(this);
+		this._spacer = null;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('resize', () => {
-			this._reposition();
-		});
-		window.addEventListener('scroll', () => {
-			this._reposition();
-		});
+		window.addEventListener('resize', this._reposition);
+		window.addEventListener('scroll', this._reposition);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('resize', () => {
-			this._reposition();
-		});
-		window.removeEventListener('scroll', () => {
-			this._reposition();
-		});
+		window.removeEventListener('resize', this._reposition);
+		window.removeEventListener('scroll', this._reposition);
 	}
 
 	render() {
@@ -176,10 +168,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	firstUpdated() {
-		this._reposition = this._reposition.bind(this);
 		this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
 		this._spacer = this.shadowRoot.querySelector('.d2l-floating-buttons-spacer');
-		this._isRTL = (getComputedStyle(this._container).direction === 'rtl');
 		this.updateComplete.then(() => {
 			this._reposition();
 			let prevDocumentHeight = document.body.offsetHeight;
@@ -197,7 +187,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	 * Whether or not the buttons are floating.
 	 */
 	isFloating() {
-		return this._containerClasses['d2l-floating-buttons-floating'];
+		return this._floatingButtonsFloating;
 	}
 
 	_reposition() {
@@ -209,7 +199,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		const spacerRect = this._spacer.getBoundingClientRect();
 		let containerTop;
 		const bodyScrollTop = document.body.scrollTop;
-		const isFloating = this._containerClasses['d2l-floating-buttons-floating'];
+		const isFloating = this._floatingButtonsFloating;
 
 		if (isFloating) {
 			containerTop = spacerRect.top + bodyScrollTop;
@@ -226,11 +216,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				return;
 			}
 
-			this._containerClasses['d2l-floating-buttons-floating'] = false;
-			if (!this._isRTL) {
-				this._innerContainerStyle.left = `${0}px`;
+			this._floatingButtonsFloating = false;
+			if (this.dir !== 'rtl') {
+				this._innerContainerStyle.left = '0px';
 			} else {
-				this._innerContainerStyle.right = `${0}px`;
+				this._innerContainerStyle.right = '0px';
 			}
 
 			this._buttonSpacerStyle.display = 'none';
@@ -238,20 +228,21 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		} else {
 
-			this._containerClasses['d2l-floating-buttons-floating'] = true;
+			this._floatingButtonsFloating = true;
 			this._buttonSpacerStyle.display = 'block';
+			const innerContainer = this._container.querySelector('div');
 
 			const updateWithRect = isFloating ? spacerRect : containerRect;
-			if (!this._isRTL) {
-				if (Math.abs(this._innerContainerStyle.left.replace('px', '') - updateWithRect.left) > 1) {
+			if (this.dir !== 'rtl') {
+				if (Math.abs(innerContainer.style.left.replace('px', '') - updateWithRect.left) > 1) {
 					this._innerContainerStyle.left = `${updateWithRect.left}px`;
 				}
 			} else {
-				if (Math.abs(this._innerContainerStyle.right.replace('px', '') - updateWithRect.left) > 1) {
+				if (Math.abs(innerContainer.style.right.replace('px', '') - updateWithRect.left) > 1) {
 					this._innerContainerStyle.right = `${updateWithRect.left}px`;
 				}
 			}
-			if (Math.abs(this._innerContainerStyle.width.replace('px', '') - updateWithRect.width) > 1) {
+			if (Math.abs(innerContainer.style.width.replace('px', '') - updateWithRect.width) > 1) {
 				this._innerContainerStyle.width = `${updateWithRect.width}px`;
 			}
 		}
