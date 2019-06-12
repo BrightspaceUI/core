@@ -1,4 +1,3 @@
-import 'lit-media-query/lit-media-query.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { buttonStyles } from './button-styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
