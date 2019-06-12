@@ -406,7 +406,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	__transitionEvents(e) {
-		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, detail: e.detail}));
+		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, composed: true, detail: e.detail}));
 	}
 
 }
