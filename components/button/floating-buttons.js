@@ -25,15 +25,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				attribute: 'min-height'
 			},
 
-			_viewportIsAtLeastMinHeight: {
-				reflect: true,
-				type: Boolean
-			},
-
-			_containerClasses: {
-				type: Object
-			},
-
 			_floatingButtonsFloating: {
 				type: Boolean,
 			},
@@ -131,10 +122,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this.minHeight = '500px';
 		this._buttonSpacerStyle = {};
 		this._container = null;
-		this._containerClasses = {
-			'd2l-floating-buttons-container': true,
-			'd2l-floating-buttons-floating': this._floatingButtonsFloating
-		};
 		this._floatingButtonsFloating = false;
 		this._innerContainerStyle = {};
 		this._reposition = this._reposition.bind(this);
@@ -154,8 +141,13 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const containerClasses = {
+			'd2l-floating-buttons-container': true,
+			'd2l-floating-buttons-floating': this._floatingButtonsFloating
+		};
+
 		return html`
-			<div class=${classMap(this._containerClasses)} >
+			<div class=${classMap(containerClasses)} >
 				<div class="d2l-floating-buttons-inner-container"
 					style=${styleMap(this._innerContainerStyle)}>
 					<slot></slot>
@@ -170,16 +162,14 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	firstUpdated() {
 		this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
 		this._spacer = this.shadowRoot.querySelector('.d2l-floating-buttons-spacer');
-		this.updateComplete.then(() => {
-			this._reposition();
-			let prevDocumentHeight = document.body.offsetHeight;
-			setInterval(() => {
-				const documentHeight = document.body.offsetHeight;
-				if (prevDocumentHeight !== documentHeight) {
-					this._reposition();
-				}
-				prevDocumentHeight = documentHeight;
-			}, 100);
+		this._reposition();
+		let prevDocumentHeight = document.body.offsetHeight;
+		setInterval(() => {
+			const documentHeight = document.body.offsetHeight;
+			if (prevDocumentHeight !== documentHeight) {
+				this._reposition();
+			}
+			prevDocumentHeight = documentHeight;
 		});
 	}
 
@@ -191,8 +181,10 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	_reposition() {
+		let viewportIsAtLeastMinHeight;
+
 		if (this.minHeight) {
-			this._viewportIsAtLeastMinHeight = window.matchMedia(`(max-height: ${this.minHeight})`).matches;
+			viewportIsAtLeastMinHeight = window.matchMedia(`(max-height: ${this.minHeight})`).matches;
 		}
 		const containerRect = this._container.getBoundingClientRect();
 		this._buttonSpacerStyle.height = `${containerRect.height}px`;
@@ -210,7 +202,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		const viewBottom = bodyScrollTop + window.innerHeight;
 
 		if (!this.alwaysFloat &&
-			(this._viewportIsAtLeastMinHeight || ((containerTop + containerRect.height) <= viewBottom))) {
+			(viewportIsAtLeastMinHeight || ((containerTop + containerRect.height) <= viewBottom))) {
 
 			if (!isFloating) {
 				return;
