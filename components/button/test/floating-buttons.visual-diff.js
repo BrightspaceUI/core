@@ -24,7 +24,9 @@ describe('d2l-floating-buttons', function() {
 		describe(entry.category, () => {
 
 			it('isFloating', async function() {
-				setAlwaysFloat(page, 'floating-button');
+				if (entry.category.indexOf('mobile') === 0) {
+					await page.setViewport({width: 450, height: 450, deviceScaleFactor: 2});
+				}
 				const rect = await visualDiff.getRect(page, `#${entry.category}`);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
@@ -32,13 +34,4 @@ describe('d2l-floating-buttons', function() {
 		});
 	});
 
-	const setAlwaysFloat = (page, selector) => {
-		return page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				elem.parentNode.alwaysFloat = true;
-				resolve();
-			});
-		}, selector);
-	};
 });
