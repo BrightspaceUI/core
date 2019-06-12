@@ -130,6 +130,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		this.__shift = false;
 		this.__bound_reactToChanges = null;
 		this.__bound_reactToMutationChanges = null;
+		this.__bound_transitionEvents = null;
 	}
 
 	firstUpdated() {
@@ -142,6 +143,12 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		}
 		this.__init_setupBlurColour();
 		this.__init_setupListeners();
+
+		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
+		this.shadowRoot.addEventListener('transitionstart', this.__bound_transitionEvents);
+		this.shadowRoot.addEventListener('transitionend', this.__bound_transitionEvents);
+		this.shadowRoot.addEventListener('transitioncancel', this.__bound_transitionEvents);
+		this.shadowRoot.addEventListener('transitionrun', this.__bound_transitionEvents);
 	}
 
 	disconnectedCallback() {
@@ -166,6 +173,10 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		}
 		this.__content.removeEventListener('focusin', this.__focusIn.bind(this));
 		this.__content.removeEventListener('focusout', this.__focusOut.bind(this));
+		this.shadowRoot.removeEventListener('transitionstart', this.__bound_transitionEvents);
+		this.shadowRoot.removeEventListener('transitionend', this.__bound_transitionEvents);
+		this.shadowRoot.removeEventListener('transitioncancel', this.__bound_transitionEvents);
+		this.shadowRoot.removeEventListener('transitionrun', this.__bound_transitionEvents);
 	}
 
 	render() {
@@ -392,6 +403,10 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 			characterData: true,
 			attributes: true
 		});
+	}
+
+	__transitionEvents(e) {
+		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, detail: e.detail}));
 	}
 
 }
