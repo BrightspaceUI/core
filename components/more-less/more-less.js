@@ -17,8 +17,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 			height: { type: String }, // The maximum height of the content when in "less" state.
 			inactive: { type: Boolean, reflect: true }, // Whether the component is active or inactive.
 			__blurBackground: { type: String },
-			__contentHeight: { type:String },
-			__langResources: { type: Object },
+			__contentHeight: { type: String },
 			__transitionAdded: { type: Boolean }
 		};
 	}
@@ -51,12 +50,8 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 			}`;
 	}
 
-	constructor() {
-		super();
-
-		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
-		this.__transitionAdded = false;
-		this.__langResources = {
+	static async getLocalizeResources(langs) {
+		const langResources = {
 			'ar': {
 				more: 'المزيد',
 				less: 'أقل'
@@ -106,6 +101,24 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 				less: '較少'
 			}
 		};
+
+		for (let i = 0; i < langs.length; i++) {
+			if (langResources[langs[i]]) {
+				return {
+					language: langs[i],
+					resources: langResources[langs[i]]
+				};
+			}
+		}
+
+		return null;
+	}
+
+	constructor() {
+		super();
+
+		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
+		this.__transitionAdded = false;
 
 		this.height = '4em';
 
@@ -175,32 +188,6 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 				h-align="${ifDefined(this.hAlign)}">
 			</d2l-button-subtle>
 		`;
-	}
-
-	getLanguage(langs) {
-		for (let i = 0; i < langs.length; i++) {
-			if (this.__langResources[langs[i]]) {
-				return langs[i];
-			}
-		}
-
-		return null;
-	}
-
-	async getLangResources(lang) {
-		const proto = this.constructor.prototype;
-		this.checkLocalizationCache(proto);
-
-		const namespace = `more-less:${lang}`;
-
-		if (proto.__localizationCache.requests[namespace]) {
-			return proto.__localizationCache.requests[namespace];
-		}
-
-		const result = this.__langResources[lang];
-
-		proto.__localizationCache.requests[namespace] = result;
-		return result;
 	}
 
 	__init_setBaseHeight() {

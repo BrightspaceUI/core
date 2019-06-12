@@ -21,7 +21,7 @@ describe('d2l-icon', function() {
 		{category: 'preset', tests: ['tier1', 'tier2', 'tier3']},
 		{category: 'custom-svg', tests: ['tier1', 'tier2', 'tier3']},
 		{category: 'fill', tests: ['none']},
-		{category: 'color-override', tests: ['preset', 'custom-svg']},
+		{category: 'color-override', tests: ['preset', 'trusted-svg', 'untrusted-svg']},
 		{category: 'size-override', tests: ['preset', 'custom-svg', 'custom-other']},
 		{category: 'rtl', tests: ['preset-tier1', 'preset-tier2', 'preset-tier3', 'custom-svg-tier1', 'custom-svg-tier2', 'custom-svg-tier3']}
 	].forEach((entry) => {

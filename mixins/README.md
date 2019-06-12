@@ -1,5 +1,9 @@
 # Mixins
 
+## LocalizeMixin
+
+Please see the [LocalizeMixin README](localize-mixin.md).
+
 ## RtlMixin
 
 The `RtlMixin` creates `dir` attributes on host elements based on the document's `dir`, enabling components to define RTL styles for elements within their shadow-DOMs via `:host([dir="rtl"])`. It is possible to opt-out our this behavior by explicitly setting a `dir` attribute (ex. for testing).

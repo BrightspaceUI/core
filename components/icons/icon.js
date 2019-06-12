@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { runAsync } from '../../directives/run-async.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 class Icon extends RtlMixin(LitElement) {
@@ -19,15 +20,8 @@ class Icon extends RtlMixin(LitElement) {
 			src: {
 				type: String,
 				reflect: true
-			},
-			_imgSrc: { type: String },
-			_svg: { type: Object }
+			}
 		};
-	}
-
-	constructor() {
-		super();
-		this.size = 'tier1';
 	}
 
 	static get styles() {
@@ -86,47 +80,10 @@ class Icon extends RtlMixin(LitElement) {
 		`;
 	}
 
-	attributeChangedCallback(name, oldval, newval) {
-		if (name === 'icon') {
-			this._fetchSvg(newval);
-		} else if (name === 'src') {
-			if (newval && newval.substr(newval.length - 4) === '.svg') {
-				this._fetchSrcSvg(newval);
-			} else {
-				this._svg = undefined;
-				this._imgSrc = newval;
-			}
-		}
-		super.attributeChangedCallback(name, oldval, newval);
-	}
-
-	shouldUpdate(changedProperties) {
-		const shouldUpdate = changedProperties.has('_svg')
-			|| changedProperties.has('_imgSrc');
-		return shouldUpdate;
-	}
-
 	render() {
-		if (this._svg) {
-			return this._svg;
-		}
-		if (this._imgSrc) {
-			return html`<img src="${this.src}" alt="">`;
-		}
-	}
-
-	async _fetchSvg(icon) {
-		const svg = await loadSvg(icon);
-		this._svg = this._fixSvg(svg ? svg.val : undefined);
-	}
-
-	async _fetchSrcSvg(src) {
-		const response = await fetch(src);
-		if (!response.ok) {
-			this._svg = undefined;
-			return;
-		}
-		this._svg = this._fixSvg(await response.text());
+		return html`${runAsync(this.icon ? this.icon : this.src, () => this._getIcon(), {
+			success: (icon) => icon
+		})}`;
 	}
 
 	_fixSvg(svgStr) {
@@ -150,6 +107,22 @@ class Icon extends RtlMixin(LitElement) {
 
 		return html`${unsafeHTML(elem.innerHTML)}`;
 
+	}
+
+	async _getIcon() {
+		if (this.icon) {
+			const svg = await loadSvg(this.icon);
+			return this._fixSvg(svg ? svg.val : undefined);
+		}
+		if (this.src) {
+			if (this.src.substr(this.src.length - 4) === '.svg' && this.src.startsWith('https://s.brightspace.com/')) {
+				const response = await fetch(this.src);
+				if (!response.ok) return;
+				return this._fixSvg(await response.text());
+			} else {
+				return html`<img src="${this.src}" alt="">`;
+			}
+		}
 	}
 
 }
