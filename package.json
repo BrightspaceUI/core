@@ -43,10 +43,10 @@
     "eslint-plugin-html": "latest",
     "eslint-plugin-lit": "latest",
     "eslint-plugin-sort-class-members": "latest",
-    "mocha": "^5.0.0",
+    "mocha": "latest",
     "polymer-cli": "latest",
     "puppeteer": "latest",
-    "wct-mocha": "^1.0.0",
+    "wct-mocha": "latest",
     "whatwg-fetch": "^3.0.0"
   },
   "dependencies": {
@@ -57,10 +57,5 @@
     "lit-element": "latest",
     "prismjs": "latest",
     "resize-observer-polyfill": "^1.5.1"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "mocha"
-    ]
   }
 }
