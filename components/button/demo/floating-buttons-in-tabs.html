@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../button.js';
+			import '../floating-buttons.js';
+		</script>
+		<style>
+			/* ripping these off for now until we can get a local tabs menu to test this on. */
+			.vui-tabmenu {
+				border-bottom: 1px solid #ddd;
+				padding-left: 0;
+				margin-bottom: 0;
+				margin-top: 0;
+				list-style: none;
+			}
+			.vui-tabmenu:after,.vui-tabmenu:before {
+				display: table;
+				content: " ";
+			}
+			.vui-tabmenu:after {
+				clear: both;
+			}
+			.vui-tabmenu>.vui-tabmenu-item {
+				float: left;
+				margin-bottom: -1px;
+				position: relative;
+				display: block;
+				text-align: center;
+				overflow: hidden;
+			}
+			.vui-tabmenu>.vui-tabmenu-item>a {
+				margin-right: 2px;
+				line-height: 1.428571429;
+				border: 1px solid transparent;
+				position: relative;
+				display: block;
+				padding: 10px 15px;
+				color: #a2a2a2;
+			}
+			.vui-tabmenu>.vui-tabmenu-item:last-child>a {
+				margin-right: 0px;
+			}
+			.vui-tabmenu>.vui-tabmenu-item>a:hover {
+				color: #666;
+			}
+			.vui-tabmenu>.vui-tabmenu-item-select>a{
+				color: #666;
+				cursor: default;
+				border: 1px solid #ddd;
+				border-bottom-color: transparent;
+				font-weight: bold;
+				background-color: #fafafa;
+				/*border-top: 4px solid #00617F;*/
+			}
+			.vui-tabmenu>.vui-tabmenu-item>a>.vui-tabmenu-item-blue {
+				display: block;
+				background-color: #bababa;
+				height: 16px;
+				width: 1px;
+				position: absolute;
+				right: -3px;
+				top: 10px;
+			}
+			.vui-tabmenu>.vui-tabmenu-item-select-prev>a>.vui-tabmenu-item-blue,
+			.vui-tabmenu>.vui-tabmenu-item:last-child>a>.vui-tabmenu-item-blue {
+				display: none;
+			}
+			.vui-tabmenu>.vui-tabmenu-item-select:last-child>a>.vui-tabmenu-item-blue,
+			.vui-tabmenu>.vui-tabmenu-item-select>a>.vui-tabmenu-item-blue {
+				display: block;
+				height: 2px;
+				width: 100%;
+				position: absolute;
+				top: -1px;
+				background-color: #00617F;
+				left: -1px;
+				border: 1px solid #00617f;
+			}
+			[dir="rtl"] .vui-tabmenu>.vui-tabmenu-item-select:last-child>a>.vui-tabmenu-item-blue,
+			[dir="rtl"] .vui-tabmenu>.vui-tabmenu-item-select>a>.vui-tabmenu-item-blue {
+				right: -1px;
+			}
+			.d2l-textblock {
+    			word-wrap: break-word;
+    			margin-bottom: 0;
+			}
+			.d2l-hidden {
+    			display: none !important;
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page title="d2l-floating-buttons">
+			<h2>Floating Buttons In a Tab Menu</h2>
+			<ul class="vui-tabmenu" role="tablist" id="TabMenu">
+				<li class="vui-tabmenu-item vui-tabmenu-item-select" role="presentation" style="width: 50%;">
+					<a id="TabOne" href="javascript:void(0);" role="tab" aria-selected="true" tabindex="-1">
+						Coffee<span class="vui-tabmenu-item-blue">
+						</span>
+					</a>
+				</li>
+				<li class="vui-tabmenu-item vui-tabmenu-item-select-next" role="presentation" style="width: 50%;">
+					<a id="TabTwo" href="javascript:void(0);" role="tab" aria-selected="false" tabindex="0">
+						Tea<span class="vui-tabmenu-item-blue">
+						</span>
+					</a>
+				</li>
+			</ul>
+
+			<div class="" id="CtnOne">
+				<div class="d2l-textblock">
+					<br>
+					<d2l-code-view id="demo-codeview1" language="html" hide-language>
+					</d2l-code-view>
+					<br>
+					<d2l-button id="btn-remove-floating">Remove Floating Buttons</d2l-button>
+					<br><br>
+					<d2l-button id="btn-append-floating">Append Floating Buttons</d2l-button>
+					<br><br>
+					<d2l-button id="btn-append-new">Append New Button</d2l-button>
+					<br><br>
+					<d2l-button id="btn-remove-last">Remove Last Button</d2l-button>
+					<br><br>
+					<d2l-button id="btn-insert-content-above">Insert Content</d2l-button>
+					<br><br>
+					<d2l-button id="btn-remove-content-above">Remove Content</d2l-button>
+					<br><br>
+					<div class="content">
+						<p>I love Coffee!</p>
+					</div>
+					<d2l-floating-buttons id="wc-buttons">
+						<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
+					</d2l-floating-buttons>
+				</div>
+			</div>
+
+			<div id="CtnTwo" class="d2l-hidden">
+				<br>
+				<d2l-code-view id="demo-codeview2" language="html" hide-language>
+				</d2l-code-view>
+
+				<div class="content">
+					<p>I love Tea!</p>
+					<div style="width: 100px; height: 300px;"></div>
+				</div>
+				<d2l-floating-buttons id="wc-buttons2">
+					<d2l-button primary id="btn-make-more2">Brew more Tea!</d2l-button>
+				</d2l-floating-buttons>
+			</div>
+		</d2l-demo-page>
+
+		<script type="module">
+			/* faux tabbing functionality */
+			const tabOne = document.getElementById('TabOne').parentNode;
+			const ctnOne = document.getElementById('CtnOne');
+			const tabTwo = document.getElementById('TabTwo').parentNode;
+			const ctnTwo = document.getElementById('CtnTwo');
+
+			tabOne.addEventListener('click', () => {
+				tabOne.classList.add('vui-tabmenu-item-select');
+				tabOne.classList.remove('vui-tabmenu-item-select-prev');
+				ctnOne.classList.remove('d2l-hidden');
+
+				tabTwo.classList.remove('vui-tabmenu-item-select');
+				tabTwo.classList.add('vui-tabmenu-item-select-next');
+				ctnTwo.classList.add('d2l-hidden');
+			});
+
+			tabTwo.addEventListener('click', () => {
+				tabOne.classList.add('vui-tabmenu-item-select-prev');
+				tabOne.classList.remove('vui-tabmenu-item-select');
+				ctnOne.classList.add('d2l-hidden');
+
+				tabTwo.classList.remove('vui-tabmenu-item-select-next');
+				tabTwo.classList.add('vui-tabmenu-item-select');
+				ctnTwo.classList.remove('d2l-hidden');
+			});
+
+			/* end: faux tabbing functionality */
+
+			const sampleHTML1 = `
+				<d2l-floating-buttons id="wc-buttons">
+					<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
+				</d2l-floating-buttons>`;
+
+			document.getElementById('demo-codeview1').textContent = `${sampleHTML1}`;
+
+			const sampleHTML2 = `
+				<d2l-floating-buttons id="wc-buttons">
+					<d2l-button primary id="btn-make-more">Brew more Tea!</d2l-button>
+				</d2l-floating-buttons>`;
+
+			document.getElementById('demo-codeview2').textContent = `${sampleHTML2}`;
+
+			let page_buttonCount = 0;
+			let page_floatingButtons;
+			function appendButton() {
+				const floatingButtons = document.getElementById('wc-buttons');
+				if (floatingButtons) {
+					page_buttonCount += 1;
+					const newButton = document.createElement('d2l-button');
+					newButton.textContent = `Coffee #${page_buttonCount}`;
+					floatingButtons.appendChild(newButton);
+				}
+			}
+
+			document.getElementById('btn-append-floating').addEventListener('click', () => {
+				if (page_floatingButtons) {
+					document.body.appendChild(page_floatingButtons);
+				}
+			});
+
+			document.getElementById('btn-remove-floating').addEventListener('click', () => {
+				const floatingButtons = document.getElementById('wc-buttons');
+				if (floatingButtons) {
+					page_floatingButtons = floatingButtons;
+					floatingButtons.parentNode.removeChild(floatingButtons);
+				}
+			});
+
+			document.getElementById('btn-append-new').addEventListener('click', appendButton);
+			document.getElementById('btn-remove-last').addEventListener('click', () => {
+				const floatingButtons = document.getElementById('wc-buttons');
+				if (floatingButtons.lastChild) {
+					floatingButtons.removeChild(
+						floatingButtons.lastChild
+					);
+				}
+			});
+
+			document.getElementById('btn-insert-content-above').addEventListener('click', () => {
+				const newContent = document.createElement('p');
+				newContent.textContent = 'I love Coffee!';
+				document.body.querySelector('.content').appendChild(newContent);
+			});
+
+			document.getElementById('btn-remove-content-above').addEventListener('click', () => {
+				const content = document.body.querySelector('.content');
+				if (content.lastChild) {
+					content.removeChild(content.lastChild);
+				}
+			});
+
+			document.getElementById('btn-make-more').addEventListener('click', () => {
+				appendButton();
+			});
+
+		</script>
+	</body>
+</html>

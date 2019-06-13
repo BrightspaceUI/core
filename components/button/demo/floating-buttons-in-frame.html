@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+		</script>
+		<style>
+			#demoContainer{
+				display:inline-block;
+				width: 100%;
+				min-height: 200px;
+			}
+			#leftFrame {
+				width: 30%;
+				height: 505px;
+				min-height: 200px;
+				float:left;
+				resize: both;
+				overflow: auto;
+
+			}
+			#rightFrame {
+				width: 65%;
+				height: 505px;
+				min-height: 200px;
+				float:left;
+				resize: both;
+				overflow: auto;
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page title="d2l-floating-buttons">
+			<h2>Floating Buttons in a frame</h2>
+			<p>(frames are resizable)</p>
+			<div id="demoContainer">
+				<iframe id="leftFrame" src="./floating-buttons.html"></iframe>
+				<iframe id="rightFrame" src="./floating-buttons-in-tabs.html"></iframe>
+			</div>
+		</d2l-demo-page>
+	</body>
+</html>
