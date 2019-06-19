@@ -114,7 +114,8 @@ class MeterLinear extends LitElement  {
 
 		// Floor so you don't get 100% when you are at 99.5%
 		context = context.replace('{%}', `${Math.floor(value / max * 100)}%`);
-		context = context.replace('{x/y}', `${value}/${max}`);
+		context = context.replace('{x}', value);
+		context = context.replace('{y}', max);
 
 		return context;
 	}

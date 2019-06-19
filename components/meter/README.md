@@ -17,7 +17,7 @@ import '@brightspace-ui/core/components/meter/meter-linear.js';
 Then add the `d2l-meter-linear`, provide values for the properties, `value` and `max`.
 
 ```html
-<d2l-meter-linear id="no-progress" value="0" max="10" text="Visited: {x/y}"></d2l-meter-linear>
+<d2l-meter-linear id="no-progress" value="0" max="10" text="Visited: {x} / {y}"></d2l-meter-linear>
 <d2l-meter-linear id="has-progress" value="3" max="10" text="Activities" text-inline percent></d2l-meter-linear>
 <d2l-meter-linear id="completed" value="10" max="10" text="{%} Activities"></d2l-meter-linear>
 ```
@@ -29,7 +29,8 @@ Then add the `d2l-meter-linear`, provide values for the properties, `value` and 
 * `percent` (optional): Show the percentage instead of `value/max` value.
 * `text-inline` (optional): Keep the meter to a single line. Text and meter will be on the same line.
 * `text` (optional): Context information about what the meter is about. Such as Activities.
-	- `{x/y}` in the string will be replaced with `value/max`
+	- `{x}` in the string will be replaced with `value`
+	- `{y}` in the string will be replaced with `max`
 	- `{%}` in the string will be replaced with percentage value.
 
 ## d2l-meter-radial
