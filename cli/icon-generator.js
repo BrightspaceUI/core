@@ -68,8 +68,8 @@ function createSvg(category, name) {
 	}
 
 	const data = fs.readFileSync(sourcePath);
-	const output = '// auto-generated\n' +
-		'export const val = `' + data + '`;\n';
+	/* eslint-disable-next-line prefer-template */
+	const output = '// auto-generated\n' + 'export const val = `' + data + '`;\n';
 
 	fs.writeFileSync(destPath, output);
 
@@ -116,8 +116,8 @@ function createCatalogue(categories) {
 		} else if (category.name === 'tier3') {
 			size = 30;
 		}
-		output += `## ${category.name}\n\n` +
-			'Size: `' + size + 'px` x `' + size + '`px\n\n';
+		/* eslint-disable-next-line prefer-template */
+		output += `## ${category.name}\n\n` + 'Size: `' + size + 'px` x `' + size + '`px\n\n';
 
 		const numCols = 3;
 		const numPerCol = Math.ceil(category.svgs.length / numCols);
