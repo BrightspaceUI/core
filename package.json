@@ -41,7 +41,7 @@
     "eslint": "latest",
     "eslint-config-brightspace": "latest",
     "eslint-plugin-html": "latest",
-    "eslint-plugin-lit": "latest",
+    "eslint-plugin-lit": "1.0.0",
     "eslint-plugin-sort-class-members": "latest",
     "mocha": "latest",
     "polymer-cli": "latest",
