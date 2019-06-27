@@ -1,6 +1,6 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 class MeterRadial extends LitElement {
 	static get properties() {
