@@ -56,8 +56,11 @@ describe('d2l-button-icon', function() {
 		const p = page.evaluate((selector) => {
 			return new Promise((resolve) => {
 				const elem = document.querySelector(selector);
+				let backgroundTransitioned, boxShadowTransitioned;
 				elem.shadowRoot.querySelector('button').addEventListener('transitionend', (e) => {
-					if (e.propertyName === 'background-color') resolve();
+					if (e.propertyName === 'background-color') backgroundTransitioned = true;
+					if (e.propertyName === 'box-shadow') boxShadowTransitioned = true;
+					if (backgroundTransitioned && boxShadowTransitioned) resolve();
 				});
 			});
 		}, selector);
