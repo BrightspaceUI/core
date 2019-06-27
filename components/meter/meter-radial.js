@@ -35,6 +35,7 @@ class MeterRadial extends LitElement {
 		}
 		.d2l-meter-radial-text {
 			fill: var(--d2l-color-ferrite);
+			color: var(--d2l-color-ferrite);
 		}
 	` ];
 	}
@@ -42,7 +43,7 @@ class MeterRadial extends LitElement {
 	render() {
 		const lengthOfLine = 115; // found by approximating half the perimeter of the ellipse with radii 38 and 35
 		const progressFill = this.value / this.max * lengthOfLine;
-		const secondaryTextElement = this.text ? html`<div class="d2l-body-small">${this.text}</div>` : html``;
+		const secondaryTextElement = this.text ? html`<div class="d2l-body-small d2l-meter-radial-text">${this.text}</div>` : html``;
 		return html `
 			<div class="d2l-meter-radial">
 				<svg viewBox="0 0 86 52" >
