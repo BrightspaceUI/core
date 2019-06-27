@@ -1,7 +1,6 @@
 {
   "extends": "brightspace/lit-config",
   "globals": {
-    "fastdom": false,
     "Prism": false
   }
 }
