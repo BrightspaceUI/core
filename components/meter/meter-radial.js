@@ -44,7 +44,9 @@ class MeterRadial extends LitElement {
 		const lengthOfLine = 115; // found by approximating half the perimeter of the ellipse with radii 38 and 35
 		const progressFill = this.value / this.max * lengthOfLine;
 		const secondaryTextElement = this.text ? html`<div class="d2l-body-small d2l-meter-radial-text">${this.text}</div>` : html``;
-		const label = this.text ? `${this.text}, progress indicator` : 'progress indicator';
+		let label = `${this.value} / ${this.max}, progress indicator`;
+		label = this.text ? `${this.text}, ${label}` : label;
+
 		return html `
 			<div
 				class="d2l-meter-radial"
