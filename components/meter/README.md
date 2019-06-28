@@ -37,6 +37,7 @@ Then add the `d2l-meter-linear`, provide values for the properties, `value` and 
 ![Radial meter with no progress](./screenshots/d2l-meter-radial-no-progress.png?raw=true)
 ![Radial meter with some progress](./screenshots/d2l-meter-radial-has-progress.png?raw=true)
 ![Radial meter completed](./screenshots/d2l-meter-radial-completed.png?raw=true)
+![Radial meter with text](./screenshots/d2l-meter-radial-with-text.png?raw=true)
 
 ### Usage
 
@@ -55,6 +56,7 @@ Then add the `d2l-meter-radial`, provide values for the properties, `value` and 
 
 * `value` (required): The current number of units that have been marked as completed. Should be a positive, non-zero number that is less than or equal to `max`
 * `max` (required): Max number of units that is being measured by this meter. For results this should be a positive, non-zero number
+* `text` (optional): Context information about what the meter is about.
 
 ## d2l-meter-circle
 ![Circle meter with no progress](./screenshots/d2l-meter-circle-no-progress.png?raw=true)
