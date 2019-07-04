@@ -18,30 +18,6 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			font-weight: 700;
 			src: local('Lato Bold'), local('Lato-Bold'), url(${new URL('Lato-700.woff2', importUrl)}) format('woff2'), url(${new URL('Lato-700.woff', importUrl)}) format('woff'), url(${new URL('Lato-700.ttf', importUrl)}) format('truetype');
 		}
-		@font-face {
-			font-family: 'Open Dyslexic';
-			font-style: normal;
-			font-weight: 400;
-			src: local('Open Dyslexic Regular'), local('OpenDyslexic-Regular'), url(${new URL('OpenDyslexic.woff', importUrl)}) format('woff'), url(${new URL('OpenDyslexic.ttf', importUrl)}) format('truetype');
-		}
-		@font-face {
-			font-family: 'Open Dyslexic';
-			font-style: italic;
-			font-weight: 400;
-			src: local('Open Dyslexic Italic'), local('OpenDyslexic-Italic'), url(${new URL('OpenDyslexic-Italic.woff', importUrl)}) format('woff'), url(${new URL('OpenDyslexic-Italic.ttf', importUrl)}) format('truetype');
-		}
-		@font-face {
-			font-family: 'Open Dyslexic';
-			font-style: normal;
-			font-weight: 700;
-			src: local('Open Dyslexic Bold'), local('OpenDyslexic-Bold'), url(${new URL('OpenDyslexic-700.woff', importUrl)}) format('woff'), url(${new URL('OpenDyslexic-700.ttf', importUrl)}) format('truetype');
-		}
-		@font-face {
-			font-family: 'Open Dyslexic';
-			font-style: italic;
-			font-weight: 700;
-			src: local('Open Dyslexic Bold Italic'), local('OpenDyslexic-BoldItalic'), url(${new URL('OpenDyslexic-700-Italic.woff', importUrl)}) format('woff'), url(${new URL('OpenDyslexic-700-Italic.ttf', importUrl)}) format('truetype');
-		}
 
 		.d2l-typography {
 			color: var(--d2l-color-ferrite);
@@ -82,12 +58,6 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 
 		.d2l-typography p {
 			margin: 1rem 0;
-		}
-
-		.d2l-typography.d2l-dyslexic,
-		.d2l-typography .d2l-dyslexic {
-			font-family: 'Open Dyslexic', sans-serif;
-			font-weight: 400;
 		}
 
 		.d2l-typography:lang(ar),
