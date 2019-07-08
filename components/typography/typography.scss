@@ -1,0 +1,139 @@
+@import '../colors/colors.scss';
+
+@mixin d2l-typography {
+
+	color: $d2l-color-ferrite;
+	display: block;
+	font-family: 'Lato', 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+	letter-spacing: 0.01rem;
+	font-size: 0.95rem;
+	font-weight: 400;
+	line-height: 1.4rem;
+
+	p {
+		margin: 1rem 0;
+	}
+
+	&:lang(ar),
+	& :lang(ar) {
+		font-family: 'Arabic Transparent', 'Arabic Typesetting', 'Geeza Pro', sans-serif;
+	}
+
+	&:lang(zh),
+	& :lang(zh) {
+		font-family: 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+	}
+
+	&:lang(ko),
+	& :lang(ko) {
+		font-family: 'Apple SD Gothic Neo', Dotum, sans-serif;
+	}
+
+	&:lang(ja),
+	& :lang(ja) {
+		font-family: 'Hiragino Kaku Gothic Pro', 'Meiyro', sans-serif;
+	}
+
+}
+
+@mixin d2l-typography-font-face {
+	@font-face {
+		font-family: 'Lato';
+		font-style: normal;
+		font-weight: 400;
+		src: url(https://s.brightspace.com/lib/fonts/0.4.0/assets/Lato-400.woff2) format('woff2'), url(https://s.brightspace.com/lib/fonts/0.4.0/assets/Lato-400.woff) format('woff');
+	}
+	@font-face {
+		font-family: 'Lato';
+		font-style: normal;
+		font-weight: 700;
+		src: url(https://s.brightspace.com/lib/fonts/0.4.0/assets/Lato-700.woff2) format('woff2'), url(https://s.brightspace.com/lib/fonts/0.4.0/assets/Lato-700.woff) format('woff');
+	}
+}
+
+@mixin d2l-body-standard {
+	font-size: 0.95rem;
+	font-weight: 400;
+	line-height: 1.4rem;
+	@media (max-width: 615px) {
+		font-size: 0.8rem;
+		line-height: 1.2rem;
+	}
+}
+
+@mixin d2l-body-compact {
+	font-size: 0.8rem;
+	font-weight: 400;
+	line-height: 1.2rem;
+	@media (max-width: 615px) {
+		font-size: 0.8rem;
+		line-height: 1.2rem;
+	}
+}
+
+@mixin d2l-body-small {
+	color: $d2l-color-tungsten;
+	font-size: 0.7rem;
+	font-weight: 400;
+	line-height: 1rem;
+	margin: auto;
+	@media (max-width: 615px) {
+		font-size: 0.6rem;
+		line-height: 0.9rem;
+	}
+}
+
+@mixin d2l-heading-1 {
+	font-size: 2rem;
+	font-weight: 400;
+	line-height: 2.4rem;
+	margin: 1.5rem 0 1.5rem 0;
+	@media (max-width: 615px) {
+		font-size: 1.5rem;
+		font-weight: 400;
+		line-height: 1.8rem;
+	}
+}
+
+@mixin d2l-heading-2 {
+	font-size: 1.5rem;
+	font-weight: 400;
+	line-height: 1.8rem;
+	margin: 1.5rem 0 1.5rem 0;
+	@media (max-width: 615px) {
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1.5rem;
+	}
+}
+
+@mixin d2l-heading-3 {
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.5rem;
+	margin: 1.5rem 0 1.5rem 0;
+	@media (max-width: 615px) {
+		font-size: 0.8rem;
+		font-weight: 700;
+		line-height: 1.2rem;
+	}
+}
+
+@mixin d2l-heading-4 {
+	font-size: 0.8rem;
+	font-weight: 700;
+	line-height: 1.2rem;
+	margin: 1.5rem 0 1.5rem 0;
+	@media (max-width: 615px) {
+		font-size: 0.8rem;
+		font-weight: 700;
+		line-height: 1.2rem;
+	}
+}
+
+@mixin d2l-label-text {
+	font-size: 0.7rem;
+	line-height: 1rem;
+	font-weight: 700;
+	letter-spacing: 0.2px;
+}
