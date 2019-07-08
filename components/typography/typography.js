@@ -1,4 +1,4 @@
-import '@webcomponents/shadycss/custom-style-interface.min.js';
+import '@webcomponents/shadycss/entrypoints/custom-style-interface.js';
 
 const importUrl = 'https://s.brightspace.com/lib/fonts/0.4.0/assets/';
 
