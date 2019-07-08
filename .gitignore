@@ -3,3 +3,4 @@ node_modules/
 package-lock.json
 components/*/test/screenshots/current/
 components/*/test/screenshots/golden/
+test/sass.output.css

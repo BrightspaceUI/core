@@ -1,0 +1,32 @@
+@import '../components/colors/colors.scss';
+@import '../components/typography/typography.scss';
+
+@include d2l-typography-font-face();
+
+.d2l-test-body {
+	@include d2l-typography();
+}
+.d2l-test-body-standard {
+	@include d2l-body-standard();
+}
+.d2l-test-body-compact {
+	@include d2l-body-compact();
+}
+.d2l-test-body-small {
+	@include d2l-body-small();
+}
+.d2l-test-heading-1 {
+	@include d2l-heading-1();
+}
+.d2l-test-heading-2 {
+	@include d2l-heading-2();
+}
+.d2l-test-heading-3 {
+	@include d2l-heading-3();
+}
+.d2l-test-heading-4 {
+	@include d2l-heading-4();
+}
+.d2l-test-label-text {
+	@include d2l-label-text();
+}
