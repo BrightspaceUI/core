@@ -4,6 +4,7 @@ addons:
   chrome: stable
 script:
 - npm run lint
+- npm run test:sass
 - |
   if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
     npm run test:diff || travis_terminate 1;
