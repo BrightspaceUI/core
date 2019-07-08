@@ -1,4 +1,4 @@
-import '@webcomponents/shadycss/custom-style-interface.min.js';
+import '@webcomponents/shadycss/entrypoints/custom-style-interface.js';
 
 if (!document.head.querySelector('#d2l-colors')) {
 	const style = document.createElement('style');
