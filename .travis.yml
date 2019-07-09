@@ -39,6 +39,7 @@ deploy:
       tags: true
   - provider: npm
     email: d2ltravisdeploy@d2l.com
+    skip_cleanup: true
     api_key:
       # 4e36......0778
       secure: asQJ4woXHKOy7aUD9DajzDTkGHQSTfbXLW4AP72Y3TeM8xOL/nSG55AsmcunKUn4SFsJgUehODv8hbQ5cjYxpV28p6O2ec1K69MH/bWsbhv6xPNraDdJG2oYc0CmRZl7gUZPUXsfO2pj1XjWXJgkWO/krWg8dDlg+AjAPwZCnFwpOL8HXOS44RT0Mo1Zgc6uE2Iq2tuj+8WTjLSF+aFcjWB9aNaDFhMK2bDLo/rqJtaK1yyphfpSDl/RD40o9SiGmV8Lt5N0ho1vtN/nmgLWo5FAm0zrDT5lbjC+dl9uKj9Y6hf9SBPARTyoN8D1ATpWaNxnGqtWNoLpNI/7+yygS5VOLfS6xvUxDIkcXt0F6ow7MWfxrIgeOQg8i9ZT+OKvMqMdwi0/f8XLkfvY43x0bmr+wN9/vKb5Xx7FWJxXIuLAHGSXmXZ4WMKxPmfhtbcfkCupN/HxCbdgD8Xaoaol5DpUZMYM2skGfRjq3p+GqZdSBMrubVudjCG9qDsLE0PQWxyB7Fi4+pVTRpzn3axGXRMF1kvtUD6X1en/6CubZan7JgjgMDj7CkgY0aubaCa8rDbaYaUvwH+Qkwb8bsNYgUQ5uEEifXAovKZYBthdlLervP6YeoV6x4dyBu7m0dB8pYCI1rZH941cg6oXz03bjP2nYu7TwYgsV8ofDgsdfZw=
