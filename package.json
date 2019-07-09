@@ -16,7 +16,7 @@
     "postinstall": "npm run build:icons",
     "test": "npm run lint && npm run test:sass && npm run test:local && npm run test:diff",
     "test:diff": "mocha ./**/*.visual-diff.js -t 10000",
-    "test:diff:golden": "mocha ./**/*.visual-diff.js -t 10000 --golden",
+    "test:diff:golden": "npm run build && mocha ./**/*.visual-diff.js -t 10000 --golden",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "test:sauce": "polymer test --skip-plugin local",
