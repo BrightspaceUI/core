@@ -37,8 +37,9 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 			stroke: var(--d2l-color-celestine);
 		}
 		.d2l-meter-radial-text {
-			fill: var(--d2l-color-ferrite);
+			text-align: center;
 			color: var(--d2l-color-ferrite);
+			fill: var(--d2l-color-ferrite);
 		}
 	` ];
 	}
