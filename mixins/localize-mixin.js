@@ -49,7 +49,12 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	localize(key) {
-		return this._computeLocalize(this.__language, this.__resources, key);
+		const args = {};
+		for (let i = 1; i < arguments.length; i += 2) {
+			args[arguments[i]] = arguments[i + 1];
+		}
+
+		return this._computeLocalize(this.__language, this.__resources, key, args);
 	}
 
 	getTimezone() {
@@ -176,7 +181,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 		));
 	}
 
-	_computeLocalize(language, resources, key) {
+	_computeLocalize(language, resources, key, args) {
 		if (!key || !resources || !language)
 			return;
 
@@ -186,11 +191,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 		}
 
 		const translatedMessage = new IntlMessageFormat(translatedValue, language);
-
-		const args = {};
-		for (let i = 1; i < arguments.length; i += 2) {
-			args[arguments[i]] = arguments[i + 1];
-		}
 
 		return translatedMessage.format(args);
 	}
