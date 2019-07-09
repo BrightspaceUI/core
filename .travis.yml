@@ -18,7 +18,7 @@ script:
 - |
   if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == false ] && [ $TRAVIS_EVENT_TYPE != "cron" ]; then
     echo "Not a pull request and on master branch, so bumping version...";
-    frauci-update-version --ownerName BrightspaceUI --repoName core;
+    frauci-update-version --ownerName=BrightspaceUI --repoName=core;
     export TRAVIS_TAG=$(frauci-get-version)
   fi
 env:
