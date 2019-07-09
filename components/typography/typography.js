@@ -1,6 +1,6 @@
 import '@webcomponents/shadycss/entrypoints/custom-style-interface.js';
 
-const importUrl = 'https://s.brightspace.com/lib/fonts/0.4.0/assets/';
+const importUrl = 'https://s.brightspace.com/lib/fonts/0.5.0/assets/';
 
 if (!document.head.querySelector('#d2l-typography-font-face')) {
 	const style = document.createElement('style');
