@@ -12,7 +12,6 @@
     "build:lang": "node ./cli/lang-generator.js",
     "build": "npm run build:clean && npm run build:icons && npm run build:lang",
     "lint": "eslint . --ext .js,.html",
-    "pretest": "npm run build",
     "test": "npm run lint && npm run test:sass && npm run test:local && npm run test:diff",
     "test:diff": "mocha ./**/*.visual-diff.js -t 10000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 10000 --golden",
