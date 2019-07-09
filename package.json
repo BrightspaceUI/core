@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Brightspace core UI components.",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
