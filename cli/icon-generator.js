@@ -1,4 +1,6 @@
-const fs = require('fs'),
+const chalk = require('chalk'),
+	cleanDir = require('./cleanDir.js'),
+	fs = require('fs'),
 	path = require('path');
 
 const imagePath = path.join(__dirname, '../components/icons/images');
@@ -36,25 +38,6 @@ function getSvgs() {
 		}
 	});
 	return svgs;
-}
-
-function cleanDir(dirPath) {
-
-	if (!fs.existsSync(dirPath))
-		return;
-
-	const files = fs.readdirSync(dirPath);
-	files.forEach((file) => {
-		const currentPath = path.join(dirPath, file);
-		if (fs.lstatSync(currentPath).isDirectory()) {
-			cleanDir(currentPath);
-		} else {
-			fs.unlinkSync(currentPath);
-		}
-	});
-
-	fs.rmdirSync(dirPath);
-
 }
 
 function createSvg(category, name) {
@@ -172,34 +155,35 @@ function createCatalogue(categories) {
 
 function generate() {
 
-	console.log('Generating icons...');
+	console.log(chalk.yellow('Generating icons...'));
 	console.group();
 
-	console.log('Clearing output directory...');
-	cleanDir(outputRoot);
-	fs.mkdirSync(outputRoot, {recursive: true});
+	console.log(chalk.blue('Clearing output directory...'));
+	if (!fs.existsSync(outputRoot)) {
+		fs.mkdirSync(outputRoot, {recursive: true});
+	}
+	cleanDir(outputPath);
 	fs.mkdirSync(outputPath, {recursive: true});
 
 	const categories = getSvgs();
-	console.log('Found SVGs, generating output...');
+	console.log(chalk.blue('Found SVGs, generating output...'));
 
 	createLoader(categories);
-	console.log('"presetIconLoader.js" generated.');
+	console.log(chalk.blue('"presetIconLoader.js" generated.'));
 
 	createCatalogue(categories);
-	console.log('"catalogue.md" generated.');
+	console.log(chalk.blue('"catalogue.md" generated.'));
 
 	createSvgs(categories);
-	console.log('SVG imports generated.');
 	console.groupEnd();
-
+	console.log(chalk.green('SVG imports generated.'));
 }
 
 try {
 	generate();
 	process.exit(0);
 } catch (err) {
-	console.error(err);
+	console.error(chalk.red(err));
 	console.groupEnd();
 	process.exit(1);
 }

@@ -23,7 +23,10 @@ describe('d2l-meter-radial', function() {
 		{ title: 'completed', fixture: '#completed'},
 		{ title: 'no-progress-scaled', fixture: '#no-progress-scaled'},
 		{ title: 'has-progress-scaled', fixture: '#has-progress-scaled'},
-		{ title: 'completed-scaled', fixture: '#completed-scaled'}
+		{ title: 'completed-scaled', fixture: '#completed-scaled'},
+		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl'},
+		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl'},
+		{ title: 'completed-rtl', fixture: '#completed-rtl'}
 	].forEach((testData) => {
 		it(testData.title, async function() {
 			const rect = await visualDiff.getRect(page, testData.fixture);

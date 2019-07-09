@@ -56,7 +56,8 @@ Then add the `d2l-meter-radial`, provide values for the properties, `value` and 
 
 * `value` (required): The current number of units that have been marked as completed. Should be a positive, non-zero number that is less than or equal to `max`
 * `max` (required): Max number of units that is being measured by this meter. For results this should be a positive, non-zero number
-* `text` (optional): Context information about what the meter is about.
+* `percent` (optional): Show the percentage instead of `value/max` value.
+* `text` (optional): Context information about what the meter is about. Displayed under the meter and used for screen readers.
 
 ## d2l-meter-circle
 ![Circle meter with no progress](./screenshots/d2l-meter-circle-no-progress.png?raw=true)
@@ -80,3 +81,5 @@ Then add the `d2l-meter-circle`, provide values for the properties, `value` and 
 
 * `value` (required): The current number of units that have been marked as completed. Should be a positive, non-zero number that is less than or equal to `max`
 * `max` (required): Max number of units that is being measured by this meter. For results this should be a positive, non-zero number
+* `percent` (optional): Show the percentage instead of `value/max` value.
+* `text` (optional): Context information about what the meter is about. This is for screen readers.
