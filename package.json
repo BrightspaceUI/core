@@ -6,14 +6,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "index.html",
   "scripts": {
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:lang": "node ./cli/lang-generator.js",
     "build": "npm run build:clean && npm run build:icons && npm run build:lang",
     "lint": "eslint . --ext .js,.html",
-    "postinstall": "npm run build:icons",
+    "pretest": "npm run build",
     "test": "npm run lint && npm run test:sass && npm run test:local && npm run test:diff",
     "test:diff": "mocha ./**/*.visual-diff.js -t 10000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 10000 --golden",
@@ -23,15 +22,18 @@
     "test:travis": "polymer test --config-file wct.conf-travis.json"
   },
   "files": [
-    "/cli",
     "/components",
     "/directives",
+    "/generated",
     "/helpers",
     "/mixins",
     "/tools",
     "!demo",
+    "!lang",
+    "!screenshots",
     "!test",
     "/components/demo",
+    "/generated/lang",
     "!/components/demo/demo"
   ],
   "author": "D2L Corporation",
@@ -48,6 +50,7 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
+    "frau-ci": "^1.37.0",
     "mocha": "^6",
     "node-sass": "^4",
     "polymer-cli": "^1",
