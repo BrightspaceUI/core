@@ -1,12 +1,17 @@
 # core
 
+[![NPM version](https://img.shields.io/npm/v/@brightspace-ui/core.svg)](https://www.npmjs.org/package/@brightspace-ui/core)
 [![Greenkeeper badge](https://badges.greenkeeper.io/BrightspaceUI/core.svg)](https://greenkeeper.io/)
 
 A collection of core UI components.
 
 ## Installation
 
-Coming soon!
+To install from NPM:
+
+```shell
+npm install @brightspace-ui/core
+```
 
 ## Components
 
@@ -42,6 +47,8 @@ Coming soon!
 ## Developing, Testing and Contributing
 
 After cloning the repo, run `npm install` to install dependencies.
+
+Run `npm run build` once, or any time icon or language files are changed.
 
 If you don't have it already, install the [Polymer CLI](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) globally:
 
@@ -96,3 +103,11 @@ To run linting, visual-diff, and unit tests:
 ```shell
 npm test
 ```
+
+## Versioning, Releasing & Deploying
+
+All version changes should obey [semantic versioning](https://semver.org/) rules.
+
+Commits and pull request merges to `master` will use [frau-ci](https://github.com/Brightspace/frau-ci) to automatically increment the `package.json` version and create a tag, which will subsequently trigger a deployment to NPM.
+
+By default, the minor version will be bumped. To increment the major or patch version instead, use `[increment major]` or `[increment patch]` in your merge message.

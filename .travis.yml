@@ -3,6 +3,7 @@ node_js: node
 addons:
   chrome: stable
 script:
+- npm run build
 - npm run lint
 - npm run test:sass
 - |
@@ -14,6 +15,12 @@ script:
     echo "Not a pull request and/or no secure environment variables, running headless tests...";
     npm run test:travis || travis_terminate 1;
   fi
+- |
+  if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == false ] && [ $TRAVIS_EVENT_TYPE != "cron" ]; then
+    echo "Not a pull request and on master branch, so bumping version...";
+    frauci-update-version --ownerName BrightspaceUI --repoName core;
+    export TRAVIS_TAG=$(frauci-get-version)
+  fi
 env:
   global:
   - SAUCE_USERNAME: Desire2Learn
@@ -23,3 +30,18 @@ env:
   - secure: i+dWesW9OieFMI8DnJiHEMfa/PFa8DXutNgYMCDqArCwbuc4luWJW+zqJxszebPj7H09uG66iUVYxb9AmCv7HMN8wvzj1AUrweT/1Ia7SKXggsdki08u10TRy6bvp9N9rWCiRwbEmCJx/9XnzRu6wRBr7jOD0pSlW5Z54YlyrZV+E3G3DYDIdXc7XXngRN1ZsuLong88B94P91wl5sZyXgcgpagfQsmA0sGiFEPKemb6hSVq/8W0sEaCEMQWkSQey1arBdgqlt6q9z8gBYP7ka6UNHJ/amA+YoFOnXn/sDOtGNkaIWrCh3pg4AUlScEDv4lxd8lKQywb285VIE1yX5v8+hxzrWj9tDeVJBhEGAgUwNlv7PRXWtMLSCqBXpHThPYN2To6bpAFXW/y+qTI3o74l7WRVny0jBRcivPapc/pofyZEYvBGiG1Sr1zN/z94nnwD4mkiQYZ60kLQgxd5cSjmkzN1aAdzxXOQHMCpYkq1Z63mMzu/h45Bqq8lBjOdAS6v7DeWHm5QkyKKfFlk8kA8aM2Gvc7MJmMloOboUN+t7oiqU4Dwjf5OejpbGdOlvZCHBCh91NwM2k+jGIUhF4B1VIPKYtgl/213pzIg1VReHVy4M1JmNIuNQT+VGcfgvcxjPnJ+g6fVKlbfd0wRLNw6bM1Od3ELWDitUtrLBY=
   # S3KEY
   - secure: kLlBYte0VCpMMlzmWCQDvTONEcXgFJwudUNClYa990KBcCBB6IteFIqiUSvqvdtK7ql/AO6Jbbxk542P7W2KYHu251aqjQiWyu7bz3Geptsq8E8DAuYQWz2WLhD4Ic8CbaJG570QixQpjBtvQIDJu+H4M2buPDCluEdrAWWBBDEB6omtT4vwjSSxKB3XIjnS+LZg71VBQgEl9dsRiaieOSfHYNT8a1Nm1dcu9K/6hgPf+dV8AABhgL2QEhfxvgrbWJwbML+0TNs5syA3qpZL6kybeXJsxAAbotA0IYPiqstl7C6H8dfPBUVytTq5JStzp9ohNJgcW3SPRt43Kd21vptV+wMOAnpZ0gxZw50yCINtlFB5MaIGIYgQpHah9y7qsaZibVL+2NWD06A3RaoAnVD/8JAD1MzpceZP42D1/gR/QHuqVcQlRoQ5iBVoV0Ir/e887OJ5fRItAGuL0tM/cA7Ktf/RM84/lx5rP/XnSr18f7hvefMhvCqUpqbaj+xGh4wVkSi5S97BATnUC4o4JmIK7JdZCbP86t3etbblLhc7W8Mx4a8PmYIQ9JxhY0JCtalCBWJdyaoLtLDaFs/fsw4/0jgpLzdDDGebYdp8yc5DWt7Iek91NxX739j/1O12P6JqJsUresKgFf5zCtF3cvy5i+4ejLhawwHDjWedsZ4=
+deploy:
+  - provider: releases
+    api_key:
+      # f167......f422d
+      secure: "XUgWLFH/3bIjIlhTuPfLNh/TSHniIqspZ6wCq4+unwjJoOr+5LI4HJWNuspNJAeUTNLzjOrTrgUDdrALLHEIBP9LefHkiDYIO5IgApNs+s2mHZhxVwr77Q4aa8sbZw5xRkENIlaa/TbOo6iCnD9QXLLBJOLlKU27u6c6CK5Up/k6W44A5HEwGvKV+EVF3RPASmjvvs32IHbZ9hYXMOKJW25pzurSGqFExzUZbue6L9lC4kxSjkwcVETFArwaEUAgo3AFssfHV+aB+IPKjswlihe/FMklRJ6gU0s77f/qFkrB/uEVAjDst+666qyqco0G03MeZP2wsrC3hBgMhKxx1cOcGdVJEb5ZRbHL698dVcPmlD9gmDaOjgePT1lxFpVaRX+7qKi8VtcAUHKL5cVizKALsSsZ5hMSMyngCg1twzkyekGtIT4EhMcuBzfSb3EjZYt0oB2+c8sKQ8mhFKXoWLGRBsYY0PIo8xp6E6HJPzPCVssx8KwFp0PsXyYC90uKp7+N8JOlIBYpLKi96vs7VKWfdnpediMQfX6j9DiZkpIsF0ag5uispAb8TJfE/z4NAJzGatW9laF0KojdYLMD3zXrDEjqLliRJRzYMZDwWq4BAm3hOWRYF0tUNNvkWs6fwzUejBGNJ9Xu8t/CIH16qskpb35sRHEuV9RVVbmO6PI="
+    on:
+      tags: true
+  - provider: npm
+    email: d2ltravisdeploy@d2l.com
+    api_key:
+      # 4e36......0778
+      secure: asQJ4woXHKOy7aUD9DajzDTkGHQSTfbXLW4AP72Y3TeM8xOL/nSG55AsmcunKUn4SFsJgUehODv8hbQ5cjYxpV28p6O2ec1K69MH/bWsbhv6xPNraDdJG2oYc0CmRZl7gUZPUXsfO2pj1XjWXJgkWO/krWg8dDlg+AjAPwZCnFwpOL8HXOS44RT0Mo1Zgc6uE2Iq2tuj+8WTjLSF+aFcjWB9aNaDFhMK2bDLo/rqJtaK1yyphfpSDl/RD40o9SiGmV8Lt5N0ho1vtN/nmgLWo5FAm0zrDT5lbjC+dl9uKj9Y6hf9SBPARTyoN8D1ATpWaNxnGqtWNoLpNI/7+yygS5VOLfS6xvUxDIkcXt0F6ow7MWfxrIgeOQg8i9ZT+OKvMqMdwi0/f8XLkfvY43x0bmr+wN9/vKb5Xx7FWJxXIuLAHGSXmXZ4WMKxPmfhtbcfkCupN/HxCbdgD8Xaoaol5DpUZMYM2skGfRjq3p+GqZdSBMrubVudjCG9qDsLE0PQWxyB7Fi4+pVTRpzn3axGXRMF1kvtUD6X1en/6CubZan7JgjgMDj7CkgY0aubaCa8rDbaYaUvwH+Qkwb8bsNYgUQ5uEEifXAovKZYBthdlLervP6YeoV6x4dyBu7m0dB8pYCI1rZH941cg6oXz03bjP2nYu7TwYgsV8ofDgsdfZw=
+    on:
+      tags: true
+      repo: BrightspaceUI/core
