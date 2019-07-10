@@ -15,12 +15,8 @@ script:
     echo "Not a pull request and/or no secure environment variables, running headless tests...";
     npm run test:travis || travis_terminate 1;
   fi
-- |
-  if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == false ] && [ $TRAVIS_EVENT_TYPE != "cron" ]; then
-    echo "Not a pull request and on master branch, so bumping version...";
-    frauci-update-version --ownerName=BrightspaceUI --repoName=core;
-    export TRAVIS_TAG=$(frauci-get-version)
-  fi
+after_success:
+- npm run update-version
 env:
   global:
   - SAUCE_USERNAME: Desire2Learn
@@ -33,10 +29,6 @@ env:
   # GITHUB_RELEASE_TOKEN (2374......46ed)
   - secure: Q0Nl6PYZhAvS2rUprp7yxAnFmaaWlRJ7Vek1y8uQ0h2Rm4hraRDTwmcFSKOdOgHnI75Wzn5qCcTDHnQMVu1tHUf7/Z1Fnk/2cG5Y5G/R877jihoaaSNdhlbBPV92EZ5+tSc51H3hmChoK4FePKv45KQLsz59txOYmsVzKd8ryKTXzrDSH5IA3ssyBLfRTT6RbRDdTRBOpoTR4zPBkWCj9vB1Pd4g01jZPk2oP1bd8sIfJp1vrEzRCOrR7FiuDIBNArKTqOoLt3rlNry4uZpwrZmmA5b0L7xNM1C1PUxMjCKZV7mT5MthVx9R2NVOrddxAE0P7z/6PK1V86oJYwoSySOedLM4AYCwddpZNzqIR5aEAM33rvbRYuyCURt/1w59SXb5zftigdjbVg7wbvxb7sxWOEbhg+LHlno0+8U1r2WU1OY3BZBvsEKCV4jGGJpSyhvQpJ0gyWfsNk3Kt37OFgG0ZBNdXgIfQ+jSzan8puoR8wUbz4DyuYOV/z5Y4LdswFR3q4/eo1FjjzBBz+fXDodXxUm2XT/lxz5uL23y5EUqfT6vIBXd2XhlQ/izS0PCckzPILSz+nOL/I4Hq/q2Zfzu+9kD/sL6G3n1c28LbQnNOsuXyfoBozVZvwPc8wXWf4jIJlWGUXCoyG2zRJkN5D64GnSDvzu6+TThOYU8ZNQ=
 deploy:
-  - provider: releases
-    api_key: "$GITHUB_RELEASE_TOKEN"
-    on:
-      tags: true
   - provider: npm
     email: d2ltravisdeploy@d2l.com
     skip_cleanup: true
