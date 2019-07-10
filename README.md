@@ -108,6 +108,4 @@ npm test
 
 All version changes should obey [semantic versioning](https://semver.org/) rules.
 
-Commits and pull request merges to `master` will use [frau-ci](https://github.com/Brightspace/frau-ci) to automatically increment the `package.json` version and create a tag, which will subsequently trigger a deployment to NPM.
-
-By default, the minor version will be bumped. To increment the major or patch version instead, use `[increment major]` or `[increment patch]` in your merge message.
+Include either `[increment major]`, `[increment minor]` or `[increment patch]` in your merge commit message to automatically increment the `package.json` version, create a tag, and trigger a deployment to NPM.
