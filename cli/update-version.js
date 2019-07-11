@@ -1,8 +1,8 @@
-const chalk = require('chalk'),
-	git = require('simple-git/promise')(),
+const git = require('simple-git/promise')(),
 	spawn = require('child_process');
 
 const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
+const branchName = process.env.TRAVIS_BRANCH;
 
 function getIncrementType() {
 
@@ -23,18 +23,18 @@ function getIncrementType() {
 
 function updateVersion(incrementType) {
 
-	console.log(chalk.blue(`Incrementing ${incrementType} version.`));
+	console.log(`Incrementing ${incrementType} version.`);
 
 	try {
 		spawn.execSync(`npm version ${incrementType} --no-git-tag-version`);
 	} catch (err) {
-		console.error(chalk.red(err));
+		console.error(err);
 		return null;
 	}
 
 	let newVersion = require('../package.json').version;
 	newVersion = `v${newVersion}`;
-	console.log(chalk.blue(`New version: ${newVersion}`));
+	console.log(`New version: ${newVersion}`);
 
 	return newVersion;
 
@@ -45,36 +45,35 @@ function commit(newVersion) {
 	git.addConfig('user.name', 'BrightspaceGitHubReader');
 	git.addConfig('user.email', 'brightspacegithubreader@d2l.com');
 	git.addConfig('push.default', 'simple');
+	git.checkout(branchName);
 
-	console.log(chalk.blue('Committing, tagging and pushing...'));
+	console.log('Committing, tagging and pushing...');
+	console.group();
+
 	const commitMessage = `[skip ci] Updated version to ${newVersion}`;
 	return git.commit(commitMessage, 'package.json')
-		.then(() => {
-			git.addTag(newVersion);
+		.then((status) => {
+			console.log(status);
+			console.log('Committed. Tagging...');
+			return git.addTag(newVersion);
 		}).then(() => {
-			git.push(remote, 'master');
+			console.log('Tagged. Pushing...');
+			return git.push(remote, branchName);
 		}).then(() => {
-			git.pushTags(remote);
-		}).then(() => {
-			process.env.TRAVIS_TAG = newVersion;
+			console.log('Pushed. Pushing tags...');
+			return git.pushTags(remote);
 		});
 
 }
 
-console.log(chalk.yellow('Checking whether package.json version update is required...'));
+console.log('Checking whether package.json version update is required...');
 console.group();
-
-if (process.env.TRAVIS_BRANCH !== 'master' || process.env.TRAVIS_PULL_REQUEST !== 'false') {
-	console.log('Pull request or not on master branch, skipping version update.');
-	console.groupEnd();
-	process.exit(0);
-}
 
 const incrementType = getIncrementType();
 if (incrementType === 'none') {
 	console.log('No [increment major/minor/patch] found in commit message, skipping version update.');
 	console.groupEnd();
-	process.exit(0);
+	process.exit(1);
 }
 
 const newVersion = updateVersion(incrementType);
@@ -86,10 +85,11 @@ if (newVersion === null) {
 commit(newVersion)
 	.then(() => {
 		console.groupEnd();
-		console.log(chalk.green('Version updated successfully.'));
+		console.groupEnd();
+		console.log('Version updated successfully.');
 		process.exit(0);
 	}).catch((err) => {
-		console.error(chalk.red(err));
+		console.error(err);
 		console.groupEnd();
 		process.exit(1);
 	});
