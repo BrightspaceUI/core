@@ -31,7 +31,7 @@ The `icon` attribute value is of the form `d2l-<category-name>:<icon-name>`. The
 
 ### Custom SVG Icons
 
-To use an a custom SVG icon, point the `src` attribute at your icon file and set the `size` attribute to one of: `tier1`, `tier2` or `tier3`.
+To use a custom SVG icon, point the `src` attribute at your icon file and set the `size` attribute to one of: `tier1`, `tier2` or `tier3`.
 
 ```html
 <d2l-icon src="path/to/my-icon.svg" size="tier2"></d2l-icon>
