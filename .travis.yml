@@ -16,7 +16,10 @@ script:
     npm run test:travis || travis_terminate 1;
   fi
 after_success:
-- npm run update-version
+- |
+  if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == false ] && [ $TRAVIS_EVENT_TYPE != "cron" ]; then
+    npm run update-version; export UPDATE_RESULT=$?;
+  fi
 env:
   global:
   - SAUCE_USERNAME: Desire2Learn
@@ -36,5 +39,5 @@ deploy:
       # 4e36......0778
       secure: asQJ4woXHKOy7aUD9DajzDTkGHQSTfbXLW4AP72Y3TeM8xOL/nSG55AsmcunKUn4SFsJgUehODv8hbQ5cjYxpV28p6O2ec1K69MH/bWsbhv6xPNraDdJG2oYc0CmRZl7gUZPUXsfO2pj1XjWXJgkWO/krWg8dDlg+AjAPwZCnFwpOL8HXOS44RT0Mo1Zgc6uE2Iq2tuj+8WTjLSF+aFcjWB9aNaDFhMK2bDLo/rqJtaK1yyphfpSDl/RD40o9SiGmV8Lt5N0ho1vtN/nmgLWo5FAm0zrDT5lbjC+dl9uKj9Y6hf9SBPARTyoN8D1ATpWaNxnGqtWNoLpNI/7+yygS5VOLfS6xvUxDIkcXt0F6ow7MWfxrIgeOQg8i9ZT+OKvMqMdwi0/f8XLkfvY43x0bmr+wN9/vKb5Xx7FWJxXIuLAHGSXmXZ4WMKxPmfhtbcfkCupN/HxCbdgD8Xaoaol5DpUZMYM2skGfRjq3p+GqZdSBMrubVudjCG9qDsLE0PQWxyB7Fi4+pVTRpzn3axGXRMF1kvtUD6X1en/6CubZan7JgjgMDj7CkgY0aubaCa8rDbaYaUvwH+Qkwb8bsNYgUQ5uEEifXAovKZYBthdlLervP6YeoV6x4dyBu7m0dB8pYCI1rZH941cg6oXz03bjP2nYu7TwYgsV8ofDgsdfZw=
     on:
-      tags: true
       repo: BrightspaceUI/core
+      condition: $UPDATE_RESULT = 0
