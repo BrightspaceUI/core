@@ -1,6 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { labelStyles } from '../typography/styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -23,15 +22,15 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				attribute: 'min-height'
 			},
 
+			_containerStyle: {
+				type: Object
+			},
+
 			_floatingButtonsFloating: {
 				type: Boolean
 			},
 
 			_innerContainerStyle: {
-				type: Object
-			},
-
-			_buttonSpacerStyle: {
 				type: Object
 			}
 		};
@@ -51,8 +50,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			.d2l-floating-buttons-container {
 				border-top: 1px solid transparent;
 				display: block;
-				margin: 0 auto;
-				width: 100%;
 			}
 
 			.d2l-floating-buttons-container.d2l-floating-buttons-floating {
@@ -120,51 +117,72 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.minHeight = '500px';
-		this._buttonSpacerStyle = {};
 		this._innerContainerStyle = {};
+		this._containerStyle = {};
 		this._container = null;
 		this._containerTop = null;
 
-		this._reposition = this._reposition.bind(this);
+		this._calcFloating = this._calcFloating.bind(this);
+		this._calcPosition = this._calcPosition.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		if( !this.alwaysFloat ) {
-			window.addEventListener('resize', this._reposition);
-			window.addEventListener('scroll', this._reposition);
+		if (!this.alwaysFloat) {
+			window.addEventListener('resize', this._calcFloating);
+			window.addEventListener('scroll', this._calcFloating);
 		}
+
+		window.addEventListener('resize', this._calcPosition);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if( !this.alwaysFloat ) {
-			window.removeEventListener('resize', this._reposition);
-			window.removeEventListener('scroll', this._reposition);
+		if (!this.alwaysFloat) {
+			window.removeEventListener('resize', this._calcFloating);
+			window.removeEventListener('scroll', this._calcFloating);
 		}
+
+		window.removeEventListener('resize', this._calcPosition);
 	}
 
 	firstUpdated() {
 		super.firstUpdated();
-		if( this.alwaysFloat ) {
+		if (this.alwaysFloat) {
 			this._floatingButtonsFloating = true;
 		} else {
 			this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
 			this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
-			this._reposition();
+			this._calcFloating();
 		}
+
+		this._calcPosition();
 	}
 
-	_reposition() {
+	_calcFloating() {
 		const viewBottom = window.innerHeight;
 		const containerRect = this._container.getBoundingClientRect();
 		const containerTop = this._containerTop.getBoundingClientRect().top;
 
-		if((containerTop + containerRect.height) <= viewBottom) {
+		if ((containerTop + containerRect.height) <= viewBottom) {
 			this._floatingButtonsFloating = false;
 		} else {
 			this._floatingButtonsFloating = true;
 		}
+	}
+
+	_calcPosition() {
+		const offsetParentLeft = this.offsetParent.getBoundingClientRect().left;
+		const left = this.getBoundingClientRect().left;
+		const containerLeft = left - offsetParentLeft - 1;
+		this._containerStyle.marginLeft = `-${containerLeft}px`;
+
+		this._innerContainerStyle.left = `${containerLeft}px`;
+
+		const offsetParentRight = this.offsetParent.getBoundingClientRect().right;
+		const right = this.getBoundingClientRect().right;
+		const containerRight = offsetParentRight - right - 1;
+		this._containerStyle.marginRight = `-${containerRight}px`;
 	}
 
 	render() {
@@ -175,7 +193,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		return html`
 			<div class="d2l-floating-detection"></div>
-			<div class=${classMap(containerClasses)}>
+			<div class=${classMap(containerClasses)} style=${styleMap(this._containerStyle)}>
 				<div class="d2l-floating-buttons-inner-container" style=${styleMap(this._innerContainerStyle)}>
 					<slot></slot>
 				</div>
