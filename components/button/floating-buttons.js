@@ -134,33 +134,24 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (!this.alwaysFloat) {
-			window.addEventListener('resize', this._calcFloating);
-			window.addEventListener('scroll', this._calcFloating);
-		}
-
+		window.addEventListener('resize', this._calcFloating);
 		window.addEventListener('resize', this._calcSizePosition);
+		window.addEventListener('scroll', this._calcFloating);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (!this.alwaysFloat) {
-			window.removeEventListener('resize', this._calcFloating);
-			window.removeEventListener('scroll', this._calcFloating);
-		}
-
+		window.removeEventListener('resize', this._calcFloating);
 		window.removeEventListener('resize', this._calcSizePosition);
+		window.removeEventListener('scroll', this._calcFloating);
 	}
 
 	firstUpdated() {
 		super.firstUpdated();
-		if (this.alwaysFloat) {
-			this._floatingButtonsFloating = true;
-		} else {
-			this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
-			this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
-			this._calcFloating();
-		}
+
+		this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
+		this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
+		this._calcFloating();
 
 		this._calcSizePosition();
 	}
@@ -175,6 +166,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	_calcFloating() {
+		if (this.alwaysFloat) {
+			this._floatingButtonsFloating = true;
+			return;
+		}
+
 		const viewBottom = window.innerHeight;
 		const containerRect = this._container.getBoundingClientRect();
 		const containerTop = this._containerTop.getBoundingClientRect().top;
