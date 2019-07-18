@@ -22,7 +22,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				attribute: 'min-height'
 			},
 
-			_containerStyle: {
+			_containerMarginLeft: {
+				type: Object
+			},
+
+			_containerMarginRight: {
 				type: Object
 			},
 
@@ -30,8 +34,12 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				type: Boolean
 			},
 
-			_innerContainerStyle: {
-				type: Object
+			_innerContainerLeft: {
+				type: Number
+			},
+
+			_innerContainerRight: {
+				type: Number
 			}
 		};
 	}
@@ -117,13 +125,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.minHeight = '500px';
-		this._innerContainerStyle = {};
-		this._containerStyle = {};
 		this._container = null;
 		this._containerTop = null;
 
 		this._calcFloating = this._calcFloating.bind(this);
-		this._calcPosition = this._calcPosition.bind(this);
+		this._calcSizePosition = this._calcSizePosition.bind(this);
 	}
 
 	connectedCallback() {
@@ -133,7 +139,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			window.addEventListener('scroll', this._calcFloating);
 		}
 
-		window.addEventListener('resize', this._calcPosition);
+		window.addEventListener('resize', this._calcSizePosition);
 	}
 
 	disconnectedCallback() {
@@ -143,7 +149,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			window.removeEventListener('scroll', this._calcFloating);
 		}
 
-		window.removeEventListener('resize', this._calcPosition);
+		window.removeEventListener('resize', this._calcSizePosition);
 	}
 
 	firstUpdated() {
@@ -156,7 +162,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._calcFloating();
 		}
 
-		this._calcPosition();
+		this._calcSizePosition();
+	}
+
+	updated(changedProperties) {
+		super.updated();
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === '_dir') {
+				this._calcSizePosition();
+			}
+		});
 	}
 
 	_calcFloating() {
@@ -171,18 +186,22 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		}
 	}
 
-	_calcPosition() {
+	_calcSizePosition() {
 		const offsetParentLeft = this.offsetParent.getBoundingClientRect().left;
 		const left = this.getBoundingClientRect().left;
 		const containerLeft = left - offsetParentLeft - 1;
-		this._containerStyle.marginLeft = `-${containerLeft}px`;
-
-		this._innerContainerStyle.left = `${containerLeft}px`;
+		this._containerMarginLeft = `-${containerLeft}px`;
 
 		const offsetParentRight = this.offsetParent.getBoundingClientRect().right;
 		const right = this.getBoundingClientRect().right;
 		const containerRight = offsetParentRight - right - 1;
-		this._containerStyle.marginRight = `-${containerRight}px`;
+		this._containerMarginRight = `-${containerRight}px`;
+
+		if (this.dir !== 'rtl') {
+			this._innerContainerLeft = `${containerLeft}px`;
+		} else {
+			this._innerContainerRight = `${containerLeft}px`;
+		}
 	}
 
 	render() {
@@ -191,10 +210,20 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			'd2l-floating-buttons-floating': this._floatingButtonsFloating
 		};
 
+		const containerStyle = {
+			marginLeft: this._containerMarginLeft,
+			marginRight: this._containerMarginRight
+		};
+
+		const innerContainerStyle = {
+			left: this._innerContainerLeft,
+			right: this._innerContainerRight
+		};
+
 		return html`
 			<div class="d2l-floating-detection"></div>
-			<div class=${classMap(containerClasses)} style=${styleMap(this._containerStyle)}>
-				<div class="d2l-floating-buttons-inner-container" style=${styleMap(this._innerContainerStyle)}>
+			<div class=${classMap(containerClasses)} style=${styleMap(containerStyle)}>
+				<div class="d2l-floating-buttons-inner-container" style=${styleMap(innerContainerStyle)}>
 					<slot></slot>
 				</div>
 			</div>
