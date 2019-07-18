@@ -61,16 +61,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			}
 
 			.d2l-floating-buttons-container.d2l-floating-buttons-floating {
-				animation: d2l-floating-buttons-animation 500ms ease-out;
-				-webkit-animation: d2l-floating-buttons-animation 500ms ease-out;
 				background-color: #ffffff;
 				background-color: rgba(255, 255, 255, 0.88);
 				border-top-color: var(--d2l-color-mica);
-				bottom: 0;
+				bottom: -10px;
 				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
 				left: 0;
 				position: sticky;
 				right: 0;
+				transform: translate(0, -10px);
+				transition: transform 500ms, border-top-color 500ms, background-color 500ms;
 				z-index: 999;
 			}
 
@@ -91,33 +91,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
 				margin-left: 0.75rem !important;
 				margin-right: 0 !important;
-			}
-
-			/* fix this */
-			@keyframes d2l-floating-buttons-animation {
-				0% {
-					border-color: transparent;
-					background-color: transparent;
-					transform: translate(0, 10px);
-				}
-				100% {
-					border-top-color: var(--d2l-color-mica);
-					background-color: rgba(255, 255, 255, 0.88);
-					transform: translate(0, 0);
-				}
-			}
-
-			@-webkit-keyframes d2l-floating-buttons-animation {
-				0% {
-					border-color: transparent;
-					background-color: transparent;
-					transform: translate(0, 10px);
-				}
-				100% {
-					border-top-color: var(--d2l-color-mica);
-					background-color: rgba(255, 255, 255, 0.88);
-					transform: translate(0, 0);
-				}
 			}
 		`;
 	}
