@@ -58,6 +58,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			.d2l-floating-buttons-container {
 				border-top: 1px solid transparent;
 				display: block;
+				overflow-x: hidden;
 			}
 
 			.d2l-floating-buttons-container.d2l-floating-buttons-floating {
@@ -107,28 +108,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('scroll', this._calcIfFloating);
-		window.addEventListener('resize', () => {
-			this._calcIfFloating();
-			this._calcContainerPosition();
-		});
-		window.addEventListener('d2l-tab-panel-selected', () => {
-			this._calcIfFloating();
-			this._calcContainerPosition();
-		});
+		window.addEventListener('scroll', this._calcContainerPosition);
+		window.addEventListener('resize', this._calcContainerPosition);
+		window.addEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('scroll', this._calcIfFloating);
-		window.removeEventListener('resize', () => {
-			this._calcIfFloating();
-			this._calcContainerPosition();
-		});
-		window.removeEventListener('d2l-tab-panel-selected', () => {
-			this._calcIfFloating();
-			this._calcContainerPosition();
-		});
+		window.removeEventListener('scroll', this._calcContainerPosition);
+		window.removeEventListener('resize', this._calcContainerPosition);
+		window.removeEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
 	}
 
 	firstUpdated() {
@@ -137,7 +126,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
 		this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
 
-		this._calcIfFloating();
 		this._calcContainerPosition();
 	}
 
@@ -148,6 +136,29 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				this._calcContainerPosition();
 			}
 		});
+	}
+
+	_calcContainerPosition() {
+		this._calcIfFloating();
+		if (!this._floatingButtonsFloating) {
+			return;
+		}
+
+		const offsetParentLeft = this.offsetParent.getBoundingClientRect().left;
+		const left = this.getBoundingClientRect().left;
+		const containerLeft = left - offsetParentLeft - 1;
+		this._containerMarginLeft = `-${containerLeft}px`;
+
+		const offsetParentRight = this.offsetParent.getBoundingClientRect().right;
+		const right = this.getBoundingClientRect().right;
+		const containerRight = offsetParentRight - right - 1;
+		this._containerMarginRight = `-${containerRight}px`;
+
+		if (this.dir !== 'rtl') {
+			this._innerContainerLeft = `${containerLeft}px`;
+		} else {
+			this._innerContainerRight = `${containerLeft}px`;
+		}
 	}
 
 	_calcIfFloating() {
@@ -173,28 +184,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._floatingButtonsFloating = false;
 		} else {
 			this._floatingButtonsFloating = true;
-		}
-	}
-
-	_calcContainerPosition() {
-		if (!this._floatingButtonsFloating) {
-			return;
-		}
-
-		const offsetParentLeft = this.offsetParent.getBoundingClientRect().left;
-		const left = this.getBoundingClientRect().left;
-		const containerLeft = left - offsetParentLeft - 1;
-		this._containerMarginLeft = `-${containerLeft}px`;
-
-		const offsetParentRight = this.offsetParent.getBoundingClientRect().right;
-		const right = this.getBoundingClientRect().right;
-		const containerRight = offsetParentRight - right - 1;
-		this._containerMarginRight = `-${containerRight}px`;
-
-		if (this.dir !== 'rtl') {
-			this._innerContainerLeft = `${containerLeft}px`;
-		} else {
-			this._innerContainerRight = `${containerLeft}px`;
 		}
 	}
 

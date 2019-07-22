@@ -132,8 +132,8 @@
 					<div class="content">
 						<p>I love Coffee!</p>
 					</div>
-					<d2l-floating-buttons id="wc-buttons">
-						<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
+					<d2l-floating-buttons id="wc-buttons-coffee">
+						<d2l-button primary id="btn-make-more-coffee">Brew more Coffee!</d2l-button>
 					</d2l-floating-buttons>
 				</div>
 			</div>
@@ -147,8 +147,8 @@
 					<p>I love Tea!</p>
 					<div style="width: 100px; height: 300px;"></div>
 				</div>
-				<d2l-floating-buttons id="wc-buttons2">
-					<d2l-button primary id="btn-make-more2">Brew more Tea!</d2l-button>
+				<d2l-floating-buttons id="wc-buttons-tea">
+					<d2l-button primary id="btn-make-more-tea">Brew more Tea!</d2l-button>
 				</d2l-floating-buttons>
 			</div>
 		</d2l-demo-page>
@@ -196,12 +196,12 @@
 			document.getElementById('demo-codeview2').textContent = `${sampleHTML2}`;
 			let page_buttonCount = 0;
 			let page_floatingButtons;
-			function appendButton() {
-				const floatingButtons = document.getElementById('wc-buttons');
+			function appendButton(beverage) {
+				const floatingButtons = document.getElementById(`wc-buttons-${beverage}`);
 				if (floatingButtons) {
 					page_buttonCount += 1;
 					const newButton = document.createElement('d2l-button');
-					newButton.textContent = `Coffee #${page_buttonCount}`;
+					newButton.textContent = `${beverage} #${page_buttonCount}`;
 					floatingButtons.appendChild(newButton);
 				}
 			}
@@ -212,15 +212,17 @@
 				}
 			});
 			document.getElementById('btn-remove-floating').addEventListener('click', () => {
-				const floatingButtons = document.getElementById('wc-buttons');
+				const floatingButtons = document.getElementById('wc-buttons-coffee');
 				if (floatingButtons) {
 					page_floatingButtons = floatingButtons;
 					floatingButtons.parentNode.removeChild(floatingButtons);
 				}
 			});
-			document.getElementById('btn-append-new').addEventListener('click', appendButton);
+			document.getElementById('btn-append-new').addEventListener('click', () => {
+				appendButton('coffee')
+			});
 			document.getElementById('btn-remove-last').addEventListener('click', () => {
-				const floatingButtons = document.getElementById('wc-buttons');
+				const floatingButtons = document.getElementById('wc-buttons-coffee');
 				if (floatingButtons.lastChild) {
 					floatingButtons.removeChild(
 						floatingButtons.lastChild
@@ -238,8 +240,11 @@
 					content.removeChild(content.lastChild);
 				}
 			});
-			document.getElementById('btn-make-more').addEventListener('click', () => {
-				appendButton();
+			document.getElementById('btn-make-more-coffee').addEventListener('click', () => {
+				appendButton('coffee');
+			});
+			document.getElementById('btn-make-more-tea').addEventListener('click', () => {
+				appendButton('tea');
 			});
 		</script>
 	</body>
