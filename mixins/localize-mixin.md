@@ -10,7 +10,7 @@ The user's language, timezone and any D2L locale overrides are automatically fet
 
 To use `LocalizeMixin` implement the following within your component (examples in "Language Resources"):
 * `static async getLocalizeResources(langs)`:
-	* `langs`: array of possible languages based upon `__documentLanguage` and `__documentLanguageFallback`. For example `['ar-dz', 'ar', 'en-us', 'en']`
+	* `langs`: array of possible languages (lowercase) based upon `__documentLanguage` and `__documentLanguageFallback`. For example `['ar-dz', 'ar', 'en-us', 'en']`
 	* Returns object containing `language` (the first language in the array that had resources available) and `resources` (the localization resources for that language). For example:
 		```
 		{
