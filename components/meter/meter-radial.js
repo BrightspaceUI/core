@@ -17,7 +17,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		return [ heading4Styles, bodySmallStyles, css`
 		:host {
 			display: inline-block;
-			width: 4.3rem;
+			width: 4.2rem;
 		}
 		.d2l-meter-radial {
 			display: flex;
@@ -39,6 +39,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		.d2l-meter-radial-text {
 			color: var(--d2l-color-ferrite);
 			fill: var(--d2l-color-ferrite);
+			line-height: 0.8rem;
 			text-align: center;
 		}
 	` ];
@@ -56,15 +57,15 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 				class="d2l-meter-radial"
 				role="img"
 				aria-label="${this._ariaLabel(primary, secondary)}">
-				<svg viewBox="0 0 86 52">
-					<path class="d2l-meter-radial-full-bar" d="M5 47a38 35 0 0 1 76 0" />
+				<svg viewBox="0 0 84 46">
+					<path class="d2l-meter-radial-full-bar" d="M5 40a37 36 0 0 1 74 0" />
 					<path
 						class="d2l-meter-radial-progress-bar"
-						d="M5 47a38 35 0 0 1 76 0"
+						d="M5 40a37 36 0 0 1 74 0"
 						stroke-dasharray="${progressFill} ${lengthOfLine}"
 						stroke-dashoffset="${this.dir === 'rtl' ? progressFill - lengthOfLine : 0}"
 						visibility="${this.value ? 'visible' : 'hidden'}" />
-					<text class="d2l-heading-4 d2l-meter-radial-text" x="38" y="2" text-anchor="middle"  transform="translate(5 47)">
+					<text class="d2l-heading-4 d2l-meter-radial-text" x="38" y="2" text-anchor="middle"  transform="translate(5 39)">
 						${primary}
 					</text>
 				</svg>
