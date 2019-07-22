@@ -33,7 +33,11 @@
 		<script type="module">
 			document.getElementById('btn-always-float').addEventListener('click', () => {
 				const floatingButtons = document.getElementById('wc-buttons');
-				floatingButtons.toggleAttribute('always-float');
+				if (floatingButtons.hasAttribute('always-float')) {
+					floatingButtons.removeAttribute('always-float');
+				} else {
+					floatingButtons.setAttribute('always-float', true);
+				}
 			});
 		</script>
 

@@ -101,22 +101,34 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._container = null;
 		this._containerTop = null;
 
-		this._calcFloating = this._calcFloating.bind(this);
-		this._calcSizePosition = this._calcSizePosition.bind(this);
+		this._calcIfFloating = this._calcIfFloating.bind(this);
+		this._calcContainerPosition = this._calcContainerPosition.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('resize', this._calcFloating);
-		window.addEventListener('resize', this._calcSizePosition);
-		window.addEventListener('scroll', this._calcFloating);
+		window.addEventListener('scroll', this._calcIfFloating);
+		window.addEventListener('resize', () => {
+			this._calcIfFloating();
+			this._calcContainerPosition();
+		});
+		window.addEventListener('d2l-tab-panel-selected', () => {
+			this._calcIfFloating();
+			this._calcContainerPosition();
+		});
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('resize', this._calcFloating);
-		window.removeEventListener('resize', this._calcSizePosition);
-		window.removeEventListener('scroll', this._calcFloating);
+		window.removeEventListener('scroll', this._calcIfFloating);
+		window.removeEventListener('resize', () => {
+			this._calcIfFloating();
+			this._calcContainerPosition();
+		});
+		window.removeEventListener('d2l-tab-panel-selected', () => {
+			this._calcIfFloating();
+			this._calcContainerPosition();
+		});
 	}
 
 	firstUpdated() {
@@ -124,38 +136,51 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
 		this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
-		this._calcFloating();
 
-		this._calcSizePosition();
+		this._calcIfFloating();
+		this._calcContainerPosition();
 	}
 
 	updated(changedProperties) {
 		super.updated();
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === '_dir') {
-				this._calcSizePosition();
+				this._calcContainerPosition();
 			}
 		});
 	}
 
-	_calcFloating() {
+	_calcIfFloating() {
 		if (this.alwaysFloat) {
 			this._floatingButtonsFloating = true;
 			return;
+		}
+
+		let _viewportIsLessThanMinHeight;
+		if (this.minHeight) {
+			_viewportIsLessThanMinHeight = window.matchMedia(`(max-height: ${this.minHeight})`).matches;
 		}
 
 		const viewBottom = window.innerHeight;
 		const containerRect = this._container.getBoundingClientRect();
 		const containerTop = this._containerTop.getBoundingClientRect().top;
 
-		if ((containerTop + containerRect.height) <= viewBottom) {
+		/* if viewport height is less than minHeight (e.g., mobile device),
+		 * or div.d2l-floating-detection is visible (i.e., buttons no longer need to be floating)
+		 * then do not float the buttons
+		 */
+		if (_viewportIsLessThanMinHeight || ((containerTop + containerRect.height) <= viewBottom)) {
 			this._floatingButtonsFloating = false;
 		} else {
 			this._floatingButtonsFloating = true;
 		}
 	}
 
-	_calcSizePosition() {
+	_calcContainerPosition() {
+		if (!this._floatingButtonsFloating) {
+			return;
+		}
+
 		const offsetParentLeft = this.offsetParent.getBoundingClientRect().left;
 		const left = this.getBoundingClientRect().left;
 		const containerLeft = left - offsetParentLeft - 1;

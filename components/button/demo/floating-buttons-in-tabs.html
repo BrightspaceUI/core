@@ -166,6 +166,10 @@
 				tabTwo.classList.remove('vui-tabmenu-item-select');
 				tabTwo.classList.add('vui-tabmenu-item-select-next');
 				ctnTwo.classList.add('d2l-hidden');
+
+				tabOne.dispatchEvent(new CustomEvent(
+					'd2l-tab-panel-selected', { bubbles: true, composed: true }
+				));
 			});
 			tabTwo.addEventListener('click', () => {
 				tabOne.classList.add('vui-tabmenu-item-select-prev');
@@ -174,6 +178,10 @@
 				tabTwo.classList.remove('vui-tabmenu-item-select-next');
 				tabTwo.classList.add('vui-tabmenu-item-select');
 				ctnTwo.classList.remove('d2l-hidden');
+
+				tabTwo.dispatchEvent(new CustomEvent(
+					'd2l-tab-panel-selected', { bubbles: true, composed: true }
+				));
 			});
 			/* end: faux tabbing functionality */
 			const sampleHTML1 = `
