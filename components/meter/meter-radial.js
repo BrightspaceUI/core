@@ -58,10 +58,10 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 				role="img"
 				aria-label="${this._ariaLabel(primary, secondary)}">
 				<svg viewBox="0 0 84 46">
-					<path class="d2l-meter-radial-full-bar" d="M5 40a37 36 0 0 1 74 0" />
+					<path class="d2l-meter-radial-full-bar" d="M5 40a37 35 0 0 1 74 0" />
 					<path
 						class="d2l-meter-radial-progress-bar"
-						d="M5 40a37 36 0 0 1 74 0"
+						d="M5 40a37 35 0 0 1 74 0"
 						stroke-dasharray="${progressFill} ${lengthOfLine}"
 						stroke-dashoffset="${this.dir === 'rtl' ? progressFill - lengthOfLine : 0}"
 						visibility="${this.value ? 'visible' : 'hidden'}" />
