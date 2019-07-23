@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -11,7 +10,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			minHeight: { type: String, attribute: 'min-height' },
 			_containerMarginLeft: { type: Object },
 			_containerMarginRight: { type: Object },
-			_floatingButtonsFloating: { type: Boolean, reflect: true },
+			_floating: { type: Boolean, reflect: true },
 			_innerContainerLeft: { type: Number },
 			_innerContainerRight: { type: Number }
 		};
@@ -24,7 +23,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				display: block;
 			}
 
-			:host([_floatingButtonsFloating]) {
+			:host([_floating]) {
 				bottom: -10px;
 				left: 0;
 				position: -webkit-sticky;
@@ -43,7 +42,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				overflow-x: hidden;
 			}
 
-			.d2l-floating-buttons-container.d2l-floating-buttons-floating {
+			:host([_floating]) .d2l-floating-buttons-container {
 				background-color: #ffffff;
 				background-color: rgba(255, 255, 255, 0.88);
 				border-top-color: var(--d2l-color-mica);
@@ -129,7 +128,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	_calcContainerPosition() {
 		this._calcIfFloating();
-		if (!this._floatingButtonsFloating) {
+		if (!this._floating) {
 			return;
 		}
 
@@ -159,7 +158,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	_calcIfFloating() {
 		if (this.alwaysFloat) {
-			this._floatingButtonsFloating = true;
+			this._floating = true;
 			return;
 		}
 
@@ -177,18 +176,13 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		 * then do not float the buttons
 		 */
 		if (_viewportIsLessThanMinHeight || ((containerTop + containerRectHeight) <= viewBottom)) {
-			this._floatingButtonsFloating = false;
+			this._floating = false;
 		} else {
-			this._floatingButtonsFloating = true;
+			this._floating = true;
 		}
 	}
 
 	render() {
-		const containerClasses = {
-			'd2l-floating-buttons-container': true,
-			'd2l-floating-buttons-floating': this._floatingButtonsFloating
-		};
-
 		const containerStyle = {
 			marginLeft: this._containerMarginLeft,
 			marginRight: this._containerMarginRight
@@ -201,7 +195,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		return html`
 			<div class="d2l-floating-detection"></div>
-			<div class=${classMap(containerClasses)} style=${styleMap(containerStyle)}>
+			<div class="d2l-floating-buttons-container" style=${styleMap(containerStyle)}>
 				<div class="d2l-floating-buttons-inner-container" style=${styleMap(innerContainerStyle)}>
 					<slot></slot>
 				</div>
