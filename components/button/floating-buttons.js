@@ -11,7 +11,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			minHeight: { type: String, attribute: 'min-height' },
 			_containerMarginLeft: { type: Object },
 			_containerMarginRight: { type: Object },
-			_floatingButtonsFloating: { type: Boolean },
+			_floatingButtonsFloating: { type: Boolean, reflect: true },
 			_innerContainerLeft: { type: Number },
 			_innerContainerRight: { type: Number }
 		};
@@ -21,7 +21,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		return css`
 			:host {
 				box-sizing: border-box;
-				display: inline;
+				display: block;
+			}
+
+			:host([_floatingButtonsFloating]) {
+				bottom: -10px;
+				left: 0;
+				position: -webkit-sticky;
+				position: sticky;
+				right: 0;
+				z-index: 999;
 			}
 
 			:host([hidden]) {
@@ -38,14 +47,9 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				background-color: #ffffff;
 				background-color: rgba(255, 255, 255, 0.88);
 				border-top-color: var(--d2l-color-mica);
-				bottom: -10px;
 				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
-				left: 0;
-				position: sticky;
-				right: 0;
 				transform: translate(0, -10px);
 				transition: transform 500ms, border-top-color 500ms, background-color 500ms;
-				z-index: 999;
 			}
 
 			.d2l-floating-buttons-container > div {
@@ -72,37 +76,34 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.minHeight = '500px';
-		this._container = null;
 		this._containerTop = null;
 
 		this._calcIfFloating = this._calcIfFloating.bind(this);
 		this._calcContainerPosition = this._calcContainerPosition.bind(this);
-		this._calcContainerInfo = this._calcContainerInfo.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('scroll', this._calcIfFloating);
-		window.addEventListener('resize', this._calcContainerInfo);
-		window.addEventListener('d2l-tab-panel-selected', this._calcContainerInfo);
+		window.addEventListener('scroll', this._calcContainerPosition);
+		window.addEventListener('resize', this._calcContainerPosition);
+		window.addEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('scroll', this._calcIfFloating);
-		window.removeEventListener('resize', this._calcContainerInfo);
-		window.removeEventListener('d2l-tab-panel-selected', this._calcContainerInfo);
+		window.removeEventListener('scroll', this._calcContainerPosition);
+		window.removeEventListener('resize', this._calcContainerPosition);
+		window.removeEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
 	}
 
 	firstUpdated() {
 		super.firstUpdated();
 
-		this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
 		this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
 
 		setTimeout(() => {
 			// need to wait a small amount for _containerTop top to be correct
-			this._calcContainerInfo();
+			this._calcContainerPosition();
 			this._startObserver();
 		});
 	}
@@ -120,18 +121,14 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		const htmlElem = window.document.getElementsByTagName('html')[0];
 		this._observer = new MutationObserver((mutations) => {
 			for (let i = 0; i < mutations.length; i++) {
-				this._calcContainerInfo();
+				this._calcContainerPosition();
 			}
 		});
 		this._observer.observe(htmlElem, { childList: true, subtree: true });
 	}
 
-	_calcContainerInfo() {
-		this._calcIfFloating();
-		this._calcContainerPosition();
-	}
-
 	_calcContainerPosition() {
+		this._calcIfFloating();
 		if (!this._floatingButtonsFloating) {
 			return;
 		}
@@ -139,15 +136,22 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		const offsetParentLeft = this.offsetParent.getBoundingClientRect().left;
 		const left = this.getBoundingClientRect().left;
 		const containerLeft = left - offsetParentLeft - 1;
-		this._containerMarginLeft = `-${containerLeft}px`;
+		if (containerLeft !== 0) {
+			// only update this if needed - needed for firefox
+			this._containerMarginLeft = `-${containerLeft}px`;
+		}
 
 		const offsetParentRight = this.offsetParent.getBoundingClientRect().right;
 		const right = this.getBoundingClientRect().right;
 		const containerRight = offsetParentRight - right - 1;
-		this._containerMarginRight = `-${containerRight}px`;
+		if (containerRight !== 0) {
+			this._containerMarginRight = `-${containerRight}px`;
+		}
 
 		if (this.dir !== 'rtl') {
-			this._innerContainerLeft = `${containerLeft}px`;
+			if (containerLeft !== 0) {
+				this._innerContainerLeft = `${containerLeft}px`;
+			}
 		} else {
 			this._innerContainerRight = `${containerLeft}px`;
 		}
@@ -165,7 +169,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		}
 
 		const viewBottom = window.innerHeight;
-		const containerRectHeight = this._container.getBoundingClientRect().height;
+		const containerRectHeight = this.getBoundingClientRect().height;
 		const containerTop = this._containerTop.getBoundingClientRect().top;
 
 		/* if viewport height is less than minHeight (e.g., mobile device),
