@@ -7,40 +7,13 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			/* Whether always enable floating buttons. Note: by default, buttons may not float depending on
-			* space available since floating buttons may result in poor user experience when view-port is small
-			* (ex. phones).
-			*/
-			alwaysFloat: {
-				type: Boolean,
-				attribute: 'always-float',
-				reflect: true
-			},
-
-			minHeight: {
-				type: String,
-				attribute: 'min-height'
-			},
-
-			_containerMarginLeft: {
-				type: Object
-			},
-
-			_containerMarginRight: {
-				type: Object
-			},
-
-			_floatingButtonsFloating: {
-				type: Boolean
-			},
-
-			_innerContainerLeft: {
-				type: Number
-			},
-
-			_innerContainerRight: {
-				type: Number
-			}
+			alwaysFloat: { type: Boolean, attribute: 'always-float' },
+			minHeight: { type: String, attribute: 'min-height' },
+			_containerMarginLeft: { type: Object },
+			_containerMarginRight: { type: Object },
+			_floatingButtonsFloating: { type: Boolean },
+			_innerContainerLeft: { type: Number },
+			_innerContainerRight: { type: Number }
 		};
 	}
 
@@ -104,20 +77,21 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		this._calcIfFloating = this._calcIfFloating.bind(this);
 		this._calcContainerPosition = this._calcContainerPosition.bind(this);
+		this._calcContainerInfo = this._calcContainerInfo.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('scroll', this._calcContainerPosition);
-		window.addEventListener('resize', this._calcContainerPosition);
-		window.addEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
+		window.addEventListener('scroll', this._calcIfFloating);
+		window.addEventListener('resize', this._calcContainerInfo);
+		window.addEventListener('d2l-tab-panel-selected', this._calcContainerInfo);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('scroll', this._calcContainerPosition);
-		window.removeEventListener('resize', this._calcContainerPosition);
-		window.removeEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
+		window.removeEventListener('scroll', this._calcIfFloating);
+		window.removeEventListener('resize', this._calcContainerInfo);
+		window.removeEventListener('d2l-tab-panel-selected', this._calcContainerInfo);
 	}
 
 	firstUpdated() {
@@ -126,7 +100,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._container = this.shadowRoot.querySelector('.d2l-floating-buttons-container');
 		this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
 
-		this._calcContainerPosition();
+		setTimeout(() => {
+			// need to wait a small amount for _containerTop top to be correct
+			this._calcContainerInfo();
+			this._startObserver();
+		});
 	}
 
 	updated(changedProperties) {
@@ -138,8 +116,22 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		});
 	}
 
-	_calcContainerPosition() {
+	_startObserver() {
+		const htmlElem = window.document.getElementsByTagName('html')[0];
+		this._observer = new MutationObserver((mutations) => {
+			for (let i = 0; i < mutations.length; i++) {
+				this._calcContainerInfo();
+			}
+		});
+		this._observer.observe(htmlElem, { childList: true, subtree: true });
+	}
+
+	_calcContainerInfo() {
 		this._calcIfFloating();
+		this._calcContainerPosition();
+	}
+
+	_calcContainerPosition() {
 		if (!this._floatingButtonsFloating) {
 			return;
 		}
@@ -173,14 +165,14 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		}
 
 		const viewBottom = window.innerHeight;
-		const containerRect = this._container.getBoundingClientRect();
+		const containerRectHeight = this._container.getBoundingClientRect().height;
 		const containerTop = this._containerTop.getBoundingClientRect().top;
 
 		/* if viewport height is less than minHeight (e.g., mobile device),
 		 * or div.d2l-floating-detection is visible (i.e., buttons no longer need to be floating)
 		 * then do not float the buttons
 		 */
-		if (_viewportIsLessThanMinHeight || ((containerTop + containerRect.height) <= viewBottom)) {
+		if (_viewportIsLessThanMinHeight || ((containerTop + containerRectHeight) <= viewBottom)) {
 			this._floatingButtonsFloating = false;
 		} else {
 			this._floatingButtonsFloating = true;
