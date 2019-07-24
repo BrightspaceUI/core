@@ -8,11 +8,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		return {
 			alwaysFloat: { type: Boolean, attribute: 'always-float' },
 			minHeight: { type: String, attribute: 'min-height' },
-			_containerMarginLeft: { type: Object },
-			_containerMarginRight: { type: Object },
+			_containerMarginLeft: { type: String },
+			_containerMarginRight: { type: String },
 			_floating: { type: Boolean, reflect: true },
-			_innerContainerLeft: { type: Number },
-			_innerContainerRight: { type: Number }
+			_innerContainerLeft: { type: String },
+			_innerContainerRight: { type: String }
 		};
 	}
 
@@ -77,7 +77,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this.minHeight = '500px';
 		this._containerTop = null;
 
-		this._calcIfFloating = this._calcIfFloating.bind(this);
 		this._calcContainerPosition = this._calcContainerPosition.bind(this);
 	}
 
@@ -127,7 +126,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	_calcContainerPosition() {
-		this._calcIfFloating();
+		this._floating = this._shouldFloat();
 		if (!this._floating) {
 			return;
 		}
@@ -156,10 +155,9 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		}
 	}
 
-	_calcIfFloating() {
+	_shouldFloat() {
 		if (this.alwaysFloat) {
-			this._floating = true;
-			return;
+			return true;
 		}
 
 		let _viewportIsLessThanMinHeight;
@@ -176,9 +174,9 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		 * then do not float the buttons
 		 */
 		if (_viewportIsLessThanMinHeight || ((containerTop + containerRectHeight) <= viewBottom)) {
-			this._floating = false;
+			return false;
 		} else {
-			this._floating = true;
+			return true;
 		}
 	}
 

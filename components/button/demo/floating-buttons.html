@@ -16,6 +16,9 @@
 		<d2l-demo-page title="d2l-floating-buttons">
 
 			<d2l-code-view id="demo-codeview" language="html" hide-language>
+				<textarea><d2l-floating-buttons id="wc-buttons">
+					<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
+				</d2l-floating-buttons></textarea>
 			</d2l-code-view>
 
 			<h2>Floating Buttons (page)</h2>
@@ -38,12 +41,6 @@
 
 		</d2l-demo-page>
 		<script type="module">
-			const sampleHTML = `
-				<d2l-floating-buttons id="wc-buttons">
-					<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
-				</d2l-floating-buttons>`;
-			document.getElementById('demo-codeview').textContent = `${sampleHTML}`;
-
 			let page_buttonCount = 0;
 			let page_floatingButtons;
 			function appendButton() {
