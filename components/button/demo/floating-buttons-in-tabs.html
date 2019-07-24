@@ -118,6 +118,9 @@
 				<div class="d2l-textblock">
 					<br>
 					<d2l-code-view id="demo-codeview1" language="html" hide-language>
+						<textarea><d2l-floating-buttons id="wc-buttons">
+							<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
+						</d2l-floating-buttons></textarea>
 					</d2l-code-view>
 					<br>
 					<d2l-button id="btn-remove-floating">Remove Floating Buttons</d2l-button>
@@ -140,7 +143,10 @@
 
 			<div id="CtnTwo" class="d2l-hidden">
 				<br>
-				<d2l-code-view id="demo-codeview2" language="html" hide-language>
+				<d2l-code-view language="html" hide-language>
+					<textarea><d2l-floating-buttons id="wc-buttons">
+						<d2l-button primary id="btn-make-more">Brew more Tea!</d2l-button>
+					</d2l-floating-buttons></textarea>
 				</d2l-code-view>
 
 				<div class="content">
@@ -184,16 +190,6 @@
 				));
 			});
 			/* end: faux tabbing functionality */
-			const sampleHTML1 = `
-				<d2l-floating-buttons id="wc-buttons">
-					<d2l-button primary id="btn-make-more">Brew more Coffee!</d2l-button>
-				</d2l-floating-buttons>`;
-			document.getElementById('demo-codeview1').textContent = `${sampleHTML1}`;
-			const sampleHTML2 = `
-				<d2l-floating-buttons id="wc-buttons">
-					<d2l-button primary id="btn-make-more">Brew more Tea!</d2l-button>
-				</d2l-floating-buttons>`;
-			document.getElementById('demo-codeview2').textContent = `${sampleHTML2}`;
 			let page_buttonCount = 0;
 			let page_floatingButtons;
 			function appendButton(beverage) {
