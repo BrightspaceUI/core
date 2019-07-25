@@ -1,4 +1,6 @@
+import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -56,16 +58,12 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				position: relative;
 			}
 
-			.d2l-floating-buttons-inner-container ::slotted(d2l-button),
-			.d2l-floating-buttons-inner-container ::slotted(button),
-			.d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
+			.d2l-floating-buttons-inner-container ::slotted(*) {
 				margin-right: 0.75rem !important;
 				margin-bottom: 0.75rem !important;
 			}
 
-			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(d2l-button),
-			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(button),
-			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
+			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(*) {
 				margin-left: 0.75rem !important;
 				margin-right: 0 !important;
 			}
@@ -84,14 +82,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		super.connectedCallback();
 		window.addEventListener('scroll', this._calcContainerPosition);
 		window.addEventListener('resize', this._calcContainerPosition);
-		window.addEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('scroll', this._calcContainerPosition);
 		window.removeEventListener('resize', this._calcContainerPosition);
-		window.removeEventListener('d2l-tab-panel-selected', this._calcContainerPosition);
+		if (this.__resizeObserver) {
+			this.__resizeObserver.disconnect();
+			this.__resizeObserver = null;
+		}
 	}
 
 	firstUpdated() {
@@ -99,11 +99,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
 
-		setTimeout(() => {
-			// need to wait a small amount for _containerTop top to be correct
-			this._calcContainerPosition();
-			this._startObserver();
-		});
+		this._calcContainerPosition();
+		this._startObserver();
 	}
 
 	updated(changedProperties) {
@@ -116,13 +113,13 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	_startObserver() {
-		const htmlElem = window.document.getElementsByTagName('html')[0];
-		this._observer = new MutationObserver((mutations) => {
-			for (let i = 0; i < mutations.length; i++) {
+		this._resizeObserver = this._resizeObserver || new ResizeObserver(entries => {
+			for (let i = 0; i < entries.length; i++) {
 				this._calcContainerPosition();
 			}
 		});
-		this._observer.observe(htmlElem, { childList: true, subtree: true });
+		const htmlElem = document.documentElement;
+		this._resizeObserver.observe(htmlElem);
 	}
 
 	_calcContainerPosition() {
@@ -131,16 +128,19 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			return;
 		}
 
-		const offsetParentLeft = this.offsetParent.getBoundingClientRect().left;
-		const left = this.getBoundingClientRect().left;
+		const offsetParentBoundingRect = this.offsetParent.getBoundingClientRect();
+		const boundingRect = this.getBoundingClientRect();
+
+		const offsetParentLeft = offsetParentBoundingRect.left;
+		const left = boundingRect.left;
 		const containerLeft = left - offsetParentLeft - 1;
 		if (containerLeft !== 0) {
 			// only update this if needed - needed for firefox
 			this._containerMarginLeft = `-${containerLeft}px`;
 		}
 
-		const offsetParentRight = this.offsetParent.getBoundingClientRect().right;
-		const right = this.getBoundingClientRect().right;
+		const offsetParentRight = offsetParentBoundingRect.right;
+		const right = boundingRect.right;
 		const containerRight = offsetParentRight - right - 1;
 		if (containerRight !== 0) {
 			this._containerMarginRight = `-${containerRight}px`;
