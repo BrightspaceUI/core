@@ -26,7 +26,7 @@ class DemoSnippet extends LitElement {
 		return html`
 			<div class="d2l-demo-snippet-demo" dir="${this._dir}">
 				<div class="d2l-demo-snippet-actions">
-					<button @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
+					<button id="d2l-demo-snippet-toggle-dir" @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
 				</div>
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 			</div>
@@ -88,6 +88,9 @@ class DemoSnippet extends LitElement {
 			}
 		};
 		applyDir(nodes, true);
+		this.dispatchEvent(new CustomEvent(
+			'd2l-dir-update', { bubbles: true, composed: true, detail: { dir: this._dir } }
+		));
 	}
 
 	_handleSlotChange(e) {

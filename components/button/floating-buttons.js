@@ -82,12 +82,14 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		super.connectedCallback();
 		window.addEventListener('scroll', this._calcContainerPosition);
 		window.addEventListener('resize', this._calcContainerPosition);
+		window.addEventListener('d2l-dir-update', this._calcContainerPosition);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('scroll', this._calcContainerPosition);
 		window.removeEventListener('resize', this._calcContainerPosition);
+		window.removeEventListener('d2l-dir-update', this._calcContainerPosition);
 		if (this.__resizeObserver) {
 			this.__resizeObserver.disconnect();
 			this.__resizeObserver = null;
@@ -101,15 +103,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		this._calcContainerPosition();
 		this._startObserver();
-	}
-
-	updated(changedProperties) {
-		super.updated();
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === '_dir') {
-				this._calcContainerPosition();
-			}
-		});
 	}
 
 	_startObserver() {
