@@ -6,6 +6,7 @@ class DemoSnippet extends LitElement {
 
 	static get properties() {
 		return {
+			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			_code: { type: String },
 			_dirButton: { type: String }

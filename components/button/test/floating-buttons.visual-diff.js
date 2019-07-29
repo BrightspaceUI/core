@@ -87,8 +87,12 @@ describe('d2l-floating-buttons', function() {
 		return page.evaluate((selector) => {
 			return new Promise((resolve) => {
 				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('.d2l-floating-buttons-container').addEventListener('transitionend', () => {
-					resolve();
+				let transformTransitioned, borderTopColorTransitioned, backgroundColorTransitioned;
+				elem.shadowRoot.querySelector('.d2l-floating-buttons-container').addEventListener('transitionend', (e) => {
+					if (e.propertyName === 'transform') transformTransitioned = true;
+					if (e.propertyName === 'border-top-color') borderTopColorTransitioned = true;
+					if (e.propertyName === 'background-color') backgroundColorTransitioned = true;
+					if (transformTransitioned && borderTopColorTransitioned && backgroundColorTransitioned) resolve();
 				});
 			});
 		}, selector);
