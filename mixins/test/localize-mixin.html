@@ -1,0 +1,368 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-localize-behavior test</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="./test-elem.js"></script>
+		<script type="module" src="../localize-mixin.js"></script>
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<test-elem></test-elem>
+			</template>
+		</test-fixture>
+		<test-fixture id="lang-set">
+			<template>
+				<test-elem __language="fr"></test-elem>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			describe('localize-behavior', () => {
+				let elem, htmlElem;
+				beforeEach(() => {
+					htmlElem = window.document.getElementsByTagName('html')[0];
+					htmlElem.removeAttribute('lang');
+					htmlElem.removeAttribute('data-lang-default');
+					htmlElem.removeAttribute('data-intl-overrides');
+					htmlElem.removeAttribute('data-timezone');
+				});
+				describe('initial load', () => {
+					it('should use "fallback" if no "lang" is present', async() => {
+						htmlElem.setAttribute('data-lang-default', 'fr');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('fr');
+					});
+					it('should use "lang" if no "fallback" is present', async() => {
+						htmlElem.setAttribute('lang', 'fr');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('fr');
+					});
+					it('should use "fallback" if "lang" is invalid', async() => {
+						htmlElem.setAttribute('lang', 'zz');
+						htmlElem.setAttribute('data-lang-default', 'fr');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('fr');
+					});
+					it('should use "lang" when "fallback" is invalid', async() => {
+						htmlElem.setAttribute('lang', 'de');
+						htmlElem.setAttribute('data-lang-default', 'zz');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('de');
+					});
+					it('should use "lang" over "fallback" when both are valid', async() => {
+						htmlElem.setAttribute('lang', 'de');
+						htmlElem.setAttribute('data-lang-default', 'es');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('de');
+					});
+					it('should use default (en) if "lang" and "fallback" are invalid', async() => {
+						htmlElem.setAttribute('lang', 'zz');
+						htmlElem.setAttribute('data-lang-default', 'yy');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('en');
+					});
+					it('should use default (en) if "lang" and "fallback" are missing', async() => {
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('en');
+					});
+					it('should use regional if specified', async() => {
+						htmlElem.setAttribute('lang', 'en-CA');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('en-ca');
+					});
+					it('should use base language if regional is missing', async() => {
+						htmlElem.setAttribute('lang', 'en-gb');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('en');
+					});
+					it('should match language in a case-insensitive way', async() => {
+						htmlElem.setAttribute('lang', 'zH-Cn');
+						elem = fixture('basic');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('zh-cn');
+					});
+				});
+				describe('lang set', () => {
+					it('should ignore "__language" attribute and use default', async() => {
+						elem = fixture('lang-set');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('en');
+					});
+					it('should ignore "__language" attribute and use "lang"', async() => {
+						htmlElem.setAttribute('lang', 'de');
+						elem = fixture('lang-set');
+						await elem.updateComplete;
+						expect(elem.__language).to.equal('de');
+					});
+				});
+				describe('mutations', () => {
+					it('should update language if "lang" gets set', (done) => {
+						elem = fixture('basic');
+						const myEventListener = () => {
+							expect(elem.__language).to.equal('fr');
+							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+							done();
+						};
+						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+						htmlElem.setAttribute('lang', 'fr');
+					});
+					it('should update language if "lang" is not set and "fallback" gets set', (done) => {
+						elem = fixture('basic');
+						const myEventListener = () => {
+							expect(elem.__language).to.equal('de');
+							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+							done();
+						};
+						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+						htmlElem.setAttribute('data-lang-default', 'de');
+					});
+					it('should not update language if "lang" is set and "fallback" gets set', (done) => {
+						htmlElem.setAttribute('lang', 'fr');
+						elem = fixture('basic');
+						const myEventListener = () => {
+							expect(elem.__language).to.equal('fr');
+							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+							done();
+						};
+						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+						htmlElem.setAttribute('data-lang-default', 'de');
+					});
+					it('should use default (en) if "lang" is removed', (done) => {
+						htmlElem.setAttribute('lang', 'es');
+						elem = fixture('basic');
+						const myEventListener = () => {
+							expect(elem.__language).to.equal('en');
+							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+							done();
+						};
+						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+						htmlElem.removeAttribute('lang');
+					});
+					it('should use default (en) if "fallback" is removed', (done) => {
+						htmlElem.setAttribute('data-lang-default', 'es');
+						elem = fixture('basic');
+						const myEventListener = () => {
+							expect(elem.__language).to.equal('en');
+							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+							done();
+						};
+						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+						htmlElem.removeAttribute('data-lang-default');
+					});
+				});
+				describe('localize', () => {
+					beforeEach(async() => {
+						elem = fixture('basic');
+						await elem.updateComplete;
+					});
+					it('should localize text', () => {
+						const val = elem.localize('hello');
+						expect(val).to.equal('Hello');
+					});
+					it('should re-localize text when locale changes', (done) => {
+						const valInitial = elem.localize('hello');
+						expect(valInitial).to.equal('Hello');
+						const myEventListener = () => {
+							const val = elem.localize('hello');
+							expect(val).to.equal('Bonjour');
+							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+							done();
+						};
+						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+						htmlElem.setAttribute('lang', 'fr');
+					});
+				});
+				describe('date/time formatting and parsing', () => {
+					const date = new Date(2017, 11, 1, 17, 13);
+					beforeEach(() => {
+						elem = fixture('basic');
+						elem.date = date;
+					});
+					it('should format a date using default format', () => {
+						const val = elem.formatDate(date);
+						expect(val).to.equal('12/1/2017');
+					});
+					it('should format a date using specified format', () => {
+						const val = elem.formatDate(date, {format: 'full'});
+						expect(val).to.equal('Friday, December 1, 2017');
+					});
+					it('should format a time using default format', () => {
+						const val = elem.formatTime(date);
+						expect(val).to.equal('5:13 PM');
+					});
+					it('should format a time using specified format', () => {
+						const val = elem.formatTime(date, {format: 'full'});
+						expect(val).to.equal('5:13 PM ');
+					});
+					it('should format a date/time using default format', () => {
+						const val = elem.formatDateTime(date);
+						expect(val).to.equal('12/1/2017 5:13 PM');
+					});
+					it('should format a date/time using specified format', () => {
+						const val = elem.formatDateTime(date, {format: 'medium'});
+						expect(val).to.equal('Dec 1, 2017 5:13 PM');
+					});
+					it('should parse a date', () => {
+						const val = elem.parseDate('12/1/2017');
+						expect(val.getFullYear()).to.equal(2017);
+						expect(val.getMonth()).to.equal(11);
+						expect(val.getDate()).to.equal(1);
+					});
+					it('should parse a time', () => {
+						const val = elem.parseTime('5:13 PM');
+						expect(val.getHours()).to.equal(17);
+						expect(val.getMinutes()).to.equal(13);
+					});
+				});
+				describe('number formatting and parsing', () => {
+					beforeEach(() => {
+						elem = fixture('basic');
+					});
+
+					it('should format a number using default format', () => {
+						const val = elem.formatNumber(1234567.890);
+						expect(val).to.equal('1,234,567.89');
+					});
+					it('should format a number rounding up', () => {
+						const val = elem.formatNumber(1234567.890, {maximumFractionDigits: 0});
+						expect(val).to.equal('1,234,568');
+					});
+					it('should format a number with specified format', () => {
+						const val = elem.formatNumber(0.189, {style: 'percent'});
+						expect(val).to.equal('18.9 %');
+					});
+					it('should parse a number', () => {
+						const val = elem.parseNumber('1234567.890');
+						expect(val).to.equal(1234567.89);
+					});
+				});
+				describe('data/time/number overrides', () => {
+					const date = new Date(2018, 0, 4, 15, 5);
+					beforeEach(() => {
+						htmlElem.setAttribute(
+							'data-intl-overrides',
+							JSON.stringify({
+								date: {
+									formats: {
+										dateFormats: {
+											short: 'MM|dd|yyyy'
+										},
+										timeFormats: {
+											short: 'HH|mm'
+										}
+									},
+									hour24: true
+								},
+								number: {
+									symbols: {
+										decimal: '|',
+										group: '`'
+									}
+								}
+							})
+						);
+						elem = fixture('basic');
+					});
+					it('should format a date using overrides', () => {
+						const val = elem.formatDate(date);
+						expect(val).to.equal('01|04|2018');
+					});
+					it('should format a time using overrides', () => {
+						const val = elem.formatTime(date);
+						expect(val).to.equal('15|05');
+					});
+					it('should format a date/time using overrides', () => {
+						const val = elem.formatDateTime(date);
+						expect(val).to.equal('01|04|2018 15|05');
+					});
+					it('should parse a date using overrides', () => {
+						const val = elem.parseDate('01|04|2018');
+						expect(val.getFullYear()).to.equal(2018);
+						expect(val.getMonth()).to.equal(0);
+						expect(val.getDate()).to.equal(4);
+					});
+					it('should parse a time using overrides', () => {
+						const val = elem.parseTime('15|05');
+						expect(val.getHours()).to.equal(15);
+						expect(val.getMinutes()).to.equal(5);
+					});
+					it('should format a number using overrides', () => {
+						const val = elem.formatNumber(1234567.890);
+						expect(val).to.equal('1`234`567|89');
+					});
+					it('should parse a number using overrides', () => {
+						const val = elem.parseNumber('1`234`567|890');
+						expect(val).to.equal(1234567.89);
+					});
+				});
+				describe('file size formatting', () => {
+					it('should format a file size', () => {
+						elem = fixture('basic');
+						const val = elem.formatFileSize(1234567.89);
+						expect(val).to.equal('1.18 MB');
+					});
+				});
+				describe('timezone', () => {
+					it('should return timezone\'s name', () => {
+						htmlElem.setAttribute(
+							'data-timezone',
+							JSON.stringify({ name: 'Hello' })
+						);
+						elem = fixture('basic');
+						expect(elem.getTimezone().name).to.equal('Hello');
+					});
+					it('should return timezone\'s identifier', () => {
+						htmlElem.setAttribute(
+							'data-timezone',
+							JSON.stringify({ identifier: 'Hello' })
+						);
+						elem = fixture('basic');
+						expect(elem.getTimezone().identifier).to.equal('Hello');
+					});
+					it('should not fail if timezone data is missing', () => {
+						elem = fixture('basic');
+						expect(elem.getTimezone().name).to.equal('');
+						expect(elem.getTimezone().identifier).to.equal('');
+					});
+					it('should not fail if timezone data is invalid', () => {
+						htmlElem.setAttribute('data-timezone', '{ohno;:}');
+						elem = fixture('basic');
+						expect(elem.getTimezone().name).to.equal('');
+						expect(elem.getTimezone().identifier).to.equal('');
+					});
+					it('should update timezone if "data-timezone" gets set', (done) => {
+						elem = fixture('basic');
+						const myEventListener = () => {
+							expect(elem.getTimezone().name).to.equal('foo');
+							expect(elem.getTimezone().identifier).to.equal('bar');
+							elem.removeEventListener('d2l-localize-behavior-timezone-changed', myEventListener);
+							done();
+						};
+						elem.addEventListener('d2l-localize-behavior-timezone-changed', myEventListener);
+						htmlElem.setAttribute(
+							'data-timezone',
+							JSON.stringify({ name: 'foo', identifier: 'bar' })
+						);
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

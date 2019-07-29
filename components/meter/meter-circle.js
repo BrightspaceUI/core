@@ -25,6 +25,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 			stroke-width: 6;
 		}
 		.d2l-meter-circle-full-bar {
+			fill: var(--d2l-meter-circle-fill, none);
 			stroke: var(--d2l-color-gypsum);
 		}
 		.d2l-meter-circle-progress-bar {

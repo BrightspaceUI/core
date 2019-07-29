@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "0.2.1",
+  "version": "0.2.4",
   "description": "Brightspace core UI components.",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -62,7 +62,7 @@
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
     "d2l-intl": "^2",
-    "intl-messageformat": "^5.0.0",
+    "intl-messageformat": "^2.2.0",
     "lit-element": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"

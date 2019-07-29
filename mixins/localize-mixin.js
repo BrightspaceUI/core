@@ -1,5 +1,5 @@
 import d2lIntl from 'd2l-intl';
-import IntlMessageFormat from 'intl-messageformat/lib/index.js';
+import IntlMessageFormat from 'intl-messageformat/src/main.js';
 window.IntlMessageFormat = IntlMessageFormat;
 
 export const LocalizeMixin = superclass => class extends superclass {
@@ -22,7 +22,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 		this.__documentLanguage = window.document.getElementsByTagName('html')[0].getAttribute('lang');
 		this.__documentLanguageFallback = window.document.getElementsByTagName('html')[0].getAttribute('data-lang-default');
 
-		this.__overrides = this._tryParseHtmlElemAttr('d2l-intl-overrides', {});
+		this.__overrides = this._tryParseHtmlElemAttr('data-intl-overrides', {});
 		this.__timezoneObject = this._tryParseHtmlElemAttr('data-timezone', {name: '', identifier: ''});
 		this.__timezone = this._computeTimezone();
 
@@ -41,6 +41,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 						}
 						this.__language = res.language;
 						this.__resources = res.resources;
+						this._languageChange();
 					});
 			} else if (propName === '__timezoneObject') {
 				this._timezoneChange();
