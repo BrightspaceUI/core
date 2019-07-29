@@ -53,7 +53,7 @@
     "mocha": "^6",
     "node-sass": "^4",
     "polymer-cli": "^1",
-    "puppeteer": "^1",
+    "puppeteer": "~1.17.0",
     "simple-git": "^1.120.0",
     "wct-mocha": "^1",
     "whatwg-fetch": "^3"
