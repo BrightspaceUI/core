@@ -58,12 +58,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				position: relative;
 			}
 
-			.d2l-floating-buttons-inner-container ::slotted(*) {
+			.d2l-floating-buttons-inner-container ::slotted(d2l-button),
+			.d2l-floating-buttons-inner-container ::slotted(button),
+			.d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
 				margin-right: 0.75rem !important;
 				margin-bottom: 0.75rem !important;
 			}
 
-			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(*) {
+			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(d2l-button),
+			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(button),
+			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
 				margin-left: 0.75rem !important;
 				margin-right: 0 !important;
 			}
