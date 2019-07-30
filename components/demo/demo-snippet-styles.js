@@ -15,7 +15,7 @@ export const styles = css`
 	:host .d2l-demo-snippet-demo {
 		background-color: white;
 		border-radius: 5px;
-		padding: 18px;
+		padding: 18px 58px 18px 18px;
 	}
 	:host([no-padding]) .d2l-demo-snippet-demo {
 		padding: 0;
