@@ -73,7 +73,7 @@ function createLoader(categories) {
 		'\tswitch (icon) {\n';
 	categories.forEach((category) => {
 		category.svgs.forEach((name) => {
-			template += `\t\tcase 'd2l-${category.name}:${name}':
+			template += `\t\tcase '${category.name}:${name}':
 			return import('./${category.name}/${name}.js');\n`;
 		});
 	});

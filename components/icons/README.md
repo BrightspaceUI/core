@@ -12,10 +12,10 @@ For preset icons, import and use the `<d2l-icon>` web component with the `icon` 
 <script type="module">
   import '@brightspace-ui/core/components/icons/icon.js';
 </script>
-<d2l-icon icon="d2l-tier1:gear"></d2l-icon>
+<d2l-icon icon="tier1:gear"></d2l-icon>
 ```
 
-The `icon` attribute value is of the form `d2l-<category-name>:<icon-name>`. The icon will automatically be the correct color (ferrite) and size based on its category.
+The `icon` attribute value is of the form `<category-name>:<icon-name>`. The icon will automatically be the correct color (ferrite) and size based on its category.
 
 **Note:** Always choose the icon whose native size best matches your desired icon size, ideally exactly.
 
@@ -34,7 +34,7 @@ The `icon` attribute value is of the form `d2l-<category-name>:<icon-name>`. The
 To change an icon's color from ferrite to something else, simply set it from CSS:
 
 ```html
-<d2l-icon icon="d2l-tier3:alert" style="color: red;"></d2l-icon>
+<d2l-icon icon="tier3:alert" style="color: red;"></d2l-icon>
 ```
 
 ### Overriding the Size

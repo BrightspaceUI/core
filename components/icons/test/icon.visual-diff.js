@@ -21,6 +21,7 @@ describe('d2l-icon', function() {
 		'tier1',
 		'tier2',
 		'tier3',
+		'prefixed',
 		'fill-none',
 		'color-override',
 		'size-override',

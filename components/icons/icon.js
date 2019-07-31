@@ -38,15 +38,15 @@ class Icon extends RtlMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([icon*="d2l-tier1:"]) {
+			:host([icon*="tier1:"]) {
 				height: var(--d2l-icon-height, 18px);
 				width: var(--d2l-icon-width, 18px);
 			}
-			:host([icon*="d2l-tier2:"]) {
+			:host([icon*="tier2:"]) {
 				height: var(--d2l-icon-height, 24px);
 				width: var(--d2l-icon-width, 24px);
 			}
-			:host([icon*="d2l-tier3:"]) {
+			:host([icon*="tier3:"]) {
 				height: var(--d2l-icon-height, 30px);
 				width: var(--d2l-icon-width, 30px);
 			}
@@ -95,7 +95,11 @@ class Icon extends RtlMixin(LitElement) {
 
 	async _getIcon() {
 		if (this.icon) {
-			const svg = await loadSvg(this.icon);
+			let icon = this.icon;
+			if (icon.substring(0, 4) === 'd2l-') {
+				icon = icon.substring(4);
+			}
+			const svg = await loadSvg(icon);
 			return this._fixSvg(svg ? svg.val : undefined);
 		}
 	}
