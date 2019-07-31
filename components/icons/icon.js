@@ -12,14 +12,6 @@ class Icon extends RtlMixin(LitElement) {
 			icon: {
 				type: String,
 				reflect: true
-			},
-			size: {
-				type: String,
-				reflect: true
-			},
-			src: {
-				type: String,
-				reflect: true
 			}
 		};
 	}
@@ -46,14 +38,6 @@ class Icon extends RtlMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([size="tier2"]) {
-				height: var(--d2l-icon-height, 24px);
-				width: var(--d2l-icon-width, 24px);
-			}
-			:host([size="tier3"]) {
-				height: var(--d2l-icon-height, 30px);
-				width: var(--d2l-icon-width, 30px);
-			}
 			:host([icon*="d2l-tier1:"]) {
 				height: var(--d2l-icon-height, 18px);
 				width: var(--d2l-icon-width, 18px);
@@ -66,7 +50,7 @@ class Icon extends RtlMixin(LitElement) {
 				height: var(--d2l-icon-height, 30px);
 				width: var(--d2l-icon-width, 30px);
 			}
-			svg, img {
+			svg {
 				display: block;
 				height: 100%;
 				pointer-events: none;
@@ -113,15 +97,6 @@ class Icon extends RtlMixin(LitElement) {
 		if (this.icon) {
 			const svg = await loadSvg(this.icon);
 			return this._fixSvg(svg ? svg.val : undefined);
-		}
-		if (this.src) {
-			if (this.src.substr(this.src.length - 4) === '.svg' && this.src.startsWith('https://s.brightspace.com/')) {
-				const response = await fetch(this.src);
-				if (!response.ok) return;
-				return this._fixSvg(await response.text());
-			} else {
-				return html`<img src="${this.src}" alt="">`;
-			}
 		}
 	}
 

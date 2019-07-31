@@ -1,6 +1,6 @@
 # Icons
 
-The `<d2l-icon>` web component can be used in your applications to embed one of the roughly 500 preset SVG icons that make up the Brightspace iconography set. Additionally, it can be used with your own custom SVG icons as well.
+The `<d2l-icon>` web component can be used in your applications to embed one of the roughly 500 preset SVG icons that make up the Brightspace iconography set.
 
 ## Usage
 
@@ -28,16 +28,6 @@ The `icon` attribute value is of the form `d2l-<category-name>:<icon-name>`. The
 | emoji | for all your emoji needs, same detail/style as tier1 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/master/components/icons/images/emoji/lol.svg?sanitize=true)&nbsp;&nbsp; ![](https://raw.githubusercontent.com/BrightspaceUI/core/master/components/icons/images/emoji/happy.svg?sanitize=true)&nbsp;&nbsp; ![](hhttps://raw.githubusercontent.com/BrightspaceUI/core/master/components/icons/images/emoji/angry.svg?sanitize=true) | `18px` x `18px` | [Full set](catalogue.md#emoji) |
 
 **[&gt; Browse ALL categories and icons](catalogue.md)**
-
-### Custom SVG Icons
-
-To use a custom SVG icon, point the `src` attribute at your icon file and set the `size` attribute to one of: `tier1`, `tier2` or `tier3`.
-
-```html
-<d2l-icon src="path/to/my-icon.svg" size="tier2"></d2l-icon>
-```
-
-Similar to preset icons, the SVG will automatically be the correct color and size.
 
 ### Overriding the Color
 
