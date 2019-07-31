@@ -8,7 +8,7 @@ class IconColorOverride extends LitElement {
 			:host {
 				display: inline-block;
 			}
-			::slotted(d2l-icon) {
+			::slotted(d2l-icon), ::slotted(d2l-icon-custom) {
 				color: var(--d2l-color-celestine-minus-1);
 			}
 		`;
