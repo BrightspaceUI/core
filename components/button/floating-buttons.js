@@ -158,7 +158,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				this._innerContainerLeft = `${containerLeft}px`;
 			}
 		} else {
-			this._innerContainerRight = `${containerLeft}px`;
+			this._innerContainerRight = `${containerRight}px`;
 		}
 	}
 
