@@ -34,6 +34,10 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				z-index: 999;
 			}
 
+			:host([_floating][always-float]) {
+				bottom: 0;
+			}
+
 			:host([hidden]) {
 				display: none;
 			}
@@ -41,7 +45,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			.d2l-floating-buttons-container {
 				border-top: 1px solid transparent;
 				display: block;
-				overflow-x: hidden;
 			}
 
 			:host([_floating]) .d2l-floating-buttons-container {
@@ -49,6 +52,9 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				background-color: rgba(255, 255, 255, 0.88);
 				border-top-color: var(--d2l-color-mica);
 				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
+			}
+
+			:host([_floating]:not([always-float])) .d2l-floating-buttons-container {
 				transform: translate(0, -10px);
 				transition: transform 500ms, border-top-color 500ms, background-color 500ms;
 			}
@@ -63,6 +69,10 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			.d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
 				margin-right: 0.75rem !important;
 				margin-bottom: 0.75rem !important;
+			}
+
+			.d2l-floating-buttons-inner-container ::slotted(d2l-button-group) {
+				padding-bottom: 0.75rem !important;
 			}
 
 			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(d2l-button),
@@ -184,8 +194,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		};
 
 		const innerContainerStyle = {
-			left: this._innerContainerLeft,
-			right: this._innerContainerRight
+			marginLeft: this._innerContainerLeft,
+			marginRight: this._innerContainerRight
 		};
 
 		return html`
