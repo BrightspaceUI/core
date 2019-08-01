@@ -1,6 +1,8 @@
 # Icons
 
-The `<d2l-icon>` web component can be used in your applications to embed one of the roughly 500 preset SVG icons that make up the Brightspace iconography set. Additionally, it can be used with your own custom SVG icons as well.
+The `<d2l-icon>` web component can be used in your applications to embed one of the roughly 500 preset SVG icons that make up the Brightspace iconography set.
+
+For custom SVGs not part of our iconography set, use the `<d2l-icon-custom>` web component.
 
 ## Usage
 
@@ -12,10 +14,10 @@ For preset icons, import and use the `<d2l-icon>` web component with the `icon` 
 <script type="module">
   import '@brightspace-ui/core/components/icons/icon.js';
 </script>
-<d2l-icon icon="d2l-tier1:gear"></d2l-icon>
+<d2l-icon icon="tier1:gear"></d2l-icon>
 ```
 
-The `icon` attribute value is of the form `d2l-<category-name>:<icon-name>`. The icon will automatically be the correct color (ferrite) and size based on its category.
+The `icon` attribute value is of the form `<category-name>:<icon-name>`. The icon will automatically be the correct color (ferrite) and size based on its category.
 
 **Note:** Always choose the icon whose native size best matches your desired icon size, ideally exactly.
 
@@ -31,20 +33,27 @@ The `icon` attribute value is of the form `d2l-<category-name>:<icon-name>`. The
 
 ### Custom SVG Icons
 
-To use a custom SVG icon, point the `src` attribute at your icon file and set the `size` attribute to one of: `tier1`, `tier2` or `tier3`.
+To use a custom SVG icon, embed the SVG inside a `<d2l-icon-custom>` element and set the `size` attribute to one of: `tier1`, `tier2` or `tier3`.
 
 ```html
-<d2l-icon src="path/to/my-icon.svg" size="tier2"></d2l-icon>
+<script type="module">
+  import '@brightspace-ui/core/components/icons/icon-custom.js';
+</script>
+<d2l-icon-custom size="tier1">
+  <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#494c4e" d="..."/>
+  </svg>
+</d2l-icon-custom>
 ```
 
-Similar to preset icons, the SVG will automatically be the correct color and size.
+Ensure that the SVG is formatted according to [the rules outlined below](#svg-format).
 
 ### Overriding the Color
 
 To change an icon's color from ferrite to something else, simply set it from CSS:
 
 ```html
-<d2l-icon icon="d2l-tier3:alert" style="color: red;"></d2l-icon>
+<d2l-icon icon="tier3:alert" style="color: red;"></d2l-icon>
 ```
 
 ### Overriding the Size
@@ -55,7 +64,9 @@ Overriding the size is not recommended. However, if you must, set the `width` an
 
 ### First, do you need to contribute?
 
-Before contributing to our shared set of icons, ask yourself whether your new icon is common enough to be included here. Will it be used in many other applications, or is it unique to yours? To keep our icon sets manageable, only icons that have the potential to be reused many times should be a part of this collection.
+Before contributing to our shared set of icons, ask yourself whether your new icon is common enough to be included here. Will it be used in many other applications, or is it unique to yours?
+
+To keep our icon sets manageable, only icons that have the potential to be reused many times should be a part of this collection.
 
 ### SVG format
 

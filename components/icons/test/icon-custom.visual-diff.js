@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-icon', function() {
+describe('d2l-icon-custom', function() {
 
-	const visualDiff = new VisualDiff('icon', __dirname);
+	const visualDiff = new VisualDiff('icon-custom', __dirname);
 
 	let browser, page;
 
@@ -11,7 +11,7 @@ describe('d2l-icon', function() {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
-		await page.goto(`${visualDiff.getBaseUrl()}/components/icons/test/icon.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+		await page.goto(`${visualDiff.getBaseUrl()}/components/icons/test/icon-custom.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
@@ -21,7 +21,6 @@ describe('d2l-icon', function() {
 		'tier1',
 		'tier2',
 		'tier3',
-		'prefixed',
 		'fill-none',
 		'color-override',
 		'size-override',
