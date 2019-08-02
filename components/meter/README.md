@@ -17,7 +17,7 @@ import '@brightspace-ui/core/components/meter/meter-linear.js';
 Then add the `d2l-meter-linear`, provide values for the properties, `value` and `max`.
 
 ```html
-<d2l-meter-linear id="no-progress" value="0" max="10" text="Visited: {x} / {y}"></d2l-meter-linear>
+<d2l-meter-linear id="no-progress" value="0" max="10" text="Visited: {x/y}"></d2l-meter-linear>
 <d2l-meter-linear id="has-progress" value="3" max="10" text="Activities" text-inline percent></d2l-meter-linear>
 <d2l-meter-linear id="completed" value="10" max="10" text="{%} Activities"></d2l-meter-linear>
 ```
@@ -29,9 +29,10 @@ Then add the `d2l-meter-linear`, provide values for the properties, `value` and 
 * `percent` (optional): Show the percentage instead of `value/max` value.
 * `text-inline` (optional): Keep the meter to a single line. Text and meter will be on the same line.
 * `text` (optional): Context information about what the meter is about. Such as Activities.
-	- `{x}` in the string will be replaced with `value`
-	- `{y}` in the string will be replaced with `max`
 	- `{%}` in the string will be replaced with percentage value.
+	- `{x/y}` in the string will be replaced with fraction with the proper language support.
+	- **DEPRECATED** `{x}` in the string will be replaced with `value`
+	- **DEPRECATED** `{y}` in the string will be replaced with `max`
 
 ## d2l-meter-radial
 ![Radial meter with no progress](./screenshots/d2l-meter-radial-no-progress.png?raw=true)
@@ -58,6 +59,8 @@ Then add the `d2l-meter-radial`, provide values for the properties, `value` and 
 * `max` (required): Max number of units that is being measured by this meter. For results this should be a positive, non-zero number
 * `percent` (optional): Show the percentage instead of `value/max` value.
 * `text` (optional): Context information about what the meter is about. Displayed under the meter and used for screen readers.
+	- `{%}` in the string will be replaced with percentage value.
+	- `{x/y}` in the string will be replaced with fraction with the proper language support.
 
 ## d2l-meter-circle
 ![Circle meter with no progress](./screenshots/d2l-meter-circle-no-progress.png?raw=true)
@@ -83,3 +86,5 @@ Then add the `d2l-meter-circle`, provide values for the properties, `value` and 
 * `max` (required): Max number of units that is being measured by this meter. For results this should be a positive, non-zero number
 * `percent` (optional): Show the percentage instead of `value/max` value.
 * `text` (optional): Context information about what the meter is about. This is for screen readers.
+	- `{%}` in the string will be replaced with percentage value.
+	- `{x/y}` in the string will be replaced with fraction with the proper language support.
