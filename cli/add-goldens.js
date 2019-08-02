@@ -13,8 +13,9 @@ function commit() {
 	console.log('Committing, tagging and pushing...');
 	console.log(`also branch name is ${process.env.TRAVIS_BRANCH}`);
 	console.group();
+	const branchName2 = 'refs/heads/travis-commit-experiment:refs/remotes/origin/travis-commit-experiment';
 
-	return git.fetch(remote, branchName)
+	return git.fetch(remote, branchName2)
 		.then(() => {
 			console.log('Fetched branch...');
 			return git.checkout(branchName);
@@ -25,7 +26,7 @@ function commit() {
 		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
-			return git.push(remote, branchName);
+			// return git.push(remote, branchName);
 		});
 }
 
