@@ -13,6 +13,7 @@ script:
     git config user.email "travis@travis.org"
     git config user.name "travis"
     git commit --allow-empty -m "[skip travis] test commit"
+    git push origin HEAD:travis-commit-experiment
     echo "Pull request with secure environment variables, running Sauce tests...";
     npm run test:sauce || travis_terminate 1;
   else
