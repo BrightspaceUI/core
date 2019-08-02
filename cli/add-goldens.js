@@ -9,16 +9,20 @@ function commit() {
 	git.addConfig('user.name', 'BrightspaceGitHubReader');
 	git.addConfig('user.email', 'brightspacegithubreader@d2l.com');
 	git.addConfig('push.default', 'simple');
-	git.fetch(remote, branchName);
-	git.checkout(branchName);
 
 	console.log('Committing, tagging and pushing...');
 	console.log(`also branch name is ${process.env.TRAVIS_BRANCH}`);
 	console.group();
 
-	const commitMessage = '[skip ci] test commit';
-	return git.commit(commitMessage, 'new-file.txt')
-		.then((status) => {
+	return git.fetch(remote, branchName)
+		.then(() => {
+			console.log('Fetched branch...');
+			return git.checkout(branchName);
+		}).then(() => {
+			console.log(`Checked out branch... ${process.env.TRAVIS_BRANCH}`);
+			const commitMessage = '[skip ci] test commit';
+			return git.commit(commitMessage, 'new-file.txt');
+		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
 			return git.push(remote, branchName);
