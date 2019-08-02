@@ -1,4 +1,3 @@
-import '../colors/colors.js';
 import '../button/button-icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DialogMixin } from './dialog-mixin.js';

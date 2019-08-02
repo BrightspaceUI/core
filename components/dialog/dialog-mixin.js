@@ -37,7 +37,7 @@ export const DialogMixin = superclass => class extends superclass {
 	_close() {
 		if (!this._state) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog');
-		let transitionEnd = () => {
+		const transitionEnd = () => {
 			dialog.removeEventListener('transitionend', transitionEnd);
 			if (this._hasNativeDialog) {
 				dialog.close();
@@ -78,7 +78,7 @@ export const DialogMixin = superclass => class extends superclass {
 			requestAnimationFrame(() => {
 				dialog.style.width = `${this.width}px`;
 				this._state = 'showing';
-			})
+			});
 		});
 	}
 
