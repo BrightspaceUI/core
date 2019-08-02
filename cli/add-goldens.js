@@ -9,10 +9,11 @@ function commit() {
 	git.addConfig('user.name', 'BrightspaceGitHubReader');
 	git.addConfig('user.email', 'brightspacegithubreader@d2l.com');
 	git.addConfig('push.default', 'simple');
+	git.fetch(remote, branchName);
 	git.checkout(branchName);
 
 	console.log('Committing, tagging and pushing...');
-	console.log('also branch name is ' + process.env.TRAVIS_BRANCH);
+	console.log(`also branch name is ${process.env.TRAVIS_BRANCH}`);
 	console.group();
 
 	const commitMessage = '[skip ci] test commit';
