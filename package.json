@@ -7,6 +7,7 @@
     "access": "public"
   },
   "scripts": {
+    "add-goldens": "node ./cli/add-goldens.js",
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:lang": "node ./cli/lang-generator.js",
