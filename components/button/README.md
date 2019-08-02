@@ -60,3 +60,28 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 * `icon` (required): Icon for the button (ex. `d2l-tier1:gear`)
 * `h-align` (optional): `text` aligns the leading edge of text
 * `translucent` (optional): Indicates to display translucent (ex. on rich backgrounds)
+
+## d2l-floating-buttons
+
+Floating workflow buttons behavior can be added by using the `<d2l-floating-buttons>` custom element. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
+
+![Floating Buttons](./screenshots/floating-buttons.png?raw=true)
+
+### Usage
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/floating-buttons.js';
+  import '@brightspace-ui/core/components/button/button.js';
+</script>
+<p>Some content</p>
+<d2l-floating-buttons>
+	<d2l-button primary>Save</d2l-button>
+	<d2l-button>Cancel</d2l-button>
+</d2l-floating-buttons>
+```
+
+***Properties***
+
+* `always-float` (optional): Indicates to display buttons as always floating
+* `min-height` (optional): The minimum height of the viewport to display floating buttons at (where applicable). If viewport is less than `min-height`, buttons will never appear floating (unless `always-float` is used). If viewport is greater than `min-height` then buttons will float when applicable.

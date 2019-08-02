@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="demo/styles.css" type="text/css">
+	<link rel="stylesheet" href="components/demo/styles.css" type="text/css">
 	<script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script type="module">
 		import './components/colors/colors.js';
@@ -11,19 +11,31 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
+	<style>
+		body {
+			padding: 0 30px;
+		}
+	</style>
 </head>
 <body class="d2l-typography">
 
 	<h1 class="d2l-heading-2">Demos</h1>
 
 	<ul>
-		<li><a href="components/button/demo/button.html">d2l-button</a></li>
-		<li><a href="components/button/demo/button-icon.html">d2l-button-icon</a></li>
-		<li><a href="components/button/demo/button-subtle.html">d2l-button-subtle</a></li>
 		<li><a href="components/demo/demo/demo-snippet.html">d2l-demo-snippet</a></li>
 		<li><a href="components/icons/demo/icon.html">d2l-icon</a></li>
 		<li><a href="components/meter/demo/meter.html">d2l-meter</a></li>
 		<li><a href="components/more-less/demo/more-less.html">d2l-more-less</a></li>
+	</ul>
+
+	<h2 class="d2l-heading-3">Buttons</h2>
+	<ul>
+		<li><a href="components/button/demo/button.html">d2l-button</a></li>
+		<li><a href="components/button/demo/button-icon.html">d2l-button-icon</a></li>
+		<li><a href="components/button/demo/button-subtle.html">d2l-button-subtle</a></li>
+		<li><a href="components/button/demo/floating-buttons.html">d2l-floating-buttons</a></li>
+		<li><a href="components/button/demo/floating-buttons-in-tabs.html">d2l-floating-buttons in tabs</a></li>
+		<li><a href="components/button/demo/floating-buttons-in-frame.html">d2l-floating-buttons in frame</a></li>
 	</ul>
 
 </body>

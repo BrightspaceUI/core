@@ -40,4 +40,7 @@ export const styles = css`
 	:host d2l-code-view {
 		margin: 0;
 	}
+	:host([code-view-hidden]) d2l-code-view {
+		display: none;
+	}
 `;
