@@ -16,6 +16,7 @@ export const dialogStyles = css`
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		position: fixed; /* also required for native to override position: absolute */
 		overflow: hidden;
 		top: 100px;
 		transform: translateY(-50px);
@@ -25,7 +26,6 @@ export const dialogStyles = css`
 	div.d2l-dialog {
 		left: 0;
 		margin: auto;
-		position: fixed;
 		right: 0;
 		width: 300px;
 		z-index: 1000;
@@ -63,8 +63,12 @@ export const dialogStyles = css`
 
 	.d2l-dialog-content {
 		flex: 1;
-		padding: 0 30px;
+		padding: 30px 30px 0 30px;
 		overflow: auto;
+	}
+
+	.d2l-dialog-header + .d2l-dialog-content {
+		padding-top: 0;
 	}
 
 	.d2l-dialog-footer {

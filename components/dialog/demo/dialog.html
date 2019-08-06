@@ -10,6 +10,7 @@
 			import '../../demo/demo-page.js';
 			import '../../button/button.js';
 			import '../dialog.js';
+			import '../dialog-confirm.js';
 		</script>
 		<style>
 			.d2l-typography p:first-child { margin-top: 0; }
@@ -37,6 +38,44 @@
 						document.querySelector('#dialog').opened = false;
 					});
 				</script>
+			</d2l-demo-snippet>
+
+			<h2>Confirm Dialog</h2>
+
+			<d2l-demo-snippet>
+
+				<d2l-button id="openConfirm">Show Confirm</d2l-button>
+				<d2l-dialog-confirm id="confirm" title="Confirm Title" text="Are you sure you want more cookies?">
+					<d2l-button slot="footer" id="cancelConfirm">Cancel</d2l-button>
+				</d2l-dialog-confirm>
+				<script>
+					document.querySelector('#openConfirm').addEventListener('click', () => {
+						document.querySelector('#confirm').opened = true;
+					});
+					document.querySelector('#cancelConfirm').addEventListener('click', () => {
+						document.querySelector('#confirm').opened = false;
+					});
+				</script>
+
+			</d2l-demo-snippet>
+
+			<h2>Confirm Dialog (No Title)</h2>
+
+			<d2l-demo-snippet>
+
+				<d2l-button id="openConfirmNoTitle">Show Confirm</d2l-button>
+				<d2l-dialog-confirm id="confirmNoTitle" text="Are you sure you want more cookies?">
+					<d2l-button slot="footer" id="cancelConfirmNoTitle">Cancel</d2l-button>
+				</d2l-dialog-confirm>
+				<script>
+					document.querySelector('#openConfirmNoTitle').addEventListener('click', () => {
+						document.querySelector('#confirmNoTitle').opened = true;
+					});
+					document.querySelector('#cancelConfirmNoTitle').addEventListener('click', () => {
+						document.querySelector('#confirmNoTitle').opened = false;
+					});
+				</script>
+
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>

@@ -1,3 +1,6 @@
+import { html } from 'lit-element/lit-element.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+
 export const DialogMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -80,6 +83,13 @@ export const DialogMixin = superclass => class extends superclass {
 				this._state = 'showing';
 			});
 		});
+	}
+
+	_render(labelId, descriptionId, inner) {
+		return html`${this._hasNativeDialog ?
+			html`<dialog aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog" @close="${this._handleClose}">${inner}</dialog>` :
+			html`<div role="dialog" aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog">${inner}</div>`}
+		`;
 	}
 
 };
