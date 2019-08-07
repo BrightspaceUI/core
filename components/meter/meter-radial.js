@@ -49,7 +49,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		const lengthOfLine = 115; // found by approximating half the perimeter of the ellipse with radii 38 and 35
 		const progressFill = this.value / this.max * lengthOfLine;
 
-		const primary = this._primary(this.value, this.max);
+		const primary = this._primary(this.value, this.max, this.dir);
 		const secondary = this._secondary(this.value, this.max, this.text);
 		const secondaryTextElement = this.text ? html`<div class="d2l-body-small d2l-meter-radial-text">${secondary}</div>` : html``;
 		return html `

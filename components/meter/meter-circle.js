@@ -44,7 +44,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const space = lengthOfLine - progressFill;
 		const dashOffset = this.dir === 'rtl' ? 7 * Math.PI + 10 - space : 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
 
-		const primary = this._primary(this.value, this.max) || '';
+		const primary = this._primary(this.value, this.max, this.dir) || '';
 		const secondary = this._secondary(this.value, this.max, this.text);
 
 		return html`
@@ -58,7 +58,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 					visibility="${this.value ? 'visible' : 'hidden'}"></circle>
 
 				<text class="d2l-body-standard d2l-meter-circle-text" x="24" y="28" text-anchor="middle">
-					${primary.split(' ').join('')}
+					${primary}
 				</text>
 			</svg>
 		`;
