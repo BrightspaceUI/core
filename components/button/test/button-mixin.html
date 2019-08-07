@@ -52,7 +52,7 @@
 					await childButton.updateComplete;
 
 					return new Promise((resolve, reject) => {
-						disabledButton.addEventListener('click', (e) => {
+						disabledButton.addEventListener('click', () => {
 							reject();
 						}, {once: true});
 						childButton.click();
