@@ -20,7 +20,10 @@
 
 		<test-fixture id="disabled">
 			<template>
-				<test-button-elem disabled>Normal Button</test-button-elem>
+				<div>
+					<test-button-elem disabled>Normal Button</test-button-elem>
+				</div>
+
 			</template>
 		</test-fixture>
 
@@ -45,20 +48,15 @@
 
 				it('should stop propagation if button is disabled', async() => {
 					const disabledButton = fixture('disabled');
-					await disabledButton.updateComplete;
+					const childButton = disabledButton.querySelector('test-button-elem');
+					await childButton.updateComplete;
 
-					const stopPropagationOriginal = Event.prototype.stopPropagation;
-					Event.prototype.stopPropagation = function(event) {
-						stopPropagationOriginal.bind(this).call(event);
-						this.isPropagationStopped = true;
-					};
-
-					return new Promise(resolve => {
+					return new Promise((resolve, reject) => {
 						disabledButton.addEventListener('click', (e) => {
-							expect(e.isPropagationStopped).to.be.true;
-							resolve();
+							reject();
 						}, {once: true});
-						disabledButton.click();
+						childButton.click();
+						setTimeout(resolve, 2000); // pass test if parent click eventlistener never called
 					});
 				});
 			});
