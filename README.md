@@ -3,7 +3,7 @@
 [![NPM version](https://img.shields.io/npm/v/@brightspace-ui/core.svg)](https://www.npmjs.org/package/@brightspace-ui/core)
 [![Greenkeeper badge](https://badges.greenkeeper.io/BrightspaceUI/core.svg)](https://greenkeeper.io/)
 
-A collection of core UI components.
+A collection of accessible, free, open-source web components for building Brightspace applications.
 
 ## Installation
 
