@@ -15,8 +15,8 @@
 				},
 				{
 					"browserName": "safari",
-					"platform": "OS X 10.11",
-					"version": ""
+					"platform": "OS X 10.13",
+					"version": "11"
 				}
 			]
 		}
