@@ -43,13 +43,19 @@
 					});
 				});
 
-				it('should stop propegation if button is disabled', async() => {
+				it('should stop propagation if button is disabled', async() => {
 					const disabledButton = fixture('disabled');
 					await disabledButton.updateComplete;
 
+					const stopPropagationOriginal = Event.prototype.stopPropagation;
+					Event.prototype.stopPropagation = function(event) {
+						stopPropagationOriginal.bind(this).call(event);
+						this.isPropagationStopped = true;
+					};
+
 					return new Promise(resolve => {
 						disabledButton.addEventListener('click', (e) => {
-							expect(e.cancelBubble).to.be.true;
+							expect(e.isPropagationStopped).to.be.true;
 							resolve();
 						}, {once: true});
 						disabledButton.click();
