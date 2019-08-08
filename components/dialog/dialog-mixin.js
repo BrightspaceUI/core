@@ -1,8 +1,9 @@
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-export const DialogMixin = superclass => class extends superclass {
+export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {

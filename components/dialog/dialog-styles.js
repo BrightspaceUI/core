@@ -75,4 +75,13 @@ export const dialogStyles = css`
 		padding: 30px;
 	}
 
+	.d2l-dialog-footer ::slotted(*) {
+		margin-right: 18px;
+	}
+
+	:host([dir="rtl"]) .d2l-dialog-footer ::slotted(*) {
+		margin-left: 18px;
+		margin-right: 0;
+	}
+
 `;
