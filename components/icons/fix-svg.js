@@ -1,8 +1,8 @@
 export function fixSvg(svg) {
 
-	const paths = svg.querySelectorAll('[fill]');
-	paths.forEach((path) => {
-		if (path.getAttribute('fill') !== 'none') path.removeAttribute('fill');
+	const fills = svg.querySelectorAll('[fill]');
+	fills.forEach((fill) => {
+		if (fill.getAttribute('fill') !== 'none') fill.removeAttribute('fill');
 	});
 
 	svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
