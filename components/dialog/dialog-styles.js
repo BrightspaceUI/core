@@ -11,11 +11,12 @@ export const dialogStyles = css`
 		display: block;
 	}
 
-	.d2l-dialog {
+	.d2l-dialog-outer {
 		background-color: white;
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 8px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		box-sizing: content-box;
 		position: fixed; /* also required for native to override position: absolute */
 		overflow: hidden;
 		top: 100px;
@@ -23,7 +24,7 @@ export const dialogStyles = css`
 		transition: transform 200ms ease-in;
 	}
 
-	div.d2l-dialog {
+	div.d2l-dialog-outer {
 		left: 0;
 		margin: auto;
 		right: 0;
@@ -31,48 +32,46 @@ export const dialogStyles = css`
 		z-index: 1000;
 	}
 
-	dialog.d2l-dialog {
+	dialog.d2l-dialog-outer {
 		color: var(--d2l-color-ferrite);
 		padding: 0;
 	}
 
-	:host([_state="showing"]) .d2l-dialog {
+	:host([_state="showing"]) .d2l-dialog-outer {
 		transform: translateY(0);
 	}
 
 	.d2l-dialog-inner {
 		display: flex;
 		flex-direction: column;
+		height: 100%;
 	}
 
 	.d2l-dialog-header {
-		display: flex;
-		flex: 0;
+		box-sizing: border-box;
+		flex: none;
 		padding: 19px 30px 23px 30px;
 	}
 
-	.d2l-dialog-header > h2 {
-		flex: 1;
+	.d2l-dialog-header > div {
+		display: flex;
+	}
+
+	.d2l-dialog-header > div > h2 {
+		flex: 1 0 0px;
 		margin: 0;
 	}
 
-	.d2l-dialog-header > d2l-button-icon {
-		flex: 0;
-		margin: -4px -15px 0 15px;
-	}
-
 	.d2l-dialog-content {
-		flex: 1;
-		padding: 30px 30px 0 30px;
+		box-sizing: border-box;
+		flex: 1 0 0px;
+		padding: 0 30px;
 		overflow: auto;
 	}
 
-	.d2l-dialog-header + .d2l-dialog-content {
-		padding-top: 0;
-	}
-
 	.d2l-dialog-footer {
-		flex: 0;
+		box-sizing: border-box;
+		flex: none;
 		padding: 30px;
 	}
 
