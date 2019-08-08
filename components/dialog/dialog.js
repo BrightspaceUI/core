@@ -15,6 +15,9 @@ class Dialog extends DialogMixin(LitElement) {
 
 	static get styles() {
 		return [ dialogStyles, heading3Styles, css`
+			.d2l-dialog-header {
+				padding-bottom: 15px;
+			}
 			.d2l-dialog-header > div > d2l-button-icon {
 				flex: none;
 				margin: -4px -15px 0 15px;
