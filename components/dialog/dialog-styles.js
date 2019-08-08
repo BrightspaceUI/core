@@ -53,6 +53,10 @@ export const dialogStyles = css`
 		padding: 19px 30px 23px 30px;
 	}
 
+	[overflow-top] .d2l-dialog-header {
+		box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.05);
+	}
+
 	.d2l-dialog-header > div {
 		display: flex;
 	}
@@ -73,6 +77,10 @@ export const dialogStyles = css`
 		box-sizing: border-box;
 		flex: none;
 		padding: 30px;
+	}
+
+	[overflow-bottom] .d2l-dialog-footer {
+		box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.05);
 	}
 
 	.d2l-dialog-footer ::slotted(*) {

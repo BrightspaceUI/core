@@ -10,6 +10,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			opened: { type: Boolean, reflect: true },
 			title: { type: String },
 			_height: { type: Number },
+			_overflowBottom: { type: Boolean },
+			_overflowTop: { type: Boolean },
 			_state: { type: String, reflect: true },
 			_width: { type: Number },
 		};
@@ -22,7 +24,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._width = 0;
 		this._hasNativeDialog = (window.HTMLDialogElement !== undefined);
 		//this._hasNativeDialog = false;
-		this._handleResize = this._handleResize.bind(this);
+		this._updateSize = this._updateSize.bind(this);
+		this._updateOverflow = this._updateOverflow.bind(this);
 	}
 
 	attributeChangedCallback(name, oldval, newval) {
@@ -48,7 +51,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 		const transitionEnd = () => {
 			dialog.removeEventListener('transitionend', transitionEnd);
-			window.removeEventListener('resize', this._handleResize);
+			dialog.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
+			window.removeEventListener('resize', this._updateSize);
 			if (this._hasNativeDialog) {
 				dialog.close();
 			}
@@ -99,14 +103,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
-	_handleResize() {
-		this._updateSize();
-	}
-
 	_open() {
 		if (!this.opened) return;
 
-		window.addEventListener('resize', this._handleResize);
+		window.addEventListener('resize', this._updateSize);
+		this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 		if (this._hasNativeDialog) {
@@ -129,17 +130,24 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		else styles.width = 'auto';
 
 		return html`${this._hasNativeDialog ?
-			html`<dialog style=${styleMap(styles)} aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog-outer" @close="${this._handleClose}">${inner}</dialog>` :
-			html`<div style=${styleMap(styles)} role="dialog" aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog-outer">${inner}</div>`}
+			html`<dialog style=${styleMap(styles)} aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog-outer" @close="${this._handleClose}" ?overflow-top="${this._overflowTop}" ?overflow-bottom="${this._overflowBottom}">${inner}</dialog>` :
+			html`<div style=${styleMap(styles)} role="dialog" aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog-outer" ?overflow-top="${this._overflowTop}" ?overflow-bottom="${this._overflowBottom}">${inner}</div>`}
 		`;
 
 	}
 
-	_updateSize() {
+	_updateOverflow() {
+		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
+		this._overflowTop = (content.scrollTop > 0);
+		this._overflowBottom = (content.scrollHeight > content.scrollTop + content.clientHeight);
+	}
+
+	async _updateSize() {
 		this._width = this._getWidth();
-		requestAnimationFrame(() => {
-			this._height = this._getHeight();
-		});
+		await this.updateComplete;
+		this._height = this._getHeight();
+		await this.updateComplete;
+		this._updateOverflow();
 	}
 
 };
