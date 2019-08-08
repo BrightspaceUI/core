@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-list unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../list.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="list">
+			<template>
+				<d2l-list value="0" max="10"></d2l-list>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-list', () => {
+
+				[
+					{ title: 'List', fixture: 'list'},
+				].forEach((testData) => {
+					let list;
+					describe(testData.title, () => {
+
+						beforeEach(async() => {
+							list = fixture(testData.fixture);
+						});
+
+						it(`should pass all axe tests for ${testData.title}`, async() => {
+							await runAxe(list);
+						});
+
+					});
+				});
+
+			});
+		</script>
+	</body>
+</html>
