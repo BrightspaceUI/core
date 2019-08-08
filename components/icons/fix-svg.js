@@ -1,6 +1,6 @@
 export function fixSvg(svg) {
 
-	const paths = svg.querySelectorAll('path[fill]');
+	const paths = svg.querySelectorAll('[fill]');
 	paths.forEach((path) => {
 		if (path.getAttribute('fill') !== 'none') path.removeAttribute('fill');
 	});

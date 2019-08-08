@@ -22,6 +22,7 @@ describe('d2l-icon-custom', function() {
 		'tier2',
 		'tier3',
 		'fill-none',
+		'fill-circle',
 		'color-override',
 		'size-override',
 		'rtl-tier1',
