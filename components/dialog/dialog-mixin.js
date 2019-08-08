@@ -130,8 +130,26 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		else styles.width = 'auto';
 
 		return html`${this._hasNativeDialog ?
-			html`<dialog style=${styleMap(styles)} aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog-outer" @close="${this._handleClose}" ?overflow-top="${this._overflowTop}" ?overflow-bottom="${this._overflowBottom}">${inner}</dialog>` :
-			html`<div style=${styleMap(styles)} role="dialog" aria-labelledby="${labelId}" aria-describedby="${ifDefined(descriptionId)}" class="d2l-dialog-outer" ?overflow-top="${this._overflowTop}" ?overflow-bottom="${this._overflowBottom}">${inner}</div>`}
+			html`<dialog
+				aria-describedby="${ifDefined(descriptionId)}"
+				aria-labelledby="${labelId}"
+				class="d2l-dialog-outer"
+				@close="${this._handleClose}"
+				?overflow-bottom="${this._overflowBottom}"
+				?overflow-top="${this._overflowTop}"
+				style=${styleMap(styles)}>
+					${inner}
+				</dialog>` :
+			html`<div
+				aria-describedby="${ifDefined(descriptionId)}"
+				aria-labelledby="${labelId}"
+				class="d2l-dialog-outer"
+				?overflow-bottom="${this._overflowBottom}"
+				?overflow-top="${this._overflowTop}"
+				role="dialog"
+				style=${styleMap(styles)}>
+					${inner}
+				</div>`}
 		`;
 
 	}
