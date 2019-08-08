@@ -12,6 +12,7 @@
  * http://polymer.github.io/PATENTS.txt
  */
 import { directive } from 'lit-html/lit-html.js';
+
 const hasAbortController = typeof AbortController === 'function';
 const runs = new WeakMap();
 /**
@@ -100,7 +101,8 @@ export const runAsync = directive((key, task, templates) => (part) => {
 			await 0;
 			const currentRunState = runs.get(part);
 			if (currentRunState === runState && currentRunState.state === 'pending') {
-				part.startNode.parentNode.dispatchEvent(new CustomEvent('pending-state', {
+				const element = part.startNode.parentNode.nodeType === Node.ELEMENT_NODE ? part.startNode.parentNode : part.startNode.parentNode.host;
+				element.dispatchEvent(new CustomEvent('pending-state', {
 					composed: true,
 					bubbles: true,
 					detail: { promise: pendingPromise }
