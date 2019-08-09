@@ -36,7 +36,7 @@ class Dialog extends DialogMixin(LitElement) {
 			<div class="d2l-dialog-inner">
 				<div class="d2l-dialog-header">
 					<div>
-						<h2 id="${this._titleId}" class="d2l-heading-3">${this.title}</h2>
+						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
 						<d2l-button-icon icon="d2l-tier1:close-small" text="Close this dialog" @click="${this._close}"></d2l-button-icon>
 					</div>
 				</div>

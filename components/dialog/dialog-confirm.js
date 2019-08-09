@@ -32,9 +32,9 @@ class DialogConfirm extends DialogMixin(LitElement) {
 
 		const inner = html`
 			<div class="d2l-dialog-inner">
-				${this.title ? html`
+				${this.titleText ? html`
 					<div class="d2l-dialog-header">
-						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.title}</h2></div>
+						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>
 					</div>` : null}
 				<div id="${this._textId}" class="d2l-dialog-content">
 					<div>${this.text}</div>
@@ -44,8 +44,8 @@ class DialogConfirm extends DialogMixin(LitElement) {
 				</div>
 			</div>`;
 
-		const labelId = (this.title && this.text) ? this._titleId : this._textId;
-		const descriptionId = (this.title && this.text) ? this._textId : null;
+		const labelId = (this.titleText && this.text) ? this._titleId : this._textId;
+		const descriptionId = (this.titleText && this.text) ? this._textId : null;
 		return this._render(labelId, descriptionId, inner);
 	}
 

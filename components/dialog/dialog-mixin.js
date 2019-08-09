@@ -8,7 +8,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	static get properties() {
 		return {
 			opened: { type: Boolean, reflect: true },
-			title: { type: String },
+			titleText: { type: String, attribute: 'title-text' },
 			_height: { type: Number },
 			_overflowBottom: { type: Boolean },
 			_overflowTop: { type: Boolean },
