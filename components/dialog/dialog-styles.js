@@ -37,8 +37,19 @@ export const dialogStyles = css`
 		padding: 0;
 	}
 
+	dialog::backdrop {
+		/* cannot use variables inside of ::backdrop : https://github.com/whatwg/fullscreen/issues/124 */
+		background-color: #f9fbff;
+		opacity: 1;
+		transition: opacity 200ms ease-in;
+	}
+
 	:host([_state="showing"]) .d2l-dialog-outer {
 		transform: translateY(0);
+	}
+
+	:host([_state="showing"]) dialog::backdrop {
+		opacity: 0.7;
 	}
 
 	.d2l-dialog-inner {
