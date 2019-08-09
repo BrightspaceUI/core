@@ -12,6 +12,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_height: { type: Number },
 			_overflowBottom: { type: Boolean },
 			_overflowTop: { type: Boolean },
+			_margin: { type: Object },
 			_state: { type: String, reflect: true },
 			_width: { type: Number },
 		};
@@ -21,6 +22,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		super();
 		this.opened = false;
 		this._height = 0;
+		this._margin = { top: 100, right: 30, bottom: 30, left: 30 };
 		this._width = 0;
 		this._hasNativeDialog = (window.HTMLDialogElement !== undefined);
 		//this._hasNativeDialog = false;
@@ -64,7 +66,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_getHeight() {
-		const availableHeight = window.innerHeight - 130;
+		const availableHeight = window.innerHeight - this._margin.top - this._margin.bottom;
 		let preferredHeight = 0;
 
 		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
@@ -81,7 +83,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_getWidth() {
-		const availableWidth = window.innerWidth - 60;
+		console.log(this._sideMargin);
+		const availableWidth = window.innerWidth - this._margin.left - this._margin.right;
 		const width = (this.width < availableWidth ? this.width : availableWidth);
 		return width;
 	}
