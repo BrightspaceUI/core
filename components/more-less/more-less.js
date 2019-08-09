@@ -186,7 +186,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		};
 
 		return html`
-			<div class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
+			<div class=${classMap(contentClasses)} style=${styleMap({ maxHeight: `${this.__contentHeight}` })}>
 				<slot></slot>
 			</div>
 			<div class="more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
