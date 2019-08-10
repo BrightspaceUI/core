@@ -335,7 +335,7 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 	__adjustToContent_makeInactive() {
 		this.inactive = true;
 		this.expanded = false;
-		this.__contentHeight = null;
+		this.__contentHeight = 'unset';
 	}
 
 	__adjustToContent_resize(contentHeight) {
