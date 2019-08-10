@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>DOM Helpers test</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="./dom-components.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="simpleFixture">
+			<template>
+				<div id="light1">
+					<div id="light2"></div>
+					some text
+				</div>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="wcFixture">
+			<template>
+				<d2l-dom-test>
+					<div id="light1"></div>
+					<div id="light2"></div>
+				</d2l-dom-test>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="mixedFixture">
+			<template>
+				<div id="light1">
+					<d2l-dom-test id="wc1">
+						<div id="light2"></div>
+						<div id="light3"></div>
+					</d2l-dom-test>
+				</div>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import * as dom from '../dom.js';
+
+			describe('d2l-dom', () => {
+
+				let simpleFixture, wcFixture, mixedFixture;
+
+				beforeEach(async() => {
+					simpleFixture = fixture('simpleFixture');
+					await simpleFixture.updateComplete;
+					wcFixture = fixture('wcFixture');
+					await wcFixture.updateComplete;
+					mixedFixture = fixture('mixedFixture');
+					await mixedFixture.updateComplete;
+				});
+
+				describe('findComposedAncestor', () => {
+
+					it('finds ancestor with specified id', () => {
+						const predicate = (node) => { return node.id === 'light1'; };
+						expect(dom.findComposedAncestor(simpleFixture.querySelector('#light2'), predicate))
+							.to.equal(simpleFixture);
+					});
+
+					it('does not find ancestor with specified id', () => {
+						const predicate = (node) => { return node.id === 'x'; };
+						expect(dom.findComposedAncestor(simpleFixture.querySelector('#light2'), predicate))
+							.to.be.null;
+					});
+
+					it('finds shadow ancestor with specified id for light node', () => {
+						const predicate = (node) => { return node.id === 'container'; };
+						expect(dom.findComposedAncestor(wcFixture.querySelector('#light1'), predicate))
+							.to.equal(wcFixture.getContainer());
+					});
+
+					it('finds light ancestor with specified id for shadow node', () => {
+						const predicate = (node) => { return node.id === 'light1'; };
+						expect(dom.findComposedAncestor(mixedFixture.querySelector('#wc1').getContainer(), predicate))
+							.to.equal(mixedFixture);
+					});
+
+				});
+
+				describe('getComposedChildren', () => {
+
+					it('returns child elememts', () => {
+						const children = dom.getComposedChildren(simpleFixture);
+						const expected = simpleFixture.children;
+						expect(children.length).to.equal(expected.length);
+						expect(children[0]).to.equal(expected[0]);
+					});
+
+					it('returns child elememts for document', () => {
+						const children = dom.getComposedChildren(document);
+						const expected = document.children;
+						expect(children.length).to.equal(expected.length);
+						expect(children[0]).to.equal(expected[0]);
+					});
+
+					it('returns shadow child elememts', () => {
+						const children = dom.getComposedChildren(wcFixture);
+						expect(children.length).to.equal(1);
+						expect(children[0]).to.equal(wcFixture.getContainer());
+					});
+
+					it('returns distributed child elements for insertion point', () => {
+						const container = wcFixture.getContainer();
+						let children = dom.getComposedChildren(container);
+						expect(children[0].tagName).to.be.oneOf(['SLOT', 'CONTENT']);
+						children = dom.getComposedChildren(children[0]);
+						expect(children.length).to.equal(2);
+						expect(children[0]).to.equal(wcFixture.querySelector('#light1'));
+						expect(children[1]).to.equal(wcFixture.querySelector('#light2'));
+					});
+
+				});
+
+				describe('getComposedParent', () => {
+
+					it('returns parent', function() {
+						expect(dom.getComposedParent(simpleFixture.querySelector('#light2')))
+							.to.equal(simpleFixture);
+					});
+
+					it('returns insertion point as parent of distributed node', () => {
+						expect(dom.getComposedParent(wcFixture.querySelector('#light1')))
+							.to.equal(wcFixture.querySelector('#light1').assignedSlot);
+					});
+
+					it('returns host as parent of shadow-root', () => {
+						expect(dom.getComposedParent(wcFixture.shadowRoot))
+							.to.equal(wcFixture);
+					});
+
+					it('returns null as parent of detached element', () => {
+						expect(dom.getComposedParent(document.createElement('div')))
+							.to.equal(null);
+					});
+
+					it('returns null as parent of document', () => {
+						expect(dom.getComposedParent(document))
+							.to.equal(null);
+					});
+
+				});
+
+				describe('isComposedAncestor', () => {
+
+					it('returns true if ancestor', () => {
+						expect(dom.isComposedAncestor(simpleFixture, simpleFixture.querySelector('#light2')))
+							.to.be.true;
+					});
+
+					it('returns true if ancestor and node are same', () => {
+						expect(dom.isComposedAncestor(simpleFixture, simpleFixture))
+							.to.be.true;
+					});
+
+					it('returns false not ancestor', () => {
+						expect(dom.isComposedAncestor(simpleFixture.querySelector('#light2'), simpleFixture))
+							.to.be.false;
+					});
+
+					it('returns true if shadow ancestor of light descendant', () => {
+						expect(dom.isComposedAncestor(wcFixture.getContainer(), wcFixture.querySelector('#light2')))
+							.to.be.true;
+					});
+
+					it('returns false if light sibling', () => {
+						expect(dom.isComposedAncestor(wcFixture.querySelector('#light3'), wcFixture.querySelector('#light2')))
+							.to.be.false;
+					});
+
+					it('returns true if light ancestor of shadow descendant', () => {
+						expect(dom.isComposedAncestor(mixedFixture, mixedFixture.querySelector('#light2')))
+							.to.be.true;
+					});
+
+				});
+
+			});
+
+		</script>
+	</body>
+</html>
