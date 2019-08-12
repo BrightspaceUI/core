@@ -26,4 +26,4 @@ class FocusTest extends LitElement {
 
 }
 
-customElements.define('d2l-focus', FocusTest);
+customElements.define('d2l-test-focus', FocusTest);
