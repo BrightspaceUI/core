@@ -12,4 +12,4 @@ class DomTest extends LitElement {
 
 }
 
-customElements.define('d2l-dom-test', DomTest);
+customElements.define('d2l-test-dom', DomTest);

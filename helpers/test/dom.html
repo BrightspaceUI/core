@@ -24,20 +24,20 @@
 
 		<test-fixture id="wcFixture">
 			<template>
-				<d2l-dom-test>
+				<d2l-test-dom>
 					<div id="light1"></div>
 					<div id="light2"></div>
-				</d2l-dom-test>
+				</d2l-test-dom>
 			</template>
 		</test-fixture>
 
 		<test-fixture id="mixedFixture">
 			<template>
 				<div id="light1">
-					<d2l-dom-test id="wc1">
+					<d2l-test-dom id="wc1">
 						<div id="light2"></div>
 						<div id="light3"></div>
-					</d2l-dom-test>
+					</d2l-test-dom>
 				</div>
 			</template>
 		</test-fixture>
@@ -45,7 +45,7 @@
 		<script type="module">
 			import * as dom from '../dom.js';
 
-			describe('d2l-dom', () => {
+			describe('dom', () => {
 
 				let simpleFixture, wcFixture, mixedFixture;
 
