@@ -68,7 +68,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 			}
 
 			.d2l-meter-linear-text {
-				color: var(--d2l-color-ferrite);
+				color: var(--d2l-meter-linear-text-fill , var(--d2l-color-ferrite));
 				display: flex;
 				flex-direction: row;
 				line-height: 1em;

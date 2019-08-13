@@ -32,7 +32,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 			stroke: var(--d2l-color-celestine);
 		}
 		.d2l-meter-circle-text {
-			fill: var(--d2l-color-ferrite);
+			fill: var(--d2l-meter-circle-text-fill, var(--d2l-color-ferrite));
 			font-size: 0.6rem;
 		}
 	` ];

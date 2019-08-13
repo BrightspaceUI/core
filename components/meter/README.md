@@ -22,6 +22,8 @@ Then add the `d2l-meter-linear`, provide values for the properties, `value` and 
 <d2l-meter-linear id="completed" value="10" max="10" text="{%} Activities"></d2l-meter-linear>
 ```
 
+Use `--d2l-meter-linear-text-fill` to change the text colour.
+
 ***Properties:***
 
 * `value` (required): The current number of units that have been marked as completed. Should be a positive, non-zero number that is less than or equal to `max`
@@ -53,6 +55,8 @@ Then add the `d2l-meter-radial`, provide values for the properties, `value` and 
 <d2l-meter-radial value="30" max="100"></d2l-meter-radial>
 ```
 
+Use `--d2l-meter-radial-text-fill` to change the text colour.
+
 ***Properties:***
 
 * `value` (required): The current number of units that have been marked as completed. Should be a positive, non-zero number that is less than or equal to `max`
@@ -79,6 +83,8 @@ Then add the `d2l-meter-circle`, provide values for the properties, `value` and 
 ```html
 <d2l-meter-circle value="30" max="100"></d2l-meter-circle>
 ```
+
+Use `--d2l-meter-circle-text-fill` to change the text colour.
 
 ***Properties:***
 
