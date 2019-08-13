@@ -39,16 +39,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('keydown', this._handleKeyDown);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('keydown', this._handleKeyDown);
-	}
-
 	_close() {
 		if (!this._state) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
@@ -149,6 +139,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				aria-labelledby="${labelId}"
 				class="d2l-dialog-outer"
 				@close="${this._handleClose}"
+				@keydown="${this._handleKeyDown}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
 				style=${styleMap(styles)}>
@@ -158,6 +149,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				aria-describedby="${ifDefined(descriptionId)}"
 				aria-labelledby="${labelId}"
 				class="d2l-dialog-outer"
+				@keydown="${this._handleKeyDown}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
 				role="dialog"
