@@ -23,6 +23,7 @@ describe('d2l-icon', function() {
 		'tier3',
 		'prefixed',
 		'fill-none',
+		'fill-circle',
 		'color-override',
 		'size-override',
 		'rtl-tier1',

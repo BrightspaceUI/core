@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>Focus Helpers test</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="./focus-components.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="simpleFixture">
+			<template>
+				<div>
+					<a id="light1" href="javascript:void(0);"></a>
+					<a id="light2" href="javascript:void(0);"></a>
+				</div>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="noChildFixture">
+			<template>
+				<div></div>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="nestedFixture">
+			<template>
+				<div>
+					<div>
+						<a id="light1" href="javascript:void(0);"></a>
+						<a id="light2" href="javascript:void(0);"></a>
+					</div>
+					<a id="light3" href="javascript:void(0);"></a>
+				</div>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="wcFixture">
+			<template>
+					<d2l-test-focus>
+						<a id="light1" href="javascript:void(0);"></a>
+						<a id="light2" href="javascript:void(0);"></a>
+					</d2l-test-focus>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="mixedFixture">
+			<template>
+				<div>
+					<a id="light1" href="javascript:void(0);"></a>
+					<d2l-test-focus id="wc1">
+						<a id="light3" href="javascript:void(0);"></a>
+					</d2l-test-focus>
+					<a id="light2" href="javascript:void(0);"></a>
+				</div>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="focusableFixture">
+			<template>
+				<div>
+					<div id="optionallyFocusable">
+						<a></a>
+						<button></button>
+						some text node
+						<!-- some comment node -->
+					</div>
+				</div>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import * as helper from '../focus.js';
+
+			describe('focus', () => {
+
+				let simpleFixture, nestedFixture, noChildFixture, wcFixture, mixedFixture;
+
+				beforeEach(async() => {
+					simpleFixture = fixture('simpleFixture');
+					await simpleFixture.updateComplete;
+					nestedFixture = fixture('nestedFixture');
+					await nestedFixture.updateComplete;
+					noChildFixture = fixture('noChildFixture');
+					await noChildFixture.updateComplete;
+					wcFixture = fixture('wcFixture');
+					await wcFixture.updateComplete;
+					mixedFixture = fixture('mixedFixture');
+					await mixedFixture.updateComplete;
+				});
+
+				describe('getComposedActiveElement', () => {
+
+					it('returns composed light-dom element', () => {
+						const expected = wcFixture.querySelector('#light1');
+						expected.focus();
+						expect(helper.getComposedActiveElement()).to.equal(expected);
+					});
+
+					it('returns composed shadow-dom element', () => {
+						const expected = wcFixture.getShadow1();
+						expected.focus();
+						expect(helper.getComposedActiveElement()).to.equal(expected);
+					});
+
+				});
+
+				describe('getFirstFocusableDescendant', () => {
+
+					it('returns focusable child', () => {
+						expect(helper.getFirstFocusableDescendant(simpleFixture))
+							.to.equal(simpleFixture.querySelector('#light1'));
+					});
+
+					it('returns focusable descendant', () => {
+						expect(helper.getFirstFocusableDescendant(nestedFixture))
+							.to.equal(nestedFixture.querySelector('#light1'));
+					});
+
+					it('returns null if no children', () => {
+						expect(helper.getFirstFocusableDescendant(noChildFixture))
+							.to.be.null;
+					});
+
+					it('returns focusable child in shadow-dom', () => {
+						expect(helper.getFirstFocusableDescendant(wcFixture))
+							.to.equal(wcFixture.getShadow1());
+					});
+
+					it('returns focusable distributed child', () => {
+						expect(helper.getFirstFocusableDescendant(wcFixture.getContent()))
+							.to.equal(wcFixture.querySelector('#light1'));
+					});
+
+				});
+
+				describe('getLastFocusableDescendant', () => {
+
+					it('returns last focusable child', () => {
+						expect(helper.getLastFocusableDescendant(simpleFixture))
+							.to.equal(simpleFixture.querySelector('#light2'));
+					});
+
+					it('returns last focusable descendant', () => {
+						expect(helper.getLastFocusableDescendant(nestedFixture))
+							.to.equal(nestedFixture.querySelector('#light3'));
+					});
+
+					it('returns null if no children', () => {
+						expect(helper.getLastFocusableDescendant(noChildFixture))
+							.to.be.null;
+					});
+
+					it('returns focusable last child in shadow-dom', () => {
+						expect(helper.getLastFocusableDescendant(wcFixture))
+							.to.equal(wcFixture.getShadow2());
+					});
+
+					it('returns focusable last distributed child', () => {
+						expect(helper.getLastFocusableDescendant(wcFixture.getContent()))
+							.to.equal(wcFixture.querySelector('#light2'));
+					});
+
+				});
+
+				describe('getNextFocusable', () => {
+
+					it('returns focusable child', () => {
+						expect(helper.getNextFocusable(simpleFixture))
+							.to.equal(simpleFixture.querySelector('#light1'));
+					});
+
+					it('returns focusable sibling', () => {
+						expect(helper.getNextFocusable(simpleFixture.querySelector('#light1')))
+							.to.equal(simpleFixture.querySelector('#light2'));
+					});
+
+					it('returns focusable parent sibling', () => {
+						expect(helper.getNextFocusable(nestedFixture.querySelector('#light1')))
+							.to.equal(nestedFixture.querySelector('#light2'));
+					});
+
+					it('returns focusable shadow parent sibling', () => {
+						expect(helper.getNextFocusable(wcFixture.querySelector('#light2')))
+							.to.equal(wcFixture.getShadow2());
+					});
+
+					it('returns focusable host sibling', () => {
+						expect(helper.getNextFocusable(mixedFixture.querySelector('#wc1').getShadow2()))
+							.to.equal(mixedFixture.querySelector('#light2'));
+					});
+
+				});
+
+				describe('getPreviousFocusable', () => {
+
+					it('returns previous focusable sibling', () => {
+						expect(helper.getPreviousFocusable(simpleFixture.querySelector('#light2')))
+							.to.equal(simpleFixture.querySelector('#light1'));
+					});
+
+					it('returns previous focusable parent sibling child', () => {
+						expect(helper.getPreviousFocusable(nestedFixture.querySelector('#light3')))
+							.to.equal(nestedFixture.querySelector('#light2'));
+					});
+
+					it('returns previous focusable shadow parent sibling', () => {
+						expect(helper.getPreviousFocusable(wcFixture.querySelector('#light1')))
+							.to.equal(wcFixture.getShadow1());
+					});
+
+					it('returns previous focusable sibling distributed element', () => {
+						expect(helper.getPreviousFocusable(wcFixture.getShadow2()))
+							.to.equal(wcFixture.querySelector('#light2'));
+					});
+
+					it('returns previous focusable host sibling', () => {
+						expect(helper.getPreviousFocusable(mixedFixture.querySelector('#wc1').getShadow1()))
+							.to.equal(mixedFixture.querySelector('#light1'));
+					});
+
+				});
+
+				describe('getPreviousFocusableAncestor', () => {
+
+					let focusableFixture;
+					beforeEach(async() => {
+						focusableFixture = fixture('focusableFixture');
+						await focusableFixture.updateComplete;
+					});
+
+					it('returns focusable div', () => {
+						const focusableDiv = focusableFixture.querySelector('#optionallyFocusable');
+						focusableDiv.setAttribute('tabindex', '-1');
+						expect(helper.getPreviousFocusableAncestor(focusableFixture.querySelector('a'), false, false))
+							.to.equal(focusableDiv);
+					});
+
+					it('returns body when no ancestor focusable', () => {
+						expect(helper.getPreviousFocusableAncestor(focusableFixture.querySelector('a'), false, false))
+							.to.equal(document.body);
+					});
+
+				});
+
+				describe('isFocusable', () => {
+
+					let focusableFixture;
+					beforeEach(async() => {
+						focusableFixture = fixture('focusableFixture');
+						await focusableFixture.updateComplete;
+					});
+
+					it('returns true for standard anchor', () => {
+						expect(helper.isFocusable(focusableFixture.querySelector('a'))).to.be.true;
+					});
+
+					it('returns true for anchor with tabindex=0', () => {
+						focusableFixture.querySelector('a').setAttribute('tabindex', '0');
+						expect(helper.isFocusable(focusableFixture.querySelector('a'))).to.be.true;
+					});
+
+					it('returns false if tabindex=-1 and includeTabbablesOnly is undefined', () => {
+						focusableFixture.querySelector('a').setAttribute('tabindex', '-1');
+						expect(helper.isFocusable(focusableFixture.querySelector('a'))).to.be.false;
+					});
+
+					it('returns false if tabindex=-1 and includeTabbablesOnly is true', () => {
+						focusableFixture.querySelector('a').setAttribute('tabindex', '-1');
+						expect(helper.isFocusable(focusableFixture.querySelector('a'), null, true)).to.be.false;
+					});
+
+					it('returns true if tabindex=-1 and includedTabbablesOnly is false', () => {
+						focusableFixture.querySelector('a').setAttribute('tabindex', '-1');
+						expect(helper.isFocusable(focusableFixture.querySelector('a'), null, false)).to.be.true;
+					});
+
+					it('returns false if not displayed', () => {
+						focusableFixture.querySelector('a').style.display = 'none';
+						expect(helper.isFocusable(focusableFixture.querySelector('a'))).to.be.false;
+					});
+
+					it('returns true if not displayed and includeHidden=true', () => {
+						focusableFixture.querySelector('a').style.display = 'none';
+						expect(helper.isFocusable(focusableFixture.querySelector('a'), true)).to.be.true;
+					});
+
+					it('returns false if not displayed and includeHidden=false', () => {
+						focusableFixture.querySelector('a').style.display = 'none';
+						expect(helper.isFocusable(focusableFixture.querySelector('a'), false)).to.be.false;
+					});
+
+					it('returns true for standard button', () => {
+						expect(helper.isFocusable(focusableFixture.querySelector('button'))).to.be.true;
+					});
+
+					it('returns false for disabled button', () => {
+						focusableFixture.querySelector('button').setAttribute('disabled', true);
+						expect(helper.isFocusable(focusableFixture.querySelector('button'))).to.be.false;
+					});
+
+					it('returns false for text node', () => {
+						const textNode = focusableFixture.querySelector('button').nextSibling;
+						expect(helper.isFocusable(textNode)).to.be.false;
+					});
+
+					it('returns false for document node', () => {
+						expect(helper.isFocusable(document)).to.be.false;
+					});
+
+					it('returns false for comment node', () => {
+						const commentNode = focusableFixture.querySelector('button').nextSibling.nextSibling;
+						expect(helper.isFocusable(commentNode)).to.be.false;
+					});
+
+				});
+
+			});
+
+		</script>
+	</body>
+</html>

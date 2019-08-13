@@ -87,7 +87,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 
 	render() {
 		const percentage = this.max > 0 ? this.value / this.max * 100 : 0;
-		const primary = this._primary(this.value, this.max);
+		const primary = this._primary(this.value, this.max, this.dir);
 		const secondary = this._secondary(this.value, this.max, this.text);
 		const textClasses =  {
 			'd2l-meter-linear-text-space-between': !this.textInline && secondary !== this.text,
