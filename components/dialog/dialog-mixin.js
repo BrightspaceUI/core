@@ -1,4 +1,4 @@
-import { getComposedActiveElement, getFirstFocusableDescendant } from '../../helpers/focus.js';
+import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -64,6 +64,18 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
+	_focusFirst() {
+		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
+		if (content) {
+			const firstFocusable = getNextFocusable(content);
+			if (!firstFocusable.classList.contains('d2l-dialog-trap-end')) {
+				firstFocusable.focus();
+				return;
+			}
+		}
+		this.shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
+	}
+
 	_getHeight() {
 		const availableHeight = window.innerHeight - this._margin.top - this._margin.bottom;
 		let preferredHeight = 0;
@@ -122,6 +134,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		requestAnimationFrame(() => {
 			this._state = 'showing';
+			this._focusFirst();
 		});
 
 	}
@@ -132,6 +145,16 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._height) styles.height = `${this._height}px`;
 		if (this._width) styles.width = `${this._width}px`;
 		else styles.width = 'auto';
+
+		inner = html`
+			<span
+				class="d2l-dialog-trap-start"
+				tabindex="0"></span>
+			${inner}
+			<span
+				class="d2l-dialog-trap-end"
+				tabindex="0"></span>
+		`;
 
 		return html`${this._hasNativeDialog ?
 			html`<dialog
