@@ -28,6 +28,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._width = 0;
 		this._hasNativeDialog = (window.HTMLDialogElement !== undefined);
 		//this._hasNativeDialog = false;
+		this._handleBodyFocus = this._handleBodyFocus.bind(this);
 		this._updateSize = this._updateSize.bind(this);
 		this._updateOverflow = this._updateOverflow.bind(this);
 	}
@@ -40,16 +41,19 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
+	_addHandlers() {
+		window.addEventListener('resize', this._updateSize);
+		document.body.addEventListener('focus', this._handleBodyFocus, true);
+		this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
+	}
+
 	_close() {
 		if (!this._state) return;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 		const transitionEnd = () => {
 			dialog.removeEventListener('transitionend', transitionEnd);
-			dialog.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
-			window.removeEventListener('resize', this._updateSize);
-			if (this._hasNativeDialog) {
-				dialog.close();
-			}
+			this._removeHandlers();
+			if (this._hasNativeDialog) dialog.close();
 			this._focusOpener();
 			this._state = null;
 			this.opened = false;
@@ -100,9 +104,17 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		return width;
 	}
 
+	_handleBodyFocus(e) {
+		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
+		const target = e.composedPath()[0];
+		if (isComposedAncestor(dialog, target)) return;
+		this._focusFirst();
+	}
+
 	_handleClose() {
 		/* reset state if native dialog closes unexpectedly. ex. user highlights
 		text and then hits escape key - this is not caught by our key handler */
+		this._removeHandlers();
 		this._focusOpener();
 		this._state = null;
 		this.opened = false;
@@ -149,8 +161,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		this._opener = getComposedActiveElement();
 
-		window.addEventListener('resize', this._updateSize);
-		this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
+		this._addHandlers();
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 		if (this._hasNativeDialog) {
@@ -164,6 +175,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			this._focusFirst();
 		});
 
+	}
+
+	_removeHandlers() {
+		window.removeEventListener('resize', this._updateSize);
+		document.body.removeEventListener('focus', this._handleBodyFocus, true);
+		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
 	_render(labelId, descriptionId, inner) {
