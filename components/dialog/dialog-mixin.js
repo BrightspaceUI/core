@@ -1,6 +1,7 @@
-import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -117,6 +118,32 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
+	_handleTrapEndFocusIn(e) {
+		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
+		if (isComposedAncestor(dialog, e.relatedTarget)) {
+			// user is exiting dialog via forward tabbing...
+			const firstFocusable = getNextFocusable(dialog.querySelector('.d2l-dialog-trap-start'));
+			if (firstFocusable) {
+				firstFocusable.focus();
+				return;
+			}
+		}
+		this._focusFirst();
+	}
+
+	_handleTrapStartFocusIn(e) {
+		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
+		if (isComposedAncestor(dialog, e.relatedTarget)) {
+			// user is exiting dialog via back tabbing...
+			const lastFocusable = getPreviousFocusable(dialog.querySelector('.d2l-dialog-trap-end'));
+			if (lastFocusable) {
+				lastFocusable.focus();
+				return;
+			}
+		}
+		this._focusFirst();
+	}
+
 	_open() {
 		if (!this.opened) return;
 
@@ -149,10 +176,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		inner = html`
 			<span
 				class="d2l-dialog-trap-start"
+				@focusin="${this._handleTrapStartFocusIn}"
 				tabindex="0"></span>
 			${inner}
 			<span
 				class="d2l-dialog-trap-end"
+				@focusin="${this._handleTrapEndFocusIn}"
 				tabindex="0"></span>
 		`;
 
