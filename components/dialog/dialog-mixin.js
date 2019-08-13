@@ -1,3 +1,4 @@
+import { getComposedActiveElement, getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -58,11 +59,19 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (this._hasNativeDialog) {
 				dialog.close();
 			}
+			this._focusOpener();
 			this._state = null;
 			this.opened = false;
 		};
 		dialog.addEventListener('transitionend', transitionEnd);
 		this._state = 'hiding';
+	}
+
+	_focusOpener() {
+		if (this._opener && this._opener.focus) {
+			this._opener.focus();
+			this._opener = null;
+		}
 	}
 
 	_getHeight() {
@@ -83,7 +92,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_getWidth() {
-		console.log(this._sideMargin);
 		const availableWidth = window.innerWidth - this._margin.left - this._margin.right;
 		const width = (this.width < availableWidth ? this.width : availableWidth);
 		return width;
@@ -92,6 +100,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_handleClose() {
 		/* reset state if native dialog closes unexpectedly. ex. user highlights
 		text and then hits escape key - this is not caught by our key handler */
+		this._focusOpener();
 		this._state = null;
 		this.opened = false;
 	}
@@ -108,6 +117,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_open() {
 		if (!this.opened) return;
+
+		this._opener = getComposedActiveElement();
 
 		window.addEventListener('resize', this._updateSize);
 		this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
