@@ -7,6 +7,7 @@
 		import '../../colors/colors.js';
 		import '../../typography/typography.js';
 		import '../list.js';
+		import '../list-item.js';
 	</script>
 	<title>d2l-list</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +15,225 @@
 	<meta charset="UTF-8">
 </head>
 <body class="d2l-typography">
-	<div class="visual-diff">
-		<d2l-list id="list" value="0" max="10"></d2l-list>
+	<!-- Divider -->
+	<div style="width: 400px">
+		<div class="visual-diff" id="list-divider-none">
+			<d2l-list  divider="none">
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
 	</div>
+	<div style="width: 400px">
+		<div class="visual-diff" id="list-divider-extended">
+			<d2l-list divider-extended>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+	<div style="width: 400px">
+		<div class="visual-diff" id="list-divider-all">
+			<d2l-list>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+	<div style="width: 400px">
+		<div class="visual-diff" id="list-divider-top">
+			<d2l-list divider="top">
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+	<div style="width: 400px">
+		<div class="visual-diff" id="list-divider-bottom">
+			<d2l-list divider="bottom">
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+	<div style="width: 400px">
+		<div class="visual-diff" id="list-divider-middle">
+			<d2l-list divider="middle">
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+					<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+	<!-- Breakpoint 842 -->
+	<div style="width: 900px">
+		<div class="visual-diff" id="list-bp842">
+			<d2l-list>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Byron Novak</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">bnovak</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration-outer"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Geomorphology and GIS </div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+
+	<!-- Breakpoint 636 -->
+	<div style="width: 700px">
+		<div class="visual-diff"  id="list-bp636">
+			<d2l-list>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Byron Novak</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">bnovak</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration-outer"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Geomorphology and GIS </div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+	<!-- Breakpoint 580 -->
+	<div style="width: 600px">
+		<div class="visual-diff" id="list-bp580">
+			<d2l-list>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Byron Novak</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">bnovak</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration-outer"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Geomorphology and GIS </div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+	<!-- Breakpoint 0 -->
+	<div style="width: 490px">
+		<div class="visual-diff" id="list-bp0">
+			<d2l-list>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Byron Novak</div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">bnovak</div>
+				</d2l-list-item>
+				<d2l-list-item>
+					<div style="height: 400px; width: 400px; background: red;" slot="illustration-outer"></div>
+					<div class="d2l-list-item-text d2l-body-compact">Geomorphology and GIS </div>
+					<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+				</d2l-list-item>
+			</d2l-list>
+		</div>
+	</div>
+
+	<div style="width: 490px">
+			<div class="visual-diff" id="list-rtl" dir="rtl">
+				<d2l-list dir="rtl">
+					<d2l-list-item dir="rtl">
+						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+						<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
+						<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+					</d2l-list-item dir="rtl">
+					<d2l-list-item dir="rtl">
+						<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+						<div class="d2l-list-item-text d2l-body-compact">Byron Novak</div>
+						<div class="d2l-list-item-text-secondary-responsive d2l-body-small">bnovak</div>
+					</d2l-list-item>
+					<d2l-list-item dir="rtl">
+						<div style="height: 400px; width: 400px; background: red;" slot="illustration-outer"></div>
+						<div class="d2l-list-item-text d2l-body-compact">Geomorphology and GIS </div>
+						<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
 </body>
 </html>
