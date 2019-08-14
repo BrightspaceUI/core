@@ -29,7 +29,7 @@ function commit() {
 		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
-			// return git.push(remote, branchName);
+			return git.push(remote, branchName);
 		});
 }
 
