@@ -18,7 +18,6 @@ export const dialogStyles = css`
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		box-sizing: content-box;
 		position: fixed; /* also required for native to override position: absolute */
-		overflow: hidden;
 		top: 100px;
 		transform: translateY(-50px);
 		transition: transform 200ms ease-in;
@@ -30,6 +29,10 @@ export const dialogStyles = css`
 		right: 0;
 		width: 300px;
 		z-index: 1000;
+	}
+
+	div[nested].d2l-dialog-outer {
+		top: 0;
 	}
 
 	dialog.d2l-dialog-outer {

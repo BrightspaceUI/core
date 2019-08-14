@@ -1,7 +1,7 @@
 import { getComposedActiveElement, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -15,6 +15,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_overflowBottom: { type: Boolean },
 			_overflowTop: { type: Boolean },
 			_margin: { type: Object },
+			_nested: { type: Object },
 			_state: { type: String, reflect: true },
 			_width: { type: Number },
 		};
@@ -25,6 +26,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		this._height = 0;
 		this._margin = { top: 100, right: 30, bottom: 30, left: 30 };
+		this._nested = false;
 		this._width = 0;
 		this._hasNativeDialog = (window.HTMLDialogElement !== undefined);
 		//this._hasNativeDialog = false;
@@ -157,6 +159,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_open() {
+
 		if (!this.opened) return;
 
 		this._opener = getComposedActiveElement();
@@ -168,12 +171,15 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			dialog.showModal();
 		}
 
+		this._nested = findComposedAncestor(this, (node) => {
+			return node.classList && node.classList.contains('d2l-dialog-outer');
+		});
+
 		this._updateSize();
 
-		requestAnimationFrame(() => {
-			this._state = 'showing';
-			this._focusFirst();
-		});
+		this._state = 'showing';
+
+		this._focusFirst();
 
 	}
 
@@ -219,6 +225,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				aria-labelledby="${labelId}"
 				class="d2l-dialog-outer"
 				@keydown="${this._handleKeyDown}"
+				?nested="${this._nested}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
 				role="dialog"
