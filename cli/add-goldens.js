@@ -17,27 +17,18 @@ function commit() {
 		.then(() => {
 			return git.branch();
 		}).then((data) => {
-			console.log("current " + data.current);
-		});
+			if (data.current !== branchName) {
+				process.exit(1);
+			}
+			console.log('Checked out branch ' + branchName)
 
-	// return git.fetch(remote, branchName2)
-	// 	.then(() => {
-	// 		console.log('Fetched branch...');
-	// 		return git.checkoutLocalBranch(branchName);
-	// 	}).then(() => {
-	// 		return git.branch();
-	// 	}).then((data) => {
-	// 		console.log("current " + data.current);
-	// 	})
-		// }).then(() => {
-		// 	// console.log(`Checked out branch... ${process.env.TRAVIS_BRANCH}`);
-		// 	const commitMessage = '[skip ci] test commit';
-		// 	return git.commit(commitMessage, 'new-file.txt');
-		// }).then((status) => {
-		// 	console.log(status);
-		// 	console.log('Committed. Pushing...');
-		// 	// return git.push(remote, branchName);
-		// });
+			const commitMessage = '[skip ci] test commit';
+			return git.commit(commitMessage, 'new-file.txt');
+		}).then((status) => {
+			console.log(status);
+			console.log('Committed. Pushing...');
+			// return git.push(remote, branchName);
+		});
 }
 
 commit()
