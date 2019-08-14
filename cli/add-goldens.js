@@ -2,7 +2,7 @@ const git = require('simple-git/promise')();
 
 const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
 // const branchName = process.env.TRAVIS_BRANCH;
-const branchName = 'travis-commit-experiment';
+const branchName = 'travis-commit-experiment-pr';
 
 function commit() {
 
@@ -18,7 +18,7 @@ function commit() {
 	return git.fetch(remote, branchName2)
 		.then(() => {
 			console.log('Fetched branch...');
-			return git.checkout(branchName);
+			return git.checkoutLocalBranch(branchName);
 		}).then(() => {
 			console.log(`Checked out branch... ${process.env.TRAVIS_BRANCH}`);
 			const commitMessage = '[skip ci] test commit';
