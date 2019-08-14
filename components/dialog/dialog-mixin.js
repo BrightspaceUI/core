@@ -1,7 +1,7 @@
+import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
