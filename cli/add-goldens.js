@@ -1,7 +1,6 @@
 const git = require('simple-git/promise')();
 
 const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
-// const branchName = process.env.TRAVIS_BRANCH;
 const branchName = 'travis-commit-experiment';
 
 function commit() {
@@ -11,19 +10,25 @@ function commit() {
 	git.addConfig('push.default', 'simple');
 
 	console.log('Committing, tagging and pushing...');
-	console.log(`also branch name is ${process.env.TRAVIS_BRANCH}`);
 	console.group();
 	const branchName2 = 'refs/heads/travis-commit-experiment:refs/remotes/origin/travis-commit-experiment';
 
-	return git.fetch(remote, branchName2)
+	return git.checkout(branchName)
 		.then(() => {
-			console.log('Fetched branch...');
-			return git.checkoutBranch(branchName);
-		}).then(() => {
 			return git.branch();
 		}).then((data) => {
 			console.log("current " + data.current);
 		});
+
+	// return git.fetch(remote, branchName2)
+	// 	.then(() => {
+	// 		console.log('Fetched branch...');
+	// 		return git.checkoutLocalBranch(branchName);
+	// 	}).then(() => {
+	// 		return git.branch();
+	// 	}).then((data) => {
+	// 		console.log("current " + data.current);
+	// 	})
 		// }).then(() => {
 		// 	// console.log(`Checked out branch... ${process.env.TRAVIS_BRANCH}`);
 		// 	const commitMessage = '[skip ci] test commit';
