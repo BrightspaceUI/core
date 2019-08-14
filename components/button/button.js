@@ -70,17 +70,17 @@ class Button extends ButtonMixin(LitElement) {
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
-				?autofocus="${ifDefined(this.autofocus)}"
+				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
 				?disabled="${this.disabled}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
 				formenctype="${ifDefined(this.formenctype)}"
 				formmethod="${ifDefined(this.formmethod)}"
-				formnovalidate="${ifDefined(this.formnovalidate)}"
+				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
 				name="${ifDefined(this.name)}"
-				type="${this.type}">
+				type="${this._getType()}">
 				<slot></slot>
 			</button>
 		`;

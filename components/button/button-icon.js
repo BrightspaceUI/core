@@ -110,18 +110,18 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
-				?autofocus="${ifDefined(this.autofocus)}"
+				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
 				?disabled="${this.disabled}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
 				formenctype="${ifDefined(this.formenctype)}"
 				formmethod="${ifDefined(this.formmethod)}"
-				formnovalidate="${ifDefined(this.formnovalidate)}"
+				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
 				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
-				type="${this.type}">
+				type="${this._getType()}">
 				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>
 		</button>
 		`;
