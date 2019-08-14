@@ -1,7 +1,7 @@
 const git = require('simple-git/promise')();
 
 const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
-const branchName = 'travis-commit-experiment-pr';
+const branchName = 'travis-commit-experiment';
 
 function commit() {
 
@@ -12,7 +12,7 @@ function commit() {
 	console.log('Committing, tagging and pushing...');
 	console.group();
 
-	return git.checkoutLocalBranch(branchName)
+	return git.checkout(branchName)
 		.then(() => {
 			return git.branch();
 		}).then((data) => {
@@ -29,7 +29,7 @@ function commit() {
 		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
-			return git.push(remote, branchName);
+			// return git.push(remote, branchName);
 		});
 }
 
