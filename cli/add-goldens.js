@@ -20,10 +20,14 @@ function commit() {
 			if (data.current !== branchName) {
 				process.exit(1);
 			}
-			console.log('Checked out branch ' + branchName)
+			console.log('Checked out branch ' + branchName);
 
+			return git.add('new-file.txt');
+		}).then((status) => {
+			console.log('added, commiting...')
 			const commitMessage = '[skip ci] test commit';
-			return git.commit(commitMessage, 'new-file.txt');
+			return git.commit(commitMessage);
+			// return git.push(remote, branchName);
 		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
