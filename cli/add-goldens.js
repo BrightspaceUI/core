@@ -11,7 +11,6 @@ function commit() {
 
 	console.log('Committing, tagging and pushing...');
 	console.group();
-	const branchName2 = 'refs/heads/travis-commit-experiment:refs/remotes/origin/travis-commit-experiment';
 
 	return git.checkoutLocalBranch(branchName)
 		.then(() => {
@@ -20,18 +19,17 @@ function commit() {
 			if (data.current !== branchName) {
 				process.exit(1);
 			}
-			console.log('Checked out branch ' + branchName);
+			console.log(`Checked out branch ${branchName}`);
 
 			return git.add('new-file.txt');
-		}).then((status) => {
-			console.log('added, commiting...')
+		}).then(() => {
+			console.log('added, commiting...');
 			const commitMessage = '[skip ci] test commit';
 			return git.commit(commitMessage);
-			// return git.push(remote, branchName);
 		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
-			// return git.push(remote, branchName);
+			return git.push(remote, branchName);
 		});
 }
 
