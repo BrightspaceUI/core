@@ -20,7 +20,7 @@ class DemoPage extends LitElement {
 
 	static get properties() {
 		return {
-			title: { type: String, reflect: true }
+			name: { type: String, reflect: true }
 		};
 	}
 
@@ -51,13 +51,13 @@ class DemoPage extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		const title = document.createElement('title');
-		title.textContent = this.title;
+		title.textContent = this.name;
 		document.head.insertBefore(title, document.head.firstChild);
 	}
 
 	render() {
 		return html`
-			<h1 class="d2l-heading-2">${this.title}</h1>
+			<h1 class="d2l-heading-2">${this.name}</h1>
 			<div><slot></slot></div>
 		`;
 	}
