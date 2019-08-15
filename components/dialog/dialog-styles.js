@@ -43,7 +43,7 @@ export const dialogStyles = css`
 	dialog::backdrop {
 		/* cannot use variables inside of ::backdrop : https://github.com/whatwg/fullscreen/issues/124 */
 		background-color: #f9fbff;
-		opacity: 1;
+		opacity: 0;
 		transition: opacity 200ms ease-in;
 	}
 
