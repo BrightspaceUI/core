@@ -11,7 +11,7 @@ script:
     echo "Commit things";
     git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
     git fetch
-    touch new-file.txt;
+    touch new-file2.txt;
     npm run add-goldens;
   else
     echo "Not a pull request and/or no secure environment variables, running headless tests...";
