@@ -57,6 +57,10 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 				margin-bottom: 0.45rem;
 			}
 
+			:host([foreground-light]) .d2l-meter-linear-full-bar {
+				background-color: rgba(255, 255, 255, 0.5);
+			}
+
 			.d2l-meter-linear-inner-bar {
 				position: absolute;
 				left: 0;
@@ -66,12 +70,18 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 			:host([dir="rtl"]) .d2l-meter-linear-inner-bar {
 				right: 0;
 			}
+			:host([foreground-light]) .d2l-meter-linear-inner-bar {
+				background-color: white;
+			}
 
 			.d2l-meter-linear-text {
 				color: var(--d2l-color-ferrite);
 				display: flex;
 				flex-direction: row;
 				line-height: 1em;
+			}
+			:host([foreground-light]) .d2l-meter-linear-text {
+				color: white;
 			}
 
 			.d2l-meter-linear-text-space-between {
