@@ -21,7 +21,7 @@ function commit() {
 			}
 			console.log(`Checked out branch ${branchName}`);
 
-			return git.add();
+			return git.add('*');
 		}).then(() => {
 			console.log('added, commiting...');
 			const commitMessage = '[skip ci] test commit';
