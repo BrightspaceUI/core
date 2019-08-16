@@ -1,6 +1,6 @@
 const git = require('simple-git/promise')();
 
-// const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
+const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
 const branchName = 'travis-commit-experiment';
 
 function commit() {
@@ -24,9 +24,6 @@ function commit() {
 			}
 			console.log(`Checked out branch ${branchName}`);
 
-			return git.status();
-		}).then((status) => {
-			console.log(status);
 			return git.add('*');
 		}).then(() => {
 			console.log('added, commiting...');
@@ -35,7 +32,7 @@ function commit() {
 		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
-			// return git.push(remote, branchName);
+			return git.push(remote, branchName);
 		});
 }
 
