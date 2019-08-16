@@ -24,6 +24,9 @@ function commit() {
 			}
 			console.log(`Checked out branch ${branchName}`);
 
+			return git.status();
+		}).then((status) => {
+			console.log(status);
 			return git.add('*');
 		}).then(() => {
 			console.log('added, commiting...');
