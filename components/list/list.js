@@ -10,6 +10,9 @@ class List extends LitElement {
 
 	static get styles() {
 		const layout = css`
+			:host {
+				display: block;
+			}
 			ul {
 				list-style-type: none;
 				padding: 0;
@@ -44,7 +47,7 @@ class List extends LitElement {
 				--d2l-list-item-divider-bottom: none;
 				--d2l-list-item-divider-top: none;
 			}
-			:host([divider-extended]) ::slotted(d2l-list-item) {
+			:host([divider-extend]) ::slotted(d2l-list-item) {
 				--d2l-list-item-content-padding: 0 18px;
 			}
 			:host(.d2l-list-divider-hover) ::slotted(d2l-list-item:hover) {

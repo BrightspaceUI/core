@@ -10,8 +10,6 @@
 			import '../../demo/demo-page.js';
 			import '../../typography/typography.js';
 			import '../list.js';
-			import '../list-item.js';
-			import '../list-item-content.js';
 			import './list-demo-name-image.js';
 			import './list-demo-course-image.js';
 			import '../../button/button-icon.js';
@@ -21,7 +19,13 @@
 
 		<d2l-demo-page page-title="List Components">
 			<h2>Basic List</h2>
-
+			<d2l-demo-snippet>
+				<d2l-list>
+					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>Item 3</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
 			<d2l-demo-snippet>
 				<d2l-list divider="middle">
 					<d2l-list-item>
@@ -82,10 +86,10 @@
 				</d2l-list>
 			</d2l-demo-snippet>
 
-			<h2>List of Users - extended borders</h2>
+			<h2>List of Users - extend borders</h2>
 
 			<d2l-demo-snippet>
-				<d2l-list divider-extended>
+				<d2l-list divider-extend>
 					<d2l-list-item>
 						<d2l-list-demo-name-image color="purple" letters="BN" slot="illustration"></d2l-list-demo-name-image>
 						<div class="d2l-list-item-text d2l-body-compact">Byron Novak</div>
@@ -171,7 +175,7 @@
 			<h2>Course List - Resposive</h2>
 
 			<d2l-demo-snippet>
-				<d2l-list divider-extended divider="bottom" class="d2l-list-divider-hover">
+				<d2l-list divider-extend divider="bottom" class="d2l-list-divider-hover">
 					<d2l-list-item>
 						<d2l-list-demo-course-image slot="illustration"></d2l-list-demo-course-image>
 						<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
@@ -193,7 +197,7 @@
 			<h2>Course List - Resposive - Outer Illustration</h2>
 
 			<d2l-demo-snippet>
-					<d2l-list divider-extended divider="top" class="d2l-list-divider-hover">
+					<d2l-list divider-extend divider="top" class="d2l-list-divider-hover">
 						<d2l-list-item>
 							<d2l-list-demo-course-image slot="illustration-outer"></d2l-list-demo-course-image>
 							<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
