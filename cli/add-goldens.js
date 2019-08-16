@@ -8,12 +8,15 @@ function commit() {
 	git.addConfig('user.name', 'BrightspaceGitHubReader');
 	git.addConfig('user.email', 'brightspacegithubreader@d2l.com');
 	git.addConfig('push.default', 'simple');
+	git.addconfig('remote.origin.fetch', 'refs/heads/*:refs/remotes/origin/*');
 
 	console.log('Committing, tagging and pushing...');
 	console.group();
 
-	return git.checkout(branchName)
+	return git.fetch()
 		.then(() => {
+			return git.checkout(branchName)
+		}).then(() => {
 			return git.branch();
 		}).then((data) => {
 			if (data.current !== branchName) {
@@ -29,7 +32,7 @@ function commit() {
 		}).then((status) => {
 			console.log(status);
 			console.log('Committed. Pushing...');
-			return git.push(remote, branchName);
+			// return git.push(remote, branchName);
 		});
 }
 
