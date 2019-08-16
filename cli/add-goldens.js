@@ -1,6 +1,6 @@
 const git = require('simple-git/promise')();
 
-const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
+// const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
 const branchName = 'travis-commit-experiment';
 
 function commit() {
@@ -8,14 +8,14 @@ function commit() {
 	git.addConfig('user.name', 'BrightspaceGitHubReader');
 	git.addConfig('user.email', 'brightspacegithubreader@d2l.com');
 	git.addConfig('push.default', 'simple');
-	git.addconfig('remote.origin.fetch', 'refs/heads/*:refs/remotes/origin/*');
+	git.addConfig('remote.origin.fetch', 'refs/heads/*:refs/remotes/origin/*');
 
 	console.log('Committing, tagging and pushing...');
 	console.group();
 
 	return git.fetch()
 		.then(() => {
-			return git.checkout(branchName)
+			return git.checkout(branchName);
 		}).then(() => {
 			return git.branch();
 		}).then((data) => {
