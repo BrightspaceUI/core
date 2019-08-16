@@ -20,6 +20,7 @@
     "test:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "test:sauce": "polymer test --skip-plugin local",
     "test:travis": "polymer test --config-file wct.conf-travis.json",
+    "update-goldens": "npm run test:diff:golden -- -g floating-buttons && npm run add-goldens",
     "update-version": "node ./cli/update-version.js"
   },
   "files": [
