@@ -9,10 +9,10 @@ class ListDemoCourseImage extends LitElement {
 	static get styles() {
 		return [ css`
 			:host {
-				position: relative;
-				width: 100%;
 				border-radius: 6px;
 				overflow: hidden;
+				position: relative;
+				width: 100%;
 			}
 			svg {
 				height: inherit;

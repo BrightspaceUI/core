@@ -24,33 +24,33 @@ class ListItem extends RtlMixin(LitElement) {
 			}
 			.d2l-list-item-content-flex {
 				display: flex;
-				justify-content: stretch;
 				flex-grow: 1;
+				justify-content: stretch;
 				margin: 18px 0;
 				padding: var(--d2l-list-item-content-padding, 0);
 			}
 			::slotted([slot|="illustration"]){
-				margin-right: 0.9rem;
-				max-width: 90px;
-				max-height: 52px;
-				flex-grow: 0;
 				align-self: flex-start;
 				display: flex;
-				overflow:hidden;
+				flex-grow: 0;
 				flex-shrink: 0;
+				margin-right: 0.9rem;
+				max-height: 52px;
+				max-width: 90px;
+				overflow:hidden;
 			}
 			:host([dir="rtl"]) ::slotted([slot|="illustration"]) {
 				margin-left: 0.9rem;
 				margin-right: 0rem;
 			}
 			::slotted([slot="illustration-outer"]) {
-				margin-top: 18px;
 				margin-bottom: 18px;
+				margin-top: 18px;
 			}
 			::slotted([slot="actions"]) {
-				flex-grow: 0;
-				display: flex;
 				align-self: flex-start;
+				display: flex;
+				flex-grow: 0;
 			}
 			.d2l-list-item-main {
 				width: 100%;
@@ -58,9 +58,9 @@ class ListItem extends RtlMixin(LitElement) {
 		`;
 		const mainContent = css`
 			::slotted(.d2l-list-item-text) {
+				margin: 0;
 				max-height: 2.4rem;
 				overflow: hidden;
-				margin: 0;
 			}
 			::slotted(.d2l-list-item-text-secondary-responsive),
 			::slotted(.d2l-list-item-text-secondary) {
@@ -94,8 +94,8 @@ class ListItem extends RtlMixin(LitElement) {
 		const breakPoint580 = css`
 			.d2l-list-item-flex[breakpoint="580"] ::slotted([slot|="illustration"]) {
 				margin-right: 1rem;
-				max-width: 120px;
 				max-height: 71px;
+				max-width: 120px;
 			}
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="580"] ::slotted([slot|="illustration"]) {
 				margin-left: 1rem;
@@ -109,8 +109,8 @@ class ListItem extends RtlMixin(LitElement) {
 		const breakPoint636 = css`
 			.d2l-list-item-flex[breakpoint="636"] ::slotted([slot|="illustration"]) {
 				margin-right: 1rem;
-				max-width: 180px;
 				max-height: 102px;
+				max-width: 180px;
 			}
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="636"] ::slotted([slot|="illustration"]) {
 				margin-left: 1rem;
@@ -124,8 +124,8 @@ class ListItem extends RtlMixin(LitElement) {
 		const breakPoint842 = css`
 			.d2l-list-item-flex[breakpoint="842"] ::slotted([slot|="illustration"]) {
 				margin-right: 1rem;
-				max-width: 216px;
 				max-height: 120px;
+				max-width: 216px;
 			}
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="842"] ::slotted([slot|="illustration"]) {
 				margin-left: 1rem;

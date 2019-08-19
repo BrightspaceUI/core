@@ -21,22 +21,22 @@ class List extends LitElement {
 				display: none;
 			}
 			::slotted(d2l-list-item) {
-				display: list-item;
-				box-sizing: content-box;
-				margin: 1px 0;
-				--d2l-list-item-divider-top: block;
 				--d2l-list-item-divider-bottom: block;
+				--d2l-list-item-divider-top: block;
+				box-sizing: content-box;
+				display: list-item;
+				margin: 1px 0;
 			}
 		`;
 
 		const specialDividers = css`
 			:host([divider="none"]) ::slotted(d2l-list-item) {
-				--d2l-list-item-divider-top: none;
 				--d2l-list-item-divider-bottom: none;
+				--d2l-list-item-divider-top: none;
 			}
 			:host([divider="bottom"]) ::slotted(d2l-list-item) {
-				--d2l-list-item-divider-top: none;
 				--d2l-list-item-divider-bottom: block;
+				--d2l-list-item-divider-top: none;
 			}
 			:host([divider="top"]) ::slotted(d2l-list-item) {
 				--d2l-list-item-divider-bottom: none;
@@ -51,8 +51,8 @@ class List extends LitElement {
 				--d2l-list-item-content-padding: 0 18px;
 			}
 			:host(.d2l-list-divider-hover) ::slotted(d2l-list-item:hover) {
-				--d2l-list-item-divider-top: block;
 				--d2l-list-item-divider-bottom: block;
+				--d2l-list-item-divider-top: block;
 			}
 		`;
 		return [layout, specialDividers];
