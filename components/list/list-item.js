@@ -146,7 +146,7 @@ class ListItem extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this._breakpoint = 0;
-		this.breakpoints = [636, 580, 0];
+		this.breakpoints = [842, 636, 580, 0];
 		this.role = "listitem";
 	}
 
