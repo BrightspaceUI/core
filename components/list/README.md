@@ -52,13 +52,16 @@ Output
 `d2l-list-item` defines the items for a `d2l-list`.
 ## Signature
 ```html
-<d2l-list-item>
+<d2l-list-item breakpoints="array">
 	[slot: illustration-outer]
 	[slot: illustration]
 	[slot: default]
 	[slot: actions]
 </d2l-list>
 ```
+
+## Attributes
+ - **breakpoints**: Define breakpoints by pixels on when things should scale. There are four different breakpoints so only the 4 biggest breakpoints will be used. If you use less than 4 breakpoints then you will skip a middle breakpoint and the first and last break points will map to the biggest and smallest visuals. Default: [842, 636, 580, 0].
 
 ## Slots
  - **default**: This is for the main content area. You can add styles to the elements in this slot.

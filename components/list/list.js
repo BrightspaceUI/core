@@ -17,9 +17,6 @@ class List extends LitElement {
 				list-style-type: none;
 				padding: 0;
 			}
-			::slotted(*) {
-				display: none;
-			}
 			::slotted(d2l-list-item) {
 				--d2l-list-item-divider-bottom: initial;
 				--d2l-list-item-divider-top: initial;

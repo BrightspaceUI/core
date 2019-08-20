@@ -9,14 +9,25 @@ const ro = new ResizeObserver(entries => {
 class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
+			breakpoints: { type: Array },
 			role: { type: String, reflect: true },
 			_breakpoint: { type: Number }
 		};
 	}
 
+	get breakpoints() {
+		return this._breakpoints;
+	}
+
+	set breakpoints(val) {
+		let oldVal = this._breakpoints;
+		this._breakpoints = val.sort((a, b) => b - a).slice(0,4);
+		this.requestUpdate('breakpoints', oldVal);
+	}
+
 	static get styles() {
 		const layout = css`
-			.host {
+			:host {
 				display: list-item;
 				margin: 1px 0;
 			}
@@ -85,57 +96,57 @@ class ListItem extends RtlMixin(LitElement) {
 			}
 		`;
 
-		const breakPoint580 = css`
-			.d2l-list-item-flex[breakpoint="580"] ::slotted([slot|="illustration"]) {
+		const breakPoint1 = css`
+			.d2l-list-item-flex[breakpoint="1"] ::slotted([slot|="illustration"]) {
 				margin-right: 1rem;
 				max-height: 71px;
 				max-width: 120px;
 			}
-			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="580"] ::slotted([slot|="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="1"] ::slotted([slot|="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			.d2l-list-item-flex[breakpoint="580"] ::slotted(.d2l-list-item-text-secondary-responsive) {
+			.d2l-list-item-flex[breakpoint="1"] ::slotted(.d2l-list-item-text-secondary-responsive) {
 				display: block;
 			}
 		`;
 
-		const breakPoint636 = css`
-			.d2l-list-item-flex[breakpoint="636"] ::slotted([slot|="illustration"]) {
+		const breakPoint2 = css`
+			.d2l-list-item-flex[breakpoint="2"] ::slotted([slot|="illustration"]) {
 				margin-right: 1rem;
 				max-height: 102px;
 				max-width: 180px;
 			}
-			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="636"] ::slotted([slot|="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="2"] ::slotted([slot|="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			.d2l-list-item-flex[breakpoint="636"] ::slotted(.d2l-list-item-text-secondary-responsive) {
+			.d2l-list-item-flex[breakpoint="2"] ::slotted(.d2l-list-item-text-secondary-responsive) {
 				display: block;
 			}
 		`;
 
-		const breakPoint842 = css`
-			.d2l-list-item-flex[breakpoint="842"] ::slotted([slot|="illustration"]) {
+		const breakPoint3 = css`
+			.d2l-list-item-flex[breakpoint="3"] ::slotted([slot|="illustration"]) {
 				margin-right: 1rem;
 				max-height: 120px;
 				max-width: 216px;
 			}
-			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="842"] ::slotted([slot|="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="3"] ::slotted([slot|="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			.d2l-list-item-flex[breakpoint="842"] ::slotted(.d2l-list-item-text-secondary-responsive) {
+			.d2l-list-item-flex[breakpoint="3"] ::slotted(.d2l-list-item-text-secondary-responsive) {
 				display: block;
 			}
 		`;
-		return [ layout, mainContent, breakPoint580, breakPoint636, breakPoint842];
+		return [ layout, mainContent, breakPoint1, breakPoint2, breakPoint3];
 	}
 
 	constructor() {
 		super();
 		this._breakpoint = 0;
-		this._breakpointList = [842, 636, 580, 0];
+		this.breakpoints = [636, 580, 0];
 		this.role = "listitem";
 	}
 
@@ -164,9 +175,10 @@ class ListItem extends RtlMixin(LitElement) {
 	}
 	resizedCallback(rect) {
 		const { width } = rect;
-		this._breakpointList.some(breakpoint => {
-			if (width >= breakpoint) {
-				this._breakpoint = breakpoint;
+		const lastBreakpointIndexToCheck = 3;
+		this.breakpoints.some((breakpoint, index) => {
+			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
+				this._breakpoint = lastBreakpointIndexToCheck - index - (lastBreakpointIndexToCheck - this.breakpoints.length + 1) * index;
 				return true;
 			}
 		});
