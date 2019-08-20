@@ -33,14 +33,24 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		.d2l-meter-radial-full-bar {
 			stroke: var(--d2l-color-gypsum);
 		}
+		:host([foreground-light]) .d2l-meter-radial-full-bar {
+			stroke: rgba(255, 255, 255, 0.5);
+		}
 		.d2l-meter-radial-progress-bar {
 			stroke: var(--d2l-color-celestine);
+		}
+		:host([foreground-light]) .d2l-meter-radial-progress-bar {
+			stroke: white;
 		}
 		.d2l-meter-radial-text {
 			color: var(--d2l-color-ferrite);
 			fill: var(--d2l-color-ferrite);
 			line-height: 0.8rem;
 			text-align: center;
+		}
+		:host([foreground-light]) .d2l-meter-radial-text {
+			color: white;
+			fill: white;
 		}
 	` ];
 	}

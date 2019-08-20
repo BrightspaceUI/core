@@ -28,12 +28,21 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 			fill: var(--d2l-meter-circle-fill, none);
 			stroke: var(--d2l-color-gypsum);
 		}
+		:host([foreground-light]) .d2l-meter-circle-full-bar {
+			stroke: rgba(255, 255, 255, 0.5);
+		}
 		.d2l-meter-circle-progress-bar {
 			stroke: var(--d2l-color-celestine);
+		}
+		:host([foreground-light]) .d2l-meter-circle-progress-bar {
+			stroke: white;
 		}
 		.d2l-meter-circle-text {
 			fill: var(--d2l-color-ferrite);
 			font-size: 0.6rem;
+		}
+		:host([foreground-light]) .d2l-meter-circle-text {
+			fill: white;
 		}
 	` ];
 	}
