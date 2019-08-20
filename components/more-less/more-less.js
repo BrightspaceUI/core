@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap} from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeMixin } from '../../mixins/localize-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -120,9 +121,11 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
 		this.__transitionAdded = false;
 
+		this.expanded = false;
 		this.height = '4em';
 
 		this.__baseHeight = 0;
+		this.__contentId = getUniqueId();
 		this.__resizeObserver = null;
 		this.__content = null;
 		this.__contentSlot = null;
@@ -186,14 +189,15 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 		};
 
 		return html`
-			<div class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
+			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
 				<slot></slot>
 			</div>
 			<div class="more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
 			<d2l-button-subtle
 				class="more-less-toggle"
 				icon="${this.__computeIcon()}"
-				aria-hidden="true"
+				aria-controls="${this.__contentId}"
+				aria-expanded="${this.expanded}"
 				@click="${this.__toggleOnClick}"
 				text="${this.__computeText()}"
 				h-align="${ifDefined(this.hAlign)}">
