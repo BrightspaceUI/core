@@ -19,6 +19,13 @@ class ListItem extends RtlMixin(LitElement) {
 				display: flex;
 			}
 			.d2l-list-item-content {
+				border-bottom: var(--d2l-list-item-divider-bottom, 1px solid var(--d2l-color-mica));
+				border-top: var(--d2l-list-item-divider-top, 1px solid var(--d2l-color-mica));
+				box-sizing: content-box;
+				margin-bottom: -1px;
+				margin-top: -1px;
+				padding-bottom: var(--d2l-list-item-divider-padding-bottom, 0);
+				padding-top: var(--d2l-list-item-divider-padding-top, 0);
 				position: relative;
 				width: 100%;
 			}
@@ -72,24 +79,6 @@ class ListItem extends RtlMixin(LitElement) {
 				display: none;
 			}
 		`;
-		const divider = css`
-			.d2l-list-item-divider-top,
-			.d2l-list-item-divider-bottom {
-				border: 0;
-				border-top: 1px solid var(--d2l-color-mica);
-				margin: 0;
-				position: absolute;
-				width: 100%;
-			}
-			.d2l-list-item-divider-top {
-				display: var(--d2l-list-item-divider-top, none);
-				top: -1px;
-			}
-			.d2l-list-item-divider-bottom {
-				bottom: -1px;
-				display: var(--d2l-list-item-divider-bottom, none);
-			}
-		`;
 
 		const breakPoint580 = css`
 			.d2l-list-item-flex[breakpoint="580"] ::slotted([slot|="illustration"]) {
@@ -135,7 +124,7 @@ class ListItem extends RtlMixin(LitElement) {
 				display: block;
 			}
 		`;
-		return [ layout, mainContent, divider, breakPoint580, breakPoint636, breakPoint842];
+		return [ layout, mainContent, breakPoint580, breakPoint636, breakPoint842];
 	}
 
 	constructor() {
@@ -149,13 +138,11 @@ class ListItem extends RtlMixin(LitElement) {
 			<div class="d2l-list-item-flex" breakpoint="${this._breakpoint}">
 				<slot name="illustration-outer"></slot>
 				<div class="d2l-list-item-content">
-					<hr class="d2l-list-item-divider-top"></hr>
 					<div class="d2l-list-item-content-flex">
 						<slot name="illustration"></slot>
 						<div class="d2l-list-item-main"><slot></slot></div>
 						<slot name="actions"></slot>
 					</div>
-					<hr class="d2l-list-item-divider-bottom"></hr>
 				</div>
 			</div>
 		`;
