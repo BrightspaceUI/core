@@ -2,6 +2,7 @@ export const ButtonMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			ariaControls: { type: String, reflect: true, attribute: 'aria-controls' },
 			ariaExpanded: { type: String, reflect: true, attribute: 'aria-expanded' },
 			ariaHaspopup: { type: String, reflect: true, attribute: 'aria-haspopup' },
 			ariaLabel: { type: String, reflect: true, attribute: 'aria-label' },

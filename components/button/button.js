@@ -67,6 +67,7 @@ class Button extends ButtonMixin(LitElement) {
 	render() {
 		return html`
 			<button
+				aria-controls="${ifDefined(this.ariaControls)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
