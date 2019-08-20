@@ -107,7 +107,6 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 	render() {
 		return html`
 			<button
-				aria-controls="${ifDefined(this.ariaControls)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"

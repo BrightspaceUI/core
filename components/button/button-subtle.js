@@ -123,7 +123,6 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			html`<d2l-icon icon="${this.icon}" class="d2l-button-subtle-icon"></d2l-icon>` : '';
 		return html`
 			<button
-				aria-controls="${ifDefined(this.ariaControls)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
