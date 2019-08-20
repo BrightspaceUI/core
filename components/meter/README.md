@@ -89,7 +89,7 @@ Then add the `d2l-meter-circle`, provide values for the properties, `value` and 
 	- `{%}` in the string will be replaced with percentage value.
 	- `{x/y}` in the string will be replaced with fraction with the proper language support.
 
-##Light Foreground##
+## Light Foreground
 
 All `meter` components have a "`foreground-light`" style for displaying against a dark background. To use this style, just add this attribute:
 
