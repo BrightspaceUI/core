@@ -74,7 +74,7 @@ function createLoader(categories) {
 	categories.forEach((category) => {
 		category.svgs.forEach((name) => {
 			template += `\t\tcase '${category.name}:${name}':
-			return import('./${category.name}/${name}.js');\n`;
+			return import(/* webpackChunkName: "icon-${name}" */'./${category.name}/${name}.js');\n`;
 		});
 	});
 
