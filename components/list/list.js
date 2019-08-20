@@ -13,7 +13,7 @@ class List extends LitElement {
 			:host {
 				display: block;
 			}
-			ul {
+			.d2l-list-container {
 				list-style-type: none;
 				padding: 0;
 			}
@@ -68,9 +68,9 @@ class List extends LitElement {
 	render() {
 
 		return html`
-			<ul>
+			<div role="list" class="d2l-list-container">
 				<slot></slot>
-			</ul>
+			</div>
 		`;
 	}
 }

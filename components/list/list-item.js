@@ -9,6 +9,7 @@ const ro = new ResizeObserver(entries => {
 class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
+			role: { type: String, reflect: true },
 			_breakpoint: { type: Number }
 		};
 	}
@@ -131,6 +132,7 @@ class ListItem extends RtlMixin(LitElement) {
 		super();
 		this._breakpoint = 0;
 		this._breakpointList = [842, 636, 580, 0];
+		this.role = "listitem";
 	}
 
 	render() {
