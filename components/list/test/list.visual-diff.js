@@ -20,7 +20,7 @@ describe('d2l-list', function() {
 	describe('List tests for dividers', () => {
 		[
 			{ title: 'list-divider-none', fixture: '#list-divider-none' },
-			{ title: 'list-divider-extended', fixture: '#list-divider-extended' },
+			{ title: 'list-divider-extend', fixture: '#list-divider-extend' },
 			{ title: 'list-divider-all', fixture: '#list-divider-all' },
 			{ title: 'list-divider-middle', fixture: '#list-divider-middle' },
 			{ title: 'list-divider-top', fixture: '#list-divider-top' },
