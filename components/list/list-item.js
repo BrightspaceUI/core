@@ -16,6 +16,10 @@ class ListItem extends RtlMixin(LitElement) {
 
 	static get styles() {
 		const layout = css`
+			.host {
+				display: list-item;
+				margin: 1px 0;
+			}
 			.d2l-list-item-flex {
 				display: flex;
 			}

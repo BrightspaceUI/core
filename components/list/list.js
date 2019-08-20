@@ -23,8 +23,6 @@ class List extends LitElement {
 			::slotted(d2l-list-item) {
 				--d2l-list-item-divider-bottom: initial;
 				--d2l-list-item-divider-top: initial;
-				display: list-item;
-				margin: 1px 0;
 			}
 		`;
 
