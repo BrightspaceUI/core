@@ -15,16 +15,6 @@ class ListItem extends RtlMixin(LitElement) {
 		};
 	}
 
-	get breakpoints() {
-		return this._breakpoints;
-	}
-
-	set breakpoints(val) {
-		let oldVal = this._breakpoints;
-		this._breakpoints = val.sort((a, b) => b - a).slice(0,4);
-		this.requestUpdate('breakpoints', oldVal);
-	}
-
 	static get styles() {
 		const layout = css`
 			:host {
@@ -147,7 +137,17 @@ class ListItem extends RtlMixin(LitElement) {
 		super();
 		this._breakpoint = 0;
 		this.breakpoints = [842, 636, 580, 0];
-		this.role = "listitem";
+		this.role = 'listitem';
+	}
+
+	get breakpoints() {
+		return this._breakpoints;
+	}
+
+	set breakpoints(val) {
+		const oldVal = this._breakpoints;
+		this._breakpoints = val.sort((a, b) => b - a).slice(0, 4);
+		this.requestUpdate('breakpoints', oldVal);
 	}
 
 	render() {
