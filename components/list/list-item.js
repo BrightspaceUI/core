@@ -141,7 +141,7 @@ class ListItem extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<div class="d2l-list-item-flex" breakpoint="${this._breakpoint}">
+			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
 				<slot name="illustration-outer"></slot>
 				<div class="d2l-list-item-content">
 					<div class="d2l-list-item-content-flex">
