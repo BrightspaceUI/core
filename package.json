@@ -58,6 +58,7 @@
     "polymer-cli": "^1",
     "puppeteer": "^1",
     "simple-git": "^1.120.0",
+    "sinon": "^7.4.1",
     "wct-mocha": "^1",
     "whatwg-fetch": "^3"
   },
