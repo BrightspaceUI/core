@@ -66,7 +66,6 @@ Output
    - *d2l-list-item-text*: This will act as the primary text. Limit is the text to two lines and will auto wrap. It will also gain all the hover styles.
    - *d2l-list-item-text-secondary*: Secondary text which will show up under the primary text. Proper padding will be applied.
    - *d2l-list-item-text-secondary-responsive*: Same as `d2l-list-item-text-secondary` but will disappear at smaller breakpoints.
- - **illustration**: Responsive slot for images. This one will be within the dividers.
-  - **illustration-outer**: Responsive slot for images. This one will be outside the dividers.
+ - **illustration**: Responsive slot for images.
   - **actions**: This is for actions. They will show up on the right side.
 
