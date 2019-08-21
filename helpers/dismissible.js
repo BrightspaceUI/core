@@ -26,7 +26,7 @@ function init() {
 	document.addEventListener('keyup', eventListener);
 }
 
-export const clearDismissible = (id) => {
+export function clearDismissible(id) {
 	for (let i = 0; i < stack.length; i++) {
 		if (stack[i].id === id) {
 			stack.splice(i, 1);
@@ -34,11 +34,11 @@ export const clearDismissible = (id) => {
 		}
 	}
 	cleanup();
-};
+}
 
-export const setDismissible = (cb) => {
+export function setDismissible(cb) {
 	init();
 	const id = ++idTracker;
 	stack.push({ id: id, cb: cb });
 	return id;
-};
+}
