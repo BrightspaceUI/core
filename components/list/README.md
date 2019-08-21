@@ -27,18 +27,16 @@ Output
 `d2l-list` can be modified to display the data in slightly different ways.
 ## Signature
 ```html
-<d2l-list [divider="[all|top|bottom|middle|none]"] [divider-extend]>
+<d2l-list [divider-mode="[none|all|between]"] [divider-extend]>
 	<d2l-list-item>...</d2l-list-item>
 	...
 	<d2l-list-item>...</d2l-list-item>
 </d2l-list>
 ```
 ## Attributes
-- **divider**: Describes which dividers will be shown for the list.
+- **divider-mode**: Describes which dividers will be shown for the list.
   - *all* (default): Shows all the dividers including dividers on the top and bottom of the list.
-  - *top*: Shows all the dividers except for the one at the bottom of the list.
-  - *bottom*: Shows all the dividers except for the one at the top of the list.
-  - *middle*: Only show the dividers between list items. The top and bottom dividers are hidden.
+  - *between*: Only show the dividers between list items. The top and bottom dividers are hidden.
   - *none*: Show no dividers.
 - **divider-extend**: A boolean attributes that extends the length of the dividers so the space between the list item contents and the left and right edges of the list dividers.
 

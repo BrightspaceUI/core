@@ -24,24 +24,14 @@ class List extends LitElement {
 		`;
 
 		const specialDividers = css`
-			:host([divider="none"]) ::slotted(d2l-list-item) {
+			:host([divider-mode="none"]) ::slotted(d2l-list-item) {
 				--d2l-list-item-divider-bottom: none;
 				--d2l-list-item-divider-padding-bottom: 1px;
 				--d2l-list-item-divider-padding-top: 1px;
 				--d2l-list-item-divider-top: none;
 			}
-			:host([divider="bottom"]) ::slotted(d2l-list-item) {
-				--d2l-list-item-divider-bottom: initial;
-				--d2l-list-item-divider-padding-top: 1px;
-				--d2l-list-item-divider-top: none;
-			}
-			:host([divider="top"]) ::slotted(d2l-list-item) {
-				--d2l-list-item-divider-bottom: none;
-				--d2l-list-item-divider-padding-bottom: 1px;
-				--d2l-list-item-divider-top: initial;
-			}
-			:host([divider="middle"]) ::slotted(d2l-list-item:first-of-type),
-			:host([divider="middle"]) ::slotted(d2l-list-item:last-of-type) {
+			:host([divider-mode="between"]) ::slotted(d2l-list-item:first-of-type),
+			:host([divider-mode="between"]) ::slotted(d2l-list-item:last-of-type) {
 				--d2l-list-item-divider-bottom: none;
 				--d2l-list-item-divider-padding-bottom: 1px;
 				--d2l-list-item-divider-padding-top: 1px;
