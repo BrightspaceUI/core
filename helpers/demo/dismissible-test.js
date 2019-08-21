@@ -45,10 +45,8 @@ class DismissibleTest extends LitElement {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'opened') {
 				if (this.opened) {
-					this.__dismissibleId = setDismissible(() => {
-						this.opened = false;
-					});
-				} else if (!this.opened) {
+					this.__dismissibleId = setDismissible(() => this.opened = false);
+				} else {
 					clearDismissible(this.__dismissibleId);
 				}
 			}
