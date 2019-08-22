@@ -20,8 +20,7 @@
     "test:local": "polymer test --skip-plugin sauce",
     "test:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "test:sauce": "polymer test --skip-plugin local",
-    "test:travis": "polymer test --config-file wct.conf-travis.json",
-    "update-version": "node ./cli/update-version.js"
+    "test:travis": "polymer test --config-file wct.conf-travis.json"
   },
   "files": [
     "/components",
@@ -58,7 +57,6 @@
     "node-sass": "^4",
     "polymer-cli": "^1",
     "puppeteer": "^1",
-    "simple-git": "^1.120.0",
     "sinon": "^7.4.1",
     "wct-mocha": "^1",
     "whatwg-fetch": "^3"
