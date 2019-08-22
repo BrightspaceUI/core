@@ -52,6 +52,7 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
+    "frau-ci": "^1",
     "lit-analyzer": "^1",
     "mocha": "^6",
     "node-sass": "^4",
