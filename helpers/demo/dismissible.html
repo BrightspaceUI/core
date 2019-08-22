@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../components/demo/demo-page.js';
+			import './dismissible-test.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="dismissible">
+
+			<p>
+				This helper is for components which should be "dismissable"
+				when the user presses the ESC key. It will keep track of the order
+				these components are displayed, and notifies them when they
+				should be dismissed.
+			</p>
+
+			<button id="create" type="button">Create</button>
+
+		</d2l-demo-page>
+		<script>
+			let count = 0;
+			document.getElementById('create').addEventListener('click', () => {
+				count++;
+				const elem = document.createElement('d2l-test-dismissible');
+				elem.appendChild(document.createTextNode(`Box ${count}`));
+				elem.setAttribute('opened', 'opened');
+				elem.style.top = `${175 + count * 50}px`;
+				elem.style.left = `${count * 50}px`;
+				document.body.appendChild(elem);
+			});
+		</script>
+	</body>
+</html>
