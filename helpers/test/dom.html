@@ -96,12 +96,6 @@
 			</div></template>
 		</test-fixture>
 
-		<div>
-			<d2l-test-offset-parent-wrapper wrapper-id="expected">
-				<div class="child"></div>
-			</d2l-test-offset-parent-wrapper>
-		</div>
-
 		<test-fixture id="wrapper-simple">
 			<template><div>
 				<d2l-test-offset-parent-wrapper wrapper-id="expected">
@@ -169,7 +163,8 @@
 
 			describe('dom', () => {
 
-				let simpleFixture, wcFixture, mixedFixture;
+				let simpleFixture, wcFixture, mixedFixture, wrapperSimpleFixture,
+					wrapperNestedFixture;
 
 				beforeEach(async() => {
 					simpleFixture = fixture('simpleFixture');
@@ -178,6 +173,10 @@
 					await wcFixture.updateComplete;
 					mixedFixture = fixture('mixedFixture');
 					await mixedFixture.updateComplete;
+					wrapperSimpleFixture = fixture('wrapper-simple');
+					await wrapperSimpleFixture.updateComplete;
+					wrapperNestedFixture = fixture('wrapper-nested');
+					await wrapperNestedFixture.updateComplete;
 				});
 
 				describe('findComposedAncestor', () => {
@@ -292,19 +291,15 @@
 							expect(dom.getOffsetParent(child)).to.equal(expected);
 						});
 					});
-					it('wrapper-simple', async() => {
-						const fixt = fixture('wrapper-simple');
-						await fixt.updateComplete;
-						const child = fixt.querySelector('.child');
+					it('wrapper-simple', () => {
+						const child = wrapperSimpleFixture.querySelector('.child');
 						expect(dom.getOffsetParent(child).id).to.equal('expected');
 					});
-					it('wrapper-nested', async() => {
-						const fixt = fixture('wrapper-nested');
-						await fixt.updateComplete;
-						const child = fixt.querySelector('.child');
+					it('wrapper-nested', () => {
+						const child = wrapperNestedFixture.querySelector('.child');
 						expect(dom.getOffsetParent(child).id).to.equal('expected');
 					});
-					it('fallback-when-shadowroot-undefined', function() {
+					it('fallback-when-shadowroot-undefined', () => {
 						const tempShadowRoot = window.ShadowRoot;
 						window.ShadowRoot = false;
 						const child = {
@@ -313,15 +308,15 @@
 						expect(dom.getOffsetParent(child)).to.equal(child.offsetParent);
 						window.ShadowRoot = tempShadowRoot;
 					});
-					it('body', function() {
+					it('body', () => {
 						const body = document.querySelector('body');
 						expect(dom.getOffsetParent(body)).to.equal(null);
 					});
-					it('orphan', function() {
+					it('orphan', () => {
 						const child = document.createElement('div');
 						expect(dom.getOffsetParent(child)).to.equal(null);
 					});
-					it('orphan-with-extra-steps', function() {
+					it('orphan-with-extra-steps', () => {
 						const grandparent = document.createElement('div');
 						const parent = document.createElement('div');
 						const child = document.createElement('div');
@@ -329,11 +324,11 @@
 						parent.appendChild(child);
 						expect(dom.getOffsetParent(child)).to.equal(null);
 					});
-					it('fixed', function() {
+					it('fixed', () => {
 						const fixed = document.querySelector('#fixed');
 						expect(dom.getOffsetParent(fixed)).to.equal(null);
 					});
-					it('body-is-parent', function() {
+					it('body-is-parent', () => {
 						const fixed = document.querySelector('#bodyIsParent');
 						const body = document.querySelector('body');
 						expect(dom.getOffsetParent(fixed)).to.equal(body);
