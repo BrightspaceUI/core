@@ -6,13 +6,13 @@ class ListItemContent extends LitElement {
 		return [ bodySmallStyles, bodyCompactStyles, css`
 			.d2l-list-item-content-text {
 				margin: 0;
-				max-height: 2.4rem;
 				overflow: hidden;
 			}
 
 			.d2l-list-item-content-text-secondary {
+				color: var(--d2l-list-item-content-text-secondary-color, var(--d2l-color-tungsten));
 				margin: 0;
-				margin-top: 0.3rem;
+				margin-top: 0.15rem;
 				overflow: hidden;
 			}
 		`];

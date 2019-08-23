@@ -10,33 +10,37 @@ class ListDemoControl extends LitElement {
 
 	static get styles() {
 		return [ bodySmallStyles, css`
-		.d2l-list-demo-flex {
+		.d2l-list-demo-grid {
 			background: white;
 			border: 1px solid var(--d2l-color-tungsten);
 			border-bottom: none;
-			border-top-left-radius: 6px;
-			border-top-right-radius: 6px;
+			border-top-left-radius: 0.3rem;
+			border-top-right-radius: 0.3rem;
 			box-sizing: content-box;
-			display: flex;
-			justify-content: flex-start;
+			display: grid;
+			grid-template-columns: repeat(4, auto);
 			margin: 0 !important;
-			margin-left: 6px !important;
-			max-width: 894px;
+			margin-left: 0.3rem !important;
+			max-width: 44.7rem;
 			width: fit-content;
 		}
-		.d2l-list-demo-flex > *:last-child {
+		.d2l-list-demo-grid > *:nth-child(4n) {
 			border-right: none;
 		}
-		.d2l-list-demo-flex > * {
+		.d2l-list-demo-grid > *:nth-child(-n+4) {
+			border-top: none;
+		}
+		.d2l-list-demo-grid > * {
 			border-right: 1px dotted var(--d2l-color-tungsten);
-			padding: 0 18px;
+			border-top: 1px dotted var(--d2l-color-tungsten);
+			padding: 0.3rem 0.9rem;
 		}
 		`];
 	}
 
 	render() {
 		return html`
-			<div class="d2l-body-small d2l-list-demo-flex">
+			<div class="d2l-body-small d2l-list-demo-grid">
 				<label>
 					divider-mode:
 					<select @change="${this._onChangeDividerMode}">
@@ -57,6 +61,8 @@ class ListDemoControl extends LitElement {
 						</select>
 				</label>
 				<label>illustration-outside: <input type="checkbox" @change="${this._onChangeIllustrationOutside}"></label>
+				<label>selectable: <input type="checkbox" @change="${this._onChangeSelectable}"></label>
+				<label>hover-effect: <input type="checkbox" @change="${this._onChangeHoverEffect}"></label>
 			</div>
 		`;
 	}
@@ -83,11 +89,21 @@ class ListDemoControl extends LitElement {
 		list.setAttribute('divider-mode', event.target.value);
 	}
 
+	_onChangeHoverEffect(event) {
+		const list = document.querySelector(`${this.target} d2l-list`);
+		list.toggleAttribute('hover-effect', event.target.checked);
+	}
+
 	_onChangeIllustrationOutside(event) {
 		const listItems = document.querySelectorAll(`${this.target} d2l-list d2l-list-item`);
 		listItems.forEach(item => {
 			item.toggleAttribute('illustration-outside', event.target.checked);
 		});
+	}
+
+	_onChangeSelectable(event) {
+		const list = document.querySelector(`${this.target} d2l-list`);
+		list.toggleAttribute('selectable', event.target.checked);
 	}
 }
 

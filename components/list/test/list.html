@@ -52,6 +52,20 @@
 							await runAxe(list);
 						});
 
+						it('should pass all axe tests when focused', async() => {
+							return new Promise((resolve, reject) => {
+								list.addEventListener('focus', async() => {
+									try {
+										await runAxe(list);
+										resolve();
+									} catch (e) {
+										reject(e);
+									}
+								});
+								list.shadowRoot.querySelector('d2l-list-item').focus();
+							});
+						});
+
 					});
 				});
 

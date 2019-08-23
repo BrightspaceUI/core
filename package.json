@@ -64,6 +64,7 @@
   "dependencies": {
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
+    "d2l-inputs": "BrightspaceUI/inputs#semver:^2",
     "d2l-intl": "^2",
     "intl-messageformat": "^2.2.0",
     "lit-element": "^2",

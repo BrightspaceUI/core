@@ -4,7 +4,9 @@ class List extends LitElement {
 	static get properties() {
 		return {
 			dividerMode: { type: String, attribute: 'divider-mode' },
-			dividerExtend: {type: Boolean, attribute: 'divider-extend'}
+			dividerExtend: { type: Boolean, attribute: 'divider-extend'},
+			hoverEffect: {type: Boolean, attribute: 'hover-effect'},
+			selectable: {type: Boolean }
 		};
 	}
 
@@ -17,25 +19,49 @@ class List extends LitElement {
 			}
 		`;
 
-		const specialDividers = css`
+		const specialCases = css`
 			:host([divider-mode="none"]) {
 				--d2l-list-item-divider-bottom: none;
 				--d2l-list-item-divider-padding-bottom: 1px;
 				--d2l-list-item-divider-padding-top: 1px;
 				--d2l-list-item-divider-top: none;
 			}
-			:host([divider-mode="between"]) ::slotted(d2l-list-item:first-of-type),
 			:host([divider-mode="between"]) ::slotted(d2l-list-item:last-of-type) {
 				--d2l-list-item-divider-bottom: none;
 				--d2l-list-item-divider-padding-bottom: 1px;
+			}
+			:host([divider-mode="between"]) ::slotted(d2l-list-item:first-of-type) {
 				--d2l-list-item-divider-padding-top: 1px;
 				--d2l-list-item-divider-top: none;
 			}
+			:host([hover-effect]),
 			:host([divider-extend]) {
-				--d2l-list-item-content-padding: 0 18px;
+				--d2l-list-item-content-padding-side: 0.9rem;
+			}
+			:host([hover-effect]) ::slotted(d2l-list-item:hover) {
+				--d2l-list-item-divider-bottom: initial;
+				--d2l-list-item-divider-padding-bottom: initial;
+				--d2l-list-item-divider-padding-top: initial;
+				--d2l-list-item-divider-top: initial;
+			}
+			:host([selectable]) {
+				--d2l-list-item-select-display: block;
+			}
+			:host([hover-effect]) ::slotted(d2l-list-item) {
+				--d2l-list-item-hover-background: var(--d2l-color-regolith);
+			}
+			:host([hover-effect]) ::slotted(d2l-list-item[checked]) {
+				--d2l-list-item-content-text-secondary-color: var(--d2l-color-ferrite);
+				--d2l-list-item-background: rgba(232, 248, 255, 0.5);
+				--d2l-list-item-divider-bottom: 1px var(--d2l-color-celestine) solid;
+				--d2l-list-item-divider-padding-bottom: initial;
+				--d2l-list-item-divider-padding-top: initial;
+				--d2l-list-item-divider-top: 1px var(--d2l-color-celestine) solid;
+				position: relative;
+				z-index: 1;
 			}
 		`;
-		return [layout, specialDividers];
+		return [layout, specialCases];
 	}
 
 	render() {
