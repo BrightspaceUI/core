@@ -49,6 +49,9 @@ getComposedChildren(element);
 // gets the composed parent (including shadow host & insertion points)
 getComposedParent(node);
 
+// browser consistent implementation of HTMLElement.offsetParent
+getOffsetParent(node);
+
 // returns true/false whether the specified ancestorNode is an ancestor of node
 isComposedAncestor(ancestorNode, node);
 ```

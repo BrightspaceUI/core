@@ -10,6 +10,14 @@
 		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
 		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
 		<script type="module" src="./dom-components.js"></script>
+		<style>
+			.relative {
+				position: relative;
+			}
+			.static {
+				position: static;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -41,6 +49,120 @@
 				</div>
 			</template>
 		</test-fixture>
+
+		<test-fixture id="direct-parent">
+			<template><div>
+					<div class="relative expected">
+						<div class="child"></div>
+					</div>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="indirect-parent">
+			<template><div>
+					<div class="relative expected">
+						<div>
+							<div class="child"></div>
+						</div>
+					</div>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="td">
+			<template><div>
+				<table>
+					<td class="static expected">
+						<div class="child"></div>
+					</td>
+				</table>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="th">
+			<template><div>
+				<table>
+					<th class="static expected">
+						<div class="child"></div>
+					</th>
+				</table>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="table">
+			<template><div>
+				<table class="static expected">
+					<tbody class="child"></tbody>
+				</table>
+			</div></template>
+		</test-fixture>
+
+		<div>
+			<d2l-test-offset-parent-wrapper wrapper-id="expected">
+				<div class="child"></div>
+			</d2l-test-offset-parent-wrapper>
+		</div>
+
+		<test-fixture id="wrapper-simple">
+			<template><div>
+				<d2l-test-offset-parent-wrapper wrapper-id="expected">
+					<div class="child"></div>
+				</d2l-test-offset-parent-wrapper>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="wrapper-inside">
+			<template><div>
+				<d2l-test-offset-parent-wrapper>
+					<div class="relative expected">
+						<div class="child"></div>
+					<div>
+				</d2l-test-offset-parent-wrapper>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="wrapper-nested">
+			<template><div>
+				<d2l-test-offset-parent-wrapper>
+					<d2l-test-offset-parent-wrapper wrapper-id="expected">
+						<div class="child"></div>
+					</d2l-test-offset-parent-wrapper>
+				</d2l-test-offset-parent-wrapper>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="wrapper-passthrough">
+			<template><div>
+				<div class="relative expected">
+					<d2l-test-offset-parent-wrapper>
+						<div class="child"></div>
+					</d2l-test-offset-parent-wrapper>
+				<div>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="wrapper-is-parent">
+			<template><div>
+				<d2l-test-offset-parent-wrapper class="relative expected">
+					<div class="child"></div>
+				</d2l-test-offset-parent-wrapper>
+			</div></template>
+		</test-fixture>
+
+		<test-fixture id="nested-wrapper-is-parent">
+			<template><div>
+				<d2l-test-offset-parent-wrapper class="relative expected">
+					<d2l-test-offset-parent-wrapper>
+						<div class="child"></div>
+					</d2l-test-offset-parent-wrapper>
+				</d2l-test-offset-parent-wrapper>
+			</div></template>
+		</test-fixture>
+
+		<div id="fixed" style="position: fixed;">
+		</div>
+
+		<div id="bodyIsParent">
+		</div>
 
 		<script type="module">
 			import * as dom from '../dom.js';
@@ -145,6 +267,76 @@
 					it('returns null as parent of document', () => {
 						expect(dom.getComposedParent(document))
 							.to.equal(null);
+					});
+
+				});
+
+				describe('getOffsetParent', () => {
+
+					[
+						'direct-parent',
+						'indirect-parent',
+						'td',
+						'th',
+						'table',
+						'wrapper-inside',
+						'wrapper-passthrough',
+						'wrapper-is-parent',
+						'nested-wrapper-is-parent'
+					].forEach(fixtureName => {
+						it(fixtureName, async() => {
+							const fixt = fixture(fixtureName);
+							await fixt.updateComplete;
+							const child = fixt.querySelector('.child');
+							const expected = fixt.querySelector('.expected');
+							expect(dom.getOffsetParent(child)).to.equal(expected);
+						});
+					});
+					it('wrapper-simple', async() => {
+						const fixt = fixture('wrapper-simple');
+						await fixt.updateComplete;
+						const child = fixt.querySelector('.child');
+						expect(dom.getOffsetParent(child).id).to.equal('expected');
+					});
+					it('wrapper-nested', async() => {
+						const fixt = fixture('wrapper-nested');
+						await fixt.updateComplete;
+						const child = fixt.querySelector('.child');
+						expect(dom.getOffsetParent(child).id).to.equal('expected');
+					});
+					it('fallback-when-shadowroot-undefined', function() {
+						const tempShadowRoot = window.ShadowRoot;
+						window.ShadowRoot = false;
+						const child = {
+							offsetParent: 'this is the offsetParent'
+						};
+						expect(dom.getOffsetParent(child)).to.equal(child.offsetParent);
+						window.ShadowRoot = tempShadowRoot;
+					});
+					it('body', function() {
+						const body = document.querySelector('body');
+						expect(dom.getOffsetParent(body)).to.equal(null);
+					});
+					it('orphan', function() {
+						const child = document.createElement('div');
+						expect(dom.getOffsetParent(child)).to.equal(null);
+					});
+					it('orphan-with-extra-steps', function() {
+						const grandparent = document.createElement('div');
+						const parent = document.createElement('div');
+						const child = document.createElement('div');
+						grandparent.appendChild(parent);
+						parent.appendChild(child);
+						expect(dom.getOffsetParent(child)).to.equal(null);
+					});
+					it('fixed', function() {
+						const fixed = document.querySelector('#fixed');
+						expect(dom.getOffsetParent(fixed)).to.equal(null);
+					});
+					it('body-is-parent', function() {
+						const fixed = document.querySelector('#bodyIsParent');
+						const body = document.querySelector('body');
+						expect(dom.getOffsetParent(fixed)).to.equal(body);
 					});
 
 				});
