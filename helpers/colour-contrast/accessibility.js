@@ -1,19 +1,15 @@
 import { contrastColors, contrastRGB } from './contrast.js';
 
-const contrastMin = 4.5;
+export const contrastNormalText = 4.5;
+export const contrastLargeTxt = 3;
+export const contrastNonText = 3;
 
 // takes 2 color strings
-function isAccessible(color1, color2, myContrastMin) {
-	return contrastColors(color1, color2) >= (myContrastMin || contrastMin);
+export function isAccessible(color1, color2, myContrastMin) {
+	return contrastColors(color1, color2) >= (myContrastMin || contrastNormalText);
 }
 
 // takes 2 RGBColor objects
-function isAccessibleRGB(rgb1, rgb2, myContrastMin) {
-	return contrastRGB(rgb1, rgb2) >= (myContrastMin || contrastMin);
+export function isAccessibleRGB(rgb1, rgb2, myContrastMin) {
+	return contrastRGB(rgb1, rgb2) >= (myContrastMin || contrastNormalText);
 }
-
-export {
-	isAccessible,
-	isAccessibleRGB,
-	contrastMin
-};
