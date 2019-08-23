@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 class DomTest extends LitElement {
 
@@ -11,5 +11,35 @@ class DomTest extends LitElement {
 	}
 
 }
-
 customElements.define('d2l-test-dom', DomTest);
+
+class OffsetParentWrapper extends LitElement {
+
+	static get properties() {
+		return {
+			wrapperId: { type: String, attribute: 'wrapper-id' }
+		};
+	}
+
+	static get styles() {
+		return css`
+			#expected {
+				position: relative;
+			}
+		`;
+	}
+
+	constructor() {
+		super();
+		this.wrapperId = 'notExpected';
+	}
+
+	render() {
+		return html`<div id="${this.wrapperId}">
+				<slot></slot>
+			</div>
+		`;
+	}
+
+}
+window.customElements.define('d2l-test-offset-parent-wrapper', OffsetParentWrapper);

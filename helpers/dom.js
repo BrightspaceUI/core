@@ -64,6 +64,45 @@ export function getComposedParent(node) {
 
 }
 
+export function getOffsetParent(node) {
+
+	if (!window.ShadowRoot) {
+		return node.offsetParent;
+	}
+
+	if (
+		!getComposedParent(node) ||
+		node.tagName === 'BODY' ||
+		window.getComputedStyle(node).position === 'fixed'
+	) {
+		return null;
+	}
+
+	let currentNode = getComposedParent(node);
+	while (currentNode) {
+		if (currentNode instanceof ShadowRoot) {
+			currentNode = getComposedParent(currentNode);
+		} else if (currentNode instanceof DocumentFragment) {
+			return null;
+		} else if (currentNode.tagName === 'BODY') {
+			return currentNode;
+		}
+
+		const position = window.getComputedStyle(currentNode).position;
+		const tagName = currentNode.tagName;
+		if (
+			(position && position !== 'static') ||
+			position === 'static' && (tagName === 'TD' || tagName === 'TH' || tagName === 'TABLE')
+		) {
+			return currentNode;
+		}
+		currentNode = getComposedParent(currentNode);
+	}
+
+	return null;
+
+}
+
 export function isComposedAncestor(ancestorNode, node) {
 	return findComposedAncestor(node, (node) => {
 		return (node === ancestorNode);
