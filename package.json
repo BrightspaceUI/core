@@ -46,7 +46,7 @@
     "babel-eslint": "^10",
     "chai": "^4",
     "chalk": "^2.4.2",
-    "eslint": "~6.1",
+    "eslint": "~6.2.2",
     "eslint-config-brightspace": "^0.6",
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
