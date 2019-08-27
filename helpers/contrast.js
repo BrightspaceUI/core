@@ -1,13 +1,9 @@
 function RGBColor(hex) {
-	console.log(`hex colour: ${hex}`);
 	const regex = /^#([a-f0-9]{6})$/i;
 	const valid = regex.test(hex);
 	if (!valid) {
 		return null;
 	}
-	console.log(`r: ${hex.substring(1, 3)}
-g: ${hex.substring(3, 5)}
-b: ${hex.substring(5)}`);
 	return {
 		r: parseInt(hex.substring(1, 3), 16),
 		g: parseInt(hex.substring(3, 5), 16),
@@ -33,7 +29,6 @@ function contrastColors(color1, color2) {
 	if (contrast < 1) {
 		contrast = 1 / contrast;
 	}
-	console.log(`contrast: ${contrast}`);
 	return contrast;
 }
 
