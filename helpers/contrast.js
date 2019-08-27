@@ -25,6 +25,11 @@ function luminance({ r, g, b }) {
 function contrastColors(color1, color2) {
 	const rgb1 = new RGBColor(color1),
 		rgb2 = new RGBColor(color2);
+	if (!rgb1) {
+		throw new Error(`Invalid HEX colour: ${color1}`);
+	} else if (!rgb2) {
+		throw new Error(`Invalid HEX colour: ${color2}`);
+	}
 	let contrast = (luminance(rgb1) + 0.05) / (luminance(rgb2) + 0.05);
 	if (contrast < 1) {
 		contrast = 1 / contrast;

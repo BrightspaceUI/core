@@ -32,7 +32,7 @@
 					F: ['#BBBBBB', '#FFFFFF']
 				};
 
-				it('Correctly passes/fails hex colours on normal text for AAA rating', () => {
+				it('Correctly passes/fails HEX colours on normal text for AAA rating', () => {
 					[
 						{ rating: 'AAA', result: true },
 						{ rating: 'AA', result: false },
@@ -42,13 +42,28 @@
 					});
 				});
 
-				it('Correctly passes/fails hex colours on normal text for AA rating', () => {
+				it('Correctly passes/fails HEX colours on normal text for AA rating', () => {
 					[
 						{ rating: 'AAA', result: true },
 						{ rating: 'AA', result: true },
 						{ rating: 'F', result: false }
 					].forEach(({ rating, result }) => {
 						expect(isAccessible(colours[rating][0], colours[rating][1])).to.equal(result);
+					});
+				});
+
+				it('Throws error with correct error message when passed invalid HEX colours', () => {
+					[
+						{color1: 'nope', color2: '#FFFFFF', invalid: 'color1'},
+						{color1: '#FFFFFF', color2: 'nuh uh', invalid: 'color2'},
+						{color1: 'nope', color2: 'nuh uh', invalid: 'color1'},
+					].forEach(config => {
+						const { color1, color2, invalid } = config;
+						try {
+							isAccessible(color1, color2);
+						} catch(e) {
+							expect(e.message).to.equal(`Invalid HEX colour: ${config[invalid]}`);
+						}
 					});
 				});
 
