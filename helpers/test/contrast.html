@@ -61,7 +61,7 @@
 						const { color1, color2, invalid } = config;
 						try {
 							isAccessible(color1, color2);
-						} catch(e) {
+						} catch (e) {
 							expect(e.message).to.equal(`Invalid HEX colour: ${config[invalid]}`);
 						}
 					});
