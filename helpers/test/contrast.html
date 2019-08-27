@@ -59,11 +59,10 @@
 						{color1: 'nope', color2: 'nuh uh', invalid: 'color1'},
 					].forEach(config => {
 						const { color1, color2, invalid } = config;
-						try {
-							isAccessible(color1, color2);
-						} catch (e) {
-							expect(e.message).to.equal(`Invalid HEX colour: ${config[invalid]}`);
-						}
+						assert.throws(
+							() => isAccessible(color1, color2),
+							`Invalid HEX colour: ${config[invalid]}`
+						);
 					});
 				});
 
