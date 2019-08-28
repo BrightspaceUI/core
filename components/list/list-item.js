@@ -1,9 +1,15 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import 'fastdom/fastdom.js'
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const ro = new ResizeObserver(entries => {
-	entries.forEach(entry => entry.target.resizedCallback(entry.contentRect));
+	entries.forEach(entry => {
+		if (entry && entry.target && entry.target.resizedCallback) {
+			return;
+		}
+		entry.target.resizedCallback(entry.contentRect && entry.contentRect.width)
+	});
 });
 
 class ListItem extends RtlMixin(LitElement) {
@@ -19,8 +25,11 @@ class ListItem extends RtlMixin(LitElement) {
 	static get styles() {
 		const layout = css`
 			:host {
-				display: list-item;
+				display: block;
 				margin: 1px 0;
+			}
+			:host[hidden] {
+				display: none;
 			}
 			.d2l-list-item-flex {
 				display: flex;
@@ -55,7 +64,7 @@ class ListItem extends RtlMixin(LitElement) {
 			}
 			:host([dir="rtl"]) ::slotted([slot="illustration"]) {
 				margin-left: 0.9rem;
-				margin-right: 0rem;
+				margin-right: 0;
 			}
 			:host([illustration-outside]) ::slotted([slot="illustration"]) {
 				margin-bottom: 18px;
@@ -67,7 +76,7 @@ class ListItem extends RtlMixin(LitElement) {
 				flex-grow: 0;
 			}
 			.d2l-list-item-main {
-				width: 100%;
+				flex-grow: 1;
 			}
 		`;
 		const mainContent = css`
@@ -149,6 +158,7 @@ class ListItem extends RtlMixin(LitElement) {
 		const oldVal = this._breakpoints;
 		this._breakpoints = val.sort((a, b) => b - a).slice(0, 4);
 		this.requestUpdate('breakpoints', oldVal);
+		fastdom.measure(() => this.resizedCallback(this.offsetWidth));
 	}
 
 	render() {
@@ -175,8 +185,7 @@ class ListItem extends RtlMixin(LitElement) {
 		super.disconnectedCallback();
 		ro.unobserve(this);
 	}
-	resizedCallback(rect) {
-		const { width } = rect;
+	resizedCallback(width) {
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
 			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {

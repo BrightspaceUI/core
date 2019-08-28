@@ -18,9 +18,6 @@ class ListDemoNameImage extends LitElement {
 				fill: white;
 				font-size: 12;
 			}
-			rect {
-				stroke: none;
-			}
 		`];
 	}
 
@@ -28,7 +25,7 @@ class ListDemoNameImage extends LitElement {
 
 		return html`
 			<svg viewBox="0 0 42 42">
-				<rect x="1" y="1" rx="10" ry="10" width="40" height="40" style="fill:${this.color};" />
+				<rect x="1" y="1" rx="10" ry="10" width="40" height="40" stroke="none" fill="${this.color}" />
 				<text x="21" y="28" text-anchor="middle" class="d2l-list-demo-name-image-text">
 					${this.letters}
 				</text>

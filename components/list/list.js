@@ -1,4 +1,3 @@
-import './list-item.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 class List extends LitElement {
@@ -14,8 +13,6 @@ class List extends LitElement {
 				display: block;
 			}
 			.d2l-list-container {
-				list-style-type: none;
-				padding: 0;
 			}
 			::slotted(d2l-list-item) {
 				--d2l-list-item-divider-bottom: initial;
@@ -24,7 +21,7 @@ class List extends LitElement {
 		`;
 
 		const specialDividers = css`
-			:host([divider-mode="none"]) ::slotted(d2l-list-item) {
+			:host([divider-mode="none"]) {
 				--d2l-list-item-divider-bottom: none;
 				--d2l-list-item-divider-padding-bottom: 1px;
 				--d2l-list-item-divider-padding-top: 1px;
@@ -37,7 +34,7 @@ class List extends LitElement {
 				--d2l-list-item-divider-padding-top: 1px;
 				--d2l-list-item-divider-top: none;
 			}
-			:host([divider-extend]) ::slotted(d2l-list-item) {
+			:host([divider-extend]) {
 				--d2l-list-item-content-padding: 0 18px;
 			}
 			:host(.d2l-list-divider-hover) ::slotted(d2l-list-item:hover) {
@@ -51,7 +48,6 @@ class List extends LitElement {
 	}
 
 	render() {
-
 		return html`
 			<div role="list" class="d2l-list-container">
 				<slot></slot>
