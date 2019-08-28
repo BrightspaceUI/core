@@ -34,12 +34,6 @@ class List extends LitElement {
 			:host([divider-extend]) {
 				--d2l-list-item-content-padding: 0 18px;
 			}
-			:host(.d2l-list-divider-hover) ::slotted(d2l-list-item:hover) {
-				--d2l-list-item-divider-bottom: initial;
-				--d2l-list-item-divider-padding-bottom: initial;
-				--d2l-list-item-divider-padding-top: initial;
-				--d2l-list-item-divider-top: initial;
-			}
 		`;
 		return [layout, specialDividers];
 	}
