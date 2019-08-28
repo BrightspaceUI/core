@@ -79,19 +79,6 @@ class ListItem extends RtlMixin(LitElement) {
 				flex-grow: 1;
 			}
 		`;
-		const mainContent = css`
-			::slotted(.d2l-list-item-text) {
-				margin: 0;
-				max-height: 2.4rem;
-				overflow: hidden;
-			}
-			::slotted(.d2l-list-item-text-secondary-responsive),
-			::slotted(.d2l-list-item-text-secondary) {
-				margin: 0;
-				margin-top: 0.3rem;
-				overflow: hidden;
-			}
-		`;
 
 		const breakPoint1 = css`
 			.d2l-list-item-flex[breakpoint="1"] ::slotted([slot="illustration"]) {
@@ -128,7 +115,7 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-right: 0;
 			}
 		`;
-		return [ layout, mainContent, breakPoint1, breakPoint2, breakPoint3];
+		return [ layout, breakPoint1, breakPoint2, breakPoint3];
 	}
 
 	constructor() {
