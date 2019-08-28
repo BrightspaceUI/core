@@ -91,9 +91,6 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-top: 0.3rem;
 				overflow: hidden;
 			}
-			::slotted(.d2l-list-item-text-secondary-responsive) {
-				display: none;
-			}
 		`;
 
 		const breakPoint1 = css`
@@ -105,9 +102,6 @@ class ListItem extends RtlMixin(LitElement) {
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="1"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
-			}
-			.d2l-list-item-flex[breakpoint="1"] ::slotted(.d2l-list-item-text-secondary-responsive) {
-				display: block;
 			}
 		`;
 
@@ -121,9 +115,6 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			.d2l-list-item-flex[breakpoint="2"] ::slotted(.d2l-list-item-text-secondary-responsive) {
-				display: block;
-			}
 		`;
 
 		const breakPoint3 = css`
@@ -135,9 +126,6 @@ class ListItem extends RtlMixin(LitElement) {
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
-			}
-			.d2l-list-item-flex[breakpoint="3"] ::slotted(.d2l-list-item-text-secondary-responsive) {
-				display: block;
 			}
 		`;
 		return [ layout, mainContent, breakPoint1, breakPoint2, breakPoint3];

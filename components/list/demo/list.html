@@ -10,6 +10,7 @@
 			import '../../button/button-icon.js';
 			import '../../demo/demo-page.js';
 			import '../../typography/typography.js';
+			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
 			import './list-demo-control.js';
@@ -31,16 +32,22 @@
 			<d2l-demo-snippet id="list-basic">
 				<d2l-list>
 					<d2l-list-item>
-						<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+						<d2l-list-item-content>
+							<div>Identify categories of physical activities</div>
+							<div slot="secondary">Specific Expectation A1.2</div>
+						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
-						<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+						<d2l-list-item-content>
+							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+							<div slot="secondary">Specific Expectation B2.1</div>
+						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
-						<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+						<d2l-list-item-content>
+							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+							<div slot="secondary">Specific Expectation B2.2</div>
+						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
 			</d2l-demo-snippet>
@@ -51,8 +58,10 @@
 				<d2l-list>
 					<d2l-list-item>
 						<d2l-list-demo-name-image color="purple" letters="BN" slot="illustration"></d2l-list-demo-name-image>
-						<div class="d2l-list-item-text d2l-body-compact">Byron Novak</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">bnovak</div>
+						<d2l-list-item-content>
+							<div>Byron Novak</div>
+							<div slot="secondary">bnovak</div>
+						</d2l-list-item-content>
 						<div slot="actions">
 							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
 							<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
@@ -60,8 +69,10 @@
 					</d2l-list-item>
 					<d2l-list-item>
 						<d2l-list-demo-name-image color="red" letters="DW" slot="illustration"></d2l-list-demo-name-image>
-						<div class="d2l-list-item-text d2l-body-compact">Dimitri Watts</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">dwatts</div>
+						<d2l-list-item-content>
+							<div>Dimitri Watts</div>
+							<div slot="secondary">dwatts</div>
+						</d2l-list-item-content>
 						<div slot="actions">
 							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
 							<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
@@ -69,8 +80,10 @@
 					</d2l-list-item>
 					<d2l-list-item>
 						<d2l-list-demo-name-image color="teal" letters="PM" slot="illustration"></d2l-list-demo-name-image>
-						<div class="d2l-list-item-text d2l-body-compact">Petra Macleod</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">pmacleod</div>
+						<d2l-list-item-content>
+							<div>Petra Macleod</div>
+							<div slot="secondary">pmacleod</div>
+						</d2l-list-item-content>
 						<div slot="actions">
 							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
 							<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
@@ -78,8 +91,10 @@
 					</d2l-list-item>
 					<d2l-list-item>
 						<d2l-list-demo-name-image color="grey" letters="YL" slot="illustration"></d2l-list-demo-name-image>
-						<div class="d2l-list-item-text d2l-body-compact">Yvonne Lord</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">ylord</div>
+						<d2l-list-item-content>
+							<div>Yvonne Lord</div>
+							<div slot="secondary">ylord</div>
+						</d2l-list-item-content>
 						<div slot="actions">
 							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
 							<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
@@ -94,18 +109,24 @@
 				<d2l-list>
 					<d2l-list-item>
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
-						<div class="d2l-list-item-text d2l-body-compact">Introductory Earth Sciences</div>
-						<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+						<d2l-list-item-content>
+							<div>Introductory Earth Sciences</div>
+							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-						<div class="d2l-list-item-text d2l-body-compact">Engineering Materials for Energy Systems</div>
-						<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						<d2l-list-item-content>
+							<div>Engineering Materials for Energy Systems</div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-						<div class="d2l-list-item-text d2l-body-compact">Geomorphology and GIS </div>
-						<div class="d2l-list-item-text-secondary-responsive d2l-body-small">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						<d2l-list-item-content>
+							<div>Geomorphology and GIS </div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
 			</d2l-demo-snippet>

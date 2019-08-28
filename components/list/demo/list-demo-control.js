@@ -28,7 +28,7 @@ class ListDemoControl extends LitElement {
 			border-right: none;
 		}
 		.d2l-list-demo-flex > * {
-			border-right: 1px solid black;
+			border-right: 1px dotted var(--d2l-color-tungsten);
 			padding: 0 18px;
 		}
 		`];
