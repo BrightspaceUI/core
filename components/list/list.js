@@ -3,7 +3,8 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 class List extends LitElement {
 	static get properties() {
 		return {
-			divider: { type: String }
+			dividerMode: { type: String, attribute: 'divider-mode' },
+			dividerExtend: {type: Boolean, attribute: 'divider-extend'}
 		};
 	}
 
