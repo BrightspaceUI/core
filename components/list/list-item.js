@@ -1,14 +1,14 @@
+import 'fastdom/fastdom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import 'fastdom/fastdom.js'
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const ro = new ResizeObserver(entries => {
 	entries.forEach(entry => {
-		if (entry && entry.target && entry.target.resizedCallback) {
+		if (!entry || !entry.target || !entry.target.resizedCallback) {
 			return;
 		}
-		entry.target.resizedCallback(entry.contentRect && entry.contentRect.width)
+		entry.target.resizedCallback(entry.contentRect && entry.contentRect.width);
 	});
 });
 

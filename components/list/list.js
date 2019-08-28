@@ -12,8 +12,6 @@ class List extends LitElement {
 		const layout = css`
 			:host {
 				display: block;
-			}
-			::slotted(d2l-list-item) {
 				--d2l-list-item-divider-bottom: initial;
 				--d2l-list-item-divider-top: initial;
 			}
