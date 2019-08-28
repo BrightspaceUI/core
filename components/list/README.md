@@ -71,4 +71,3 @@ Output
  - **default**: This is for the main content area. You can add styles to the elements in this slot.
  - **illustration**: Responsive slot for images.
   - **actions**: This is for actions. They will show up on the right side.
-
