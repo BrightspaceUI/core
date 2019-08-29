@@ -2,7 +2,7 @@ export function fixSvg(svg) {
 
 	const fills = svg.querySelectorAll('[fill]');
 	fills.forEach((fill) => {
-		if (fill.getAttribute('fill') !== 'none') fill.removeAttribute('fill');
+		if (fill.getAttribute('fill').toLowerCase() === '#494c4e') fill.removeAttribute('fill');
 	});
 
 	svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');

@@ -16,12 +16,11 @@ script:
     npm run test:travis || travis_terminate 1;
   fi
 after_success:
-- |
-  if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == false ] && [ $TRAVIS_EVENT_TYPE != "cron" ]; then
-    npm run update-version; export UPDATE_RESULT=$?;
-  fi
+- frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
 env:
   global:
+  - REPO_NAME=core
+  - OWNER_NAME=BrightspaceUI
   - SAUCE_USERNAME: Desire2Learn
   # SAUCE_ACCESS_KEY
   - secure: L2WHX4RIJZB0HoRv8icbLgHwaDrEskv9TCoAqWu9OwzOFu3Bj+cveiIITJX7cHO79mnN8dnotuYIMx0pKnlQ4azGHLwzlXUuxc8o02zJtnXHWrdA8Y0UWb1elghorIf/FwLhp5O3iMI8HNO6HotfDo8aM6inRpu9yiQpDk0Nq49XwfrH7vqFDG4ZAopJpM/4RwZNBqM/1wgBA4BWMgQfG0WL96BZ6gVAQQyBE9Ptt7vvHJ7V13ynYp99BMXY224Ki4pdvfYkbZjUvmq2b6rYm+JnwIk6LDYsqPWPXIkg2UtiUS7aBz6/cB9wZ1j54OVK1nAcN2e2E8V4bvCgS1aItV1vE2G80Nb2i5YjewdHbhirH0JRv+WlgZuvSpjwIS4+7j5sYLiIkx52UC/mHZmARhLVemhBPlidKN2hfI5ZuLkr8P4gpKcLBcwRpZg3nbyKgT5vh8x7PP1IcjtlRtRT/KHQjMHXE+luA4uurBo1jp4kf4JrSGFF5OKfwJvj3FU6HVWPsM41SOvCVLgQyvp1fCbWatHla1tpk1tMZvq16hqTR1HPfNn9QZyFfvV0geso094rCH7536Muv2xdZlzZCioPi8SAHZENhpfXo0eTQLHoyodIh+b+/C/GdysetpbDY85z7EdJuh4DF3VLRJZEzQYyBA03oOvSLm3IcjO99C4=
@@ -40,4 +39,4 @@ deploy:
       secure: asQJ4woXHKOy7aUD9DajzDTkGHQSTfbXLW4AP72Y3TeM8xOL/nSG55AsmcunKUn4SFsJgUehODv8hbQ5cjYxpV28p6O2ec1K69MH/bWsbhv6xPNraDdJG2oYc0CmRZl7gUZPUXsfO2pj1XjWXJgkWO/krWg8dDlg+AjAPwZCnFwpOL8HXOS44RT0Mo1Zgc6uE2Iq2tuj+8WTjLSF+aFcjWB9aNaDFhMK2bDLo/rqJtaK1yyphfpSDl/RD40o9SiGmV8Lt5N0ho1vtN/nmgLWo5FAm0zrDT5lbjC+dl9uKj9Y6hf9SBPARTyoN8D1ATpWaNxnGqtWNoLpNI/7+yygS5VOLfS6xvUxDIkcXt0F6ow7MWfxrIgeOQg8i9ZT+OKvMqMdwi0/f8XLkfvY43x0bmr+wN9/vKb5Xx7FWJxXIuLAHGSXmXZ4WMKxPmfhtbcfkCupN/HxCbdgD8Xaoaol5DpUZMYM2skGfRjq3p+GqZdSBMrubVudjCG9qDsLE0PQWxyB7Fi4+pVTRpzn3axGXRMF1kvtUD6X1en/6CubZan7JgjgMDj7CkgY0aubaCa8rDbaYaUvwH+Qkwb8bsNYgUQ5uEEifXAovKZYBthdlLervP6YeoV6x4dyBu7m0dB8pYCI1rZH941cg6oXz03bjP2nYu7TwYgsV8ofDgsdfZw=
     on:
       repo: BrightspaceUI/core
-      condition: $UPDATE_RESULT = 0
+      tags: true

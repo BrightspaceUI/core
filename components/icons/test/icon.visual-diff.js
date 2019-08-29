@@ -24,6 +24,7 @@ describe('d2l-icon', function() {
 		'prefixed',
 		'fill-none',
 		'fill-circle',
+		'fill-mixed',
 		'color-override',
 		'size-override',
 		'rtl-tier1',

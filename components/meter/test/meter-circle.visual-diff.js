@@ -26,7 +26,10 @@ describe('d2l-meter-circle', function() {
 		{ title: 'completed-scaled', fixture: '#completed-scaled'},
 		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl'},
 		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl'},
-		{ title: 'completed-rtl', fixture: '#completed-rtl'}
+		{ title: 'completed-rtl', fixture: '#completed-rtl'},
+		{ title: 'no-progress-light', fixture: '#no-progress-light'},
+		{ title: 'has-progress-light', fixture: '#has-progress-light'},
+		{ title: 'completed-light', fixture: '#completed-light'}
 	].forEach((testData) => {
 		it(testData.title, async function() {
 			const rect = await visualDiff.getRect(page, testData.fixture);

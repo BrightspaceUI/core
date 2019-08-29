@@ -88,3 +88,11 @@ Then add the `d2l-meter-circle`, provide values for the properties, `value` and 
 * `text` (optional): Context information about what the meter is about. This is for screen readers.
 	- `{%}` in the string will be replaced with percentage value.
 	- `{x/y}` in the string will be replaced with fraction with the proper language support.
+
+## Light Foreground
+
+All `meter` components have a "`foreground-light`" style for displaying against a dark background. To use this style, just add this attribute:
+
+```html
+<d2l-meter-circle value="30" max="100" foreground-light></d2l-meter-circle>
+```

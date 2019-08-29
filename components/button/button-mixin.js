@@ -39,6 +39,13 @@ export const ButtonMixin = superclass => class extends superclass {
 		this.removeEventListener('click', this._handleClick, true);
 	}
 
+	_getType() {
+		if (this.type === 'submit' || this.type === 'reset') {
+			return this.type;
+		}
+		return 'button';
+	}
+
 	_handleClick(e) {
 		if (this.disabled) {
 			e.stopPropagation();

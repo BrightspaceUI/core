@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.1.0",
+  "version": "1.7.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -11,15 +11,16 @@
     "build:icons": "node ./cli/icon-generator.js",
     "build:lang": "node ./cli/lang-generator.js",
     "build": "npm run build:clean && npm run build:icons && npm run build:lang",
-    "lint": "eslint . --ext .js,.html",
+    "lint": "npm run lint:eslint && npm run lint:lit-analyze",
+    "lint:eslint": "eslint . --ext .js,.html",
+    "lint:lit-analyze": "lit-analyzer components demo directives helpers mixins test tools",
     "test": "npm run lint && npm run test:sass && npm run test:local && npm run test:diff",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "test:sauce": "polymer test --skip-plugin local",
-    "test:travis": "polymer test --config-file wct.conf-travis.json",
-    "update-version": "node ./cli/update-version.js"
+    "test:travis": "polymer test --config-file wct.conf-travis.json"
   },
   "files": [
     "/components",
@@ -45,16 +46,18 @@
     "babel-eslint": "^10",
     "chai": "^4",
     "chalk": "^2.4.2",
-    "eslint": "^6",
+    "eslint": "~6.1",
     "eslint-config-brightspace": "^0.6",
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
+    "frau-ci": "^1",
+    "lit-analyzer": "^1",
     "mocha": "^6",
     "node-sass": "^4",
     "polymer-cli": "^1",
     "puppeteer": "^1",
-    "simple-git": "^1.120.0",
+    "sinon": "^7.4.1",
     "wct-mocha": "^1",
     "whatwg-fetch": "^3"
   },

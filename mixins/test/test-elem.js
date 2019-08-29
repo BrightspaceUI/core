@@ -5,7 +5,7 @@ class TestElem extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
-			date: { type: Date },
+			date: { attribute: false },
 			number: { type: Number }
 		};
 	}

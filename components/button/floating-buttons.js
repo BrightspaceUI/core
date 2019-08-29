@@ -131,7 +131,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	_calcContainerPosition() {
 		this._floating = this._shouldFloat();
-		if (!this._floating) {
+		if (!this._floating || !this.offsetParent) {
 			return;
 		}
 
