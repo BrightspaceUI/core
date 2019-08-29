@@ -15,7 +15,6 @@ export const ButtonMixin = superclass => class extends superclass {
 			formtarget: { type: String, reflect: true },
 			name: { type: String, reflect: true },
 			primary: { type: Boolean, reflect: true },
-			textAriaLabel: { type: String, reflect: true, attribute: 'text-aria-label' },
 			type: { type: String, reflect: true }
 		};
 	}
@@ -38,10 +37,6 @@ export const ButtonMixin = superclass => class extends superclass {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('click', this._handleClick, true);
-	}
-
-	getAriaLabel() {
-		return this.textAriaLabel ? this.textAriaLabel : this.ariaLabel;
 	}
 
 	_getType() {
