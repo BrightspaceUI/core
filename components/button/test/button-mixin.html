@@ -24,6 +24,24 @@
 			</template>
 		</test-fixture>
 
+		<test-fixture id="aria-label">
+			<template>
+				<test-button-elem aria-label="test button"></test-button-elem>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="text-aria-label">
+			<template>
+				<test-button-elem text-aria-label="test button text"></test-button-elem>
+			</template>
+		</test-fixture>
+
+		<test-fixture id="text-and-aria-label">
+			<template>
+				<test-button-elem text-aria-label="test button text 1" aria-label="test button text 2"></test-button-elem>
+			</template>
+		</test-fixture>
+
 		<script type="module">
 			describe('ButtonMixin', () => {
 				let button;
@@ -54,6 +72,27 @@
 						disabledButton.click();
 						setTimeout(resolve, 500); // pass test if parent click eventlistener never called
 					});
+				});
+
+				it('should use aria-label if defined and no text-aria-label', async() => {
+					const ariaLabelFixture = fixture('aria-label');
+					await ariaLabelFixture.updateComplete;
+
+					expect(ariaLabelFixture.shadowRoot.querySelector('button').getAttribute('aria-label')).to.equal('test button');
+				});
+
+				it('should use text-aria-label if defined', async() => {
+					const textAriaLabelFixture = fixture('text-aria-label');
+					await textAriaLabelFixture.updateComplete;
+
+					expect(textAriaLabelFixture.shadowRoot.querySelector('button').getAttribute('aria-label')).to.equal('test button text');
+				});
+
+				it('should use text-aria-label if defined and aria-label also defined', async() => {
+					const textAndAriaLabelFixture = fixture('text-and-aria-label');
+					await textAndAriaLabelFixture.updateComplete;
+
+					expect(textAndAriaLabelFixture.shadowRoot.querySelector('button').getAttribute('aria-label')).to.equal('test button text 1');
 				});
 			});
 		</script>

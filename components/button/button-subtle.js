@@ -125,7 +125,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			<button
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-				aria-label="${ifDefined(this.ariaLabel)}"
+				aria-label="${ifDefined(this.getAriaLabel())}"
 				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
 				?disabled="${this.disabled}"
