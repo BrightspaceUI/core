@@ -21,8 +21,8 @@ import {clearDismissible, setDismissible} from '@brightspace-ui/core/helpers/dis
 // Call when component is made visible
 // to be notified of ESC key presses.
 const id = setDismissible(() => {
-	// Callback will be called if user presses ESC.
-	// Component should dismiss itself.
+    // Callback will be called if user presses ESC.
+    // Component should dismiss itself.
 });
 
 // Call when component is hidden or removed
@@ -54,6 +54,22 @@ getOffsetParent(node);
 
 // returns true/false whether the specified ancestorNode is an ancestor of node
 isComposedAncestor(ancestorNode, node);
+```
+
+## requestIdleCallback
+
+A simple shim for [requestIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-requestidlecallback-method) and [cancelIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-cancelidlecallback-method) that transparently falls back to `setTimeout` if it's not natively supported.
+
+### Usage
+
+The Google Developer update on [using requestIdleCallback](https://developers.google.com/web/updates/2015/08/using-requestidlecallback) has some excellent examples of usage. Provide a callback for non-essential work, and optionally a `timeout` after which the callback will be invoked regardless of activity on the main thread. A `deadline` object is passed with a `timeRemaining()` function and a `didTimeout` property, enabling the consumer to queue tasks across callbacks if necessary.
+
+```js
+import '@brightspace-ui/core/helpers/requestIdleCallback.js';
+
+requestIdleCallback((deadline) => {
+    // do some work
+}, { timeout: 1000 });
 ```
 
 ## UniqueId
