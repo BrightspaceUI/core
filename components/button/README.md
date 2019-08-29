@@ -15,6 +15,10 @@ The `d2l-button` element can be used just like the native button element, but al
 <d2l-button>My Button</d2l-button>
 ```
 
+***Properties:***
+
+* `text-aria-label` (optional): `aria-label` to be added to the `button`
+
 ## d2l-button-subtle
 
 The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
@@ -38,6 +42,7 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 * `h-align` (optional): `text` aligns the leading edge of text
 * `icon` (optional): Icon for the button (ex. `d2l-tier1:gear`)
 * `icon-right` (optional): Indicates that the icon should be rendered on right
+* `text-aria-label` (optional): `aria-label` to be added to the `button`
 
 ## d2l-button-icon
 
@@ -59,6 +64,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 * `text` (required): Accessibly text for the button
 * `icon` (required): Icon for the button (ex. `d2l-tier1:gear`)
 * `h-align` (optional): `text` aligns the leading edge of text
+* `text-aria-label` (optional): `aria-label` to be added to the `button`
 * `translucent` (optional): Indicates to display translucent (ex. on rich backgrounds)
 
 ## d2l-floating-buttons
