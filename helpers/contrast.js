@@ -44,6 +44,6 @@ export const contrastLargeTxt = 3;
 export const contrastNonText = 3;
 
 // takes 2 HEX color strings
-export function isContrastAccessible(color1, color2, myContrastMin) {
+export function isColorAccessible(color1, color2, myContrastMin) {
 	return contrastColors(color1, color2) >= (myContrastMin || contrastMin);
 }
