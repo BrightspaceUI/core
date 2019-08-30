@@ -2,7 +2,7 @@
   {
     "name": "meter",
     "source_dir": "components/meter/lang",
-    "output_file_path": "components/meter/%LANG%.json",
+    "output_file_path": "components/meter/lang/%LANG%.json",
     "parser_plugin": {
       "plugin": "parse_d2l_fra"
     },
