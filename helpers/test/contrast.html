@@ -20,7 +20,7 @@
 	</test-fixture>
 
 	<script type="module">
-		import { isAccessible } from '../contrast.js';
+		import { isContrastAccessible } from '../contrast.js';
 
 		describe('colour-contrast', () => {
 
@@ -38,7 +38,7 @@
 						{ rating: 'AA', result: false },
 						{ rating: 'F', result: false }
 					].forEach(({ rating, result }) => {
-						expect(isAccessible(colours[rating][0], colours[rating][1], 7)).to.equal(result);
+						expect(isContrastAccessible(colours[rating][0], colours[rating][1], 7)).to.equal(result);
 					});
 				});
 
@@ -48,7 +48,7 @@
 						{ rating: 'AA', result: true },
 						{ rating: 'F', result: false }
 					].forEach(({ rating, result }) => {
-						expect(isAccessible(colours[rating][0], colours[rating][1])).to.equal(result);
+						expect(isContrastAccessible(colours[rating][0], colours[rating][1])).to.equal(result);
 					});
 				});
 
@@ -60,7 +60,7 @@
 					].forEach(config => {
 						const { color1, color2, invalid } = config;
 						assert.throws(
-							() => isAccessible(color1, color2),
+							() => isContrastAccessible(color1, color2),
 							`Invalid HEX colour: ${config[invalid]}`
 						);
 					});
