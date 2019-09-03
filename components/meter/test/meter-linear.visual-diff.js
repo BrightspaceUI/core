@@ -22,6 +22,7 @@ describe('d2l-meter-linear', function() {
 		{ title: 'has-progress', fixture: '#has-progress'},
 		{ title: 'completed', fixture: '#completed'},
 		{ title: 'max-zero', fixture: '#max-zero'},
+		{ title: 'round-to-zero', fixture: '#round-to-zero'},
 		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl'},
 		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl'},
 		{ title: 'completed-rtl', fixture: '#completed-rtl'},
