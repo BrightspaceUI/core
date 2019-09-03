@@ -69,5 +69,10 @@
     "lit-element": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "intl-messageformat"
+    ]
   }
 }
