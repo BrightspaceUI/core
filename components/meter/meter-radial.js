@@ -57,8 +57,9 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 
 	render() {
 		const lengthOfLine = 115; // found by approximating half the perimeter of the ellipse with radii 38 and 35
-		const progressFill = this.value / this.max * lengthOfLine;
-
+		const percent = (this.value / this.max);
+		const visibility = (percent < 0.005) ? 'hidden' : 'visible';
+		const progressFill = percent * lengthOfLine;
 		const primary = this._primary(this.value, this.max, this.dir);
 		const secondary = this._secondary(this.value, this.max, this.text);
 		const secondaryTextElement = this.text ? html`<div class="d2l-body-small d2l-meter-radial-text">${secondary}</div>` : html``;
@@ -74,7 +75,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 						d="M5 40a37 35 0 0 1 74 0"
 						stroke-dasharray="${progressFill} ${lengthOfLine}"
 						stroke-dashoffset="${this.dir === 'rtl' ? progressFill - lengthOfLine : 0}"
-						visibility="${this.value ? 'visible' : 'hidden'}" />
+						visibility="${visibility}" />
 					<text class="d2l-heading-4 d2l-meter-radial-text" x="38" y="2" text-anchor="middle"  transform="translate(5 39)">
 						${primary}
 					</text>
