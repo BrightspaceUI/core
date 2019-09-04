@@ -100,10 +100,10 @@ To update the official goldens using Travis:
 
 1. In the Travis environment for BrightspaceUI/core, under "More options" select "Trigger Build"
 2. Enter the following parameters:
-	* Branch: your current branch
+	* Branch: your current branch (NOT master)
 	* Custom Commit Message: Updating goldens for <component>
-	* Custom Config: `script: npm run test:diff:golden && npm run add-goldens`
-		* or for a specific subset: `script: npm run test:diff:golden -- -g <component e.g., button> && npm run add-goldens`
+	* Custom Config: `script: npm run build && npm run test:diff:golden && npm run add-goldens`
+		* or for a specific subset: `script: npm run build && npm run test:diff:golden -- -g <component e.g., button> && npm run add-goldens`
 
 To run a subset of local unit tests, modify your local [index.html](https://github.com/BrightspaceUI/core/blob/master/test/index.html), or start the dev server and navigate to the desired test page.
 

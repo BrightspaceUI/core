@@ -1,8 +1,7 @@
 const git = require('simple-git/promise')();
 
 const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
-const branchName = 'travis-commit-experiment';
-console.log(`branch ${process.env.TRAVIS_BRANCH}`);
+const branchName = ${process.env.TRAVIS_BRANCH};
 
 function commit() {
 
@@ -13,28 +12,32 @@ function commit() {
 
 	console.log('Committing, tagging and pushing...');
 	console.group();
-
-	return git.fetch()
-		.then(() => {
-			return git.checkout(branchName);
-		}).then(() => {
-			return git.branch();
-		}).then((data) => {
-			if (data.current !== branchName) {
-				process.exit(1);
-			}
-			console.log(`Checked out branch ${branchName}`);
-
-			return git.add('*');
-		}).then(() => {
-			console.log('added, commiting...');
-			const commitMessage = '[skip ci] test commit';
-			return git.commit(commitMessage);
-		}).then((status) => {
-			console.log(status);
-			console.log('Committed. Pushing...');
-			return git.push(remote, branchName);
+	return git.status()
+		.then((data) => {
+			console.log('branch ' + data.current)
 		});
+
+	// return git.fetch()
+	// 	.then(() => {
+	// 		return git.checkout(branchName);
+	// 	}).then(() => {
+	// 		return git.branch();
+	// 	}).then((data) => {
+	// 		if (data.current !== branchName) {
+	// 			process.exit(1);
+	// 		}
+	// 		console.log(`Checked out branch ${branchName}`);
+	//
+	// 		return git.add('*');
+	// 	}).then(() => {
+	// 		console.log('added, commiting...');
+	// 		const commitMessage = '[skip ci] test commit';
+	// 		return git.commit(commitMessage);
+	// 	}).then((status) => {
+	// 		console.log(status);
+	// 		console.log('Committed. Pushing...');
+	// 		return git.push(remote, branchName);
+	// 	});
 }
 
 commit()
