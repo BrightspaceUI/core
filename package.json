@@ -15,7 +15,7 @@
     "lint": "eslint . --ext .js,.html",
     "test": "npm run lint && npm run test:sass && npm run test:local && npm run test:diff",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
-    "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden && npm run add-goldens",
+    "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "test:sauce": "polymer test --skip-plugin local",
