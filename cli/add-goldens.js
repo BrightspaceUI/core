@@ -1,7 +1,7 @@
 const git = require('simple-git/promise')();
 
 const remote = `https://${process.env.GITHUB_RELEASE_TOKEN}@github.com/BrightspaceUI/core`;
-const branchName = ${process.env.TRAVIS_BRANCH};
+const branchName = process.env.TRAVIS_BRANCH;
 
 function commit() {
 
