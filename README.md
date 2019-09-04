@@ -92,6 +92,15 @@ To update visual-diff goldens:
 npm run test:diff:golden
 ```
 
+To update the official goldens using Travis:
+
+1. In the Travis environment for BrightspaceUI/core, under "More options" select "Trigger Build"
+2. Enter the following parameters:
+	* Branch: your current branch (NOT master)
+	* Custom Commit Message: Updating goldens for <component>
+	* Custom Config: `script: npm run build && npm run test:diff:golden && npm run test:diff:commit-goldens`
+		* or for a specific subset: `script: npm run build && npm run test:diff:golden -- -g <component e.g., button> && npm run test:diff:commit-goldens`
+
 To run local unit tests:
 
 ```shell
