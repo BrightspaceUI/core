@@ -21,6 +21,7 @@ describe('d2l-meter-circle', function() {
 		{ title: 'no-progress', fixture: '#no-progress'},
 		{ title: 'has-progress', fixture: '#has-progress'},
 		{ title: 'completed', fixture: '#completed'},
+		{ title: 'round-to-zero', fixture: '#round-to-zero'},
 		{ title: 'no-progress-scaled', fixture: '#no-progress-scaled'},
 		{ title: 'has-progress-scaled', fixture: '#has-progress-scaled'},
 		{ title: 'completed-scaled', fixture: '#completed-scaled'},
