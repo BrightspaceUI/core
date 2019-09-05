@@ -21,6 +21,7 @@ class ListItem extends RtlMixin(LitElement) {
 			href: { type: String },
 			selected: { type: Boolean, reflect: true },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
+			ref: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
 			_breakpoint: { type: Number }
@@ -180,6 +181,11 @@ class ListItem extends RtlMixin(LitElement) {
 		return [ checkboxStyles, layout, primaryAction, breakPoint1, breakPoint2, breakPoint3, illustrationOutside];
 	}
 
+	static uniqueRef() {
+		ListItem._uniqueRef = !ListItem._uniqueRef ? 1 : ListItem._uniqueRef + 1;
+		return ListItem._uniqueRef;
+	}
+
 	constructor() {
 		super();
 		this._breakpoint = 0;
@@ -198,6 +204,33 @@ class ListItem extends RtlMixin(LitElement) {
 		const oldVal = this._breakpoints;
 		this._breakpoints = val.sort((a, b) => b - a).slice(0, 4);
 		this.requestUpdate('breakpoints', oldVal);
+	}
+
+	get checked() {
+		return this._checked;
+	}
+
+	set checked(value) {
+		const oldVal = this.checked;
+		this._checked = value;
+		this.requestUpdate('checked', oldVal).then(() => {
+			const checkBox = this.shadowRoot.querySelector('.d2l-list-item-checkbox');
+			checkBox && (checkBox.checked = value);
+
+			if (typeof this.ref === 'undefined') {
+				this.ref = ListItem.uniqueRef();
+			}
+		});
+	}
+
+	get ref() {
+		return this._ref;
+	}
+
+	set ref(ref) {
+		const oldVal = this.ref;
+		this._ref = ref;
+		this.requestUpdate('ref', oldVal);
 	}
 
 	render() {
@@ -228,6 +261,27 @@ class ListItem extends RtlMixin(LitElement) {
 			</div>
 		`;
 	}
+	updated(changedProperties) {
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === 'ref') {
+				if (typeof oldValue === 'undefined') {
+					this._fireItemChecked(this.checked);
+				} else {
+					this.checked = undefined;
+					this._fireItemChecked(false, oldValue);
+				}
+				return;
+			}
+
+			if (propName === 'checked') {
+				if (typeof this.checked === 'undefined' || typeof this.ref === 'undefined') {
+					return;
+				}
+				this._fireItemChecked(this.checked);
+			}
+
+		});
+	}
 
 	updated(changedProperties) {
 		if (changedProperties.has('breakpoints')) {
@@ -256,6 +310,17 @@ class ListItem extends RtlMixin(LitElement) {
 	}
 	_handleChange(e) {
 		this.selected = e.target.checked;
+	}
+
+	_fireItemChecked(value, ref) {
+		ref = ref ? ref : this.ref;
+		this.dispatchEvent(new CustomEvent('d2l-list-item-checked', {
+			detail: {
+				ref: ref,
+				checked: value,
+			},
+			bubbles: true
+		}));
 	}
 }
 

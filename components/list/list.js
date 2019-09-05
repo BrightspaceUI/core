@@ -1,4 +1,11 @@
+import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+
+export const selectableListStates = {
+	none: 0,
+	indeterminate: 1,
+	all: 2
+};
 
 class List extends LitElement {
 	static get properties() {
@@ -60,12 +67,64 @@ class List extends LitElement {
 		return [layout, specialCases];
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this._checked = {};
+		this.addEventListener('d2l-list-item-checked', this._onlistItemChecked.bind(this));
+	}
+
+	itemsChecked() {
+		return Object.keys(this._checked).filter(ref => this._checked[ref]);
+	}
+
 	render() {
 		return html`
 			<div role="list" class="d2l-list-container">
 				<slot></slot>
 			</div>
 		`;
+	}
+
+	selectionState() {
+		const checkedListItems = this.itemsChecked();
+		if (!checkedListItems || checkedListItems.length < 1) {
+			return selectableListStates.none;
+		}
+
+		const uncheckedListItems = this.querySelectorAll('d2l-list-item:not([checked])');
+		if (uncheckedListItems.length < 1) {
+			return selectableListStates.all;
+		}
+
+		return selectableListStates.indeterminate;
+	}
+
+	selectAll() {
+		if (!this.selectable) {
+			return;
+		}
+		const uncheckedListItems = this.querySelectorAll('d2l-list-item:not([checked])');
+		if (uncheckedListItems.length < 1) {
+			const checkedListItems = this.querySelectorAll('d2l-list-item[checked]');
+			checkedListItems.forEach(listItem => {
+				listItem.toggleAttribute('checked');
+			});
+		} else {
+			uncheckedListItems.forEach(listItem => {
+				listItem.toggleAttribute('checked');
+			});
+		}
+	}
+
+	_onlistItemChecked(event) {
+		event.stopPropagation();
+
+		this._checked[event.detail.ref] = event.detail.checked;
+		this.dispatchEvent(new CustomEvent('change', {
+			detail: {
+				checkedItems: this.itemsChecked()
+			}
+		}));
 	}
 }
 

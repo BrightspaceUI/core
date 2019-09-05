@@ -10,62 +10,126 @@
 		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
 		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
 		<script type="module" src="../list.js"></script>
+		<script type="module" src="../list-item.js"></script>
+		<script type="module" src="../list-item-content.js"></script>
 	</head>
 	<body>
 
 		<test-fixture id="list">
 			<template>
-				<d2l-list>
-					<d2l-list-item>
-						<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
-					</d2l-list-item>
-					<d2l-list-item>
-						<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
-					</d2l-list-item>
-					<d2l-list-item>
-						<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-						<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
-					</d2l-list-item>
-				</d2l-list>
-				</div>
+					<d2l-list>
+						<d2l-list-item ref="1">
+							<d2l-list-item-content>
+								<div>Identify categories of physical activities</div>
+								<div slot="secondary">Specific Expectation A1.2</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="#" id="link" ref="2">
+							<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+							<d2l-list-item-content>
+								<div>Introductory Earth Sciences</div>
+								<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item id="hover" ref="3">
+							<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+							<d2l-list-item-content>
+								<div>Byron Novak</div>
+								<div slot="secondary">bnovak</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item illustration-outside ref="4">
+							<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+							<d2l-list-item-content>
+								<div>Geomorphology and GIS </div>
+								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
 			</template>
 		</test-fixture>
 
 		<script type="module">
 			import { runAxe } from '../../../tools/a11y-test-helper.js';
-
+			import { selectableListStates } from '../list.js';
+			let list;
 			describe('d2l-list', () => {
+				describe('Pass Axe tests', () => {
 
-				[
-					{ title: 'List', fixture: 'list'},
-				].forEach((testData) => {
-					let list;
-					describe(testData.title, () => {
+					beforeEach(() => {
+						list = fixture('list');
+					});
 
-						beforeEach(async() => {
-							list = fixture(testData.fixture);
-						});
+					it('should pass all axe tests', async() => {
+						await runAxe(list);
+					});
 
-						it(`should pass all axe tests for ${testData.title}`, async() => {
-							await runAxe(list);
-						});
+					it('should pass all axe when selectable and hover-effect', async() => {
+						list.toggleAttribute('hover-effect', true);
+						list.toggleAttribute('selectable', true);
+						list.querySelectorAll('d2l-list-item').forEach(element => element.checked = true);
+						await runAxe(list);
+					});
 
-						it('should pass all axe tests when focused', async() => {
-							return new Promise((resolve, reject) => {
-								list.addEventListener('focus', async() => {
-									try {
-										await runAxe(list);
-										resolve();
-									} catch (e) {
-										reject(e);
-									}
-								});
-								list.shadowRoot.querySelector('d2l-list-item').focus();
+				});
+
+				// The order in this group of tests matter.
+				describe('Test Selection actions', () => {
+					before(() => {
+						list = fixture('list');
+						list.toggleAttribute('selectable', true);
+					});
+
+					it('Select one element and wait for on change.', async() => {
+						return new Promise((resolve, reject) => {
+							list.addEventListener('change', (e) => {
+								try {
+									expect(e.detail.checkedItems).deep.equal(['1']);
+									resolve();
+								} catch (e) {
+									reject(e);
+								}
 							});
+							list.querySelector('d2l-list-item').checked = true;
+						});
+					});
+
+					it('Selection state indeterminate.', async() => {
+						expect(list.selectionState()).to.equal(selectableListStates.indeterminate);
+					});
+
+					it('Select all.', async() => {
+						await new Promise((resolve, reject) => {
+							list.addEventListener('change', (e) => {
+								try {
+									if (e.detail.checkedItems.length === 4) {
+										resolve();
+									}
+								} catch (e) {
+									reject(e);
+								}
+							});
+							list.selectAll();
 						});
 
+						expect(list.selectionState()).to.equal(selectableListStates.all);
+					});
+
+					it('Select none.', async() => {
+						await new Promise((resolve, reject) => {
+							list.addEventListener('change', (e) => {
+								try {
+									if (e.detail.checkedItems.length === 0) {
+										resolve();
+									}
+								} catch (e) {
+									reject(e);
+								}
+							});
+							list.selectAll();
+						});
+
+						expect(list.selectionState()).to.equal(selectableListStates.none);
 					});
 				});
 
