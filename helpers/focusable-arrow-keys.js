@@ -1,5 +1,3 @@
-import 'fastdom/fastdom.js';
-
 const keyCodes = Object.freeze({
 	END: 35,
 	HOME: 36,
@@ -42,10 +40,10 @@ export class FocusableArrowKeysHelper {
 		if (elem) {
 			if (this.onBeforeFocus) {
 				this.onBeforeFocus(elem).then(() => {
-					fastdom.mutate(() => { elem.focus(); });
+					elem.focus();
 				});
 			} else {
-				fastdom.mutate(() => { elem.focus(); });
+				elem.focus();
 			}
 		}
 	}
@@ -113,21 +111,17 @@ export class FocusableArrowKeysHelper {
 	_handleKeyDown(e) {
 		const target = e.target;
 		if (this.direction.indexOf('left') >= 0 && e.keyCode === keyCodes.LEFT) {
-			fastdom.measure(() => {
-				if (getComputedStyle(this.element).direction === 'rtl') {
-					this._focusNext(target);
-				} else {
-					this._focusPrevious(target);
-				}
-			});
+			if (getComputedStyle(this.element).direction === 'rtl') {
+				this._focusNext(target);
+			} else {
+				this._focusPrevious(target);
+			}
 		} else if (this.direction.indexOf('right') >= 0 && e.keyCode === keyCodes.RIGHT) {
-			fastdom.measure(() => {
-				if (getComputedStyle(this.element).direction === 'rtl') {
-					this._focusPrevious(target);
-				} else {
-					this._focusNext(target);
-				}
-			});
+			if (getComputedStyle(this.element).direction === 'rtl') {
+				this._focusPrevious(target);
+			} else {
+				this._focusNext(target);
+			}
 		} else if (this.direction.indexOf('up') >= 0 && e.keyCode === keyCodes.UP) {
 			this._focusPrevious(target);
 		} else if (this.direction.indexOf('down') >= 0 && e.keyCode === keyCodes.DOWN) {
