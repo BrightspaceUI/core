@@ -9,46 +9,51 @@ end - focuses last
 
 # Usage
 
-```
+The focusable elements can be provided in one of two ways.
+
+If the elements are known up-front and are in the element's local DOM scope, simply add the d2l-arrowkeys-focusable class.
+
+```javascript
+import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrowkeys-mixin.js';
 class MyElement extends ArrowKeysMixin(LitElement) {
-
-   constructor() {
-      super();
-      this.arrowKeysDirection = '';  // optionally override default: ['leftright', 'updown', or any string combination of arrow keys you wish to allow]
-      this.arrowKeysNoWrap = true;  // optionally override default: [true, false]
-   }
-
    render() {
-      const inner = html`
-         <a href="..." class="d2l-arrowkeys-focusable">link 1</a>
-         <a href="..." class="d2l-arrowkeys-focusable">link 2</a>
-         // etc
-      `;
       return html`
-         <div class="some-outer-html">
+         <div>
             ...
-            ${this.arrowKeysContainer(inner)}
+            <a href="..." class="d2l-arrowkeys-focusable">link 1</a>
+            <a href="..." class="d2l-arrowkeys-focusable">link 2</a>
             ...
          </div>
       `;
    }
-
-   async arrowKeysBeforeFocus() {
-      // consumer optionally implements
-   }
-
-	/*
-	async focusablesProvider() {
-		// consumer optionally implements to override which elements are considered focusable
-		// in the default case, 'inner' elements with the 'd2l-arrowkeys-focusable' class are considered focusable
-
-		// example of an override that gets particular slotted tags
-		const listOfFocusableElements = getComposedChildren(this.shadowRoot.querySelector('slot')).filter((tag) => {
-			return tag.nodeName === 'D2L-TAG-I-WANT';
-		}) || [];
-		return listOfFocusableElements;
-	}
-	*/
 }
 customElements.define('my-element', MyElement);
 ```
+
+If the elements are not known up front, or the elements cannot be simply queried in the element's local DOM-scope, an async arrowKeysFocusablesProvider may be implemented.
+
+```javascript
+import { ArrowKeysMixin } from '@brightspace-ui/core/mixins/arrowkeys-mixin.js';
+class MyElement extends ArrowKeysMixin(LitElement) {
+   render() {
+      return html`
+         <div>
+            ...
+            <a href="...">link 1</a>
+            <a href="...">link 2</a>
+            ...
+         </div>
+      `;
+   }
+   async arrowKeysFocusablesProvider() {
+      return [ /* array containing focusable elements */]
+   }
+}
+customElements.define('my-element', MyElement);
+```
+
+# Properties:
+
+`arrowKeysDirection` (optional): string listing which arrow keys are allowed (default is leftright)
+`arrowKeysNoWrap` (optional): To opt out of wrapping focus from end-to-start and start-to-end
+`arrowKeysBeforeFocus` (optional): Async callback invoked before focus us applied

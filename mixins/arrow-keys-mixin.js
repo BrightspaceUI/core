@@ -29,7 +29,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		</div>`;
 	}
 
-	async focusablesProvider() {
+	async arrowKeysFocusablesProvider() {
 		return this.shadowRoot.getElementsByClassName('d2l-arrowkeys-focusable');
 	}
 
@@ -40,13 +40,13 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	_handleArrowKeys(e) {
 		const target = e.target;
 		if (this.arrowKeysDirection.indexOf('left') >= 0 && e.keyCode === keyCodes.LEFT) {
-			if (getComputedStyle(this._arrowKeysContainerElement).arrowKeysDirection === 'rtl') {
+			if (getComputedStyle(this._arrowKeysContainerElement).direction === 'rtl') {
 				this._focusNext(target);
 			} else {
 				this._focusPrevious(target);
 			}
 		} else if (this.arrowKeysDirection.indexOf('right') >= 0 && e.keyCode === keyCodes.RIGHT) {
-			if (getComputedStyle(this._arrowKeysContainerElement).arrowKeysDirection === 'rtl') {
+			if (getComputedStyle(this._arrowKeysContainerElement).direction === 'rtl') {
 				this._focusPrevious(target);
 			} else {
 				this._focusNext(target);
@@ -78,7 +78,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	_focusFirst() {
-		return this.focusablesProvider().then(
+		return this.arrowKeysFocusablesProvider().then(
 			(elems) => {
 				if (elems && elems.length > 0) {
 					this._focus(elems[0]);
@@ -88,7 +88,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	_focusLast() {
-		return this.focusablesProvider().then(
+		return this.arrowKeysFocusablesProvider().then(
 			(elems) => {
 				if (elems && elems.length > 0) {
 					this._focus(elems[elems.length - 1]);
@@ -98,7 +98,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	_focusNext(elem) {
-		return this.focusablesProvider().then(
+		return this.arrowKeysFocusablesProvider().then(
 			(elems) => {
 				const next = this._tryGetNextFocusable(elems, elem);
 				this._focus(next);
@@ -107,7 +107,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	_focusPrevious(elem) {
-		return this.focusablesProvider().then(
+		return this.arrowKeysFocusablesProvider().then(
 			(elems) => {
 				const previous = this._tryGetPreviousFocusable(elems, elem);
 				this._focus(previous);
