@@ -29,8 +29,8 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		</div>`;
 	}
 
-	focusablesProvider() {
-		return Promise.resolve(this.shadowRoot.getElementsByClassName('d2l-arrowkeys-focusable'));
+	async focusablesProvider() {
+		return this.shadowRoot.getElementsByClassName('d2l-arrowkeys-focusable');
 	}
 
 	get _arrowKeysContainerElement() {
