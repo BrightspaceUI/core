@@ -1,7 +1,7 @@
 import { LitElement } from 'lit-element/lit-element.js';
 import { LocalizeMixin } from '../../mixins/localize-mixin.js';
 
-class TestElem extends LocalizeMixin(LitElement) {
+class LocalizeTestElem extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -46,4 +46,4 @@ class TestElem extends LocalizeMixin(LitElement) {
 	}
 }
 
-customElements.define('test-elem', TestElem);
+customElements.define('localize-test-elem', LocalizeTestElem);

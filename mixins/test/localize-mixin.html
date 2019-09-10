@@ -9,18 +9,18 @@
 		<script src="/node_modules/chai/chai.js"></script>
 		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
 		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
-		<script type="module" src="./test-elem.js"></script>
+		<script type="module" src="./localize-test-elem.js"></script>
 		<script type="module" src="../localize-mixin.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
 			<template>
-				<test-elem></test-elem>
+				<localize-test-elem></localize-test-elem>
 			</template>
 		</test-fixture>
 		<test-fixture id="lang-set">
 			<template>
-				<test-elem __language="fr"></test-elem>
+				<localize-test-elem __language="fr"></localize-test-elem>
 			</template>
 		</test-fixture>
 
