@@ -30,23 +30,19 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	async arrowKeysFocusablesProvider() {
-		return this.shadowRoot.getElementsByClassName('d2l-arrowkeys-focusable');
-	}
-
-	get _arrowKeysContainerElement() {
-		return this.shadowRoot.querySelector('.arrow-keys-container');
+		return [...this.shadowRoot.querySelectorAll('.d2l-arrowkeys-focusable')];
 	}
 
 	_handleArrowKeys(e) {
 		const target = e.target;
 		if (this.arrowKeysDirection.indexOf('left') >= 0 && e.keyCode === keyCodes.LEFT) {
-			if (getComputedStyle(this._arrowKeysContainerElement).direction === 'rtl') {
+			if (getComputedStyle(this).direction === 'rtl') {
 				this._focusNext(target);
 			} else {
 				this._focusPrevious(target);
 			}
 		} else if (this.arrowKeysDirection.indexOf('right') >= 0 && e.keyCode === keyCodes.RIGHT) {
-			if (getComputedStyle(this._arrowKeysContainerElement).direction === 'rtl') {
+			if (getComputedStyle(this).direction === 'rtl') {
 				this._focusPrevious(target);
 			} else {
 				this._focusNext(target);
@@ -67,8 +63,8 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 
 	_focus(elem) {
 		if (elem) {
-			if (this.onBeforeFocus) {
-				this.onBeforeFocus(elem).then(() => {
+			if (this.arrowKeysOnBeforeFocus) {
+				this.arrowKeysOnBeforeFocus(elem).then(() => {
 					elem.focus();
 				});
 			} else {
