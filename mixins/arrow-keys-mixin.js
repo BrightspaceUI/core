@@ -17,8 +17,6 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		};
 	}
 
-	// this.onBeforeFocus = onBeforeFocus; /// NEEDS DOCS
-	// this.focusablesProvider = focusablesProvider; // NEEDS DOCS
 	constructor() {
 		super();
 		this.arrowKeysDirection = 'leftright';
@@ -31,13 +29,13 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		</div>`;
 	}
 
-   focusablesProvider() {
+	focusablesProvider() {
 		return Promise.resolve(this.shadowRoot.getElementsByClassName('d2l-arrowkeys-focusable'));
-   }
+	}
 
-   get _arrowKeysContainerElement() {
-	   return this.shadowRoot.querySelector('.arrow-keys-container');
-   }
+	get _arrowKeysContainerElement() {
+		return this.shadowRoot.querySelector('.arrow-keys-container');
+	}
 
 	_handleArrowKeys(e) {
 		const target = e.target;
@@ -144,4 +142,4 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		}
 		return elems[index - 1];
 	}
-}
+};
