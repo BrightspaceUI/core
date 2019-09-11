@@ -15,13 +15,34 @@ class Dialog extends DialogMixin(LitElement) {
 
 	static get styles() {
 		return [ dialogStyles, heading3Styles, css`
+
 			.d2l-dialog-header {
 				padding-bottom: 15px;
 			}
+
 			.d2l-dialog-header > div > d2l-button-icon {
 				flex: none;
 				margin: -4px -15px 0 15px;
 			}
+
+			@media (max-width: 615px) {
+
+				.d2l-dialog-outer {
+					height: calc(100% - 42px) !important;
+					top: 42px;
+					width: 100% !important;
+				}
+
+				div[nested].d2l-dialog-outer {
+					top: 0;
+				}
+
+				.d2l-dialog-header > div > d2l-button-icon {
+					margin: -8px -13px 0 15px;
+				}
+
+			}
+
 		`];
 	}
 

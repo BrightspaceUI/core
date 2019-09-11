@@ -14,15 +14,33 @@ class DialogConfirm extends DialogMixin(LitElement) {
 
 	static get styles() {
 		return [ dialogStyles, heading3Styles, css`
+
 			.d2l-dialog-outer {
 				max-width: 420px;
 			}
+
 			.d2l-dialog-content > div {
 				padding-top: 30px;
 			}
+
 			.d2l-dialog-header + .d2l-dialog-content > div {
 				padding-top: 0;
 			}
+
+			@media (max-width: 615px) {
+
+				.d2l-dialog-outer {
+					bottom: 0;
+					top: 0;
+					margin: auto;
+				}
+
+				.d2l-dialog-content > div {
+					padding-top: 20px;
+				}
+
+			}
+
 		`];
 	}
 
