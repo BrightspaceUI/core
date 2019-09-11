@@ -109,7 +109,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._hasNativeDialog || !this._parentDialog) return 0;
 		const parentRect = this._parentDialog.getBoundingClientRect();
 		if (parentRect.width > this._width) return 0;
-		return (parentRect.width - this._width)/2;
+		return (parentRect.width - this._width) / 2;
 	}
 
 	_getWidth() {
