@@ -24,13 +24,20 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	arrowKeysContainer(inner) {
-		return html`<div class="arrow-keys-container" @keyup="${this._handleArrowKeys}">
+		return html`<div class="arrow-keys-container" @keyup="${this._handleArrowKeys}"" @keydown="${this._handleKeyDown}">
 			${inner}
 		</div>`;
 	}
 
 	async arrowKeysFocusablesProvider() {
 		return [...this.shadowRoot.querySelectorAll('.d2l-arrowkeys-focusable')];
+	}
+
+	_handleKeyDown(e) {
+		if (this.arrowKeysDirection.indexOf('up') >= 0 && e.keyCode === keyCodes.UP
+			|| this.arrowKeysDirection.indexOf('down') >= 0 && e.keyCode === keyCodes.DOWN) {
+			e.preventDefault();
+		}
 	}
 
 	_handleArrowKeys(e) {
