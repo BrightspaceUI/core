@@ -23,6 +23,11 @@ export const dialogStyles = css`
 		transition: transform 200ms ease-in;
 	}
 
+	[nested-showing].d2l-dialog-outer {
+		border-color: rgba(205, 213, 220, 0.35);
+		box-shadow: none;
+	}
+
 	div.d2l-dialog-outer {
 		left: 0;
 		margin: auto;

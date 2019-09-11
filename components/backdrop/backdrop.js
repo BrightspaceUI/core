@@ -1,0 +1,151 @@
+import '../colors/colors.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+
+let count = 0;
+let overflow = null;
+
+class Backdrop extends LitElement {
+
+	static get properties() {
+		return {
+			show: { type: Boolean, reflect: true },
+			forTarget: { type: String, attribute: 'for-target' },
+			_state: { type: String, reflect: true }
+		};
+	}
+
+	static get styles() {
+		return [ css`
+			:host {
+				background-color: var(--d2l-color-regolith);
+				height: 0;
+				left: 0;
+				opacity: 0;
+				position: fixed;
+				top: 0;
+				transition: opacity 200ms ease-in;
+				width: 0;
+				z-index: 999;
+			}
+			:host([_state="showing"]), :host([_state="hiding"]) {
+				height: 100%;
+				width: 100%;
+			}
+			:host([_state="showing"]) {
+				opacity: 0.7;
+			}
+		`];
+	}
+
+	constructor() {
+		super();
+		this.show = false;
+		this._state = null;
+	}
+
+	attributeChangedCallback(name, oldval, newval) {
+		super.attributeChangedCallback(name, oldval, newval);
+
+		if (name === 'show' && oldval !== newval) {
+			if (this.show) {
+
+				if (count === 0) {
+					overflow = document.body.style.overflow;
+					document.body.style.overflow = 'hidden';
+				}
+				count++;
+
+				this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
+				this._state = 'showing';
+			} else {
+				const transitionEnd = () => {
+					this.removeEventListener('transitionend', transitionEnd);
+
+					count--;
+					if (count === 0) {
+						document.body.style.overflow = overflow;
+						overflow = null;
+					}
+
+					showAccessible(this._hiddenElements);
+					this._hiddenElements = null;
+					this._state = null;
+				};
+				this.addEventListener('transitionend', transitionEnd);
+				this._state = 'hiding';
+			}
+		}
+	}
+
+	render() {
+		return html`<div></div>`;
+	}
+
+}
+
+function hideAccessible(target) {
+
+	const hiddenElements = [];
+	const path = [target];
+
+	const hideAccessibleChildren = function(parent) {
+		const children = getComposedChildren(parent);
+		for (let i = 0; i < children.length; i++) {
+			const child = children[i];
+
+			if (child.tagName === 'SCRIPT' || child.tagName === 'STYLE') continue;
+			if (path.indexOf(child) !== -1) continue;
+			if (child.hasAttribute('d2l-backdrop-hidden')) continue;
+
+			const role = child.getAttribute('role');
+			if (role) child.setAttribute('d2l-backdrop-role', role);
+			child.setAttribute('role', 'presentation');
+
+			if (child.nodeName === 'FORM' || child.nodeName === 'A') {
+				const ariaHidden = child.getAttribute('aria-hidden');
+				if (ariaHidden) child.setAttribute('d2l-backdrop-aria-hidden', ariaHidden);
+				child.setAttribute('aria-hidden', 'true');
+			}
+
+			child.setAttribute('d2l-backdrop-hidden', 'd2l-backdrop-hidden');
+			hiddenElements.push(child);
+
+			hideAccessibleChildren(child);
+		}
+	};
+
+	let parent = getComposedParent(target);
+	while (parent !== document.documentElement) {
+		if (parent.nodeType === Node.ELEMENT_NODE) {
+			path.push(parent);
+			hideAccessibleChildren(parent);
+		}
+		parent = getComposedParent(parent);
+	}
+
+	return hiddenElements;
+}
+
+function showAccessible(elems) {
+	for (let i = 0; i < elems.length; i++) {
+		const elem = elems[i];
+		const role = elem.getAttribute('d2l-backdrop-role');
+		if (role) {
+			elem.setAttribute('role', role);
+			elem.removeAttribute('d2l-backdrop-role');
+		} else {
+			elem.removeAttribute('role');
+		}
+		const ariaHidden = elem.getAttribute('d2l-backdrop-aria-hidden');
+		if (ariaHidden) {
+			elem.setAttribute('aria-hidden', ariaHidden);
+			elem.removeAttribute('d2l-backdrop-aria-hidden');
+		} else {
+			elem.removeAttribute('aria-hidden');
+		}
+		elem.removeAttribute('d2l-backdrop-hidden');
+	}
+}
+
+customElements.define('d2l-backdrop', Backdrop);

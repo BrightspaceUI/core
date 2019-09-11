@@ -1,5 +1,7 @@
+import '../backdrop/backdrop.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -12,24 +14,30 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			opened: { type: Boolean, reflect: true },
 			titleText: { type: String, attribute: 'title-text' },
 			_height: { type: Number },
+			_left: { type: Number },
+			_margin: { type: Object },
+			_nestedShowing: { type: Boolean },
 			_overflowBottom: { type: Boolean },
 			_overflowTop: { type: Boolean },
-			_margin: { type: Object },
-			_nested: { type: Object },
+			_parentDialog: { type: Object },
 			_state: { type: String, reflect: true },
-			_width: { type: Number },
+			_width: { type: Number }
 		};
 	}
 
 	constructor() {
 		super();
 		this.opened = false;
+		this._dialogId = getUniqueId();
 		this._height = 0;
 		this._margin = { top: 100, right: 30, bottom: 30, left: 30 };
-		this._nested = false;
+		this._parentDialog = null;
+		this._nestedShowing = false;
+		this._state = null;
+		this._left = 0;
 		this._width = 0;
-		this._hasNativeDialog = (window.HTMLDialogElement !== undefined);
-		//this._hasNativeDialog = false;
+		//this._hasNativeDialog = (window.HTMLDialogElement !== undefined);
+		this._hasNativeDialog = false;
 		this._handleBodyFocus = this._handleBodyFocus.bind(this);
 		this._updateSize = this._updateSize.bind(this);
 		this._updateOverflow = this._updateOverflow.bind(this);
@@ -54,11 +62,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 		const transitionEnd = () => {
 			dialog.removeEventListener('transitionend', transitionEnd);
-			this._removeHandlers();
 			if (this._hasNativeDialog) dialog.close();
-			this._focusOpener();
-			this._state = null;
-			this.opened = false;
+			else this._handleClose();
 		};
 		dialog.addEventListener('transitionend', transitionEnd);
 		this._state = 'hiding';
@@ -100,6 +105,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		return height;
 	}
 
+	_getLeft() {
+		if (this._hasNativeDialog || !this._parentDialog) return 0;
+		const parentRect = this._parentDialog.getBoundingClientRect();
+		if (parentRect.width > this._width) return 0;
+		return (parentRect.width - this._width)/2;
+	}
+
 	_getWidth() {
 		const availableWidth = window.innerWidth - this._margin.left - this._margin.right;
 		const width = (this.width < availableWidth ? this.width : availableWidth);
@@ -120,6 +132,19 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusOpener();
 		this._state = null;
 		this.opened = false;
+		this.dispatchEvent(new CustomEvent(
+			'd2l-dialog-close', { bubbles: true, composed: true }
+		));
+	}
+
+	_handleDialogOpen(e) {
+		this._nestedShowing = true;
+		e.stopPropagation();
+	}
+
+	_handleDialogClose(e) {
+		this._nestedShowing = false;
+		e.stopPropagation();
 	}
 
 	_handleKeyDown(e) {
@@ -159,7 +184,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_open() {
-
 		if (!this.opened) return;
 
 		this._opener = getComposedActiveElement();
@@ -171,16 +195,17 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			dialog.showModal();
 		}
 
-		this._nested = findComposedAncestor(this, (node) => {
+		this._parentDialog = findComposedAncestor(this, (node) => {
 			return node.classList && node.classList.contains('d2l-dialog-outer');
 		});
 
 		this._updateSize();
-
 		this._state = 'showing';
-
 		this._focusFirst();
 
+		this.dispatchEvent(new CustomEvent(
+			'd2l-dialog-open', { bubbles: true, composed: true }
+		));
 	}
 
 	_removeHandlers() {
@@ -192,6 +217,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_render(labelId, descriptionId, inner) {
 
 		const styles = {};
+		if (this._left) styles.left = `${this._left}px`;
 		if (this._height) styles.height = `${this._height}px`;
 		if (this._width) styles.width = `${this._width}px`;
 		else styles.width = 'auto';
@@ -214,6 +240,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				aria-labelledby="${labelId}"
 				class="d2l-dialog-outer"
 				@close="${this._handleClose}"
+				id="${this._dialogId}"
 				@keydown="${this._handleKeyDown}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
@@ -224,14 +251,19 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				aria-describedby="${ifDefined(descriptionId)}"
 				aria-labelledby="${labelId}"
 				class="d2l-dialog-outer"
+				@d2l-dialog-close="${this._handleDialogClose}"
+				@d2l-dialog-open="${this._handleDialogOpen}"
 				@keydown="${this._handleKeyDown}"
-				?nested="${this._nested}"
+				id="${this._dialogId}"
+				?nested="${this._parentDialog}"
+				?nested-showing="${this._nestedShowing}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
 				role="dialog"
 				style=${styleMap(styles)}>
 					${inner}
-				</div>`}
+				</div>
+				<d2l-backdrop for-target="${this._dialogId}" ?show="${this._state === 'showing'}"></d2l-backdrop>`}
 		`;
 
 	}
@@ -244,6 +276,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	async _updateSize() {
 		this._width = this._getWidth();
+		this._left = this._getLeft();
 		await this.updateComplete;
 		this._height = this._getHeight();
 		await this.updateComplete;
