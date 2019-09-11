@@ -5,8 +5,10 @@ class ListItemContent extends LitElement {
 	static get styles() {
 		return [ bodySmallStyles, bodyCompactStyles, css`
 			.d2l-list-item-content-text {
+				color: var(--d2l-list-item-content-text-color, null);
 				margin: 0;
 				overflow: hidden;
+				text-decoration: var(--d2l-list-item-content-text-decoration, none);
 			}
 
 			.d2l-list-item-content-text-secondary {

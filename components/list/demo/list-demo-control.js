@@ -63,8 +63,18 @@ class ListDemoControl extends LitElement {
 				<label>illustration-outside: <input type="checkbox" @change="${this._onChangeIllustrationOutside}"></label>
 				<label>selectable: <input type="checkbox" @change="${this._onChangeSelectable}"></label>
 				<label>hover-effect: <input type="checkbox" @change="${this._onChangeHoverEffect}"></label>
+				<label>Add Action: <input type="checkbox" @change="${this._onChangeAddAction}"></label>
 			</div>
 		`;
+	}
+
+	_onChangeAddAction(event) {
+		const listItems = document.querySelectorAll(`${this.target} d2l-list d2l-list-item`);
+		listItems.forEach(item => {
+			event.target.checked
+				? item.setAttribute('href', this.target)
+				: item.removeAttribute('href');
+		});
 	}
 
 	_onChangeBreakpoints(event) {

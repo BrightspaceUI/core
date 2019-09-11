@@ -1,6 +1,8 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/checkbox-shared-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LinkMixin } from '../link/link-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -13,7 +15,7 @@ const ro = new ResizeObserver(entries => {
 	});
 });
 
-class ListItem extends RtlMixin(LitElement) {
+class ListItem extends LinkMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
@@ -88,6 +90,7 @@ class ListItem extends RtlMixin(LitElement) {
 				flex-grow: 1;
 				margin-top: 0.05rem;
 			}
+			.d2l-list-item-link,
 			.d2l-list-item-label {
 				height: 100%;
 				position: absolute;
@@ -115,6 +118,19 @@ class ListItem extends RtlMixin(LitElement) {
 			:host([illustration-outside]) input[type="checkbox"] {
 				margin-bottom: 1.15rem;
 				margin-top: 1.15rem;
+			}
+		`;
+
+		const primaryAction = css`
+			:host([href]) .d2l-list-item-label {
+				width: 3.0rem;
+				z-index: 150;
+			}
+			:host([href]) {
+				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
+			}
+			:host([href]) .d2l-list-item-link:hover + .d2l-list-item-content {
+				--d2l-list-item-content-text-decoration: underline;
 			}
 		`;
 
@@ -153,7 +169,7 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-right: 0;
 			}
 		`;
-		return [ checkboxStyles, layout, breakPoint1, breakPoint2, breakPoint3, illustrationOutside];
+		return [ checkboxStyles, layout, primaryAction, breakPoint1, breakPoint2, breakPoint3, illustrationOutside];
 	}
 
 	constructor() {
@@ -182,6 +198,11 @@ class ListItem extends RtlMixin(LitElement) {
 			label = html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>`;
 			checkbox = html`<input @change="${this._handleChange}" type="checkbox" id="${this._checkBoxId}">`;
 		}
+		const link = html`
+			<a class="d2l-list-item-link" href="${ifDefined(this.href)}">
+				<span class="d2l-card-link-text">${this.text}</span>
+			</a>
+		`;
 		const illustrationSlot = html`
 			${checkbox}
 			<slot name="illustration"></slot>
@@ -190,6 +211,7 @@ class ListItem extends RtlMixin(LitElement) {
 			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
 				${label}
 				${this.illustrationOutside ? illustrationSlot : null}
+				${this.href ? link : null}
 				<div class="d2l-list-item-content" id="${this._contentId}">
 					<div class="d2l-list-item-content-flex">
 						${this.illustrationOutside ? null : illustrationSlot}

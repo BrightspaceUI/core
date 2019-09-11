@@ -90,6 +90,21 @@ describe('d2l-list', function() {
 					await visualListScreenshot(page, this.test.fullTitle());
 				});
 
+				it('Hover with link on checkbox', async function() {
+					const selector = '#link';
+					const element = await page.$(selector);
+					const boundingBox = await element.boundingBox();
+					await page.mouse.move(boundingBox.x + 5, boundingBox.y + 5);
+					await new Promise((resolve) => setTimeout(resolve, 505));
+
+					await visualListScreenshot(page, this.test.fullTitle());
+				});
+
+				it('Hover with link on link', async function() {
+					await hover(page, '#link');
+					await visualListScreenshot(page, this.test.fullTitle());
+				});
+
 				it('Focus', async function() {
 					await tab(page);
 					await visualListScreenshot(page, this.test.fullTitle());
