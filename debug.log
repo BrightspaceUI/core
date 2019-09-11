@@ -1,3 +1,0 @@
-[0911/100626.464:ERROR:file_io_win.cc(161)] CreateFile C:\Users\JSTEFA~1\AppData\Local\Temp\scoped_dir19460_6219\Crashpad\settings.dat: The system cannot find the path specified. (0x3)
-[0911/100626.465:ERROR:file_io_win.cc(170)] CreateFile C:\Users\JSTEFA~1\AppData\Local\Temp\scoped_dir19460_6219\Crashpad\reports\5590e7b2-1e0e-43c8-a3ad-23db3bcaae83.dmp: The system cannot find the path specified. (0x3)
-[0911/100626.465:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
