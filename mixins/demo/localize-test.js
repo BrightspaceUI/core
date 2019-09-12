@@ -1,12 +1,13 @@
-import { LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeMixin } from '../../mixins/localize-mixin.js';
 
-class LocalizeTestElem extends LocalizeMixin(LitElement) {
+class LocalizeTest extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
-			date: { attribute: false },
-			number: { type: Number }
+			name: {
+				type: String
+			}
 		};
 	}
 
@@ -39,11 +40,17 @@ class LocalizeTestElem extends LocalizeMixin(LitElement) {
 		return null;
 	}
 
-	constructor() {
-		super();
-
-		this.date = new Date();
+	render() {
+		const date = new Date();
+		return html`
+			<p>Text: ${this.localize('hello', 'name', this.name)}</p>
+			<p>Number: ${this.formatNumber(123456.789)}</p>
+			<p>Date: ${this.formatDate(date)}</p>
+			<p>Time: ${this.formatTime(date)}</p>
+			<p>Date &amp; time: ${this.formatDateTime(date)}</p>
+			<p>File size: ${this.formatFileSize(123456789)}</p>
+		`;
 	}
 }
 
-customElements.define('localize-test-elem', LocalizeTestElem);
+customElements.define('d2l-test-localize', LocalizeTest);

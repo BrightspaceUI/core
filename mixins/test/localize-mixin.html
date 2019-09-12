@@ -9,17 +9,17 @@
 		<script src="/node_modules/chai/chai.js"></script>
 		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
 		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
-		<script type="module" src="./localize-test-elem.js"></script>
+		<script type="module" src="../demo/localize-test.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
 			<template>
-				<localize-test-elem></localize-test-elem>
+				<d2l-test-localize></d2l-test-localize>
 			</template>
 		</test-fixture>
 		<test-fixture id="lang-set">
 			<template>
-				<localize-test-elem __language="fr"></localize-test-elem>
+				<d2l-test-localize __language="fr"></d2l-test-localize>
 			</template>
 		</test-fixture>
 
@@ -346,7 +346,7 @@
 						expect(elem.getTimezone().name).to.equal('');
 						expect(elem.getTimezone().identifier).to.equal('');
 					});
-					it('should update timezone if "data-timezone" gets set', async () => {
+					it('should update timezone if "data-timezone" gets set', async() => {
 						elem = fixture('basic');
 						htmlElem.setAttribute(
 							'data-timezone',
