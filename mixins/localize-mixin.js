@@ -80,11 +80,20 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	localize(key) {
-		const args = {};
-		for (let i = 1; i < arguments.length; i += 2) {
-			args[arguments[i]] = arguments[i + 1];
+
+		let params = {};
+		if (arguments.length > 1 && typeof arguments[1] === 'object') {
+			// support for key-value replacements as a single arg
+			params = arguments[1];
+		} else {
+			// legacy support for localize-behavior replacements as many args
+			for (let i = 1; i < arguments.length; i += 2) {
+				params[arguments[i]] = arguments[i + 1];
+			}
 		}
-		return localize(key, this.__resources, this.__language, args);
+
+		return localize(key, this.__resources, this.__language, params);
+
 	}
 
 	parseDate(val) {

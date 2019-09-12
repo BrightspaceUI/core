@@ -171,15 +171,19 @@
 						elem = fixture('basic');
 						await elem.updateComplete;
 					});
-					it('should localize text', () => {
+					it('should localize text using object format', () => {
+						const val = elem.localize('hello', {name: 'Bill'});
+						expect(val).to.equal('Hello Bill');
+					});
+					it('should localize text using legacy format', () => {
 						const val = elem.localize('hello', 'name', 'Bill');
 						expect(val).to.equal('Hello Bill');
 					});
 					it('should re-localize text when locale changes', (done) => {
-						const valInitial = elem.localize('hello', 'name', 'Sam');
+						const valInitial = elem.localize('hello', {name: 'Sam'});
 						expect(valInitial).to.equal('Hello Sam');
 						const myEventListener = () => {
-							const val = elem.localize('hello', 'name', 'Mary');
+							const val = elem.localize('hello', {name: 'Mary'});
 							expect(val).to.equal('Bonjour Mary');
 							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
 							done();
