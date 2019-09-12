@@ -172,15 +172,15 @@
 						await elem.updateComplete;
 					});
 					it('should localize text', () => {
-						const val = elem.localize('hello');
-						expect(val).to.equal('Hello');
+						const val = elem.localize('hello', 'name', 'Bill');
+						expect(val).to.equal('Hello Bill');
 					});
 					it('should re-localize text when locale changes', (done) => {
-						const valInitial = elem.localize('hello');
-						expect(valInitial).to.equal('Hello');
+						const valInitial = elem.localize('hello', 'name', 'Sam');
+						expect(valInitial).to.equal('Hello Sam');
 						const myEventListener = () => {
-							const val = elem.localize('hello');
-							expect(val).to.equal('Bonjour');
+							const val = elem.localize('hello', 'name', 'Mary');
+							expect(val).to.equal('Bonjour Mary');
 							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
 							done();
 						};
@@ -346,19 +346,15 @@
 						expect(elem.getTimezone().name).to.equal('');
 						expect(elem.getTimezone().identifier).to.equal('');
 					});
-					it('should update timezone if "data-timezone" gets set', (done) => {
+					it('should update timezone if "data-timezone" gets set', async () => {
 						elem = fixture('basic');
-						const myEventListener = () => {
-							expect(elem.getTimezone().name).to.equal('foo');
-							expect(elem.getTimezone().identifier).to.equal('bar');
-							elem.removeEventListener('d2l-localize-behavior-timezone-changed', myEventListener);
-							done();
-						};
-						elem.addEventListener('d2l-localize-behavior-timezone-changed', myEventListener);
 						htmlElem.setAttribute(
 							'data-timezone',
 							JSON.stringify({ name: 'foo', identifier: 'bar' })
 						);
+						await elem.updateComplete;
+						expect(elem.getTimezone().name).to.equal('foo');
+						expect(elem.getTimezone().identifier).to.equal('bar');
 					});
 				});
 			});

@@ -12,19 +12,19 @@ class LocalizeTestElem extends LocalizeMixin(LitElement) {
 
 	static async getLocalizeResources(langs) {
 		const langResources = {
-			'ar': { 'hello': 'مرحبا' },
-			'de': { 'hello': 'Hallo' },
-			'en': { 'hello': 'Hello' },
-			'en-ca': { 'hello': 'Hello, eh' },
-			'es': { 'hello': 'Hola' },
-			'fr': { 'hello': 'Bonjour' },
-			'ja': { 'hello': 'こんにちは' },
-			'ko': { 'hello': '안녕하세요' },
-			'pt-br': { 'hello': 'Olá' },
-			'sv': { 'hello': 'Hallå' },
-			'tr': { 'hello': 'Merhaba' },
-			'zh-cn': { 'hello': '你好' },
-			'zh-tw': { 'hello': '你好' }
+			'ar': { 'hello': 'مرحبا {name}' },
+			'de': { 'hello': 'Hallo {name}' },
+			'en': { 'hello': 'Hello {name}' },
+			'en-ca': { 'hello': 'Hello, {name} eh' },
+			'es': { 'hello': 'Hola {name}' },
+			'fr': { 'hello': 'Bonjour {name}' },
+			'ja': { 'hello': 'こんにちは {name}' },
+			'ko': { 'hello': '안녕하세요 {name}' },
+			'pt-br': { 'hello': 'Olá {name}' },
+			'sv': { 'hello': 'Hallå {name}' },
+			'tr': { 'hello': 'Merhaba {name}' },
+			'zh-cn': { 'hello': '你好 {name}' },
+			'zh-tw': { 'hello': '你好 {name}' }
 		};
 
 		for (let i = 0; i < langs.length; i++) {
