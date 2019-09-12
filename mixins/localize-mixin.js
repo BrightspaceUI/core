@@ -46,6 +46,15 @@ export const LocalizeMixin = superclass => class extends superclass {
 		removeListener(this.__languageChangeCallback);
 	}
 
+	shouldUpdate() {
+		const ready = this.__language !== undefined
+			&& this.__resources !== undefined;
+		if (!ready) {
+			return false;
+		}
+		return super.shouldUpdate();
+	}
+
 	localize(key) {
 		const args = {};
 		for (let i = 1; i < arguments.length; i += 2) {
