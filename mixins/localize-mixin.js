@@ -55,14 +55,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 		return super.shouldUpdate();
 	}
 
-	localize(key) {
-		const args = {};
-		for (let i = 1; i < arguments.length; i += 2) {
-			args[arguments[i]] = arguments[i + 1];
-		}
-		return localize(key, this.__resources, this.__language, args);
-	}
-
 	getTimezone() {
 		return getTimezone();
 	}
@@ -85,6 +77,14 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	formatTime(val, opts) {
 		return formatTime(this.__language, val, opts);
+	}
+
+	localize(key) {
+		const args = {};
+		for (let i = 1; i < arguments.length; i += 2) {
+			args[arguments[i]] = arguments[i + 1];
+		}
+		return localize(key, this.__resources, this.__language, args);
 	}
 
 	parseDate(val) {
