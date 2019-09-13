@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap} from 'lit-html/directives/class-map.js';
+import { dispatchRenderEvent } from '../../helpers/dispatchRenderEvent.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeMixin } from '../../mixins/localize-mixin.js';
@@ -183,11 +184,11 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	render() {
+		dispatchRenderEvent(this);
 		const contentClasses = {
 			'more-less-content': true,
 			'more-less-transition': this.__transitionAdded
 		};
-
 		return html`
 			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
 				<slot></slot>

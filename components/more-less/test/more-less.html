@@ -43,25 +43,26 @@
 			describe('d2l-more-less', () => {
 				let moreless, content;
 
-				function waitForInitialization(callback) {
-					if (content.style.height === '') {
-						setTimeout(() => { waitForInitialization(callback);}, 10);
-					} else {
-						setTimeout(() => { // Need the second timeout here to give the transition a chance to finish
-							callback();
-						}, 400);
-					}
+				function waitForInitialization() {
+					return new Promise((resolve) => {
+						function check() {
+							content = moreless.shadowRoot.querySelector('.more-less-content');
+							if (content.style.height === '') {
+								setTimeout(() => check(), 10);
+							} else {
+								// Need the second timeout here to give the transition a chance to finish
+								setTimeout(() => resolve(), 400);
+							}
+						}
+						moreless.addEventListener('d2l-element-render', () => check());
+					});
 				}
 
 				describe('basic', () => {
 
 					beforeEach(async() => {
 						moreless = fixture('basic');
-						await moreless.updateComplete;
-						content = moreless.shadowRoot.querySelector('.more-less-content');
-						await new Promise(resolve => {
-							waitForInitialization(resolve);
-						});
+						await waitForInitialization();
 					});
 
 					it('should pass all axe tests', async() => {
@@ -74,11 +75,7 @@
 
 					beforeEach(async() => {
 						moreless = fixture('expanded-dynamic');
-						await moreless.updateComplete;
-						content = moreless.shadowRoot.querySelector('.more-less-content');
-						await new Promise(resolve => {
-							waitForInitialization(resolve);
-						});
+						await waitForInitialization();
 					});
 
 					it('should pass all axe tests when expanded', async() => {
