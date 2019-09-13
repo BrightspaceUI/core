@@ -1,144 +1,130 @@
 # LocalizeMixin
 
-The `LocalizeMixin` adds language resolution, timezone and locale overrides support.
-
-## Automatic Language, Timezone and Override Support
-
-The user's language, timezone and any D2L locale overrides are automatically fetched by `LocalizeMixin` from the `<html>` element's `lang`, `data-timezone` and `data-intl-overrides` attributes respectively.
+The `LocalizeMixin` allows you to localize text and format & parse numbers, dates, times and file sizes.
 
 ## Usage
 
-To use `LocalizeMixin` implement the following within your component (examples in "Language Resources"):
-* `static async getLocalizeResources(langs)`:
-	* `langs`: array of possible languages (lowercase) based upon `__documentLanguage` and `__documentLanguageFallback`. For example `['ar-dz', 'ar', 'en-us', 'en']`
-	* Returns object containing `language` (the first language in the array that had resources available) and `resources` (the localization resources for that language). For example:
-		```
-		{
-			"language":"ar",
-			"resources":{"more":"المزيد","less":"أقل"}
-		}
-		```
-
-Consume your web component in a page which has the lang attribute set on the <html> element:
-```html
-<html lang="ar">
-	<head>
-		<script type="module">
-			import '../my-element.js';
-		</script>
-	</head>
-	<body>
-		<my-elem></my-elem>
-	</body>
-</html>
-```
-
-If the language of the page changes (via an update to the `lang` attribute on `<html>`), the mixin will automatically detect the change and re-render the web component. It will fire the event `d2l-localize-behavior-language-changed` when this occurs.
-
-## Language Resources
-
-* Always provide entries for base languages (e.g. "en", "fr", "pt") so that if the user is using a regional language (e.g. "en-gb", "fr-ca", "pt-br") which is missing, it can fall back to the base language.
-* If there's no entry for a particular language, and no base language, the value of `data-lang-default` on the `<html>` element will be used.
-* If no `data-lang-default` is specified, "en" will be used as a last resort.
-
-### Resources in an Object Example
-
-In this example the language resources for `ar` and `en` are stored in the `langResources` const within `getLocalizeResources`.
+Import `LocalizeMixin` and have your component extend it:
 
 ```javascript
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+
 class MyComponent extends LocalizeMixin(LitElement) {
-
-	static async getLocalizeResources(langs) {
-		const langResources = {
-			'ar': {
-				more: 'المزيد',
-				less: 'أقل'
-			},
-			'en': {
-				more: 'more',
-				less: 'less'
-			}
-		};
-
-		for (let i = 0; i < langs.length; i++) {
-			if (langResources[langs[i]]) {
-				return {
-					language: langs[i],
-					resources: langResources[langs[i]]
-				};
-			}
-		}
-
-		return null;
-	}
-
-	render() {
-		return html`<div>${this.localize('more')}</div>`;
-	}
 }
 ```
 
-### Dynamically Imported Resources Example
+## Localizing Text
 
-This is more ideal for components with many language resources for each language.
+### `getLocalizedResources()`
 
-ar.js:
+To localize text, your component must provide localized resources to the mixin. To do this, implement the `getLocalizeResources()` method in your component. It will be passed an array of lowercase languages in preferential order. These will be based on the language of the page (i.e. `<html lang="fr-ca">`) and D2L organization fallback language (i.e. `<html data-lang-default="fr">`).
+
+Your implementation should find the resources that best match the languages passed in. It should then return an object containing two values:
+- `language` (string): the language of the resources
+- `resources` (object): localization resources for that language
+
+### Language Resources
+
+Resources should be key-value JSON objects, where the keys are lowercase strings and the values are in [ICU Message Syntax](https://formatjs.io/guides/message-syntax/) format.
+
+Example:
+
 ```javascript
+{
+	"hello": "Hello {firstName}!",
+	"goodbye": "Goodbye."
+}
+```
+
+Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc.). That way, if the user prefers a regional language (e.g. `fr-ca`) that isn't recognized, it can fall back to the base language.
+
+### Static vs. Async Resources
+
+`getLocalizedResources()` is an `async` method, so you can either return your resources immediately, or have the option to fetch them asynchronously.
+
+#### Example 1: Static Resources
+
+If your component has a small number of translations, it may make the most sense to store them locally with the component in a constant.
+
+```javascript
+const resources = {
+	'en': {
+		hello: 'Hello {firstName}!'
+	},
+	'fr': {
+		hello: 'Bonjour {firstName}!'
+	},
+	...
+};
+static async getLocalizeResources(langs) {
+	langs.forEach((lang) => {
+		if (resources[lang] !== undefined) {
+			return {
+				language: lang,
+				resources: resources[lang]
+			};
+		}
+	});
+	return {
+		language: 'en',
+		resources: resources['en']
+	};
+}
+```
+
+#### Example 2: Dynamically Imported Resources
+
+This approach is better for components with many language resources. By importing them dynamically, only the resources for the requested language are actually fetched and downloaded.
+
+Store your resources in individual files, one for each language:
+```javascript
+// en.js
 export const val = {
-	'more': 'المزيد',
-	'less': 'أقل'
+	'hello': 'Hello {firstName}!'
 };
 ```
 
-component:
+Then dynamically import the matching file:
 ```javascript
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
-class MyComponent extends LocalizeMixin(LitElement) {
-	/*
-	* Retrieves the localization resources for language from a file.
-	* Note that using "translations = await import(`./locales/${lang}.js`);)" does not work
-	*/
-	static async getLocalizeResources(langs) {
-		for await (const lang of langs) {
-			let translations;
-			switch (lang) {
-				case 'en':
-					translations = await import('./locales/en.js');
-					break;
-				case 'ar':
-					translations = await import('./locales/ar.js');
-					break;
-			}
-
-			if (translations && translations.val) {
-				return {
-					language: lang,
-					resources: translations.val
-				};
-			}
+static async getLocalizeResources(langs) {
+	for await (const lang of langs) {
+		let translations;
+		switch (lang) {
+			case 'en':
+				translations = await import('./locales/en.js');
+				break;
+			case 'fr':
+				translations = await import('./locales/fr.js');
+				break;
 		}
-		
-		return null;
+		if (translations && translations.val) {
+			return {
+				language: lang,
+				resources: translations.val
+			};
+		}
 	}
-
-	render() {
-		return html`<div>${this.localize('more')}</div>`;
-	}
+	translations = await import('./locales/en.js');
+	return {
+		language: 'en',
+		resources: translations.val
+	};
 }
 ```
 
-## Available Functionality
+### `localize()`
 
-### Text
+Once your localization resources are available, the `localize()` method is used to localize a piece of text in your `render()` method.
 
-Words/phrases with available translations can be localized based on available language resources using the `localize` function. In the example below, 'more' would have a corresponding language resource for different languages.
+If your localized string contains arguments, pass them as a key-value object as the 2nd parameter:
 
 ```javascript
-this.localize('more')
+render() {
+	return html`<p>${this.localize('hello', {firstName: 'Mary'})}</p>`;
+}
 ```
 
-### Numbers, File Sizes, Dates and Times
+## Numbers, File Sizes, Dates and Times
 
 While [format.js](https://formatjs.io) has built-in support for date, time and number formatting, D2L has its own rules and also allows complex overriding of the standard locale settings (decimal separator, group separator, 24-hour clocks, etc.).
 
@@ -247,3 +233,7 @@ To format file sizes in the user's locale, use the `formatFileSize` method:
 time.formatFileSize(1234567.89);
 // -> '1.18 MB' for en-CA
 ```
+
+## Automatic Language, Timezone and Override Support
+
+The user's language, timezone and any D2L locale overrides are automatically fetched by `LocalizeMixin` from the `<html>` element's `lang`, `data-timezone` and `data-intl-overrides` attributes respectively.
