@@ -43,7 +43,7 @@
 			describe('d2l-more-less', () => {
 				let moreless, content;
 
-				function waitForInitialization() {
+				function waitForHeight() {
 					return new Promise((resolve) => {
 						function check() {
 							content = moreless.shadowRoot.querySelector('.more-less-content');
@@ -54,7 +54,15 @@
 								setTimeout(() => resolve(), 400);
 							}
 						}
-						moreless.addEventListener('d2l-element-render', () => check());
+						check();
+					});
+				}
+
+				function waitForRender() {
+					return new Promise((resolve) => {
+						moreless.addEventListener('d2l-element-render', () => {
+							resolve();
+						});
 					});
 				}
 
@@ -62,7 +70,8 @@
 
 					beforeEach(async() => {
 						moreless = fixture('basic');
-						await waitForInitialization();
+						await waitForRender();
+						await waitForHeight();
 					});
 
 					it('should pass all axe tests', async() => {
@@ -75,7 +84,8 @@
 
 					beforeEach(async() => {
 						moreless = fixture('expanded-dynamic');
-						await waitForInitialization();
+						await waitForRender();
+						await waitForHeight();
 					});
 
 					it('should pass all axe tests when expanded', async() => {
@@ -83,19 +93,18 @@
 					});
 
 					it('should expand when more content is dynamically added', async() => {
+
 						const previousContentHeight = content.scrollHeight;
 						expect(moreless.offsetHeight).to.be.above(content.scrollHeight);
 
 						const p = document.getElementById('clone-target');
 						content.appendChild(p.cloneNode(true));
 
-						return new Promise(resolve => {
-							waitForInitialization(() => {
-								expect(content.scrollHeight).to.be.above(previousContentHeight);
-								expect(moreless.offsetHeight).to.be.above(content.scrollHeight);
-								resolve();
-							});
-						});
+						await waitForHeight();
+
+						expect(content.scrollHeight).to.be.above(previousContentHeight);
+						expect(moreless.offsetHeight).to.be.above(content.scrollHeight);
+
 					});
 
 				});
