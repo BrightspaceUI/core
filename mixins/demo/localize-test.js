@@ -43,7 +43,7 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 	render() {
 		const date = new Date();
 		return html`
-			<p>Text: ${this.localize('hello', 'name', this.name)}</p>
+			<p>Text: ${this.localize('hello', {name: this.name})}</p>
 			<p>Number: ${this.formatNumber(123456.789)}</p>
 			<p>Date: ${this.formatDate(date)}</p>
 			<p>Time: ${this.formatTime(date)}</p>
