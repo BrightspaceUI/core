@@ -42,6 +42,12 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 
 	render() {
 		const date = new Date();
+		requestAnimationFrame(
+			() => this.dispatchEvent(new CustomEvent('d2l-test-localize-render', {
+				bubbles: false,
+				composed: false
+			}))
+		);
 		return html`
 			<p>Text: ${this.localize('hello', {name: this.name})}</p>
 			<p>Number: ${this.formatNumber(123456.789)}</p>
