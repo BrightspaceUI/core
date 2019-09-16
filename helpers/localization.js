@@ -1,5 +1,6 @@
 import d2lIntl from 'd2l-intl';
-import IntlMessageFormat from 'intl-messageformat';
+import IntlMessageFormat from 'intl-messageformat/src/main.js';
+window.IntlMessageFormat = IntlMessageFormat;
 
 let documentLanguage = 'en';
 let documentLanguageFallback = 'en';
