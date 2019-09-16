@@ -24,7 +24,7 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 	}
 
 	arrowKeysContainer(inner) {
-		return html`<div class="arrow-keys-container" @keyup="${this._handleArrowKeys}">
+		return html`<div class="arrow-keys-container" @keydown="${this._handleArrowKeys}">
 			${inner}
 		</div>`;
 	}

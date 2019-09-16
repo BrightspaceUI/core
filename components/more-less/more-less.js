@@ -183,11 +183,16 @@ class MoreLess extends LocalizeMixin(LitElement)  {
 	}
 
 	render() {
+		requestAnimationFrame(
+			() => this.dispatchEvent(new CustomEvent('d2l-more-less-render', {
+				bubbles: false,
+				composed: false
+			}))
+		);
 		const contentClasses = {
 			'more-less-content': true,
 			'more-less-transition': this.__transitionAdded
 		};
-
 		return html`
 			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
 				<slot></slot>

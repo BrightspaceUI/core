@@ -31,8 +31,8 @@
 	<script type="module">
 		import * as helper from '../../helpers/focus.js';
 
-		function keyUp(element, keycode) {
-			const event = new CustomEvent('keyup', {
+		function keyDown(element, keycode) {
+			const event = new CustomEvent('keydown', {
 				detail: 0,
 				bubbles: true,
 				cancelable: true,
@@ -60,7 +60,7 @@
 								expect(helper.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].endIndex]);
 								done();
 							});
-							keyUp(focusables[keyInteractions[i].startIndex], keyInteractions[i].keyCode);
+							keyDown(focusables[keyInteractions[i].startIndex], keyInteractions[i].keyCode);
 						});
 					}(i));
 				}
@@ -116,7 +116,7 @@
 							(function(i) {
 								it(keyInteractions[i].name, async() => {
 									focusables[keyInteractions[i].startIndex].focus();
-									keyUp(focusables[[keyInteractions[i].startIndex]], keyInteractions[i].keyCode);
+									keyDown(focusables[[keyInteractions[i].startIndex]], keyInteractions[i].keyCode);
 									await simpleFixture.updateComplete;
 									expect(helper.getComposedActiveElement()).to.equal(focusables[keyInteractions[i].startIndex]);
 								});
