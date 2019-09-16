@@ -1,4 +1,3 @@
-import 'fastdom/fastdom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -133,7 +132,6 @@ class ListItem extends RtlMixin(LitElement) {
 		const oldVal = this._breakpoints;
 		this._breakpoints = val.sort((a, b) => b - a).slice(0, 4);
 		this.requestUpdate('breakpoints', oldVal);
-		fastdom.measure(() => this.resizedCallback(this.offsetWidth));
 	}
 
 	render() {
@@ -150,6 +148,12 @@ class ListItem extends RtlMixin(LitElement) {
 				</div>
 			</div>
 		`;
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('breakpoints')) {
+			this.resizedCallback(this.offsetWidth);
+		}
 	}
 
 	connectedCallback() {

@@ -65,7 +65,6 @@
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
     "d2l-intl": "^2",
-    "fastdom": "^1.0.9",
     "intl-messageformat": "^2.2.0",
     "lit-element": "^2",
     "prismjs": "^1",
