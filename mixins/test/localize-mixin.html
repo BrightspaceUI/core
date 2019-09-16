@@ -110,62 +110,72 @@
 					});
 				});
 				describe('mutations', () => {
-					it('should update language if "lang" gets set', (done) => {
+					it('should update language if "lang" gets set', () => {
 						return fixtureAndAwaitRender('basic').then((elem) => {
-							const myEventListener = () => {
-								expect(elem.__language).to.equal('fr');
-								elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
-								done();
-							};
-							elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
-							htmlElem.setAttribute('lang', 'fr');
+							return new Promise((resolve) => {
+								const myEventListener = () => {
+									expect(elem.__language).to.equal('fr');
+									elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+									resolve();
+								};
+								elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+								htmlElem.setAttribute('lang', 'fr');
+							});
 						});
 					});
-					it('should update language if "lang" is not set and "fallback" gets set', (done) => {
+					it('should update language if "lang" is not set and "fallback" gets set', () => {
 						return fixtureAndAwaitRender('basic').then((elem) => {
-							const myEventListener = () => {
-								expect(elem.__language).to.equal('de');
-								elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
-								done();
-							};
-							elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
-							htmlElem.setAttribute('data-lang-default', 'de');
+							return new Promise((resolve) => {
+								const myEventListener = () => {
+									expect(elem.__language).to.equal('de');
+									elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+									resolve();
+								};
+								elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+								htmlElem.setAttribute('data-lang-default', 'de');
+							});
 						});
 					});
-					it('should not update language if "lang" is set and "fallback" gets set', (done) => {
+					it('should not update language if "lang" is set and "fallback" gets set', () => {
 						htmlElem.setAttribute('lang', 'fr');
 						return fixtureAndAwaitRender('basic').then((elem) => {
-							const myEventListener = () => {
-								expect(elem.__language).to.equal('fr');
-								elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
-								done();
-							};
-							elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
-							htmlElem.setAttribute('data-lang-default', 'de');
+							return new Promise((resolve) => {
+								const myEventListener = () => {
+									expect(elem.__language).to.equal('fr');
+									elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+									resolve();
+								};
+								elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+								htmlElem.setAttribute('data-lang-default', 'de');
+							});
 						});
 					});
-					it('should use default (en) if "lang" is removed', (done) => {
+					it('should use default (en) if "lang" is removed', () => {
 						htmlElem.setAttribute('lang', 'es');
 						return fixtureAndAwaitRender('basic').then((elem) => {
-							const myEventListener = () => {
-								expect(elem.__language).to.equal('en');
-								elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
-								done();
-							};
-							elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
-							htmlElem.removeAttribute('lang');
+							return new Promise((resolve) => {
+								const myEventListener = () => {
+									expect(elem.__language).to.equal('en');
+									elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+									resolve();
+								};
+								elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+								htmlElem.removeAttribute('lang');
+							});
 						});
 					});
-					it('should use default (en) if "fallback" is removed', (done) => {
+					it('should use default (en) if "fallback" is removed', () => {
 						htmlElem.setAttribute('data-lang-default', 'es');
 						return fixtureAndAwaitRender('basic').then((elem) => {
-							const myEventListener = () => {
-								expect(elem.__language).to.equal('en');
-								elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
-								done();
-							};
-							elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
-							htmlElem.removeAttribute('data-lang-default');
+							return new Promise((resolve) => {
+								const myEventListener = () => {
+									expect(elem.__language).to.equal('en');
+									elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+									resolve();
+								};
+								elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+								htmlElem.removeAttribute('data-lang-default');
+							});
 						});
 					});
 				});
@@ -358,16 +368,18 @@
 						expect(elem.getTimezone().name).to.equal('');
 						expect(elem.getTimezone().identifier).to.equal('');
 					});
-					it('should update timezone if "data-timezone" gets set', (done) => {
+					it('should update timezone if "data-timezone" gets set', () => {
 						return fixtureAndAwaitRender('basic').then((elem) => {
 							htmlElem.setAttribute(
 								'data-timezone',
 								JSON.stringify({ name: 'foo', identifier: 'bar' })
 							);
-							requestAnimationFrame(() => {
-								expect(elem.getTimezone().name).to.equal('foo');
-								expect(elem.getTimezone().identifier).to.equal('bar');
-								done();
+							return new Promise((resolve) => {
+								requestAnimationFrame(() => {
+									expect(elem.getTimezone().name).to.equal('foo');
+									expect(elem.getTimezone().identifier).to.equal('bar');
+									resolve();
+								});
 							});
 						});
 					});
