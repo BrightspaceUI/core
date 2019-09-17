@@ -47,35 +47,40 @@ class Backdrop extends LitElement {
 	attributeChangedCallback(name, oldval, newval) {
 		super.attributeChangedCallback(name, oldval, newval);
 
-		if (name === 'show' && oldval !== newval) {
-			if (this.show) {
+		if (name !== 'show') return;
 
-				if (count === 0) {
-					overflow = document.body.style.overflow;
-					document.body.style.overflow = 'hidden';
-				}
-				count++;
+		if (this.show) {
 
-				this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
-				this._state = 'showing';
-			} else {
-				const transitionEnd = () => {
-					this.removeEventListener('transitionend', transitionEnd);
-
-					count--;
-					if (count === 0) {
-						document.body.style.overflow = overflow;
-						overflow = null;
-					}
-
-					showAccessible(this._hiddenElements);
-					this._hiddenElements = null;
-					this._state = null;
-				};
-				this.addEventListener('transitionend', transitionEnd);
-				this._state = 'hiding';
+			if (count === 0) {
+				overflow = document.body.style.overflow;
+				document.body.style.overflow = 'hidden';
 			}
+			count++;
+
+			this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
+			this._state = 'showing';
+
+		} else {
+
+			const transitionEnd = () => {
+				this.removeEventListener('transitionend', transitionEnd);
+
+				count--;
+				if (count === 0) {
+					document.body.style.overflow = overflow;
+					overflow = null;
+				}
+
+				showAccessible(this._hiddenElements);
+				this._hiddenElements = null;
+				this._state = null;
+			};
+
+			this.addEventListener('transitionend', transitionEnd);
+			this._state = 'hiding';
+
 		}
+
 	}
 
 	render() {
