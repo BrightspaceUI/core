@@ -22,6 +22,11 @@
 				<d2l-test-localize __language="fr"></d2l-test-localize>
 			</template>
 		</test-fixture>
+		<test-fixture id="async">
+			<template>
+				<d2l-test-localize name="Bill" async></d2l-test-localize>
+			</template>
+		</test-fixture>
 
 		<script type="module">
 			describe('LocalizeMixin', () => {
@@ -383,6 +388,47 @@
 							});
 						});
 					});
+				});
+				describe('shouldUpdate tracking', () => {
+
+					it('should pass all changed properties to updated()', (done) => {
+						const elem = fixture('async');
+						elem.addEventListener('d2l-test-localize-updated', (e) => {
+							const props = e.detail.props;
+							expect(props.size).to.equal(4);
+							expect(props.has('name'));
+							expect(props.has('async'));
+							expect(props.has('__language'));
+							expect(props.has('__resources'));
+							done();
+						});
+						elem.__localizeResourcesPromise.then(() => {
+							elem.resolveLang();
+						});
+					});
+
+					it('should clear changed properties after language resolution', (done) => {
+						const elem = fixture('async');
+						let first = true;
+						elem.addEventListener('d2l-test-localize-updated', (e) => {
+							const props = e.detail.props;
+							if (first) {
+								first = false;
+								expect(props.size).to.equal(4);
+								return;
+							}
+							expect(props.size).to.equal(1);
+							expect(e.detail.props.has('name'));
+							done();
+						});
+						elem.__localizeResourcesPromise.then(() => {
+							elem.resolveLang();
+						});
+						elem.addEventListener('d2l-test-localize-render', () => {
+							elem.setAttribute('name', 'Jim');
+						});
+					});
+
 				});
 			});
 		</script>
