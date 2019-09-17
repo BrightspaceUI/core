@@ -49,42 +49,50 @@ class Backdrop extends LitElement {
 
 		if (name !== 'shown') return;
 
-		if (this.shown) {
-
-			if (count === 0) {
-				overflow = document.body.style.overflow;
-				document.body.style.overflow = 'hidden';
-			}
-			count++;
-
-			this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
-			this._state = 'showing';
-
-		} else {
-
-			const transitionEnd = () => {
-				this.removeEventListener('transitionend', transitionEnd);
-
-				count--;
-				if (count === 0) {
-					document.body.style.overflow = overflow;
-					overflow = null;
-				}
-
-				showAccessible(this._hiddenElements);
-				this._hiddenElements = null;
-				this._state = null;
-			};
-
-			this.addEventListener('transitionend', transitionEnd);
-			this._state = 'hiding';
-
-		}
-
+		if (this.shown) this._show();
+		else this._hide(true);
 	}
 
 	render() {
 		return html`<div></div>`;
+	}
+
+	_hide(animate) {
+
+		const hide = () => {
+			if (animate) this.removeEventListener('transitionend', hide);
+
+			count--;
+			if (count === 0) {
+				document.body.style.overflow = overflow;
+				overflow = null;
+			}
+
+			showAccessible(this._hiddenElements);
+			this._hiddenElements = null;
+			this._state = null;
+		};
+
+		if (animate) {
+			this.addEventListener('transitionend', hide);
+			this._state = 'hiding';
+		} else {
+			hide();
+		}
+
+	}
+
+	_show() {
+
+		if (count === 0) {
+			overflow = document.body.style.overflow;
+			document.body.style.overflow = 'hidden';
+		}
+		count++;
+
+		this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
+		this._state = 'showing';
+
 	}
 
 }
