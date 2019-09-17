@@ -191,6 +191,15 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._addHandlers();
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
+
+		const transitionEnd = () => {
+			dialog.removeEventListener('transitionend', transitionEnd);
+			this.dispatchEvent(new CustomEvent(
+				'd2l-dialog-open', { bubbles: true, composed: true }
+			));
+		};
+		dialog.addEventListener('transitionend', transitionEnd);
+
 		if (this._hasNativeDialog) {
 			dialog.showModal();
 		}
@@ -202,10 +211,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._updateSize();
 		this._state = 'showing';
 		this._focusFirst();
-
-		this.dispatchEvent(new CustomEvent(
-			'd2l-dialog-open', { bubbles: true, composed: true }
-		));
 	}
 
 	_removeHandlers() {
