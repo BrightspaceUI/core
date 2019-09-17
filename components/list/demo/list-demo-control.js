@@ -102,8 +102,10 @@ class ListDemoControl extends LitElement {
 	}
 
 	_onChangeSelectable(event) {
-		const list = document.querySelector(`${this.target} d2l-list`);
-		list.toggleAttribute('selectable', event.target.checked);
+		const listItems = document.querySelectorAll(`${this.target} d2l-list d2l-list-item`);
+		listItems.forEach(item => {
+			item.toggleAttribute('selectable', event.target.checked);
+		});
 	}
 }
 

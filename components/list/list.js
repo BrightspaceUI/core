@@ -5,8 +5,7 @@ class List extends LitElement {
 		return {
 			dividerMode: { type: String, attribute: 'divider-mode' },
 			dividerExtend: { type: Boolean, attribute: 'divider-extend'},
-			hoverEffect: {type: Boolean, attribute: 'hover-effect'},
-			selectable: {type: Boolean }
+			hoverEffect: {type: Boolean, attribute: 'hover-effect'}
 		};
 	}
 
@@ -43,9 +42,6 @@ class List extends LitElement {
 				--d2l-list-item-divider-padding-bottom: initial;
 				--d2l-list-item-divider-padding-top: initial;
 				--d2l-list-item-divider-top: initial;
-			}
-			:host([selectable]) {
-				--d2l-list-item-select-display: block;
 			}
 			:host([hover-effect]) ::slotted(d2l-list-item) {
 				--d2l-list-item-hover-background: var(--d2l-color-regolith);

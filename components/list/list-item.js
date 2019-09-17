@@ -20,6 +20,7 @@ class ListItem extends RtlMixin(LitElement) {
 			checked: { type: Boolean, reflect: true },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
 			role: { type: String, reflect: true },
+			selectable: {type: Boolean },
 			_breakpoint: { type: Number }
 		};
 	}
@@ -102,10 +103,6 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
-			.d2l-list-item-label,
-			input[type="checkbox"] {
-				display: var(--d2l-list-item-select-display, none);
-			}
 		`;
 		const illustrationOutside = css`
 			:host([illustration-outside]) .d2l-list-item-content-flex {
@@ -165,6 +162,8 @@ class ListItem extends RtlMixin(LitElement) {
 		this.breakpoints = [842, 636, 580, 0];
 		this.role = 'listitem';
 		this.checked = false;
+		this._contentId = getUniqueId();
+		this._checkBoxId = getUniqueId();
 	}
 
 	get breakpoints() {
@@ -178,17 +177,20 @@ class ListItem extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const contentId = getUniqueId();
-		const checkBoxId = getUniqueId();
+		let label, checkbox = html``;
+		if (this.selectable) {
+			label = html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>`;
+			checkbox = html`<input @change="${this._handleChange}" type="checkbox" id="${this._checkBoxId}">`;
+		}
 		const illustrationSlot = html`
-			<input @change="${this._handleChange}" class="d2l-list-item-checkbox" type="checkbox" id="${checkBoxId}">
+			${checkbox}
 			<slot name="illustration"></slot>
 		`;
 		return html`
 			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
-				<label class="d2l-list-item-label" for="${checkBoxId}" aria-labelledby="${contentId}"></label>
+				${label}
 				${this.illustrationOutside ? illustrationSlot : null}
-				<div class="d2l-list-item-content" id="${contentId}">
+				<div class="d2l-list-item-content" id="${this._contentId}">
 					<div class="d2l-list-item-content-flex">
 						${this.illustrationOutside ? null : illustrationSlot}
 						<div class="d2l-list-item-main"><slot></slot></div>

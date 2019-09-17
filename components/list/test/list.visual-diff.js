@@ -17,16 +17,6 @@ describe('d2l-list', function() {
 
 	after(() => browser.close());
 
-	afterEach(async() => {
-		await page.$eval('#list', (list) => {
-			list.style.width = '500px';
-			list.toggleAttribute('divider-mode', false);
-			list.toggleAttribute('divider-extend', false);
-			list.toggleAttribute('hover-effect', false);
-			list.toggleAttribute('selectable', false);
-		});
-	});
-
 	describe('Breakpoints', () => {
 		[
 			{ breakpoint: 3, width: 900 },
@@ -77,7 +67,7 @@ describe('d2l-list', function() {
 
 	describe('List tests for selectable', () => {
 		before(async() => {
-			await toggleAttribute(page, 'd2l-list', 'selectable', true);
+			await toggleAttribute(page, 'd2l-list d2l-list-item', 'selectable', true);
 		});
 		[
 			{ name: 'hover-effect', value: false },
@@ -107,7 +97,7 @@ describe('d2l-list', function() {
 
 				it('Selected', async function() {
 					await page.click('#hover');
-					await resetMouse(page); // take away focus.
+					await visualDiff.resetFocus(page);
 					await visualListScreenshot(page, this.test.fullTitle());
 					await page.click('#hover');
 				});
