@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-link unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../link.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="standard">
+			<template>
+				<d2l-link href="https://www.d2l.com">Link Test</d2l-link>
+			</template>
+		</test-fixture>
+		<test-fixture id="attributes">
+			<template>
+				<d2l-link
+					aria-label='My Aria Label'
+					download
+					href="https://www.d2l.com"
+					main
+					small
+					target="_blank">Link Test</d2l-link>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { getComposedActiveElement } from '../../../helpers/focus.js';
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-link', () => {
+
+				let elem, anchor;
+
+				describe('standard', () => {
+
+					beforeEach(async() => {
+						elem = fixture('standard');
+						await elem.updateComplete;
+						anchor = elem.shadowRoot.querySelector('a');
+					});
+
+					it('should execute onclick when clicked', async() => {
+						return new Promise(resolve => {
+							elem.addEventListener('click', resolve, {once: true});
+							elem.click();
+						});
+					});
+
+					it('should pass all axe tests', async() => {
+						await runAxe(elem);
+					});
+
+					it('should pass all axe tests when focused', async() => {
+						elem.focus();
+						await runAxe(elem);
+					});
+
+					it('should delegate focus to underlying anchor', () => {
+						elem.focus();
+						const activeElement = getComposedActiveElement();
+						expect(activeElement).to.equal(anchor);
+					});
+
+					it('should default "main" property to false when unset', () => {
+						expect(elem.main).to.be.false;
+						expect(elem.hasAttribute('main')).to.be.false;
+					});
+
+					it('should reflect "main" attribute to property', () => {
+						elem.setAttribute('main', 'main');
+						expect(elem.main).to.be.true;
+					});
+
+					it('should reflect "main" property to attribute', async() => {
+						elem.main = true;
+						await elem.updateComplete;
+						expect(elem.hasAttribute('main')).to.be.true;
+					});
+
+					it('should default "small" property to false when unset', () => {
+						expect(elem.small).to.be.false;
+						expect(elem.hasAttribute('small')).to.be.false;
+					});
+
+					it('should reflect "small" attribute to property', () => {
+						elem.setAttribute('small', 'small');
+						expect(elem.small).to.be.true;
+					});
+
+					it('should reflect "small" property to attribute', async() => {
+						elem.small = true;
+						await elem.updateComplete;
+						expect(elem.hasAttribute('small')).to.be.true;
+					});
+
+				});
+
+				describe('attributes', () => {
+
+					beforeEach(async() => {
+						elem = fixture('attributes');
+						await elem.updateComplete;
+						anchor = elem.shadowRoot.querySelector('a');
+					});
+
+					it('should pass link attributes down to anchor', () => {
+						expect(anchor.getAttribute('aria-label')).to.equal('My Aria Label');
+						expect(anchor.hasAttribute('download')).to.be.true;
+						expect(anchor.getAttribute('href')).to.equal('https://www.d2l.com');
+						expect(anchor.hasAttribute('main')).to.be.true;
+						expect(anchor.hasAttribute('small')).to.be.true;
+						expect(anchor.getAttribute('target')).to.equal('_blank');
+					});
+
+				});
+
+			});
+		</script>
+	</body>
+</html>
