@@ -127,9 +127,10 @@ class ListDemoControl extends LitElement {
 	}
 
 	_onListChange(event) {
+		console.log('here');
 		const list = event.target;
 		const selectAll = this.shadowRoot.querySelector('.select-all');
-		this._numberSelected = event.detail.checkedItems.length;
+		this._numberSelected = event.detail.selectedItems.length;
 		selectAll.indeterminate = list.selectionState() === selectableListStates.indeterminate;
 		selectAll.checked = list.selectionState() === selectableListStates.all;
 	}

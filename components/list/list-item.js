@@ -191,7 +191,6 @@ class ListItem extends RtlMixin(LitElement) {
 		this._breakpoint = 0;
 		this.breakpoints = [842, 636, 580, 0];
 		this.role = 'listitem';
-		this.selected = false;
 		this._contentId = getUniqueId();
 		this._checkBoxId = getUniqueId();
 	}
@@ -206,15 +205,15 @@ class ListItem extends RtlMixin(LitElement) {
 		this.requestUpdate('breakpoints', oldVal);
 	}
 
-	get checked() {
-		return this._checked;
+	get selected() {
+		return this._selected;
 	}
 
-	set checked(value) {
-		const oldVal = this.checked;
-		this._checked = value;
-		this.requestUpdate('checked', oldVal).then(() => {
-			const checkBox = this.shadowRoot.querySelector('.d2l-list-item-checkbox');
+	set selected(value) {
+		const oldVal = this.selected;
+		this._selected = value;
+		this.requestUpdate('selected', oldVal).then(() => {
+			const checkBox = this.shadowRoot.querySelector(`#${this._checkBoxId}`);
 			checkBox && (checkBox.checked = value);
 
 			if (typeof this.ref === 'undefined') {
@@ -265,25 +264,23 @@ class ListItem extends RtlMixin(LitElement) {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'ref') {
 				if (typeof oldValue === 'undefined') {
-					this._fireItemChecked(this.checked);
+					this._fireItemSelected(this.selected);
 				} else {
-					this.checked = undefined;
-					this._fireItemChecked(false, oldValue);
+					this.selected = undefined;
+					this._fireItemSelected(false, oldValue);
 				}
 				return;
 			}
 
-			if (propName === 'checked') {
-				if (typeof this.checked === 'undefined' || typeof this.ref === 'undefined') {
+			if (propName === 'selected') {
+				if (typeof this.selected === 'undefined' || typeof this.ref === 'undefined') {
 					return;
 				}
-				this._fireItemChecked(this.checked);
+				this._fireItemSelected(this.selected);
 			}
 
 		});
-	}
 
-	updated(changedProperties) {
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
 		}
@@ -312,12 +309,12 @@ class ListItem extends RtlMixin(LitElement) {
 		this.selected = e.target.checked;
 	}
 
-	_fireItemChecked(value, ref) {
+	_fireItemSelected(value, ref) {
 		ref = ref ? ref : this.ref;
-		this.dispatchEvent(new CustomEvent('d2l-list-item-checked', {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: {
 				ref: ref,
-				checked: value,
+				selected: value,
 			},
 			bubbles: true
 		}));

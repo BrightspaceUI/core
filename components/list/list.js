@@ -69,12 +69,12 @@ class List extends LitElement {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this._checked = {};
-		this.addEventListener('d2l-list-item-checked', this._onlistItemChecked.bind(this));
+		this._selected = {};
+		this.addEventListener('d2l-list-item-selected', this._onlistItemSelected.bind(this));
 	}
 
-	itemsChecked() {
-		return Object.keys(this._checked).filter(ref => this._checked[ref]);
+	itemsSelected() {
+		return Object.keys(this._selected).filter(ref => this._selected[ref]);
 	}
 
 	render() {
@@ -86,13 +86,13 @@ class List extends LitElement {
 	}
 
 	selectionState() {
-		const checkedListItems = this.itemsChecked();
-		if (!checkedListItems || checkedListItems.length < 1) {
+		const selectedListItems = this.itemsSelected();
+		if (!selectedListItems || selectedListItems.length < 1) {
 			return selectableListStates.none;
 		}
 
-		const uncheckedListItems = this.querySelectorAll('d2l-list-item:not([checked])');
-		if (uncheckedListItems.length < 1) {
+		const notSelectedListItems = this.querySelectorAll('d2l-list-item:not([selected])');
+		if (notSelectedListItems.length < 1) {
 			return selectableListStates.all;
 		}
 
@@ -100,29 +100,27 @@ class List extends LitElement {
 	}
 
 	selectAll() {
-		if (!this.selectable) {
-			return;
-		}
-		const uncheckedListItems = this.querySelectorAll('d2l-list-item:not([checked])');
-		if (uncheckedListItems.length < 1) {
-			const checkedListItems = this.querySelectorAll('d2l-list-item[checked]');
-			checkedListItems.forEach(listItem => {
-				listItem.toggleAttribute('checked');
+		const notSelectedListItems = this.querySelectorAll('d2l-list-item:not([selected])');
+		if (notSelectedListItems.length < 1) {
+			const selectedListItems = this.querySelectorAll('d2l-list-item[selected]');
+			selectedListItems.forEach(listItem => {
+				listItem.toggleAttribute('selected');
 			});
 		} else {
-			uncheckedListItems.forEach(listItem => {
-				listItem.toggleAttribute('checked');
+			notSelectedListItems.forEach(listItem => {
+				listItem.toggleAttribute('selected');
 			});
 		}
 	}
 
-	_onlistItemChecked(event) {
+	_onlistItemSelected(event) {
+		console.log('me');
 		event.stopPropagation();
 
-		this._checked[event.detail.ref] = event.detail.checked;
+		this._selected[event.detail.ref] = event.detail.selected;
 		this.dispatchEvent(new CustomEvent('change', {
 			detail: {
-				checkedItems: this.itemsChecked()
+				selectedItems: this.itemsSelected()
 			}
 		}));
 	}
