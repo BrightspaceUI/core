@@ -33,6 +33,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 					}
 				});
 		};
+		this.__updatedProperties = new Map();
 
 	}
 
@@ -44,15 +45,25 @@ export const LocalizeMixin = superclass => class extends superclass {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		removeListener(this.__languageChangeCallback);
+		this.__updatedProperties.clear();
 	}
 
-	shouldUpdate() {
+	shouldUpdate(changedProperties) {
 		const ready = this.__language !== undefined
 			&& this.__resources !== undefined;
 		if (!ready) {
+			changedProperties.forEach((oldValue, propName) => {
+				this.__updatedProperties.set(propName, oldValue);
+			});
 			return false;
 		}
-		return super.shouldUpdate();
+		this.__updatedProperties.forEach((oldValue, propName) => {
+			if (!changedProperties.has(propName)) {
+				changedProperties.set(propName, oldValue);
+			}
+		});
+		this.__updatedProperties.clear();
+		return super.shouldUpdate(changedProperties);
 	}
 
 	getTimezone() {
