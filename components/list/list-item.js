@@ -2,7 +2,6 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/checkbox-shared-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LinkMixin } from '../link/link-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -15,7 +14,7 @@ const ro = new ResizeObserver(entries => {
 	});
 });
 
-class ListItem extends LinkMixin(RtlMixin(LitElement)) {
+class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
@@ -199,9 +198,7 @@ class ListItem extends LinkMixin(RtlMixin(LitElement)) {
 			checkbox = html`<input @change="${this._handleChange}" type="checkbox" id="${this._checkBoxId}">`;
 		}
 		const link = html`
-			<a class="d2l-list-item-link" href="${ifDefined(this.href)}">
-				<span class="d2l-card-link-text">${this.text}</span>
-			</a>
+			<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>
 		`;
 		const illustrationSlot = html`
 			${checkbox}
@@ -233,10 +230,12 @@ class ListItem extends LinkMixin(RtlMixin(LitElement)) {
 		super.connectedCallback();
 		ro.observe(this);
 	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		ro.unobserve(this);
 	}
+
 	resizedCallback(width) {
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
