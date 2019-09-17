@@ -25,6 +25,11 @@ class Dialog extends DialogMixin(LitElement) {
 				margin: -4px -15px 0 15px;
 			}
 
+			:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
+				margin-left: -15px;
+				margin-right: 15px;
+			}
+
 			@media (max-width: 615px) {
 
 				.d2l-dialog-outer {
@@ -39,6 +44,11 @@ class Dialog extends DialogMixin(LitElement) {
 
 				.d2l-dialog-header > div > d2l-button-icon {
 					margin: -8px -13px 0 15px;
+				}
+
+				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
+					margin-left: -13px;
+					margin-right: 15px;
 				}
 
 			}
