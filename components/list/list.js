@@ -114,7 +114,6 @@ class List extends LitElement {
 	}
 
 	_onlistItemSelected(event) {
-		console.log('me');
 		event.stopPropagation();
 
 		this._selected[event.detail.ref] = event.detail.selected;
