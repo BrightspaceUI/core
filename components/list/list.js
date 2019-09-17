@@ -46,7 +46,7 @@ class List extends LitElement {
 			:host([hover-effect]) ::slotted(d2l-list-item) {
 				--d2l-list-item-hover-background: var(--d2l-color-regolith);
 			}
-			:host([hover-effect]) ::slotted(d2l-list-item[checked]) {
+			:host([hover-effect]) ::slotted(d2l-list-item[selected]) {
 				--d2l-list-item-content-text-secondary-color: var(--d2l-color-ferrite);
 				--d2l-list-item-background: rgba(232, 248, 255, 0.5);
 				--d2l-list-item-divider-bottom: 1px var(--d2l-color-celestine) solid;

@@ -17,7 +17,7 @@ class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
-			checked: { type: Boolean, reflect: true },
+			selected: { type: Boolean, reflect: true },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
@@ -161,7 +161,7 @@ class ListItem extends RtlMixin(LitElement) {
 		this._breakpoint = 0;
 		this.breakpoints = [842, 636, 580, 0];
 		this.role = 'listitem';
-		this.checked = false;
+		this.selected = false;
 		this._contentId = getUniqueId();
 		this._checkBoxId = getUniqueId();
 	}
@@ -225,7 +225,7 @@ class ListItem extends RtlMixin(LitElement) {
 		});
 	}
 	_handleChange(e) {
-		this.checked = e.target.checked;
+		this.selected = e.target.checked;
 	}
 }
 
