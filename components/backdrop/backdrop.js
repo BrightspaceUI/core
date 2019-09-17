@@ -53,6 +53,13 @@ class Backdrop extends LitElement {
 		else this._hide(true);
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this.shown) {
+			this._hide(false);
+		}
+	}
+
 	render() {
 		return html`<div></div>`;
 	}
