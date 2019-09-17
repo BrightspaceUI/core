@@ -8,6 +8,14 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+window.D2L = window.D2L || {};
+window.D2L.DialogMixin = window.D2L.DialogMixin || {};
+
+window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined);
+if (window.D2L.DialogMixin.preferNative === undefined) {
+	window.D2L.DialogMixin.preferNative = true;
+}
+
 export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
@@ -37,8 +45,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._state = null;
 		this._left = 0;
 		this._width = 0;
-		//this._hasNativeDialog = (window.HTMLDialogElement !== undefined);
-		this._hasNativeDialog = false;
+		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
 		this._handleBodyFocus = this._handleBodyFocus.bind(this);
 		this._updateSize = this._updateSize.bind(this);
 		this._updateOverflow = this._updateOverflow.bind(this);
@@ -65,7 +72,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 		const transitionEnd = () => {
 			dialog.removeEventListener('transitionend', transitionEnd);
-			if (this._hasNativeDialog) dialog.close();
+			if (this._useNative) dialog.close();
 			else this._handleClose();
 		};
 		dialog.addEventListener('transitionend', transitionEnd);
@@ -109,7 +116,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_getLeft() {
-		if (this._hasNativeDialog || !this._parentDialog) return 0;
+		if (this._useNative || !this._parentDialog) return 0;
 		const parentRect = this._parentDialog.getBoundingClientRect();
 		if (parentRect.width > this._width) return 0;
 		return (parentRect.width - this._width) / 2;
@@ -206,7 +213,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		};
 		dialog.addEventListener('transitionend', transitionEnd);
 
-		if (this._hasNativeDialog) {
+		if (this._useNative) {
 			dialog.showModal();
 		}
 
@@ -245,7 +252,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				tabindex="0"></span>
 		`;
 
-		return html`${this._hasNativeDialog ?
+		return html`${this._useNative ?
 			html`<dialog
 				aria-describedby="${ifDefined(descriptionId)}"
 				aria-labelledby="${labelId}"
