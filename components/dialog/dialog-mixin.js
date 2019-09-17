@@ -1,4 +1,5 @@
 import '../backdrop/backdrop.js';
+import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -59,6 +60,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_close() {
 		if (!this._state) return;
+		clearDismissible(this._dismissibleId);
+		this._dismissibleId = null;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 		const transitionEnd = () => {
 			dialog.removeEventListener('transitionend', transitionEnd);
@@ -150,10 +153,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_handleKeyDown(e) {
 		if (!this.opened) return;
 		if (e.keyCode === 27) {
-			// escape (note: prevent native dialog close so we can animate it)
+			// escape (note: prevent native dialog close so we can: animate it; use setDismissible)
 			e.stopPropagation();
 			e.preventDefault();
-			this._close();
 		}
 	}
 
@@ -187,6 +189,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (!this.opened) return;
 
 		this._opener = getComposedActiveElement();
+		this._dismissibleId = setDismissible(() => {
+			if (!this.opened) return;
+			this._close();
+		});
 
 		this._addHandlers();
 
@@ -258,7 +264,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				class="d2l-dialog-outer"
 				@d2l-dialog-close="${this._handleDialogClose}"
 				@d2l-dialog-open="${this._handleDialogOpen}"
-				@keydown="${this._handleKeyDown}"
 				id="${this._dialogId}"
 				?nested="${this._parentDialog}"
 				?nested-showing="${this._nestedShowing}"
