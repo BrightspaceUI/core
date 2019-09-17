@@ -18,6 +18,7 @@ class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
+			href: { type: String },
 			selected: { type: Boolean, reflect: true },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
 			role: { type: String, reflect: true },
@@ -128,8 +129,16 @@ class ListItem extends RtlMixin(LitElement) {
 			:host([href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
+			:host([href]) .d2l-list-item-link:focus + .d2l-list-item-content,
 			:host([href]) .d2l-list-item-link:hover + .d2l-list-item-content {
 				--d2l-list-item-content-text-decoration: underline;
+			}
+			:host([href]) .d2l-list-item-link:focus {
+				outline: none;
+			}
+			:host([href]) .d2l-list-item-link:focus + .d2l-list-item-content {
+				border-color: transparent;
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
 		`;
 
