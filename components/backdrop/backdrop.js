@@ -9,7 +9,7 @@ class Backdrop extends LitElement {
 
 	static get properties() {
 		return {
-			show: { type: Boolean, reflect: true },
+			shown: { type: Boolean },
 			forTarget: { type: String, attribute: 'for-target' },
 			_state: { type: String, reflect: true }
 		};
@@ -40,16 +40,16 @@ class Backdrop extends LitElement {
 
 	constructor() {
 		super();
-		this.show = false;
+		this.shown = false;
 		this._state = null;
 	}
 
 	attributeChangedCallback(name, oldval, newval) {
 		super.attributeChangedCallback(name, oldval, newval);
 
-		if (name !== 'show') return;
+		if (name !== 'shown') return;
 
-		if (this.show) {
+		if (this.shown) {
 
 			if (count === 0) {
 				overflow = document.body.style.overflow;

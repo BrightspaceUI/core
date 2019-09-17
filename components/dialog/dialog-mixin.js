@@ -273,7 +273,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				style=${styleMap(styles)}>
 					${inner}
 				</div>
-				<d2l-backdrop for-target="${this._dialogId}" ?show="${this._state === 'showing'}"></d2l-backdrop>`}
+				<d2l-backdrop for-target="${this._dialogId}" ?shown="${this._state === 'showing'}"></d2l-backdrop>`}
 		`;
 
 	}
