@@ -204,7 +204,7 @@ class ListItem extends RtlMixin(LitElement) {
 		let label, checkbox = html``;
 		if (this.selectable) {
 			label = html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>`;
-			checkbox = html`<input @change="${this._handleChange}" type="checkbox" id="${this._checkBoxId}">`;
+			checkbox = html`<input @change="${this._handleChange}" type="checkbox" id="${this._checkBoxId}" .checked="${this.selected}">`;
 		}
 		const link = html`
 			<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>
@@ -235,11 +235,6 @@ class ListItem extends RtlMixin(LitElement) {
 				this.setIsSelected(undefined, true);
 				this._fireItemSelected(false, oldValue);
 			}
-		}
-
-		if (changedProperties.has('selected')) {
-			const checkBox = this.shadowRoot.querySelector(`#${this._checkBoxId}`);
-			checkBox && (checkBox.checked = this.selected);
 		}
 
 		if (changedProperties.has('breakpoints')) {
