@@ -35,7 +35,7 @@ Output
 ## Signature
 
 ```html
-<d2l-list [divider-mode="[none|all|between]"] [divider-extend] [selectable] [hover-effect]>
+<d2l-list [divider-mode="[none|all|between]"] [divider-extend] [hover-effect]>
     <d2l-list-item>...</d2l-list-item>
     ...
     <d2l-list-item>...</d2l-list-item>
@@ -50,18 +50,17 @@ Output
   - *none*: Show no dividers.
 - **divider-extend**: A boolean attributes that extends the length of the dividers so the space between the list item contents and the left and right edges of the list dividers.
 - **hover-effect**: When the list item is interactive (selectable or link) then this applies a hover effect for the background. In the selectable case it also adds background color and highlights the divider of selected items.
-- **selectable**: Makes all the items in the list selectable.
 
 ## Events
 
-- **change**: Whenever a list item is selected this `change` event will be emitted with a list of items that are current checked.
-It returns `event.detial.checkedItems` which is an array that contains ref id for all selected items.
+- **d2l-list-selection-change**: Whenever a list item is selected this `change` event will be emitted with a list of items that are current selected.
+It returns `event.detial.key` and `event.detial.selected` where `key` is the key of the element that has changed and `selected` is the boolean value that it changed to.
 
 ## Public Methods
 
-- **selectAll()**: Checks all list items if current state is `none` or `indeterminate`. Removes the check from all list items if in the `all` state.
-- **itemsChecked()**: Returns the list of ref ids of list items that are checked.
-- **selectionState()**: Returns a selectableListStates that describes the current state.
+- **toggleSelectAll()**: Checks all list items if current state is `none` or `indeterminate`. Removes the check from all list items if in the `all` state. Note this will suppress the events of items being selected.
+- **getSelectedKeys()**: Returns the list of keys of list items that are selected.
+- **getSelectionState()**: Returns a selectableListStates that describes the current state.
 
 ## Helpers
 
@@ -80,9 +79,9 @@ selectableListStates.all
 
 Values:
 
--**none**: There are no rendered list items that are checked.
--**indeterminate**: There are some but not all list items that are rendered are checked.
--**all**: All rendered list items are checked.
+-**none**: There are no rendered list items that are selected.
+-**indeterminate**: There are some but not all list items that are rendered are selected.
+-**all**: All rendered list items are selected.
 
 # d2l-list-item
 
@@ -91,7 +90,7 @@ Values:
 ## Signature
 
 ```html
-<d2l-list-item [breakpoints=":array" ] [illustration-outside] [href=":url"] [checked]>
+<d2l-list-item [breakpoints=":array" ] [illustration-outside] [href=":url"] [selected] [key=":string"] [selectable]>
     [slot: illustration]
     [slot: default]
     [slot: actions]
@@ -113,9 +112,10 @@ Values:
   - Breakpoint 3
     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
     - default break: `843px < x`  where `x` is the width of the component.
-- **checked**: This item is checked.
 - **href**: This item will link to the given page.
 - **illustration-outside**: Whether the illustration is outside of the dividers.
+- **selectable**: This item can be selected.
+- **selected**: This item is selected.
 
 ## Slots
 
