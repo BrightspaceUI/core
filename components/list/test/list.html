@@ -86,11 +86,13 @@
 						list.querySelectorAll('d2l-list-item').forEach(element => element.selectable = false);
 					});
 
-					it('Select one element and wait for on change.', async() => {
+					it('Select one element and wait for on event.', async() => {
 						return new Promise((resolve, reject) => {
 							list.addEventListener('d2l-list-selection-change', (e) => {
 								try {
-									expect(e.detail.selected).deep.equal(['1']);
+									expect(e.detail.key).to.equal('1');
+									expect(e.detail.selected).to.be.true;
+									expect(e.target.getSelectedKeys()).deep.equal(['1']);
 									resolve();
 								} catch (e) {
 									reject(e);
@@ -106,36 +108,14 @@
 					});
 
 					it('Select all.', async() => {
-						await new Promise((resolve, reject) => {
-							list.addEventListener('d2l-list-selection-change', (e) => {
-								try {
-									if (e.detail.selected.length === 4) {
-										resolve();
-									}
-								} catch (e) {
-									reject(e);
-								}
-							});
-							list.toggleSelectAll();
-						});
-
+						list.toggleSelectAll();
+						expect(list.getSelectedKeys()).deep.equal(['1', '2', '3', '4']);
 						expect(list.getSelectionState()).to.equal(selectableListStates.all);
 					});
 
 					it('Select none.', async() => {
-						await new Promise((resolve, reject) => {
-							list.addEventListener('d2l-list-selection-change', (e) => {
-								try {
-									if (e.detail.selected.length === 0) {
-										resolve();
-									}
-								} catch (e) {
-									reject(e);
-								}
-							});
-							list.toggleSelectAll();
-						});
-
+						list.toggleSelectAll();
+						expect(list.getSelectedKeys()).deep.equal([]);
 						expect(list.getSelectionState()).to.equal(selectableListStates.none);
 					});
 				});

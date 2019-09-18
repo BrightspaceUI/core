@@ -228,12 +228,12 @@ class ListItem extends RtlMixin(LitElement) {
 			</div>
 		`;
 	}
+
 	updated(changedProperties) {
 		if (changedProperties.has('key')) {
 			const oldValue = changedProperties.get('key');
 			if (typeof oldValue !== 'undefined') {
 				this.setIsSelected(undefined, true);
-				this._fireItemSelected(false, oldValue);
 			}
 		}
 
@@ -264,9 +264,6 @@ class ListItem extends RtlMixin(LitElement) {
 
 	setIsSelected(isSelected, suppressEvent) {
 		this.selected = isSelected;
-		if (typeof this.key === 'undefined') {
-			this.key = getUniqueId();
-		}
 		if (!suppressEvent) {
 			this._fireItemSelected(isSelected);
 		}
@@ -280,7 +277,7 @@ class ListItem extends RtlMixin(LitElement) {
 		key = key ? key : this.key;
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: {
-				key,
+				key: key,
 				selected: value
 			},
 			bubbles: true

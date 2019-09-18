@@ -132,14 +132,7 @@ class ListDemoControl extends LitElement {
 	}
 
 	_onListChange(event) {
-		const list = event.target;
-		const selectAll = this.shadowRoot.querySelector('.select-all');
-		this._numberSelected = event.detail.selected.length;
-		selectAll.indeterminate = list.getSelectionState() === selectableListStates.indeterminate;
-		selectAll.checked = list.getSelectionState() === selectableListStates.all;
-
-		// This line allows you to see how and when the events fire. So check your console log.
-		console.log(event.detail.selected); // eslint-disable-line
+		this._updateSelectAll(event.target);
 	}
 
 	_onChangeSelectable(event) {
@@ -152,6 +145,18 @@ class ListDemoControl extends LitElement {
 	_onChangeSelectAll() {
 		const list = document.querySelector(`${this.target} d2l-list`);
 		list.toggleSelectAll();
+		this._updateSelectAll(list);
+	}
+
+	_updateSelectAll(list) {
+		const selectAll = this.shadowRoot.querySelector('.select-all');
+		const elementsSelected = list.getSelectedKeys();
+		this._numberSelected = elementsSelected.length;
+		selectAll.indeterminate = list.getSelectionState() === selectableListStates.indeterminate;
+		selectAll.checked = list.getSelectionState() === selectableListStates.all;
+
+		// This line allows you to see how and when the events fire. So check your console log.
+		console.log(elementsSelected); // eslint-disable-line
 	}
 }
 

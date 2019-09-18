@@ -66,29 +66,24 @@ class List extends LitElement {
 		`;
 		return [layout, specialCases];
 	}
-
 	constructor() {
 		super();
-		this._selected = {};
 		this.addEventListener('d2l-list-item-selected', this._onlistItemSelected.bind(this));
 	}
 
-	disconnectedCallback() {
-		this._selected = {};
-		super.disconnectedCallback();
-	}
-
-	getSelectedItemKeys() {
-		return Object.keys(this._selected).filter(key => this._selected[key]);
+	getSelectedKeys() {
+		const selectedListItems = [...this.querySelectorAll('d2l-list-item')];
+		return selectedListItems && selectedListItems.filter(listItem => listItem.selected).map(listItem => listItem.key);
 	}
 
 	getSelectionState() {
-		const selectedListItems = this.getSelectedItemKeys();
+		const listItems = [...this.querySelectorAll('d2l-list-item')];
+		const selectedListItems = listItems.filter(listItem => listItem.selected);
 		if (!selectedListItems || selectedListItems.length < 1) {
 			return selectableListStates.none;
 		}
 
-		const notSelectedListItems = this.querySelectorAll('d2l-list-item:not([selected])');
+		const notSelectedListItems = listItems.filter(listItem => !listItem.selected);
 		if (notSelectedListItems.length < 1) {
 			return selectableListStates.all;
 		}
@@ -105,33 +100,24 @@ class List extends LitElement {
 	}
 
 	toggleSelectAll() {
-		const notSelectedListItems = this.querySelectorAll('d2l-list-item:not([selected])');
+		const listItems = [...this.querySelectorAll('d2l-list-item')];
+		const notSelectedListItems = listItems.filter(listItem => !listItem.selected);
 		if (notSelectedListItems.length < 1) {
-			const selectedListItems = this.querySelectorAll('d2l-list-item[selected]');
+			const selectedListItems = listItems.filter(listItem => listItem.selected);
 			selectedListItems.forEach(listItem => {
 				listItem.setIsSelected(false, true);
-				this._selected[listItem.key] = false;
 			});
 		} else {
 			notSelectedListItems.forEach(listItem => {
 				listItem.setIsSelected(true, true);
-				this._selected[listItem.key] = true;
 			});
 		}
-		this._fireSelectionChange();
-	}
-
-	_fireSelectionChange() {
-		this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
-			detail: {
-				selected: this.getSelectedItemKeys()
-			}
-		}));
 	}
 
 	_onlistItemSelected(event) {
-		this._selected[event.detail.key] = event.detail.selected;
-		this._fireSelectionChange();
+		this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
+			detail: event.detail
+		}));
 		event.stopPropagation();
 	}
 }
