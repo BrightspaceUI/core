@@ -10,6 +10,10 @@ describe('d2l-dialog', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
+
+		const client = await page.target().createCDPSession();
+		await client.send('Animation.enable');
+		await client.send('Animation.setPlaybackRate', { playbackRate: 100 });
 	});
 
 	after(() => browser.close());
