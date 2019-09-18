@@ -1,6 +1,6 @@
 # Off-screen Content
 
-Positioning content off-screen is a valuable accessibility technique when you wish to have content which is only visible to screen readers. For more information, read [WebAIM's article on Invisible Content](http://webaim.org/techniques/css/invisiblecontent/).
+Positioning content off-screen is a valuable accessibility technique when you wish to have content which is only visible to screen readers. For more information on this approach, read [WebAIM's article on Invisible Content](http://webaim.org/techniques/css/invisiblecontent/).
 
 ## Web Component
 
