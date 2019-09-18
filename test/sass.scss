@@ -1,5 +1,6 @@
 @import '../components/colors/colors.scss';
 @import '../components/link/link.scss';
+@import '../components/offscreen/offscreen.scss';
 @import '../components/typography/typography.scss';
 
 @include d2l-typography-font-face();
@@ -33,4 +34,7 @@
 }
 .d2l-test-link {
 	@include d2l-link();
+}
+.d2l-test-offscreen {
+	@include d2l-offscreen();
 }
