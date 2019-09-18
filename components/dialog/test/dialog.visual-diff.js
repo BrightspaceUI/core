@@ -113,19 +113,16 @@ describe('d2l-dialog', function() {
 				it('wrap to first', async function() {
 					await open(page, '#dialog');
 					await page.evaluate(() => {
-						document.querySelector('#dialog #cancel').focus();
+						document.querySelector('#dialog').shadowRoot.querySelector('.d2l-dialog-trap-end').focus();
 					});
-					await page.keyboard.press('Tab');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('wrap to last', async function() {
 					await open(page, '#dialog');
 					await page.evaluate(() => {
-						document.querySelector('#dialog').shadowRoot.querySelector('d2l-button-icon').focus();
+						document.querySelector('#dialog').shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
 					});
-					await page.keyboard.down('Shift');
-					await page.keyboard.press('Tab');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
