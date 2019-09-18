@@ -4,9 +4,7 @@ The `<d2l-icon>` web component can be used in your applications to embed one of 
 
 For custom SVGs not part of our iconography set, use the `<d2l-icon-custom>` web component.
 
-## Usage
-
-### Preset Icons
+## Preset Icons
 
 For preset icons, import and use the `<d2l-icon>` web component with the `icon` attribute.
 
@@ -31,7 +29,7 @@ The `icon` attribute value is of the form `<category-name>:<icon-name>`. The ico
 
 **[&gt; Browse ALL categories and icons](catalogue.md)**
 
-### Custom SVG Icons
+## Custom SVG Icons
 
 To use a custom SVG icon, embed the SVG inside a `<d2l-icon-custom>` element and set the `size` attribute to one of: `tier1`, `tier2` or `tier3`.
 
@@ -48,7 +46,7 @@ To use a custom SVG icon, embed the SVG inside a `<d2l-icon-custom>` element and
 
 Ensure that the SVG is formatted according to [the rules outlined below](#svg-format).
 
-### Overriding the Color
+## Overriding the Color
 
 To change an icon's color from ferrite to something else, simply set it from CSS:
 
@@ -56,7 +54,7 @@ To change an icon's color from ferrite to something else, simply set it from CSS
 <d2l-icon icon="tier3:alert" style="color: red;"></d2l-icon>
 ```
 
-### Overriding the Size
+## Overriding the Size
 
 Overriding the size is not recommended. However, if you must, set the `width` and `height` from CSS. For this to work in IE11, it **must** be done from inside another web component.
 
