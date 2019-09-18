@@ -24,7 +24,9 @@ Same size as the standard link, but bolder.
 
 ![example screenshot of main link](./screenshots/main.png?raw=true)
 
-## `<d2l-link>` Usage
+## `<d2l-link>` Web Component
+
+Import and use the `<d2l-link>` web component instead of the native `<a>` element:
 
 ```html
 <script type="module">
@@ -44,7 +46,7 @@ Same size as the standard link, but bolder.
 
 ## Applying link styles to native `<a>` elements
 
-Alternately, you can apply link styles to a native `<a>` element. Import the styles and place the `d2l-link` CSS class on the element.
+Alternately, you can apply link styles to a native `<a>` element by importing the styles and placing the `d2l-link` CSS class on the element.
 
 ```javascript
 import { linkStyles } from './link-styles.js';
