@@ -24,7 +24,7 @@ Same size as the standard link, but bolder.
 
 ![example screenshot of main link](./screenshots/main.png?raw=true)
 
-## `<d2l-link>` Web Component
+## Web Component
 
 Import and use the `<d2l-link>` web component instead of the native `<a>` element:
 
