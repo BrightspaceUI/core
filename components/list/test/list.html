@@ -18,27 +18,27 @@
 		<test-fixture id="list">
 			<template>
 					<d2l-list>
-						<d2l-list-item ref="1">
+						<d2l-list-item key="1">
 							<d2l-list-item-content>
 								<div>Identify categories of physical activities</div>
 								<div slot="secondary">Specific Expectation A1.2</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
-						<d2l-list-item href="#" id="link" ref="2">
+						<d2l-list-item href="#" id="link" key="2">
 							<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
 							<d2l-list-item-content>
 								<div>Introductory Earth Sciences</div>
 								<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
-						<d2l-list-item id="hover" ref="3">
+						<d2l-list-item id="hover" key="3">
 							<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
 							<d2l-list-item-content>
 								<div>Byron Novak</div>
 								<div slot="secondary">bnovak</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
-						<d2l-list-item illustration-outside ref="4">
+						<d2l-list-item illustration-outside key="4">
 							<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
 							<d2l-list-item-content>
 								<div>Geomorphology and GIS </div>
@@ -52,6 +52,7 @@
 		<script type="module">
 			import { runAxe } from '../../../tools/a11y-test-helper.js';
 			import { selectableListStates } from '../list.js';
+
 			let list;
 			describe('d2l-list', () => {
 				describe('Pass Axe tests', () => {
@@ -66,9 +67,10 @@
 
 					it('should pass all axe when selectable and hover-effect', async() => {
 						list.toggleAttribute('hover-effect', true);
-						list.toggleAttribute('selectable', true);
-						list.querySelectorAll('d2l-list-item').forEach(element => element.checked = true);
+						list.querySelectorAll('d2l-list-item').forEach(element => element.selectable = true);
+						list.querySelectorAll('d2l-list-item').forEach(element => element.selected = true);
 						await runAxe(list);
+						list.querySelectorAll('d2l-list-item').forEach(element => element.selectable = false);
 					});
 
 				});
@@ -77,59 +79,63 @@
 				describe('Test Selection actions', () => {
 					before(() => {
 						list = fixture('list');
-						list.toggleAttribute('selectable', true);
+						list.querySelectorAll('d2l-list-item').forEach(element => element.selectable = true);
+					});
+
+					after(() => {
+						list.querySelectorAll('d2l-list-item').forEach(element => element.selectable = false);
 					});
 
 					it('Select one element and wait for on change.', async() => {
 						return new Promise((resolve, reject) => {
-							list.addEventListener('change', (e) => {
+							list.addEventListener('d2l-list-selection-change', (e) => {
 								try {
-									expect(e.detail.checkedItems).deep.equal(['1']);
+									expect(e.detail.selected).deep.equal(['1']);
 									resolve();
 								} catch (e) {
 									reject(e);
 								}
 							});
-							list.querySelector('d2l-list-item').checked = true;
+							list.querySelector('d2l-list-item').setIsSelected(true);
 						});
 					});
 
 					it('Selection state indeterminate.', async() => {
-						expect(list.selectionState()).to.equal(selectableListStates.indeterminate);
+						expect(list.getSelectionState()).to.equal(selectableListStates.indeterminate);
 					});
 
 					it('Select all.', async() => {
 						await new Promise((resolve, reject) => {
-							list.addEventListener('change', (e) => {
+							list.addEventListener('d2l-list-selection-change', (e) => {
 								try {
-									if (e.detail.checkedItems.length === 4) {
+									if (e.detail.selected.length === 4) {
 										resolve();
 									}
 								} catch (e) {
 									reject(e);
 								}
 							});
-							list.selectAll();
+							list.toggleSelectAll();
 						});
 
-						expect(list.selectionState()).to.equal(selectableListStates.all);
+						expect(list.getSelectionState()).to.equal(selectableListStates.all);
 					});
 
 					it('Select none.', async() => {
 						await new Promise((resolve, reject) => {
-							list.addEventListener('change', (e) => {
+							list.addEventListener('d2l-list-selection-change', (e) => {
 								try {
-									if (e.detail.checkedItems.length === 0) {
+									if (e.detail.selected.length === 0) {
 										resolve();
 									}
 								} catch (e) {
 									reject(e);
 								}
 							});
-							list.selectAll();
+							list.toggleSelectAll();
 						});
 
-						expect(list.selectionState()).to.equal(selectableListStates.none);
+						expect(list.getSelectionState()).to.equal(selectableListStates.none);
 					});
 				});
 

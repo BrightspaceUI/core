@@ -10,8 +10,8 @@ export const selectableListStates = {
 class List extends LitElement {
 	static get properties() {
 		return {
-			dividerMode: { type: String, attribute: 'divider-mode' },
 			dividerExtend: { type: Boolean, attribute: 'divider-extend'},
+			dividerMode: { type: String, attribute: 'divider-mode' },
 			hoverEffect: {type: Boolean, attribute: 'hover-effect'}
 		};
 	}
@@ -73,20 +73,12 @@ class List extends LitElement {
 		this.addEventListener('d2l-list-item-selected', this._onlistItemSelected.bind(this));
 	}
 
-	itemsSelected() {
-		return Object.keys(this._selected).filter(ref => this._selected[ref]);
+	getSelectedItemKeys() {
+		return Object.keys(this._selected).filter(key => this._selected[key]);
 	}
 
-	render() {
-		return html`
-			<div role="list" class="d2l-list-container">
-				<slot></slot>
-			</div>
-		`;
-	}
-
-	selectionState() {
-		const selectedListItems = this.itemsSelected();
+	getSelectionState() {
+		const selectedListItems = this.getSelectedItemKeys();
 		if (!selectedListItems || selectedListItems.length < 1) {
 			return selectableListStates.none;
 		}
@@ -99,29 +91,43 @@ class List extends LitElement {
 		return selectableListStates.indeterminate;
 	}
 
-	selectAll() {
+	render() {
+		return html`
+			<div role="list" class="d2l-list-container">
+				<slot></slot>
+			</div>
+		`;
+	}
+
+	toggleSelectAll() {
 		const notSelectedListItems = this.querySelectorAll('d2l-list-item:not([selected])');
 		if (notSelectedListItems.length < 1) {
 			const selectedListItems = this.querySelectorAll('d2l-list-item[selected]');
 			selectedListItems.forEach(listItem => {
-				listItem.toggleAttribute('selected');
+				listItem.setIsSelected(false, true);
+				this._selected[listItem.key] = false;
 			});
 		} else {
 			notSelectedListItems.forEach(listItem => {
-				listItem.toggleAttribute('selected');
+				listItem.setIsSelected(true, true);
+				this._selected[listItem.key] = true;
 			});
 		}
+		this._fireSelectionChange();
+	}
+
+	_fireSelectionChange() {
+		this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
+			detail: {
+				selected: this.getSelectedItemKeys()
+			}
+		}));
 	}
 
 	_onlistItemSelected(event) {
+		this._selected[event.detail.key] = event.detail.selected;
+		this._fireSelectionChange();
 		event.stopPropagation();
-
-		this._selected[event.detail.ref] = event.detail.selected;
-		this.dispatchEvent(new CustomEvent('change', {
-			detail: {
-				selectedItems: this.itemsSelected()
-			}
-		}));
 	}
 }
 

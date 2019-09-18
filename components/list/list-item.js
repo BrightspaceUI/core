@@ -19,11 +19,11 @@ class ListItem extends RtlMixin(LitElement) {
 		return {
 			breakpoints: { type: Array },
 			href: { type: String },
-			selected: { type: Boolean, reflect: true },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
-			ref: { type: String, reflect: true },
+			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
+			selected: { type: Boolean, reflect: true },
 			_breakpoint: { type: Number }
 		};
 	}
@@ -181,11 +181,6 @@ class ListItem extends RtlMixin(LitElement) {
 		return [ checkboxStyles, layout, primaryAction, breakPoint1, breakPoint2, breakPoint3, illustrationOutside];
 	}
 
-	static uniqueRef() {
-		ListItem._uniqueRef = !ListItem._uniqueRef ? 1 : ListItem._uniqueRef + 1;
-		return ListItem._uniqueRef;
-	}
-
 	constructor() {
 		super();
 		this._breakpoint = 0;
@@ -205,33 +200,6 @@ class ListItem extends RtlMixin(LitElement) {
 		this.requestUpdate('breakpoints', oldVal);
 	}
 
-	get selected() {
-		return this._selected;
-	}
-
-	set selected(value) {
-		const oldVal = this.selected;
-		this._selected = value;
-		this.requestUpdate('selected', oldVal).then(() => {
-			const checkBox = this.shadowRoot.querySelector(`#${this._checkBoxId}`);
-			checkBox && (checkBox.checked = value);
-
-			if (typeof this.ref === 'undefined') {
-				this.ref = ListItem.uniqueRef();
-			}
-		});
-	}
-
-	get ref() {
-		return this._ref;
-	}
-
-	set ref(ref) {
-		const oldVal = this.ref;
-		this._ref = ref;
-		this.requestUpdate('ref', oldVal);
-	}
-
 	render() {
 		let label, checkbox = html``;
 		if (this.selectable) {
@@ -249,7 +217,7 @@ class ListItem extends RtlMixin(LitElement) {
 			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
 				${label}
 				${this.illustrationOutside ? illustrationSlot : null}
-				${this.href ? link : null}
+				${this.hkey ? link : null}
 				<div class="d2l-list-item-content" id="${this._contentId}">
 					<div class="d2l-list-item-content-flex">
 						${this.illustrationOutside ? null : illustrationSlot}
@@ -261,25 +229,18 @@ class ListItem extends RtlMixin(LitElement) {
 		`;
 	}
 	updated(changedProperties) {
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'ref') {
-				if (typeof oldValue === 'undefined') {
-					this._fireItemSelected(this.selected);
-				} else {
-					this.selected = undefined;
-					this._fireItemSelected(false, oldValue);
-				}
-				return;
+		if (changedProperties.has('key')) {
+			const oldValue = changedProperties.get('key');
+			if (typeof oldValue !== 'undefined') {
+				this.setIsSelected(undefined, true);
+				this._fireItemSelected(false, oldValue);
 			}
+		}
 
-			if (propName === 'selected') {
-				if (typeof this.selected === 'undefined' || typeof this.ref === 'undefined') {
-					return;
-				}
-				this._fireItemSelected(this.selected);
-			}
-
-		});
+		if (changedProperties.has('selected')) {
+			const checkBox = this.shadowRoot.querySelector(`#${this._checkBoxId}`);
+			checkBox && (checkBox.checked = this.selected);
+		}
 
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
@@ -305,15 +266,26 @@ class ListItem extends RtlMixin(LitElement) {
 			}
 		});
 	}
-	_handleChange(e) {
-		this.selected = e.target.checked;
+
+	setIsSelected(isSelected, suppressEvent) {
+		this.selected = isSelected;
+		if (typeof this.key === 'undefined') {
+			this.key = getUniqueId();
+		}
+		if (!suppressEvent) {
+			this._fireItemSelected(isSelected);
+		}
 	}
 
-	_fireItemSelected(value, ref) {
-		ref = ref ? ref : this.ref;
+	_handleChange(e) {
+		this.setIsSelected(e.target.checked);
+	}
+
+	_fireItemSelected(value, key) {
+		key = key ? key : this.key;
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: {
-				ref: ref,
+				key,
 				selected: value,
 			},
 			bubbles: true

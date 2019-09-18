@@ -41,14 +41,19 @@ class ListDemoControl extends LitElement {
 		`];
 	}
 
+	constructor() {
+		super();
+		this._onListChange = this._onListChange.bind(this);
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		const list = document.querySelector(`${this.target} d2l-list`);
-		list.addEventListener('change', this._onListChange.bind(this));
+		list.addEventListener('d2l-list-selection-change', this._onListChange);
 	}
 	disconnectedCallback() {
 		const list = document.querySelector(`${this.target} d2l-list`);
-		list.removeEventListener('change', this._onListChange.bind(this));
+		list.removeEventListener('d2l-list-selection-change', this._onListChange);
 		super.disconnectedCallback();
 	}
 
@@ -129,9 +134,12 @@ class ListDemoControl extends LitElement {
 	_onListChange(event) {
 		const list = event.target;
 		const selectAll = this.shadowRoot.querySelector('.select-all');
-		this._numberSelected = event.detail.selectedItems.length;
-		selectAll.indeterminate = list.selectionState() === selectableListStates.indeterminate;
-		selectAll.checked = list.selectionState() === selectableListStates.all;
+		this._numberSelected = event.detail.selected.length;
+		selectAll.indeterminate = list.getSelectionState() === selectableListStates.indeterminate;
+		selectAll.checked = list.getSelectionState() === selectableListStates.all;
+
+		// This line allows you to see how and when the events fire. So check your console log.
+		console.log(event.detail.selected); // eslint-disable-line
 	}
 
 	_onChangeSelectable(event) {
@@ -143,7 +151,7 @@ class ListDemoControl extends LitElement {
 
 	_onChangeSelectAll() {
 		const list = document.querySelector(`${this.target} d2l-list`);
-		list.selectAll();
+		list.toggleSelectAll();
 	}
 }
 
