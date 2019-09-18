@@ -52,7 +52,8 @@ export const dialogStyles = css`
 		transition: opacity 200ms ease-in;
 	}
 
-	:host([_state="showing"]) .d2l-dialog-outer {
+	:host([_state="showing"]) > .d2l-dialog-outer {
+		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Edge/IE11 */
 		transform: translateY(0);
 	}
 
