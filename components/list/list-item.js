@@ -286,7 +286,7 @@ class ListItem extends RtlMixin(LitElement) {
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: {
 				key,
-				selected: value,
+				selected: value
 			},
 			bubbles: true
 		}));

@@ -101,6 +101,7 @@
 					});
 
 					it('Selection state indeterminate.', async() => {
+						list.querySelector('d2l-list-item').setIsSelected(true);
 						expect(list.getSelectionState()).to.equal(selectableListStates.indeterminate);
 					});
 

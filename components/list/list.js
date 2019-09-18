@@ -67,10 +67,15 @@ class List extends LitElement {
 		return [layout, specialCases];
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
+	constructor() {
+		super();
 		this._selected = {};
 		this.addEventListener('d2l-list-item-selected', this._onlistItemSelected.bind(this));
+	}
+
+	disconnectedCallback() {
+		this._selected = {};
+		super.disconnectedCallback();
 	}
 
 	getSelectedItemKeys() {
