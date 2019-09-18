@@ -1,4 +1,4 @@
-import '../backdrop/backdrop.js';
+import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
@@ -142,6 +142,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusOpener();
 		this._state = null;
 		this.opened = false;
+		allowBodyScroll(this._bodyScrollKey);
+		this._bodyScrollKey = null;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-dialog-close', { bubbles: true, composed: true }
 		));
@@ -220,6 +222,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._parentDialog = findComposedAncestor(this, (node) => {
 			return node.classList && node.classList.contains('d2l-dialog-outer');
 		});
+
+		// native dialog backdrop does not prevent body scrolling
+		this._bodyScrollKey = preventBodyScroll();
 
 		this._updateSize();
 		this._state = 'showing';
