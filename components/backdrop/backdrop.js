@@ -1,9 +1,10 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 
-let count = 0;
-let overflow = null;
+const scrollKeys = [];
+let scrollOverflow = null;
 
 class Backdrop extends LitElement {
 
@@ -69,11 +70,8 @@ class Backdrop extends LitElement {
 		const hide = () => {
 			if (animate) this.removeEventListener('transitionend', hide);
 
-			count--;
-			if (count === 0) {
-				document.body.style.overflow = overflow;
-				overflow = null;
-			}
+			allowBodyScroll(this._bodyScrollKey);
+			this._bodyScrollKey = null;
 
 			showAccessible(this._hiddenElements);
 			this._hiddenElements = null;
@@ -91,17 +89,22 @@ class Backdrop extends LitElement {
 
 	_show() {
 
-		if (count === 0) {
-			overflow = document.body.style.overflow;
-			document.body.style.overflow = 'hidden';
-		}
-		count++;
-
+		this._bodyScrollKey = preventBodyScroll();
 		this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
 		this._state = 'showing';
 
 	}
 
+}
+
+export function allowBodyScroll(key) {
+	const index = scrollKeys.indexOf(key);
+	if (index === -1) return;
+	scrollKeys.splice(index, 1);
+	if (scrollKeys.length === 0) {
+		document.body.style.overflow = scrollOverflow;
+		scrollOverflow = null;
+	}
 }
 
 function hideAccessible(target) {
@@ -145,6 +148,16 @@ function hideAccessible(target) {
 	}
 
 	return hiddenElements;
+}
+
+export function preventBodyScroll() {
+	if (scrollKeys.length === 0) {
+		scrollOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+	}
+	const key = getUniqueId();
+	scrollKeys.push(key);
+	return key;
 }
 
 function showAccessible(elems) {
