@@ -22,6 +22,18 @@ module.exports = {
 		return getEvent(page, selector, 'd2l-dialog-open');
 	},
 
+	getRect(page, selector) {
+		return page.$eval(selector, (dialog) => {
+			const elem = dialog.shadowRoot.querySelector('.d2l-dialog-outer');
+			return {
+				x: elem.offsetLeft - 10,
+				y: elem.offsetTop - 10,
+				width: elem.offsetWidth + 20,
+				height: elem.offsetHeight + 20
+			};
+		});
+	},
+
 	async open(page, selector) {
 		const openEvent = this.getOpenEvent(page, selector);
 		await page.$eval(selector, (dialog) => dialog.opened = true);
