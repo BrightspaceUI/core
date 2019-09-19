@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script>
+		const preferNative = (window.location.search.indexOf('preferNative=false') === -1);
+		window.D2L = { DialogMixin: { preferNative: preferNative } };
+	</script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../../button/button.js';
+		import '../dialog-confirm.js';
+	</script>
+	<title>d2l-dialog-confirm</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body class="d2l-typography">
+	<d2l-button id="open">Open Dialog</d2l-button>
+
+	<d2l-dialog-confirm id="confirm" title-text="Title" text="Are you sure?">
+		<d2l-button slot="footer" primary>Yes</d2l-button>
+		<d2l-button slot="footer" id="cancel">No</d2l-button>
+	</d2l-dialog-confirm>
+
+	<d2l-dialog-confirm id="confirmLongTitle" title-text="A title that is really long and should wrap onto a second line." text="Are you sure?">
+		<d2l-button slot="footer" primary>Yes</d2l-button>
+		<d2l-button slot="footer" id="cancel">No</d2l-button>
+	</d2l-dialog-confirm>
+
+	<d2l-dialog-confirm id="confirmNoTitle" text="Are you sure?">
+		<d2l-button slot="footer" primary>Yes</d2l-button>
+		<d2l-button slot="footer" id="cancel">No</d2l-button>
+	</d2l-dialog-confirm>
+
+	<d2l-dialog-confirm id="confirmLongText" title-text="Title" text="Some confirm dialog content that should wrap onto a second line?">
+		<d2l-button slot="footer" primary>Yes</d2l-button>
+		<d2l-button slot="footer" id="cancel">No</d2l-button>
+	</d2l-dialog-confirm>
+
+	<d2l-dialog-confirm id="confirmRtl" title-text="Title" text="Are you sure?" dir="rtl">
+		<d2l-button slot="footer" primary>Yes</d2l-button>
+		<d2l-button slot="footer" id="cancel">No</d2l-button>
+	</d2l-dialog-confirm>
+
+</body>
+</html>
