@@ -10,6 +10,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 <script type="module">
   import '@brightspace-ui/core/components/dialog/dialog.js';
 </script>
+
 <d2l-button id="open">Show Dialog</d2l-button>
 
 <d2l-dialog title-text="Dialog Title">
@@ -44,6 +45,7 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 <script type="module">
   import '@brightspace-ui/core/components/dialog/dialog-confirm.js';
 </script>
+
 <d2l-button id="open">Show Confirm</d2l-button>
 
 <d2l-dialog-confirm title-text="Confirm Title" text="Are you sure?">
