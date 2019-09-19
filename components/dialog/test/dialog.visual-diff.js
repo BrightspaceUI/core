@@ -35,42 +35,6 @@ describe('d2l-dialog', function() {
 				await helper.reset(page, '#dialogRtl');
 			});
 
-			describe('generic', function() {
-
-				before(async() => {
-					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
-				});
-
-				it('initial closed', async function() {
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-				});
-
-				it('closed', async function() {
-					await helper.open(page, '#dialog');
-					await helper.close(page, '#dialog');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-				});
-
-				it('abort', async function() {
-					await helper.open(page, '#dialog');
-					const closeEvent = helper.getCloseEvent(page, '#dialog');
-					await page.$eval('#dialog', (dialog) => {
-						dialog.shadowRoot.querySelector('d2l-button-icon').click();
-					});
-					await closeEvent;
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-				});
-
-				it('escape', async function() {
-					await helper.open(page, '#dialog');
-					const closeEvent = helper.getCloseEvent(page, '#dialog');
-					await page.keyboard.up('Escape');
-					await closeEvent;
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-				});
-
-			});
-
 			[
 				{ category: 'wide', viewport: { width: 800, height: 500 } },
 				{ category: 'narrow', viewport: { width: 600, height: 500 } }
@@ -105,38 +69,6 @@ describe('d2l-dialog', function() {
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
-				});
-
-			});
-
-			describe('focus trap', function() {
-
-				before(async() => {
-					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
-				});
-
-				it('wrap to first', async function() {
-					await helper.open(page, '#dialog');
-					await page.$eval('#dialog', (dialog) => {
-						dialog.shadowRoot.querySelector('.d2l-dialog-trap-end').focus();
-					});
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-				});
-
-				it('wrap to last', async function() {
-					await helper.open(page, '#dialog');
-					await page.$eval('#dialog', (dialog) => {
-						dialog.shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
-					});
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-				});
-
-				it('redirect from body', async function() {
-					await helper.open(page, '#dialog');
-					await page.$eval('#open', (button) => {
-						button.focus();
-					});
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 			});
