@@ -1,3 +1,4 @@
+const helper = require('./dialog-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
@@ -29,9 +30,9 @@ describe('d2l-dialog', function() {
 			});
 
 			beforeEach(async() => {
-				await reset(page, '#dialog');
-				await reset(page, '#dialogLong');
-				await reset(page, '#dialogRtl');
+				await helper.reset(page, '#dialog');
+				await helper.reset(page, '#dialogLong');
+				await helper.reset(page, '#dialogRtl');
 			});
 
 			describe('generic', function() {
@@ -45,24 +46,24 @@ describe('d2l-dialog', function() {
 				});
 
 				it('closed', async function() {
-					await open(page, '#dialog');
-					await close(page, '#dialog');
+					await helper.open(page, '#dialog');
+					await helper.close(page, '#dialog');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('abort', async function() {
-					await open(page, '#dialog');
-					const closeEvent = getCloseEvent(page, '#dialog');
-					await page.evaluate(() => {
-						document.querySelector('#dialog').shadowRoot.querySelector('d2l-button-icon').click();
+					await helper.open(page, '#dialog');
+					const closeEvent = helper.getCloseEvent(page, '#dialog');
+					await page.$eval('#dialog', (dialog) => {
+						dialog.shadowRoot.querySelector('d2l-button-icon').click();
 					});
 					await closeEvent;
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('escape', async function() {
-					await open(page, '#dialog');
-					const closeEvent = getCloseEvent(page, '#dialog');
+					await helper.open(page, '#dialog');
+					const closeEvent = helper.getCloseEvent(page, '#dialog');
 					await page.keyboard.up('Escape');
 					await closeEvent;
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
@@ -82,25 +83,25 @@ describe('d2l-dialog', function() {
 					});
 
 					it('opened', async function() {
-						await open(page, '#dialog');
+						await helper.open(page, '#dialog');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('scroll bottom shadow', async function() {
-						await open(page, '#dialogLong');
+						await helper.open(page, '#dialogLong');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('scroll top shadow', async function() {
-						await open(page, '#dialogLong');
-						await page.evaluate(() => {
-							document.querySelector('#dialogLong #bottom').scrollIntoView();
+						await helper.open(page, '#dialogLong');
+						await page.$eval('#dialogLong #bottom', (bottom) => {
+							bottom.scrollIntoView();
 						});
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('rtl', async function() {
-						await open(page, '#dialogRtl');
+						await helper.open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
@@ -115,25 +116,25 @@ describe('d2l-dialog', function() {
 				});
 
 				it('wrap to first', async function() {
-					await open(page, '#dialog');
-					await page.evaluate(() => {
-						document.querySelector('#dialog').shadowRoot.querySelector('.d2l-dialog-trap-end').focus();
+					await helper.open(page, '#dialog');
+					await page.$eval('#dialog', (dialog) => {
+						dialog.shadowRoot.querySelector('.d2l-dialog-trap-end').focus();
 					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('wrap to last', async function() {
-					await open(page, '#dialog');
-					await page.evaluate(() => {
-						document.querySelector('#dialog').shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
+					await helper.open(page, '#dialog');
+					await page.$eval('#dialog', (dialog) => {
+						dialog.shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
 					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('redirect from body', async function() {
-					await open(page, '#dialog');
-					await page.evaluate(() => {
-						document.querySelector('#open').focus();
+					await helper.open(page, '#dialog');
+					await page.$eval('#open', (button) => {
+						button.focus();
 					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
@@ -143,54 +144,5 @@ describe('d2l-dialog', function() {
 		});
 
 	});
-
-	const close = async(page, selector) => {
-		const closeEvent = getCloseEvent(page, selector);
-		await page.evaluate((selector) => {
-			document.querySelector(selector).opened = false;
-		}, selector);
-		return closeEvent;
-	};
-
-	const getCloseEvent = (page, selector) => {
-		return getEvent(page, selector, 'd2l-dialog-close');
-	};
-
-	const getEvent = (page, selector, name) => {
-		return page.evaluate((selector, name) => {
-			return new Promise((resolve) => {
-				const dialog = document.querySelector(selector);
-				dialog.addEventListener(name, resolve, { once: true });
-			});
-		}, selector, name);
-	};
-
-	const getOpenEvent = (page, selector) => {
-		return getEvent(page, selector, 'd2l-dialog-open');
-	};
-
-	const open = async(page, selector) => {
-		const openEvent = getOpenEvent(page, selector);
-		await page.evaluate((selector) => {
-			document.querySelector(selector).opened = true;
-		}, selector);
-		return openEvent;
-	};
-
-	const reset = async(page, selector) => {
-		await page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const dialog = document.querySelector(selector);
-				dialog.shadowRoot.querySelector('.d2l-dialog-content').scrollTo(0, 0);
-				if (dialog._state) {
-					dialog.addEventListener('d2l-dialog-close', () => resolve(), { once: true });
-					dialog.opened = false;
-				} else {
-					resolve();
-				}
-			});
-		}, selector);
-		return page.click('#open');
-	};
 
 });
