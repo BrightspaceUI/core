@@ -1,19 +1,23 @@
 import { LocalizeMixin } from './localize-mixin.js';
 
+const fallbackLang = 'en';
+
 export const LocalizeStaticMixin = superclass => class extends LocalizeMixin(superclass) {
 
 	static async getLocalizeResources(langs) {
-		langs.forEach((lang) => {
-			if (this.resources[lang] !== undefined) {
-				return {
-					language: lang,
-					resources: this.resources[lang]
-				};
+		let resolvedLang = fallbackLang;
+		const resolvedResources = Object.assign({}, this.resources[fallbackLang]);
+
+		langs.reverse().forEach((lang) => {
+			if (this.resources[lang]) {
+				resolvedLang = lang;
+				Object.assign(resolvedResources, this.resources[lang]);
 			}
 		});
+
 		return {
-			language: 'en',
-			resources: this.resources['en']
+			language: resolvedLang,
+			resources: resolvedResources
 		};
 	}
 
