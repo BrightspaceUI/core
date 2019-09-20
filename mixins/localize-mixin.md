@@ -229,4 +229,4 @@ time.formatFileSize(1234567.89);
 
 ## Automatic Language, Timezone and Override Support
 
-The user's language, timezone and any D2L locale overrides are automatically fetched by he localization mixins from the `<html>` element's `lang`, `data-timezone` and `data-intl-overrides` attributes respectively.
+The user's language, timezone and any D2L locale overrides are automatically fetched by the localization mixins from the `<html>` element's `lang`, `data-timezone` and `data-intl-overrides` attributes respectively.
