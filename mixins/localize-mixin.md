@@ -1,23 +1,12 @@
-# LocalizeMixin
+# Localization Mixins
 
-The `LocalizeMixin` allows you to localize text and format & parse numbers, dates, times and file sizes.
-
-## Usage
-
-Import `LocalizeMixin` and have your component extend it:
-
-```javascript
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
-
-class MyComponent extends LocalizeMixin(LitElement) {
-}
-```
+The`LocalizeMixin` and `LocalizeStaticMixin` allow you to localize text and format & parse numbers, dates, times and file sizes.
 
 ## Localizing Text
 
-### `getLocalizedResources()`
+### Providing Resources
 
-To localize text, your component must provide localized resources to the mixin by implementing the `getLocalizeResources()` method. It will be passed an array of lowercase languages in preferential order. These will be based on the language of the page (i.e. `<html lang="fr-ca">`) and D2L organization fallback language (i.e. `<html data-lang-default="fr">`).
+To localize text, your component must provide resources by either implementing a static `resources` getter for local resources, or a `getLocalizeResources` method to fetch resources asynchronously. The `getLocalizeResources` method will be passed an array of lowercase languages in preferential order. These will be based on the language of the page (i.e. `<html lang="fr-ca">`) and D2L organization fallback language (i.e. `<html data-lang-default="fr">`).
 
 Your implementation should find the resources that best match the languages passed in. It should then return an object containing two values:
 - `language` (string): the language of the resources
@@ -44,35 +33,29 @@ Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc
 
 ### Static vs. Async Resources
 
-`getLocalizedResources()` is an `async` method, so you can either return your resources immediately or fetch them asynchronously.
+For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources. To get resources asynchronously, use the `LocalizeMixin` and implement `getLocalizedResources` as an `async` method.
 
 #### Example 1: Static Resources
 
 If your component has a small number of translations, it may make sense to store them locally within the component in a constant.
 
 ```javascript
-const resources = {
-  'en': {
-    hello: 'Hello {firstName}!'
-  },
-  'fr': {
-    hello: 'Bonjour {firstName}!'
-  },
-  ...
-};
-static async getLocalizeResources(langs) {
-  langs.forEach((lang) => {
-    if (resources[lang] !== undefined) {
-      return {
-        language: lang,
-        resources: resources[lang]
-      };
-    }
-  });
-  return {
-    language: 'en',
-    resources: resources['en']
-  };
+import { LocalizeStaticMixin } from '@brightspace-ui/core/mixins/localize-static-mixin.js';
+
+class MyComponent extends LocalizeStaticMixin(LitElement) {
+
+  static get resources() {
+    return {
+      'en': {
+        hello: 'Hello {firstName}!'
+      },
+      'fr': {
+        hello: 'Bonjour {firstName}!'
+      },
+      ...
+    };
+  }
+
 }
 ```
 
@@ -90,29 +73,35 @@ export const val = {
 
 Then dynamically import the matching file:
 ```javascript
-static async getLocalizeResources(langs) {
-  for await (const lang of langs) {
-    let translations;
-    switch (lang) {
-      case 'en':
-        translations = await import('./locales/en.js');
-        break;
-      case 'fr':
-        translations = await import('./locales/fr.js');
-        break;
+import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+
+class MyComponent extends LocalizeMixin(LitElement) {
+
+  static async getLocalizeResources(langs) {
+    for await (const lang of langs) {
+      let translations;
+      switch (lang) {
+        case 'en':
+          translations = await import('./locales/en.js');
+          break;
+        case 'fr':
+          translations = await import('./locales/fr.js');
+          break;
+      }
+      if (translations && translations.val) {
+        return {
+          language: lang,
+          resources: translations.val
+        };
+      }
     }
-    if (translations && translations.val) {
-      return {
-        language: lang,
-        resources: translations.val
-      };
-    }
+    translations = await import('./locales/en.js');
+    return {
+      language: 'en',
+      resources: translations.val
+    };
   }
-  translations = await import('./locales/en.js');
-  return {
-    language: 'en',
-    resources: translations.val
-  };
+
 }
 ```
 
@@ -132,7 +121,7 @@ render() {
 
 While [format.js](https://formatjs.io) has built-in support for date, time and number formatting, D2L has its own rules and also allows complex overriding of the standard locale settings (decimal separator, group separator, 24-hour clocks, etc.).
 
-To support these custom rules, `LocalizeMixin` exposes several methods for formatting and parsing dates, times, numbers and file sizes. These simply leverage the [D2L Intl library](https://github.com/Brightspace/intl).
+To support these custom rules, the localization mixins expose several methods for formatting and parsing dates, times, numbers and file sizes. These simply leverage the [D2L Intl library](https://github.com/Brightspace/intl).
 
 ### Formatting Numbers (decimal and percent)
 
@@ -240,4 +229,4 @@ time.formatFileSize(1234567.89);
 
 ## Automatic Language, Timezone and Override Support
 
-The user's language, timezone and any D2L locale overrides are automatically fetched by `LocalizeMixin` from the `<html>` element's `lang`, `data-timezone` and `data-intl-overrides` attributes respectively.
+The user's language, timezone and any D2L locale overrides are automatically fetched by he localization mixins from the `<html>` element's `lang`, `data-timezone` and `data-intl-overrides` attributes respectively.
