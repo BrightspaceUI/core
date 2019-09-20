@@ -1,10 +1,29 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import '../../components/colors/colors.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ArrowKeysMixin } from '../arrow-keys-mixin.js';
 
 export class ArrowKeysTest extends ArrowKeysMixin(LitElement) {
+
+	static get styles() {
+		return css`
+			:host {
+				display: inline-block;
+			}
+			.d2l-arrowkeys-focusable {
+				display: inline-block;
+				padding: 1rem;
+				border: 2px solid var(--d2l-color-ferrite);
+				border-radius: 4px;
+			}
+			.d2l-arrowkeys-focusable:focus {
+				border: 2px solid var(--d2l-color-celestine);
+			}
+		`;
+	}
+
 	render() {
 		const inner = html`
-			<div class="d2l-arrowkeys-focusable" tabindex="-1"></div>
+			<div class="d2l-arrowkeys-focusable" tabindex="0"></div>
 			<div class="d2l-arrowkeys-focusable" tabindex="-1"></div>
 			<div class="d2l-arrowkeys-focusable" tabindex="-1"></div>
 			<div class="d2l-arrowkeys-focusable" tabindex="-1"></div>

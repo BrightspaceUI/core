@@ -10,10 +10,11 @@ const keyCodes = Object.freeze({
 });
 
 export const ArrowKeysMixin = superclass => class extends superclass {
+
 	static get properties() {
 		return {
-			arrowKeysDirection: { type: String },
-			arrowKeysNoWrap: { type: Boolean }
+			arrowKeysDirection: { type: String, attribute: 'arrow-keys-direction' },
+			arrowKeysNoWrap: { type: Boolean, attribute: 'arrow-keys-no-wrap' }
 		};
 	}
 
