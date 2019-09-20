@@ -47,24 +47,22 @@
 				let simpleFixture, focusables;
 
 				const testKeyInteractions = (keyInteractions) => {
-					for (let i = 0; i < keyInteractions.length; i++) {
-						(function(i) {
-							it(keyInteractions[i].name, (done) => {
-								simpleFixture.arrowKeysOnBeforeFocus = (elem) => {
-									return new Promise((resolve) => {
-										expect(elem).to.equal(focusables[keyInteractions[i].endIndex]);
-										resolve();
-									});
-								};
-								focusables[keyInteractions[i].startIndex].focus();
-								focusables[keyInteractions[i].endIndex].addEventListener('focus', () => {
-									expect(getComposedActiveElement()).to.equal(focusables[keyInteractions[i].endIndex]);
-									done();
+					keyInteractions.forEach((keyInteraction) => {
+						it(keyInteraction.name, (done) => {
+							simpleFixture.arrowKeysOnBeforeFocus = (elem) => {
+								return new Promise((resolve) => {
+									expect(elem).to.equal(focusables[keyInteraction.endIndex]);
+									resolve();
 								});
-								keyDown(focusables[keyInteractions[i].startIndex], keyInteractions[i].keyCode);
+							};
+							focusables[keyInteraction.startIndex].focus();
+							focusables[keyInteraction.endIndex].addEventListener('focus', () => {
+								expect(getComposedActiveElement()).to.equal(focusables[keyInteraction.endIndex]);
+								done();
 							});
-						}(i));
-					}
+							keyDown(focusables[keyInteraction.startIndex], keyInteraction.keyCode);
+						});
+					});
 				};
 
 				describe('ltr', () => {
