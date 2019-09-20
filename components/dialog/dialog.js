@@ -4,8 +4,9 @@ import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
+import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
-class Dialog extends DialogMixin(LitElement) {
+class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -56,6 +57,14 @@ class Dialog extends DialogMixin(LitElement) {
 		`];
 	}
 
+	static get resources() {
+		return {
+			'en': {
+				close: 'Close this dialog'
+			}
+		};
+	}
+
 	constructor() {
 		super();
 		this.width = 600;
@@ -68,7 +77,7 @@ class Dialog extends DialogMixin(LitElement) {
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
-						<d2l-button-icon icon="d2l-tier1:close-small" text="Close this dialog" @click="${this._close}"></d2l-button-icon>
+						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('close')}" @click="${this._close}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content">
