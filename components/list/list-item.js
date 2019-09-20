@@ -217,7 +217,7 @@ class ListItem extends RtlMixin(LitElement) {
 			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
 				${label}
 				${this.illustrationOutside ? illustrationSlot : null}
-				${this.hkey ? link : null}
+				${this.href ? link : null}
 				<div class="d2l-list-item-content" id="${this._contentId}">
 					<div class="d2l-list-item-content-flex">
 						${this.illustrationOutside ? null : illustrationSlot}
