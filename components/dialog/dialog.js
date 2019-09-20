@@ -59,9 +59,22 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 
 	static get resources() {
 		return {
-			'en': {
-				close: 'Close this dialog'
-			}
+			'ar': { close: 'إغلاق مربع الحوار هذا' },
+			'da': { close: 'Luk denne dialogboks' },
+			'de': { close: 'Dieses Dialogfeld schließen' },
+			'en': { close: 'Close this dialog' },
+			'es': { close: 'Cerrar este cuadro de diálogo' },
+			'fr': { close: 'Fermer cette boîte de dialogue' },
+			'ja': { close: 'このダイアログを閉じる' },
+			'ko': { close: '이 대화 상자 닫기' },
+			'nl': { close: 'Dit dialoogvenster sluiten' },
+			'pt': { close: 'Fechar esta caixa de diálogo' },
+			'sv': { close: 'Stäng dialogrutan' },
+			'tr': { close: 'Bu iletişim kutusunu kapat' },
+			'tr-tr': { close: 'Bu diyalog kutusunu kapat' },
+			'zh': { close: '关闭此对话框' },
+			'zh-cn': { close: '关闭此对话' },
+			'zh-tw': { close: '關閉此對話方塊' }
 		};
 	}
 
