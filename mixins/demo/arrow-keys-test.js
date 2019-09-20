@@ -1,7 +1,7 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { ArrowKeysMixin } from '../arrow-keys-mixin';
+import { ArrowKeysMixin } from '../arrow-keys-mixin.js';
 
-export class ArrowKeysTestElem extends ArrowKeysMixin(LitElement) {
+export class ArrowKeysTest extends ArrowKeysMixin(LitElement) {
 	render() {
 		const inner = html`
 			<div class="d2l-arrowkeys-focusable" tabindex="-1"></div>
@@ -16,4 +16,4 @@ export class ArrowKeysTestElem extends ArrowKeysMixin(LitElement) {
 	}
 }
 
-customElements.define('arrow-keys-test-elem', ArrowKeysTestElem);
+customElements.define('d2l-test-arrow-keys', ArrowKeysTest);
