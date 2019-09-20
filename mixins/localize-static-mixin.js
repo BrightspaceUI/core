@@ -2,10 +2,6 @@ import { LocalizeMixin } from './localize-mixin.js';
 
 export const LocalizeStaticMixin = superclass => class extends LocalizeMixin(superclass) {
 
-	static get resources() {
-		return { 'en': {} };
-	}
-
 	static async getLocalizeResources(langs) {
 		langs.forEach((lang) => {
 			if (this.resources[lang] !== undefined) {
@@ -19,6 +15,10 @@ export const LocalizeStaticMixin = superclass => class extends LocalizeMixin(sup
 			language: 'en',
 			resources: this.resources['en']
 		};
+	}
+
+	static get resources() {
+		return { 'en': {} };
 	}
 
 };
