@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-input-text unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../input-text.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="basic">
+			<template>
+				<d2l-input-text aria-label="label"></d2l-input-text>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-input-text', () => {
+
+				let elem, input;
+
+				beforeEach(async() => {
+					elem = fixture('basic');
+					await elem.updateComplete;
+					input = elem.shadowRoot.querySelector('.d2l-input');
+				});
+
+				describe('accessibility', () => {
+
+					it('should pass all aXe tests', async() => {
+						await runAxe(elem);
+					});
+
+					it('should pass all aXe tests with value', async() => {
+						elem.setAttribute('value', 'hello');
+						await runAxe(elem);
+					});
+
+					it('should pass all aXe tests when disabled', async() => {
+						elem.disabled = true;
+						await runAxe(elem);
+					});
+
+					it('should pass all aXe tests when invalid', async() => {
+						elem.setAttribute('aria-invalid', 'true');
+						await runAxe(elem);
+					});
+
+					it('should pass all aXe tests when focused', async() => {
+						elem.focus();
+						await runAxe(elem);
+					});
+
+				});
+
+				describe('default property values', () => {
+
+					it('should default "preventSubmit" property to "false" when unset', () => {
+						expect(elem.preventSubmit).to.be.false;
+					});
+
+					it('should default "type" property to "text" when unset', () => {
+						expect(elem.type).to.equal('text');
+					});
+
+					it('should default "value" property to empty when unset', () => {
+						expect(elem.value).to.equal('');
+					});
+
+					it('should default unrecognized "type" to "text"', () => {
+						elem.setAttribute('type', 'silly');
+						expect(input.type).to.equal('text');
+					});
+
+				});
+
+				describe('property binding', () => {
+
+					it('should bind "value" attribute to input property', async() => {
+						elem.setAttribute('value', 'hello');
+						await elem.updateComplete;
+						expect(input.value).to.equal('hello');
+					});
+
+					[
+						{name: 'aria-invalid', propName: 'ariaInvalid', value: 'true'},
+						{name: 'aria-label', propName: 'ariaLabel', value: 'hello'},
+						{name: 'autocomplete', value: 'email'},
+						{name: 'autofocus', value: true},
+						{name: 'disabled', value: true},
+						{name: 'max', value: '5'},
+						{name: 'maxlength', propName: 'maxLength', value: 10},
+						{name: 'min', value: '1'},
+						{name: 'minLength', propName: 'minLength', value: 3},
+						{name: 'name', value: 'jim'},
+						{name: 'pattern', value: '[A-Za-z]+'},
+						{name: 'placeholder', value: 'enter something'},
+						{name: 'readonly', propName: 'readOnly', value: true},
+						{name: 'required', value: true},
+						{name: 'size', value: 20},
+						{name: 'step', value: '2'},
+						{name: 'type', value: 'email'}
+					].forEach((attr) => {
+						attr.propName = attr.propName || attr.name;
+						it(`should bind "${attr.name}" to input`, async() => {
+							if (typeof attr.value === 'boolean') {
+								elem.setAttribute(attr.name, attr.name);
+							} else {
+								elem.setAttribute(attr.name, attr.value.toString());
+							}
+							await elem.updateComplete;
+							if (typeof attr.value === 'boolean') {
+								expect(input.hasAttribute(attr.name)).to.be.true;
+								expect(input[attr.propName]).to.equal(attr.value);
+							} else {
+								expect(input.getAttribute(attr.name)).to.equal(attr.value.toString());
+								if (attr.name.indexOf('aria-') === -1) {
+									expect(input[attr.propName]).to.equal(attr.value);
+								}
+							}
+						});
+					});
+
+				});
+
+				describe('value', () => {
+
+					function dispatchEvent(eventType, composed) {
+						const e = new Event(
+							eventType,
+							{ bubbles: true, cancelable: false, composed: composed }
+						);
+						input.dispatchEvent(e);
+					}
+
+					it('should fire uncomposed "change" event when input value changes', (done) => {
+						elem.addEventListener('change', (e) => {
+							expect(e.composed).to.be.false;
+							done();
+						});
+						dispatchEvent('change', false);
+					});
+
+					it('should fire "input" event when input value changes', (done) => {
+						elem.addEventListener('input', () => done());
+						dispatchEvent('input', true);
+					});
+
+					it('should change "value" property when input value changes', () => {
+						input.value = 'hello';
+						dispatchEvent('input', true);
+						expect(elem.value).to.equal('hello');
+					});
+
+				});
+
+				describe('submit prevention', () => {
+
+					function pressEnter() {
+						const event = new CustomEvent('keypress', {
+							detail: 0,
+							bubbles: true,
+							cancelable: true,
+							composed: true
+						});
+						event.keyCode = 13;
+						event.code = 13;
+						input.dispatchEvent(event);
+					}
+
+					it('should allow ENTER keypress event by default', (done) => {
+						elem.addEventListener('keypress', (e) => {
+							expect(e.defaultPrevented).to.be.false;
+							done();
+						});
+						pressEnter();
+					});
+
+					it('should preventDefault on ENTER when "prevent-submit"', (done) => {
+						elem.addEventListener('keypress', (e) => {
+							expect(e.defaultPrevented).to.be.true;
+							done();
+						});
+						elem.setAttribute('prevent-submit', 'prevent-submit');
+						pressEnter();
+					});
+
+				});
+
+			});
+		</script>
+	</body>
+</html>
