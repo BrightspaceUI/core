@@ -25,7 +25,6 @@ export const inputStyles = css`
 		position: relative;
 		vertical-align: middle;
 		width: 100%;
-		transition: background-color 0.5s ease, border-color 0.001s ease;
 	}
 	input.d2l-input::placeholder,
 	textarea.d2l-input::placeholder {
