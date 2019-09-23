@@ -1,4 +1,3 @@
-import { getLocalizationResource } from '../../tools/localization-load.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 export const MeterMixin = superclass => class extends LocalizeStaticMixin(superclass) {
