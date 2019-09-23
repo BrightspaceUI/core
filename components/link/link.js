@@ -7,7 +7,7 @@ class Link extends LitElement {
 
 	static get properties() {
 		return {
-			ariaLabel: { stype: String, attribute: 'aria-label' },
+			ariaLabel: { type: String, attribute: 'aria-label' },
 			download: { type: Boolean },
 			href: { type: String },
 			main: { type: Boolean, reflect: true },

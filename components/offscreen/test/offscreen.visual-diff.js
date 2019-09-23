@@ -1,0 +1,34 @@
+const puppeteer = require('puppeteer');
+const VisualDiff = require('@brightspace-ui/visual-diff');
+
+describe('d2l-offscreen', function() {
+
+	const visualDiff = new VisualDiff('offscreen', __dirname);
+
+	let browser, page;
+
+	before(async() => {
+		browser = await puppeteer.launch();
+		page = await browser.newPage();
+		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+		await page.goto(`${visualDiff.getBaseUrl()}/components/offscreen/test/offscreen.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+		await page.bringToFront();
+	});
+
+	after(() => browser.close());
+
+	[
+		'wc',
+		'style',
+		'sass'
+	].forEach((name) => {
+		['ltr', 'rtl'].forEach((dir) => {
+			const test = `${name}-${dir}`;
+			it(test, async function() {
+				const rect = await visualDiff.getRect(page, `#${test}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
+});
