@@ -1,7 +1,7 @@
 import { getLocalizationResource } from '../../tools/localization-load.js';
-import { LocalizeMixin } from '../../mixins/localize-mixin.js';
+import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
-export const MeterMixin = superclass => class extends LocalizeMixin(superclass) {
+export const MeterMixin = superclass => class extends LocalizeStaticMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -12,8 +12,22 @@ export const MeterMixin = superclass => class extends LocalizeMixin(superclass) 
 		};
 	}
 
-	static async getLocalizeResources(langs) {
-		return getLocalizationResource('meter', langs);
+	static get resources() {
+		return {
+			'ar': { commaSeperatedAria: '{term1}، ‏{term2}', fraction: '{x}∕{y}', progressIndicator: 'مؤشر التقدم' },
+			'de': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Fortschrittsanzeige' },
+			'en': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Progress Indicator' },
+			'es': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Indicador de progreso' },
+			'fr': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Indicateur de progrès' },
+			'ja': { commaSeperatedAria: '{term1}、{term2}', fraction: '{x}∕{y}', progressIndicator: '進捗状況インジケータ' },
+			'ko': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: '진도 표시기' },
+			'nl': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Voortgangsindicator' },
+			'pt': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Indicador de Progresso' },
+			'sv': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Förloppsindikator' },
+			'tr': { commaSeperatedAria: '{term1}, {term2}', fraction: '{x}∕{y}', progressIndicator: 'Gelişim Göstergesi' },
+			'zh': { commaSeperatedAria: '{term1}、{term2}', fraction: '{x}∕{y}', progressIndicator: '进度指示符' },
+			'zh-tw': { commaSeperatedAria: '{term1}，{term2}', fraction: '{x}∕{y}', progressIndicator: '進度指示器' }
+		};
 	}
 
 	constructor() {
