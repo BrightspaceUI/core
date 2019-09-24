@@ -9,9 +9,8 @@
   "scripts": {
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
-    "build:lang": "node ./cli/lang-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
-    "build": "npm run build:clean && npm run build:icons && npm run build:lang && npm run build:sass",
+    "build": "npm run build:clean && npm run build:icons && npm run build:sass",
     "lint": "npm run lint:eslint && npm run lint:lit-analyze",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit-analyze": "lit-analyzer components demo directives helpers mixins test tools",
