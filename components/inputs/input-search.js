@@ -1,5 +1,4 @@
 import '../button/button-icon.js';
-import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -38,7 +37,6 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
-					-webkit-appearance: textfield;
 				}
 				:host([dir="rtl"]) .d2l-input {
 					padding-right: 0.75rem;
@@ -57,7 +55,7 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					--d2l-button-icon-min-height: 1.5rem;
 					--d2l-button-icon-min-width: 1.5rem;
 					--d2l-button-icon-border-radius: 4px;
-					--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
+					--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #006fbf;
 					position: absolute;
 					right: 0.3rem;
 					top: 50%;
@@ -73,18 +71,18 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	static get resources() {
 		return {
-			'ar': { 'search': 'بحث', 'clear': 'مسح البحث' },
-			'en': { 'search': 'Search', 'clear': 'Clear Search' },
-			'es': { 'search': 'Buscar', 'clear': 'Borrar búsqueda' },
-			'fr': { 'search': 'Rechercher', 'clear': 'Effacer la recherche' },
-			'ja': { 'search': '検索', 'clear': '検索のクリア' },
-			'ko': { 'search': '검색', 'clear': '검색 지우기' },
-			'nl': { 'search': 'Zoeken', 'clear': 'Zoekopdracht wissen' },
-			'pt': { 'search': 'Pesquisar', 'clear': 'Limpar Pesquisa' },
-			'sv': { 'search': 'Sökning', 'clear': 'Rensa sökning' },
-			'tr': { 'search': 'Ara', 'clear': 'Aramayı Temizle' },
-			'zh': { 'search': '搜索', 'clear': '清除搜索' },
-			'zh-tw': { 'search': '搜尋', 'clear': '清除搜尋' }
+			'ar': { 'search': 'بحث', 'search.clear': 'مسح البحث' },
+			'en': { 'search': 'Search', 'search.clear': 'Clear Search' },
+			'es': { 'search': 'Buscar', 'search.clear': 'Borrar búsqueda' },
+			'fr': { 'search': 'Rechercher', 'search.clear': 'Effacer la recherche' },
+			'ja': { 'search': '検索', 'search.clear': '検索のクリア' },
+			'ko': { 'search': '검색', 'search.clear': '검색 지우기' },
+			'nl': { 'search': 'Zoeken', 'search.clear': 'Zoekopdracht wissen' },
+			'pt': { 'search': 'Pesquisar', 'search.clear': 'Limpar Pesquisa' },
+			'sv': { 'search': 'Sökning', 'search.clear': 'Rensa sökning' },
+			'tr': { 'search': 'Ara', 'search.clear': 'Aramayı Temizle' },
+			'zh': { 'search': '搜索', 'search.clear': '清除搜索' },
+			'zh-tw': { 'search': '搜尋', 'search.clear': '清除搜尋' }
 		};
 	}
 
@@ -131,17 +129,21 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					maxlength="${ifDefined(this.maxlength)}"
 					placeholder="${ifDefined(this.placeholder)}"
 					type="search"
-					.value="${this.value}">${showSearch ? html`
-					<d2l-button-icon
-						?disabled="${this.disabled}"
-						icon="tier1:search"
-						@click="${this.search}"
-						text="${this.localize('search')}"></d2l-button-icon>` : html`
-					<d2l-button-icon
-						@click="${this._handleClearClick}"
-						?disabled="${this.disabled}"
-						icon="tier1:close-default"
-						text="${this.localize('clear')}"></d2l-button-icon>`}
+					.value="${this.value}">
+				<d2l-button-icon
+					class="d2l-input-search-search"
+					?disabled="${this.disabled}"
+					?hidden="${!showSearch}"
+					icon="tier1:search"
+					@click="${this.search}"
+					text="${this.localize('search')}"></d2l-button-icon>
+				<d2l-button-icon
+					class="d2l-input-search-clear"
+					@click="${this._handleClearClick}"
+					?disabled="${this.disabled}"
+					?hidden="${showSearch}"
+					icon="tier1:close-default"
+					text="${this.localize('search.clear')}"></d2l-button-icon>
 			</div>
 		`;
 	}
@@ -170,7 +172,7 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._dispatchEvent();
 		if (!this.noClear && this.value.length > 0) {
 			this.updateComplete.then(() => {
-				this.shadowRoot.querySelector('d2l-button-icon').focus();
+				this.shadowRoot.querySelector('.d2l-input-search-clear').focus();
 			});
 		}
 	}
@@ -190,7 +192,11 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		));
 	}
 
-	_handleBlur() {
+	_handleBlur(e) {
+		const isFocusableChild = (e.relatedTarget === this.shadowRoot.querySelector('.d2l-input'))
+			|| (e.relatedTarget === this.shadowRoot.querySelector('.d2l-input-search-search'))
+			|| (e.relatedTarget === this.shadowRoot.querySelector('.d2l-input-search-clear'));
+		if (isFocusableChild) return;
 		this._focussed = false;
 	}
 
