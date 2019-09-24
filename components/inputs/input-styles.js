@@ -38,7 +38,8 @@ export const inputStyles = css`
 		font-weight: 400;
 	}
 	.d2l-input:hover,
-	.d2l-input:focus {
+	.d2l-input:focus,
+	.d2l-input-focus {
 		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
 		outline-style: none;
