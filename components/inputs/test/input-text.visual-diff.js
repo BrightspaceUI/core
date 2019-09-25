@@ -41,10 +41,7 @@ describe('d2l-input-text', function() {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 		it(`${name}-focus`, async function() {
-			await page.evaluate((name) => {
-				const elem = document.querySelector(`#${name}`);
-				elem.focus();
-			}, name);
+			await page.evaluate((name) => document.querySelector(`#${name}`).focus(), name);
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
