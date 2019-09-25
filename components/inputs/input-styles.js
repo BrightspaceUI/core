@@ -59,7 +59,8 @@ export const inputStyles = css`
 	.d2l-input:disabled {
 		opacity: 0.5;
 	}
-	.d2l-input::-webkit-search-cancel-button {
+	.d2l-input::-webkit-search-cancel-button,
+	.d2l-input::-webkit-search-decoration {
 		display: none;
 	}
 	.d2l-input::-ms-clear {
