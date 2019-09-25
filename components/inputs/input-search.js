@@ -193,11 +193,7 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		));
 	}
 
-	_handleBlur(e) {
-		const isFocusableChild = (e.relatedTarget === this.shadowRoot.querySelector('.d2l-input'))
-			|| (e.relatedTarget === this.shadowRoot.querySelector('.d2l-input-search-search'))
-			|| (e.relatedTarget === this.shadowRoot.querySelector('.d2l-input-search-clear'));
-		if (isFocusableChild) return;
+	_handleBlur() {
 		this._focussed = false;
 	}
 
