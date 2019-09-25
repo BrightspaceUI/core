@@ -26,15 +26,13 @@ export const inputStyles = css`
 		vertical-align: middle;
 		width: 100%;
 	}
-	input.d2l-input::placeholder,
-	textarea.d2l-input::placeholder {
+	.d2l-input::placeholder {
 		color: var(--d2l-input-placeholder-color, var(--d2l-color-mica));
 		font-size: 0.8rem;
 		font-weight: 400;
 		opacity: 1; /* Firefox has non-1 default */
 	}
-	input.d2l-input::-ms-input-placeholder,
-	textarea.d2l-input::-ms-input-placeholder {
+	.d2l-input::-ms-input-placeholder {
 		color: var(--d2l-input-placeholder-color, var(--d2l-color-mica));
 		font-size: 0.8rem;
 		font-weight: 400;
@@ -60,10 +58,10 @@ export const inputStyles = css`
 	.d2l-input:disabled {
 		opacity: 0.5;
 	}
-	input.d2l-input::-webkit-search-cancel-button {
+	.d2l-input::-webkit-search-cancel-button {
 		display: none;
 	}
-	input.d2l-input::-ms-clear {
+	.d2l-input::-ms-clear {
 		display: none;
 		width: 0;
 		height: 0;
