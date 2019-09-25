@@ -1,4 +1,5 @@
 import '../button/button-icon.js';
+import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -55,7 +56,7 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					--d2l-button-icon-min-height: 1.5rem;
 					--d2l-button-icon-min-width: 1.5rem;
 					--d2l-button-icon-border-radius: 4px;
-					--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #006fbf;
+					--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
 					position: absolute;
 					right: 0.3rem;
 					top: 50%;
