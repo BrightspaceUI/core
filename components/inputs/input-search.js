@@ -72,18 +72,18 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	static get resources() {
 		return {
-			'ar': { 'search': 'بحث', 'search.clear': 'مسح البحث' },
-			'en': { 'search': 'Search', 'search.clear': 'Clear Search' },
-			'es': { 'search': 'Buscar', 'search.clear': 'Borrar búsqueda' },
-			'fr': { 'search': 'Rechercher', 'search.clear': 'Effacer la recherche' },
-			'ja': { 'search': '検索', 'search.clear': '検索のクリア' },
-			'ko': { 'search': '검색', 'search.clear': '검색 지우기' },
-			'nl': { 'search': 'Zoeken', 'search.clear': 'Zoekopdracht wissen' },
-			'pt': { 'search': 'Pesquisar', 'search.clear': 'Limpar Pesquisa' },
-			'sv': { 'search': 'Sökning', 'search.clear': 'Rensa sökning' },
-			'tr': { 'search': 'Ara', 'search.clear': 'Aramayı Temizle' },
-			'zh': { 'search': '搜索', 'search.clear': '清除搜索' },
-			'zh-tw': { 'search': '搜尋', 'search.clear': '清除搜尋' }
+			'ar': { 'search': 'بحث', 'clear': 'مسح البحث' },
+			'en': { 'search': 'Search', 'clear': 'Clear Search' },
+			'es': { 'search': 'Buscar', 'clear': 'Borrar búsqueda' },
+			'fr': { 'search': 'Rechercher', 'clear': 'Effacer la recherche' },
+			'ja': { 'search': '検索', 'clear': '検索のクリア' },
+			'ko': { 'search': '검색', 'clear': '검색 지우기' },
+			'nl': { 'search': 'Zoeken', 'clear': 'Zoekopdracht wissen' },
+			'pt': { 'search': 'Pesquisar', 'clear': 'Limpar Pesquisa' },
+			'sv': { 'search': 'Sökning', 'clear': 'Rensa sökning' },
+			'tr': { 'search': 'Ara', 'clear': 'Aramayı Temizle' },
+			'zh': { 'search': '搜索', 'clear': '清除搜索' },
+			'zh-tw': { 'search': '搜尋', 'clear': '清除搜尋' }
 		};
 	}
 
@@ -143,7 +143,7 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 						@click="${this._handleClearClick}"
 						?disabled="${this.disabled}"
 						icon="tier1:close-default"
-						text="${this.localize('search.clear')}"></d2l-button-icon>`}
+						text="${this.localize('clear')}"></d2l-button-icon>`}
 			</div>
 		`;
 	}
