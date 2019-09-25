@@ -38,6 +38,7 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+					-webkit-appearance: textfield;
 				}
 				:host([dir="rtl"]) .d2l-input {
 					padding-right: 0.75rem;
