@@ -16,7 +16,7 @@
     "lint:lit-analyze": "lit-analyzer components demo directives helpers mixins test tools",
     "test": "npm run lint && npm run test:local && npm run test:diff",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
-    "test:diff:golden": "mocha ./components/button/test/*.visual-diff.js -t 40000 --golden",
+    "test:diff:golden": "mocha ./components/button/test/button-icon.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sauce": "polymer test --skip-plugin local",
