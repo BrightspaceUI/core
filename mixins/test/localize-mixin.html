@@ -10,6 +10,7 @@
 		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
 		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
 		<script type="module" src="../demo/localize-test.js"></script>
+		<script type="module" src="../demo/localize-test-no-resources.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
@@ -25,6 +26,11 @@
 		<test-fixture id="async">
 			<template>
 				<d2l-test-localize name="Bill" async></d2l-test-localize>
+			</template>
+		</test-fixture>
+		<test-fixture id="no-resources">
+			<template>
+				<d2l-test-localize-no-resources></d2l-test-localize-no-resources>
 			</template>
 		</test-fixture>
 
@@ -276,7 +282,7 @@
 						expect(val).to.equal(1234567.89);
 					});
 				});
-				describe('data/time/number overrides', () => {
+				describe('date/time/number overrides', () => {
 
 					const date = new Date(2018, 0, 4, 15, 5);
 					let elem;
@@ -389,15 +395,31 @@
 						});
 					});
 				});
+				describe('no resources', () => {
+
+					it('should use document language even if resources are missing', async() => {
+						htmlElem.setAttribute('lang', 'sv');
+						const elem = await fixtureAndAwaitRender('basic');
+						expect(elem.formatNumber(123456.789)).to.equal('123 456,789');
+					});
+
+					it('should use document language when no resources', async() => {
+						htmlElem.setAttribute('lang', 'es');
+						const elem = await fixtureAndAwaitRender('no-resources');
+						expect(elem.formatNumber(123456.789)).to.equal('123.456,789');
+					});
+
+				});
 				describe('shouldUpdate tracking', () => {
 
 					it('should pass all changed properties to updated()', (done) => {
 						const elem = fixture('async');
 						elem.addEventListener('d2l-test-localize-updated', (e) => {
 							const props = e.detail.props;
-							expect(props.size).to.equal(4);
+							expect(props.size).to.equal(5);
 							expect(props.has('name'));
 							expect(props.has('async'));
+							expect(props.has('__pageLanguage'));
 							expect(props.has('__language'));
 							expect(props.has('__resources'));
 							done();
@@ -414,7 +436,7 @@
 							const props = e.detail.props;
 							if (first) {
 								first = false;
-								expect(props.size).to.equal(4);
+								expect(props.size).to.equal(5);
 								return;
 							}
 							expect(props.size).to.equal(1);
