@@ -25,7 +25,6 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			'ja': { 'hello': 'こんにちは {name}' },
 			'ko': { 'hello': '안녕하세요 {name}' },
 			'pt-br': { 'hello': 'Olá {name}' },
-			'sv': { 'hello': 'Hallå {name}' },
 			'tr': { 'hello': 'Merhaba {name}' },
 			'zh-cn': { 'hello': '你好 {name}' },
 			'zh-tw': { 'hello': '你好 {name}' }

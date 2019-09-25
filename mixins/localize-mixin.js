@@ -1,15 +1,16 @@
 import {
 	addListener, formatDate, formatDateTime, formatFileSize, formatNumber,
-	formatTime, getTimezone, localize, parseDate, parseNumber,
-	parseTime, removeListener
+	formatTime, getDocumentLanguage, getDocumentLanguageFallback, getTimezone,
+	localize, parseDate, parseNumber, parseTime, removeListener
 } from '../helpers/localization.js';
 
 export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			__language: { type: String },
-			__resources: { type: Object }
+			__pageLanguage: { type: String, attribute: false },
+			__language: { type: String, attribute: false  },
+			__resources: { type: Object, attribute: false  }
 		};
 	}
 
@@ -18,6 +19,10 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 		let first = true;
 		this.__languageChangeCallback = (documentLanguage, documentLanguageFallback) => {
+
+			this.__pageLanguage = documentLanguage || documentLanguageFallback || 'en';
+
+			if (!this._hasResources()) return;
 			const possibleLanguages = this._generatePossibleLanguages(documentLanguage, documentLanguageFallback);
 			this.constructor.getLocalizeResources(possibleLanguages)
 				.then((res) => {
@@ -32,8 +37,10 @@ export const LocalizeMixin = superclass => class extends superclass {
 						this._languageChange();
 					}
 				});
+
 		};
 		this.__updatedProperties = new Map();
+		this.__pageLanguage = getDocumentLanguage() || getDocumentLanguageFallback() || 'en';
 
 	}
 
@@ -49,21 +56,29 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	shouldUpdate(changedProperties) {
-		const ready = this.__language !== undefined
-			&& this.__resources !== undefined;
+
+		const hasResources = this._hasResources();
+		if (!hasResources) {
+			return super.shouldUpdate(changedProperties);
+		}
+
+		const ready = (this.__language !== undefined && this.__resources !== undefined);
 		if (!ready) {
 			changedProperties.forEach((oldValue, propName) => {
 				this.__updatedProperties.set(propName, oldValue);
 			});
 			return false;
 		}
+
 		this.__updatedProperties.forEach((oldValue, propName) => {
 			if (!changedProperties.has(propName)) {
 				changedProperties.set(propName, oldValue);
 			}
 		});
 		this.__updatedProperties.clear();
+
 		return super.shouldUpdate(changedProperties);
+
 	}
 
 	getTimezone() {
@@ -71,23 +86,23 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	formatDateTime(val, opts) {
-		return formatDateTime(this.__language, val, opts);
+		return formatDateTime(this.__pageLanguage, val, opts);
 	}
 
 	formatDate(val, opts) {
-		return formatDate(this.__language, val, opts);
+		return formatDate(this.__pageLanguage, val, opts);
 	}
 
 	formatFileSize(val) {
-		return formatFileSize(this.__language, val);
+		return formatFileSize(this.__pageLanguage, val);
 	}
 
 	formatNumber(val, opts) {
-		return formatNumber(this.__language, val, opts);
+		return formatNumber(this.__pageLanguage, val, opts);
 	}
 
 	formatTime(val, opts) {
-		return formatTime(this.__language, val, opts);
+		return formatTime(this.__pageLanguage, val, opts);
 	}
 
 	localize(key) {
@@ -108,15 +123,15 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	parseDate(val) {
-		return parseDate(this.__language, val);
+		return parseDate(this.__pageLanguage, val);
 	}
 
 	parseNumber(val, opts) {
-		return parseNumber(this.__language, val, opts);
+		return parseNumber(this.__pageLanguage, val, opts);
 	}
 
 	parseTime(val) {
-		return parseTime(this.__language, val);
+		return parseTime(this.__pageLanguage, val);
 	}
 
 	_generatePossibleLanguages(docLang, docFallbackLang) {
@@ -145,6 +160,10 @@ export const LocalizeMixin = superclass => class extends superclass {
 		langs.push('en-us', 'en');
 
 		return langs;
+	}
+
+	_hasResources() {
+		return this.constructor['getLocalizeResources'] !== undefined;
 	}
 
 	_languageChange() {
