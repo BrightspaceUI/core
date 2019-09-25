@@ -4,7 +4,7 @@ The `ArrowKeysMixin` enables the user to move focus using the arrow keys. The `r
 
 ## Usage
 
-The focusable elements can be provided in one of two ways.
+The focusable elements can be provided in one of two ways:
 
 If the elements are known up-front and are in the element's local DOM scope, simply add the d2l-arrowkeys-focusable class.
 
