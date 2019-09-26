@@ -9,7 +9,7 @@ There are various input components available:
 
 The `<d2l-input-text>` element is a simple wrapper around the native `<input type="text">` tag. It's intended primarily for inputting generic text, email addresses and URLs.
 
-![example screenshot of text input](./screenshots/text.png?raw=true)
+![example screenshot of text input](./screenshots/text.gif?raw=true)
 
 ```html
 <script type="module">
@@ -44,7 +44,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 
 For text searches use `<d2l-input-search>`, which wraps the native `<input type="search">` element.
 
-![example screenshot of search input](./screenshots/search.png?raw=true)
+![example screenshot of search input](./screenshots/search.gif?raw=true)
 
 ```html
 <script type="module">
