@@ -15,7 +15,9 @@ The `d2l-button` element can be used just like the native button element, but al
 
 **Properties:**
 
-- `description` (optional, String): A description to be added to the `button` for accessibility
+- `description` (String): A description to be added to the `button` for accessibility
+- `disabled` (Boolean): disables the button
+- `primary` (Boolean): styles the button as a primary button
 
 ## d2l-button-subtle
 
@@ -35,10 +37,11 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 **Properties:**
 
 - `text` (required, String): Text for the button
-- `description` (optional, String): A description to be added to the `button` for accessibility
-- `h-align` (optional, String): `text` aligns the leading edge of text
-- `icon` (optional, String): [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`)
-- `icon-right` (optional, Boolean): Indicates that the icon should be rendered on right
+- `description` (String): A description to be added to the `button` for accessibility
+- `disabled` (Boolean): disables the button
+- `h-align` (String): `text` aligns the leading edge of text
+- `icon` (String): [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`)
+- `icon-right` (Boolean): Indicates that the icon should be rendered on right
 
 ## d2l-button-icon
 
@@ -50,15 +53,16 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
 </script>
-<d2l-button-icon text="My Button" icon="d2l-tier1:gear"></d2l-button-icon>
+<d2l-button-icon text="My Button" icon="tier1:gear"></d2l-button-icon>
 ```
 
 **Properties:**
 
-- `text` (required, String): Accessibly text for the button
 - `icon` (required, String): [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`)
-- `h-align` (optional, String): `text` aligns the leading edge of text
-- `translucent` (optional, Boolean): Indicates to display translucent (ex. on rich backgrounds)
+- `text` (required, String): Accessible text for the button
+- `disabled` (Boolean): disables the button
+- `h-align` (String): `text` aligns the leading edge of text
+- `translucent` (Boolean): Indicates to display translucent (ex. on rich backgrounds)
 
 ## d2l-floating-buttons
 
@@ -80,5 +84,5 @@ Floating workflow buttons behavior can be added by using the `<d2l-floating-butt
 
 **Properties:**
 
-- `always-float` (optional, Boolean): Indicates to display buttons as always floating
-- `min-height` (optional, String): The minimum height of the viewport to display floating buttons at (where applicable). If viewport is less than `min-height`, buttons will never appear floating (unless `always-float` is used). If viewport is greater than `min-height` then buttons will float when applicable.
+- `always-float` (Boolean): Indicates to display buttons as always floating
+- `min-height` (String, default: `'500px'`): The minimum height of the viewport to display floating buttons at (where applicable). If viewport is less than `min-height`, buttons will never appear floating (unless `always-float` is used). If viewport is greater than `min-height` then buttons will float when applicable.

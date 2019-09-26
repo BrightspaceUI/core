@@ -20,10 +20,10 @@ Linear meters show a horizontal progress bar.
 **Properties:**
 
 - `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-- `max` (required, Number): Max number of units that are being measured by this meter. A positive, non-zero number.
-- `percent` (optional, Boolean): Shows a percentage instead of `value/max`.
-- `text-inline` (optional, Boolean): Keeps the meter to a single line.
-- `text` (optional, String): Context information about what the meter is about.
+- `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
+- `percent` (Boolean): Shows a percentage instead of `value/max`.
+- `text-inline` (Boolean): Keeps the meter to a single line.
+- `text` (String): Context information about what the meter is about.
 	- `{%}` in the string will be replaced with percentage value
 	- `{x/y}` in the string will be replaced with fraction with the proper language support
 	- **DEPRECATED** `{x}` in the string will be replaced with `value`
@@ -48,9 +48,9 @@ Radial meters will show the progress bar as a half circle.
 **Properties:**
 
 - `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-- `max` (required, Number): Max number of units that are being measured by this meter. A positive, non-zero number.
-- `percent` (optional, Boolean): Shows a percentage instead of `value/max`.
-- `text` (optional, String): Context information about what the meter is about.
+- `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
+- `percent` (Boolean): Shows a percentage instead of `value/max`.
+- `text` (String): Context information about what the meter is about.
 	- `{%}` in the string will be replaced with percentage value
 	- `{x/y}` in the string will be replaced with fraction with the proper language support
 
@@ -72,9 +72,9 @@ Circle meters will show the progress as a full circle.
 **Properties:**
 
 - `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-- `max` (required, Number): Max number of units that are being measured by this meter. A positive, non-zero number.
-- `percent` (optional, Boolean): Shows a percentage instead of `value/max`.
-- `text` (optional, String): Context information about what the meter is about.
+- `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
+- `percent` (Boolean): Shows a percentage instead of `value/max`.
+- `text` (String): Context information about what the meter is about.
 	- `{%}` in the string will be replaced with percentage value
 	- `{x/y}` in the string will be replaced with fraction with the proper language support
 

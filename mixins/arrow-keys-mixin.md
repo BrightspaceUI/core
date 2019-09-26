@@ -49,6 +49,6 @@ customElements.define('my-element', MyElement);
 
 **Properties:**
 
-- `arrowKeysDirection` (optional, String): Indicates which arrow keys are allowed (default is leftright)
-- `arrowKeysNoWrap` (optional, Boolean): Whether focus should wrap from end-to-start and start-to-end
-- `arrowKeysBeforeFocus` (optional, Function): Async callback invoked before focus us applied
+- `arrowKeysDirection` (String): Indicates which arrow keys are allowed (default is leftright)
+- `arrowKeysNoWrap` (Boolean): Whether focus should wrap from end-to-start and start-to-end
+- `arrowKeysBeforeFocus` (Function): Async callback invoked before focus us applied

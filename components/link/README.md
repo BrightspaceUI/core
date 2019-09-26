@@ -37,12 +37,12 @@ Import and use the `<d2l-link>` web component instead of the native `<a>` elemen
 
 **Properties:**
 
-- `aria-label` (optional, String): sets an accessible label
-- `download` (optional, Boolean): download a URL instead of navigating to it
 - `href` (required, String): URL or URL fragment of the link
-- `main` (optional, Boolean): whether to apply the "main" link style
-- `small` (optional, Boolean): whether to apply the "small" link style
-- `target` (optional, String): where to display the linked URL
+- `aria-label` (String): sets an accessible label
+- `download` (Boolean): download a URL instead of navigating to it
+- `main` (Boolean): whether to apply the "main" link style
+- `small` (Boolean): whether to apply the "small" link style
+- `target` (String): where to display the linked URL
 
 ## Applying link styles to native `<a>` elements
 
