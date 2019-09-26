@@ -34,28 +34,33 @@
 
 			describe('d2l-input-search', () => {
 
-				let clearButton, elem, input, searchButton;
+				let elem, input;
 
 				async function getFixture(name) {
 					return new Promise((resolve) => {
 						elem = fixture(name);
 						elem.addEventListener('d2l-input-search-render', () => {
-							clearButton = elem.shadowRoot.querySelector('.d2l-input-search-clear');
 							input = elem.shadowRoot.querySelector('.d2l-input');
-							searchButton = elem.shadowRoot.querySelector('.d2l-input-search-search');
 							resolve();
 						});
 					});
 				}
 
 				function assertSearchVisibility(isVisible) {
+					const visibleButton = elem.shadowRoot.querySelector('d2l-button-icon');
 					if (isVisible) {
-						expect(clearButton.hasAttribute('hidden')).to.be.true;
-						expect(searchButton.hasAttribute('hidden')).to.be.false;
+						expect(visibleButton.getAttribute('icon')).to.equal('tier1:search');
 					} else {
-						expect(clearButton.hasAttribute('hidden')).to.be.false;
-						expect(searchButton.hasAttribute('hidden')).to.be.true;
+						expect(visibleButton.getAttribute('icon')).to.equal('tier1:close-default');
 					}
+				}
+
+				function getClearButton() {
+					return elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:close-default"]');
+				}
+
+				function getSearchButton() {
+					return elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:search"]');
 				}
 
 				function pressEnter() {
@@ -146,7 +151,7 @@
 						await getFixture('basic');
 						elem.value = 'bar';
 						await elem.updateComplete;
-						searchButton.click();
+						getSearchButton().click();
 						await elem.updateComplete;
 						expect(elem.value).to.equal('bar');
 						expect(elem.lastSearchValue).to.equal('bar');
@@ -154,7 +159,7 @@
 
 					it('should clear both when cleared', async() => {
 						await getFixture('value-set');
-						clearButton.click();
+						getClearButton().click();
 						await elem.updateComplete;
 						expect(elem.value).to.equal('');
 						expect(elem.lastSearchValue).to.equal('');
@@ -203,28 +208,30 @@
 
 					it('should show search if value is cleared', async() => {
 						await getFixture('value-set');
-						clearButton.click();
+						getClearButton().click();
 						await elem.updateComplete;
 						assertSearchVisibility(true);
 					});
 
 					it('should show search if empty search is performed', async() => {
 						await getFixture('basic');
-						searchButton.click();
+						getSearchButton().click();
 						assertSearchVisibility(true);
 					});
 
 					it('should show clear if modified value is searched', async() => {
 						await getFixture('value-set');
 						elem.value = 'foobar';
-						searchButton.click();
+						await elem.updateComplete;
+						getSearchButton().click();
+						await elem.updateComplete;
 						assertSearchVisibility(false);
 					});
 
 					it('should NOT show clear if modified value is searched in no-clear mode', async() => {
 						await getFixture('no-clear');
 						elem.value = 'foobar';
-						searchButton.click();
+						getSearchButton().click();
 						await elem.updateComplete;
 						assertSearchVisibility(true);
 					});
@@ -241,7 +248,7 @@
 								resolve();
 							});
 							elem.value = 'bar';
-							searchButton.click();
+							getSearchButton().click();
 						});
 					});
 
@@ -264,7 +271,7 @@
 								expect(e.detail.value).to.equal('');
 								resolve();
 							});
-							clearButton.click();
+							getClearButton().click();
 						});
 					});
 
@@ -276,7 +283,7 @@
 								resolve();
 							});
 							elem.value = '';
-							searchButton.click();
+							elem.updateComplete.then(() => getSearchButton().click() );
 						});
 					});
 

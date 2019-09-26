@@ -133,13 +133,11 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					type="search"
 					.value="${this.value}">${showSearch ? html`
 					<d2l-button-icon
-						class="d2l-input-search-search"
 						?disabled="${this.disabled}"
 						icon="tier1:search"
 						@click="${this.search}"
 						text="${this.localize('search')}"></d2l-button-icon>` : html`
 					<d2l-button-icon
-						class="d2l-input-search-clear"
 						@click="${this._handleClearClick}"
 						?disabled="${this.disabled}"
 						icon="tier1:close-default"
@@ -172,7 +170,7 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._dispatchEvent();
 		if (!this.noClear && this.value.length > 0) {
 			this.updateComplete.then(() => {
-				this.shadowRoot.querySelector('.d2l-input-search-clear').focus();
+				this.shadowRoot.querySelector('d2l-button-icon').focus();
 			});
 		}
 	}

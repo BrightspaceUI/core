@@ -31,11 +31,11 @@ describe('d2l-input-search', function() {
 	}
 
 	async function getClearButton(id) {
-		return getShadowElem(id, '.d2l-input-search-clear');
+		return getShadowElem(id, 'd2l-button-icon[icon="tier1:close-default"]');
 	}
 
 	async function getSearchButton(id) {
-		return getShadowElem(id, '.d2l-input-search-search');
+		return getShadowElem(id, 'd2l-button-icon[icon="tier1:search"]');
 	}
 
 	[
