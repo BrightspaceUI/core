@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../input-search.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-input-search">
+			<h2>Search Input</h2>
+			<d2l-demo-snippet>
+				<d2l-input-search label="Search" value="apples" placeholder="Search for some stuff">
+				</d2l-input-search>
+			</d2l-demo-snippet>
+			<h2>Search Input (No Clear)</h2>
+			<d2l-demo-snippet>
+				<d2l-input-search label="Search" value="Clear button will never appear" placeholder="Search for some stuff" no-clear>
+				</d2l-input-search>
+			</d2l-demo-snippet>
+			<script>
+				document.body.addEventListener('d2l-input-search-searched', (e) => {
+					// eslint-disable-next-line no-console
+					console.log(e);
+				});
+			</script>
+		</d2l-demo-page>
+	</body>
+</html>

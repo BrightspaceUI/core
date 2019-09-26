@@ -38,7 +38,8 @@ export const inputStyles = css`
 		font-weight: 400;
 	}
 	.d2l-input:hover,
-	.d2l-input:focus {
+	.d2l-input:focus,
+	.d2l-input-focus {
 		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
 		outline-style: none;
@@ -58,7 +59,8 @@ export const inputStyles = css`
 	.d2l-input:disabled {
 		opacity: 0.5;
 	}
-	.d2l-input::-webkit-search-cancel-button {
+	.d2l-input::-webkit-search-cancel-button,
+	.d2l-input::-webkit-search-decoration {
 		display: none;
 	}
 	.d2l-input::-ms-clear {
