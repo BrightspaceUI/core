@@ -31,9 +31,9 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 
 **Properties:**
 
-- `opened`: Whether or not the dialog is open
 - `title-text` (required, String): Text displayed in the header of the dialog
-- `width` (optional, Number): The preferred width (unit-less) for the dialog
+- `opened` (Boolean): Whether or not the dialog is open
+- `width` (Number, default: `600`): The preferred width (unit-less) for the dialog
 
 ## d2l-dialog-confirm
 
@@ -65,6 +65,6 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 
 **Properties:**
 
-- `opened`: Whether or not the dialog is open
 - `text` (required, String): The required text content for the confirmation dialog
-- `title-text` (optional, String): The optional title for the confirmation dialog
+- `opened` (Boolean): Whether or not the dialog is open
+- `title-text` (String): The optional title for the confirmation dialog
