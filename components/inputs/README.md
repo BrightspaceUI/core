@@ -2,9 +2,9 @@
 
 There are various input components available:
 
-- - [Text](#text-inputs)
-- - [Search](#search-inputs)
-- - [Checkboxes](#checkboxes)
+- [Text](#text-inputs)
+- [Search](#search-inputs)
+- [Checkboxes](#checkboxes)
 
 ## Text Inputs
 
