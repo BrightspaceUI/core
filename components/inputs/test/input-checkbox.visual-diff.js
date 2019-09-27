@@ -49,7 +49,7 @@ describe('d2l-input-checkbox', () => {
 		'hidden-label'
 	].forEach((name) => {
 		it(`${name}-focus`, async function() {
-			await page.evaluate((name) => document.querySelector(`#${name}`).focus(), name);
+			await page.$eval(`#${name}`, (elem) => elem.focus());
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
