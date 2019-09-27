@@ -83,19 +83,21 @@ class InputCheckbox extends LitElement {
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
 		return html`
-			<label><input
-				aria-checked="${ifDefined(ariaChecked)}"
-				aria-label="${ifDefined(this.ariaLabel)}"
-				@change="${this._handleChange}"
-				class="d2l-input-checkbox"
-				@click="${this._handleClick}"
-				?checked="${this.checked}"
-				?disabled="${this.disabled}"
-				.indeterminate="${this.indeterminate}"
-				name="${ifDefined(this.name)}"
-				tabindex="${ifDefined(tabindex)}"
-				type="checkbox"
-				.value="${this.value}"><span class="${classMap(textClasses)}"><slot></slot></span></label>
+			<label>
+				<input
+					aria-checked="${ifDefined(ariaChecked)}"
+					aria-label="${ifDefined(this.ariaLabel)}"
+					@change="${this._handleChange}"
+					class="d2l-input-checkbox"
+					@click="${this._handleClick}"
+					?checked="${this.checked}"
+					?disabled="${this.disabled}"
+					.indeterminate="${this.indeterminate}"
+					name="${ifDefined(this.name)}"
+					tabindex="${ifDefined(tabindex)}"
+					type="checkbox"
+					.value="${this.value}"><span class="${classMap(textClasses)}"><slot></slot></span>
+			</label>
 		`;
 	}
 
