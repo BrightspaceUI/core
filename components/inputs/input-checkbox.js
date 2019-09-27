@@ -91,7 +91,6 @@ class InputCheckbox extends LitElement {
 				@click="${this._handleClick}"
 				?checked="${this.checked}"
 				?disabled="${this.disabled}"
-				@focus="${this._handleFocus}"
 				.indeterminate="${this.indeterminate}"
 				name="${ifDefined(this.name)}"
 				tabindex="${ifDefined(tabindex)}"
@@ -101,7 +100,7 @@ class InputCheckbox extends LitElement {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('.d2l-input-checkbox');
+		const elem = this.shadowRoot.querySelector('input.d2l-input-checkbox');
 		if (elem) elem.focus();
 	}
 
@@ -120,7 +119,7 @@ class InputCheckbox extends LitElement {
 	 * function is NOT triggered, therefore we have to detect the click and handle it ourselves.
 	 */
 	_handleClick() {
-		/*const browserType = window.navigator.userAgent;
+		const browserType = window.navigator.userAgent;
 		if (this.indeterminate && (browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) {
 			this.checked = !this.checked;
 			this.indeterminate = false;
@@ -128,18 +127,7 @@ class InputCheckbox extends LitElement {
 				'change',
 				{bubbles: true, composed: false}
 			));
-		}*/
-	}
-
-	_handleFocus() {
-		// in shady DOM the input's "focus" event does not bubble,
-		// so no need to fire it
-		/*if (!useShadow) {
-			this.dispatchEvent(new CustomEvent(
-				'focus',
-				{bubbles: true, composed: false}
-			));
-		}*/
+		}
 	}
 
 }

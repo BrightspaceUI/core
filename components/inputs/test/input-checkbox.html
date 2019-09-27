@@ -49,7 +49,7 @@
 				async function getFixture(name) {
 					elem = fixture(name);
 					await elem.updateComplete;
-					input = elem.shadowRoot.querySelector('.d2l-input-checkbox');
+					input = elem.shadowRoot.querySelector('input.d2l-input-checkbox');
 				}
 
 				describe('accessibility', () => {
