@@ -41,6 +41,37 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 - `type` (String, default: `'text'`): can be one of `text`, `email`, `number`, `password`, `tel`, `url`
 - `value` (String, default: `''`): value of the input
 
+**Events:**
+
+The `d2l-input-text` dispatches the `change` event when text is entered, modified or removed:
+
+
+```javascript
+input.addEventListener('change', (e) => {
+  console.log(input.value);
+});
+```
+
+### Applying styles to native input
+
+As an alternative to using the `<d2l-input-text>` custom element, you can style a native text input inside your own element. Import `input-styles.js` and apply the `d2l-input` CSS class to the input:
+
+```javascript
+import { inputStyles } from './input-styles.js';
+
+class MyElem extends LitElement {
+
+	static get styles() {
+		return inputStyles;
+	}
+
+	render() {
+		return html`<input type="text" class="d2l-input">`;
+	}
+
+}
+```
+
 ## Search Inputs
 
 For text searches use `<d2l-input-search>`, which wraps the native `<input type="search">` element.
@@ -103,6 +134,19 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 - `not-tabbable` (optional, Boolean): sets `tabindex="-1"` on the checkbox
 - `value` (optional, String): value of the input
 
+**Events:**
+
+When the checkbox's state changes, it dispatches the `change` event:
+
+
+```javascript
+checkbox.addEventListener('change', (e) => {
+  console.log(checkbox.checked);
+});
+```
+
+### Checkbox Spacer
+
 To align related content below checkboxes, the `d2l-input-checkbox-spacer` element can be used:
 
 ```html
@@ -115,4 +159,24 @@ To align related content below checkboxes, the `d2l-input-checkbox-spacer` eleme
   Additional content can go here and will
   line up nicely with the edge of the checkbox.
 </d2l-input-checkbox-spacer>
+```
+
+### Applying styles to native checkboxes
+
+As an alternative to using the `<d2l-input-checkbox>` custom element, you can style a native checkbox inside your own element. Import `input-checkbox-styles.js` and apply the `d2l-input-checkbox` CSS class to the input:
+
+```javascript
+import { checkboxStyles } from './input-checkbox-styles.js';
+
+class MyElem extends LitElement {
+
+	static get styles() {
+		return checkboxStyles;
+	}
+
+	render() {
+		return html`<input type="checkbox" class="d2l-input-checkbox">`;
+	}
+
+}
 ```
