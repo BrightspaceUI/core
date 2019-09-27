@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-input-search', function() {
+describe('d2l-input-search', () => {
 
 	const visualDiff = new VisualDiff('input-search', __dirname);
 
@@ -53,7 +53,7 @@ describe('d2l-input-search', function() {
 	});
 
 	it('focus-input', async function() {
-		await page.evaluate(() => document.querySelector('#no-value').focus());
+		await page.$eval('#no-value', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#no-value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
