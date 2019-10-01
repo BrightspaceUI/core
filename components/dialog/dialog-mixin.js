@@ -266,7 +266,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
-	_render(labelId, descriptionId, inner) {
+	_render(inner, info) {
 
 		const styles = {};
 		if (this._left) styles.left = `${this._left}px`;
@@ -288,8 +288,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		return html`${this._useNative ?
 			html`<dialog
-				aria-describedby="${ifDefined(descriptionId)}"
-				aria-labelledby="${labelId}"
+				aria-describedby="${ifDefined(info.descId)}"
+				aria-labelledby="${info.labelId}"
 				class="d2l-dialog-outer"
 				@click="${this._handleClick}"
 				@close="${this._handleClose}"
@@ -297,12 +297,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				@keydown="${this._handleKeyDown}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
+				role="${info.role}"
 				style=${styleMap(styles)}>
 					${inner}
 				</dialog>` :
 			html`<div
-				aria-describedby="${ifDefined(descriptionId)}"
-				aria-labelledby="${labelId}"
+				aria-describedby="${ifDefined(info.descId)}"
+				aria-labelledby="${info.labelId}"
 				class="d2l-dialog-outer"
 				@click="${this._handleClick}"
 				@d2l-dialog-close="${this._handleDialogClose}"
@@ -312,7 +313,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				?nested-showing="${this._nestedShowing}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
-				role="dialog"
+				role="${info.role}"
 				style=${styleMap(styles)}>
 					${inner}
 				</div>

@@ -63,8 +63,11 @@ class DialogConfirm extends DialogMixin(LitElement) {
 			</div>`;
 
 		const labelId = (this.titleText && this.text) ? this._titleId : this._textId;
-		const descriptionId = (this.titleText && this.text) ? this._textId : null;
-		return this._render(labelId, descriptionId, inner);
+		const descId = (this.titleText && this.text) ? this._textId : undefined;
+		return this._render(
+			inner,
+			{ labelId: labelId, descId: descId, role: 'alertdialog' }
+		);
 	}
 
 	_getWidth() {

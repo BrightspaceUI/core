@@ -101,7 +101,10 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 				</div>
 			</div>
 		`;
-		return this._render(this._titleId, undefined, inner);
+		return this._render(
+			inner,
+			{ labelId: this._titleId, role: 'dialog' }
+		);
 	}
 
 	_abort() {
