@@ -52,11 +52,11 @@
 				</d2l-dialog>
 
 				<script>
-					document.querySelector('#openParent').addEventListener('click', async () => {
+					document.querySelector('#openParent').addEventListener('click', async() => {
 						const action = await document.querySelector('#parentDialog').open();
 						console.log('parent dialog action:', action);
 					});
-					document.querySelector('#openChild').addEventListener('click', async () => {
+					document.querySelector('#openChild').addEventListener('click', async() => {
 						const action = await document.querySelector('#childDialog').open();
 						console.log('child dialog action:', action);
 					});
