@@ -114,6 +114,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
 	}
 
+	_focusInitial() {
+		this._focusFirst();
+	}
+
 	_getHeight() {
 		const availableHeight = window.innerHeight - this._margin.top - this._margin.bottom;
 		let preferredHeight = 0;
@@ -257,7 +261,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		this._updateSize();
 		this._state = 'showing';
-		this._focusFirst();
+		this._focusInitial();
 	}
 
 	_removeHandlers() {

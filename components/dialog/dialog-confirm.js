@@ -70,6 +70,16 @@ class DialogConfirm extends DialogMixin(LitElement) {
 		);
 	}
 
+	_focusInitial() {
+		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
+		const nodes = footer.querySelector('slot').assignedNodes();
+		const initial = nodes.reduce((initial, node) => {
+			if (node.nodeType !== Node.ELEMENT_NODE) return initial;
+			if (!initial && !node.hasAttribute('primary')) return node;
+		}, null);
+		if (initial) initial.focus();
+	}
+
 	_getWidth() {
 		/* override default width measurement and just use max-width */
 	}
