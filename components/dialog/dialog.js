@@ -90,7 +90,7 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
-						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('close')}" @click="${this._close}"></d2l-button-icon>
+						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content">
@@ -101,7 +101,14 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 				</div>
 			</div>
 		`;
-		return this._render(this._titleId, undefined, inner);
+		return this._render(
+			inner,
+			{ labelId: this._titleId, role: 'dialog' }
+		);
+	}
+
+	_abort() {
+		this._close('abort');
 	}
 
 }

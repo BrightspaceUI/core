@@ -16,6 +16,8 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
 
+const abortAction = 'abort';
+
 export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
@@ -59,14 +61,28 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
+	open() {
+		if (this.opened) return;
+		this.opened = true;
+		return new Promise((resolve) => {
+			const onClose = function(e) {
+				if (e.target !== this) return; // ignore if bubbling from child dialog
+				this.removeEventListener('d2l-dialog-close', onClose);
+				resolve(e.detail.action);
+			}.bind(this);
+			this.addEventListener('d2l-dialog-close', onClose);
+		});
+	}
+
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
 		document.body.addEventListener('focus', this._handleBodyFocus, true);
 		this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
 	}
 
-	_close() {
+	_close(action) {
 		if (!this._state) return;
+		this._action = action;
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
@@ -96,6 +112,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			}
 		}
 		this.shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
+	}
+
+	_focusInitial() {
+		this._focusFirst();
 	}
 
 	_getHeight() {
@@ -135,6 +155,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusFirst();
 	}
 
+	_handleClick(e) {
+		if (!e.target.hasAttribute('dialog-action')) return;
+		const action = e.target.getAttribute('dialog-action');
+		e.stopPropagation();
+		this._close(action);
+	}
+
 	_handleClose() {
 		/* reset state if native dialog closes unexpectedly. ex. user highlights
 		text and then hits escape key - this is not caught by our key handler */
@@ -144,8 +171,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		allowBodyScroll(this._bodyScrollKey);
 		this._bodyScrollKey = null;
+		if (this._action === undefined) this._action = abortAction;
 		this.dispatchEvent(new CustomEvent(
-			'd2l-dialog-close', { bubbles: true, composed: true }
+			'd2l-dialog-close', {
+				bubbles: true,
+				composed: true,
+				detail: { action: this._action }
+			}
 		));
 	}
 
@@ -200,9 +232,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._opener = getComposedActiveElement();
 		this._dismissibleId = setDismissible(() => {
 			if (!this.opened) return;
-			this._close();
+			this._close(abortAction);
 		});
 
+		this._action = undefined;
 		this._addHandlers();
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
@@ -228,7 +261,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		this._updateSize();
 		this._state = 'showing';
-		this._focusFirst();
+		this._focusInitial();
 	}
 
 	_removeHandlers() {
@@ -237,7 +270,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
-	_render(labelId, descriptionId, inner) {
+	_render(inner, info) {
 
 		const styles = {};
 		if (this._left) styles.left = `${this._left}px`;
@@ -259,21 +292,24 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		return html`${this._useNative ?
 			html`<dialog
-				aria-describedby="${ifDefined(descriptionId)}"
-				aria-labelledby="${labelId}"
+				aria-describedby="${ifDefined(info.descId)}"
+				aria-labelledby="${info.labelId}"
 				class="d2l-dialog-outer"
+				@click="${this._handleClick}"
 				@close="${this._handleClose}"
 				id="${this._dialogId}"
 				@keydown="${this._handleKeyDown}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
+				role="${info.role}"
 				style=${styleMap(styles)}>
 					${inner}
 				</dialog>` :
 			html`<div
-				aria-describedby="${ifDefined(descriptionId)}"
-				aria-labelledby="${labelId}"
+				aria-describedby="${ifDefined(info.descId)}"
+				aria-labelledby="${info.labelId}"
 				class="d2l-dialog-outer"
+				@click="${this._handleClick}"
 				@d2l-dialog-close="${this._handleDialogClose}"
 				@d2l-dialog-open="${this._handleDialogOpen}"
 				id="${this._dialogId}"
@@ -281,7 +317,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				?nested-showing="${this._nestedShowing}"
 				?overflow-bottom="${this._overflowBottom}"
 				?overflow-top="${this._overflowTop}"
-				role="dialog"
+				role="${info.role}"
 				style=${styleMap(styles)}>
 					${inner}
 				</div>
