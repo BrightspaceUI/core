@@ -52,14 +52,13 @@
 				</d2l-dialog>
 
 				<script>
-					document.querySelector('#openParent').addEventListener('click', () => {
-						document.querySelector('#parentDialog').opened = true;
+					document.querySelector('#openParent').addEventListener('click', async () => {
+						const action = await document.querySelector('#parentDialog').open();
+						console.log('parent dialog action:', action);
 					});
-					document.querySelector('#openChild').addEventListener('click', () => {
-						document.querySelector('#childDialog').opened = true;
-					});
-					document.querySelector('#parentDialog').addEventListener('d2l-dialog-close', (e) => {
-						console.log('confirm action:', e.detail.action);
+					document.querySelector('#openChild').addEventListener('click', async () => {
+						const action = await document.querySelector('#childDialog').open();
+						console.log('child dialog action:', action);
 					});
 				</script>
 

@@ -61,6 +61,19 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
+	open() {
+		if (this.opened) return;
+		this.opened = true;
+		return new Promise((resolve) => {
+			const onClose = function(e) {
+				if (e.target !== this) return; // ignore if bubbling from child dialog
+				this.removeEventListener('d2l-dialog-close', onClose);
+				resolve(e.detail.action);
+			}.bind(this);
+			this.addEventListener('d2l-dialog-close', onClose);
+		});
+	}
+
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
 		document.body.addEventListener('focus', this._handleBodyFocus, true);
