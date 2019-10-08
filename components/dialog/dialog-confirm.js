@@ -71,13 +71,17 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	}
 
 	_focusInitial() {
-		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
-		const nodes = footer.querySelector('slot').assignedNodes();
-		const initial = nodes.reduce((initial, node) => {
-			if (node.nodeType !== Node.ELEMENT_NODE) return initial;
-			if (!initial && !node.hasAttribute('primary')) return node;
-		}, null);
-		if (initial) initial.focus();
+		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer slot');
+		const nodes = footer.assignedNodes();
+		for (let i=0; i<nodes.length; i++) {
+			const node = nodes[i];
+			if (node.nodeType !== Node.ELEMENT_NODE) continue;
+			if (!node.hasAttribute('primary')) {
+				node.focus();
+				return;
+			}
+		}
+		this._focusFirst();
 	}
 
 	_getWidth() {
