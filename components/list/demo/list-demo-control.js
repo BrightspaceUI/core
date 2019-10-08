@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '../../typography/styles.js';
 
 class ListDemoControl extends LitElement {
+
 	static get properties() {
 		return {
 			target: { type: String }
@@ -10,27 +11,27 @@ class ListDemoControl extends LitElement {
 
 	static get styles() {
 		return [ bodySmallStyles, css`
-		.d2l-list-demo-flex {
-			background: white;
-			border: 1px solid var(--d2l-color-tungsten);
-			border-bottom: none;
-			border-top-left-radius: 6px;
-			border-top-right-radius: 6px;
-			box-sizing: content-box;
-			display: flex;
-			justify-content: flex-start;
-			margin: 0 !important;
-			margin-left: 6px !important;
-			max-width: 894px;
-			width: fit-content;
-		}
-		.d2l-list-demo-flex > *:last-child {
-			border-right: none;
-		}
-		.d2l-list-demo-flex > * {
-			border-right: 1px dotted var(--d2l-color-tungsten);
-			padding: 0 18px;
-		}
+			.d2l-list-demo-flex {
+				background: white;
+				border: 1px solid var(--d2l-color-tungsten);
+				border-bottom: none;
+				border-top-left-radius: 6px;
+				border-top-right-radius: 6px;
+				box-sizing: content-box;
+				display: flex;
+				justify-content: flex-start;
+				margin: 0 !important;
+				margin-left: 6px !important;
+				max-width: 894px;
+				width: fit-content;
+			}
+			.d2l-list-demo-flex > *:last-child {
+				border-right: none;
+			}
+			.d2l-list-demo-flex > * {
+				border-right: 1px dotted var(--d2l-color-tungsten);
+				padding: 0 18px;
+			}
 		`];
 	}
 
@@ -38,15 +39,15 @@ class ListDemoControl extends LitElement {
 		return html`
 			<div class="d2l-body-small d2l-list-demo-flex">
 				<label>
-					divider-mode:
-					<select @change="${this._onChangeDividerMode}">
+					separators:
+					<select @change="${this._onChangeSeparators}">
 						<option value="" selected>default (all)</option>
 						<option value="none">none</option>
 						<option value="between">between</option>
 						<option value="all">all</option>
 					</select>
 				</label>
-				<label>divider-extend: <input type="checkbox" @change="${this._onChangeDividerExtend}"></label>
+				<label>extend-separators: <input type="checkbox" @change="${this._onChangeExtendSeparators}"></label>
 				<label>
 					breakpoints:
 					<select @change="${this._onChangeBreakpoints}">
@@ -73,14 +74,14 @@ class ListDemoControl extends LitElement {
 		list.style.maxWidth = `${event.target.value}px`;
 	}
 
-	_onChangeDividerExtend(event) {
+	_onChangeExtendSeparators(event) {
 		const list = document.querySelector(`${this.target} d2l-list`);
-		list.toggleAttribute('divider-extend', event.target.checked);
+		list.toggleAttribute('extend-separators', event.target.checked);
 	}
 
-	_onChangeDividerMode(event) {
+	_onChangeSeparators(event) {
 		const list = document.querySelector(`${this.target} d2l-list`);
-		list.setAttribute('divider-mode', event.target.value);
+		list.setAttribute('separators', event.target.value);
 	}
 
 	_onChangeIllustrationOutside(event) {
@@ -89,6 +90,7 @@ class ListDemoControl extends LitElement {
 			item.toggleAttribute('illustration-outside', event.target.checked);
 		});
 	}
+
 }
 
 customElements.define('d2l-list-demo-control', ListDemoControl);

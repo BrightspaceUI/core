@@ -12,6 +12,7 @@ const ro = new ResizeObserver(entries => {
 });
 
 class ListItem extends RtlMixin(LitElement) {
+
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
@@ -34,13 +35,13 @@ class ListItem extends RtlMixin(LitElement) {
 				display: flex;
 			}
 			.d2l-list-item-content {
-				border-bottom: var(--d2l-list-item-divider-bottom, 1px solid var(--d2l-color-mica));
-				border-top: var(--d2l-list-item-divider-top, 1px solid var(--d2l-color-mica));
+				border-bottom: var(--d2l-list-item-separator-bottom, 1px solid var(--d2l-color-mica));
+				border-top: var(--d2l-list-item-separator-top, 1px solid var(--d2l-color-mica));
 				box-sizing: content-box;
 				margin-bottom: -1px;
 				margin-top: -1px;
-				padding-bottom: var(--d2l-list-item-divider-padding-bottom, 0);
-				padding-top: var(--d2l-list-item-divider-padding-top, 0);
+				padding-bottom: var(--d2l-list-item-separator-padding-bottom, 0);
+				padding-top: var(--d2l-list-item-separator-padding-top, 0);
 				position: relative;
 				width: 100%;
 			}

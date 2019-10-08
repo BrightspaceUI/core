@@ -17,12 +17,12 @@ describe('d2l-list', function() {
 
 	after(() => browser.close());
 
-	describe('List tests for dividers', () => {
+	describe('separators', () => {
 		[
-			{ title: 'list-divider-none', fixture: '#list-divider-none' },
-			{ title: 'list-divider-extend', fixture: '#list-divider-extend' },
-			{ title: 'list-divider-all', fixture: '#list-divider-all' },
-			{ title: 'list-divider-middle', fixture: '#list-divider-middle' }
+			{ title: 'none', fixture: '#list-separators-none' },
+			{ title: 'extend', fixture: '#list-separators-extend' },
+			{ title: 'all', fixture: '#list-separators-all' },
+			{ title: 'between', fixture: '#list-separators-between' }
 		].forEach((testData) => {
 			it(testData.title, async function() {
 				const rect = await visualDiff.getRect(page, testData.fixture);
@@ -31,16 +31,16 @@ describe('d2l-list', function() {
 		});
 	});
 
-	describe('List tests for breakpoint', () => {
+	describe('breakpoints', () => {
 		[842, 636, 580, 0].forEach(breakPoint => {
-			it(`list-bp${breakPoint}`, async function() {
+			it(`${breakPoint}`, async function() {
 				const rect = await visualDiff.getRect(page, `#list-bp${breakPoint}`);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
 	});
 
-	it('list-rtl', async function() {
+	it('rtl', async function() {
 		const rect = await visualDiff.getRect(page, '#list-rtl');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});

@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 class ListDemoNameImage extends LitElement {
+
 	static get properties() {
 		return {
 			letters: { type: String },
@@ -22,7 +23,6 @@ class ListDemoNameImage extends LitElement {
 	}
 
 	render() {
-
 		return html`
 			<svg viewBox="0 0 42 42">
 				<rect x="1" y="1" rx="10" ry="10" width="40" height="40" stroke="none" fill="${this.color}" />
@@ -32,6 +32,7 @@ class ListDemoNameImage extends LitElement {
 			</svg>
 		`;
 	}
+
 }
 
 customElements.define('d2l-list-demo-name-image', ListDemoNameImage);
