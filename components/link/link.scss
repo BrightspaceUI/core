@@ -1,0 +1,27 @@
+@import '../colors/colors.scss';
+
+@mixin d2l-link() {
+	&,
+	&:visited,
+	&:link,
+	&:active {
+		color: $d2l-color-celestine;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	&:hover,
+	&:focus,
+	&.d2l-link-focus {
+		color: $d2l-color-celestine-minus-1;
+		text-decoration: underline;
+		outline-width: 0;
+	}
+	&[main] {
+		font-weight: 700;
+	}
+	&[small] {
+		font-size: 0.7rem;
+		line-height: 1.05rem;
+		letter-spacing: 0.01rem;
+	}
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-search.js';
+		</script>
+		<title>d2l-input-search visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div style="width: 300px;">
+			<div class="visual-diff">
+				<d2l-input-search id="no-value" label="search"></d2l-input-search>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-search id="has-value" label="search" value="Apples"></d2l-input-search>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-search id="no-clear" label="search" value="Apples" no-clear></d2l-input-search>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-search id="disabled" label="search" value="Apples" disabled></d2l-input-search>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-search id="placeholder" label="search" placeholder="Search for something..."></d2l-input-search>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-search id="placeholder-disabled" label="search" placeholder="Search for something..." disabled></d2l-input-search>
+			</div>
+		</div>
+	</body>
+</html>

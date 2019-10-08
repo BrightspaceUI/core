@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
 
 export const buttonStyles = css`
@@ -23,6 +24,6 @@ export const buttonStyles = css`
 		width: auto;
 	}
 	button:focus {
-		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
+		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 	}
 `;

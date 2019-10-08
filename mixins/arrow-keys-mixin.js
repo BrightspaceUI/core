@@ -10,10 +10,11 @@ const keyCodes = Object.freeze({
 });
 
 export const ArrowKeysMixin = superclass => class extends superclass {
+
 	static get properties() {
 		return {
-			arrowKeysDirection: { type: String },
-			arrowKeysNoWrap: { type: Boolean }
+			arrowKeysDirection: { type: String, attribute: 'arrow-keys-direction' },
+			arrowKeysNoWrap: { type: Boolean, attribute: 'arrow-keys-no-wrap' }
 		};
 	}
 
@@ -61,79 +62,52 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		e.preventDefault();
 	}
 
-	_focus(elem) {
+	async _focus(elem) {
 		if (elem) {
-			if (this.arrowKeysOnBeforeFocus) {
-				this.arrowKeysOnBeforeFocus(elem).then(() => {
-					elem.focus();
-				});
-			} else {
-				elem.focus();
-			}
+			if (this.arrowKeysOnBeforeFocus) await this.arrowKeysOnBeforeFocus(elem);
+			elem.focus();
 		}
 	}
 
-	_focusFirst() {
-		return this.arrowKeysFocusablesProvider().then(
-			(elems) => {
-				if (elems && elems.length > 0) {
-					this._focus(elems[0]);
-				}
-			}
-		);
+	async _focusFirst() {
+		const elems = await this.arrowKeysFocusablesProvider();
+		if (elems && elems.length > 0) return this._focus(elems[0]);
 	}
 
-	_focusLast() {
-		return this.arrowKeysFocusablesProvider().then(
-			(elems) => {
-				if (elems && elems.length > 0) {
-					this._focus(elems[elems.length - 1]);
-				}
-			}
-		);
+	async _focusLast() {
+		const elems = await this.arrowKeysFocusablesProvider();
+		if (elems && elems.length > 0) return this._focus(elems[elems.length - 1]);
 	}
 
-	_focusNext(elem) {
-		return this.arrowKeysFocusablesProvider().then(
-			(elems) => {
-				const next = this._tryGetNextFocusable(elems, elem);
-				this._focus(next);
-			}
-		);
+	async _focusNext(elem) {
+		const elems = await this.arrowKeysFocusablesProvider();
+		const next = this._tryGetNextFocusable(elems, elem);
+		return this._focus(next);
 	}
 
-	_focusPrevious(elem) {
-		return this.arrowKeysFocusablesProvider().then(
-			(elems) => {
-				const previous = this._tryGetPreviousFocusable(elems, elem);
-				this._focus(previous);
-			}
-		);
+	async _focusPrevious(elem) {
+		const elems = await this.arrowKeysFocusablesProvider();
+		const previous = this._tryGetPreviousFocusable(elems, elem);
+		return this._focus(previous);
 	}
 
 	_tryGetNextFocusable(elems, elem) {
-		if (!elems || elems.length === 0) {
-			return;
-		}
+		if (!elems || elems.length === 0) return;
+
 		const index = elems.indexOf(elem);
 		if (index === elems.length - 1) {
-			if (this.arrowKeysNoWrap) {
-				return;
-			}
+			if (this.arrowKeysNoWrap) return;
 			return elems[0];
 		}
 		return elems[index + 1];
 	}
 
 	_tryGetPreviousFocusable(elems, elem) {
-		if (!elems || elems.length === 0) {
-			return;
-		}
+		if (!elems || elems.length === 0) return;
+
 		const index = elems.indexOf(elem);
 		if (index === 0) {
-			if (this.arrowKeysNoWrap) {
-				return;
-			}
+			if (this.arrowKeysNoWrap) return;
 			return elems[elems.length - 1];
 		}
 		return elems[index - 1];

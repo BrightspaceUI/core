@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-input-text-mixin unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../demo/input-text-mixin-test.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="basic">
+			<template>
+				<d2l-test-input-text-mixin></d2l-test-input-text-mixin>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { getComposedActiveElement } from '../../../helpers/focus.js';
+
+			describe('d2l-input-text-mixin', () => {
+
+				let elem, input;
+
+				beforeEach(async() => {
+					elem = fixture('basic');
+					await elem.updateComplete;
+					input = elem.shadowRoot.querySelector('.d2l-input');
+				});
+
+				['autofocus', 'disabled', 'readonly', 'required'].forEach((name) => {
+
+					it(`should reflect "${name}" attribute to property`, () => {
+						elem.setAttribute(name, name);
+						expect(elem[name]).to.be.true;
+					});
+
+					it(`should default "${name}" property to false when unset`, () => {
+						expect(elem[name]).to.be.false;
+						expect(elem.hasAttribute(name)).to.be.false;
+					});
+
+				});
+
+				it('should reflect "disabled" property to attribute', async() => {
+					elem.disabled = true;
+					await elem.updateComplete;
+					expect(elem.hasAttribute('disabled')).to.be.true;
+				});
+
+				it('should delegate focus to underlying input', () => {
+					elem.focus();
+					const activeElement = getComposedActiveElement();
+					expect(activeElement).to.equal(input);
+				});
+
+			});
+		</script>
+	</body>
+</html>

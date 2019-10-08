@@ -19,9 +19,13 @@ npm install @brightspace-ui/core
 
 * [Buttons](components/button/): normal, primary, icon and subtle buttons
 * [Colors](components/colors/): color palette
+* [Dialogs](components/dialog/): generic and confirmation dialogs
 * [Icons](components/icons/): iconography SVGs and web components
-* [Meter](components/meter/): linear, radial, circle meter web components.
+* [Inputs](components/inputs/): text, search, checkbox and radio inputs
+* [Links](components/link/): link component and styles
+* [Meter](components/meter/): linear, radial, circle meter web components
 * [More/less](components/more-less/): constrain long bits of content
+* [Off-screen](components/offscreen/): component and styles for positioning content off-screen
 * [Typography](components/typography/): typography styles and components
 
 ## Helpers
@@ -30,7 +34,10 @@ npm install @brightspace-ui/core
 
 ## Mixins
 
-* [Mixins](mixins/): mixins for localization, RTL styles, etc.
+* [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
+* [LocalizeMixin](mixins/localize-mixin.md): localize text and format & parse numbers, dates, etc.
+* [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
+* [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
 
 ## Usage
 
@@ -90,6 +97,12 @@ To update visual-diff goldens:
 
 ```shell
 npm run test:diff:golden
+```
+
+To update the visual-diff goldens in Github using Travis (through triggering a build on the current branch):
+
+```shell
+npm run build && npm run test:diff:golden && npm run test:diff:golden:commit
 ```
 
 To run local unit tests:

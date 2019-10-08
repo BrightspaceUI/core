@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script>
+			//window.D2L = { DialogMixin: { preferNative: false } };
+		</script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../button/button.js';
+			import '../dialog.js';
+			import '../dialog-confirm.js';
+		</script>
+		<style>
+			#openChild {
+				display: inline-block;
+				margin: 1rem 0;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-dialog (nested)">
+
+			<h2>Dialog</h2>
+
+			<d2l-demo-snippet>
+				<d2l-button id="openParent">Show Parent</d2l-button>
+				<d2l-dialog id="parentDialog" title-text="Parent Dialog">
+					<div>
+
+						<div>Quarter bounty jib Letter of Marque clipper ballast warp hulk jack scurvy. Avast code of conduct jury mast spyglass booty sloop piracy overhaul barque Arr. Boom quarter loaded to the gunwalls crow's nest code of conduct spyglass Spanish Main booty run a shot across the bow Gold Road.</div>
+						<d2l-button id="openChild">Show Child</d2l-button>
+						<div>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</div>
+
+						<d2l-dialog id="childDialog" title-text="Child Dialog" width="400">
+							<div>
+								Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.
+								Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.
+							</div>
+							<d2l-button slot="footer" primary dialog-action="child ok">Child</d2l-button>
+							<d2l-button slot="footer" dialog-action>Cancel</d2l-button>
+						</d2l-dialog>
+
+					</div>
+					<d2l-button slot="footer" primary dialog-action="ok">Parent</d2l-button>
+					<d2l-button slot="footer" dialog-action>Cancel</d2l-button>
+				</d2l-dialog>
+
+				<script>
+					document.querySelector('#openParent').addEventListener('click', async() => {
+						const action = await document.querySelector('#parentDialog').open();
+						console.log('parent dialog action:', action);
+					});
+					document.querySelector('#openChild').addEventListener('click', async() => {
+						const action = await document.querySelector('#childDialog').open();
+						console.log('child dialog action:', action);
+					});
+				</script>
+
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>

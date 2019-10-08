@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-input-checkbox unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../input-checkbox.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="basic">
+			<template>
+				<d2l-input-checkbox aria-label="basic"></d2l-input-checkbox>
+			</template>
+		</test-fixture>
+		<test-fixture id="checked">
+			<template>
+				<d2l-input-checkbox checked></d2l-input-checkbox>
+			</template>
+		</test-fixture>
+		<test-fixture id="indeterminate-checked">
+			<template>
+				<d2l-input-checkbox indeterminate checked></d2l-input-checkbox>
+			</template>
+		</test-fixture>
+		<test-fixture id="indeterminate-unchecked">
+			<template>
+				<d2l-input-checkbox indeterminate></d2l-input-checkbox>
+			</template>
+		</test-fixture>
+		<test-fixture id="not-tabbable">
+			<template>
+				<d2l-input-checkbox not-tabbable="not-tabbable" label="not-tabbable"></d2l-input-checkbox>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-input-checkbox', () => {
+
+				let elem, input;
+
+				async function getFixture(name) {
+					elem = fixture(name);
+					await elem.updateComplete;
+					input = elem.shadowRoot.querySelector('input.d2l-input-checkbox');
+				}
+
+				describe('accessibility', () => {
+
+					beforeEach(async() => await getFixture('basic'));
+
+					it('should pass all aXe tests', async() => {
+						await runAxe(elem);
+					});
+
+					it('should pass all aXe tests when checked', async() => {
+						elem.checked = true;
+						await runAxe(elem);
+					});
+
+					it('should pass all aXe tests when disabled', async() => {
+						elem.disabled = true;
+						await runAxe(elem);
+					});
+
+					it('should pass all aXe tests when focused', async() => {
+						elem.focus();
+						await runAxe(elem);
+					});
+
+				});
+
+				describe('default property values', () => {
+
+					beforeEach(async() => await getFixture('basic'));
+
+					['checked', 'disabled', 'indeterminate', 'notTabbable'].forEach((name) => {
+						it(`should default "${name}" property to "false"`, () => {
+							expect(elem[name]).to.be.false;
+						});
+					});
+
+					it('should default "name" property to empty when unset', () => {
+						expect(elem.name).to.equal('');
+					});
+
+					it('should default "value" property to "on" when unset', () => {
+						expect(elem.value).to.equal('on');
+					});
+
+				});
+
+				describe('property binding', () => {
+
+					beforeEach(async() => await getFixture('basic'));
+
+					it('should bind "value" attribute to input property', async() => {
+						elem.setAttribute('value', 'hello');
+						await elem.updateComplete;
+						expect(input.value).to.equal('hello');
+					});
+
+					it('should bind "indeterminate" attribute to input property', async() => {
+						elem.setAttribute('indeterminate', 'indeterminate');
+						await elem.updateComplete;
+						expect(input.indeterminate).to.be.true;
+					});
+
+					[
+						{name: 'aria-label', propName: 'ariaLabel', value: 'hello'},
+						{name: 'checked', value: true},
+						{name: 'disabled', value: true},
+						{name: 'name', value: 'jim'}
+					].forEach((attr) => {
+						attr.propName = attr.propName || attr.name;
+						it(`should bind "${attr.name}" to input`, async() => {
+							if (typeof attr.value === 'boolean') {
+								elem.setAttribute(attr.name, attr.name);
+							} else {
+								elem.setAttribute(attr.name, attr.value);
+							}
+							await elem.updateComplete;
+							if (typeof attr.value === 'boolean') {
+								expect(input.hasAttribute(attr.name)).to.be.true;
+								expect(input[attr.propName]).to.equal(attr.value);
+							} else {
+								expect(input.getAttribute(attr.name)).to.equal(attr.value.toString());
+								if (attr.name.indexOf('aria-') === -1) {
+									expect(input[attr.propName]).to.equal(attr.value);
+								}
+							}
+						});
+					});
+
+				});
+
+				describe('change event', () => {
+
+					beforeEach(async() => await getFixture('basic'));
+
+					it('should fire "change" event when input element is clicked', (done) => {
+						elem.addEventListener('change', (e) => {
+							expect(e.target).to.equal(elem);
+							done();
+						});
+						input.click();
+					});
+
+					it('should reflect that a previously unchecked input is now checked', (done) => {
+						elem.addEventListener('change', (e) => {
+							expect(e.target.checked).to.equal(true);
+							done();
+						});
+						input.click();
+					});
+
+				});
+
+				describe('indeterminate', () => {
+
+					it('should set aria-checked to "mixed" when indeterminate and checked', async() => {
+						await getFixture('indeterminate-checked');
+						expect(input.getAttribute('aria-checked')).to.equal('mixed');
+					});
+
+					it('should set aria-checked to "mixed" when indeterminate and unchecked', async() => {
+						await getFixture('indeterminate-unchecked');
+						expect(input.getAttribute('aria-checked')).to.equal('mixed');
+					});
+
+					it('should clear "indeterminate" when checked interderminate clicked', async() => {
+						await getFixture('indeterminate-checked');
+						input.click();
+						await elem.updateComplete;
+						expect(elem.checked).to.be.false;
+						expect(elem.indeterminate).to.be.false;
+						expect(input.hasAttribute('aria-checked')).to.be.false;
+					});
+
+					it('should fire "change" event when input element is clicked', (done) => {
+						getFixture('indeterminate-checked').then(() => {
+							elem.addEventListener('change', (e) => {
+								expect(e.target.checked).to.equal(false);
+								expect(e.target.indeterminate).to.equal(false);
+								done();
+							});
+							input.click();
+						});
+					});
+
+					it('should clear "indeterminate" when unchecked indeterminate clicked', async() => {
+						await getFixture('indeterminate-unchecked');
+						input.click();
+						await elem.updateComplete;
+						expect(elem.checked).to.be.true;
+						expect(elem.indeterminate).to.be.false;
+						expect(input.hasAttribute('aria-checked')).to.be.false;
+					});
+
+				});
+
+				describe('not tabbable', () => {
+
+					it('should not put a tabindex on the checkbox by default', async() => {
+						await getFixture('basic');
+						expect(input.hasAttribute('tabindex')).to.be.false;
+					});
+
+					it('should apply -1 tabindex when set', async() => {
+						await getFixture('not-tabbable');
+						expect(input.getAttribute('tabindex')).to.equal('-1');
+					});
+
+				});
+
+				describe('focus management', () => {
+
+					beforeEach(async() => await getFixture('basic'));
+
+					it('should fire "focus" event when input element is focussed', (done) => {
+						elem.addEventListener('focus', (e) => {
+							expect(e.target).to.equal(elem);
+							done();
+						});
+						input.focus();
+					});
+
+					it('should fire "focus" event when custom element is focussed', (done) => {
+						elem.addEventListener('focus', (e) => {
+							expect(e.target).to.equal(elem);
+							done();
+						});
+						elem.focus();
+					});
+
+				});
+
+			});
+		</script>
+	</body>
+</html>

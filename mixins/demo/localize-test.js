@@ -5,6 +5,9 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
+			async: {
+				type: Boolean
+			},
 			name: {
 				type: String
 			}
@@ -22,7 +25,6 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			'ja': { 'hello': 'こんにちは {name}' },
 			'ko': { 'hello': '안녕하세요 {name}' },
 			'pt-br': { 'hello': 'Olá {name}' },
-			'sv': { 'hello': 'Hallå {name}' },
 			'tr': { 'hello': 'Merhaba {name}' },
 			'zh-cn': { 'hello': '你好 {name}' },
 			'zh-tw': { 'hello': '你好 {name}' }
@@ -30,18 +32,47 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 
 		for (let i = 0; i < langs.length; i++) {
 			if (langResources[langs[i]]) {
-				return {
+				this.__langVal = {
 					language: langs[i],
 					resources: langResources[langs[i]]
 				};
+				if (!this.async) {
+					return this.__langVal;
+				}
+				return this.__localizeResourcesPromise;
 			}
 		}
 
 		return null;
 	}
 
+	constructor() {
+		super();
+		this.async = false;
+		this.__localizeResourcesPromise = new Promise((resolve) => {
+			this.__resolve = resolve;
+		});
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		this.dispatchEvent(new CustomEvent('d2l-test-localize-updated', {
+			bubbles: false,
+			composed: false,
+			detail: {
+				props: changedProperties
+			}
+		}));
+	}
+
 	render() {
 		const date = new Date();
+		requestAnimationFrame(
+			() => this.dispatchEvent(new CustomEvent('d2l-test-localize-render', {
+				bubbles: false,
+				composed: false
+			}))
+		);
 		return html`
 			<p>Text: ${this.localize('hello', {name: this.name})}</p>
 			<p>Number: ${this.formatNumber(123456.789)}</p>
@@ -51,6 +82,11 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			<p>File size: ${this.formatFileSize(123456789)}</p>
 		`;
 	}
+
+	resolveLang() {
+		this.__resolve(this.__langVal);
+	}
+
 }
 
 customElements.define('d2l-test-localize', LocalizeTest);

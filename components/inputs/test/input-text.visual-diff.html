@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-text.js';
+		</script>
+		<title>d2l-input-text visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<style>
+		#override-padding {
+			--d2l-input-padding: 2rem 3rem;
+			--d2l-input-padding-focus: calc(2rem - 1px) calc(3rem - 1px);
+		}
+		#override-height {
+			--d2l-input-height: 100px;
+		}
+		#override-placeholder {
+			--d2l-input-placeholder-color: red;
+		}
+		</style>
+	</head>
+	<body class="d2l-typography">
+		<div style="width: 300px;">
+			<div class="visual-diff">
+				<d2l-input-text id="basic" value="text"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="email" type="email" value="bill@nye.com"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="number" type="number" value="500"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="password" type="password" value="123456"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="search" type="search" value="search"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="tel" type="tel" value="123-456-7890"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="url" type="url" value="https://www.d2l.com"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="disabled" disabled value="text disabled"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="placeholder" placeholder="placeholder"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="placeholder-disabled" disabled placeholder="placeholder disabled"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="invalid" type="email" value="invalid@"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="invalid-disabled" disabled type="email" value="invalid-disabled@"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="aria-invalid" value="aria-invalid" aria-invalid="true"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="aria-invalid-disabled" disabled value="aria-invalid-disabled" aria-invalid="true"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="override-height" value="text"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="override-padding" value="text"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="override-placeholder" placeholder="enter some text"></d2l-input-text>
+			</div>
+		</div>
+	</body>
+</html>

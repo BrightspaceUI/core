@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../offscreen.js';
+			import './offscreen-demo.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-offscreen">
+			<h2>Web Component</h2>
+			<d2l-demo-snippet>
+				<p>Some off-screen content:</p>
+				<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>
+			</d2l-demo-snippet>
+			<h2>Web Component Using Styles</h2>
+			<d2l-demo-snippet>
+				<p>Some off-screen content:</p>
+				<d2l-offscreen-demo></d2l-offscreen-demo>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../offscreen.js';
+			import '../demo/offscreen-demo.js';
+		</script>
+		<title>d2l-offscreen</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<div class="visual-diff">
+			<div id="wc-ltr">
+				<p>Offscreen text:</p>
+				<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>
+			</div>
+		</div>
+		<div class="visual-diff">
+			<div id="style-ltr">
+				<p>Offscreen text:</p>
+				<d2l-offscreen-demo></d2l-offscreen-demo>
+			</div>
+		</div>
+		<div class="visual-diff">
+			<div id="sass-ltr">
+				<p>Offscreen text:</p>
+				<p class="d2l-test-offscreen">This message will only be visible to assistive technology, such as a screen reader.</p>
+			</div>
+		</div>
+		<div class="visual-diff">
+			<div id="wc-rtl" dir="rtl">
+				<p>Offscreen text:</p>
+				<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>
+			</div>
+		</div>
+		<div class="visual-diff">
+			<div id="style-rtl" dir="rtl">
+				<p>Offscreen text:</p>
+				<d2l-offscreen-demo></d2l-offscreen-demo>
+			</div>
+		</div>
+		<div class="visual-diff">
+			<div id="sass-rtl" dir="rtl">
+				<p>Offscreen text:</p>
+				<p class="d2l-test-offscreen">This message will only be visible to assistive technology, such as a screen reader.</p>
+			</div>
+		</div>
+	</body>
+</html>
