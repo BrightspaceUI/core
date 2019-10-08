@@ -99,6 +99,12 @@ To update visual-diff goldens:
 npm run test:diff:golden
 ```
 
+To update the visual-diff goldens in Github using Travis (through triggering a build on the current branch):
+
+```shell
+npm run build && npm run test:diff:golden && npm run test:diff:golden:commit
+```
+
 To run local unit tests:
 
 ```shell

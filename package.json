@@ -17,6 +17,7 @@
     "test": "npm run lint && npm run test:local && npm run test:diff",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
+    "test:diff:golden:commit": "commit-goldens",
     "test:local": "polymer test --skip-plugin sauce",
     "test:sauce": "polymer test --skip-plugin local",
     "test:travis": "polymer test --config-file wct.conf-travis.json"
@@ -39,7 +40,7 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@brightspace-ui/visual-diff": "^0.1.0",
+    "@brightspace-ui/visual-diff": "^1.0.0",
     "@polymer/test-fixture": "^4",
     "axe-core": "^3",
     "babel-eslint": "^10",
