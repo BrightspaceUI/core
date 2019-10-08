@@ -1,73 +1,61 @@
-<span style="color:red; font-size:24px; text-transform: uppercase;">**In Development**</span>
+**In Development**
 
-# List Component
+# Lists
 
-The `d2l-list` is the container to create a styled list. It requires the use of `d2l-list-item` as its children.
+## d2l-list
 
-## Usage
+The `d2l-list` is the container to create a styled list of items using `d2l-list-item`. It provide the appropriate `list` semantics as well as options for displaying separators, etc.
 
-Import
-```js
-import '@brightspace-ui/core/components/list/list.js';
-```
-Then add the `d2l-list` component to your html and use the `d2l-list-item` to define the `d2l-list`'s children.
+![List](./screenshots/list.png?raw=true)
+
 ```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+</script>
+
 <d2l-list>
-	<d2l-list-item>Item 1</d2l-list-item>
-	<d2l-list-item>Item 2</d2l-list-item>
-	<d2l-list-item>Item 3</d2l-list-item>
+  <d2l-list-item>...</d2l-list-item>
+  <d2l-list-item>...</d2l-list-item>
+  ...
 </d2l-list>
 ```
 
-Output
+**Properties:**
 
-![Basic List](./screenshots/d2l-list-basic.png?raw=true)
+- `separators` (String): Display separators (`all` (default), `between`, `none`)
+- `extend-separators` (Boolean): Whether to extend the separators beyond the content's edge
 
-# d2l-list
-`d2l-list` can be modified to display the data in slightly different ways.
-## Signature
+## d2l-list-item
+
+The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout and breakpoints for responsiveness.
+
+![List](./screenshots/list-item.png?raw=true)
+
 ```html
-<d2l-list [separators="[none|all|between]"] [extend-separators]>
-	<d2l-list-item>...</d2l-list-item>
-	...
-	<d2l-list-item>...</d2l-list-item>
-</d2l-list>
-```
-## Attributes
-- **separators**: Describes which separators will be shown for the list.
-  - *all* (default): Shows all the separators including above and below the list.
-  - *between*: Only show the separators between list items, excluding above and below the list.
-  - *none*: Show no separators.
-- **extend-separators**: A boolean attributes that extends the length of the separators so the space between the list item contents and the left and right edges of the list separators.
-
-# d2l-list-item
-`d2l-list-item` defines the items for a `d2l-list`.
-## Signature
-```html
-<d2l-list-item [breakpoints="array" ][illustration-outside]>
-	[slot: illustration]
-	[slot: default]
-	[slot: actions]
-</d2l-list>
+<d2l-list-item [breakpoints="array"] [illustration-outside]>
+  <img src="..." slot="illustration">
+  <div>...</div>
+  <div slot="actions">
+    <d2l-button-icon ...></d2l-button-icon>
+    <d2l-button-icon ...></d2l-button-icon>
+  </div>
+</d2l-list-item>
 ```
 
-## Attributes
- - **breakpoints**: Define breakpoints by pixels on when things should scale. There are four different breakpoints so only the 4 biggest breakpoints will be used. If you use less than 4 breakpoints then you will skip a middle breakpoint and the first and last break points will map to the biggest and smallest visuals. Default: [842, 636, 580, 0].
-   - Breakpoint 0
-     - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
-     - default break: `x < 580px` where `x` is the width of the component.
-   - Breakpoint 1
-     - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
-     - default break: `581px < x < 636px` where `x` is the width of the component.
-   - Breakpoint 2
-     - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
-     - default break: `637px < x < 842px`  where `x` is the width of the component.
-   - Breakpoint 3
-     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
-     - default break: `843px < x`  where `x` is the width of the component.
- - **illustration-outside**: Whether the illustration is outside of the separators.
+**Properties:**
 
-## Slots
- - **default**: This is for the main content area. You can add styles to the elements in this slot.
- - **illustration**: Responsive slot for images.
-  - **actions**: This is for actions. They will show up on the right side.
+- `breakpoints` (Array): Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
+  - Breakpoint 0
+    - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
+    - default break: `x < 580px` where `x` is the width of the component.
+  - Breakpoint 1
+    - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
+    - default break: `581px < x < 636px` where `x` is the width of the component.
+  - Breakpoint 2
+    - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
+    - default break: `637px < x < 842px`  where `x` is the width of the component.
+  - Breakpoint 3
+    - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
+    - default break: `843px < x`  where `x` is the width of the component.
+- `illustration-outside` (Boolean): Whether the illustration is rendered outside of the separators
