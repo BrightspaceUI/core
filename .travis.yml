@@ -18,6 +18,7 @@ jobs:
       fi
   - stage: visual-difference-tests
     script:
+    - npm run build
     - |
       if [ $TRAVIS_SECURE_ENV_VARS == true ]; then
         echo "Running visual difference tests...";
