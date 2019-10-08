@@ -59,3 +59,18 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
     - default break: `843px < x`  where `x` is the width of the component.
 - `illustration-outside` (Boolean): Whether the illustration is rendered outside of the separators
+
+## d2l-list-content
+
+The `d2l-list-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots.
+
+![List](./screenshots/list-item-content.png?raw=true)
+
+```html
+<d2l-list-item>
+  <d2l-list-item-content>
+    <div>Item 1</div>
+    <div slot="secondary">secondary info for item 1</div>
+  </d2l-list-item-content>
+</d2l-list-item>
+```
