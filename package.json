@@ -40,7 +40,7 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@brightspace-ui/visual-diff": "^1.0.0",
+    "@brightspace-ui/visual-diff": "Brightspaceui/visual-diff#remove-skip-ci",
     "@polymer/test-fixture": "^4",
     "axe-core": "^3",
     "babel-eslint": "^10",
