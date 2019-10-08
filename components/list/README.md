@@ -27,18 +27,18 @@ Output
 `d2l-list` can be modified to display the data in slightly different ways.
 ## Signature
 ```html
-<d2l-list [divider-mode="[none|all|between]"] [divider-extend]>
+<d2l-list [separators="[none|all|between]"] [extend-separators]>
 	<d2l-list-item>...</d2l-list-item>
 	...
 	<d2l-list-item>...</d2l-list-item>
 </d2l-list>
 ```
 ## Attributes
-- **divider-mode**: Describes which dividers will be shown for the list.
-  - *all* (default): Shows all the dividers including dividers on the top and bottom of the list.
-  - *between*: Only show the dividers between list items. The top and bottom dividers are hidden.
-  - *none*: Show no dividers.
-- **divider-extend**: A boolean attributes that extends the length of the dividers so the space between the list item contents and the left and right edges of the list dividers.
+- **separators**: Describes which separators will be shown for the list.
+  - *all* (default): Shows all the separators including above and below the list.
+  - *between*: Only show the separators between list items, excluding above and below the list.
+  - *none*: Show no separators.
+- **extend-separators**: A boolean attributes that extends the length of the separators so the space between the list item contents and the left and right edges of the list separators.
 
 # d2l-list-item
 `d2l-list-item` defines the items for a `d2l-list`.
@@ -65,7 +65,7 @@ Output
    - Breakpoint 3
      - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
      - default break: `843px < x`  where `x` is the width of the component.
- - **illustration-outside**: Whether the illustration is outside of the dividers.
+ - **illustration-outside**: Whether the illustration is outside of the separators.
 
 ## Slots
  - **default**: This is for the main content area. You can add styles to the elements in this slot.
