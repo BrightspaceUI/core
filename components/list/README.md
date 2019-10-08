@@ -62,7 +62,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 ## d2l-list-content
 
-The `d2l-list-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots.
+The `d2l-list-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots mentioned above.
 
 ![List](./screenshots/list-item-content.png?raw=true)
 
