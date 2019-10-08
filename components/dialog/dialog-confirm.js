@@ -73,7 +73,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	_focusInitial() {
 		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer slot');
 		const nodes = footer.assignedNodes();
-		for (let i=0; i<nodes.length; i++) {
+		for (let i = 0; i < nodes.length; i++) {
 			const node = nodes[i];
 			if (node.nodeType !== Node.ELEMENT_NODE) continue;
 			if (!node.hasAttribute('primary')) {
