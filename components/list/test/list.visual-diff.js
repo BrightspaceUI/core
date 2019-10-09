@@ -17,32 +17,47 @@ describe('d2l-list', function() {
 
 	after(() => browser.close());
 
-	describe('separators', () => {
-		[
-			{ title: 'none', fixture: '#list-separators-none' },
-			{ title: 'extend', fixture: '#list-separators-extend' },
-			{ title: 'all', fixture: '#list-separators-all' },
-			{ title: 'between', fixture: '#list-separators-between' }
-		].forEach((testData) => {
-			it(testData.title, async function() {
-				const rect = await visualDiff.getRect(page, testData.fixture);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-		});
-	});
+	[
+		{ category: 'general', tests: [
+			{ name: 'simple', selector: '#simple' },
+			{ name: 'actions', selector: '#actions' },
+			{ name: 'rtl', selector: '#rtl' },
+			{ name: 'rtl outside', selector: '#rtlOutside' }
+		]},
+		{ category: 'illustration', tests: [
+			{ name: 'default', selector: '#illustration' },
+			{ name: 'outside', selector: '#illustrationOutside' }
+		]},
+		{ category: 'separators', tests: [
+			{ name: 'simple', selector: '#simple' },
+			{ name: 'none', selector: '#separatorsNone' },
+			{ name: 'all', selector: '#separatorsAll' },
+			{ name: 'between', selector: '#separatorsBetween' },
+			{ name: 'extended', selector: '#separatorsExtended' }
+		]},
+		{ category: 'item-content', tests: [
+			{ name: 'primary and secondary', selector: '#itemContent' },
+			{ name: 'no secondary', selector: '#itemContentNoSecondary' }
+		]},
+		{ category: 'breakpoints', tests: [
+			{ name: '842', selector: '#breakpoint-842' },
+			{ name: '636', selector: '#breakpoint-636' },
+			{ name: '580', selector: '#breakpoint-580' },
+			{ name: '0', selector: '#breakpoint-0' }
+		]}
+	].forEach((info) => {
 
-	describe('breakpoints', () => {
-		[842, 636, 580, 0].forEach(breakPoint => {
-			it(`${breakPoint}`, async function() {
-				const rect = await visualDiff.getRect(page, `#list-bp${breakPoint}`);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-		});
-	});
+		describe(info.category, () => {
 
-	it('rtl', async function() {
-		const rect = await visualDiff.getRect(page, '#list-rtl');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			info.tests.forEach((info) => {
+				it(info.name, async function() {
+					const rect = await visualDiff.getRect(page, info.selector);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+			});
+
+		});
+
 	});
 
 });

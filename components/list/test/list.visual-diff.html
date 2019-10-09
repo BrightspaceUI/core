@@ -5,9 +5,11 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../colors/colors.js';
+			import '../../button/button-icon.js';
 			import '../../typography/typography.js';
 			import '../list.js';
 			import '../list-item.js';
+			import '../list-item-content.js';
 		</script>
 		<title>d2l-list</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,214 +18,225 @@
 	</head>
 	<body class="d2l-typography">
 
-		<!-- Separator -->
 		<div style="width: 400px">
-			<div class="visual-diff" id="list-separators-none">
+			<div class="visual-diff" id="simple">
+				<d2l-list>
+					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>Item 3</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="actions">
+				<d2l-list>
+					<d2l-list-item>
+						<div>Item 1</div>
+						<div slot="actions">
+							<d2l-button-icon text="Action 1" icon="d2l-tier1:preview"></d2l-button-icon>
+							<d2l-button-icon text="Action 2" icon="d2l-tier1:more"></d2l-button-icon>
+						</div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="illustration">
+				<d2l-list>
+					<d2l-list-item>
+						<div>Item 1</div>
+						<div slot="illustration" style="height: 400px; width: 400px; background-color: blue;"></div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="illustrationOutside">
+				<d2l-list>
+					<d2l-list-item illustration-outside>
+						<div>Item 1</div>
+						<div slot="illustration" style="height: 400px; width: 400px; background-color: blue;"></div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="rtl" dir="rtl">
+				<d2l-list dir="rtl">
+					<d2l-list-item dir="rtl">
+						<div slot="illustration" style="height: 400px; width: 400px; background-color: blue;"></div>
+						<div>Item 1</div>
+						<div slot="actions">
+							<d2l-button-icon text="Action 1" icon="d2l-tier1:preview"></d2l-button-icon>
+							<d2l-button-icon text="Action 2" icon="d2l-tier1:more"></d2l-button-icon>
+						</div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="rtlOutside" dir="rtl">
+				<d2l-list dir="rtl">
+					<d2l-list-item illustration-outside dir="rtl">
+						<div slot="illustration" style="height: 400px; width: 400px; background-color: blue;"></div>
+						<div>Item 1</div>
+						<div slot="actions">
+							<d2l-button-icon text="Action 1" icon="d2l-tier1:preview"></d2l-button-icon>
+							<d2l-button-icon text="Action 2" icon="d2l-tier1:more"></d2l-button-icon>
+						</div>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="separatorsNone">
 				<d2l-list separators="none">
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Identify categories of physical activities</div>
-							<div slot="secondary">Specific Expectation A1.2</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-							<div slot="secondary">Specific Expectation B2.1</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-							<div slot="secondary">Specific Expectation B2.2</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
+					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>Item 3</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
+
 		<div style="width: 400px">
-			<div class="visual-diff" id="list-separators-extend">
-				<d2l-list extend-separators>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Identify categories of physical activities</div>
-							<div slot="secondary">Specific Expectation A1.2</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-							<div slot="secondary">Specific Expectation B2.1</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-							<div slot="secondary">Specific Expectation B2.2</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
+			<div class="visual-diff" id="separatorsAll">
+				<d2l-list separators="all">
+					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>Item 3</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
+
 		<div style="width: 400px">
-			<div class="visual-diff" id="list-separators-all">
-				<d2l-list>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Identify categories of physical activities</div>
-							<div slot="secondary">Specific Expectation A1.2</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-							<div slot="secondary">Specific Expectation B2.1</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-							<div slot="secondary">Specific Expectation B2.2</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-			</div>
-		</div>
-		<div style="width: 400px">
-			<div class="visual-diff" id="list-separators-between">
+			<div class="visual-diff" id="separatorsBetween">
 				<d2l-list separators="between">
+					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>Item 3</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="separatorsExtended">
+				<d2l-list extend-separators>
+					<d2l-list-item>Item 1</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>Item 3</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="itemContent">
+				<d2l-list>
 					<d2l-list-item>
 						<d2l-list-item-content>
-							<div>Identify categories of physical activities</div>
-							<div slot="secondary">Specific Expectation A1.2</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-							<div slot="secondary">Specific Expectation B2.1</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<d2l-list-item-content>
-							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-							<div slot="secondary">Specific Expectation B2.2</div>
+							<div>Item 1</div>
+							<div slot="secondary">Secondary info for item 1</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
 
-		<!-- Breakpoint 842 -->
+		<div style="width: 400px">
+			<div class="visual-diff" id="itemContentNoSecondary">
+				<d2l-list>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
 		<div style="width: 900px">
-			<div class="visual-diff" id="list-bp842">
+			<div class="visual-diff" id="breakpoint-842">
 				<d2l-list>
 					<d2l-list-item>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Introductory Earth Sciences</div>
-							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
-						<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Byron Novak</div>
-							<div slot="secondary">bnovak</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item illustration-outside>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Geomorphology and GIS </div>
-							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
 
-		<!-- Breakpoint 636 -->
 		<div style="width: 700px">
-			<div class="visual-diff"  id="list-bp636">
+			<div class="visual-diff" id="breakpoint-636">
 				<d2l-list>
 					<d2l-list-item>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Introductory Earth Sciences</div>
-							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
-						<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Byron Novak</div>
-							<div slot="secondary">bnovak</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item illustration-outside>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Geomorphology and GIS </div>
-							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
 			</div>
 		</div>
 
-		<!-- Breakpoint 580 -->
 		<div style="width: 600px">
-			<div class="visual-diff" id="list-bp580">
+			<div class="visual-diff" id="breakpoint-580">
 				<d2l-list>
 					<d2l-list-item>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Introductory Earth Sciences</div>
-							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
-						<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
+						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Byron Novak</div>
-							<div slot="secondary">bnovak</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item illustration-outside>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
-							<div>Geomorphology and GIS </div>
-							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-			</div>
-		</div>
-
-		<!-- Breakpoint 0 -->
-		<div style="width: 490px">
-			<div class="visual-diff" id="list-bp0">
-				<d2l-list>
-					<d2l-list-item>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
-						<d2l-list-item-content>
-							<div>Introductory Earth Sciences</div>
-							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item>
-						<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
-						<d2l-list-item-content>
-							<div>Byron Novak</div>
-							<div slot="secondary">bnovak</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item illustration-outside>
-						<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
-						<d2l-list-item-content>
-							<div>Geomorphology and GIS </div>
-							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -231,28 +244,32 @@
 		</div>
 
 		<div style="width: 490px">
-				<div class="visual-diff" id="list-rtl" dir="rtl">
-					<d2l-list dir="rtl">
-						<d2l-list-item dir="rtl">
-							<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
-							<d2l-list-item-content>
-							<div>Introductory Earth Sciences</div>
-							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-						</d2l-list-item dir="rtl">
-						<d2l-list-item dir="rtl">
-							<div style="height: 42px; width: 42px; background: red;" slot="illustration"></div>
-							<d2l-list-item-content>
-							<div>Byron Novak</div>
-							<div slot="secondary">bnovak</div>
-						</d2l-list-item>
-						<d2l-list-item dir="rtl" illustration-outside>
-							<div style="height: 400px; width: 400px; background: red;" slot="illustration"></div>
-							<d2l-list-item-content>
-							<div>Geomorphology and GIS </div>
-							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-						</d2l-list-item>
-					</d2l-list>
-				</div>
+			<div class="visual-diff" id="breakpoint-0">
+				<d2l-list>
+					<d2l-list-item>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
+						<d2l-list-item-content>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item>
+						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
+						<d2l-list-item-content>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item illustration-outside>
+						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
+						<d2l-list-item-content>
+							<div>Introductory Pirate Ipsum</div>
+							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
 			</div>
+		</div>
+
 	</body>
 </html>
