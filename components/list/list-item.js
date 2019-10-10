@@ -1,4 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -18,6 +20,8 @@ class ListItem extends RtlMixin(LitElement) {
 			breakpoints: { type: Array },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
 			role: { type: String, reflect: true },
+			selectable: {type: Boolean },
+			selected: { type: Boolean, reflect: true },
 			_breakpoint: { type: Number }
 		};
 	}
@@ -26,65 +30,98 @@ class ListItem extends RtlMixin(LitElement) {
 		const layout = css`
 			:host {
 				display: block;
-				margin: 1px 0;
+				margin: 0.05rem 0;
 			}
 			:host[hidden] {
 				display: none;
 			}
 			.d2l-list-item-flex {
 				display: flex;
+				position: relative;
 			}
 			.d2l-list-item-content {
 				border-bottom: var(--d2l-list-item-separator-bottom, 1px solid var(--d2l-color-mica));
 				border-top: var(--d2l-list-item-separator-top, 1px solid var(--d2l-color-mica));
 				box-sizing: content-box;
-				margin-bottom: -1px;
-				margin-top: -1px;
+				margin-bottom: -0.05rem;
+				margin-top: -0.05rem;
 				padding-bottom: var(--d2l-list-item-separator-padding-bottom, 0);
 				padding-top: var(--d2l-list-item-separator-padding-top, 0);
 				position: relative;
 				width: 100%;
 			}
+			.d2l-list-item-flex:hover .d2l-list-item-content {
+				background-color: var(--d2l-list-item-hover-background, none);
+			}
 			.d2l-list-item-content-flex {
 				display: flex;
 				flex-grow: 1;
 				justify-content: stretch;
-				margin: 18px 0;
-				padding: var(--d2l-list-item-content-padding, 0);
+				padding: 0.55rem var(--d2l-list-item-content-padding-side, 0);
 			}
 			::slotted([slot="illustration"]){
-				align-self: flex-start;
 				display: flex;
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin-right: 0.9rem;
-				max-height: 52px;
-				max-width: 90px;
-				overflow:hidden;
+				margin: 0.15rem 0.9rem 0.15rem 0;
+				max-height: 2.6rem;
+				max-width: 4.5rem;
+				overflow: hidden;
 			}
 			:host([dir="rtl"]) ::slotted([slot="illustration"]) {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
-			:host([illustration-outside]) ::slotted([slot="illustration"]) {
-				margin-bottom: 18px;
-				margin-top: 18px;
-			}
 			::slotted([slot="actions"]) {
 				align-self: flex-start;
-				display: flex;
+				display: grid;
 				flex-grow: 0;
+				grid-auto-columns: 1fr;
+				grid-auto-flow: column;
+				grid-gap: 0.3rem;
+				margin: 0.15rem 0;
+				position: relative;
+				z-index: 150;
 			}
 			.d2l-list-item-main {
 				flex-grow: 1;
+				margin-top: 0.05rem;
+			}
+			.d2l-list-item-label {
+				height: 100%;
+				position: absolute;
+				width: 100%;
+				z-index: 100;
+			}
+			input[type="checkbox"] {
+				flex-shrink: 0;
+				margin: 0.6rem 0.9rem 0.6rem 0;
+			}
+			:host([dir="rtl"]) input[type="checkbox"] {
+				margin-left: 0.9rem;
+				margin-right: 0;
+			}
+		`;
+
+		const illustrationOutside = css`
+			:host([illustration-outside]) .d2l-list-item-content-flex {
+				padding: 0.55rem 0;
+			}
+			:host([illustration-outside]) ::slotted([slot="illustration"]) {
+				margin-bottom: 0.7rem;
+				margin-top: 0.7rem;
+			}
+			:host([illustration-outside]) input[type="checkbox"] {
+				margin-bottom: 1.15rem;
+				margin-top: 1.15rem;
 			}
 		`;
 
 		const breakPoint1 = css`
 			.d2l-list-item-flex[breakpoint="1"] ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
-				max-height: 71px;
-				max-width: 120px;
+				max-height: 3.55rem;
+				max-width: 6rem;
 			}
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="1"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
@@ -95,8 +132,8 @@ class ListItem extends RtlMixin(LitElement) {
 		const breakPoint2 = css`
 			.d2l-list-item-flex[breakpoint="2"] ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
-				max-height: 102px;
-				max-width: 180px;
+				max-height: 5.1rem;
+				max-width: 9rem;
 			}
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="2"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
@@ -107,15 +144,15 @@ class ListItem extends RtlMixin(LitElement) {
 		const breakPoint3 = css`
 			.d2l-list-item-flex[breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
-				max-height: 120px;
-				max-width: 216px;
+				max-height: 6rem;
+				max-width: 10.8rem;
 			}
 			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 		`;
-		return [ layout, breakPoint1, breakPoint2, breakPoint3];
+		return [ checkboxStyles, layout, breakPoint1, breakPoint2, breakPoint3, illustrationOutside ];
 	}
 
 	constructor() {
@@ -123,6 +160,10 @@ class ListItem extends RtlMixin(LitElement) {
 		this._breakpoint = 0;
 		this.breakpoints = [842, 636, 580, 0];
 		this.role = 'listitem';
+		this.selected = false;
+		this.selectable = false;
+		this._contentId = getUniqueId();
+		this._checkBoxId = getUniqueId();
 	}
 
 	get breakpoints() {
@@ -135,12 +176,27 @@ class ListItem extends RtlMixin(LitElement) {
 		this.requestUpdate('breakpoints', oldVal);
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		ro.observe(this);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		ro.unobserve(this);
+	}
+
 	render() {
-		const illustrationSlot = html`<slot name="illustration"></slot>`;
+
+		const label = (this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null);
+		const checkbox = (this.selectable ? html`<input @change="${this._handleCheckboxChange}" class="d2l-input-checkbox" type="checkbox" id="${this._checkBoxId}">` : null);
+		const illustrationSlot = html`${checkbox}<slot name="illustration"></slot>`;
+
 		return html`
 			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
+				${label}
 				${this.illustrationOutside ? illustrationSlot : null}
-				<div class="d2l-list-item-content">
+				<div class="d2l-list-item-content" id="${this._contentId}">
 					<div class="d2l-list-item-content-flex">
 						${this.illustrationOutside ? null : illustrationSlot}
 						<div class="d2l-list-item-main"><slot></slot></div>
@@ -149,22 +205,9 @@ class ListItem extends RtlMixin(LitElement) {
 				</div>
 			</div>
 		`;
+
 	}
 
-	updated(changedProperties) {
-		if (changedProperties.has('breakpoints')) {
-			this.resizedCallback(this.offsetWidth);
-		}
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		ro.observe(this);
-	}
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		ro.unobserve(this);
-	}
 	resizedCallback(width) {
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
@@ -174,6 +217,17 @@ class ListItem extends RtlMixin(LitElement) {
 			}
 		});
 	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('breakpoints')) {
+			this.resizedCallback(this.offsetWidth);
+		}
+	}
+
+	_handleCheckboxChange(e) {
+		this.selected = e.target.checked;
+	}
+
 }
 
 customElements.define('d2l-list-item', ListItem);

@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
@@ -8,13 +9,13 @@ class ListItemContent extends LitElement {
 
 			.d2l-list-item-content-text {
 				margin: 0;
-				max-height: 2.4rem;
 				overflow: hidden;
 			}
 
 			.d2l-list-item-content-text-secondary {
+				color: var(--d2l-list-item-content-text-secondary-color, var(--d2l-color-tungsten));
 				margin: 0;
-				margin-top: 0.3rem;
+				margin-top: 0.15rem;
 				overflow: hidden;
 			}
 
