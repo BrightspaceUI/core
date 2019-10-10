@@ -2,20 +2,30 @@ language: node_js
 node_js: node
 addons:
   chrome: stable
-script:
-- npm run build
-- npm run lint
-- |
-  if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
-    echo "Pull request with secure environment variables, running Sauce tests...";
-    npm run test:sauce || travis_terminate 1;
-    npm run test:diff || travis_terminate 1;
-  else
-    echo "Not a pull request and/or no secure environment variables, running headless tests...";
-    npm run test:travis || travis_terminate 1;
-  fi
-after_success:
-- frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
+jobs:
+  include:
+  - stage: code-tests
+    script:
+    - npm run build
+    - npm run lint
+    - |
+      if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
+          echo "Pull request with secure environment variables, running Sauce tests...";
+          npm run test:sauce || travis_terminate 1;
+      else
+          echo "Not a pull request and/or no secure environment variables, running headless tests...";
+          npm run test:travis || travis_terminate 1;
+      fi
+  - stage: visual-difference-tests
+    script:
+    - npm run build
+    - |
+      if [ $TRAVIS_SECURE_ENV_VARS == true ]; then
+        echo "Running visual difference tests...";
+        npm run test:diff || travis_terminate 1;
+      fi
+  - stage: update-version
+    script: frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
 env:
   global:
   - REPO_NAME=core
