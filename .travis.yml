@@ -24,8 +24,11 @@ jobs:
         echo "Running visual difference tests...";
         npm run test:diff || travis_terminate 1;
       fi
-  - stage: update-version
-    script: frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
+after_success:
+- |
+  if [ $TRAVIS_BUILD_STAGE_NAME == "Code-tests" ]; then
+    frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
+  fi
 env:
   global:
   - REPO_NAME=core
