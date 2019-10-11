@@ -26,7 +26,7 @@ jobs:
       fi
 after_success:
 - |
-  if [ $TRAVIS_BUILD_STAGE_NAME == "Code-tests" ]; then
+  if [ $TRAVIS_BUILD_STAGE_NAME == "Visual-difference-tests" ]; then
     frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
   fi
 env:
