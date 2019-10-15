@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -18,6 +19,7 @@ class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
+			href: { type: String },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
@@ -87,6 +89,7 @@ class ListItem extends RtlMixin(LitElement) {
 				flex-grow: 1;
 				margin-top: 0.05rem;
 			}
+			.d2l-list-item-link,
 			.d2l-list-item-label {
 				height: 100%;
 				position: absolute;
@@ -152,7 +155,29 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-right: 0;
 			}
 		`;
-		return [ checkboxStyles, layout, breakPoint1, breakPoint2, breakPoint3, illustrationOutside ];
+
+		const primaryAction = css`
+			:host([href]) .d2l-list-item-label {
+				width: 3.0rem;
+				z-index: 150;
+			}
+			:host([href]) {
+				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
+			}
+			:host([href]) .d2l-list-item-link:focus + .d2l-list-item-content,
+			:host([href]) .d2l-list-item-link:hover + .d2l-list-item-content {
+				--d2l-list-item-content-text-decoration: underline;
+			}
+			:host([href]) .d2l-list-item-link:focus {
+				outline: none;
+			}
+			:host([href]) .d2l-list-item-link:focus + .d2l-list-item-content {
+				border-color: transparent;
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+			}
+		`;
+
+		return [ checkboxStyles, layout, primaryAction, breakPoint1, breakPoint2, breakPoint3, illustrationOutside ];
 	}
 
 	constructor() {
@@ -188,17 +213,20 @@ class ListItem extends RtlMixin(LitElement) {
 
 	render() {
 
-		const label = (this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null);
-		const checkbox = (this.selectable ? html`<input @change="${this._handleCheckboxChange}" class="d2l-input-checkbox" type="checkbox" id="${this._checkBoxId}">` : null);
-		const illustrationSlot = html`${checkbox}<slot name="illustration"></slot>`;
+		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
+		const link = this.href ? html`<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>` : null;
+		const beforeContent = this.selectable
+			? html`<input @change="${this._handleCheckboxChange}" class="d2l-input-checkbox" type="checkbox" id="${this._checkBoxId}"><slot name="illustration"></slot>`
+			: html`<slot name="illustration"></slot>`;
 
 		return html`
 			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
 				${label}
-				${this.illustrationOutside ? illustrationSlot : null}
+				${this.illustrationOutside ? beforeContent : null}
+				${link}
 				<div class="d2l-list-item-content" id="${this._contentId}">
 					<div class="d2l-list-item-content-flex">
-						${this.illustrationOutside ? null : illustrationSlot}
+						${!this.illustrationOutside ? beforeContent : null}
 						<div class="d2l-list-item-main"><slot></slot></div>
 						<slot name="actions"></slot>
 					</div>
