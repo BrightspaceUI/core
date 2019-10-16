@@ -21,6 +21,7 @@ class ListItem extends RtlMixin(LitElement) {
 			breakpoints: { type: Array },
 			href: { type: String },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
+			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
 			selected: { type: Boolean, reflect: true },
@@ -185,7 +186,6 @@ class ListItem extends RtlMixin(LitElement) {
 		this._breakpoint = 0;
 		this.breakpoints = [842, 636, 580, 0];
 		this.role = 'listitem';
-		this.selected = false;
 		this.selectable = false;
 		this._contentId = getUniqueId();
 		this._checkBoxId = getUniqueId();
@@ -195,10 +195,10 @@ class ListItem extends RtlMixin(LitElement) {
 		return this._breakpoints;
 	}
 
-	set breakpoints(val) {
-		const oldVal = this._breakpoints;
-		this._breakpoints = val.sort((a, b) => b - a).slice(0, 4);
-		this.requestUpdate('breakpoints', oldVal);
+	set breakpoints(value) {
+		const oldValue = this._breakpoints;
+		this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
+		this.requestUpdate('breakpoints', oldValue);
 	}
 
 	connectedCallback() {
@@ -216,7 +216,7 @@ class ListItem extends RtlMixin(LitElement) {
 		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
 		const link = this.href ? html`<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>` : null;
 		const beforeContent = this.selectable
-			? html`<input @change="${this._handleCheckboxChange}" class="d2l-input-checkbox" type="checkbox" id="${this._checkBoxId}"><slot name="illustration"></slot>`
+			? html`<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}"><slot name="illustration"></slot>`
 			: html`<slot name="illustration"></slot>`;
 
 		return html`
@@ -246,14 +246,32 @@ class ListItem extends RtlMixin(LitElement) {
 		});
 	}
 
+	setSelected(selected, suppressEvent) {
+		this.selected = selected;
+		if (!suppressEvent) this._dispatchSelected(selected);
+	}
+
 	updated(changedProperties) {
+		if (changedProperties.has('key')) {
+			const oldValue = changedProperties.get('key');
+			if (typeof oldValue !== 'undefined') {
+				this.setSelected(undefined, true);
+			}
+		}
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
 		}
 	}
 
+	_dispatchSelected(value) {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
+			detail: { key: this.key, selected: value },
+			bubbles: true
+		}));
+	}
+
 	_handleCheckboxChange(e) {
-		this.selected = e.target.checked;
+		this.setSelected(e.target.checked);
 	}
 
 }

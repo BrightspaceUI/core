@@ -1,6 +1,12 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
+export const selectableListStates = {
+	none: 0,
+	indeterminate: 1,
+	all: 2
+};
+
 class List extends LitElement {
 
 	static get properties() {
@@ -64,12 +70,59 @@ class List extends LitElement {
 		return [layout, specialCases];
 	}
 
+	constructor() {
+		super();
+		this.addEventListener('d2l-list-item-selected', this._onlistItemSelected.bind(this));
+	}
+
+	getSelectedKeys() {
+		const items = [...this.querySelectorAll('d2l-list-item')];
+		return items && items.filter(item => item.selected).map(item => item.key);
+	}
+
+	getSelectionState() {
+		const items = [...this.querySelectorAll('d2l-list-item')];
+		const selectedItems = items.filter(item => item.selected);
+		if (!selectedItems || selectedItems.length < 1) {
+			return selectableListStates.none;
+		}
+
+		const notSelectedItems = items.filter(item => !item.selected);
+		if (notSelectedItems.length < 1) {
+			return selectableListStates.all;
+		}
+
+		return selectableListStates.indeterminate;
+	}
+
 	render() {
 		return html`
 			<div role="list" class="d2l-list-container">
 				<slot></slot>
 			</div>
 		`;
+	}
+
+	toggleSelectAll() {
+		const items = [...this.querySelectorAll('d2l-list-item')];
+		const notSelectedItems = items.filter(item => !item.selected);
+		if (notSelectedItems.length < 1) {
+			const selectedItems = items.filter(item => item.selected);
+			selectedItems.forEach(item => {
+				item.setSelected(false, true);
+			});
+		} else {
+			notSelectedItems.forEach(item => {
+				item.setSelected(true, true);
+			});
+		}
+	}
+
+	_onlistItemSelected(event) {
+		this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
+			detail: event.detail
+		}));
+		event.stopPropagation();
 	}
 
 }

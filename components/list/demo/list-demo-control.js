@@ -1,11 +1,13 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '../../typography/styles.js';
+import { selectableListStates } from '../list.js';
 
 class ListDemoControl extends LitElement {
 
 	static get properties() {
 		return {
-			target: { type: String }
+			target: { type: String },
+			_numberSelected: { type: Number }
 		};
 	}
 
@@ -39,6 +41,23 @@ class ListDemoControl extends LitElement {
 		`];
 	}
 
+	constructor() {
+		super();
+		this._onListChange = this._onListChange.bind(this);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		const list = document.querySelector(`${this.target} d2l-list`);
+		list.addEventListener('d2l-list-selection-change', this._onListChange);
+	}
+
+	disconnectedCallback() {
+		const list = document.querySelector(`${this.target} d2l-list`);
+		list.removeEventListener('d2l-list-selection-change', this._onListChange);
+		super.disconnectedCallback();
+	}
+
 	render() {
 		return html`
 			<div class="d2l-body-small d2l-list-demo-grid">
@@ -65,6 +84,7 @@ class ListDemoControl extends LitElement {
 				<label>selectable: <input type="checkbox" @change="${this._onChangeSelectable}"></label>
 				<label>hover-effect: <input type="checkbox" @change="${this._onChangeHoverEffect}"></label>
 				<label>Add Action: <input type="checkbox" @change="${this._onChangeAddAction}"></label>
+				<label>Select All: <input type="checkbox" class="select-all" @change="${this._onChangeSelectAll}"> ${this._numberSelected}</label>
 			</div>
 		`;
 	}
@@ -100,6 +120,12 @@ class ListDemoControl extends LitElement {
 		list.toggleAttribute('hover-effect', event.target.checked);
 	}
 
+	_onChangeSelectAll() {
+		const list = document.querySelector(`${this.target} d2l-list`);
+		list.toggleSelectAll();
+		this._updateSelectAll(list);
+	}
+
 	_onChangeSelectable(event) {
 		const listItems = document.querySelectorAll(`${this.target} d2l-list d2l-list-item`);
 		listItems.forEach(item => {
@@ -117,6 +143,21 @@ class ListDemoControl extends LitElement {
 		listItems.forEach(item => {
 			item.toggleAttribute('illustration-outside', event.target.checked);
 		});
+	}
+
+	_onListChange(event) {
+		this._updateSelectAll(event.target);
+	}
+
+	_updateSelectAll(list) {
+		const selectAll = this.shadowRoot.querySelector('.select-all');
+		const elementsSelected = list.getSelectedKeys();
+		this._numberSelected = elementsSelected.length;
+		selectAll.indeterminate = list.getSelectionState() === selectableListStates.indeterminate;
+		selectAll.checked = list.getSelectionState() === selectableListStates.all;
+
+		// This line allows you to see how and when the events fire. So check your console log.
+		console.log(elementsSelected); // eslint-disable-line
 	}
 
 }
