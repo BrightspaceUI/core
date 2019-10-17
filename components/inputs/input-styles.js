@@ -27,13 +27,13 @@ export const inputStyles = css`
 		width: 100%;
 	}
 	.d2l-input::placeholder {
-		color: var(--d2l-input-placeholder-color, var(--d2l-color-mica));
+		color: var(--d2l-color-mica);
 		font-size: 0.8rem;
 		font-weight: 400;
 		opacity: 1; /* Firefox has non-1 default */
 	}
 	.d2l-input::-ms-input-placeholder {
-		color: var(--d2l-input-placeholder-color, var(--d2l-color-mica));
+		color: var(--d2l-color-mica);
 		font-size: 0.8rem;
 		font-weight: 400;
 	}
