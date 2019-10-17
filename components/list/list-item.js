@@ -14,6 +14,8 @@ const ro = new ResizeObserver(entries => {
 	});
 });
 
+const defaultBreakpoints = [842, 636, 580, 0];
+
 class ListItem extends RtlMixin(LitElement) {
 
 	static get properties() {
@@ -184,7 +186,7 @@ class ListItem extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this._breakpoint = 0;
-		this.breakpoints = [842, 636, 580, 0];
+		this.breakpoints = defaultBreakpoints;
 		this.role = 'listitem';
 		this.selectable = false;
 		this._contentId = getUniqueId();
@@ -197,7 +199,8 @@ class ListItem extends RtlMixin(LitElement) {
 
 	set breakpoints(value) {
 		const oldValue = this._breakpoints;
-		this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
+		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
+		else this._breakpoints = defaultBreakpoints;
 		this.requestUpdate('breakpoints', oldValue);
 	}
 
