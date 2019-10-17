@@ -70,9 +70,13 @@ class List extends LitElement {
 		return [layout, specialCases];
 	}
 
-	constructor() {
-		super();
-		this.addEventListener('d2l-list-item-selected', this._onlistItemSelected.bind(this));
+	firstUpdated() {
+		this.addEventListener('d2l-list-item-selected', (e) => {
+			this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
+				detail: e.detail
+			}));
+			e.stopPropagation();
+		});
 	}
 
 	getSelectedKeys() {
@@ -116,13 +120,6 @@ class List extends LitElement {
 				item.setSelected(true, true);
 			});
 		}
-	}
-
-	_onlistItemSelected(event) {
-		this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
-			detail: event.detail
-		}));
-		event.stopPropagation();
 	}
 
 }
