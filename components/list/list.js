@@ -80,12 +80,12 @@ class List extends LitElement {
 	}
 
 	getSelectedKeys() {
-		const items = [...this.querySelectorAll('d2l-list-item')];
+		const items = [...this.querySelectorAll('[role="listitem"]')];
 		return items && items.filter(item => item.selected).map(item => item.key);
 	}
 
 	getSelectionState() {
-		const items = [...this.querySelectorAll('d2l-list-item')];
+		const items = [...this.querySelectorAll('[role="listitem"]')];
 		const selectedItems = items.filter(item => item.selected);
 		if (!selectedItems || selectedItems.length < 1) {
 			return listSelectionStates.none;
@@ -108,7 +108,7 @@ class List extends LitElement {
 	}
 
 	toggleSelectAll() {
-		const items = [...this.querySelectorAll('d2l-list-item')];
+		const items = [...this.querySelectorAll('[role="listitem"]')];
 		const notSelectedItems = items.filter(item => !item.selected);
 		if (notSelectedItems.length < 1) {
 			const selectedItems = items.filter(item => item.selected);
