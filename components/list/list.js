@@ -110,15 +110,10 @@ class List extends LitElement {
 	toggleSelectAll() {
 		const items = this._getItems();
 		const notSelectedItems = items.filter(item => !item.selected);
-		if (notSelectedItems.length < 1) {
-			const selectedItems = items.filter(item => item.selected);
-			selectedItems.forEach(item => {
-				item.setSelected(false, true);
-			});
+		if (notSelectedItems.length === 0) {
+			items.forEach(item => item.setSelected(false, true));
 		} else {
-			notSelectedItems.forEach(item => {
-				item.setSelected(true, true);
-			});
+			notSelectedItems.forEach(item => item.setSelected(true, true));
 		}
 	}
 
