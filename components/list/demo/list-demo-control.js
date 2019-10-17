@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '../../typography/styles.js';
-import { selectableListStates } from '../list.js';
+import { listSelectionStates } from '../list.js';
 
 class ListDemoControl extends LitElement {
 
@@ -153,8 +153,8 @@ class ListDemoControl extends LitElement {
 		const selectAll = this.shadowRoot.querySelector('.select-all');
 		const elementsSelected = list.getSelectedKeys();
 		this._numberSelected = elementsSelected.length;
-		selectAll.indeterminate = list.getSelectionState() === selectableListStates.indeterminate;
-		selectAll.checked = list.getSelectionState() === selectableListStates.all;
+		selectAll.indeterminate = list.getSelectionState() === listSelectionStates.indeterminate;
+		selectAll.checked = list.getSelectionState() === listSelectionStates.all;
 
 		// This line allows you to see how and when the events fire. So check your console log.
 		console.log(elementsSelected); // eslint-disable-line

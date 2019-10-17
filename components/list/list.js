@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
-export const selectableListStates = {
+export const listSelectionStates = {
 	none: 0,
 	indeterminate: 1,
 	all: 2
@@ -84,15 +84,15 @@ class List extends LitElement {
 		const items = [...this.querySelectorAll('d2l-list-item')];
 		const selectedItems = items.filter(item => item.selected);
 		if (!selectedItems || selectedItems.length < 1) {
-			return selectableListStates.none;
+			return listSelectionStates.none;
 		}
 
 		const notSelectedItems = items.filter(item => !item.selected);
 		if (notSelectedItems.length < 1) {
-			return selectableListStates.all;
+			return listSelectionStates.all;
 		}
 
-		return selectableListStates.indeterminate;
+		return listSelectionStates.indeterminate;
 	}
 
 	render() {
