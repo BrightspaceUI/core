@@ -79,24 +79,20 @@ class List extends LitElement {
 		});
 	}
 
-	getSelectedKeys() {
-		const items = this._getItems();
-		return items && items.filter(item => item.selected).map(item => item.key);
-	}
-
-	getSelectionState() {
+	getSelectionInfo() {
 		const items = this._getItems();
 		const selectedItems = items.filter(item => item.selected);
-		if (!selectedItems || selectedItems.length < 1) {
-			return listSelectionStates.none;
+
+		let state = listSelectionStates.none;
+		if (selectedItems.length > 0) {
+			if (selectedItems.length === items.length) state = listSelectionStates.all;
+			else state = listSelectionStates.indeterminate;
 		}
 
-		const notSelectedItems = items.filter(item => !item.selected);
-		if (notSelectedItems.length < 1) {
-			return listSelectionStates.all;
-		}
-
-		return listSelectionStates.indeterminate;
+		return {
+			keys: selectedItems.map(item => item.key),
+			state: state
+		};
 	}
 
 	render() {
