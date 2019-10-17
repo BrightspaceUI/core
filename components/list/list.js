@@ -80,12 +80,12 @@ class List extends LitElement {
 	}
 
 	getSelectedKeys() {
-		const items = [...this.querySelectorAll('[role="listitem"]')];
+		const items = this._getItems();
 		return items && items.filter(item => item.selected).map(item => item.key);
 	}
 
 	getSelectionState() {
-		const items = [...this.querySelectorAll('[role="listitem"]')];
+		const items = this._getItems();
 		const selectedItems = items.filter(item => item.selected);
 		if (!selectedItems || selectedItems.length < 1) {
 			return listSelectionStates.none;
@@ -108,7 +108,7 @@ class List extends LitElement {
 	}
 
 	toggleSelectAll() {
-		const items = [...this.querySelectorAll('[role="listitem"]')];
+		const items = this._getItems();
 		const notSelectedItems = items.filter(item => !item.selected);
 		if (notSelectedItems.length < 1) {
 			const selectedItems = items.filter(item => item.selected);
@@ -120,6 +120,12 @@ class List extends LitElement {
 				item.setSelected(true, true);
 			});
 		}
+	}
+
+	_getItems() {
+		return this.shadowRoot.querySelector('slot').assignedNodes().filter((node) => {
+			return node.nodeType === Node.ELEMENT_NODE && node.role === 'listitem';
+		});
 	}
 
 }
