@@ -233,15 +233,15 @@ class MyElem extends LitElement {
 	render() {
 		return html`
 			<label class="d2l-input-radio-label">
-				<input type="radio" name="group" selected>
+				<input type="radio" name="myGroup" selected>
 				Option 1 (selected)
 			</label>
 			<label class="d2l-input-radio-label d2l-input-radio-label-disabled">
-				<input type="radio" name="group" disabled>
+				<input type="radio" name="myGroup" disabled>
 				Option 2 (disabled)
 			</label>
 			<label class="d2l-input-radio-label">
-				<input type="radio" name="group">
+				<input type="radio" name="myGroup">
 				Option 3
 			</label>
 		`;
