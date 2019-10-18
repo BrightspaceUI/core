@@ -211,7 +211,7 @@ class MyElem extends LitElement {
 
 Unlike checkboxes, individual radio buttons cannot be placed in a custom element. Items belonging to a radio group cannot span across different shadow roots -- all radios in the same group must be in the same shadow root.
 
-Instead, we'll apply styles to native radio inputs.
+Instead, apply styles to native radio inputs.
 
 ### Radio Inputs With Labels
 
