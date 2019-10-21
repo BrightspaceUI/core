@@ -5,7 +5,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			disabled: { type: Boolean, reflect: true },
 			first: { type: Boolean, reflect: true }, // set by d2l-menu
 			hasChildView: { type: Boolean, attribute: 'has-child-view' },
-			hidden: { type: Boolean, observer: '_onHidden', reflect: true }, // observer?
+			hidden: { type: Boolean, reflect: true },
 			last: { type: String, reflect: true }, // set by d2l-menu
 			role: { type: String, reflect: true },
 			tabindex: { type: Number, reflect: true, attribute: 'tab-index' },
@@ -27,7 +27,18 @@ export const MenuItemMixin = superclass => class extends superclass {
 	}
 
 	firstUpdated() {
+		super.firstUpdated();
 		this.__initializeItem();
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === 'hidden') {
+				this._onHidden();
+			}
+		});
 	}
 
 	connectedCallback() {
