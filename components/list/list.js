@@ -2,9 +2,9 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 export const listSelectionStates = {
-	none: 0,
-	indeterminate: 1,
-	all: 2
+	none: 'none',
+	some: 'some',
+	all: 'all'
 };
 
 class List extends LitElement {
@@ -86,7 +86,7 @@ class List extends LitElement {
 		let state = listSelectionStates.none;
 		if (selectedItems.length > 0) {
 			if (selectedItems.length === items.length) state = listSelectionStates.all;
-			else state = listSelectionStates.indeterminate;
+			else state = listSelectionStates.some;
 		}
 
 		return {

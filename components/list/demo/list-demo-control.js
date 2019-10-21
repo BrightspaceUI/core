@@ -153,11 +153,11 @@ class ListDemoControl extends LitElement {
 		const selectAll = this.shadowRoot.querySelector('.select-all');
 		const selectionInfo = list.getSelectionInfo();
 		this._numberSelected = selectionInfo.keys.length;
-		selectAll.indeterminate = selectionInfo.state === listSelectionStates.indeterminate;
+		selectAll.some = selectionInfo.state === listSelectionStates.some;
 		selectAll.checked = selectionInfo.state === listSelectionStates.all;
 
 		// This line allows you to see how and when the events fire. So check your console log.
-		console.log(elementsSelected); // eslint-disable-line
+		console.log('selectionInfo', selectionInfo); // eslint-disable-line
 	}
 
 }
