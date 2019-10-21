@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-menu-item unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../menu-item.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="basic">
+			<template>
+				<d2l-menu-item text="Lorem ipsum dolor sit amet."></d2l-menu-item>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-menu-item', () => {
+
+				[
+					{ title: 'Menu Item', fixture: 'basic'},
+				].forEach((testData) => {
+					let menuItem;
+					describe(testData.title, () => {
+
+						beforeEach(async() => {
+							menuItem = fixture(testData.fixture);
+						});
+
+						it.skip(`should pass all axe tests for ${testData.title}`, async() => {
+							// Currently fails "Required ARIA parents role not present: menu menubar"
+							// Enable after d2l-menu is added
+							await runAxe(menuItem);
+						});
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
