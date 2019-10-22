@@ -21,8 +21,8 @@ describe('d2l-input-radio', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	async function getRadio(id, val) {
-		return await page.evaluateHandle(
+	function getRadio(id, val) {
+		return page.evaluateHandle(
 			`document.querySelector('#${id}').shadowRoot.querySelector('input[type="radio"][value="${val}"]')`
 		);
 	}
