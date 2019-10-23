@@ -32,7 +32,7 @@ class MenuItem extends MenuItemMixin(LitElement) {
 
 	render() {
 		const icon = this.hasChildView ?
-			html`<d2l-icon icon="tier1:chevron-right"></d2l-icon>` : '';
+			html`<d2l-icon icon="tier1:chevron-right"></d2l-icon>` : null;
 
 		return html`
 			<span>${this.text}</span>

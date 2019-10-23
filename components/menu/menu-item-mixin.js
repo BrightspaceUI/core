@@ -8,7 +8,6 @@ export const MenuItemMixin = superclass => class extends superclass {
 			hidden: { type: Boolean, reflect: true },
 			last: { type: String, reflect: true }, // set by d2l-menu
 			role: { type: String, reflect: true },
-			tabindex: { type: Number, reflect: true, attribute: 'tab-index' },
 			text: String
 		};
 	}
@@ -26,8 +25,20 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.tabindex = -1;
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('click', this.__onClick);
+		this.removeEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
+		this.removeEventListener('dom-change', this.__onDomChange);
+		this.removeEventListener('keydown', this.__onKeyDown);
+	}
+
 	firstUpdated() {
 		super.firstUpdated();
+		this.addEventListener('click', this.__onClick);
+		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
+		this.addEventListener('dom-change', this.__onDomChange);
+		this.addEventListener('keydown', this.__onKeyDown);
 		this.__initializeItem();
 	}
 
@@ -41,28 +52,12 @@ export const MenuItemMixin = superclass => class extends superclass {
 		});
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('blur', this.__onBlur);
-		this.addEventListener('click', this.__onClick);
-		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
-		this.addEventListener('dom-change', this.__onDomChange);
-		this.addEventListener('focus', this.__onFocus);
-		this.addEventListener('keydown', this.__onKeyDown);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('blur', this.__onBlur);
-		this.removeEventListener('click', this.__onClick);
-		this.removeEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
-		this.removeEventListener('dom-change', this.__onDomChange);
-		this.removeEventListener('focus', this.__onFocus);
-		this.removeEventListener('keydown', this.__onKeyDown);
-	}
-
 	__initializeItem() {
-		const children = Array.from(this.children);
+		const slot = this.shadowRoot.querySelector('slot');
+		if (!slot) {
+			return;
+		}
+		const children = slot.assignedNodes().filter((node) => node.nodeType === Node.ELEMENT_NODE);
 		if (children && children.length > 0 && children[0].tagName === 'TEMPLATE') {
 			return;
 		}
@@ -75,9 +70,6 @@ export const MenuItemMixin = superclass => class extends superclass {
 				this.__children[0].label = this.text;
 				break;
 			}
-		}
-		if (this._initialize) {
-			this._initialize();
 		}
 	}
 
@@ -95,10 +87,6 @@ export const MenuItemMixin = superclass => class extends superclass {
 		}
 	}
 
-	__onBlur() {
-		this.dispatchEvent(new CustomEvent('_blur', { bubbles: true, composed: true }));
-	}
-
 	__onClick(e) {
 		e.stopPropagation();
 		this.__action();
@@ -106,10 +94,6 @@ export const MenuItemMixin = superclass => class extends superclass {
 
 	__onDomChange() {
 		this.__initializeItem();
-	}
-
-	__onFocus() {
-		this.dispatchEvent(new CustomEvent('_focus', { bubbles: true, composed: true }));
 	}
 
 	__onHideComplete(e) {
