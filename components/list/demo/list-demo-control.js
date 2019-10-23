@@ -82,7 +82,6 @@ class ListDemoControl extends LitElement {
 				</label>
 				<label>illustration-outside: <input type="checkbox" @change="${this._onChangeIllustrationOutside}"></label>
 				<label>selectable: <input type="checkbox" @change="${this._onChangeSelectable}"></label>
-				<label>hover-effect: <input type="checkbox" @change="${this._onChangeHoverEffect}"></label>
 				<label>Add Action: <input type="checkbox" @change="${this._onChangeAddAction}"></label>
 				<label>Select All: <input type="checkbox" class="select-all" @change="${this._onChangeSelectAll}"> ${this._numberSelected}</label>
 			</div>
@@ -113,11 +112,6 @@ class ListDemoControl extends LitElement {
 	_onChangeExtendSeparators(event) {
 		const list = document.querySelector(`${this.target} d2l-list`);
 		list.toggleAttribute('extend-separators', event.target.checked);
-	}
-
-	_onChangeHoverEffect(event) {
-		const list = document.querySelector(`${this.target} d2l-list`);
-		list.toggleAttribute('hover-effect', event.target.checked);
 	}
 
 	_onChangeSelectAll() {
