@@ -12,7 +12,6 @@
 			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
-			import './list-demo-control.js';
 			import './list-demo-name-image.js';
 		</script>
 		<style>
@@ -26,9 +25,10 @@
 	<body unresolved>
 
 		<d2l-demo-page page-title="List Components">
+
 			<h2>Basic List</h2>
-			<d2l-list-demo-control target="#list-basic"></d2l-list-demo-control>
-			<d2l-demo-snippet id="list-basic">
+
+			<d2l-demo-snippet>
 				<d2l-list>
 					<d2l-list-item>
 						<d2l-list-item-content>
@@ -51,9 +51,84 @@
 				</d2l-list>
 			</d2l-demo-snippet>
 
-			<h2>List of Users</h2>
-			<d2l-list-demo-control target="#list-of-users"></d2l-list-demo-control>
-			<d2l-demo-snippet id="list-of-users">
+			<h2>Basic List (separators: between)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list separators="between">
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Identify categories of physical activities</div>
+							<div slot="secondary">Specific Expectation A1.2</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+							<div slot="secondary">Specific Expectation B2.1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+							<div slot="secondary">Specific Expectation B2.2</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
+
+			<h2>Basic List (separators: none)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list separators="none">
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Identify categories of physical activities</div>
+							<div slot="secondary">Specific Expectation A1.2</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+							<div slot="secondary">Specific Expectation B2.1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+							<div slot="secondary">Specific Expectation B2.2</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
+
+			<h2>Basic List (extend separators)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list extend-separators>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Identify categories of physical activities</div>
+							<div slot="secondary">Specific Expectation A1.2</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+							<div slot="secondary">Specific Expectation B2.1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item>
+						<d2l-list-item-content>
+							<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+							<div slot="secondary">Specific Expectation B2.2</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
+
+			<h2>List (with secondary actions)</h2>
+
+			<d2l-demo-snippet>
 				<d2l-list>
 					<d2l-list-item>
 						<d2l-list-demo-name-image color="purple" letters="BN" slot="illustration"></d2l-list-demo-name-image>
@@ -102,9 +177,9 @@
 				</d2l-list>
 			</d2l-demo-snippet>
 
-			<h2>Course List</h2>
-			<d2l-list-demo-control target="#list-of-courses"></d2l-list-demo-control>
-			<d2l-demo-snippet id="list-of-courses">
+			<h2>List (with illustration)</h2>
+
+			<d2l-demo-snippet>
 				<d2l-list>
 					<d2l-list-item>
 						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -129,6 +204,119 @@
 					</d2l-list-item>
 				</d2l-list>
 			</d2l-demo-snippet>
+
+			<h2>List (illustration outside)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list>
+					<d2l-list-item illustration-outside>
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Introductory Earth Sciences</div>
+							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item illustration-outside>
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Engineering Materials for Energy Systems</div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item illustration-outside>
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Geomorphology and GIS </div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
+
+			<h2>List (with href)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list>
+					<d2l-list-item href="http://www.d2l.com">
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Introductory Earth Sciences</div>
+							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item href="http://www.d2l.com">
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Engineering Materials for Energy Systems</div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item href="http://www.d2l.com">
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Geomorphology and GIS </div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
+
+			<h2>List (selectable)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list>
+					<d2l-list-item selectable key="1">
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Introductory Earth Sciences</div>
+							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item selectable key="2" selected>
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Engineering Materials for Energy Systems</div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item selectable key="3">
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Geomorphology and GIS </div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
+
+			<h2>List (selectable with href)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list>
+					<d2l-list-item href="http://www.d2l.com" selectable key="1">
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Introductory Earth Sciences</div>
+							<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Engineering Materials for Energy Systems</div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item href="http://www.d2l.com" selectable key="3">
+						<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+						<d2l-list-item-content>
+							<div>Geomorphology and GIS </div>
+							<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>
