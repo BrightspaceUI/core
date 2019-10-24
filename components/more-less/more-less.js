@@ -155,7 +155,7 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 				class="more-less-toggle"
 				icon="${this.__computeIcon()}"
 				aria-controls="${this.__contentId}"
-				aria-expanded="${this.expanded}"
+				aria-expanded="${this.__computeAriaExpanded()}"
 				@click="${this.__toggleOnClick}"
 				text="${this.__computeText()}"
 				h-align="${ifDefined(this.hAlign)}">
@@ -215,6 +215,10 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 		}
 		this.__content.addEventListener('focusin', this.__focusIn.bind(this));
 		this.__content.addEventListener('focusout', this.__focusOut.bind(this));
+	}
+
+	__computeAriaExpanded() {
+		return this.expanded ? 'true' : 'false';
 	}
 
 	__computeText() {

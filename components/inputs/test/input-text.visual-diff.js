@@ -33,8 +33,7 @@ describe('d2l-input-text', () => {
 		'aria-invalid',
 		'aria-invalid-disabled',
 		'override-height',
-		'override-padding',
-		'override-placeholder'
+		'override-padding'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
