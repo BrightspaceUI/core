@@ -25,14 +25,6 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.tabindex = -1;
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('click', this.__onClick);
-		this.removeEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
-		this.removeEventListener('dom-change', this.__onDomChange);
-		this.removeEventListener('keydown', this.__onKeyDown);
-	}
-
 	firstUpdated() {
 		super.firstUpdated();
 		this.addEventListener('click', this.__onClick);
