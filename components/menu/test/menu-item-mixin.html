@@ -31,12 +31,12 @@
 					menuItem = fixture('basic');
 				});
 
-				it('has role="menuitem"', function() {
+				it('has role="menuitem"', () => {
 					expect(menuItem.getAttribute('role')).to.equal('menuitem');
 				});
 
-				it('fires select event when item clicked', function(done) {
-					menuItem.addEventListener('d2l-menu-item-select', function(e) {
+				it('fires select event when item clicked', (done) => {
+					menuItem.addEventListener('d2l-menu-item-select', (e) => {
 						expect(e.target.id).to.equal('my-menu-item');
 						done();
 					});
@@ -47,11 +47,11 @@
 					const disabledMenuItem = fixture('disabled');
 					let fired = false;
 
-					disabledMenuItem.addEventListener('d2l-menu-item-select', function() {
+					disabledMenuItem.addEventListener('d2l-menu-item-select', () => {
 						fired = true;
 					});
 
-					setTimeout(function() {
+					setTimeout(() => {
 						expect(fired).to.be.false;
 						done();
 					}, 0);
