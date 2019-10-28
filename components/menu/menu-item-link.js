@@ -36,12 +36,6 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 		];
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('keydown', this._onKeyDown);
-		this.shadowRoot.querySelector('a').removeEventListener('click', this._onClick);
-	}
-
 	firstUpdated() {
 		super.firstUpdated();
 		this.addEventListener('keydown', this._onKeyDown);
