@@ -1,4 +1,9 @@
+import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
+import { classMap} from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -11,160 +16,257 @@ const ro = new ResizeObserver(entries => {
 	});
 });
 
+const defaultBreakpoints = [842, 636, 580, 0];
+
 class ListItem extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
+			href: { type: String },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
+			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
+			selectable: {type: Boolean },
+			selected: { type: Boolean, reflect: true },
 			_breakpoint: { type: Number }
 		};
 	}
 
 	static get styles() {
-		const layout = css`
+
+		return [ checkboxStyles,  css`
+
 			:host {
 				display: block;
-				margin: 1px 0;
+				margin-top: -1px;
 			}
+
 			:host[hidden] {
 				display: none;
 			}
+
 			.d2l-list-item-flex {
 				display: flex;
-			}
-			.d2l-list-item-content {
-				border-bottom: var(--d2l-list-item-separator-bottom, 1px solid var(--d2l-color-mica));
-				border-top: var(--d2l-list-item-separator-top, 1px solid var(--d2l-color-mica));
-				box-sizing: content-box;
-				margin-bottom: -1px;
-				margin-top: -1px;
-				padding-bottom: var(--d2l-list-item-separator-padding-bottom, 0);
-				padding-top: var(--d2l-list-item-separator-padding-top, 0);
 				position: relative;
+			}
+
+			.d2l-list-item-content {
+				border-bottom: 1px solid transparent;
+				border-bottom: 1px solid var(--d2l-color-mica);
+				border-top: 1px solid var(--d2l-color-mica);
 				width: 100%;
 			}
+
+			:host(:first-child) .d2l-list-item-content[separators="between"] {
+				border-top: 1px solid transparent;
+			}
+
+			:host(:last-child) .d2l-list-item-content[separators="between"] {
+				border-bottom: 1px solid transparent;
+			}
+
+			.d2l-list-item-content[separators="none"] {
+				border-top: 1px solid transparent;
+				border-bottom: 1px solid transparent;
+			}
+
 			.d2l-list-item-content-flex {
 				display: flex;
-				flex-grow: 1;
 				justify-content: stretch;
-				margin: 18px 0;
-				padding: var(--d2l-list-item-content-padding, 0);
+				padding: 0.55rem 0;
 			}
-			::slotted([slot="illustration"]){
-				align-self: flex-start;
-				display: flex;
+
+			.d2l-list-item-content[extend-separators] .d2l-list-item-content-flex {
+				padding-left: 0.9rem;
+				padding-right: 0.9rem;
+			}
+
+			input[type="checkbox"] {
 				flex-grow: 0;
 				flex-shrink: 0;
-				margin-right: 0.9rem;
-				max-height: 52px;
-				max-width: 90px;
-				overflow:hidden;
+				margin: 0.6rem 0.9rem 0.6rem 0;
 			}
+
+			:host([dir="rtl"]) input[type="checkbox"] {
+				margin-left: 0.9rem;
+				margin-right: 0;
+			}
+
+			::slotted([slot="illustration"]) {
+				flex-grow: 0;
+				flex-shrink: 0;
+				margin: 0.15rem 0.9rem 0.15rem 0;
+				max-height: 2.6rem;
+				max-width: 4.5rem;
+				overflow: hidden;
+			}
+
 			:host([dir="rtl"]) ::slotted([slot="illustration"]) {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
+
+			:host([illustration-outside]) .d2l-list-item-content-flex {
+				padding: 0.55rem 0;
+			}
+
 			:host([illustration-outside]) ::slotted([slot="illustration"]) {
-				margin-bottom: 18px;
-				margin-top: 18px;
+				margin-bottom: 0.7rem;
+				margin-top: 0.7rem;
 			}
-			::slotted([slot="actions"]) {
-				align-self: flex-start;
-				display: flex;
-				flex-grow: 0;
+
+			:host([illustration-outside]) input[type="checkbox"] {
+				margin-bottom: 1.15rem;
+				margin-top: 1.15rem;
 			}
+
 			.d2l-list-item-main {
 				flex-grow: 1;
+				margin-top: 0.05rem;
 			}
-		`;
 
-		const breakPoint1 = css`
-			.d2l-list-item-flex[breakpoint="1"] ::slotted([slot="illustration"]) {
-				margin-right: 1rem;
-				max-height: 71px;
-				max-width: 120px;
+			::slotted([slot="actions"]) {
+				align-self: flex-start;
+				display: grid;
+				flex-grow: 0;
+				grid-auto-columns: 1fr;
+				grid-auto-flow: column;
+				grid-gap: 0.3rem;
+				margin: 0.15rem 0;
+				z-index: 4;
 			}
-			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="1"] ::slotted([slot="illustration"]) {
+
+			a, label {
+				height: 100%;
+				position: absolute;
+				width: 100%;
+				z-index: 2;
+			}
+
+			:host([href]) label {
+				width: 2.1rem;
+				z-index: 3;
+			}
+
+			:host([href]) {
+				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
+			}
+
+			a[href]:focus + .d2l-list-item-content,
+			a[href]:hover + .d2l-list-item-content {
+				--d2l-list-item-content-text-decoration: underline;
+			}
+
+			:host([href]) .d2l-list-item-link:focus {
+				outline: none;
+			}
+
+			[breakpoint="1"] ::slotted([slot="illustration"]) {
+				margin-right: 1rem;
+				max-height: 3.55rem;
+				max-width: 6rem;
+			}
+
+			:host([dir="rtl"]) [breakpoint="1"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-		`;
 
-		const breakPoint2 = css`
-			.d2l-list-item-flex[breakpoint="2"] ::slotted([slot="illustration"]) {
+			[breakpoint="2"] ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
-				max-height: 102px;
-				max-width: 180px;
+				max-height: 5.1rem;
+				max-width: 9rem;
 			}
-			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="2"] ::slotted([slot="illustration"]) {
+
+			:host([dir="rtl"]) [breakpoint="2"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-		`;
 
-		const breakPoint3 = css`
-			.d2l-list-item-flex[breakpoint="3"] ::slotted([slot="illustration"]) {
+			[breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
-				max-height: 120px;
-				max-width: 216px;
+				max-height: 6rem;
+				max-width: 10.8rem;
 			}
-			:host([dir="rtl"]) .d2l-list-item-flex[breakpoint="3"] ::slotted([slot="illustration"]) {
+
+			:host([dir="rtl"]) [breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-		`;
-		return [ layout, breakPoint1, breakPoint2, breakPoint3];
+
+		`];
 	}
 
 	constructor() {
 		super();
 		this._breakpoint = 0;
-		this.breakpoints = [842, 636, 580, 0];
+		this.breakpoints = defaultBreakpoints;
 		this.role = 'listitem';
+		this.selectable = false;
+		this._contentId = getUniqueId();
+		this._checkBoxId = getUniqueId();
 	}
 
 	get breakpoints() {
 		return this._breakpoints;
 	}
 
-	set breakpoints(val) {
-		const oldVal = this._breakpoints;
-		this._breakpoints = val.sort((a, b) => b - a).slice(0, 4);
-		this.requestUpdate('breakpoints', oldVal);
+	set breakpoints(value) {
+		const oldValue = this._breakpoints;
+		if (value !== defaultBreakpoints) this._breakpoints = value.sort((a, b) => b - a).slice(0, 4);
+		else this._breakpoints = defaultBreakpoints;
+		this.requestUpdate('breakpoints', oldValue);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		const separators = this.parentNode.getAttribute('separators');
+		if (separators) this._separators = separators;
+		this._extendSeparators = this.parentNode.hasAttribute('extend-separators');
+
+		ro.observe(this);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		ro.unobserve(this);
 	}
 
 	render() {
-		const illustrationSlot = html`<slot name="illustration"></slot>`;
+
+		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
+		const link = this.href ? html`<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>` : null;
+		const beforeContent = this.selectable
+			? html`<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}"><slot name="illustration"></slot>`
+			: html`<slot name="illustration"></slot>`;
+
+		const classes = {
+			'd2l-list-item-flex': label || link || this.illustrationOutside,
+			'd2l-visible-on-ancestor-target': true
+		};
+
 		return html`
-			<div class="d2l-list-item-flex d2l-visible-on-ancestor-target" breakpoint="${this._breakpoint}">
-				${this.illustrationOutside ? illustrationSlot : null}
-				<div class="d2l-list-item-content">
+			<div class="${classMap(classes)}" breakpoint="${this._breakpoint}">
+				${label}
+				${this.illustrationOutside ? beforeContent : null}
+				${link}
+				<div id="${this._contentId}"
+					class="d2l-list-item-content"
+					?extend-separators="${this._extendSeparators}"
+					separators="${ifDefined(this._separators)}">
 					<div class="d2l-list-item-content-flex">
-						${this.illustrationOutside ? null : illustrationSlot}
+						${!this.illustrationOutside ? beforeContent : null}
 						<div class="d2l-list-item-main"><slot></slot></div>
 						<slot name="actions"></slot>
 					</div>
 				</div>
 			</div>
 		`;
+
 	}
 
-	updated(changedProperties) {
-		if (changedProperties.has('breakpoints')) {
-			this.resizedCallback(this.offsetWidth);
-		}
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		ro.observe(this);
-	}
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		ro.unobserve(this);
-	}
 	resizedCallback(width) {
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
@@ -174,6 +276,35 @@ class ListItem extends RtlMixin(LitElement) {
 			}
 		});
 	}
+
+	setSelected(selected, suppressEvent) {
+		this.selected = selected;
+		if (!suppressEvent) this._dispatchSelected(selected);
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('key')) {
+			const oldValue = changedProperties.get('key');
+			if (typeof oldValue !== 'undefined') {
+				this.setSelected(undefined, true);
+			}
+		}
+		if (changedProperties.has('breakpoints')) {
+			this.resizedCallback(this.offsetWidth);
+		}
+	}
+
+	_dispatchSelected(value) {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
+			detail: { key: this.key, selected: value },
+			bubbles: true
+		}));
+	}
+
+	_handleCheckboxChange(e) {
+		this.setSelected(e.target.checked);
+	}
+
 }
 
 customElements.define('d2l-list-item', ListItem);

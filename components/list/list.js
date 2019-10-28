@@ -1,4 +1,11 @@
+import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+
+export const listSelectionStates = {
+	none: 'none',
+	some: 'some',
+	all: 'all'
+};
 
 class List extends LitElement {
 
@@ -10,35 +17,36 @@ class List extends LitElement {
 	}
 
 	static get styles() {
-
-		const layout = css`
+		return css`
 			:host {
 				display: block;
-				--d2l-list-item-separator-bottom: initial;
-				--d2l-list-item-separator-top: initial;
 			}
 		`;
+	}
 
-		const specialSeparators = css`
-			:host([separators="none"]) {
-				--d2l-list-item-separator-bottom: none;
-				--d2l-list-item-separator-padding-bottom: 1px;
-				--d2l-list-item-separator-padding-top: 1px;
-				--d2l-list-item-separator-top: none;
-			}
-			:host([separators="between"]) ::slotted([role="listitem"]:first-of-type),
-			:host([separators="between"]) ::slotted([role="listitem"]:last-of-type) {
-				--d2l-list-item-separator-bottom: none;
-				--d2l-list-item-separator-padding-bottom: 1px;
-				--d2l-list-item-separator-padding-top: 1px;
-				--d2l-list-item-separator-top: none;
-			}
-			:host([extend-separators]) {
-				--d2l-list-item-content-padding: 0 18px;
-			}
-		`;
+	firstUpdated() {
+		this.addEventListener('d2l-list-item-selected', (e) => {
+			this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
+				detail: e.detail
+			}));
+			e.stopPropagation();
+		});
+	}
 
-		return [layout, specialSeparators];
+	getSelectionInfo() {
+		const items = this._getItems();
+		const selectedItems = items.filter(item => item.selected);
+
+		let state = listSelectionStates.none;
+		if (selectedItems.length > 0) {
+			if (selectedItems.length === items.length) state = listSelectionStates.all;
+			else state = listSelectionStates.some;
+		}
+
+		return {
+			keys: selectedItems.map(item => item.key),
+			state: state
+		};
 	}
 
 	render() {
@@ -47,6 +55,22 @@ class List extends LitElement {
 				<slot></slot>
 			</div>
 		`;
+	}
+
+	toggleSelectAll() {
+		const items = this._getItems();
+		const notSelectedItems = items.filter(item => !item.selected);
+		if (notSelectedItems.length === 0) {
+			items.forEach(item => item.setSelected(false, true));
+		} else {
+			notSelectedItems.forEach(item => item.setSelected(true, true));
+		}
+	}
+
+	_getItems() {
+		return this.shadowRoot.querySelector('slot').assignedNodes().filter((node) => {
+			return node.nodeType === Node.ELEMENT_NODE && node.role === 'listitem';
+		});
 	}
 
 }
