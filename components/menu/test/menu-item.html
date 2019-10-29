@@ -23,22 +23,17 @@
 			import { runAxe } from '../../../tools/a11y-test-helper.js';
 
 			describe('d2l-menu-item', () => {
+				let menuItem;
+				describe('basic', () => {
 
-				[
-					{ title: 'Menu Item', fixture: 'basic'},
-				].forEach((testData) => {
-					let menuItem;
-					describe(testData.title, () => {
+					beforeEach(async() => {
+						menuItem = fixture('basic');
+					});
 
-						beforeEach(async() => {
-							menuItem = fixture(testData.fixture);
-						});
-
-						it.skip(`should pass all axe tests for ${testData.title}`, async() => {
-							// Currently fails "Required ARIA parents role not present: menu menubar"
-							// Enable after d2l-menu is added
-							await runAxe(menuItem);
-						});
+					it.skip('should pass all axe tests for d2l-menu-item', async() => {
+						// Currently fails "Required ARIA parents role not present: menu menubar"
+						// Enable after d2l-menu is added
+						await runAxe(menuItem);
 					});
 				});
 			});
