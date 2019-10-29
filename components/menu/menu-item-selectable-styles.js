@@ -10,7 +10,7 @@ export const menuItemSelectableStyles = [ menuItemStyles,
 			align-items: center
 		}
 
-		:host > span {
+		span {
 			flex: auto;
 			line-height: 1rem;
 			overflow-x: hidden;
@@ -27,18 +27,13 @@ export const menuItemSelectableStyles = [ menuItemStyles,
 			color: var(--d2l-color-celestine-minus-1);
 		}
 
-		:host > d2l-icon {
+		d2l-icon {
 			flex: none;
 			visibility: hidden;
 			margin-right: 0.8rem;
 		}
 
-		:host-context([dir="rtl"]) > d2l-icon {
-			margin-left: 0.8rem;
-			margin-right: 0;
-		}
-
-		:host(:dir(rtl)) > d2l-icon {
+		:host([dir="rtl"]) > d2l-icon {
 			margin-left: 0.8rem;
 			margin-right: 0;
 		}

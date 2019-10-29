@@ -2,8 +2,9 @@ import '../icons/icon.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { MenuItemSelectableMixin } from './menu-item-selectable-mixin.js';
 import { menuItemSelectableStyles } from './menu-item-selectable-styles.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class MenuItemCheckbox extends MenuItemSelectableMixin(LitElement) {
+class MenuItemCheckbox extends RtlMixin(MenuItemSelectableMixin(LitElement)) {
 
 	static get styles() {
 		return menuItemSelectableStyles;
@@ -21,7 +22,7 @@ class MenuItemCheckbox extends MenuItemSelectableMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-icon icon="tier1:check" aria-hidden="true"></d2l-icon>
+			<d2l-icon icon="tier1:check"></d2l-icon>
 			<span>${this.text}</span>
 		`;
 	}
