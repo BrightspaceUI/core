@@ -1,5 +1,5 @@
+import { html, LitElement } from 'lit-element/lit-element.js';
 import { offscreenStyles } from '../components/offscreen/offscreen-styles.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 class AnnounceContainer extends LitElement {
 

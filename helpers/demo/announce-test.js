@@ -1,7 +1,7 @@
 import '../../components/inputs/input-text.js';
 import '../../components/button/button.js';
-import { announce } from '../announce.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { announce } from '../announce.js';
 
 class AnnounceTest extends LitElement {
 
