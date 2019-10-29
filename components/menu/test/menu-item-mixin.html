@@ -29,6 +29,7 @@
 				let menuItem;
 				beforeEach(async() => {
 					menuItem = fixture('basic');
+					await menuItem.updateComplete;
 				});
 
 				it('has role="menuitem"', () => {
