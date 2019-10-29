@@ -26,38 +26,48 @@
 
 		<script type="module">
 			describe('MenuItemMixin', () => {
-				let menuItem;
-				beforeEach(async() => {
-					menuItem = fixture('basic');
-					await menuItem.updateComplete;
-				});
 
-				it('has role="menuitem"', () => {
-					expect(menuItem.getAttribute('role')).to.equal('menuitem');
-				});
-
-				it('fires select event when item clicked', (done) => {
-					menuItem.addEventListener('d2l-menu-item-select', (e) => {
-						expect(e.target.id).to.equal('my-menu-item');
-						done();
-					});
-					menuItem.click();
-				});
-
-				it('does not fire select event for disabled item', (done) => {
-					const disabledMenuItem = fixture('disabled');
-					let fired = false;
-
-					disabledMenuItem.addEventListener('d2l-menu-item-select', () => {
-						fired = true;
+				describe('basic', () => {
+					let menuItem;
+					beforeEach(async() => {
+						menuItem = fixture('basic');
+						await menuItem.updateComplete;
 					});
 
-					setTimeout(() => {
-						expect(fired).to.be.false;
-						done();
-					}, 0);
+					it('has role="menuitem"', () => {
+						expect(menuItem.getAttribute('role')).to.equal('menuitem');
+					});
 
-					disabledMenuItem.click();
+					it('fires select event when item clicked', (done) => {
+						menuItem.addEventListener('d2l-menu-item-select', (e) => {
+							expect(e.target.id).to.equal('my-menu-item');
+							done();
+						});
+						menuItem.click();
+					});
+				});
+
+				describe('disabled', () => {
+					let disabledMenuItem;
+					beforeEach(async() => {
+						disabledMenuItem = fixture('disabled');
+						await disabledMenuItem.updateComplete;
+					});
+
+					it('does not fire select event for disabled item', (done) => {
+						let fired = false;
+
+						disabledMenuItem.addEventListener('d2l-menu-item-select', () => {
+							fired = true;
+						});
+
+						setTimeout(() => {
+							expect(fired).to.be.false;
+							done();
+						}, 0);
+
+						disabledMenuItem.click();
+					});
 				});
 			});
 		</script>

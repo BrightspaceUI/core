@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>MenuItemSelectableMixin test</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="./test-menu-item-selectable-elem.js"></script>
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<test-menu-item-selectable-elem id="my-menu-item"></test-menu-item-selectable-elem>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			describe('MenuItemSelectableMixin', () => {
+				describe('basic', () => {
+					let menuItem;
+					beforeEach(async() => {
+						menuItem = fixture('basic');
+						await menuItem.updateComplete;
+					});
+
+					it('does not have aria-checked set by default', () => {
+						expect(menuItem.getAttribute('aria-checked')).to.be.null;
+					});
+
+					it('changes aria-checked when item selected', (done) => {
+						menuItem.setAttribute('selected', true);
+						setTimeout(() => {
+							expect(menuItem.getAttribute('aria-checked')).to.equal('true');
+							done();
+						}, 0);
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
