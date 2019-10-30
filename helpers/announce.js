@@ -1,41 +1,23 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
-import { offscreenStyles } from '../components/offscreen/offscreen-styles.js';
-
-class AnnounceContainer extends LitElement {
-
-	static get styles() {
-		return [ offscreenStyles ];
-	}
-
-	constructor() {
-		super();
-		this._messages = [];
-	}
-
-	announce(text) {
-		this._messages.push(text);
-		this.requestUpdate();
-	}
-
-	render() {
-		return html`<div aria-live="polite" class="d2l-offscreen">
-			${this._messages.map(message => html`<div>${message}</div>`)}
-		</div>`;
-	}
-
-}
-
-customElements.define('d2l-announce-container', AnnounceContainer);
-
 let container;
+let lastMessage;
 
-export function announce(text) {
-	if (!text) return;
+export function announce(message) {
+	if (!message) return;
 	if (!container) {
-		container = document.createElement('d2l-announce-container');
+		container = document.createElement('div');
+		container.setAttribute('aria-live', 'polite');
+		container.style.display = 'inline-block';
+		container.style.position = 'fixed';
+		container.style.clip = 'rect(0px,0px,0px,0px)';
 		document.body.appendChild(container);
 	}
+	/* VO has strange hueristics for announcement - it will not announce
+	duplicate message unless it is additive, but we prefer content to not grow */
+	if (message !== lastMessage) {
+		container.innerHTML = '';
+	}
 	requestAnimationFrame(() => {
-		container.announce(text);
+		container.appendChild(document.createTextNode(message));
+		lastMessage = message;
 	});
 }
