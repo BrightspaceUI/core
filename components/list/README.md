@@ -1,5 +1,3 @@
-**In Development**
-
 # Lists
 
 ## d2l-list
