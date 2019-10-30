@@ -1,5 +1,16 @@
 # Helpers
 
+## Announce
+
+A helper for announcing text to screen readers.
+
+```js
+import { announce } from '@brightspace-ui/core/helpers/announce.js';
+
+// announce some text
+announce('...');
+```
+
 ## Dismissible
 
 Dismissible components are those that should be dismissible when the user presses
@@ -8,8 +19,6 @@ on-focus under [WCAG 2.1 Criterio 1.4.13: Content on Hover or Focus](https://www
 
 The dismissible helper uses a first-in-last-out ordering to ensure that each time
 the `ESC` key is pressed, only the most recent component is dismissed.
-
-### Usage
 
 When the component becomes visible to the user, call `setDismissible(cb)`, passing a callback. The callback will be called if the user presses `ESC` and that component should be dismissed.
 
@@ -35,8 +44,6 @@ clearDismissible(id);
 
 DOM helper functions to make your life easier.
 
-### Usage
-
 ```js
 import { ... } from '@brightspace-ui/core/helpers/dom.js';
 
@@ -60,8 +67,6 @@ isComposedAncestor(ancestorNode, node);
 
 A simple shim for [requestIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-requestidlecallback-method) and [cancelIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-cancelidlecallback-method) that transparently falls back to `setTimeout` if it's not natively supported.
 
-### Usage
-
 The Google Developer update on [using requestIdleCallback](https://developers.google.com/web/updates/2015/08/using-requestidlecallback) has some excellent examples of usage. Provide a callback for non-essential work, and optionally a `timeout` after which the callback will be invoked regardless of activity on the main thread. A `deadline` object is passed with a `timeRemaining()` function and a `didTimeout` property, enabling the consumer to queue tasks across callbacks if necessary.
 
 ```js
@@ -75,8 +80,6 @@ requestIdleCallback((deadline) => {
 ## UniqueId
 
 A simple helper that returns a unique id.
-
-### Usage
 
 ```js
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
