@@ -111,7 +111,6 @@ class MenuItemReturn extends RtlMixin(LocalizeStaticMixin(MenuItemMixin(LitEleme
 		return html`
 			<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 			<span aria-hidden="true">${this.text}</span>
-			<slot></slot>
 		`;
 	}
 }
