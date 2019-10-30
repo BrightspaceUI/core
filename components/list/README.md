@@ -28,12 +28,17 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 ## d2l-list-item
 
-The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout and breakpoints for responsiveness.
+The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a link for navigation, and selection.
 
 ![List](./screenshots/list-item.png?raw=true)
 
 ```html
-<d2l-list-item [breakpoints="array"] [illustration-outside]>
+<d2l-list-item breakpoints="array"
+  href="http://www.d2l.com"
+  illustration-outside
+  key="item1"
+  selectable
+  selected>
   <img src="..." slot="illustration">
   <div>...</div>
   <div slot="actions">
@@ -58,7 +63,11 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
   - Breakpoint 3
     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
     - default break: `843px < x`  where `x` is the width of the component.
+- `href` (String): Address of item link if navigable
 - `illustration-outside` (Boolean): Whether the illustration is rendered outside of the separators
+- `key` (String): Value to identify item if selectable
+- `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
+- `selected` (Boolean): Whether the item is selected
 
 ## d2l-list-content
 
