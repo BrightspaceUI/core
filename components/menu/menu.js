@@ -1,16 +1,16 @@
 import '../icons/icon.js';
+import './menu-item-return.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { HierarchicalViewMixin } from './hierarchical-view-mixin.js';
 import { hierarchicalViewStyles } from './hierarchical-view-styles.js';
-import './menu-item-return.js';
 
 class Menu extends HierarchicalViewMixin(LitElement) {
 
 	static get properties() {
 		return {
+			active: { type: Boolean, reflect: true },
 			label: { type: String },
-			noReturnItem: { type: Boolean, attribute: 'no-return-item' },
-			active: { type: Boolean, reflect: true }
+			role: { type: String, reflect: true }
 		};
 	}
 
@@ -46,6 +46,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			UP: 38
 		};
 		this._items = [];
+
+		this.role = 'menu';
 	}
 
 	firstUpdated() {
@@ -136,7 +138,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		if (!slot) return;
 		const items = slot.assignedNodes().filter((node) => node.nodeType === Node.ELEMENT_NODE);
 
-		const returnItem = this.shadowRoot.querySelector('d2l-menu-item-return');
+		const returnItem = this._getMenuItemReturn();
 		if (returnItem) {
 			items.unshift(returnItem);
 		}
@@ -144,6 +146,10 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			const role = item.role;
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
 		});
+	}
+
+	_getMenuItemReturn() {
+		return this.shadowRoot.querySelector('d2l-menu-item-return');
 	}
 
 	_isFocusable(item) {
@@ -163,7 +169,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		if (newValue) {
 			this.setAttribute('aria-label', newValue);
 		}
-		const returnItem = this.shadowRoot.querySelector('d2l-menu-item-return');
+		const returnItem = this._getMenuItemReturn();
 		if (returnItem) {
 			returnItem.setAttribute('text', newValue);
 		}

@@ -8,6 +8,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			hidden: { type: Boolean, reflect: true },
 			last: { type: String, reflect: true }, // set by d2l-menu
 			role: { type: String, reflect: true },
+			tabindex: { type: String, reflect: true },
 			text: String
 		};
 	}
@@ -32,6 +33,9 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.addEventListener('dom-change', this.__onDomChange);
 		this.addEventListener('keydown', this.__onKeyDown);
 		this.__initializeItem();
+		if (this.hidden) {
+			this._onHidden();
+		}
 	}
 
 	updated(changedProperties) {

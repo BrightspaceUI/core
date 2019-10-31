@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { MenuItemRadioMixin } from '../menu-item-radio-mixin.js';
+import { MenuItemRadioMixin } from '../../menu-item-radio-mixin.js';
 
 class TestMenuItemRadioElem extends MenuItemRadioMixin(LitElement) {
 	render() {

@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { MenuItemSelectableMixin } from '../menu-item-selectable-mixin.js';
+import { MenuItemSelectableMixin } from '../../menu-item-selectable-mixin.js';
 
 class TestMenuItemSelectableElem extends MenuItemSelectableMixin(LitElement) {
 	render() {

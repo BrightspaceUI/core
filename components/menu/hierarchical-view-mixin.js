@@ -1,6 +1,6 @@
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const HierarchicalViewMixin = superclass => class extends superclass {
 
@@ -354,7 +354,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onViewResize(e) {
-		this.style.height = e.detail.height + 'px';
+		this.style.height = `${e.detail.height}px`;
 	}
 
 	__onShowStart(e) {
@@ -392,6 +392,4 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			view.__fireViewResize();
 		}
 	}
-
-
 };
