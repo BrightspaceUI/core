@@ -53,7 +53,7 @@ class DemoSnippet extends LitElement {
 		// fix script whitespace (for some reason brower keeps <script> indent but not the rest)
 		let lines = text.replace(/\t/g, '  ').replace(/<\/script>/g, '\n</script>').replace(/<script>/g, '<script>\n').split('\n');
 		let scriptIndent = 0;
-		lines = lines.map((l, i) => {
+		lines = lines.map((l) => {
 			//console.log(i, l);
 			if (l.indexOf('<script>') > -1) {
 				scriptIndent = l.match(/^(\s*)/)[0].length;
