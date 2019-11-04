@@ -48,6 +48,8 @@ class DemoSnippet extends LitElement {
 
 		// remove the leading and trailing template tags
 		text = text.replace(/^[\t]*\n/, '').replace(/\n[\t]*$/, '');
+		const templateMatch = text.match(/^[\t]*<template>[\n]*/);
+		const isTemplate = templateMatch && templateMatch.length > 0;
 		text = text.replace(/^[\t]*<template>[\n]*/, '').replace(/[\n]*[\t]*<\/template>$/, '');
 
 		// fix script whitespace (for some reason brower keeps <script> indent but not the rest)
@@ -61,7 +63,7 @@ class DemoSnippet extends LitElement {
 				const nl = this._repeat(' ', scriptIndent) + l ;
 				scriptIndent = 0;
 				return nl;
-			} else if (scriptIndent) {
+			} else if (scriptIndent && !isTemplate) {
 				return this._repeat(' ', scriptIndent + 2) + l;
 			} else {
 				return l;
