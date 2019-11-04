@@ -22,7 +22,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 			css`
 				:host {
 					display: inline-block;
-					--d2l-button-icon-border-radius: 0.3rem;
+					--d2l-button-icon-border-radius: 0;
 					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
