@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../menu.js';
+		import '../menu-item-checkbox.js';
+	</script>
+	<title>d2l-menu (checkbox)</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-menu id="normal">
+			<d2l-menu-item-checkbox id="a1" text="a"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox id="b1" text="b"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox id="c1" text="c"></d2l-menu-item-checkbox>
+		</d2l-menu>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-menu id="normal-multiple-selected">
+			<d2l-menu-item-checkbox id="a2" text="a"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox id="b2" text="b"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox id="c2" text="c"></d2l-menu-item-checkbox>
+		</d2l-menu>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-menu id="normal-multiple-clicks">
+			<d2l-menu-item-checkbox id="a3" text="a"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox id="b3" text="b"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox id="c3" text="c"></d2l-menu-item-checkbox>
+		</d2l-menu>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-menu id="selected">
+			<d2l-menu-item-checkbox text="a"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox text="b"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox selected text="c"></d2l-menu-item-checkbox>
+		</d2l-menu>
+	</div>
+</body>
+</html>
