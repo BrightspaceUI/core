@@ -121,7 +121,6 @@ class DemoSnippet extends LitElement {
 			this._code = '';
 			return;
 		}
-		const importedNodes = [];
 		const tempContainer = document.createElement('div');
 		for (let i = 0; i < nodes.length; i++) {
 			if (nodes[i].tagName === 'TEMPLATE') {
