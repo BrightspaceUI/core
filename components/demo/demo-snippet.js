@@ -9,8 +9,7 @@ class DemoSnippet extends LitElement {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			_code: { type: String },
-			_dirButton: { type: String },
-			_importedNodes: { type: Array }
+			_dirButton: { type: String }
 		};
 	}
 
@@ -22,7 +21,6 @@ class DemoSnippet extends LitElement {
 		super();
 		this._dir = document.documentElement.dir;
 		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
-		this._importedNodes = [];
 	}
 
 	render() {
@@ -31,15 +29,15 @@ class DemoSnippet extends LitElement {
 				<div class="d2l-demo-snippet-actions">
 					<button id="d2l-demo-snippet-toggle-dir" @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
 				</div>
-				${this._importedNodes.map((node) => html`${node}`)}
-				<slot @slotchange="${this._handleSlotChange}"></slot>
+				<slot name="_demo"></slot>
+				<slot></slot>
 			</div>
 			<d2l-code-view language="html" hide-language>${this._code}</d2l-code-view>
 		`;
 	}
 
 	firstUpdated() {
-		this._updateCode(this.shadowRoot.querySelector('slot'));
+		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
 	}
 
 	_formatCode(text) {
@@ -48,6 +46,8 @@ class DemoSnippet extends LitElement {
 
 		// remove the leading and trailing template tags
 		text = text.replace(/^[\t]*\n/, '').replace(/\n[\t]*$/, '');
+		const templateMatch = text.match(/^[\t]*<template>[\n]*/);
+		const isTemplate = templateMatch && templateMatch.length > 0;
 		text = text.replace(/^[\t]*<template>[\n]*/, '').replace(/[\n]*[\t]*<\/template>$/, '');
 
 		// fix script whitespace (for some reason brower keeps <script> indent but not the rest)
@@ -61,7 +61,7 @@ class DemoSnippet extends LitElement {
 				const nl = this._repeat(' ', scriptIndent) + l ;
 				scriptIndent = 0;
 				return nl;
-			} else if (scriptIndent) {
+			} else if (scriptIndent && !isTemplate) {
 				return this._repeat(' ', scriptIndent + 2) + l;
 			} else {
 				return l;
@@ -101,8 +101,11 @@ class DemoSnippet extends LitElement {
 		));
 	}
 
-	_handleSlotChange(e) {
-		this._updateCode(e.target);
+	_removeImportedDemo() {
+		const nodes = this.shadowRoot.querySelector('slot[name="_demo"]').assignedNodes();
+		for (let i = nodes.length - 1; i === 0; i--) {
+			nodes[i].parentNode.removeChild(nodes[i]);
+		}
 	}
 
 	_repeat(value, times) {
@@ -112,23 +115,25 @@ class DemoSnippet extends LitElement {
 	}
 
 	_updateCode(slot) {
+		this._removeImportedDemo();
 		const nodes = slot.assignedNodes();
 		if (nodes.length === 0) {
 			this._code = '';
 			return;
 		}
-		const importedNodes = [];
 		const tempContainer = document.createElement('div');
 		for (let i = 0; i < nodes.length; i++) {
 			if (nodes[i].tagName === 'TEMPLATE') {
-				const clone = document.importNode(nodes[i].content, true);
-				importedNodes.push(clone);
+				const demoContainer = document.createElement('div');
+				demoContainer.setAttribute('slot', '_demo');
+				demoContainer.appendChild(document.importNode(nodes[i].content, true));
+				this.appendChild(demoContainer);
 			}
+
 			tempContainer.appendChild(nodes[i].cloneNode(true));
 		}
 		const textNode = document.createTextNode(this._formatCode(tempContainer.innerHTML));
 		this._code = textNode.textContent;
-		this._importedNodes = importedNodes;
 	}
 
 }
