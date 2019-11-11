@@ -29,6 +29,10 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 - `getSelectionInfo` (Object): gets the `state` (`listSelectionStates`) and `keys` (Array) for the selected items
 - `toggleSelectAll`: toggles the selection state of all items
 
+**Events:**
+
+- `d2l-list-selection-change`: dispatched when the selection state changes
+
 ## d2l-list-item
 
 The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a link for navigation, and selection.
