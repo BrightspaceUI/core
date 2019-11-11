@@ -15,6 +15,10 @@ describe('d2l-list', function() {
 		await page.bringToFront();
 	});
 
+	beforeEach(async() => {
+		await visualDiff.resetFocus(page);
+	});
+
 	after(() => browser.close());
 
 	[
@@ -39,6 +43,20 @@ describe('d2l-list', function() {
 			{ name: 'primary and secondary', selector: '#itemContent' },
 			{ name: 'no secondary', selector: '#itemContentNoSecondary' }
 		]},
+		{ category: 'href', tests: [
+			{ name: 'default', selector: '#href' },
+			{ name: 'focus', selector: '#href', action: () => focusLink('#href [href]') },
+			{ name: 'hover', selector: '#href', action: () => hover('#href [href]') }
+		]},
+		{ category: 'selectable', tests: [
+			{ name: 'not selected', selector: '#selectable' },
+			{ name: 'not selected focus', selector: '#selectable', action: () => focusInput('#selectable [selectable]') },
+			{ name: 'not selected hover', selector: '#selectable', action: () => hover('#selectable [selectable]') },
+			{ name: 'selected', selector: '#selectableSelected' },
+			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
+			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
+			{ name: 'item-content', selector: '#selectableItemContent' }
+		]},
 		{ category: 'breakpoints', tests: [
 			{ name: '842', selector: '#breakpoint-842' },
 			{ name: '636', selector: '#breakpoint-636' },
@@ -51,6 +69,9 @@ describe('d2l-list', function() {
 
 			info.tests.forEach((info) => {
 				it(info.name, async function() {
+					if (info.action) {
+						await info.action();
+					}
 					const rect = await visualDiff.getRect(page, info.selector);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
@@ -59,5 +80,21 @@ describe('d2l-list', function() {
 		});
 
 	});
+
+	const focusInput = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.shadowRoot.querySelector('input').focus();
+		});
+	};
+
+	const focusLink = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.shadowRoot.querySelector('a').focus();
+		});
+	};
+
+	const hover = (selector) => {
+		return page.hover(selector);
+	};
 
 });
