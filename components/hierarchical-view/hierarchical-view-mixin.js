@@ -44,6 +44,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		requestAnimationFrame(() => {
 			this.__autoSize(this);
+
+			if (this.getActiveView() === this) {
+				this.__fireViewResize();
+			}
 		});
 	}
 
@@ -56,8 +60,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		if (parentView) {
 			this.childView = true;
 		}
-
-		// this.observeNodes(this.__observeNodes); // does not work
 
 		if (!this.childView) {
 			this.addEventListener('focus', this.__focusCapture, true);
@@ -78,6 +80,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				return childView;
 			}
 		}
+		return rootView;
 	}
 
 	getRootView() {
@@ -134,7 +137,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	 * Shows the view (hiding its parent view). To show, simply call show(); on the view.
 	 */
 	show(data, sourceView) {
-
 		const _show = (data, view) => {
 			view.shown = true;
 			const eventDetails = {
@@ -201,7 +203,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		const eventDetails = {
 			bubbles: true,
 			composed: true,
-			detail: { data: data }
+			detail: { activeView: this.getActiveView(), data: data }
 		};
 		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-show-complete', eventDetails));
 	}
@@ -306,12 +308,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 	}
 
-	__observeNodes() {
-		if (this.isAttached && this.getActiveView() === this) {
-			this.__fireViewResize();
-		}
-	}
-
 	__onHideStart(e) {
 
 		const rootTarget = e.composedPath()[0];
@@ -358,7 +354,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onShowStart(e) {
-
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget === this || !rootTarget.isHierarchicalView) {
 			return;

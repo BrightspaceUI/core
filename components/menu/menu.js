@@ -1,8 +1,8 @@
 import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { HierarchicalViewMixin } from './hierarchical-view-mixin.js';
-import { hierarchicalViewStyles } from './hierarchical-view-styles.js';
+import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
+import { hierarchicalViewStyles } from '../hierarchical-view/hierarchical-view-styles.js';
 
 class Menu extends HierarchicalViewMixin(LitElement) {
 
