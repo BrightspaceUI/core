@@ -45,7 +45,7 @@
     "axe-core": "^3",
     "babel-eslint": "^10",
     "chai": "^4",
-    "chalk": "^2.4.2",
+    "chalk": "^3",
     "eslint": "^6",
     "eslint-config-brightspace": "^0.6",
     "eslint-plugin-html": "^6",
