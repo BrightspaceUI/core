@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
 import { classMap} from 'lit-html/directives/class-map.js';
+import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -241,6 +242,11 @@ class ListItem extends RtlMixin(LitElement) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		ro.unobserve(this);
+	}
+
+	focus() {
+		const node = getFirstFocusableDescendant(this);
+		if (node) node.focus();
 	}
 
 	render() {
