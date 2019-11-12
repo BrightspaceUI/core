@@ -33,7 +33,7 @@ describe('d2l-list', function() {
 			{ name: 'outside', selector: '#illustrationOutside' }
 		]},
 		{ category: 'separators', tests: [
-			{ name: 'simple', selector: '#simple' },
+			{ name: 'default', selector: '#simple' },
 			{ name: 'none', selector: '#separatorsNone' },
 			{ name: 'all', selector: '#separatorsAll' },
 			{ name: 'between', selector: '#separatorsBetween' },
@@ -56,6 +56,11 @@ describe('d2l-list', function() {
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
 			{ name: 'item-content', selector: '#selectableItemContent' }
+		]},
+		{ category: 'focus method', tests: [
+			{ name: 'href', selector: '#href', action: () => focusMethod('#href [href]') },
+			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
+			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') }
 		]},
 		{ category: 'breakpoints', tests: [
 			{ name: '842', selector: '#breakpoint-842' },
@@ -80,6 +85,12 @@ describe('d2l-list', function() {
 		});
 
 	});
+
+	const focusMethod = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.focus();
+		});
+	};
 
 	const focusInput = (selector) => {
 		return page.$eval(selector, (item) => {
