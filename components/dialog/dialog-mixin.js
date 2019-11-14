@@ -74,6 +74,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		});
 	}
 
+	resize() {
+		return this._updateSize();
+	}
+
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
 		document.body.addEventListener('focus', this._handleBodyFocus, true);
