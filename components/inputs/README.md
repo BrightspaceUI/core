@@ -4,6 +4,7 @@ There are various input components available:
 
 - [Text](#text-inputs)
 - [Search](#search-inputs)
+- [Select Lists](#select-lists)
 - [Checkboxes](#checkboxes)
 
 ## Text Inputs
@@ -57,7 +58,7 @@ input.addEventListener('change', (e) => {
 As an alternative to using the `<d2l-input-text>` custom element, you can style a native text input inside your own element. Import `input-styles.js` and apply the `d2l-input` CSS class to the input:
 
 ```javascript
-import { inputStyles } from './input-styles.js';
+import { inputStyles } from '@brightspace-ui/core/inputs/input-styles.js';
 
 class MyElem extends LitElement {
 
@@ -110,6 +111,30 @@ search.addEventListener('d2l-input-search-searched', (e) => {
 ```
 
 When the input is cleared, the same event will be fired with an empty value.
+
+## Select Lists
+
+Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class.
+
+Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
+
+```javascript
+import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
+import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+class MyElem extends RtlMixin(LitElement) {
+	static get styles() {
+		return selectStyles;
+	}
+	render() {
+		return html`
+			<select class="d2l-input-select">
+				<option>Option 1</option>
+				<option>Option 2</option>
+			</select>
+		`;
+	}
+}
+```
 
 ## Checkboxes
 
@@ -166,7 +191,7 @@ To align related content below checkboxes, the `d2l-input-checkbox-spacer` eleme
 As an alternative to using the `<d2l-input-checkbox>` custom element, you can style a native checkbox inside your own element. Import `input-checkbox-styles.js` and apply the `d2l-input-checkbox` CSS class to the input:
 
 ```javascript
-import { checkboxStyles } from './input-checkbox-styles.js';
+import { checkboxStyles } from '@brightspace-ui/core/inputs/input-checkbox-styles.js';
 
 class MyElem extends LitElement {
 

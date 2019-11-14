@@ -21,7 +21,7 @@ npm install @brightspace-ui/core
 * [Colors](components/colors/): color palette
 * [Dialogs](components/dialog/): generic and confirmation dialogs
 * [Icons](components/icons/): iconography SVGs and web components
-* [Inputs](components/inputs/): text, search, checkbox and radio inputs
+* [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
 * [Links](components/link/): link component and styles
 * [List](components/list/): list and list-item components
 * [Meter](components/meter/): linear, radial, circle meter web components
