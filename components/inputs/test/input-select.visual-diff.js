@@ -28,7 +28,7 @@ describe('d2l-input-select', () => {
 		});
 	});
 
-	['default', 'overflow', 'invalid', 'rtl'].forEach((name) => {
+	['default', 'overflow', 'invalid', 'rtl', 'rtl-overflow'].forEach((name) => {
 		it(`${name}-focus`, async function() {
 			await page.$eval(`#${name}`, (elem) => elem.focus());
 			const rect = await visualDiff.getRect(page, `#${name}`);
