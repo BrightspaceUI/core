@@ -51,7 +51,7 @@ document.querySelector('#open').addEventListener('click', () => {
 
 **Methods:**
 
-- `resize`: resizes the dialog based on specified `width` and height of the content
+- `resize`: resizes the dialog based on specified `width` and measured content height
 
 **Events:**
 
