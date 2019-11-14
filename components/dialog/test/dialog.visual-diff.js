@@ -33,6 +33,7 @@ describe('d2l-dialog', function() {
 				await helper.reset(page, '#dialog');
 				await helper.reset(page, '#dialogLong');
 				await helper.reset(page, '#dialogRtl');
+				await helper.reset(page, '#dialogResize');
 			});
 
 			[
@@ -66,6 +67,16 @@ describe('d2l-dialog', function() {
 
 					it('rtl', async function() {
 						await helper.open(page, '#dialogRtl');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					});
+
+					it('resize', async function() {
+						await helper.open(page, '#dialogResize');
+						await page.$eval('#dialogResize', (dialog) => {
+							dialog.querySelector('div').style.height = '60px';
+							dialog.width = 500;
+							dialog.resize();
+						});
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
