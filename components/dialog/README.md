@@ -49,6 +49,10 @@ document.querySelector('#open').addEventListener('click', () => {
 - `opened` (Boolean): Whether or not the dialog is open
 - `width` (Number, default: `600`): The preferred width (unit-less) for the dialog
 
+**Methods:**
+
+- `resize`: resizes the dialog based on specified `width` and height of the content
+
 **Events:**
 
 - `d2l-dialog-open`: dispatched when the dialog is opened
