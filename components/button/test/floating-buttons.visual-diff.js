@@ -10,6 +10,7 @@ describe('d2l-floating-buttons', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
+		await visualDiff.disableAnimations(page);
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/floating-buttons.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
