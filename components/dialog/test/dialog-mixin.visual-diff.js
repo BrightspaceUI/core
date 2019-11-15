@@ -11,10 +11,7 @@ describe('d2l-dialog-mixin', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-
-		const client = await page.target().createCDPSession();
-		await client.send('Animation.enable');
-		await client.send('Animation.setPlaybackRate', { playbackRate: 100 });
+		await visualDiff.disableAnimations(page);
 	});
 
 	after(() => browser.close());
