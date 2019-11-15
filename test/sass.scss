@@ -1,4 +1,5 @@
 @import '../components/colors/colors.scss';
+@import '../components/inputs/input-select.scss';
 @import '../components/link/link.scss';
 @import '../components/offscreen/offscreen.scss';
 @import '../components/typography/typography.scss';
@@ -31,6 +32,9 @@
 }
 .d2l-test-label-text {
 	@include d2l-label-text();
+}
+.d2l-test-input-select {
+	@include d2l-input-select();
 }
 .d2l-test-link {
 	@include d2l-link();

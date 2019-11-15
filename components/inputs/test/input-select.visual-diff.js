@@ -21,18 +21,22 @@ describe('d2l-input-select', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	['default', 'overflow', 'disabled', 'invalid', 'rtl', 'rtl-overflow'].forEach((name) => {
-		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	['wc', 'sass'].forEach((type) => {
+		['default', 'overflow', 'disabled', 'invalid', 'rtl', 'rtl-overflow'].forEach((name) => {
+			const id = `${type}-${name}`;
+			it(id, async function() {
+				const rect = await visualDiff.getRect(page, `#${id}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
 		});
-	});
 
-	['default', 'overflow', 'invalid', 'rtl', 'rtl-overflow'].forEach((name) => {
-		it(`${name}-focus`, async function() {
-			await page.$eval(`#${name}`, (elem) => elem.focus());
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		['default', 'overflow', 'invalid', 'rtl', 'rtl-overflow'].forEach((name) => {
+			const id = `${type}-${name}`;
+			it(`${id}-focus`, async function() {
+				await page.$eval(`#${id}`, (elem) => elem.focus());
+				const rect = await visualDiff.getRect(page, `#${id}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
 		});
 	});
 
