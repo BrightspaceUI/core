@@ -5,150 +5,31 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../typography/typography.js';
+			import '../demo/input-select-test.js';
 		</script>
 		<title>d2l-input-select visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
-		<style>
-			select.vui-input {
-    border-radius: .3rem;
-    border-style: solid;
-    box-sizing: border-box;
-    display: inline-block;
-    height: auto;
-    margin: 0;
-    vertical-align: middle;
-    transition: background-color .5s ease,border-color 1ms ease;
-    color: #494c4e;
-    font-family: inherit;
-    font-size: .8rem;
-    font-weight: 400;
-    letter-spacing: .02rem;
-    line-height: 1.2rem
-}
-select.vui-input::-webkit-input-placeholder {
-    color: #cdd5dc
-}
-select.vui-input::-moz-placeholder {
-    color: #cdd5dc
-}
-select.vui-input:-ms-input-placeholder {
-    color: #cdd5dc
-}
-select.vui-input::-ms-input-placeholder {
-    color: #cdd5dc
-}
-select.vui-input::placeholder {
-    color: #cdd5dc
-}
-select.vui-input,select.vui-input:hover:disabled {
-    background-color: #fff;
-    border-color: #868c8f;
-    border-width: 1px;
-    box-shadow: inset 0 2px 0 0 rgba(181,189,194,.2);
-    padding: .4rem .75rem
-}
-select.vui-input.vui-input-focus,select.vui-input:focus,select.vui-input:hover {
-    border-color: #006fbf;
-    border-width: 2px;
-    outline-width: 0;
-    padding: calc(.4rem - 1px) calc(.75rem - 1px)
-}
-select.vui-input[aria-invalid=true] {
-    border-color: #cd2026
-}
-select.vui-input:disabled {
-    opacity: .5
-}
-select.vui-input::-webkit-search-cancel-button {
-    display: none
-}
-select.vui-input::-ms-clear {
-    display: none;
-    width: 0;
-    height: 0
-}
-select.vui-input option {
-    font-weight: 400
-}
-@media screen and (-webkit-min-device-pixel-ratio: 0),screen and (min--moz-device-pixel-ratio:0),screen and (-ms-high-contrast:active),(-ms-high-contrast:none) {
-    select.vui-input:not([multiple]) {
-        -webkit-appearance:none;
-        -moz-appearance: none;
-        appearance: none;
-        background-position: right center;
-        background-repeat: no-repeat;
-        background-size: contain;
-        max-height: calc(2rem + 2px)
-    }
-    select.vui-input:not([multiple]).vui-input-focus,select.vui-input:not([multiple]).vui-input-hover,select.vui-input:not([multiple]):focus,select.vui-input:not([multiple]):hover {
-        background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2242%22%20height%3D%2242%22%20viewBox%3D%220%200%2042%2042%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23E3E9F1%22%20d%3D%22M0%200h42v42H0z%22%2F%3E%3Cpath%20stroke%3D%22%23CDD5DC%22%20d%3D%22M0%200v42%22%2F%3E%3Cpath%20d%3D%22M14.99%2019.582l4.95%204.95a1.5%201.5%200%200%200%202.122%200l4.95-4.95a1.5%201.5%200%200%200-2.122-2.122L21%2021.35l-3.888-3.89a1.5%201.5%200%200%200-2.12%202.122z%22%20fill%3D%22%23494C4E%22%2F%3E%3C%2Fsvg%3E);
-        padding-right: calc(.75rem + 42px - 1px)
-    }
-    select.vui-input:not([multiple]).vui-input-focus::-ms-value,select.vui-input:not([multiple]).vui-input-hover::-ms-value,select.vui-input:not([multiple]):focus::-ms-value,select.vui-input:not([multiple]):hover::-ms-value {
-        background-color: transparent;
-        color: #494c4e
-    }
-    select.vui-input:not([multiple]),select.vui-input:not([multiple]):disabled,select.vui-input:not([multiple]):focus:disabled,select.vui-input:not([multiple]):hover:disabled {
-        background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2242%22%20height%3D%2242%22%20viewBox%3D%220%200%2042%2042%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23F1F5FB%22%20d%3D%22M0%200h42v42H0z%22%2F%3E%3Cpath%20stroke%3D%22%23CDD5DC%22%20d%3D%22M0%200v42%22%2F%3E%3Cpath%20d%3D%22M14.99%2019.582l4.95%204.95a1.5%201.5%200%200%200%202.122%200l4.95-4.95a1.5%201.5%200%200%200-2.122-2.122L21%2021.35l-3.888-3.89a1.5%201.5%200%200%200-2.12%202.122z%22%20fill%3D%22%23494C4E%22%2F%3E%3C%2Fsvg%3E);
-        padding-right: calc(.75rem + 42px)
-    }
-    [dir=rtl] select.vui-input:not([multiple]) {
-        background-position: left center
-    }
-    [dir=rtl] select.vui-input:not([multiple]).vui-input-focus,[dir=rtl] select.vui-input:not([multiple]).vui-input-hover,[dir=rtl] select.vui-input:not([multiple]):focus,[dir=rtl] select.vui-input:not([multiple]):hover {
-        background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2242%22%20height%3D%2242%22%20viewBox%3D%220%200%2042%2042%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23E3E9F1%22%20d%3D%22M0%200h42v42H0z%22%2F%3E%3Cpath%20stroke%3D%22%23CDD5DC%22%20d%3D%22M42%200v42%22%2F%3E%3Cpath%20d%3D%22M14.99%2019.582l4.95%204.95a1.5%201.5%200%200%200%202.122%200l4.95-4.95a1.5%201.5%200%200%200-2.122-2.122L21%2021.35l-3.888-3.89a1.5%201.5%200%200%200-2.12%202.122z%22%20fill%3D%22%23494C4E%22%2F%3E%3C%2Fsvg%3E);
-        padding-left: calc(.75rem + 42px - 1px);
-        padding-right: calc(.75rem - 1px)
-    }
-    [dir=rtl] select.vui-input:not([multiple]),[dir=rtl] select.vui-input:not([multiple]):disabled,[dir=rtl] select.vui-input:not([multiple]):focus:disabled,[dir=rtl] select.vui-input:not([multiple]):hover:disabled {
-        background-image: url(data:image/svg+xml,%3Csvg%20width%3D%2242%22%20height%3D%2242%22%20viewBox%3D%220%200%2042%2042%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill%3D%22%23F1F5FB%22%20d%3D%22M0%200h42v42H0z%22%2F%3E%3Cpath%20stroke%3D%22%23CDD5DC%22%20d%3D%22M42%200v42%22%2F%3E%3Cpath%20d%3D%22M14.99%2019.582l4.95%204.95a1.5%201.5%200%200%200%202.122%200l4.95-4.95a1.5%201.5%200%200%200-2.122-2.122L21%2021.35l-3.888-3.89a1.5%201.5%200%200%200-2.12%202.122z%22%20fill%3D%22%23494C4E%22%2F%3E%3C%2Fsvg%3E);
-        padding-right: .75rem;
-        padding-left: calc(.75rem + 42px)
-    }
-    select.vui-input::-ms-expand {
-        display: none
-    }
-}
-		</style>
 	</head>
 	<body class="d2l-typography">
 		<div class="visual-diff">
-			<select class="vui-input" id="default">
-				<option>Tyrannosaurus</option>
-				<option>Option 2</option>
-			</select>
+			<d2l-test-input-select id="default"></d2l-test-input-select>
 		</div>
 		<div class="visual-diff">
-			<select class="vui-input" id="overflow" style="max-width: 130px;">
-				<option>Tyrannosaurus</option>
-				<option>Option 2</option>
-			</select>
+			<d2l-test-input-select id="overflow" overflow></d2l-test-input-select>
 		</div>
 		<div class="visual-diff">
-			<select class="vui-input" id="disabled" disabled>
-				<option>Tyrannosaurus</option>
-				<option>Option 2</option>
-			</select>
+			<d2l-test-input-select id="disabled" disabled></d2l-test-input-select>
 		</div>
 		<div class="visual-diff">
-			<select class="vui-input" id="invalid" aria-invalid="true">
-				<option>Tyrannosaurus</option>
-				<option>Option 2</option>
-			</select>
+			<d2l-test-input-select id="invalid" invalid></d2l-test-input-select>
 		</div>
-		<div class="visual-diff" dir="rtl">
-			<select class="vui-input" id="rtl">
-				<option>Tyrannosaurus</option>
-				<option>Option 2</option>
-			</select>
+		<div class="visual-diff">
+			<d2l-test-input-select id="rtl" dir="rtl"></d2l-test-input-select>
 		</div>
-		<div class="visual-diff" dir="rtl">
-			<select class="vui-input" id="rtl-overflow" style="max-width: 130px;">
-				<option>Tyrannosaurus</option>
-				<option>Option 2</option>
-			</select>
+		<div class="visual-diff">
+			<d2l-test-input-select id="rtl-overflow" dir="rtl" overflow></d2l-test-input-select>
 		</div>
 	</body>
-</html> 
+</html>
