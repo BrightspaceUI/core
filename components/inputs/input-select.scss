@@ -5,7 +5,7 @@
 	-moz-appearance: none;
 	appearance: none;
 	background-origin: border-box;
-	background-position: center right 19px;
+	background-position: center right 17px;
 	background-repeat: no-repeat;
 	background-size: 11px 7px;
 	border-radius: 0.3rem;
@@ -35,7 +35,7 @@
 	&:hover:disabled,
 	&:focus:disabled {
 		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
-		padding-right: calc(0.75rem + 11px + 18px);
+		padding-right: calc(0.5rem + 11px + 16px);
 	}
 	&:hover,
 	&:focus {
@@ -44,7 +44,7 @@
 		outline-style: none; /* Safari */
 		outline-width: 0;
 		padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
-		padding-right: calc(0.75rem + 11px + 18px - 1px);
+		padding-right: calc(0.5rem + 11px + 16px - 1px);
 	}
 	&[aria-invalid='true'] {
 		border-color: $d2l-color-cinnabar;
@@ -68,17 +68,17 @@
 		text-shadow: 0 0 0 #000;
 	}
 	[dir='rtl'] & {
-		background-position: center left 19px;
+		background-position: center left 17px;
 		&,
 		&:disabled,
 		&:hover:disabled,
 		&:focus:disabled {
 			padding-right: 0.75rem;
-			padding-left: calc(0.75rem + 11px + 18px);
+			padding-left: calc(0.5rem + 11px + 16px);
 		}
 		&:hover,
 		&:focus {
-			padding-left: calc(0.75rem + 11px + 18px - 1px);
+			padding-left: calc(0.5rem + 11px + 16px - 1px);
 			padding-right: calc(0.75rem - 1px);
 		}
 	}
