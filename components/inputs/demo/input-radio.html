@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../input-radio-spacer.js';
+			import './input-radio-label-test.js';
+			import './input-radio-solo-test.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-input-radio">
+
+			<h2>Simple radio group with labels</h2>
+			<d2l-demo-snippet>
+				<d2l-test-input-radio-label></d2l-test-input-radio-label>
+			</d2l-demo-snippet>
+
+			<h2>Radio group with labels and secondary content</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-test-input-radio-label></d2l-test-input-radio-label>
+					<d2l-input-radio-spacer style="color:#999999;">
+						Additional content can go here and will<br>
+						also line up nicely with the radios.
+					</d2l-input-radio-spacer>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Radio buttons on their own</h2>
+			<d2l-demo-snippet>
+				<d2l-test-input-radio-solo></d2l-test-input-radio-solo>
+				<d2l-test-input-radio-solo disabled></d2l-test-input-radio-solo>
+				<d2l-test-input-radio-solo invalid></d2l-test-input-radio-solo>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
