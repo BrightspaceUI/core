@@ -117,6 +117,8 @@ When the input is cleared, the same event will be fired with an empty value.
 
 Native `<select>` elements can be styled by importing `input-select-styles.js` into your LitElement and applying the `d2l-input-select` CSS class.
 
+![example screenshot of select inputs](./screenshots/select.gif?raw=true)
+
 Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
 
 ```javascript
