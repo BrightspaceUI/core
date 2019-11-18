@@ -129,13 +129,16 @@
 						menu.querySelector('#b1').click();
 					});
 
-					it.skip('hides nested menu when escape is pressed in nested menu', (done) => {
+					it('hides nested menu when escape is pressed in nested menu', (done) => {
 						menu.addEventListener('d2l-hierarchical-view-hide-complete', () => {
 							expect(menu.isActive()).to.be.true;
 							done();
 						});
 						menu.addEventListener('d2l-hierarchical-view-show-complete', () => {
-							fireKeyEvent(menu.querySelector('#b2'), 27);
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keyup', true, true);
+							eventObj.keyCode = 27;
+							menu.querySelector('#b2').dispatchEvent(eventObj);
 						});
 						menu.querySelector('#b1').click();
 					});
@@ -155,13 +158,6 @@
 				});
 
 				describe('focus management', () => {
-
-					/* helper needed since MockInteractions does not set charCode */
-					// const keyPressOn = function(target, keyCode) {
-					// 	var e = MockInteractions.keyboardEventFor('keypress', keyCode);
-					// 	e.charCode = keyCode;
-					// 	target.dispatchEvent(e);
-					// };
 
 					beforeEach(async() => {
 						menu = fixture('focus');
@@ -214,16 +210,20 @@
 						expect(document.activeElement).to.equal(menu.querySelector('#b1'));
 					});
 
-					it.skip('sets focus to next item that starts with character pressed', () => {
-						// keyPressOn(menu.querySelector('#a1'), 99); /* "c" */
-						fireKeyEvent(menu.querySelector('#a1'), 99);
+					it('sets focus to next item that starts with character pressed', () => {
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keypress', true, true);
+						eventObj.charCode = 99;
+						menu.querySelector('#a1').dispatchEvent(eventObj);
 						expect(document.activeElement).to.equal(menu.querySelector('#c1'));
 					});
 
 					// fails in IE11
-					it.skip('sets focus by rolling over to beginning of menu when searching if necessary', () => {
-						// keyPressOn(menu.querySelector('#c1'), 98); /* "b" */
-						fireKeyEvent(menu.querySelector('#c1'), 98);
+					it('sets focus by rolling over to beginning of menu when searching if necessary', () => {
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keypress', true, true);
+						eventObj.charCode = 98;
+						menu.querySelector('#c1').dispatchEvent(eventObj);
 						expect(document.activeElement).to.equal(menu.querySelector('#b1'));
 					});
 
@@ -231,18 +231,10 @@
 			});
 
 			function fireKeyEvent(el, key) {
-				if (document.createEventObject) {
-					const eventObj = document.createEventObject();
-					eventObj.keyCode = key;
-					el.fireEvent('onkeydown', eventObj);
-				} else if (document.createEvent) {
-					const eventObj = document.createEvent('Events');
-					eventObj.initEvent('keydown', true, true);
-					eventObj.which = key;
-					eventObj.keyCode = key;
-					eventObj.charCode = key;
-					el.dispatchEvent(eventObj);
-				}
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = key;
+				el.dispatchEvent(eventObj);
 			}
 		</script>
 	</body>

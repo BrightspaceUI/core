@@ -153,8 +153,10 @@
 							done();
 						});
 						const view2_content = document.getElementById('view2_content');
-						// MockInteractions.pressAndReleaseKeyOn(view2_content, 27);
-						fireKeyEvent(view2_content, 27);
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keyup', true, true);
+						eventObj.keyCode = 27;
+						view2_content.dispatchEvent(eventObj);
 					});
 					view2.show();
 				});
@@ -173,7 +175,6 @@
 
 				it('applies focus to next focusable element in active view', (done) => {
 					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
-						// MockInteractions.focus(document.getElementById('view1_content'));
 						document.getElementById('view1_content').focus();
 						expect(document.activeElement).to.equal(document.getElementById('view2_content'));
 						done();
@@ -191,21 +192,6 @@
 					view2.show();
 				});
 			});
-
-			function fireKeyEvent(el, key) {
-				if (document.createEventObject) {
-					const eventObj = document.createEventObject();
-					eventObj.keyCode = key;
-					el.fireEvent('onkeydown', eventObj);
-				} else if (document.createEvent) {
-					const eventObj = document.createEvent('Events');
-					eventObj.initEvent('keydown', true, true);
-					eventObj.which = key;
-					eventObj.keyCode = key;
-					eventObj.charCode = key;
-					el.dispatchEvent(eventObj);
-				}
-			}
 		</script>
 	</body>
 </html>
