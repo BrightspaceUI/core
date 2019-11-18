@@ -14,16 +14,23 @@
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="d2l-offscreen">
+
 			<h2>Web Component</h2>
 			<d2l-demo-snippet>
-				<p>Some off-screen content:</p>
-				<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>
+				<template>
+					<p>Some off-screen content:</p>
+					<d2l-offscreen>This message will only be visible to assistive technology, such as a screen reader.</d2l-offscreen>
+				</template>
 			</d2l-demo-snippet>
+
 			<h2>Web Component Using Styles</h2>
 			<d2l-demo-snippet>
-				<p>Some off-screen content:</p>
-				<d2l-offscreen-demo></d2l-offscreen-demo>
+				<template>
+					<p>Some off-screen content:</p>
+					<d2l-offscreen-demo></d2l-offscreen-demo>
+				</template>
 			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>

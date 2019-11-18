@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../demo/input-select-test.js';
+		</script>
+		<title>d2l-input-select visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div class="visual-diff">
+			<d2l-test-input-select id="default"></d2l-test-input-select>
+		</div>
+		<div class="visual-diff">
+			<d2l-test-input-select id="overflow" overflow></d2l-test-input-select>
+		</div>
+		<div class="visual-diff">
+			<d2l-test-input-select id="disabled" disabled></d2l-test-input-select>
+		</div>
+		<div class="visual-diff">
+			<d2l-test-input-select id="invalid" invalid></d2l-test-input-select>
+		</div>
+		<div class="visual-diff">
+			<d2l-test-input-select id="rtl" dir="rtl"></d2l-test-input-select>
+		</div>
+		<div class="visual-diff">
+			<d2l-test-input-select id="rtl-overflow" dir="rtl" overflow></d2l-test-input-select>
+		</div>
+	</body>
+</html>

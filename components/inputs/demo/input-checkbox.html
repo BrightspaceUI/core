@@ -17,40 +17,52 @@
 
 			<h2>Simple checkbox with label</h2>
 			<d2l-demo-snippet>
-				<d2l-input-checkbox checked>Checked item</d2l-input-checkbox>
-				<d2l-input-checkbox>Unchecked item</d2l-input-checkbox>
+				<template>
+					<d2l-input-checkbox checked>Checked item</d2l-input-checkbox>
+					<d2l-input-checkbox>Unchecked item</d2l-input-checkbox>
+				</template>
 			</d2l-demo-snippet>
 
 			<h2>Checkbox with multi-line label</h2>
 			<d2l-demo-snippet>
-				<d2l-input-checkbox style="width:200px;">
-					Label for checkbox that wraps nicely onto
-					multiple lines and stays aligned
-				</d2l-input-checkbox>
+				<template>
+					<d2l-input-checkbox style="width:200px;">
+						Label for checkbox that wraps nicely onto
+						multiple lines and stays aligned
+					</d2l-input-checkbox>
+				</template>
 			</d2l-demo-snippet>
 
 			<h2>Checkbox with hidden label</h2>
 			<d2l-demo-snippet>
-				<d2l-input-checkbox aria-label="Label for checkbox"></d2l-input-checkbox>
+				<template>
+					<d2l-input-checkbox aria-label="Label for checkbox"></d2l-input-checkbox>
+				</template>
 			</d2l-demo-snippet>
 
 			<h2>Disabled checkbox</h2>
 			<d2l-demo-snippet>
-				<d2l-input-checkbox checked disabled>Disabled checkbox</d2l-input-checkbox>
+				<template>
+					<d2l-input-checkbox checked disabled>Disabled checkbox</d2l-input-checkbox>
+				</template>
 			</d2l-demo-snippet>
 
 			<h2>Checkbox with label and secondary content</h2>
 			<d2l-demo-snippet>
-				<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
-				<d2l-input-checkbox-spacer style="color:#999999;">
-					Additional content can go here and will<br>
-					also line up nicely with the checkbox.
-				</d2l-input-checkbox-spacer>
+				<template>
+					<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
+					<d2l-input-checkbox-spacer style="color:#999999;">
+						Additional content can go here and will<br>
+						also line up nicely with the checkbox.
+					</d2l-input-checkbox-spacer>
+				</template>
 			</d2l-demo-snippet>
 
 			<h2>Indeterminate checkbox</h2>
 			<d2l-demo-snippet>
-				<d2l-input-checkbox indeterminate>Indeterminate checkbox</d2l-input-checkbox>
+				<template>
+					<d2l-input-checkbox indeterminate>Indeterminate checkbox</d2l-input-checkbox>
+				</template>
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>

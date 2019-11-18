@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
 import { classMap} from 'lit-html/directives/class-map.js';
+import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -93,7 +94,8 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-right: 0;
 			}
 
-			::slotted([slot="illustration"]) {
+			.d2l-list-item-container ::slotted([slot="illustration"]),
+			.d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				flex-grow: 0;
 				flex-shrink: 0;
 				margin: 0.15rem 0.9rem 0.15rem 0;
@@ -102,7 +104,8 @@ class ListItem extends RtlMixin(LitElement) {
 				overflow: hidden;
 			}
 
-			:host([dir="rtl"]) ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-container ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
@@ -111,7 +114,8 @@ class ListItem extends RtlMixin(LitElement) {
 				padding: 0.55rem 0;
 			}
 
-			:host([illustration-outside]) ::slotted([slot="illustration"]) {
+			:host([illustration-outside]) .d2l-list-item-container ::slotted([slot="illustration"]),
+			:host([illustration-outside]) .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-bottom: 0.7rem;
 				margin-top: 0.7rem;
 			}
@@ -126,7 +130,7 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-top: 0.05rem;
 			}
 
-			::slotted([slot="actions"]) {
+			.d2l-list-item-content-flex ::slotted([slot="actions"]) {
 				align-self: flex-start;
 				display: grid;
 				flex-grow: 0;
@@ -162,35 +166,41 @@ class ListItem extends RtlMixin(LitElement) {
 				outline: none;
 			}
 
-			[breakpoint="1"] ::slotted([slot="illustration"]) {
+			.d2l-list-item-container[breakpoint="1"] ::slotted([slot="illustration"]),
+			.d2l-list-item-container[breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 3.55rem;
 				max-width: 6rem;
 			}
 
-			:host([dir="rtl"]) [breakpoint="1"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="1"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 
-			[breakpoint="2"] ::slotted([slot="illustration"]) {
+			.d2l-list-item-container[breakpoint="2"] ::slotted([slot="illustration"]),
+			.d2l-list-item-container[breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 5.1rem;
 				max-width: 9rem;
 			}
 
-			:host([dir="rtl"]) [breakpoint="2"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="2"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 
-			[breakpoint="3"] ::slotted([slot="illustration"]) {
+			.d2l-list-item-container[breakpoint="3"] ::slotted([slot="illustration"]),
+			.d2l-list-item-container[breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 6rem;
 				max-width: 10.8rem;
 			}
 
-			:host([dir="rtl"]) [breakpoint="3"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="3"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
@@ -234,6 +244,11 @@ class ListItem extends RtlMixin(LitElement) {
 		ro.unobserve(this);
 	}
 
+	focus() {
+		const node = getFirstFocusableDescendant(this);
+		if (node) node.focus();
+	}
+
 	render() {
 
 		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
@@ -243,6 +258,7 @@ class ListItem extends RtlMixin(LitElement) {
 			: html`<slot name="illustration"></slot>`;
 
 		const classes = {
+			'd2l-list-item-container': true,
 			'd2l-list-item-flex': label || link || this.illustrationOutside,
 			'd2l-visible-on-ancestor-target': true
 		};
