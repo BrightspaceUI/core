@@ -60,7 +60,7 @@ export const radioStyles = css`
 		padding-right: 0;
 		vertical-align: middle;
 	}
-	[dir="rtl"] .d2l-input-radio-label {
+	:host([dir="rtl"]) .d2l-input-radio-label {
 		padding-right: 1.7rem;
 		padding-left: 0;
 	}
@@ -80,8 +80,8 @@ export const radioStyles = css`
 		margin-left: -1.7rem;
 		flex: 0 0 auto;
 	}
-	[dir="rtl"] .d2l-input-radio-label > .d2l-input-radio,
-	[dir="rtl"] .d2l-input-radio-label > input[type="radio"] {
+	:host([dir="rtl"]) .d2l-input-radio-label > .d2l-input-radio,
+	:host([dir="rtl"]) .d2l-input-radio-label > input[type="radio"] {
 		margin-left: 0.5rem;
 		margin-right: -1.7rem;
 	}

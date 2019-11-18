@@ -6,6 +6,7 @@ class InputRadioSpacer extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`
 				:host {
+					box-sizing: border-box;
 					display: block;
 					padding-left: 1.7rem;
 					margin-bottom: 0.9rem;

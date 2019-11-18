@@ -213,6 +213,8 @@ Unlike checkboxes, individual radio buttons cannot be placed in a custom element
 
 Instead, apply styles to native radio inputs.
 
+Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
+
 ### Radio Inputs With Labels
 
 The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS class on a `<label>` element that wraps the input.
@@ -222,9 +224,10 @@ The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS
 For disabled items, add the `d2l-input-radio-label-disabled` class on the label and the `disabled` attribute on the input itself.
 
 ```javascript
-import { radioStyles } from './input-radio-styles.js';
+import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
+import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
 
-class MyElem extends LitElement {
+class MyElem extends RtlMixin(LitElement) {
 
 	static get styles() {
 		return radioStyles;

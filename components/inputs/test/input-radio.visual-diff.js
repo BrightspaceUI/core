@@ -26,6 +26,11 @@ describe('d2l-input-radio', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('wc-label-rtl', async function() {
+		const rect = await visualDiff.getRect(page, '#wc-label-rtl');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	['wc-solo', 'sass'].forEach((type) => {
 		['default', 'disabled', 'invalid'].forEach((state) => {
 			['unchecked', 'checked'].forEach((checked) => {

@@ -1,7 +1,8 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { radioStyles } from '../input-radio-styles.js';
+import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 
-class TestInputRadioLabel extends LitElement {
+class TestInputRadioLabel extends RtlMixin(LitElement) {
 
 	static get styles() {
 		return [ radioStyles,
