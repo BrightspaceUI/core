@@ -6,6 +6,7 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../typography/typography.js';
+			import '../input-radio-spacer.js';
 			import '../demo/input-radio-label-test.js';
 			import '../demo/input-radio-solo-test.js';
 		</script>
@@ -16,7 +17,13 @@
 	</head>
 	<body class="d2l-typography">
 		<div class="visual-diff">
-			<d2l-test-input-radio-label id="label"></d2l-test-input-radio-label>
+			<div id="wc-label">
+				<d2l-test-input-radio-label></d2l-test-input-radio-label>
+				<d2l-input-radio-spacer style="color:#999999;">
+					Additional content can go here and will<br>
+					also line up nicely with the radios.
+				</d2l-input-radio-spacer>
+			</div>
 		</div>
 		<div class="visual-diff">
 			<d2l-test-input-radio-solo id="solo"></d2l-test-input-radio-solo>

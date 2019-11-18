@@ -8,6 +8,7 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../demo/demo-page.js';
+			import '../input-radio-spacer.js';
 			import './input-radio-label-test.js';
 			import './input-radio-solo-test.js';
 		</script>
@@ -18,6 +19,17 @@
 			<h2>Simple radio group with labels</h2>
 			<d2l-demo-snippet>
 				<d2l-test-input-radio-label></d2l-test-input-radio-label>
+			</d2l-demo-snippet>
+
+			<h2>Radio group with labels and secondary content</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-test-input-radio-label></d2l-test-input-radio-label>
+					<d2l-input-radio-spacer style="color:#999999;">
+						Additional content can go here and will<br>
+						also line up nicely with the radios.
+					</d2l-input-radio-spacer>
+				</template>
 			</d2l-demo-snippet>
 
 			<h2>Radio buttons on their own</h2>
