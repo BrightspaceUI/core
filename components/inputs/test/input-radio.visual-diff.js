@@ -21,26 +21,30 @@ describe('d2l-input-radio', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	function getRadio(id, val) {
-		return page.evaluateHandle(
-			`document.querySelector('#${id}').shadowRoot.querySelector('input[type="radio"][value="${val}"]')`
-		);
-	}
-
-	['label', 'solo'].forEach((name) => {
-		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
+	it('wc-label', async function() {
+		const rect = await visualDiff.getRect(page, '#wc-label');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	['label', 'solo'].forEach((name) => {
-		['normal', 'invalid'].forEach((val) => {
-			it(`${name}-${val}-focus`, async function() {
-				const input = await getRadio(name, val);
-				input.focus();
-				const rect = await visualDiff.getRect(page, `#${name}`);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	['wc-solo', 'sass'].forEach((type) => {
+		['default', 'disabled', 'invalid'].forEach((state) => {
+			['unchecked', 'checked'].forEach((checked) => {
+
+				const id = `${type}-${state}-${checked}`;
+
+				it(id, async function() {
+					const rect = await visualDiff.getRect(page, `#${id}`);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
+				if (state !== 'disabled') {
+					it(`${id}-focus`, async function() {
+						await page.$eval(`#${id}`, (elem) => elem.focus());
+						const rect = await visualDiff.getRect(page, `#${id}`);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+				}
+
 			});
 		});
 	});

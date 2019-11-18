@@ -3,17 +3,36 @@ import { radioStyles } from '../input-radio-styles.js';
 
 class TestInputRadioSolo extends LitElement {
 
+	static get properties() {
+		return {
+			checked: { type: Boolean },
+			disabled: { type: Boolean },
+			invalid: { type: Boolean }
+		};
+	}
+
 	static get styles() {
 		return radioStyles;
 	}
 
+	focus() {
+		const elem = this.shadowRoot.querySelector('input');
+		if (elem) elem.focus();
+	}
+
 	render() {
+		const invalid = this.invalid ? 'true' : 'false';
 		return html`
-			<input type="radio" class="d2l-input-radio" aria-label="Option 1" name="best" value="normal" checked>
-			<input type="radio" class="d2l-input-radio" aria-label="Option 2 (invalid)" aria-invalid="true" name="best" value="invalid">
-			<input type="radio" class="d2l-input-radio" aria-label="Option 3 (disabled)" name="best" value="disabled" disabled>
+			<input
+				aria-invalid="${invalid}"
+				aria-label="Option 1"
+				?checked="${this.checked}"
+				class="d2l-input-radio"
+				?disabled="${this.disabled}"
+				type="radio">
 		`;
 	}
 
 }
+
 customElements.define('d2l-test-input-radio-solo', TestInputRadioSolo);
