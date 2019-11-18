@@ -7,7 +7,7 @@ export const selectStyles = css`
 		-moz-appearance: none;
 		appearance: none;
 		background-origin: border-box;
-		background-position: center right 19px;
+		background-position: center right 17px;
 		background-repeat: no-repeat;
 		background-size: 11px 7px;
 		border-radius: 0.3rem;
@@ -26,7 +26,7 @@ export const selectStyles = css`
 		vertical-align: middle;
 	}
 	:host([dir='rtl']) .d2l-input-select {
-		background-position: center left 19px;
+		background-position: center left 17px;
 	}
 	.d2l-input-select,
 	.d2l-input-select:hover:disabled {
@@ -41,14 +41,14 @@ export const selectStyles = css`
 	.d2l-input-select:hover:disabled,
 	.d2l-input-select:focus:disabled {
 		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
-		padding-right: calc(0.75rem + 11px + 18px);
+		padding-right: calc(0.5rem + 11px + 16px);
 	}
 	:host([dir='rtl']) .d2l-input-select,
 	:host([dir='rtl']) .d2l-input-select:disabled,
 	:host([dir='rtl']) .d2l-input-select:hover:disabled,
 	:host([dir='rtl']) .d2l-input-select:focus:disabled {
 		padding-right: 0.75rem;
-		padding-left: calc(0.75rem + 11px + 18px);
+		padding-left: calc(0.5rem + 11px + 16px);
 	}
 	.d2l-input-select:hover,
 	.d2l-input-select:focus {
@@ -57,11 +57,11 @@ export const selectStyles = css`
 		outline-style: none; /* Safari */
 		outline-width: 0;
 		padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
-		padding-right: calc(0.75rem + 11px + 18px - 1px);
+		padding-right: calc(0.5rem + 11px + 16px - 1px);
 	}
 	:host([dir='rtl']) .d2l-input-select:hover,
 	:host([dir='rtl']) .d2l-input-select:focus {
-		padding-left: calc(0.75rem + 11px + 18px - 1px);
+		padding-left: calc(0.5rem + 11px + 16px - 1px);
 		padding-right: calc(0.75rem - 1px);
 	}
 	.d2l-input-select[aria-invalid='true'] {
