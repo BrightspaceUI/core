@@ -1,5 +1,5 @@
-import '../dialog.js';
 import '../../button/button.js';
+import '../dialog.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 
 class DialogContainer extends LitElement {
