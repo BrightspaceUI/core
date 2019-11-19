@@ -46,6 +46,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._nestedShowing = false;
 		this._state = null;
 		this._left = 0;
+		this._overflowBottom = false;
+		this._overflowTop = false;
 		this._width = 0;
 		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
 		this._handleBodyFocus = this._handleBodyFocus.bind(this);
