@@ -173,11 +173,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		const containerRectHeight = this.getBoundingClientRect().height;
 		const containerTop = this.getBoundingClientRect().top;
 
-		const scrollbarHeightEstimate = 0;
-		// const hasHorizontalScollbar = document.body.scrollWidth > document.body.clientWidth;
-		// if (hasHorizontalScollbar) {
-		// 	scrollbarHeightEstimate = 17; // needed in case of horizontal scrollbar in Windows
-		// }
+		let scrollbarHeightEstimate = 0;
+		const hasHorizontalScollbar = document.body.scrollWidth > document.body.clientWidth;
+		if (hasHorizontalScollbar) {
+			scrollbarHeightEstimate = 17; // needed in case of horizontal scrollbar in Windows
+		}
 
 		/* if viewport height is less than minHeight (e.g., mobile device),
 		 * or user has scrolled to bottom of page
