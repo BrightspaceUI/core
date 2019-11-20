@@ -7,6 +7,8 @@
 		import '../../typography/typography.js';
 		import '../menu.js';
 		import '../menu-item.js';
+		import '../menu-item-link.js';
+		import '../menu-item-separator.js';
 	</script>
 	<title>d2l-menu</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +19,9 @@
 	<div class="visual-diff">
 		<d2l-menu id="normal">
 			<d2l-menu-item text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></d2l-menu-item>
-			<d2l-menu-item text="b"></d2l-menu-item>
-			<d2l-menu-item text="c"></d2l-menu-item>
+		    <d2l-menu-item-separator></d2l-menu-item-separator>
+		    <d2l-menu-item text="b"></d2l-menu-item>
+		    <d2l-menu-item text="c"></d2l-menu-item>
 		</d2l-menu>
 	</div>
 	<div class="visual-diff">
@@ -31,8 +34,9 @@
 	<div class="visual-diff">
 		<d2l-menu id="disabled">
 			<d2l-menu-item text="a"></d2l-menu-item>
-			<d2l-menu-item text="b"></d2l-menu-item>
-			<d2l-menu-item text="c" disabled></d2l-menu-item>
+			<d2l-menu-item text="b" disabled></d2l-menu-item>
+			<d2l-menu-item-separator></d2l-menu-item-separator>
+			<d2l-menu-item-link text="c" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
 		</d2l-menu>
 	</div>
 	<div class="visual-diff">

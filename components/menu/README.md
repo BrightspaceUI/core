@@ -43,7 +43,7 @@ While navigation can be done in JS too, `d2l-menu-item-link` gives users the abi
 ```html
 <d2l-menu label="Astronomy">
   <d2l-menu-item text="Introduction"></d2l-menu-item>
-  <d2l-menu-item text="The Planets"></d2l-menu-item>
+  <d2l-menu-item text="The Planets" disabled></d2l-menu-item>
   <d2l-menu-item-separator></d2l-menu-item-separator>
   <d2l-menu-item-link text="The Universe" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
 </d2l-menu>

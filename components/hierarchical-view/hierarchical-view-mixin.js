@@ -15,14 +15,11 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this.__keyCodes = {
-			ESCAPE: 27
-		};
+
+		this.isHierarchicalView = true;
 		this.__nativeFocus = null;
-		this.__content = null;
 		this.__focusPrevious = false;
 		this.__resizeObserver = null;
-		this.isHierarchicalView = true;
 	}
 
 	firstUpdated() {
@@ -32,26 +29,8 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
 		this.addEventListener('d2l-hierarchical-view-resize', this.__onViewResize);
 		this.__nativeFocus = document.createElement('div').focus;
-		this.__focusCapture = this.__focusCapture.bind(this);
-		this.__focusOutCapture = this.__focusOutCapture.bind(this);
 		this.__onWindowResize = this.__onWindowResize.bind(this);
 
-		this._getParentChildInfo();
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		requestAnimationFrame(() => {
-			this.__autoSize(this);
-
-			if (this.getActiveView() === this) {
-				this.__fireViewResize();
-			}
-		});
-	}
-
-	_getParentChildInfo() {
 		const parentView = findComposedAncestor(
 			this.parentNode,
 			(node) => { return node.isHierarchicalView; }
@@ -66,6 +45,18 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			this.addEventListener('focusout', this.__focusOutCapture, true);
 			window.addEventListener('resize', this.__onWindowResize);
 		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		requestAnimationFrame(() => {
+			this.__autoSize(this);
+
+			if (this.getActiveView() === this) {
+				this.__fireViewResize();
+			}
+		});
 	}
 
 	getActiveView() {
@@ -242,7 +233,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__focusCapture(e) {
-
 		const parentView = this.__getParentViewFromEvent(e);
 
 		if (parentView.isActive()) {
@@ -286,7 +276,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__focusOutCapture(e) {
-
 		// focus tracking required since ie only supports relatedTarget on focusin/focusout
 		const relatedTarget = e.relatedTarget;
 		const activeView = this.getActiveView();
@@ -342,15 +331,12 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onKeyUp(e) {
-		if (this.childView && e.keyCode === this.__keyCodes.ESCAPE) {
+		const escapeKeyCode = 27;
+		if (this.childView && e.keyCode === escapeKeyCode) {
 			e.stopPropagation();
 			this.hide();
 			return;
 		}
-	}
-
-	__onViewResize(e) {
-		this.style.height = `${e.detail.height}px`;
 	}
 
 	__onShowStart(e) {
@@ -379,6 +365,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			e.detail.sourceView.__fireViewResize();
 		}
 
+	}
+
+	__onViewResize(e) {
+		this.style.height = `${e.detail.height}px`;
 	}
 
 	__onWindowResize() {
