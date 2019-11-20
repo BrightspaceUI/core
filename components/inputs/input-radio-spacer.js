@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputCheckboxSpacer extends RtlMixin(LitElement) {
+class InputRadioSpacer extends RtlMixin(LitElement) {
 
 	static get styles() {
 		return css`
@@ -23,4 +23,4 @@ class InputCheckboxSpacer extends RtlMixin(LitElement) {
 	}
 
 }
-customElements.define('d2l-input-checkbox-spacer', InputCheckboxSpacer);
+customElements.define('d2l-input-radio-spacer', InputRadioSpacer);

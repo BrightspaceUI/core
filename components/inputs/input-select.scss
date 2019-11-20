@@ -1,0 +1,85 @@
+@import '../colors/colors.scss';
+
+@mixin d2l-input-select() {
+	-webkit-appearance:none;
+	-moz-appearance: none;
+	appearance: none;
+	background-origin: border-box;
+	background-position: center right 17px;
+	background-repeat: no-repeat;
+	background-size: 11px 7px;
+	border-radius: 0.3rem;
+	border-style: solid;
+	box-sizing: border-box;
+	color: $d2l-color-ferrite;
+	display: inline-block;
+	font-family: inherit;
+	font-size: 0.8rem;
+	font-weight: 400;
+	height: auto;
+	letter-spacing: 0.02rem;
+	line-height: 1.2rem;
+	margin: 0;
+	max-height: calc(2rem + 2px);
+	vertical-align: middle;
+	&,
+	&:hover:disabled {
+		background-color: #ffffff;
+		border-color: $d2l-color-galena;
+		border-width: 1px;
+		box-shadow: inset 0 2px 0 0 rgba(181, 189, 194, .2); /* corundum */
+		padding: 0.4rem 0.75rem;
+	}
+	&,
+	&:disabled,
+	&:hover:disabled,
+	&:focus:disabled {
+		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
+		padding-right: calc(0.5rem + 11px + 16px);
+	}
+	&:hover,
+	&:focus {
+		border-color: $d2l-color-celestine;
+		border-width: 2px;
+		outline-style: none; /* Safari */
+		outline-width: 0;
+		padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
+		padding-right: calc(0.5rem + 11px + 16px - 1px);
+	}
+	&[aria-invalid='true'] {
+		border-color: $d2l-color-cinnabar;
+	}
+	&:disabled {
+		opacity: 0.5;
+	}
+	/* IE11 to prevent selection styling */
+	&:focus::-ms-value,
+	&:hover::-ms-value {
+		background-color: transparent;
+		color: $d2l-color-ferrite;
+	}
+	/* IE11 to hide the native chevron */
+	&::-ms-expand {
+		display: none;
+	}
+	/* Prevents dotted outline when focused in Firefox */
+	&:-moz-focusring {
+		color: transparent;
+		text-shadow: 0 0 0 #000;
+	}
+	[dir='rtl'] & {
+		background-position: center left 17px;
+		&,
+		&:disabled,
+		&:hover:disabled,
+		&:focus:disabled {
+			padding-right: 0.75rem;
+			padding-left: calc(0.5rem + 11px + 16px);
+		}
+		&:hover,
+		&:focus {
+			padding-left: calc(0.5rem + 11px + 16px - 1px);
+			padding-right: calc(0.75rem - 1px);
+		}
+	}
+}
