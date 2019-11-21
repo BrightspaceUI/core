@@ -25,7 +25,7 @@ class ListItem extends RtlMixin(LitElement) {
 		return {
 			breakpoints: { type: Array },
 			href: { type: String },
-			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
+			illustrationOutside: { type: Boolean, attribute: 'illustration-outside' },
 			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
