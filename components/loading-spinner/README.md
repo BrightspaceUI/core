@@ -15,4 +15,4 @@
 **Properties:**
 
 - `color` (String): Color of the animated bar (default is `--d2l-color-celestine`)
-- `size` (Number): Height and width (`px`) of the spinner (default is `50px`)
+- `size` (Number): Height and width (`px`) of the spinner (default is `50`)

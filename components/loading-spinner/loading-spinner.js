@@ -23,34 +23,34 @@ class LoadingSpinner extends LitElement {
 				display: none;
 			}
 
-			:host .d2l-loading-spinner-wrapper {
+			.d2l-loading-spinner-wrapper {
 				height: var(--d2l-loading-spinner-size, 50px);
 				margin: auto;
 				overflow: hidden;
 				position: relative;
 				width: var(--d2l-loading-spinner-size, 50px);
 			}
-			:host .d2l-loading-spinner-bg,
-			:host .d2l-loading-spinner-bg-blur {
+			.d2l-loading-spinner-bg,
+			.d2l-loading-spinner-bg-blur {
 				height: 100%;
 				position: absolute;
 				stroke: var(--d2l-loading-spinner-color, var(--d2l-color-celestine));
 				top: 0;
 				width: 100%;
 			}
-			:host .d2l-loading-spinner-bg-stroke {
+			.d2l-loading-spinner-bg-stroke {
 				stroke: #ededfa;
 			}
-			:host .d2l-loading-spinner-bg-blur {
+			.d2l-loading-spinner-bg-blur {
 				opacity: 0.1;
 				filter: blur(calc(var(--d2l-loading-spinner-size, 50px) / 10));
 			}
 
-			:host .d2l-loading-spinner-slice1,
-			:host .d2l-loading-spinner-slice2,
-			:host .d2l-loading-spinner-slice3,
-			:host .d2l-loading-spinner-slice4,
-			:host .d2l-loading-spinner-slice5 {
+			.d2l-loading-spinner-slice1,
+			.d2l-loading-spinner-slice2,
+			.d2l-loading-spinner-slice3,
+			.d2l-loading-spinner-slice4,
+			.d2l-loading-spinner-slice5 {
 				animation-duration: 1.5s;
 				animation-iteration-count: infinite;
 				animation-timing-function: cubic-bezier(.5,0,.5,1);
@@ -61,23 +61,23 @@ class LoadingSpinner extends LitElement {
 				transform-origin: left bottom;
 				width: 50%;
 			}
-			:host .d2l-loading-spinner-slice1 {
+			.d2l-loading-spinner-slice1 {
 				animation-name: slicespin1;
 				transform: rotate(54deg);
 			}
-			:host .d2l-loading-spinner-slice2 {
+			.d2l-loading-spinner-slice2 {
 				animation-name: slicespin2;
 				transform: rotate(124deg);
 			}
-			:host .d2l-loading-spinner-slice3 {
+			.d2l-loading-spinner-slice3 {
 				animation-name: slicespin3;
 				transform: rotate(198deg);
 			}
-			:host .d2l-loading-spinner-slice4 {
+			.d2l-loading-spinner-slice4 {
 				animation-name: slicespin4;
 				transform: rotate(270deg);
 			}
-			:host .d2l-loading-spinner-slice5 {
+			.d2l-loading-spinner-slice5 {
 				animation-name: slicespin5;
 				transform: rotate(344deg);
 			}
