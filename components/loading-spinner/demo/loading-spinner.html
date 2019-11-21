@@ -9,6 +9,7 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../loading-spinner.js';
+			import './loading-spinner-override.js';
 		</script>
 	</head>
 	<body unresolved>
@@ -39,6 +40,22 @@
 					<d2l-loading-spinner size="30"></d2l-loading-spinner>
 					<d2l-loading-spinner size="70"></d2l-loading-spinner>
 					<d2l-loading-spinner size="100"></d2l-loading-spinner>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Color Override (CSS variable)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-loading-spinner-demo-override override-color></d2l-loading-spinner-demo-override>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Size Override (CSS variable)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-loading-spinner-demo-override override-size></d2l-loading-spinner-demo-override>
 				</template>
 			</d2l-demo-snippet>
 
