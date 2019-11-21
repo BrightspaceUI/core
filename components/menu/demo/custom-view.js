@@ -34,7 +34,7 @@ class CustomView extends HierarchicalViewMixin(LitElement) {
 	firstUpdated() {
 		super.firstUpdated();
 
-		this.addEventListener('d2l-hierarchical-view-show-start', this._onShowComplete);
+		this.addEventListener('d2l-hierarchical-view-show-complete', this._onShowComplete);
 	}
 
 	render() {
