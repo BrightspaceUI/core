@@ -8,7 +8,7 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/menu/d2l-menu.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
 </script>
 
 <d2l-menu label="Astronomy">

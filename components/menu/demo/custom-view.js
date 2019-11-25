@@ -1,11 +1,10 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { HierarchicalViewMixin } from '../../hierarchical-view/hierarchical-view-mixin.js';
-import { hierarchicalViewStyles } from '../../hierarchical-view/hierarchical-view-styles.js';
 
 class CustomView extends HierarchicalViewMixin(LitElement) {
 
 	static get styles() {
-		return [ hierarchicalViewStyles,
+		return [ super.styles,
 			css`
 				:host {
 					background-image: url("https://www.nasa.gov/sites/default/files/images/504349main_ngc6357_hst_big_full.jpg");

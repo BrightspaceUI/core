@@ -75,7 +75,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			return;
 		}
 
-		if (this.__children && this.__children.length > 0 && this.__children[0].isHierarchicalView) {
+		if (this.__children && this.__children.length > 0 && this.__children[0].hierarchicalView) {
 			// assumption: single, focusable child view
 			this.__children[0].show();
 		} else {
