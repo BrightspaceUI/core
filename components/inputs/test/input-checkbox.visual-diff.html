@@ -16,46 +16,43 @@
 	</head>
 	<body class="d2l-typography">
 		<div class="visual-diff">
-			<d2l-input-checkbox id="checked" checked>Checkbox (checked)</d2l-input-checkbox>
+			<d2l-input-checkbox id="wc-default-unchecked">Checkbox (unchecked)</d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="checked-disabled" checked disabled>Checkbox (checked, disabled)</d2l-input-checkbox>
+			<d2l-input-checkbox id="wc-default-checked" checked>Checkbox (checked)</d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="unchecked">Checkbox (unchecked)</d2l-input-checkbox>
+			<d2l-input-checkbox id="wc-default-indeterminate" indeterminate>Checkbox (indeterminate)</d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="unchecked-disabled" disabled>Checkbox (unchecked, disabled)</d2l-input-checkbox>
+			<d2l-input-checkbox id="wc-disabled-unchecked" disabled>Checkbox (unchecked, disabled)</d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="unchecked-rtl" dir="rtl">Checkbox (unchecked, rtl)</d2l-input-checkbox>
+			<d2l-input-checkbox id="wc-disabled-checked" checked disabled>Checkbox (checked, disabled)</d2l-input-checkbox>
+		</div>		
+		<div class="visual-diff">
+			<d2l-input-checkbox id="wc-disabled-indeterminate" indeterminate disabled>Checkbox (indeterminate, disabled)</d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="indeterminate" indeterminate>Checkbox (indeterminate)</d2l-input-checkbox>
-		</div>
-		<div class="visual-diff">
-			<d2l-input-checkbox id="indeterminate-disabled" indeterminate disabled>Checkbox (indeterminate, disabled)</d2l-input-checkbox>
-		</div>
-		<div class="visual-diff">
-			<d2l-input-checkbox id="multiline" style="width:200px;">
+			<d2l-input-checkbox id="wc-multiline" style="width:200px;">
 				Label for checkbox that wraps nicely onto
 				multiple lines and stays aligned
 			</d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="multiline-rtl" dir="rtl" style="width:200px;">
+			<d2l-input-checkbox id="wc-multiline-rtl" dir="rtl" style="width:200px;">
 				Label for checkbox that wraps nicely onto
 				multiple lines and stays aligned
 			</d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="hidden-label" aria-label="Label for checkbox"></d2l-input-checkbox>
+			<d2l-input-checkbox id="wc-hidden-label" aria-label="Label for checkbox"></d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<d2l-input-checkbox id="hidden-label-rtl" aria-label="Label for checkbox" dir="rtl"></d2l-input-checkbox>
+			<d2l-input-checkbox id="wc-hidden-label-rtl" aria-label="Label for checkbox" dir="rtl"></d2l-input-checkbox>
 		</div>
 		<div class="visual-diff">
-			<div id="spacer" class="display:inline-block;">
+			<div id="wc-spacer" class="display:inline-block;">
 				<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
 				<d2l-input-checkbox-spacer style="color:#999999;">
 					Additional content can go here and will<br>
@@ -64,13 +61,25 @@
 			</div>
 		</div>
 		<div class="visual-diff">
-			<div id="spacer-rtl" class="display:inline-block;">
+			<div id="wc-spacer-rtl" class="display:inline-block;">
 				<d2l-input-checkbox dir="rtl">Label for checkbox</d2l-input-checkbox>
 				<d2l-input-checkbox-spacer dir="rtl" style="color:#999999;">
 					Additional content can go here and will<br>
 					also line up nicely with the checkbox.
 				</d2l-input-checkbox-spacer>
 			</div>
+		</div>
+		<div class="visual-diff">
+			<input id="sass-default-unchecked" type="checkbox" class="d2l-test-input-checkbox">
+		</div>
+		<div class="visual-diff">
+			<input id="sass-default-checked" type="checkbox" class="d2l-test-input-checkbox" checked>
+		</div>
+		<div class="visual-diff">
+			<input id="sass-disabled-unchecked" type="checkbox" class="d2l-test-input-checkbox" disabled>
+		</div>
+		<div class="visual-diff">
+			<input id="sass-disabled-checked" type="checkbox" class="d2l-test-input-checkbox" disabled checked>
 		</div>
 	</body>
 </html>
