@@ -50,7 +50,7 @@ While navigation can be done in JS too, `d2l-menu-item-link` gives users the abi
 ```
 
 ```javascript
-menu.addEventListener('d2l-menu-item-select', function(e) {
+menu.addEventListener('d2l-menu-item-select', (e) => {
 	console.log('item selected:', e.target);
 });
 ```

@@ -159,10 +159,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	isActive() {
-		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 		if (this.childView && !this.shown) {
 			return false;
 		} else {
+			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 			return !content.classList.contains('d2l-child-view-show');
 		}
 	}

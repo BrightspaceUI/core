@@ -38,25 +38,63 @@ describe('d2l-menu', function() {
 	});
 
 	it('opens nested menu on click', async function() {
-		await click(page, '#b1');
+		const selector = '#b1';
+		const resize = contentResize(page, selector);
+		await page.evaluate((selector) => {
+			document.querySelector(selector).click();
+		}, selector);
+		await resize;
 		const rect = await visualDiff.getRect(page, '#nested');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	// it('opens nested menu on enter', async function() {
-	// 	const rect = await visualDiff.getRect(page, '#collapsed');
-	// 	await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	// });
-	//
-	// it('leaves nested menu on escape', async function() {
-	// 	const rect = await visualDiff.getRect(page, '#collapsed');
-	// 	await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	// });
-	//
-	// it('leaves nested menu when return clicked', async function() {
-	// 	const rect = await visualDiff.getRect(page, '#collapsed');
-	// 	await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	// });
+	it('leaves nested menu when return clicked', async function() {
+		const resize = contentResizeReturn(page);
+		await page.evaluate(() => {
+			document.querySelector('#nestedMenu').shadowRoot.querySelector('d2l-menu-item-return').click();
+		});
+		await resize;
+		const rect = await visualDiff.getRect(page, '#nested');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('opens nested menu on enter', async function() {
+		const selector = '#b1';
+		const resize = contentResize(page, selector);
+		await page.evaluate((selector) => {
+			const eventObj = document.createEvent('Events');
+			eventObj.initEvent('keydown', true, true);
+			eventObj.keyCode = 13;
+			document.querySelector(selector).dispatchEvent(eventObj);
+		}, selector);
+		await resize;
+		const rect = await visualDiff.getRect(page, '#nested');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('leaves nested menu on escape', async function() {
+		const resize = contentResizeReturn(page);
+		await page.evaluate(() => {
+			const eventObj = document.createEvent('Events');
+			eventObj.initEvent('keyup', true, true);
+			eventObj.keyCode = 27;
+			document.querySelector('#b2').dispatchEvent(eventObj);
+		});
+		await resize;
+		const rect = await visualDiff.getRect(page, '#nested');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	const contentResizeReturn = (page) => {
+		return page.evaluate(() => {
+			return new Promise((resolve) => {
+				const elem = document.querySelector('#nestedMenu');
+				elem.addEventListener('d2l-hierarchical-view-hide-complete', () => {
+					resolve();
+				});
+			});
+		});
+	};
 
 	const contentResize = (page, selector) => {
 		return page.evaluate((selector) => {
@@ -68,13 +106,4 @@ describe('d2l-menu', function() {
 			});
 		}, selector);
 	};
-
-	const click = async(page, selector) => {
-		const resize = contentResize(page, selector);
-		await page.evaluate((selector) => {
-			document.querySelector(selector).click();
-		}, selector);
-		return resize;
-	};
-
 });
