@@ -28,11 +28,10 @@
 
 					beforeEach(async() => {
 						menuItem = fixture('basic');
+						await menuItem.updateComplete;
 					});
 
-					it('should pass all axe tests for d2l-menu-item', async() => {
-						// Currently fails "Required ARIA parents role not present: menu menubar"
-						// Enable after d2l-menu is added
+					it('should pass all axe tests for d2l-menu-item-separator', async() => {
 						await runAxe(menuItem);
 					});
 
