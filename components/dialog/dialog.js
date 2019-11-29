@@ -94,7 +94,7 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 					</div>
 				</div>
 				<div class="d2l-dialog-content">
-					<div><slot></slot></div>
+					<div style="overflow: auto;"><slot></slot></div>
 				</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer"></slot>
