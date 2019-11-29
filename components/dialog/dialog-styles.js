@@ -93,6 +93,12 @@ export const dialogStyles = css`
 		overflow: auto;
 	}
 
+	.d2l-dialog-content > div {
+		/* required to properly calculate preferred height when there are bottom
+		margins at the end of the slotted content */
+		border-bottom: 1px solid transparent;
+	}
+
 	.d2l-dialog-footer {
 		box-sizing: border-box;
 		flex: none;
