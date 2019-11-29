@@ -132,7 +132,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (header) preferredHeight += header.scrollHeight;
 
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content > div');
-		if (content) preferredHeight += content.scrollHeight;
+		if (content) preferredHeight += content.scrollHeight + 20;
 
 		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer');
 		if (footer) preferredHeight += footer.scrollHeight;
