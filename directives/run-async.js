@@ -53,6 +53,11 @@ export const runAsync = directive((key, task, templates) => (part) => {
 		const pendingPromise = new Promise((res, rej) => {
 			resolvePending = res;
 			rejectPending = rej;
+		}).catch((error) => {
+			if (!(error instanceof InitialStateError)) {
+				// swallow initial state errors
+				throw error;
+			}
 		});
 		const promise = task(key, { signal: abortSignal });
 		// The state is immediately 'pending', since the function has been
