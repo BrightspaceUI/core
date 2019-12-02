@@ -1,6 +1,6 @@
 import '../loading-spinner/loading-spinner.js';
 import { AsyncContainerMixin, asyncStates } from './async-container-mixin.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 
 class AsyncContainer extends AsyncContainerMixin(LitElement) {
 
@@ -17,9 +17,9 @@ class AsyncContainer extends AsyncContainerMixin(LitElement) {
 
 	render() {
 		if (this.asyncState === asyncStates.success) {
-			return html`<slot></slot>`
+			return html`<slot></slot>`;
 		} else if (this.asyncState === asyncStates.failure) {
-			return html`<slot name="failure"></slot><slot></slot>`
+			return html`<slot name="failure"></slot><slot></slot>`;
 		} else if (this.asyncState === asyncStates.pending && this._showPending) {
 			return html`<d2l-loading-spinner></d2l-loading-spinner>`;
 		} else {
