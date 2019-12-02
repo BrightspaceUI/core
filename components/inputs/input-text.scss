@@ -1,6 +1,11 @@
 @import '../colors/colors.scss';
 
-@mixin d2l-input-text() {
+@mixin d2l-input-text(
+		$include-pseudo-classes: true,
+		$line-height: 1.2rem,
+		$padding: 0.4rem 0.75rem,
+		$padding-focus: calc(0.4rem - 1px) calc(0.75rem - 1px)
+	) {
 	background-color: #ffffff;	
 	border-radius: 0.3rem;
 	border-style: solid;
@@ -9,15 +14,17 @@
 	box-sizing: border-box;
 	color: $d2l-color-ferrite;
 	display: inline-block;
+	font-family: inherit;
+	font-size: 0.8rem;
+	font-weight: 400;
 	height: auto;
 	letter-spacing: 0.02rem;
-	line-height: 1.2rem;
+	line-height: $line-height;
 	margin: 0;
 	min-width: calc(2rem + 1em);
 	position: relative;
 	vertical-align: middle;
 	width: 100%;
-	@include d2l-body-compact();
 	&::placeholder,
 	&::-ms-input-placeholder {
 		color: $d2l-color-mica;
@@ -31,7 +38,7 @@
 		border-width: 2px;
 		outline-style: none;
 		outline-width: 0;
-		padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
+		padding: $padding-focus;
 	}
 	&[aria-invalid='true'],
 	&:invalid {
@@ -42,18 +49,20 @@
 	&[aria-invalid="true"]:disabled {
 		border-color: $d2l-color-galena;
 		border-width: 1px;
-		padding: 0.4rem 0.75rem;
+		padding: $padding;
 	}
 	&:disabled {
 		opacity: 0.5;
 	}
-	&::-webkit-search-cancel-button,
-	&::-webkit-search-decoration {
-		display: none;
-	}
-	&::-ms-clear {
-		display: none;
-		width: 0;
-		height: 0;
+	@if $include-pseudo-classes {
+		&::-webkit-search-cancel-button,
+		&::-webkit-search-decoration {
+			display: none;
+		}
+		&::-ms-clear {
+			display: none;
+			width: 0;
+			height: 0;
+		}
 	}
 }
