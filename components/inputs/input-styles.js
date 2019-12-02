@@ -9,8 +9,8 @@ export const inputStyles = css`
 		border-style: solid;
 		border-width: 1px;
 		box-shadow: inset 0 2px 0 0 rgba(181, 189, 194, .2); /* corundum */
-		color: var(--d2l-color-ferrite);
 		box-sizing: border-box;
+		color: var(--d2l-color-ferrite);
 		display: inline-block;
 		font-family: inherit;
 		font-size: 0.8rem;
