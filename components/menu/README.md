@@ -49,29 +49,52 @@ While navigation can be done in JS too, `d2l-menu-item-link` gives users the abi
 </d2l-menu>
 ```
 
-```javascript
-menu.addEventListener('d2l-menu-item-select', (e) => {
-	console.log('item selected:', e.target);
-});
+### d2l-menu-item
+
+This is used with JS handlers and can be wired-up to the `d2l-menu-item-select` event. For example:
+
+```html
+<d2l-menu label="Astronomy">
+  <d2l-menu-item text="Introduction"></d2l-menu-item>
+  <d2l-menu-item text="The Planets" disabled></d2l-menu-item>
+</d2l-menu>
+
+<script>
+  menu.addEventListener('d2l-menu-item-select', (e) => {
+    console.log('item selected:', e.target);
+  });
+</script>
 ```
 
-**Properties (d2l-menu-item, d2l-menu-item-link, d2l-menu-item-checkbox, d2l-menu-item-radio):**
+**Properties:**
 
 * `text` (required, String): text displayed by the menu item
 * `disabled` (Boolean): disables the menu item
-
-**Properties (d2l-menu-item-link):**
-
-* `href` (required, String): the url the menu item link navigates to
-* `prevent-default` (Boolean): Disables normal link behavior.  This can help if you want both a JS handler and the browser's 'open in new tab' functionality (e.g. popup window links).
 
 **Events:**
 
 * `d2l-menu-item-select`: dispatched when a menu item is selected
 
-### Selection Menu Items (radio/checkbox)
+### d2l-menu-item-link
 
-The selection menu items act as you would expect a checkbox or radio item to act. Multiple checkboxes in the same menu may be selected, but only one radio item in a given `<d2l-menu>` may be selected at once (i.e. selecting one option will deselect all the other `d2l-menu-item-radio` items).
+The link menu item, `d2l-menu-item-link`, is used for navigating.
+
+```html
+<d2l-menu label="Astronomy">
+  <d2l-menu-item-link text="The Universe" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
+</d2l-menu>
+```
+
+**Properties:**
+
+* `text` (required, String): text displayed by the menu item
+* `href` (required, String): the url the menu item link navigates to
+* `disabled` (Boolean): disables the menu item
+* `prevent-default` (Boolean): Disables normal link behavior.  This can help if you want both a JS handler and the browser's 'open in new tab' functionality (e.g. popup window links).
+
+### d2l-menu-item-checkbox
+
+The checkbox menu item, `d2l-menu-item-checkbox`, is used for selection. This can be wired-up to the `d2l-menu-item-change` event. Multiple checkboxes can be selected at once.
 
 ![Checkbox Menu](./screenshots/checkbox-menu.png?raw=true)
 
@@ -81,7 +104,28 @@ The selection menu items act as you would expect a checkbox or radio item to act
   <d2l-menu-item-checkbox text="Option 2" value="2"></d2l-menu-item-checkbox>
   <d2l-menu-item-checkbox text="Option 3" value="3"></d2l-menu-item-checkbox>
 </d2l-menu>
+
+<script>
+  menu.addEventListener('d2l-menu-item-change', (e) => {
+    console.log('item selection changed:', e.target);
+  });
+</script>
 ```
+
+**Properties:**
+
+* `text` (required, String): text displayed by the menu item
+* `value` (required, String)
+* `disabled` (Boolean): disables the menu item
+* `selected` (Boolean): this will set the item to be selected by default.
+
+**Events:**
+
+* `d2l-menu-item-change`: dispatched when the selected menu item changes
+
+### d2l-menu-item-radio
+
+The radio menu item, `d2l-menu-item-radio`, is used for selection. This can be wired-up to the `d2l-menu-item-change` event. Only one radio item in a given `<d2l-menu>` may be selected at once (i.e., selecting one option will deselect the other selected `d2l-menu-item-radio` item).
 
 ![Radio Menu](./screenshots/radio-menu.png?raw=true)
 
@@ -91,11 +135,19 @@ The selection menu items act as you would expect a checkbox or radio item to act
   <d2l-menu-item-radio text="Option 2" value="2"></d2l-menu-item-radio>
   <d2l-menu-item-radio text="Option 3" value="3"></d2l-menu-item-radio>
 </d2l-menu>
+
+<script>
+  menu.addEventListener('d2l-menu-item-change', (e) => {
+    console.log('item selection changed:', e.target);
+  });
+</script>
 ```
 
 **Properties:**
 
-* `value` (required, String):
+* `text` (required, String): text displayed by the menu item
+* `value` (required, String)
+* `disabled` (Boolean): disables the menu item
 * `selected` (Boolean): this will set the item to be selected by default.
 
 **Events:**

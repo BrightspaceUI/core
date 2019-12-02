@@ -28,11 +28,14 @@ export const MenuItemMixin = superclass => class extends superclass {
 
 	firstUpdated() {
 		super.firstUpdated();
+
 		this.addEventListener('click', this.__onClick);
 		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
 		this.addEventListener('dom-change', this.__onDomChange);
 		this.addEventListener('keydown', this.__onKeyDown);
+
 		this.__initializeItem();
+
 		if (this.hidden) {
 			this._onHidden();
 		}

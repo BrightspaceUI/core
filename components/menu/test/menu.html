@@ -115,7 +115,7 @@
 							expect(menu.querySelector('#nestedMenu').isActive()).to.be.true;
 							done();
 						});
-						fireKeyEvent(menu.querySelector('#b1'), 39);
+						dispatchKeyEvent(menu.querySelector('#b1'), 39);
 					});
 
 					it('hides nested menu when left arrow is pressed in nested menu', (done) => {
@@ -124,7 +124,7 @@
 							done();
 						});
 						menu.addEventListener('d2l-hierarchical-view-show-complete', () => {
-							fireKeyEvent(menu.querySelector('#b2'), 37);
+							dispatchKeyEvent(menu.querySelector('#b2'), 37);
 						});
 						menu.querySelector('#b1').click();
 					});
@@ -185,28 +185,28 @@
 					});
 
 					it('down arrow moves focus to next focusable item', () => {
-						fireKeyEvent(menu.querySelector('#c1'), 40);
+						dispatchKeyEvent(menu.querySelector('#c1'), 40);
 						expect(document.activeElement).to.equal(menu.querySelector('#d1'));
 					});
 
 					it('up arrow moves focus to previous focusable item', () => {
-						fireKeyEvent(menu.querySelector('#d1'), 38);
+						dispatchKeyEvent(menu.querySelector('#d1'), 38);
 						expect(document.activeElement).to.equal(menu.querySelector('#c1'));
 					});
 
 					it('down arrow on last focusable item moves focus to first focusable item', () => {
-						fireKeyEvent(menu.querySelector('#d1'), 40);
+						dispatchKeyEvent(menu.querySelector('#d1'), 40);
 						expect(document.activeElement).to.equal(menu.querySelector('#a1'));
 					});
 
 					it('up arrow on first focusable item moves focus to last focusable item', () => {
-						fireKeyEvent(menu.querySelector('#a1'), 38);
+						dispatchKeyEvent(menu.querySelector('#a1'), 38);
 						expect(document.activeElement).to.equal(menu.querySelector('#d1'));
 					});
 
 					// fails in IE11
 					it('sets focus to disabled menu items', () => {
-						fireKeyEvent(menu.querySelector('#a1'), 40);
+						dispatchKeyEvent(menu.querySelector('#a1'), 40);
 						expect(document.activeElement).to.equal(menu.querySelector('#b1'));
 					});
 
@@ -230,7 +230,7 @@
 				});
 			});
 
-			function fireKeyEvent(el, key) {
+			function dispatchKeyEvent(el, key) {
 				const eventObj = document.createEvent('Events');
 				eventObj.initEvent('keydown', true, true);
 				eventObj.keyCode = key;

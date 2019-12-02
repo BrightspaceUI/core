@@ -86,10 +86,10 @@ describe('d2l-menu', function() {
 	});
 
 	const contentResizeReturn = (page) => {
-		return page.evaluate(() => {
+		const selector = '#nestedMenu';
+		return page.$eval(selector, (item) => {
 			return new Promise((resolve) => {
-				const elem = document.querySelector('#nestedMenu');
-				elem.addEventListener('d2l-hierarchical-view-hide-complete', () => {
+				item.addEventListener('d2l-hierarchical-view-hide-complete', () => {
 					resolve();
 				});
 			});
@@ -97,13 +97,12 @@ describe('d2l-menu', function() {
 	};
 
 	const contentResize = (page, selector) => {
-		return page.evaluate((selector) => {
+		return page.$eval(selector, (item) => {
 			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				elem.addEventListener('d2l-hierarchical-view-show-complete', () => {
+				item.addEventListener('d2l-hierarchical-view-show-complete', () => {
 					resolve();
 				});
 			});
-		}, selector);
+		});
 	};
 });

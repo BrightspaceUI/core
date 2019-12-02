@@ -48,21 +48,18 @@ describe('d2l-menu radio', function() {
 	});
 
 	const contentResize = (page, selector) => {
-		return page.evaluate((selector) => {
+		return page.$eval(selector, (item) => {
 			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				elem.addEventListener('d2l-menu-item-select', () => {
+				item.addEventListener('d2l-menu-item-change', () => {
 					resolve();
 				});
 			});
-		}, selector);
+		});
 	};
 
 	const click = async(page, selector) => {
 		const resize = contentResize(page, selector);
-		await page.evaluate((selector) => {
-			document.querySelector(selector).click();
-		}, selector);
+		await page.$eval(selector, (item) => item.click());
 		return resize;
 	};
 

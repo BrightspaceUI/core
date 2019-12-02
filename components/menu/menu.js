@@ -3,13 +3,22 @@ import './menu-item-return.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
 
+const keyCodes = {
+	DOWN: 40,
+	ENTER: 13,
+	ESCAPE: 27,
+	LEFT: 37,
+	SPACE: 32,
+	RIGHT: 39,
+	UP: 38
+};
+
 class Menu extends HierarchicalViewMixin(LitElement) {
 
 	static get properties() {
 		return {
 			active: { type: Boolean, reflect: true },
-			label: { type: String },
-			role: { type: String, reflect: true }
+			label: { type: String }
 		};
 	}
 
@@ -35,17 +44,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	constructor() {
 		super();
 
-		this.role = 'menu';
-
-		this._keyCodes = {
-			DOWN: 40,
-			ENTER: 13,
-			ESCAPE: 27,
-			LEFT: 37,
-			SPACE: 32,
-			RIGHT: 39,
-			UP: 38
-		};
 		this._items = [];
 	}
 
@@ -68,6 +66,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		}
 
 		this._onMenuItemsChanged();
+
+		this.setAttribute('role', 'menu');
 	}
 
 	connectedCallback() {
@@ -76,12 +76,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this.active = this.getActiveView() === this;
 	}
 
-	updated(changedProperties) {
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'label') {
-				this._labelChanged();
-			}
-		});
+	focus() {
+		this._focusFirst();
 	}
 
 	render() {
@@ -92,16 +88,17 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		`;
 	}
 
-	focus() {
-		this._focusFirst();
+	updated(changedProperties) {
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === 'label') this._labelChanged();
+		});
 	}
 
 	_createReturnItem() {
 		const item = document.createElement('d2l-menu-item-return');
-		const self = this;
 		item.addEventListener('d2l-menu-item-select', (e) => {
 			e.stopPropagation();
-			self.hide();
+			this.hide();
 		});
 		item.text = this.label;
 		return item;
@@ -109,16 +106,12 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 	_focusFirst() {
 		const item = this._tryGetNextFocusable();
-		if (item) {
-			item.focus();
-		}
+		if (item) item.focus();
 	}
 
 	_focusLast() {
 		const item = this._tryGetPreviousFocusable();
-		if (item) {
-			item.focus();
-		}
+		if (item) item.focus();
 	}
 
 	_focusNext(item) {
@@ -166,30 +159,26 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	_labelChanged() {
 		this.setAttribute('aria-label', this.label);
 		const returnItem = this._getMenuItemReturn();
-		if (returnItem) {
-			returnItem.setAttribute('text', this.label);
-		}
+		if (returnItem) returnItem.setAttribute('text', this.label);
 	}
 
 	_onKeyDown(e) {
 		const rootTarget = e.composedPath()[0];
-		if (this._items.indexOf(rootTarget) === -1) {
-			return;
-		}
+		if (this._items.indexOf(rootTarget) === -1) return;
 
-		if (e.keyCode === this._keyCodes.DOWN || e.keyCode === this._keyCodes.UP) {
+		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP) {
 			// prevent scrolling when up/down arrows pressed
 			e.preventDefault();
 			e.stopPropagation();
-			if (e.keyCode === this._keyCodes.DOWN) {
+			if (e.keyCode === keyCodes.DOWN) {
 				this._focusNext(rootTarget);
-			} else if (e.keyCode === this._keyCodes.UP) {
+			} else if (e.keyCode === keyCodes.UP) {
 				this._focusPrevious(rootTarget);
 			}
 			return;
 		}
 
-		if (this.childView && e.keyCode === this._keyCodes.LEFT) {
+		if (this.childView && e.keyCode === keyCodes.LEFT) {
 			e.stopPropagation();
 			this.hide();
 			return;
@@ -198,13 +187,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	_onKeyPress(e) {
-		if (this._items.indexOf(e.composedPath()[0]) === -1) {
-			return;
-		}
+		if (this._items.indexOf(e.composedPath()[0]) === -1) return;
 
-		if (e.keyCode === this._keyCodes.DOWN || e.keyCode === this._keyCodes.UP
-			|| e.keyCode === this._keyCodes.SPACE || e.keyCode === this._keyCodes.ENTER
-			|| e.keyCode === this._keyCodes.ESCAPE) {
+		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP
+			|| e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER
+			|| e.keyCode === keyCodes.ESCAPE) {
 			return;
 		}
 
@@ -218,9 +205,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		};
 
 		const focusableItems = this._items.filter(this._isFocusable, this);
-		if (!focusableItems || focusableItems.length === 0) {
-			return;
-		}
+		if (!focusableItems || focusableItems.length === 0) return;
 
 		const targetItemIndex = focusableItems.indexOf(e.composedPath()[0]);
 
@@ -266,9 +251,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 	_onMenuItemsChanged() {
 		this._items = this._getMenuItems();
-		if (!this._items || this._items.length === 0) {
-			return;
-		}
+		if (!this._items || this._items.length === 0) return;
 
 		const visibleItems = [];
 
@@ -294,16 +277,14 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	_onShowComplete() {
-		if (!this.isActive()) {
-			return;
-		}
+		if (!this.isActive()) return;
+
 		this.focus();
 	}
 
 	_onViewResize(e) {
-		if (this.childView) {
-			return;
-		}
+		if (this.childView) return;
+
 		const eventDetails = {
 			bubbles: true,
 			composed: true,

@@ -4,6 +4,7 @@ import { css } from 'lit-element/lit-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 const __nativeFocus = document.createElement('div').focus;
+const escapeKeyCode = 27;
 
 export const HierarchicalViewMixin = superclass => class extends superclass {
 
@@ -366,7 +367,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onKeyUp(e) {
-		const escapeKeyCode = 27;
 		if (this.childView && e.keyCode === escapeKeyCode) {
 			e.stopPropagation();
 			this.hide();

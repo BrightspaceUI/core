@@ -24,15 +24,13 @@
 					<d2l-menu-item-radio text="Radio Option 2" value="2"></d2l-menu-item-radio>
 					<d2l-menu-item-radio text="Radio Option 3" value="3"></d2l-menu-item-radio>
 				</d2l-menu>
+
+				<script>
+					document.body.addEventListener('d2l-menu-item-change', (e) => {
+						console.log('item selection changed:', e.target);
+					});
+				</script>
 			</d2l-demo-snippet>
-
 		</d2l-demo-page>
-
-		<script>
-			document.body.addEventListener('d2l-menu-item-change', (e) => {
-				// eslint-disable-next-line no-console
-				console.log('item selection changed:', e.target);
-			});
-		</script>
 	</body>
 </html>
