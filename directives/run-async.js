@@ -84,7 +84,7 @@ export const runAsync = directive((key, task, templates) => (part) => {
 			part.commit();
 		}, (error) => {
 			const currentRunState = runs.get(part);
-			runState.rejectPending(new Error());
+			runState.rejectPending(error);
 			if (currentRunState !== runState) {
 				return;
 			}
@@ -116,7 +116,7 @@ export const runAsync = directive((key, task, templates) => (part) => {
 		})();
 	}
 	// If the promise has not yet resolved, set/update the defaultContent
-	const latestRunState = currentRunState;
+	const latestRunState = runs.get(part);
 	if ((latestRunState === undefined || latestRunState.state === 'pending') && typeof pending === 'function') {
 		part.setValue(pending());
 	}
