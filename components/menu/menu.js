@@ -89,6 +89,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
+
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'label') this._labelChanged();
 		});
