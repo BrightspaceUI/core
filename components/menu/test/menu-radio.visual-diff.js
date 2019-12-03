@@ -27,24 +27,49 @@ describe('d2l-menu radio', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('selects when clicked', async function() {
-		await click(page, '#a1');
-		const rect = await visualDiff.getRect(page, '#normal');
+	it('disabled', async function() {
+		const rect = await visualDiff.getRect(page, '#disabled');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('changes selection when new selection clicked', async function() {
-		await click(page, '#a2');
-		await click(page, '#b2');
-		const rect = await visualDiff.getRect(page, '#normal-multiple-selected');
+	it('does not select disabled item', async function() {
+		const selector = '#disabled-b';
+		await page.$eval(selector, (item) => {
+			return new Promise((resolve) => {
+				item.addEventListener('click', () => {
+					resolve();
+				});
+				item.click();
+			});
+		});
+		const rect = await visualDiff.getRect(page, '#disabled');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('does not deselect when clicked twice', async function() {
-		await click(page, '#a3');
-		await click(page, '#a3');
-		const rect = await visualDiff.getRect(page, '#normal-multiple-clicks');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	describe('selection behavior', () => {
+		this.afterEach(async() => {
+			await page.reload();
+		});
+
+		it('selects when clicked', async function() {
+			await click(page, '#normal-a');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('changes selection when new selection clicked', async function() {
+			await click(page, '#normal-a');
+			await click(page, '#normal-b');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('does not deselect when clicked twice', async function() {
+			await click(page, '#normal-a');
+			await click(page, '#normal-a');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	const contentResize = (page, selector) => {
