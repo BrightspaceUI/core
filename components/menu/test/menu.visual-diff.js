@@ -17,8 +17,83 @@ describe('d2l-menu', function() {
 
 	after(() => browser.close());
 
-	it('normal', async function() {
-		const rect = await visualDiff.getRect(page, '#normal');
+	describe('normal', () => {
+		afterEach(async() => {
+			await page.reload();
+		});
+
+		it('normal', async function() {
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('normal hover', async function() {
+			await page.hover('#normal-b');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('normal focus', async function() {
+			await page.focus('#normal-b');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('normal first hover', async function() {
+			await page.hover('#normal-first');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('normal first focus', async function() {
+			await page.focus('#normal-first');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('normal last hover', async function() {
+			await page.hover('#normal-last');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('normal last focus', async function() {
+			await page.focus('#normal-last');
+			const rect = await visualDiff.getRect(page, '#normal');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	describe('disabled', () => {
+		afterEach(async() => {
+			await page.reload();
+		});
+
+		it('disabled menu item', async function() {
+			const rect = await visualDiff.getRect(page, '#disabled');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('disabled menu item hover', async function() {
+			await page.hover('#disabled-item');
+			const rect = await visualDiff.getRect(page, '#disabled');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('disabled menu item focus', async function() {
+			await page.focus('#disabled-item');
+			const rect = await visualDiff.getRect(page, '#disabled');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	it('separator', async function() {
+		const rect = await visualDiff.getRect(page, '#separator');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('long menu item', async function() {
+		const rect = await visualDiff.getRect(page, '#long');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
@@ -27,66 +102,84 @@ describe('d2l-menu', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('disabled menu item', async function() {
-		const rect = await visualDiff.getRect(page, '#disabled');
+	it('link menu item', async function() {
+		const rect = await visualDiff.getRect(page, '#link');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('nested menu', async function() {
-		const rect = await visualDiff.getRect(page, '#nested');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('opens nested menu on click', async function() {
-		const selector = '#b1';
-		const resize = contentResize(page, selector);
-		await page.evaluate((selector) => {
-			document.querySelector(selector).click();
-		}, selector);
-		await resize;
-		const rect = await visualDiff.getRect(page, '#nested');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('leaves nested menu when return clicked', async function() {
-		const resize = contentResizeReturn(page);
-		await page.evaluate(() => {
-			document.querySelector('#nestedMenu').shadowRoot.querySelector('d2l-menu-item-return').click();
+	describe('nested menu', () => {
+		it('nested menu', async function() {
+			const rect = await visualDiff.getRect(page, '#nested');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-		await resize;
-		const rect = await visualDiff.getRect(page, '#nested');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
 
-	it('opens nested menu on enter', async function() {
-		const selector = '#b1';
-		const resize = contentResize(page, selector);
-		await page.evaluate((selector) => {
-			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keydown', true, true);
-			eventObj.keyCode = 13;
-			document.querySelector(selector).dispatchEvent(eventObj);
-		}, selector);
-		await resize;
-		const rect = await visualDiff.getRect(page, '#nested');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('leaves nested menu on escape', async function() {
-		const resize = contentResizeReturn(page);
-		await page.evaluate(() => {
-			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keyup', true, true);
-			eventObj.keyCode = 27;
-			document.querySelector('#b2').dispatchEvent(eventObj);
+		it('opens nested menu on click', async function() {
+			const selector = '#nested-item';
+			const resize = contentResize(page, selector);
+			await page.$eval(selector, (item) => item.click());
+			await resize;
+			const rect = await visualDiff.getRect(page, '#nested');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-		await resize;
-		const rect = await visualDiff.getRect(page, '#nested');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+
+		it('leaves nested menu when return clicked', async function() {
+			const selector = '#nested-menu';
+			const resize = contentResizeReturn(page, selector);
+			await page.evaluate(() => {
+				document.querySelector('#nested-menu').shadowRoot.querySelector('d2l-menu-item-return').click();
+			});
+			await resize;
+			const rect = await visualDiff.getRect(page, '#nested');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opens nested menu on enter', async function() {
+			const selector = '#nested-item';
+			const resize = contentResize(page, selector);
+			await page.$eval(selector, (item) => {
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				item.dispatchEvent(eventObj);
+			});
+			await resize;
+			const rect = await visualDiff.getRect(page, '#nested');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('leaves nested menu on escape', async function() {
+			const selector = '#nested-menu';
+			const menuItemSelector = '#b2';
+			const resize = contentResizeReturn(page, selector);
+			await page.$eval(menuItemSelector, (item) => {
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keyup', true, true);
+				eventObj.keyCode = 27;
+				item.dispatchEvent(eventObj);
+			});
+			await resize;
+			const rect = await visualDiff.getRect(page, '#nested');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
-	const contentResizeReturn = (page) => {
-		const selector = '#nestedMenu';
+	describe('nested menu with long text', () => {
+		it('long nested menu', async function() {
+			const rect = await visualDiff.getRect(page, '#nested-long');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opens long nested menu on click', async function() {
+			const selector = '#nested-item-long';
+			const resize = contentResize(page, selector);
+			await page.$eval(selector, (item) => item.click());
+			await resize;
+			const rect = await visualDiff.getRect(page, '#nested-long');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	const contentResizeReturn = (page, selector) => {
 		return page.$eval(selector, (item) => {
 			return new Promise((resolve) => {
 				item.addEventListener('d2l-hierarchical-view-hide-complete', () => {
