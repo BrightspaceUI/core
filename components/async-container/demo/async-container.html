@@ -9,7 +9,7 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../../button/button.js';
-			import '../async-container.js';
+			import './async-container.js';
 			import './async-item.js';
 		</script>
 		<style>
@@ -18,11 +18,11 @@
 				margin-top: 0.6rem;
 				margin-bottom: 0.6rem;
 			}
-			d2l-async-container {
+			d2l-async-demo-container {
 				display: block;
 				margin-top: 0.6rem;
 			}
-			d2l-async-container-demo-item {
+			d2l-async-demo-item {
 				margin-right: 0.6rem;
 			}
 		</style>
@@ -37,14 +37,14 @@
 				<template>
 					<d2l-button>Do Async Tasks</d2l-button>
 					<div>
-						<d2l-async-container-demo-item delay="1000"></d2l-async-container-demo-item>
-						<d2l-async-container-demo-item delay="2000" throw-error></d2l-async-container-demo-item>
-						<d2l-async-container-demo-item delay="6000"></d2l-async-container-demo-item>
-						<d2l-async-container-demo-item delay="2000"></d2l-async-container-demo-item>
+						<d2l-async-demo-item delay="1000"></d2l-async-demo-item>
+						<d2l-async-demo-item delay="2000" throw-error></d2l-async-demo-item>
+						<d2l-async-demo-item delay="6000"></d2l-async-demo-item>
+						<d2l-async-demo-item delay="2000"></d2l-async-demo-item>
 					</div>
 					<script>
 						document.querySelector('#asyncNoContainer d2l-button').addEventListener('click', () => {
-							const items = document.querySelectorAll('#asyncNoContainer d2l-async-container-demo-item');
+							const items = document.querySelectorAll('#asyncNoContainer d2l-async-demo-item');
 							for (let i = 0; i < items.length; i++) {
 								items[i].key = `key-${i}`;
 							}
@@ -58,19 +58,19 @@
 			<d2l-demo-snippet id="asyncContainer">
 				<template>
 					<d2l-button>Do Async Tasks</d2l-button>
-					<d2l-async-container>
+					<d2l-async-demo-container>
 						<div slot="initial">Click above!</div>
 						<div slot="failure">One or more async tasks failed.</div>
 						<div>
-							<d2l-async-container-demo-item delay="1000"></d2l-async-container-demo-item>
-							<d2l-async-container-demo-item delay="2000" throw-error></d2l-async-container-demo-item>
-							<d2l-async-container-demo-item delay="6000"></d2l-async-container-demo-item>
-							<d2l-async-container-demo-item delay="2000"></d2l-async-container-demo-item>
+							<d2l-async-demo-item delay="1000"></d2l-async-demo-item>
+							<d2l-async-demo-item delay="2000" throw-error></d2l-async-demo-item>
+							<d2l-async-demo-item delay="6000"></d2l-async-demo-item>
+							<d2l-async-demo-item delay="2000"></d2l-async-demo-item>
 						</div>
-					</d2l-async-container>
+					</d2l-async-demo-container>
 					<script>
 						document.querySelector('#asyncContainer d2l-button').addEventListener('click', () => {
-							const items = document.querySelectorAll('#asyncContainer d2l-async-container-demo-item');
+							const items = document.querySelectorAll('#asyncContainer d2l-async-demo-item');
 							for (let i = 0; i < items.length; i++) {
 								items[i].key = `key-${i}`;
 							}

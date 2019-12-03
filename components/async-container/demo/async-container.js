@@ -1,5 +1,5 @@
-import '../loading-spinner/loading-spinner.js';
-import { AsyncContainerMixin, asyncStates } from './async-container-mixin.js';
+import '../../loading-spinner/loading-spinner.js';
+import { AsyncContainerMixin, asyncStates } from '../async-container-mixin.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 
 class AsyncContainer extends AsyncContainerMixin(LitElement) {
@@ -38,4 +38,4 @@ class AsyncContainer extends AsyncContainerMixin(LitElement) {
 
 }
 
-customElements.define('d2l-async-container', AsyncContainer);
+customElements.define('d2l-async-demo-container', AsyncContainer);

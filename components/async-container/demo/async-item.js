@@ -63,4 +63,4 @@ class AsyncItem extends LitElement {
 
 }
 
-customElements.define('d2l-async-container-demo-item', AsyncItem);
+customElements.define('d2l-async-demo-item', AsyncItem);
