@@ -9,6 +9,7 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			asyncPendingDelay: { type: Number, attribute: 'async-pending-delay' },
 			asyncState: { type: String }
 		};
 	}
@@ -16,6 +17,7 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._initializeAsyncState();
+		this.asyncPendingDelay = 0;
 		if (!this.asyncContainer) {
 			this.addEventListener('pending-state', this._handleAsyncItemState.bind(this));
 		}
@@ -41,7 +43,23 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 
 		this._asyncPromises.push(promise);
 		this._asyncCounts.pending++;
-		this.asyncState = asyncStates.pending;
+
+		if (this.asyncState === asyncStates.initial) {
+			if (this.asyncPendingDelay > 0) {
+				if (this._asyncTimeoutId === null) {
+
+					this._asyncTimeoutId = setTimeout(() => {
+						this._asyncTimeoutId = null;
+						if (this.asyncState === asyncStates.initial) {
+							this.asyncState = asyncStates.pending;
+						}
+					}, this.asyncPendingDelay);
+
+				}
+			} else {
+				this.asyncState = asyncStates.pending;
+			}
+		}
 
 		try {
 			await promise;
@@ -58,7 +76,9 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 	}
 
 	_initializeAsyncState() {
+		if (this._asyncTimeoutId !== null) clearTimeout(this._asyncTimeoutId);
 		this.asyncState = asyncStates.initial;
+		this._asyncTimeoutId = null;
 		this._asyncPromises = [];
 		this._asyncCounts = {
 			pending: 0,
