@@ -4,10 +4,8 @@ import { css } from 'lit-element/lit-element.js';
 export const inputStyles = css`
 	.d2l-input {
 		background-color: #ffffff;
-		border-color: var(--d2l-color-galena);
 		border-radius: 0.3rem;
 		border-style: solid;
-		border-width: 1px;
 		box-shadow: inset 0 2px 0 0 rgba(181, 189, 194, .2); /* corundum */
 		box-sizing: border-box;
 		color: var(--d2l-color-ferrite);
@@ -21,10 +19,17 @@ export const inputStyles = css`
 		margin: 0;
 		min-height: calc(2rem + 2px);
 		min-width: calc(2rem + 1em);
-		padding: var(--d2l-input-padding, 0.4rem 0.75rem);
 		position: relative;
 		vertical-align: middle;
 		width: 100%;
+	}
+	.d2l-input,
+	.d2l-input:hover:disabled,
+	.d2l-input:focus:disabled,
+	[aria-invalid="true"].d2l-input:disabled {
+		border-color: var(--d2l-color-galena);
+		border-width: 1px;
+		padding: var(--d2l-input-padding, 0.4rem 0.75rem);
 	}
 	.d2l-input::placeholder {
 		color: var(--d2l-color-mica);
@@ -50,12 +55,6 @@ export const inputStyles = css`
 	.d2l-input:invalid {
 		border-color: var(--d2l-color-cinnabar);
 	}
-	.d2l-input:hover:disabled,
-	[aria-invalid="true"].d2l-input:disabled {
-		border-color: var(--d2l-color-galena);
-		border-width: 1px;
-		padding: 0.4rem 0.75rem;
-	}
 	.d2l-input:disabled {
 		opacity: 0.5;
 	}
@@ -67,5 +66,20 @@ export const inputStyles = css`
 		display: none;
 		width: 0;
 		height: 0;
+	}
+	textarea.d2l-input {
+		line-height: normal;
+	}
+	textarea.d2l-input,
+	textarea.d2l-input:hover:disabled,
+	textarea.d2l-input:focus:disabled,
+	textarea[aria-invalid="true"].d2l-input:disabled {
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+	}
+	textarea.d2l-input:hover,
+	textarea.d2l-input:focus {
+		padding-top: calc(0.5rem - 1px);
+		padding-bottom: calc(0.5rem - 1px);
 	}
 `;
