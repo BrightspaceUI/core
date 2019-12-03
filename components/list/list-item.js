@@ -83,13 +83,13 @@ class ListItem extends RtlMixin(LitElement) {
 				padding-right: 0.9rem;
 			}
 
-			input[type="checkbox"] {
+			input[type="checkbox"].d2l-input-checkbox {
 				flex-grow: 0;
 				flex-shrink: 0;
 				margin: 0.6rem 0.9rem 0.6rem 0;
 			}
 
-			:host([dir="rtl"]) input[type="checkbox"] {
+			:host([dir="rtl"]) input[type="checkbox"].d2l-input-checkbox {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
@@ -120,7 +120,7 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-top: 0.7rem;
 			}
 
-			:host([illustration-outside]) input[type="checkbox"] {
+			:host([illustration-outside]) input[type="checkbox"].d2l-input-checkbox {
 				margin-bottom: 1.15rem;
 				margin-top: 1.15rem;
 			}
