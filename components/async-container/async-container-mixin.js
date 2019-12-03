@@ -2,8 +2,7 @@
 export const asyncStates = {
 	initial: 'initial',
 	pending: 'pending',
-	success: 'success',
-	failure: 'failure'
+	complete: 'complete'
 };
 
 export const AsyncContainerMixin = superclass => class extends superclass {
@@ -38,8 +37,7 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 		const promise = e.detail.promise;
 
 		if (!promise) return;
-		if (this.asyncState === asyncStates.success
-			|| this.asyncState === asyncStates.failure) return;
+		if (this.asyncState === asyncStates.complete) return;
 
 		this._asyncPromises.push(promise);
 		this._asyncCounts.pending++;
@@ -53,13 +51,7 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 		} finally {
 			if (this._asyncPromises.indexOf(promise) !== -1) {
 				this._asyncCounts.pending--;
-				if (this._asyncCounts.pending === 0) {
-					if (this._asyncCounts.rejected > 0) {
-						this.asyncState = asyncStates.failure;
-					} else if (this._asyncCounts.pending === 0)  {
-						this.asyncState = asyncStates.success;
-					}
-				}
+				if (this._asyncCounts.pending === 0) this.asyncState = asyncStates.complete;
 			}
 		}
 

@@ -16,10 +16,8 @@ class AsyncContainer extends AsyncContainerMixin(LitElement) {
 	}
 
 	render() {
-		if (this.asyncState === asyncStates.success) {
+		if (this.asyncState === asyncStates.complete) {
 			return html`<slot></slot>`;
-		} else if (this.asyncState === asyncStates.failure) {
-			return html`<slot name="failure"></slot><slot></slot>`;
 		} else if (this.asyncState === asyncStates.pending && this._showPending) {
 			return html`<d2l-loading-spinner></d2l-loading-spinner>`;
 		} else {
