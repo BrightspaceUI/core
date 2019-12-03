@@ -44,21 +44,13 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 		this._asyncPromises.push(promise);
 		this._asyncCounts.pending++;
 
-		if (this.asyncState === asyncStates.initial) {
-			if (this.asyncPendingDelay > 0) {
-				if (this._asyncTimeoutId === null) {
-
-					this._asyncTimeoutId = setTimeout(() => {
-						this._asyncTimeoutId = null;
-						if (this.asyncState === asyncStates.initial) {
-							this.asyncState = asyncStates.pending;
-						}
-					}, this.asyncPendingDelay);
-
+		if (this.asyncState === asyncStates.initial && this._asyncTimeoutId === null) {
+			this._asyncTimeoutId = setTimeout(() => {
+				this._asyncTimeoutId = null;
+				if (this.asyncState === asyncStates.initial) {
+					this.asyncState = asyncStates.pending;
 				}
-			} else {
-				this.asyncState = asyncStates.pending;
-			}
+			}, this.asyncPendingDelay);
 		}
 
 		try {
