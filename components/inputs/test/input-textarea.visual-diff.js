@@ -17,7 +17,7 @@ describe('d2l-input-textarea', () => {
 
 	after(() => browser.close());
 
-	['sass'].forEach((type) => {
+	['wc', 'sass'].forEach((type) => {
 		[
 			'basic',
 			'disabled',
