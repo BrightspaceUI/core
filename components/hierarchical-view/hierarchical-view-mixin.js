@@ -73,18 +73,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__resizeObserver = null;
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
-
-		this.addEventListener('keyup', this.__onKeyUp);
-		this.addEventListener('d2l-hierarchical-view-hide-start', this.__onHideStart);
-		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
-		this.addEventListener('d2l-hierarchical-view-resize', this.__onViewResize);
-		this.__onWindowResize = this.__onWindowResize.bind(this);
-
-		this._isChildView();
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
 
@@ -111,6 +99,18 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.removeEventListener('focus', this.__focusCapture);
 		this.removeEventListener('focusout', this.__focusOutCapture);
 		window.removeEventListener('resize', this.__onWindowResize);
+	}
+
+	firstUpdated() {
+		super.firstUpdated();
+
+		this.addEventListener('keyup', this.__onKeyUp);
+		this.addEventListener('d2l-hierarchical-view-hide-start', this.__onHideStart);
+		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
+		this.addEventListener('d2l-hierarchical-view-resize', this.__onViewResize);
+		this.__onWindowResize = this.__onWindowResize.bind(this);
+
+		this._isChildView();
 	}
 
 	getActiveView() {
@@ -229,15 +229,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	}
 
-	__dispatchShowComplete(data) {
-		const eventDetails = {
-			bubbles: true,
-			composed: true,
-			detail: { activeView: this.getActiveView(), data: data }
-		};
-		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-show-complete', eventDetails));
-	}
-
 	__dispatchHideComplete(data) {
 		const eventDetails = {
 			bubbles: true,
@@ -245,6 +236,15 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			detail: { activeView: this.getActiveView(), data: data }
 		};
 		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-hide-complete', eventDetails));
+	}
+
+	__dispatchShowComplete(data) {
+		const eventDetails = {
+			bubbles: true,
+			composed: true,
+			detail: { activeView: this.getActiveView(), data: data }
+		};
+		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-show-complete', eventDetails));
 	}
 
 	__dispatchViewResize() {
@@ -269,17 +269,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		if (parentView) {
 			this.childView = true;
 		}
-	}
-
-	__reactToChanges() {
-		const contentRect = this.__content.getBoundingClientRect();
-		if (contentRect.height < 1) return;
-		const eventDetails = {
-			bubbles: true,
-			composed: true,
-			detail: contentRect
-		};
-		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
 	}
 
 	__focusCapture(e) {
@@ -418,5 +407,16 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		if (view) {
 			view.__dispatchViewResize();
 		}
+	}
+
+	__reactToChanges() {
+		const contentRect = this.__content.getBoundingClientRect();
+		if (contentRect.height < 1) return;
+		const eventDetails = {
+			bubbles: true,
+			composed: true,
+			detail: contentRect
+		};
+		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
 	}
 };

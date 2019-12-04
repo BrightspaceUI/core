@@ -47,6 +47,12 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this._items = [];
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+
+		this.active = this.getActiveView() === this;
+	}
+
 	firstUpdated() {
 		super.firstUpdated();
 
@@ -68,12 +74,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this._onMenuItemsChanged();
 
 		this.setAttribute('role', 'menu');
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		this.active = this.getActiveView() === this;
 	}
 
 	focus() {
@@ -124,6 +124,24 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	_focusPrevious(item) {
 		item = this._tryGetPreviousFocusable(item);
 		item ? item.focus() : this._focusLast();
+	}
+
+	_getFirstVisibleItem() {
+		for (let x = 0; x < this._items.length; x++) {
+			if (!this._items[x].hidden) {
+				return this._items[x];
+			}
+		}
+		return null;
+	}
+
+	_getLastVisibleItem() {
+		for (let x = this._items.length - 1; x >= 0; x--) {
+			if (!this._items[x].hidden) {
+				return this._items[x];
+			}
+		}
+		return null;
 	}
 
 	_getMenuItems() {
@@ -233,24 +251,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 	}
 
-	_getFirstVisibleItem() {
-		for (let x = 0; x < this._items.length; x++) {
-			if (!this._items[x].hidden) {
-				return this._items[x];
-			}
-		}
-		return null;
-	}
-
-	_getLastVisibleItem() {
-		for (let x = this._items.length - 1; x >= 0; x--) {
-			if (!this._items[x].hidden) {
-				return this._items[x];
-			}
-		}
-		return null;
-	}
-
 	_onMenuItemsChanged() {
 		this._items = this._getMenuItems();
 		if (!this._items || this._items.length === 0) return;
@@ -274,10 +274,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 	}
 
-	_onVisibilityChange() {
-		this.active = this.isActive();
-	}
-
 	_onShowComplete() {
 		if (!this.isActive()) return;
 
@@ -293,6 +289,10 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			detail: e.detail
 		};
 		this.dispatchEvent(new CustomEvent('d2l-menu-resize', eventDetails));
+	}
+
+	_onVisibilityChange() {
+		this.active = this.isActive();
 	}
 
 	_tryGetPreviousFocusable(item) {
