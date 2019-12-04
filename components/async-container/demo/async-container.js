@@ -13,6 +13,15 @@ class AsyncContainer extends AsyncContainerMixin(LitElement) {
 		}
 	}
 
+	updated(changedProperties) {
+		if (!changedProperties.has('asyncState')) return;
+		this.dispatchEvent(new CustomEvent('d2l-async-demo-container-changed', {
+			composed: true,
+			bubbles: true,
+			detail: { state: this.asyncState }
+		}));
+	}
+
 }
 
 customElements.define('d2l-async-demo-container', AsyncContainer);
