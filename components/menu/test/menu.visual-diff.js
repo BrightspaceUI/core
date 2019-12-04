@@ -178,21 +178,6 @@ describe('d2l-menu', function() {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('long rtl menu item', async function() {
-			const rect = await visualDiff.getRect(page, '#nested-long-rtl');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('opens long rtl menu item submenu on click', async function() {
-			// this scenario also tests height change going from 3 menu items to 2 within nested menu
-			const selector = '#nested-rtl-item-long';
-			const resize = contentResize(page, selector);
-			await page.$eval(selector, (item) => item.click());
-			await resize;
-			const rect = await visualDiff.getRect(page, '#nested-long-rtl');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
 		it('custom submenu', async function() {
 			const rect = await visualDiff.getRect(page, '#custom-view');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
