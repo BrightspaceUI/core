@@ -30,8 +30,10 @@ const runs = new WeakMap();
  *     called when they key changes.
  * @param task An async function to run when the key changes
  * @param templates The templates to render for each state of the task
+ * @param options The directive options, for example whether to dispatch pending-state
  */
-export const runAsync = directive((key, task, templates) => (part) => {
+export const runAsync = directive((key, task, templates, options) => (part) => {
+	const directiveOptions = Object.assign({ pendingState: true }, options);
 	const { success, pending, initial, failure } = templates;
 	const currentRunState = runs.get(part);
 	// The first time we see a value we save and await the work function.
@@ -107,11 +109,13 @@ export const runAsync = directive((key, task, templates) => (part) => {
 			const currentRunState = runs.get(part);
 			if (currentRunState === runState && currentRunState.state === 'pending') {
 				const element = part.startNode.parentNode.nodeType === Node.ELEMENT_NODE ? part.startNode.parentNode : part.startNode.parentNode.host;
-				element.dispatchEvent(new CustomEvent('pending-state', {
-					composed: true,
-					bubbles: true,
-					detail: { promise: pendingPromise }
-				}));
+				if (directiveOptions.pendingState) {
+					element.dispatchEvent(new CustomEvent('pending-state', {
+						composed: true,
+						bubbles: true,
+						detail: { promise: pendingPromise }
+					}));
+				}
 			}
 		})();
 	}
