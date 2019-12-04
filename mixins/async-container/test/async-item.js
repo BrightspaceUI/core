@@ -1,15 +1,11 @@
-import '../../colors/colors.js';
+import '../../../components/colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { InitialStateError, runAsync } from '../../../directives/run-async.js';
 
 class AsyncItem extends LitElement {
 
 	static get properties() {
-		return {
-			delay: { type: Number },
-			key: { type: String },
-			throwError: { type: Boolean, attribute: 'throw-error' }
-		};
+		return { key: { type: String } };
 	}
 
 	static get styles() {
@@ -23,8 +19,8 @@ class AsyncItem extends LitElement {
 				border-radius: 0.4rem;
 				color: white;
 				padding: 0.3rem;
-				width: 100px;
-				height: 100px;
+				width: 50px;
+				height: 50px;
 				text-align: center;
 			}
 		`;
@@ -32,8 +28,11 @@ class AsyncItem extends LitElement {
 
 	constructor() {
 		super();
-		this.delay = 4000;
 		this.key = null;
+	}
+
+	reject() {
+		setTimeout(() => this._reject('error'), 0);
 	}
 
 	render() {
@@ -41,26 +40,22 @@ class AsyncItem extends LitElement {
 			initial: () => html`<div>init</div>`,
 			pending: () => html`<div>pending</div>`,
 			success: (content) => content,
-			failure: (message) => html`<div title="${message}">failure</div>`
+			failure: () => html`<div>failure</div>`
 		})}`;
+	}
+
+	resolve() {
+		setTimeout(() => this._resolve(html`<div>${this.key}</div>`), 0);
 	}
 
 	_getContent(key) {
 		return new Promise((resolve, reject) => {
-			if (!key) {
-				throw new InitialStateError();
-			} else {
-				setTimeout(() => {
-					if (this.throwError) {
-						reject('an error occurred');
-					} else {
-						resolve(html`<div>${this.key}</div>`);
-					}
-				}, this.delay);
-			}
+			if (!key) throw new InitialStateError();
+			this._resolve = resolve;
+			this._reject = reject;
 		});
 	}
 
 }
 
-customElements.define('d2l-async-demo-item', AsyncItem);
+customElements.define('d2l-async-test-item', AsyncItem);
