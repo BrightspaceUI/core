@@ -20,6 +20,7 @@
 		</test-fixture>
 
 		<script type="module">
+			import { getComposedActiveElement } from '../../../helpers/focus.js';
 			import { runAxe } from '../../../tools/a11y-test-helper.js';
 
 			describe('d2l-input-text', () => {
@@ -62,8 +63,10 @@
 
 				describe('default property values', () => {
 
-					it('should default "preventSubmit" property to "false" when unset', () => {
-						expect(elem.preventSubmit).to.be.false;
+					['autofocus', 'disabled', 'preventSubmit', 'readonly', 'required'].forEach((name) => {
+						it(`should default "${name}" property to "false" when unset`, () => {
+							expect(elem[name]).to.be.false;
+						});
 					});
 
 					it('should default "type" property to "text" when unset', () => {
@@ -79,6 +82,14 @@
 						expect(input.type).to.equal('text');
 					});
 
+				});
+
+				describe('attribute reflection', () => {
+					it('should reflect "disabled" property to attribute', async() => {
+						elem.disabled = true;
+						await elem.updateComplete;
+						expect(elem.hasAttribute('disabled')).to.be.true;
+					});
 				});
 
 				describe('property binding', () => {
@@ -192,6 +203,14 @@
 						pressEnter();
 					});
 
+				});
+
+				describe('focus delegation', () => {
+					it('should delegate focus to underlying input', () => {
+						elem.focus();
+						const activeElement = getComposedActiveElement();
+						expect(activeElement).to.equal(input);
+					});
 				});
 
 			});
