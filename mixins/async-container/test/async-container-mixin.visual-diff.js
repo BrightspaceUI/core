@@ -37,15 +37,20 @@ describe('d2l-async-container-mixin', function() {
 	});
 
 	it('mixed', async function() {
-		const pendingState = getAsyncStateEvent(page, '#mixed', 'pending');
-		await page.evaluate(() => {
-			const items = document.querySelectorAll('#mixed d2l-async-test-item');
-			for (let i = 0; i < items.length; i++) {
-				items[i].key = `key ${i}`;
-			}
+		await page.$eval('#mixed', (container) => {
+			return new Promise((resolve) => {
+				const items = container.querySelectorAll('d2l-async-test-item');
+				container.addEventListener('d2l-async-demo-container-changed', (e) => {
+					if (e.detail.state === 'pending') {
+						items[0].resolve();
+						resolve();
+					}
+				});
+				for (let i = 0; i < items.length; i++) {
+					items[i].key = `key ${i}`;
+				}
+			});
 		});
-		await pendingState;
-		await page.$eval('#mixed d2l-async-test-item', item => item.resolve());
 		const rect = await visualDiff.getRect(page, '#mixed');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
