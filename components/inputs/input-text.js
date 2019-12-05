@@ -2,17 +2,26 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
-import { InputTextMixin } from './input-text-mixin.js';
 
-class InputText extends InputTextMixin(LitElement) {
+class InputText extends LitElement {
 
 	static get properties() {
 		return {
+			ariaInvalid: { type: String, attribute: 'aria-invalid' },
+			ariaLabel: { type: String, attribute: 'aria-label' },
 			autocomplete: { type: String },
+			autofocus: { type: Boolean },
+			disabled: { type: Boolean, reflect: true },
 			max: { type: String },
+			maxlength: { type: Number },
 			min: { type: String },
+			minlength: { type: Number },
+			name: { type: String },
 			pattern: { type: String },
+			placeholder: { type: String },
 			preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
+			readonly: { type: Boolean },
+			required: { type: Boolean },
 			size: { type: Number },
 			step: { type: String },
 			type: { type: String },
@@ -36,15 +45,21 @@ class InputText extends InputTextMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.autofocus = false;
+		this.disabled = false;
 		this.preventSubmit = false;
+		this.readonly = false;
+		this.required = false;
 		this.type = 'text';
 		this.value = '';
 	}
 
 	render() {
+		const ariaRequired = this.required ? 'true' : undefined;
 		return html`
 			<input aria-invalid="${ifDefined(this.ariaInvalid)}"
 			 	aria-label="${ifDefined(this.ariaLabel)}"
+				aria-required="${ifDefined(ariaRequired)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
@@ -61,13 +76,17 @@ class InputText extends InputTextMixin(LitElement) {
 				pattern="${ifDefined(this.pattern)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				?readonly="${this.readonly}"
-				?required="${this.required}"
 				size="${ifDefined(this.size)}"
 				step="${ifDefined(this.step)}"
 				tabindex="${ifDefined(this.tabindex)}"
 				type="${this._getType()}"
 				.value="${this.value}">
 		`;
+	}
+
+	focus() {
+		const elem = this.shadowRoot.querySelector('.d2l-input');
+		if (elem) elem.focus();
 	}
 
 	_getType() {
