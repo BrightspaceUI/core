@@ -38,7 +38,7 @@ class Icon extends RtlMixin(LitElement) {
 	render() {
 		return html`${runAsync(this.icon, () => this._getIcon(), {
 			success: (icon) => icon
-		})}`;
+		}, { pendingState: false })}`;
 	}
 
 	_fixSvg(svgStr) {
