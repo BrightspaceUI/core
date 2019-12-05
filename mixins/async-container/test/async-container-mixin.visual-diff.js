@@ -43,9 +43,9 @@ describe('d2l-async-container-mixin', function() {
 			for (let i = 0; i < items.length; i++) {
 				items[i].key = `key ${i}`;
 			}
-			items[0].resolve();
 		});
 		await pendingState;
+		await page.$eval('#mixed d2l-async-test-item', item => item.resolve());
 		const rect = await visualDiff.getRect(page, '#mixed');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
