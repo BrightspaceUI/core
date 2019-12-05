@@ -55,9 +55,11 @@ class InputText extends LitElement {
 	}
 
 	render() {
+		const ariaRequired = this.required ? 'true' : undefined;
 		return html`
 			<input aria-invalid="${ifDefined(this.ariaInvalid)}"
 			 	aria-label="${ifDefined(this.ariaLabel)}"
+				aria-required="${ifDefined(ariaRequired)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
@@ -74,7 +76,6 @@ class InputText extends LitElement {
 				pattern="${ifDefined(this.pattern)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				?readonly="${this.readonly}"
-				?required="${this.required}"
 				size="${ifDefined(this.size)}"
 				step="${ifDefined(this.step)}"
 				tabindex="${ifDefined(this.tabindex)}"
