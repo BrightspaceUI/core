@@ -1,4 +1,5 @@
 import '@webcomponents/shadycss/entrypoints/custom-style-interface.js';
+import '../colors/colors.js';
 
 const importUrl = 'https://s.brightspace.com/lib/fonts/0.5.0/assets/';
 
