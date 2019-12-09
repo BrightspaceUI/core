@@ -1,31 +1,23 @@
 export const ProviderMixin = superclass => class extends superclass {
-
 	constructor() {
 		super();
-		this._providers = new Map();
-		this.addEventListener('d2l-request-provider', this._handleRequest);
+		this._instances = new Map();
+		this.addEventListener('d2l-request-instance', e => {
+			if (this._instances.has(e.detail.key)) {
+				e.detail.instance = this._instances.get(e.detail.key);
+				e.stopPropagation();
+			}
+		});
 	}
 
-	_handleRequest(e) {
-		if (this._providers.has(e.detail.key)) {
-			e.detail.provider = this._providers.get(e.detail.key);
-			e.stopPropagation();
-		}
-	}
-
-	provide(key, factory) {
-		this._providers.set(key, factory);
-	}
-
-	delete(key) {
-		this._providers.delete(key);
+	provideInstance(key, obj) {
+		this._instances.set(key, obj);
 	}
 };
 
-export const RequestProviderMixin = superclass => class extends superclass {
-
-	requestProvider(key) {
-		const event = new CustomEvent('d2l-request-provider', {
+export const RequesterMixin = superclass => class extends superclass {
+	requestInstance(key) {
+		const event = new CustomEvent('d2l-request-instance', {
 			detail: { key },
 			bubbles: true,
 			composed: true,
@@ -33,6 +25,6 @@ export const RequestProviderMixin = superclass => class extends superclass {
 		});
 
 		this.dispatchEvent(event);
-		return event.detail.provider;
+		return event.detail.instance;
 	}
 };
