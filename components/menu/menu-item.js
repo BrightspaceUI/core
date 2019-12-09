@@ -9,7 +9,6 @@ class MenuItem extends MenuItemMixin(LitElement) {
 		return [ menuItemStyles,
 			css`
 				:host {
-					display: flex;
 					padding: 0.75rem 1rem;
 				}
 

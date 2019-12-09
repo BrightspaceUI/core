@@ -9,7 +9,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 			last: { type: String, reflect: true }, // set by d2l-menu
 			role: { type: String, reflect: true },
 			tabindex: { type: String, reflect: true },
-			text: String
+			text: String,
+			visible: Boolean
 		};
 	}
 
@@ -26,8 +27,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.tabindex = -1;
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
 
 		this.addEventListener('click', this.__onClick);
 		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);

@@ -14,7 +14,6 @@ class CustomMenuItem extends MenuItemMixin(LitElement) {
 		return [ menuItemStyles,
 			css`
 				:host {
-					display: block;
 					padding: 0.75rem 1.5rem;
 				}
 				:host span {

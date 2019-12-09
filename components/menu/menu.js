@@ -53,8 +53,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this.active = this.getActiveView() === this;
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
 
 		this.addEventListener('d2l-hierarchical-view-show-start', this._onVisibilityChange);
 		this.addEventListener('d2l-hierarchical-view-hide-complete', this._onVisibilityChange);
@@ -65,11 +65,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this.addEventListener('keypress', this._onKeyPress);
 
 		this._labelChanged();
-
-		if (this.childView) {
-			const items = this.shadowRoot.querySelector('.d2l-menu-items');
-			items.insertBefore(this._createReturnItem(), items.childNodes[0]);
-		}
 
 		this._onMenuItemsChanged();
 
@@ -93,6 +88,13 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'label') this._labelChanged();
+
+			if (propName === 'childView' && this.childView) {
+				const items = this.shadowRoot.querySelector('.d2l-menu-items');
+				items.insertBefore(this._createReturnItem(), items.childNodes[0]);
+
+				this._onMenuItemsChanged();
+			}
 		});
 	}
 
@@ -261,6 +263,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			const item = this._items[i];
 			item.removeAttribute('first');
 			item.removeAttribute('last');
+			item.setAttribute('visible', true);
 			if (!item.hidden) {
 				item.setAttribute('tabindex', visibleItems.length === 0 ? 0 : -1);
 				visibleItems.push(item);

@@ -9,11 +9,15 @@ export const menuItemStyles = css`
 		box-sizing: border-box;
 		color: var(--d2l-color-ferrite);
 		cursor: pointer;
-		display: block;
+		display: none;
 		font-size: 0.8rem;
 		margin-top: -1px;
 		outline: none;
 		width: 100%;
+	}
+
+	:host([visible]) {
+		display: flex;
 	}
 
 	:host(:focus),
