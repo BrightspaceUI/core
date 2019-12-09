@@ -50,6 +50,9 @@ describe('d2l-input-text', () => {
 	});
 
 	[
+		'wc-labelled',
+		'wc-required',
+		'wc-label-hidden',
 		'wc-override-height',
 		'wc-override-padding'
 	].forEach((name) => {

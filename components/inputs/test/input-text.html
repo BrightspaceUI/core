@@ -15,7 +15,7 @@
 
 		<test-fixture id="basic">
 			<template>
-				<d2l-input-text aria-label="label"></d2l-input-text>
+				<d2l-input-text label="label"></d2l-input-text>
 			</template>
 		</test-fixture>
 
@@ -25,13 +25,16 @@
 
 			describe('d2l-input-text', () => {
 
-				let elem, input;
+				let elem;
 
 				beforeEach(async() => {
 					elem = fixture('basic');
 					await elem.updateComplete;
-					input = elem.shadowRoot.querySelector('.d2l-input');
 				});
+
+				function getInput() {
+					return elem.shadowRoot.querySelector('.d2l-input');
+				}
 
 				describe('accessibility', () => {
 
@@ -59,11 +62,17 @@
 						await runAxe(elem);
 					});
 
+					it('should pass all aXe tests with hidden label', async() => {
+						elem.setAttribute('label-hidden', 'label-hidden');
+						await elem.updateComplete;
+						await runAxe(elem);
+					});
+
 				});
 
 				describe('default property values', () => {
 
-					['autofocus', 'disabled', 'preventSubmit', 'readonly', 'required'].forEach((name) => {
+					['autofocus', 'disabled', 'labelHidden', 'preventSubmit', 'readonly', 'required'].forEach((name) => {
 						it(`should default "${name}" property to "false" when unset`, () => {
 							expect(elem[name]).to.be.false;
 						});
@@ -79,16 +88,18 @@
 
 					it('should default unrecognized "type" to "text"', () => {
 						elem.setAttribute('type', 'silly');
-						expect(input.type).to.equal('text');
+						expect(getInput().type).to.equal('text');
 					});
 
 				});
 
 				describe('attribute reflection', () => {
-					it('should reflect "disabled" property to attribute', async() => {
-						elem.disabled = true;
-						await elem.updateComplete;
-						expect(elem.hasAttribute('disabled')).to.be.true;
+					['disabled', 'required'].forEach((name) => {
+						it(`should reflect "${name}" property to attribute`, async() => {
+							elem[name] = true;
+							await elem.updateComplete;
+							expect(elem.hasAttribute(name)).to.be.true;
+						});
 					});
 				});
 
@@ -97,19 +108,19 @@
 					it('should bind "value" attribute to input property', async() => {
 						elem.setAttribute('value', 'hello');
 						await elem.updateComplete;
-						expect(input.value).to.equal('hello');
+						expect(getInput().value).to.equal('hello');
 					});
 
 					it('should bind "required" attribute to input "aria-required"', async() => {
 						elem.setAttribute('required', 'required');
 						await elem.updateComplete;
+						const input = getInput();
 						expect(input.required).to.be.false;
 						expect(input.getAttribute('aria-required')).to.equal('true');
 					});
 
 					[
 						{name: 'aria-invalid', propName: 'ariaInvalid', value: 'true'},
-						{name: 'aria-label', propName: 'ariaLabel', value: 'hello'},
 						/*{name: 'autocomplete', value: 'email'}, bug in Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=1583957 */
 						{name: 'autofocus', value: true},
 						{name: 'disabled', value: true},
@@ -133,6 +144,7 @@
 								elem.setAttribute(attr.name, attr.value.toString());
 							}
 							await elem.updateComplete;
+							const input = getInput();
 							if (typeof attr.value === 'boolean') {
 								expect(input.hasAttribute(attr.name)).to.be.true;
 								expect(input[attr.propName]).to.equal(attr.value);
@@ -147,6 +159,30 @@
 
 				});
 
+				describe('labelling', () => {
+
+					it('should display visible label', async() => {
+						const label = elem.shadowRoot.querySelector('.d2l-input-label');
+						expect(label.innerText).to.equal('label');
+					});
+
+					it('should put hidden label on "aria-label"', async() => {
+						elem.setAttribute('label-hidden', 'label-hidden');
+						await elem.updateComplete;
+						expect(elem.shadowRoot.querySelector('.d2l-input-label')).to.be.null;
+						expect(getInput().getAttribute('aria-label')).to.equal('label');
+					});
+
+					it('should fall back to using "aria-label" for backwards compatibility', async() => {
+						elem.removeAttribute('label');
+						elem.setAttribute('aria-label', 'new label');
+						await elem.updateComplete;
+						expect(elem.shadowRoot.querySelector('.d2l-input-label')).to.be.null;
+						expect(getInput().getAttribute('aria-label')).to.equal('new label');
+					});
+
+				});
+
 				describe('value', () => {
 
 					function dispatchEvent(eventType, composed) {
@@ -154,7 +190,7 @@
 							eventType,
 							{ bubbles: true, cancelable: false, composed: composed }
 						);
-						input.dispatchEvent(e);
+						getInput().dispatchEvent(e);
 					}
 
 					it('should fire uncomposed "change" event when input value changes', (done) => {
@@ -171,7 +207,7 @@
 					});
 
 					it('should change "value" property when input value changes', () => {
-						input.value = 'hello';
+						getInput().value = 'hello';
 						dispatchEvent('input', true);
 						expect(elem.value).to.equal('hello');
 					});
@@ -189,7 +225,7 @@
 						});
 						event.keyCode = 13;
 						event.code = 13;
-						input.dispatchEvent(event);
+						getInput().dispatchEvent(event);
 					}
 
 					it('should allow ENTER keypress event by default', (done) => {
@@ -215,7 +251,7 @@
 					it('should delegate focus to underlying input', () => {
 						elem.focus();
 						const activeElement = getComposedActiveElement();
-						expect(activeElement).to.equal(input);
+						expect(activeElement).to.equal(getInput());
 					});
 				});
 
