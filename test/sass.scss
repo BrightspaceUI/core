@@ -1,9 +1,10 @@
 @import '../components/colors/colors.scss';
-@import '../components/inputs/input-checkbox.scss';
-@import '../components/inputs/input-radio.scss';
-@import '../components/inputs/input-select.scss';
-@import '../components/inputs/input-text.scss';
-@import '../components/inputs/input-textarea.scss';
+@import '../components/inputs/sass/checkbox.scss';
+@import '../components/inputs/sass/label.scss';
+@import '../components/inputs/sass/radio.scss';
+@import '../components/inputs/sass/select.scss';
+@import '../components/inputs/sass/text.scss';
+@import '../components/inputs/sass/textarea.scss';
 @import '../components/link/link.scss';
 @import '../components/offscreen/offscreen.scss';
 @import '../components/typography/typography.scss';
@@ -39,6 +40,12 @@
 }
 .d2l-test-input-checkbox {
 	@include d2l-input-checkbox();
+}
+.d2l-test-input-label {
+	@include d2l-input-label();
+}
+.d2l-test-input-label-required {
+	@include d2l-input-label-required();
 }
 .d2l-test-input-radio {
 	@include d2l-input-radio();
