@@ -4,7 +4,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 		return {
 			disabled: { type: Boolean, reflect: true },
 			first: { type: Boolean, reflect: true }, // set by d2l-menu
-			hasChildView: { type: Boolean, attribute: 'has-child-view' },
+			hasChildView: { type: Boolean },
 			hidden: { type: Boolean, reflect: true },
 			last: { type: String, reflect: true }, // set by d2l-menu
 			role: { type: String, reflect: true },

@@ -78,6 +78,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		this.__isChildView();
 
+		/* If this node is not yet known to be a childView (e.g., if there is a timing issue and the
+			parent does not yet exist, as in Firefox) run the mutation observer so that if/when
+			the parentNode exists it will be detected that this is a childView if applicable */
 		if (!this.childView) {
 			this.__startMutationObserver();
 		}
@@ -431,6 +434,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__mutationObserver = this.__mutationObserver || new MutationObserver(this.__bound_reactToMutationChanges);
 		this.__mutationObserver.disconnect();
 
+		// mutation is triggered when parent (e.g., d2l-menu-item) sets an attribute (e.g., aria-haspopup)
 		this.__mutationObserver.observe(this.parentNode, {
 			attributes: true
 		});
