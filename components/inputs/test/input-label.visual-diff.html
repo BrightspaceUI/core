@@ -41,7 +41,7 @@
 		<script type="module">
 			import '../input-checkbox.js';
 			import '../input-fieldset.js';
-			import { html, LitElement } from 'lit-element/lit-element.js';
+			import { css, html, LitElement } from 'lit-element/lit-element.js';
 			import { classMap} from 'lit-html/directives/class-map.js';
 			import { ifDefined } from 'lit-html/directives/if-defined.js';
 			import { inputStyles } from '../input-styles.js';
@@ -58,7 +58,7 @@
 				}
 
 				static get styles() {
-					return [inputStyles, labelStyles];
+					return [inputStyles, labelStyles, css`:host { display: block; }`];
 				}
 
 				render() {
@@ -87,7 +87,7 @@
 				}
 
 				static get styles() {
-					return [inputStyles, labelStyles];
+					return [inputStyles, labelStyles, css`:host { display: block; }`];
 				}
 
 				render() {

@@ -2,12 +2,15 @@ import { css } from 'lit-element/lit-element.js';
 
 export const labelStyles = css`
 	.d2l-input-label {
+		cursor: default;
 		display: block;
 		font-size: 0.7rem;
 		line-height: 1rem;
 		font-weight: 700;
 		letter-spacing: 0.2px;
+		margin: 0;
 		padding: 0 0 7px 0;
+		width: 100%;
 	}
 	:host([required]) .d2l-input-label:after,
 	.d2l-input-label-required:after {
@@ -29,10 +32,5 @@ export const labelStyles = css`
 		display: block;
 		margin: 0;
 		padding: 0;
-	}
-	legend.d2l-input-label {
-		cursor: default;
-		margin: 0;
-		width: 100%;
 	}
 `;
