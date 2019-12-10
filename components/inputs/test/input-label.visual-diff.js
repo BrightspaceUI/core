@@ -18,14 +18,14 @@ describe('d2l-input-label', () => {
 	after(() => browser.close());
 
 	[
-		'wrap',
-		'wrap-required',
-		'ref',
-		'ref-required',
-		'fieldset',
-		'fieldset-required',
-		'fieldset-manual',
-		'fieldset-manual-required'
+		'wc-wrap',
+		'wc-wrap-required',
+		'wc-ref',
+		'wc-ref-required',
+		'wc-fieldset',
+		'wc-fieldset-required',
+		'wc-fieldset-manual',
+		'wc-fieldset-manual-required'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
