@@ -39,6 +39,7 @@ npm install @brightspace-ui/core
 * [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
 * [AsyncContainerMixin](mixins/async-container/): manage collective async state
 * [LocalizeMixin](mixins/localize-mixin.md): localize text and format & parse numbers, dates, etc.
+* [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion
 * [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
 * [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
 
