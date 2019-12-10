@@ -67,6 +67,10 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					left: 0.3rem;
 					right: auto;
 				}
+
+				.d2l-input-search-container {
+					position: relative;
+				}
 			`
 		];
 	}
