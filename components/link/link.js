@@ -41,15 +41,13 @@ class Link extends LitElement {
 	}
 
 	render() {
-		return html`
-			<a class="d2l-link"
+		return html`<a class="d2l-link"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				?main="${this.main}"
 				?small="${this.small}"
-				target="${ifDefined(this.target)}"><slot></slot></a>
-		`;
+				target="${ifDefined(this.target)}"><slot></slot></a>`;
 	}
 
 	focus() {

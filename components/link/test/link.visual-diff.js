@@ -21,6 +21,7 @@ describe('d2l-link', function() {
 		'wc-standard',
 		'wc-main',
 		'wc-small',
+		'wc-inline',
 		'sass-standard',
 		'sass-main',
 		'sass-small'

@@ -27,8 +27,10 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return [inputStyles, css`
 				:host {
 					display: inline-block;
+					width: 100%;
+				}
+				.d2l-input-search-container {
 					position: relative;
-					width: 100%
 				}
 				:host([hidden]) {
 					display: none;
