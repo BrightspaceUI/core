@@ -44,7 +44,9 @@ describe('d2l-input-search', () => {
 		'no-clear',
 		'disabled',
 		'placeholder',
-		'placeholder-disabled'
+		'placeholder-disabled',
+		'padding',
+		'flexbox'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
