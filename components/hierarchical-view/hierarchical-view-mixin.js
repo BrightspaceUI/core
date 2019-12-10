@@ -79,15 +79,12 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__isChildView();
 
 		if (!this.childView) {
-			this.__startObserving();
+			this.__startMutationObserver();
 		}
 
 		requestAnimationFrame(() => {
 			this.__autoSize(this);
-
-			if (this.getActiveView() === this) {
-				this.__dispatchViewResize();
-			}
+			this.__startResizeObserver();
 
 			if (!this.childView) {
 				this.addEventListener('focus', this.__focusCapture, true);
@@ -253,11 +250,15 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			view.resize();
 			return;
 		}
-		this.__content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
-		this.__bound_reactToChanges = this.__bound_reactToChanges || this.__reactToChanges.bind(this);
-		this.__resizeObserver = this.__resizeObserver || new ResizeObserver(this.__bound_reactToChanges);
-		this.__resizeObserver.disconnect();
-		this.__resizeObserver.observe(this.__content);
+		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
+		const contentRect = content.getBoundingClientRect();
+		if (contentRect.height < 1) return;
+		const eventDetails = {
+			bubbles: true,
+			composed: true,
+			detail: contentRect
+		};
+		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
 	}
 
 	__focusCapture(e) {
@@ -409,17 +410,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 	}
 
-	__reactToChanges() {
-		const contentRect = this.__content.getBoundingClientRect();
-		if (contentRect.height < 1) return;
-		const eventDetails = {
-			bubbles: true,
-			composed: true,
-			detail: contentRect
-		};
-		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
-	}
-
 	__reactToMutationChanges() {
 		this.__isChildView();
 
@@ -435,7 +425,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		window.removeEventListener('resize', this.__onWindowResize);
 	}
 
-	__startObserving() {
+	__startMutationObserver() {
 		this.__bound_reactToMutationChanges = this.__bound_reactToMutationChanges || this.__reactToMutationChanges.bind(this);
 
 		this.__mutationObserver = this.__mutationObserver || new MutationObserver(this.__bound_reactToMutationChanges);
@@ -444,5 +434,13 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__mutationObserver.observe(this.parentNode, {
 			attributes: true
 		});
+	}
+
+	__startResizeObserver() {
+		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
+		this.__bound_dispatchViewResize = this.__bound_dispatchViewResize || this.__dispatchViewResize.bind(this);
+		this.__resizeObserver = this.__resizeObserver || new ResizeObserver(this.__bound_dispatchViewResize);
+		this.__resizeObserver.disconnect();
+		this.__resizeObserver.observe(content);
 	}
 };
