@@ -40,7 +40,7 @@ describe('d2l-button-icon', function() {
 						if (entry.category === 'translucent-enabled') {
 							await focus(page, '#translucent-enabled > d2l-button-icon');
 						} else {
-							await focus(page, `#${entry.category}`);
+							await page.$eval(`#${entry.category}`, (elem) => elem.focus());
 						}
 					}
 
