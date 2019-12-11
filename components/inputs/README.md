@@ -19,12 +19,13 @@ Groups of inputs (like checkboxes or radios) should be wrapped in a `<fieldset>`
 
 ![example screenshot of input label](./screenshots/label.png?raw=true)
 
-Import the label styles and include them in your component:
+Import the label styles and `RtlMixin` and include them in your component:
 
 ```javascript
 import {labelStyles} from '@brightspace-ui/core/components/inputs/input-label-styles.js';
+import {RtlMixin} from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
-class MyElem extends LitElement {
+class MyElem extends RtlMixin(LitElement) {
 
   static get styles() {
     return labelStyles;

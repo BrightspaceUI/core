@@ -48,8 +48,9 @@
 			import { inputStyles } from '../input-styles.js';
 			import { labelStyles } from '../input-label-styles.js';
 			import { radioStyles } from '../input-radio-styles.js';
+			import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 
-			class TestInputLabelWrap extends LitElement {
+			class TestInputLabelWrap extends RtlMixin(LitElement) {
 
 				static get properties() {
 					return {
@@ -78,7 +79,7 @@
 			}
 			customElements.define('d2l-test-input-label-wrap', TestInputLabelWrap);
 
-			class TestInputLabelRef extends LitElement {
+			class TestInputLabelRef extends RtlMixin(LitElement) {
 
 				static get properties() {
 					return {
@@ -102,7 +103,7 @@
 			}
 			customElements.define('d2l-test-input-label-ref', TestInputLabelRef);
 
-			class TestInputLabelFieldset extends LitElement {
+			class TestInputLabelFieldset extends RtlMixin(LitElement) {
 
 				static get properties() {
 					return {
@@ -131,7 +132,7 @@
 			}
 			customElements.define('d2l-test-input-label-fieldset', TestInputLabelFieldset);
 
-			class TestInputLabelFieldsetManual extends LitElement {
+			class TestInputLabelFieldsetManual extends RtlMixin(LitElement) {
 
 				static get properties() {
 					return {
