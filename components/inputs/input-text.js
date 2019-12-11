@@ -1,17 +1,19 @@
-import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
+import { labelStyles } from './input-label-styles.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputText extends LitElement {
+class InputText extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
-			ariaLabel: { type: String, attribute: 'aria-label' },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean, reflect: true },
+			label: { type: String },
+			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			max: { type: String },
 			maxlength: { type: Number },
 			min: { type: String },
@@ -21,7 +23,7 @@ class InputText extends LitElement {
 			placeholder: { type: String },
 			preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
 			readonly: { type: Boolean },
-			required: { type: Boolean },
+			required: { type: Boolean, reflect: true },
 			size: { type: Number },
 			step: { type: String },
 			type: { type: String },
@@ -30,7 +32,7 @@ class InputText extends LitElement {
 	}
 
 	static get styles() {
-		return [ inputStyles,
+		return [ inputStyles, labelStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -38,6 +40,9 @@ class InputText extends LitElement {
 				}
 				:host([hidden]) {
 					display: none;
+				}
+				label {
+					display: block;
 				}
 			`
 		];
@@ -47,6 +52,7 @@ class InputText extends LitElement {
 		super();
 		this.autofocus = false;
 		this.disabled = false;
+		this.labelHidden = false;
 		this.preventSubmit = false;
 		this.readonly = false;
 		this.required = false;
@@ -56,9 +62,9 @@ class InputText extends LitElement {
 
 	render() {
 		const ariaRequired = this.required ? 'true' : undefined;
-		return html`
+		const input = html`
 			<input aria-invalid="${ifDefined(this.ariaInvalid)}"
-			 	aria-label="${ifDefined(this.ariaLabel)}"
+				aria-label="${ifDefined(this._getAriaLabel())}"
 				aria-required="${ifDefined(ariaRequired)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
@@ -82,11 +88,29 @@ class InputText extends LitElement {
 				type="${this._getType()}"
 				.value="${this.value}">
 		`;
+		if (this.label && !this.labelHidden) {
+			return html`
+				<label>
+					<span class="d2l-input-label">${this.label}</span>
+					${input}
+				</label>`;
+		}
+		return input;
 	}
 
 	focus() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		if (elem) elem.focus();
+	}
+
+	_getAriaLabel() {
+		if (this.label && this.labelHidden) {
+			return this.label;
+		}
+		if (this.hasAttribute('aria-label')) {
+			return this.getAttribute('aria-label');
+		}
+		return undefined;
 	}
 
 	_getType() {
