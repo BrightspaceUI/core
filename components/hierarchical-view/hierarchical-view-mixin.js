@@ -92,6 +92,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			if (!this.childView) {
 				this.addEventListener('focus', this.__focusCapture, true);
 				this.addEventListener('focusout', this.__focusOutCapture, true);
+				this.__onWindowResize = this.__onWindowResize.bind(this);
 				window.addEventListener('resize', this.__onWindowResize);
 			}
 		});
@@ -110,7 +111,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('d2l-hierarchical-view-hide-start', this.__onHideStart);
 		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
 		this.addEventListener('d2l-hierarchical-view-resize', this.__onViewResize);
-		this.__onWindowResize = this.__onWindowResize.bind(this);
 	}
 
 	getActiveView() {
