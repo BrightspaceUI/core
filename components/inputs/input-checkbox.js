@@ -107,6 +107,15 @@ class InputCheckbox extends RtlMixin(LitElement) {
 		if (elem) elem.focus();
 	}
 
+	simulateClick() {
+		this.checked = !this.checked;
+		this.indeterminate = false;
+		this.dispatchEvent(new CustomEvent(
+			'change',
+			{bubbles: true, composed: false}
+		));
+	}
+
 	_handleChange(e) {
 		this.checked = e.target.checked;
 		this.indeterminate = false;
@@ -124,12 +133,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 	_handleClick() {
 		const browserType = window.navigator.userAgent;
 		if (this.indeterminate && (browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) {
-			this.checked = !this.checked;
-			this.indeterminate = false;
-			this.dispatchEvent(new CustomEvent(
-				'change',
-				{bubbles: true, composed: false}
-			));
+			this.simulateClick();
 		}
 	}
 

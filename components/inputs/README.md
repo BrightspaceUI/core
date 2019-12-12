@@ -270,6 +270,10 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 - `not-tabbable` (optional, Boolean): sets `tabindex="-1"` on the checkbox
 - `value` (optional, String): value of the input
 
+**Methods:**
+
+- `simulateClick()`: useful for testing, it simulates the user clicking on the checkbox, which toggles the state of the checkbox and fires the `change` event
+
 **Events:**
 
 When the checkbox's state changes, it dispatches the `change` event:
