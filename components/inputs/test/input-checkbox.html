@@ -163,6 +163,24 @@
 
 				});
 
+				describe('simulateClick', () => {
+
+					beforeEach(async() => await getFixture('basic'));
+
+					it('should set "checked" property', () => {
+						elem.simulateClick();
+						expect(elem.checked).to.be.true;
+					});
+
+					it('should trigger an event', () => {
+						let pass = false;
+						elem.addEventListener('change', () => pass = true);
+						elem.simulateClick();
+						expect(pass).to.be.true;
+					});
+
+				});
+
 				describe('indeterminate', () => {
 
 					it('should set aria-checked to "mixed" when indeterminate and checked', async() => {
