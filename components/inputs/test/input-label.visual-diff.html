@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../typography/typography.js';
@@ -25,6 +26,34 @@
 			<div class="visual-diff">
 				<d2l-test-input-label-ref id="wc-ref-required" required></d2l-test-input-label-ref>
 			</div>
+			<div class="visual-diff">
+				<div id="sass-wrap">
+					<label>
+						<span class="d2l-test-input-label">Name</span>
+						<input type="text" class="d2l-test-input-text">
+					</label>
+				</div>
+			</div>
+			<div class="visual-diff">
+					<div id="sass-wrap-required">
+						<label>
+							<span class="d2l-test-input-label d2l-test-input-label-required">Name</span>
+							<input type="text" class="d2l-test-input-text" aria-required="true">
+						</label>
+					</div>
+				</div>
+			<div class="visual-diff">
+				<div id="sass-ref">
+					<label for="input-sass-ref" class="d2l-test-input-label">Name</label>
+					<input type="text" id="input-sass-ref" class="d2l-test-input-text">
+				</div>
+			</div>
+			<div class="visual-diff">
+				<div id="sass-ref-required">
+					<label for="input-sass-ref-required" class="d2l-test-input-label d2l-test-input-label-required">Name</label>
+					<input type="text" id="input-sass-ref-required" class="d2l-test-input-text" aria-required="true">
+				</div>
+			</div>	
 			<div class="visual-diff" id="wc-fieldset">
 				<d2l-test-input-label-fieldset></d2l-test-input-label-fieldset>
 			</div>
