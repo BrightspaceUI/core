@@ -9,6 +9,88 @@ There are various input components available:
 - [Checkboxes](#checkboxes)
 - [Radio Buttons](#radio-buttons)
 
+## Labelling Inputs
+
+All inputs *must* have a label. Web component-based inputs like `<d2l-input-checkbox>`, `<d2l-input-search>` and `<d2l-input-text>` come with built-in labels. For the rest, labelling is accomplished visually using a `<label>` element or with a hidden label via the `aria-label` attribute.
+
+Groups of inputs (like checkboxes or radios) should be wrapped in a `<fieldset>` which can have label styles applied to it.
+
+### Visible labels using the `<label>` element
+
+![example screenshot of input label](./screenshots/label.png?raw=true)
+
+Import the label styles and `RtlMixin` and include them in your component:
+
+```javascript
+import {labelStyles} from '@brightspace-ui/core/components/inputs/input-label-styles.js';
+import {RtlMixin} from '@brightspace-ui/core/mixins/rtl-mixin.js';
+
+class MyElem extends RtlMixin(LitElement) {
+
+  static get styles() {
+    return labelStyles;
+  }
+
+}
+```
+
+Label styles are then applied using the `d2l-input-label` CSS class.
+
+Wrap the input in a `<label>` element and apply the styles to a nested `<span>` element:
+
+```html
+<label>
+  <span class="d2l-input-label">City</span>
+  <select>...</select>
+</label>
+```
+
+Alternately, associate the `<label>` with the input using the `for` and `id` attributes and apply the styles to the label directly:
+
+```html
+<label for="myInput" class="d2l-input-label">City</label>
+<select id="myInput">...</select>
+```
+
+For required inputs, add the `d2l-input-label-required` CSS class to the label to get a visual indicator. Don't forget to add `aria-required="true"` to the input so that assistive technology is aware as well.
+
+![example screenshot of required input](./screenshots/label-required.png?raw=true)
+
+```html
+<label for="myInput" class="d2l-input-label d2l-input-label-required">City</label>
+<select id="myInput" aria-required="true">...</select>
+```
+
+### Hidden labels
+
+If you wish to visually hide the label, use the `aria-label` attribute on your input instead:
+
+```html
+<select aria-label="City">...</select>
+```
+
+### Grouping inputs with `<fieldset>`
+
+When a page contains multiple inputs which are related (for example to form an address), wrap the inputs with `<fieldset>` and `<legend>` elements. Then apply the `d2l-input-label-fieldset` and `d2l-input-label` CSS classes to the `<fieldset>` and `<legend>` elements respectively.
+
+```html
+<fieldset class="d2l-input-label-fieldset">
+  <legend class="d2l-input-label">Shipping Address</legend>
+  <!-- set of related inputs go here -->
+</fieldset>
+```
+
+Alternately, the `<d2l-input-fieldset>` component can accomplish this for you:
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-fieldset.js';
+</script>
+<d2l-input-fieldset label="Shipping Address">
+	<!-- set of related inputs go here -->
+</d2l-input-fieldset>
+```
+
 ## Text Inputs
 
 The `<d2l-input-text>` element is a simple wrapper around the native `<input type="text">` tag. It's intended primarily for inputting generic text, email addresses and URLs.
@@ -19,16 +101,20 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
 </script>
-<d2l-input-text value="hello"></d2l-input-text>
+<d2l-input-text
+  label="Label"
+  placeholder="Enter some text"
+  value="hello"></d2l-input-text>
 ```
 
 **Properties:**
 
 - `aria-invalid` (String): indicates that the input value is invalid
-- `aria-label` (String): sets an accessible label
 - `autocomplete` (String): specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser
 - `autofocus` (Boolean): when set, will automatically place focus on the input
 - `disabled` (Boolean): disables the input
+- `label` (String, required): label for the input
+- `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
 - `max` (String): for number inputs, maximum value
 - `maxlength` (Number): imposes an upper character limit
 - `min` (String): for number inputs, minimum value
@@ -64,13 +150,13 @@ import { inputStyles } from '@brightspace-ui/core/inputs/input-styles.js';
 
 class MyElem extends LitElement {
 
-	static get styles() {
-		return inputStyles;
-	}
+  static get styles() {
+    return inputStyles;
+  }
 
-	render() {
-		return html`<input type="text" class="d2l-input">`;
-	}
+  render() {
+    return html`<input type="text" class="d2l-input">`;
+  }
 
 }
 ```
@@ -184,6 +270,10 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 - `not-tabbable` (optional, Boolean): sets `tabindex="-1"` on the checkbox
 - `value` (optional, String): value of the input
 
+**Methods:**
+
+- `simulateClick()`: useful for testing, it simulates the user clicking on the checkbox, which toggles the state of the checkbox and fires the `change` event
+
 **Events:**
 
 When the checkbox's state changes, it dispatches the `change` event:
@@ -220,13 +310,13 @@ import { checkboxStyles } from '@brightspace-ui/core/inputs/input-checkbox-style
 
 class MyElem extends LitElement {
 
-	static get styles() {
-		return checkboxStyles;
-	}
+  static get styles() {
+    return checkboxStyles;
+  }
 
-	render() {
-		return html`<input type="checkbox" class="d2l-input-checkbox">`;
-	}
+  render() {
+    return html`<input type="checkbox" class="d2l-input-checkbox">`;
+  }
 
 }
 ```
@@ -253,26 +343,26 @@ import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-
 
 class MyElem extends RtlMixin(LitElement) {
 
-	static get styles() {
-		return radioStyles;
-	}
+  static get styles() {
+    return radioStyles;
+  }
 
-	render() {
-		return html`
-			<label class="d2l-input-radio-label">
-				<input type="radio" name="myGroup" selected>
-				Option 1 (selected)
-			</label>
-			<label class="d2l-input-radio-label d2l-input-radio-label-disabled">
-				<input type="radio" name="myGroup" disabled>
-				Option 2 (disabled)
-			</label>
-			<label class="d2l-input-radio-label">
-				<input type="radio" name="myGroup">
-				Option 3
-			</label>
-		`;
-	}
+  render() {
+    return html`
+      <label class="d2l-input-radio-label">
+        <input type="radio" name="myGroup" selected>
+        Option 1 (selected)
+      </label>
+      <label class="d2l-input-radio-label d2l-input-radio-label-disabled">
+        <input type="radio" name="myGroup" disabled>
+        Option 2 (disabled)
+      </label>
+      <label class="d2l-input-radio-label">
+        <input type="radio" name="myGroup">
+        Option 3
+      </label>
+    `;
+  }
 
 }
 ```
@@ -286,15 +376,15 @@ import { radioStyles } from './input-radio-styles.js';
 
 class MyElem extends LitElement {
 
-	static get styles() {
-		return radioStyles;
-	}
+  static get styles() {
+    return radioStyles;
+  }
 
-	render() {
-		return html`
-			<input type="radio" class="d2l-input-radio" aria-label="Option 1">
-		`;
-	}
+  render() {
+    return html`
+      <input type="radio" class="d2l-input-radio" aria-label="Option 1">
+    `;
+  }
 
 }
 ```

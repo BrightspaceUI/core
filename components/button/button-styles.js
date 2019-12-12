@@ -14,7 +14,6 @@ export const buttonStyles = css`
 		min-height: calc(2rem + 2px);
 		outline: none;
 		text-align: center;
-		transition: box-shadow 0.2s;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
