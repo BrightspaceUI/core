@@ -91,7 +91,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 					@change="${this._handleChange}"
 					class="d2l-input-checkbox"
 					@click="${this._handleClick}"
-					?checked="${this.checked}"
+					.checked="${this.checked}"
 					?disabled="${this.disabled}"
 					.indeterminate="${this.indeterminate}"
 					name="${ifDefined(this.name)}"

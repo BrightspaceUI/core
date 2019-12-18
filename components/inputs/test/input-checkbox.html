@@ -113,9 +113,15 @@
 						expect(input.indeterminate).to.be.true;
 					});
 
+					it('should bind "checked" attribute to input property', async() => {
+						expect(input.checked).to.be.false;
+						elem.setAttribute('checked', 'true');
+						await elem.updateComplete;
+						expect(input.checked).to.be.true;
+					});
+
 					[
 						{name: 'aria-label', propName: 'ariaLabel', value: 'hello'},
-						{name: 'checked', value: true},
 						{name: 'disabled', value: true},
 						{name: 'name', value: 'jim'}
 					].forEach((attr) => {
@@ -256,6 +262,33 @@
 							done();
 						});
 						elem.focus();
+					});
+
+				});
+
+				describe('input checked property handled correctly', () => {
+
+					beforeEach(async() => await getFixture('basic'));
+
+					it('should keep input and element in sync with both physical clicks and programatic changes to the checked property', async() => {
+						expect(elem.checked).to.be.false;
+						expect(input.checked).to.be.false;
+						input.click();
+						await elem.updateComplete;
+						expect(elem.checked).to.be.true;
+						expect(input.checked).to.be.true;
+						elem.checked = false;
+						await elem.updateComplete;
+						expect(elem.checked).to.be.false;
+						expect(input.checked).to.be.false;
+						elem.checked = true;
+						await elem.updateComplete;
+						expect(elem.checked).to.be.true;
+						expect(input.checked).to.be.true;
+						input.click();
+						await elem.updateComplete;
+						expect(elem.checked).to.be.false;
+						expect(input.checked).to.be.false;
 					});
 
 				});
