@@ -277,11 +277,11 @@
 						await elem.updateComplete;
 						expect(elem.checked).to.be.true;
 						expect(input.checked).to.be.true;
-						elem.checked = false;
+						elem.checked = false; // eslint-disable-line require-atomic-updates
 						await elem.updateComplete;
 						expect(elem.checked).to.be.false;
 						expect(input.checked).to.be.false;
-						elem.checked = true;
+						elem.checked = true; // eslint-disable-line require-atomic-updates
 						await elem.updateComplete;
 						expect(elem.checked).to.be.true;
 						expect(input.checked).to.be.true;
