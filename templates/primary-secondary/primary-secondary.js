@@ -18,35 +18,31 @@ class TemplatePrimarySecondary extends LitElement {
 			.container {
 				display: grid;
 				grid-template-columns: 2fr auto 1fr;
-				grid-template-rows: auto auto auto;
+				grid-template-rows: auto 1fr auto;
 				grid-template-areas:
 				"header header header"
 				"primary divider secondary"
 				"footer footer footer";
+				height: 100vh;
 			}
 			.d2l-template-primary-secondary-header {
 				grid-area: header;
-			}
-			.d2l-template-primary-secondary-panels-wrapper {
 			}
 			.d2l-template-primary-secondary-primary {
 				grid-area: primary;
 				min-width: 320px;
 				overflow-y: auto;
-				height: calc(100vh - 100px); /** TEMPORARY **/
 			}
 			.d2l-template-primary-secondary-divider {
 				grid-area: divider;
 				background-color: var(--d2l-color-mica);
 				width: 1px;
 				height: 100%;
-				margin: 0 20px;
 			}
 			.d2l-template-primary-secondary-secondary {
 				grid-area: secondary;
 				min-width: 320px;
 				overflow-y: auto;
-				height: calc(100vh - 100px); /** TEMPORARY **/
 			}
 			.d2l-template-primary-secondary-footer {
 				grid-area: footer;
