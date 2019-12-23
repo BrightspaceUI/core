@@ -54,9 +54,9 @@ class TemplatePrimarySecondary extends LitElement {
 		return html`
 			<div class="container">
 				<div class="d2l-template-primary-secondary-header"><slot name="header"></slot></div>
-					<div class="d2l-template-primary-secondary-primary"><slot name="primary"></slot></div>
-					<div class="d2l-template-primary-secondary-divider"></div>
-					<div class="d2l-template-primary-secondary-secondary"><slot name="secondary"></slot></div>
+				<div class="d2l-template-primary-secondary-primary"><slot name="primary"></slot></div>
+				<div class="d2l-template-primary-secondary-divider"></div>
+				<div class="d2l-template-primary-secondary-secondary"><slot name="secondary"></slot></div>
 				<div class="d2l-template-primary-secondary-footer"><slot name="footer"></slot></div>
 			</div>
 		`;
