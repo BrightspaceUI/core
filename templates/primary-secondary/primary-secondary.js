@@ -17,7 +17,7 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			.container {
 				display: grid;
-				grid-template-columns: 2fr auto 1fr;
+				grid-template-columns: minmax(320px, 2fr) 1px minmax(320px, 1fr);
 				grid-template-rows: auto 1fr auto;
 				grid-template-areas:
 				"header header header"
@@ -30,18 +30,15 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			.d2l-template-primary-secondary-primary {
 				grid-area: primary;
-				min-width: 320px;
 				overflow-y: auto;
 			}
 			.d2l-template-primary-secondary-divider {
 				grid-area: divider;
 				background-color: var(--d2l-color-mica);
 				width: 1px;
-				height: 100%;
 			}
 			.d2l-template-primary-secondary-secondary {
 				grid-area: secondary;
-				min-width: 320px;
 				overflow-y: auto;
 			}
 			.d2l-template-primary-secondary-footer {
