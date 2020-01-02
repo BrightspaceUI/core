@@ -4,7 +4,9 @@ import { css, html, LitElement } from 'lit-element/lit-element';
 class TemplatePrimarySecondary extends LitElement {
 
 	static get properties() {
-		return {};
+		return {
+			hideFooter: { type: Boolean }
+		};
 	}
 
 	static get styles() {
@@ -18,7 +20,7 @@ class TemplatePrimarySecondary extends LitElement {
 			.container {
 				display: grid;
 				grid-template-columns: minmax(320px, 2fr) 1px minmax(320px, 1fr);
-				grid-template-rows: auto 1fr auto;
+				grid-template-rows: auto 1fr 78px;
 				grid-template-areas:
 				"header header header"
 				"primary divider secondary"
@@ -43,6 +45,7 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			.d2l-template-primary-secondary-footer {
 				grid-area: footer;
+				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
 			}
 		`;
 	}
@@ -54,7 +57,7 @@ class TemplatePrimarySecondary extends LitElement {
 				<div class="d2l-template-primary-secondary-primary"><slot name="primary"></slot></div>
 				<div class="d2l-template-primary-secondary-divider"></div>
 				<div class="d2l-template-primary-secondary-secondary"><slot name="secondary"></slot></div>
-				<div class="d2l-template-primary-secondary-footer"><slot name="footer"></slot></div>
+				<div class="d2l-template-primary-secondary-footer" ?hidden="${this.hideFooter}"><slot name="footer"></slot></div>
 			</div>
 		`;
 	}
