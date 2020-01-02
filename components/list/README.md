@@ -45,7 +45,8 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
   illustration-outside
   key="item1"
   selectable
-  selected>
+  selected
+  disabled>
   <img src="..." slot="illustration">
   <div>...</div>
   <div slot="actions">
@@ -75,6 +76,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 - `key` (String): Value to identify item if selectable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
+- `disabled` (Boolean): Whether or not the checkbox is disabled.
 
 ## d2l-list-content
 
