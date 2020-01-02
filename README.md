@@ -43,6 +43,10 @@ npm install @brightspace-ui/core
 * [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
 * [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
 
+## Templates
+
+* [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) template with header and optional footer
+
 ## Usage
 
 ### Structure
@@ -56,6 +60,8 @@ npm install @brightspace-ui/core
 `/test/` - Index and shared styles for unit tests
 
 `/tools/` - Development tools for building, testing, etc.
+
+`/templates/` - Templates to provide common ways to arrange content
 
 ## Developing, Testing and Contributing
 
