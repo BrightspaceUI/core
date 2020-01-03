@@ -28,6 +28,7 @@
     "/generated",
     "/helpers",
     "/mixins",
+    "/templates",
     "/tools",
     "!demo",
     "!lang",
@@ -35,8 +36,7 @@
     "!test",
     "/components/demo",
     "/generated/lang",
-    "!/components/demo/demo",
-    "/templates"
+    "!/components/demo/demo"
   ],
   "author": "D2L Corporation",
   "license": "Apache-2.0",
