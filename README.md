@@ -45,7 +45,7 @@ npm install @brightspace-ui/core
 
 ## Templates
 
-* [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) template with header and optional footer
+* [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) page template with header and optional footer
 
 ## Usage
 
@@ -57,11 +57,11 @@ npm install @brightspace-ui/core
 
 `/mixins/` - Mixins for use in your web components (ex. localize, RTL, etc)
 
+`/templates/` - Page templates to provide common ways to arrange content on a page
+
 `/test/` - Index and shared styles for unit tests
 
 `/tools/` - Development tools for building, testing, etc.
-
-`/templates/` - Templates to provide common ways to arrange content
 
 ## Developing, Testing and Contributing
 
