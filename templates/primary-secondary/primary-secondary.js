@@ -46,7 +46,7 @@ class TemplatePrimarySecondary extends LitElement {
 			.d2l-template-primary-secondary-footer {
 				grid-area: footer;
 				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
-				height: 78px;
+				padding: 0.75rem 1rem;
 			}
 		`;
 	}
