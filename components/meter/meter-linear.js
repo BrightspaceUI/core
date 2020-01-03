@@ -66,6 +66,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 				left: 0;
 				top: 0;
 				background-color: var(--d2l-color-celestine);
+				max-width: 100%;
 			}
 			:host([dir="rtl"]) .d2l-meter-linear-inner-bar {
 				right: 0;
