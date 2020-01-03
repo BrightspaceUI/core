@@ -1,6 +1,3 @@
-import {formatDate, formatDateTime, formatTime, parseDate, parseTime} from '@brightspace-ui/intl/lib/dateTime.js';
-import {formatNumber, parseNumber} from '@brightspace-ui/intl/lib/number.js';
-import {formatFileSize} from '@brightspace-ui/intl/lib/fileSize.js';
 import {getDocumentLocaleSettings} from '@brightspace-ui/intl/lib/common.js';
 import IntlMessageFormat from 'intl-messageformat/src/main.js';
 window.IntlMessageFormat = IntlMessageFormat;
@@ -80,30 +77,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	}
 
-	getTimezone() {
-		return this.__documentLocaleSettings.timezone;
-	}
-
-	formatDateTime(val, opts) {
-		return formatDateTime(val, opts);
-	}
-
-	formatDate(val, opts) {
-		return formatDate(val, opts);
-	}
-
-	formatFileSize(val) {
-		return formatFileSize(val);
-	}
-
-	formatNumber(val, opts) {
-		return formatNumber(val, opts);
-	}
-
-	formatTime(val, opts) {
-		return formatTime(val, opts);
-	}
-
 	localize(key) {
 
 		if (!key || !this.__resources || !this.__language) {
@@ -129,18 +102,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 		const translatedMessage = new IntlMessageFormat(translatedValue, this.__language);
 		return translatedMessage.format(params);
 
-	}
-
-	parseDate(val) {
-		return parseDate(val);
-	}
-
-	parseNumber(val, opts) {
-		return parseNumber(val, opts);
-	}
-
-	parseTime(val) {
-		return parseTime(val);
 	}
 
 	_generatePossibleLanguages() {
