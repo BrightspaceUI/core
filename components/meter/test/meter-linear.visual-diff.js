@@ -24,6 +24,7 @@ describe('d2l-meter-linear', function() {
 		{ title: 'max-zero', fixture: '#max-zero'},
 		{ title: 'round-to-zero', fixture: '#round-to-zero'},
 		{ title: 'over-100', fixture: '#over-100'},
+		{ title: 'zero-max', fixture: '#zero-max'},
 		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl'},
 		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl'},
 		{ title: 'completed-rtl', fixture: '#completed-rtl'},
