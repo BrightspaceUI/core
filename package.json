@@ -28,6 +28,7 @@
     "/generated",
     "/helpers",
     "/mixins",
+    "/templates",
     "/tools",
     "!demo",
     "!lang",
