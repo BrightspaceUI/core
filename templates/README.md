@@ -21,7 +21,7 @@ Mental Models and Page Structure:
 > - [x] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
 > - [x] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
 > - [x] Demo page
-> - [ ] README documentation
+> - [x] README documentation
 
 ### Usage
 ```html
@@ -37,7 +37,4 @@ Mental Models and Page Structure:
 </d2l-template-primary-secondary>
 ```
 
-***Properties:***
-
-* `hideFooter` (Boolean): Hides the footer
-
+If no nodes are assigned to the `footer` slot, the footer is hidden.
