@@ -57,7 +57,7 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 
 	render() {
 		const lengthOfLine = 115; // found by approximating half the perimeter of the ellipse with radii 38 and 35
-		const percent = (this.value / this.max);
+		const percent = this.max > 0 ? (this.value / this.max) : 0;
 		const visibility = (percent < 0.005) ? 'hidden' : 'visible';
 		const progressFill = percent * lengthOfLine;
 		const primary = this._primary(this.value, this.max, this.dir);
