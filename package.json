@@ -63,9 +63,9 @@
     "whatwg-fetch": "^3"
   },
   "dependencies": {
+    "@brightspace-ui/intl": "^3",
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
-    "d2l-intl": "^2",
     "intl-messageformat": "^2.2.0",
     "lit-element": "^2",
     "prismjs": "^1",
