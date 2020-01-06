@@ -1,6 +1,17 @@
 # Templates
+Page templates to provide common ways to arrange content on a page
 
 ## Primary-Secondary - NOT READY
+Two Panel (primary and secondary) page template with header and optional footer
+
+Use this template when: 
+- There are primary and secondary elements on the page
+- The user may need to see the primary and secondary elements at the same time 
+ 
+Mental Models and Page Structure: 
+- The page includes basic settings (primary) and advanced settings (secondary) 
+- There is a primary object which users are modifying or supplementing with secondary tools/settings/options
+
 >
 > - [x] [Design organization buy-in](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#working-with-design)
 > - [ ] [design.d2l entry](http://design.d2l/)
@@ -12,5 +23,20 @@
 > - [x] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
 > - [x] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
 > - [x] Demo page
-> - [ ] README documentation
+> - [x] README documentation
 
+### Usage
+```html
+<script type="module">
+  import '@brightspace-ui/core/templates/primary-secondary/primary-secondary.js';
+</script>
+
+<d2l-template-primary-secondary>
+    <div slot="header">Header</div>
+    <div slot="primary">The primary slot</div>
+    <div slot="secondary">The secondary slot</div>
+    <div slot="footer">Footer</div>
+</d2l-template-primary-secondary>
+```
+
+If no nodes are assigned to the `footer` slot, the footer is hidden.

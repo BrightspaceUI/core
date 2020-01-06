@@ -4,7 +4,9 @@ import { css, html, LitElement } from 'lit-element/lit-element';
 class TemplatePrimarySecondary extends LitElement {
 
 	static get properties() {
-		return {};
+		return {
+			_hasFooter: { type: Boolean }
+		};
 	}
 
 	static get styles() {
@@ -43,6 +45,8 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			.d2l-template-primary-secondary-footer {
 				grid-area: footer;
+				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
+				padding: 0.75rem 1rem;
 			}
 		`;
 	}
@@ -54,11 +58,15 @@ class TemplatePrimarySecondary extends LitElement {
 				<div class="d2l-template-primary-secondary-primary"><slot name="primary"></slot></div>
 				<div class="d2l-template-primary-secondary-divider"></div>
 				<div class="d2l-template-primary-secondary-secondary"><slot name="secondary"></slot></div>
-				<div class="d2l-template-primary-secondary-footer"><slot name="footer"></slot></div>
+				<div class="d2l-template-primary-secondary-footer" ?hidden="${!this._hasFooter}"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot></div>
 			</div>
 		`;
 	}
 
+	_handleFooterSlotChange(e) {
+		const nodes = e.target.assignedNodes();
+		this._hasFooter = (nodes.length !== 0);
+	}
 }
 
 customElements.define('d2l-template-primary-secondary', TemplatePrimarySecondary);
