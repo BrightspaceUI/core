@@ -1,15 +1,18 @@
 import '../button/button-icon.js';
+import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { AsyncContainerMixin } from '../../mixins/async-container/async-container-mixin.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
-class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
+class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElement))) {
 
 	static get properties() {
 		return {
+			async: { type: Boolean },
 			width: { type: Number }
 		};
 	}
@@ -35,6 +38,10 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 				/* required to properly calculate preferred height when there are bottom
 				margins at the end of the slotted content */
 				border-bottom: 1px solid transparent;
+			}
+
+			.d2l-dialog-content-loading {
+				text-align: center;
 			}
 
 			@media (max-width: 615px) {
@@ -90,6 +97,9 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 	}
 
 	render() {
+		const loadingSpinner = (this.async && this.asyncState !== 'complete')
+			? html`<div class="d2l-dialog-content-loading"><d2l-loading-spinner size="100"></d2l-loading-spinner></div>` : null;
+
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner">
@@ -100,6 +110,7 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 					</div>
 				</div>
 				<div class="d2l-dialog-content">
+					${loadingSpinner}
 					<div><slot></slot></div>
 				</div>
 				<div class="d2l-dialog-footer">
@@ -111,6 +122,17 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 			inner,
 			{ labelId: this._titleId, role: 'dialog' }
 		);
+	}
+
+	updated(changedProperties) {
+		if (!changedProperties.has('asyncState')) return;
+		if (this.asyncState === 'complete') {
+			this.resize();
+		}
+	}
+
+	asyncContainer() {
+		return this.shadowRoot.querySelector('.d2l-dialog-content');
 	}
 
 	_abort() {
