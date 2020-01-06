@@ -40,7 +40,8 @@ class CodeView extends LitElement {
 			/* Current, non-relative imports don't appear to work with Polymer dev server
 			for FF, Edge, IE11.  Use of non-default languages is limited to dev with this approach.
 			https://github.com/Polymer/tools/issues/3402 */
-			this._dependenciesPromise = import(`/node_modules/prismjs/components/prism-${language}.min.js`);
+			const path = `/node_modules/prismjs/components/prism-${language}.min.js`;
+			this._dependenciesPromise = import(path);
 		}
 		this._updateCode(this.shadowRoot.querySelector('slot'));
 		super.attributeChangedCallback(name, oldval, newval);
