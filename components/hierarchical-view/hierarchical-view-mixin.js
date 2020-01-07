@@ -78,9 +78,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		this.__isChildView();
 
-		/* If this node is not yet known to be a childView (e.g., if there is a timing issue and the
-			parent does not yet exist, as in Firefox) run the mutation observer so that if/when
-			the parentNode exists it will be detected that this is a childView if applicable */
+		/* On Edge, the children are upgraded before the ancestors, so it's not possible
+			to reliably check for ancestor hierarchical view here. For Edge, we rely on the
+			mutation observer below. */
 		if (!this.childView) {
 			this.__startMutationObserver();
 		}
@@ -428,6 +428,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		window.removeEventListener('resize', this.__onWindowResize);
 	}
 
+	/* Edge only - since children are upgraded before ancestors */
 	__startMutationObserver() {
 		this.__bound_reactToMutationChanges = this.__bound_reactToMutationChanges || this.__reactToMutationChanges.bind(this);
 
