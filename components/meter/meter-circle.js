@@ -49,7 +49,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 
 	render() {
 		const lengthOfLine = 21 * Math.PI * 2; // approximation perimeter of circle
-		const percent = (this.value / this.max);
+		const percent = this.max > 0 ? (this.value / this.max) : 0;
 		const visibility = (percent < 0.005) ? 'hidden' : 'visible';
 		const progressFill = percent * lengthOfLine;
 		const space = lengthOfLine - progressFill;

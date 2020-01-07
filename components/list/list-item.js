@@ -24,6 +24,7 @@ class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
+			disabled: {type: Boolean },
 			href: { type: String },
 			illustrationOutside: { type: Boolean, attribute: 'illustration-outside' },
 			key: { type: String, reflect: true },
@@ -212,6 +213,7 @@ class ListItem extends RtlMixin(LitElement) {
 		super();
 		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
+		this.disabled = false;
 		this.role = 'listitem';
 		this.selectable = false;
 		this._contentId = getUniqueId();
@@ -254,7 +256,7 @@ class ListItem extends RtlMixin(LitElement) {
 		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
 		const link = this.href ? html`<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>` : null;
 		const beforeContent = this.selectable
-			? html`<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}"><slot name="illustration"></slot>`
+			? html`<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}" ?disabled="${this.disabled}"><slot name="illustration"></slot>`
 			: html`<slot name="illustration"></slot>`;
 
 		const classes = {

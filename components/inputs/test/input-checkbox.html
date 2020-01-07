@@ -113,9 +113,30 @@
 						expect(input.indeterminate).to.be.true;
 					});
 
+					it('should bind "checked" attribute to input property', async() => {
+						elem.setAttribute('checked', 'checked');
+						await elem.updateComplete;
+						expect(input.checked).to.be.true;
+					});
+
+					it('should bind "checked" property to input property', async() => {
+						elem.checked = true;
+						await elem.updateComplete;
+						expect(input.checked).to.be.true;
+					});
+
+					it('should continue to bind "checked" property after interaction', async() => {
+						input.click();
+						expect(input.checked).to.be.true;
+						expect(elem.checked).to.be.true;
+						await elem.updateComplete;
+						elem.checked = false; // eslint-disable-line require-atomic-updates
+						await elem.updateComplete;
+						expect(input.checked).to.be.false;
+					});
+
 					[
 						{name: 'aria-label', propName: 'ariaLabel', value: 'hello'},
-						{name: 'checked', value: true},
 						{name: 'disabled', value: true},
 						{name: 'name', value: 'jim'}
 					].forEach((attr) => {

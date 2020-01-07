@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.22.0",
+  "version": "1.28.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -28,6 +28,7 @@
     "/generated",
     "/helpers",
     "/mixins",
+    "/templates",
     "/tools",
     "!demo",
     "!lang",
@@ -57,14 +58,14 @@
     "node-sass": "^4",
     "polymer-cli": "^1",
     "puppeteer": "^1",
-    "sinon": "^7.4.1",
+    "sinon": "^8",
     "wct-mocha": "^1",
     "whatwg-fetch": "^3"
   },
   "dependencies": {
+    "@brightspace-ui/intl": "^3",
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
-    "d2l-intl": "^2",
     "intl-messageformat": "^2.2.0",
     "lit-element": "^2",
     "prismjs": "^1",

@@ -1,3 +1,4 @@
+import { formatPercent } from '@brightspace-ui/intl/lib/number.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 export const MeterMixin = superclass => class extends LocalizeStaticMixin(superclass) {
@@ -40,7 +41,7 @@ export const MeterMixin = superclass => class extends LocalizeStaticMixin(superc
 		const percentage = max > 0 ? value / max : 0;
 
 		return this.percent
-			? this.formatNumber(percentage, {style: 'percent', maximumFractionDigits: 0})
+			? formatPercent(percentage, {maximumFractionDigits: 0})
 			: (dir !== 'rtl' ? this.localize('fraction', 'x', value, 'y', max) : this.localize('fraction', 'x', max, 'y', value));
 	}
 
@@ -50,7 +51,7 @@ export const MeterMixin = superclass => class extends LocalizeStaticMixin(superc
 		}
 
 		const percentage = this.max > 0 ? value / max : 0;
-		context = context.replace('{%}', this.formatNumber(percentage, {style: 'percent', maximumFractionDigits: 0}));
+		context = context.replace('{%}', formatPercent(percentage, {maximumFractionDigits: 0}));
 		context = context.replace('{x/y}', this.localize('fraction', 'x', value, 'y', max));
 		context = context.replace('{x}', value);
 		context = context.replace('{y}', max);

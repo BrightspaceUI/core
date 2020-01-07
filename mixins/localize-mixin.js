@@ -1,14 +1,11 @@
-import {
-	addListener, formatDate, formatDateTime, formatFileSize, formatNumber,
-	formatTime, getDocumentLanguage, getDocumentLanguageFallback, getTimezone,
-	localize, parseDate, parseNumber, parseTime, removeListener
-} from '../helpers/localization.js';
+import {getDocumentLocaleSettings} from '@brightspace-ui/intl/lib/common.js';
+import IntlMessageFormat from 'intl-messageformat/src/main.js';
+window.IntlMessageFormat = IntlMessageFormat;
 
 export const LocalizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			__pageLanguage: { type: String, attribute: false },
 			__language: { type: String, attribute: false  },
 			__resources: { type: Object, attribute: false  }
 		};
@@ -17,13 +14,12 @@ export const LocalizeMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 
+		this.__documentLocaleSettings = getDocumentLocaleSettings();
 		let first = true;
-		this.__languageChangeCallback = (documentLanguage, documentLanguageFallback) => {
-
-			this.__pageLanguage = documentLanguage || documentLanguageFallback || 'en';
+		this.__languageChangeCallback = () => {
 
 			if (!this._hasResources()) return;
-			const possibleLanguages = this._generatePossibleLanguages(documentLanguage, documentLanguageFallback);
+			const possibleLanguages = this._generatePossibleLanguages();
 			this.constructor.getLocalizeResources(possibleLanguages)
 				.then((res) => {
 					if (!res) {
@@ -40,18 +36,18 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 		};
 		this.__updatedProperties = new Map();
-		this.__pageLanguage = getDocumentLanguage() || getDocumentLanguageFallback() || 'en';
 
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		addListener(this.__languageChangeCallback);
+		this.__documentLocaleSettings.addChangeListener(this.__languageChangeCallback);
+		this.__languageChangeCallback();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		removeListener(this.__languageChangeCallback);
+		this.__documentLocaleSettings.removeChangeListener(this.__languageChangeCallback);
 		this.__updatedProperties.clear();
 	}
 
@@ -81,31 +77,16 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	}
 
-	getTimezone() {
-		return getTimezone();
-	}
-
-	formatDateTime(val, opts) {
-		return formatDateTime(this.__pageLanguage, val, opts);
-	}
-
-	formatDate(val, opts) {
-		return formatDate(this.__pageLanguage, val, opts);
-	}
-
-	formatFileSize(val) {
-		return formatFileSize(this.__pageLanguage, val);
-	}
-
-	formatNumber(val, opts) {
-		return formatNumber(this.__pageLanguage, val, opts);
-	}
-
-	formatTime(val, opts) {
-		return formatTime(this.__pageLanguage, val, opts);
-	}
-
 	localize(key) {
+
+		if (!key || !this.__resources || !this.__language) {
+			return '';
+		}
+
+		const translatedValue = this.__resources[key];
+		if (!translatedValue) {
+			return '';
+		}
 
 		let params = {};
 		if (arguments.length > 1 && typeof arguments[1] === 'object') {
@@ -118,25 +99,15 @@ export const LocalizeMixin = superclass => class extends superclass {
 			}
 		}
 
-		return localize(key, this.__resources, this.__language, params);
+		const translatedMessage = new IntlMessageFormat(translatedValue, this.__language);
+		return translatedMessage.format(params);
 
 	}
 
-	parseDate(val) {
-		return parseDate(this.__pageLanguage, val);
-	}
-
-	parseNumber(val, opts) {
-		return parseNumber(this.__pageLanguage, val, opts);
-	}
-
-	parseTime(val) {
-		return parseTime(this.__pageLanguage, val);
-	}
-
-	_generatePossibleLanguages(docLang, docFallbackLang) {
+	_generatePossibleLanguages() {
 		const langs = [];
 
+		let docLang = this.__documentLocaleSettings.language;
 		if (docLang) {
 			docLang = docLang.toLowerCase();
 			langs.push(docLang);
@@ -147,6 +118,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 			}
 		}
 
+		let docFallbackLang = this.__documentLocaleSettings.fallbackLanguage;
 		if (docFallbackLang) {
 			docFallbackLang = docFallbackLang.toLowerCase();
 			langs.push(docFallbackLang);

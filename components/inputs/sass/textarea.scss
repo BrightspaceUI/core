@@ -1,5 +1,5 @@
-@import '../colors/colors.scss';
-@import './input-text.scss';
+@import '../../colors/colors.scss';
+@import './text.scss';
 
 @mixin d2l-input-textarea() {
 	@include d2l-input-text(
