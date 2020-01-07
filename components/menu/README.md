@@ -24,7 +24,7 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 
 **Properties:**
 
-* `label` (required, String): Text to be applied to menu `aria-label` for use with screen readers
+* `label` (required for root menu, String): Text to be applied to menu `aria-label` for use with screen readers; for nested menus, the label is automatically applied based on its parent menu-item
 
 **Events:**
 
