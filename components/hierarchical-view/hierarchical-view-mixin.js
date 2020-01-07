@@ -26,8 +26,8 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				overflow: hidden;
 				width: 100%;
 				--d2l-hierarchical-view-height-transition: height 300ms linear;
-				-webkit-transition: const(--d2l-hierarchical-view-height-transition);
-				transition: const(--d2l-hierarchical-view-height-transition);
+				-webkit-transition: var(--d2l-hierarchical-view-height-transition);
+				transition: var(--d2l-hierarchical-view-height-transition);
 			}
 			:host([child-view]) {
 				display: none;
