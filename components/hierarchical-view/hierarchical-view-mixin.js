@@ -376,6 +376,15 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 	}
 
+	__onParentMutation() {
+		this.__isChildView();
+
+		if (this.childView) {
+			this.__removeEventListeners();
+			this.__mutationObserver.disconnect();
+		}
+	}
+
 	__onShowStart(e) {
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget === this || !rootTarget.hierarchicalView) return;
@@ -413,15 +422,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 	}
 
-	__reactToMutationChanges() {
-		this.__isChildView();
-
-		if (this.childView) {
-			this.__removeEventListeners();
-			this.__mutationObserver.disconnect();
-		}
-	}
-
 	__removeEventListeners() {
 		this.removeEventListener('focus', this.__focusCapture);
 		this.removeEventListener('focusout', this.__focusOutCapture);
@@ -430,9 +430,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	/* Edge only - since children are upgraded before ancestors */
 	__startMutationObserver() {
-		this.__bound_reactToMutationChanges = this.__bound_reactToMutationChanges || this.__reactToMutationChanges.bind(this);
+		this.__bound_onParentMutation = this.__bound_onParentMutation || this.__onParentMutation.bind(this);
 
-		this.__mutationObserver = this.__mutationObserver || new MutationObserver(this.__bound_reactToMutationChanges);
+		this.__mutationObserver = this.__mutationObserver || new MutationObserver(this.__bound_onParentMutation);
 		this.__mutationObserver.disconnect();
 
 		// mutation is triggered when parent (e.g., d2l-menu-item) sets an attribute (e.g., aria-haspopup)
