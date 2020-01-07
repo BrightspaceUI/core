@@ -107,7 +107,7 @@ describe('d2l-menu', function() {
 		});
 	});
 
-	describe('nested menu', () => {
+	describe('nested', () => {
 		it('simple', async function() {
 			const rect = await visualDiff.getRect(page, '#nested');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

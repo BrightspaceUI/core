@@ -32,7 +32,7 @@ describe('d2l-menu rtl', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	describe('nested menu', () => {
+	describe('nested', () => {
 		it('simple', async function() {
 			const rect = await visualDiff.getRect(page, '#nested');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
