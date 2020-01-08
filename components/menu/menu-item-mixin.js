@@ -9,8 +9,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			last: { type: String, reflect: true }, // set by d2l-menu
 			role: { type: String, reflect: true },
 			tabindex: { type: String, reflect: true },
-			text: String,
-			visible: Boolean
+			text: String
 		};
 	}
 

@@ -263,7 +263,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			const item = this._items[i];
 			item.removeAttribute('first');
 			item.removeAttribute('last');
-			item.setAttribute('visible', true);
 			if (!item.hidden) {
 				item.setAttribute('tabindex', visibleItems.length === 0 ? 0 : -1);
 				visibleItems.push(item);
