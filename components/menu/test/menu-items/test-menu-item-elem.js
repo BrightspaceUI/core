@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { MenuItemMixin } from '../menu-item-mixin.js';
+import { MenuItemMixin } from '../../menu-item-mixin.js';
 
 class TestMenuItemElem extends MenuItemMixin(LitElement) {
 	render() {

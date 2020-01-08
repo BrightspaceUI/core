@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-menu (radio) unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../menu.js"></script>
+		<script type="module" src="../menu-item-radio.js"></script>
+	</head>
+	<body>
+		<test-fixture id="basic">
+			<template>
+				<d2l-menu id="menu">
+					<d2l-menu-item-radio id="radio1" value="1"></d2l-menu-item-radio>
+					<d2l-menu-item-radio id="radio2" value="2"></d2l-menu-item-radio>
+					<d2l-menu-item-radio id="radio3" value="3" disabled></d2l-menu-item-radio>
+				</d2l-menu>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			describe('d2l-menu (radio)', () => {
+				let menu, radio;
+				describe('basic', () => {
+					beforeEach(async() => {
+						menu = fixture('basic');
+						radio = menu.querySelector('#radio1');
+						await menu.updateComplete;
+					});
+
+					it('has role="menuitemradio"', function() {
+						expect(radio.getAttribute('role')).to.equal('menuitemradio');
+					});
+
+					it('swallows the "select" event', function(done) {
+						let dispatched = false;
+						menu.addEventListener('d2l-menu-item-select', function() {
+							dispatched = true;
+						});
+						setTimeout(function() {
+							expect(dispatched).to.be.false;
+							done();
+						}, 0);
+						radio.click();
+					});
+
+					it('dispatches d2l-menu-item-change event when item is clicked', function(done) {
+						radio.addEventListener('d2l-menu-item-change', function(e) {
+							expect(e.detail.value).to.equal('1');
+							expect(e.detail.selected).to.be.true;
+							done();
+						});
+						radio.click();
+					});
+
+					it('dispatches d2l-menu-item-change event when enter key pressed on item', function(done) {
+						radio.addEventListener('d2l-menu-item-change', function() {
+							done();
+						});
+						dispatchKeyEvent(radio, 13);
+					});
+
+					it('dispatches d2l-menu-item-change event when space key pressed on item', function(done) {
+						radio.addEventListener('d2l-menu-item-change', function() {
+							done();
+						});
+						dispatchKeyEvent(radio, 32);
+					});
+
+					it('does not dispatch d2l-menu-item-change event for disabled item', function(done) {
+						radio = menu.querySelector('#radio3');
+						let dispatched = false;
+						radio.addEventListener('d2l-menu-item-change', function() {
+							dispatched = true;
+						});
+						setTimeout(function() {
+							expect(dispatched).to.be.false;
+							done();
+						}, 0);
+						dispatchKeyEvent(radio, 13);
+					});
+
+					it('should set selected=true on selection', function(done) {
+						let clicks = 0;
+						radio.addEventListener('d2l-menu-item-change', function(e) {
+							expect(radio.selected).to.be.true;
+							expect(e.detail.selected).to.be.true;
+							expect(e.detail.value).to.equal('1');
+							if (clicks > 0) {
+								done();
+							}
+							clicks++;
+						});
+						radio.click();
+						radio.click();
+					});
+
+					it('deselects other radio options in the menu when selected', function(done) {
+						menu.querySelector('#radio2').click();
+
+						radio.addEventListener('d2l-menu-item-change', function() {
+							expect(radio.selected).to.be.true;
+							expect(menu.querySelector('#radio2').selected).to.be.false;
+							done();
+						});
+						radio.click();
+					});
+				});
+			});
+
+			function dispatchKeyEvent(el, key) {
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = key;
+				el.dispatchEvent(eventObj);
+			}
+		</script>
+	</body>
+</html>

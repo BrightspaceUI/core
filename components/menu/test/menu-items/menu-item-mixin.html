@@ -38,13 +38,43 @@
 						expect(menuItem.getAttribute('role')).to.equal('menuitem');
 					});
 
-					it('fires select event when item clicked', (done) => {
+					it('dispatches select event when item clicked', (done) => {
 						menuItem.addEventListener('d2l-menu-item-select', (e) => {
 							expect(e.target.id).to.equal('my-menu-item');
 							done();
 						});
 						menuItem.click();
 					});
+
+					it('dispatches select event when enter key pressed on item', (done) => {
+						menuItem.addEventListener('d2l-menu-item-select', (e) => {
+							expect(e.target.id).to.equal('my-menu-item');
+							done();
+						});
+						dispatchKeyEvent(menuItem, 13);
+					});
+
+					it('dispatches select event when space key pressed on item', (done) => {
+						menuItem.addEventListener('d2l-menu-item-select', (e) => {
+							expect(e.target.id).to.equal('my-menu-item');
+							done();
+						});
+						dispatchKeyEvent(menuItem, 32);
+					});
+
+					function dispatchKeyEvent(el, key) {
+						if (document.createEventObject) {
+							const eventObj = document.createEventObject();
+							eventObj.keyCode = key;
+							el.dispatchEvent('onkeydown', eventObj);
+						} else if (document.createEvent) {
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.which = key;
+							eventObj.keyCode = key;
+							el.dispatchEvent(eventObj);
+						}
+					}
 				});
 
 				describe('disabled', () => {
@@ -54,15 +84,15 @@
 						await disabledMenuItem.updateComplete;
 					});
 
-					it('does not fire select event for disabled item', (done) => {
-						let fired = false;
+					it('does not dispatch select event for disabled item', (done) => {
+						let dispatchd = false;
 
 						disabledMenuItem.addEventListener('d2l-menu-item-select', () => {
-							fired = true;
+							dispatchd = true;
 						});
 
 						setTimeout(() => {
-							expect(fired).to.be.false;
+							expect(dispatchd).to.be.false;
 							done();
 						}, 0);
 
