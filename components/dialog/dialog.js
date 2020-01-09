@@ -110,9 +110,6 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 			content = html`<div><slot></slot></div>`;
 		}
 
-		const loadingSpinner = (this.async && this.asyncState !== 'complete')
-			? html`<div class="d2l-dialog-content-loading"><d2l-loading-spinner size="100"></d2l-loading-spinner></div>` : null;
-
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner">
