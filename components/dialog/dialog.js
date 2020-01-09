@@ -1,7 +1,7 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
+import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { AsyncContainerMixin } from '../../mixins/async-container/async-container-mixin.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -99,7 +99,7 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 	render() {
 
 		let content;
-		if (this.async && this.asyncState !== 'complete') {
+		if (this.async && this.asyncState !== asyncStates.complete) {
 			content = html`
 				<div class="d2l-dialog-content-loading">
 					<d2l-loading-spinner size="100"></d2l-loading-spinner>
@@ -133,7 +133,7 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 
 	updated(changedProperties) {
 		if (!changedProperties.has('asyncState')) return;
-		if (this.asyncState === 'complete') {
+		if (this.asyncState === asyncStates.complete) {
 			this.resize();
 		}
 	}
