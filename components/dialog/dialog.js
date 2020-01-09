@@ -97,6 +97,19 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 	}
 
 	render() {
+
+		let content;
+		if (this.async && this.asyncState !== 'complete') {
+			content = html`
+				<div class="d2l-dialog-content-loading">
+					<d2l-loading-spinner size="100"></d2l-loading-spinner>
+				</div>
+				<div style="display: none;"><slot></slot></div>
+			`;
+		} else {
+			content = html`<div><slot></slot></div>`;
+		}
+
 		const loadingSpinner = (this.async && this.asyncState !== 'complete')
 			? html`<div class="d2l-dialog-content-loading"><d2l-loading-spinner size="100"></d2l-loading-spinner></div>` : null;
 
@@ -109,10 +122,7 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
-				<div class="d2l-dialog-content">
-					${loadingSpinner}
-					<div><slot></slot></div>
-				</div>
+				<div class="d2l-dialog-content">${content}</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer"></slot>
 				</div>
