@@ -46,6 +46,7 @@ document.querySelector('#open').addEventListener('click', () => {
 **Properties:**
 
 - `title-text` (required, String): Text displayed in the header of the dialog
+- `async` (Boolean): Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container)
 - `opened` (Boolean): Whether or not the dialog is open
 - `width` (Number, default: `600`): The preferred width (unit-less) for the dialog
 
