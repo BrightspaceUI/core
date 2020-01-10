@@ -27,7 +27,6 @@ class DialogAsyncContent extends LitElement {
 		return new Promise((resolve) => {
 			if (!href) {
 				throw new InitialStateError();
-				//reject();
 			}
 			setTimeout(() => {
 				resolve(html`
