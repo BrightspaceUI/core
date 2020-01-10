@@ -7,6 +7,7 @@ import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElement))) {
 
@@ -98,17 +99,21 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 
 	render() {
 
-		let content;
+		let loading = null;
+		const slotStyles = {};
 		if (this.async && this.asyncState !== asyncStates.complete) {
-			content = html`
+			slotStyles.display = 'none';
+			loading = html`
 				<div class="d2l-dialog-content-loading">
 					<d2l-loading-spinner size="100"></d2l-loading-spinner>
 				</div>
-				<div style="display: none;"><slot></slot></div>
 			`;
-		} else {
-			content = html`<div><slot></slot></div>`;
 		}
+
+		const content = html`
+			${loading}
+			<div style=${styleMap(slotStyles)}><slot></slot></div>
+		`;
 
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
