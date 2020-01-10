@@ -3,12 +3,6 @@ import { css, LitElement } from 'lit-element/lit-element.js';
 
 class MenuItemSeparator extends LitElement {
 
-	static get properties() {
-		return {
-			role: { type: String, reflect: true }
-		};
-	}
-
 	static get styles() {
 		return css`
 			:host {
@@ -21,10 +15,10 @@ class MenuItemSeparator extends LitElement {
 		`;
 	}
 
-	constructor() {
-		super();
+	firstUpdated() {
+		super.firstUpdated();
 
-		this.role = 'separator';
+		this.setAttribute('role', 'separator');
 	}
 }
 

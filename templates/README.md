@@ -40,3 +40,5 @@ Mental Models and Page Structure:
 ```
 
 If no nodes are assigned to the `footer` slot, the footer is hidden.
+
+**Note:** this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-hierarchical-view unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../hierarchical-view.js"></script>
+	</head>
+	<body>
+		<test-fixture id="views">
+			<template>
+				<a id="previous_focusable" tabindex="0"></a>
+				<d2l-hierarchical-view id="view1">
+					<div id="view1_content" tabindex="0">view 1</div>
+					<d2l-hierarchical-view id="view2">
+						<div id="view2_content" tabindex="0">view 2</div>
+					</d2l-hierarchical-view>
+				</d2l-hierarchical-view>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			describe('d2l-hierarchical-view', () => {
+				let view1, view2;
+				beforeEach((done) => {
+					fixture('views');
+					view1 = document.getElementById('view1');
+					view2 = document.getElementById('view2');
+					const initHandler = () => {
+						view1.removeEventListener('d2l-hierarchical-view-resize', initHandler);
+						done();
+					};
+					view1.addEventListener('d2l-hierarchical-view-resize', initHandler);
+				});
+
+				it('root view is initially active', () => {
+					expect(view1.isActive()).to.be.true;
+					expect(view1.getRootView()).to.equal(view1);
+					expect(view1.getActiveView()).to.equal(view1);
+				});
+
+				it('child view is initially inactive', () => {
+					expect(view2.isActive()).to.be.false;
+				});
+
+				it('resize on root view triggers resize event', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-resize', () => {
+						done();
+					});
+					view1.resize();
+				});
+
+				it('resize on child view triggers resize event', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-resize', () => {
+						done();
+					});
+					view2.resize();
+				});
+
+				it('resizes when light-dom is mutated', (done) => {
+					const initialHeight = view1.getBoundingClientRect().height;
+					view1.addEventListener('d2l-hierarchical-view-resize', () => {
+						setTimeout(() => {
+							expect(view1.getBoundingClientRect().height).to.above(initialHeight);
+							done();
+						}, 400);
+					});
+					const content = document.createElement('p');
+					content.appendChild(document.createTextNode('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'));
+					view1.appendChild(content);
+				});
+
+				it('show on child view triggers show-start event', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-start', (e) => {
+						expect(e.detail.sourceView).to.equal(view2);
+						done();
+					});
+					view2.show();
+				});
+
+				it('show on child view triggers show-complete event', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						done();
+					});
+					view2.show();
+				});
+
+				it('show data argument is passed to show-start and show-complete event handlers', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-start', (e) => {
+						expect(e.detail.data.some).to.equal('thing');
+					});
+					view1.addEventListener('d2l-hierarchical-view-show-complete', (e) => {
+						expect(e.detail.data.some).to.equal('thing');
+						done();
+					});
+					view2.show({ some: 'thing' });
+				});
+
+				it('show on child view makes it active view', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						expect(view1.isActive()).to.be.false;
+						expect(view2.isActive()).to.be.true;
+						done();
+					});
+					view2.show();
+				});
+
+				it('hide on child view triggers hide-start event', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						view1.addEventListener('d2l-hierarchical-view-hide-start', (e) => {
+							expect(e.detail.sourceView).to.equal(view2);
+							done();
+						});
+						view2.hide();
+					});
+					view2.show();
+				});
+
+				it('hide on child view triggers hide-complete event', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						view1.addEventListener('d2l-hierarchical-view-hide-complete', () => {
+							expect(view1.isActive()).to.be.true;
+							done();
+						});
+						view2.hide();
+					});
+					view2.show();
+				});
+
+				it('hide data argument is passed to hide-start and hide-complete event handlers', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						view1.addEventListener('d2l-hierarchical-view-hide-start', (e) => {
+							expect(e.detail.data.some).to.equal('thing');
+						});
+						view1.addEventListener('d2l-hierarchical-view-hide-complete', (e) => {
+							expect(e.detail.data.some).to.equal('thing');
+							done();
+						});
+						view2.hide({ some: 'thing' });
+					});
+					view2.show();
+				});
+
+				it('pressing Escape in child view context hides view', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						view1.addEventListener('d2l-hierarchical-view-hide-complete', () => {
+							expect(view1.isActive()).to.be.true;
+							done();
+						});
+						const view2_content = document.getElementById('view2_content');
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keyup', true, true);
+						eventObj.keyCode = 27;
+						view2_content.dispatchEvent(eventObj);
+					});
+					view2.show();
+				});
+
+				it('applies focus using focus override if provided', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						const mockFocusHandler = () => {
+							done();
+						};
+						view2.focus = mockFocusHandler;
+						const view1_content = document.getElementById('view1_content');
+						view1_content.focus();
+					});
+					view2.show();
+				});
+
+				it('applies focus to next focusable element in active view', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						document.getElementById('view1_content').focus();
+						expect(document.activeElement).to.equal(document.getElementById('view2_content'));
+						done();
+					});
+					view2.show();
+				});
+
+				it('applies focus to previous focusable element outside hierarchy', (done) => {
+					view1.addEventListener('d2l-hierarchical-view-show-complete', () => {
+						document.getElementById('view2_content').focus();
+						document.getElementById('view1_content').focus();
+						expect(document.activeElement).to.equal(document.getElementById('previous_focusable'));
+						done();
+					});
+					view2.show();
+				});
+			});
+		</script>
+	</body>
+</html>

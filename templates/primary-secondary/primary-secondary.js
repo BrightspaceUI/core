@@ -27,10 +27,10 @@ class TemplatePrimarySecondary extends LitElement {
 				"footer footer footer";
 				height: 100vh;
 			}
-			.d2l-template-primary-secondary-header {
+			header {
 				grid-area: header;
 			}
-			.d2l-template-primary-secondary-primary {
+			main {
 				grid-area: primary;
 				overflow-y: auto;
 			}
@@ -39,11 +39,11 @@ class TemplatePrimarySecondary extends LitElement {
 				background-color: var(--d2l-color-mica);
 				width: 1px;
 			}
-			.d2l-template-primary-secondary-secondary {
+			aside {
 				grid-area: secondary;
 				overflow-y: auto;
 			}
-			.d2l-template-primary-secondary-footer {
+			footer {
 				grid-area: footer;
 				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
 				padding: 0.75rem 1rem;
@@ -54,11 +54,11 @@ class TemplatePrimarySecondary extends LitElement {
 	render() {
 		return html`
 			<div class="container">
-				<div class="d2l-template-primary-secondary-header"><slot name="header"></slot></div>
-				<div class="d2l-template-primary-secondary-primary"><slot name="primary"></slot></div>
+				<header><slot name="header"></slot></header>
+				<main><slot name="primary"></slot></main>
 				<div class="d2l-template-primary-secondary-divider"></div>
-				<div class="d2l-template-primary-secondary-secondary"><slot name="secondary"></slot></div>
-				<div class="d2l-template-primary-secondary-footer" ?hidden="${!this._hasFooter}"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot></div>
+				<aside><slot name="secondary"></slot></aside>
+				<footer ?hidden="${!this._hasFooter}"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot></footer>
 			</div>
 		`;
 	}

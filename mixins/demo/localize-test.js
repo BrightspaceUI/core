@@ -66,7 +66,6 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 	}
 
 	render() {
-		const date = new Date();
 		requestAnimationFrame(
 			() => this.dispatchEvent(new CustomEvent('d2l-test-localize-render', {
 				bubbles: false,
@@ -74,12 +73,7 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			}))
 		);
 		return html`
-			<p>Text: ${this.localize('hello', {name: this.name})}</p>
-			<p>Number: ${this.formatNumber(123456.789)}</p>
-			<p>Date: ${this.formatDate(date)}</p>
-			<p>Time: ${this.formatTime(date)}</p>
-			<p>Date &amp; time: ${this.formatDateTime(date)}</p>
-			<p>File size: ${this.formatFileSize(123456789)}</p>
+			<p>${this.localize('hello', {name: this.name})}</p>
 		`;
 	}
 
