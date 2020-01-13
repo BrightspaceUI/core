@@ -1,16 +1,20 @@
+import '../button/button-icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { heading4Styles } from '../typography/styles.js';
+import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class Calendar extends RtlMixin(LitElement) {
+class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: String,
 			_firstDayOfWeek: Number,
+			_nextMonth: Number,
+			_prevMonth: Number,
 			_selectedDate: Number,
 			_selectedMonth: Number,
 			_selectedYear: Number,
@@ -22,7 +26,6 @@ class Calendar extends RtlMixin(LitElement) {
 	static get styles() {
 		return [heading4Styles, css`
 				:host {
-					border-radius: 4px;
 					display: block;
 				}
 
@@ -48,6 +51,10 @@ class Calendar extends RtlMixin(LitElement) {
 
 				thead {
 					vertical-align: top;
+				}
+
+				.d2l-calendar {
+					border-radius: 4px;
 				}
 
 				.d2l-calendar-title {
@@ -97,14 +104,31 @@ class Calendar extends RtlMixin(LitElement) {
 			`];
 	}
 
+	static get resources() {
+		return {
+			'ar': { show: 'Show {month} ' },
+			'en': { show: 'Show {month}' },
+			'es': { show: 'Show {month} ' },
+			'fr': { show: 'Show {month} ' },
+			'ja': { show: 'Show {month} ' },
+			'ko': { show: 'Show {month} ' },
+			'nl': { show: 'Show {month} ' },
+			'pt': { show: 'Show {month} ' },
+			'sv': { show: 'Show {month} ' },
+			'tr': { show: 'Show {month} ' },
+			'zh': { show: 'Show {month} ' },
+			'zh-tw': { show: 'Show {month} ' }
+		};
+	}
+
 	constructor() {
 		super();
 
 		const descriptor = getDateTimeDescriptor();
 		this._monthNames = descriptor.calendar.months.long;
+		this._firstDayOfWeek = descriptor.calendar.firstDayOfWeek;
 		const weekdays = descriptor.calendar.days.long;
 		const weekdaysShort = descriptor.calendar.days.short;
-		this._firstDayOfWeek = descriptor.calendar.firstDayOfWeek;
 
 		this._arrangedWeekdays = [];
 		for (let i = this._firstDayOfWeek; i < this._firstDayOfWeek + 7; i++) {
@@ -127,6 +151,16 @@ class Calendar extends RtlMixin(LitElement) {
 
 		this._shownMonth = this._selectedMonth;
 		this._shownYear = this._selectedYear;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === '_shownMonth') {
+				this._setNextPrevMonth();
+			}
+		});
 	}
 
 	render() {
@@ -161,13 +195,13 @@ class Calendar extends RtlMixin(LitElement) {
 					<thead>
 						<tr class="d2l-calendar-title">
 							<td>
-								L
+								<d2l-button-icon @click="${this._showPrevMonth}" text="${this._computeText(this._prevMonth)}" icon="tier1:chevron-left"></d2l-button-icon>
 							</td>
 							<th colspan="5">
 								<h2 class="d2l-heading-4">${this._monthNames[this._shownMonth]} ${this._shownYear}</h2>
 							</th>
 							<td>
-								R
+								<d2l-button-icon @click="${this._showNextMonth}" text="${this._computeText(this._nextMonth)}" icon="tier1:chevron-right"></d2l-button-icon>
 							</td>
 						</tr>
 					</thead>
@@ -181,6 +215,10 @@ class Calendar extends RtlMixin(LitElement) {
 				<slot></slot>
 			</div>
 		`;
+	}
+
+	_computeText(month) {
+		return this.localize('show', {month: this._monthNames[month]});
 	}
 
 	_checkIfSelected(month, date, year) {
@@ -209,13 +247,7 @@ class Calendar extends RtlMixin(LitElement) {
 
 		// populate first week of month
 		if (firstDay.getDay() !== this._firstDayOfWeek) {
-			let lastMonth;
-			if (this._shownMonth === 0) {
-				lastMonth = 12;
-			} else {
-				lastMonth = this._shownMonth;
-			}
-			const numDaysLastMonth = this._getNumberOfDaysInMonth(lastMonth, this._shownYear);
+			const numDaysLastMonth = this._getNumberOfDaysInMonth(this._prevMonth, this._shownYear);
 			numDaysFromLastMonthToShowThisMonth = firstDay.getDay() - this._firstDayOfWeek;
 			if (numDaysFromLastMonthToShowThisMonth < 0) {
 				numDaysFromLastMonthToShowThisMonth += 7;
@@ -265,6 +297,33 @@ class Calendar extends RtlMixin(LitElement) {
 			days = 30;
 		}
 		return days;
+	}
+
+	_setNextPrevMonth() {
+		if (this._shownMonth === 0) {
+			this._prevMonth = 11;
+			this._nextMonth = this._shownMonth + 1;
+		} else if (this._shownMonth === 11) {
+			this._prevMonth = this._shownMonth - 1;
+			this._nextMonth = 0;
+		} else {
+			this._prevMonth = this._shownMonth - 1;
+			this._nextMonth = this._shownMonth + 1;
+		}
+	}
+
+	_showNextMonth() {
+		if (this._shownMonth === 11) {
+			this._shownYear++;
+		}
+		this._shownMonth = this._nextMonth;
+	}
+
+	_showPrevMonth() {
+		if (this._shownMonth === 0) {
+			this._shownYear--;
+		}
+		this._shownMonth = this._prevMonth;
 	}
 
 }
