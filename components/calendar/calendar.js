@@ -379,7 +379,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		};
 
 		// RTL fix this
-		// issue if there are multiple 1's in a month, who gets focus
+		// issue if there are multiple 1's in a month, tab will go to both
+		// also clean this up
 		const col = parseInt(rootTarget.getAttribute('data-col'));
 		const row = parseInt(rootTarget.getAttribute('data-row'));
 		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP) {
@@ -402,9 +403,30 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				this._focusOnDate(col, newRow);
 			}
 		} else if (e.keyCode === keyCodes.LEFT) {
-			this._focusOnDate(col - 1, row);
+			let newCol = col - 1;
+			let newRow = row;
+			if (newCol < 0) {
+				newCol = 6;
+				newRow -= 1;
+				if (newRow < 0) {
+					this._showPrevMonth();
+					newRow = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
+				}
+			}
+			this._focusOnDate(newCol, newRow);
 		} else if (e.keyCode === keyCodes.RIGHT) {
-			this._focusOnDate(col + 1, row);
+			let newCol = col + 1;
+			let newRow = row;
+			if (newCol > 6) {
+				newCol = 0;
+				newRow += 1;
+				const numWeeks = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
+				if (newRow > numWeeks) {
+					this._showNextMonth();
+					newRow = 0;
+				}
+			}
+			this._focusOnDate(newCol, newRow);
 		} else if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
 			e.stopPropagation();
 			e.preventDefault();
