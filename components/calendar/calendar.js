@@ -27,6 +27,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return [heading4Styles, css`
 				:host {
 					display: block;
+					min-width: 350px;
 				}
 
 				table {
@@ -68,7 +69,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				}
 
 				.d2l-calendar-day {
-					border: 1px solid transparent;
 					cursor: pointer;
 					font-size: 0.8rem;
 					position: relative;
@@ -77,29 +77,40 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 				.d2l-calendar-day div {
 					align-items: center;
+					border: 2.5px solid transparent;
 					border-radius: 8px;
 					color: var(--d2l-color-ferrite);
 					display: flex;
-					height: 2.5rem;
+					height: 2rem;
 					justify-content: center;
 					margin-left: auto;
 					margin-right: auto;
-					width: 2.5rem;
+					width: 2rem;
 				}
 
-				.d2l-calendar-day:hover div,
-				.d2l-calendar-day:focus div {
-					background-color: var(--d2l-color-celestine-plus-2);
+				.d2l-calendar-day:focus {
 					outline: none;
+				}
+
+				.d2l-calendar-day:hover div {
+					background-color: var(--d2l-color-celestine-plus-2);
+					color: var(--d2l-color-ferrite);
+				}
+
+				.d2l-calendar-day:focus div {
+					background-color: white;
+					border-color: var(--d2l-color-celestine);
+					color: var(--d2l-color-ferrite);
 				}
 
 				.d2l-calendar-day-selected div {
 					background-color: var(--d2l-color-celestine);
 					color: white;
-					outline: none;
 				}
 
-				.d2l-calendar-day-other-month div {
+				.d2l-calendar-day-other-month div,
+				.d2l-calendar-day-other-month:hover div,
+				.d2l-calendar-day-other-month:focus div {
 					color: var(--d2l-color-chromite);
 				}
 			`];
@@ -145,6 +156,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
+		this.addEventListener('keydown', this._onKeyDown);
+
 		const selected = parseDate(this.selectedValue);
 		this._selectedMonth = selected.getMonth();
 		this._selectedDate = selected.getDate();
@@ -160,6 +173,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_shownMonth') {
 				this._setNextPrevMonth();
+				this._dates = this.shadowRoot.querySelectorAll('.d2l-calendar-day');
 			}
 		});
 	}
@@ -184,9 +198,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				return html`
 					<td
 						@click="${this._onDateSelected}"
-						data-date="${day.date}"
+						data-date="${day.fullDate}"
+						data-row="${day.row}"
+						data-col="${day.col}"
 						class=${classMap(dayClass)}
-						tabindex="${day.selected ? 0 : -1}">
+						tabindex="${day.date === 1 ? 0 : -1}">
 						<div>${day.date}</div>
 					</td>
 				`;
@@ -232,13 +248,31 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return this.localize('show', {month: this._monthNames[month]});
 	}
 
-	_createDateObject(date, prevMonth, nextMonth) {
+	_createDateObject(date, row, col, prevMonth, nextMonth) {
+		let month = this._shownMonth;
+		let year = this._shownYear;
+		if (prevMonth) {
+			month = this._prevMonth;
+			if (this._shownMonth === 0) year = this._shownYear - 1;
+		} else if (nextMonth) {
+			month = this._nextMonth;
+			if (this._shownMonth === 11) year = this._shownYear + 1;
+		}
+		const fullDate = `${month + 1}/${date}/${year}`;
 		return {
 			date: date,
+			fullDate: fullDate,
+			row: row,
+			col: col,
 			prevMonth: prevMonth,
 			nextMonth: nextMonth,
 			selected: this._checkIfSelected(this._shownMonth, date, this._shownYear)
 		};
+	}
+
+	_focusOnDate(col, row) {
+		const cell = this._getCell(col, row);
+		cell.focus();
 	}
 
 	_generateDaysInMonth() {
@@ -252,6 +286,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const firstWeek = [];
 		const firstDayOfMonth = new Date(this._shownYear, this._shownMonth, 1).getDay();
 		let numDaysFromLastMonthToShowThisMonth = 0;
+		let col = 0;
 		if (firstDayOfMonth !== this._firstDayOfWeek) {
 			const numDaysLastMonth = this._getNumberOfDaysInMonth(this._prevMonth, this._shownYear);
 			numDaysFromLastMonthToShowThisMonth = firstDayOfMonth - this._firstDayOfWeek;
@@ -259,28 +294,31 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				numDaysFromLastMonthToShowThisMonth += 7;
 			}
 			for (let i = numDaysLastMonth - numDaysFromLastMonthToShowThisMonth + 1; i <= numDaysLastMonth; i++) {
-				firstWeek.push(this._createDateObject(i, true, false));
+				firstWeek.push(this._createDateObject(i, 0, col, true, false));
+				col++;
 			}
 		}
 		for (let j = 1; j <= 7 - numDaysFromLastMonthToShowThisMonth; j++) {
-			firstWeek.push(this._createDateObject(j, false, false));
+			firstWeek.push(this._createDateObject(j, 0, col, false, false));
+			col++;
 		}
 		days.push(firstWeek);
 
 		// remaining weeks
 		let nextMonthDay = 1;
 		let firstDateOfWeek = 7 - numDaysFromLastMonthToShowThisMonth + 1;
-		for (let i = 1; i < Math.ceil(numDays / 7); i++) {
+		for (let i = 1; i < this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear); i++) {
 			const week = [];
+			col = 0;
 			for (let j = firstDateOfWeek; j < firstDateOfWeek + 7; j++) {
 				let day;
 				if (j >= (numDays + 1)) {
-					day = this._createDateObject(nextMonthDay, false, true);
+					day = this._createDateObject(nextMonthDay, i, col, false, true);
 					nextMonthDay++;
 				} else {
-					day = this._createDateObject(j, false, false);
+					day = this._createDateObject(j, i, col, false, false);
 				}
-
+				col++;
 				week.push(day);
 			}
 			firstDateOfWeek = firstDateOfWeek + 7;
@@ -288,6 +326,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 
 		return days;
+	}
+
+	_getCell(col, row) {
+		return [].filter.call(this._dates, (element) => {
+			return element.matches(`td[data-row="${row}"][data-col="${col}"]`);
+		})[0];
 	}
 
 	_getNumberOfDaysInMonth(month, year) {
@@ -305,13 +349,68 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return days;
 	}
 
-	_onDateSelected(e) {
+	_getNumberOfWeeksInAMonth(month, year) {
+		const numDays = this._getNumberOfDaysInMonth(month, year);
+		return Math.ceil(numDays / 7);
+	}
+
+	_onDateSelected(e, dataDate) {
+		const date = e.currentTarget.getAttribute('data-date') || dataDate;
 		const eventDetails = {
 			bubbles: true,
 			composed: true,
-			detail: { date: e.currentTarget.getAttribute('data-date') }
+			detail: { date: date }
 		};
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
+	}
+
+	_onKeyDown(e) {
+		const rootTarget = e.composedPath()[0];
+		if (!rootTarget.getAttribute('data-date')) return;
+
+		const keyCodes = {
+			DOWN: 40,
+			ENTER: 13,
+			ESCAPE: 27,
+			LEFT: 37,
+			SPACE: 32,
+			RIGHT: 39,
+			UP: 38
+		};
+
+		// RTL fix this
+		// issue if there are multiple 1's in a month, who gets focus
+		const col = parseInt(rootTarget.getAttribute('data-col'));
+		const row = parseInt(rootTarget.getAttribute('data-row'));
+		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP) {
+			e.preventDefault();
+			e.stopPropagation();
+			if (e.keyCode === keyCodes.DOWN) {
+				let newRow = row + 1;
+				const numWeeks = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
+				if (newRow > numWeeks) {
+					this._showNextMonth();
+					newRow = 0;
+				}
+				this._focusOnDate(col, newRow);
+			} else if (e.keyCode === keyCodes.UP) {
+				let newRow = row - 1;
+				if (newRow < 0) {
+					this._showPrevMonth();
+					newRow = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
+				}
+				this._focusOnDate(col, newRow);
+			}
+		} else if (e.keyCode === keyCodes.LEFT) {
+			this._focusOnDate(col - 1, row);
+		} else if (e.keyCode === keyCodes.RIGHT) {
+			this._focusOnDate(col + 1, row);
+		} else if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
+			e.stopPropagation();
+			e.preventDefault();
+			const cell = this._getCell(col, row);
+			this._onDateSelected(e, cell.getAttribute('data-date'));
+		}
 	}
 
 	_setNextPrevMonth() {
