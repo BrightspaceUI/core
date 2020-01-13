@@ -1,22 +1,17 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
 import { labelStyles } from './input-label-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 
 class InputTime extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			autofocus: { type: Boolean },
 			disabled: { type: Boolean, reflect: true },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			name: { type: String },
-			readonly: { type: Boolean },
-			required: { type: Boolean, reflect: true },
-			size: { type: Number },
 			value: { type: String },
 			_formattedValue: { type: String },
 			_dateValue: { type: Object }
@@ -42,11 +37,8 @@ class InputTime extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.autofocus = false;
 		this.disabled = false;
 		this.labelHidden = false;
-		this.readonly = false;
-		this.required = false;
 		this._dateValue = parseTime(this.value);
 		try {
 			this._formattedValue = formatTime(this._dateValue);
@@ -59,21 +51,14 @@ class InputTime extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const ariaRequired = this.required ? 'true' : undefined;
 		console.log('render', this._formattedValue);
 		const input = html`
 			<input
 				aria-label="${ifDefined(this._getAriaLabel())}"
-				aria-required="${ifDefined(ariaRequired)}"
-				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
 				class="d2l-input"
 				?disabled="${this.disabled}"
 				@keypress="${this._handleKeypress}"
-				name="${ifDefined(this.name)}"
-				?readonly="${this.readonly}"
-				size="${ifDefined(this.size)}"
-				tabindex="${ifDefined(this.tabindex)}"
 				.value="${this._formattedValue}">
 		`;
 		if (this.label && !this.labelHidden) {
