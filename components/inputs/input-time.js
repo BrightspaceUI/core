@@ -5,6 +5,46 @@ import { inputStyles } from './input-styles.js';
 import { labelStyles } from './input-label-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
+const TODAY = new Date();
+const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
+
+function formatValue(time) {
+	const zeroPadMin = (time.getMinutes() < 10) ? '0' : '';
+	const zeroPadSec = (time.getSeconds() < 10) ? '0' : '';
+	const value = `${time.getHours()}:${zeroPadMin}${time.getMinutes()}:${zeroPadSec}${time.getSeconds()}`;
+	return value;
+}
+
+function parseValue(val) {
+	let hour = 0;
+	let minute = 0;
+	let second = 0;
+	const match = VALUE_RE.exec(val);
+	if (match !== null) {
+		if (match.length > 1) {
+			hour = parseInt(match[1]);
+			if (isNaN(hour) || hour < 0 || hour > 23) {
+				hour = 0;
+			}
+		}
+		if (match.length > 2) {
+			minute = parseInt(match[2]);
+			if (isNaN(minute) || minute < 0 || minute > 59) {
+				minute = 0;
+			}
+		}
+		if (match.length > 3) {
+			second = parseInt(match[3]);
+			if (isNaN(second) || second < 0 || second > 59) {
+				second = 0;
+			}
+		}
+	}
+	const time = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), hour, minute, second);
+	return time;
+}
+
 class InputTime extends RtlMixin(LitElement) {
 
 	static get properties() {
@@ -13,8 +53,7 @@ class InputTime extends RtlMixin(LitElement) {
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			value: { type: String },
-			_formattedValue: { type: String },
-			_dateValue: { type: Object }
+			_formattedValue: { type: String }
 		};
 	}
 
@@ -39,19 +78,20 @@ class InputTime extends RtlMixin(LitElement) {
 		super();
 		this.disabled = false;
 		this.labelHidden = false;
-		this._dateValue = parseTime(this.value);
-		try {
-			this._formattedValue = formatTime(this._dateValue);
-		}
-		catch (e){
-			this._dateValue = new Date();
-			this._formattedValue = formatTime(this._dateValue);
-		}
-		this._setValue();
+		this._value = formatValue(DEFAULT_VALUE);
+		this._formattedValue = formatTime(DEFAULT_VALUE);
+	}
+
+	get value() { return this._value; }
+	set value(val) {
+		const oldValue = this.value;
+		const time = parseValue(val);
+		this._value = formatValue(time);
+		this._formattedValue = formatTime(time);
+		this.requestUpdate('value', oldValue);
 	}
 
 	render() {
-		console.log('render', this._formattedValue);
 		const input = html`
 			<input
 				aria-label="${ifDefined(this._getAriaLabel())}"
@@ -76,28 +116,13 @@ class InputTime extends RtlMixin(LitElement) {
 		if (elem) elem.focus();
 	}
 
-	getHour() {
-		return this._dateValue.getHours();
-	}
-
-	getMinute() {
-		return this._dateValue.getMinutes();
-	}
-
-	getSecond() {
-		return this._dateValue.getSeconds();
-	}
-
 	getTime() {
+		const time = parseValue(this.value);
 		return {
-			hour: this.getHour(),
-			minute: this.getMinute(),
-			second: this.getSecond()
+			hour: time.getHours(),
+			minute: time.getMinutes(),
+			second: time.getSeconds()
 		};
-	}
-
-	_setValue() {
-		this.value = `${this.getHour()}:${this.getMinute()}:${this.getSecond()}`
 	}
 
 	_getAriaLabel() {
@@ -110,27 +135,17 @@ class InputTime extends RtlMixin(LitElement) {
 		return undefined;
 	}
 
-	_handleChange(e) {
-		try {
-			this._dateValue = parseTime(e.target.value);
-			this._formattedValue = formatTime(this._dateValue);
-			this._setValue();
-			// Change events aren't composed, so we need to re-dispatch
-			this.dispatchEvent(new CustomEvent(
-				'd2l-time-input-changed',
-				{bubbles: true, composed: false} //Taken from input-text component - what do we mean 'composed'? Docs unclear
-			));
+	async _handleChange(e) {
+		const value = e.target.value;
+		const time = parseTime(value);
+		this._formattedValue = value;
+		await this.updateComplete;
+		if (time === null) {
+			this._formattedValue = formatTime(parseValue(this.value));
+		} else {
+			this.value = formatValue(time);
 		}
-		catch (e)
-		{
-			console.log(e);
-			this._dateValue = parseTime(this.value);
-			this._formattedValue = formatTime(this._dateValue);
-		}
-
-		console.log(this._dateValue);
-		console.log(this._formattedValue);
-		console.log(this.value);
 	}
+
 }
 customElements.define('d2l-input-time', InputTime);
