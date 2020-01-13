@@ -105,7 +105,6 @@ class Calendar extends RtlMixin(LitElement) {
 		const weekdays = descriptor.calendar.days.long;
 		const weekdaysShort = descriptor.calendar.days.short;
 		this._firstDayOfWeek = descriptor.calendar.firstDayOfWeek;
-		// this._firstDayOfWeek = 4;
 
 		this._arrangedWeekdays = [];
 		for (let i = this._firstDayOfWeek; i < this._firstDayOfWeek + 7; i++) {
@@ -218,7 +217,9 @@ class Calendar extends RtlMixin(LitElement) {
 			}
 			const numDaysLastMonth = this._getNumberOfDaysInMonth(lastMonth, this._shownYear);
 			numDaysFromLastMonthToShowThisMonth = firstDay.getDay() - this._firstDayOfWeek;
-			// handle multiple weeks last month -.-
+			if (numDaysFromLastMonthToShowThisMonth < 0) {
+				numDaysFromLastMonthToShowThisMonth += 7;
+			}
 			for (let i = numDaysLastMonth - numDaysFromLastMonthToShowThisMonth + 1; i <= numDaysLastMonth; i++) {
 				firstWeek.push(this._createDateObject(i, true, false));
 			}
