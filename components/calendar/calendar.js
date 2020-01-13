@@ -11,7 +11,6 @@ class Calendar extends RtlMixin(LitElement) {
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: String,
 			_firstDayOfWeek: Number,
-			_monthNames: Array,
 			_selectedDate: Number,
 			_selectedMonth: Number,
 			_selectedYear: Number,
@@ -23,33 +22,19 @@ class Calendar extends RtlMixin(LitElement) {
 	static get styles() {
 		return [heading4Styles, css`
 				:host {
-					display: block;
 					border-radius: 4px;
-				}
-
-				.d2l-calendar-mini-title {
-					border-top-left-radius: 4px;
-					border-top-right-radius: 4px;
-					text-align: center;
-				}
-
-				.d2l-calendar-mini-title .d2l-heading-4 {
-					margin: 0.25rem 0 1.25rem 0;
-				}
-
-				.d2l-calendar-mini-other-month {
-					color: var(--d2l-color-chromite);
+					display: block;
 				}
 
 				table {
 					border-collapse: separate;
 					border-spacing: 0;
-					width: 100%;
 					table-layout: fixed;
+					width: 100%;
 				}
 
 				th[role="columnheader"] {
-					/* padding: 0.45rem 0; */
+					padding: 0.45rem 0;
 				}
 
 				th > abbr {
@@ -65,29 +50,49 @@ class Calendar extends RtlMixin(LitElement) {
 					vertical-align: top;
 				}
 
-				.d2l-calendar-mini-day {
+				.d2l-calendar-title {
+					border-top-left-radius: 4px;
+					border-top-right-radius: 4px;
+					text-align: center;
+				}
+
+				.d2l-calendar-title .d2l-heading-4 {
+					margin: 0.25rem 0 1.25rem 0;
+				}
+
+				.d2l-calendar-day {
 					border: 1px solid transparent;
+					cursor: pointer;
 					font-size: 0.8rem;
 					position: relative;
 					text-align: center;
-					cursor: pointer;
 				}
 
-				.d2l-calendar-mini-day div {
+				.d2l-calendar-day div {
+					align-items: center;
 					border-radius: 10px;
-					width: 2.5rem;
+					display: flex;
 					height: 2.5rem;
+					justify-content: center;
 					margin-left: auto;
 					margin-right: auto;
-					display: flex;
-					align-items: center;
-					justify-content: center;
+					width: 2.5rem;
 				}
 
-				.d2l-calendar-mini-day:hover div,
-				.d2l-calendar-mini-day:focus div {
+				.d2l-calendar-day:hover div,
+				.d2l-calendar-day:focus div {
 					background-color: var(--d2l-color-celestine-plus-2);
+					color: var(--d2l-color-ferrite);
 					outline: none;
+				}
+
+				.d2l-calendar-day-selected div {
+					background-color: var(--d2l-color-celestine);
+					color: white;
+				}
+
+				.d2l-calendar-day-other-month {
+					color: var(--d2l-color-chromite);
 				}
 			`];
 	}
@@ -138,8 +143,9 @@ class Calendar extends RtlMixin(LitElement) {
 		const dayRows = days.map((week) => {
 			const weekHtml = week.map((day) => {
 				const dayClass = {
-					'd2l-calendar-mini-day': true,
-					'd2l-calendar-mini-other-month': day.lastMonth || day.nextMonth
+					'd2l-calendar-day': true,
+					'd2l-calendar-day-other-month': day.prevMonth || day.nextMonth,
+					'd2l-calendar-day-selected': day.selected
 				};
 				return html`
 					<td class=${classMap(dayClass)}><div>${day.date}</div></td>
@@ -151,10 +157,10 @@ class Calendar extends RtlMixin(LitElement) {
 		});
 
 		return html`
-			<div aria-labelledby="${this.labelledById}" class="d2l-calendar-mini">
+			<div aria-labelledby="${this.labelledById}" class="d2l-calendar">
 				<table summary="${this.summary}" role="grid">
 					<thead>
-						<tr class="d2l-calendar-mini-title">
+						<tr class="d2l-calendar-title">
 							<td>
 								L
 							</td>
@@ -173,18 +179,34 @@ class Calendar extends RtlMixin(LitElement) {
 						${dayRows}
 					</tbody>
 				</table>
+				<slot></slot>
 			</div>
 		`;
 	}
 
+	_checkIfSelected(month, date, year) {
+		return this._selectedMonth === month && this._selectedDate === date && this._selectedYear === year;
+	}
+
+	_createDateObject(date, prevMonth, nextMonth) {
+		return {
+			date: date,
+			prevMonth: prevMonth,
+			nextMonth: nextMonth,
+			selected: this._checkIfSelected(this._shownMonth, date, this._shownYear)
+		};
+	}
+
 	_generateDaysInMonth() {
 		if (this._shownMonth === undefined || !this._shownYear) return [];
-		const numDays = this._getNumberOfDaysInMonth(this._shownMonth + 1, this._shownYear);
+
+		const numDays = this._getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
 		const firstDay = new Date(this._shownYear, this._shownMonth, 1);
 
 		const days = [];
-		const week = [];
+		const firstWeek = [];
 		let startDay = 1;
+		let numDaysFromLastMonthToShowThisMonth = 0;
 
 		// populate first week of month
 		if (firstDay.getDay() !== this._firstDayOfWeek) {
@@ -195,50 +217,29 @@ class Calendar extends RtlMixin(LitElement) {
 				lastMonth = this._shownMonth;
 			}
 			const numDaysLastMonth = this._getNumberOfDaysInMonth(lastMonth, this._shownYear);
-			const numDaysFromLastMonth = firstDay.getDay() - this._firstDayOfWeek;
+			numDaysFromLastMonthToShowThisMonth = firstDay.getDay() - this._firstDayOfWeek;
 			// handle multiple weeks last month -.-
-			for (let i = numDaysLastMonth - numDaysFromLastMonth + 1; i <= numDaysLastMonth; i++) {
-				const day = {
-					date: i,
-					lastMonth: true
-				};
-				week.push(day);
+			for (let i = numDaysLastMonth - numDaysFromLastMonthToShowThisMonth + 1; i <= numDaysLastMonth; i++) {
+				firstWeek.push(this._createDateObject(i, true, false));
 			}
-			for (let j = 1; j <= 7 - numDaysFromLastMonth; j++) {
-				const day = {
-					date: j
-				};
-				startDay = j + 1;
-				week.push(day);
-			}
-			days.push(week);
-		} else {
-			for (let j = 1; j <= 7; j++) {
-				const day = {
-					date: j
-				};
-				startDay = j + 1;
-				week.push(day);
-			}
-			days.push(week);
 		}
+		for (let j = 1; j <= 7 - numDaysFromLastMonthToShowThisMonth; j++) {
+			startDay = j + 1;
+			firstWeek.push(this._createDateObject(j, false, false));
+		}
+		days.push(firstWeek);
 
-		// other weeks
-		let nextMonthDays = 1;
+		// remaining weeks
+		let nextMonthDay = 1;
 		for (let i = 1; i < Math.ceil(numDays / 7); i++) {
 			const week = [];
 			for (let j = startDay; j < startDay + 7; j++) {
 				let day;
 				if (j >= (numDays + 1)) {
-					day = {
-						date: nextMonthDays,
-						nextMonth: true
-					};
-					nextMonthDays++;
+					day = this._createDateObject(nextMonthDay, false, true);
+					nextMonthDay++;
 				} else {
-					day = {
-						date: j
-					};
+					day = this._createDateObject(j, false, false);
 				}
 
 				week.push(day);
@@ -251,6 +252,7 @@ class Calendar extends RtlMixin(LitElement) {
 	}
 
 	_getNumberOfDaysInMonth(month, year) {
+		month++; // month index started at 0
 		let days = 31;
 		if (month === 2) {
 			if ((year % 4 === 0) && ((year % 100 !== 0) || (year % 400 === 0))) {
