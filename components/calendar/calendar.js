@@ -64,7 +64,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				}
 
 				.d2l-calendar-title .d2l-heading-4 {
-					margin: 0.25rem 0 1.25rem 0;
+					margin: 0.45rem 0 1.25rem 0;
 				}
 
 				.d2l-calendar-day {
@@ -77,7 +77,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 				.d2l-calendar-day div {
 					align-items: center;
-					border-radius: 10px;
+					border-radius: 8px;
+					color: var(--d2l-color-ferrite);
 					display: flex;
 					height: 2.5rem;
 					justify-content: center;
@@ -89,16 +90,16 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				.d2l-calendar-day:hover div,
 				.d2l-calendar-day:focus div {
 					background-color: var(--d2l-color-celestine-plus-2);
-					color: var(--d2l-color-ferrite);
 					outline: none;
 				}
 
 				.d2l-calendar-day-selected div {
 					background-color: var(--d2l-color-celestine);
 					color: white;
+					outline: none;
 				}
 
-				.d2l-calendar-day-other-month {
+				.d2l-calendar-day-other-month div {
 					color: var(--d2l-color-chromite);
 				}
 			`];
@@ -181,7 +182,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					'd2l-calendar-day-selected': day.selected
 				};
 				return html`
-					<td class=${classMap(dayClass)}><div>${day.date}</div></td>
+					<td
+						@click="${this._onDateSelected}"
+						data-date="${day.date}"
+						class=${classMap(dayClass)}
+						tabindex="${day.selected ? 0 : -1}">
+						<div>${day.date}</div>
+					</td>
 				`;
 			});
 			return html`
@@ -217,12 +224,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`;
 	}
 
-	_computeText(month) {
-		return this.localize('show', {month: this._monthNames[month]});
-	}
-
 	_checkIfSelected(month, date, year) {
 		return this._selectedMonth === month && this._selectedDate === date && this._selectedYear === year;
+	}
+
+	_computeText(month) {
+		return this.localize('show', {month: this._monthNames[month]});
 	}
 
 	_createDateObject(date, prevMonth, nextMonth) {
@@ -237,18 +244,17 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	_generateDaysInMonth() {
 		if (this._shownMonth === undefined || !this._shownYear) return [];
 
-		const numDays = this._getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
-		const firstDay = new Date(this._shownYear, this._shownMonth, 1);
-
 		const days = [];
-		const firstWeek = [];
-		let startDay = 1;
-		let numDaysFromLastMonthToShowThisMonth = 0;
+
+		const numDays = this._getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
 
 		// populate first week of month
-		if (firstDay.getDay() !== this._firstDayOfWeek) {
+		const firstWeek = [];
+		const firstDayOfMonth = new Date(this._shownYear, this._shownMonth, 1).getDay();
+		let numDaysFromLastMonthToShowThisMonth = 0;
+		if (firstDayOfMonth !== this._firstDayOfWeek) {
 			const numDaysLastMonth = this._getNumberOfDaysInMonth(this._prevMonth, this._shownYear);
-			numDaysFromLastMonthToShowThisMonth = firstDay.getDay() - this._firstDayOfWeek;
+			numDaysFromLastMonthToShowThisMonth = firstDayOfMonth - this._firstDayOfWeek;
 			if (numDaysFromLastMonthToShowThisMonth < 0) {
 				numDaysFromLastMonthToShowThisMonth += 7;
 			}
@@ -257,16 +263,16 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 		}
 		for (let j = 1; j <= 7 - numDaysFromLastMonthToShowThisMonth; j++) {
-			startDay = j + 1;
 			firstWeek.push(this._createDateObject(j, false, false));
 		}
 		days.push(firstWeek);
 
 		// remaining weeks
 		let nextMonthDay = 1;
+		let firstDateOfWeek = 7 - numDaysFromLastMonthToShowThisMonth + 1;
 		for (let i = 1; i < Math.ceil(numDays / 7); i++) {
 			const week = [];
-			for (let j = startDay; j < startDay + 7; j++) {
+			for (let j = firstDateOfWeek; j < firstDateOfWeek + 7; j++) {
 				let day;
 				if (j >= (numDays + 1)) {
 					day = this._createDateObject(nextMonthDay, false, true);
@@ -277,7 +283,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 				week.push(day);
 			}
-			startDay = startDay + 7;
+			firstDateOfWeek = firstDateOfWeek + 7;
 			days.push(week);
 		}
 
@@ -297,6 +303,15 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			days = 30;
 		}
 		return days;
+	}
+
+	_onDateSelected(e) {
+		const eventDetails = {
+			bubbles: true,
+			composed: true,
+			detail: { date: e.currentTarget.getAttribute('data-date') }
+		};
+		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
 	}
 
 	_setNextPrevMonth() {
