@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-calendar unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../calendar.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="basic">
+			<template>
+				<d2l-calendar selected-value="09/02/2015"></d2l-calendar>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-calendar', () => {
+
+				let calendar;
+
+				describe('basic', () => {
+
+					beforeEach(async() => {
+						calendar = fixture('basic');
+						await calendar.updateComplete;
+					});
+
+					it('passes all axe tests', async() => {
+						await runAxe(calendar);
+					});
+
+					it('dispatches event when date clicked', (done) => {
+						calendar.addEventListener('d2l-calendar-selected', (e) => {
+							expect(e.detail.date).to.equal('9/1/2015');
+							done();
+						});
+						setTimeout(() => {
+							const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="1"]');
+							date.click();
+						});
+					});
+
+					it('dispatches event when enter key pressed on date', (done) => {
+						calendar.addEventListener('d2l-calendar-selected', (e) => {
+							expect(e.detail.date).to.equal('9/20/2015');
+							done();
+						});
+						setTimeout(() => {
+							const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="20"]');
+							dispatchKeyEvent(date, 13);
+						});
+					});
+
+					it('dispatches event when space key pressed on date', (done) => {
+						const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="2"]');
+						calendar.addEventListener('d2l-calendar-selected', (e) => {
+							expect(e.detail.date).to.equal('9/2/2015');
+							done();
+						});
+						setTimeout(() => {
+							const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="2"]');
+							dispatchKeyEvent(date, 13);
+						});
+					});
+
+					function dispatchKeyEvent(el, key) {
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keydown', true, true);
+						eventObj.which = key;
+						eventObj.keyCode = key;
+						el.dispatchEvent(eventObj);
+					}
+
+				});
+
+			});
+		</script>
+	</body>
+</html>

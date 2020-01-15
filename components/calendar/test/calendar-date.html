@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+		<title>d2l-calendar unit tests</title>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script src="/node_modules/mocha/mocha.js"></script>
+		<script src="/node_modules/chai/chai.js"></script>
+		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+		<script type="module" src="../calendar-date.js"></script>
+	</head>
+	<body>
+
+		<test-fixture id="basic">
+			<template>
+				<d2l-calendar-date date="12"></d2l-calendar-date>
+			</template>
+		</test-fixture>
+
+		<script type="module">
+			import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+			describe('d2l-calendar', () => {
+
+				let date;
+
+				describe('basic', () => {
+
+					beforeEach(async() => {
+						date = fixture('basic');
+						await date.updateComplete;
+					});
+
+					it('passes all axe tests', async() => {
+						await runAxe(date);
+					});
+
+					it('passes all axe tests when focused', async() => {
+						return new Promise((resolve, reject) => {
+							date.addEventListener('focus', async() => {
+								try {
+									await runAxe(date);
+									resolve();
+								} catch (e) {
+									reject(e);
+								}
+							});
+							date.focus();
+						});
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

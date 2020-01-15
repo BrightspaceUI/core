@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../calendar.js';
+
+		const oldDate = Date;
+		Date = function (year, month, date) {
+			if( ! year ) return new oldDate('02/12/2017');
+
+			return new oldDate(year, month, date);
+		}
+		Date.prototype = oldDate.prototype;
+	</script>
+	<title>d2l-calendar</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-calendar id="no-selected"></d2l-calendar>
+	</div>
+	<div class="visual-diff">
+		<d2l-calendar id="contains-today-diff-selected" selected-value="02/14/2017"></d2l-calendar>
+	</div>
+	<div class="visual-diff">
+		<d2l-calendar id="today-selected" selected-value="02/12/2017"></d2l-calendar>
+	</div>
+	<div class="visual-diff">
+		<d2l-calendar id="dec-2019" selected-value="12/01/2019"></d2l-calendar>
+	</div>
+	<div class="visual-diff">
+		<d2l-calendar id="nov-2019" selected-value="11/15/2019"></d2l-calendar>
+	</div>
+</body>
+</html>
