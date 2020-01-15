@@ -1,7 +1,8 @@
 import '../button/button-icon.js';
+import './calendar-date.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading4Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -12,12 +13,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return {
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: String,
+			_dates: Array,
 			_firstDayOfWeek: Number,
 			_nextMonth: Number,
 			_prevMonth: Number,
-			_selectedDate: Number,
-			_selectedMonth: Number,
-			_selectedYear: Number,
+			_selectedDate: Object,
 			_shownMonth: Number,
 			_shownYear: Number
 		};
@@ -67,52 +67,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				.d2l-calendar-title .d2l-heading-4 {
 					margin: 0.45rem 0 1.25rem 0;
 				}
-
-				.d2l-calendar-day {
-					cursor: pointer;
-					font-size: 0.8rem;
-					position: relative;
-					text-align: center;
-				}
-
-				.d2l-calendar-day div {
-					align-items: center;
-					border: 2.5px solid transparent;
-					border-radius: 8px;
-					color: var(--d2l-color-ferrite);
-					display: flex;
-					height: 2rem;
-					justify-content: center;
-					margin-left: auto;
-					margin-right: auto;
-					width: 2rem;
-				}
-
-				.d2l-calendar-day:focus {
-					outline: none;
-				}
-
-				.d2l-calendar-day:hover div {
-					background-color: var(--d2l-color-celestine-plus-2);
-					color: var(--d2l-color-ferrite);
-				}
-
-				.d2l-calendar-day:focus div {
-					background-color: white;
-					border-color: var(--d2l-color-celestine);
-					color: var(--d2l-color-ferrite);
-				}
-
-				.d2l-calendar-day-selected div {
-					background-color: var(--d2l-color-celestine);
-					color: white;
-				}
-
-				.d2l-calendar-day-other-month div,
-				.d2l-calendar-day-other-month:hover div,
-				.d2l-calendar-day-other-month:focus div {
-					color: var(--d2l-color-chromite);
-				}
 			`];
 	}
 
@@ -151,6 +105,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			};
 			this._arrangedWeekdays.push(day);
 		}
+
+		this._dialogLabelId = getUniqueId();
 	}
 
 	firstUpdated(changedProperties) {
@@ -159,12 +115,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this.addEventListener('keydown', this._onKeyDown);
 
 		const selected = parseDate(this.selectedValue);
-		this._selectedMonth = selected.getMonth();
-		this._selectedDate = selected.getDate();
-		this._selectedYear = selected.getFullYear();
+		this._selectedDate = {
+			month: selected.getMonth(),
+			date: selected.getDate(),
+			year: selected.getFullYear()
+		};
 
-		this._shownMonth = this._selectedMonth;
-		this._shownYear = this._selectedYear;
+		this._shownMonth = this._selectedDate.month;
+		this._shownYear = this._selectedDate.year;
 	}
 
 	updated(changedProperties) {
@@ -173,7 +131,16 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_shownMonth') {
 				this._setNextPrevMonth();
-				this._dates = this.shadowRoot.querySelectorAll('.d2l-calendar-day');
+				this._dates = this._generateDaysInMonth();
+				if (this._focusDate) {
+					// this happens if user navigates by arrow keys to next month
+					this.updateComplete.then(() => {
+						const node = this.shadowRoot.querySelector(`d2l-calendar-date[date="${this._focusDate.date}"][month="${this._focusDate.month}"][year="${this._focusDate.year}"]`);
+						if (node) {
+							node.focus();
+						}
+					});
+				}
 			}
 		});
 	}
@@ -187,44 +154,41 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			</th>
 		`);
 
-		const days = this._generateDaysInMonth();
-		const dayRows = days.map((week) => {
-			const weekHtml = week.map((day) => {
-				const dayClass = {
-					'd2l-calendar-day': true,
-					'd2l-calendar-day-other-month': day.prevMonth || day.nextMonth,
-					'd2l-calendar-day-selected': day.selected
-				};
+		let dayRows;
+		if (this._dates) {
+			dayRows = this._dates.map((week) => {
+				const weekHtml = week.map((day) => {
+					return html`
+						<td>
+							<d2l-calendar-date
+								month=${day.month}
+								date=${day.date}
+								year=${day.year}
+								?selected=${day.selected}
+								?selected-month=${day.month === this._selectedDate.month}
+								?other-month=${day.otherMonth}>
+							</d2l-calendar-date>
+						</td>`;
+				});
+
 				return html`
-					<td
-						@click="${this._onDateSelected}"
-						data-date="${day.fullDate}"
-						data-row="${day.row}"
-						data-col="${day.col}"
-						class=${classMap(dayClass)}
-						tabindex="${day.date === 1 ? 0 : -1}">
-						<div>${day.date}</div>
-					</td>
+					<tr>${weekHtml}</tr>
 				`;
 			});
-			return html`
-				<tr>${weekHtml}</tr>
-			`;
-		});
-
+		}
 		return html`
-			<div aria-labelledby="${this.labelledById}" class="d2l-calendar">
+			<div aria-labelledby="${this._dialogLabelId}" class="d2l-calendar">
 				<table summary="${this.summary}" role="grid">
 					<thead>
 						<tr class="d2l-calendar-title">
 							<td>
-								<d2l-button-icon @click="${this._showPrevMonth}" text="${this._computeText(this._prevMonth)}" icon="tier1:chevron-left"></d2l-button-icon>
+								<d2l-button-icon @click="${this._onPrevButtonClick}" text="${this._computeText(this._prevMonth)}" icon="tier1:chevron-left"></d2l-button-icon>
 							</td>
 							<th colspan="5">
-								<h2 class="d2l-heading-4">${this._monthNames[this._shownMonth]} ${this._shownYear}</h2>
+								<h2 class="d2l-heading-4" aria-live="polite" id="${this._dialogLabelId}">${this._monthNames[this._shownMonth]} ${this._shownYear}</h2>
 							</th>
 							<td>
-								<d2l-button-icon @click="${this._showNextMonth}" text="${this._computeText(this._nextMonth)}" icon="tier1:chevron-right"></d2l-button-icon>
+								<d2l-button-icon @click="${this._onNextButtonClick}" text="${this._computeText(this._nextMonth)}" icon="tier1:chevron-right"></d2l-button-icon>
 							</td>
 						</tr>
 					</thead>
@@ -240,15 +204,50 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`;
 	}
 
+	_changeFocusDate(numDays) {
+		if (!this._focusDate) {
+			let focusDay = 1;
+			if (this._selectedDate.month === this._shownMonth) focusDay = this._selectedDate.date;
+			this._focusDate = {
+				date: focusDay,
+				month: this._shownMonth,
+				year: this._shownYear
+			};
+		}
+		const d =  new Date(this._focusDate.year, this._focusDate.month, this._focusDate.date);
+		d.setDate(d.getDate() + numDays);
+
+		this._focusDate = {
+			date: d.getDate(),
+			month: d.getMonth(),
+			year: d.getFullYear()
+		};
+
+		const node = this.shadowRoot.querySelector(`d2l-calendar-date[date="${this._focusDate.date}"][month="${this._focusDate.month}"][year="${this._focusDate.year}"]`);
+		if (!node) {
+			if (this._focusDate.year < this._shownYear) {
+				this._showPrevMonth();
+			} else if (this._focusDate.month > this._shownMonth || (this._shownMonth === 11 && this._focusDate.month === 0)) {
+				this._showNextMonth();
+			} else {
+				this._showPrevMonth();
+			}
+		} else {
+			node.focus();
+		}
+	}
+
 	_checkIfSelected(month, date, year) {
-		return this._selectedMonth === month && this._selectedDate === date && this._selectedYear === year;
+		return this._selectedDate.month === month
+			&& this._selectedDate.date === date
+			&& this._selectedDate.year === year;
 	}
 
 	_computeText(month) {
 		return this.localize('show', {month: this._monthNames[month]});
 	}
 
-	_createDateObject(date, row, col, prevMonth, nextMonth) {
+	_createDateObject(date, prevMonth, nextMonth) {
 		let month = this._shownMonth;
 		let year = this._shownYear;
 		if (prevMonth) {
@@ -258,21 +257,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			month = this._nextMonth;
 			if (this._shownMonth === 11) year = this._shownYear + 1;
 		}
-		const fullDate = `${month + 1}/${date}/${year}`;
+
 		return {
 			date: date,
-			fullDate: fullDate,
-			row: row,
-			col: col,
-			prevMonth: prevMonth,
-			nextMonth: nextMonth,
-			selected: this._checkIfSelected(this._shownMonth, date, this._shownYear)
+			month: month,
+			year: year,
+			otherMonth: prevMonth || nextMonth,
+			selected: this._checkIfSelected(month, date, year) ? true : false
 		};
-	}
-
-	_focusOnDate(col, row) {
-		const cell = this._getCell(col, row);
-		cell.focus();
 	}
 
 	_generateDaysInMonth() {
@@ -286,7 +278,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const firstWeek = [];
 		const firstDayOfMonth = new Date(this._shownYear, this._shownMonth, 1).getDay();
 		let numDaysFromLastMonthToShowThisMonth = 0;
-		let col = 0;
+
 		if (firstDayOfMonth !== this._firstDayOfWeek) {
 			const numDaysLastMonth = this._getNumberOfDaysInMonth(this._prevMonth, this._shownYear);
 			numDaysFromLastMonthToShowThisMonth = firstDayOfMonth - this._firstDayOfWeek;
@@ -294,13 +286,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				numDaysFromLastMonthToShowThisMonth += 7;
 			}
 			for (let i = numDaysLastMonth - numDaysFromLastMonthToShowThisMonth + 1; i <= numDaysLastMonth; i++) {
-				firstWeek.push(this._createDateObject(i, 0, col, true, false));
-				col++;
+				firstWeek.push(this._createDateObject(i, true, false));
 			}
 		}
 		for (let j = 1; j <= 7 - numDaysFromLastMonthToShowThisMonth; j++) {
-			firstWeek.push(this._createDateObject(j, 0, col, false, false));
-			col++;
+			firstWeek.push(this._createDateObject(j, false, false));
 		}
 		days.push(firstWeek);
 
@@ -309,16 +299,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		let firstDateOfWeek = 7 - numDaysFromLastMonthToShowThisMonth + 1;
 		for (let i = 1; i < this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear); i++) {
 			const week = [];
-			col = 0;
 			for (let j = firstDateOfWeek; j < firstDateOfWeek + 7; j++) {
 				let day;
 				if (j >= (numDays + 1)) {
-					day = this._createDateObject(nextMonthDay, i, col, false, true);
+					day = this._createDateObject(nextMonthDay, false, true);
 					nextMonthDay++;
 				} else {
-					day = this._createDateObject(j, i, col, false, false);
+					day = this._createDateObject(j, false, false);
 				}
-				col++;
 				week.push(day);
 			}
 			firstDateOfWeek = firstDateOfWeek + 7;
@@ -326,12 +314,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 
 		return days;
-	}
-
-	_getCell(col, row) {
-		return [].filter.call(this._dates, (element) => {
-			return element.matches(`td[data-row="${row}"][data-col="${col}"]`);
-		})[0];
 	}
 
 	_getNumberOfDaysInMonth(month, year) {
@@ -354,19 +336,9 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return Math.ceil(numDays / 7);
 	}
 
-	_onDateSelected(e, dataDate) {
-		const date = e.currentTarget.getAttribute('data-date') || dataDate;
-		const eventDetails = {
-			bubbles: true,
-			composed: true,
-			detail: { date: date }
-		};
-		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
-	}
-
 	_onKeyDown(e) {
 		const rootTarget = e.composedPath()[0];
-		if (!rootTarget.getAttribute('data-date')) return;
+		if (rootTarget.tagName !== 'D2L-CALENDAR-DATE') return;
 
 		const keyCodes = {
 			DOWN: 40,
@@ -378,61 +350,31 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			UP: 38
 		};
 
-		// RTL fix this
-		// issue if there are multiple 1's in a month, tab will go to both
-		// also clean this up
-		const col = parseInt(rootTarget.getAttribute('data-col'));
-		const row = parseInt(rootTarget.getAttribute('data-row'));
 		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP) {
 			e.preventDefault();
 			e.stopPropagation();
 			if (e.keyCode === keyCodes.DOWN) {
-				let newRow = row + 1;
-				const numWeeks = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
-				if (newRow > numWeeks) {
-					this._showNextMonth();
-					newRow = 0;
-				}
-				this._focusOnDate(col, newRow);
+				this._changeFocusDate(7);
 			} else if (e.keyCode === keyCodes.UP) {
-				let newRow = row - 1;
-				if (newRow < 0) {
-					this._showPrevMonth();
-					newRow = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
-				}
-				this._focusOnDate(col, newRow);
+				this._changeFocusDate(-7);
 			}
-		} else if (e.keyCode === keyCodes.LEFT) {
-			let newCol = col - 1;
-			let newRow = row;
-			if (newCol < 0) {
-				newCol = 6;
-				newRow -= 1;
-				if (newRow < 0) {
-					this._showPrevMonth();
-					newRow = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
-				}
-			}
-			this._focusOnDate(newCol, newRow);
-		} else if (e.keyCode === keyCodes.RIGHT) {
-			let newCol = col + 1;
-			let newRow = row;
-			if (newCol > 6) {
-				newCol = 0;
-				newRow += 1;
-				const numWeeks = this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear) - 1;
-				if (newRow > numWeeks) {
-					this._showNextMonth();
-					newRow = 0;
-				}
-			}
-			this._focusOnDate(newCol, newRow);
-		} else if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
-			e.stopPropagation();
-			e.preventDefault();
-			const cell = this._getCell(col, row);
-			this._onDateSelected(e, cell.getAttribute('data-date'));
+		} else if ((e.keyCode === keyCodes.LEFT && this.dir !== 'rtl')
+			|| (e.keyCode === keyCodes.RIGHT && this.dir === 'rtl')) {
+			this._changeFocusDate(-1);
+		} else if ((e.keyCode === keyCodes.RIGHT && this.dir !== 'rtl')
+			|| (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT)) {
+			this._changeFocusDate(1);
 		}
+	}
+
+	_onNextButtonClick() {
+		this._focusDate = null;
+		this._showNextMonth();
+	}
+
+	_onPrevButtonClick() {
+		this._focusDate = null;
+		this._showPrevMonth();
 	}
 
 	_setNextPrevMonth() {
