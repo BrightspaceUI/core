@@ -12,14 +12,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			selectedValue: { type: String, attribute: 'selected-value' },
-			summary: String,
-			_dates: Array,
-			_firstDayOfWeek: Number,
-			_nextMonth: Number,
-			_prevMonth: Number,
-			_selectedDate: Object,
-			_shownMonth: Number,
-			_shownYear: Number
+			summary: { type: String },
+			_dates: { type: Array },
+			_firstDayOfWeek: { type: Number },
+			_nextMonth: { type: Number },
+			_prevMonth: { type: Number },
+			_selectedDate: { type: Object },
+			_shownMonth: { type: Number },
+			_shownYear: { type: Number }
 		};
 	}
 
@@ -114,7 +114,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 		this.addEventListener('keydown', this._onKeyDown);
 
-		const selected = parseDate(this.selectedValue);
+		let selected;
+		if (this.selectedValue) {
+			selected = parseDate(this.selectedValue);
+		} else {
+			selected = new Date();
+		}
+
 		this._selectedDate = {
 			month: selected.getMonth(),
 			date: selected.getDate(),
@@ -176,6 +182,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				`;
 			});
 		}
+		const heading = `${this._monthNames[this._shownMonth]} ${this._shownYear}`;
 		return html`
 			<div aria-labelledby="${this._dialogLabelId}" class="d2l-calendar">
 				<table summary="${this.summary}" role="grid">
@@ -185,7 +192,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 								<d2l-button-icon @click="${this._onPrevButtonClick}" text="${this._computeText(this._prevMonth)}" icon="tier1:chevron-left"></d2l-button-icon>
 							</td>
 							<th colspan="5">
-								<h2 class="d2l-heading-4" aria-live="polite" id="${this._dialogLabelId}">${this._monthNames[this._shownMonth]} ${this._shownYear}</h2>
+								<h2 class="d2l-heading-4" aria-live="polite" id="${this._dialogLabelId}">${heading}</h2>
 							</th>
 							<td>
 								<d2l-button-icon @click="${this._onNextButtonClick}" text="${this._computeText(this._nextMonth)}" icon="tier1:chevron-right"></d2l-button-icon>
@@ -297,7 +304,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		// remaining weeks
 		let nextMonthDay = 1;
 		let firstDateOfWeek = 7 - numDaysFromLastMonthToShowThisMonth + 1;
-		for (let i = 1; i < this._getNumberOfWeeksInAMonth(this._shownMonth, this._shownYear); i++) {
+		const numWeeks = Math.ceil((numDaysFromLastMonthToShowThisMonth + numDays) / 7);
+		for (let i = 1; i < numWeeks; i++) {
 			const week = [];
 			for (let j = firstDateOfWeek; j < firstDateOfWeek + 7; j++) {
 				let day;
@@ -329,11 +337,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			days = 30;
 		}
 		return days;
-	}
-
-	_getNumberOfWeeksInAMonth(month, year) {
-		const numDays = this._getNumberOfDaysInMonth(month, year);
-		return Math.ceil(numDays / 7);
 	}
 
 	_onKeyDown(e) {

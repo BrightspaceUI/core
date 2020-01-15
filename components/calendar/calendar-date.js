@@ -4,13 +4,14 @@ class CalendarDate extends LitElement {
 
 	static get properties() {
 		return {
-			date: { type: Number, reflect: true },
-			month: { type: Number, reflect: true },
-			year: { type: Number, reflect: true },
+			date: { type: Number },
+			month: { type: Number },
+			year: { type: Number },
 			otherMonth: { type: Boolean, attribute: 'other-month' },
 			selected: { type: Boolean, reflect: true },
 			selectedMonth: { type: Boolean, attribute: 'selected-month' },
 			tabindex: { type: String, reflect: true },
+			_today: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -21,19 +22,6 @@ class CalendarDate extends LitElement {
 					font-size: 0.8rem;
 					position: relative;
 					text-align: center;
-				}
-
-				div {
-					align-items: center;
-					border: 2.5px solid transparent;
-					border-radius: 8px;
-					color: var(--d2l-color-ferrite);
-					display: flex;
-					height: 2rem;
-					justify-content: center;
-					margin-left: auto;
-					margin-right: auto;
-					width: 2rem;
 				}
 
 				:host(:focus) {
@@ -61,13 +49,25 @@ class CalendarDate extends LitElement {
 				:host([other-month]):focus div {
 					color: var(--d2l-color-chromite);
 				}
+
+				:host([_today]:not([selected])) div {
+					font-size: 1.1rem;
+					font-weight: 700;
+				}
+
+				div {
+					align-items: center;
+					border: 2.5px solid transparent;
+					border-radius: 8px;
+					color: var(--d2l-color-ferrite);
+					display: flex;
+					height: 2rem;
+					justify-content: center;
+					margin-left: auto;
+					margin-right: auto;
+					width: 2rem;
+				}
 			`;
-	}
-
-	constructor() {
-		super();
-
-		this.tabindex = -1;
 	}
 
 	firstUpdated(changedProperties) {
@@ -81,7 +81,13 @@ class CalendarDate extends LitElement {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((old, prop) => {
-			if (prop === 'selected' || prop === 'date' || prop === 'otherMonth' || prop === 'selectedMonth') {
+			if (prop === 'month') {
+				const todayDate = new Date();
+				this._today = (this.year === todayDate.getFullYear() && this.month === todayDate.getMonth() && this.date === todayDate.getDate());
+			} else if (prop === 'selected' || prop === 'date' || prop === 'otherMonth' || prop === 'selectedMonth') {
+				// tab index is 0 if this date is selected
+				// OR if it is the 1st day of the currently shown month and the currently shown month is
+				// not the month containing the selected day
 				if (this.selected ||
 					(this.date === 1 && !this.otherMonth && !this.selectedMonth)) {
 					this.tabindex = 0;
@@ -94,13 +100,8 @@ class CalendarDate extends LitElement {
 
 	_onKeyDown(e) {
 		const keyCodes = {
-			DOWN: 40,
 			ENTER: 13,
-			ESCAPE: 27,
-			LEFT: 37,
-			SPACE: 32,
-			RIGHT: 39,
-			UP: 38
+			SPACE: 32
 		};
 
 		if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
@@ -108,7 +109,6 @@ class CalendarDate extends LitElement {
 			e.preventDefault();
 			this._onDateSelected(e);
 		}
-
 	}
 
 	render() {
@@ -124,7 +124,6 @@ class CalendarDate extends LitElement {
 			composed: true,
 			detail: { date: fullDate }
 		};
-		console.log('date selected ' + eventDetails.detail.date)
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
 	}
 
