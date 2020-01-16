@@ -75,7 +75,7 @@
 			import { getUniqueId } from '../../../helpers/uniqueId.js';
 			import { ifDefined } from 'lit-html/directives/if-defined.js';
 			import { inputStyles } from '../input-styles.js';
-			import { labelStyles } from '../input-label-styles.js';
+			import { inputLabelStyles } from '../input-label-styles.js';
 			import { radioStyles } from '../input-radio-styles.js';
 			import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 
@@ -88,7 +88,7 @@
 				}
 
 				static get styles() {
-					return [inputStyles, labelStyles, css`:host { display: block; }`];
+					return [inputStyles, inputLabelStyles, css`:host { display: block; }`];
 				}
 
 				render() {
@@ -117,7 +117,7 @@
 				}
 
 				static get styles() {
-					return [inputStyles, labelStyles, css`:host { display: block; }`];
+					return [inputStyles, inputLabelStyles, css`:host { display: block; }`];
 				}
 
 				render() {
@@ -170,7 +170,7 @@
 				}
 
 				static get styles() {
-					return [labelStyles];
+					return [inputLabelStyles];
 				}
 
 				render() {
