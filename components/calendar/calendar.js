@@ -113,6 +113,9 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		super.firstUpdated(changedProperties);
 
 		this.addEventListener('keydown', this._onKeyDown);
+		this.addEventListener('d2l-calendar-selected', (e) => {
+			this._selectedDate = e.detail.date;
+		});
 
 		let selected;
 		if (this.selectedValue) {
@@ -135,6 +138,9 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
+			if (prop === '_selectedDate') {
+				this._dates = this._generateDaysInMonth();
+			}
 			if (prop === '_shownMonth') {
 				this._setNextPrevMonth();
 				this._dates = this._generateDaysInMonth();
@@ -270,7 +276,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			month: month,
 			year: year,
 			otherMonth: prevMonth || nextMonth,
-			selected: this._checkIfDatesEqual(month, date, year, this._selectedDate)
+			selected: this._checkIfDatesEqual(month, date, year, this._selectedDate) ? true : false
 		};
 	}
 

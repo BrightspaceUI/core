@@ -29,24 +29,19 @@ class CalendarDate extends LitElement {
 				}
 
 				:host(:hover) div,
-				:host(:hover[selected]) div {
+				:host(:hover[selected]:not([other-month])) div {
 					background-color: var(--d2l-color-celestine-plus-2);
 					color: var(--d2l-color-ferrite);
 				}
 
 				:host(:focus) div,
-				:host(:focus[selected]) div {
+				:host(:focus[selected]:not([other-month])) div {
 					background-color: white;
 					border-color: var(--d2l-color-celestine);
 					color: var(--d2l-color-ferrite);
 				}
 
-				:host([selected]) div {
-					background-color: var(--d2l-color-celestine);
-					color: white;
-				}
-
-				:host([selected]) div {
+				:host([selected]:not([other-month])) div {
 					background-color: var(--d2l-color-celestine);
 					color: white;
 				}
@@ -92,10 +87,10 @@ class CalendarDate extends LitElement {
 				const todayDate = new Date();
 				this._today = (this.year === todayDate.getFullYear() && this.month === todayDate.getMonth() && this.date === todayDate.getDate());
 			} else if (prop === 'selected' || prop === 'date' || prop === 'otherMonth' || prop === 'selectedMonth') {
-				// tab index is 0 if this date is selected
+				// tab index is 0 if this date is selected && selected not in other month
 				// OR if it is the 1st day of the currently shown month and the currently shown month is
 				// not the month containing the selected day
-				if (this.selected ||
+				if ((this.selected && !this.otherMonth) ||
 					(this.date === 1 && !this.otherMonth && !this.selectedMonth)) {
 					this.tabindex = 0;
 				} else {
@@ -136,6 +131,7 @@ class CalendarDate extends LitElement {
 			detail: { date: fullDate }
 		};
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
+		this.selected = true;
 	}
 
 }

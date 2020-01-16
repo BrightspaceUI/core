@@ -7,6 +7,8 @@ describe('d2l-calendar', function() {
 
 	let browser, page;
 
+	const firstCalendarOfPage = '#no-selected';
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
@@ -42,6 +44,39 @@ describe('d2l-calendar', function() {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	describe('selection', () => {
+		afterEach(async() => {
+			await page.reload();
+		});
+
+		it('selects a new date by clicking on it', async function() {
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				const arrow = calendar.shadowRoot.querySelector('d2l-calendar-date[date="20"]');
+				arrow.click();
+			});
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('selects a new date by pressing enter on it', async function() {
+			await tabToDates();
+			await page.keyboard.press('ArrowRight');
+			await page.keyboard.press('Enter');
+			await page.keyboard.press('ArrowRight');
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('selects a new date by pressing sapace on it', async function() {
+			await tabToDates();
+			await page.keyboard.press('ArrowRight');
+			await page.keyboard.press('Space');
+			await page.keyboard.press('ArrowRight');
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 	describe('navigation', () => {
 		afterEach(async() => {
 			await page.reload();
@@ -75,7 +110,6 @@ describe('d2l-calendar', function() {
 		});
 
 		describe('arrow key navigation of dates', () => {
-			const firstCalendarOfPage = '#no-selected';
 			it('starts from focus date on selected dates month', async function() {
 				await tabToDates();
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -127,13 +161,13 @@ describe('d2l-calendar', function() {
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
-
-			const tabToDates = async function() {
-				await page.keyboard.press('Tab');
-				await page.keyboard.press('Tab');
-				await page.keyboard.press('Tab');
-			};
 		});
 	});
+
+	const tabToDates = async function() {
+		await page.keyboard.press('Tab');
+		await page.keyboard.press('Tab');
+		await page.keyboard.press('Tab');
+	};
 
 });
