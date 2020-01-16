@@ -9,7 +9,7 @@
 
 		const oldDate = Date;
 		Date = function (year, month, date) {
-			if( ! year ) return new oldDate('02/12/2017');
+			if( !year ) return new oldDate('02/12/2018');
 
 			return new oldDate(year, month, date);
 		}
@@ -25,10 +25,10 @@
 		<d2l-calendar id="no-selected"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
-		<d2l-calendar id="contains-today-diff-selected" selected-value="02/14/2017"></d2l-calendar>
+		<d2l-calendar id="contains-today-diff-selected" selected-value="02/14/2018"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
-		<d2l-calendar id="today-selected" selected-value="02/12/2017"></d2l-calendar>
+		<d2l-calendar id="today-selected" selected-value="02/12/2018"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
 		<d2l-calendar id="dec-2019" selected-value="12/01/2019"></d2l-calendar>

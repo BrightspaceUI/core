@@ -39,7 +39,7 @@
 
 					it('dispatches event when date clicked', (done) => {
 						calendar.addEventListener('d2l-calendar-selected', (e) => {
-							expect(e.detail.date).to.equal('9/1/2015');
+							expect(e.detail.date).to.deep.equal({ month: 8, date: 1, year: 2015 });
 							done();
 						});
 						setTimeout(() => {
@@ -50,7 +50,7 @@
 
 					it('dispatches event when enter key pressed on date', (done) => {
 						calendar.addEventListener('d2l-calendar-selected', (e) => {
-							expect(e.detail.date).to.equal('9/20/2015');
+							expect(e.detail.date).to.deep.equal({ month: 8, date: 20, year: 2015 });
 							done();
 						});
 						setTimeout(() => {
@@ -62,7 +62,7 @@
 					it('dispatches event when space key pressed on date', (done) => {
 						const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="2"]');
 						calendar.addEventListener('d2l-calendar-selected', (e) => {
-							expect(e.detail.date).to.equal('9/2/2015');
+							expect(e.detail.date).to.deep.equal({ month: 8, date: 2, year: 2015 });
 							done();
 						});
 						setTimeout(() => {

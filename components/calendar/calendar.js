@@ -244,10 +244,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	_checkIfSelected(month, date, year) {
-		return this._selectedDate.month === month
-			&& this._selectedDate.date === date
-			&& this._selectedDate.year === year;
+	_checkIfDatesEqual(month, date, year, comparisonDate) {
+		return comparisonDate.month === month
+			&& comparisonDate.date === date
+			&& comparisonDate.year === year;
 	}
 
 	_computeText(month) {
@@ -270,7 +270,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			month: month,
 			year: year,
 			otherMonth: prevMonth || nextMonth,
-			selected: this._checkIfSelected(month, date, year) ? true : false
+			selected: this._checkIfDatesEqual(month, date, year, this._selectedDate)
 		};
 	}
 

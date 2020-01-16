@@ -28,15 +28,22 @@ class CalendarDate extends LitElement {
 					outline: none;
 				}
 
-				:host(:hover) div {
+				:host(:hover) div,
+				:host(:hover[selected]) div {
 					background-color: var(--d2l-color-celestine-plus-2);
 					color: var(--d2l-color-ferrite);
 				}
 
-				:host(:focus) div {
+				:host(:focus) div,
+				:host(:focus[selected]) div {
 					background-color: white;
 					border-color: var(--d2l-color-celestine);
 					color: var(--d2l-color-ferrite);
+				}
+
+				:host([selected]) div {
+					background-color: var(--d2l-color-celestine);
+					color: white;
 				}
 
 				:host([selected]) div {
@@ -81,7 +88,7 @@ class CalendarDate extends LitElement {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((old, prop) => {
-			if (prop === 'month') {
+			if (prop === 'month' || prop === 'year') {
 				const todayDate = new Date();
 				this._today = (this.year === todayDate.getFullYear() && this.month === todayDate.getMonth() && this.date === todayDate.getDate());
 			} else if (prop === 'selected' || prop === 'date' || prop === 'otherMonth' || prop === 'selectedMonth') {
@@ -118,7 +125,11 @@ class CalendarDate extends LitElement {
 	}
 
 	_onDateSelected() {
-		const fullDate = `${parseInt(this.month) + 1}/${this.date}/${this.year}`;
+		const fullDate = {
+			month: this.month,
+			date: this.date,
+			year: this.year
+		};
 		const eventDetails = {
 			bubbles: true,
 			composed: true,
