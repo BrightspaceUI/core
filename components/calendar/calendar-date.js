@@ -5,11 +5,11 @@ class CalendarDate extends LitElement {
 	static get properties() {
 		return {
 			date: { type: Number },
+			focused: { type: Boolean },
 			month: { type: Number },
 			year: { type: Number },
 			otherMonth: { type: Boolean, attribute: 'other-month' },
 			selected: { type: Boolean, reflect: true },
-			selectedMonth: { type: Boolean, attribute: 'selected-month' },
 			tabindex: { type: String, reflect: true },
 			_today: { type: Boolean, reflect: true }
 		};
@@ -77,6 +77,8 @@ class CalendarDate extends LitElement {
 
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('click', this._onDateSelected);
+
+		this.tabindex = this.focused ? 0 : -1;
 	}
 
 	updated(changedProperties) {
@@ -86,12 +88,9 @@ class CalendarDate extends LitElement {
 			if (prop === 'month' || prop === 'year') {
 				const todayDate = new Date();
 				this._today = (this.year === todayDate.getFullYear() && this.month === todayDate.getMonth() && this.date === todayDate.getDate());
-			} else if (prop === 'selected' || prop === 'date' || prop === 'otherMonth' || prop === 'selectedMonth') {
-				// tab index is 0 if this date is selected && selected not in other month
-				// OR if it is the 1st day of the currently shown month and the currently shown month is
-				// not the month containing the selected day
-				if ((this.selected && !this.otherMonth) ||
-					(this.date === 1 && !this.otherMonth && !this.selectedMonth)) {
+			}
+			if (prop === 'focused') {
+				if (this.focused) {
 					this.tabindex = 0;
 				} else {
 					this.tabindex = -1;

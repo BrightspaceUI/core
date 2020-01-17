@@ -67,7 +67,7 @@ describe('d2l-calendar', function() {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('selects a new date by pressing sapace on it', async function() {
+		it('selects a new date by pressing space on it', async function() {
 			await tabToDates();
 			await page.keyboard.press('ArrowRight');
 			await page.keyboard.press('Space');
@@ -161,6 +161,52 @@ describe('d2l-calendar', function() {
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
+		});
+
+		describe('other key navigation', () => {
+			// the selected day is the monday with first day of week sunday
+			it('navigates to the end of the week when on the first day of the week and END key pressed', async function() {
+				await tabToDates();
+				await page.keyboard.press('ArrowLeft');
+				await page.keyboard.press('End');
+				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('navigates to the end of the week when on the last day of the week and END key pressed', async function() {
+				await tabToDates();
+				await page.keyboard.press('ArrowLeft');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('End');
+				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('navigates to the start of the week when on the first day of the week and HOME key pressed', async function() {
+				await tabToDates();
+				await page.keyboard.press('ArrowLeft');
+				await page.keyboard.press('Home');
+				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('navigates to the start of the week when on the last day of the week and HOME key pressed', async function() {
+				await tabToDates();
+				await page.keyboard.press('ArrowLeft');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('ArrowRight');
+				await page.keyboard.press('Home');
+				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
 		});
 	});
 
