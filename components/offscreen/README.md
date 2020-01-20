@@ -34,3 +34,7 @@ class MyElement extends LitElement {
 
 }
 ```
+
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!

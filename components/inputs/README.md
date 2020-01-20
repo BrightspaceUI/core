@@ -388,3 +388,15 @@ class MyElem extends LitElement {
 
 }
 ```
+
+## Future Enhancements
+
+- Date input
+- Time input
+- Date/time input
+- Date & time range with validation
+- Numeric input
+- Color input with contrast analysis
+- Auto-growing textareas
+
+Looking for an enhancement not listed here? Create a GitHub issue!
