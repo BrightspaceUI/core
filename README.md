@@ -28,6 +28,7 @@ npm install @brightspace-ui/core
 * [Meter](components/meter/): linear, radial, circle meter web components
 * [More/less](components/more-less/): constrain long bits of content
 * [Off-screen](components/offscreen/): component and styles for positioning content off-screen
+* [Status Indicator](components/status-indicator/): status-indicator components
 * [Typography](components/typography/): typography styles and components
 
 ## Helpers

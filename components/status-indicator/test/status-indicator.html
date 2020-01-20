@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<title>d2l-status-indicator unit tests</title>
+	<script src="/node_modules/@webstatusIndicators/webstatusIndicatorsjs/webstatusIndicators-loader.js"></script>
+	<script src="/node_modules/mocha/mocha.js"></script>
+	<script src="/node_modules/chai/chai.js"></script>
+	<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
+	<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
+	<script type="module" src="../status-indicator.js"></script>
+</head>
+
+<body>
+
+	<test-fixture id="basic">
+		<template>
+			<d2l-status-indicator state="default" text="test"></d2l-status-indicator>
+		</template>
+	</test-fixture>
+
+	<script type="module">
+		import { runAxe } from '../../../tools/a11y-test-helper.js';
+
+		describe('d2l-status-indicator', () => {
+
+			let statusIndicator;
+
+			beforeEach(async() => {
+				statusIndicator = fixture('basic');
+				await statusIndicator.updateComplete;
+			});
+
+			it('passes all axe tests', async () => {
+				await runAxe(statusIndicator);
+			});
+
+			it('should set the demo text', () => {
+				expect(statusIndicator.getAttribute('text')).to.equal('test');
+			});
+
+			it('should have the initially specified default state', () => {
+				expect(statusIndicator.getAttribute('state')).to.equal('default');
+			});
+
+			it('should have state "success" when specified', async() => {
+				statusIndicator.state = 'success';
+				await statusIndicator.updateComplete;
+				expect(statusIndicator.getAttribute('state')).to.equal('success');
+			});
+
+			it('should have state "alert" when specified', async() => {
+				statusIndicator.state = 'alert';
+				await statusIndicator.updateComplete;
+				expect(statusIndicator.getAttribute('state')).to.equal('alert');
+			});
+
+			it('should have state "none" when specified', async() => {
+				statusIndicator.state = 'none';
+				await statusIndicator.updateComplete;
+				expect(statusIndicator.getAttribute('state')).to.equal('none');
+			});
+		});
+	</script>
+</body>
+
+</html>
