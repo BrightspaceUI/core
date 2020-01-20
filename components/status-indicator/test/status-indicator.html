@@ -17,7 +17,7 @@
 
 	<test-fixture id="basic">
 		<template>
-			<d2l-status-indicator state="default" text="test"></d2l-status-indicator>
+			<d2l-status-indicator text="test subtle"></d2l-status-indicator>
 		</template>
 	</test-fixture>
 
@@ -33,35 +33,32 @@
 				await statusIndicator.updateComplete;
 			});
 
-			it('passes all axe tests', async () => {
-				await runAxe(statusIndicator);
-			});
-
-			it('should set the demo text', () => {
-				expect(statusIndicator.getAttribute('text')).to.equal('test');
+			[
+				{ state: 'default', bold: true },
+				{ state: 'none', bold: true },
+				{ state: 'alert', bold: true },
+				{ state: 'success', bold: true },
+				{ state: 'default', bold: false },
+				{ state: 'none', bold: false },
+				{ state: 'alert', bold: false },
+				{ state: 'success', bold: false },
+			].forEach(({state, bold}) => {
+				it(`passes axe tests for state "${state}" and bold ${bold}`, async() => {
+					statusIndicator.state = state;
+					statusIndicator.bold = bold;
+					await statusIndicator.updateComplete;
+					await runAxe(statusIndicator);
+				});
 			});
 
 			it('should have the initially specified default state', () => {
 				expect(statusIndicator.getAttribute('state')).to.equal('default');
 			});
 
-			it('should have state "success" when specified', async() => {
-				statusIndicator.state = 'success';
-				await statusIndicator.updateComplete;
-				expect(statusIndicator.getAttribute('state')).to.equal('success');
+			it('should be subtle by default', () => {
+				expect(statusIndicator.hasAttribute('bold')).to.be.false;
 			});
 
-			it('should have state "alert" when specified', async() => {
-				statusIndicator.state = 'alert';
-				await statusIndicator.updateComplete;
-				expect(statusIndicator.getAttribute('state')).to.equal('alert');
-			});
-
-			it('should have state "none" when specified', async() => {
-				statusIndicator.state = 'none';
-				await statusIndicator.updateComplete;
-				expect(statusIndicator.getAttribute('state')).to.equal('none');
-			});
 		});
 	</script>
 </body>

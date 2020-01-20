@@ -13,8 +13,11 @@ class StatusIndicator extends LitElement {
 				reflect: true
 			},
 			text: {
-				type: String,
-				value: null
+				type: String
+			},
+			bold: {
+				type: Boolean,
+				reflect: true
 			}
 		};
 	}
@@ -56,12 +59,28 @@ class StatusIndicator extends LitElement {
 				border-color: var(--d2l-color-ferrite);
 				color: var(--d2l-color-ferrite);
 			}
+
+			:host([bold]) {
+				background-color: var(--d2l-color-celestine);
+				color: white;
+			}
+			:host([bold][state="success"]) {
+				background-color: var(--d2l-color-olivine-minus-1);
+			}
+			:host([bold][state="alert"]) {
+				background-color: var(--d2l-color-cinnabar);
+			}
+			:host([bold][state="none"]),
+			:host([bold][state="null"]) {
+				background-color: var(--d2l-color-ferrite);
+			}
 		`;
 	}
 
 	constructor() {
 		super();
 		this.state = 'default';
+		this.bold = false;
 	}
 
 	render() {
