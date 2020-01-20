@@ -179,12 +179,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					return html`
 						<td>
 							<d2l-calendar-date
-								month=${day.month}
 								date=${day.date}
+								month=${day.month}
 								year=${day.year}
-								?selected=${day.selected}
+								?focused=${day.focused}
 								?other-month=${day.otherMonth}
-								?focused=${day.focused}>
+								?selected=${day.selected}>
 							</d2l-calendar-date>
 						</td>`;
 				});
@@ -307,8 +307,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		// remaining weeks
 		let nextMonthDay = 1;
 		let firstDateOfWeek = 7 - numDaysFromLastMonthToShowThisMonth + 1;
-		this._numWeeks = Math.ceil((numDaysFromLastMonthToShowThisMonth + numDays) / 7);
-		for (let i = 1; i < this._numWeeks; i++) {
+		for (let i = 1; i < Math.ceil((numDaysFromLastMonthToShowThisMonth + numDays) / 7); i++) {
 			const week = [];
 			for (let j = firstDateOfWeek; j < firstDateOfWeek + 7; j++) {
 				let day;
@@ -327,12 +326,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return this._dates;
 	}
 
-	_getCalendarDateByDate(month, date, year) {
-		return this.shadowRoot.querySelector(`d2l-calendar-date[date="${date}"][month="${month}"][year="${year}"]`);
+	_getCalendarDateByDate(date) {
+		return this.shadowRoot.querySelector(`d2l-calendar-date[date="${date.date}"][month="${date.month}"][year="${date.year}"]`);
 	}
 
 	_getNodeAndAddFocus(keyboardTriggeredFocus) {
-		const node = this._getCalendarDateByDate(this._focusDate.month, this._focusDate.date, this._focusDate.year);
+		const node = this._getCalendarDateByDate(this._focusDate);
 		if (node) {
 			node.setAttribute('focused', true);
 			if (keyboardTriggeredFocus) {
@@ -342,7 +341,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_getNodeAndRemoveFocus() {
-		const node = this._getCalendarDateByDate(this._focusDate.month, this._focusDate.date, this._focusDate.year);
+		const node = this._getCalendarDateByDate(this._focusDate);
 		if (node) {
 			node.removeAttribute('focused');
 		}
@@ -415,21 +414,19 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				this._changeFocusDate(diff);
 				preventDefault = true;
 				break;
-			} case keyCodes.PAGEUP:
+			} case keyCodes.PAGEUP: {
 				if (e.shiftKey) {
 					// Changes the grid of dates to the previous Year.
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
-				this._changeFocusDate(this._numWeeks * -7);
-				preventDefault = true;
+				// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				break;
-			case keyCodes.PAGEDOWN:
+			} case keyCodes.PAGEDOWN:
 				if (e.shiftKey) {
 					// Changes the grid of dates to the next Year.
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
-				this._changeFocusDate(this._numWeeks * 7);
-				preventDefault = true;
+				// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				break;
 		}
 

@@ -60,7 +60,6 @@
 					});
 
 					it('dispatches event when space key pressed on date', (done) => {
-						const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="2"]');
 						calendar.addEventListener('d2l-calendar-selected', (e) => {
 							expect(e.detail.date).to.deep.equal({ month: 8, date: 2, year: 2015 });
 							done();

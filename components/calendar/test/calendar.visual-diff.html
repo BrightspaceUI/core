@@ -8,11 +8,12 @@
 		import '../calendar.js';
 
 		const oldDate = Date;
-		Date = function (year, month, date) {
-			if( !year ) return new oldDate('02/12/2018');
 
+		// eslint-disable-next-line no-global-assign
+		Date = function(year, month, date) {
+			if (!year) return new oldDate('02/12/2018');
 			return new oldDate(year, month, date);
-		}
+		};
 		Date.prototype = oldDate.prototype;
 	</script>
 	<title>d2l-calendar</title>

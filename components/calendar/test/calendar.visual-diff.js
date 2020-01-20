@@ -116,7 +116,8 @@ describe('d2l-calendar', function() {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('starts from 1st on non-selected dates month', async function() {
+			it('starts from selected date on non-selected dates month', async function() {
+				// e.g., if selected = feb 12th, in next month the arrow key nav should begin on march 12th
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
 					arrow.click();
@@ -130,14 +131,13 @@ describe('d2l-calendar', function() {
 				await tabToDates();
 				await page.keyboard.press('ArrowUp');
 				await page.keyboard.press('ArrowUp');
-				await page.keyboard.press('ArrowUp');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('navigates to previous month when left arrow pressed enough times', async function() {
 				await tabToDates();
-				for (let i = 0; i < 16; i++) {
+				for (let i = 0; i < 12; i++) {
 					await page.keyboard.press('ArrowLeft');
 				}
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -155,7 +155,7 @@ describe('d2l-calendar', function() {
 
 			it('navigates to next month when right arrow pressed enough times', async function() {
 				await tabToDates();
-				for (let i = 0; i < 20; i++) {
+				for (let i = 0; i < 17; i++) {
 					await page.keyboard.press('ArrowRight');
 				}
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
