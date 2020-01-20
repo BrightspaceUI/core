@@ -1,6 +1,6 @@
 import { css } from 'lit-element/lit-element.js';
 
-export const labelStyles = css`
+export const inputLabelStyles = css`
 	.d2l-input-label {
 		cursor: default;
 		display: block;

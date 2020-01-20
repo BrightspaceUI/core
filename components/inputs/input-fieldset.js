@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { labelStyles } from './input-label-styles.js';
+import { inputLabelStyles } from './input-label-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class InputFieldset extends RtlMixin(LitElement) {
@@ -12,7 +12,7 @@ class InputFieldset extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ labelStyles,
+		return [ inputLabelStyles,
 			css`
 				:host {
 					display: block;
