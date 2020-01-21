@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../status-indicator.js';
+	</script>
+	<style>
+		.align-item {
+			color: var(--d2l-color-tungsten);
+			font-size: 0.7rem;
+		}
+		.align-item.bullet::before {
+			color: var(--d2l-color-tungsten);
+			content: '\002022';
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+	</style>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-status-indicator">
+
+		<h2>Default</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="default" text="due today"></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Success</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="success" text="complete"></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+		
+		<h2>Alert</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="alert" text="overdue"></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+		
+		<h2>None</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="none" text="closed"></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Default Bold</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="default" text="due today" bold></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Success Bold</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="success" text="complete" bold></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Alert Bold</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="alert" text="overdue" bold></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>None Bold</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="none" text="closed" bold></d2l-status-indicator>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Alignment with other elements</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-status-indicator state="alert" text="overdue"></d2l-status-indicator>
+				<span class="align-item" style="margin-left:10px;">Grade 6 Science</span>
+				<span class="align-item bullet">Assignment</span>
+			</template>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
+
+</body>
+
+</html>
