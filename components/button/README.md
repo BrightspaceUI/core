@@ -89,4 +89,6 @@ Floating workflow buttons behavior can be added by using the `<d2l-floating-butt
 
 ## Future Enhancements
 
+- `<d2l-button-preset type="save">` for common button types that will have built-in language support
+
 Looking for an enhancement not listed here? Create a GitHub issue!
