@@ -32,9 +32,9 @@ describe('d2l-dialog-ifrau', function() {
 			});
 
 			[
-				{ name: 'ifrau top height < dialog top margin', ifrau: { availableHeight: 500, top: 50 } },
-				{ name: 'ifrau top height > dialog top margin', ifrau: { availableHeight: 500, top: 120 } },
-				{ name: 'ifrau available height < host height', ifrau: { availableHeight: 300, top: 50 } },
+				{ name: 'ifrau top height lt dialog top margin', ifrau: { availableHeight: 500, top: 50 } },
+				{ name: 'ifrau top height gt dialog top margin', ifrau: { availableHeight: 500, top: 120 } },
+				{ name: 'ifrau available height lt host height', ifrau: { availableHeight: 300, top: 50 } },
 				{ name: 'host scrolled down', ifrau: { availableHeight: 400, top: -50 } }
 			].forEach((info) => {
 				it(info.name, async function() {
