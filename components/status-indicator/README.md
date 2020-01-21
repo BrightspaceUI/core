@@ -47,3 +47,7 @@ The `d2l-status-indicator` element can be used to communicate the status of an i
 - `state` (String, default: `'default'`): State of status indicator to display. Can be one of  `default`, `success`, `alert` , `none`
 - `text` (required, String): The text that is displayed within the status indicator
 - `bold` (Boolean): Use when the status is very important and needs to have a lot of prominence
+
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!
