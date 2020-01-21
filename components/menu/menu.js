@@ -67,6 +67,10 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this._labelChanged();
 
 		this._onMenuItemsChanged();
+		const slot = this.shadowRoot.querySelector('slot');
+		slot.addEventListener('dom-change', () => {
+			this._onMenuItemsChanged();
+		});
 
 		this.setAttribute('role', 'menu');
 	}
@@ -156,7 +160,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			items.unshift(returnItem);
 		}
 		return items.filter((item) => {
-			const role = item.role;
+			const role = item.role || item.getAttribute('role');
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
 		});
 	}
