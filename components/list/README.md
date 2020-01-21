@@ -95,6 +95,7 @@ The `d2l-list-content` provides additional consistent layout for primary and sec
 
 ## Future Enhancements
 
+- Use grid to manage focus with arrow keys
 - Drag & drop support
 - Paging: integration with "load more", "scroll" and "numeric" paging mechanisms
 
