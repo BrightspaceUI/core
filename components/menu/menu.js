@@ -68,7 +68,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 		this._onMenuItemsChanged();
 		const slot = this.shadowRoot.querySelector('slot');
-		slot.addEventListener('dom-change', () => {
+		slot.addEventListener('slotchange', () => {
 			this._onMenuItemsChanged();
 		});
 
