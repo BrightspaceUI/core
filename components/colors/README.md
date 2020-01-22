@@ -23,3 +23,7 @@ Run the demo page to see the full palette. See [colors.js](colors.js) for the va
 ## Feedback
 
 ![Feedback Colors](./screenshots/feedback.png?raw=true)
+
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!

@@ -130,6 +130,10 @@ To run linting, visual-diff, and unit tests:
 npm test
 ```
 
+## Future Enhancements
+
+Looking for a new component or an enhancement not listed here? Create a GitHub issue!
+
 ## Versioning, Releasing & Deploying
 
 All version changes should obey [semantic versioning](https://semver.org/) rules.

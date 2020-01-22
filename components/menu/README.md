@@ -196,3 +196,7 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
   <d2l-menu-item text="The Night Sky"></d2l-menu-item>
 </d2l-menu>
 ```
+
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!
