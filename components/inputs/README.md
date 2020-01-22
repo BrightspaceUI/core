@@ -146,7 +146,7 @@ input.addEventListener('change', (e) => {
 As an alternative to using the `<d2l-input-text>` custom element, you can style a native text input inside your own element. Import `input-styles.js` and apply the `d2l-input` CSS class to the input:
 
 ```javascript
-import { inputStyles } from '@brightspace-ui/core/inputs/input-styles.js';
+import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 
 class MyElem extends LitElement {
 
@@ -306,7 +306,7 @@ To align related content below checkboxes, the `d2l-input-checkbox-spacer` eleme
 As an alternative to using the `<d2l-input-checkbox>` custom element, you can style a native checkbox inside your own element. Import `input-checkbox-styles.js` and apply the `d2l-input-checkbox` CSS class to the input:
 
 ```javascript
-import { checkboxStyles } from '@brightspace-ui/core/inputs/input-checkbox-styles.js';
+import { checkboxStyles } from '@brightspace-ui/core/components/inputs/input-checkbox-styles.js';
 
 class MyElem extends LitElement {
 
@@ -388,3 +388,15 @@ class MyElem extends LitElement {
 
 }
 ```
+
+## Future Enhancements
+
+- Date input
+- Time input
+- Date/time input
+- Date & time range with validation
+- Numeric input
+- Color input with contrast analysis
+- Auto-growing textareas
+
+Looking for an enhancement not listed here? Create a GitHub issue!

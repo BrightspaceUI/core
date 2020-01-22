@@ -92,3 +92,11 @@ The `d2l-list-content` provides additional consistent layout for primary and sec
   </d2l-list-item-content>
 </d2l-list-item>
 ```
+
+## Future Enhancements
+
+- Use grid to manage focus with arrow keys
+- Drag & drop support
+- Paging: integration with "load more", "scroll" and "numeric" paging mechanisms
+
+Looking for an enhancement not listed here? Create a GitHub issue!

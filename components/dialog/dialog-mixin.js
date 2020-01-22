@@ -17,6 +17,7 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 }
 
 const abortAction = 'abort';
+const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
 
 export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
@@ -32,6 +33,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_overflowTop: { type: Boolean },
 			_parentDialog: { type: Object },
 			_state: { type: String, reflect: true },
+			_top: { type: Number },
 			_width: { type: Number }
 		};
 	}
@@ -41,13 +43,14 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		this._dialogId = getUniqueId();
 		this._height = 0;
-		this._margin = { top: 100, right: 30, bottom: 30, left: 30 };
+		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
 		this._parentDialog = null;
 		this._nestedShowing = false;
 		this._state = null;
 		this._left = 0;
 		this._overflowBottom = false;
 		this._overflowTop = false;
+		this._top = 0;
 		this._width = 0;
 		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
 		this._handleBodyFocus = this._handleBodyFocus.bind(this);
@@ -55,12 +58,29 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._updateOverflow = this._updateOverflow.bind(this);
 	}
 
-	attributeChangedCallback(name, oldval, newval) {
+	async attributeChangedCallback(name, oldval, newval) {
 		super.attributeChangedCallback(name, oldval, newval);
 		if (name === 'opened' && oldval !== newval) {
-			if (this.opened) this._open();
-			else this._close();
+			if (this.opened) {
+				if (this._ifrauDialogService) {
+					this._ifrauContextInfo = await this._ifrauDialogService.showBackdrop();
+				}
+				this._open();
+			} else {
+				if (this._ifrauDialogService) {
+					this._ifrauDialogService.hideBackdrop();
+					this._ifrauContextInfo = null;
+				}
+				this._close();
+			}
 		}
+	}
+
+	async connectedCallback() {
+		super.connectedCallback();
+		if (!window.ifrauclient) return;
+		const ifrauClient = await window.ifrauclient().connect();
+		this._ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
 	}
 
 	open() {
@@ -125,7 +145,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_getHeight() {
-		const availableHeight = window.innerHeight - this._margin.top - this._margin.bottom;
+
+		const availableHeight = this._ifrauContextInfo
+			? this._ifrauContextInfo.availableHeight - this._margin.top - this._margin.bottom
+			: window.innerHeight - this._margin.top - this._margin.bottom;
 		let preferredHeight = 0;
 
 		const header = this.shadowRoot.querySelector('.d2l-dialog-header');
@@ -286,6 +309,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_render(inner, info) {
 
 		const styles = {};
+		if (this._ifrauContextInfo) styles.top = `${this._top}px`;
+		if (this._ifrauContextInfo) styles.bottom = 'auto';
 		if (this._left) styles.left = `${this._left}px`;
 		if (this._height) styles.height = `${this._height}px`;
 		if (this._width) styles.width = `${this._width}px`;
@@ -346,6 +371,18 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	async _updateSize() {
+		if (this._ifrauContextInfo) {
+			if (this._ifrauContextInfo.top > defaultMargin.top) {
+				this._top = 0;
+				this._margin.top = 0;
+			} else if (this._ifrauContextInfo.top < 0) {
+				this._top = defaultMargin.top - this._ifrauContextInfo.top;
+				this._margin.top = defaultMargin.top;
+			} else {
+				this._top = defaultMargin.top - this._ifrauContextInfo.top;
+				this._margin.top = defaultMargin.top - this._ifrauContextInfo.top;
+			}
+		}
 		this._width = this._getWidth();
 		this._left = this._getLeft();
 		await this.updateComplete;
