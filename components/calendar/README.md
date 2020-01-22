@@ -10,14 +10,14 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 </script>
 <!-- Today is January 16, 2020 -->
 <d2l-calendar
-	selected-value="01/09/2020"
+	selected-value="2020-01-09"
 	summary="Click on a day to select it as the assignment due date.">
 </d2l-calendar>
 ```
 
 **Properties:**
 
-- `selected-value` (String): Currently selected date.
+- `selected-value` (String): Currently selected date. This should be in ISO 8601 Extended Format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
 - `summary` (String): Summary of the calendar for accessibility.
 
 **Events:**

@@ -1,11 +1,15 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
+const keyCodes = {
+	ENTER: 13,
+	SPACE: 32
+};
+
 class CalendarDate extends LitElement {
 
 	static get properties() {
 		return {
 			date: { type: Number },
-			focused: { type: Boolean },
 			month: { type: Number },
 			year: { type: Number },
 			otherMonth: { type: Boolean, attribute: 'other-month' },
@@ -59,7 +63,7 @@ class CalendarDate extends LitElement {
 
 				div {
 					align-items: center;
-					border: 2.5px solid transparent;
+					border: 2px solid transparent;
 					border-radius: 8px;
 					color: var(--d2l-color-ferrite);
 					display: flex;
@@ -75,10 +79,8 @@ class CalendarDate extends LitElement {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.addEventListener('keydown', this._onKeyDown);
+		this.addEventListener('keyup', this._onKeyUp);
 		this.addEventListener('click', this._onDateSelected);
-
-		this.tabindex = this.focused ? 0 : -1;
 	}
 
 	updated(changedProperties) {
@@ -89,21 +91,10 @@ class CalendarDate extends LitElement {
 				const todayDate = new Date();
 				this._today = (this.year === todayDate.getFullYear() && this.month === todayDate.getMonth() && this.date === todayDate.getDate());
 			}
-			if (prop === 'focused') {
-				if (this.focused) {
-					this.tabindex = 0;
-				} else {
-					this.tabindex = -1;
-				}
-			}
 		});
 	}
 
-	_onKeyDown(e) {
-		const keyCodes = {
-			ENTER: 13,
-			SPACE: 32
-		};
+	_onKeyUp(e) {
 
 		if (e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE) {
 			e.stopPropagation();

@@ -1,11 +1,26 @@
-import '../button/button-icon.js';
 import './calendar-date.js';
+import '../button/button-icon.js';
+import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
+import { getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading4Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
+const keyCodes = {
+	DOWN: 40,
+	END: 35,
+	ENTER: 13,
+	ESCAPE: 27,
+	HOME: 36,
+	LEFT: 37,
+	PAGEUP: 33,
+	PAGEDOWN: 34,
+	SPACE: 32,
+	RIGHT: 39,
+	UP: 38
+};
 
 class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
@@ -118,12 +133,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			this._selectedDate = e.detail.date;
 		});
 
-		let selected;
-		if (this.selectedValue) {
-			selected = parseDate(this.selectedValue);
-		} else {
-			selected = new Date();
-		}
+		const selected = this.selectedValue ? new Date(this.selectedValue) : new Date();
 
 		this._selectedDate = {
 			month: selected.getMonth(),
@@ -182,7 +192,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 								date=${day.date}
 								month=${day.month}
 								year=${day.year}
-								?focused=${day.focused}
+								tabindex=${day.focused ? '0' : '-1'}
 								?other-month=${day.otherMonth}
 								?selected=${day.selected}>
 							</d2l-calendar-date>
@@ -333,7 +343,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	_getNodeAndAddFocus(keyboardTriggeredFocus) {
 		const node = this._getCalendarDateByDate(this._focusDate);
 		if (node) {
-			node.setAttribute('focused', true);
+			node.setAttribute('tabindex', '0');
 			if (keyboardTriggeredFocus) {
 				node.focus();
 			}
@@ -343,7 +353,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	_getNodeAndRemoveFocus() {
 		const node = this._getCalendarDateByDate(this._focusDate);
 		if (node) {
-			node.removeAttribute('focused');
+			node.setAttribute('tabindex', '-1');
 		}
 	}
 
@@ -365,20 +375,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	_onKeyDown(e) {
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget.tagName !== 'D2L-CALENDAR-DATE') return;
-
-		const keyCodes = {
-			DOWN: 40,
-			END: 35,
-			ENTER: 13,
-			ESCAPE: 27,
-			HOME: 36,
-			LEFT: 37,
-			PAGEUP: 33,
-			PAGEDOWN: 34,
-			SPACE: 32,
-			RIGHT: 39,
-			UP: 38
-		};
 
 		let preventDefault = false;
 

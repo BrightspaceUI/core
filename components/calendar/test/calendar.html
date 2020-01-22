@@ -15,7 +15,7 @@
 
 		<test-fixture id="basic">
 			<template>
-				<d2l-calendar selected-value="09/02/2015"></d2l-calendar>
+				<d2l-calendar selected-value="2015-09-02T12:00Z"></d2l-calendar>
 			</template>
 		</test-fixture>
 
@@ -72,7 +72,7 @@
 
 					function dispatchKeyEvent(el, key) {
 						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
+						eventObj.initEvent('keyup', true, true);
 						eventObj.which = key;
 						eventObj.keyCode = key;
 						el.dispatchEvent(eventObj);

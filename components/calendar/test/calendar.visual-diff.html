@@ -10,9 +10,9 @@
 		const oldDate = Date;
 
 		// eslint-disable-next-line no-global-assign
-		Date = function(year, month, date) {
-			if (!year) return new oldDate('02/12/2018');
-			return new oldDate(year, month, date);
+		Date = function(input1, input2, input3) {
+			if (!input1) return new oldDate('2018-02-12T12:00Z');
+			return (input2 !== 0 && !input2) ? new oldDate(input1) : new oldDate(input1, input2, input3);
 		};
 		Date.prototype = oldDate.prototype;
 	</script>
@@ -26,16 +26,16 @@
 		<d2l-calendar id="no-selected"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
-		<d2l-calendar id="contains-today-diff-selected" selected-value="02/14/2018"></d2l-calendar>
+		<d2l-calendar id="contains-today-diff-selected" selected-value="2018-02-14T12:00Z"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
-		<d2l-calendar id="today-selected" selected-value="02/12/2018"></d2l-calendar>
+		<d2l-calendar id="today-selected" selected-value="2018-02-12T12:00Z"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
-		<d2l-calendar id="dec-2019" selected-value="12/01/2019"></d2l-calendar>
+		<d2l-calendar id="dec-2019" selected-value="2019-12-01T12:00Z"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
-		<d2l-calendar id="nov-2019" selected-value="11/15/2019"></d2l-calendar>
+		<d2l-calendar id="nov-2019" selected-value="2019-11-15T12:00Z"></d2l-calendar>
 	</div>
 </body>
 </html>
