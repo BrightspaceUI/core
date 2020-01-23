@@ -1,3 +1,4 @@
+import '../../helpers/queueMicrotask.js';
 import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -69,9 +70,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this._onMenuItemsChanged();
 		const slot = this.shadowRoot.querySelector('slot');
 		slot.addEventListener('slotchange', () => {
-			requestAnimationFrame(() => {
-				this._onMenuItemsChanged();
-			});
+			this._onMenuItemsChanged();
 		});
 
 		this.setAttribute('role', 'menu');
@@ -260,26 +259,10 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	_onMenuItemsChanged() {
-		this._items = this._getMenuItems();
-		if (!this._items || this._items.length === 0) return;
-
-		const visibleItems = [];
-
-		for (let i = 0; i < this._items.length; i++) {
-			const item = this._items[i];
-			item.removeAttribute('first');
-			item.removeAttribute('last');
-			if (!item.hidden) {
-				item.setAttribute('tabindex', visibleItems.length === 0 ? 0 : -1);
-				visibleItems.push(item);
-			}
-		}
-
-		if (visibleItems.length > 0) {
-			visibleItems[0].setAttribute('first', true);
-			visibleItems[visibleItems.length - 1].setAttribute('last', true);
-		}
-
+		queueMicrotask(() => {
+			this._items = this._getMenuItems();
+			this._updateItemAttributes();
+		});
 	}
 
 	_onShowComplete() {
@@ -338,6 +321,28 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		}
 
 		return focusableItems[itemIndex + 1];
+
+	}
+
+	_updateItemAttributes() {
+		if (!this._items || this._items.length === 0) return;
+
+		const visibleItems = [];
+
+		for (let i = 0; i < this._items.length; i++) {
+			const item = this._items[i];
+			item.removeAttribute('first');
+			item.removeAttribute('last');
+			if (!item.hidden) {
+				item.setAttribute('tabindex', visibleItems.length === 0 ? 0 : -1);
+				visibleItems.push(item);
+			}
+		}
+
+		if (visibleItems.length > 0) {
+			visibleItems[0].setAttribute('first', true);
+			visibleItems[visibleItems.length - 1].setAttribute('last', true);
+		}
 
 	}
 }

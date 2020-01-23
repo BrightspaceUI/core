@@ -77,6 +77,17 @@ requestIdleCallback((deadline) => {
 }, { timeout: 1000 });
 ```
 
+## queueMicrotask
+
+A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask).
+
+```js
+import '@brightspace-ui/core/helpers/queueMicrotask.js';
+queueMicrotask(() => {
+	// do some work
+});
+```
+
 ## UniqueId
 
 A simple helper that returns a unique id.
