@@ -67,6 +67,10 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this._labelChanged();
 
 		this._onMenuItemsChanged();
+		const slot = this.shadowRoot.querySelector('slot');
+		slot.addEventListener('slotchange', () => {
+			this._onMenuItemsChanged();
+		});
 
 		this.setAttribute('role', 'menu');
 	}
@@ -156,7 +160,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			items.unshift(returnItem);
 		}
 		return items.filter((item) => {
-			const role = item.role;
+			const role = item.getAttribute('role');
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
 		});
 	}
@@ -254,26 +258,10 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	_onMenuItemsChanged() {
-		this._items = this._getMenuItems();
-		if (!this._items || this._items.length === 0) return;
-
-		const visibleItems = [];
-
-		for (let i = 0; i < this._items.length; i++) {
-			const item = this._items[i];
-			item.removeAttribute('first');
-			item.removeAttribute('last');
-			if (!item.hidden) {
-				item.setAttribute('tabindex', visibleItems.length === 0 ? 0 : -1);
-				visibleItems.push(item);
-			}
-		}
-
-		if (visibleItems.length > 0) {
-			visibleItems[0].setAttribute('first', true);
-			visibleItems[visibleItems.length - 1].setAttribute('last', true);
-		}
-
+		requestAnimationFrame(() => {
+			this._items = this._getMenuItems();
+			this._updateItemAttributes();
+		});
 	}
 
 	_onShowComplete() {
@@ -332,6 +320,28 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		}
 
 		return focusableItems[itemIndex + 1];
+
+	}
+
+	_updateItemAttributes() {
+		if (!this._items || this._items.length === 0) return;
+
+		const visibleItems = [];
+
+		for (let i = 0; i < this._items.length; i++) {
+			const item = this._items[i];
+			item.removeAttribute('first');
+			item.removeAttribute('last');
+			if (!item.hidden) {
+				item.setAttribute('tabindex', visibleItems.length === 0 ? 0 : -1);
+				visibleItems.push(item);
+			}
+		}
+
+		if (visibleItems.length > 0) {
+			visibleItems[0].setAttribute('first', true);
+			visibleItems[visibleItems.length - 1].setAttribute('last', true);
+		}
 
 	}
 }
