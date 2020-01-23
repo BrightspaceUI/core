@@ -79,7 +79,7 @@ requestIdleCallback((deadline) => {
 
 ## queueMicrotask
 
-A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask).
+A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
 
 ```js
 import '@brightspace-ui/core/helpers/queueMicrotask.js';

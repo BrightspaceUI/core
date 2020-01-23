@@ -1,4 +1,3 @@
-import '../../helpers/queueMicrotask.js';
 import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -259,7 +258,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	_onMenuItemsChanged() {
-		queueMicrotask(() => {
+		requestAnimationFrame(() => {
 			this._items = this._getMenuItems();
 			this._updateItemAttributes();
 		});

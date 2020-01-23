@@ -159,9 +159,13 @@
 
 				describe('focus management', () => {
 
-					beforeEach(async() => {
+					beforeEach((done) => {
 						menu = fixture('focus');
-						await menu.updateComplete;
+						menu.updateComplete.then(() => {
+							requestAnimationFrame(() => {
+								done();
+							});
+						});
 					});
 
 					it('sets tabindex equal to 0 for first menu item', () => {
