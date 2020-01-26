@@ -54,7 +54,7 @@
     "eslint-plugin-sort-class-members": "^1",
     "frau-ci": "^1",
     "lit-analyzer": "^1",
-    "mocha": "^6",
+    "mocha": "^7.0.1",
     "node-sass": "^4",
     "polymer-cli": "^1",
     "puppeteer": "^1",
