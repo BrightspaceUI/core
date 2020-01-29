@@ -103,4 +103,6 @@ document.querySelector('#open').addEventListener('click', () => {
 
 ## Future Enhancements
 
+* scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
+
 Looking for an enhancement not listed here? Create a GitHub issue!
