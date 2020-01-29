@@ -70,18 +70,12 @@ After cloning the repo, run `npm install` to install dependencies.
 
 Run `npm run build` once, or any time icon or language files are changed.
 
-If you don't have it already, install the [Polymer CLI](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) globally:
-
-```shell
-npm install -g polymer-cli
-```
-
 ### Running the demos
 
-To start a [local web server](https://www.polymer-project.org/3.0/docs/tools/polymer-cli-commands#serve) that hosts the demo page and tests:
+To start a local web server that hosts the demo page and tests:
 
 ```shell
-polymer serve
+npm run start
 ```
 
 ### Testing
