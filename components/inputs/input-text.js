@@ -98,9 +98,14 @@ class InputText extends RtlMixin(LitElement) {
 		return input;
 	}
 
-	focus() {
+	async focus() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
-		if (elem) elem.focus();
+		if (elem) {
+			elem.focus();
+		} else {
+			await this.updateComplete;
+			this.focus();
+		}
 	}
 
 	_getAriaLabel() {
