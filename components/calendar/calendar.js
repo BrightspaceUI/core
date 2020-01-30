@@ -6,7 +6,6 @@ import { getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading4Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -28,13 +27,13 @@ function checkIfDatesEqual(month, date, year, comparisonDate) {
 		&& comparisonDate.getFullYear() === year;
 }
 
-function createDateObject(date, prevMonth, nextMonth, shownMonth, shownYear) {
+function createDateObject(date, inPrevMonth, inNextMonth, shownMonth, shownYear, prevMonth, nextMonth) {
 	let month = shownMonth;
 	let year = shownYear;
-	if (prevMonth) {
+	if (inPrevMonth) {
 		month = prevMonth;
 		if (shownMonth === 0) year = shownYear - 1;
-	} else if (nextMonth) {
+	} else if (inNextMonth) {
 		month = nextMonth;
 		if (shownMonth === 11) year = shownYear + 1;
 	}
@@ -43,11 +42,11 @@ function createDateObject(date, prevMonth, nextMonth, shownMonth, shownYear) {
 		date: date,
 		month: month,
 		year: year,
-		otherMonth: prevMonth || nextMonth
+		otherMonth: inPrevMonth || inNextMonth
 	};
 }
 
-function generateDaysInMonth(shownMonth, shownYear, prevMonth, firstDayOfWeek) {
+function generateDaysInMonth(shownMonth, shownYear, prevMonth, nextMonth, firstDayOfWeek) {
 	if (shownMonth === undefined || !shownYear) return [];
 
 	const dates = [];
@@ -65,11 +64,11 @@ function generateDaysInMonth(shownMonth, shownYear, prevMonth, firstDayOfWeek) {
 			numDaysFromLastMonthToShowThisMonth += 7;
 		}
 		for (let i = numDaysLastMonth - numDaysFromLastMonthToShowThisMonth + 1; i <= numDaysLastMonth; i++) {
-			firstWeek.push(createDateObject(i, true, false, shownMonth, shownYear));
+			firstWeek.push(createDateObject(i, true, false, shownMonth, shownYear, prevMonth, nextMonth));
 		}
 	}
 	for (let j = 1; j <= 7 - numDaysFromLastMonthToShowThisMonth; j++) {
-		firstWeek.push(createDateObject(j, false, false, shownMonth, shownYear));
+		firstWeek.push(createDateObject(j, false, false, shownMonth, shownYear, prevMonth, nextMonth));
 	}
 	dates.push(firstWeek);
 
@@ -81,10 +80,10 @@ function generateDaysInMonth(shownMonth, shownYear, prevMonth, firstDayOfWeek) {
 		for (let j = firstDateOfWeek; j < firstDateOfWeek + 7; j++) {
 			let day;
 			if (j >= (numDays + 1)) {
-				day = createDateObject(nextMonthDay, false, true, shownMonth, shownYear);
+				day = createDateObject(nextMonthDay, false, true, shownMonth, shownYear, prevMonth, nextMonth);
 				nextMonthDay++;
 			} else {
-				day = createDateObject(j, false, false, shownMonth, shownYear);
+				day = createDateObject(j, false, false, shownMonth, shownYear, prevMonth, nextMonth);
 			}
 			week.push(day);
 		}
@@ -110,7 +109,7 @@ function getNumberOfDaysInMonth(month, year) {
 	return days;
 }
 
-class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -196,7 +195,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			</th>
 		`);
 
-		const dates = generateDaysInMonth(this._shownMonth, this._shownYear, this._prevMonth, this._descriptor.calendar.firstDayOfWeek);
+		const dates = generateDaysInMonth(this._shownMonth, this._shownYear, this._prevMonth, this._nextMonth, this._descriptor.calendar.firstDayOfWeek);
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const classes = {
@@ -331,25 +330,51 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				preventDefault = true;
 				break;
 			case keyCodes.LEFT:
-				this._changeFocusDate(-1);
+				if (getComputedStyle(this).direction === 'rtl') {
+					this._changeFocusDate(1);
+				} else {
+					this._changeFocusDate(-1);
+				}
 				break;
 			case keyCodes.RIGHT:
-				this._changeFocusDate(1);
+				if (getComputedStyle(this).direction === 'rtl') {
+					this._changeFocusDate(-1);
+				} else {
+					this._changeFocusDate(1);
+				}
 				break;
 			case keyCodes.HOME: {
 				const dayOfTheWeek = this._focusDate.getDay();
-				let diff = dayOfTheWeek - this._descriptor.calendar.firstDayOfWeek;
-				if (diff < 0) {
-					diff += 7;
+				let diff;
+				if (getComputedStyle(this).direction === 'rtl') {
+					diff = 6 - dayOfTheWeek + this._descriptor.calendar.firstDayOfWeek;
+					if (diff > 6) {
+						diff -= 7;
+					}
+				} else {
+					diff = dayOfTheWeek - this._descriptor.calendar.firstDayOfWeek;
+					if (diff < 0) {
+						diff += 7;
+					}
+					diff *= -1;
 				}
-				this._changeFocusDate(-diff);
+				this._changeFocusDate(diff);
 				preventDefault = true;
 				break;
 			} case keyCodes.END: {
-				const dayOfTheWeek2 = this._focusDate.getDay();
-				let diff = 6 - dayOfTheWeek2 + this._descriptor.calendar.firstDayOfWeek;
-				if (diff > 6) {
-					diff -= 7;
+				const dayOfTheWeek = this._focusDate.getDay();
+				let diff;
+				if (getComputedStyle(this).direction === 'rtl') {
+					diff = dayOfTheWeek - this._descriptor.calendar.firstDayOfWeek;
+					if (diff < 0) {
+						diff += 7;
+					}
+					diff *= -1;
+				} else {
+					diff = 6 - dayOfTheWeek + this._descriptor.calendar.firstDayOfWeek;
+					if (diff > 6) {
+						diff -= 7;
+					}
 				}
 				this._changeFocusDate(diff);
 				preventDefault = true;

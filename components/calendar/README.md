@@ -22,4 +22,4 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 
 **Events:**
 
-* `d2l-calendar-selected`: dispatched when a date is selected through click, space, or enter. `e.detail.date` is an object representing the selected date. For example, if January 1, 2020 is selected, the date will be `{month: 0, date: 1, year: 2020}`.
+* `d2l-calendar-selected`: dispatched when a date is selected through click, space, or enter. `e.detail.date` is in ISO 8601 Extended Format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
