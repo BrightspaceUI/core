@@ -51,8 +51,8 @@ describe('d2l-calendar', function() {
 
 		it('selects a new date by clicking on it', async function() {
 			await page.$eval(firstCalendarOfPage, (calendar) => {
-				const arrow = calendar.shadowRoot.querySelector('div[data-date="20"]');
-				arrow.click();
+				const date = calendar.shadowRoot.querySelector('div[data-date="20"]');
+				date.click();
 			});
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -71,6 +71,18 @@ describe('d2l-calendar', function() {
 			await tabToDates();
 			await page.keyboard.press('ArrowRight');
 			await page.keyboard.press('Space');
+			await page.keyboard.press('ArrowRight');
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focuses on the correct date when right arrow then click a date then right arrow', async function() {
+			await tabToDates();
+			await page.keyboard.press('ArrowRight');
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				const date = calendar.shadowRoot.querySelector('div[data-date="20"]');
+				date.click();
+			});
 			await page.keyboard.press('ArrowRight');
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

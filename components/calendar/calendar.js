@@ -78,12 +78,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this._today = new Date();
-
 		this.selectedValue = this.selectedValue ? new Date(this.selectedValue) : new Date();
+
+		this._focusDate = new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate());
 		this._shownMonth = this.selectedValue.getMonth();
 		this._shownYear = this.selectedValue.getFullYear();
-		this._focusDate = new Date(this._shownYear, this._shownMonth, this.selectedValue.getDate());
+		this._today = new Date();
+
 		this._setPrevNextMonth();
 	}
 
@@ -93,12 +94,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_shownMonth') {
 				this._onMonthChange();
-				this.updateComplete.then(() => {
-					this.updateComplete.then(() => {
-						this._getNodeAndAddFocus(this._keyboardTriggeredMonthChange);
-						this._keyboardTriggeredMonthChange = false;
-					});
-				});
+				this._getNodeAndAddFocus(this._keyboardTriggeredMonthChange);
+				this._keyboardTriggeredMonthChange = false;
 			}
 		});
 	}
@@ -117,11 +114,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			const weekHtml = week.map((day) => {
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-focused': this._checkIfDatesEqual(day.month, day.date, day.year, this._focusDate),
 					'd2l-calendar-date-other-month': day.otherMonth,
 					'd2l-calendar-date-selected': this._checkIfDatesEqual(day.month, day.date, day.year, this.selectedValue),
 					'd2l-calendar-date-today': this._checkIfDatesEqual(day.month, day.date, day.year, this._today)
 				};
+				const focused = this._checkIfDatesEqual(day.month, day.date, day.year, this._focusDate);
 				return html`
 					<td>
 						<div
@@ -131,7 +128,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 							data-date=${day.date}
 							data-month=${day.month}
 							data-year=${day.year}
-							tabindex=${day.focused ? '0' : '-1'}>
+							tabindex=${focused ? '0' : '-1'}>
 							${day.date}
 						</div>
 					</td>`;
@@ -304,6 +301,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
 		this.selectedValue = new Date(year, month, date);
+		this._focusDate = new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate());
+
 		const eventDetails = {
 			bubbles: true,
 			composed: true,
@@ -379,10 +378,9 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_onMonthChange() {
-		this._getNodeAndRemoveFocus();
 		const numDaysInMonth = this._getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
 		let date = this._focusDate.getDate();
-		if (this._focusDate.date > (numDaysInMonth - 1)) date = numDaysInMonth;
+		if (date > (numDaysInMonth - 1)) date = numDaysInMonth;
 		this._focusDate = new Date(this._shownYear, this._shownMonth, date);
 
 	}
@@ -401,6 +399,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_showNextMonth() {
+		this._getNodeAndRemoveFocus();
 		if (this._shownMonth === 11) {
 			this._shownYear++;
 		}
@@ -409,6 +408,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_showPrevMonth() {
+		this._getNodeAndRemoveFocus();
 		if (this._shownMonth === 0) {
 			this._shownYear--;
 		}
