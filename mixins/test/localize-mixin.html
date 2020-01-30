@@ -86,6 +86,10 @@
 						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
 						documentLocaleSettings.language = 'fr';
 					});
+					it('should localize term using plurals', () => {
+						const val = elem.localize('plural', {itemCount: 1});
+						expect(val).to.equal('You have 1 item.');
+					});
 				});
 				describe('shouldUpdate tracking', () => {
 
