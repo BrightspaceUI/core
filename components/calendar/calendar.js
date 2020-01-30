@@ -73,14 +73,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 
 		this._dialogLabelId = getUniqueId();
-
-		this._today = new Date();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.addEventListener('keydown', this._onKeyDown);
+		this._today = new Date();
 
 		this.selectedValue = this.selectedValue ? new Date(this.selectedValue) : new Date();
 		this._shownMonth = this.selectedValue.getMonth();
@@ -122,17 +120,18 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					'd2l-calendar-date-focused': this._checkIfDatesEqual(day.month, day.date, day.year, this._focusDate),
 					'd2l-calendar-date-other-month': day.otherMonth,
 					'd2l-calendar-date-selected': this._checkIfDatesEqual(day.month, day.date, day.year, this.selectedValue),
-					'd2l-calendar-date-today': (day.year === this._today.getFullYear() && day.month === this._today.getMonth() && day.date === this._today.getDate())
+					'd2l-calendar-date-today': this._checkIfDatesEqual(day.month, day.date, day.year, this._today)
 				};
 				return html`
 					<td>
 						<div
 							@click="${this._onDateSelected}"
-							tabindex=${day.focused ? '0' : '-1'}
+							@keydown="${this._onKeyDown}"
 							class=${classMap(classes)}
 							data-date=${day.date}
 							data-month=${day.month}
-							data-year=${day.year}>
+							data-year=${day.year}
+							tabindex=${day.focused ? '0' : '-1'}>
 							${day.date}
 						</div>
 					</td>`;
@@ -187,7 +186,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_checkIfDatesEqual(month, date, year, comparisonDate) {
-		// const asDate = new Date(comparisonDate);
 		return comparisonDate.getMonth() === month
 			&& comparisonDate.getDate() === date
 			&& comparisonDate.getFullYear() === year;
@@ -212,9 +210,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			date: date,
 			month: month,
 			year: year,
-			otherMonth: prevMonth || nextMonth,
-			// selected: this._checkIfDatesEqual(month, date, year, this.selectedValue),
-			// focused: this._checkIfDatesEqual(month, date, year, this._focusDate)
+			otherMonth: prevMonth || nextMonth
 		};
 	}
 
@@ -311,9 +307,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const eventDetails = {
 			bubbles: true,
 			composed: true,
-			detail: { date: `${year}-${month}-${date}` }
+			detail: { date: `${year}-${parseInt(month) + 1}-${date}` }
 		};
-		e.target.selected = true;
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
 	}
 
@@ -324,6 +319,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		let preventDefault = false;
 
 		switch (e.keyCode) {
+			case keyCodes.ENTER:
+			case keyCodes.SPACE:
+				preventDefault = true;
+				this._onDateSelected(e);
+				break;
 			case keyCodes.DOWN:
 				this._changeFocusDate(7);
 				preventDefault = true;
@@ -369,10 +369,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				}
 				// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				break;
-			} case keyCodes.ENTER || keyCodes.SPACE:
-				preventDefault = true;
-				this._onDateSelected(e);
-				break;
+			}
 		}
 
 		if (preventDefault) {

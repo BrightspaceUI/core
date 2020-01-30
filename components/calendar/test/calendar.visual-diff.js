@@ -51,7 +51,7 @@ describe('d2l-calendar', function() {
 
 		it('selects a new date by clicking on it', async function() {
 			await page.$eval(firstCalendarOfPage, (calendar) => {
-				const arrow = calendar.shadowRoot.querySelector('d2l-calendar-date[date="20"]');
+				const arrow = calendar.shadowRoot.querySelector('div[data-date="20"]');
 				arrow.click();
 			});
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);

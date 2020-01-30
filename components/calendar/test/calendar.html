@@ -39,40 +39,40 @@
 
 					it('dispatches event when date clicked', (done) => {
 						calendar.addEventListener('d2l-calendar-selected', (e) => {
-							expect(e.detail.date).to.deep.equal({ month: 8, date: 1, year: 2015 });
+							expect(e.detail.date).to.equal('2015-9-1');
 							done();
 						});
 						setTimeout(() => {
-							const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="1"]');
+							const date = calendar.shadowRoot.querySelector('div[data-date="1"]');
 							date.click();
 						});
 					});
 
 					it('dispatches event when enter key pressed on date', (done) => {
 						calendar.addEventListener('d2l-calendar-selected', (e) => {
-							expect(e.detail.date).to.deep.equal({ month: 8, date: 20, year: 2015 });
+							expect(e.detail.date).to.equal('2015-9-20');
 							done();
 						});
 						setTimeout(() => {
-							const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="20"]');
+							const date = calendar.shadowRoot.querySelector('div[data-date="20"]');
 							dispatchKeyEvent(date, 13);
 						});
 					});
 
 					it('dispatches event when space key pressed on date', (done) => {
 						calendar.addEventListener('d2l-calendar-selected', (e) => {
-							expect(e.detail.date).to.deep.equal({ month: 8, date: 2, year: 2015 });
+							expect(e.detail.date).to.equal('2015-9-2');
 							done();
 						});
 						setTimeout(() => {
-							const date = calendar.shadowRoot.querySelector('d2l-calendar-date[date="2"]');
-							dispatchKeyEvent(date, 13);
+							const date = calendar.shadowRoot.querySelector('div[data-date="2"]');
+							dispatchKeyEvent(date, 32);
 						});
 					});
 
 					function dispatchKeyEvent(el, key) {
 						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keyup', true, true);
+						eventObj.initEvent('keydown', true, true);
 						eventObj.which = key;
 						eventObj.keyCode = key;
 						el.dispatchEvent(eventObj);
