@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
 
 export const calendarStyles = css`
