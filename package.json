@@ -25,7 +25,7 @@
     "test:sauce": "npm run test:sauce:karma && npm run test:sauce:polymer",
     "test:sauce:karma": "karma start karma.conf.sauce.js",
     "test:sauce:polymer": "polymer test --skip-plugin local",
-    "test:travis": "polymer test --config-file wct.conf-travis.json"
+    "test:travis": "polymer test --config-file wct.conf-travis.json && npm run test:local:karma"
   },
   "files": [
     "/components",
