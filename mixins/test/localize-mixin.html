@@ -10,7 +10,7 @@
 		<script src="/node_modules/@polymer/test-fixture/test-fixture.js"></script>
 		<script src="/node_modules/wct-mocha/wct-mocha.js"></script>
 		<script type="module" src="../demo/localize-test.js"></script>
-		<script type="module" src="../demo/localize-test-no-resources.js"></script>
+		<script type="module" src="../demo/localize-test-async.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
@@ -25,12 +25,12 @@
 		</test-fixture>
 		<test-fixture id="async">
 			<template>
-				<d2l-test-localize name="Bill" async></d2l-test-localize>
+				<d2l-test-localize-async name="Bill"></d2l-test-localize-async>
 			</template>
 		</test-fixture>
-		<test-fixture id="no-resources">
+		<test-fixture id="container">
 			<template>
-				<d2l-test-localize-no-resources></d2l-test-localize-no-resources>
+				<div></div>
 			</template>
 		</test-fixture>
 
@@ -43,11 +43,62 @@
 				afterEach(() => documentLocaleSettings.reset());
 
 				async function fixtureAndAwaitRender(name) {
-					return new Promise((resolve) => {
-						const elem = fixture(name);
-						elem.addEventListener('d2l-test-localize-render', () => resolve(elem));
-					});
+					const elem = fixture(name);
+					await elem.updateComplete;
+					return elem;
 				}
+
+				['static', 'async'].forEach((type) => {
+
+					const fixtureName = (type === 'static') ? 'basic' : 'async';
+					const tagName = (type === 'static') ? 'd2l-test-localize' : 'd2l-test-localize-async';
+
+					describe('localize', () => {
+						let elem;
+						beforeEach(async() => {
+							elem = await fixtureAndAwaitRender(fixtureName);
+						});
+						it('should localize text using object format', () => {
+							const val = elem.localize('hello', {name: 'Bill'});
+							expect(val).to.equal('Hello Bill');
+						});
+						it('should localize text using legacy format', () => {
+							const val = elem.localize('hello', 'name', 'Bill');
+							expect(val).to.equal('Hello Bill');
+						});
+						it('should re-localize text when locale changes', (done) => {
+							const valInitial = elem.localize('hello', {name: 'Sam'});
+							expect(valInitial).to.equal('Hello Sam');
+							const myEventListener = () => {
+								const val = elem.localize('hello', {name: 'Mary'});
+								expect(val).to.equal('Bonjour Mary');
+								elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+								done();
+							};
+							elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+							documentLocaleSettings.language = 'fr';
+						});
+						it('should localize term using plurals', () => {
+							const val = elem.localize('plural', {itemCount: 1});
+							expect(val).to.equal('You have 1 item.');
+						});
+					});
+
+					it(`should only render once (${type})`, (done) => {
+						const container = fixture('container');
+						const elem = document.createElement(tagName);
+						let renderCount = 0;
+						elem.addEventListener('d2l-test-localize-render', () => {
+							renderCount++;
+						});
+						container.appendChild(elem);
+						setTimeout(() => {
+							expect(renderCount).to.equal(1);
+							done();
+						}, 100);
+					});
+
+				});
 
 				describe('lang set', () => {
 					it('should ignore "__language" attribute and use default', async() => {
@@ -61,74 +112,41 @@
 					});
 				});
 
-				describe('localize', () => {
-					let elem;
-					beforeEach(async() => {
-						elem = await fixtureAndAwaitRender('basic');
-					});
-					it('should localize text using object format', () => {
-						const val = elem.localize('hello', {name: 'Bill'});
-						expect(val).to.equal('Hello Bill');
-					});
-					it('should localize text using legacy format', () => {
-						const val = elem.localize('hello', 'name', 'Bill');
-						expect(val).to.equal('Hello Bill');
-					});
-					it('should re-localize text when locale changes', (done) => {
-						const valInitial = elem.localize('hello', {name: 'Sam'});
-						expect(valInitial).to.equal('Hello Sam');
-						const myEventListener = () => {
-							const val = elem.localize('hello', {name: 'Mary'});
-							expect(val).to.equal('Bonjour Mary');
-							elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
-							done();
-						};
-						elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
-						documentLocaleSettings.language = 'fr';
-					});
-					it('should localize term using plurals', () => {
-						const val = elem.localize('plural', {itemCount: 1});
-						expect(val).to.equal('You have 1 item.');
-					});
-				});
 				describe('shouldUpdate tracking', () => {
 
 					it('should pass all changed properties to updated()', (done) => {
-						const elem = fixture('async');
+						const container = fixture('container');
+						const elem = document.createElement('d2l-test-localize-async');
 						elem.addEventListener('d2l-test-localize-updated', (e) => {
 							const props = e.detail.props;
-							expect(props.size).to.equal(4);
-							expect(props.has('name'));
-							expect(props.has('async'));
+							expect(props.size).to.equal(2);
 							expect(props.has('__language'));
 							expect(props.has('__resources'));
 							done();
 						});
-						elem.__localizeResourcesPromise.then(() => {
-							elem.resolveLang();
-						});
+						container.appendChild(elem);
 					});
 
 					it('should clear changed properties after language resolution', (done) => {
-						const elem = fixture('async');
+						const container = fixture('container');
 						let first = true;
+						const elem = document.createElement('d2l-test-localize-async');
+						elem.setAttribute('name', 'Bill');
 						elem.addEventListener('d2l-test-localize-updated', (e) => {
 							const props = e.detail.props;
 							if (first) {
 								first = false;
-								expect(props.size).to.equal(4);
+								expect(props.size).to.equal(3);
 								return;
 							}
 							expect(props.size).to.equal(1);
 							expect(e.detail.props.has('name'));
 							done();
 						});
-						elem.__localizeResourcesPromise.then(() => {
-							elem.resolveLang();
-						});
 						elem.addEventListener('d2l-test-localize-render', () => {
 							elem.setAttribute('name', 'Jim');
 						});
+						container.appendChild(elem);
 					});
 
 				});
