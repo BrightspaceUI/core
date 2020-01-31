@@ -18,7 +18,10 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 		const langResources = {
 			'ar': { 'hello': 'مرحبا {name}' },
 			'de': { 'hello': 'Hallo {name}' },
-			'en': { 'hello': 'Hello {name}' },
+			'en': {
+				'hello': 'Hello {name}',
+				'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
+			},
 			'en-ca': { 'hello': 'Hello, {name} eh' },
 			'es': { 'hello': 'Hola {name}' },
 			'fr': { 'hello': 'Bonjour {name}' },

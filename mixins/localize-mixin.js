@@ -1,3 +1,4 @@
+import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
 import {getDocumentLocaleSettings} from '@brightspace-ui/intl/lib/common.js';
 import IntlMessageFormat from 'intl-messageformat';
 
