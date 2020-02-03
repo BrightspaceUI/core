@@ -2,55 +2,55 @@
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../demo/styles.css" type="text/css">
-    <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script type="module">
-        import '../../demo/demo-page.js';
-        import '../../button/button.js';
-        import '../dropdown.js';
-        import '../dropdown-content.js';
-    </script>
-    <style>
-        .align-item {
-            color: var(--d2l-color-tungsten);
-            font-size: 0.7rem;
-        }
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../../button/button.js';
+		import '../dropdown.js';
+		import '../dropdown-content.js';
+	</script>
+	<style>
+		.align-item {
+			color: var(--d2l-color-tungsten);
+			font-size: 0.7rem;
+		}
 
-        .align-item.bullet::before {
-            color: var(--d2l-color-tungsten);
-            content: '\002022';
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-    </style>
+		.align-item.bullet::before {
+			color: var(--d2l-color-tungsten);
+			content: '\002022';
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+	</style>
 </head>
 
 <body unresolved>
 
-    <d2l-demo-page page-title="d2l-dropdown">
+	<d2l-demo-page page-title="d2l-dropdown">
 
-        <h2>Generic Dropdown</h2>
-        <d2l-demo-snippet>
-            <template>
-                <d2l-dropdown>
-                    <d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-                    <d2l-dropdown-content max-width="400">
-                        <a href="https://youtu.be/9ze87zQFSak">Google</a>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                            anim id est laborum.</p>
-                        <a href="http://www.desire2learn.com">D2L</a>
-                    </d2l-dropdown-content>
-                </d2l-dropdown>
-            </template>
-        </d2l-demo-snippet>
+		<h2>Generic Dropdown</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="400">
+						<a href="https://youtu.be/9ze87zQFSak">Google</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+							magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+							commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+							anim id est laborum.</p>
+						<a href="http://www.desire2learn.com">D2L</a>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
 
-    </d2l-demo-page>
+	</d2l-demo-page>
 
 </body>
 
