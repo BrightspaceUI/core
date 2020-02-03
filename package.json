@@ -11,7 +11,7 @@
     "build:icons": "node ./cli/icon-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "build": "npm run build:clean && npm run build:icons && npm run build:sass",
-    "lint": "npm run lint:eslint && npm run lint:lit-analyze",
+    "lint": "npm run lint:eslint && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit-analyze": "lit-analyzer components demo directives helpers mixins test tools",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
