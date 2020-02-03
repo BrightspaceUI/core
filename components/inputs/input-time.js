@@ -144,6 +144,11 @@ class InputTime extends RtlMixin(LitElement) {
 			this._formattedValue = formatTime(parseValue(this.value));
 		} else {
 			this.value = formatValue(time);
+			// Change events aren't composed, so we need to re-dispatch
+			this.dispatchEvent(new CustomEvent(
+				'd2l-time-input-changed',
+				{bubbles: true, composed: false}
+			));
 		}
 	}
 
