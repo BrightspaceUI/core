@@ -131,7 +131,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		super.firstUpdated(changedProperties);
 
 		this.__content = this.__getContentContainer();
-		this.__content.addEventListener('scroll', this.__toggleScrollStyles);
+		this.addEventListener('d2l-dropdown-close', this.__onClose);
+		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
 
 	connectedCallback() {
@@ -140,9 +141,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		window.addEventListener('resize', this.__onResize);
 		document.body.addEventListener('focus', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('click', this.__onAutoCloseClick, true);
-
-		this.addEventListener('d2l-dropdown-close', this.__onClose);
-		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
 
 	disconnectedCallback() {
@@ -150,9 +148,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		window.removeEventListener('resize', this.__onResize);
 		document.body.removeEventListener('focus', this.__onAutoCloseFocus, true);
 		document.body.removeEventListener('click', this.__onAutoCloseClick, true);
-		this.removeEventListener('d2l-dropdown-close', this.__onClose);
-		this.removeEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
-		this.__content.removeEventListener('scroll', this.__toggleScrollStyles);
 		clearDismissible(this.__dismissibleId);
 		this.__dismissibleId = null;
 	}
@@ -180,7 +175,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
 				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
 					<div class=${classMap(topClasses)}></div>
-					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)}>
+					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)} @scroll=${this.__toggleScrollStyles}>
 						${this.renderContent ? html`<slot></slot>` : null}
 					</div>
 					<div class=${classMap(bottomClasses)}></div>
