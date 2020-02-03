@@ -21,6 +21,7 @@
     "test:diff:golden:commit": "commit-goldens",
     "test:headless": "npm run test:headless:polymer && npm run test:headless:karma",
     "test:headless:karma": "karma start",
+    "test:headless:karma:watch": "karma start --auto-watch=true --single-run=false",
     "test:headless:polymer": "polymer test --skip-plugin sauce",
     "test:sauce": "npm run test:sauce:karma && npm run test:sauce:polymer",
     "test:sauce:karma": "karma start karma.sauce.conf.js",
