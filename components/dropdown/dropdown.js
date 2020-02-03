@@ -1,5 +1,6 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { DropdownOpenerMixin } from './dropdown-opener-mixin';
+import { html, LitElement } from 'lit-element/lit-element.js';
+import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
+import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 
 class Dropdown extends DropdownOpenerMixin(LitElement) {
 
@@ -8,14 +9,7 @@ class Dropdown extends DropdownOpenerMixin(LitElement) {
 	}
 
 	static get styles() {
-		return css`
-			:host {
-			}
-
-			:host([hidden]) {
-				display: none;
-			}
-		`;
+		return [dropdownOpenerStyles];
 	}
 
 	render() {

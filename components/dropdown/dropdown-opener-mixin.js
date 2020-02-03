@@ -4,31 +4,85 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		return {
 			isDropdownOpener: {
 				type: Boolean
+			},
+			noAutoOpen: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'no-auto-open'
+			},
+			disabled: {
+				type: Boolean,
+				reflect: true
 			}
 		};
+	}
+
+	constructor() {
+		super();
+		this.isDropdownOpener = true;
+
+		this.__onKeyPress = this.__onKeyPress.bind(this);
+		this.__onMouseUp = this.__onMouseUp.bind(this);
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		super.firstUpdated();
-		this.addEventListener('keydown', this._onKeyDown);
-
 		const opener = this.getOpenerElement();
-		const content = this.getContentElement();
+		const content = this.__getContentElement();
 		if (!opener) {
 			return;
 		}
 		opener.setAttribute('aria-haspopup', 'true');
-		opener.addEventListener('keypress', this.__onKeyPress.bind(this));
-		opener.addEventListener('mouseup', this.__onMouseUp.bind(this));
+		opener.addEventListener('keypress', this.__onKeyPress);
+		opener.addEventListener('mouseup', this.__onMouseUp);
 		opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
 	}
 
-	getContentElement() {
-		return this.shadowRoot.querySelector('slot').assignedNodes().find(
-			node => node.nodeType === 1 && node.nodeName === 'D2L-DROPDOWN-CONTENT'
-		);
+	connectedCallback() {
+		super.connectedCallback();
+
+		this.addEventListener('d2l-dropdown-open', this.__onOpened);
+		this.addEventListener('d2l-dropdown-close', this.__onClosed);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('d2l-dropdown-open', this.__onOpened);
+		this.removeEventListener('d2l-dropdown-close', this.__onClosed);
+
+		const opener = this.getOpenerElement();
+		if (!opener) {
+			return;
+		}
+		opener.removeEventListener('keypress', this.__onKeyPress);
+		opener.removeEventListener('mouseup', this.__onMouseUp);
+	}
+
+	/**
+	 * Applies focus to opener.
+	 */
+	focus() {
+		const opener = this.getOpenerElement();
+		if (!opener) {
+			return;
+		}
+		opener.focus();
+	}
+
+	/**
+	 * Gets the opener component.
+	 */
+	getOpener() {
+		return this;
+	}
+
+	/**
+	 * Gets the opener element (required by d2l-dropdown behavior).
+	 * @return {HTMLElement}
+	 */
+	getOpenerElement() {
+		return this;
 	}
 
 	/**
@@ -40,11 +94,17 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			return;
 		}
 
-		const content = this.getContentElement();
+		const content = this.__getContentElement();
 		if (!content) {
 			return;
 		}
 		content.toggleOpen(applyFocus);
+	}
+
+	__getContentElement() {
+		return this.shadowRoot.querySelector('slot').assignedNodes().find(
+			node => node.nodeType === 1 && node.nodeName === 'D2L-DROPDOWN-CONTENT'
+		);
 	}
 
 	__onKeyPress(e) {
@@ -63,4 +123,23 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 		this.toggleOpen(false);
 	}
+
+	__onOpened() {
+		const opener = this.getOpenerElement();
+		if (!opener) {
+			return;
+		}
+		opener.setAttribute('aria-expanded', 'true');
+		opener.setAttribute('active', 'true');
+	}
+
+	__onClosed() {
+		const opener = this.getOpenerElement();
+		if (!opener) {
+			return;
+		}
+		opener.setAttribute('aria-expanded', 'false');
+		opener.removeAttribute('active');
+	}
+
 };
