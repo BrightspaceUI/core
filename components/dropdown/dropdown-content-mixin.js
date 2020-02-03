@@ -456,7 +456,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._width = null;
 		await this.updateComplete;
 
-		const adjustPosition = () => {
+		const adjustPosition = async() => {
 
 			const targetRect = target.getBoundingClientRect();
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
@@ -487,6 +487,9 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			if (!this.noAutoFit && maxHeight && maxHeight > 0) {
 				this._maxHeight = maxHeight;
 				this.__toggleOverflowY(contentRect.height > maxHeight);
+
+				// ensure the content height has updated when the __toggleScrollStyles event handler runs
+				await this.updateComplete;
 			}
 
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
