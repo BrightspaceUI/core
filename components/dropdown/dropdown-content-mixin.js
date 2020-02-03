@@ -1,6 +1,7 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
+import { classMap } from 'lit-html/directives/class-map';
 import { html } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -74,6 +75,24 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			verticalOffset: {
 				type: String,
 				attribute: 'vertical-offset'
+			},
+			_width: {
+				type: Number
+			},
+			_maxHeight: {
+				type: Number
+			},
+			_position: {
+				type: Number
+			},
+			_bottomOverflow: {
+				type: Boolean
+			},
+			_topOverflow: {
+				type: Boolean
+			},
+			_contentOverflow: {
+				type: Boolean
 			}
 		};
 	}
@@ -83,10 +102,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		this.__opened = false;
 		this.__content = null;
-		this.__isRTL = false;
 		this.__previousFocusableAncestor = null;
 		this.__applyFocus = true;
 		this.__dismissibleId = null;
+
+		this._bottomOverflow = false;
+		this._topOverflow = false;
+		this._contentOverflow = false;
 
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
@@ -145,33 +167,76 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		});
 	}
 
-	_renderContentContainer(innerHtml) {
-		const styles = {};
-		if (this.minWidth) {
-			styles.minWidth = `${this.minWidth}px`;
-		}
+	_renderContent() {
+
+		const positionStyle = this._getContentPositionStyle();
+		const widthStyle = this._getContentWidthStyle();
+		const containerStyle = this._getContentContainerStyle();
+
+		const topClasses = { 'd2l-dropdown-content-top': true, 'd2l-dropdown-content-top-scroll': this._topOverflow };
+		const bottomClasses = { 'd2l-dropdown-content-bottom': true, 'd2l-dropdown-content-bottom-scroll': this._bottomOverflow };
 
 		return html`
-			<div class="d2l-dropdown-content-container" style=${styleMap(styles)}>
-				${innerHtml()}
+			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+					<div class=${classMap(topClasses)}></div>
+					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)}>
+						${this.renderContent ? html`<slot></slot>` : null}
+					</div>
+					<div class=${classMap(bottomClasses)}></div>
+				</div>
 			</div>
 		`;
 	}
 
-	_renderWidthContainer(innerHtml) {
-		const styles = {};
+	_getContentPositionStyle() {
+		const style = {};
+		if (this._position) {
+			const isRTL = this.getAttribute('dir') === 'rtl';
+			if (!isRTL) {
+				style.left = `${this._position}px`;
+			} else {
+				style.right = `${this._position}px`;
+			}
+		}
+		return style;
+	}
+
+	_getContentWidthStyle() {
+		const style = {};
 		if (this.maxWidth) {
-			styles.maxWidth = `${this.maxWidth}px`;
+			style.maxWidth = `${this.maxWidth}px`;
 		}
 		if (this.minWidth) {
-			styles.minWidth = `${this.minWidth}px`;
+			style.minWidth = `${this.minWidth}px`;
 		}
+		if (this._width) {
+			/* add 2 to content width since scrollWidth does not include border */
+			style.width = `${this._width + 20}px`;
+		}
+		return style;
+	}
 
-		return html`
-			<div class="d2l-dropdown-content-width" style=${styleMap(styles)}>
-				${innerHtml()}
-			</div>
-		`;
+	_getContentContainerStyle() {
+		const style = {};
+		if (this.minWidth) {
+			style.minWidth = `${this.minWidth}px`;
+		}
+		if (this._width) {
+			/* set width of content in addition to width container so IE will render scroll inside border */
+			style.width = `${this._width + 18}px`;
+		}
+		if (this._maxHeight) {
+			style.maxHeight = `${this._maxHeight}px`;
+		} else {
+			style.maxHeight = 'none';
+		}
+		if (this._contentOverflow) {
+			style.overflowY = 'auto';
+		} else {
+			style.overflowY = 'hidden';
+		}
+		return style;
 	}
 
 	/**
@@ -327,9 +392,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				? getPreviousFocusableAncestor(this, false, false)
 				: null;
 
-		this.__isRTL = (getComputedStyle(this).direction === 'rtl');
-
-		const doOpen = () => {
+		const doOpen = async() => {
 
 			const content = this.__getContentContainer();
 
@@ -337,7 +400,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				content.scrollTop = 0;
 			}
 
-			this.__position(undefined, undefined);
+			await this.__position(undefined, undefined);
 
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
@@ -361,9 +424,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		if (newValue) {
 			if (!this.renderContent) {
-				await this.forceRender();
-			} else {
-				await this.updateComplete;
+				this.renderContent = true;
 			}
 
 			doOpen();
@@ -380,7 +441,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 	}
 
-	__position(ignoreVertical, contentRect) {
+	async __position(ignoreVertical, contentRect) {
 
 		const opener = this.__getOpener();
 		if (!opener) {
@@ -392,166 +453,132 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 
 		const content = this.__getContentContainer();
-		const position = this.__getPositionContainer();
-		const widthContainer = this.__getWidthContainer();
 
 		if (!this.noAutoFit) {
-			content.style.maxHeight = 'none';
+			this._maxHeight = null;
 		}
+		/* don't let dropdown content horizontally overflow viewport */
+		this._width = null;
+		await this.updateComplete;
 
 		const adjustPosition = () => {
 
 			const targetRect = target.getBoundingClientRect();
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
 
-			const spaceAround = {
+			const spaceAround = this._constrainSpaceAround({
 				above: targetRect.top - 50,
 				below: window.innerHeight - targetRect.bottom - 80,
 				left: targetRect.left - 20,
 				right: document.documentElement.clientWidth - targetRect.right - 15
-			};
-
-			if (this.boundary) {
-				spaceAround.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
-				spaceAround.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
-				spaceAround.left = this.boundary.left >= 0 ? Math.min(spaceAround.left, this.boundary.left) : spaceAround.left;
-				spaceAround.right = this.boundary.right >= 0 ? Math.min(spaceAround.right, this.boundary.right) : spaceAround.right;
-			}
+			});
 
 			const spaceRequired = {
 				height: contentRect.height + 20,
 				width: contentRect.width
 			};
 
-			let maxHeight;
-
 			if (!ignoreVertical) {
-				if (
-					(spaceAround.below < spaceRequired.height)
-			&& (
-				(spaceAround.above > spaceRequired.height)
-				|| (spaceAround.above > spaceAround.below)
-			)
-				) {
-					this.openedAbove = true;
-				} else {
-					this.openedAbove = false;
-				}
-			}
-
-			if (this.openedAbove) {
-				maxHeight = Math.floor(spaceAround.above);
-			} else {
-				maxHeight = Math.floor(spaceAround.below);
-			}
-
-			if ((this.align === 'start' && !this.__isRTL) || (this.align === 'end' && this.__isRTL)) {
-				spaceAround.left = 0;
-			} else if ((this.align === 'start' && this.__isRTL) || (this.align === 'end' && !this.__isRTL)) {
-				spaceAround.right = 0;
+				this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
 			}
 
 			const centerDelta = contentRect.width - targetRect.width;
-			const contentXAdjustment = centerDelta / 2;
-			if (centerDelta > 0) {
-				// content wider than target, so slide left/right as needed
-				if (!this.__isRTL) {
-					if (spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
-						// center with target
-						position.style.left = `${contentXAdjustment * -1}px`;
-					} else if (spaceAround.left < contentXAdjustment) {
-						// slide content right (not enough space to center)
-						position.style.left = `${(spaceAround.left) * -1}px`;
-					} else if (spaceAround.right < contentXAdjustment) {
-						// slide content left (not enough space to center)
-						position.style.left = `${((contentRect.width - targetRect.width) * -1) + spaceAround.right}px`;
-					}
-				} else {
-					if (spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
-						// center with target
-						position.style.right = `${contentXAdjustment * -1}px`;
-					} else if (spaceAround.left < contentXAdjustment) {
-						// slide content right (not enough space to center)
-						position.style.right = `${((contentRect.width - targetRect.width) * -1) + spaceAround.left}px`;
-					} else if (spaceAround.right < contentXAdjustment) {
-						// slide content left (not enough space to center)
-						position.style.right = `${(spaceAround.right) * -1}px`;
-					}
-				}
-			} else {
-				// content narrower than target, so slide in
-				if (!this.__isRTL) {
-					position.style.left = `${contentXAdjustment * -1}px`;
-				} else {
-					position.style.right = `${contentXAdjustment * -1}px`;
-				}
+			const position = this._getPosition(spaceAround, centerDelta);
+			if (position) {
+				this._position = position;
 			}
 
+			const maxHeight = Math.floor(this.openedAbove ? spaceAround.above : spaceAround.below);
 			if (!this.noAutoFit && maxHeight && maxHeight > 0) {
-				content.style.maxHeight = `${maxHeight}px`;
+				this._maxHeight = maxHeight;
 				this.__toggleOverflowY(contentRect.height > maxHeight);
 			}
 
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 		};
 
-		/* don't let dropdown content horizontally overflow viewport */
-		widthContainer.style.width = '';
-		content.style.width = '';
-
-		let width = window.innerWidth - 40;
-		if (width > content.scrollWidth) {
-			width = content.scrollWidth;
-		}
-
-		/* add 2 to width since scrollWidth does not include border */
-		widthContainer.style.width = `${width + 20}px`;
-		/* set width of content too so IE will render scroll inside border */
-		content.style.width = `${width + 18}px`;
+		this._width = this._getWidth(content.scrollWidth);
+		await this.updateComplete;
 
 		adjustPosition();
 	}
 
-	__toggleOverflowY(isOverflowing) {
-		if (!this.__content || !this.__content.style || !this.__content.style.maxHeight) {
-			return;
+	_getWidth(scrollWidth) {
+		let width = window.innerWidth - 40;
+		if (width > scrollWidth) {
+			width = scrollWidth;
 		}
+		return width;
+	}
 
-		const maxHeight = parseInt(this.__content.style.maxHeight, 10);
-		if (!maxHeight) {
-			return;
+	_getPosition(spaceAround, centerDelta) {
+
+		const contentXAdjustment = centerDelta / 2;
+		if (centerDelta <= 0) {
+			return contentXAdjustment * -1;
 		}
-
-		if (isOverflowing || this.__content.scrollHeight > maxHeight) {
-			this.__content.style.overflowY = 'auto';
+		if (spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
+			// center with target
+			return contentXAdjustment * -1;
+		}
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		if (!isRTL) {
+			if (spaceAround.left < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return spaceAround.left * -1;
+			} else if (spaceAround.right < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return (centerDelta * -1) + spaceAround.right;
+			}
 		} else {
-			/* needed for IE */
-			this.__content.style.overflowY = 'hidden';
+			if (spaceAround.left < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return (centerDelta * -1) + spaceAround.left;
+			} else if (spaceAround.right < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return spaceAround.right * -1;
+			}
 		}
+		return null;
+	}
+
+	_getOpenedAbove(spaceAround, spaceRequired) {
+		return (spaceAround.below < spaceRequired.height) && (
+			(spaceAround.above > spaceRequired.height) ||
+			(spaceAround.above > spaceAround.below)
+		);
+	}
+
+	_constrainSpaceAround(spaceAround) {
+		const constrained = {...spaceAround};
+		if (this.boundary) {
+			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
+			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
+			constrained.left = this.boundary.left >= 0 ? Math.min(spaceAround.left, this.boundary.left) : spaceAround.left;
+			constrained.right = this.boundary.right >= 0 ? Math.min(spaceAround.right, this.boundary.right) : spaceAround.right;
+		}
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
+			constrained.left = 0;
+		} else if ((this.align === 'start' && isRTL) || (this.align === 'end' && !isRTL)) {
+			constrained.right = 0;
+		}
+		return constrained;
+	}
+
+	__toggleOverflowY(isOverflowing) {
+		if (!this.__content) {
+			return;
+		}
+		if (!this._maxHeight) {
+			return;
+		}
+		this._contentOverflow = isOverflowing || this.__content.scrollHeight > this._maxHeight;
 	}
 
 	__toggleScrollStyles() {
-		const topCap = this.shadowRoot.querySelector('.d2l-dropdown-content-top');
-		const bottomCap = this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
-		if (this.__content.scrollTop === 0) {
-			if (topCap.classList.contains('d2l-dropdown-content-top-scroll')) {
-				topCap.classList.remove('d2l-dropdown-content-top-scroll');
-			}
-		} else {
-			if (!topCap.classList.contains('d2l-dropdown-content-top-scroll')) {
-				topCap.classList.add('d2l-dropdown-content-top-scroll');
-			}
-		}
-
 		/* scrollHeight incorrect in IE by 4px second time opened */
-		if (this.__content.scrollHeight - (this.__content.scrollTop + this.__content.clientHeight) < 5) {
-			if (bottomCap.classList.contains('d2l-dropdown-content-bottom-scroll')) {
-				bottomCap.classList.remove('d2l-dropdown-content-bottom-scroll');
-			}
-		} else {
-			if (!bottomCap.classList.contains('d2l-dropdown-content-bottom-scroll')) {
-				bottomCap.classList.add('d2l-dropdown-content-bottom-scroll');
-			}
-		}
+		this._bottomOverflow = this.__content.scrollHeight - (this.__content.scrollTop + this.__content.clientHeight) >= 5;
+		this._topOverflow = this.__content.scrollTop !== 0;
 	}
 };
