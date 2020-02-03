@@ -75,7 +75,7 @@ Run `npm run build` once, or any time icon or language files are changed.
 To start an [es-dev-server](https://open-wc.org/developing/es-dev-server.html) that hosts the demo page and tests:
 
 ```shell
-npm run start
+npm start
 ```
 
 ### Testing
