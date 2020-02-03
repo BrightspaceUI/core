@@ -17,7 +17,7 @@ class DropdownContent extends DropdownContentMixin(LitElement) {
 		<div class="d2l-dropdown-content-position">
 			${this._renderWidthContainer(() => html`
 				<div class="d2l-dropdown-content-top"></div>
-					${this._renderContentContainer(() => (html`<slot></slot>`))}
+					${this._renderContentContainer(() => (this.renderContent ? html`<slot></slot>` : null))}
 				<div class="d2l-dropdown-content-bottom"></div>
 			`)}
 		</div>
