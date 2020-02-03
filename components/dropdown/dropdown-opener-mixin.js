@@ -2,7 +2,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			isDropdownOpener: {
+			dropdownOpener: {
 				type: Boolean
 			},
 			noAutoOpen: {
@@ -19,7 +19,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this.isDropdownOpener = true;
+		this.dropdownOpener = true;
+		this.noAutoOpen = false;
+		this.disabled = false;
 
 		this.__onKeyPress = this.__onKeyPress.bind(this);
 		this.__onMouseUp = this.__onMouseUp.bind(this);

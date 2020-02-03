@@ -2,9 +2,10 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { html } from 'lit-element/lit-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-export const DropdownContentMixin = superclass => class extends superclass {
+export const DropdownContentMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -248,7 +249,7 @@ export const DropdownContentMixin = superclass => class extends superclass {
 
 	__getOpener() {
 		const opener = findComposedAncestor(this, (elem) => {
-			if (elem.isDropdownOpener) {
+			if (elem.dropdownOpener) {
 				return true;
 			}
 		});

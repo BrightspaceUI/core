@@ -9,7 +9,7 @@ class DropdownContent extends DropdownContentMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [dropdownContentStyles];
+		return dropdownContentStyles;
 	}
 
 	render() {

@@ -9,7 +9,7 @@ class Dropdown extends DropdownOpenerMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [dropdownOpenerStyles];
+		return dropdownOpenerStyles;
 	}
 
 	render() {
