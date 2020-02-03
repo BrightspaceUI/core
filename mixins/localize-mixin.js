@@ -15,28 +15,40 @@ export const LocalizeMixin = superclass => class extends superclass {
 		super();
 
 		this.__documentLocaleSettings = getDocumentLocaleSettings();
-		let first = true;
-		this.__languageChangeCallback = () => {
+		this.__resourcesLoadedPromise = new Promise((resolve) => {
+			let first = true;
+			this.__languageChangeCallback = () => {
+				if (!this._hasResources()) return;
+				const possibleLanguages = this._generatePossibleLanguages();
+				this.constructor.getLocalizeResources(possibleLanguages)
+					.then((res) => {
+						if (!res) {
+							return;
+						}
+						this.__language = res.language;
+						this.__resources = res.resources;
+						if (first) {
+							resolve();
+							first = false;
+						} else {
+							this._languageChange();
+						}
+					});
+			};
+		});
 
-			if (!this._hasResources()) return;
-			const possibleLanguages = this._generatePossibleLanguages();
-			this.constructor.getLocalizeResources(possibleLanguages)
-				.then((res) => {
-					if (!res) {
-						return;
-					}
-					this.__language = res.language;
-					this.__resources = res.resources;
-					if (first) {
-						first = false;
-					} else {
-						this._languageChange();
-					}
-				});
-
-		};
 		this.__updatedProperties = new Map();
 
+	}
+
+	async _getUpdateComplete() {
+		await super._getUpdateComplete();
+		const hasResources = this._hasResources();
+		const resourcesLoaded = (this.__language !== undefined && this.__resources !== undefined);
+		if (!hasResources || resourcesLoaded) {
+			return;
+		}
+		await this.__resourcesLoadedPromise;
 	}
 
 	connectedCallback() {

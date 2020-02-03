@@ -37,13 +37,9 @@
 				let elem, input;
 
 				async function getFixture(name) {
-					return new Promise((resolve) => {
-						elem = fixture(name);
-						elem.addEventListener('d2l-input-search-render', () => {
-							input = elem.shadowRoot.querySelector('.d2l-input');
-							resolve();
-						});
-					});
+					elem = fixture(name);
+					await elem.updateComplete;
+					input = elem.shadowRoot.querySelector('.d2l-input');
 				}
 
 				function assertSearchVisibility(isVisible) {
