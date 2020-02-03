@@ -28,6 +28,7 @@ npm install @brightspace-ui/core
 * [Meter](components/meter/): linear, radial, circle meter web components
 * [More/less](components/more-less/): constrain long bits of content
 * [Off-screen](components/offscreen/): component and styles for positioning content off-screen
+* [Status Indicator](components/status-indicator/): status-indicator components
 * [Typography](components/typography/): typography styles and components
 
 ## Helpers
@@ -69,18 +70,12 @@ After cloning the repo, run `npm install` to install dependencies.
 
 Run `npm run build` once, or any time icon or language files are changed.
 
-If you don't have it already, install the [Polymer CLI](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) globally:
-
-```shell
-npm install -g polymer-cli
-```
-
 ### Running the demos
 
-To start a [local web server](https://www.polymer-project.org/3.0/docs/tools/polymer-cli-commands#serve) that hosts the demo page and tests:
+To start an [es-dev-server](https://open-wc.org/developing/es-dev-server.html) that hosts the demo page and tests:
 
 ```shell
-polymer serve
+npm run start
 ```
 
 ### Testing
@@ -128,6 +123,10 @@ To run linting, visual-diff, and unit tests:
 ```shell
 npm test
 ```
+
+## Future Enhancements
+
+Looking for a new component or an enhancement not listed here? Create a GitHub issue!
 
 ## Versioning, Releasing & Deploying
 

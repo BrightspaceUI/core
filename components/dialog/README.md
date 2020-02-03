@@ -46,6 +46,7 @@ document.querySelector('#open').addEventListener('click', () => {
 **Properties:**
 
 - `title-text` (required, String): Text displayed in the header of the dialog
+- `async` (Boolean): Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container)
 - `opened` (Boolean): Whether or not the dialog is open
 - `width` (Number, default: `600`): The preferred width (unit-less) for the dialog
 
@@ -99,3 +100,9 @@ document.querySelector('#open').addEventListener('click', () => {
 
 - `d2l-dialog-open`: dispatched when the dialog is opened
 - `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
+
+## Future Enhancements
+
+* scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
+
+Looking for an enhancement not listed here? Create a GitHub issue!

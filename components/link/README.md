@@ -65,3 +65,7 @@ class MyElement extends LitElement {
 ```
 
 Add the `main` or `small` attributes to the `<a>` element to apply those styles.
+
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!
