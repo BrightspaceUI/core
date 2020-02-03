@@ -214,6 +214,26 @@ export const DropdownContentMixin = superclass => class extends superclass {
 		}
 	}
 
+	/**
+	 * Private.
+	 */
+	scrollTo(scrollTop) {
+		const content = this.__content;
+		if (content) {
+			if (typeof scrollTop === 'number') {
+				content.scrollTop = scrollTop;
+			}
+			return content.scrollTop;
+		}
+	}
+
+	/**
+	 * Private.
+	 */
+	height() {
+		return this.__content && this.__content.offsetHeight;
+	}
+
 	__getContentContainer() {
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-container');
 	}
