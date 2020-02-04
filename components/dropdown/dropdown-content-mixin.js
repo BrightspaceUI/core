@@ -395,7 +395,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				content.scrollTop = 0;
 			}
 
-			await this.__position(undefined, undefined);
+			await this.__position();
 
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);

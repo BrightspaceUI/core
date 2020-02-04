@@ -39,8 +39,8 @@
 
 			let dropdown, opener, content;
 
-			beforeEach(() => {
-				dropdown = fixture('dropdown');
+			beforeEach(async() => {
+				dropdown = await fixture('dropdown');
 				opener = dropdown.querySelector('.d2l-dropdown-opener');
 				content = dropdown.querySelector('d2l-dropdown-content');
 			});
