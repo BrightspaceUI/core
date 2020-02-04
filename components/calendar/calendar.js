@@ -427,7 +427,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 				let diff = (numWeeksPrevMonth - week) * 7 + week * 7 - (hasDaysFromLastMonth ? 7 : 0);
 				const numDaysLastMonth = getNumberOfDaysInMonth(this._prevMonth, this._shownYear);
-
 				if (diff >= (numDaysLastMonth + this._focusDate.getDate())) diff -= 7;
 				else if ((this._focusDate.getDate() - diff) > 0) diff += 7; // if that date in prev month is actually in this month
 
@@ -440,16 +439,17 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
 				const numWeeksCurrMonth = getNumberOfWeeksInMonth(this._shownMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
-				const firstDayOfMonth = new Date(this._shownYear, this._nextMonth, 1).getDay();
-				const hasDaysFromLastMonth = (firstDayOfMonth !== this._descriptor.calendar.firstDayOfWeek);
+				const firstDayOfNextMonth = new Date(this._shownYear, this._nextMonth, 1).getDay();
+				const hasDaysFromThisMonth = (firstDayOfNextMonth !== this._descriptor.calendar.firstDayOfWeek);
 
 				const selectedDate = e.composedPath()[0];
 				const week = selectedDate.getAttribute('data-week');
 
-				let diff = (numWeeksCurrMonth - week) * 7 + week * 7 - (hasDaysFromLastMonth ? 7 : 0);
+				let diff = (numWeeksCurrMonth - week) * 7 + week * 7 - (hasDaysFromThisMonth ? 7 : 0);
 				const numDaysThisMonth = getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
 				const numDaysNextMonth = getNumberOfDaysInMonth(this._nextMonth, this._shownYear);
 				if ((this._focusDate.getDate() + diff - numDaysThisMonth) > numDaysNextMonth) diff -= 7;
+				else if ((this._focusDate.getDate() + diff) <= numDaysThisMonth) diff += 7;
 
 				this._changeFocusDate(diff);
 				preventDefault = true;
