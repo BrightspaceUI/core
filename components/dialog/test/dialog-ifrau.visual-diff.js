@@ -2,7 +2,7 @@ const helper = require('./dialog-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-dialog-ifrau', function() {
+describe('d2l-dialog-ifrau', () => {
 
 	const visualDiff = new VisualDiff('dialog-ifrau', __dirname);
 
@@ -18,7 +18,7 @@ describe('d2l-dialog-ifrau', function() {
 
 	['native', 'custom'].forEach((name) => {
 
-		describe(name, function() {
+		describe(name, () => {
 
 			before(async() => {
 				const preferNative = (name === 'native' ? '' : '?preferNative=false');
