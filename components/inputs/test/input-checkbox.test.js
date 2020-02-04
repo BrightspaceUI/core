@@ -1,12 +1,9 @@
 import '../input-checkbox.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
-const checkedFixture = html`<d2l-input-checkbox checked></d2l-input-checkbox>`;
-const disabledFixture = html`<d2l-input-checkbox disabled></d2l-input-checkbox>`;
 const uncheckedFixture = html`<d2l-input-checkbox aria-label="basic"></d2l-input-checkbox>`;
 const indeterminateCheckedFixture = html`<d2l-input-checkbox indeterminate checked></d2l-input-checkbox>`;
 const indeterminateUncheckedFixture = html`<d2l-input-checkbox indeterminate></d2l-input-checkbox>`;
-const notTabbableFixture = html`<d2l-input-checkbox not-tabbable label="not-tabbable"></d2l-input-checkbox>`;
 
 describe('d2l-input-checkbox', () => {
 
@@ -22,12 +19,12 @@ describe('d2l-input-checkbox', () => {
 		});
 
 		it('should pass all aXe tests (checked)', async() => {
-			const elem = await fixture(checkedFixture);
+			const elem = await fixture(html`<d2l-input-checkbox checked></d2l-input-checkbox>`);
 			await expect(elem).to.be.accessible;
 		});
 
 		it('should pass all aXe tests (disabled)', async() => {
-			const elem = await fixture(disabledFixture);
+			const elem = await fixture(html`<d2l-input-checkbox disabled></d2l-input-checkbox>`);
 			await expect(elem).to.be.accessible;
 		});
 
@@ -222,7 +219,7 @@ describe('d2l-input-checkbox', () => {
 		});
 
 		it('should apply -1 tabindex when set', async() => {
-			const elem = await fixture(notTabbableFixture);
+			const elem = await fixture(html`<d2l-input-checkbox not-tabbable label="not-tabbable"></d2l-input-checkbox>`);
 			expect(getInput(elem).getAttribute('tabindex')).to.equal('-1');
 		});
 
