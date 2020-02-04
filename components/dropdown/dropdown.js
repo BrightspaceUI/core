@@ -13,7 +13,7 @@ class Dropdown extends DropdownOpenerMixin(LitElement) {
 	}
 
 	/**
-	 * Gets the opener element with class "d2l-dropdown-opener" (required by d2l-dropdown behavior).
+	 * Gets the opener element with class "d2l-dropdown-opener" (required by dropdown-opener-mixin).
 	 * @return {HTMLElement}
 	 */
 	getOpenerElement() {

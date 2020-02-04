@@ -60,9 +60,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.removeEventListener('mouseup', this.__onMouseUp);
 	}
 
-	/**
-	 * Applies focus to opener.
-	 */
 	focus() {
 		const opener = this.getOpenerElement();
 		if (!opener) {
@@ -71,25 +68,14 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.focus();
 	}
 
-	/**
-	 * Gets the opener component.
-	 */
 	getOpener() {
 		return this;
 	}
 
-	/**
-	 * Gets the opener element (required by d2l-dropdown behavior).
-	 * @return {HTMLElement}
-	 */
 	getOpenerElement() {
 		return this;
 	}
 
-	/**
-	 * Toggles the visible state of the dropdown. If open, it will close, and vice versa.
-	 * @param {Boolean} applyFocus Whether focus should be automatically move to first focusable upon opening.
-	 */
 	toggleOpen(applyFocus) {
 		if (this.disabled) {
 			return;
