@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
-import { labelStyles } from './input-label-styles.js';
+import { inputLabelStyles } from './input-label-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
@@ -58,7 +58,7 @@ class InputTime extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ inputStyles, labelStyles,
+		return [ inputStyles, inputLabelStyles,
 			css`
 				:host {
 					display: inline-block;
