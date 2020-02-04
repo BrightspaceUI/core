@@ -294,6 +294,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_onDateSelected(e) {
+		this._getNodeAndRemoveFocus();
 		const selectedDate = e.composedPath()[0];
 		const year = selectedDate.getAttribute('data-year');
 		const month = selectedDate.getAttribute('data-month');
