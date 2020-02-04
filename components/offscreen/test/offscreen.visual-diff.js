@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-offscreen', function() {
+describe('d2l-offscreen', () => {
 
 	const visualDiff = new VisualDiff('offscreen', __dirname);
 
