@@ -4,10 +4,6 @@ import { dropdownContentStyles } from './dropdown-content-styles.js';
 
 class DropdownContent extends DropdownContentMixin(LitElement) {
 
-	static get properties() {
-		return {};
-	}
-
 	static get styles() {
 		return dropdownContentStyles;
 	}

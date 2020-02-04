@@ -164,9 +164,30 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	_renderContent() {
 
-		const positionStyle = this._getContentPositionStyle();
-		const widthStyle = this._getContentWidthStyle();
-		const containerStyle = this._getContentContainerStyle();
+		const positionStyle = {};
+		if (this._position) {
+			const isRTL = this.getAttribute('dir') === 'rtl';
+			if (!isRTL) {
+				positionStyle.left = `${this._position}px`;
+			} else {
+				positionStyle.right = `${this._position}px`;
+			}
+		}
+
+		const widthStyle = {
+			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
+			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			/* add 2 to content width since scrollWidth does not include border */
+			width: this._width ? `${this._width + 20}px` : undefined
+		};
+
+		const containerStyle = {
+			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			/* set width of content in addition to width container so IE will render scroll inside border */
+			width: this._width ? `${this._width + 18}px` : undefined,
+			maxHeight: this._maxHeight ? `${this._maxHeight}px` : 'none',
+			overflowY: this._contentOverflow ? 'auto' : 'hidden'
+		};
 
 		const topClasses = { 'd2l-dropdown-content-top': true, 'd2l-dropdown-content-top-scroll': this._topOverflow };
 		const bottomClasses = { 'd2l-dropdown-content-bottom': true, 'd2l-dropdown-content-bottom-scroll': this._bottomOverflow };
@@ -182,56 +203,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				</div>
 			</div>
 		`;
-	}
-
-	_getContentPositionStyle() {
-		const style = {};
-		if (this._position) {
-			const isRTL = this.getAttribute('dir') === 'rtl';
-			if (!isRTL) {
-				style.left = `${this._position}px`;
-			} else {
-				style.right = `${this._position}px`;
-			}
-		}
-		return style;
-	}
-
-	_getContentWidthStyle() {
-		const style = {};
-		if (this.maxWidth) {
-			style.maxWidth = `${this.maxWidth}px`;
-		}
-		if (this.minWidth) {
-			style.minWidth = `${this.minWidth}px`;
-		}
-		if (this._width) {
-			/* add 2 to content width since scrollWidth does not include border */
-			style.width = `${this._width + 20}px`;
-		}
-		return style;
-	}
-
-	_getContentContainerStyle() {
-		const style = {};
-		if (this.minWidth) {
-			style.minWidth = `${this.minWidth}px`;
-		}
-		if (this._width) {
-			/* set width of content in addition to width container so IE will render scroll inside border */
-			style.width = `${this._width + 18}px`;
-		}
-		if (this._maxHeight) {
-			style.maxHeight = `${this._maxHeight}px`;
-		} else {
-			style.maxHeight = 'none';
-		}
-		if (this._contentOverflow) {
-			style.overflowY = 'auto';
-		} else {
-			style.overflowY = 'hidden';
-		}
-		return style;
 	}
 
 	/**
@@ -401,9 +372,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
 					// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
-					requestAnimationFrame(() => {
-						focusable.focus();
-					});
+					requestAnimationFrame(() => focusable.focus());
 				} else {
 					content.setAttribute('tabindex', '-1');
 					content.focus();
