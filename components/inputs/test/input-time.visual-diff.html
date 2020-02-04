@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-time.js';
+		</script>
+		<title>d2l-input-time visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div style="width: 300px;">
+			<div class="visual-diff">
+				<d2l-input-time id="basic" value="text"></d2l-input-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-time id="labelled" label="Name" value="text"></d2l-input-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-time id="label-hidden" label="Name" label-hidden value="text"></d2l-input-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-time id="disabled" disabled value="text disabled"></d2l-input-time>
+			</div>
+		</div>
+	</body>
+</html>
