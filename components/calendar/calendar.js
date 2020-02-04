@@ -27,7 +27,7 @@ function checkIfDatesEqual(month, date, year, comparisonDate) {
 		&& comparisonDate.getFullYear() === year;
 }
 
-function createDateObject(date, inPrevMonth, inNextMonth, shownMonth, shownYear, week) {
+function createDateObject(date, inPrevMonth, inNextMonth, shownMonth, shownYear) {
 	let month = shownMonth;
 	let year = shownYear;
 	if (inPrevMonth) {
@@ -42,7 +42,6 @@ function createDateObject(date, inPrevMonth, inNextMonth, shownMonth, shownYear,
 		date: date,
 		month: month,
 		year: year,
-		week: week,
 		otherMonth: inPrevMonth || inNextMonth
 	};
 }
@@ -82,11 +81,11 @@ function generateDaysInMonth(shownMonth, shownYear, firstDayOfWeek) {
 			numDaysFromLastMonthToShowThisMonth += 7;
 		}
 		for (let i = numDaysLastMonth - numDaysFromLastMonthToShowThisMonth + 1; i <= numDaysLastMonth; i++) {
-			firstWeek.push(createDateObject(i, true, false, shownMonth, shownYear, 1));
+			firstWeek.push(createDateObject(i, true, false, shownMonth, shownYear));
 		}
 	}
 	for (let j = 1; j <= 7 - numDaysFromLastMonthToShowThisMonth; j++) {
-		firstWeek.push(createDateObject(j, false, false, shownMonth, shownYear, 1));
+		firstWeek.push(createDateObject(j, false, false, shownMonth, shownYear));
 	}
 	dates.push(firstWeek);
 
@@ -98,10 +97,10 @@ function generateDaysInMonth(shownMonth, shownYear, firstDayOfWeek) {
 		for (let j = firstDateOfWeek; j < firstDateOfWeek + 7; j++) {
 			let day;
 			if (j >= (numDays + 1)) {
-				day = createDateObject(nextMonthDay, false, true, shownMonth, shownYear, i + 1);
+				day = createDateObject(nextMonthDay, false, true, shownMonth, shownYear);
 				nextMonthDay++;
 			} else {
-				day = createDateObject(j, false, false, shownMonth, shownYear, i + 1);
+				day = createDateObject(j, false, false, shownMonth, shownYear);
 			}
 			week.push(day);
 		}
@@ -246,7 +245,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 							data-date=${day.date}
 							data-month=${day.month}
 							data-year=${day.year}
-							data-week=${day.week}
 							tabindex=${focused ? '0' : '-1'}>
 							${day.date}
 						</div>
@@ -418,14 +416,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					// Changes the grid of dates to the previous Year.
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
-				const numWeeksPrevMonth = getNumberOfWeeksInMonth(this._prevMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
-				const firstDayOfMonth = new Date(this._shownYear, this._shownMonth, 1).getDay();
-				const hasDaysFromLastMonth = (firstDayOfMonth !== this._descriptor.calendar.firstDayOfWeek);
-
-				const selectedDate = e.composedPath()[0];
-				const week = selectedDate.getAttribute('data-week');
-
-				let diff = (numWeeksPrevMonth - week) * 7 + week * 7 - (hasDaysFromLastMonth ? 7 : 0);
+				let diff = this._getNumberOfDaysToSameWeekPrevMonth(this._shownMonth);
 				const numDaysLastMonth = getNumberOfDaysInMonth(this._prevMonth, this._shownYear);
 				if (diff >= (numDaysLastMonth + this._focusDate.getDate())) diff -= 7;
 				else if ((this._focusDate.getDate() - diff) > 0) diff += 7; // if that date in prev month is actually in this month
@@ -438,14 +429,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					// Changes the grid of dates to the next Year.
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
-				const numWeeksCurrMonth = getNumberOfWeeksInMonth(this._shownMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
-				const firstDayOfNextMonth = new Date(this._shownYear, this._nextMonth, 1).getDay();
-				const hasDaysFromThisMonth = (firstDayOfNextMonth !== this._descriptor.calendar.firstDayOfWeek);
-
-				const selectedDate = e.composedPath()[0];
-				const week = selectedDate.getAttribute('data-week');
-
-				let diff = (numWeeksCurrMonth - week) * 7 + week * 7 - (hasDaysFromThisMonth ? 7 : 0);
+				let diff = this._getNumberOfDaysToSameWeekPrevMonth(this._nextMonth);
 				const numDaysThisMonth = getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
 				const numDaysNextMonth = getNumberOfDaysInMonth(this._nextMonth, this._shownYear);
 				if ((this._focusDate.getDate() + diff - numDaysThisMonth) > numDaysNextMonth) diff -= 7;
@@ -461,6 +445,13 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
+	}
+
+	_getNumberOfDaysToSameWeekPrevMonth(month) {
+		const numWeeksPrevMonth = getNumberOfWeeksInMonth(getPrevMonth(month), this._shownYear, this._descriptor.calendar.firstDayOfWeek);
+		const firstDayOfMonth = new Date(this._shownYear, month, 1).getDay();
+		const hasDaysFromLastMonth = (firstDayOfMonth !== this._descriptor.calendar.firstDayOfWeek);
+		return 7 * (numWeeksPrevMonth - (hasDaysFromLastMonth ? 1 : 0));
 	}
 
 	_setPrevNextMonth() {
