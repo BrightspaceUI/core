@@ -30,6 +30,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
+		this.addEventListener('d2l-dropdown-open', this.__onOpened);
+		this.addEventListener('d2l-dropdown-close', this.__onClosed);
+
 		const opener = this.getOpenerElement();
 		const content = this.__getContentElement();
 		if (!opener) {
@@ -39,26 +42,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.addEventListener('keypress', this.__onKeyPress);
 		opener.addEventListener('mouseup', this.__onMouseUp);
 		opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		this.addEventListener('d2l-dropdown-open', this.__onOpened);
-		this.addEventListener('d2l-dropdown-close', this.__onClosed);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('d2l-dropdown-open', this.__onOpened);
-		this.removeEventListener('d2l-dropdown-close', this.__onClosed);
-
-		const opener = this.getOpenerElement();
-		if (!opener) {
-			return;
-		}
-		opener.removeEventListener('keypress', this.__onKeyPress);
-		opener.removeEventListener('mouseup', this.__onMouseUp);
 	}
 
 	/**
