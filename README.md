@@ -113,7 +113,7 @@ npm run build && npm run test:diff:golden && npm run test:diff:golden:commit
 To run local unit tests:
 
 ```shell
-npm run test:local
+npm run test:headless
 ```
 
 To run a subset of local unit tests, modify your local [index.html](https://github.com/BrightspaceUI/core/blob/master/test/index.html), or start the dev server and navigate to the desired test page.
