@@ -5,11 +5,11 @@ const uncheckedFixture = html`<d2l-input-checkbox aria-label="basic"></d2l-input
 const indeterminateCheckedFixture = html`<d2l-input-checkbox indeterminate checked></d2l-input-checkbox>`;
 const indeterminateUncheckedFixture = html`<d2l-input-checkbox indeterminate></d2l-input-checkbox>`;
 
-describe('d2l-input-checkbox', () => {
+function getInput(elem) {
+	return elem.shadowRoot.querySelector('input.d2l-input-checkbox');
+}
 
-	function getInput(elem) {
-		return elem.shadowRoot.querySelector('input.d2l-input-checkbox');
-	}
+describe('d2l-input-checkbox', () => {
 
 	describe('accessibility', () => {
 

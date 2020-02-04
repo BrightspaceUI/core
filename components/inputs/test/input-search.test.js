@@ -5,36 +5,36 @@ const normalFixture = html`<d2l-input-search label="search"></d2l-input-search>`
 const valueSetFixture = html`<d2l-input-search value="foo"></d2l-input-search>`;
 const noClearFixture = html`<d2l-input-search value="foo" no-clear></d2l-input-search>`;
 
+function assertSearchVisibility(elem, isVisible) {
+	const visibleButton = elem.shadowRoot.querySelector('d2l-button-icon');
+	if (isVisible) {
+		expect(visibleButton.getAttribute('icon')).to.equal('tier1:search');
+	} else {
+		expect(visibleButton.getAttribute('icon')).to.equal('tier1:close-default');
+	}
+}
+
+function getClearButton(elem) {
+	return elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:close-default"]');
+}
+
+function getSearchButton(elem) {
+	return elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:search"]');
+}
+
+function pressEnter(elem) {
+	const event = new CustomEvent('keypress', {
+		detail: 0,
+		bubbles: true,
+		cancelable: true,
+		composed: true
+	});
+	event.keyCode = 13;
+	event.code = 13;
+	elem.shadowRoot.querySelector('.d2l-input').dispatchEvent(event);
+}
+
 describe('d2l-input-search', () => {
-
-	function assertSearchVisibility(elem, isVisible) {
-		const visibleButton = elem.shadowRoot.querySelector('d2l-button-icon');
-		if (isVisible) {
-			expect(visibleButton.getAttribute('icon')).to.equal('tier1:search');
-		} else {
-			expect(visibleButton.getAttribute('icon')).to.equal('tier1:close-default');
-		}
-	}
-
-	function getClearButton(elem) {
-		return elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:close-default"]');
-	}
-
-	function getSearchButton(elem) {
-		return elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:search"]');
-	}
-
-	function pressEnter(elem) {
-		const event = new CustomEvent('keypress', {
-			detail: 0,
-			bubbles: true,
-			cancelable: true,
-			composed: true
-		});
-		event.keyCode = 13;
-		event.code = 13;
-		elem.shadowRoot.querySelector('.d2l-input').dispatchEvent(event);
-	}
 
 	describe('accessibility', () => {
 
