@@ -1,7 +1,7 @@
 import '../status-indicator.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
-describe('d2l-input-checkbox', () => {
+describe('d2l-status-indicator', () => {
 
 	let elem;
 	beforeEach(async() => {
