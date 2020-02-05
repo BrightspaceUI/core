@@ -2,7 +2,7 @@ const helper = require('./dialog-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-dialog', function() {
+describe('d2l-dialog', () => {
 
 	const visualDiff = new VisualDiff('dialog', __dirname);
 
@@ -18,7 +18,7 @@ describe('d2l-dialog', function() {
 
 	['native', 'custom'].forEach((name) => {
 
-		describe(name, function() {
+		describe(name, () => {
 
 			before(async() => {
 				const preferNative = (name === 'native' ? '' : '?preferNative=false');
@@ -38,7 +38,7 @@ describe('d2l-dialog', function() {
 				{ category: 'narrow', viewport: { width: 600, height: 500 } }
 			].forEach((info) => {
 
-				describe(info.category, function() {
+				describe(info.category, () => {
 
 					before(async() => {
 						await page.setViewport({ width: info.viewport.width, height: info.viewport.height, deviceScaleFactor: 2 });

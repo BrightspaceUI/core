@@ -109,12 +109,6 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		requestAnimationFrame(
-			() => this.dispatchEvent(new CustomEvent('d2l-input-search-render', {
-				bubbles: false,
-				composed: false
-			}))
-		);
 		const inputClasses = {
 			'd2l-input': true,
 			'd2l-input-focus': !this.disabled && (this._focussed || this._hovered)
