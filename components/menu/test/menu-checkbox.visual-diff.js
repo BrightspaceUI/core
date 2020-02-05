@@ -47,7 +47,7 @@ describe('d2l-menu checkbox', () => {
 	});
 
 	describe('selection behavior', () => {
-		this.afterEach(async() => {
+		afterEach(async() => {
 			await page.reload();
 		});
 
