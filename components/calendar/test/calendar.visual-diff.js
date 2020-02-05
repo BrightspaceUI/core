@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-calendar', function() {
+describe('d2l-calendar', () => {
 
 	const visualDiff = new VisualDiff('calendar', __dirname);
 

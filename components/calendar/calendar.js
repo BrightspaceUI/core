@@ -7,6 +7,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading4Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
+const daysInWeek = 7;
 const keyCodes = {
 	DOWN: 40,
 	END: 35,
@@ -20,8 +21,6 @@ const keyCodes = {
 	RIGHT: 39,
 	UP: 38
 };
-
-const daysInWeek = 7;
 
 function checkIfDatesEqual(date1, date2) {
 	date1.setHours(0, 0, 0, 0);
