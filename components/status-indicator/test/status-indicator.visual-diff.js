@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-status-indicator', function() {
+describe('d2l-status-indicator', () => {
 
 	const visualDiff = new VisualDiff('status-indicator', __dirname);
 
