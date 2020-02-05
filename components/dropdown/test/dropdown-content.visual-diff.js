@@ -24,7 +24,6 @@ describe('d2l-dropdown-content', () => {
 		'default-max-width',
 		'max-width',
 		'scroll-bottom-shadow',
-		'scroll-top-shadow',
 		'top-middle',
 		'top-right',
 		'bottom-left',
@@ -51,7 +50,6 @@ describe('d2l-dropdown-content', () => {
 		await page.$eval('#scroll-top-shadow d2l-dropdown-content', (content) => {
 			content.scrollTo(1000);
 		});
-
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
