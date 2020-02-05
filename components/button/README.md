@@ -86,3 +86,9 @@ Floating workflow buttons behavior can be added by using the `<d2l-floating-butt
 
 - `always-float` (Boolean): Indicates to display buttons as always floating
 - `min-height` (String, default: `'500px'`): The minimum height of the viewport to display floating buttons at (where applicable). If viewport is less than `min-height`, buttons will never appear floating (unless `always-float` is used). If viewport is greater than `min-height` then buttons will float when applicable.
+
+## Future Enhancements
+
+- `<d2l-button-preset type="save">` for common button types that will have built-in language support
+
+Looking for an enhancement not listed here? Create a GitHub issue!

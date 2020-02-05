@@ -42,3 +42,11 @@ Mental Models and Page Structure:
 If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 **Note:** this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
+
+## Future Enhancements
+
+- Optional draggable divider between the primary and secondary panels
+- For smaller devices, the primary and secondary panels will move into collapsible drawers
+- Option to specify a maximum width for the template (in Desktop view), so that the template does not always take 100% of the viewport width.
+
+Looking for an enhancement not listed here? Create a GitHub issue!

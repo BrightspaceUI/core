@@ -85,3 +85,7 @@ All `meter` components have a `foreground-light` style for displaying against a 
 ```html
 <d2l-meter-circle value="30" max="100" foreground-light></d2l-meter-circle>
 ```
+
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!

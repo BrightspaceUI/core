@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-floating-buttons', function() {
+describe('d2l-floating-buttons', () => {
 
 	const visualDiff = new VisualDiff('floating-buttons', __dirname);
 

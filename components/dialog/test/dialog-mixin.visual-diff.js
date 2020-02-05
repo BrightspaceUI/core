@@ -2,7 +2,7 @@ const helper = require('./dialog-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-dialog-mixin', function() {
+describe('d2l-dialog-mixin', () => {
 
 	const visualDiff = new VisualDiff('dialog-mixin', __dirname);
 
@@ -18,7 +18,7 @@ describe('d2l-dialog-mixin', function() {
 
 	['native', 'custom'].forEach((name) => {
 
-		describe(name, function() {
+		describe(name, () => {
 
 			before(async() => {
 				const preferNative = (name === 'native' ? '' : '?preferNative=false');
@@ -30,7 +30,7 @@ describe('d2l-dialog-mixin', function() {
 				await helper.reset(page, '#dialog');
 			});
 
-			describe('generic', function() {
+			describe('generic', () => {
 
 				before(async() => {
 					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
@@ -66,7 +66,7 @@ describe('d2l-dialog-mixin', function() {
 
 			});
 
-			describe('focus trap', function() {
+			describe('focus trap', () => {
 
 				before(async() => {
 					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });

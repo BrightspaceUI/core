@@ -5,9 +5,6 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
-			async: {
-				type: Boolean
-			},
 			name: {
 				type: String
 			}
@@ -18,7 +15,10 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 		const langResources = {
 			'ar': { 'hello': 'مرحبا {name}' },
 			'de': { 'hello': 'Hallo {name}' },
-			'en': { 'hello': 'Hello {name}' },
+			'en': {
+				'hello': 'Hello {name}',
+				'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
+			},
 			'en-ca': { 'hello': 'Hello, {name} eh' },
 			'es': { 'hello': 'Hola {name}' },
 			'fr': { 'hello': 'Bonjour {name}' },
@@ -32,37 +32,14 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 
 		for (let i = 0; i < langs.length; i++) {
 			if (langResources[langs[i]]) {
-				this.__langVal = {
+				return {
 					language: langs[i],
 					resources: langResources[langs[i]]
 				};
-				if (!this.async) {
-					return this.__langVal;
-				}
-				return this.__localizeResourcesPromise;
 			}
 		}
 
 		return null;
-	}
-
-	constructor() {
-		super();
-		this.async = false;
-		this.__localizeResourcesPromise = new Promise((resolve) => {
-			this.__resolve = resolve;
-		});
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		this.dispatchEvent(new CustomEvent('d2l-test-localize-updated', {
-			bubbles: false,
-			composed: false,
-			detail: {
-				props: changedProperties
-			}
-		}));
 	}
 
 	render() {
@@ -75,10 +52,6 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 		return html`
 			<p>${this.localize('hello', {name: this.name})}</p>
 		`;
-	}
-
-	resolveLang() {
-		this.__resolve(this.__langVal);
 	}
 
 }

@@ -58,7 +58,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 					<div>${this.text}</div>
 				</div>
 				<div class="d2l-dialog-footer">
-					<slot name="footer"></slot>
+					<slot name="footer" class="d2l-dialog-footer-slot"></slot>
 				</div>
 			</div>`;
 
@@ -71,7 +71,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	}
 
 	_focusInitial() {
-		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer slot');
+		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer-slot');
 		const nodes = footer.assignedNodes();
 		for (let i = 0; i < nodes.length; i++) {
 			const node = nodes[i];

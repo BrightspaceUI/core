@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { labelStyles } from './input-label-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class InputText extends RtlMixin(LitElement) {
@@ -32,7 +32,7 @@ class InputText extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ inputStyles, labelStyles,
+		return [ inputStyles, inputLabelStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -98,9 +98,14 @@ class InputText extends RtlMixin(LitElement) {
 		return input;
 	}
 
-	focus() {
+	async focus() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
-		if (elem) elem.focus();
+		if (elem) {
+			elem.focus();
+		} else {
+			await this.updateComplete;
+			this.focus();
+		}
 	}
 
 	_getAriaLabel() {

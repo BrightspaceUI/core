@@ -107,3 +107,7 @@ When rendered in a right-to-left direction, any icons which show directionality 
 ```
 
 To learn more about how best to determine if an icon should be mirrored, refer to [Google's Material Design Bidirectionality](https://material.google.com/usability/bidirectionality.html) documentation.
+
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!

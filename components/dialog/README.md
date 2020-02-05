@@ -100,3 +100,9 @@ document.querySelector('#open').addEventListener('click', () => {
 
 - `d2l-dialog-open`: dispatched when the dialog is opened
 - `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
+
+## Future Enhancements
+
+* scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
+
+Looking for an enhancement not listed here? Create a GitHub issue!
