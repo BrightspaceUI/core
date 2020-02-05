@@ -93,6 +93,11 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			},
 			_contentOverflow: {
 				type: Boolean
+			},
+			_dropdownContent: {
+				type: Boolean,
+				attribute: 'd2l-dropdown-content',
+				reflect: true
 			}
 		};
 	}
@@ -106,6 +111,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.__applyFocus = true;
 		this.__dismissibleId = null;
 
+		this._dropdownContent = true;
 		this._bottomOverflow = false;
 		this._topOverflow = false;
 		this._contentOverflow = false;
