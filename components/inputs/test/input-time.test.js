@@ -1,5 +1,5 @@
 import '../input-time.js';
-import { expect, fixture, oneEvent, aTimeout } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
 
@@ -38,7 +38,7 @@ describe('d2l-input-time', () => {
 	});
 
 	describe('attribute reflection', () => {
-		it(`should reflect disabled property to attribute`, async() => {
+		it('should reflect disabled property to attribute', async() => {
 			elem.setAttribute('disabled', 'disabled');
 			await elem.updateComplete;
 			expect(elem.hasAttribute('disabled')).to.be.true;
@@ -49,7 +49,7 @@ describe('d2l-input-time', () => {
 
 		function getLabel() {
 			return elem.shadowRoot.querySelector('.d2l-input-label');
-		};
+		}
 
 		it('should display visible label', async() => {
 			expect(getLabel().innerText).to.equal('label text');
@@ -107,7 +107,7 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should provide a time object with hour, minute and second', async() => {
-			getInput().value = "11:22 AM";
+			getInput().value = '11:22 AM';
 			dispatchEvent('change', false);
 			await oneEvent(elem, 'd2l-time-input-changed');
 			expect(elem.getTime()).to.deep.equal({ hour: 11, minute: 22, second: 0 });
