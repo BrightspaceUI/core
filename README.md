@@ -60,50 +60,44 @@ npm start
 To lint (eslint and [lit-analyzer](https://github.com/runem/lit-analyzer/tree/master/packages/lit-analyzer)):
 
 ```shell
+# eslint and lit-analyzer
 npm run lint
-```
 
-Or individually as `npm run lint:eslint` and `npm run lint:lit`.
+# eslint only
+npm run lint:eslint
+
+# lit-analyzer only
+npm run lint:lit
+```
 
 ### Testing
 
 Lint, unit test and visual-diff test:
 
 ```shell
+# lint, unit test and visual-diff test
 npm test
-```
 
-To run local unit tests:
-
-```shell
+# unit tests
 npm run test:headless
-```
 
-To debug or run a subset of local unit tests:
-
-```shell
+# debug or run a subset of local unit tests
+# then navigate to `http://localhost:9876/debug.html`
 npm run test:headless:watch
 ```
-
-Then navigate to `http://localhost:9876/debug.html`.
 
 ### Visual Diff Testing
 
 To run visual-diff tests:
 
 ```shell
+# run visual-diff tests
 npm run test:diff
-```
 
-To run a subset of visual-diff tests:
-
-```shell
+# subset of visual-diff tests:
 npm run test:diff -- -g some-pattern
-```
 
-To update visual-diff goldens:
-
-```shell
+# update visual-diff goldens
 npm run test:diff:golden
 ```
 
