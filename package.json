@@ -58,6 +58,7 @@
     "frau-ci": "^1",
     "karma-sauce-launcher": "^2",
     "lit-analyzer": "^1",
+    "mocha": "^7",
     "node-sass": "^4",
     "puppeteer": "^1",
     "sinon": "^8",
