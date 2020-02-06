@@ -165,7 +165,7 @@ describe('d2l-input-text', () => {
 
 		[
 			{name: 'aria-invalid', propName: 'ariaInvalid', value: 'true'},
-			{name: 'autocomplete', value: 'email'},
+			/*{name: 'autocomplete', value: 'email'}, bug in Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=1583957 */
 			{name: 'autofocus', value: true},
 			{name: 'disabled', value: true},
 			{name: 'max', value: '5'},
