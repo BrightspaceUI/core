@@ -5,18 +5,15 @@ const normalFixture = html`<d2l-calendar selected-value="2015-09-02T12:00Z"></d2
 
 describe('d2l-calendar', () => {
 
-	let calendar;
-	beforeEach(async() => {
-		calendar = await fixture(normalFixture);
-	});
-
 	// Currently due to insufficient color contrast on previous/next month date numbers.
 	// Re-enable once design exists.
 	it.skip('passes all axe tests', async() => {
+		const calendar = await fixture(normalFixture);
 		await expect(calendar).to.be.accessible();
 	});
 
 	it('dispatches event when date clicked', async() => {
+		const calendar = await fixture(normalFixture);
 		const el = calendar.shadowRoot.querySelector('div[data-date="1"]');
 		setTimeout(() => el.click());
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
@@ -24,6 +21,7 @@ describe('d2l-calendar', () => {
 	});
 
 	it('dispatches event when date in previous month clicked', async() => {
+		const calendar = await fixture(normalFixture);
 		const el = calendar.shadowRoot.querySelector('div[data-date="31"][data-month="7"]');
 		setTimeout(() => el.click());
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
@@ -31,6 +29,7 @@ describe('d2l-calendar', () => {
 	});
 
 	it('dispatches event when date in next month clicked', async() => {
+		const calendar = await fixture(normalFixture);
 		const el = calendar.shadowRoot.querySelector('div[data-date="1"][data-month="9"]');
 		setTimeout(() => el.click());
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
@@ -38,6 +37,7 @@ describe('d2l-calendar', () => {
 	});
 
 	it('dispatches event when enter key pressed on date', async() => {
+		const calendar = await fixture(normalFixture);
 		const el = calendar.shadowRoot.querySelector('div[data-date="20"]');
 		setTimeout(() => dispatchKeyEvent(el, 13));
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
@@ -45,6 +45,7 @@ describe('d2l-calendar', () => {
 	});
 
 	it('dispatches event when space key pressed on date', async() => {
+		const calendar = await fixture(normalFixture);
 		const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
 		setTimeout(() => dispatchKeyEvent(el, 32));
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
