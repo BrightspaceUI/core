@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-meter-radial', function() {
+describe('d2l-meter-radial', () => {
 
 	const visualDiff = new VisualDiff('meter-radial', __dirname);
 
