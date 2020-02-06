@@ -69,6 +69,17 @@ describe('d2l-input-text', () => {
 
 	});
 
+	describe('attribute reflection', () => {
+		['disabled', 'required'].forEach((name) => {
+			it(`should reflect "${name}" property to attribute`, async() => {
+				const elem = await fixture(normalFixture);
+				elem[name] = true;
+				await elem.updateComplete;
+				expect(elem.hasAttribute(name)).to.be.true;
+			});
+		});
+	});
+
 	describe('default property values', () => {
 
 		let elem;
@@ -97,15 +108,45 @@ describe('d2l-input-text', () => {
 
 	});
 
-	describe('attribute reflection', () => {
-		['disabled', 'required'].forEach((name) => {
-			it(`should reflect "${name}" property to attribute`, async() => {
-				const elem = await fixture(normalFixture);
-				elem[name] = true;
-				await elem.updateComplete;
-				expect(elem.hasAttribute(name)).to.be.true;
-			});
+	describe('focus management', () => {
+
+		it('should delegate focus to underlying input', async() => {
+			const elem = await fixture(normalFixture);
+			elem.focus();
+			const activeElement = getComposedActiveElement();
+			expect(activeElement).to.equal(getInput(elem));
 		});
+
+		it('should focus even if component has not rendered', async() => {
+			const container = await fixture(html`<div></div>`);
+			const newInput = document.createElement('d2l-input-text');
+			container.appendChild(newInput);
+			await newInput.focus();
+			const activeElement = getComposedActiveElement();
+			expect(activeElement).to.equal(getInput(newInput));
+		});
+
+	});
+
+	describe('labelling', () => {
+
+		it('should display visible label', async() => {
+			const elem = await fixture(normalFixture);
+			expect(getLabel(elem).innerText).to.equal('label');
+		});
+
+		it('should put hidden label on "aria-label"', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" label-hidden></d2l-input-text>`);
+			expect(getLabel(elem)).to.be.null;
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('label');
+		});
+
+		it('should fall back to using "aria-label" for backwards compatibility', async() => {
+			const elem = await fixture(html`<d2l-input-text aria-label="new label"></d2l-input-text>`);
+			expect(getLabel(elem)).to.be.null;
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('new label');
+		});
+
 	});
 
 	describe('property binding', () => {
@@ -124,7 +165,7 @@ describe('d2l-input-text', () => {
 
 		[
 			{name: 'aria-invalid', propName: 'ariaInvalid', value: 'true'},
-			/*{name: 'autocomplete', value: 'email'}, bug in Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=1583957 */
+			{name: 'autocomplete', value: 'email'},
 			{name: 'autofocus', value: true},
 			{name: 'disabled', value: true},
 			{name: 'max', value: '5'},
@@ -163,23 +204,20 @@ describe('d2l-input-text', () => {
 
 	});
 
-	describe('labelling', () => {
+	describe('submit prevention', () => {
 
-		it('should display visible label', async() => {
+		it('should allow ENTER keypress event by default', async() => {
 			const elem = await fixture(normalFixture);
-			expect(getLabel(elem).innerText).to.equal('label');
+			setTimeout(() => pressEnter(elem));
+			const { defaultPrevented } = await oneEvent(elem, 'keypress');
+			expect(defaultPrevented).to.be.false;
 		});
 
-		it('should put hidden label on "aria-label"', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" label-hidden></d2l-input-text>`);
-			expect(getLabel(elem)).to.be.null;
-			expect(getInput(elem).getAttribute('aria-label')).to.equal('label');
-		});
-
-		it('should fall back to using "aria-label" for backwards compatibility', async() => {
-			const elem = await fixture(html`<d2l-input-text aria-label="new label"></d2l-input-text>`);
-			expect(getLabel(elem)).to.be.null;
-			expect(getInput(elem).getAttribute('aria-label')).to.equal('new label');
+		it('should preventDefault on ENTER when "prevent-submit"', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" prevent-submit></d2l-input-text>`);
+			setTimeout(() => pressEnter(elem));
+			const { defaultPrevented } = await oneEvent(elem, 'keypress');
+			expect(defaultPrevented).to.be.true;
 		});
 
 	});
@@ -204,44 +242,6 @@ describe('d2l-input-text', () => {
 			getInput(elem).value = 'hello';
 			dispatchEvent(elem, 'input', true);
 			expect(elem.value).to.equal('hello');
-		});
-
-	});
-
-	describe('submit prevention', () => {
-
-		it('should allow ENTER keypress event by default', async() => {
-			const elem = await fixture(normalFixture);
-			setTimeout(() => pressEnter(elem));
-			const { defaultPrevented } = await oneEvent(elem, 'keypress');
-			expect(defaultPrevented).to.be.false;
-		});
-
-		it('should preventDefault on ENTER when "prevent-submit"', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" prevent-submit></d2l-input-text>`);
-			setTimeout(() => pressEnter(elem));
-			const { defaultPrevented } = await oneEvent(elem, 'keypress');
-			expect(defaultPrevented).to.be.true;
-		});
-
-	});
-
-	describe('focus delegation', () => {
-
-		it('should delegate focus to underlying input', async() => {
-			const elem = await fixture(normalFixture);
-			elem.focus();
-			const activeElement = getComposedActiveElement();
-			expect(activeElement).to.equal(getInput(elem));
-		});
-
-		it('should focus even if component has not rendered', async() => {
-			const container = await fixture(html`<div></div>`);
-			const newInput = document.createElement('d2l-input-text');
-			container.appendChild(newInput);
-			await newInput.focus();
-			const activeElement = getComposedActiveElement();
-			expect(activeElement).to.equal(getInput(newInput));
 		});
 
 	});

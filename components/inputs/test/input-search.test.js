@@ -80,49 +80,38 @@ describe('d2l-input-search', () => {
 
 	});
 
-	describe('value and lastSearchValue', () => {
+	describe('events', () => {
 
-		it('should default both to empty string', async() => {
-			const elem = await fixture(normalFixture);
-			expect(elem.value).to.equal('');
-			expect(elem.lastSearchValue).to.equal('');
-		});
-
-		it('should initially match lastSearchValue with value', async() => {
-			const elem = await fixture(valueSetFixture);
-			expect(elem.value).to.equal('foo');
-			expect(elem.lastSearchValue).to.equal('foo');
-		});
-
-		it('should not persist value to lastSearchValue', async() => {
+		it('should fire "search" event when search button is clicked', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = 'bar';
-			await elem.updateComplete;
-			expect(elem.lastSearchValue).to.equal('');
+			setTimeout(() => getSearchButton(elem).click());
+			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
+			expect(detail.value).to.equal('bar');
 		});
 
-		it('should persist value to lastSearchValue when search is performed', async() => {
+		it('should fire "search" event when ENTER is pressed', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = 'bar';
-			await elem.updateComplete;
-			getSearchButton(elem).click();
-			await elem.updateComplete;
-			expect(elem.value).to.equal('bar');
-			expect(elem.lastSearchValue).to.equal('bar');
+			setTimeout(() => pressEnter(elem));
+			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
+			expect(detail.value).to.equal('bar');
 		});
 
-		it('should clear both when cleared', async() => {
+		it('should fire "search" event when clear button is pressed', async() => {
 			const elem = await fixture(valueSetFixture);
-			getClearButton(elem).click();
-			await elem.updateComplete;
-			expect(elem.value).to.equal('');
-			expect(elem.lastSearchValue).to.equal('');
+			setTimeout(() => getClearButton(elem).click());
+			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
+			expect(detail.value).to.equal('');
 		});
 
-		it('should ignore lastSearchValue setter', async() => {
+		it('should fire "search" event on empty value search', async() => {
 			const elem = await fixture(valueSetFixture);
-			elem.lastSearchValue = 'new value';
-			expect(elem.lastSearchValue).to.equal('foo');
+			elem.value = '';
+			await elem.updateComplete;
+			setTimeout(() => getSearchButton(elem).click());
+			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
+			expect(detail.value).to.equal('');
 		});
 
 	});
@@ -192,38 +181,49 @@ describe('d2l-input-search', () => {
 
 	});
 
-	describe('events', () => {
+	describe('value and lastSearchValue', () => {
 
-		it('should fire "search" event when search button is clicked', async() => {
+		it('should default both to empty string', async() => {
+			const elem = await fixture(normalFixture);
+			expect(elem.value).to.equal('');
+			expect(elem.lastSearchValue).to.equal('');
+		});
+
+		it('should initially match lastSearchValue with value', async() => {
+			const elem = await fixture(valueSetFixture);
+			expect(elem.value).to.equal('foo');
+			expect(elem.lastSearchValue).to.equal('foo');
+		});
+
+		it('should not persist value to lastSearchValue', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = 'bar';
-			setTimeout(() => getSearchButton(elem).click());
-			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
-			expect(detail.value).to.equal('bar');
-		});
-
-		it('should fire "search" event when ENTER is pressed', async() => {
-			const elem = await fixture(normalFixture);
-			elem.value = 'bar';
-			setTimeout(() => pressEnter(elem));
-			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
-			expect(detail.value).to.equal('bar');
-		});
-
-		it('should fire "search" event when clear button is pressed', async() => {
-			const elem = await fixture(valueSetFixture);
-			setTimeout(() => getClearButton(elem).click());
-			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
-			expect(detail.value).to.equal('');
-		});
-
-		it('should fire "search" event on empty value search', async() => {
-			const elem = await fixture(valueSetFixture);
-			elem.value = '';
 			await elem.updateComplete;
-			setTimeout(() => getSearchButton(elem).click());
-			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
-			expect(detail.value).to.equal('');
+			expect(elem.lastSearchValue).to.equal('');
+		});
+
+		it('should persist value to lastSearchValue when search is performed', async() => {
+			const elem = await fixture(normalFixture);
+			elem.value = 'bar';
+			await elem.updateComplete;
+			getSearchButton(elem).click();
+			await elem.updateComplete;
+			expect(elem.value).to.equal('bar');
+			expect(elem.lastSearchValue).to.equal('bar');
+		});
+
+		it('should clear both when cleared', async() => {
+			const elem = await fixture(valueSetFixture);
+			getClearButton(elem).click();
+			await elem.updateComplete;
+			expect(elem.value).to.equal('');
+			expect(elem.lastSearchValue).to.equal('');
+		});
+
+		it('should ignore lastSearchValue setter', async() => {
+			const elem = await fixture(valueSetFixture);
+			elem.lastSearchValue = 'new value';
+			expect(elem.lastSearchValue).to.equal('foo');
 		});
 
 	});

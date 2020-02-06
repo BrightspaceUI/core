@@ -27,21 +27,33 @@ describe('ButtonMixin', () => {
 		document.removeEventListener('click', documentClickHandler);
 	});
 
-	it('should use "type" defaulting to "button"', async() => {
-		const el = await fixture(`<${tagName}></${tagName}`);
-		expect(el.type).to.equal('button');
+	describe('default property values', () => {
+
+		it('should default "type" property to "button"', async() => {
+			const el = await fixture(`<${tagName}></${tagName}`);
+			expect(el.type).to.equal('button');
+		});
+
 	});
 
-	it('should call button focus', async() => {
-		const el = await fixture(`<${tagName}></${tagName}`);
-		const buttonEl = el.shadowRoot.querySelector('button');
-		setTimeout(() => el.focus());
-		await oneEvent(buttonEl, 'focus');
+	describe('events', () => {
+
+		it('should stop propagation of click events if button is disabled', async() => {
+			const el = await fixture(`<${tagName} disabled></${tagName}`);
+			expect(() => el.click()).to.not.throw();
+		});
+
 	});
 
-	it('should stop propagation if button is disabled', async() => {
-		const el = await fixture(`<${tagName} disabled></${tagName}`);
-		expect(() => el.click()).to.not.throw();
+	describe('focus management', () => {
+
+		it('should delegate focus to button', async() => {
+			const el = await fixture(`<${tagName}></${tagName}`);
+			const buttonEl = el.shadowRoot.querySelector('button');
+			setTimeout(() => el.focus());
+			await oneEvent(buttonEl, 'focus');
+		});
+
 	});
 
 });
