@@ -1,8 +1,17 @@
-let container;
-let lastMessage;
+let timeoutId = null;
+let container = null;
 
 export function announce(message) {
 	if (!message) return;
+
+	/* Reuse the existing aria-live container if possible, since multiple live regions
+	announcing at the same time will cause one or more messages to be ignored, regardless
+	of polite vs assertive when using VO. This will coelesce messages, however if a new
+	announce call is made while the browser is announcing, it will be interupted. */
+	if (timeoutId !== null) {
+		clearTimeout(timeoutId);
+		timeoutId = null;
+	}
 	if (!container) {
 		container = document.createElement('div');
 		container.setAttribute('aria-live', 'polite');
@@ -11,13 +20,22 @@ export function announce(message) {
 		container.style.clip = 'rect(0px,0px,0px,0px)';
 		document.body.appendChild(container);
 	}
-	/* VO has strange hueristics for announcement - it will not announce
-	duplicate message unless it is additive, but we prefer content to not grow */
-	if (message !== lastMessage) {
-		container.innerHTML = '';
-	}
-	requestAnimationFrame(() => {
+
+	/* Need to give browser enough time to create the live region so that it will
+	treat the change as an update. Firefox sometimes ignores changes if the region
+	and update are made too quickly in succession. RequestAnimationFrame is not
+	sufficient here. */
+	setTimeout(() => {
 		container.appendChild(document.createTextNode(message));
-		lastMessage = message;
-	});
+	}, 100);
+
+	/* Need to purge old messages so that they are not discovered by screen readers
+	using virtual cursor, but we need to give the browser ample time to hand off
+	the change to the AT before removing it. ex. otherwise sometimes VO will not announce. */
+	timeoutId = setTimeout(() => {
+		container.parentNode.removeChild(container);
+		container = null;
+		timeoutId = null;
+	}, 10000);
+
 }

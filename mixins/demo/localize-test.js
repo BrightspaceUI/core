@@ -5,9 +5,6 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
-			async: {
-				type: Boolean
-			},
 			name: {
 				type: String
 			}
@@ -18,7 +15,10 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 		const langResources = {
 			'ar': { 'hello': 'مرحبا {name}' },
 			'de': { 'hello': 'Hallo {name}' },
-			'en': { 'hello': 'Hello {name}' },
+			'en': {
+				'hello': 'Hello {name}',
+				'plural': 'You have {itemCount, plural, =0 {no items} one {1 item} other {{itemCount} items}}.'
+			},
 			'en-ca': { 'hello': 'Hello, {name} eh' },
 			'es': { 'hello': 'Hola {name}' },
 			'fr': { 'hello': 'Bonjour {name}' },
@@ -32,41 +32,17 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 
 		for (let i = 0; i < langs.length; i++) {
 			if (langResources[langs[i]]) {
-				this.__langVal = {
+				return {
 					language: langs[i],
 					resources: langResources[langs[i]]
 				};
-				if (!this.async) {
-					return this.__langVal;
-				}
-				return this.__localizeResourcesPromise;
 			}
 		}
 
 		return null;
 	}
 
-	constructor() {
-		super();
-		this.async = false;
-		this.__localizeResourcesPromise = new Promise((resolve) => {
-			this.__resolve = resolve;
-		});
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		this.dispatchEvent(new CustomEvent('d2l-test-localize-updated', {
-			bubbles: false,
-			composed: false,
-			detail: {
-				props: changedProperties
-			}
-		}));
-	}
-
 	render() {
-		const date = new Date();
 		requestAnimationFrame(
 			() => this.dispatchEvent(new CustomEvent('d2l-test-localize-render', {
 				bubbles: false,
@@ -74,17 +50,8 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			}))
 		);
 		return html`
-			<p>Text: ${this.localize('hello', {name: this.name})}</p>
-			<p>Number: ${this.formatNumber(123456.789)}</p>
-			<p>Date: ${this.formatDate(date)}</p>
-			<p>Time: ${this.formatTime(date)}</p>
-			<p>Date &amp; time: ${this.formatDateTime(date)}</p>
-			<p>File size: ${this.formatFileSize(123456789)}</p>
+			<p>${this.localize('hello', {name: this.name})}</p>
 		`;
-	}
-
-	resolveLang() {
-		this.__resolve(this.__langVal);
 	}
 
 }

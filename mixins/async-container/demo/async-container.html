@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../../components/demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../../components/demo/demo-page.js';
+			import '../../../components/button/button.js';
+			import '../../../components/loading-spinner/loading-spinner.js';
+			import './async-container.js';
+			import './async-item.js';
+		</script>
+		<style>
+			#asyncNoContainer div,
+			#asyncContainer div {
+				margin-top: 0.6rem;
+				margin-bottom: 0.6rem;
+			}
+			d2l-async-demo-container {
+				display: block;
+				margin-top: 0.6rem;
+			}
+			d2l-async-demo-item {
+				margin-right: 0.6rem;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-async-container">
+
+			<h2>Async Items (no container)</h2>
+
+			<d2l-demo-snippet id="asyncNoContainer">
+				<template>
+					<d2l-button>Do Async Tasks</d2l-button>
+					<div>
+						<d2l-async-demo-item delay="1000"></d2l-async-demo-item>
+						<d2l-async-demo-item delay="2000" throw-error></d2l-async-demo-item>
+						<d2l-async-demo-item delay="6000"></d2l-async-demo-item>
+						<d2l-async-demo-item delay="2000"></d2l-async-demo-item>
+					</div>
+					<script>
+						document.querySelector('#asyncNoContainer d2l-button').addEventListener('click', () => {
+							const items = document.querySelectorAll('#asyncNoContainer d2l-async-demo-item');
+							for (let i = 0; i < items.length; i++) {
+								items[i].key = `key-${i}`;
+							}
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Async Container (init -> pending -> complete)</h2>
+
+			<d2l-demo-snippet id="asyncContainer">
+				<template>
+					<d2l-button>Do Async Tasks</d2l-button>
+					<d2l-async-demo-container async-pending-delay="1000">
+						<div slot="initial">Click above!</div>
+						<div slot="pending"><d2l-loading-spinner></d2l-loading-spinner></div>
+						<div>
+							<d2l-async-demo-item delay="1000"></d2l-async-demo-item>
+							<d2l-async-demo-item delay="2000" throw-error></d2l-async-demo-item>
+							<d2l-async-demo-item delay="4000"></d2l-async-demo-item>
+							<d2l-async-demo-item delay="2000"></d2l-async-demo-item>
+						</div>
+					</d2l-async-demo-container>
+					<script>
+						document.querySelector('#asyncContainer d2l-button').addEventListener('click', () => {
+							const items = document.querySelectorAll('#asyncContainer d2l-async-demo-item');
+							for (let i = 0; i < items.length; i++) {
+								items[i].key = `key-${i}`;
+							}
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Async Container (init -> complete)</h2>
+
+			<d2l-demo-snippet id="asyncContainerNoPending">
+				<template>
+					<d2l-button>Do Async Tasks</d2l-button>
+					<d2l-async-demo-container async-pending-delay="5000">
+						<div slot="initial">Click above!</div>
+						<div slot="pending"><d2l-loading-spinner></d2l-loading-spinner></div>
+						<div>
+							<d2l-async-demo-item delay="1000"></d2l-async-demo-item>
+							<d2l-async-demo-item delay="2000" throw-error></d2l-async-demo-item>
+							<d2l-async-demo-item delay="4000"></d2l-async-demo-item>
+							<d2l-async-demo-item delay="2000"></d2l-async-demo-item>
+						</div>
+					</d2l-async-demo-container>
+					<script>
+						document.querySelector('#asyncContainerNoPending d2l-button').addEventListener('click', () => {
+							const items = document.querySelectorAll('#asyncContainerNoPending d2l-async-demo-item');
+							for (let i = 0; i < items.length; i++) {
+								items[i].key = `key-${i}`;
+							}
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>

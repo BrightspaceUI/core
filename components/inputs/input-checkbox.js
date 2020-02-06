@@ -3,8 +3,9 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from './input-checkbox-styles.js';
 import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputCheckbox extends LitElement {
+class InputCheckbox extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -90,7 +91,7 @@ class InputCheckbox extends LitElement {
 					@change="${this._handleChange}"
 					class="d2l-input-checkbox"
 					@click="${this._handleClick}"
-					?checked="${this.checked}"
+					.checked="${this.checked}"
 					?disabled="${this.disabled}"
 					.indeterminate="${this.indeterminate}"
 					name="${ifDefined(this.name)}"
@@ -104,6 +105,15 @@ class InputCheckbox extends LitElement {
 	focus() {
 		const elem = this.shadowRoot.querySelector('input.d2l-input-checkbox');
 		if (elem) elem.focus();
+	}
+
+	simulateClick() {
+		this.checked = !this.checked;
+		this.indeterminate = false;
+		this.dispatchEvent(new CustomEvent(
+			'change',
+			{bubbles: true, composed: false}
+		));
 	}
 
 	_handleChange(e) {
@@ -123,12 +133,7 @@ class InputCheckbox extends LitElement {
 	_handleClick() {
 		const browserType = window.navigator.userAgent;
 		if (this.indeterminate && (browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) {
-			this.checked = !this.checked;
-			this.indeterminate = false;
-			this.dispatchEvent(new CustomEvent(
-				'change',
-				{bubbles: true, composed: false}
-			));
+			this.simulateClick();
 		}
 	}
 

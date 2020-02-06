@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-button-icon', function() {
+describe('d2l-button-icon', () => {
 
 	const visualDiff = new VisualDiff('button-icon', __dirname);
 
@@ -40,7 +40,7 @@ describe('d2l-button-icon', function() {
 						if (entry.category === 'translucent-enabled') {
 							await focus(page, '#translucent-enabled > d2l-button-icon');
 						} else {
-							await focus(page, `#${entry.category}`);
+							await page.$eval(`#${entry.category}`, (elem) => elem.focus());
 						}
 					}
 

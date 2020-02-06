@@ -24,9 +24,11 @@ npm install @brightspace-ui/core
 * [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
 * [Links](components/link/): link component and styles
 * [List](components/list/): list and list-item components
+* [Loading Spinner](components/loading-spinner/): loading-spinner components
 * [Meter](components/meter/): linear, radial, circle meter web components
 * [More/less](components/more-less/): constrain long bits of content
 * [Off-screen](components/offscreen/): component and styles for positioning content off-screen
+* [Status Indicator](components/status-indicator/): status-indicator components
 * [Typography](components/typography/): typography styles and components
 
 ## Helpers
@@ -36,9 +38,15 @@ npm install @brightspace-ui/core
 ## Mixins
 
 * [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
-* [LocalizeMixin](mixins/localize-mixin.md): localize text and format & parse numbers, dates, etc.
+* [AsyncContainerMixin](mixins/async-container/): manage collective async state
+* [LocalizeMixin](mixins/localize-mixin.md): localize text in your components
+* [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion
 * [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
 * [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
+
+## Templates
+
+* [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) page template with header and optional footer
 
 ## Usage
 
@@ -50,6 +58,8 @@ npm install @brightspace-ui/core
 
 `/mixins/` - Mixins for use in your web components (ex. localize, RTL, etc)
 
+`/templates/` - Page templates to provide common ways to arrange content on a page
+
 `/test/` - Index and shared styles for unit tests
 
 `/tools/` - Development tools for building, testing, etc.
@@ -60,18 +70,12 @@ After cloning the repo, run `npm install` to install dependencies.
 
 Run `npm run build` once, or any time icon or language files are changed.
 
-If you don't have it already, install the [Polymer CLI](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) globally:
-
-```shell
-npm install -g polymer-cli
-```
-
 ### Running the demos
 
-To start a [local web server](https://www.polymer-project.org/3.0/docs/tools/polymer-cli-commands#serve) that hosts the demo page and tests:
+To start an [es-dev-server](https://open-wc.org/developing/es-dev-server.html) that hosts the demo page and tests:
 
 ```shell
-polymer serve
+npm start
 ```
 
 ### Testing
@@ -109,7 +113,7 @@ npm run build && npm run test:diff:golden && npm run test:diff:golden:commit
 To run local unit tests:
 
 ```shell
-npm run test:local
+npm run test:headless
 ```
 
 To run a subset of local unit tests, modify your local [index.html](https://github.com/BrightspaceUI/core/blob/master/test/index.html), or start the dev server and navigate to the desired test page.
@@ -119,6 +123,10 @@ To run linting, visual-diff, and unit tests:
 ```shell
 npm test
 ```
+
+## Future Enhancements
+
+Looking for a new component or an enhancement not listed here? Create a GitHub issue!
 
 ## Versioning, Releasing & Deploying
 

@@ -1,15 +1,19 @@
 import '../button/button-icon.js';
+import '../loading-spinner/loading-spinner.js';
+import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
-class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
+class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElement))) {
 
 	static get properties() {
 		return {
+			async: { type: Boolean },
 			width: { type: Number }
 		};
 	}
@@ -29,6 +33,16 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 			:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 				margin-left: -15px;
 				margin-right: 15px;
+			}
+
+			.d2l-dialog-content > div {
+				/* required to properly calculate preferred height when there are bottom
+				margins at the end of the slotted content */
+				border-bottom: 1px solid transparent;
+			}
+
+			.d2l-dialog-content-loading {
+				text-align: center;
 			}
 
 			@media (max-width: 615px) {
@@ -84,6 +98,23 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 	}
 
 	render() {
+
+		let loading = null;
+		const slotStyles = {};
+		if (this.async && this.asyncState !== asyncStates.complete) {
+			slotStyles.display = 'none';
+			loading = html`
+				<div class="d2l-dialog-content-loading">
+					<d2l-loading-spinner size="100"></d2l-loading-spinner>
+				</div>
+			`;
+		}
+
+		const content = html`
+			${loading}
+			<div style=${styleMap(slotStyles)}><slot></slot></div>
+		`;
+
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner">
@@ -93,9 +124,7 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
-				<div class="d2l-dialog-content">
-					<div><slot></slot></div>
-				</div>
+				<div class="d2l-dialog-content">${content}</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer"></slot>
 				</div>
@@ -105,6 +134,17 @@ class Dialog extends LocalizeStaticMixin(DialogMixin(LitElement)) {
 			inner,
 			{ labelId: this._titleId, role: 'dialog' }
 		);
+	}
+
+	updated(changedProperties) {
+		if (!changedProperties.has('asyncState')) return;
+		if (this.asyncState === asyncStates.complete) {
+			this.resize();
+		}
+	}
+
+	asyncContainer() {
+		return this.shadowRoot.querySelector('.d2l-dialog-content');
 	}
 
 	_abort() {

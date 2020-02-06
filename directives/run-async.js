@@ -30,8 +30,10 @@ const runs = new WeakMap();
  *     called when they key changes.
  * @param task An async function to run when the key changes
  * @param templates The templates to render for each state of the task
+ * @param options The directive options, for example whether to dispatch pending-state
  */
-export const runAsync = directive((key, task, templates) => (part) => {
+export const runAsync = directive((key, task, templates, options) => (part) => {
+	const directiveOptions = Object.assign({ pendingState: true }, options);
 	const { success, pending, initial, failure } = templates;
 	const currentRunState = runs.get(part);
 	// The first time we see a value we save and await the work function.
@@ -53,6 +55,11 @@ export const runAsync = directive((key, task, templates) => (part) => {
 		const pendingPromise = new Promise((res, rej) => {
 			resolvePending = res;
 			rejectPending = rej;
+		}).catch((error) => {
+			if (!(error instanceof InitialStateError)) {
+				// swallow initial state errors
+				throw error;
+			}
 		});
 		const promise = task(key, { signal: abortSignal });
 		// The state is immediately 'pending', since the function has been
@@ -79,7 +86,7 @@ export const runAsync = directive((key, task, templates) => (part) => {
 			part.commit();
 		}, (error) => {
 			const currentRunState = runs.get(part);
-			runState.rejectPending(new Error());
+			runState.rejectPending(error);
 			if (currentRunState !== runState) {
 				return;
 			}
@@ -102,16 +109,18 @@ export const runAsync = directive((key, task, templates) => (part) => {
 			const currentRunState = runs.get(part);
 			if (currentRunState === runState && currentRunState.state === 'pending') {
 				const element = part.startNode.parentNode.nodeType === Node.ELEMENT_NODE ? part.startNode.parentNode : part.startNode.parentNode.host;
-				element.dispatchEvent(new CustomEvent('pending-state', {
-					composed: true,
-					bubbles: true,
-					detail: { promise: pendingPromise }
-				}));
+				if (directiveOptions.pendingState) {
+					element.dispatchEvent(new CustomEvent('pending-state', {
+						composed: true,
+						bubbles: true,
+						detail: { promise: pendingPromise }
+					}));
+				}
 			}
 		})();
 	}
 	// If the promise has not yet resolved, set/update the defaultContent
-	const latestRunState = currentRunState;
+	const latestRunState = runs.get(part);
 	if ((latestRunState === undefined || latestRunState.state === 'pending') && typeof pending === 'function') {
 		part.setValue(pending());
 	}

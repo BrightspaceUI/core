@@ -17,23 +17,44 @@ describe('d2l-input-text', () => {
 
 	after(() => browser.close());
 
+	['wc', 'sass'].forEach((type) => {
+		[
+			'basic',
+			'email',
+			'number',
+			'password',
+			'search',
+			'tel',
+			'url',
+			'disabled',
+			'placeholder',
+			'placeholder-disabled',
+			'invalid',
+			'invalid-disabled',
+			'aria-invalid',
+			'aria-invalid-disabled'
+		].forEach((name) => {
+			const id = `${type}-${name}`;
+			it(id, async function() {
+				const rect = await visualDiff.getRect(page, `#${id}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+			if (name.indexOf('disabled') === -1) {
+				it(`${id}-focus`, async function() {
+					await page.$eval(`#${id}`, (elem) => elem.focus());
+					const rect = await visualDiff.getRect(page, `#${id}`);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+			}
+		});
+	});
+
 	[
-		'basic',
-		'email',
-		'number',
-		'password',
-		'search',
-		'tel',
-		'url',
-		'disabled',
-		'placeholder',
-		'placeholder-disabled',
-		'invalid',
-		'invalid-disabled',
-		'aria-invalid',
-		'aria-invalid-disabled',
-		'override-height',
-		'override-padding'
+		'wc-labelled',
+		'wc-required',
+		'wc-label-hidden',
+		'wc-override-height',
+		'wc-override-padding'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);

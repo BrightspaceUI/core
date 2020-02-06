@@ -3,4 +3,9 @@ node_modules/
 package-lock.json
 components/*/test/screenshots/current/
 components/*/test/screenshots/golden/
+mixins/*/test/screenshots/current/
+mixins/*/test/screenshots/golden/
+templates/*/test/screenshots/current/
+templates/*/test/screenshots/golden/
 test/sass.output.css
+.DS_Store

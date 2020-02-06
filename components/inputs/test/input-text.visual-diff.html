@@ -13,11 +13,11 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
 		<style>
-		#override-padding {
+		#wc-override-padding {
 			--d2l-input-padding: 2rem 3rem;
 			--d2l-input-padding-focus: calc(2rem - 1px) calc(3rem - 1px);
 		}
-		#override-height {
+		#wc-override-height {
 			--d2l-input-height: 100px;
 		}
 		</style>
@@ -25,52 +25,103 @@
 	<body class="d2l-typography">
 		<div style="width: 300px;">
 			<div class="visual-diff">
-				<d2l-input-text id="basic" value="text"></d2l-input-text>
+				<d2l-input-text id="wc-basic" value="text"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="email" type="email" value="bill@nye.com"></d2l-input-text>
+				<d2l-input-text id="wc-labelled" label="Name" value="text"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="number" type="number" value="500"></d2l-input-text>
+				<d2l-input-text id="wc-required" label="Name" required value="text"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="password" type="password" value="123456"></d2l-input-text>
+				<d2l-input-text id="wc-label-hidden" label="Name" label-hidden value="text"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="search" type="search" value="search"></d2l-input-text>
+				<d2l-input-text id="wc-email" type="email" value="bill@nye.com"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="tel" type="tel" value="123-456-7890"></d2l-input-text>
+				<d2l-input-text id="wc-number" type="number" value="500"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="url" type="url" value="https://www.d2l.com"></d2l-input-text>
+				<d2l-input-text id="wc-password" type="password" value="123456"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="disabled" disabled value="text disabled"></d2l-input-text>
+				<d2l-input-text id="wc-search" type="search" value="search"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="placeholder" placeholder="placeholder"></d2l-input-text>
+				<d2l-input-text id="wc-tel" type="tel" value="123-456-7890"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="placeholder-disabled" disabled placeholder="placeholder disabled"></d2l-input-text>
+				<d2l-input-text id="wc-url" type="url" value="https://www.d2l.com"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="invalid" type="email" value="invalid@"></d2l-input-text>
+				<d2l-input-text id="wc-disabled" disabled value="text disabled"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="invalid-disabled" disabled type="email" value="invalid-disabled@"></d2l-input-text>
+				<d2l-input-text id="wc-placeholder" placeholder="placeholder"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="aria-invalid" value="aria-invalid" aria-invalid="true"></d2l-input-text>
+				<d2l-input-text id="wc-placeholder-disabled" disabled placeholder="placeholder disabled"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="aria-invalid-disabled" disabled value="aria-invalid-disabled" aria-invalid="true"></d2l-input-text>
+				<d2l-input-text id="wc-invalid" type="email" value="invalid@"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="override-height" value="text"></d2l-input-text>
+				<d2l-input-text id="wc-invalid-disabled" disabled type="email" value="invalid-disabled@"></d2l-input-text>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-text id="override-padding" value="text"></d2l-input-text>
+				<d2l-input-text id="wc-aria-invalid" value="aria-invalid" aria-invalid="true"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-aria-invalid-disabled" disabled value="aria-invalid-disabled" aria-invalid="true"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-override-height" value="text"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-override-padding" value="text"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<input id="sass-basic" class="d2l-test-input-text" type="text" value="text">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-email" class="d2l-test-input-text" type="email" value="bill@nye.com">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-number" class="d2l-test-input-text" type="number" value="500">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-password" class="d2l-test-input-text" type="password" value="123456">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-search" class="d2l-test-input-text" type="search" value="search">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-tel" class="d2l-test-input-text" type="tel" value="123-456-7890">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-url" class="d2l-test-input-text" type="url" value="https://www.d2l.com">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-disabled" class="d2l-test-input-text" disabled value="text disabled">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-placeholder" class="d2l-test-input-text" placeholder="placeholder">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-placeholder-disabled" class="d2l-test-input-text" disabled placeholder="placeholder disabled">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-invalid" class="d2l-test-input-text" type="email" value="invalid@">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-invalid-disabled" class="d2l-test-input-text" disabled type="email" value="invalid-disabled@">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-aria-invalid" class="d2l-test-input-text" value="aria-invalid" aria-invalid="true">
+			</div>
+			<div class="visual-diff">
+				<input id="sass-aria-invalid-disabled" class="d2l-test-input-text" disabled value="aria-invalid-disabled" aria-invalid="true">
 			</div>
 		</div>
 	</body>

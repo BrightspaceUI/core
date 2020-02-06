@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-meter-radial', function() {
+describe('d2l-meter-radial', () => {
 
 	const visualDiff = new VisualDiff('meter-radial', __dirname);
 
@@ -22,6 +22,7 @@ describe('d2l-meter-radial', function() {
 		{ title: 'has-progress', fixture: '#has-progress'},
 		{ title: 'completed', fixture: '#completed'},
 		{ title: 'round-to-zero', fixture: '#round-to-zero'},
+		{ title: 'max-zero-with-value', fixture: '#max-zero-with-value'},
 		{ title: 'no-progress-scaled', fixture: '#no-progress-scaled'},
 		{ title: 'has-progress-scaled', fixture: '#has-progress-scaled'},
 		{ title: 'completed-scaled', fixture: '#completed-scaled'},

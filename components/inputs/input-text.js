@@ -1,18 +1,29 @@
-import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { InputTextMixin } from './input-text-mixin.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputText extends InputTextMixin(LitElement) {
+class InputText extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			autocomplete: { type: String },
+			autofocus: { type: Boolean },
+			disabled: { type: Boolean, reflect: true },
+			label: { type: String },
+			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			max: { type: String },
+			maxlength: { type: Number },
 			min: { type: String },
+			minlength: { type: Number },
+			name: { type: String },
 			pattern: { type: String },
+			placeholder: { type: String },
 			preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
+			readonly: { type: Boolean },
+			required: { type: Boolean, reflect: true },
 			size: { type: Number },
 			step: { type: String },
 			type: { type: String },
@@ -21,7 +32,7 @@ class InputText extends InputTextMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ inputStyles,
+		return [ inputStyles, inputLabelStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -30,21 +41,31 @@ class InputText extends InputTextMixin(LitElement) {
 				:host([hidden]) {
 					display: none;
 				}
+				label {
+					display: block;
+				}
 			`
 		];
 	}
 
 	constructor() {
 		super();
+		this.autofocus = false;
+		this.disabled = false;
+		this.labelHidden = false;
 		this.preventSubmit = false;
+		this.readonly = false;
+		this.required = false;
 		this.type = 'text';
 		this.value = '';
 	}
 
 	render() {
-		return html`
+		const ariaRequired = this.required ? 'true' : undefined;
+		const input = html`
 			<input aria-invalid="${ifDefined(this.ariaInvalid)}"
-			 	aria-label="${ifDefined(this.ariaLabel)}"
+				aria-label="${ifDefined(this._getAriaLabel())}"
+				aria-required="${ifDefined(ariaRequired)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
@@ -61,13 +82,40 @@ class InputText extends InputTextMixin(LitElement) {
 				pattern="${ifDefined(this.pattern)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				?readonly="${this.readonly}"
-				?required="${this.required}"
 				size="${ifDefined(this.size)}"
 				step="${ifDefined(this.step)}"
 				tabindex="${ifDefined(this.tabindex)}"
 				type="${this._getType()}"
 				.value="${this.value}">
 		`;
+		if (this.label && !this.labelHidden) {
+			return html`
+				<label>
+					<span class="d2l-input-label">${this.label}</span>
+					${input}
+				</label>`;
+		}
+		return input;
+	}
+
+	async focus() {
+		const elem = this.shadowRoot.querySelector('.d2l-input');
+		if (elem) {
+			elem.focus();
+		} else {
+			await this.updateComplete;
+			this.focus();
+		}
+	}
+
+	_getAriaLabel() {
+		if (this.label && this.labelHidden) {
+			return this.label;
+		}
+		if (this.hasAttribute('aria-label')) {
+			return this.getAttribute('aria-label');
+		}
+		return undefined;
 	}
 
 	_getType() {

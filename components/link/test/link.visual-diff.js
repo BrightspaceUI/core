@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-link', function() {
+describe('d2l-link', () => {
 
 	const visualDiff = new VisualDiff('link', __dirname);
 
@@ -21,6 +21,7 @@ describe('d2l-link', function() {
 		'wc-standard',
 		'wc-main',
 		'wc-small',
+		'wc-inline',
 		'sass-standard',
 		'sass-main',
 		'sass-small'

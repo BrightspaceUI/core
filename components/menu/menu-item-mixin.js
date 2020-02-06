@@ -4,10 +4,11 @@ export const MenuItemMixin = superclass => class extends superclass {
 		return {
 			disabled: { type: Boolean, reflect: true },
 			first: { type: Boolean, reflect: true }, // set by d2l-menu
-			hasChildView: { type: Boolean, attribute: 'has-child-view' },
+			hasChildView: { type: Boolean },
 			hidden: { type: Boolean, reflect: true },
 			last: { type: String, reflect: true }, // set by d2l-menu
 			role: { type: String, reflect: true },
+			tabindex: { type: String, reflect: true },
 			text: String
 		};
 	}
@@ -25,13 +26,19 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.tabindex = -1;
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
 		this.addEventListener('click', this.__onClick);
 		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
 		this.addEventListener('dom-change', this.__onDomChange);
 		this.addEventListener('keydown', this.__onKeyDown);
+
 		this.__initializeItem();
+
+		if (this.hidden) {
+			this._onHidden();
+		}
 	}
 
 	updated(changedProperties) {
@@ -71,7 +78,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			return;
 		}
 
-		if (this.__children && this.__children.length > 0 && this.__children[0].isHierarchicalView) {
+		if (this.__children && this.__children.length > 0 && this.__children[0].hierarchicalView) {
 			// assumption: single, focusable child view
 			this.__children[0].show();
 		} else {

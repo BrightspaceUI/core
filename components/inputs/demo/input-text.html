@@ -17,35 +17,44 @@
 			<h2>Simple</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-text></d2l-input-text>
+					<d2l-input-text label="Name"></d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Hidden Label</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text label="Name" label-hidden></d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Required</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text label="Name" required></d2l-input-text>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Disabled</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-text disabled></d2l-input-text>
+					<d2l-input-text label="Name (disabled)" disabled></d2l-input-text>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Placeholder</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-text placeholder="enter some text"></d2l-input-text>
+					<d2l-input-text label="Name" label-hidden placeholder="Enter a name..."></d2l-input-text>
 				</template>
 			</d2l-demo-snippet>
 
 			<h3>Invalid</h3>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-text type="email" value="foo@"></d2l-input-text>
-				</template>
-			</d2l-demo-snippet>
-
-			<h3>Aria-Invalid</h3>
-			<d2l-demo-snippet>
-				<template>
-					<d2l-input-text type="text" aria-invalid="true"></d2l-input-text>
+					<d2l-input-text label="Automatic" type="email" value="foo@"></d2l-input-text>
+					<br><br>
+					<d2l-input-text label="Manual" type="text" aria-invalid="true"></d2l-input-text>
 				</template>
 			</d2l-demo-snippet>
 

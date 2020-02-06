@@ -87,7 +87,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.minHeight = '500px';
-		this._containerTop = null;
 
 		this._calcContainerPosition = this._calcContainerPosition.bind(this);
 	}
@@ -112,8 +111,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	firstUpdated() {
 		super.firstUpdated();
-
-		this._containerTop = this.shadowRoot.querySelector('.d2l-floating-detection');
 
 		this._calcContainerPosition();
 		this._startObserver();
@@ -174,13 +171,19 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 		const viewBottom = window.innerHeight;
 		const containerRectHeight = this.getBoundingClientRect().height;
-		const containerTop = this._containerTop.getBoundingClientRect().top;
+		const containerTop = this.getBoundingClientRect().top;
+
+		let scrollbarHeightEstimate = 0;
+		const hasHorizontalScollbar = document.body.scrollWidth > document.body.clientWidth;
+		if (hasHorizontalScollbar) {
+			scrollbarHeightEstimate = 17; // needed in case of horizontal scrollbar in Windows
+		}
 
 		/* if viewport height is less than minHeight (e.g., mobile device),
-		 * or div.d2l-floating-detection is visible (i.e., buttons no longer need to be floating)
+		 * or user has scrolled to bottom of page
 		 * then do not float the buttons
 		 */
-		if (_viewportIsLessThanMinHeight || ((containerTop + containerRectHeight) <= viewBottom)) {
+		if (_viewportIsLessThanMinHeight || ((containerTop + containerRectHeight + scrollbarHeightEstimate) <= viewBottom)) {
 			return false;
 		} else {
 			return true;
@@ -199,7 +202,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		};
 
 		return html`
-			<div class="d2l-floating-detection"></div>
 			<div class="d2l-floating-buttons-container" style=${styleMap(containerStyle)}>
 				<div class="d2l-floating-buttons-inner-container" style=${styleMap(innerContainerStyle)}>
 					<slot></slot>

@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-button', function() {
+describe('d2l-button', () => {
 
 	const visualDiff = new VisualDiff('button', __dirname);
 
@@ -10,7 +10,6 @@ describe('d2l-button', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await visualDiff.disableAnimations(page);
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/button.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
@@ -28,7 +27,7 @@ describe('d2l-button', function() {
 					if (name === 'hover') {
 						await page.hover(`#${entry.category}`);
 					} else if (name === 'focus') {
-						await focus(page, `#${entry.category}`);
+						await page.$eval(`#${entry.category}`, (elem) => elem.focus());
 					}
 
 					const rectId = (name.indexOf('disabled') !== -1) ? name : entry.category;
@@ -38,15 +37,5 @@ describe('d2l-button', function() {
 			});
 		});
 	});
-
-	const focus = (page, selector) => {
-		return page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
-				elem.focus();
-			});
-		}, selector);
-	};
 
 });

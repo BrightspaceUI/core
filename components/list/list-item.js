@@ -24,8 +24,9 @@ class ListItem extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			breakpoints: { type: Array },
+			disabled: {type: Boolean },
 			href: { type: String },
-			illustrationOutside: { type: Boolean, attribute: 'illustration-outside'},
+			illustrationOutside: { type: Boolean, attribute: 'illustration-outside' },
 			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
@@ -83,13 +84,13 @@ class ListItem extends RtlMixin(LitElement) {
 				padding-right: 0.9rem;
 			}
 
-			input[type="checkbox"] {
+			input[type="checkbox"].d2l-input-checkbox {
 				flex-grow: 0;
 				flex-shrink: 0;
 				margin: 0.6rem 0.9rem 0.6rem 0;
 			}
 
-			:host([dir="rtl"]) input[type="checkbox"] {
+			:host([dir="rtl"]) input[type="checkbox"].d2l-input-checkbox {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
@@ -120,7 +121,7 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-top: 0.7rem;
 			}
 
-			:host([illustration-outside]) input[type="checkbox"] {
+			:host([illustration-outside]) input[type="checkbox"].d2l-input-checkbox {
 				margin-bottom: 1.15rem;
 				margin-top: 1.15rem;
 			}
@@ -212,6 +213,7 @@ class ListItem extends RtlMixin(LitElement) {
 		super();
 		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
+		this.disabled = false;
 		this.role = 'listitem';
 		this.selectable = false;
 		this._contentId = getUniqueId();
@@ -254,7 +256,7 @@ class ListItem extends RtlMixin(LitElement) {
 		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
 		const link = this.href ? html`<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>` : null;
 		const beforeContent = this.selectable
-			? html`<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}"><slot name="illustration"></slot>`
+			? html`<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}" ?disabled="${this.disabled}"><slot name="illustration"></slot>`
 			: html`<slot name="illustration"></slot>`;
 
 		const classes = {
