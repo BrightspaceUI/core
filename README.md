@@ -60,7 +60,7 @@ npm install @brightspace-ui/core
 
 `/templates/` - Page templates to provide common ways to arrange content on a page
 
-`/test/` - Index and shared styles for unit tests
+`/test/` - Shared styles for unit tests
 
 `/tools/` - Development tools for building, testing, etc.
 
@@ -116,7 +116,7 @@ To run local unit tests:
 npm run test:headless
 ```
 
-To run a subset of local unit tests, modify your local [index.html](https://github.com/BrightspaceUI/core/blob/master/test/index.html), or start the dev server and navigate to the desired test page.
+To run a subset of local unit tests or to debug them, run `npm run test:headless:watch` and navigate to `http://localhost:9876/debug.html`.
 
 To run linting, visual-diff, and unit tests:
 
