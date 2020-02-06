@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-menu checkbox', function() {
+describe('d2l-menu checkbox', () => {
 
 	const visualDiff = new VisualDiff('menu-checkbox', __dirname);
 
@@ -47,7 +47,7 @@ describe('d2l-menu checkbox', function() {
 	});
 
 	describe('selection behavior', () => {
-		this.afterEach(async() => {
+		afterEach(async() => {
 			await page.reload();
 		});
 
