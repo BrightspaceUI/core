@@ -108,10 +108,15 @@ function getNumberOfDaysInMonth(month, year) {
 }
 
 function getNumberOfDaysToSameWeekPrevMonth(month, year, firstDayOfWeek) {
-	const numDays = getNumberOfDaysInMonth(month, year);
-	const numDaysFromLastMonthToShowThisMonth = getNumberOfDaysFromPrevMonthToShow(month, year, firstDayOfWeek);
-	const numWeeksPrevMonth = Math.ceil((numDaysFromLastMonthToShowThisMonth + numDays) / daysInWeek);
-	return daysInWeek * (numWeeksPrevMonth - ((numDaysFromLastMonthToShowThisMonth > 0) ? 1 : 0));
+	const prevMonth = getPrevMonth(month);
+	const prevMonthYear = prevMonth === 11 ? year - 1 : year;
+	const numDaysPrevMonth = getNumberOfDaysInMonth(prevMonth, prevMonthYear);
+	const numDaysFromPrevPrevMonthToShowPrevMonth = getNumberOfDaysFromPrevMonthToShow(prevMonth, prevMonthYear, firstDayOfWeek);
+	const numWeeksPrevMonth = Math.ceil((numDaysFromPrevPrevMonthToShowPrevMonth + numDaysPrevMonth) / 7);
+
+	const firstDayOfMonth = new Date(year, month, 1).getDay();
+	const hasDaysFromPrevMonth = (firstDayOfMonth !== firstDayOfWeek);
+	return daysInWeek * (numWeeksPrevMonth - ((hasDaysFromPrevMonth) ? 1 : 0));
 }
 
 function getPrevMonth(month) {
@@ -435,7 +440,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		this._focusDate.setDate(this._focusDate.getDate() + numDays);
 
 		this._keyboardTriggeredMonthChange = true;
-		if (this._focusDate.getFullYear() < this._shownYear || this._focusDate.getMonth() < this._shownMonth) {
+		if (this._focusDate.getFullYear() < this._shownYear || (this._focusDate.getMonth() < this._shownMonth && this._shownYear === this._focusDate.getFullYear())) {
 			this._showPrevMonth();
 		} else if (this._focusDate.getMonth() > this._shownMonth || (this._shownMonth === 11 && this._focusDate.getMonth() === 0)) {
 			this._showNextMonth();
