@@ -92,8 +92,8 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should provide a time object with hour, minute and second', async() => {
-			const elem = await fixture('<d2l-input-time value="11:22 AM"></d2l-input-time>');
-			expect(elem.getTime()).to.deep.equal({ hour: 11, minute: 22, second: 0 });
+			const elem = await fixture('<d2l-input-time value="11:22:33"></d2l-input-time>');
+			expect(elem.getTime()).to.deep.equal({ hour: 11, minute: 22, second: 33 });
 		});
 
 		it('should default to 12 AM', async() => {
@@ -102,9 +102,10 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should not save input seconds after time changes', async() => {
-			const elem = await fixture('<d2l-input-time value="11:22:33 AM"></d2l-input-time>');
+			//Seconds are saved when value is assigned directly, not when input by user (for EOD)
+			const elem = await fixture('<d2l-input-time value="11:22:33"></d2l-input-time>');
 			expect(elem.getTime().second).to.equal(33);
-			getInput().value = '11:45 AM';
+			getInput(elem).value = '11:45 AM';
 			dispatchEvent(elem, 'change', false);
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('11:45:00');

@@ -34,7 +34,7 @@ function parseValue(val) {
 			}
 		}
 		if (match.length > 3) {
-			second = parseInt(match[3]);
+			second = parseInt(match[4]);
 			if (isNaN(second) || second < 0 || second > 59) {
 				second = 0;
 			}

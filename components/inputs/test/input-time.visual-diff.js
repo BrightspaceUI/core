@@ -27,11 +27,12 @@ describe('d2l-input-time', () => {
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-		it(`${name}-focus`, async function() {
-			await page.$eval(`#${name}`, (elem) => elem.focus());
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
+	});
+
+	it('basic-focus', async function() {
+		await page.$eval('#basic', (elem) => elem.focus());
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 });
