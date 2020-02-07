@@ -23,7 +23,9 @@ jobs:
         npm run test:diff || travis_terminate 1;
       fi
   - stage: update-version
-    script: frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
+    script:
+    - npm run build
+    - frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
 env:
   global:
   - REPO_NAME=core
