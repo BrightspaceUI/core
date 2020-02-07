@@ -228,17 +228,8 @@ describe('d2l-input-checkbox', () => {
 
 	describe('simulateClick', () => {
 
-		let elem;
-		beforeEach(async() => {
-			elem = await fixture(uncheckedFixture);
-		});
-
-		it('should set "checked" property', () => {
-			elem.simulateClick();
-			expect(elem.checked).to.be.true;
-		});
-
-		it('should trigger an event', async() => {
+		it('should set checked property and trigger an event', async() => {
+			const elem = await fixture(uncheckedFixture);
 			setTimeout(() => elem.simulateClick());
 			await oneEvent(elem, 'change');
 			expect(elem.checked).to.be.true;
