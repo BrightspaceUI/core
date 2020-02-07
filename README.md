@@ -16,30 +16,30 @@ npm install @brightspace-ui/core
 ## README Index
 
 * Components
- - [Buttons](components/button/): normal, primary, icon and subtle buttons
- - [Colors](components/colors/): color palette
- - [Dialogs](components/dialog/): generic and confirmation dialogs
- - [Icons](components/icons/): iconography SVGs and web components
- - [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
- - [Links](components/link/): link component and styles
- - [List](components/list/): list and list-item components
- - [Loading Spinner](components/loading-spinner/): loading-spinner components
- - [Meter](components/meter/): linear, radial, circle meter web components
- - [More/less](components/more-less/): constrain long bits of content
- - [Off-screen](components/offscreen/): component and styles for positioning content off-screen
- - [Status Indicator](components/status-indicator/): status-indicator components
- - [Typography](components/typography/): typography styles and components
+  * [Buttons](components/button/): normal, primary, icon and subtle buttons
+  * [Colors](components/colors/): color palette
+  * [Dialogs](components/dialog/): generic and confirmation dialogs
+  * [Icons](components/icons/): iconography SVGs and web components
+  * [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
+  * [Links](components/link/): link component and styles
+  * [List](components/list/): list and list-item components
+  * [Loading Spinner](components/loading-spinner/): loading-spinner components
+  * [Meter](components/meter/): linear, radial, circle meter web components
+  * [More/less](components/more-less/): constrain long bits of content
+  * [Off-screen](components/offscreen/): component and styles for positioning content off-screen
+  * [Status Indicator](components/status-indicator/): status-indicator components
+  * [Typography](components/typography/): typography styles and components
 * Helpers
- - [Helpers](helpers/): helpers for composed DOM, unique ids, etc.
+  * [Helpers](helpers/): helpers for composed DOM, unique ids, etc.
 * Mixins
- - [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
- - [AsyncContainerMixin](mixins/async-container/): manage collective async state
- - [LocalizeMixin](mixins/localize-mixin.md): localize text in your components
- - [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion
- - [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
- - [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
+  * [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
+  * [AsyncContainerMixin](mixins/async-container/): manage collective async state
+  * [LocalizeMixin](mixins/localize-mixin.md): localize text in your components
+  * [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion
+  * [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
+  * [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
 * Templates
- - [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) page template with header and optional footer
+  * [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) page template with header and optional footer
 
 ## Developing
 
