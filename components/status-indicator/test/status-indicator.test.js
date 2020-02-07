@@ -28,18 +28,6 @@ describe('d2l-status-indicator', () => {
 
 	});
 
-	describe('default property values', () => {
-
-		it('should default "state" property to "default" when unset', () => {
-			expect(elem.state).to.equal('default');
-		});
-
-		it('should default "bold" property to "false" when unset', () => {
-			expect(elem.bold).to.be.false;
-		});
-
-	});
-
 	describe('attribute reflection', () => {
 
 		it('should reflect "state" property to attribute', async() => {
@@ -52,6 +40,18 @@ describe('d2l-status-indicator', () => {
 			elem.bold = true;
 			await elem.updateComplete;
 			expect(elem.hasAttribute('bold')).to.be.true;
+		});
+
+	});
+
+	describe('default property values', () => {
+
+		it('should default "state" property to "default" when unset', () => {
+			expect(elem.state).to.equal('default');
+		});
+
+		it('should default "bold" property to "false" when unset', () => {
+			expect(elem.bold).to.be.false;
 		});
 
 	});

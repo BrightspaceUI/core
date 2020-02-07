@@ -36,42 +36,6 @@ describe('d2l-link', () => {
 
 	});
 
-	describe('events', () => {
-
-		it('dispatches click event when clicked', async() => {
-			const elem = await fixture(html`<d2l-link></d2l-link>`);
-			setTimeout(() => getAnchor(elem).click());
-			const { target } = await oneEvent(elem, 'click');
-			expect(target).to.equal(elem);
-		});
-
-	});
-
-	describe('default property values', () => {
-
-		['main', 'small'].forEach((attrName) => {
-			it(`should default "${attrName}" property to false when unset`, async() => {
-				const elem = await fixture(normalFixture);
-				expect(elem[attrName]).to.be.false;
-				expect(elem.hasAttribute(attrName)).to.be.false;
-			});
-		});
-
-	});
-
-	describe('attribute reflection', () => {
-
-		['main', 'small'].forEach((attrName) => {
-			it(`should reflect "${attrName}" property to attribute`, async() => {
-				const elem = await fixture(normalFixture);
-				elem[attrName] = true;
-				await elem.updateComplete;
-				expect(elem.hasAttribute(attrName)).to.be.true;
-			});
-		});
-
-	});
-
 	describe('attribute binding', () => {
 
 		['download', 'href', 'main', 'small'].forEach((attrName) => {
@@ -100,7 +64,43 @@ describe('d2l-link', () => {
 
 	});
 
-	describe('focus delegation', () => {
+	describe('attribute reflection', () => {
+
+		['main', 'small'].forEach((attrName) => {
+			it(`should reflect "${attrName}" property to attribute`, async() => {
+				const elem = await fixture(normalFixture);
+				elem[attrName] = true;
+				await elem.updateComplete;
+				expect(elem.hasAttribute(attrName)).to.be.true;
+			});
+		});
+
+	});
+
+	describe('default property values', () => {
+
+		['main', 'small'].forEach((attrName) => {
+			it(`should default "${attrName}" property to false when unset`, async() => {
+				const elem = await fixture(normalFixture);
+				expect(elem[attrName]).to.be.false;
+				expect(elem.hasAttribute(attrName)).to.be.false;
+			});
+		});
+
+	});
+
+	describe('events', () => {
+
+		it('dispatches click event when clicked', async() => {
+			const elem = await fixture(html`<d2l-link></d2l-link>`);
+			setTimeout(() => getAnchor(elem).click());
+			const { target } = await oneEvent(elem, 'click');
+			expect(target).to.equal(elem);
+		});
+
+	});
+
+	describe('focus management', () => {
 
 		it('should delegate focus to underlying anchor', async() => {
 			const elem = await fixture(normalFixture);
