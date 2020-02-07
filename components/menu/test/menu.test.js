@@ -37,81 +37,6 @@ describe('d2l-menu', () => {
 
 	});
 
-	describe('nested menu', () => {
-
-		let elem, nestedMenu;
-		beforeEach(async() => {
-			elem = await fixture(html`
-				<d2l-menu id="menu">
-					<d2l-menu-item id="a1"></d2l-menu-item>
-					<d2l-menu-item id="b1" text="b">
-						<d2l-menu id="nestedMenu">
-							<d2l-menu-item id="a2"></d2l-menu-item>
-							<d2l-menu-item id="b2"></d2l-menu-item>
-						</d2l-menu>
-					</d2l-menu-item>
-					<d2l-menu-item id="c1"></d2l-menu-item>
-				</d2l-menu>
-			`);
-			nestedMenu = elem.querySelector('#nestedMenu');
-		});
-
-		it('sets label for nested menu to the opener item text', () => {
-			expect(nestedMenu.getAttribute('aria-label')).to.equal('b');
-		});
-
-		it('shows nested menu when opener is clicked', async() => {
-			setTimeout(() => elem.querySelector('#b1').click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			expect(nestedMenu.isActive()).to.be.true;
-		});
-
-		it('sets focus to d2l-menu-item-return when nested menu is displayed', async() => {
-			setTimeout(() => elem.querySelector('#b1').click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			let focused = (document.activeElement.tagName === 'D2L-MENU-ITEM-RETURN');
-			if (!focused) {
-				focused = (document.activeElement === nestedMenu);
-			}
-			expect(focused).to.be.true;
-		});
-
-		it('shows nested menu when right arrow is pressed on opener', async() => {
-			setTimeout(() => dispatchKeyEvent(elem.querySelector('#b1'), 39));
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			expect(nestedMenu.isActive()).to.be.true;
-		});
-
-		it('hides nested menu when left arrow is pressed in nested menu', async() => {
-			setTimeout(() => elem.querySelector('#b1').click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			setTimeout(() => dispatchKeyEvent(elem.querySelector('#b2'), 37));
-			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
-			expect(elem.isActive()).to.be.true;
-		});
-
-		it('hides nested menu when escape is pressed in nested menu', async() => {
-			setTimeout(() => elem.querySelector('#b1').click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keyup', true, true);
-			eventObj.keyCode = 27;
-			setTimeout(() => elem.querySelector('#b2').dispatchEvent(eventObj));
-			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
-			expect(elem.isActive()).to.be.true;
-		});
-
-		it('hides nested menu when d2l-menu-item-return is clicked', async() => {
-			setTimeout(() => elem.querySelector('#b1').click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			const returnItem = elem.querySelector('#nestedMenu')._getMenuItemReturn();
-			setTimeout(() => returnItem.click());
-			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
-			expect(elem.isActive()).to.be.true;
-		});
-
-	});
-
 	describe('focus management', () => {
 
 		let elem;
@@ -188,6 +113,81 @@ describe('d2l-menu', () => {
 			eventObj.charCode = 98;
 			elem.querySelector('#c1').dispatchEvent(eventObj);
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));
+		});
+
+	});
+
+	describe('nested menu', () => {
+
+		let elem, nestedMenu;
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<d2l-menu id="menu">
+					<d2l-menu-item id="a1"></d2l-menu-item>
+					<d2l-menu-item id="b1" text="b">
+						<d2l-menu id="nestedMenu">
+							<d2l-menu-item id="a2"></d2l-menu-item>
+							<d2l-menu-item id="b2"></d2l-menu-item>
+						</d2l-menu>
+					</d2l-menu-item>
+					<d2l-menu-item id="c1"></d2l-menu-item>
+				</d2l-menu>
+			`);
+			nestedMenu = elem.querySelector('#nestedMenu');
+		});
+
+		it('sets label for nested menu to the opener item text', () => {
+			expect(nestedMenu.getAttribute('aria-label')).to.equal('b');
+		});
+
+		it('shows nested menu when opener is clicked', async() => {
+			setTimeout(() => elem.querySelector('#b1').click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			expect(nestedMenu.isActive()).to.be.true;
+		});
+
+		it('sets focus to d2l-menu-item-return when nested menu is displayed', async() => {
+			setTimeout(() => elem.querySelector('#b1').click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			let focused = (document.activeElement.tagName === 'D2L-MENU-ITEM-RETURN');
+			if (!focused) {
+				focused = (document.activeElement === nestedMenu);
+			}
+			expect(focused).to.be.true;
+		});
+
+		it('shows nested menu when right arrow is pressed on opener', async() => {
+			setTimeout(() => dispatchKeyEvent(elem.querySelector('#b1'), 39));
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			expect(nestedMenu.isActive()).to.be.true;
+		});
+
+		it('hides nested menu when left arrow is pressed in nested menu', async() => {
+			setTimeout(() => elem.querySelector('#b1').click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			setTimeout(() => dispatchKeyEvent(elem.querySelector('#b2'), 37));
+			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+			expect(elem.isActive()).to.be.true;
+		});
+
+		it('hides nested menu when escape is pressed in nested menu', async() => {
+			setTimeout(() => elem.querySelector('#b1').click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			const eventObj = document.createEvent('Events');
+			eventObj.initEvent('keyup', true, true);
+			eventObj.keyCode = 27;
+			setTimeout(() => elem.querySelector('#b2').dispatchEvent(eventObj));
+			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+			expect(elem.isActive()).to.be.true;
+		});
+
+		it('hides nested menu when d2l-menu-item-return is clicked', async() => {
+			setTimeout(() => elem.querySelector('#b1').click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			const returnItem = elem.querySelector('#nestedMenu')._getMenuItemReturn();
+			setTimeout(() => returnItem.click());
+			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+			expect(elem.isActive()).to.be.true;
 		});
 
 	});
