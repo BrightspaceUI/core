@@ -419,11 +419,13 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_showNextMonth() {
+		this._focusDateRemoveFocus();
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
 	}
 
 	_showPrevMonth() {
+		this._focusDateRemoveFocus();
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
 	}
