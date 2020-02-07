@@ -2,7 +2,7 @@ language: node_js
 node_js: node
 jobs:
   include:
-  - stage: code-tests
+  - stage: tests
     script:
     - npm run build
     - npm run lint
@@ -22,11 +22,8 @@ jobs:
         echo "Running visual difference tests...";
         npm run test:diff || travis_terminate 1;
       fi
-after_success:
-- |
-  if [ $TRAVIS_BUILD_STAGE_NAME == "Visual-difference-tests" ]; then
-    frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
-  fi
+  - stage: update-version
+    script: frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
 env:
   global:
   - REPO_NAME=core
