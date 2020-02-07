@@ -32,9 +32,8 @@ jobs:
         # VISUAL_DIFF_S3_SECRET
         - secure: hETcU1ZRPPz7ipofSeUj8fLkdM9JJda/Qg/oXU83FqZ/y/LZya6jMJjBfcHgEGsCLmVOPLw4lj2+pcyA6ZprJuujdS56elnbWPYUa4iwCbPN7ayfFQQjQx3jo3LYd7jFlCilgMT+Q+s+SnVfmV1Wa91N5WOpINpi7NzIarBRhWVeoiCQJmaabAX2pIn4G5VnBIE562SJULq+05Ucavl9zWrSFHDsMqMtcVcHG7TI6BExENJf76iutEk/YqWdaSvk5LY4xLrO29tThZBVJ7lX5wQGa3MkmlJkHZqxoONBWbGsKfrwh5I7QHExkj8PYYfvpYHQd+VugFrSkDTW3wHsoe/cmrzVe8aEbpHfUSPpO5HOkTdOqy92NVjyh4MOE7hJexmQsYRD+zjFzL4AS876hOdjrf/FS5ume843MvZseSZiCpK7uHTQWwVmitib/dNJdy8YyWoAyceWHpz46QOArrECVYOFhMKYuPrNy3gYY05kCLHCEW24pVN1ToRW2Gp6Z3Z3YblfWShjFHl3eU8riOPeCU9RaBV1k1UuP0C5POyFDPS12K8glPNIJ6dbp6GyI6KKW3iYuX/O3G4w/evO/AMy9nQPL4tUOPU5gQsPvr4Z77+bluP9VqEd3o1VBC6IBwLEcc8tzO+5EAeRbj9THU7zDmoIQH0oRHpIo+elg/8=
     - stage: deploy
-      script:
-      - npm run build
-      - frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
+      script: npm run build
+      after_success: frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
       env:
         - REPO_NAME=core
         - OWNER_NAME=BrightspaceUI
