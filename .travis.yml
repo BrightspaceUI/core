@@ -2,51 +2,50 @@ language: node_js
 node_js: node
 jobs:
   include:
-  - stage: code-tests
-    script:
-    - npm run build
-    - npm run lint
-    - |
-      if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
-          echo "Pull request with secure environment variables, running Sauce tests...";
-          npm run test:sauce || travis_terminate 1;
-      else
-          echo "Not a pull request and/or no secure environment variables, running headless tests...";
-          npm run test:headless || travis_terminate 1;
-      fi
-  - stage: visual-difference-tests
-    script:
-    - npm run build
-    - |
-      if [ $TRAVIS_SECURE_ENV_VARS == true ]; then
-        echo "Running visual difference tests...";
-        npm run test:diff || travis_terminate 1;
-      fi
-after_success:
-- |
-  if [ $TRAVIS_BUILD_STAGE_NAME == "Visual-difference-tests" ]; then
-    frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
-  fi
-env:
-  global:
-  - REPO_NAME=core
-  - OWNER_NAME=BrightspaceUI
-  - SAUCE_USERNAME: Gaudi1
-  # SAUCE_ACCESS_KEY
-  - secure: bwPUP8HCJ4x/VQHYT83fw28MF6fZqcCFYYLQIuYl5d8QXPuHNiON+36YSEkIix/2AjuQR8OtNqy7MPem013QUzEl9ayJ+P/Kto3hN84D6fNj4DXKUtDywDeAs6B0hv3OZZIUJ2ixqClyGDRoK9M51NzS3d9Nts8rEDTJY5CqnD7s+0mOUXfmr7ehStQfs4JdsGApdp5ByA7btC6t3vNAUSoGOlnfKGb4VP/cCXAS64Suy/8Q09fCCKr2BMswQwR6hwb52EJ50W9JbpXu/S0DwrwwM5ZGCG4+SSXqrMoaWXeoOjjQ+tdTx+Rj/cvYO0IE9vJvEMubFCzjs57d2r9IwoKmJg27Fh7YPlZk4YEhcge2vDO9AmlGKGDKeEYco4fXelAmmCcFjmrWXjH8Uc31n2wZj4yYg6AKU2M+GvMYNmh+aI1qGJ+urpQigYdf8IWpqryW19wiOzRm+N6JhdFGlfgnJMEv/OmdTwGOXKA1Qlmc0Bv8ZjWHa6bVMrwnueygoUwc7rWYQg0SjIaW8zhTWwy2JkBoCD1/TpKYTNOdL4VSaxpRSCQn4uAlJ2rNBIyv7FM0S7ycKMTVQGXIyaRo28vKUEGUDYGYWbu++5fBxRfaHWeE79ZFE823LyFQetTUmr7ms/i4pqkaM/m+q840s34lLwmupSoUoVBAGezVsk8=
-  # VISUAL_DIFF_S3_ID
-  - secure: GGPx9fJpdWd2BcvfXnFQQBBswAazOEWgZXnqmrRma045OpvlJeeUYn3N3gamz3nS2Mv0u3Y0j3ViAbEgDjo4hbW4Iz4/8tmv0T/59qYnco8ONXBnUEytJxMy8B6dOHT+rX/Fgn/4+dxWItWc4igG1FryK4TpGn1JrcsmlPHoJJZRQyUYqrKk4OfUzjs2LOaGHGyy2Sm+bXfSOWt12VnMBrHzwMRsrnhdZNzx/XqKTbGPWuV/YTLqJ0azqz3DoxhmmrllgnGgbKncTtZN2vSzGqlxTjS0Dn+CDnXP5LAvN6u7OLqI2jo/10XBG8ZHe6W/szun/nIKnIHBX87HDr0+39B5R9kMR6PHgGG/fRnDSva/ssKHgjRAoMxznG74j7Efk+MegYf8DSctMGwA+NxCMZFoNM5gEDIKo7w7N5RdDK9PC3kZaZajJqskQIr1uE2hVlBZONXtOvkQ0fJX4eiHym7ClWJW8QWXVU7FyiZfj0WE4MWwYzGSa/ve5EpvKCP1Wat276qnJRIdrSCsxxYk2u8w9qgyXr8jbhkWHzkaX9Ff/82X4/POCxoXibDMOF60DHxWniKCdhaviUEf1leiTjidJqr3dXRCLjCTD3GlLTxQVt6JlGDdY+0Dy/IcUblrCG5t4Ym4S6hbkIWx5cVPPQSl6t5ELq37Gof9FSvUQSg=
-  # VISUAL_DIFF_S3_SECRET
-  - secure: hETcU1ZRPPz7ipofSeUj8fLkdM9JJda/Qg/oXU83FqZ/y/LZya6jMJjBfcHgEGsCLmVOPLw4lj2+pcyA6ZprJuujdS56elnbWPYUa4iwCbPN7ayfFQQjQx3jo3LYd7jFlCilgMT+Q+s+SnVfmV1Wa91N5WOpINpi7NzIarBRhWVeoiCQJmaabAX2pIn4G5VnBIE562SJULq+05Ucavl9zWrSFHDsMqMtcVcHG7TI6BExENJf76iutEk/YqWdaSvk5LY4xLrO29tThZBVJ7lX5wQGa3MkmlJkHZqxoONBWbGsKfrwh5I7QHExkj8PYYfvpYHQd+VugFrSkDTW3wHsoe/cmrzVe8aEbpHfUSPpO5HOkTdOqy92NVjyh4MOE7hJexmQsYRD+zjFzL4AS876hOdjrf/FS5ume843MvZseSZiCpK7uHTQWwVmitib/dNJdy8YyWoAyceWHpz46QOArrECVYOFhMKYuPrNy3gYY05kCLHCEW24pVN1ToRW2Gp6Z3Z3YblfWShjFHl3eU8riOPeCU9RaBV1k1UuP0C5POyFDPS12K8glPNIJ6dbp6GyI6KKW3iYuX/O3G4w/evO/AMy9nQPL4tUOPU5gQsPvr4Z77+bluP9VqEd3o1VBC6IBwLEcc8tzO+5EAeRbj9THU7zDmoIQH0oRHpIo+elg/8=
-  # GITHUB_RELEASE_TOKEN (2374......46ed)
-  - secure: Q0Nl6PYZhAvS2rUprp7yxAnFmaaWlRJ7Vek1y8uQ0h2Rm4hraRDTwmcFSKOdOgHnI75Wzn5qCcTDHnQMVu1tHUf7/Z1Fnk/2cG5Y5G/R877jihoaaSNdhlbBPV92EZ5+tSc51H3hmChoK4FePKv45KQLsz59txOYmsVzKd8ryKTXzrDSH5IA3ssyBLfRTT6RbRDdTRBOpoTR4zPBkWCj9vB1Pd4g01jZPk2oP1bd8sIfJp1vrEzRCOrR7FiuDIBNArKTqOoLt3rlNry4uZpwrZmmA5b0L7xNM1C1PUxMjCKZV7mT5MthVx9R2NVOrddxAE0P7z/6PK1V86oJYwoSySOedLM4AYCwddpZNzqIR5aEAM33rvbRYuyCURt/1w59SXb5zftigdjbVg7wbvxb7sxWOEbhg+LHlno0+8U1r2WU1OY3BZBvsEKCV4jGGJpSyhvQpJ0gyWfsNk3Kt37OFgG0ZBNdXgIfQ+jSzan8puoR8wUbz4DyuYOV/z5Y4LdswFR3q4/eo1FjjzBBz+fXDodXxUm2XT/lxz5uL23y5EUqfT6vIBXd2XhlQ/izS0PCckzPILSz+nOL/I4Hq/q2Zfzu+9kD/sL6G3n1c28LbQnNOsuXyfoBozVZvwPc8wXWf4jIJlWGUXCoyG2zRJkN5D64GnSDvzu6+TThOYU8ZNQ=
-deploy:
-  provider: npm
-  email: d2ltravisdeploy@d2l.com
-  skip_cleanup: true
-  api_key:
-    # 57c4......d343
-    secure: IitMXMxHrtsjCy3eucLs/mxja8e27DRpxT1YnA7HM6nCpKEr+SzPaHqV4tSNfX8fmKvqhyR3SRijPWnGahaZNVAPlN0l01MSEaG419o3QIKFzSgpNZLjNe5BsGTH3CFC5yPgtrU6ILW2Et1pb1+oixghXSifybxxan4aJKwBuri1DnrijmBnlEyog1Wglra1e7GzwZnEohDitHWKqO2V6uE+v1LmDtnHMzKoEjEeD/iHk1/oKdfsbZLEcZ+l6xU3gORBMskG+XT8EPgPOpfnuCiL0tqJ+ZFcP2hbNrzMMKs/k5TAmvL0DJyvmDfjlBXLik4aHKX6GmYGfhfktBCEN4hl8rmo9eBoQxJuzWWnCJq5BxVRGxaBZg7yZK5qZYR8cUwS5t241LqDgMK4rQP6J6cImCZ1Fe93t9yMd3GsurSHIByHwwQ3tuY4Xj3f6Nr/skGYrS9azqRtREWsRY4rsiudcKuTQGsDfLMpEN6ZGZQBXrYgKZpCrgIUiK5PyggbzTfOfpSrxe4oBD6IIb6bITYPPU5rXnE4EMOLY6AUn5OBxR/ACkooccFa7gHxlgVaNAy+RRIFk4sW6NAbADZXzy1U+jp8QsCzZBU0gmjNLShD0uuUfWSdv75qq3eKlwBzrlI6TpADoGmsFxoO3Yc6d0YGOmcxWVu6ZRuqeyVTZ9I=
-  on:
-    repo: BrightspaceUI/core
-    tags: true
+    - stage: tests
+      script:
+      - npm run build
+      - npm run lint
+      - |
+        if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
+            echo "Pull request with secure environment variables, running Sauce tests...";
+            npm run test:sauce || travis_terminate 1;
+        else
+            echo "Not a pull request and/or no secure environment variables, running headless tests...";
+            npm run test:headless || travis_terminate 1;
+        fi
+      env:
+        - SAUCE_USERNAME: Gaudi1
+        # SAUCE_ACCESS_KEY
+        - secure: bwPUP8HCJ4x/VQHYT83fw28MF6fZqcCFYYLQIuYl5d8QXPuHNiON+36YSEkIix/2AjuQR8OtNqy7MPem013QUzEl9ayJ+P/Kto3hN84D6fNj4DXKUtDywDeAs6B0hv3OZZIUJ2ixqClyGDRoK9M51NzS3d9Nts8rEDTJY5CqnD7s+0mOUXfmr7ehStQfs4JdsGApdp5ByA7btC6t3vNAUSoGOlnfKGb4VP/cCXAS64Suy/8Q09fCCKr2BMswQwR6hwb52EJ50W9JbpXu/S0DwrwwM5ZGCG4+SSXqrMoaWXeoOjjQ+tdTx+Rj/cvYO0IE9vJvEMubFCzjs57d2r9IwoKmJg27Fh7YPlZk4YEhcge2vDO9AmlGKGDKeEYco4fXelAmmCcFjmrWXjH8Uc31n2wZj4yYg6AKU2M+GvMYNmh+aI1qGJ+urpQigYdf8IWpqryW19wiOzRm+N6JhdFGlfgnJMEv/OmdTwGOXKA1Qlmc0Bv8ZjWHa6bVMrwnueygoUwc7rWYQg0SjIaW8zhTWwy2JkBoCD1/TpKYTNOdL4VSaxpRSCQn4uAlJ2rNBIyv7FM0S7ycKMTVQGXIyaRo28vKUEGUDYGYWbu++5fBxRfaHWeE79ZFE823LyFQetTUmr7ms/i4pqkaM/m+q840s34lLwmupSoUoVBAGezVsk8=
+    - stage: visual-difference-tests
+      script:
+      - npm run build
+      - |
+        if [ $TRAVIS_SECURE_ENV_VARS == true ]; then
+          echo "Running visual difference tests...";
+          npm run test:diff || travis_terminate 1;
+        fi
+      env:
+        # VISUAL_DIFF_S3_ID
+        - secure: GGPx9fJpdWd2BcvfXnFQQBBswAazOEWgZXnqmrRma045OpvlJeeUYn3N3gamz3nS2Mv0u3Y0j3ViAbEgDjo4hbW4Iz4/8tmv0T/59qYnco8ONXBnUEytJxMy8B6dOHT+rX/Fgn/4+dxWItWc4igG1FryK4TpGn1JrcsmlPHoJJZRQyUYqrKk4OfUzjs2LOaGHGyy2Sm+bXfSOWt12VnMBrHzwMRsrnhdZNzx/XqKTbGPWuV/YTLqJ0azqz3DoxhmmrllgnGgbKncTtZN2vSzGqlxTjS0Dn+CDnXP5LAvN6u7OLqI2jo/10XBG8ZHe6W/szun/nIKnIHBX87HDr0+39B5R9kMR6PHgGG/fRnDSva/ssKHgjRAoMxznG74j7Efk+MegYf8DSctMGwA+NxCMZFoNM5gEDIKo7w7N5RdDK9PC3kZaZajJqskQIr1uE2hVlBZONXtOvkQ0fJX4eiHym7ClWJW8QWXVU7FyiZfj0WE4MWwYzGSa/ve5EpvKCP1Wat276qnJRIdrSCsxxYk2u8w9qgyXr8jbhkWHzkaX9Ff/82X4/POCxoXibDMOF60DHxWniKCdhaviUEf1leiTjidJqr3dXRCLjCTD3GlLTxQVt6JlGDdY+0Dy/IcUblrCG5t4Ym4S6hbkIWx5cVPPQSl6t5ELq37Gof9FSvUQSg=
+        # VISUAL_DIFF_S3_SECRET
+        - secure: hETcU1ZRPPz7ipofSeUj8fLkdM9JJda/Qg/oXU83FqZ/y/LZya6jMJjBfcHgEGsCLmVOPLw4lj2+pcyA6ZprJuujdS56elnbWPYUa4iwCbPN7ayfFQQjQx3jo3LYd7jFlCilgMT+Q+s+SnVfmV1Wa91N5WOpINpi7NzIarBRhWVeoiCQJmaabAX2pIn4G5VnBIE562SJULq+05Ucavl9zWrSFHDsMqMtcVcHG7TI6BExENJf76iutEk/YqWdaSvk5LY4xLrO29tThZBVJ7lX5wQGa3MkmlJkHZqxoONBWbGsKfrwh5I7QHExkj8PYYfvpYHQd+VugFrSkDTW3wHsoe/cmrzVe8aEbpHfUSPpO5HOkTdOqy92NVjyh4MOE7hJexmQsYRD+zjFzL4AS876hOdjrf/FS5ume843MvZseSZiCpK7uHTQWwVmitib/dNJdy8YyWoAyceWHpz46QOArrECVYOFhMKYuPrNy3gYY05kCLHCEW24pVN1ToRW2Gp6Z3Z3YblfWShjFHl3eU8riOPeCU9RaBV1k1UuP0C5POyFDPS12K8glPNIJ6dbp6GyI6KKW3iYuX/O3G4w/evO/AMy9nQPL4tUOPU5gQsPvr4Z77+bluP9VqEd3o1VBC6IBwLEcc8tzO+5EAeRbj9THU7zDmoIQH0oRHpIo+elg/8=
+    - stage: deploy
+      script: npm run build
+      after_success: frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
+      env:
+        - REPO_NAME=core
+        - OWNER_NAME=BrightspaceUI
+        # GITHUB_RELEASE_TOKEN (2374......46ed)
+        - secure: Q0Nl6PYZhAvS2rUprp7yxAnFmaaWlRJ7Vek1y8uQ0h2Rm4hraRDTwmcFSKOdOgHnI75Wzn5qCcTDHnQMVu1tHUf7/Z1Fnk/2cG5Y5G/R877jihoaaSNdhlbBPV92EZ5+tSc51H3hmChoK4FePKv45KQLsz59txOYmsVzKd8ryKTXzrDSH5IA3ssyBLfRTT6RbRDdTRBOpoTR4zPBkWCj9vB1Pd4g01jZPk2oP1bd8sIfJp1vrEzRCOrR7FiuDIBNArKTqOoLt3rlNry4uZpwrZmmA5b0L7xNM1C1PUxMjCKZV7mT5MthVx9R2NVOrddxAE0P7z/6PK1V86oJYwoSySOedLM4AYCwddpZNzqIR5aEAM33rvbRYuyCURt/1w59SXb5zftigdjbVg7wbvxb7sxWOEbhg+LHlno0+8U1r2WU1OY3BZBvsEKCV4jGGJpSyhvQpJ0gyWfsNk3Kt37OFgG0ZBNdXgIfQ+jSzan8puoR8wUbz4DyuYOV/z5Y4LdswFR3q4/eo1FjjzBBz+fXDodXxUm2XT/lxz5uL23y5EUqfT6vIBXd2XhlQ/izS0PCckzPILSz+nOL/I4Hq/q2Zfzu+9kD/sL6G3n1c28LbQnNOsuXyfoBozVZvwPc8wXWf4jIJlWGUXCoyG2zRJkN5D64GnSDvzu6+TThOYU8ZNQ=
+      deploy:
+        provider: npm
+        email: d2ltravisdeploy@d2l.com
+        skip_cleanup: true
+        api_key:
+          # 57c4......d343
+          secure: IitMXMxHrtsjCy3eucLs/mxja8e27DRpxT1YnA7HM6nCpKEr+SzPaHqV4tSNfX8fmKvqhyR3SRijPWnGahaZNVAPlN0l01MSEaG419o3QIKFzSgpNZLjNe5BsGTH3CFC5yPgtrU6ILW2Et1pb1+oixghXSifybxxan4aJKwBuri1DnrijmBnlEyog1Wglra1e7GzwZnEohDitHWKqO2V6uE+v1LmDtnHMzKoEjEeD/iHk1/oKdfsbZLEcZ+l6xU3gORBMskG+XT8EPgPOpfnuCiL0tqJ+ZFcP2hbNrzMMKs/k5TAmvL0DJyvmDfjlBXLik4aHKX6GmYGfhfktBCEN4hl8rmo9eBoQxJuzWWnCJq5BxVRGxaBZg7yZK5qZYR8cUwS5t241LqDgMK4rQP6J6cImCZ1Fe93t9yMd3GsurSHIByHwwQ3tuY4Xj3f6Nr/skGYrS9azqRtREWsRY4rsiudcKuTQGsDfLMpEN6ZGZQBXrYgKZpCrgIUiK5PyggbzTfOfpSrxe4oBD6IIb6bITYPPU5rXnE4EMOLY6AUn5OBxR/ACkooccFa7gHxlgVaNAy+RRIFk4sW6NAbADZXzy1U+jp8QsCzZBU0gmjNLShD0uuUfWSdv75qq3eKlwBzrlI6TpADoGmsFxoO3Yc6d0YGOmcxWVu6ZRuqeyVTZ9I=
+        on:
+          repo: BrightspaceUI/core
+          tags: true
