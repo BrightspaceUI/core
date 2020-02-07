@@ -3,7 +3,6 @@ import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
 const TODAY = new Date();
@@ -45,11 +44,11 @@ function parseValue(val) {
 	return time;
 }
 
-class InputTime extends RtlMixin(LitElement) {
+class InputTime extends LitElement{
 
 	static get properties() {
 		return {
-			disabled: { type: Boolean, reflect: true },
+			disabled: { type: Boolean },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			value: { type: String },
@@ -129,9 +128,6 @@ class InputTime extends RtlMixin(LitElement) {
 		if (this.label && this.labelHidden) {
 			return this.label;
 		}
-		if (this.hasAttribute('aria-label')) {
-			return this.getAttribute('aria-label');
-		}
 		return undefined;
 	}
 
@@ -144,9 +140,8 @@ class InputTime extends RtlMixin(LitElement) {
 			this._formattedValue = formatTime(parseValue(this.value));
 		} else {
 			this.value = formatValue(time);
-			// Change events aren't composed, so we need to re-dispatch
 			this.dispatchEvent(new CustomEvent(
-				'd2l-time-input-changed',
+				'change',
 				{bubbles: true, composed: false}
 			));
 		}
