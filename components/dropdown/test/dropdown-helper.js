@@ -6,10 +6,6 @@ const getEvent = (page, selector, name) => {
 	}, name);
 };
 
-const asyncSetTimeout = (delay) => {
-	return new Promise(resolve => setTimeout(resolve, delay));
-};
-
 module.exports = {
 
 	getOpenEvent(page, selector) {
@@ -19,10 +15,11 @@ module.exports = {
 	async open(page, selector) {
 		const openEvent = this.getOpenEvent(page, selector);
 		await page.$eval(selector, (dropdown) => {
-			dropdown.toggleOpen();
+			return new Promise((resolve) => {
+				dropdown.querySelector('d2l-dropdown-content').addEventListener('animationend', () => resolve(), { once: true });
+				dropdown.toggleOpen();
+			});
 		});
-		// 300ms fade-in animation on open
-		await asyncSetTimeout(300);
 		return openEvent;
 	},
 

@@ -39,9 +39,8 @@ describe('d2l-dropdown', () => {
 			content.setAttribute('opened', true);
 			await oneEvent(content, 'd2l-dropdown-open');
 
-			const dropdownClose = oneEvent(content, 'd2l-dropdown-close');
-			content.removeAttribute('opened');
-			await dropdownClose;
+			setTimeout(() => content.removeAttribute('opened'));
+			await oneEvent(content, 'd2l-dropdown-close');
 
 			expect(content.opened).to.be.false;
 		});
@@ -60,9 +59,8 @@ describe('d2l-dropdown', () => {
 			content.toggleOpen();
 			await oneEvent(content, 'd2l-dropdown-open');
 
-			const dropdownClose = oneEvent(content, 'd2l-dropdown-close');
-			content.toggleOpen();
-			await dropdownClose;
+			setTimeout(() => content.toggleOpen());
+			await oneEvent(content, 'd2l-dropdown-close');
 
 			expect(content.opened).to.be.false;
 		});
@@ -122,9 +120,8 @@ describe('d2l-dropdown', () => {
 			content.setAttribute('opened', true);
 			await oneEvent(content, 'd2l-dropdown-open');
 
-			const dropdownClose = oneEvent(content, 'd2l-dropdown-close');
-			dropdown.querySelector('#non_focusable_outside').click();
-			await dropdownClose;
+			setTimeout(() => dropdown.querySelector('#non_focusable_outside').click());
+			await oneEvent(content, 'd2l-dropdown-close');
 
 			expect(content.opened).to.be.false;
 		});
@@ -139,9 +136,8 @@ describe('d2l-dropdown', () => {
 			eventObj.initEvent('keyup', true, true);
 			eventObj.keyCode = 27;
 
-			const dropdownClose = oneEvent(content, 'd2l-dropdown-close');
-			document.dispatchEvent(eventObj);
-			await dropdownClose;
+			setTimeout(() => document.dispatchEvent(eventObj));
+			await oneEvent(content, 'd2l-dropdown-close');
 
 			expect(content.opened).to.be.false;
 		});
@@ -248,9 +244,8 @@ describe('d2l-dropdown', () => {
 			await opener.updateComplete;
 			expect(opener.getAttribute('aria-expanded')).to.equal('true');
 
-			const dropdownClose = oneEvent(content, 'd2l-dropdown-close');
-			content.removeAttribute('opened');
-			await dropdownClose;
+			setTimeout(() => content.removeAttribute('opened'));
+			await oneEvent(content, 'd2l-dropdown-close');
 			await opener.updateComplete;
 			expect(opener.getAttribute('aria-expanded')).to.equal('false');
 		});

@@ -95,19 +95,13 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onKeyPress(e) {
-		if (e.keyCode !== 13) {
-			return;
-		}
-		if (this.noAutoOpen) {
-			return;
-		}
+		if (e.keyCode !== 13) return;
+		if (this.noAutoOpen) return;
 		this.toggleOpen(true);
 	}
 
 	__onMouseUp() {
-		if (this.noAutoOpen) {
-			return;
-		}
+		if (this.noAutoOpen) return;
 		this.toggleOpen(false);
 	}
 

@@ -27,6 +27,7 @@
 			height: 100%;
 		}
 		d2l-dropdown .d2l-dropdown-opener {
+			box-sizing: border-box;
 			width: 30px;
 			height: 30px;
 			border-radius: 50%;
@@ -38,27 +39,42 @@
 		d2l-dropdown {
 			position: absolute;
 		}
-		#top-middle,
-		#align-start,
-		#align-end,
+		#wide-opener {
+			top: 45px;
+		}
+		#wide-opener,
+		#wide-opener .d2l-dropdown-opener {
+			width: 100%;
+		}
+		#wide-opener .d2l-dropdown-opener {
+			border-radius: 5px;
+		}
+
+		.top-middle,
+		.align-start,
+		.align-end,
 		#vertical-offset,
 		#rtl {
 			top: 0;
 			left: 50%;
 		}
-		#top-right {
+		#default-max-width {
+			top: 0;
+			left: 0;
+		}
+		.top-right {
 			top: 0;
 			right: 0;
 		}
-		#bottom-left {
+		.bottom-left {
 			bottom: 0;
 			left: 0;
 		}
-		#bottom-middle {
+		.bottom-middle {
 			bottom: 0;
 			left: 50%;
 		}
-		#bottom-right {
+		.bottom-right {
 			bottom: 0;
 			right: 0;
 		}
@@ -72,6 +88,15 @@
 <body class="d2l-typography">
 	<div class="visual-diff">
 
+		<d2l-dropdown id="wide-opener">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content boundary="{&quot;right&quot;:50, &quot;above&quot;:20}">
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
 		<d2l-dropdown id="default-width">
 			<div class="d2l-dropdown-opener"></div>	
 			<d2l-dropdown-content>
@@ -81,14 +106,6 @@
 		<d2l-dropdown id="min-width">
 			<div class="d2l-dropdown-opener"></div>	
 			<d2l-dropdown-content min-width="600">
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-					magna aliqua.</div>
-			</d2l-dropdown-content>
-		</d2l-dropdown>
-
-		<d2l-dropdown id="default-max-width">
-			<div class="d2l-dropdown-opener"></div>	
-			<d2l-dropdown-content>
 				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
 					magna aliqua.</div>
 			</d2l-dropdown-content>
@@ -142,7 +159,17 @@
 			</d2l-dropdown-content>
 		</d2l-dropdown>
 
-		<d2l-dropdown id="top-middle">
+		<d2l-dropdown id="top-left" class="top-left">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content>
+				<a href="http://www.desire2learn.com">D2L</a>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="top-middle" class="top-middle">
 			<div class="d2l-dropdown-opener"></div>	
 			<d2l-dropdown-content>
 				<a href="http://www.desire2learn.com">D2L</a>
@@ -151,7 +178,7 @@
 			</d2l-dropdown-content>
 		</d2l-dropdown>
 
-		<d2l-dropdown id="top-right">
+		<d2l-dropdown id="top-right" class="top-right">
 			<div class="d2l-dropdown-opener"></div>	
 			<d2l-dropdown-content>
 				<a href="http://www.desire2learn.com">D2L</a>
@@ -160,7 +187,7 @@
 			</d2l-dropdown-content>
 		</d2l-dropdown>
 
-		<d2l-dropdown id="bottom-left">
+		<d2l-dropdown id="bottom-left" class="bottom-left">
 			<div class="d2l-dropdown-opener"></div>	
 			<d2l-dropdown-content>
 				<a href="http://www.desire2learn.com">D2L</a>
@@ -169,7 +196,7 @@
 			</d2l-dropdown-content>
 		</d2l-dropdown>
 
-		<d2l-dropdown id="bottom-right">
+		<d2l-dropdown id="bottom-right" class="bottom-right">
 			<div class="d2l-dropdown-opener"></div>	
 			<d2l-dropdown-content>
 				<a href="http://www.desire2learn.com">D2L</a>
@@ -178,11 +205,29 @@
 			</d2l-dropdown-content>
 		</d2l-dropdown>
 
-		<d2l-dropdown id="bottom-middle">
+		<d2l-dropdown id="bottom-middle" class="bottom-middle">
 			<div class="d2l-dropdown-opener"></div>	
 			<d2l-dropdown-content>
 				<a href="http://www.desire2learn.com">D2L</a>
 				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="align-start" class="align-start">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content align="start">
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="align-end" class="align-end">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content align="end">
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
 					magna aliqua.</div>
 			</d2l-dropdown-content>
 		</d2l-dropdown>
@@ -195,34 +240,9 @@
 			</d2l-dropdown-content>
 		</d2l-dropdown>
 
-		<d2l-dropdown id="align-start">
-			<div class="d2l-dropdown-opener"></div>	
-			<d2l-dropdown-content align="start">
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-					magna aliqua.</div>
-			</d2l-dropdown-content>
-		</d2l-dropdown>
-
-		<d2l-dropdown id="align-end">
-			<div class="d2l-dropdown-opener"></div>	
-			<d2l-dropdown-content align="end">
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-					magna aliqua.</div>
-			</d2l-dropdown-content>
-		</d2l-dropdown>
-
 		<d2l-dropdown id="vertical-offset">
 			<div class="d2l-dropdown-opener"></div>
 			<d2l-dropdown-content vertical-offset="100">
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-					dolore
-					magna aliqua.</div>
-			</d2l-dropdown-content>
-		</d2l-dropdown>
-
-		<d2l-dropdown id="rtl" dir="rtl">
-			<div class="d2l-dropdown-opener"></div>
-			<d2l-dropdown-content dir="rtl">
 				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
 					dolore
 					magna aliqua.</div>
@@ -246,6 +266,85 @@
 					magna aliqua.</div>
 			</d2l-dropdown-content>
 		</d2l-dropdown>
+
+		<d2l-dropdown id="top-left-rtl" class="top-left" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content dir="rtl">
+				<a href="http://www.desire2learn.com">D2L</a>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="top-middle-rtl" class="top-middle" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content dir="rtl">
+				<a href="http://www.desire2learn.com">D2L</a>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+		
+		<d2l-dropdown id="top-right-rtl" class="top-right" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content dir="rtl">
+				<a href="http://www.desire2learn.com">D2L</a>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+		
+		<d2l-dropdown id="bottom-left-rtl" class="bottom-left" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content dir="rtl">
+				<a href="http://www.desire2learn.com">D2L</a>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+		
+		<d2l-dropdown id="bottom-right-rtl" class="bottom-right" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content dir="rtl">
+				<a href="http://www.desire2learn.com">D2L</a>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+		
+		<d2l-dropdown id="bottom-middle-rtl" class="bottom-middle" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content dir="rtl">
+				<a href="http://www.desire2learn.com">D2L</a>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="align-start-rtl" class="align-start" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content align="start" dir="rtl">
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="align-end-rtl" class="align-end" dir="rtl">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content align="end" dir="rtl">
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
 	</div>
 </body>
 </html>

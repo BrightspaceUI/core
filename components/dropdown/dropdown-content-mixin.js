@@ -162,49 +162,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		});
 	}
 
-	_renderContent() {
-
-		const positionStyle = {};
-		if (this._position) {
-			const isRTL = this.getAttribute('dir') === 'rtl';
-			if (!isRTL) {
-				positionStyle.left = `${this._position}px`;
-			} else {
-				positionStyle.right = `${this._position}px`;
-			}
-		}
-
-		const widthStyle = {
-			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
-			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : undefined
-		};
-
-		const containerStyle = {
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
-			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: this._width ? `${this._width + 18}px` : undefined,
-			maxHeight: this._maxHeight ? `${this._maxHeight}px` : 'none',
-			overflowY: this._contentOverflow ? 'auto' : 'hidden'
-		};
-
-		const topClasses = { 'd2l-dropdown-content-top': true, 'd2l-dropdown-content-top-scroll': this._topOverflow };
-		const bottomClasses = { 'd2l-dropdown-content-bottom': true, 'd2l-dropdown-content-bottom-scroll': this._bottomOverflow };
-
-		return html`
-			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
-					<div class=${classMap(topClasses)}></div>
-					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)} @scroll=${this.__toggleScrollStyles}>
-						${this.renderContent ? html`<slot></slot>` : null}
-					</div>
-					<div class=${classMap(bottomClasses)}></div>
-				</div>
-			</div>
-		`;
-	}
-
 	close() {
 		this.opened = false;
 	}
@@ -253,6 +210,49 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	 */
 	height() {
 		return this.__content && this.__content.offsetHeight;
+	}
+
+	_renderContent() {
+
+		const positionStyle = {};
+		if (this._position) {
+			const isRTL = this.getAttribute('dir') === 'rtl';
+			if (!isRTL) {
+				positionStyle.left = `${this._position}px`;
+			} else {
+				positionStyle.right = `${this._position}px`;
+			}
+		}
+
+		const widthStyle = {
+			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
+			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			/* add 2 to content width since scrollWidth does not include border */
+			width: this._width ? `${this._width + 20}px` : undefined
+		};
+
+		const containerStyle = {
+			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			/* set width of content in addition to width container so IE will render scroll inside border */
+			width: this._width ? `${this._width + 18}px` : undefined,
+			maxHeight: this._maxHeight ? `${this._maxHeight}px` : 'none',
+			overflowY: this._contentOverflow ? 'auto' : 'hidden'
+		};
+
+		const topClasses = { 'd2l-dropdown-content-top': true, 'd2l-dropdown-content-top-scroll': this._topOverflow };
+		const bottomClasses = { 'd2l-dropdown-content-bottom': true, 'd2l-dropdown-content-bottom-scroll': this._bottomOverflow };
+
+		return html`
+			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+					<div class=${classMap(topClasses)}></div>
+					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)} @scroll=${this.__toggleScrollStyles}>
+						${this.renderContent ? html`<slot></slot>` : null}
+					</div>
+					<div class=${classMap(bottomClasses)}></div>
+				</div>
+			</div>
+		`;
 	}
 
 	__getContentContainer() {
