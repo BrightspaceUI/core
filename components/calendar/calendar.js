@@ -183,9 +183,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_shownMonth') {
+				this._focusDateRemoveFocus();
 				const numDaysInMonth = getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
 				if (this._focusDate.getDate() > (numDaysInMonth - 1)) this._focusDate.setDate(numDaysInMonth);
 				this._focusDate.setMonth(this._shownMonth);
+				this._focusDate.setFullYear(this._shownYear);
 				this._focusDateAddFocus();
 			}
 		});
@@ -417,13 +419,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_showNextMonth() {
-		this._focusDateRemoveFocus();
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
 	}
 
 	_showPrevMonth() {
-		this._focusDateRemoveFocus();
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
 	}
