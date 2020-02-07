@@ -158,17 +158,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		super();
 
 		this._descriptor = getDateTimeDescriptor();
-		const weekdays = this._descriptor.calendar.days.long;
-		const weekdaysShort = this._descriptor.calendar.days.short;
 
-		this._arrangedWeekdays = [];
+		this._daysOfWeekIndex = [];
 		for (let i = this._descriptor.calendar.firstDayOfWeek; i < this._descriptor.calendar.firstDayOfWeek + daysInWeek; i++) {
-			const index = i % daysInWeek;
-			const day = {
-				long: weekdays[index],
-				short: weekdaysShort[index]
-			};
-			this._arrangedWeekdays.push(day);
+			this._daysOfWeekIndex.push(i % daysInWeek);
 		}
 
 		this._dialogLabelId = getUniqueId();
@@ -199,10 +192,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	render() {
-		const weekdayHeaders = this._arrangedWeekdays.map((day) => html`
-			<th role="columnheader" abbr="${day.long}">
-				<abbr title="${day.long}">
-					${day.short}
+		const weekdayHeaders = this._daysOfWeekIndex.map((index) => html`
+			<th role="columnheader" abbr="${this._descriptor.calendar.days.long[index]}">
+				<abbr title="${this._descriptor.calendar.days.long[index]}">
+					${this._descriptor.calendar.days.short[index]}
 				</abbr>
 			</th>
 		`);
