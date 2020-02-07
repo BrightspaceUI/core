@@ -57,8 +57,6 @@ npm start
 
 ### Linting
 
-To lint (eslint and [lit-analyzer](https://github.com/runem/lit-analyzer/tree/master/packages/lit-analyzer)):
-
 ```shell
 # eslint and lit-analyzer
 npm run lint
@@ -71,8 +69,6 @@ npm run lint:lit
 ```
 
 ### Testing
-
-Lint, unit test and visual-diff test:
 
 ```shell
 # lint, unit test and visual-diff test
@@ -88,7 +84,7 @@ npm run test:headless:watch
 
 ### Visual Diff Testing
 
-To run visual-diff tests:
+This repo uses the [@brightspace-ui/visual-diff utility](https://github.com/BrightspaceUI/visual-diff/) to compare current snapshots against a set of golden snapshots stored in source control.
 
 ```shell
 # run visual-diff tests
@@ -101,7 +97,7 @@ npm run test:diff -- -g some-pattern
 npm run test:diff:golden
 ```
 
-Visual-diff goldens in source control must be updated by Travis CI. To trigger an update, press the "Regenerate Goldens" button in the pull request `visual-difference` test run.
+Golden snapshots in source control must be updated by Travis CI. To trigger an update, press the "Regenerate Goldens" button in the pull request `visual-difference` test run.
 
 ## Future Enhancements
 
