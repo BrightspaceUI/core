@@ -46,7 +46,7 @@ jobs:
           secure: IitMXMxHrtsjCy3eucLs/mxja8e27DRpxT1YnA7HM6nCpKEr+SzPaHqV4tSNfX8fmKvqhyR3SRijPWnGahaZNVAPlN0l01MSEaG419o3QIKFzSgpNZLjNe5BsGTH3CFC5yPgtrU6ILW2Et1pb1+oixghXSifybxxan4aJKwBuri1DnrijmBnlEyog1Wglra1e7GzwZnEohDitHWKqO2V6uE+v1LmDtnHMzKoEjEeD/iHk1/oKdfsbZLEcZ+l6xU3gORBMskG+XT8EPgPOpfnuCiL0tqJ+ZFcP2hbNrzMMKs/k5TAmvL0DJyvmDfjlBXLik4aHKX6GmYGfhfktBCEN4hl8rmo9eBoQxJuzWWnCJq5BxVRGxaBZg7yZK5qZYR8cUwS5t241LqDgMK4rQP6J6cImCZ1Fe93t9yMd3GsurSHIByHwwQ3tuY4Xj3f6Nr/skGYrS9azqRtREWsRY4rsiudcKuTQGsDfLMpEN6ZGZQBXrYgKZpCrgIUiK5PyggbzTfOfpSrxe4oBD6IIb6bITYPPU5rXnE4EMOLY6AUn5OBxR/ACkooccFa7gHxlgVaNAy+RRIFk4sW6NAbADZXzy1U+jp8QsCzZBU0gmjNLShD0uuUfWSdv75qq3eKlwBzrlI6TpADoGmsFxoO3Yc6d0YGOmcxWVu6ZRuqeyVTZ9I=
         on:
           repo: BrightspaceUI/core
-        tags: true
+          tags: true
 env:
   global:
   # GITHUB_RELEASE_TOKEN (2374......46ed)
