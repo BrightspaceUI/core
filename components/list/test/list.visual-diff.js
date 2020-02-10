@@ -10,7 +10,7 @@ describe('d2l-list', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await page.setViewport({width: 900, height: 900, deviceScaleFactor: 2});
+		await page.setViewport({width: 1000, height: 3700, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
