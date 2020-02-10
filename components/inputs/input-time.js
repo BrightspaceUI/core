@@ -44,7 +44,7 @@ function parseValue(val) {
 	return time;
 }
 
-class InputTime extends LitElement{
+class InputTime extends LitElement {
 
 	static get properties() {
 		return {

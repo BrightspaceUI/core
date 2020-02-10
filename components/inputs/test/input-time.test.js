@@ -4,7 +4,6 @@ import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
 const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden></d2l-input-time>';
 
-
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
 		eventType,
