@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-meter-circle', function() {
+describe('d2l-meter-circle', () => {
 
 	const visualDiff = new VisualDiff('meter-circle', __dirname);
 
@@ -10,7 +10,7 @@ describe('d2l-meter-circle', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+		await page.setViewport({width: 800, height: 2500, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/meter/test/meter-circle.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});

@@ -9,6 +9,11 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 		};
 	}
 
+	constructor() {
+		super();
+		this.selected = false;
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 

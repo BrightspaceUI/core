@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-list', function() {
+describe('d2l-list', () => {
 
 	const visualDiff = new VisualDiff('list', __dirname);
 
@@ -10,7 +10,7 @@ describe('d2l-list', function() {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await page.setViewport({width: 900, height: 900, deviceScaleFactor: 2});
+		await page.setViewport({width: 1000, height: 3700, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
