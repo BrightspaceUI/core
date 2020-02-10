@@ -38,15 +38,15 @@ class Button extends ButtonMixin(LitElement) {
 				button[disabled]:hover,
 				button[disabled]:focus,
 				:host([active]) button[disabled] {
-					background-color: var(--d2l-color-regolith);
-					border-color: var(--d2l-color-mica);
+					background-color: var(--d2l-color-gypsum);
 					color: var(--d2l-color-ferrite);
 				}
 
 				button:hover,
 				button:focus,
 				:host([active]) button {
-					background-color: var(--d2l-color-gypsum);
+					background-color: var(--d2l-color-mica);
+					color: var(--d2l-color-ferrite);
 				}
 
 				button[disabled] {
