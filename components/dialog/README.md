@@ -19,8 +19,13 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
   <d2l-button slot="footer" dialog-action>Cancel</d2l-button>
 </d2l-dialog>
 ```
+Open the dialog declaratively using a boolean attribute `opened`:
 
-Open the dialog by calling the `open` method to return a promise:
+```html
+<d2l-dialog ?opened="${this.someProp}"></d2l-dialog>
+```
+
+Alternatively, open the dialog by calling the `open` method to return a promise:
 
 ```javascript
 document.querySelector('#open').addEventListener('click', async() => {
@@ -40,8 +45,23 @@ document.querySelector('#open').addEventListener('click', () => {
   });
 });
 ```
+Make sure that in the 'd2l-dialog-close' event handler that you sync any bound properties if you decided to use them:
+```html
+<d2l-dialog ?opened="${this.dialogIsOpened}"></d2l-dialog>
+```
+```javascript
+// later on...
+document.querySelector('d2l-dialog').addEventListener('d2l-dialog-close', (e) => {
+  this.dialogIsOpened = false;
+});
+```
 
-*Note:* The user may close the dialog in a few different ways: clicking the dialog workflow buttons (marked up with `dialog-action`), by clicking the `[x]` button in the top-right corner, or by pressing the `escape` key. It is possible to listen for click events directly on the workflow buttons, however to be notified in any of these scenarios, it is best to either wait for the `open` method's promise, or listen for the `d2l-dialog-close` event.
+*Note:* The user may close the dialog in a few different ways: clicking the dialog workflow buttons (marked up with `dialog-action`), by clicking the `[x]` button in the top-right corner, or by pressing the `escape` key. It is possible to listen for click events directly on the workflow buttons, however to be notified in any of these scenarios, it is best to either wait for the `open` method's promise, or listen for the `d2l-dialog-close` event:
+
+```html
+<d2l-dialog @d2l-dialog-close="${(e)=> console.log('dialog action:', e.detail.action)}">
+</d2l-dialog>
+```
 
 **Properties:**
 
