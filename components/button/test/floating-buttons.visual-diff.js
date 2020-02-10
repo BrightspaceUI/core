@@ -29,6 +29,7 @@ describe('d2l-floating-buttons', () => {
 	});
 
 	it('does not float when small amount of content', async function() {
+		await scroll(page, '#floating-buttons-short');
 		const rect = await visualDiff.getRect(page, '#floating-buttons-short');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
