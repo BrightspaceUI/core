@@ -32,7 +32,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 					background-color: transparent;
 					border-color: transparent;
 					font-family: inherit;
-					padding: 0.5rem 0.6rem;
+					padding: 0.55rem 0.6rem;
 					position: relative;
 				}
 
