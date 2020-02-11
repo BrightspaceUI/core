@@ -46,7 +46,6 @@ class Button extends ButtonMixin(LitElement) {
 				button:focus,
 				:host([active]) button {
 					background-color: var(--d2l-color-mica);
-					color: var(--d2l-color-ferrite);
 				}
 
 				button[disabled] {
