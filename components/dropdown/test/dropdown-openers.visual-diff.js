@@ -19,14 +19,8 @@ describe('d2l-dropdown-openers', () => {
 	after(() => browser.close());
 
 	[
-		'button',
 		'button-primary',
-		'button-subtle',
 		'button-rtl',
-		'context-menu',
-		'context-menu-translucent',
-		'context-menu-disabled',
-		'context-menu-translucent-disabled'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
@@ -36,13 +30,14 @@ describe('d2l-dropdown-openers', () => {
 	});
 
 	[
-		{ name: 'button-open', id: '#button'},
-		{ name: 'button-subtle-open', id: '#button-subtle'},
-		{ name: 'context-menu-open', id: '#context-menu'}
-	].forEach((testCase) => {
-		it(testCase.name, async function() {
-			await helper.open(page, testCase.id);
-			const rect = await helper.getRect(page, testCase.id);
+		'button',
+		'button-subtle',
+		'context-menu'
+	].forEach((testName) => {
+		it(testName, async function() {
+			const selector = `#${testName}`;
+			await helper.open(page, selector);
+			const rect = await helper.getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
