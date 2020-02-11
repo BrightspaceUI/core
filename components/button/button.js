@@ -57,7 +57,6 @@ class Button extends ButtonMixin(LitElement) {
 				:host([primary]) button[disabled]:focus,
 				:host([primary][active]) button[disabled] {
 					background-color: var(--d2l-color-celestine);
-					border-color: var(--d2l-color-celestine-minus-1);
 					color: #ffffff;
 				}
 				:host([primary]) button:hover,
