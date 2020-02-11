@@ -24,16 +24,14 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 			d2l-icon {
 				height: 0.8rem;
 				width: 0.8rem;
-			}
-			.d2l-dropdown-button-text {
-				margin-right: 0.6rem;
+				margin-left: 0.6rem;
 			}
 			:host([primary]) d2l-icon {
 				color: white;
 			}
-			:host([dir="rtl"]) .d2l-dropdown-button-text {
-				margin-left: 0.6rem;
-				margin-right: 0;
+			:host([dir="rtl"]) d2l-icon {
+				margin-right: 0.6rem;
+				margin-left: 0;
 			}
 		`];
 	}
@@ -46,7 +44,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 	render() {
 		return html`
 			<d2l-button ?primary=${this.primary}>
-				<span class="d2l-dropdown-button-text">${this.text}</span><d2l-icon icon="tier1:chevron-down"></d2l-icon>
+				${this.text}<d2l-icon icon="tier1:chevron-down"></d2l-icon>
 			</d2l-button>
 			<slot></slot>
 		`;
