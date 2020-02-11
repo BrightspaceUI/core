@@ -32,13 +32,6 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 		this.translucent = false;
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('d2l-dropdown-open', this._onOpen);
-		this.addEventListener('d2l-dropdown-close', this._onClose);
-	}
-
 	render() {
 		return html`
 			<d2l-button-icon aria-label=${this.text} ?disabled=${this.disabled} icon="tier1:chevron-down" text=${this.text} ?translucent=${this.translucent}>
@@ -53,14 +46,6 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 	 */
 	getOpenerElement() {
 		return this.shadowRoot.querySelector('d2l-button-icon');
-	}
-
-	_onClose() {
-		this.removeAttribute('opened');
-	}
-
-	_onOpen() {
-		this.setAttribute('opened', '');
 	}
 
 }
