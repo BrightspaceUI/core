@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../../menu/menu.js';
+		import '../../menu/menu-item.js';
+		import '../dropdown-more.js';
+		import '../dropdown-menu.js';
+	</script>
+	<style>
+		.ancestor-container {
+			padding: 0.5rem;
+			position: relative;
+		}
+
+		.ancestor-container::before {
+			background-color: rgba(0, 0, 0, 0.03);
+			box-sizing: border-box;
+			content: 'visible-on-ancestor-target';
+			font-size: 0.7rem;
+			height: 100%;
+			left: 0;
+			padding: 0.5rem;
+			position: absolute;
+			text-align: right;
+			top: 0;
+			width: 100%;
+		}
+
+		.translucent-container {
+			position: relative;
+			height: 150px;
+		}
+
+		.translucent-container > img {
+			border-radius: 6px;
+			height: 100%;
+			position: absolute;
+			max-width: 400px;
+			width: 100%;
+		}
+
+		.translucent-container > d2l-dropdown-more {
+			padding-right: 0;
+			margin-top: 12px;
+			margin-left: 12px;
+		}
+	</style>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-dropdown-more">
+
+		<h2>Normal</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown-more text="Open!">
+					<d2l-dropdown-menu>
+						<d2l-menu label="Astronomy">
+							<d2l-menu-item text="Introduction"></d2l-menu-item>
+							<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
+							<d2l-menu-item text="The Night Sky">
+								<d2l-menu>
+									<d2l-menu-item text="Constellations"></d2l-menu-item>
+									<d2l-menu-item text="Mapping the Heavens"></d2l-menu-item>
+									<d2l-menu-item text="Reading Star Maps"></d2l-menu-item>
+									<d2l-menu-item text="Telescopes"></d2l-menu-item>
+								</d2l-menu>
+							</d2l-menu-item>
+							<d2l-menu-item text="The Universe"></d2l-menu-item>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown-more>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Translucent</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown-more text="Open!" translucent>
+					<d2l-dropdown-menu>
+						<d2l-menu label="Astronomy">
+							<d2l-menu-item text="Introduction"></d2l-menu-item>
+							<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
+							<d2l-menu-item text="The Night Sky">
+								<d2l-menu>
+									<d2l-menu-item text="Constellations"></d2l-menu-item>
+									<d2l-menu-item text="Mapping the Heavens"></d2l-menu-item>
+									<d2l-menu-item text="Reading Star Maps"></d2l-menu-item>
+									<d2l-menu-item text="Telescopes"></d2l-menu-item>
+								</d2l-menu>
+							</d2l-menu-item>
+							<d2l-menu-item text="The Universe"></d2l-menu-item>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown-more>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Visible on Ancestor</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="ancestor-container d2l-visible-on-ancestor-target">
+					<d2l-dropdown-more text="Open!" visible-on-ancestor>
+						<d2l-dropdown-menu>
+							<d2l-menu label="Astronomy">
+								<d2l-menu-item text="Introduction"></d2l-menu-item>
+								<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
+								<d2l-menu-item text="The Night Sky">
+									<d2l-menu>
+										<d2l-menu-item text="Constellations"></d2l-menu-item>
+										<d2l-menu-item text="Mapping the Heavens"></d2l-menu-item>
+										<d2l-menu-item text="Reading Star Maps"></d2l-menu-item>
+										<d2l-menu-item text="Telescopes"></d2l-menu-item>
+									</d2l-menu>
+								</d2l-menu-item>
+								<d2l-menu-item text="The Universe"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-more>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Translucent + Visible on Ancestor</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="translucent-container d2l-visible-on-ancestor-target">
+					<img alt
+						src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
+					<d2l-dropdown-more text="Open!" translucent visible-on-ancestor>
+						<d2l-dropdown-menu>
+							<d2l-menu label="Astronomy">
+								<d2l-menu-item text="Introduction"></d2l-menu-item>
+								<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
+								<d2l-menu-item text="The Night Sky">
+									<d2l-menu>
+										<d2l-menu-item text="Constellations"></d2l-menu-item>
+										<d2l-menu-item text="Mapping the Heavens"></d2l-menu-item>
+										<d2l-menu-item text="Reading Star Maps"></d2l-menu-item>
+										<d2l-menu-item text="Telescopes"></d2l-menu-item>
+									</d2l-menu>
+								</d2l-menu-item>
+								<d2l-menu-item text="The Universe"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-more>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
+
+</body>
+
+</html>
