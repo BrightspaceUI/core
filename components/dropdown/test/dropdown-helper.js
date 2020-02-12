@@ -16,7 +16,7 @@ module.exports = {
 		const openEvent = this.getOpenEvent(page, selector);
 		await page.$eval(selector, (dropdown) => {
 			return new Promise((resolve) => {
-				dropdown.querySelector('[d2l-dropdown-content]').addEventListener('animationend', () => resolve(), { once: true });
+				dropdown.querySelector('[dropdown-content]').addEventListener('animationend', () => resolve(), { once: true });
 				dropdown.toggleOpen();
 			});
 		});
@@ -24,7 +24,7 @@ module.exports = {
 	},
 
 	getRect(page, selector) {
-		return page.$eval(`${selector} > [d2l-dropdown-content]`, (content) => {
+		return page.$eval(`${selector} > [dropdown-content]`, (content) => {
 			const opener = content.__getOpener();
 			const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
 			const openerRect = opener.getBoundingClientRect();

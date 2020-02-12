@@ -10,15 +10,22 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	static get properties() {
 		return {
-			minWidth: {
-				type: Number,
-				reflect: true,
-				attribute: 'min-width'
+			align: {
+				type: String,
+				reflect: true
+			},
+			boundary: {
+				type: Object,
 			},
 			maxWidth: {
 				type: Number,
 				reflect: true,
 				attribute: 'max-width'
+			},
+			minWidth: {
+				type: Number,
+				reflect: true,
+				attribute: 'min-width'
 			},
 			noAutoClose: {
 				type: Boolean,
@@ -45,13 +52,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				reflect: true,
 				attribute: 'no-pointer'
 			},
-			align: {
-				type: String,
-				reflect: true
-			},
-			boundary: {
-				type: Object,
-			},
 			opened: {
 				type: Boolean,
 				reflect: true
@@ -76,19 +76,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				type: String,
 				attribute: 'vertical-offset'
 			},
-			_width: {
-				type: Number
-			},
-			_maxHeight: {
-				type: Number
-			},
-			_position: {
-				type: Number
-			},
 			_bottomOverflow: {
-				type: Boolean
-			},
-			_topOverflow: {
 				type: Boolean
 			},
 			_contentOverflow: {
@@ -96,8 +84,20 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			},
 			_dropdownContent: {
 				type: Boolean,
-				attribute: 'd2l-dropdown-content',
+				attribute: 'dropdown-content',
 				reflect: true
+			},
+			_maxHeight: {
+				type: Number
+			},
+			_position: {
+				type: Number
+			},
+			_topOverflow: {
+				type: Boolean
+			},
+			_width: {
+				type: Number
 			}
 		};
 	}
