@@ -25,7 +25,7 @@ class Button extends ButtonMixin(LitElement) {
 
 				button {
 					font-family: inherit;
-					padding: 0.5rem 1.5rem;
+					padding: 0.55rem 1.5rem;
 					width: 100%;
 				}
 
@@ -38,15 +38,14 @@ class Button extends ButtonMixin(LitElement) {
 				button[disabled]:hover,
 				button[disabled]:focus,
 				:host([active]) button[disabled] {
-					background-color: var(--d2l-color-regolith);
-					border-color: var(--d2l-color-mica);
+					background-color: var(--d2l-color-gypsum);
 					color: var(--d2l-color-ferrite);
 				}
 
 				button:hover,
 				button:focus,
 				:host([active]) button {
-					background-color: var(--d2l-color-gypsum);
+					background-color: var(--d2l-color-mica);
 				}
 
 				button[disabled] {
@@ -58,7 +57,6 @@ class Button extends ButtonMixin(LitElement) {
 				:host([primary]) button[disabled]:focus,
 				:host([primary][active]) button[disabled] {
 					background-color: var(--d2l-color-celestine);
-					border-color: var(--d2l-color-celestine-minus-1);
 					color: #ffffff;
 				}
 				:host([primary]) button:hover,

@@ -4,8 +4,7 @@ import { css } from 'lit-element/lit-element.js';
 export const buttonStyles = css`
 	button {
 		border-radius: 0.3rem;
-		border-style: solid;
-		border-width: 1px;
+		border-style: none;
 		box-shadow: 0 0 0 4px rgba(0, 0, 0, 0);
 		box-sizing: border-box;
 		cursor: pointer;
