@@ -23,6 +23,21 @@ module.exports = {
 		return openEvent;
 	},
 
+	async reset(page, selector) {
+		await page.$eval(selector, (dropdown) => {
+			return new Promise((resolve) => {
+				const content = dropdown.querySelector('[dropdown-content]');
+				content.scrollTo(0);
+				if (content.opened) {
+					content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
+					content.opened = false;
+				} else {
+					resolve();
+				}
+			});
+		});
+	},
+
 	getRect(page, selector) {
 		return page.$eval(`${selector} > [dropdown-content]`, (content) => {
 			const opener = content.__getOpener();
