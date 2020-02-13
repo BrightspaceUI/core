@@ -25,6 +25,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 				height: 0.8rem;
 				width: 0.8rem;
 				margin-left: 0.6rem;
+				pointer-events: none;
 			}
 			:host([primary]) d2l-icon {
 				color: white;

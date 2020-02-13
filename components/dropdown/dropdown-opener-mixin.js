@@ -89,9 +89,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__getContentElement() {
-		return this.shadowRoot.querySelector('slot').assignedNodes().find(
-			node => node.nodeType === 1 && node.nodeName === 'D2L-DROPDOWN-CONTENT'
-		);
+		return this.shadowRoot.querySelector('slot').assignedNodes().find(node => node.hasAttribute && node.hasAttribute('dropdown-content'));
 	}
 
 	__onKeyPress(e) {

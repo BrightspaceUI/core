@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../../menu/menu.js';
+		import '../../menu/menu-item.js';
+		import '../../menu/menu-item-radio.js';
+		import '../dropdown.js';
+		import '../dropdown-menu.js';
+	</script>
+	<title>d2l-dropdown-menu</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-dropdown id="dropdown-menu">
+			<button class="d2l-dropdown-opener">Open it!</button>
+			<d2l-dropdown-menu id="dropdown">
+				<d2l-menu label="Astronomy">
+					<d2l-menu-item text="Introduction" id="first-item"></d2l-menu-item>
+					<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+					<d2l-menu-item text="The Solar System" id="next-page">
+						<d2l-menu>
+							<d2l-menu-item text="Formation"></d2l-menu-item>
+							<d2l-menu-item text="Modern Solar System"></d2l-menu-item>
+							<d2l-menu-item text="Future Solar System"></d2l-menu-item>
+							<d2l-menu-item text="The Sun"></d2l-menu-item>
+							<d2l-menu-item text="Solar &amp; Lunar Eclipses"></d2l-menu-item>
+							<d2l-menu-item text="Meteors &amp; Meteorites"></d2l-menu-item>
+							<d2l-menu-item text="Asteroids"></d2l-menu-item>
+							<d2l-menu-item text="Comets"></d2l-menu-item>
+						</d2l-menu>
+					</d2l-menu-item>
+					<d2l-menu-item text="The Universe" id="last-item"></d2l-menu-item>
+				</d2l-menu>
+			</d2l-dropdown-menu>
+		</d2l-dropdown>
+	</div>
+</body>
+
+</html>
