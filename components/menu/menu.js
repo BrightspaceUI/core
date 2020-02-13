@@ -27,6 +27,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			:host {
 				box-sizing: border-box;
 				display: block;
+				vertical-align: top;
 				min-width: 180px;
 				width: 100%;
 				padding-top: 1px;
