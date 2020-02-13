@@ -16,9 +16,22 @@ describe('d2l-dropdown-menu', () => {
 		await page.bringToFront();
 	});
 
+	beforeEach(async() => {
+		await helper.reset(page, '#dropdown-menu');
+	});
+
 	after(() => browser.close());
 
 	it('first-page', async function() {
+		await helper.open(page, '#dropdown-menu');
+		const rect = await helper.getRect(page, '#dropdown-menu');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	/* Prevent regression to DE37329: reopening caused etra bottom spacing */
+	it('closed-reopened', async function() {
+		await helper.open(page, '#dropdown-menu');
+		await helper.reset(page, '#dropdown-menu');
 		await helper.open(page, '#dropdown-menu');
 		const rect = await helper.getRect(page, '#dropdown-menu');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
