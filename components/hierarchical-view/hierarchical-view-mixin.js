@@ -72,6 +72,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.hierarchicalView = true;
 		this.__focusPrevious = false;
 		this.__resizeObserver = null;
+		this.__hideAnimations = [];
 	}
 
 	connectedCallback() {
@@ -348,16 +349,29 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 
 			const data = e.detail.data;
-			const animationEnd = (e) => {
-				content.removeEventListener('animationend', animationEnd);
-				e.composedPath()[0].classList.remove('d2l-child-view-hide');
+			const animate = !!content.offsetParent;
+			const hideRoot = () => {
 				rootTarget.shown = false;
 				rootTarget.__dispatchHideComplete(data);
 			};
-			content.addEventListener('animationend', animationEnd);
+			if (animate) {
+				const animationEnd = () => {
+					const index = this.__hideAnimations.indexOf(animationEnd);
+					this.__hideAnimations.splice(index, 1);
 
-			content.classList.add('d2l-child-view-hide');
+					content.removeEventListener('animationend', animationEnd);
+					content.classList.remove('d2l-child-view-hide');
+					hideRoot();
+				};
+				this.__hideAnimations.push(animationEnd);
+				content.addEventListener('animationend', animationEnd);
+				content.classList.add('d2l-child-view-hide');
+			}
 			content.classList.remove('d2l-child-view-show');
+			if (!animate) {
+				this.__hideAnimations.forEach(stop => stop());
+				hideRoot();
+			}
 
 			const eventDetails = {
 				bubbles: true,
