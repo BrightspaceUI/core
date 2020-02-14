@@ -3,7 +3,7 @@
   "globals": {
     "Prism": false
   },
-  "rules":  {
+  "rules": {
     "linebreak-style": ["error", "unix"]
   }
 }
