@@ -11,7 +11,7 @@ describe('d2l-dropdown-openers', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await page.setViewport({ width: 300, height: 400, deviceScaleFactor: 2 });
+		await page.setViewport({ width: 300, height: 800, deviceScaleFactor: 2 });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/dropdown/test/dropdown-openers.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -32,7 +32,8 @@ describe('d2l-dropdown-openers', () => {
 	[
 		'button',
 		'button-subtle',
-		'context-menu'
+		'context-menu',
+		'more'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
