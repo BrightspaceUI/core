@@ -4,12 +4,12 @@ import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/vi
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 
-class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement)) {
+class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			/**
-			 * Label for the context-menu button (required for accessibility).
+			 * Label for the more button (required for accessibility).
 			 */
 			text: {
 				type: String
@@ -34,7 +34,7 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 
 	render() {
 		return html`
-			<d2l-button-icon aria-label=${this.text} ?disabled=${this.disabled} icon="tier1:chevron-down" text=${this.text} ?translucent=${this.translucent}>
+			<d2l-button-icon aria-label=${this.text} ?disabled=${this.disabled} icon="tier1:more" text=${this.text} ?translucent=${this.translucent}>
 			</d2l-button-icon>
 			<slot></slot>
 		`;
@@ -49,4 +49,4 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 	}
 
 }
-customElements.define('d2l-dropdown-context-menu', DropdownContextMenu);
+customElements.define('d2l-dropdown-more', DropdownMore);

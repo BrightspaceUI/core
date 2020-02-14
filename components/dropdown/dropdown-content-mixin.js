@@ -10,15 +10,22 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	static get properties() {
 		return {
-			minWidth: {
-				type: Number,
-				reflect: true,
-				attribute: 'min-width'
+			align: {
+				type: String,
+				reflect: true
+			},
+			boundary: {
+				type: Object,
 			},
 			maxWidth: {
 				type: Number,
 				reflect: true,
 				attribute: 'max-width'
+			},
+			minWidth: {
+				type: Number,
+				reflect: true,
+				attribute: 'min-width'
 			},
 			noAutoClose: {
 				type: Boolean,
@@ -45,13 +52,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				reflect: true,
 				attribute: 'no-pointer'
 			},
-			align: {
-				type: String,
-				reflect: true
-			},
-			boundary: {
-				type: Object,
-			},
 			opened: {
 				type: Boolean,
 				reflect: true
@@ -76,8 +76,16 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				type: String,
 				attribute: 'vertical-offset'
 			},
-			_width: {
-				type: Number
+			_bottomOverflow: {
+				type: Boolean
+			},
+			_contentOverflow: {
+				type: Boolean
+			},
+			_dropdownContent: {
+				type: Boolean,
+				attribute: 'dropdown-content',
+				reflect: true
 			},
 			_maxHeight: {
 				type: Number
@@ -85,14 +93,11 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			_position: {
 				type: Number
 			},
-			_bottomOverflow: {
-				type: Boolean
-			},
 			_topOverflow: {
 				type: Boolean
 			},
-			_contentOverflow: {
-				type: Boolean
+			_width: {
+				type: Number
 			}
 		};
 	}
@@ -106,6 +111,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.__applyFocus = true;
 		this.__dismissibleId = null;
 
+		this._dropdownContent = true;
 		this._bottomOverflow = false;
 		this._topOverflow = false;
 		this._contentOverflow = false;
@@ -228,13 +234,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
 			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
 			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : undefined
+			width: this._width ? `${this._width + 20}px` : ''
 		};
 
 		const containerStyle = {
 			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
 			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: this._width ? `${this._width + 18}px` : undefined,
+			width: this._width ? `${this._width + 18}px` : '',
 			maxHeight: this._maxHeight ? `${this._maxHeight}px` : 'none',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
@@ -380,7 +386,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				this.renderContent = true;
 			}
 
-			doOpen();
+			await doOpen();
 
 		} else {
 
@@ -388,6 +394,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
 			}
+			await this.updateComplete;
 
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
 
@@ -456,7 +463,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._width = this._getWidth(content.scrollWidth);
 		await this.updateComplete;
 
-		adjustPosition();
+		await adjustPosition();
 	}
 
 	_getWidth(scrollWidth) {

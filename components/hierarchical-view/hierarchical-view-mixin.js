@@ -37,6 +37,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			}
 			:host([shown]) {
 				display: inline-block;
+				vertical-align: top; /* DE37329: required to prevent extra spacing caused by inline-block */
 			}
 			.d2l-hierarchical-view-content.d2l-child-view-show {
 				-webkit-animation: show-child-view-animation forwards 300ms linear;
