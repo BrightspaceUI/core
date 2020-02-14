@@ -3,6 +3,7 @@ import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit-element/lit-element.js';
 import { LocalizeMixin } from '../localize-mixin.js';
+import { stub } from 'sinon';
 
 const asyncTag = defineCE(
 	class extends LocalizeMixin(LitElement) {
@@ -73,9 +74,14 @@ describe('LocalizeMixin', () => {
 
 		describe(`localize (${type})`, () => {
 
-			let elem;
+			let elem, errorSpy;
 			beforeEach(async() => {
 				elem = await fixture(f);
+				errorSpy = stub(console, 'error');
+			});
+
+			afterEach(() => {
+				errorSpy.restore();
 			});
 
 			it('should localize text using object format', () => {
@@ -104,6 +110,17 @@ describe('LocalizeMixin', () => {
 			it('should localize term using plurals', () => {
 				const val = elem.localize('plural', {itemCount: 1});
 				expect(val).to.equal('You have 1 item.');
+			});
+
+			it('should not throw when a parameter is missing', () => {
+				let val;
+				expect(() => {
+					val = elem.localize('hello', {invalidParam: 'Bill'});
+				}).to.not.throw();
+				expect(val).to.equal('Hello {name}');
+				const errArg = errorSpy.firstCall.args[0];
+				expect(errArg).to.be.instanceof(Error);
+				expect(errArg.message).to.equal('The intl string context variable "name" was not provided to the string "Hello {name}"');
 			});
 
 		});
