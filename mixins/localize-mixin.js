@@ -112,7 +112,13 @@ export const LocalizeMixin = superclass => class extends superclass {
 		}
 
 		const translatedMessage = new IntlMessageFormat(translatedValue, this.__language);
-		return translatedMessage.format(params);
+		let formattedMessage = translatedValue;
+		try {
+			formattedMessage = translatedMessage.format(params);
+		} catch (e) {
+			console.error(e);
+		}
+		return formattedMessage;
 
 	}
 
