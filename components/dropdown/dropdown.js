@@ -19,7 +19,7 @@ class Dropdown extends DropdownOpenerMixin(LitElement) {
 	getOpenerElement() {
 		return this.shadowRoot.querySelector('slot')
 			.assignedNodes()
-			.find(node => node.className === 'd2l-dropdown-opener');
+			.find(node => node.classList && node.classList.contains('d2l-dropdown-opener'));
 	}
 
 }

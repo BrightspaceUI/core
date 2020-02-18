@@ -6,7 +6,7 @@ const normalFixture = html`
 	<div>
 		<div id="optionallyFocusable">
 			<d2l-dropdown>
-				<button class="d2l-dropdown-opener"></button>
+				<button class="another-class d2l-dropdown-opener"></button>
 				<d2l-dropdown-content>
 					<p id="non_focusable_inside">a</p>
 					<a id="focusable_inside" href="http://www.desire2learn.com">b</a>
@@ -25,6 +25,17 @@ describe('d2l-dropdown', () => {
 	beforeEach(async() => {
 		dropdown = await fixture(normalFixture);
 		content = dropdown.querySelector('d2l-dropdown-content');
+	});
+
+	describe('opener', () => {
+
+		it('gets opener when the opener has multiple classes', () => {
+			const dropdownContainer = dropdown.querySelector('d2l-dropdown');
+			const actualOpener = dropdownContainer.getOpenerElement();
+			const expectedOpener = dropdown.querySelector('.d2l-dropdown-opener');
+			expect(actualOpener).to.equal(expectedOpener);
+		});
+
 	});
 
 	describe('events', () => {
