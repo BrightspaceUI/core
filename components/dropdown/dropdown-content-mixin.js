@@ -161,6 +161,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
 			if (propName === 'verticalOffset') {
+				let newVerticalOffset = parseInt(this.verticalOffset);
+				if (isNaN(newVerticalOffset)) {
+					newVerticalOffset = 20;
+				}
 				// for IE11
 				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-dropdown-verticaloffset': `${this.verticalOffset}px` });
 				else this.style.setProperty('--d2l-dropdown-verticaloffset', `${this.verticalOffset}px`);
