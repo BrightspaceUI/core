@@ -128,9 +128,11 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	set opened(val) {
 		const oldVal = this.__opened;
-		this.__opened = val;
-		this.requestUpdate('opened', oldVal);
-		this.__openedChanged(val);
+		if (oldVal !== val) {
+			this.__opened = val;
+			this.requestUpdate('opened', oldVal);
+			this.__openedChanged(val);
+		}
 	}
 
 	firstUpdated(changedProperties) {
@@ -166,8 +168,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					newVerticalOffset = 20;
 				}
 				// for IE11
-				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-dropdown-verticaloffset': `${this.verticalOffset}px` });
-				else this.style.setProperty('--d2l-dropdown-verticaloffset', `${this.verticalOffset}px`);
+				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-dropdown-verticaloffset': `${newVerticalOffset}px` });
+				else this.style.setProperty('--d2l-dropdown-verticaloffset', `${newVerticalOffset}px`);
 			}
 		});
 	}
