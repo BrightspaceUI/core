@@ -1,3 +1,8 @@
+import '../dropdown/dropdown.js'
+import '../dropdown/dropdown-menu.js'
+import '../menu/menu.js'
+import '../menu/menu-item-radio.js'
+
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -7,6 +12,17 @@ import { inputStyles } from './input-styles.js';
 const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
 const TODAY = new Date();
 const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
+const INTERVALS = getIntervals();
+
+function getIntervals() {
+  let intervals = [];
+  for(let i = 0; i < 24; i++) {
+    intervals.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 0, 0));
+    intervals.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 30, 0));
+	}
+	intervals.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59));
+	return intervals;
+}
 
 function formatValue(time) {
 	const zeroPadMin = (time.getMinutes() < 10) ? '0' : '';
@@ -69,6 +85,12 @@ class InputTime extends LitElement {
 				label {
 					display: block;
 				}
+				.menu-time {
+					width: 180px;
+					min-width: 180px;
+					border-top: 1px solid var(--d2l-color-gypsum);
+					border-bottom: 1px solid var(--d2l-color-gypsum);
+				}
 			`
 		];
 	}
@@ -79,6 +101,7 @@ class InputTime extends LitElement {
 		this.labelHidden = false;
 		this._value = formatValue(DEFAULT_VALUE);
 		this._formattedValue = formatTime(DEFAULT_VALUE);
+		this.addEventListener('', this._handleDropdownChange);
 	}
 
 	get value() { return this._value; }
@@ -92,13 +115,23 @@ class InputTime extends LitElement {
 
 	render() {
 		const input = html`
-			<input
-				aria-label="${ifDefined(this._getAriaLabel())}"
-				@change="${this._handleChange}"
-				class="d2l-input"
-				?disabled="${this.disabled}"
-				@keypress="${this._handleKeypress}"
-				.value="${this._formattedValue}">
+			<d2l-dropdown>
+				<input
+					aria-label="${ifDefined(this._getAriaLabel())}"
+					@change="${this._handleChange}"
+					class="d2l-input d2l-dropdown-opener"
+					?disabled="${this.disabled}"
+					@keypress="${this._handleKeypress}"
+					.value="${this._formattedValue}">
+				<d2l-dropdown-menu id="dropdown">
+					<d2l-menu
+						class="menu-time"
+						@d2l-menu-item-change="${this._handleDropdownChange}"
+						.value="${this._formattedValue}">
+  					${INTERVALS.map(i => html`<d2l-menu-item-radio text="${formatTime(i)}" value="${formatValue(i)}"></d2l-menu-item-radio>`)}
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown>
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
@@ -140,6 +173,7 @@ class InputTime extends LitElement {
 			this._formattedValue = formatTime(parseValue(this.value));
 		} else {
 			this.value = formatValue(time);
+			this.shadowRoot.querySelector('.d2l-menu').value = this.value;
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{bubbles: true, composed: false}
@@ -147,5 +181,12 @@ class InputTime extends LitElement {
 		}
 	}
 
+	async _handleDropdownChange(e) {
+		this.value = e.target.value;
+		this.dispatchEvent(new CustomEvent(
+			'change',
+			{bubbles: true, composed: false}
+		));
+	}
 }
 customElements.define('d2l-input-time', InputTime);
