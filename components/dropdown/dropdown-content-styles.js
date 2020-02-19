@@ -94,15 +94,22 @@ export const dropdownContentStyles = css`
 		vertical-align: top; /* prevents baseline bloat - fix for github issue #173 */
 	}
 
-	:host([no-padding]) .d2l-dropdown-content-container {
-		padding: 0;
-	}
-
 	.d2l-dropdown-content-top,
 	.d2l-dropdown-content-bottom {
-		height: 5px;
+		min-height: 5px;
 		position: relative;
 		z-index: 2;
+	}
+
+	.d2l-dropdown-content-header,
+	.d2l-dropdown-content-footer {
+		padding: 1rem;
+	}
+
+	:host([no-padding]) .d2l-dropdown-content-container,
+	:host([no-padding]) .d2l-dropdown-content-header,
+	:host([no-padding]) .d2l-dropdown-content-footer {
+		padding: 0;
 	}
 
 	.d2l-dropdown-content-top {
