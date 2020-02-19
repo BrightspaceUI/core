@@ -46,55 +46,48 @@ export const calendarStyles = css`
 	}
 
 	.d2l-calendar-date {
-		cursor: pointer;
-		font-size: 0.8rem;
-		position: relative;
-		text-align: center;
-	}
-
-	.d2l-calendar-date:focus {
-		outline: none;
-	}
-
-	.d2l-calendar-date:hover,
-	.d2l-calendar-date-selected:not(.d2l-calendar-date-other-month) {
-		background-color: var(--d2l-color-celestine-plus-2);
-		color: var(--d2l-color-ferrite);
-	}
-
-	.d2l-calendar-date:focus,
-	.d2l-calendar-date-selected:focus:not(.d2l-calendar-date-other-month) {
-		background-color: white;
-		border-color: var(--d2l-color-celestine);
-		color: var(--d2l-color-ferrite);
-	}
-
-	.d2l-calendar-date-selected:not(.d2l-calendar-date-other-month) {
-		background-color: var(--d2l-color-celestine);
-		color: white;
-	}
-
-	.d2l-calendar-date.d2l-calendar-date-other-month,
-	.d2l-calendar-date.d2l-calendar-date-other-month:hover,
-	.d2l-calendar-date.d2l-calendar-date-other-month:focus {
-		color: var(--d2l-color-chromite);
-	}
-
-	.d2l-calendar-date-today:not(.d2l-calendar-date-selected):not(.d2l-calendar-date-other-month) {
-		font-size: 1.1rem;
-		font-weight: 700;
-	}
-
-	.d2l-calendar-date {
 		align-items: center;
 		border: 2px solid transparent;
 		border-radius: 8px;
 		color: var(--d2l-color-ferrite);
+		cursor: pointer;
 		display: flex;
+		font-size: 0.8rem;
 		height: 2rem;
 		justify-content: center;
 		margin-left: auto;
 		margin-right: auto;
+		position: relative;
+		text-align: center;
 		width: 2rem;
+	}
+
+	.d2l-calendar-date:hover {
+		background-color: var(--d2l-color-gypsum);
+	}
+
+	.d2l-calendar-date:focus {
+		border-color: var(--d2l-color-celestine);
+		border-width: 2px;
+		outline: none;
+	}
+
+	.d2l-calendar-date[disabled],
+	.d2l-calendar-date[disabled]:hover,
+	.d2l-calendar-date[disabled]:focus {
+		background-color: white;
+		color: var(--d2l-color-chromite);
+	}
+
+	.d2l-calendar-date-selected {
+		background-color: var(--d2l-color-celestine-plus-2);
+		border-color: var(--d2l-color-celestine);
+		border-width: 1px;
+	}
+
+	.d2l-calendar-date-today,
+	.d2l-calendar-date-selected {
+		font-size: 1rem;
+		font-weight: 700;
 	}
 `;

@@ -207,7 +207,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			const weekHtml = week.map((day) => {
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-other-month': day.getMonth() !== this._shownMonth,
 					'd2l-calendar-date-selected': checkIfDatesEqual(day, this.selectedValue),
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
@@ -391,7 +390,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				if (diff >= (numDaysLastMonth + this._focusDate.getDate())) diff -= daysInWeek;
 				else if ((this._focusDate.getDate() - diff) > 0) diff += daysInWeek;
 
-				this._updateFocusDate(-diff);
+				this._focusDateRemoveFocus();
+				this._focusDate.setDate(this._focusDate.getDate() - diff);
+				this._keyboardTriggeredMonthChange = true;
+				this._showPrevMonth();
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEDOWN: {
@@ -406,7 +408,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				if ((this._focusDate.getDate() + diff - numDaysThisMonth) > numDaysNextMonth) diff -= daysInWeek;
 				else if ((this._focusDate.getDate() + diff) <= numDaysThisMonth) diff += daysInWeek;
 
-				this._updateFocusDate(diff);
+				this._focusDateRemoveFocus();
+				this._focusDate.setDate(this._focusDate.getDate() + diff);
+				this._keyboardTriggeredMonthChange = true;
+				this._showNextMonth();
 				preventDefault = true;
 				break;
 			}
@@ -431,14 +436,17 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_updateFocusDate(numDays) {
+		const oldFocusDate = new Date(this._focusDate);
 		this._focusDateRemoveFocus();
 		this._focusDate.setDate(this._focusDate.getDate() + numDays);
-
 		this._keyboardTriggeredMonthChange = true;
-		if (this._focusDate.getFullYear() < this._shownYear || (this._focusDate.getMonth() < this._shownMonth && this._shownYear === this._focusDate.getFullYear())) {
-			this._showPrevMonth();
-		} else if (this._focusDate.getMonth() > this._shownMonth || (this._shownMonth === 11 && this._focusDate.getMonth() === 0)) {
-			this._showNextMonth();
+		const date = this._getFocusDateElement();
+		if (!date) {
+			if (oldFocusDate < this._focusDate) {
+				this._showNextMonth();
+			} else {
+				this._showPrevMonth();
+			}
 		} else {
 			this._focusDateAddFocus();
 		}
