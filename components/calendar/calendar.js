@@ -23,6 +23,8 @@ const keyCodes = {
 };
 
 function checkIfDatesEqual(date1, date2) {
+	if (!date1 || !date2) return false;
+
 	date1.setHours(0, 0, 0, 0);
 	date2.setHours(0, 0, 0, 0);
 	return date1.getTime() === date2.getTime();
@@ -170,12 +172,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.selectedValue = this.selectedValue ? new Date(this.selectedValue) : new Date();
-
-		this._focusDate = new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate());
-		this._shownMonth = this.selectedValue.getMonth();
-		this._shownYear = this.selectedValue.getFullYear();
+		this.selectedValue = this.selectedValue ? new Date(this.selectedValue) : null;
 		this._today = new Date();
+		this._focusDate = this.selectedValue ? new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate()) : new Date(this._today.getFullYear(), this._today.getMonth(), 1);
+		this._shownMonth = this.selectedValue ? this.selectedValue.getMonth() : this._today.getMonth();
+		this._shownYear = this.selectedValue ? this.selectedValue.getFullYear() : this._today.getFullYear();
 	}
 
 	updated(changedProperties) {
@@ -184,10 +185,14 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_shownMonth') {
 				this._focusDateRemoveFocus();
-				const numDaysInMonth = getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
-				if (this._focusDate.getDate() > (numDaysInMonth - 1)) this._focusDate.setDate(numDaysInMonth);
-				this._focusDate.setMonth(this._shownMonth);
-				this._focusDate.setFullYear(this._shownYear);
+				if (!this._keyboardTriggeredMonthChange) {
+					// if selectedValue is in the month, that should be the focus date, else the 1st of the month should be
+					if (this.selectedValue && this.selectedValue.getMonth() === this._shownMonth) {
+						this._focusDate = new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate());
+					} else {
+						this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
+					}
+				}
 				this._focusDateAddFocus();
 			}
 		});

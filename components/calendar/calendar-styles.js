@@ -62,7 +62,8 @@ export const calendarStyles = css`
 		width: 2rem;
 	}
 
-	.d2l-calendar-date:hover {
+	.d2l-calendar-date:hover,
+	.d2l-calendar-date.d2l-calendar-date-hover {
 		background-color: var(--d2l-color-gypsum);
 	}
 

@@ -7,7 +7,7 @@ describe('d2l-calendar', () => {
 
 	let browser, page;
 
-	const firstCalendarOfPage = '#no-selected';
+	const firstCalendarOfPage = '#contains-today-diff-selected';
 
 	before(async() => {
 		browser = await puppeteer.launch();
@@ -19,7 +19,7 @@ describe('d2l-calendar', () => {
 
 	after(() => browser.close());
 
-	it('selects today when no selected-value specified', async function() {
+	it('has no selected-value when selected-value not set', async function() {
 		const rect = await visualDiff.getRect(page, '#no-selected');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -42,6 +42,72 @@ describe('d2l-calendar', () => {
 	it('month with first row containing previous month days and last row entirely current month', async function() {
 		const rect = await visualDiff.getRect(page, '#nov-2019');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	describe('style', () => {
+		afterEach(async() => {
+			await page.reload();
+		});
+
+		it('has correct hover style on non-selected-value', async function() {
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				const date = calendar.shadowRoot.querySelector('div[data-date="20"]');
+				date.classList.add('d2l-calendar-date-hover');
+			});
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('has correct hover style on selected-value', async function() {
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				const date = calendar.shadowRoot.querySelector('div[data-date="14"]');
+				date.classList.add('d2l-calendar-date-hover');
+			});
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('has correct focus style on non-selected-value', async function() {
+			let date;
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				date = calendar.shadowRoot.querySelector('div[data-date="20"]');
+				date.focus();
+			});
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('has correct focus style on selected-value', async function() {
+			let date;
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				date = calendar.shadowRoot.querySelector('div[data-date="14"]');
+				date.focus();
+			});
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('has correct hover and focus style on non-selected-value', async function() {
+			let date;
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				date = calendar.shadowRoot.querySelector('div[data-date="20"]');
+				date.classList.add('d2l-calendar-date-hover');
+				date.focus();
+			});
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('has correct hover and focus style on selected-value', async function() {
+			let date;
+			await page.$eval(firstCalendarOfPage, (calendar) => {
+				date = calendar.shadowRoot.querySelector('div[data-date="14"]');
+				date.classList.add('d2l-calendar-date-hover');
+				date.focus();
+			});
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	describe('selection', () => {
@@ -128,8 +194,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('starts from selected date on non-selected dates month', async function() {
-				// e.g., if selected = feb 12th, in next month the arrow key nav should begin on march 12th
+			it('starts from 1st of month on month that does not contain selected value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
 					arrow.click();
@@ -143,13 +208,14 @@ describe('d2l-calendar', () => {
 				await tabToDates();
 				await page.keyboard.press('ArrowUp');
 				await page.keyboard.press('ArrowUp');
+				await page.keyboard.press('ArrowUp');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('navigates to previous month when left arrow pressed enough times', async function() {
 				await tabToDates();
-				for (let i = 0; i < 12; i++) {
+				for (let i = 0; i < 18; i++) {
 					await page.keyboard.press('ArrowLeft');
 				}
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -167,7 +233,7 @@ describe('d2l-calendar', () => {
 
 			it('navigates to next month when right arrow pressed enough times', async function() {
 				await tabToDates();
-				for (let i = 0; i < 17; i++) {
+				for (let i = 0; i < 18; i++) {
 					await page.keyboard.press('ArrowRight');
 				}
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -187,9 +253,6 @@ describe('d2l-calendar', () => {
 
 			it('navigates to the end of the week when on the last day of the week and END key pressed', async function() {
 				await tabToDates();
-				await page.keyboard.press('ArrowLeft');
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('ArrowRight');
@@ -201,6 +264,8 @@ describe('d2l-calendar', () => {
 			it('navigates to the start of the week when on the first day of the week and HOME key pressed', async function() {
 				await tabToDates();
 				await page.keyboard.press('ArrowLeft');
+				await page.keyboard.press('ArrowLeft');
+				await page.keyboard.press('ArrowLeft');
 				await page.keyboard.press('Home');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -208,9 +273,6 @@ describe('d2l-calendar', () => {
 
 			it('navigates to the start of the week when on the last day of the week and HOME key pressed', async function() {
 				await tabToDates();
-				await page.keyboard.press('ArrowLeft');
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('ArrowRight');
