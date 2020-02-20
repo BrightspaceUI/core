@@ -64,14 +64,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				reflect: true,
 				attribute: 'opened-above'
 			},
-			/**
-			 * Whether to render the content immediately. By default, the content rendering
-			 * is deferred.
-			 */
-			renderContent: {
-				type: Boolean,
-				attribute: 'render-content'
-			},
 			verticalOffset: {
 				type: String,
 				attribute: 'vertical-offset'
@@ -128,9 +120,11 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	set opened(val) {
 		const oldVal = this.__opened;
-		this.__opened = val;
-		this.requestUpdate('opened', oldVal);
-		this.__openedChanged(val);
+		if (oldVal !== val) {
+			this.__opened = val;
+			this.requestUpdate('opened', oldVal);
+			this.__openedChanged(val);
+		}
 	}
 
 	firstUpdated(changedProperties) {
@@ -161,9 +155,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
 			if (propName === 'verticalOffset') {
+				let newVerticalOffset = parseInt(this.verticalOffset);
+				if (isNaN(newVerticalOffset)) {
+					newVerticalOffset = 20;
+				}
 				// for IE11
-				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-dropdown-verticaloffset': `${this.verticalOffset}px` });
-				else this.style.setProperty('--d2l-dropdown-verticaloffset', `${this.verticalOffset}px`);
+				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-dropdown-verticaloffset': `${newVerticalOffset}px` });
+				else this.style.setProperty('--d2l-dropdown-verticaloffset', `${newVerticalOffset}px`);
 			}
 		});
 	}
@@ -178,17 +176,12 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	/**
-	 * Synchronously stamps and attaches the content into the DOM. By default, rendering of the
-	 * content into the DOM is deferred as a performance optimization, so if access to the content
-	 * DOM is required (for example by calling `document.querySelector`) before opening the dropdown,
-	 * `forceRender` may be used.
+	 * forceRender is no longer necessary, this is left as a stub so that
+	 * places calling it will not break. It will be removed once the Polymer
+	 * dropdown is swapped over to use this and all instances of
+	 * forceRender are removed.
 	 */
-	async forceRender() {
-		if (!this.renderContent) {
-			this.renderContent = true;
-		}
-		await this.updateComplete;
-	}
+	forceRender() {}
 
 	toggleOpen(applyFocus) {
 		if (this.opened) {
@@ -253,7 +246,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
 					<div class=${classMap(topClasses)}></div>
 					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)} @scroll=${this.__toggleScrollStyles}>
-						${this.renderContent ? html`<slot></slot>` : null}
+						<slot></slot>
 					</div>
 					<div class=${classMap(bottomClasses)}></div>
 				</div>
@@ -382,9 +375,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		};
 
 		if (newValue) {
-			if (!this.renderContent) {
-				this.renderContent = true;
-			}
 
 			await doOpen();
 
