@@ -45,7 +45,7 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 	_getTabsElement() {
 		return this.shadowRoot.querySelector('slot')
 			.assignedNodes()
-			.find(node => node.hasAttribute && node.getAttribute('role') === 'tablist');
+			.filter(node => node.hasAttribute && node.getAttribute('role') === 'tablist')[0];
 	}
 
 }
