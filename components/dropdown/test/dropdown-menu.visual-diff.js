@@ -37,4 +37,9 @@ describe('d2l-dropdown-menu', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('with-header-footer', async function() {
+		await helper.open(page, '#dropdown-menu-header-footer');
+		const rect = await helper.getRect(page, '#dropdown-menu-header-footer');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
 });
