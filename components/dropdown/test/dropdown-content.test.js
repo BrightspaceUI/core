@@ -242,7 +242,6 @@ describe('d2l-dropdown', () => {
 		});
 
 		it('should focus on container when opened and no focusable light descendant exists', async() => {
-			await content.forceRender();
 			content.querySelector('#focusable_inside').setAttribute('tabindex', '-1');
 			content.setAttribute('opened', true);
 
