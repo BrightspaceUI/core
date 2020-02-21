@@ -1,10 +1,10 @@
 import '../button/button-icon.js';
+import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { calendarStyles } from './calendar-styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { heading4Styles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 const daysInWeek = 7;
@@ -136,7 +136,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [calendarStyles, heading4Styles];
+		return [calendarStyles, bodySmallStyles, heading4Styles];
 	}
 
 	static get resources() {
@@ -186,7 +186,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			if (prop === '_shownMonth') {
 				this._focusDateRemoveFocus();
 				if (!this._keyboardTriggeredMonthChange) {
-					// if selectedValue is in the month, that should be the focus date, else the 1st of the month should be
+					// if selectedValue is in the month, that should be the focus date,
+					// else the 1st of the month should be
 					if (this.selectedValue && this.selectedValue.getMonth() === this._shownMonth) {
 						this._focusDate = new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate());
 					} else {
@@ -201,17 +202,18 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	render() {
 		const weekdayHeaders = this._daysOfWeekIndex.map((index) => html`
 			<th role="columnheader" abbr="${this._descriptor.calendar.days.long[index]}">
-				<abbr title="${this._descriptor.calendar.days.long[index]}">
+				<abbr class="d2l-body-small" title="${this._descriptor.calendar.days.long[index]}">
 					${this._descriptor.calendar.days.short[index]}
 				</abbr>
 			</th>
 		`);
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
-		const dayRows = dates.map((week) => {
+		const dayRows = dates.map((week, index) => {
 			const weekHtml = week.map((day) => {
 				const classes = {
 					'd2l-calendar-date': true,
+					'd2l-calendar-date-first-row': index === 0 ? true : false,
 					'd2l-calendar-date-selected': checkIfDatesEqual(day, this.selectedValue),
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};

@@ -12,7 +12,7 @@ describe('d2l-calendar', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await page.setViewport({width: 500, height: 1600, deviceScaleFactor: 2});
+		await page.setViewport({width: 400, height: 1600, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/calendar/test/calendar.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});

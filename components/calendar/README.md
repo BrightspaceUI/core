@@ -1,6 +1,6 @@
 # Calendar
 
-The `d2l-calendar` component can be used to display a responsively sized calendar that allows for date selection. It indicates a currently selected date, and if no `selected-value` is specified, the current date will be indicated as the selected date.
+The `d2l-calendar` component can be used to display a responsively sized calendar that allows for date selection. It indicates a currently selected date if a `selected-value` specified, or if the user selects a date.
 
 ![Calendar](./screenshots/calendar.png?raw=true)
 

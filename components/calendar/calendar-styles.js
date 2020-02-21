@@ -8,27 +8,20 @@ export const calendarStyles = css`
 	}
 
 	table {
-		border-collapse: separate;
+		border-collapse: collapse;
 		border-spacing: 0;
 		table-layout: fixed;
 		width: 100%;
 	}
 
 	th[role="columnheader"] {
-		padding: 0.45rem 0;
+		border-bottom: 1px solid var(--d2l-color-gypsum);
+		padding-bottom: 0.6rem;
+		padding-top: 0.3rem;
 	}
 
-	th > abbr {
-		color: var(--d2l-color-tungsten);
-		display: block;
-		font-size: 0.8rem;
-		font-weight: normal;
-		text-align: center;
+	abbr {
 		text-decoration: none;
-	}
-
-	thead {
-		vertical-align: top;
 	}
 
 	.d2l-calendar {
@@ -42,7 +35,8 @@ export const calendarStyles = css`
 	}
 
 	.d2l-calendar-title .d2l-heading-4 {
-		margin: 0.45rem 0 1.25rem 0;
+		height: 100%;
+		margin: 0;
 	}
 
 	.d2l-calendar-date {
@@ -68,22 +62,17 @@ export const calendarStyles = css`
 	}
 
 	.d2l-calendar-date:focus {
-		border-color: var(--d2l-color-celestine);
-		border-width: 2px;
+		border: 2px solid var(--d2l-color-celestine);
 		outline: none;
 	}
 
-	.d2l-calendar-date[disabled],
-	.d2l-calendar-date[disabled]:hover,
-	.d2l-calendar-date[disabled]:focus {
-		background-color: white;
-		color: var(--d2l-color-chromite);
+	.d2l-calendar-date-first-row {
+		margin-top: 0.3rem;
 	}
 
 	.d2l-calendar-date-selected {
 		background-color: var(--d2l-color-celestine-plus-2);
-		border-color: var(--d2l-color-celestine);
-		border-width: 1px;
+		border: 1px solid var(--d2l-color-celestine);
 	}
 
 	.d2l-calendar-date-today,
