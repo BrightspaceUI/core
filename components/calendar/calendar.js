@@ -31,6 +31,7 @@ function checkIfDatesEqual(date1, date2) {
 }
 
 function getDatesInMonthArray(shownMonth, shownYear, firstDayOfWeek) {
+	// checking for undefined because month can be 0
 	if (shownMonth === undefined || !shownYear) return [];
 
 	const dates = [];
@@ -43,7 +44,7 @@ function getDatesInMonthArray(shownMonth, shownYear, firstDayOfWeek) {
 	if (numDaysFromPrevMonthToShow > 0) {
 		const prevMonth = getPrevMonth(shownMonth);
 		const prevMonthYear = (shownMonth === 0) ? (shownYear - 1) : shownYear;
-		const numDaysLastMonth = getNumberOfDaysInMonth(prevMonth, shownYear);
+		const numDaysLastMonth = getNumberOfDaysInMonth(prevMonth, prevMonthYear);
 		for (let i = numDaysLastMonth - numDaysFromPrevMonthToShow + 1; i <= numDaysLastMonth; i++) {
 			firstWeek.push(new Date(prevMonthYear, prevMonth, i));
 		}
@@ -184,16 +185,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_shownMonth') {
-				this._focusDateRemoveFocus();
-				if (!this._keyboardTriggeredMonthChange) {
-					// if selectedValue is in the month, that should be the focus date,
-					// else the 1st of the month should be
-					if (this.selectedValue && this.selectedValue.getMonth() === this._shownMonth) {
-						this._focusDate = new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate());
-					} else {
-						this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
-					}
-				}
 				this._focusDateAddFocus();
 			}
 		});
@@ -245,7 +236,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 						<tr class="d2l-calendar-title">
 							<td>
 								<d2l-button-icon
-									@click="${this._showPrevMonth}"
+									@click="${this._onPrevMonthButtonClick}"
 									text="${this._computeText(getPrevMonth(this._shownMonth))}"
 									icon="tier1:chevron-left">
 								</d2l-button-icon>
@@ -255,7 +246,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 							</th>
 							<td>
 								<d2l-button-icon
-									@click="${this._showNextMonth}"
+									@click="${this._onNextMonthButtonClick}"
 									text="${this._computeText(getNextMonth(this._shownMonth))}"
 									icon="tier1:chevron-right">
 								</d2l-button-icon>
@@ -322,6 +313,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		if (!rootTarget.classList.contains('d2l-calendar-date')) return;
 
 		let preventDefault = false;
+		let numDaysChange;
 
 		switch (e.keyCode) {
 			case keyCodes.ENTER:
@@ -330,61 +322,57 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				this._onDateSelected(e);
 				break;
 			case keyCodes.DOWN:
-				this._updateFocusDate(daysInWeek);
+				numDaysChange = daysInWeek;
 				preventDefault = true;
 				break;
 			case keyCodes.UP:
-				this._updateFocusDate(-daysInWeek);
+				numDaysChange = -daysInWeek;
 				preventDefault = true;
 				break;
 			case keyCodes.LEFT:
 				if (getComputedStyle(this).direction === 'rtl') {
-					this._updateFocusDate(1);
+					numDaysChange = 1;
 				} else {
-					this._updateFocusDate(-1);
+					numDaysChange = -1;
 				}
 				break;
 			case keyCodes.RIGHT:
 				if (getComputedStyle(this).direction === 'rtl') {
-					this._updateFocusDate(-1);
+					numDaysChange = -1;
 				} else {
-					this._updateFocusDate(1);
+					numDaysChange = 1;
 				}
 				break;
 			case keyCodes.HOME: {
 				const dayOfTheWeek = this._focusDate.getDay();
-				let diff;
 				if (getComputedStyle(this).direction === 'rtl') {
-					diff = 6 - dayOfTheWeek + this._descriptor.calendar.firstDayOfWeek;
-					if (diff > 6) {
-						diff -= daysInWeek;
+					numDaysChange = 6 - dayOfTheWeek + this._descriptor.calendar.firstDayOfWeek;
+					if (numDaysChange > 6) {
+						numDaysChange -= daysInWeek;
 					}
 				} else {
-					diff = dayOfTheWeek - this._descriptor.calendar.firstDayOfWeek;
-					if (diff < 0) {
-						diff += daysInWeek;
+					numDaysChange = dayOfTheWeek - this._descriptor.calendar.firstDayOfWeek;
+					if (numDaysChange < 0) {
+						numDaysChange += daysInWeek;
 					}
-					diff *= -1;
+					numDaysChange *= -1;
 				}
-				this._updateFocusDate(diff);
 				preventDefault = true;
 				break;
 			} case keyCodes.END: {
 				const dayOfTheWeek = this._focusDate.getDay();
-				let diff;
 				if (getComputedStyle(this).direction === 'rtl') {
-					diff = dayOfTheWeek - this._descriptor.calendar.firstDayOfWeek;
-					if (diff < 0) {
-						diff += daysInWeek;
+					numDaysChange = dayOfTheWeek - this._descriptor.calendar.firstDayOfWeek;
+					if (numDaysChange < 0) {
+						numDaysChange += daysInWeek;
 					}
-					diff *= -1;
+					numDaysChange *= -1;
 				} else {
-					diff = 6 - dayOfTheWeek + this._descriptor.calendar.firstDayOfWeek;
-					if (diff > 6) {
-						diff -= daysInWeek;
+					numDaysChange = 6 - dayOfTheWeek + this._descriptor.calendar.firstDayOfWeek;
+					if (numDaysChange > 6) {
+						numDaysChange -= daysInWeek;
 					}
 				}
-				this._updateFocusDate(diff);
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEUP: {
@@ -402,7 +390,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const newFocusDateMonth = this._focusDate.getMonth();
 				if (newFocusDateMonth === this._shownMonth) this._focusDate.setDate(this._focusDate.getDate() - 7);
 
-				this._showPrevMonth();
+				this._updateShownMonthDecrease();
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEDOWN: {
@@ -424,10 +412,14 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				) {
 					this._focusDate.setDate(this._focusDate.getDate() - 7);
 				}
-				this._showNextMonth();
+				this._updateShownMonthIncrease();
 				preventDefault = true;
 				break;
 			}
+		}
+
+		if (numDaysChange) {
+			this._updateFocusDateOnKeyDown(numDaysChange);
 		}
 
 		if (preventDefault) {
@@ -436,19 +428,28 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		}
 	}
 
-	_showNextMonth() {
-		this._focusDateRemoveFocus();
-		if (this._shownMonth === 11) this._shownYear++;
-		this._shownMonth = getNextMonth(this._shownMonth);
+	_onNextMonthButtonClick() {
+		this._updateShownMonthIncrease();
+		this._updateFocusDateOnMonthButtonClick();
 	}
 
-	_showPrevMonth() {
-		this._focusDateRemoveFocus();
-		if (this._shownMonth === 0) this._shownYear--;
-		this._shownMonth = getPrevMonth(this._shownMonth);
+	_onPrevMonthButtonClick() {
+		this._updateShownMonthDecrease();
+		this._updateFocusDateOnMonthButtonClick();
 	}
 
-	_updateFocusDate(numDays) {
+	_updateFocusDateOnMonthButtonClick() {
+		// if selectedValue is in the month, that should be the focus date,
+		// else the 1st of the month should be
+		this._focusDateRemoveFocus();
+		if (this.selectedValue && this.selectedValue.getMonth() === this._shownMonth) {
+			this._focusDate = new Date(this.selectedValue.getFullYear(), this.selectedValue.getMonth(), this.selectedValue.getDate());
+		} else {
+			this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
+		}
+	}
+
+	_updateFocusDateOnKeyDown(numDays) {
 		const oldFocusDate = new Date(this._focusDate);
 		this._focusDateRemoveFocus();
 		this._focusDate.setDate(this._focusDate.getDate() + numDays);
@@ -456,13 +457,23 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const date = this._getFocusDateElement();
 		if (!date) {
 			if (oldFocusDate < this._focusDate) {
-				this._showNextMonth();
+				this._updateShownMonthIncrease();
 			} else {
-				this._showPrevMonth();
+				this._updateShownMonthDecrease();
 			}
 		} else {
 			this._focusDateAddFocus();
 		}
+	}
+
+	_updateShownMonthDecrease() {
+		if (this._shownMonth === 0) this._shownYear--;
+		this._shownMonth = getPrevMonth(this._shownMonth);
+	}
+
+	_updateShownMonthIncrease() {
+		if (this._shownMonth === 11) this._shownYear++;
+		this._shownMonth = getNextMonth(this._shownMonth);
 	}
 
 }
