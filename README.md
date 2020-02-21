@@ -19,6 +19,7 @@ npm install @brightspace-ui/core
   * [Buttons](components/button/): normal, primary, icon and subtle buttons
   * [Colors](components/colors/): color palette
   * [Dialogs](components/dialog/): generic and confirmation dialogs
+  * [Dropdowns](components/dropdown/): dropdown openers and content containers
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
   * [Links](components/link/): link component and styles
