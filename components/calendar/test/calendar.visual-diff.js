@@ -24,29 +24,19 @@ describe('d2l-calendar', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('emphasizes today when different date in same month selected', async function() {
-		const rect = await visualDiff.getRect(page, '#contains-today-diff-selected');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('selects today when today specified as selected-value', async function() {
-		const rect = await visualDiff.getRect(page, '#today-selected');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
 	it('month with first row entirely current month days and last row containing next month days', async function() {
 		const rect = await visualDiff.getRect(page, '#dec-2019');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('month with first row containing previous month days and last row entirely current month', async function() {
-		const rect = await visualDiff.getRect(page, '#nov-2019');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	describe('style', () => {
 		afterEach(async() => {
 			await page.reload();
+		});
+
+		it('has correct style when today selected', async function() {
+			const rect = await visualDiff.getRect(page, '#today-selected');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('has correct hover style on non-selected-value', async function() {
@@ -141,32 +131,11 @@ describe('d2l-calendar', () => {
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-
-		it('focuses on the correct date when right arrow then click a date then right arrow', async function() {
-			await tabToDates();
-			await page.keyboard.press('ArrowRight');
-			await page.$eval(firstCalendarOfPage, (calendar) => {
-				const date = calendar.shadowRoot.querySelector('div[data-date="20"]');
-				date.click();
-			});
-			await page.keyboard.press('ArrowRight');
-			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
 	});
 
 	describe('navigation', () => {
 		afterEach(async() => {
 			await page.reload();
-		});
-
-		it('navigates to next month when clicking on the right arrow', async function() {
-			await page.$eval('#contains-today-diff-selected', (calendar) => {
-				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
-				arrow.click();
-			});
-			const rect = await visualDiff.getRect(page, '#contains-today-diff-selected');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('navigates to the previous month when clicking the left arrow', async function() {
@@ -178,7 +147,7 @@ describe('d2l-calendar', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('navigates to the next month in the next year', async function() {
+		it('navigates to next month when clicking on the right arrow', async function() {
 			await page.$eval('#dec-2019', (calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
@@ -243,40 +212,50 @@ describe('d2l-calendar', () => {
 
 		describe('other key navigation', () => {
 			// the selected day is the monday with first day of week sunday
-			it('navigates to the end of the week when on the first day of the week and END key pressed', async function() {
+			it('navigates to the end of the week when END key pressed', async function() {
 				await tabToDates();
-				await page.keyboard.press('ArrowLeft');
 				await page.keyboard.press('End');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('navigates to the end of the week when on the last day of the week and END key pressed', async function() {
+			it('navigates to the start of the week when HOME key pressed', async function() {
 				await tabToDates();
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('End');
-				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-
-			it('navigates to the start of the week when on the first day of the week and HOME key pressed', async function() {
-				await tabToDates();
-				await page.keyboard.press('ArrowLeft');
-				await page.keyboard.press('ArrowLeft');
-				await page.keyboard.press('ArrowLeft');
 				await page.keyboard.press('Home');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('navigates to the start of the week when on the last day of the week and HOME key pressed', async function() {
+			it('navigates to first week in next month when PAGEDOWN pressed from month with more weeks in current month than next', async function() {
+				await page.$eval(firstCalendarOfPage, (calendar) => {
+					const arrow1 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
+					arrow1.click();
+					const arrow2 = calendar.shadowRoot.querySelector('d2l-button-icon');
+					arrow2.click();
+				});
 				await tabToDates();
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('ArrowRight');
-				await page.keyboard.press('Home');
+				await page.keyboard.press('PageDown');
+
+				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('navigates to last week in previous month when PAGEUP pressed from month with more weeks in current month than next', async function() {
+				await page.$eval(firstCalendarOfPage, (calendar) => {
+					const arrow1 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
+					arrow1.click();
+					const arrow2 = calendar.shadowRoot.querySelector('d2l-button-icon');
+					arrow2.click();
+				});
+
+				await page.$eval(firstCalendarOfPage, (calendar) => {
+					const date = calendar.shadowRoot.querySelector('div[data-date="3"][data-month="0"]');
+					date.click();
+				});
+
+				await tabToDates();
+				await page.keyboard.press('PageUp');
+
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});

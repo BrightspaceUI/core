@@ -390,14 +390,16 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					// Changes the grid of dates to the previous Year.
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
-				let diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
-				const numDaysLastMonth = getNumberOfDaysInMonth(getPrevMonth(this._shownMonth), this._shownYear);
-				if (diff >= (numDaysLastMonth + this._focusDate.getDate())) diff -= daysInWeek;
-				else if ((this._focusDate.getDate() - diff) > 0) diff += daysInWeek;
+				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
 
 				this._focusDateRemoveFocus();
 				this._focusDate.setDate(this._focusDate.getDate() - diff);
 				this._keyboardTriggeredMonthChange = true;
+
+				// handle when current month has more weeks than previous month and page up pressed from last week
+				const newFocusDateMonth = this._focusDate.getMonth();
+				if (newFocusDateMonth === this._shownMonth) this._focusDate.setDate(this._focusDate.getDate() - 7);
+
 				this._showPrevMonth();
 				preventDefault = true;
 				break;
@@ -407,15 +409,19 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
 				const nextMonth = getNextMonth(this._shownMonth);
-				let diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
-				const numDaysThisMonth = getNumberOfDaysInMonth(this._shownMonth, this._shownYear);
-				const numDaysNextMonth = getNumberOfDaysInMonth(nextMonth, this._shownYear);
-				if ((this._focusDate.getDate() + diff - numDaysThisMonth) > numDaysNextMonth) diff -= daysInWeek;
-				else if ((this._focusDate.getDate() + diff) <= numDaysThisMonth) diff += daysInWeek;
+				const diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear, this._descriptor.calendar.firstDayOfWeek);
 
 				this._focusDateRemoveFocus();
 				this._focusDate.setDate(this._focusDate.getDate() + diff);
 				this._keyboardTriggeredMonthChange = true;
+
+				// handle when current month has more weeks than next month and page down pressed from last week
+				const newFocusDateMonth = this._focusDate.getMonth();
+				if ((newFocusDateMonth - this._shownMonth) > 1
+					|| (newFocusDateMonth === 1 && this._shownMonth === 11)
+				) {
+					this._focusDate.setDate(this._focusDate.getDate() - 7);
+				}
 				this._showNextMonth();
 				preventDefault = true;
 				break;

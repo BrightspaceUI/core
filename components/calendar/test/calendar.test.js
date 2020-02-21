@@ -5,9 +5,7 @@ const normalFixture = html`<d2l-calendar selected-value="2015-09-02T12:00Z"></d2
 
 describe('d2l-calendar', () => {
 
-	// Currently due to insufficient color contrast on previous/next month date numbers.
-	// Re-enable once design exists.
-	it.skip('passes all axe tests', async() => {
+	it('passes all axe tests', async() => {
 		const calendar = await fixture(normalFixture);
 		await expect(calendar).to.be.accessible();
 	});
