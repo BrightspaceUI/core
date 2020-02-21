@@ -2,5 +2,8 @@
   "extends": "brightspace/lit-config",
   "globals": {
     "Prism": false
+  },
+  "rules": {
+    "linebreak-style": ["error", "unix"]
   }
 }

@@ -4,13 +4,15 @@ import { spy } from 'sinon';
 
 const viewsFixture = html`
 	<div>
-		<a id="previous_focusable" tabindex="0"></a>
-		<d2l-hierarchical-view id="view1">
-			<div id="view1_content" tabindex="0">view 1</div>
-			<d2l-hierarchical-view id="view2">
-				<div id="view2_content" tabindex="0">view 2</div>
+		<div id="parent">
+			<a id="previous_focusable" tabindex="0"></a>
+			<d2l-hierarchical-view id="view1">
+				<div id="view1_content" tabindex="0">view 1</div>
+				<d2l-hierarchical-view id="view2">
+					<div id="view2_content" tabindex="0">view 2</div>
+				</d2l-hierarchical-view>
 			</d2l-hierarchical-view>
-		</d2l-hierarchical-view>
+		</div>
 	</div>
 `;
 
@@ -118,28 +120,58 @@ describe('d2l-hierarchical-view', () => {
 		expect(view1.isActive()).to.be.true;
 	});
 
-	it('applies focus using focus override if provided', async() => {
-		setTimeout(() => view2.show());
-		await oneEvent(view1, 'd2l-hierarchical-view-show-complete');
-		const view1_content = document.getElementById('view1_content');
-		const mockFocusHandler = spy(view2, 'focus');
-		view1_content.focus();
-		expect(mockFocusHandler).to.have.been.called;
+	describe('focus management', () => {
+
+		it('applies focus using focus override if provided', async() => {
+			setTimeout(() => view2.show());
+			await oneEvent(view1, 'd2l-hierarchical-view-show-complete');
+			const view1_content = document.getElementById('view1_content');
+			const mockFocusHandler = spy(view2, 'focus');
+			view1_content.focus();
+			expect(mockFocusHandler).to.have.been.called;
+		});
+
+		it('applies focus to next focusable element in active view', async() => {
+			setTimeout(() => view2.show());
+			await oneEvent(view1, 'd2l-hierarchical-view-show-complete');
+			document.getElementById('view1_content').focus();
+			expect(document.activeElement).to.equal(document.getElementById('view2_content'));
+		});
+
+		it('applies focus to previous focusable element outside hierarchy', async() => {
+			setTimeout(() => view2.show());
+			await oneEvent(view1, 'd2l-hierarchical-view-show-complete');
+			document.getElementById('view2_content').focus();
+			document.getElementById('view1_content').focus();
+			expect(document.activeElement).to.equal(document.getElementById('previous_focusable'));
+		});
+
 	});
 
-	it('applies focus to next focusable element in active view', async() => {
+	it('hide on child view triggers hide-complete event when not displayed', async() => {
 		setTimeout(() => view2.show());
 		await oneEvent(view1, 'd2l-hierarchical-view-show-complete');
-		document.getElementById('view1_content').focus();
-		expect(document.activeElement).to.equal(document.getElementById('view2_content'));
+		document.getElementById('parent').style.display = 'none';
+		setTimeout(() => view2.hide());
+		await oneEvent(view1, 'd2l-hierarchical-view-hide-complete');
+		expect(view1.isActive()).to.be.true;
 	});
 
-	it('applies focus to previous focusable element outside hierarchy', async() => {
+	it('hide on child view triggers hide-complete event for cancelled hide animations when not displayed', async() => {
+
 		setTimeout(() => view2.show());
 		await oneEvent(view1, 'd2l-hierarchical-view-show-complete');
-		document.getElementById('view2_content').focus();
-		document.getElementById('view1_content').focus();
-		expect(document.activeElement).to.equal(document.getElementById('previous_focusable'));
+		setTimeout(() => view2.hide());
+		setTimeout(() => document.getElementById('parent').style.display = 'none');
+		setTimeout(() => view2.hide());
+		const twoEvent = new Promise((resolve) => {
+			let count = 0;
+			const receivedEvent = () => {
+				if (++count === 2) { resolve(); }
+			};
+			view1.addEventListener('d2l-hierarchical-view-hide-complete', receivedEvent);
+		});
+		await twoEvent;
+		expect(view1.isActive()).to.be.true;
 	});
-
 });

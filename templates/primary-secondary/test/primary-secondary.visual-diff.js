@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-template-primary-secondary', function() {
+describe('d2l-template-primary-secondary', () => {
 	const visualDiff = new VisualDiff('primary-secondary', __dirname);
 	let browser;
 	let page;
@@ -13,7 +13,7 @@ describe('d2l-template-primary-secondary', function() {
 
 	after(() => browser.close());
 
-	describe('desktop', function() {
+	describe('desktop', () => {
 		before(async() => {
 			await page.setViewport({width: 930, height: 930, deviceScaleFactor: 2});
 		});
