@@ -212,21 +212,21 @@ describe('d2l-calendar', () => {
 
 		describe('other key navigation', () => {
 			// the selected day is the monday with first day of week sunday
-			it('navigates to the end of the week when END key pressed', async function() {
+			it('to the end of the week when END key pressed', async function() {
 				await tabToDates();
 				await page.keyboard.press('End');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('navigates to the start of the week when HOME key pressed', async function() {
+			it('to the start of the week when HOME key pressed', async function() {
 				await tabToDates();
 				await page.keyboard.press('Home');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('navigates to first week in next month when PAGEDOWN pressed from month with more weeks in current month than next', async function() {
+			it('to first week next month when PAGEDOWN pressed from month with more weeks than next', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const arrow1 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 					arrow1.click();
@@ -240,7 +240,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it('navigates to last week in previous month when PAGEUP pressed from month with more weeks in current month than next', async function() {
+			it('to last week in previous month when PAGEUP pressed from month with more weeks than next', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const arrow1 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 					arrow1.click();
