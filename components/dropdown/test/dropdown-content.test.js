@@ -100,8 +100,8 @@ describe('d2l-dropdown', () => {
 		it('sets scrollTop to specified value', async() => {
 
 			content.boundary = {
-				below: 1,
-				above: 1
+				below: 11,
+				above: 11
 			};
 			content.opened = true;
 
