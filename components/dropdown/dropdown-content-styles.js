@@ -101,14 +101,19 @@ export const dropdownContentStyles = css`
 		z-index: 2;
 	}
 
-	.d2l-dropdown-content-header,
+	.d2l-dropdown-content-header {
+		border-bottom: 1px solid var(--d2l-color-mica);
+		padding: 1rem;
+	}
+
 	.d2l-dropdown-content-footer {
+		border-top: 1px solid var(--d2l-color-mica);
 		padding: 1rem;
 	}
 
 	:host([no-padding]) .d2l-dropdown-content-container,
-	:host([no-padding]) .d2l-dropdown-content-header,
-	:host([no-padding]) .d2l-dropdown-content-footer {
+	:host([no-padding-header]) .d2l-dropdown-content-header,
+	:host([no-padding-footer]) .d2l-dropdown-content-footer {
 		padding: 0;
 	}
 
