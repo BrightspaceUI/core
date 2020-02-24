@@ -167,6 +167,8 @@ dropdown.addEventListener('click', function() {
 * `no-auto-fit` (Boolean, default: `false`): opt out of auto-sizing
 * `no-auto-focus` (Boolean, default: `false`): opt out of focus being automatically moved to the first focusable element in the dropdown when opened
 * `no-padding` (Boolean, default: `false`): render with no padding
+* `no-padding-header` (Boolean, default: `false`): render the header with no padding (if it has content)
+* `no-padding-footer` (Boolean, default: `false`): render the footer with no padding (if it has content)
 * `no-pointer` (Boolean, default: `false`): render without a pointer
 * `vertical-offset` (Number|String) - provide custom offset, positive or negative
 * `align` (String): optionally align dropdown to either `start` or `end`. If not set, the dropdown will attempt be centred
@@ -175,6 +177,18 @@ dropdown.addEventListener('click', function() {
 **Events:**
 * `d2l-dropdown-open`: dispatched when the dropdown is opened
 * `d2l-dropdown-close`: dispatched when the dropdown is closed
+
+**Slots:**
+* `header`: Sticky container at the top of the dropdown
+* `footer`: Sticky container at the bottom of the dropdown
+
+```html
+<d2l-dropdown-content min-width="150" max-width="400">
+  <div slot="header">Header Content</div>
+  Some Content...
+  <div slot="footer">Footer Content</div>
+</d2l-dropdown-content>
+```
 
 ### d2l-dropdown-menu
 `d2l-dropdown-menu` is a container for a [d2l-menu](../menu/README.md) component. It provides additional support on top of `d2l-dropdown-content` for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
