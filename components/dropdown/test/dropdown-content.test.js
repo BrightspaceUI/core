@@ -56,6 +56,24 @@ describe('d2l-dropdown', () => {
 			expect(content.opened).to.be.false;
 		});
 
+		it('doesnt fire open event when already opened', async() => {
+			content.opened = true;
+			await oneEvent(content, 'd2l-dropdown-open');
+			let hasDuplicateEvent = false;
+			oneEvent(content, 'd2l-dropdown-open').then(() => hasDuplicateEvent = true);
+			content.opened = true;
+			await aTimeout(100);
+			expect(hasDuplicateEvent).to.be.false;
+		});
+
+		it('doesnt fire close event when already closed', async() => {
+			let hasDuplicateEvent = false;
+			oneEvent(content, 'd2l-dropdown-close').then(() => hasDuplicateEvent = true);
+			content.opened = false;
+			await aTimeout(100);
+			expect(hasDuplicateEvent).to.be.false;
+		});
+
 	});
 
 	describe('toggleOpen', () => {
@@ -224,7 +242,6 @@ describe('d2l-dropdown', () => {
 		});
 
 		it('should focus on container when opened and no focusable light descendant exists', async() => {
-			await content.forceRender();
 			content.querySelector('#focusable_inside').setAttribute('tabindex', '-1');
 			content.setAttribute('opened', true);
 
@@ -260,6 +277,36 @@ describe('d2l-dropdown', () => {
 			await opener.updateComplete;
 			expect(opener.getAttribute('aria-expanded')).to.equal('false');
 		});
+	});
+
+	describe('vertical-offset', () => {
+
+		it('vertical offset should update if set without px', async() => {
+			content.setAttribute('vertical-offset', 100);
+			await nextFrame();
+			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('100px');
+		});
+
+		it('vertical offset should update if set with px', async() => {
+			content.setAttribute('vertical-offset', '50px');
+			await nextFrame();
+			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('50px');
+		});
+
+		it('vertical offset should default to 20 if removed', async() => {
+			content.setAttribute('vertical-offset', 100);
+			await nextFrame();
+			content.removeAttribute('vertical-offset');
+			await nextFrame();
+			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('20px');
+		});
+
+		it('vertical offset should default to 20 if set to an invalid number', async() => {
+			content.setAttribute('vertical-offset', 'thisisnotasize');
+			await nextFrame();
+			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('20px');
+		});
+
 	});
 
 });
