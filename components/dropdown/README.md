@@ -190,7 +190,7 @@ dropdown.addEventListener('click', function() {
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-menu id="dropdown">
     <d2l-menu label="Astronomy">
-      <d2l-menu-item text="Introduction" id="first-item" ></d2l-menu-item>
+      <d2l-menu-item text="Introduction"></d2l-menu-item>
       <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
       <d2l-menu-item text="The Solar System">
         <d2l-menu>
@@ -207,7 +207,7 @@ dropdown.addEventListener('click', function() {
       </d2l-menu-item>
       <d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
       <d2l-menu-item text="The Night Sky"></d2l-menu-item>
-      <d2l-menu-item text="The Universe" id="last-item"></d2l-menu-item>
+      <d2l-menu-item text="The Universe"></d2l-menu-item>
     </d2l-menu>
   </d2l-dropdown-menu>
 </d2l-dropdown-button>
