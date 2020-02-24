@@ -181,6 +181,7 @@ dropdown.addEventListener('click', function() {
 **Slots:**
 * `header`: Sticky container at the top of the dropdown
 * `footer`: Sticky container at the bottom of the dropdown
+* `default`: Anything inside of `d2l-dropdown-content` that isn't in the `header` or `footer` slots appears as regular content
 
 ```html
 <d2l-dropdown-content min-width="150" max-width="400">
