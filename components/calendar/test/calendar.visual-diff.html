@@ -6,15 +6,10 @@
 	<script type="module">
 		import '../../typography/typography.js';
 		import '../calendar.js';
+		import sinon from 'sinon';
 
-		const oldDate = Date;
-
-		// eslint-disable-next-line no-global-assign
-		Date = function(input1, input2, input3) {
-			if (!input1) return new oldDate('2018-02-12T12:00Z');
-			return (input2 !== 0 && !input2) ? new oldDate(input1) : new oldDate(input1, input2, input3);
-		};
-		Date.prototype = oldDate.prototype;
+		const newToday = new Date('2018-02-12T12:00Z');
+		sinon.useFakeTimers(newToday.getTime());
 	</script>
 	<title>d2l-calendar</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +24,7 @@
 		<d2l-calendar id="no-selected"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
-		<d2l-calendar id="today-selected" selected-value="2018-02-12T12:00Z"></d2l-calendar>
+		<d2l-calendar id="today-selected" selected-value="2018-02-12"></d2l-calendar>
 	</div>
 	<div class="visual-diff">
 		<d2l-calendar id="dec-2019" selected-value="2019-12-01T12:00Z"></d2l-calendar>

@@ -23,12 +23,13 @@ const keyCodes = {
 };
 
 const descriptor = getDateTimeDescriptor();
+const firstDayOfWeek = descriptor.calendar.firstDayOfWeek;
 const daysOfWeekIndex = [];
-for (let i = descriptor.calendar.firstDayOfWeek; i < descriptor.calendar.firstDayOfWeek + daysInWeek; i++) {
+for (let i = firstDayOfWeek; i < firstDayOfWeek + daysInWeek; i++) {
 	daysOfWeekIndex.push(i % daysInWeek);
 }
 
-function checkIfDatesEqual(date1, date2) {
+export function checkIfDatesEqual(date1, date2) {
 	if (!date1 || !date2) return false;
 
 	date1.setHours(0, 0, 0, 0);
@@ -36,7 +37,7 @@ function checkIfDatesEqual(date1, date2) {
 	return date1.getTime() === date2.getTime();
 }
 
-function getDatesInMonthArray(shownMonth, shownYear, firstDayOfWeek) {
+export function getDatesInMonthArray(shownMonth, shownYear) {
 	// checking for undefined because month can be 0
 	if (shownMonth === undefined || !shownYear) return [];
 
@@ -45,7 +46,7 @@ function getDatesInMonthArray(shownMonth, shownYear, firstDayOfWeek) {
 
 	// populate first week of month
 	const firstWeek = [];
-	const numDaysFromPrevMonthToShow = getNumberOfDaysFromPrevMonthToShow(shownMonth, shownYear, firstDayOfWeek);
+	const numDaysFromPrevMonthToShow = getNumberOfDaysFromPrevMonthToShow(shownMonth, shownYear);
 
 	if (numDaysFromPrevMonthToShow > 0) {
 		const prevMonth = getPrevMonth(shownMonth);
@@ -85,11 +86,11 @@ function getDatesInMonthArray(shownMonth, shownYear, firstDayOfWeek) {
 	return dates;
 }
 
-function getNextMonth(month) {
+export function getNextMonth(month) {
 	return (month === 11) ? 0 : (month + 1);
 }
 
-function getNumberOfDaysFromPrevMonthToShow(month, year, firstDayOfWeek) {
+export function getNumberOfDaysFromPrevMonthToShow(month, year) {
 	const firstDayOfMonth = new Date(year, month, 1).getDay();
 	let numDaysFromLastMonthToShowThisMonth = 0;
 	if (firstDayOfMonth !== firstDayOfWeek) {
@@ -101,15 +102,15 @@ function getNumberOfDaysFromPrevMonthToShow(month, year, firstDayOfWeek) {
 	return numDaysFromLastMonthToShowThisMonth;
 }
 
-function getNumberOfDaysInMonth(month, year) {
+export function getNumberOfDaysInMonth(month, year) {
 	return new Date(year, month + 1, 0).getDate();
 }
 
-function getNumberOfDaysToSameWeekPrevMonth(month, year, firstDayOfWeek) {
+export function getNumberOfDaysToSameWeekPrevMonth(month, year) {
 	const prevMonth = getPrevMonth(month);
 	const prevMonthYear = prevMonth === 11 ? year - 1 : year;
 	const numDaysPrevMonth = getNumberOfDaysInMonth(prevMonth, prevMonthYear);
-	const numDaysFromPrevPrevMonthToShowPrevMonth = getNumberOfDaysFromPrevMonthToShow(prevMonth, prevMonthYear, firstDayOfWeek);
+	const numDaysFromPrevPrevMonthToShowPrevMonth = getNumberOfDaysFromPrevMonthToShow(prevMonth, prevMonthYear);
 	const numWeeksPrevMonth = Math.ceil((numDaysFromPrevPrevMonthToShowPrevMonth + numDaysPrevMonth) / 7);
 
 	const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -117,8 +118,19 @@ function getNumberOfDaysToSameWeekPrevMonth(month, year, firstDayOfWeek) {
 	return daysInWeek * (numWeeksPrevMonth - ((hasDaysFromPrevMonth) ? 1 : 0));
 }
 
-function getPrevMonth(month) {
+export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
+}
+
+export function parseDate(date) {
+	if (!date) return null;
+
+	if (date.includes('T')) {
+		date = date.split('T');
+		date = date[0];
+	}
+	date = date.split('-');
+	return new Date(date[0], parseInt(date[1]) - 1, date[2]);
 }
 
 class Calendar extends LocalizeStaticMixin(LitElement) {
@@ -164,7 +176,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		this._today = new Date();
 		if (this.selectedValue) {
-			const selectedValueDate = new Date(this.selectedValue);
+			const selectedValueDate = parseDate(this.selectedValue);
 			this._focusDate = new Date(selectedValueDate.getFullYear(), selectedValueDate.getMonth(), selectedValueDate.getDate());
 			this._shownMonth = selectedValueDate.getMonth();
 			this._shownYear = selectedValueDate.getFullYear();
@@ -194,12 +206,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			</th>
 		`);
 
-		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear, descriptor.calendar.firstDayOfWeek);
+		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-selected': this.selectedValue ? checkIfDatesEqual(day, new Date(this.selectedValue)) : false,
+					'd2l-calendar-date-selected': this.selectedValue ? checkIfDatesEqual(day, parseDate(this.selectedValue)) : false,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
 				const focused = checkIfDatesEqual(day, this._focusDate);
@@ -276,20 +288,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	_onDateSelected(e) {
 		const selectedDate = e.composedPath()[0];
 		const year = selectedDate.getAttribute('data-year');
-		let month = selectedDate.getAttribute('data-month');
-		let date = selectedDate.getAttribute('data-date');
+		const month = selectedDate.getAttribute('data-month');
+		const date = selectedDate.getAttribute('data-date');
 		this._focusDate = new Date(year, month, date);
 
-		month = (parseInt(month) + 1).toString();
-
-		if (month.length < 2) {
-			month = `0${month}`;
-		}
-		if (date.length < 2) {
-			date = `0${date}`;
-		}
-
-		this.selectedValue = `${year}-${month}-${date}T12:00Z`;
+		this.selectedValue = (new Date(year, month, date)).toISOString();
 
 		const eventDetails = {
 			bubbles: true,
@@ -337,12 +340,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			case keyCodes.HOME: {
 				const dayOfTheWeek = this._focusDate.getDay();
 				if (getComputedStyle(this).direction === 'rtl') {
-					numDaysChange = 6 - dayOfTheWeek + descriptor.calendar.firstDayOfWeek;
+					numDaysChange = 6 - dayOfTheWeek + firstDayOfWeek;
 					if (numDaysChange > 6) {
 						numDaysChange -= daysInWeek;
 					}
 				} else {
-					numDaysChange = dayOfTheWeek - descriptor.calendar.firstDayOfWeek;
+					numDaysChange = dayOfTheWeek - firstDayOfWeek;
 					if (numDaysChange < 0) {
 						numDaysChange += daysInWeek;
 					}
@@ -353,13 +356,13 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			} case keyCodes.END: {
 				const dayOfTheWeek = this._focusDate.getDay();
 				if (getComputedStyle(this).direction === 'rtl') {
-					numDaysChange = dayOfTheWeek - descriptor.calendar.firstDayOfWeek;
+					numDaysChange = dayOfTheWeek - firstDayOfWeek;
 					if (numDaysChange < 0) {
 						numDaysChange += daysInWeek;
 					}
 					numDaysChange *= -1;
 				} else {
-					numDaysChange = 6 - dayOfTheWeek + descriptor.calendar.firstDayOfWeek;
+					numDaysChange = 6 - dayOfTheWeek + firstDayOfWeek;
 					if (numDaysChange > 6) {
 						numDaysChange -= daysInWeek;
 					}
@@ -371,7 +374,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					// Changes the grid of dates to the previous Year.
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
-				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear, descriptor.calendar.firstDayOfWeek);
+				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear);
 
 				this._focusDate.setDate(this._focusDate.getDate() - diff);
 				this._keyboardTriggeredMonthChange = true;
@@ -391,7 +394,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
 				}
 				const nextMonth = getNextMonth(this._shownMonth);
-				const diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear, descriptor.calendar.firstDayOfWeek);
+				const diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear);
 
 				this._focusDate.setDate(this._focusDate.getDate() + diff);
 				this._keyboardTriggeredMonthChange = true;
@@ -433,7 +436,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	_updateFocusDateOnMonthButtonClick() {
 		// if selectedValue is in the month, that should be the focus date,
 		// else the 1st of the month should be
-		const selectedValueDate = this.selectedValue ? new Date(this.selectedValue) : null;
+		const selectedValueDate = this.selectedValue ? parseDate(this.selectedValue) : null;
 		if (selectedValueDate && selectedValueDate.getMonth() === this._shownMonth) {
 			this._focusDate = new Date(selectedValueDate.getFullYear(), selectedValueDate.getMonth(), selectedValueDate.getDate());
 		} else {
