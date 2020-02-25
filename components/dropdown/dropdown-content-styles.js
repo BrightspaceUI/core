@@ -42,7 +42,7 @@ export const dropdownContentStyles = css`
 		background-color: #ffffff;
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 0.1rem;
-		box-shadow: -4px -4px 12px -5px rgba(86, 90, 92, .2);
+		box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 		height: 16px;
 		width: 16px;
 		transform: rotate(45deg);
@@ -56,7 +56,7 @@ export const dropdownContentStyles = css`
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-pointer > div {
-		box-shadow: 4px 4px 12px -5px rgba(86, 90, 92, .2);
+		box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 	}
 
 	:host([no-pointer]) .d2l-dropdown-content-pointer {
