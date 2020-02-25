@@ -15,7 +15,7 @@ describe('d2l-calendar', () => {
 		const el = calendar.shadowRoot.querySelector('div[data-date="1"]');
 		setTimeout(() => el.click());
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
-		expect(detail.date).to.equal('2015-9-1');
+		expect(detail.date).to.equal('2015-09-01T12:00Z');
 	});
 
 	it('dispatches event when date in previous month clicked', async() => {
@@ -23,7 +23,7 @@ describe('d2l-calendar', () => {
 		const el = calendar.shadowRoot.querySelector('div[data-date="31"][data-month="7"]');
 		setTimeout(() => el.click());
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
-		expect(detail.date).to.equal('2015-8-31');
+		expect(detail.date).to.equal('2015-08-31T12:00Z');
 	});
 
 	it('dispatches event when date in next month clicked', async() => {
@@ -31,7 +31,7 @@ describe('d2l-calendar', () => {
 		const el = calendar.shadowRoot.querySelector('div[data-date="1"][data-month="9"]');
 		setTimeout(() => el.click());
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
-		expect(detail.date).to.equal('2015-10-1');
+		expect(detail.date).to.equal('2015-10-01T12:00Z');
 	});
 
 	it('dispatches event when enter key pressed on date', async() => {
@@ -39,7 +39,7 @@ describe('d2l-calendar', () => {
 		const el = calendar.shadowRoot.querySelector('div[data-date="20"]');
 		setTimeout(() => dispatchKeyEvent(el, 13));
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
-		expect(detail.date).to.equal('2015-9-20');
+		expect(detail.date).to.equal('2015-09-20T12:00Z');
 	});
 
 	it('dispatches event when space key pressed on date', async() => {
@@ -47,7 +47,7 @@ describe('d2l-calendar', () => {
 		const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
 		setTimeout(() => dispatchKeyEvent(el, 32));
 		const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
-		expect(detail.date).to.equal('2015-9-2');
+		expect(detail.date).to.equal('2015-09-02T12:00Z');
 	});
 
 	function dispatchKeyEvent(el, key) {

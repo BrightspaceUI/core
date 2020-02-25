@@ -4,7 +4,7 @@ import { css } from 'lit-element/lit-element.js';
 export const calendarStyles = css`
 	:host {
 		display: block;
-		min-width: 350px;
+		min-width: 18rem;
 	}
 
 	table {
@@ -56,8 +56,8 @@ export const calendarStyles = css`
 		width: 2rem;
 	}
 
-	.d2l-calendar-date:hover,
-	.d2l-calendar-date.d2l-calendar-date-hover {
+	.d2l-calendar-date:hover:not(.d2l-calendar-date-selected),
+	.d2l-calendar-date.d2l-calendar-date-hover:not(.d2l-calendar-date-selected) {
 		background-color: var(--d2l-color-gypsum);
 	}
 
@@ -66,7 +66,7 @@ export const calendarStyles = css`
 		outline: none;
 	}
 
-	.d2l-calendar-date-first-row {
+	tbody > tr:first-child div {
 		margin-top: 0.3rem;
 	}
 
