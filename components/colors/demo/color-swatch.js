@@ -65,7 +65,6 @@ class ColorSwatch extends LitElement {
 			}
 			:host([name="feedback-warning"]) {
 				background-color: var(--d2l-color-feedback-warning);
-				color: var(--d2l-color-ferrite);
 			}
 			:host([name="feedback-success"]) {
 				background-color: var(--d2l-color-feedback-success);
