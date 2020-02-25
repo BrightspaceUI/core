@@ -23,6 +23,7 @@ describe('d2l-dropdown-content', () => {
 		'min-width',
 		'max-width',
 		'wide-opener',
+		'with-header-footer',
 		'no-padding-no-pointer',
 		'scroll-bottom-shadow',
 		'vertical-offset',

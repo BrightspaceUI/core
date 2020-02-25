@@ -13,7 +13,7 @@ const itemFixture = html`
 				<d2l-menu label="Astronomy">
 					<d2l-menu-item text="Introduction" id="first-item"></d2l-menu-item>
 					<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-					<d2l-menu-item text="The Universe" id="last-item"></d2l-menu-item>
+					<d2l-menu-item text="The Universe"></d2l-menu-item>
 				</d2l-menu>
 			</d2l-dropdown-menu>
 		</d2l-dropdown>
@@ -28,7 +28,7 @@ const radioFixture = html`
 				<d2l-menu label="Astronomy">
 						<d2l-menu-item-radio text="Radio Option 1" value="1" id="first-item"></d2l-menu-item-radio>
 						<d2l-menu-item-radio text="Radio Option 2" value="2"></d2l-menu-item-radio>
-						<d2l-menu-item-radio text="Radio Option 3" value="3" id="last-item"></d2l-menu-item-radio>
+						<d2l-menu-item-radio text="Radio Option 3" value="3"></d2l-menu-item-radio>
 				</d2l-menu>
 			</d2l-dropdown-menu>
 		</d2l-dropdown>
