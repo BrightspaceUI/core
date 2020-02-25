@@ -132,11 +132,17 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 
 **Events:**
 
-The `d2l-input-text` dispatches the `change` event when text is entered, modified or removed:
+The `d2l-input-text` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
 
 
 ```javascript
+// fired when value changes are committed
 input.addEventListener('change', (e) => {
+  console.log(input.value);
+});
+
+// fired whenever value changes occur
+input.addEventListener('input', (e) => {
   console.log(input.value);
 });
 ```

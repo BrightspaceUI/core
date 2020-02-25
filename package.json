@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.30.2",
+  "version": "1.31.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -61,7 +61,7 @@
     "mocha": "^7",
     "node-sass": "^4",
     "puppeteer": "^2",
-    "sinon": "^8",
+    "sinon": "^9",
     "whatwg-fetch": "^3"
   },
   "dependencies": {

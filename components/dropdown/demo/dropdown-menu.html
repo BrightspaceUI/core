@@ -27,7 +27,7 @@
 					<button class="d2l-dropdown-opener">Open it!</button>
 					<d2l-dropdown-menu id="dropdown">
 						<d2l-menu label="Astronomy">
-							<d2l-menu-item text="Introduction" id="first-item"></d2l-menu-item>
+							<d2l-menu-item text="Introduction"></d2l-menu-item>
 							<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
 							<d2l-menu-item text="The Solar System">
 								<d2l-menu>
@@ -90,8 +90,39 @@
 									<d2l-menu-item text="Telescopes"></d2l-menu-item>
 								</d2l-menu>
 							</d2l-menu-item>
-							<d2l-menu-item text="The Universe" id="last-item"></d2l-menu-item>
+							<d2l-menu-item text="The Universe"></d2l-menu-item>
 						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>With Header/Footer</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<button class="d2l-dropdown-opener">Open it!</button>
+					<d2l-dropdown-menu id="dropdown" no-padding-footer>
+						<div slot="header" style="font-weight: bold; width: 100%; text-align: center;">Physics Topics</div>
+						<d2l-menu>
+							<d2l-menu-item text="Introduction"></d2l-menu-item>
+							<d2l-menu-item text="Matter"></d2l-menu-item>
+							<d2l-menu-item text="Speed"></d2l-menu-item>
+							<d2l-menu-item text="Velocity"></d2l-menu-item>
+							<d2l-menu-item text="Acceleration"></d2l-menu-item>
+							<d2l-menu-item text="Jerk"></d2l-menu-item>
+							<d2l-menu-item text="Jounce"></d2l-menu-item>
+							<d2l-menu-item text="Friction"></d2l-menu-item>
+							<d2l-menu-item text="Centrifugal Force"></d2l-menu-item>
+							<d2l-menu-item text="Centripetal Force"></d2l-menu-item>
+							<d2l-menu-item text="Torque"></d2l-menu-item>
+							<d2l-menu-item text="Inertia"></d2l-menu-item>
+							<d2l-menu-item text="Momentum"></d2l-menu-item>
+							<d2l-menu-item text="Potential Energy"></d2l-menu-item>
+							<d2l-menu-item text="Gravity"></d2l-menu-item>
+							<d2l-menu-item text="Magnetism"></d2l-menu-item>
+						</d2l-menu>
+						<div slot="footer" style="font-size: 0.75rem; width: 100%; text-align: center;">And <a href="#">More</a>!</div>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
 			</template>
