@@ -43,7 +43,7 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 	}
 
 	_getTabsElement() {
-		return this.shadowRoot.querySelector('slot')
+		return this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot')
 			.assignedNodes()
 			.filter(node => node.hasAttribute && node.getAttribute('role') === 'tablist')[0];
 	}
