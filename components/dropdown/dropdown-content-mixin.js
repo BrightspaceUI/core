@@ -79,6 +79,12 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				attribute: 'dropdown-content',
 				reflect: true
 			},
+			_hasHeader: {
+				type: Boolean
+			},
+			_hasFooter: {
+				type: Boolean
+			},
 			_maxHeight: {
 				type: Number
 			},
@@ -107,6 +113,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._bottomOverflow = false;
 		this._topOverflow = false;
 		this._contentOverflow = false;
+		this._hasHeader = false;
+		this._hasFooter = false;
 
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
@@ -238,17 +246,29 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
-		const topClasses = { 'd2l-dropdown-content-top': true, 'd2l-dropdown-content-top-scroll': this._topOverflow };
-		const bottomClasses = { 'd2l-dropdown-content-bottom': true, 'd2l-dropdown-content-bottom-scroll': this._bottomOverflow };
+		const topClasses = {
+			'd2l-dropdown-content-top': true,
+			'd2l-dropdown-content-top-scroll': this._topOverflow,
+			'd2l-dropdown-content-header': this._hasHeader
+		};
+		const bottomClasses = {
+			'd2l-dropdown-content-bottom': true,
+			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
+			'd2l-dropdown-content-footer': this._hasFooter
+		};
 
 		return html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
 				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
-					<div class=${classMap(topClasses)}></div>
+					<div class=${classMap(topClasses)}>
+						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
+					</div>
 					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)} @scroll=${this.__toggleScrollStyles}>
 						<slot></slot>
 					</div>
-					<div class=${classMap(bottomClasses)}></div>
+					<div class=${classMap(bottomClasses)}>
+						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+					</div>
 				</div>
 			</div>
 		`;
@@ -256,6 +276,14 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	__getContentContainer() {
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-container');
+	}
+
+	__getContentTop() {
+		return this.shadowRoot.querySelector('.d2l-dropdown-content-top');
+	}
+
+	__getContentBottom() {
+		return this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
 	}
 
 	__getPositionContainer() {
@@ -403,6 +431,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 
 		const content = this.__getContentContainer();
+		const header = this.__getContentTop();
+		const footer = this.__getContentBottom();
 
 		if (!this.noAutoFit) {
 			this._maxHeight = null;
@@ -415,6 +445,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 			const targetRect = target.getBoundingClientRect();
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
+			const headerFooterHeight =  header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
 			const spaceAround = this._constrainSpaceAround({
 				above: targetRect.top - 50,
@@ -424,7 +455,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			});
 
 			const spaceRequired = {
-				height: contentRect.height + 20,
+				height: contentRect.height + headerFooterHeight + 10,
 				width: contentRect.width
 			};
 
@@ -438,7 +469,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				this._position = position;
 			}
 
-			const maxHeight = Math.floor(this.openedAbove ? spaceAround.above : spaceAround.below);
+			const maxHeight = Math.floor((this.openedAbove ? spaceAround.above : spaceAround.below) - headerFooterHeight);
 			if (!this.noAutoFit && maxHeight && maxHeight > 0) {
 				this._maxHeight = maxHeight;
 				this.__toggleOverflowY(contentRect.height > maxHeight);
@@ -533,5 +564,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		/* scrollHeight incorrect in IE by 4px second time opened */
 		this._bottomOverflow = this.__content.scrollHeight - (this.__content.scrollTop + this.__content.clientHeight) >= 5;
 		this._topOverflow = this.__content.scrollTop !== 0;
+	}
+
+	__handleHeaderSlotChange(e) {
+		this._hasHeader = e.target.assignedNodes().length !== 0;
+	}
+
+	__handleFooterSlotChange(e) {
+		this._hasFooter = e.target.assignedNodes().length !== 0;
 	}
 };

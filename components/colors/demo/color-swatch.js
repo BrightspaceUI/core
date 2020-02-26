@@ -65,7 +65,6 @@ class ColorSwatch extends LitElement {
 			}
 			:host([name="feedback-warning"]) {
 				background-color: var(--d2l-color-feedback-warning);
-				color: var(--d2l-color-ferrite);
 			}
 			:host([name="feedback-success"]) {
 				background-color: var(--d2l-color-feedback-success);
@@ -184,20 +183,6 @@ class ColorSwatch extends LitElement {
 			}
 			:host([name="citrine-minus-2"]) {
 				background-color: var(--d2l-color-citrine-minus-2);
-			}
-			:host([name="topaz-plus-1"]) {
-				background-color: var(--d2l-color-topaz-plus-1);
-				color: var(--d2l-color-ferrite);
-			}
-			:host([name="topaz"]) {
-				background-color: var(--d2l-color-topaz);
-				color: var(--d2l-color-ferrite);
-			}
-			:host([name="topaz-minus-1"]) {
-				background-color: var(--d2l-color-topaz-minus-1);
-			}
-			:host([name="topaz-minus-2"]) {
-				background-color: var(--d2l-color-topaz-minus-2);
 			}
 			:host([name="peridot-plus-1"]) {
 				background-color: var(--d2l-color-peridot-plus-1);
