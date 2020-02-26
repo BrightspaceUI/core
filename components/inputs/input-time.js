@@ -2,6 +2,7 @@ import '../dropdown/dropdown.js'
 import '../dropdown/dropdown-menu.js'
 import '../menu/menu.js'
 import '../menu/menu-item-radio.js'
+import { bodySmallStyles } from '../typography/styles.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -73,7 +74,7 @@ class InputTime extends LitElement {
 	}
 
 	static get styles() {
-		return [ inputStyles, inputLabelStyles,
+		return [ inputStyles, inputLabelStyles, bodySmallStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -85,11 +86,15 @@ class InputTime extends LitElement {
 				label {
 					display: block;
 				}
-				.menu-time {
-					width: 180px;
-					min-width: 180px;
+				.d2l-input-time-menu {
 					border-top: 1px solid var(--d2l-color-gypsum);
 					border-bottom: 1px solid var(--d2l-color-gypsum);
+				}
+				.d2l-input-time-timezone {
+					width: 100%;
+					line-height: 1.8rem;
+					text-align: center;
+					vertical-align: middle;
 				}
 			`
 		];
@@ -123,13 +128,14 @@ class InputTime extends LitElement {
 					?disabled="${this.disabled}"
 					@keypress="${this._handleKeypress}"
 					.value="${this._formattedValue}">
-				<d2l-dropdown-menu id="dropdown">
+				<d2l-dropdown-menu id="dropdown" no-padding-footer  min-width="195" max-width="200">
 					<d2l-menu
-						class="menu-time"
+						class="d2l-input-time-menu"
 						@d2l-menu-item-change="${this._handleDropdownChange}"
 						.value="${this._formattedValue}">
   					${INTERVALS.map(i => html`<d2l-menu-item-radio text="${formatTime(i)}" value="${formatValue(i)}"></d2l-menu-item-radio>`)}
 					</d2l-menu>
+					<div class="d2l-input-time-timezone d2l-body-small" slot="footer">Canada - Toronto</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
