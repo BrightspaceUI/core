@@ -327,6 +327,12 @@ describe('d2l-calendar', () => {
 			it('should return correct date if no time provided', () => {
 				expect(parseDate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30, 0, 0, 0));
 			});
+
+			it('should throw when invalid date format', () => {
+				expect(() => {
+					parseDate('2019-02');
+				}).to.throw('Invalid selected-value date input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ or YYYY-MM-DD');
+			});
 		});
 
 	});

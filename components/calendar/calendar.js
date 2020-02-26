@@ -122,15 +122,20 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
-export function parseDate(date) {
-	if (!date) return null;
+export function parseDate(val) {
+	if (!val) return null;
 
-	if (date.includes('T')) {
-		date = date.split('T');
-		date = date[0];
+	let date = val;
+	if (val.includes('T')) {
+		const dateTimeParts = val.split('T');
+		date = dateTimeParts[0];
 	}
-	date = date.split('-');
-	return new Date(date[0], parseInt(date[1]) - 1, date[2]);
+	const dateParts = date.split('-');
+	if (dateParts.length !== 3) {
+		throw new Error('Invalid selected-value date input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ or YYYY-MM-DD');
+	}
+
+	return new Date(dateParts[0], parseInt(dateParts[1]) - 1, dateParts[2]);
 }
 
 class Calendar extends LocalizeStaticMixin(LitElement) {
