@@ -45,7 +45,7 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			footer {
 				grid-area: footer;
-				box-shadow: 0 -2px 4px rgba(86, 90, 92, .2);
+				box-shadow: 0 -2px 4px rgba(73, 76, 78, .2); /* ferrite */
 				padding: 0.75rem 1rem;
 			}
 		`;
