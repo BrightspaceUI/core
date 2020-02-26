@@ -1,3 +1,4 @@
+import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
 	getNextMonth,
@@ -7,7 +8,7 @@ import { checkIfDatesEqual,
 	getPrevMonth,
 	parseDate
 } from '../calendar.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import sinon from 'sinon';
 
 const normalFixture = html`<d2l-calendar selected-value="2015-09-02T12:00Z"></d2l-calendar>`;
 
@@ -28,7 +29,12 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="1"]');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+
 			expect(detail.date).to.contain('2015-09-01T');
+			expect(calendar.selectedValue).to.contain('2015-09-01T');
+
+			const expectedFocusDate = new Date(detail.date);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
 		it('dispatches event when date in previous month clicked', async() => {
@@ -36,7 +42,12 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="31"][data-month="7"]');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+
 			expect(detail.date).to.contain('2015-08-31T');
+			expect(calendar.selectedValue).to.contain('2015-08-31T');
+
+			const expectedFocusDate = new Date(detail.date);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
 		it('dispatches event when date in next month clicked', async() => {
@@ -44,7 +55,12 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="1"][data-month="9"]');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+
 			expect(detail.date).to.contain('2015-10-01T');
+			expect(calendar.selectedValue).to.contain('2015-10-01T');
+
+			const expectedFocusDate = new Date(detail.date);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
 		it('dispatches event when enter key pressed on date', async() => {
@@ -52,7 +68,12 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="20"]');
 			setTimeout(() => dispatchKeyEvent(el, 13));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+
 			expect(detail.date).to.contain('2015-09-20T');
+			expect(calendar.selectedValue).to.contain('2015-09-20T');
+
+			const expectedFocusDate = new Date(detail.date);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
 		it('dispatches event when space key pressed on date', async() => {
@@ -60,16 +81,145 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
 			setTimeout(() => dispatchKeyEvent(el, 32));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+
 			expect(detail.date).to.contain('2015-09-02T');
+			expect(calendar.selectedValue).to.contain('2015-09-02T');
+
+			const expectedFocusDate = new Date(detail.date);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+	});
+
+	describe('focus date', () => {
+		it('has initial correct _focusDate when on month with selected-value', async() => {
+			const calendar = await fixture(normalFixture);
+			const expectedFocusDate = new Date(2015, 8, 2);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
-		function dispatchKeyEvent(el, key) {
-			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keydown', true, true);
-			eventObj.which = key;
-			eventObj.keyCode = key;
-			el.dispatchEvent(eventObj);
-		}
+		it('has initial correct _focusDate when on month with no selected-value', async() => {
+			const newToday = new Date('2018-02-12T12:00Z');
+			const clock = sinon.useFakeTimers(newToday.getTime());
+
+			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
+			const expectedFocusDate = new Date(2018, 1, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+
+			clock.restore();
+		});
+
+		it('has correct _focusDate when user uses right arrow from a focused date', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 8, 3);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user uses left arrow from a focused date', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 8, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user changes month to next month using button', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show October"]');
+			setTimeout(() => el.click());
+			await oneEvent(el, 'click');
+
+			const expectedFocusDate = new Date(2015, 9, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(9);
+		});
+
+		it('has correct _focusDate when user changes month to previous month using button', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show August"]');
+			setTimeout(() => el.click());
+			await oneEvent(el, 'click');
+
+			const expectedFocusDate = new Date(2015, 7, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user changes to previous month using left arrow key 4 times', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 7, 29);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(7);
+		});
+
+		it('has correct _focusDate when user changes to next month using right arrow key 4 times', async() => {
+			const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-30T12:00Z"></d2l-calendar>`);
+			const el = calendar.shadowRoot.querySelector('div[data-date="30"][data-month="8"]');
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 9, 4);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(9);
+		});
+
+		it('has correct _focusDate when user presses PAGEUP', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 33));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 6, 29);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(7);
+		});
+
+		it('has correct _focusDate when user presses PAGEDOWN', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 34));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 8, 30);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(9);
+		});
+
+		it('has correct _focusDate when user presses HOME', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 36));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 7, 30);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(8);
+		});
+
+		it('has correct _focusDate when user presses END', async() => {
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 35));
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 8, 5);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(8);
+		});
 	});
 
 	describe('utility functions', () => {
@@ -336,5 +486,13 @@ describe('d2l-calendar', () => {
 		});
 
 	});
+
+	function dispatchKeyEvent(el, key) {
+		const eventObj = document.createEvent('Events');
+		eventObj.initEvent('keydown', true, true);
+		eventObj.which = key;
+		eventObj.keyCode = key;
+		el.dispatchEvent(eventObj);
+	}
 
 });

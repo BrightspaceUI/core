@@ -24,6 +24,10 @@ export const calendarStyles = css`
 		text-decoration: none;
 	}
 
+	tbody > tr:first-child div {
+		margin-top: 0.3rem;
+	}
+
 	.d2l-calendar {
 		border-radius: 4px;
 	}
@@ -64,10 +68,6 @@ export const calendarStyles = css`
 	.d2l-calendar-date:focus {
 		border: 2px solid var(--d2l-color-celestine);
 		outline: none;
-	}
-
-	tbody > tr:first-child div {
-		margin-top: 0.3rem;
 	}
 
 	.d2l-calendar-date-selected {
