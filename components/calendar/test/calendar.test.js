@@ -8,11 +8,15 @@ import { checkIfDatesEqual,
 	getPrevMonth,
 	parseDate
 } from '../calendar.js';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
-const normalFixture = html`<d2l-calendar selected-value="2015-09-02T12:00Z"></d2l-calendar>`;
+const normalFixture = html`<d2l-calendar selected-value="2015-09-02T12:00:00Z"></d2l-calendar>`;
+const defaultHour = 12;
 
 describe('d2l-calendar', () => {
+	const documentLocaleSettings = getDocumentLocaleSettings();
+	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 
 	describe('accessibility', () => {
 
@@ -93,7 +97,7 @@ describe('d2l-calendar', () => {
 	describe('focus date', () => {
 		it('has initial correct _focusDate when on month with selected-value', async() => {
 			const calendar = await fixture(normalFixture);
-			const expectedFocusDate = new Date(2015, 8, 2);
+			const expectedFocusDate = new Date(2015, 8, 2, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -102,7 +106,7 @@ describe('d2l-calendar', () => {
 			const clock = sinon.useFakeTimers(newToday.getTime());
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
-			const expectedFocusDate = new Date(2018, 1, 1);
+			const expectedFocusDate = new Date(2018, 1, 1, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 
 			clock.restore();
@@ -114,7 +118,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 8, 3);
+			const expectedFocusDate = new Date(2015, 8, 3, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -124,7 +128,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 37));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 8, 1);
+			const expectedFocusDate = new Date(2015, 8, 1, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -134,7 +138,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => el.click());
 			await oneEvent(el, 'click');
 
-			const expectedFocusDate = new Date(2015, 9, 1);
+			const expectedFocusDate = new Date(2015, 9, 1, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(9);
 		});
@@ -145,7 +149,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => el.click());
 			await oneEvent(el, 'click');
 
-			const expectedFocusDate = new Date(2015, 7, 1);
+			const expectedFocusDate = new Date(2015, 7, 1, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -158,13 +162,13 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 37));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 7, 29);
+			const expectedFocusDate = new Date(2015, 7, 29, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(7);
 		});
 
 		it('has correct _focusDate when user changes to next month using right arrow key 4 times', async() => {
-			const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-30T12:00Z"></d2l-calendar>`);
+			const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-30T12:00:00Z"></d2l-calendar>`);
 			const el = calendar.shadowRoot.querySelector('div[data-date="30"][data-month="8"]');
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			setTimeout(() => dispatchKeyEvent(el, 39));
@@ -172,7 +176,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 9, 4);
+			const expectedFocusDate = new Date(2015, 9, 4, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(9);
 		});
@@ -183,7 +187,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 33));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 6, 29);
+			const expectedFocusDate = new Date(2015, 6, 29, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(7);
 		});
@@ -194,7 +198,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 34));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 8, 30);
+			const expectedFocusDate = new Date(2015, 8, 30, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(9);
 		});
@@ -205,7 +209,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 36));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 7, 30);
+			const expectedFocusDate = new Date(2015, 7, 30, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(8);
 		});
@@ -216,7 +220,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 35));
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2015, 8, 5);
+			const expectedFocusDate = new Date(2015, 8, 5, defaultHour, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(8);
 		});
@@ -225,14 +229,20 @@ describe('d2l-calendar', () => {
 	describe('utility functions', () => {
 
 		describe('checkIfDatesEqual', () => {
-			it('returns true if dates equal and times are not', () => {
-				const date1 = new Date(2019, 1, 1, 12, 0, 0, 0);
-				const date2 = new Date(2019, 1, 1, 7, 30, 0);
+			it('returns true if dates and times are equal', () => {
+				const date1 = new Date(2019, 1, 1, defaultHour, 0, 0);
+				const date2 = new Date(2019, 1, 1, defaultHour, 0, 0);
 				expect(checkIfDatesEqual(date1, date2)).to.be.true;
 			});
 
+			it('returns false if dates equal and times are not', () => {
+				const date1 = new Date(2019, 1, 1, defaultHour, 0, 0, 0);
+				const date2 = new Date(2019, 1, 1, 7, 30, 0);
+				expect(checkIfDatesEqual(date1, date2)).to.be.false;
+			});
+
 			it('returns false if dates not equal', () => {
-				const date1 = new Date(2019, 1, 1, 12, 0, 0, 0);
+				const date1 = new Date(2019, 1, 1, defaultHour, 0, 0, 0);
 				const date2 = new Date(2019, 1, 31, 7, 30, 0);
 				expect(checkIfDatesEqual(date1, date2)).to.be.false;
 			});
@@ -244,7 +254,7 @@ describe('d2l-calendar', () => {
 			});
 
 			it('returns false if date 2 is null', () => {
-				const date1 = new Date(2019, 1, 1, 12, 0, 0, 0);
+				const date1 = new Date(2019, 1, 1, defaultHour, 0, 0, 0);
 				const date2 = null;
 				expect(checkIfDatesEqual(date1, date2)).to.be.false;
 			});
@@ -261,143 +271,143 @@ describe('d2l-calendar', () => {
 
 			it('returns expected array for Feb 2020 (days from prev month, no days from next month', () => {
 				const dates = [[
-					new Date(2020, 0, 26),
-					new Date(2020, 0, 27),
-					new Date(2020, 0, 28),
-					new Date(2020, 0, 29),
-					new Date(2020, 0, 30),
-					new Date(2020, 0, 31),
-					new Date(2020, 1, 1)
+					new Date(2020, 0, 26, defaultHour, 0, 0),
+					new Date(2020, 0, 27, defaultHour, 0, 0),
+					new Date(2020, 0, 28, defaultHour, 0, 0),
+					new Date(2020, 0, 29, defaultHour, 0, 0),
+					new Date(2020, 0, 30, defaultHour, 0, 0),
+					new Date(2020, 0, 31, defaultHour, 0, 0),
+					new Date(2020, 1, 1, defaultHour, 0, 0)
 				], [
-					new Date(2020, 1, 2),
-					new Date(2020, 1, 3),
-					new Date(2020, 1, 4),
-					new Date(2020, 1, 5),
-					new Date(2020, 1, 6),
-					new Date(2020, 1, 7),
-					new Date(2020, 1, 8)
+					new Date(2020, 1, 2, defaultHour, 0, 0),
+					new Date(2020, 1, 3, defaultHour, 0, 0),
+					new Date(2020, 1, 4, defaultHour, 0, 0),
+					new Date(2020, 1, 5, defaultHour, 0, 0),
+					new Date(2020, 1, 6, defaultHour, 0, 0),
+					new Date(2020, 1, 7, defaultHour, 0, 0),
+					new Date(2020, 1, 8, defaultHour, 0, 0)
 				], [
-					new Date(2020, 1, 9),
-					new Date(2020, 1, 10),
-					new Date(2020, 1, 11),
-					new Date(2020, 1, 12),
-					new Date(2020, 1, 13),
-					new Date(2020, 1, 14),
-					new Date(2020, 1, 15)
+					new Date(2020, 1, 9, defaultHour, 0, 0),
+					new Date(2020, 1, 10, defaultHour, 0, 0),
+					new Date(2020, 1, 11, defaultHour, 0, 0),
+					new Date(2020, 1, defaultHour, 12, 0, 0),
+					new Date(2020, 1, 13, defaultHour, 0, 0),
+					new Date(2020, 1, 14, defaultHour, 0, 0),
+					new Date(2020, 1, 15, defaultHour, 0, 0)
 				], [
-					new Date(2020, 1, 16),
-					new Date(2020, 1, 17),
-					new Date(2020, 1, 18),
-					new Date(2020, 1, 19),
-					new Date(2020, 1, 20),
-					new Date(2020, 1, 21),
-					new Date(2020, 1, 22)
+					new Date(2020, 1, 16, defaultHour, 0, 0),
+					new Date(2020, 1, 17, defaultHour, 0, 0),
+					new Date(2020, 1, 18, defaultHour, 0, 0),
+					new Date(2020, 1, 19, defaultHour, 0, 0),
+					new Date(2020, 1, 20, defaultHour, 0, 0),
+					new Date(2020, 1, 21, defaultHour, 0, 0),
+					new Date(2020, 1, 22, defaultHour, 0, 0)
 				], [
-					new Date(2020, 1, 23),
-					new Date(2020, 1, 24),
-					new Date(2020, 1, 25),
-					new Date(2020, 1, 26),
-					new Date(2020, 1, 27),
-					new Date(2020, 1, 28),
-					new Date(2020, 1, 29)
+					new Date(2020, 1, 23, defaultHour, 0, 0),
+					new Date(2020, 1, 24, defaultHour, 0, 0),
+					new Date(2020, 1, 25, defaultHour, 0, 0),
+					new Date(2020, 1, 26, defaultHour, 0, 0),
+					new Date(2020, 1, 27, defaultHour, 0, 0),
+					new Date(2020, 1, 28, defaultHour, 0, 0),
+					new Date(2020, 1, 29, defaultHour, 0, 0)
 				]];
 				expect(getDatesInMonthArray(1, 2020)).to.deep.equal(dates);
 			});
 
 			it('returns expected array for March 2020 (days from next month, no days from prev month)', () => {
 				const dates = [[
-					new Date(2020, 2, 1),
-					new Date(2020, 2, 2),
-					new Date(2020, 2, 3),
-					new Date(2020, 2, 4),
-					new Date(2020, 2, 5),
-					new Date(2020, 2, 6),
-					new Date(2020, 2, 7)
+					new Date(2020, 2, 1, defaultHour, 0, 0),
+					new Date(2020, 2, 2, defaultHour, 0, 0),
+					new Date(2020, 2, 3, defaultHour, 0, 0),
+					new Date(2020, 2, 4, defaultHour, 0, 0),
+					new Date(2020, 2, 5, defaultHour, 0, 0),
+					new Date(2020, 2, 6, defaultHour, 0, 0),
+					new Date(2020, 2, 7, defaultHour, 0, 0)
 				], [
-					new Date(2020, 2, 8),
-					new Date(2020, 2, 9),
-					new Date(2020, 2, 10),
-					new Date(2020, 2, 11),
-					new Date(2020, 2, 12),
-					new Date(2020, 2, 13),
-					new Date(2020, 2, 14)
+					new Date(2020, 2, 8, defaultHour, 0, 0),
+					new Date(2020, 2, 9, defaultHour, 0, 0),
+					new Date(2020, 2, 10, defaultHour, 0, 0),
+					new Date(2020, 2, 11, defaultHour, 0, 0),
+					new Date(2020, 2, defaultHour, 12, 0, 0),
+					new Date(2020, 2, 13, defaultHour, 0, 0),
+					new Date(2020, 2, 14, defaultHour, 0, 0)
 				], [
-					new Date(2020, 2, 15),
-					new Date(2020, 2, 16),
-					new Date(2020, 2, 17),
-					new Date(2020, 2, 18),
-					new Date(2020, 2, 19),
-					new Date(2020, 2, 20),
-					new Date(2020, 2, 21)
+					new Date(2020, 2, 15, defaultHour, 0, 0),
+					new Date(2020, 2, 16, defaultHour, 0, 0),
+					new Date(2020, 2, 17, defaultHour, 0, 0),
+					new Date(2020, 2, 18, defaultHour, 0, 0),
+					new Date(2020, 2, 19, defaultHour, 0, 0),
+					new Date(2020, 2, 20, defaultHour, 0, 0),
+					new Date(2020, 2, 21, defaultHour, 0, 0)
 				], [
-					new Date(2020, 2, 22),
-					new Date(2020, 2, 23),
-					new Date(2020, 2, 24),
-					new Date(2020, 2, 25),
-					new Date(2020, 2, 26),
-					new Date(2020, 2, 27),
-					new Date(2020, 2, 28)
+					new Date(2020, 2, 22, defaultHour, 0, 0),
+					new Date(2020, 2, 23, defaultHour, 0, 0),
+					new Date(2020, 2, 24, defaultHour, 0, 0),
+					new Date(2020, 2, 25, defaultHour, 0, 0),
+					new Date(2020, 2, 26, defaultHour, 0, 0),
+					new Date(2020, 2, 27, defaultHour, 0, 0),
+					new Date(2020, 2, 28, defaultHour, 0, 0)
 				], [
-					new Date(2020, 2, 29),
-					new Date(2020, 2, 30),
-					new Date(2020, 2, 31),
-					new Date(2020, 3, 1),
-					new Date(2020, 3, 2),
-					new Date(2020, 3, 3),
-					new Date(2020, 3, 4)
+					new Date(2020, 2, 29, defaultHour, 0, 0),
+					new Date(2020, 2, 30, defaultHour, 0, 0),
+					new Date(2020, 2, 31, defaultHour, 0, 0),
+					new Date(2020, 3, 1, defaultHour, 0, 0),
+					new Date(2020, 3, 2, defaultHour, 0, 0),
+					new Date(2020, 3, 3, defaultHour, 0, 0),
+					new Date(2020, 3, 4, defaultHour, 0, 0)
 				]];
 				expect(getDatesInMonthArray(2, 2020)).to.deep.equal(dates);
 			});
 
 			it('returns expected array for Jan 2021 (days from prev and next month and 6 weeks)', () => {
 				const dates = [[
-					new Date(2020, 11, 27),
-					new Date(2020, 11, 28),
-					new Date(2020, 11, 29),
-					new Date(2020, 11, 30),
-					new Date(2020, 11, 31),
-					new Date(2021, 0, 1),
-					new Date(2021, 0, 2)
+					new Date(2020, 11, 27, defaultHour, 0, 0),
+					new Date(2020, 11, 28, defaultHour, 0, 0),
+					new Date(2020, 11, 29, defaultHour, 0, 0),
+					new Date(2020, 11, 30, defaultHour, 0, 0),
+					new Date(2020, 11, 31, defaultHour, 0, 0),
+					new Date(2021, 0, 1, defaultHour, 0, 0),
+					new Date(2021, 0, 2, defaultHour, 0, 0)
 				], [
-					new Date(2021, 0, 3),
-					new Date(2021, 0, 4),
-					new Date(2021, 0, 5),
-					new Date(2021, 0, 6),
-					new Date(2021, 0, 7),
-					new Date(2021, 0, 8),
-					new Date(2021, 0, 9)
+					new Date(2021, 0, 3, defaultHour, 0, 0),
+					new Date(2021, 0, 4, defaultHour, 0, 0),
+					new Date(2021, 0, 5, defaultHour, 0, 0),
+					new Date(2021, 0, 6, defaultHour, 0, 0),
+					new Date(2021, 0, 7, defaultHour, 0, 0),
+					new Date(2021, 0, 8, defaultHour, 0, 0),
+					new Date(2021, 0, 9, defaultHour, 0, 0)
 				], [
-					new Date(2021, 0, 10),
-					new Date(2021, 0, 11),
-					new Date(2021, 0, 12),
-					new Date(2021, 0, 13),
-					new Date(2021, 0, 14),
-					new Date(2021, 0, 15),
-					new Date(2021, 0, 16)
+					new Date(2021, 0, 10, defaultHour, 0, 0),
+					new Date(2021, 0, 11, defaultHour, 0, 0),
+					new Date(2021, 0, defaultHour, 12, 0, 0),
+					new Date(2021, 0, 13, defaultHour, 0, 0),
+					new Date(2021, 0, 14, defaultHour, 0, 0),
+					new Date(2021, 0, 15, defaultHour, 0, 0),
+					new Date(2021, 0, 16, defaultHour, 0, 0)
 				], [
-					new Date(2021, 0, 17),
-					new Date(2021, 0, 18),
-					new Date(2021, 0, 19),
-					new Date(2021, 0, 20),
-					new Date(2021, 0, 21),
-					new Date(2021, 0, 22),
-					new Date(2021, 0, 23)
+					new Date(2021, 0, 17, defaultHour, 0, 0),
+					new Date(2021, 0, 18, defaultHour, 0, 0),
+					new Date(2021, 0, 19, defaultHour, 0, 0),
+					new Date(2021, 0, 20, defaultHour, 0, 0),
+					new Date(2021, 0, 21, defaultHour, 0, 0),
+					new Date(2021, 0, 22, defaultHour, 0, 0),
+					new Date(2021, 0, 23, defaultHour, 0, 0)
 				], [
-					new Date(2021, 0, 24),
-					new Date(2021, 0, 25),
-					new Date(2021, 0, 26),
-					new Date(2021, 0, 27),
-					new Date(2021, 0, 28),
-					new Date(2021, 0, 29),
-					new Date(2021, 0, 30)
+					new Date(2021, 0, 24, defaultHour, 0, 0),
+					new Date(2021, 0, 25, defaultHour, 0, 0),
+					new Date(2021, 0, 26, defaultHour, 0, 0),
+					new Date(2021, 0, 27, defaultHour, 0, 0),
+					new Date(2021, 0, 28, defaultHour, 0, 0),
+					new Date(2021, 0, 29, defaultHour, 0, 0),
+					new Date(2021, 0, 30, defaultHour, 0, 0)
 				], [
-					new Date(2021, 0, 31),
-					new Date(2021, 1, 1),
-					new Date(2021, 1, 2),
-					new Date(2021, 1, 3),
-					new Date(2021, 1, 4),
-					new Date(2021, 1, 5),
-					new Date(2021, 1, 6)
+					new Date(2021, 0, 31, defaultHour, 0, 0),
+					new Date(2021, 1, 1, defaultHour, 0, 0),
+					new Date(2021, 1, 2, defaultHour, 0, 0),
+					new Date(2021, 1, 3, defaultHour, 0, 0),
+					new Date(2021, 1, 4, defaultHour, 0, 0),
+					new Date(2021, 1, 5, defaultHour, 0, 0),
+					new Date(2021, 1, 6, defaultHour, 0, 0)
 				]];
 				expect(getDatesInMonthArray(0, 2021)).to.deep.equal(dates);
 			});
@@ -471,17 +481,13 @@ describe('d2l-calendar', () => {
 
 		describe('parseDate', () => {
 			it('should return correct date if date and time provided', () => {
-				expect(parseDate('2019-01-30T12:00Z')).to.deep.equal(new Date(2019, 0, 30, 0, 0, 0));
-			});
-
-			it('should return correct date if no time provided', () => {
-				expect(parseDate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30, 0, 0, 0));
+				expect(parseDate('2019-01-30T12:00:00Z')).to.deep.equal(new Date(2019, 0, 30, defaultHour, 0, 0));
 			});
 
 			it('should throw when invalid date format', () => {
 				expect(() => {
-					parseDate('2019-02');
-				}).to.throw('Invalid selected-value date input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ or YYYY-MM-DD');
+					parseDate('2019-02-30');
+				}).to.throw('Invalid selected-value date input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ');
 			});
 		});
 

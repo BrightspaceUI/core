@@ -17,7 +17,7 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 
 **Properties:**
 
-- `selected-value` (String): Currently selected date. This should be in ISO 8601 Extended Format (`YYYY-MM-DDTHH:mm:ss.sssZ` or `YYYY-MM-DD`).
+- `selected-value` (String): Currently selected date. This should be in ISO 8601 Extended Format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
 - `summary` (String): Summary of the calendar for accessibility.
 
 **Events:**

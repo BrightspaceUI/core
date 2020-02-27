@@ -1,13 +1,14 @@
 import '../button/button-icon.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
+import { convertLocalToUTCDateTime, convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { calendarStyles } from './calendar-styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 const daysInWeek = 7;
+const defaultHour = 12;
 const keyCodes = {
 	DOWN: 40,
 	END: 35,
@@ -31,9 +32,6 @@ for (let i = firstDayOfWeek; i < firstDayOfWeek + daysInWeek; i++) {
 
 export function checkIfDatesEqual(date1, date2) {
 	if (!date1 || !date2) return false;
-
-	date1.setHours(0, 0, 0, 0);
-	date2.setHours(0, 0, 0, 0);
 	return date1.getTime() === date2.getTime();
 }
 
@@ -53,11 +51,11 @@ export function getDatesInMonthArray(shownMonth, shownYear) {
 		const prevMonthYear = (shownMonth === 0) ? (shownYear - 1) : shownYear;
 		const numDaysLastMonth = getNumberOfDaysInMonth(prevMonth, prevMonthYear);
 		for (let i = numDaysLastMonth - numDaysFromPrevMonthToShow + 1; i <= numDaysLastMonth; i++) {
-			firstWeek.push(new Date(prevMonthYear, prevMonth, i));
+			firstWeek.push(new Date(prevMonthYear, prevMonth, i, defaultHour, 0, 0));
 		}
 	}
 	for (let j = 1; j <= daysInWeek - numDaysFromPrevMonthToShow; j++) {
-		firstWeek.push(new Date(shownYear, shownMonth, j));
+		firstWeek.push(new Date(shownYear, shownMonth, j, defaultHour, 0, 0));
 	}
 	dates.push(firstWeek);
 
@@ -72,10 +70,10 @@ export function getDatesInMonthArray(shownMonth, shownYear) {
 		for (let j = firstDateOfWeek; j < firstDateOfWeek + daysInWeek; j++) {
 			let day;
 			if (j > numDays) {
-				day = new Date(nextMonthYear, nextMonth, nextMonthDay);
+				day = new Date(nextMonthYear, nextMonth, nextMonthDay, defaultHour, 0, 0);
 				nextMonthDay++;
 			} else {
-				day = new Date(shownYear, shownMonth, j);
+				day = new Date(shownYear, shownMonth, j, defaultHour, 0, 0);
 			}
 			week.push(day);
 		}
@@ -122,20 +120,38 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
+export function getToday() {
+	const todayInUTC = new Date();
+	const todayInUTCObj = {
+		year: todayInUTC.getFullYear(),
+		month: todayInUTC.getMonth() + 1,
+		date: todayInUTC.getDate(),
+		hours: todayInUTC.getHours(),
+		minutes: todayInUTC.getMinutes(),
+		seconds: todayInUTC.getSeconds()
+	};
+	const todayInLocal = convertUTCToLocalDateTime(todayInUTCObj);
+	return new Date(todayInLocal.year, todayInLocal.month - 1, todayInLocal.date, defaultHour, 0, 0);
+}
+
 export function parseDate(val) {
 	if (!val) return null;
-
-	let date = val;
-	if (val.includes('T')) {
-		const dateTimeParts = val.split('T');
-		date = dateTimeParts[0];
+	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/;
+	const match = val.match(re);
+	if (!match || match.length !== 7) {
+		throw new Error('Invalid selected-value date input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ');
 	}
-	const dateParts = date.split('-');
-	if (dateParts.length !== 3) {
-		throw new Error('Invalid selected-value date input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ or YYYY-MM-DD');
-	}
+	const dateTime = {
+		year: parseInt(match[1]),
+		month: parseInt(match[2]),
+		date: parseInt(match[3]),
+		hours: parseInt(match[4]),
+		minutes: parseInt(match[5]),
+		seconds: parseInt(match[6])
+	};
 
-	return new Date(dateParts[0], parseInt(dateParts[1]) - 1, dateParts[2]);
+	const valInLocalDateTime = convertUTCToLocalDateTime(dateTime);
+	return new Date(valInLocalDateTime.year, valInLocalDateTime.month - 1, valInLocalDateTime.date, defaultHour, 0, 0);
 }
 
 class Calendar extends LocalizeStaticMixin(LitElement) {
@@ -155,18 +171,20 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get resources() {
 		return {
-			'ar': { show: 'Show {month} ' },
+			'ar': { show: '{month} إظهار' },
+			'da': { show: 'Vis {month}' },
+			'de': { show: '{month} anzeigen' },
 			'en': { show: 'Show {month}' },
-			'es': { show: 'Show {month} ' },
-			'fr': { show: 'Show {month} ' },
-			'ja': { show: 'Show {month} ' },
-			'ko': { show: 'Show {month} ' },
-			'nl': { show: 'Show {month} ' },
-			'pt': { show: 'Show {month} ' },
-			'sv': { show: 'Show {month} ' },
-			'tr': { show: 'Show {month} ' },
-			'zh': { show: 'Show {month} ' },
-			'zh-tw': { show: 'Show {month} ' }
+			'es': { show: 'Mostrar {month}' },
+			'fr': { show: 'Afficher {month}' },
+			'ja': { show: '{month} の表示' },
+			'ko': { show: '{month} 표시' },
+			'nl': { show: '{month} tonen' },
+			'pt': { show: 'Mostrar {month}' },
+			'sv': { show: 'Visa {month}' },
+			'tr': { show: '{month} öğesini göster' },
+			'zh': { show: '显示 {month}' },
+			'zh-tw': { show: '顯示 {month}' }
 		};
 	}
 
@@ -179,17 +197,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this._today = new Date();
-		if (this.selectedValue) {
-			const selectedValueDate = parseDate(this.selectedValue);
-			this._focusDate = new Date(selectedValueDate.getFullYear(), selectedValueDate.getMonth(), selectedValueDate.getDate());
-			this._shownMonth = selectedValueDate.getMonth();
-			this._shownYear = selectedValueDate.getFullYear();
-		} else {
-			this._focusDate = new Date(this._today.getFullYear(), this._today.getMonth(), 1);
-			this._shownMonth = this._today.getMonth();
-			this._shownYear = this._today.getFullYear();
-		}
+		this._today = getToday();
+		const date = this.selectedValue ? parseDate(this.selectedValue) : this._today;
+		const focusDateDate = this.selectedValue ? date.getDate() : 1;
+		this._focusDate = new Date(date.getFullYear(), date.getMonth(), focusDateDate, defaultHour, 0, 0);
+		this._shownMonth = date.getMonth();
+		this._shownYear = date.getFullYear();
 	}
 
 	updated(changedProperties) {
@@ -272,17 +285,20 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		`;
 	}
 
+	focus() {
+		const firstButton = this.shadowRoot.querySelector('d2l-button-icon');
+		if (firstButton) firstButton.focus();
+	}
+
 	_computeText(month) {
 		return this.localize('show', {month: descriptor.calendar.months.long[month]});
 	}
 
 	_focusDateAddFocus() {
 		const date = this._getFocusDateElement();
-		if (date) {
-			if (this._keyboardTriggeredMonthChange) {
-				date.focus();
-				this._keyboardTriggeredMonthChange = false;
-			}
+		if (date && this._keyboardTriggeredMonthChange) {
+			date.focus();
+			this._keyboardTriggeredMonthChange = false;
 		}
 	}
 
@@ -295,9 +311,25 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const year = selectedDate.getAttribute('data-year');
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
-		this._focusDate = new Date(year, month, date);
+		this._focusDate = new Date(year, month, date, defaultHour, 0, 0);
 
-		this.selectedValue = (new Date(year, month, date)).toISOString();
+		const localDate = {
+			year: parseInt(year),
+			month: parseInt(month),
+			date: parseInt(date),
+			hours: 12,
+			minutes: 0,
+			seconds: 0
+		};
+		const dateInUTCDateTime = convertLocalToUTCDateTime(localDate);
+		this.selectedValue = (new Date(Date.UTC(
+			dateInUTCDateTime.year,
+			dateInUTCDateTime.month,
+			dateInUTCDateTime.date,
+			dateInUTCDateTime.hours,
+			dateInUTCDateTime.minutes,
+			dateInUTCDateTime.seconds)
+		)).toISOString();
 
 		const eventDetails = {
 			bubbles: true,
@@ -375,10 +407,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEUP: {
-				if (e.shiftKey) {
-					// Changes the grid of dates to the previous Year.
-					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
-				}
 				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear);
 
 				this._focusDate.setDate(this._focusDate.getDate() - diff);
@@ -388,16 +416,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const newFocusDateMonth = this._focusDate.getMonth();
 				if (newFocusDateMonth === this._shownMonth) this._focusDate.setDate(this._focusDate.getDate() - 7);
 
-				this._focusDate = new Date(this._focusDate.getFullYear(), this._focusDate.getMonth(), this._focusDate.getDate());
+				this._focusDate = new Date(this._focusDate.getFullYear(), this._focusDate.getMonth(), this._focusDate.getDate(), defaultHour, 0, 0);
 
 				this._updateShownMonthDecrease();
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEDOWN: {
-				if (e.shiftKey) {
-					// Changes the grid of dates to the next Year.
-					// Sets focus on the same day of the same week. If that day does not exist, then moves focus to the same day of the previous or next week.
-				}
 				const nextMonth = getNextMonth(this._shownMonth);
 				const diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear);
 
@@ -411,7 +435,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				) {
 					this._focusDate.setDate(this._focusDate.getDate() - 7);
 				}
-				this._focusDate = new Date(this._focusDate.getFullYear(), this._focusDate.getMonth(), this._focusDate.getDate());
+				this._focusDate = new Date(this._focusDate.getFullYear(), this._focusDate.getMonth(), this._focusDate.getDate(), defaultHour, 0, 0);
 				this._updateShownMonthIncrease();
 				preventDefault = true;
 				break;
@@ -443,16 +467,16 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		// else the 1st of the month should be
 		const selectedValueDate = this.selectedValue ? parseDate(this.selectedValue) : null;
 		if (selectedValueDate && selectedValueDate.getMonth() === this._shownMonth) {
-			this._focusDate = new Date(selectedValueDate.getFullYear(), selectedValueDate.getMonth(), selectedValueDate.getDate());
+			this._focusDate = new Date(selectedValueDate.getFullYear(), selectedValueDate.getMonth(), selectedValueDate.getDate(), defaultHour, 0, 0);
 		} else {
-			this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
+			this._focusDate = new Date(this._shownYear, this._shownMonth, 1, defaultHour, 0, 0);
 		}
 	}
 
 	_updateFocusDateOnKeyDown(numDays) {
 		const oldFocusDate = new Date(this._focusDate);
 		this._focusDate.setDate(this._focusDate.getDate() + numDays);
-		this._focusDate = new Date(this._focusDate.getFullYear(), this._focusDate.getMonth(), this._focusDate.getDate());
+		this._focusDate = new Date(this._focusDate.getFullYear(), this._focusDate.getMonth(), this._focusDate.getDate(), defaultHour, 0, 0);
 		this._keyboardTriggeredMonthChange = true;
 		const date = this._getFocusDateElement();
 		if (!date) {
