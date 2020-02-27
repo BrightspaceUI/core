@@ -121,17 +121,8 @@ export function getPrevMonth(month) {
 }
 
 export function getToday() {
-	const todayInUTC = new Date();
-	const todayInUTCObj = {
-		year: todayInUTC.getFullYear(),
-		month: todayInUTC.getMonth() + 1,
-		date: todayInUTC.getDate(),
-		hours: todayInUTC.getHours(),
-		minutes: todayInUTC.getMinutes(),
-		seconds: todayInUTC.getSeconds()
-	};
-	const todayInLocal = convertUTCToLocalDateTime(todayInUTCObj);
-	return new Date(todayInLocal.year, todayInLocal.month - 1, todayInLocal.date, defaultHour, 0, 0);
+	const todayInUTC = new Date().toISOString();
+	return parseDate(todayInUTC);
 }
 
 export function parseDate(val) {

@@ -6,6 +6,7 @@ import { checkIfDatesEqual,
 	getNumberOfDaysInMonth,
 	getNumberOfDaysToSameWeekPrevMonth,
 	getPrevMonth,
+	getToday,
 	parseDate
 } from '../calendar.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
@@ -19,12 +20,10 @@ describe('d2l-calendar', () => {
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 
 	describe('accessibility', () => {
-
 		it('passes all axe tests', async() => {
 			const calendar = await fixture(normalFixture);
 			await expect(calendar).to.be.accessible();
 		});
-
 	});
 
 	describe('events', () => {
@@ -34,10 +33,10 @@ describe('d2l-calendar', () => {
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 
-			expect(detail.date).to.contain('2015-09-01T');
-			expect(calendar.selectedValue).to.contain('2015-09-01T');
+			expect(detail.date).to.equal('2015-09-01T16:00:00.000Z');
+			expect(calendar.selectedValue).to.equal('2015-09-01T16:00:00.000Z');
 
-			const expectedFocusDate = new Date(detail.date);
+			const expectedFocusDate = new Date(2015, 8, 1, 12, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -47,10 +46,10 @@ describe('d2l-calendar', () => {
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 
-			expect(detail.date).to.contain('2015-08-31T');
-			expect(calendar.selectedValue).to.contain('2015-08-31T');
+			expect(detail.date).to.equal('2015-08-31T16:00:00.000Z');
+			expect(calendar.selectedValue).to.equal('2015-08-31T16:00:00.000Z');
 
-			const expectedFocusDate = new Date(detail.date);
+			const expectedFocusDate = new Date(2015, 7, 31, 12, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -60,10 +59,10 @@ describe('d2l-calendar', () => {
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 
-			expect(detail.date).to.contain('2015-10-01T');
-			expect(calendar.selectedValue).to.contain('2015-10-01T');
+			expect(detail.date).to.equal('2015-10-01T16:00:00.000Z');
+			expect(calendar.selectedValue).to.equal('2015-10-01T16:00:00.000Z');
 
-			const expectedFocusDate = new Date(detail.date);
+			const expectedFocusDate = new Date(2015, 9, 1, 12, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -73,10 +72,10 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 13));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 
-			expect(detail.date).to.contain('2015-09-20T');
-			expect(calendar.selectedValue).to.contain('2015-09-20T');
+			expect(detail.date).to.equal('2015-09-20T16:00:00.000Z');
+			expect(calendar.selectedValue).to.equal('2015-09-20T16:00:00.000Z');
 
-			const expectedFocusDate = new Date(detail.date);
+			const expectedFocusDate = new Date(2015, 8, 20, 12, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
@@ -86,11 +85,26 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 32));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 
-			expect(detail.date).to.contain('2015-09-02T');
-			expect(calendar.selectedValue).to.contain('2015-09-02T');
+			expect(detail.date).to.equal('2015-09-02T16:00:00.000Z');
+			expect(calendar.selectedValue).to.equal('2015-09-02T16:00:00.000Z');
 
-			const expectedFocusDate = new Date(detail.date);
+			const expectedFocusDate = new Date(2015, 8, 2, 12, 0, 0);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('converts date to correct timezone', async() => {
+			documentLocaleSettings.timezone.identifier = 'Pacific/Apia'; // 13 hour difference
+			const calendar = await fixture(normalFixture);
+			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
+			setTimeout(() => el.click());
+			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+
+			expect(detail.date).to.equal('2015-09-01T23:00:00.000Z');
+			expect(calendar.selectedValue).to.equal('2015-09-01T23:00:00.000Z');
+
+			const expectedFocusDate = new Date(2015, 8, 2, 12, 0, 0);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			documentLocaleSettings.timezone.identifier = 'America/Toronto';
 		});
 	});
 
@@ -476,6 +490,28 @@ describe('d2l-calendar', () => {
 
 			it('should return November as previous month of December', () => {
 				expect(getPrevMonth(11)).to.equal(10);
+			});
+		});
+
+		describe('getToday', () => {
+			let clock;
+			beforeEach(() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				clock = sinon.useFakeTimers(newToday.getTime());
+			});
+
+			afterEach(() => {
+				clock.restore();
+				documentLocaleSettings.timezone.identifier = 'America/Toronto';
+			});
+
+			it('should return expected day in America/Toronto timezone', () => {
+				expect(getToday()).to.deep.equal(new Date(2018, 1, 12, 12, 0, 0));
+			});
+
+			it('should return expected day in Australia/Eucla timezone', () => {
+				documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
+				expect(getToday()).to.deep.equal(new Date(2018, 1, 13, 12, 0, 0));
 			});
 		});
 
