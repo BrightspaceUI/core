@@ -445,7 +445,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 			const targetRect = target.getBoundingClientRect();
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
-			const headerFooterHeight =  header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
+			const headerRect = header.getBoundingClientRect();
+			const footerRect = footer.getBoundingClientRect();
+			const headerFooterHeight = headerRect.height + footerRect.height;
+			const widestRectWidth = Math.max(headerRect.width, contentRect.width, footerRect.width);
 
 			const spaceAround = this._constrainSpaceAround({
 				above: targetRect.top - 50,
@@ -456,14 +459,14 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 			const spaceRequired = {
 				height: contentRect.height + headerFooterHeight + 10,
-				width: contentRect.width
+				width: widestRectWidth
 			};
 
 			if (!ignoreVertical) {
 				this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
 			}
 
-			const centerDelta = contentRect.width - targetRect.width;
+			const centerDelta = widestRectWidth - targetRect.width;
 			const position = this._getPosition(spaceAround, centerDelta);
 			if (position) {
 				this._position = position;
@@ -481,7 +484,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 		};
 
-		this._width = this._getWidth(content.scrollWidth);
+		this._width = this._getWidth(Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth));
 		await this.updateComplete;
 
 		await adjustPosition();
