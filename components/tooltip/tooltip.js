@@ -12,7 +12,8 @@ class Tooltip extends LitElement {
 			_maxHeight: { type: Number },
 			_width: { type: Number },
 			_x: { type: Number },
-			_y: { type: Number }
+			_y: { type: Number },
+			_targetRect: { type: Object }
 		};
 	}
 
@@ -28,6 +29,11 @@ class Tooltip extends LitElement {
 				top: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
 				width: 100%;
 				z-index: 1000; /* position on top of floating buttons */
+			}
+
+			.d2l-tooltip-target {
+				position: absolute;
+				display: inline-block;
 			}
 
 			:host([opened]) {
@@ -174,6 +180,7 @@ class Tooltip extends LitElement {
 		super();
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
+		this._onResize = this._onResize.bind(this);
 	}
 
 	get for() {
@@ -214,7 +221,7 @@ class Tooltip extends LitElement {
 		};
 
 		const positionStyle = {
-			left: `${this._x}px`
+
 		};
 		if (this.openedAbove) {
 			positionStyle.bottom = `${this._y}px`;
@@ -222,17 +229,40 @@ class Tooltip extends LitElement {
 			positionStyle.top = `${this._y}px`;
 		}
 
+		const targetStyle = {};
+		if (this._targetRect) {
+			targetStyle.x = this._targetRect.x,
+			targetStyle.y = this._targetRect.y,
+			targetStyle.width = this._targetRect.width,
+			targetStyle.height = this._targetRect.height;
+			console.log(targetStyle);
+		}
+
 		return html`
-			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
-					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)}>
-						<slot></slot>
+			<div class="d2l-tooltip-target" style=${styleMap(targetStyle)}>
+				<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+					<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+						<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)}>
+							<slot></slot>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="d2l-dropdown-content-pointer">
-				<div></div>
-			</div>`;
+				<div class="d2l-dropdown-content-pointer">
+					<div></div>
+				</div>
+			</div>`
+		;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		window.addEventListener('resize', this._onResize);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('resize', this._onResize);
 	}
 
 	_targetChanged() {
@@ -271,6 +301,13 @@ class Tooltip extends LitElement {
 		this.opened = true;
 	}
 
+	_onResize() {
+		if (!this.opened) {
+			return;
+		}
+		this.__position();
+	}
+
 	__getContentContainer() {
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-container');
 	}
@@ -297,6 +334,8 @@ class Tooltip extends LitElement {
 		if (!target) {
 			return;
 		}
+		this._targetRect = target.getBoundingClientRect();
+		console.log(target.getBoundingClientRect());
 
 		const content = this.__getContentContainer();
 		const container = this.__getWidthContainer();
@@ -306,7 +345,9 @@ class Tooltip extends LitElement {
 		await this.updateComplete;
 
 		this._width = this._getWidth(content.scrollWidth);
-		console.log(content.scrollWidth);
+		await this.updateComplete;
+
+		this._y = 0;
 		await this.updateComplete;
 
 		const targetRect = target.getBoundingClientRect();
@@ -324,25 +365,31 @@ class Tooltip extends LitElement {
 			width: containerRect.width
 		};
 
-		console.log(targetRect);
-		console.log(containerRect);
+		//console.log(targetRect);
+		// console.log(containerRect);
 		// this._x = targetRect.x - contentRect.x;
-		this._y = (targetRect.y - containerRect.y);// + (targetRect.height / 2) + 5;
+		// this._y = (targetRect.y - containerRect.y);// + (targetRect.height / 2) + 5;
 
 		// this._y = targetRect.y - containerRect.height;
 		// top of the target is 169
 		// -
 
 		// console.log(this._x);
-		console.log(this._y);
+		// console.log(`yL ${  this._y}`);
+
+		// console.log(targetRect);
+		// console.log(containerRect);
 
 		this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
 
-		if (this.openedAbove) {
-			this._y = (containerRect.y - targetRect.y + containerRect.height);
-		} else {
-			this._y = (targetRect.y - containerRect.y);
-		}
+		// if (this.openedAbove) {
+		// this._y = (containerRect.y - targetRect.y + containerRect.height) + (targetRect.height / 2) + 5;
+		// } else {
+
+		// this._y = (targetRect.y - containerRect.y) + (targetRect.height / 2) + 5;
+
+		// this._y = (targetRect.y - containerRect._y) + (targetRect.height / 2) + 5;
+		// }
 	}
 
 	_getWidth(scrollWidth) {
