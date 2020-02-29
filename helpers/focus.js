@@ -99,13 +99,11 @@ export function getPreviousFocusable(node, includeHidden) {
 	return focusable;
 }
 
-export function getNextFocusable(node, includeHidden, predicate) {
+export function getNextFocusable(node, includeHidden) {
 
 	if (!node) return null;
 
 	if (includeHidden === undefined) includeHidden = false;
-
-	if (predicate === undefined) predicate = () => true;
 
 	const _getNextAncestorSibling = (node) => {
 		let parentNode = getComposedParent(node);
@@ -121,24 +119,24 @@ export function getNextFocusable(node, includeHidden, predicate) {
 	};
 
 	const _getNextFocusable = (node, ignore, ignoreChildren) => {
-		if (!ignore && isFocusable(node, includeHidden)) return node;
+		if (!ignore) return node;
 
 		if (!ignoreChildren) {
-			const focusable = getFirstFocusableDescendant(node, includeHidden, predicate);
-			if (focusable && predicate(focusable)) return focusable;
+			const focusable = getFirstFocusableDescendant(node, includeHidden);
+			if (focusable) return focusable;
 		}
 
 		const nextSibling = node.nextElementSibling;
 		if (nextSibling) {
 			const siblingFocusable = _getNextFocusable(nextSibling, false, false);
-			if (siblingFocusable && predicate(siblingFocusable)) return siblingFocusable;
+			if (siblingFocusable) return siblingFocusable;
 			return null;
 		}
 
 		const nextParentSibling = _getNextAncestorSibling(node);
 		if (nextParentSibling) {
 			const parentSibingFocusable = _getNextFocusable(nextParentSibling, false, false);
-			if (parentSibingFocusable && predicate(parentSibingFocusable)) return parentSibingFocusable;
+			if (parentSibingFocusable) return parentSibingFocusable;
 		}
 
 		return null;
