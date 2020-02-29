@@ -119,7 +119,7 @@ export function getNextFocusable(node, includeHidden) {
 	};
 
 	const _getNextFocusable = (node, ignore, ignoreChildren) => {
-		if (!ignore) return node;
+		if (!ignore && isFocusable(node, includeHidden)) return node;
 
 		if (!ignoreChildren) {
 			const focusable = getFirstFocusableDescendant(node, includeHidden);
