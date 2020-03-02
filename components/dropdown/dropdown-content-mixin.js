@@ -242,7 +242,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
 			/* set width of content in addition to width container so IE will render scroll inside border */
 			width: this._width ? `${this._width + 18}px` : '',
-		}
+		};
 
 		const contentStyle = {
 			...contentWidthStyle,
