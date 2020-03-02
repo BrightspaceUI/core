@@ -94,7 +94,7 @@ describe('focus', () => {
 
 	});
 
-	describe('getFirstFocusableDescendant', () => {
+	describe('getFirstFocusableDescendant without predicate', () => {
 
 		it('returns focusable child', async() => {
 			const elem = await fixture(simpleFixture);
@@ -124,6 +124,42 @@ describe('focus', () => {
 			const elem = await fixture(wcFixture);
 			expect(getFirstFocusableDescendant(elem.getContent()))
 				.to.equal(elem.querySelector('#light1'));
+		});
+
+	});
+
+	describe('getFirstFocusableDescendant with predicate', () => {
+		const lightPredicate = node => node.id === 'light2';
+		const shadowPredicate = node => node.id === 'shadow2';
+
+		it('returns focusable child', async() => {
+			const elem = await fixture(simpleFixture);
+			expect(getFirstFocusableDescendant(elem, false, lightPredicate))
+				.to.equal(elem.querySelector('#light2'));
+		});
+
+		it('returns focusable descendant', async() => {
+			const elem = await fixture(nestedFixture);
+			expect(getFirstFocusableDescendant(elem, false, lightPredicate))
+				.to.equal(elem.querySelector('#light2'));
+		});
+
+		it('returns null if no children', async() => {
+			const elem = await fixture(html`<div></div>`);
+			expect(getFirstFocusableDescendant(elem, false, lightPredicate))
+				.to.be.null;
+		});
+
+		it('returns focusable child in shadow-dom', async() => {
+			const elem = await fixture(wcFixture);
+			expect(getFirstFocusableDescendant(elem, false, shadowPredicate))
+				.to.equal(elem.getShadow2());
+		});
+
+		it('returns focusable distributed child', async() => {
+			const elem = await fixture(wcFixture);
+			expect(getFirstFocusableDescendant(elem.getContent(), false, lightPredicate))
+				.to.equal(elem.querySelector('#light2'));
 		});
 
 	});
