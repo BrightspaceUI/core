@@ -39,7 +39,7 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	firstUpdated() {
 		super.firstUpdated();
 		this.addEventListener('keydown', this._onKeyDown);
-		this.shadowRoot.querySelector('a').addEventListener('click', this._onClick);
+		this.addEventListener('click', this._onClick);
 	}
 
 	render() {
@@ -61,6 +61,7 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	}
 
 	_onClick(e) {
+		this.shadowRoot.querySelector('a').dispatchEvent(new CustomEvent('click', { bubbles: false }));
 		if (this.preventDefault) {
 			e.preventDefault();
 		}
