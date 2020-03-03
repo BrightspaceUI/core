@@ -34,144 +34,20 @@ class Tooltip extends LitElement {
 			.d2l-tooltip-target {
 				position: absolute;
 				display: inline-block;
+				pointer-events: none;
+				background-color: red;
+				opacity: 0.5;
+			}
+
+			.d2l-tooltip {
+				positon: absolute;
+				width: 50%;
+				height: 50%;
+				background-color: green;
 			}
 
 			:host([opened]) {
 				display: inline-block;
-			}
-
-			:host([opened]) {
-				-webkit-animation: d2l-dropdown-animation 300ms ease;
-				animation: d2l-dropdown-animation 300ms ease;
-			}
-
-			:host([opened-above]) {
-				-webkit-animation: d2l-dropdown-above-animation 300ms ease;
-				animation: d2l-dropdown-above-animation 300ms ease;
-			}
-
-			.d2l-dropdown-content-pointer {
-				position: absolute;
-				display: inline-block;
-				clip: rect(-5px, 21px, 8px, -7px);
-				top: -7px;
-				z-index: 1;
-			}
-
-			.d2l-dropdown-content-pointer > div {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-mica);
-				border-radius: 0.1rem;
-				box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
-				height: 16px;
-				width: 16px;
-				transform: rotate(45deg);
-				-webkit-transform: rotate(45deg);
-			}
-
-			:host([opened-above]) .d2l-dropdown-content-pointer {
-				top: auto;
-				clip: rect(9px, 21px, 22px, -3px);
-				bottom: -8px;
-			}
-
-			:host([opened-above]) .d2l-dropdown-content-pointer > div {
-				box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
-			}
-
-			:host([no-pointer]) .d2l-dropdown-content-pointer {
-				display: none;
-			}
-
-			.d2l-dropdown-content-position {
-				border-radius: 0.3rem;
-				display: inline-block;
-				position: absolute;
-			}
-
-			.d2l-dropdown-content-width {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-mica);
-				border-radius: 0.3rem;
-				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
-				box-sizing: border-box;
-				min-width: 70px;
-				max-width: 370px;
-				position: absolute;
-				width: 100vw;
-			}
-
-			.d2l-dropdown-content-container {
-				box-sizing: border-box;
-				display: inline-block;
-				max-width: 100%;
-				outline: none;
-				padding: 1rem;
-				vertical-align: top; /* prevents baseline bloat - fix for github issue #173 */
-			}
-
-			.d2l-dropdown-content-top,
-			.d2l-dropdown-content-bottom {
-				min-height: 5px;
-				position: relative;
-				z-index: 2;
-			}
-
-			.d2l-dropdown-content-header {
-				border-bottom: 1px solid var(--d2l-color-mica);
-				padding: 1rem;
-			}
-
-			.d2l-dropdown-content-footer {
-				border-top: 1px solid var(--d2l-color-mica);
-				padding: 1rem;
-			}
-
-			:host([no-padding]) .d2l-dropdown-content-container,
-			:host([no-padding-header]) .d2l-dropdown-content-header,
-			:host([no-padding-footer]) .d2l-dropdown-content-footer {
-				padding: 0;
-			}
-
-			.d2l-dropdown-content-top {
-				border-top-left-radius: 0.3rem;
-				border-top-right-radius: 0.3rem;
-			}
-
-			.d2l-dropdown-content-bottom {
-				border-bottom-left-radius: 0.3rem;
-				border-bottom-right-radius: 0.3rem;
-			}
-
-			.d2l-dropdown-content-top-scroll {
-				box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.05);
-			}
-
-			.d2l-dropdown-content-bottom-scroll {
-				box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.05);
-			}
-
-			:host([dir="rtl"]) {
-				left: auto;
-				right: 0;
-				text-align: right;
-			}
-
-			@keyframes d2l-dropdown-animation {
-				0% { transform: translate(0,-10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
-			}
-			@keyframes d2l-dropdown-above-animation {
-				0% { transform: translate(0,10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
-			}
-			@-webkit-keyframes d2l-dropdown-animation {
-				0% { -webkit-transform: translate(0,-10px); opacity: 0; }
-				100% { -webkit-transform: translate(0,0); opacity: 1; }
-			}
-			@-webkit-keyframes d2l-dropdown-above-animation {
-				0% { -webkit-transform: translate(0,10px); opacity: 0; }
-				100% { -webkit-transform: translate(0,0); opacity: 1; }
 			}
 		`;
 	}
@@ -210,45 +86,20 @@ class Tooltip extends LitElement {
 
 	render() {
 
-		const widthStyle = {
-			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : ''
-		};
-
-		const containerStyle = {
-			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: this._width ? `${this._width + 18}px` : '',
-		};
-
-		const positionStyle = {
-
-		};
-		if (this.openedAbove) {
-			positionStyle.bottom = `${this._y}px`;
-		} else {
-			positionStyle.top = `${this._y}px`;
-		}
+		// absolute positioned on top of the target
 
 		const targetStyle = {};
 		if (this._targetRect) {
-			targetStyle.x = this._targetRect.x,
-			targetStyle.y = this._targetRect.y,
-			targetStyle.width = this._targetRect.width,
-			targetStyle.height = this._targetRect.height;
+			targetStyle.left = `${this._targetRect.x}px`,
+			targetStyle.top = `${this._targetRect.y}px`,
+			targetStyle.width = `${this._targetRect.width}px`,
+			targetStyle.height = `${this._targetRect.height}px`;
 			console.log(targetStyle);
 		}
 
 		return html`
 			<div class="d2l-tooltip-target" style=${styleMap(targetStyle)}>
-				<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-					<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
-						<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)}>
-							<slot></slot>
-						</div>
-					</div>
-				</div>
-				<div class="d2l-dropdown-content-pointer">
-					<div></div>
+				<div class="d2l-tooltip">
 				</div>
 			</div>`
 		;
@@ -320,10 +171,13 @@ class Tooltip extends LitElement {
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-width');
 	}
 
+	__getTooltipTarget() {
+		return this.shadowRoot.querySelector('.d2l-tooltip-target');
+	}
+
 	async _openedChanged(newValue) {
 		if (newValue) {
-			const content = this.__getContentContainer();
-			content.scrollTop = 0;
+			await this.updateComplete;
 			await this.__position();
 		}
 	}
@@ -334,88 +188,30 @@ class Tooltip extends LitElement {
 		if (!target) {
 			return;
 		}
-		this._targetRect = target.getBoundingClientRect();
-		console.log(target.getBoundingClientRect());
-
-		const content = this.__getContentContainer();
-		const container = this.__getWidthContainer();
-
-		/* don't let dropdown content horizontally overflow viewport */
-		this._width = null;
-		await this.updateComplete;
-
-		this._width = this._getWidth(content.scrollWidth);
-		await this.updateComplete;
-
-		this._y = 0;
-		await this.updateComplete;
+		const tooltipTarget = this.__getTooltipTarget();
+		if (!tooltipTarget) {
+			return;
+		}
 
 		const targetRect = target.getBoundingClientRect();
-		const containerRect = container.getBoundingClientRect();
+		const tooltipRect = tooltipTarget.getBoundingClientRect();
+		const top = targetRect.top - tooltipRect.top + tooltipTarget.offsetTop;
+		const left = targetRect.left - tooltipRect.left + tooltipTarget.offsetLeft;
 
-		const spaceAround = this._constrainSpaceAround({
-			above: targetRect.top - 50,
-			below: window.innerHeight - targetRect.bottom - 80,
-			left: targetRect.left - 20,
-			right: document.documentElement.clientWidth - targetRect.right - 15
-		});
-
-		const spaceRequired = {
-			height: containerRect.height,
-			width: containerRect.width
+		this._targetRect = {
+			x: left,
+			y: top,
+			width: targetRect.width,
+			height: targetRect.height
 		};
-
-		//console.log(targetRect);
-		// console.log(containerRect);
-		// this._x = targetRect.x - contentRect.x;
-		// this._y = (targetRect.y - containerRect.y);// + (targetRect.height / 2) + 5;
-
-		// this._y = targetRect.y - containerRect.height;
-		// top of the target is 169
-		// -
-
-		// console.log(this._x);
-		// console.log(`yL ${  this._y}`);
-
-		// console.log(targetRect);
-		// console.log(containerRect);
-
-		this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
-
-		// if (this.openedAbove) {
-		// this._y = (containerRect.y - targetRect.y + containerRect.height) + (targetRect.height / 2) + 5;
-		// } else {
-
-		// this._y = (targetRect.y - containerRect.y) + (targetRect.height / 2) + 5;
-
-		// this._y = (targetRect.y - containerRect._y) + (targetRect.height / 2) + 5;
-		// }
 	}
 
-	_getWidth(scrollWidth) {
-		let width = window.innerWidth - 40;
-		if (width > scrollWidth) {
-			width = scrollWidth;
-		}
-		return width;
-	}
-
-	_getOpenedAbove(spaceAround, spaceRequired) {
-		return (spaceAround.below < spaceRequired.height) && (
-			(spaceAround.above > spaceRequired.height) ||
-			(spaceAround.above > spaceAround.below)
-		);
-	}
-
-	_constrainSpaceAround(spaceAround) {
-		const constrained = { ...spaceAround };
-		if (this.boundary) {
-			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
-			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
-			constrained.left = this.boundary.left >= 0 ? Math.min(spaceAround.left, this.boundary.left) : spaceAround.left;
-			constrained.right = this.boundary.right >= 0 ? Math.min(spaceAround.right, this.boundary.right) : spaceAround.right;
-		}
-		return constrained;
+	_getOrigin(e) {
+		const boundingRect = e.getBoundingClientRect();
+		return {
+			left: boundingRect.left - e.offsetLeft,
+			top: boundingRect.top - e.offsetTop
+		};
 	}
 
 	_addListeners() {

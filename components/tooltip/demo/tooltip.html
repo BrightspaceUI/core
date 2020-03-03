@@ -9,6 +9,7 @@
 	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script type="module">
 		import '../../demo/demo-page.js';
+		import '../../inputs/input-text.js';
 		import '../tooltip.js';
 	</script>
 </head>
@@ -20,7 +21,7 @@
 		<h2>Generic Tooltip</h2>
 		<d2l-demo-snippet>
 			<template>
-				<button id="my-button">target</button>
+				<d2l-input-text id="my-button">target</d2l-input-text>
 
 				<div>
 				<d2l-tooltip for="my-button">
