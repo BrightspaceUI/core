@@ -48,8 +48,9 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		this.__voaAttached = true;
-		if (this.visibleOnAncestor) this.__voaInit();
-		else this.__voaState = null;
+		if (this.visibleOnAncestor) {
+			requestAnimationFrame(() => this.__voaInit());
+		} else this.__voaState = null;
 	}
 
 	disconnectedCallback() {
