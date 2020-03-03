@@ -37,13 +37,14 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 
 	firstUpdated() {
 		super.firstUpdated();
-		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('click', this._onClick);
+		this.addEventListener('keydown', this._onKeyDown);
 	}
 
 	render() {
+		const rel = this.target ? 'noreferrer noopener' : undefined;
 		return html`
-			<a href="${ifDefined(this.href)}" target="${ifDefined(this.target)}" tabindex="-1">${this.text}</a>
+			<a href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">${this.text}</a>
 		`;
 	}
 
