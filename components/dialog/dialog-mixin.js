@@ -1,7 +1,8 @@
+import '../focus-trap/focus-trap.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -53,7 +54,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._top = 0;
 		this._width = 0;
 		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
-		this._handleBodyFocus = this._handleBodyFocus.bind(this);
 		this._updateSize = this._updateSize.bind(this);
 		this._updateOverflow = this._updateOverflow.bind(this);
 	}
@@ -102,7 +102,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
-		document.body.addEventListener('focus', this._handleBodyFocus, true);
 		this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
 	}
 
@@ -121,10 +120,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._state = 'hiding';
 	}
 
-	_focusOpener() {
+	async _focusOpener() {
 		if (this._opener && this._opener.focus) {
-			this._opener.focus();
-			this._opener = null;
+			// wait for inactive focus trap
+			requestAnimationFrame(() => {
+				this._opener.focus();
+				this._opener = null;
+			});
 		}
 	}
 
@@ -132,12 +134,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
 			const firstFocusable = getNextFocusable(content);
-			if (!firstFocusable.classList.contains('d2l-dialog-trap-end')) {
+			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), firstFocusable)) {
 				firstFocusable.focus();
 				return;
 			}
 		}
-		this.shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
+		this.shadowRoot.querySelector('d2l-focus-trap').focus();
 	}
 
 	_focusInitial() {
@@ -184,13 +186,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		return width;
 	}
 
-	_handleBodyFocus(e) {
-		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
-		const target = e.composedPath()[0];
-		if (isComposedAncestor(dialog, target)) return;
-		this._focusFirst();
-	}
-
 	_handleClick(e) {
 		if (!e.target.hasAttribute('dialog-action')) return;
 		const action = e.target.getAttribute('dialog-action');
@@ -227,6 +222,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		e.stopPropagation();
 	}
 
+	_handleFocusTrapEnter() {
+		this._focusFirst();
+	}
+
 	_handleKeyDown(e) {
 		if (!this.opened) return;
 		if (e.keyCode === 27) {
@@ -234,32 +233,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			e.stopPropagation();
 			e.preventDefault();
 		}
-	}
-
-	_handleTrapEndFocusIn(e) {
-		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
-		if (isComposedAncestor(dialog, e.relatedTarget)) {
-			// user is exiting dialog via forward tabbing...
-			const firstFocusable = getNextFocusable(dialog.querySelector('.d2l-dialog-trap-start'));
-			if (firstFocusable) {
-				firstFocusable.focus();
-				return;
-			}
-		}
-		this._focusFirst();
-	}
-
-	_handleTrapStartFocusIn(e) {
-		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
-		if (isComposedAncestor(dialog, e.relatedTarget)) {
-			// user is exiting dialog via back tabbing...
-			const lastFocusable = getPreviousFocusable(dialog.querySelector('.d2l-dialog-trap-end'));
-			if (lastFocusable) {
-				lastFocusable.focus();
-				return;
-			}
-		}
-		this._focusFirst();
 	}
 
 	_open() {
@@ -302,7 +275,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_removeHandlers() {
 		window.removeEventListener('resize', this._updateSize);
-		document.body.removeEventListener('focus', this._handleBodyFocus, true);
 		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
@@ -316,17 +288,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._width) styles.width = `${this._width}px`;
 		else styles.width = 'auto';
 
-		inner = html`
-			<span
-				class="d2l-dialog-trap-start"
-				@focusin="${this._handleTrapStartFocusIn}"
-				tabindex="0"></span>
-			${inner}
-			<span
-				class="d2l-dialog-trap-end"
-				@focusin="${this._handleTrapEndFocusIn}"
-				tabindex="0"></span>
-		`;
+		inner = html`<d2l-focus-trap
+			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
+			?trap="${this.opened}">
+				${inner}
+			</d2l-focus-trap>`;
 
 		return html`${this._useNative ?
 			html`<dialog
