@@ -15,7 +15,8 @@ class Tooltip extends LitElement {
 			_x: { type: Number },
 			_y: { type: Number },
 			_targetRect: { type: Object },
-			_offsetVertical: { type: Number }
+			_offsetVertical: { type: Number },
+			_position: { type: Number }
 		};
 	}
 
@@ -104,6 +105,12 @@ class Tooltip extends LitElement {
 				bottom: 100%;
 			}
 
+			.d2l-dropdown-content-position {
+				border-radius: 0.3rem;
+				display: inline-block;
+				position: absolute;
+			}
+
 		`];
 	}
 
@@ -152,10 +159,22 @@ class Tooltip extends LitElement {
 			// console.log(targetStyle);
 		}
 
+		const positionStyle = {};
+		if (this._position) {
+			positionStyle.left = `${this._position}px`;
+		}
+
+		const widthStyle = {
+			/* add 2 to content width since scrollWidth does not include border */
+			// width: this._width ? `${this._width + 20}px` : ''
+		};
+
 		return html`
 			<div class="d2l-tooltip-target" style=${styleMap(targetStyle)}>
-				<div class="d2l-dropdown-content-container d2l-body-compact">
-					<slot></slot>
+				<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+					<div class="d2l-dropdown-content-container d2l-body-compact" style=${styleMap(widthStyle)}>
+						<slot></slot>
+					</div>
 				</div>
 				<div class="d2l-dropdown-content-pointer">
 					<div></div>
@@ -248,7 +267,10 @@ class Tooltip extends LitElement {
 		this._width = null;
 		await this.updateComplete;
 
+		console.log();
 		const content = this.__getContentContainer();
+
+		console.log(content.scrollWidth);
 
 		this._width = this._getWidth(content.scrollWidth);
 		await this.updateComplete;
@@ -274,6 +296,12 @@ class Tooltip extends LitElement {
 
 		this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
 
+		const centerDelta = contentRect.width - targetRect.width;
+		const position = this._getPosition(spaceAround, centerDelta);
+		if (position) {
+			this._position = position;
+		}
+
 		this._targetRect = {
 			x: left,
 			y: this.openedAbove ? top - this._offsetVertical : top + targetRect.height + this._offsetVertical,
@@ -288,6 +316,37 @@ class Tooltip extends LitElement {
 			width = scrollWidth;
 		}
 		return width;
+	}
+
+	_getPosition(spaceAround, centerDelta) {
+
+		const contentXAdjustment = centerDelta / 2;
+		if (centerDelta <= 0) {
+			return contentXAdjustment * -1;
+		}
+		if (spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
+			// center with target
+			return contentXAdjustment * -1;
+		}
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		if (!isRTL) {
+			if (spaceAround.left < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return spaceAround.left * -1;
+			} else if (spaceAround.right < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return (centerDelta * -1) + spaceAround.right;
+			}
+		} else {
+			if (spaceAround.left < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return (centerDelta * -1) + spaceAround.left;
+			} else if (spaceAround.right < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return spaceAround.right * -1;
+			}
+		}
+		return null;
 	}
 
 	_getOpenedAbove(spaceAround, spaceRequired) {
