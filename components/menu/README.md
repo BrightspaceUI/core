@@ -90,7 +90,6 @@ The link menu item, `d2l-menu-item-link`, is used for navigating.
 * `text` (required, String): text displayed by the menu item
 * `href` (required, String): the url the menu item link navigates to
 * `disabled` (Boolean): disables the menu item
-* `prevent-default` (Boolean): Disables normal link behavior.  This can help if you want both a JS handler and the browser's 'open in new tab' functionality (e.g. popup window links).
 
 ### d2l-menu-item-checkbox
 

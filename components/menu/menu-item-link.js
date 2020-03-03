@@ -8,7 +8,6 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	static get properties() {
 		return {
 			href: { type: String },
-			preventDefault: { type: Boolean, reflect: true, attribute: 'prevent-default' },
 			target: { type: String }
 		};
 	}
@@ -60,18 +59,11 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 		return null;
 	}
 
-	_onClick(e) {
-		this.shadowRoot.querySelector('a').dispatchEvent(new CustomEvent('click', { bubbles: false }));
-		if (this.preventDefault) {
-			e.preventDefault();
-		}
+	_onClick() {
+		this.shadowRoot.querySelector('a').dispatchEvent(new CustomEvent('click'));
 	}
 
 	_onKeyDown(e) {
-		if (this.preventDefault) {
-			e.preventDefault();
-			return;
-		}
 		if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
 			const target = this._getTarget();
 			if (target === '_parent') {
