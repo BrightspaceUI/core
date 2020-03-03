@@ -42,7 +42,7 @@ export const dropdownContentStyles = css`
 		background-color: #ffffff;
 		border: 1px solid var(--d2l-color-mica);
 		border-radius: 0.1rem;
-		box-shadow: -4px -4px 12px -5px rgba(86, 90, 92, .2);
+		box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 		height: 16px;
 		width: 16px;
 		transform: rotate(45deg);
@@ -56,7 +56,7 @@ export const dropdownContentStyles = css`
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-pointer > div {
-		box-shadow: 4px 4px 12px -5px rgba(86, 90, 92, .2);
+		box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 	}
 
 	:host([no-pointer]) .d2l-dropdown-content-pointer {
@@ -79,6 +79,9 @@ export const dropdownContentStyles = css`
 		max-width: 370px;
 		position: absolute;
 		width: 100vw;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-width {
@@ -87,15 +90,15 @@ export const dropdownContentStyles = css`
 
 	.d2l-dropdown-content-container {
 		box-sizing: border-box;
-		display: inline-block;
 		max-width: 100%;
 		outline: none;
 		padding: 1rem;
-		vertical-align: top; /* prevents baseline bloat - fix for github issue #173 */
 	}
 
 	.d2l-dropdown-content-top,
 	.d2l-dropdown-content-bottom {
+		box-sizing: border-box;
+		max-width: 100%;
 		min-height: 5px;
 		position: relative;
 		z-index: 2;

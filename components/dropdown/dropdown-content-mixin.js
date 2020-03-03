@@ -238,10 +238,14 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			width: this._width ? `${this._width + 20}px` : ''
 		};
 
-		const containerStyle = {
+		const contentWidthStyle = {
 			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
 			/* set width of content in addition to width container so IE will render scroll inside border */
 			width: this._width ? `${this._width + 18}px` : '',
+		};
+
+		const contentStyle = {
+			...contentWidthStyle,
 			maxHeight: this._maxHeight ? `${this._maxHeight}px` : 'none',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
@@ -260,13 +264,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
 				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
-					<div class=${classMap(topClasses)}>
+					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
-					<div class="d2l-dropdown-content-container" style=${styleMap(containerStyle)} @scroll=${this.__toggleScrollStyles}>
+					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
 						<slot></slot>
 					</div>
-					<div class=${classMap(bottomClasses)}>
+					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
 					</div>
 				</div>
@@ -445,7 +449,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 			const targetRect = target.getBoundingClientRect();
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
-			const headerFooterHeight =  header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
+			const headerFooterHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
 			const spaceAround = this._constrainSpaceAround({
 				above: targetRect.top - 50,
@@ -481,7 +485,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 		};
 
-		this._width = this._getWidth(content.scrollWidth);
+		this._width = this._getWidth(Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth));
 		await this.updateComplete;
 
 		await adjustPosition();
