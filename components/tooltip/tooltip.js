@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { bodyCompactStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -19,7 +20,7 @@ class Tooltip extends LitElement {
 	}
 
 	static get styles() {
-		return css`
+		return [bodyCompactStyles, css`
 			:host {
 				box-sizing: border-box;
 				color: var(--d2l-color-ferrite);
@@ -35,9 +36,9 @@ class Tooltip extends LitElement {
 			.d2l-tooltip-target {
 				position: absolute;
 				display: inline-block;
-				pointer-events: none;
 				background-color: red;
 				height: 1px;
+				min-width: 40px;
 			}
 
 			:host([opened]) {
@@ -69,8 +70,8 @@ class Tooltip extends LitElement {
 			}
 
 			.d2l-dropdown-content-pointer > div {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-mica);
+				background-color: var(--d2l-color-ferrite);
+				border: 1px solid var(--d2l-color-ferrite);
 				border-radius: 0.1rem;
 				box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 				height: 16px;
@@ -90,10 +91,20 @@ class Tooltip extends LitElement {
 			}
 
 			.d2l-dropdown-content-container {
-				background-color: gray;
+				background-color: var(--d2l-color-ferrite);
+				color: white;
+				position: absolute;
+				border-radius: 0.3rem;
+				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+				box-sizing: border-box;
+				padding: 9px 15px;
 			}
 
-		`;
+			:host([opened-above]) .d2l-dropdown-content-container {
+				bottom: 100%;
+			}
+
+		`];
 	}
 
 	constructor() {
@@ -143,12 +154,11 @@ class Tooltip extends LitElement {
 
 		return html`
 			<div class="d2l-tooltip-target" style=${styleMap(targetStyle)}>
-				<div class="d2l-tooltip-container">
-					<div class="d2l-tooltip-inner">
-						<div class="d2l-dropdown-content-pointer">
-							<div></div>
-						</div>
-					</div>
+				<div class="d2l-dropdown-content-container d2l-body-compact">
+					<slot></slot>
+				</div>
+				<div class="d2l-dropdown-content-pointer">
+					<div></div>
 				</div>
 			</div>`
 		;
@@ -212,14 +222,6 @@ class Tooltip extends LitElement {
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-container');
 	}
 
-	__getPositionContainer() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-position');
-	}
-
-	__getWidthContainer() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-width');
-	}
-
 	__getTooltipTarget() {
 		return this.shadowRoot.querySelector('.d2l-tooltip-target');
 	}
@@ -242,16 +244,42 @@ class Tooltip extends LitElement {
 			return;
 		}
 
+		/* don't let dropdown content horizontally overflow viewport */
+		this._width = null;
+		await this.updateComplete;
+
+		const content = this.__getContentContainer();
+
+		this._width = this._getWidth(content.scrollWidth);
+		await this.updateComplete;
+
 		const targetRect = target.getBoundingClientRect();
 		const tooltipRect = tooltipTarget.getBoundingClientRect();
+		const contentRect = content.getBoundingClientRect();
+
 		const top = targetRect.top - tooltipRect.top + tooltipTarget.offsetTop;
 		const left = targetRect.left - tooltipRect.left + tooltipTarget.offsetLeft;
 
+		const spaceAround = {
+			above: targetRect.top - 50,
+			below: window.innerHeight - targetRect.bottom - 80,
+			left: targetRect.left - 20,
+			right: document.documentElement.clientWidth - targetRect.right - 15
+		};
+
+		const spaceRequired = {
+			height: contentRect.height + 20,
+			width: contentRect.width
+		};
+
+		this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
+
 		this._targetRect = {
 			x: left,
-			y: top + targetRect.height + this._offsetVertical,
+			y: this.openedAbove ? top - this._offsetVertical : top + targetRect.height + this._offsetVertical,
 			width: targetRect.width
 		};
+
 	}
 
 	_getWidth(scrollWidth) {
@@ -260,6 +288,13 @@ class Tooltip extends LitElement {
 			width = scrollWidth;
 		}
 		return width;
+	}
+
+	_getOpenedAbove(spaceAround, spaceRequired) {
+		return (spaceAround.below < spaceRequired.height) && (
+			(spaceAround.above > spaceRequired.height) ||
+			(spaceAround.above > spaceAround.below)
+		);
 	}
 
 	_addListeners() {
