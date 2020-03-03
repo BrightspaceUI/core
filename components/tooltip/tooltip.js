@@ -13,7 +13,8 @@ class Tooltip extends LitElement {
 			_width: { type: Number },
 			_x: { type: Number },
 			_y: { type: Number },
-			_targetRect: { type: Object }
+			_targetRect: { type: Object },
+			_offsetVertical: { type: Number }
 		};
 	}
 
@@ -36,19 +37,62 @@ class Tooltip extends LitElement {
 				display: inline-block;
 				pointer-events: none;
 				background-color: red;
-				opacity: 0.5;
-			}
-
-			.d2l-tooltip {
-				positon: absolute;
-				width: 50%;
-				height: 50%;
-				background-color: green;
+				height: 1px;
 			}
 
 			:host([opened]) {
 				display: inline-block;
 			}
+
+			.d2l-tooltip-container {
+				position: relative;
+				width: 100%;
+				height: 100%;
+			}
+
+			.d2l-tooltip-inner {
+				left: 0;
+				position: absolute;
+				text-align: left;
+				top: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+				width: 100%;
+				z-index: 1000; /* position on top of floating buttons */
+			}
+
+			.d2l-dropdown-content-pointer {
+				position: absolute;
+				display: inline-block;
+				clip: rect(-5px, 21px, 8px, -7px);
+				top: -7px;
+				left: calc(50% - 7px);
+				z-index: 1;
+			}
+
+			.d2l-dropdown-content-pointer > div {
+				background-color: #ffffff;
+				border: 1px solid var(--d2l-color-mica);
+				border-radius: 0.1rem;
+				box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
+				height: 16px;
+				width: 16px;
+				transform: rotate(45deg);
+				-webkit-transform: rotate(45deg);
+			}
+
+			:host([opened-above]) .d2l-dropdown-content-pointer {
+				top: auto;
+				clip: rect(9px, 21px, 22px, -3px);
+				bottom: -8px;
+			}
+
+			:host([opened-above]) .d2l-dropdown-content-pointer > div {
+				box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
+			}
+
+			.d2l-dropdown-content-container {
+				background-color: gray;
+			}
+
 		`;
 	}
 
@@ -57,6 +101,7 @@ class Tooltip extends LitElement {
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
 		this._onResize = this._onResize.bind(this);
+		this._offsetVertical = 20;
 	}
 
 	get for() {
@@ -92,14 +137,18 @@ class Tooltip extends LitElement {
 		if (this._targetRect) {
 			targetStyle.left = `${this._targetRect.x}px`,
 			targetStyle.top = `${this._targetRect.y}px`,
-			targetStyle.width = `${this._targetRect.width}px`,
-			targetStyle.height = `${this._targetRect.height}px`;
-			console.log(targetStyle);
+			targetStyle.width = `${this._targetRect.width}px`;
+			// console.log(targetStyle);
 		}
 
 		return html`
 			<div class="d2l-tooltip-target" style=${styleMap(targetStyle)}>
-				<div class="d2l-tooltip">
+				<div class="d2l-tooltip-container">
+					<div class="d2l-tooltip-inner">
+						<div class="d2l-dropdown-content-pointer">
+							<div></div>
+						</div>
+					</div>
 				</div>
 			</div>`
 		;
@@ -200,18 +249,17 @@ class Tooltip extends LitElement {
 
 		this._targetRect = {
 			x: left,
-			y: top,
-			width: targetRect.width,
-			height: targetRect.height
+			y: top + targetRect.height + this._offsetVertical,
+			width: targetRect.width
 		};
 	}
 
-	_getOrigin(e) {
-		const boundingRect = e.getBoundingClientRect();
-		return {
-			left: boundingRect.left - e.offsetLeft,
-			top: boundingRect.top - e.offsetTop
-		};
+	_getWidth(scrollWidth) {
+		let width = window.innerWidth - 40;
+		if (width > scrollWidth) {
+			width = scrollWidth;
+		}
+		return width;
 	}
 
 	_addListeners() {
