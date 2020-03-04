@@ -26,88 +26,67 @@ class Tooltip extends LitElement {
 				box-sizing: border-box;
 				color: white;
 				display: none;
-				left: 0;
 				position: absolute;
 				text-align: left;
-				top: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
-				width: 100%;
 				z-index: 1000; /* position on top of floating buttons */
-			}
-
-			.d2l-tooltip-target {
-				position: absolute;
-				display: inline-block;
-				min-width: 40px;
 			}
 
 			:host([opened]) {
 				display: inline-block;
 			}
 
-			.d2l-tooltip-container {
-				position: relative;
-				width: 100%;
-				height: 100%;
-			}
-
-			.d2l-tooltip-inner {
-				left: 0;
-				position: absolute;
-				text-align: left;
-				top: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
-				width: 100%;
-				z-index: 1000; /* position on top of floating buttons */
-			}
-
-			.d2l-dropdown-content-pointer {
-				position: absolute;
+			.d2l-tooltip-target-position {
 				display: inline-block;
+				position: absolute;
+			}
+
+			.d2l-tooltip-pointer {
 				clip: rect(-5px, 21px, 8px, -7px);
-				top: -7px;
+				display: inline-block;
 				left: calc(50% - 7px);
+				position: absolute;
+				top: -7px;
 				z-index: 1;
 			}
 
-			.d2l-dropdown-content-pointer > div {
+			.d2l-tooltip-pointer > div {
+				-webkit-transform: rotate(45deg);
 				background-color: var(--d2l-color-ferrite);
-				border: 1px solid var(--d2l-color-ferrite);
 				border-radius: 0.1rem;
 				box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 				height: 16px;
-				width: 16px;
 				transform: rotate(45deg);
-				-webkit-transform: rotate(45deg);
+				width: 16px;
 			}
 
-			:host([opened-above]) .d2l-dropdown-content-pointer {
-				top: auto;
+			:host([opened-above]) .d2l-tooltip-pointer {
+				bottom: -7px;
 				clip: rect(9px, 21px, 22px, -3px);
-				bottom: -8px;
+				top: auto;
 			}
 
-			:host([opened-above]) .d2l-dropdown-content-pointer > div {
+			:host([opened-above]) .d2l-tooltip-pointer > div {
 				box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 			}
 
-			.d2l-dropdown-content-container {
-				background-color: var(--d2l-color-ferrite);
-				position: absolute;
-				border-radius: 0.3rem;
-				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
-				box-sizing: border-box;
-				padding: 9px 15px;
-			}
-
-			:host([opened-above]) .d2l-dropdown-content-container {
-				bottom: 100%;
-			}
-
-			.d2l-dropdown-content-position {
+			.d2l-tooltip-position {
 				display: inline-block;
 				position: absolute;
 				width: 100vw;
 			}
 
+			.d2l-tooltip-content {
+				background-color: var(--d2l-color-ferrite);
+				border-radius: 0.3rem;
+				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+				box-sizing: border-box;
+				padding: 9px 15px;
+				position: absolute;
+			}
+
+			:host([opened-above]) .d2l-tooltip-content {
+				bottom: 100%;
+			}
 		`];
 	}
 
@@ -167,13 +146,13 @@ class Tooltip extends LitElement {
 		};
 
 		return html`
-			<div class="d2l-tooltip-target" style=${styleMap(targetStyle)}>
-				<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-					<div class="d2l-dropdown-content-container d2l-body-compact" style=${styleMap(widthStyle)}>
+			<div class="d2l-tooltip-target-position" style=${styleMap(targetStyle)}>
+				<div class="d2l-tooltip-position" style=${styleMap(positionStyle)}>
+					<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(widthStyle)}>
 						<slot></slot>
 					</div>
 				</div>
-				<div class="d2l-dropdown-content-pointer">
+				<div class="d2l-tooltip-pointer">
 					<div></div>
 				</div>
 			</div>`
@@ -235,11 +214,11 @@ class Tooltip extends LitElement {
 	}
 
 	__getContentContainer() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-container');
+		return this.shadowRoot.querySelector('.d2l-tooltip-content');
 	}
 
 	__getTooltipTarget() {
-		return this.shadowRoot.querySelector('.d2l-tooltip-target');
+		return this.shadowRoot.querySelector('.d2l-tooltip-target-position');
 	}
 
 	async _openedChanged(newValue) {
@@ -264,11 +243,7 @@ class Tooltip extends LitElement {
 		this._width = null;
 		await this.updateComplete;
 
-		console.log();
 		const content = this.__getContentContainer();
-
-		console.log(content.scrollWidth);
-
 		this._width = this._getWidth(content.scrollWidth);
 		await this.updateComplete;
 
@@ -310,10 +285,7 @@ class Tooltip extends LitElement {
 	_getWidth(scrollWidth) {
 		let width = window.innerWidth - 40;
 		if (width > scrollWidth) {
-			console.log('use contnet width');
 			width = scrollWidth;
-		} else {
-			console.log(`use innerWidth: ${  window.innerWidth}`);
 		}
 		return width;
 	}
