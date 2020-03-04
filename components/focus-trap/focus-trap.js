@@ -7,7 +7,7 @@ class FocusTrap extends LitElement {
 
 	static get properties() {
 		return {
-			trap: { type: Boolean, reflect: true }
+			trap: { type: Boolean }
 		};
 	}
 
@@ -15,6 +15,9 @@ class FocusTrap extends LitElement {
 		return css`
 			:host {
 				display: inline-block;
+			}
+			:host([hidden]) {
+				display: hidden;
 			}
 		`;
 	}
