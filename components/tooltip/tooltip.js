@@ -135,12 +135,12 @@ class Tooltip extends LitElement {
 		const tooltipPositionStyle = {};
 		if (this._position) {
 			tooltipPositionStyle.left = `${this._position}px`;
-			tooltipPositionStyle.width = this._width ? `${this._width + 20}px` : '';
+			tooltipPositionStyle.width = this._width ? `${this._width}px` : '';
 		}
 
 		const contentStyle = {
 			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : ''
+			width: this._width ? `${this._width}px` : ''
 		};
 
 		return html`
@@ -242,21 +242,20 @@ class Tooltip extends LitElement {
 		await this.updateComplete;
 
 		const content = this.__getContentContainer();
-		this._width = this._getWidth(content.scrollWidth);
+		let contentRect = content.getBoundingClientRect();
+
+		this._width = this._getWidth(contentRect.width);
 		await this.updateComplete;
 
+		contentRect = content.getBoundingClientRect();
 		const targetRect = target.getBoundingClientRect();
 		const tooltipRect = tooltipTarget.getBoundingClientRect();
-		const contentRect = content.getBoundingClientRect();
-
-		const top = targetRect.top - tooltipRect.top + tooltipTarget.offsetTop;
-		const left = targetRect.left - tooltipRect.left + tooltipTarget.offsetLeft;
 
 		const spaceAround = {
-			above: targetRect.top - 50,
-			below: window.innerHeight - targetRect.bottom - 80,
-			left: targetRect.left - 20,
-			right: document.documentElement.clientWidth - targetRect.right - 15
+			above: targetRect.top,
+			below: document.documentElement.clientHeight - targetRect.bottom,
+			left: targetRect.left,
+			right: document.documentElement.clientWidth - targetRect.right
 		};
 
 		const spaceRequired = {
@@ -272,6 +271,9 @@ class Tooltip extends LitElement {
 			this._position = position;
 		}
 
+		const top = targetRect.top - tooltipRect.top + tooltipTarget.offsetTop;
+		const left = targetRect.left - tooltipRect.left + tooltipTarget.offsetLeft;
+
 		this._targetRect = {
 			x: left,
 			y: this.openedAbove ? top - this._offsetVertical : top + targetRect.height + this._offsetVertical,
@@ -281,7 +283,7 @@ class Tooltip extends LitElement {
 	}
 
 	_getWidth(scrollWidth) {
-		let width = document.body.clientWidth - 40;
+		let width = document.documentElement.clientWidth;
 		if (width > scrollWidth) {
 			width = scrollWidth;
 		}
