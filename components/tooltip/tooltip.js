@@ -24,7 +24,7 @@ class Tooltip extends LitElement {
 		return [bodyCompactStyles, css`
 			:host {
 				box-sizing: border-box;
-				color: var(--d2l-color-ferrite);
+				color: white;
 				display: none;
 				left: 0;
 				position: absolute;
@@ -37,8 +37,6 @@ class Tooltip extends LitElement {
 			.d2l-tooltip-target {
 				position: absolute;
 				display: inline-block;
-				background-color: red;
-				height: 1px;
 				min-width: 40px;
 			}
 
@@ -93,7 +91,6 @@ class Tooltip extends LitElement {
 
 			.d2l-dropdown-content-container {
 				background-color: var(--d2l-color-ferrite);
-				color: white;
 				position: absolute;
 				border-radius: 0.3rem;
 				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
@@ -106,9 +103,9 @@ class Tooltip extends LitElement {
 			}
 
 			.d2l-dropdown-content-position {
-				border-radius: 0.3rem;
 				display: inline-block;
 				position: absolute;
+				width: 100vw;
 			}
 
 		`];
@@ -166,7 +163,7 @@ class Tooltip extends LitElement {
 
 		const widthStyle = {
 			/* add 2 to content width since scrollWidth does not include border */
-			// width: this._width ? `${this._width + 20}px` : ''
+			width: this._width ? `${this._width + 20}px` : ''
 		};
 
 		return html`
@@ -313,7 +310,10 @@ class Tooltip extends LitElement {
 	_getWidth(scrollWidth) {
 		let width = window.innerWidth - 40;
 		if (width > scrollWidth) {
+			console.log('use contnet width');
 			width = scrollWidth;
+		} else {
+			console.log(`use innerWidth: ${  window.innerWidth}`);
 		}
 		return width;
 	}
