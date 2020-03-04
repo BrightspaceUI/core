@@ -135,6 +135,7 @@ class Tooltip extends LitElement {
 		const tooltipPositionStyle = {};
 		if (this._position) {
 			tooltipPositionStyle.left = `${this._position}px`;
+			tooltipPositionStyle.width = this._width ? `${this._width + 20}px` : '';
 		}
 
 		const contentStyle = {
@@ -196,7 +197,7 @@ class Tooltip extends LitElement {
 	}
 
 	close() {
-		this.opened = false;
+		// this.opened = false;
 	}
 
 	open() {
@@ -259,7 +260,7 @@ class Tooltip extends LitElement {
 		};
 
 		const spaceRequired = {
-			height: contentRect.height + 20,
+			height: contentRect.height + this._offsetVertical,
 			width: contentRect.width
 		};
 
@@ -280,7 +281,7 @@ class Tooltip extends LitElement {
 	}
 
 	_getWidth(scrollWidth) {
-		let width = window.innerWidth - 40;
+		let width = document.body.clientWidth - 40;
 		if (width > scrollWidth) {
 			width = scrollWidth;
 		}
