@@ -1,9 +1,10 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-class Tooltip extends LitElement {
+class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -29,6 +30,10 @@ class Tooltip extends LitElement {
 				position: absolute;
 				text-align: left;
 				z-index: 1000; /* position on top of floating buttons */
+			}
+
+			:host([dir="rtl"]) {
+				text-align: right;
 			}
 
 			:host([opened]) {
@@ -132,10 +137,16 @@ class Tooltip extends LitElement {
 			targetPositionStyle.width = `${this._targetRect.width}px`;
 		}
 
-		const tooltipPositionStyle = {};
+		const tooltipPositionStyle = {
+			width: this._width ? `${this._width}px` : ''
+		};
 		if (this._position) {
-			tooltipPositionStyle.left = `${this._position}px`;
-			tooltipPositionStyle.width = this._width ? `${this._width}px` : '';
+			const isRTL = this.getAttribute('dir') === 'rtl';
+			if (!isRTL) {
+				tooltipPositionStyle.left = `${this._position}px`;
+			} else {
+				tooltipPositionStyle.right = `${this._position}px`;
+			}
 		}
 
 		const contentStyle = {
