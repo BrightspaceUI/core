@@ -16,7 +16,7 @@ function getInput(elem) {
 	return elem.shadowRoot.querySelector('.d2l-input');
 }
 
-describe('d2l-input-time', () => {
+describe('d2l-input-date', () => {
 
 	describe('accessibility', () => {
 
