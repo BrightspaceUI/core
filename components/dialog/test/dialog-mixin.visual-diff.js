@@ -66,41 +66,6 @@ describe('d2l-dialog-mixin', () => {
 
 			});
 
-			describe('focus trap', () => {
-
-				before(async() => {
-					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
-				});
-
-				it('wrap to first', async function() {
-					await helper.open(page, '#dialog');
-					await page.$eval('#dialog', (dialog) => {
-						dialog.shadowRoot.querySelector('.d2l-dialog-trap-end').focus();
-					});
-					const rect = await helper.getRect(page, '#dialog');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('wrap to last', async function() {
-					await helper.open(page, '#dialog');
-					await page.$eval('#dialog', (dialog) => {
-						dialog.shadowRoot.querySelector('.d2l-dialog-trap-start').focus();
-					});
-					const rect = await helper.getRect(page, '#dialog');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('redirect from body', async function() {
-					await helper.open(page, '#dialog');
-					await page.$eval('#open', (button) => {
-						button.focus();
-					});
-					const rect = await helper.getRect(page, '#dialog');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-			});
-
 		});
 
 	});
