@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-date.js';
+		</script>
+		<title>d2l-input-date visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div style="width: 300px;">
+			<div class="visual-diff">
+				<d2l-input-date id="basic" value="2019-02-01"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="labelled" label="Start Time" value="2019-03-02"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="labelled-rtl" dir="rtl" label="Start Time" value="2019-10-31"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="label-hidden" label="Start Time" label-hidden value="2020-12-30"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="disabled" disabled value="1990-01-01"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="placeholder-default"></d2l-input-date>
+			</div>
+
+			<div class="visual-diff">
+				<d2l-input-date id="placeholder-specified" placeholder="No Start Date"></d2l-input-date>
+			</div>
+		</div>
+	</body>
+</html>
