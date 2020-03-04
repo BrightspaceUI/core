@@ -11,10 +11,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			for: { type: String },
 			opened: { type: Boolean, reflect: true },
 			openedAbove: { type: Boolean, reflect: true, attribute: 'opened-above' },
+			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			_maxHeight: { type: Number },
 			_width: { type: Number },
-			_x: { type: Number },
-			_y: { type: Number },
 			_targetRect: { type: Object },
 			_offsetVertical: { type: Number },
 			_position: { type: Number }
@@ -41,6 +40,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-target-position {
+				background-color: red;
+				width: 1px;
+				height: 1px;
 				display: inline-block;
 				position: absolute;
 			}
@@ -64,13 +66,27 @@ class Tooltip extends RtlMixin(LitElement) {
 				width: 16px;
 			}
 
-			:host([opened-above]) .d2l-tooltip-pointer {
+			:host([open-dir="top"]) .d2l-tooltip-pointer {
 				bottom: -7px;
 				clip: rect(9px, 21px, 22px, -3px);
 				top: auto;
 			}
 
-			:host([opened-above]) .d2l-tooltip-pointer > div {
+			:host([open-dir="left"]) .d2l-tooltip-pointer,
+			:host([open-dir="right"]) .d2l-tooltip-pointer {
+				left: -7px;
+				clip: rect(-3px, 9px, 21px, -3px);
+
+				top: calc(50% - 7px);
+			}
+
+			:host([open-dir="right"]) .d2l-tooltip-pointer {
+				right: -7px;
+				clip: rect(-3px, 9px, 21px, -3px);
+				left: auto;
+			}
+
+			:host([open-dir="top"]) .d2l-tooltip-pointer > div {
 				box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 			}
 
@@ -89,8 +105,12 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 			}
 
-			:host([opened-above]) .d2l-tooltip-content {
+			:host([open-dir="top"]) .d2l-tooltip-content {
 				bottom: 100%;
+			}
+
+			:host([open-dir="left"]) .d2l-tooltip-content {
+				right: 100%;
 			}
 		`];
 	}
@@ -135,17 +155,17 @@ class Tooltip extends RtlMixin(LitElement) {
 			targetPositionStyle.left = `${this._targetRect.x}px`,
 			targetPositionStyle.top = `${this._targetRect.y}px`,
 			targetPositionStyle.width = `${this._targetRect.width}px`;
+			targetPositionStyle.height = `${this._targetRect.height}px`;
 		}
 
 		const tooltipPositionStyle = {
 			width: this._width ? `${this._width}px` : ''
 		};
 		if (this._position) {
-			const isRTL = this.getAttribute('dir') === 'rtl';
-			if (!isRTL) {
+			if (this._isVerticalOpen()) {
 				tooltipPositionStyle.left = `${this._position}px`;
 			} else {
-				tooltipPositionStyle.right = `${this._position}px`;
+				tooltipPositionStyle.top = `${this._position}px`;
 			}
 		}
 
@@ -258,6 +278,12 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._width = this._getWidth(contentRect.width);
 		await this.updateComplete;
 
+		// check if it would scroll above and below
+		// if it would then consider left and right
+
+		// at this point we have desired width and height
+		// only go left or right if top AND bottom would cause scroll
+
 		contentRect = content.getBoundingClientRect();
 		const targetRect = target.getBoundingClientRect();
 		const tooltipRect = tooltipTarget.getBoundingClientRect();
@@ -274,10 +300,17 @@ class Tooltip extends RtlMixin(LitElement) {
 			width: contentRect.width
 		};
 
-		this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
+		this.openDir = this._computeOpenDir(spaceAround, spaceRequired);
 
-		const centerDelta = contentRect.width - targetRect.width;
-		const position = this._getPosition(spaceAround, centerDelta);
+		let position;
+		// this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
+		if (this._isVerticalOpen()) {
+			const centerDelta = contentRect.width - targetRect.width;
+			position = this._getPosition(spaceAround, centerDelta);
+		} else {
+			const centerDelta = contentRect.height - targetRect.height;
+			position = this._getPositionHorizontal(spaceAround, centerDelta);
+		}
 		if (position) {
 			this._position = position;
 		}
@@ -285,11 +318,21 @@ class Tooltip extends RtlMixin(LitElement) {
 		const top = targetRect.top - tooltipRect.top + tooltipTarget.offsetTop;
 		const left = targetRect.left - tooltipRect.left + tooltipTarget.offsetLeft;
 
-		this._targetRect = {
-			x: left,
-			y: this.openedAbove ? top - this._offsetVertical : top + targetRect.height + this._offsetVertical,
-			width: targetRect.width
-		};
+		if (this._isVerticalOpen()) {
+			this._targetRect = {
+				x: left,
+				y: this.openDir === 'top' ? top - this._offsetVertical : top + targetRect.height + this._offsetVertical,
+				width: targetRect.width,
+				height: 1,
+			};
+		} else {
+			this._targetRect = {
+				x: this.openDir === 'left' ? left - this._offsetVertical : left + targetRect.width + this._offsetVertical,
+				y: top,
+				height: targetRect.height,
+				width: 1,
+			};
+		}
 
 	}
 
@@ -332,11 +375,56 @@ class Tooltip extends RtlMixin(LitElement) {
 		return null;
 	}
 
-	_getOpenedAbove(spaceAround, spaceRequired) {
-		return (spaceAround.below < spaceRequired.height) && (
-			(spaceAround.above > spaceRequired.height) ||
-			(spaceAround.above > spaceAround.below)
-		);
+	_getPositionHorizontal(spaceAround, centerDelta) {
+
+		const contentXAdjustment = centerDelta / 2;
+		if (centerDelta <= 0) {
+			return contentXAdjustment * -1;
+		}
+		if (spaceAround.top > contentXAdjustment && spaceAround.bottom > contentXAdjustment) {
+			// center with target
+			return contentXAdjustment * -1;
+		}
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		if (!isRTL) {
+			if (spaceAround.top < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return spaceAround.top * -1;
+			} else if (spaceAround.bottom < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return (centerDelta * -1) + spaceAround.bottom;
+			}
+		} else {
+			if (spaceAround.top < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return (centerDelta * -1) + spaceAround.top;
+			} else if (spaceAround.bottom < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return spaceAround.bottom * -1;
+			}
+		}
+		return null;
+	}
+
+	_computeOpenDir(spaceAround, spaceRequired) {
+		if (spaceAround.below >= spaceRequired.height) {
+			return 'bottom';
+		} else if (spaceAround.above >= spaceRequired.height) {
+			return 'top';
+		} else if (spaceAround.right >= spaceRequired.width) {
+			return 'right';
+		} else if (spaceAround.left >= spaceRequired.width) {
+			return 'left';
+		} else {
+			// pick side with the the largest area
+			console.log('panic');
+			return 'left';
+		}
+	}
+
+	_isVerticalOpen() {
+		console.log(this.openDir);
+		return this.openDir === 'bottom' || this.openDir === 'top';
 	}
 
 	_addListeners() {
