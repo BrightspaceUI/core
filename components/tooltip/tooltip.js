@@ -125,30 +125,27 @@ class Tooltip extends LitElement {
 
 	render() {
 
-		// absolute positioned on top of the target
-
-		const targetStyle = {};
+		const targetPositionStyle = {};
 		if (this._targetRect) {
-			targetStyle.left = `${this._targetRect.x}px`,
-			targetStyle.top = `${this._targetRect.y}px`,
-			targetStyle.width = `${this._targetRect.width}px`;
-			// console.log(targetStyle);
+			targetPositionStyle.left = `${this._targetRect.x}px`,
+			targetPositionStyle.top = `${this._targetRect.y}px`,
+			targetPositionStyle.width = `${this._targetRect.width}px`;
 		}
 
-		const positionStyle = {};
+		const tooltipPositionStyle = {};
 		if (this._position) {
-			positionStyle.left = `${this._position}px`;
+			tooltipPositionStyle.left = `${this._position}px`;
 		}
 
-		const widthStyle = {
+		const contentStyle = {
 			/* add 2 to content width since scrollWidth does not include border */
 			width: this._width ? `${this._width + 20}px` : ''
 		};
 
 		return html`
-			<div class="d2l-tooltip-target-position" style=${styleMap(targetStyle)}>
-				<div class="d2l-tooltip-position" style=${styleMap(positionStyle)}>
-					<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(widthStyle)}>
+			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
+				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
+					<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(contentStyle)}>
 						<slot></slot>
 					</div>
 				</div>
@@ -199,7 +196,7 @@ class Tooltip extends LitElement {
 	}
 
 	close() {
-		// this.opened = false;
+		this.opened = false;
 	}
 
 	open() {
