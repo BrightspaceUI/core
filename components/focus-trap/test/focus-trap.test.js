@@ -11,7 +11,7 @@ const normalFixture = html`
 			some content
 			<a id="last" href="http://www.d2l.com">Last</a>
 		</d2l-focus-trap>
-		<a id=after"" href="http://www.d2l.com">After</a>
+		<a id="after" href="http://www.d2l.com">After</a>
 	</div>
 `;
 
