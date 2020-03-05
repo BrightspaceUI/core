@@ -16,7 +16,8 @@ class Tooltip extends RtlMixin(LitElement) {
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
 			_offsetVertical: { type: Number },
-			_position: { type: Number }
+			_position: { type: Number },
+			_opens: {type: Number }
 		};
 	}
 
@@ -29,6 +30,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 				text-align: left;
 				z-index: 1000; /* position on top of floating buttons */
+				opacity: 0;
 			}
 
 			:host([dir="rtl"]) {
@@ -37,6 +39,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([opened]) {
 				display: inline-block;
+				opacity: 1;
 			}
 
 			.d2l-tooltip-target-position {
@@ -128,6 +131,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.close = this.close.bind(this);
 		this._onResize = this._onResize.bind(this);
 		this._offsetVertical = 20;
+		this._opens = 0;
 	}
 
 	get for() {
@@ -237,11 +241,13 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	close() {
-		// this.opened = false;
+		this._opens -= 1;
+		this.opened = this._opens > 0;
 	}
 
 	open() {
-		this.opened = true;
+		this._opens += 1;
+		this.opened = this._opens > 0;
 	}
 
 	_onResize() {
@@ -409,16 +415,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		return null;
 	}
 
-	_computeVerticalOpenDir(spaceAround, spaceRequired) {
-		if (spaceAround.below >= spaceRequired) {
-			return 'bottom';
-		}
-		if (spaceAround.above >= spaceRequired) {
-			return 'top';
-		}
-		return null;
-	}
-
 	_isVerticalOpen() {
 		return this.openDir === 'bottom' || this.openDir === 'top';
 	}
@@ -427,6 +423,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._target) {
 			this._target.addEventListener('mouseenter', this.open);
 			this._target.addEventListener('mouseleave', this.close);
+			this._target.addEventListener('focus', this.open);
+			this._target.addEventListener('blur', this.close);
 		}
 	}
 
