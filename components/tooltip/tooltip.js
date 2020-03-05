@@ -286,7 +286,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			{ dir: 'right', width: Math.max(spaceAround.right - this._offsetVertical, 1), height: horizontalHeight },
 			{ dir: 'left', width: Math.max(spaceAround.left - this._offsetVertical, 1), height: horizontalHeight }
 		];
-		console.log(spaces[0]);
 		let space = null;
 		const content = this.__getContentContainer();
 		for (let i = 0; i < spaces.length; ++i) {
@@ -316,7 +315,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		} else {
 			const centerDelta = contentRect.height - targetRect.height;
 			position = this._getPositionHorizontal(spaceAround, centerDelta);
-			console.log(position);
 		}
 		if (position !== null) {
 			this._position = position;
@@ -348,11 +346,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._maxWidth = space.width;
 		this._maxHeight = space.height;
 		await this.updateComplete;
-		console.log(`${this._maxWidth  },${  this._maxHeight}`);
-		console.log(`${content.scrollWidth  }, ${  content.scrollHeight}`);
-		console.log(`${content.clientWidth}, ${content.clientHeight}`);
-		const contentRect = content.getBoundingClientRect();
-		return content.scrollWidth <= contentRect.width && content.scrollHeight <= contentRect.height;
+		return content.scrollWidth <= this._maxWidth && content.scrollHeight <= this._maxHeight;
 	}
 
 	_getPosition(spaceAround, centerDelta) {
@@ -390,37 +384,21 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const contentXAdjustment = centerDelta / 2;
 		if (centerDelta <= 0) {
+			// target height is larger than content height
 			return contentXAdjustment * -1;
 		}
-		if (spaceAround.top > contentXAdjustment && spaceAround.bottom > contentXAdjustment) {
-			console.log('CENTER');
+		if (spaceAround.above >= contentXAdjustment && spaceAround.below >= contentXAdjustment) {
 			// center with target
 			return contentXAdjustment * -1;
 		}
-		if (spaceAround.top < contentXAdjustment) {
+		if (spaceAround.above < contentXAdjustment) {
 			// slide content right (not enough space to center)
-			return spaceAround.top * -1;
-		} else if (spaceAround.bottom < contentXAdjustment) {
+			return spaceAround.above * -1;
+		} else if (spaceAround.below < contentXAdjustment) {
 			// slide content left (not enough space to center)
-			return (centerDelta * -1) + spaceAround.bottom;
+			return (centerDelta * -1) + spaceAround.below;
 		}
 		return null;
-	}
-
-	_computeOpenDir(spaceAround, spaceRequired) {
-		if (spaceAround.below >= spaceRequired.height) {
-			return 'bottom';
-		} else if (spaceAround.above >= spaceRequired.height) {
-			return 'top';
-		} else if (spaceAround.right >= spaceRequired.width) {
-			return 'right';
-		} else if (spaceAround.left >= spaceRequired.width) {
-			return 'left';
-		} else {
-			// pick side with the the largest area
-			console.log('panic');
-			return 'left';
-		}
 	}
 
 	_computeVerticalOpenDir(spaceAround, spaceRequired) {
@@ -434,7 +412,6 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_isVerticalOpen() {
-		console.log(this.openDir);
 		return this.openDir === 'bottom' || this.openDir === 'top';
 	}
 
