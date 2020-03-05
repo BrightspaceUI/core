@@ -12,6 +12,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			opened: { type: Boolean, reflect: true },
 			openedAbove: { type: Boolean, reflect: true, attribute: 'opened-above' },
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
+			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
@@ -31,6 +32,16 @@ class Tooltip extends RtlMixin(LitElement) {
 				text-align: left;
 				z-index: 1000; /* position on top of floating buttons */
 				opacity: 0;
+			}
+
+			.d2l-tooltip-pointer > div,
+			.d2l-tooltip-content {
+				background-color: var(--d2l-color-ferrite);
+			}
+
+			:host([state="error"]) .d2l-tooltip-pointer > div,
+			:host([state="error"]) .d2l-tooltip-content {
+				background-color: var(--d2l-color-cinnabar);
 			}
 
 			:host([dir="rtl"]) {
@@ -85,7 +96,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			.d2l-tooltip-pointer > div {
 				-webkit-transform: rotate(45deg);
-				background-color: var(--d2l-color-ferrite);
 				border-radius: 0.1rem;
 				box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 				height: 16px;
@@ -106,7 +116,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-content {
-				background-color: var(--d2l-color-ferrite);
 				border-radius: 0.3rem;
 				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 				box-sizing: border-box;
@@ -132,6 +141,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onResize = this._onResize.bind(this);
 		this._offsetVertical = 20;
 		this._opens = 0;
+		this.state = 'info';
 	}
 
 	get for() {
