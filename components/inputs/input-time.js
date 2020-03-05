@@ -107,7 +107,6 @@ class InputTime extends LitElement {
 		this._value = formatValue(DEFAULT_VALUE);
 		this._formattedValue = formatTime(DEFAULT_VALUE);
 		this._timezone = formatTime( new Date(), {format: 'ZZZ'});
-		this.addEventListener('d2l-dropdown-open', this._dropdownMakeSelectedVisible);
 	}
 
 	get value() { return this._value; }
@@ -121,7 +120,7 @@ class InputTime extends LitElement {
 
 	render() {
 		const input = html`
-			<d2l-dropdown>
+			<d2l-dropdown @d2l-dropdown-open="${this._dropdownMakeSelectedVisible}">
 				<input
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					@change="${this._handleChange}"
