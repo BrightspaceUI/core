@@ -1,5 +1,5 @@
-import '../input-date.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { formatDateInISO, parseISODate } from '../input-date.js';
 
 const basicFixture = '<d2l-input-date label="label text"></d2l-input-date>';
 const labelHiddenFixture = '<d2l-input-date label="label text" label-hidden></d2l-input-date>';
@@ -58,6 +58,32 @@ describe('d2l-input-date', () => {
 			const elem = await fixture(labelHiddenFixture);
 			expect(getLabel(elem)).to.be.null;
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label text');
+		});
+	});
+
+	describe('utility function', () => {
+		describe('formatDateInISO', () => {
+			it('should return the correct date', () => {
+				const testDate = new Date(2020, 2, 1);
+				expect(formatDateInISO(testDate)).to.equal('2020-03-01');
+			});
+
+			it('should return the correct date', () => {
+				const testDate = new Date(2020, 9, 10);
+				expect(formatDateInISO(testDate)).to.equal('2020-10-10');
+			});
+		});
+
+		describe('parseISODate', () => {
+			it('should return correct date when input is valid', () => {
+				expect(parseISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
+			});
+
+			it('should throw when invalid date format', () => {
+				expect(() => {
+					parseISODate('2019/01/30');
+				}).to.throw('Invalid value: Expected format is YYYY-MM-DD');
+			});
 		});
 	});
 

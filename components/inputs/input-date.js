@@ -1,4 +1,3 @@
-import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -8,7 +7,7 @@ import { inputStyles } from './input-styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-function formatDateInISO(val) {
+export function formatDateInISO(val) {
 	let month = parseInt(val.getMonth()) + 1;
 	let date = val.getDate();
 	if (month < 10) month = `0${month}`;
@@ -16,7 +15,7 @@ function formatDateInISO(val) {
 	return `${val.getFullYear()}-${month}-${date}`;
 }
 
-function parseISODate(val) {
+export function parseISODate(val) {
 	if (!val) return null;
 	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
 	const match = val.match(re);
@@ -35,7 +34,8 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			placeholder: { type: String },
-			value: { type: String }
+			value: { type: String },
+			_formattedValue: { type: String }
 		};
 	}
 
@@ -118,21 +118,22 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.placeholder = this.placeholder || this.localize('chooseDate');
+		this._formattedValue = this.value ? formatDate(parseISODate(this.value)) : '';
 	}
 
 	render() {
-		const value = this.value ? formatDate(parseISODate(this.value), { format: 'short' }) : '';
+		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
+		const placeholder = this.placeholder || this.localize('chooseDate');
 		const input = html`
 			<div class="d2l-input-date-container">
 				<input
-					aria-label="${ifDefined(this._getAriaLabel())}"
+					aria-label="${ifDefined(ariaLabel)}"
 					@change="${this._handleChange}"
 					class="d2l-input"
 					?disabled="${this.disabled}"
 					@keypress="${this._handleKeypress}"
-					placeholder="${this.placeholder}"
-					.value="${value}">
+					placeholder="${placeholder}"
+					.value="${this._formattedValue}">
 				<d2l-icon
 					?disabled="${this.disabled}"
 					icon="tier1:calendar"></d2l-icon>
@@ -153,23 +154,21 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (elem) elem.focus();
 	}
 
-	_getAriaLabel() {
-		if (this.label && this.labelHidden) {
-			return this.label;
-		}
-		return undefined;
-	}
-
 	async _handleChange(e) {
-		const date = parseDate(e.target.value);
+		const value = e.target.value;
+		this._formattedValue = value;
 		await this.updateComplete;
-		if (date) {
+		try {
+			const date = parseDate(value);
 			this.value = formatDateInISO(date);
 			this.dispatchEvent(new CustomEvent(
 				'd2l-input-date-change',
 				{ bubbles: true, composed: false }
 			));
+		} catch (e) {
+			// leave value the same when invalid input
 		}
+		this._formattedValue = this.value ? formatDate(parseISODate(this.value)) : '';
 	}
 
 }
