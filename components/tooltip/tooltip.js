@@ -13,10 +13,11 @@ class Tooltip extends RtlMixin(LitElement) {
 			openedAbove: { type: Boolean, reflect: true, attribute: 'opened-above' },
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
+			boundary: { type: Object },
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
-			_offset: { type: Number },
+			offset: { type: Number },
 			_position: { type: Number },
 			_opens: {type: Number }
 		};
@@ -139,7 +140,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
 		this._onResize = this._onResize.bind(this);
-		this._offset = 20;
+		this.offset = 20;
 		this._opens = 0;
 		this.state = 'info';
 	}
@@ -294,21 +295,21 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 
 		const targetRect = target.getBoundingClientRect();
-		const spaceAround = {
+		const spaceAround = this._constrainSpaceAround({
 			above: targetRect.top - 12,
 			below: document.documentElement.clientHeight - targetRect.bottom - 12,
 			left: targetRect.left - 12,
 			right: document.documentElement.clientWidth - targetRect.right - 12
-		};
+		});
 
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
 		const horizontalHeight = Math.max(spaceAround.above + targetRect.height + spaceAround.below, 1);
 
 		const spaces = [
-			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this._offset, 1) },
-			{ dir: 'bottom', width: verticalWidth, height: Math.max(spaceAround.below - this._offset, 1) },
-			{ dir: 'right', width: Math.max(spaceAround.right - this._offset, 1), height: horizontalHeight },
-			{ dir: 'left', width: Math.max(spaceAround.left - this._offset, 1), height: horizontalHeight }
+			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this.offset, 1) },
+			{ dir: 'bottom', width: verticalWidth, height: Math.max(spaceAround.below - this.offset, 1) },
+			{ dir: 'right', width: Math.max(spaceAround.right - this.offset, 1), height: horizontalHeight },
+			{ dir: 'left', width: Math.max(spaceAround.left - this.offset, 1), height: horizontalHeight }
 		];
 		let space = null;
 		const content = this.__getContentContainer();
@@ -350,13 +351,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._isVerticalOpen()) {
 			this._targetRect = {
 				x: left,
-				y: this.openDir === 'top' ? top - this._offset : top + targetRect.height + this._offset,
+				y: this.openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
 				width: targetRect.width,
 				height: 0,
 			};
 		} else {
 			this._targetRect = {
-				x: this.openDir === 'left' ? left - this._offset : left + targetRect.width + this._offset,
+				x: this.openDir === 'left' ? left - this.offset : left + targetRect.width + this.offset,
 				y: top,
 				height: targetRect.height,
 				width: 0,
@@ -371,6 +372,17 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._maxHeight = space.height;
 		await this.updateComplete;
 		return content.scrollWidth <= this._maxWidth && content.scrollHeight <= this._maxHeight;
+	}
+
+	_constrainSpaceAround(spaceAround) {
+		const constrained = { ...spaceAround };
+		if (this.boundary) {
+			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
+			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
+			constrained.left = this.boundary.left >= 0 ? Math.min(spaceAround.left, this.boundary.left) : spaceAround.left;
+			constrained.right = this.boundary.right >= 0 ? Math.min(spaceAround.right, this.boundary.right) : spaceAround.right;
+		}
+		return constrained;
 	}
 
 	_getPosition(spaceAround, centerDelta) {
