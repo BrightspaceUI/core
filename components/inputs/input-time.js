@@ -107,6 +107,7 @@ class InputTime extends LitElement {
 		this._value = formatValue(DEFAULT_VALUE);
 		this._formattedValue = formatTime(DEFAULT_VALUE);
 		this._timezone = formatTime( new Date(), {format: 'ZZZ'});
+		this.addEventListener('d2l-dropdown-open', this._dropdownMakeSelectedVisible);
 	}
 
 	get value() { return this._value; }
@@ -167,6 +168,16 @@ class InputTime extends LitElement {
 			return this.label;
 		}
 		return undefined;
+	}
+
+	async _dropdownMakeSelectedVisible() {
+		const selected = this.shadowRoot.querySelector('.d2l-input-time-menu > [selected]');
+		if (selected != null) {
+			const dropdown = this.shadowRoot.querySelector('#dropdown');
+			console.log("Scroll to: " + selected.offsetTop);
+			dropdown.scrollTo(selected.offsetTop);
+			console.log("Scroll Position is set properly here");
+		}
 	}
 
 	async _handleChange(e) {
