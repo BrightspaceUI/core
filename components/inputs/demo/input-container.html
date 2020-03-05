@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../icons/icon.js';
+			import '../input-container.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-input-container">
+
+			<h2>Empty with icon on left</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-container>
+						<d2l-icon icon="tier1:calendar"></d2l-icon>
+					</d2l-input-container>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Empty with icon on right</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-container right>
+						<d2l-icon icon="tier1:search"></d2l-icon>
+					</d2l-input-container>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Placeholder with icon on right</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-container right placeholder="Search...">
+						<d2l-icon icon="tier1:search"></d2l-icon>
+					</d2l-input-container>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Value with icon on left</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-container value="test content">
+						<d2l-icon icon="tier1:calendar"></d2l-icon>
+					</d2l-input-container>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Disabled with icon on left</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-container disabled value="test content">
+						<d2l-icon icon="tier1:calendar"></d2l-icon>
+					</d2l-input-container>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Disabled with icon on right</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-container right disabled value="test content">
+						<d2l-icon icon="tier1:calendar"></d2l-icon>
+					</d2l-input-container>
+				</template>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
+</html>
