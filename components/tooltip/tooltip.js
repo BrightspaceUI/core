@@ -45,12 +45,39 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-pointer {
-				clip: rect(-5px, 21px, 8px, -7px);
 				display: inline-block;
-				left: calc(50% - 7px);
 				position: absolute;
-				top: -7px;
 				z-index: 1;
+			}
+
+			:host([open-dir="top"]) .d2l-tooltip-pointer,
+			:host([open-dir="bottom"]) .d2l-tooltip-pointer {
+				left: calc(50% - 7px);
+			}
+
+			:host([open-dir="top"]) .d2l-tooltip-pointer {
+				clip: rect(9px, 21px, 22px, -3px);
+				bottom: -7px;
+			}
+
+			:host([open-dir="bottom"]) .d2l-tooltip-pointer {
+				clip: rect(-5px, 21px, 8px, -7px);
+				top: -7px;
+			}
+
+			:host([open-dir="left"]) .d2l-tooltip-pointer,
+			:host([open-dir="right"]) .d2l-tooltip-pointer {
+				top: calc(50% - 7px);
+			}
+
+			:host([open-dir="left"]) .d2l-tooltip-pointer {
+				clip: rect(-3px, 21px, 21px, 9px);
+				right: -7px;
+			}
+
+			:host([open-dir="right"]) .d2l-tooltip-pointer {
+				clip: rect(-3px, 9px, 21px, -3px);
+				left: -7px;
 			}
 
 			.d2l-tooltip-pointer > div {
@@ -61,26 +88,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				height: 16px;
 				transform: rotate(45deg);
 				width: 16px;
-			}
-
-			:host([open-dir="top"]) .d2l-tooltip-pointer {
-				bottom: -7px;
-				clip: rect(9px, 21px, 22px, -3px);
-				top: auto;
-			}
-
-			:host([open-dir="left"]) .d2l-tooltip-pointer,
-			:host([open-dir="right"]) .d2l-tooltip-pointer {
-				left: -7px;
-				clip: rect(-3px, 9px, 21px, -3px);
-
-				top: calc(50% - 7px);
-			}
-
-			:host([open-dir="right"]) .d2l-tooltip-pointer {
-				right: -7px;
-				clip: rect(-3px, 9px, 21px, -3px);
-				left: auto;
 			}
 
 			:host([open-dir="top"]) .d2l-tooltip-pointer > div {
@@ -272,10 +279,10 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const targetRect = target.getBoundingClientRect();
 		const spaceAround = {
-			above: targetRect.top - 20,
-			below: document.documentElement.clientHeight - targetRect.bottom - 20,
-			left: targetRect.left - 20,
-			right: document.documentElement.clientWidth - targetRect.right - 20
+			above: targetRect.top - 12,
+			below: document.documentElement.clientHeight - targetRect.bottom - 12,
+			left: targetRect.left - 12,
+			right: document.documentElement.clientWidth - targetRect.right - 12
 		};
 
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
