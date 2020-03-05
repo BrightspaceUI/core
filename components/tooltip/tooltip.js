@@ -92,6 +92,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 				width: 100vw;
 				height: 100vh;
+								overflow: hidden;
 			}
 
 			.d2l-tooltip-content {
@@ -271,10 +272,10 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const targetRect = target.getBoundingClientRect();
 		const spaceAround = {
-			above: targetRect.top,
-			below: document.documentElement.clientHeight - targetRect.bottom,
-			left: targetRect.left,
-			right: document.documentElement.clientWidth - targetRect.right
+			above: targetRect.top - 20,
+			below: document.documentElement.clientHeight - targetRect.bottom - 20,
+			left: targetRect.left - 20,
+			right: document.documentElement.clientWidth - targetRect.right - 20
 		};
 
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
@@ -328,14 +329,14 @@ class Tooltip extends RtlMixin(LitElement) {
 				x: left,
 				y: this.openDir === 'top' ? top - this._offsetVertical : top + targetRect.height + this._offsetVertical,
 				width: targetRect.width,
-				height: 1,
+				height: 0,
 			};
 		} else {
 			this._targetRect = {
 				x: this.openDir === 'left' ? left - this._offsetVertical : left + targetRect.width + this._offsetVertical,
 				y: top,
 				height: targetRect.height,
-				width: 1,
+				width: 0,
 			};
 		}
 
