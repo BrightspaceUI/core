@@ -171,11 +171,8 @@ class InputTime extends LitElement {
 
 	async _dropdownMakeSelectedVisible() {
 		const selected = this.shadowRoot.querySelector('.d2l-input-time-menu > [selected]');
-		if (selected != null) {
-			const dropdown = this.shadowRoot.querySelector('#dropdown');
-			console.log("Scroll to: " + selected.offsetTop);
-			dropdown.scrollTo(selected.offsetTop);
-			console.log("Scroll Position is set properly here");
+		if (selected !== null) {
+			setTimeout(() => selected.scrollIntoView(), 0);
 		}
 	}
 
