@@ -9,6 +9,8 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../input-time.js';
+
+			document.getElementsByTagName("html")[0].setAttribute("data-timezone", `{"name":"Canada - Toronto","identifier":"America/Toronto"}`)
 		</script>
 	</head>
 	<body unresolved>
@@ -17,7 +19,7 @@
 			<h2>Simple</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-time label="Name"></d2l-input-time>
+					<d2l-input-time label="Name" value="18:00:00"></d2l-input-time>
 				</template>
 			</d2l-demo-snippet>
 

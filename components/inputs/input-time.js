@@ -91,7 +91,7 @@ class InputTime extends LitElement {
 					border-bottom: 1px solid var(--d2l-color-gypsum);
 				}
 				.d2l-input-time-timezone {
-					width: 100%;
+					width: auto;
 					line-height: 1.8rem;
 					text-align: center;
 					vertical-align: middle;
@@ -106,7 +106,7 @@ class InputTime extends LitElement {
 		this.labelHidden = false;
 		this._value = formatValue(DEFAULT_VALUE);
 		this._formattedValue = formatTime(DEFAULT_VALUE);
-		this.addEventListener('', this._handleDropdownChange);
+		this._timezone = formatTime( new Date(), {format: 'ZZZ'});
 	}
 
 	get value() { return this._value; }
@@ -128,14 +128,13 @@ class InputTime extends LitElement {
 					?disabled="${this.disabled}"
 					@keypress="${this._handleKeypress}"
 					.value="${this._formattedValue}">
-				<d2l-dropdown-menu id="dropdown" no-padding-footer  min-width="195" max-width="200">
+				<d2l-dropdown-menu id="dropdown" no-padding-footer min-width="195">
 					<d2l-menu
 						class="d2l-input-time-menu"
-						@d2l-menu-item-change="${this._handleDropdownChange}"
-						.value="${this._formattedValue}">
-  					${INTERVALS.map(i => html`<d2l-menu-item-radio text="${formatTime(i)}" value="${formatValue(i)}"></d2l-menu-item-radio>`)}
+						@d2l-menu-item-change="${this._handleDropdownChange}">
+  					${INTERVALS.map(i => html`<d2l-menu-item-radio text="${formatTime(i)}" value="${formatValue(i)}" ?selected=${this._value === formatValue(i)}></d2l-menu-item-radio>`)}
 					</d2l-menu>
-					<div class="d2l-input-time-timezone d2l-body-small" slot="footer">Canada - Toronto</div>
+					<div class="d2l-input-time-timezone d2l-body-small" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
@@ -179,7 +178,6 @@ class InputTime extends LitElement {
 			this._formattedValue = formatTime(parseValue(this.value));
 		} else {
 			this.value = formatValue(time);
-			this.shadowRoot.querySelector('.d2l-menu').value = this.value;
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{bubbles: true, composed: false}
