@@ -16,7 +16,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
-			_offsetVertical: { type: Number },
+			_offset: { type: Number },
 			_position: { type: Number },
 			_opens: {type: Number }
 		};
@@ -139,7 +139,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
 		this._onResize = this._onResize.bind(this);
-		this._offsetVertical = 20;
+		this._offset = 20;
 		this._opens = 0;
 		this.state = 'info';
 	}
@@ -305,10 +305,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		const horizontalHeight = Math.max(spaceAround.above + targetRect.height + spaceAround.below, 1);
 
 		const spaces = [
-			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this._offsetVertical, 1) },
-			{ dir: 'bottom', width: verticalWidth, height: Math.max(spaceAround.below - this._offsetVertical, 1) },
-			{ dir: 'right', width: Math.max(spaceAround.right - this._offsetVertical, 1), height: horizontalHeight },
-			{ dir: 'left', width: Math.max(spaceAround.left - this._offsetVertical, 1), height: horizontalHeight }
+			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this._offset, 1) },
+			{ dir: 'bottom', width: verticalWidth, height: Math.max(spaceAround.below - this._offset, 1) },
+			{ dir: 'right', width: Math.max(spaceAround.right - this._offset, 1), height: horizontalHeight },
+			{ dir: 'left', width: Math.max(spaceAround.left - this._offset, 1), height: horizontalHeight }
 		];
 		let space = null;
 		const content = this.__getContentContainer();
@@ -350,13 +350,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._isVerticalOpen()) {
 			this._targetRect = {
 				x: left,
-				y: this.openDir === 'top' ? top - this._offsetVertical : top + targetRect.height + this._offsetVertical,
+				y: this.openDir === 'top' ? top - this._offset : top + targetRect.height + this._offset,
 				width: targetRect.width,
 				height: 0,
 			};
 		} else {
 			this._targetRect = {
-				x: this.openDir === 'left' ? left - this._offsetVertical : left + targetRect.width + this._offsetVertical,
+				x: this.openDir === 'left' ? left - this._offset : left + targetRect.width + this._offset,
 				y: top,
 				height: targetRect.height,
 				width: 0,
