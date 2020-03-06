@@ -1,6 +1,8 @@
+import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -14,13 +16,16 @@ class Tooltip extends RtlMixin(LitElement) {
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			boundary: { type: Object },
+			customTarget: { type: Object, attribute: 'custom-target' },
 			_viewportMargin: { type: Number },
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
 			offset: { type: Number },
 			_position: { type: Number },
-			_opens: {type: Number }
+			_opens: {type: Number },
+			_focused: { type: Boolean },
+			_clicked: { type: Boolean }
 		};
 	}
 
@@ -141,6 +146,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.open = this.open.bind(this);
 		this.close = this.close.bind(this);
 		this._onResize = this._onResize.bind(this);
+		this._onAutoCloseClick = this._onAutoCloseClick.bind(this);
 		this.offset = 20;
 		this._viewportMargin = 12;
 		this._opens = 0;
@@ -216,12 +222,13 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-
+		document.body.addEventListener('click', this._onAutoCloseClick);
 		window.addEventListener('resize', this._onResize);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		document.body.removeEventListener('click', this._onAutoCloseClick);
 		window.removeEventListener('resize', this._onResize);
 	}
 
@@ -253,14 +260,25 @@ class Tooltip extends RtlMixin(LitElement) {
 		return target;
 	}
 
-	close() {
-		this._opens -= 1;
+	open(e) {
+		console.log(e);
+		e.preventDefault();
+		this._opens += 1;
 		this.opened = this._opens > 0;
 	}
 
-	open() {
-		this._opens += 1;
+	close() {
+		this._opens = Math.max(this._opens - 1, 0);
 		this.opened = this._opens > 0;
+		if (!this.opened) {
+			this._clicked = false;
+		}
+	}
+
+	_forceClose() {
+		this._opens = 0;
+		this._clicked = false;
+		this.opened = false;
 	}
 
 	_onResize() {
@@ -281,27 +299,36 @@ class Tooltip extends RtlMixin(LitElement) {
 	async _openedChanged(newValue) {
 		if (newValue) {
 			await this.updateComplete;
+
 			await this.__position();
+
+			this._dismissibleId = setDismissible(() => {
+				this._forceClose();
+			});
+		} else {
+			if (this._dismissibleId) {
+				clearDismissible(this._dismissibleId);
+				this._dismissibleId = null;
+			}
 		}
 	}
 
 	async __position() {
 
 		const target = this._target;
-		if (!target) {
+		if (!target && !this.customTarget) {
 			return;
 		}
 		const tooltipTarget = this.__getTooltipTarget();
 		if (!tooltipTarget) {
 			return;
 		}
-
-		const targetRect = target.getBoundingClientRect();
+		const targetRect = this.customTarget ? this.customTarget : target.getBoundingClientRect();
 		const spaceAround = this._constrainSpaceAround({
 			above: targetRect.top - this._viewportMargin,
-			below: document.documentElement.clientHeight - targetRect.bottom - this._viewportMargin,
+			below: document.documentElement.clientHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
 			left: targetRect.left - this._viewportMargin,
-			right: document.documentElement.clientWidth - targetRect.right - this._viewportMargin
+			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
 		});
 
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
@@ -443,6 +470,18 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this.openDir === 'bottom' || this.openDir === 'top';
 	}
 
+	_onAutoCloseClick(e) {
+		console.log('CLICK');
+		if (this._clicked) {
+			this._forceClose();
+		} else {
+			const rootTarget = e.composedPath()[0];
+			if (this._target && isComposedAncestor(this._target, rootTarget)) {
+				this._clicked = true;
+			}
+		}
+	}
+
 	_addListeners() {
 		if (this._target) {
 			this._target.addEventListener('mouseenter', this.open);
@@ -456,6 +495,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._target) {
 			this._target.removeEventListener('mouseenter', this.open);
 			this._target.removeEventListener('mouseleave', this.close);
+			this._target.removeEventListener('focus', this.open);
+			this._target.removeEventListener('blur', this.close);
 		}
 	}
 }
