@@ -44,7 +44,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 
 	render() {
 		return html`
-			<d2l-button ?primary=${this.primary}>
+			<d2l-button ?primary=${this.primary} ?disabled=${this.disabled}>
 				${this.text}<d2l-icon icon="tier1:chevron-down"></d2l-icon>
 			</d2l-button>
 			<slot></slot>

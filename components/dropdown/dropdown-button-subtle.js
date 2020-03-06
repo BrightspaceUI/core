@@ -19,7 +19,7 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-button-subtle text=${this.text} icon="tier1:chevron-down" icon-right></d2l-button-subtle>
+			<d2l-button-subtle text=${this.text} icon="tier1:chevron-down" icon-right ?disabled=${this.disabled}></d2l-button-subtle>
 			<slot></slot>
 		`;
 	}
