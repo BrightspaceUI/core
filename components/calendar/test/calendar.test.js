@@ -7,7 +7,7 @@ import { checkIfDatesEqual,
 	getNumberOfDaysToSameWeekPrevMonth,
 	getPrevMonth,
 	getToday,
-	parseDate
+	parseISODate
 } from '../calendar.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
@@ -259,14 +259,6 @@ describe('d2l-calendar', () => {
 		});
 
 		describe('getDatesInMonthArray', () => {
-			it('returns empty array if month undefined', () => {
-				expect(getDatesInMonthArray(undefined, 2020)).to.deep.equal([]);
-			});
-
-			it('returns empty array if year undefined', () => {
-				expect(getDatesInMonthArray(1, undefined)).to.deep.equal([]);
-			});
-
 			it('returns expected array for Feb 2020 (days from prev month, no days from next month', () => {
 				const dates = [[
 					new Date(2020, 0, 26),
@@ -502,12 +494,12 @@ describe('d2l-calendar', () => {
 
 		describe('parseDate', () => {
 			it('should return correct date if date and time provided', () => {
-				expect(parseDate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
+				expect(parseISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
 			});
 
 			it('should throw when invalid date format', () => {
 				expect(() => {
-					parseDate('2019/01/30');
+					parseISODate('2019/01/30');
 				}).to.throw('Invalid selected-value date input: Expected format is YYYY-MM-DD');
 			});
 		});
