@@ -261,8 +261,6 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	open(e) {
-		console.log(e);
-		e.preventDefault();
 		this._opens += 1;
 		this.opened = this._opens > 0;
 	}
@@ -477,6 +475,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		} else {
 			const rootTarget = e.composedPath()[0];
 			if (this._target && isComposedAncestor(this._target, rootTarget)) {
+				this.open();
 				this._clicked = true;
 			}
 		}

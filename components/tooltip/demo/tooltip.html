@@ -10,6 +10,7 @@
 	<script type="module">
 		import '../../demo/demo-page.js';
 		import '../../inputs/input-text.js';
+		import '../../button/button.js';
 		import '../tooltip.js';
 	</script>
 </head>
@@ -24,6 +25,14 @@
 
 				<div>
 					<d2l-tooltip state="error" for="my-button">
+						Your message will display here
+					</d2l-tooltip>
+				</div>
+
+				<d2l-button style="width: 100px;" id="my-button-2">target</d2l-button>
+
+				<div>
+					<d2l-tooltip state="error" for="my-button-2">
 						Your message will display here
 					</d2l-tooltip>
 				</div>
