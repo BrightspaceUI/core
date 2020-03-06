@@ -44,14 +44,21 @@ function handleTouchStart(e) {
 		const distanceX = tracking.end.x - tracking.start.x;
 		const distanceY = tracking.end.y - tracking.start.y;
 
+		// angle of right-angle tri from y (radians)
 		let theta = Math.atan(Math.abs(distanceX) / Math.abs(distanceY));
+
+		// angle of arc from y (deg)
 		if (distanceY > 0 && distanceX > 0) {
+			// swipe down and right
 			theta = (Math.PI - theta) * 57.3;
 		} else if (distanceY > 0 && distanceX < 0) {
+			// swipe down and left
 			theta = (Math.PI + theta) * 57.3;
 		} else if (distanceY < 0 && distanceX > 0) {
+			// swipe up and right
 			theta = theta * 57.3;
 		} else if (distanceY < 0 && distanceX < 0) {
+			// swipe up and left
 			theta = ((2 * Math.PI) - theta) * 57.3;
 		}
 
