@@ -14,6 +14,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			boundary: { type: Object },
+			_viewportMargin: { type: Number },
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
@@ -141,6 +142,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.close = this.close.bind(this);
 		this._onResize = this._onResize.bind(this);
 		this.offset = 20;
+		this._viewportMargin = 12;
 		this._opens = 0;
 		this.state = 'info';
 	}
@@ -296,10 +298,10 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const targetRect = target.getBoundingClientRect();
 		const spaceAround = this._constrainSpaceAround({
-			above: targetRect.top - 12,
-			below: document.documentElement.clientHeight - targetRect.bottom - 12,
-			left: targetRect.left - 12,
-			right: document.documentElement.clientWidth - targetRect.right - 12
+			above: targetRect.top - this._viewportMargin,
+			below: document.documentElement.clientHeight - targetRect.bottom - this._viewportMargin,
+			left: targetRect.left - this._viewportMargin,
+			right: document.documentElement.clientWidth - targetRect.right - this._viewportMargin
 		});
 
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
