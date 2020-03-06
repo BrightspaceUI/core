@@ -11,7 +11,7 @@ function handleTouchStart(e) {
 
 	let tracking = {
 		start: {
-			time: new Date().getTime(),
+			time: performance.now(),
 			x: e.touches[0].clientX,
 			y: e.touches[0].clientY
 		}
@@ -35,7 +35,7 @@ function handleTouchStart(e) {
 			return;
 		}
 
-		const elapsedTime = new Date().getTime() - tracking.start.time;
+		const elapsedTime = performance.now() - tracking.start.time;
 		if (elapsedTime > maxTime) {
 			reset();
 			return;
