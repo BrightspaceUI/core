@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../components/demo/demo-page.js';
+		</script>
+		<style>
+			#container {
+				height: 300px;
+				padding-top: 100px;
+				padding: 100px 1rem 1rem 1rem;
+				text-align: center;
+			}
+			#container > :first-child {
+				color: var(--d2l-color-galena);
+				margin-bottom: 1rem;
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="gestures">
+
+			<h2>Swipe</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<div id="container">
+						<div>swipe while using emulator or touch enabled device</div>
+						<div id="distance"></div>
+						<div id="direction"></div>
+						<div id="duration"></div>
+					</div>
+					<script type="module">
+						import { registerSwipe } from '../gestures.js';
+
+						const container = document.querySelector('#container');
+						registerSwipe(container);
+
+						container.addEventListener('d2l-swipe', (e) => {
+							document.querySelector('#distance').textContent =
+								JSON.stringify(e.detail.distance);
+							document.querySelector('#direction').textContent =
+								JSON.stringify(e.detail.direction);
+							document.querySelector('#duration').textContent =
+								JSON.stringify(e.detail.duration);
+							console.log('d2l-swipe', e.detail);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>

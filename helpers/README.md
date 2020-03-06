@@ -63,6 +63,17 @@ getOffsetParent(node);
 isComposedAncestor(ancestorNode, node);
 ```
 
+## queueMicrotask
+
+A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
+
+```js
+import '@brightspace-ui/core/helpers/queueMicrotask.js';
+queueMicrotask(() => {
+    // do some work
+});
+```
+
 ## requestIdleCallback
 
 A simple shim for [requestIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-requestidlecallback-method) and [cancelIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-cancelidlecallback-method) that transparently falls back to `setTimeout` if it's not natively supported.
@@ -77,14 +88,25 @@ requestIdleCallback((deadline) => {
 }, { timeout: 1000 });
 ```
 
-## queueMicrotask
+## Swipe
 
-A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
+A simple helper for swipe touch gestures, providing distance, direction, and duration.
 
 ```js
-import '@brightspace-ui/core/helpers/queueMicrotask.js';
-queueMicrotask(() => {
-	// do some work
+import { registerSwipe } from '@brightspace-ui/core/helpers/gestures.js';
+
+// sets up event listeners for swipe gesture
+registerSwipe(element);
+
+// listen for custom swipe event
+element.addEventListener('d2l-swipe', (e) => {
+    console.log(
+        e.detail.distance,             // .x/.y
+        e.detail.direction.angle,      // deg
+        e.detail.direction.horizontal, // left/right
+        e.detail.direction.vertical,   // up/down
+        e.detail.duration              // ms
+    );
 });
 ```
 
