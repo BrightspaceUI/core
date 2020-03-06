@@ -9,8 +9,8 @@ class InputContainer extends RtlMixin(LitElement) {
 		return {
 			ariaLabel: { type: String, attribute: 'aria-label' },
 			class: { type: String },
-			keypress: { type: Object },
 			disabled: { type: Boolean },
+			keypress: { type: Object },
 			maxlength: { type: Number },
 			placeholder: { type: String },
 			right: { type: Boolean },
@@ -22,6 +22,9 @@ class InputContainer extends RtlMixin(LitElement) {
 	static get styles() {
 		return [ inputStyles,
 			css`
+				:host {
+					--d2l-input-container-slot-content-padding: 0.8rem;
+				}
 				.d2l-input-container {
 					position: relative;
 				}
@@ -53,16 +56,13 @@ class InputContainer extends RtlMixin(LitElement) {
 				}
 				::slotted(*),
 				:host([dir="rtl"][right]) ::slotted(*) {
-					left: 0.3rem;
-					/* padding-left: 0.75rem; */
+					left: var(--d2l-input-container-slot-content-padding);
 					right: auto;
 				}
 				:host([right]) ::slotted(*),
 				:host([dir="rtl"]) ::slotted(*) {
 					left: auto;
-					/* padding-left: 0;
-					padding-right: 0.75rem; */
-					right: 0.3rem;
+					right: var(--d2l-input-container-slot-content-padding);
 				}
 				.d2l-input:hover,
 				.d2l-input:focus,
@@ -93,11 +93,12 @@ class InputContainer extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const inputClass = this.class ? `${this.class} d2l-input` : 'd2l-input';
 		const input = html`
 			<div class="d2l-input-container">
 				<input
 					aria-label="${ifDefined(this.ariaLabel)}"
-					class="${ifDefined(this.class)}"
+					class="${inputClass}"
 					@change="${this._handleChange}"
 					?disabled="${this.disabled}"
 					@input="${this._handleInput}"
