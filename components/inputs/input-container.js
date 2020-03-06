@@ -28,15 +28,18 @@ class InputContainer extends RtlMixin(LitElement) {
 				.d2l-input-container {
 					position: relative;
 				}
-				.d2l-input,
-				:host([disabled]) .d2l-input:hover,
-				:host([disabled][right][dir="rtl"]) .d2l-input:hover {
-					padding-left: 2.4rem;
-					padding-right: 0.75rem;
+				.d2l-input {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					-webkit-appearance: textfield;
+				}
+				.d2l-input,
+				:host([dir="rtl"][right]) .d2l-input,
+				:host([disabled]) .d2l-input:hover,
+				:host([disabled][right][dir="rtl"]) .d2l-input:hover {
+					padding-left: 2.4rem;
+					padding-right: 0.75rem;
 				}
 				:host([dir="rtl"]) .d2l-input,
 				:host([disabled][dir="rtl"]) .d2l-input:hover,
@@ -44,25 +47,6 @@ class InputContainer extends RtlMixin(LitElement) {
 				:host([disabled][right]) .d2l-input:hover {
 					padding-left: 0.75rem;
 					padding-right: 2.4rem;
-				}
-				:host([dir="rtl"][right]) .d2l-input {
-					padding-left: 2.4rem;
-					padding-right: 0.75rem;
-				}
-				::slotted(*) {
-					position: absolute;
-					top: 50%;
-					transform: translateY(-50%);
-				}
-				::slotted(*),
-				:host([dir="rtl"][right]) ::slotted(*) {
-					left: var(--d2l-input-container-slot-content-padding);
-					right: auto;
-				}
-				:host([right]) ::slotted(*),
-				:host([dir="rtl"]) ::slotted(*) {
-					left: auto;
-					right: var(--d2l-input-container-slot-content-padding);
 				}
 				.d2l-input:hover,
 				.d2l-input:focus,
@@ -81,6 +65,21 @@ class InputContainer extends RtlMixin(LitElement) {
 				:host([right]) .d2l-input:focus {
 					padding-left: calc(0.75rem - 1px);
 					padding-right: calc(2.4rem - 1px);
+				}
+				::slotted(*) {
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+				}
+				::slotted(*),
+				:host([dir="rtl"][right]) ::slotted(*) {
+					left: var(--d2l-input-container-slot-content-padding);
+					right: auto;
+				}
+				:host([right]) ::slotted(*),
+				:host([dir="rtl"]) ::slotted(*) {
+					left: auto;
+					right: var(--d2l-input-container-slot-content-padding);
 				}
 			`
 		];
