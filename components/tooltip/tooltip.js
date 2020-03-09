@@ -23,9 +23,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			_targetRect: { type: Object },
 			offset: { type: Number },
 			_position: { type: Number },
-			_opens: {type: Number },
-			_focused: { type: Boolean },
-			_clicked: { type: Boolean }
+			_clicked: { type: Boolean },
+			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
+			delay: { type: Number }
 		};
 	}
 
@@ -38,6 +38,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 				text-align: left;
 				z-index: 1000; /* position on top of floating buttons */
+				white-space: normal;
 			}
 
 			.d2l-tooltip-pointer > div,
@@ -179,14 +180,16 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.show = this.show.bind(this);
-		this.hide = this.hide.bind(this);
+
+		this._onMouseEnter = this._onMouseEnter.bind(this);
+		this._onMouseLeave = this._onMouseLeave.bind(this);
+		this._onFocus = this._onFocus.bind(this);
+		this._onBlur = this._onBlur.bind(this);
 		this._onResize = this._onResize.bind(this);
-		this._onAutoCloseClick = this._onAutoCloseClick.bind(this);
 		this.offset = 20;
 		this._viewportMargin = 12;
-		this._opens = 0;
 		this.state = 'info';
+		this.disableFocusLock = false;
 	}
 
 	get for() {
@@ -206,11 +209,9 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 	set forceShow(val) {
 		const oldVal = this._forceShow;
-		if (oldVal !== val) {
-			this._forceShow = val;
-			this.requestUpdate('force-show', oldVal);
-			this._openedChanged(val || this.showing);
-		}
+		this._forceShow = val;
+		this.requestUpdate('force-show', oldVal);
+		this._updateShowing();
 	}
 
 	get showing() {
@@ -222,7 +223,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (oldVal !== val) {
 			this.__showing = val;
 			this.requestUpdate('showing', oldVal);
-			this._openedChanged(val || this.forceShow);
+			this._openedChanged(val);
 		}
 	}
 
@@ -272,7 +273,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		document.body.addEventListener('click', this._onAutoCloseClick);
 		window.addEventListener('resize', this._onResize);
 
 		requestAnimationFrame(() => {
@@ -282,7 +282,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		document.body.removeEventListener('click', this._onAutoCloseClick);
 		window.removeEventListener('resize', this._onResize);
 	}
 
@@ -313,16 +312,11 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	show() {
-		this._opens += 1;
-		this.showing = this._opens > 0;
+		this.showing = true;
 	}
 
 	hide() {
-		this._opens = Math.max(this._opens - 1, 0);
-		this.showing = this._opens > 0;
-		if (!this.showing) {
-			this._clicked = false;
-		}
+		this.showing = false;
 	}
 
 	_forceClose() {
@@ -347,6 +341,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	async _openedChanged(newValue) {
+		clearTimeout(this._hoverTimeout);
 		if (newValue) {
 			await this.updateComplete;
 
@@ -374,12 +369,14 @@ class Tooltip extends RtlMixin(LitElement) {
 			return;
 		}
 		const targetRect =  target.getBoundingClientRect();
+		console.log(`TOP: ${targetRect.top}`);
 		const spaceAround = this._constrainSpaceAround({
 			above: targetRect.top - this._viewportMargin,
 			below: document.documentElement.clientHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
 			left: targetRect.left - this._viewportMargin,
 			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
 		});
+		console.log(`TOP: ${  spaceAround.above}`);
 
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
 		const horizontalHeight = Math.max(spaceAround.above + targetRect.height + spaceAround.below, 1);
@@ -390,6 +387,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			{ dir: 'right', width: Math.max(spaceAround.right - this.offset, 1), height: horizontalHeight },
 			{ dir: 'left', width: Math.max(spaceAround.left - this.offset, 1), height: horizontalHeight }
 		];
+		console.log(spaces);
 		let space = null;
 		const content = this.__getContentContainer();
 		for (let i = 0; i < spaces.length; ++i) {
@@ -450,6 +448,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._maxWidth = space.width;
 		this._maxHeight = space.height;
 		await this.updateComplete;
+		console.log(content.getBoundingClientRect());
+		console.log(space);
+		console.log(`${content.scrollWidth  }, ${  content.scrollHeight}`);
+		console.log(`FITS: ${content.scrollWidth <= this._maxWidth && content.scrollHeight <= this._maxHeight}`);
 		return content.scrollWidth <= this._maxWidth && content.scrollHeight <= this._maxHeight;
 	}
 
@@ -520,33 +522,52 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this.openDir === 'bottom' || this.openDir === 'top';
 	}
 
-	_onAutoCloseClick(e) {
-		if (this._clicked) {
-			this._forceClose();
+	_onMouseEnter() {
+		this._hoverTimeout = setTimeout(() => {
+			this._isHovering = true;
+			this._updateShowing();
+		}, this.delay);
+	}
+
+	_onMouseLeave() {
+		clearTimeout(this._hoverTimeout);
+		this._isHovering = false;
+		this._updateShowing();
+	}
+
+	_onFocus() {
+		if (this.disableFocusLock) {
+			this.showing = true;
 		} else {
-			const rootTarget = e.composedPath()[0];
-			if (this._target && isComposedAncestor(this._target, rootTarget)) {
-				this.show();
-				this._clicked = true;
-			}
+			this._isFocusing = true;
+			this._updateShowing();
 		}
+	}
+
+	_onBlur() {
+		this._isFocusing = false;
+		this._updateShowing();
+	}
+
+	_updateShowing() {
+		this.showing = this._isFocusing || this._isHovering || this.forceShow;
 	}
 
 	_addListeners() {
 		if (this._target) {
-			this._target.addEventListener('mouseenter', this.show);
-			this._target.addEventListener('mouseleave', this.hide);
-			this._target.addEventListener('focus', this.show);
-			this._target.addEventListener('blur', this.hide);
+			this._target.addEventListener('mouseenter', this._onMouseEnter);
+			this._target.addEventListener('mouseleave', this._onMouseLeave);
+			this._target.addEventListener('focus', this._onFocus);
+			this._target.addEventListener('blur', this._onBlur);
 		}
 	}
 
 	_removeListeners() {
 		if (this._target) {
-			this._target.removeEventListener('mouseenter', this.show);
-			this._target.removeEventListener('mouseleave', this.hide);
-			this._target.removeEventListener('focus', this.show);
-			this._target.removeEventListener('blur', this.hide);
+			this._target.removeEventListener('mouseenter', this._onMouseEnter);
+			this._target.removeEventListener('mouseleave', this._onMouseLeave);
+			this._target.removeEventListener('focus', this._onFocus);
+			this._target.removeEventListener('blur', this._onBlur);
 		}
 	}
 }
