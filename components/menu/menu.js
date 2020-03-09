@@ -76,7 +76,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	focus() {
-		this._focusFirst();
+		if (this.children[0].tagName === 'D2L-MENU-ITEM-RADIO') {
+			this._focusSelected();
+		} else {
+			this._focusFirst();
+		}
 	}
 
 	render() {
@@ -120,6 +124,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	_focusLast() {
 		const item = this._tryGetPreviousFocusable();
 		if (item) item.focus();
+	}
+
+	_focusSelected() {
+		const selected = this.querySelector('[selected]');
+		if (selected) selected.focus();
 	}
 
 	_focusNext(item) {
