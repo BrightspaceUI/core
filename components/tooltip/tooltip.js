@@ -38,7 +38,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 				text-align: left;
 				z-index: 1000; /* position on top of floating buttons */
-				opacity: 0;
 			}
 
 			.d2l-tooltip-pointer > div,
@@ -58,7 +57,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([showing]),
 			:host([force-show]) {
 				display: inline-block;
-				opacity: 1;
 			}
 
 			.d2l-tooltip-target-position {
@@ -120,7 +118,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 				width: 100vw;
 				height: 100vh;
-								overflow: hidden;
+				overflow: hidden;
 			}
 
 			.d2l-tooltip-content {
