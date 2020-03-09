@@ -17,6 +17,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			boundary: { type: Object },
 			customTarget: { type: Object, attribute: 'custom-target' },
+			forceShow: { type: Boolean, attribute: 'force-show' },
 			_viewportMargin: { type: Number },
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
@@ -55,7 +56,8 @@ class Tooltip extends RtlMixin(LitElement) {
 				text-align: right;
 			}
 
-			:host([showing]) {
+			:host([showing]),
+			:host([force-show]) {
 				display: inline-block;
 				opacity: 1;
 			}
@@ -165,6 +167,18 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
+	get forceShow() {
+		return this._forceShow;
+	}
+	set forceShow(val) {
+		const oldVal = this._forceShow;
+		if (oldVal !== val) {
+			this._forceShow = val;
+			this.requestUpdate('force-show', oldVal);
+			this._openedChanged(val || this.showing);
+		}
+	}
+
 	get showing() {
 		return this.__showing;
 	}
@@ -174,7 +188,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (oldVal !== val) {
 			this.__showing = val;
 			this.requestUpdate('showing', oldVal);
-			this._openedChanged(val);
+			this._openedChanged(val || this.forceShow);
 		}
 	}
 
@@ -263,6 +277,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	show() {
 		this._opens += 1;
 		this.showing = this._opens > 0;
+		console.log(this.forceShow);
 	}
 
 	hide() {
