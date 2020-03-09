@@ -76,7 +76,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	focus() {
-		this._focusFirst();
+		if (this._items[0].role === 'menuitemradio') {
+			this._focusSelected();
+		} else {
+			this._focusFirst();
+		}
 	}
 
 	render() {
@@ -125,6 +129,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	_focusNext(item) {
 		item = this._tryGetNextFocusable(item);
 		item ? item.focus() : this._focusFirst();
+	}
+
+	_focusSelected() {
+		const selected = this.querySelector('[selected]');
+		if (selected) selected.focus();
 	}
 
 	_focusPrevious(item) {
