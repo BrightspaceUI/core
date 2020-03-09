@@ -139,6 +139,43 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([open-dir="left"]) .d2l-tooltip-position {
 				right: 100%;
 			}
+
+			:host([open-dir="bottom"]) .d2l-tooltip-container {
+				-webkit-animation: d2l-tooltip-bottom-animation 200ms ease;
+				animation: d2l-tooltip-bottom-animation 200ms ease;
+			}
+
+			:host([open-dir="top"]) .d2l-tooltip-container {
+				-webkit-animation: d2l-tooltip-top-animation 200ms ease;
+				animation: d2l-tooltip-top-animation 200ms ease;
+			}
+
+			:host([open-dir="left"]) .d2l-tooltip-container {
+				-webkit-animation: d2l-tooltip-left-animation 200ms ease;
+				animation: d2l-tooltip-left-animation 200ms ease;
+			}
+
+			:host([open-dir="right"]) .d2l-tooltip-container {
+				-webkit-animation: d2l-tooltip-right-animation 200ms ease;
+				animation: d2l-tooltip-right-animation 200ms ease;
+			}
+
+			@keyframes d2l-tooltip-top-animation {
+				0% { transform: translate(0,-10px); opacity: 0; }
+				100% { transform: translate(0,0); opacity: 1; }
+			}
+			@keyframes d2l-tooltip-bottom-animation {
+				0% { transform: translate(0,10px); opacity: 0; }
+				100% { transform: translate(0,0); opacity: 1; }
+			}
+			@keyframes d2l-tooltip-left-animation {
+				0% { transform: translate(-10px,0); opacity: 0; }
+				100% { transform: translate(0,0); opacity: 1; }
+			}
+			@keyframes d2l-tooltip-right-animation {
+				0% { transform: translate(10px,0); opacity: 0; }
+				100% { transform: translate(0,0); opacity: 1; }
+			}
 		`];
 	}
 
@@ -221,13 +258,15 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		return html`
 			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
-				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-					<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(contentStyle)}>
-						<slot></slot>
+				<div class="d2l-tooltip-container">
+					<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
+						<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(contentStyle)}>
+							<slot></slot>
+						</div>
 					</div>
-				</div>
-				<div class="d2l-tooltip-pointer">
-					<div></div>
+					<div class="d2l-tooltip-pointer">
+						<div></div>
+					</div>
 				</div>
 			</div>`
 		;
