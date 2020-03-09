@@ -16,7 +16,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			boundary: { type: Object },
-			customTarget: { type: Object, attribute: 'custom-target' },
 			forceShow: { type: Boolean, attribute: 'force-show' },
 			_viewportMargin: { type: Number },
 			_maxWidth: { type: Number },
@@ -238,6 +237,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		super.connectedCallback();
 		document.body.addEventListener('click', this._onAutoCloseClick);
 		window.addEventListener('resize', this._onResize);
+
+		requestAnimationFrame(() => {
+			this._targetChanged();
+		});
 	}
 
 	disconnectedCallback() {
@@ -247,6 +250,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_targetChanged() {
+		this._removeListeners();
 		const target = this._findTarget();
 		if (target) {
 			this.id = this.id || getUniqueId();
@@ -265,9 +269,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			const targetSelector = `#${this.for}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
-		} else if (this.customTarget !== undefined) {
-			// Set to undefined because it is not used - target is a DOM node, whereas customTarget is an object
-			target = undefined;
 		} else {
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
@@ -277,7 +278,6 @@ class Tooltip extends RtlMixin(LitElement) {
 	show() {
 		this._opens += 1;
 		this.showing = this._opens > 0;
-		console.log(this.forceShow);
 	}
 
 	hide() {
@@ -295,7 +295,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onResize() {
-		if (!this.showing) {
+		if (!this.showing && !this.forceShow) {
 			return;
 		}
 		this.__position();
@@ -336,7 +336,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!tooltipTarget) {
 			return;
 		}
-		const targetRect = this.customTarget ? this.customTarget : target.getBoundingClientRect();
+		const targetRect =  target.getBoundingClientRect();
 		const spaceAround = this._constrainSpaceAround({
 			above: targetRect.top - this._viewportMargin,
 			below: document.documentElement.clientHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
