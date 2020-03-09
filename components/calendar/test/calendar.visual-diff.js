@@ -29,6 +29,36 @@ describe('d2l-calendar', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	describe('localization', () => {
+
+		after(async() => {
+			await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
+		});
+
+		[
+			'ar',
+			'da',
+			'de',
+			'en',
+			'es',
+			'fr',
+			'ja',
+			'ko',
+			'nl',
+			'pt',
+			'sv',
+			'tr',
+			'zh',
+			'zh-tw'
+		].forEach((lang) => {
+			it(`works correctly in ${lang}`, async function() {
+				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
+				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
 	describe('style', () => {
 		afterEach(async() => {
 			await page.reload();

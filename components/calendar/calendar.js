@@ -283,6 +283,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		);
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
+
+		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+			calendarData = null;
+			getCalendarData();
+			this.requestUpdate();
+		});
 	}
 
 	updated(changedProperties) {
