@@ -1,7 +1,7 @@
 const maxTime = 2000;
 const minDistance = 30;
 
-export function registerSwipe(node) {
+export function registerGestureSwipe(node) {
 	node.addEventListener('touchstart', handleTouchStart);
 }
 
@@ -80,7 +80,7 @@ function handleTouchStart(e) {
 			}
 		}
 
-		node.dispatchEvent(new CustomEvent('d2l-swipe', {
+		node.dispatchEvent(new CustomEvent('d2l-gesture-swipe', {
 			detail: {
 				distance: {
 					x: distanceX,

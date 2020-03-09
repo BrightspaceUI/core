@@ -63,6 +63,28 @@ getOffsetParent(node);
 isComposedAncestor(ancestorNode, node);
 ```
 
+## Gesture - Swipe
+
+A simple helper for swipe touch gestures, providing distance, direction, and duration.
+
+```js
+import { registerGestureSwipe } from '@brightspace-ui/core/helpers/gestures.js';
+
+// sets up event listeners for swipe gesture
+registerGestureSwipe(element);
+
+// listen for custom swipe event
+element.addEventListener('d2l-gesture-swipe', (e) => {
+    console.log(
+        e.detail.distance,             // .x/.y
+        e.detail.direction.angle,      // deg, clock-wise from y-axis
+        e.detail.direction.horizontal, // left/right
+        e.detail.direction.vertical,   // up/down
+        e.detail.duration              // ms
+    );
+});
+```
+
 ## queueMicrotask
 
 A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
@@ -86,28 +108,6 @@ import '@brightspace-ui/core/helpers/requestIdleCallback.js';
 requestIdleCallback((deadline) => {
     // do some work
 }, { timeout: 1000 });
-```
-
-## Swipe
-
-A simple helper for swipe touch gestures, providing distance, direction, and duration.
-
-```js
-import { registerSwipe } from '@brightspace-ui/core/helpers/gestures.js';
-
-// sets up event listeners for swipe gesture
-registerSwipe(element);
-
-// listen for custom swipe event
-element.addEventListener('d2l-swipe', (e) => {
-    console.log(
-        e.detail.distance,             // .x/.y
-        e.detail.direction.angle,      // deg
-        e.detail.direction.horizontal, // left/right
-        e.detail.direction.vertical,   // up/down
-        e.detail.duration              // ms
-    );
-});
 ```
 
 ## UniqueId
