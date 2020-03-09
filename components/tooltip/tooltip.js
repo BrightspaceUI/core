@@ -11,7 +11,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			for: { type: String },
-			opened: { type: Boolean, reflect: true },
+			showing: { type: Boolean, reflect: true },
 			openedAbove: { type: Boolean, reflect: true, attribute: 'opened-above' },
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
@@ -55,7 +55,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				text-align: right;
 			}
 
-			:host([opened]) {
+			:host([showing]) {
 				display: inline-block;
 				opacity: 1;
 			}
@@ -143,8 +143,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.open = this.open.bind(this);
-		this.close = this.close.bind(this);
+		this.show = this.show.bind(this);
+		this.hide = this.hide.bind(this);
 		this._onResize = this._onResize.bind(this);
 		this._onAutoCloseClick = this._onAutoCloseClick.bind(this);
 		this.offset = 20;
@@ -165,15 +165,15 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	get opened() {
-		return this.__opened;
+	get showing() {
+		return this.__showing;
 	}
 
-	set opened(val) {
-		const oldVal = this.__opened;
+	set showing(val) {
+		const oldVal = this.__showing;
 		if (oldVal !== val) {
-			this.__opened = val;
-			this.requestUpdate('opened', oldVal);
+			this.__showing = val;
+			this.requestUpdate('showing', oldVal);
 			this._openedChanged(val);
 		}
 	}
@@ -260,15 +260,15 @@ class Tooltip extends RtlMixin(LitElement) {
 		return target;
 	}
 
-	open(e) {
+	show() {
 		this._opens += 1;
-		this.opened = this._opens > 0;
+		this.showing = this._opens > 0;
 	}
 
-	close() {
+	hide() {
 		this._opens = Math.max(this._opens - 1, 0);
-		this.opened = this._opens > 0;
-		if (!this.opened) {
+		this.showing = this._opens > 0;
+		if (!this.showing) {
 			this._clicked = false;
 		}
 	}
@@ -276,11 +276,11 @@ class Tooltip extends RtlMixin(LitElement) {
 	_forceClose() {
 		this._opens = 0;
 		this._clicked = false;
-		this.opened = false;
+		this.showing = false;
 	}
 
 	_onResize() {
-		if (!this.opened) {
+		if (!this.showing) {
 			return;
 		}
 		this.__position();
@@ -469,13 +469,12 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onAutoCloseClick(e) {
-		console.log('CLICK');
 		if (this._clicked) {
 			this._forceClose();
 		} else {
 			const rootTarget = e.composedPath()[0];
 			if (this._target && isComposedAncestor(this._target, rootTarget)) {
-				this.open();
+				this.show();
 				this._clicked = true;
 			}
 		}
@@ -483,19 +482,19 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_addListeners() {
 		if (this._target) {
-			this._target.addEventListener('mouseenter', this.open);
-			this._target.addEventListener('mouseleave', this.close);
-			this._target.addEventListener('focus', this.open);
-			this._target.addEventListener('blur', this.close);
+			this._target.addEventListener('mouseenter', this.show);
+			this._target.addEventListener('mouseleave', this.hide);
+			this._target.addEventListener('focus', this.show);
+			this._target.addEventListener('blur', this.hide);
 		}
 	}
 
 	_removeListeners() {
 		if (this._target) {
-			this._target.removeEventListener('mouseenter', this.open);
-			this._target.removeEventListener('mouseleave', this.close);
-			this._target.removeEventListener('focus', this.open);
-			this._target.removeEventListener('blur', this.close);
+			this._target.removeEventListener('mouseenter', this.show);
+			this._target.removeEventListener('mouseleave', this.hide);
+			this._target.removeEventListener('focus', this.show);
+			this._target.removeEventListener('blur', this.hide);
 		}
 	}
 }
