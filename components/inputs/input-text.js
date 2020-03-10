@@ -94,6 +94,16 @@ class InputText extends RtlMixin(LitElement) {
 		this._lastSlotWidth = 0;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.addEventListener('blur', this._handleBlur, true);
+		this.addEventListener('focus', this._handleFocus, true);
+
+		this.addEventListener('mouseover', this._handleMouseEnter);
+		this.addEventListener('mouseout', this._handleMouseLeave);
+	}
+
 	render() {
 		const isFocusedOrHovered = !this.disabled && (this._focused || this._hovered);
 		const inputClasses = {
@@ -113,11 +123,7 @@ class InputText extends RtlMixin(LitElement) {
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
 		const input = html`
-			<div class="d2l-input-text-container"
-				@blur="${this._handleBlur}"
-				@focus="${this._handleFocus}"
-				@mouseout="${this._handleMouseLeave}"
-				@mouseover="${this._handleMouseEnter}">
+			<div class="d2l-input-text-container">
 				<input aria-invalid="${ifDefined(this.ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-required="${ifDefined(ariaRequired)}"
