@@ -115,7 +115,7 @@ describe('d2l-menu', () => {
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));
 		});
 
-		it('focus method sets focus to selected radio menu item', async () => {
+		it('focus method sets focus to selected radio menu item', async() => {
 			elem = await fixture(html`
 				<d2l-menu>
 					<d2l-menu-item-radio id="r1" text="1"></d2l-menu-item-radio>
