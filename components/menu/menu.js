@@ -84,20 +84,20 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	getMenuType() {
-		if (this._items.length > 0) {
-			switch (this._items[0].role) {
-				case 'menuitemradio':
-					return 'menu-radio';
-
-				case 'menuitemcheckbox':
-					return 'menu-checkbox';
-
-				case 'menuitem':
-				default:
-					return 'menu';
-			}
-		} else {
+		if (this._items.length === 0) {
 			return 'menu';
+		}
+
+		switch (this._items[0].role) {
+			case 'menuitemradio':
+				return 'menu-radio';
+
+			case 'menuitemcheckbox':
+				return 'menu-checkbox';
+
+			case 'menuitem':
+			default:
+				return 'menu';
 		}
 	}
 

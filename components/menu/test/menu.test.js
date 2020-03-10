@@ -69,27 +69,27 @@ describe('d2l-menu', () => {
 			}
 		});
 
-		it('focus method sets focus to first visible menu item', () => {
+		it('focuses on first visible menu item when focus() is called', () => {
 			elem.focus();
 			expect(document.activeElement).to.equal(elem.querySelector('#a1'));
 		});
 
-		it('down arrow moves focus to next focusable item', () => {
+		it('moves focus to next focusable item when down arrow is pressed', () => {
 			dispatchKeyEvent(elem.querySelector('#c1'), 40);
 			expect(document.activeElement).to.equal(elem.querySelector('#d1'));
 		});
 
-		it('up arrow moves focus to previous focusable item', () => {
+		it('moves focus to previous focusable item when up arrow is pressed', () => {
 			dispatchKeyEvent(elem.querySelector('#d1'), 38);
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
 
-		it('down arrow on last focusable item moves focus to first focusable item', () => {
+		it('moves focus to first focusable item when down arrow is pressed on last focusable item', () => {
 			dispatchKeyEvent(elem.querySelector('#d1'), 40);
 			expect(document.activeElement).to.equal(elem.querySelector('#a1'));
 		});
 
-		it('up arrow on first focusable item moves focus to last focusable item', () => {
+		it('moves focus to last focusable item when up arrow is pressed on first focusable item', () => {
 			dispatchKeyEvent(elem.querySelector('#a1'), 38);
 			expect(document.activeElement).to.equal(elem.querySelector('#d1'));
 		});
@@ -115,7 +115,7 @@ describe('d2l-menu', () => {
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));
 		});
 
-		it('focus method sets focus to selected radio menu item', async() => {
+		it('focuses on the selected radio menu item when focus() is called', async() => {
 			elem = await fixture(html`
 				<d2l-menu>
 					<d2l-menu-item-radio id="r1" text="1"></d2l-menu-item-radio>
