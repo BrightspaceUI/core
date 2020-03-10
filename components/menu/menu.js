@@ -96,6 +96,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 				default:
 					return 'menu';
 			}
+		} else {
+			return 'menu';
 		}
 	}
 
