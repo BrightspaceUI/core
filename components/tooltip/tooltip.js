@@ -21,11 +21,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
+			_target: { type: Object },
 			offset: { type: Number },
 			_position: { type: Number },
 			_clicked: { type: Boolean },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
-			delay: { type: Number }
+			delay: { type: Number },
 		};
 	}
 
@@ -137,6 +138,11 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([open-dir="left"]) .d2l-tooltip-position {
 				right: 100%;
+			}
+
+			.d2l-tooltip-container {
+				height: 100%;
+				width: 100%;
 			}
 
 			:host([open-dir="bottom"]) .d2l-tooltip-container {
@@ -293,7 +299,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			target.setAttribute('aria-describedby', this.id);
 		}
 		this._target = target;
+
 		this._addListeners();
+		this.__position();
 	}
 
 	_findTarget() {
@@ -361,22 +369,23 @@ class Tooltip extends RtlMixin(LitElement) {
 	async __position() {
 
 		const target = this._target;
-		if (!target && !this.customTarget) {
+		if (!target) {
+			console.log('tooltip target not found');
 			return;
 		}
 		const tooltipTarget = this.__getTooltipTarget();
 		if (!tooltipTarget) {
+			console.log('tooltip target not found');
 			return;
 		}
+
 		const targetRect =  target.getBoundingClientRect();
-		console.log(`TOP: ${targetRect.top}`);
 		const spaceAround = this._constrainSpaceAround({
 			above: targetRect.top - this._viewportMargin,
-			below: document.documentElement.clientHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
+			below: window.innerHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
 			left: targetRect.left - this._viewportMargin,
 			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
 		});
-		console.log(`TOP: ${  spaceAround.above}`);
 
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
 		const horizontalHeight = Math.max(spaceAround.above + targetRect.height + spaceAround.below, 1);
@@ -559,6 +568,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			this._target.addEventListener('mouseleave', this._onMouseLeave);
 			this._target.addEventListener('focus', this._onFocus);
 			this._target.addEventListener('blur', this._onBlur);
+
+			this._targetSizeObserver = new ResizeObserver(() => this.__position());
+			this._targetSizeObserver.observe(this._target);
 		}
 	}
 
@@ -568,6 +580,11 @@ class Tooltip extends RtlMixin(LitElement) {
 			this._target.removeEventListener('mouseleave', this._onMouseLeave);
 			this._target.removeEventListener('focus', this._onFocus);
 			this._target.removeEventListener('blur', this._onBlur);
+
+			if (this._targetSizeObserver) {
+				this._targetSizeObserver.disconnect();
+				this._targetSizeObserver = null;
+			}
 		}
 	}
 }
