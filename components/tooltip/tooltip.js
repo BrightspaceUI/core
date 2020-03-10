@@ -2,7 +2,6 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -396,7 +395,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			{ dir: 'right', width: Math.max(spaceAround.right - this.offset, 1), height: horizontalHeight },
 			{ dir: 'left', width: Math.max(spaceAround.left - this.offset, 1), height: horizontalHeight }
 		];
-		console.log(spaces);
+
 		let space = null;
 		const content = this.__getContentContainer();
 		for (let i = 0; i < spaces.length; ++i) {
@@ -415,7 +414,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._maxWidth = contentRect.width;
 		this._maxHeight = contentRect.height;
 		this.openDir = space.dir;
-		await this.updateComplete;
 
 		const tooltipRect = tooltipTarget.getBoundingClientRect();
 
@@ -449,7 +447,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				width: 0,
 			};
 		}
-
 	}
 
 	async _canFitSpace(content, space) {
@@ -457,10 +454,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._maxWidth = space.width;
 		this._maxHeight = space.height;
 		await this.updateComplete;
-		console.log(content.getBoundingClientRect());
-		console.log(space);
-		console.log(`${content.scrollWidth  }, ${  content.scrollHeight}`);
-		console.log(`FITS: ${content.scrollWidth <= this._maxWidth && content.scrollHeight <= this._maxHeight}`);
 		return content.scrollWidth <= this._maxWidth && content.scrollHeight <= this._maxHeight;
 	}
 
