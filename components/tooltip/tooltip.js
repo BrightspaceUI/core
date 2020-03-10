@@ -2,9 +2,9 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 class Tooltip extends RtlMixin(LitElement) {
 
@@ -377,12 +377,10 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const target = this._target;
 		if (!target) {
-			console.log('tooltip target not found');
 			return;
 		}
 		const tooltipTarget = this.__getTooltipTarget();
 		if (!tooltipTarget) {
-			console.log('tooltip target not found');
 			return;
 		}
 
@@ -394,14 +392,14 @@ class Tooltip extends RtlMixin(LitElement) {
 			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
 		});
 
-		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 1);
-		const horizontalHeight = Math.max(spaceAround.above + targetRect.height + spaceAround.below, 1);
+		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 0);
+		const horizontalHeight = Math.max(spaceAround.above + targetRect.height + spaceAround.below, 0);
 
 		const spaces = [
-			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this.offset, 1) },
-			{ dir: 'bottom', width: verticalWidth, height: Math.max(spaceAround.below - this.offset, 1) },
-			{ dir: 'right', width: Math.max(spaceAround.right - this.offset, 1), height: horizontalHeight },
-			{ dir: 'left', width: Math.max(spaceAround.left - this.offset, 1), height: horizontalHeight }
+			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this.offset, 0) },
+			{ dir: 'bottom', width: verticalWidth, height: Math.max(spaceAround.below - this.offset, 0) },
+			{ dir: 'right', width: Math.max(spaceAround.right - this.offset, 0), height: horizontalHeight },
+			{ dir: 'left', width: Math.max(spaceAround.left - this.offset, 0), height: horizontalHeight }
 		];
 		if (this.getAttribute('dir') === 'rtl') {
 			const tmp = spaces[2];
