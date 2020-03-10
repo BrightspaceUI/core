@@ -499,7 +499,6 @@ describe('d2l-calendar', () => {
 			it('should return expected day in Australia/Eucla timezone', () => {
 				documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 				expect(getToday()).to.deep.equal(new Date(2018, 1, 13));
-				documentLocaleSettings.timezone.identifier = 'America/Toronto';
 			});
 		});
 
