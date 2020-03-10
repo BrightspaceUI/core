@@ -10,14 +10,14 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
+			forceShow: { type: Boolean, attribute: 'force-show' },
+			showing: { type: Boolean, reflect: true, attribute: 'showing' },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			/* -------*/
-			showing: { type: Boolean, reflect: true },
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			boundary: { type: Object },
-			forceShow: { type: Boolean, attribute: 'force-show' },
-			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			offset: { type: Number },
 			position: { type: String },
 			_viewportMargin: { type: Number },
@@ -32,14 +32,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		return [bodyCompactStyles, css`
 			:host {
 				--d2l-tooltip-background-color: var(--d2l-color-ferrite);
-
 				box-sizing: border-box;
 				color: white;
 				display: none;
 				position: absolute;
 				text-align: left;
-				z-index: 1000; /* position on top of floating buttons */
 				white-space: normal;
+				z-index: 1000; /* position on top of floating buttons */
 			}
 
 			:host([state="error"]) {
@@ -191,11 +190,15 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onBlur = this._onBlur.bind(this);
 		this._onResize = this._onResize.bind(this);
 
-		this.offset = 20;
-		this.state = 'info';
+		this.delay = 0;
 		this.disableFocusLock = false;
-		this.delay = 500;
+		this.forceShow = false;
+		this.offset = 20;
 		this.showing = false;
+		this.state = 'info';
+
+		this._isFocusing = false;
+		this._isHovering = false;
 
 		this._viewportMargin = 12;
 	}
@@ -217,22 +220,47 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 	set forceShow(val) {
 		const oldVal = this._forceShow;
-		this._forceShow = val;
-		this.requestUpdate('force-show', oldVal);
-		this._updateShowing();
+		if (oldVal !== val) {
+			this._forceShow = val;
+			this.requestUpdate('force-show', oldVal);
+			this._updateShowing();
+		}
 	}
 
 	get showing() {
-		return this.__showing;
+		return this._showing;
 	}
-
 	set showing(val) {
-		const oldVal = this.__showing;
+		const oldVal = this._showing;
 		if (oldVal !== val) {
-			this.__showing = val;
+			this._showing = val;
 			this.requestUpdate('showing', oldVal);
 			this._openedChanged(val);
 		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('resize', this._onResize);
+
+		requestAnimationFrame(() => {
+			this._updateTarget();
+		});
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('resize', this._onResize);
+	}
+
+	show() {
+		this.showing = true;
+	}
+
+	hide() {
+		this._isHovering = false;
+		this._isFocusing = false;
+		this._updateShowing();
 	}
 
 	_updateTarget() {
@@ -263,6 +291,70 @@ class Tooltip extends RtlMixin(LitElement) {
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
 		return target;
+	}
+
+	_addListeners() {
+		if (this._target) {
+			this._target.addEventListener('mouseenter', this._onMouseEnter);
+			this._target.addEventListener('mouseleave', this._onMouseLeave);
+			this._target.addEventListener('focus', this._onFocus);
+			this._target.addEventListener('blur', this._onBlur);
+
+			this._targetSizeObserver = new ResizeObserver(() => this.__positionTooltip());
+			this._targetSizeObserver.observe(this._target);
+		}
+	}
+
+	_removeListeners() {
+		if (this._target) {
+			this._target.removeEventListener('mouseenter', this._onMouseEnter);
+			this._target.removeEventListener('mouseleave', this._onMouseLeave);
+			this._target.removeEventListener('focus', this._onFocus);
+			this._target.removeEventListener('blur', this._onBlur);
+
+			if (this._targetSizeObserver) {
+				this._targetSizeObserver.disconnect();
+				this._targetSizeObserver = null;
+			}
+		}
+	}
+
+	_onMouseEnter() {
+		this._hoverTimeout = setTimeout(() => {
+			this._isHovering = true;
+			this._updateShowing();
+		}, this.delay);
+	}
+
+	_onMouseLeave() {
+		clearTimeout(this._hoverTimeout);
+		this._isHovering = false;
+		this._updateShowing();
+	}
+
+	_onFocus() {
+		if (this.disableFocusLock) {
+			this.showing = true;
+		} else {
+			this._isFocusing = true;
+			this._updateShowing();
+		}
+	}
+
+	_onBlur() {
+		this._isFocusing = false;
+		this._updateShowing();
+	}
+
+	_updateShowing() {
+		this.showing = this._isFocusing || this._isHovering || this.forceShow;
+	}
+
+	_onResize() {
+		if (!this.showing) {
+			return;
+		}
+		this.__positionTooltip();
 	}
 
 	render() {
@@ -315,37 +407,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('resize', this._onResize);
-
-		requestAnimationFrame(() => {
-			this._updateTarget();
-		});
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		window.removeEventListener('resize', this._onResize);
-	}
-
-	show() {
-		this.showing = true;
-	}
-
-	hide() {
-		this._isHovering = false;
-		this._isFocusing = false;
-		this._updateShowing();
-	}
-
-	_onResize() {
-		if (!this.showing && !this.forceShow) {
-			return;
-		}
-		this.__positionTooltip();
-	}
-
 	__getContentContainer() {
 		return this.shadowRoot.querySelector('.d2l-tooltip-content');
 	}
@@ -358,13 +419,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		clearTimeout(this._hoverTimeout);
 		if (newValue) {
 			await this.updateComplete;
-
-			console.log('POSITION');
 			await this.__positionTooltip();
-
-			this._dismissibleId = setDismissible(() => {
-				this.hide();
-			});
+			this._dismissibleId = setDismissible(() => this.hide());
 		} else {
 			if (this._dismissibleId) {
 				clearDismissible(this._dismissibleId);
@@ -382,7 +438,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		const tooltipTarget = this.__getTooltipTarget();
 		if (!tooltipTarget) {
 			return;
-		} console.log('FO REALZ');
+		}
 
 		const targetRect =  target.getBoundingClientRect();
 		const spaceAround = this._constrainSpaceAround({
@@ -552,63 +608,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_isVerticalOpen() {
 		return this.openDir === 'bottom' || this.openDir === 'top';
-	}
-
-	_onMouseEnter() {
-		this._hoverTimeout = setTimeout(() => {
-			this._isHovering = true;
-			this._updateShowing();
-		}, this.delay);
-	}
-
-	_onMouseLeave() {
-		clearTimeout(this._hoverTimeout);
-		this._isHovering = false;
-		this._updateShowing();
-	}
-
-	_onFocus() {
-		if (this.disableFocusLock) {
-			this.showing = true;
-		} else {
-			this._isFocusing = true;
-			this._updateShowing();
-		}
-	}
-
-	_onBlur() {
-		this._isFocusing = false;
-		this._updateShowing();
-	}
-
-	_updateShowing() {
-		this.showing = this._isFocusing || this._isHovering || this.forceShow;
-	}
-
-	_addListeners() {
-		if (this._target) {
-			this._target.addEventListener('mouseenter', this._onMouseEnter);
-			this._target.addEventListener('mouseleave', this._onMouseLeave);
-			this._target.addEventListener('focus', this._onFocus);
-			this._target.addEventListener('blur', this._onBlur);
-
-			this._targetSizeObserver = new ResizeObserver(() => this.__positionTooltip());
-			this._targetSizeObserver.observe(this._target);
-		}
-	}
-
-	_removeListeners() {
-		if (this._target) {
-			this._target.removeEventListener('mouseenter', this._onMouseEnter);
-			this._target.removeEventListener('mouseleave', this._onMouseLeave);
-			this._target.removeEventListener('focus', this._onFocus);
-			this._target.removeEventListener('blur', this._onBlur);
-
-			if (this._targetSizeObserver) {
-				this._targetSizeObserver.disconnect();
-				this._targetSizeObserver = null;
-			}
-		}
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
