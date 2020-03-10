@@ -244,7 +244,9 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const tooltipPositionStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : '',
-			maxHeight: this._maxHeight ? `${this._maxHeight}px` : ''
+			maxHeight: this._maxHeight ? `${this._maxHeight}px` : '',
+			width: this._maxWidth ? `${this._maxWidth}px` : '',
+			height: this._maxHeight ? `${this._maxHeight}px` : ''
 		};
 		if (this._position) {
 			if (this._isVerticalOpen()) {
@@ -405,13 +407,13 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 		}
 		if (space === null) {
-			space = spaces[0];
-			console.log('NO SPACES FIT');
+			space = this._findLargestSpace(spaces);
+			this._maxWidth = space.width;
+			this._maxHeight = null;
+			await this.updateComplete;
 		}
-
 		const contentRect = content.getBoundingClientRect();
-
-		this._maxWidth = contentRect.width;
+		this._maxWidth = Math.max(contentRect.width, content.scrollWidth);
 		this._maxHeight = contentRect.height;
 		this.openDir = space.dir;
 
@@ -455,6 +457,18 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._maxHeight = space.height;
 		await this.updateComplete;
 		return content.scrollWidth <= this._maxWidth && content.scrollHeight <= this._maxHeight;
+	}
+
+	_findLargestSpace(spaces) {
+
+		let largest = spaces[0];
+		for (let i = 1; i < spaces.length; ++i) {
+			const space = spaces[i];
+			if (space.width * space.height > largest.width * largest.height) {
+				largest = space;
+			}
+		}
+		return largest;
 	}
 
 	_constrainSpaceAround(spaceAround) {
