@@ -11,9 +11,10 @@ class Tooltip extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			for: { type: String },
+			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
+			/* -------*/
 			showing: { type: Boolean, reflect: true },
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
-			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			boundary: { type: Object },
 			forceShow: { type: Boolean, attribute: 'force-show' },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
@@ -30,6 +31,8 @@ class Tooltip extends RtlMixin(LitElement) {
 	static get styles() {
 		return [bodyCompactStyles, css`
 			:host {
+				--d2l-tooltip-background-color: var(--d2l-color-ferrite);
+
 				box-sizing: border-box;
 				color: white;
 				display: none;
@@ -39,14 +42,8 @@ class Tooltip extends RtlMixin(LitElement) {
 				white-space: normal;
 			}
 
-			.d2l-tooltip-pointer > div,
-			.d2l-tooltip-content {
-				background-color: var(--d2l-color-ferrite);
-			}
-
-			:host([state="error"]) .d2l-tooltip-pointer > div,
-			:host([state="error"]) .d2l-tooltip-content {
-				background-color: var(--d2l-color-cinnabar);
+			:host([state="error"]) {
+				--d2l-tooltip-background-color: var(--d2l-color-cinnabar);
 			}
 
 			:host([dir="rtl"]) {
@@ -100,6 +97,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			.d2l-tooltip-pointer > div {
 				-webkit-transform: rotate(45deg);
+				background-color: var(--d2l-tooltip-background-color);
 				border-radius: 0.1rem;
 				box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 				height: 16px;
@@ -120,6 +118,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-content {
+				background-color: var(--d2l-tooltip-background-color);
 				border-radius: 0.3rem;
 				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 				box-sizing: border-box;
