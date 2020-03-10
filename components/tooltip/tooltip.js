@@ -16,16 +16,14 @@ class Tooltip extends RtlMixin(LitElement) {
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			boundary: { type: Object },
 			forceShow: { type: Boolean, attribute: 'force-show' },
+			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
+			offset: { type: Number },
+			position: { type: String },
 			_viewportMargin: { type: Number },
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
-			_target: { type: Object },
-			_position: { type: Number },
-			offset: { type: Number },
-			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
-			delay: { type: Number },
-			position: { type: String }
+			_position: { type: Number }
 		};
 	}
 
@@ -211,7 +209,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (oldVal !== val) {
 			this._for = val;
 			this.requestUpdate('for', oldVal);
-			this._targetChanged();
+			this._updateTarget();
 		}
 	}
 
@@ -236,6 +234,36 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.requestUpdate('showing', oldVal);
 			this._openedChanged(val);
 		}
+	}
+
+	_updateTarget() {
+		this._removeListeners();
+		const target = this._findTarget();
+		if (target) {
+			this.id = this.id || getUniqueId();
+			target.setAttribute('aria-describedby', this.id);
+		}
+		this._target = target;
+		this._addListeners();
+
+		if (this.showing) {
+			this.__positionTooltip();
+		}
+	}
+
+	_findTarget() {
+		const parentNode = this.parentNode;
+		const ownerRoot = this.getRootNode();
+
+		let target;
+		if (this._for) {
+			const targetSelector = `#${this.for}`;
+			target = ownerRoot.querySelector(targetSelector);
+			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
+		} else {
+			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
+		}
+		return target;
 	}
 
 	render() {
@@ -293,41 +321,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		window.addEventListener('resize', this._onResize);
 
 		requestAnimationFrame(() => {
-			this._targetChanged();
+			this._updateTarget();
 		});
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('resize', this._onResize);
-	}
-
-	_targetChanged() {
-		this._removeListeners();
-		const target = this._findTarget();
-		if (target) {
-			this.id = this.id || getUniqueId();
-			target.setAttribute('aria-describedby', this.id);
-		}
-		this._target = target;
-
-		this._addListeners();
-		this.__positionTooltip();
-	}
-
-	_findTarget() {
-		const parentNode = this.parentNode;
-		const ownerRoot = this.getRootNode();
-
-		let target;
-		if (this._for) {
-			const targetSelector = `#${this.for}`;
-			target = ownerRoot.querySelector(targetSelector);
-			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
-		} else {
-			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
-		}
-		return target;
 	}
 
 	show() {
@@ -360,6 +360,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (newValue) {
 			await this.updateComplete;
 
+			console.log('POSITION');
 			await this.__positionTooltip();
 
 			this._dismissibleId = setDismissible(() => {
@@ -382,7 +383,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		const tooltipTarget = this.__getTooltipTarget();
 		if (!tooltipTarget) {
 			return;
-		}
+		} console.log('FO REALZ');
 
 		const targetRect =  target.getBoundingClientRect();
 		const spaceAround = this._constrainSpaceAround({
