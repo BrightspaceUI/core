@@ -11,7 +11,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		return {
 			for: { type: String },
 			showing: { type: Boolean, reflect: true },
-			openedAbove: { type: Boolean, reflect: true, attribute: 'opened-above' },
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			boundary: { type: Object },
@@ -21,9 +20,8 @@ class Tooltip extends RtlMixin(LitElement) {
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
 			_target: { type: Object },
-			offset: { type: Number },
 			_position: { type: Number },
-			_clicked: { type: Boolean },
+			offset: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			delay: { type: Number },
 		};
@@ -55,8 +53,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				text-align: right;
 			}
 
-			:host([showing]),
-			:host([force-show]) {
+			:host([showing]) {
 				display: inline-block;
 			}
 
@@ -191,10 +188,14 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onFocus = this._onFocus.bind(this);
 		this._onBlur = this._onBlur.bind(this);
 		this._onResize = this._onResize.bind(this);
+
 		this.offset = 20;
-		this._viewportMargin = 12;
 		this.state = 'info';
 		this.disableFocusLock = false;
+		this.delay = 500;
+		this.showing = false;
+
+		this._viewportMargin = 12;
 	}
 
 	get for() {
@@ -325,13 +326,9 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	hide() {
-		this.showing = false;
-	}
-
-	_forceClose() {
-		this._opens = 0;
-		this._clicked = false;
-		this.showing = false;
+		this._isHovering = false;
+		this._isFocusing = false;
+		this._updateShowing();
 	}
 
 	_onResize() {
@@ -357,7 +354,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			await this.__position();
 
 			this._dismissibleId = setDismissible(() => {
-				this._forceClose();
+				this.hide();
 			});
 		} else {
 			if (this._dismissibleId) {
