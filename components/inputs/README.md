@@ -126,7 +126,6 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 - `readonly` (Boolean): makes the input read-only
 - `required` (Boolean): indicates that a value is required
 - `size` (Number): size of the input
-* `slot-padding-width` (Number, default: `2.2`): total padding (in `rem` units) prior to start/end of input box content when slot is used. Left and right slot content padding will be calculated to be even based on size of slot content and this property's value.
 - `step` (String): for number inputs, sets the step size
 - `type` (String, default: `'text'`): can be one of `text`, `email`, `number`, `password`, `tel`, `url`
 - `value` (String, default: `''`): value of the input

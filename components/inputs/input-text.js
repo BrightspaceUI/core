@@ -27,7 +27,6 @@ class InputText extends RtlMixin(LitElement) {
 			readonly: { type: Boolean },
 			required: { type: Boolean, reflect: true },
 			size: { type: Number },
-			slotPaddingWidth: { type: Number, attribute: 'slot-padding-width' },
 			step: { type: String },
 			type: { type: String },
 			value: { type: String },
@@ -84,7 +83,6 @@ class InputText extends RtlMixin(LitElement) {
 		this.preventSubmit = false;
 		this.readonly = false;
 		this.required = false;
-		this.slotPaddingWidth = 2.2;
 		this.type = 'text';
 		this.value = '';
 
