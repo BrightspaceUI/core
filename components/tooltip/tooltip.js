@@ -4,6 +4,7 @@ import { bodyCompactStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 class Tooltip extends RtlMixin(LitElement) {
 
@@ -24,6 +25,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			offset: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			delay: { type: Number },
+			position: { type: String }
 		};
 	}
 
@@ -134,6 +136,9 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([open-dir="left"]) .d2l-tooltip-position {
 				right: 100%;
+			}
+			:host([dir="rtl"][open-dir="right"]) .d2l-tooltip-position {
+				left: 100%;
 			}
 
 			.d2l-tooltip-container {
@@ -251,7 +256,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		};
 		if (this._position) {
 			if (this._isVerticalOpen()) {
-				tooltipPositionStyle.left = `${this._position}px`;
+				if (this.getAttribute('dir') === 'rtl') {
+					tooltipPositionStyle.right = `${this._position}px`;
+				} else {
+					tooltipPositionStyle.left = `${this._position}px`;
+				}
 			} else {
 				tooltipPositionStyle.top = `${this._position}px`;
 			}
@@ -303,7 +312,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target = target;
 
 		this._addListeners();
-		this.__position();
+		this.__positionTooltip();
 	}
 
 	_findTarget() {
@@ -335,7 +344,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this.showing && !this.forceShow) {
 			return;
 		}
-		this.__position();
+		this.__positionTooltip();
 	}
 
 	__getContentContainer() {
@@ -351,7 +360,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (newValue) {
 			await this.updateComplete;
 
-			await this.__position();
+			await this.__positionTooltip();
 
 			this._dismissibleId = setDismissible(() => {
 				this.hide();
@@ -364,7 +373,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	async __position() {
+	async __positionTooltip() {
 
 		const target = this._target;
 		if (!target) {
@@ -394,20 +403,32 @@ class Tooltip extends RtlMixin(LitElement) {
 			{ dir: 'right', width: Math.max(spaceAround.right - this.offset, 1), height: horizontalHeight },
 			{ dir: 'left', width: Math.max(spaceAround.left - this.offset, 1), height: horizontalHeight }
 		];
+		if (this.getAttribute('dir') === 'rtl') {
+			const tmp = spaces[2];
+			spaces[2] = spaces[3];
+			spaces[3] = tmp;
+		}
 
 		let space = null;
 		const content = this.__getContentContainer();
-		for (let i = 0; i < spaces.length; ++i) {
-			if (await this._canFitSpace(content, spaces[i])) {
-				space = spaces[i];
-				break;
-			}
-		}
-		if (space === null) {
-			space = this._findLargestSpace(spaces);
+		if (this.position !== undefined) {
+			space = spaces.filter(space => space.dir === this.position)[0];
 			this._maxWidth = space.width;
 			this._maxHeight = null;
 			await this.updateComplete;
+		} else {
+			for (let i = 0; i < spaces.length; ++i) {
+				if (await this._canFitSpace(content, spaces[i])) {
+					space = spaces[i];
+					break;
+				}
+			}
+			if (space === null) {
+				space = this._findLargestSpace(spaces);
+				this._maxWidth = space.width;
+				this._maxHeight = null;
+				await this.updateComplete;
+			}
 		}
 		const contentRect = content.getBoundingClientRect();
 		this._maxWidth = Math.max(contentRect.width, content.scrollWidth);
@@ -573,7 +594,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this._target.addEventListener('focus', this._onFocus);
 			this._target.addEventListener('blur', this._onBlur);
 
-			this._targetSizeObserver = new ResizeObserver(() => this.__position());
+			this._targetSizeObserver = new ResizeObserver(() => this.__positionTooltip());
 			this._targetSizeObserver.observe(this._target);
 		}
 	}
