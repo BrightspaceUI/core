@@ -31,9 +31,10 @@ class InputText extends RtlMixin(LitElement) {
 			step: { type: String },
 			type: { type: String },
 			value: { type: String },
+			_firstSlotWidth: { type: Number },
 			_focused: { type: Boolean },
-			_hasSlot: { type: Boolean },
-			_hovered: { type: Boolean }
+			_hovered: { type: Boolean },
+			_lastSlotWidth: { type: Number }
 		};
 	}
 
@@ -53,16 +54,23 @@ class InputText extends RtlMixin(LitElement) {
 				.d2l-input-text-container {
 					position: relative;
 				}
-				.d2l-input-text-container .d2l-input {
+				.d2l-input {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					-webkit-appearance: textfield;
 				}
-				::slotted(*) {
+				#first-slot, #last-slot {
+					display: flex;
 					position: absolute;
 					top: 50%;
 					transform: translateY(-50%);
+				}
+				#first-slot {
+					left: 0;
+				}
+				#last-slot {
+					right: 0;
 				}
 			`
 		];
@@ -81,16 +89,9 @@ class InputText extends RtlMixin(LitElement) {
 		this.value = '';
 
 		this._focused = false;
-		this._hasSlot = false;
 		this._hovered = false;
-		this._slotContent = {};
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('blur', this._handleBlur, true);
-		this.addEventListener('focus', this._handleFocus, true);
+		this._firstSlotWidth = 0;
+		this._lastSlotWidth = 0;
 	}
 
 	render() {
@@ -102,19 +103,21 @@ class InputText extends RtlMixin(LitElement) {
 		const ariaRequired = this.required ? 'true' : undefined;
 
 		const inputStyles = {};
-		if (this._slotContent['left']) {
-			this._slotContent['left'].style.left = `calc((${this.slotPaddingWidth}rem - ${this._slotContent['left'].offsetWidth}px) / 2)`;
-			inputStyles.paddingLeft = isFocusedOrHovered ? `calc(${this.slotPaddingWidth}rem - 1px)` : `${this.slotPaddingWidth}rem`;
+		if (this._firstSlotWidth > 0) {
+			inputStyles.paddingLeft = isFocusedOrHovered ? `${this._firstSlotWidth - 1}px` : `${this._firstSlotWidth}px`;
 		}
-		if (this._slotContent['right']) {
-			this._slotContent['right'].style.right = `calc((${this.slotPaddingWidth}rem - ${this._slotContent['right'].offsetWidth}px) / 2)`;
-			inputStyles.paddingRight = isFocusedOrHovered ? `calc(${this.slotPaddingWidth}rem - 1px)` : `${this.slotPaddingWidth}rem`;
+		if (this._lastSlotWidth > 0) {
+			inputStyles.paddingRight = isFocusedOrHovered ? `${this._lastSlotWidth - 1}px` : `${this._lastSlotWidth}px`;
 		}
+		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
+		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
 		const input = html`
 			<div class="d2l-input-text-container"
-						@mouseout="${this._handleMouseLeave}"
-						@mouseover="${this._handleMouseEnter}">
+				@blur="${this._handleBlur}"
+				@focus="${this._handleFocus}"
+				@mouseout="${this._handleMouseLeave}"
+				@mouseover="${this._handleMouseEnter}">
 				<input aria-invalid="${ifDefined(this.ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-required="${ifDefined(ariaRequired)}"
@@ -140,8 +143,8 @@ class InputText extends RtlMixin(LitElement) {
 					tabindex="${ifDefined(this.tabindex)}"
 					type="${this._getType()}"
 					.value="${this.value}">
-					<slot name="left" @slotchange="${this._onSlotChange}"></slot>
-					<slot name="right" @slotchange="${this._onSlotChange}"></slot>
+					<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
+					<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {
@@ -230,13 +233,9 @@ class InputText extends RtlMixin(LitElement) {
 		this._hovered = false;
 	}
 
-	_onSlotChange(e) {
-		const children = e.target.assignedNodes();
-		if (children.length > 0) {
-			const slotName = this.dir !== 'rtl' ? e.target.name : (e.target.name === 'left' ? 'right' : 'left');
-			this._slotContent[slotName] = children[0];
-		}
-		this._hasSlot = true;
+	_onSlotChange() {
+		this._firstSlotWidth = this.shadowRoot.querySelector('#first-slot').offsetWidth;
+		this._lastSlotWidth = this.shadowRoot.querySelector('#last-slot').offsetWidth;
 	}
 
 }

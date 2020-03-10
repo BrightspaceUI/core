@@ -14,10 +14,22 @@
 		</script>
 		<style>
 			d2l-button-icon {
-				--d2l-button-icon-min-height: 1.5rem;
-				--d2l-button-icon-min-width: 1.5rem;
+				--d2l-button-icon-min-height: 1.8rem;
+				--d2l-button-icon-min-width: 1.8rem;
 				--d2l-button-icon-border-radius: 4px;
 				--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
+			}
+			d2l-icon[slot="left"], d2l-icon[slot="right"] {
+				margin-left: 0.55rem;
+				margin-right: 0.55rem;
+			}
+			d2l-button-icon[slot="left"], [dir="rtl"] d2l-button-icon[slot="right"] {
+				margin-left: 3px;
+				margin-right: 15px;
+			}
+			d2l-button-icon[slot="right"], [dir="rtl"] d2l-button-icon[slot="left"] {
+				margin-left: 15px;
+				margin-right: 3px;
 			}
 		</style>
 	</head>
@@ -73,42 +85,6 @@
 				<template>
 					<d2l-input-text label="Name">
 						<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>
-					</d2l-input-text>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Icon on Left and Label (rtl)</h2>
-			<d2l-demo-snippet>
-				<template>
-					<d2l-input-text dir="rtl" label="Name">
-						<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>
-					</d2l-input-text>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Icon Button on Left</h2>
-			<d2l-demo-snippet>
-				<template>
-					<d2l-input-text>
-						<d2l-button-icon icon="tier1:search" slot="left"></d2l-button-icon>
-					</d2l-input-text>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Icon on Right</h2>
-			<d2l-demo-snippet>
-				<template>
-					<d2l-input-text>
-						<d2l-icon icon="tier1:calendar" slot="right"></d2l-icon>
-					</d2l-input-text>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Icon on Right (rtl)</h2>
-			<d2l-demo-snippet>
-				<template>
-					<d2l-input-text dir="rtl">
-						<d2l-icon icon="tier1:calendar" slot="right"></d2l-icon>
 					</d2l-input-text>
 				</template>
 			</d2l-demo-snippet>
