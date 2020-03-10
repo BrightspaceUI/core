@@ -7,9 +7,19 @@
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
+			import '../../button/button-icon.js';
 			import '../../demo/demo-page.js';
+			import '../../icons/icon.js';
 			import '../input-text.js';
 		</script>
+		<style>
+			d2l-button-icon {
+				--d2l-button-icon-min-height: 1.5rem;
+				--d2l-button-icon-min-width: 1.5rem;
+				--d2l-button-icon-border-radius: 4px;
+				--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
+			}
+		</style>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="d2l-input-text">
@@ -58,6 +68,69 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Icon on Left and Label</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text label="Name">
+						<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Icon on Left and Label (rtl)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text dir="rtl" label="Name">
+						<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Icon Button on Left</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text>
+						<d2l-button-icon icon="tier1:search" slot="left"></d2l-button-icon>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Icon on Right</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text>
+						<d2l-icon icon="tier1:calendar" slot="right"></d2l-icon>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Icon on Right (rtl)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text dir="rtl">
+						<d2l-icon icon="tier1:calendar" slot="right"></d2l-icon>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Icon Button on Right</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text>
+						<d2l-button-icon icon="tier1:search" slot="right"></d2l-button-icon>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Icons on Left and Right</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text>
+						<d2l-icon icon="tier1:search" slot="left"></d2l-icon>
+						<d2l-icon icon="tier1:search" slot="right"></d2l-icon>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
 		</d2l-demo-page>
 	</body>
 </html>

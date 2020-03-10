@@ -66,6 +66,9 @@ class InputText extends RtlMixin(LitElement) {
 					top: 50%;
 					transform: translateY(-50%);
 				}
+				:host([label]) ::slotted(*) {
+					transform: translateY(20%);
+				}
 			`
 		];
 	}
@@ -109,24 +112,6 @@ class InputText extends RtlMixin(LitElement) {
 			elem.removeEventListener('focus', this._handleFocus);
 			elem.removeEventListener('blur', this._handleBlur);
 		});
-	}
-
-	_onSlotChange(e) {
-		const children = e.target.assignedNodes();
-		if (children.length > 0) {
-			const slotName = e.target.name;
-			const slotContent = children[0];
-			const slotContentWidth = slotContent.offsetWidth;
-			const diff = (this.slotPaddingWidth * documentFontSize - slotContentWidth) / 2;
-
-			slotContent.style[slotName] = `${diff}px`;
-			slotContent.addEventListener('focus', this._handleFocus);
-			slotContent.addEventListener('blur', this._handleBlur);
-			this._slotElems.push(slotContent);
-
-			this._padding[slotName] = `${this.slotPaddingWidth}rem`;
-			this._hasSlot = true;
-		}
 	}
 
 	_handleBlur() {
@@ -270,6 +255,25 @@ class InputText extends RtlMixin(LitElement) {
 
 	_handleMouseLeave() {
 		this._hovered = false;
+	}
+
+	_onSlotChange(e) {
+		const children = e.target.assignedNodes();
+		if (children.length > 0) {
+			const slotName = e.target.name;
+			const affectedSlotName = this.dir !== 'rtl' ? slotName : (slotName === 'left' ? 'right' : 'left');
+			const slotContent = children[0];
+			const slotContentWidth = slotContent.offsetWidth;
+			const diff = (this.slotPaddingWidth * documentFontSize - slotContentWidth) / 2;
+
+			slotContent.style[affectedSlotName] = `${diff}px`;
+			slotContent.addEventListener('focus', this._handleFocus);
+			slotContent.addEventListener('blur', this._handleBlur);
+			this._slotElems.push(slotContent);
+
+			this._padding[affectedSlotName] = `${this.slotPaddingWidth}rem`;
+			this._hasSlot = true;
+		}
 	}
 
 }
