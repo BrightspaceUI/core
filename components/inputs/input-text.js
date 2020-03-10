@@ -111,7 +111,7 @@ class InputText extends RtlMixin(LitElement) {
 			inputStyles.paddingRight = isFocusedOrHovered ? `calc(${this.slotPaddingWidth}rem - 1px)` : `${this.slotPaddingWidth}rem`;
 		}
 
-		let input = html`
+		const input = html`
 			<div class="d2l-input-text-container"
 						@mouseout="${this._handleMouseLeave}"
 						@mouseover="${this._handleMouseEnter}">
@@ -145,7 +145,7 @@ class InputText extends RtlMixin(LitElement) {
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {
-			input = html`
+			return html`
 				<label>
 					<span class="d2l-input-label">${this.label}</span>
 					${input}
