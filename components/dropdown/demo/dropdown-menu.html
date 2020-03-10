@@ -11,6 +11,7 @@
 		import '../../demo/demo-page.js';
 		import '../../menu/menu.js';
 		import '../../menu/menu-item.js';
+		import '../../menu/menu-item-radio.js';
 		import '../dropdown.js';
 		import '../dropdown-menu.js';
 	</script>
@@ -123,6 +124,31 @@
 							<d2l-menu-item text="Magnetism"></d2l-menu-item>
 						</d2l-menu>
 						<div slot="footer" style="font-size: 0.75rem; width: 100%; text-align: center;">And <a href="#">More</a>!</div>
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>With Radio Menu</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<button class="d2l-dropdown-opener">Open it!</button>
+					<d2l-dropdown-menu id="dropdown" no-padding-footer>
+						<div slot="header" style="font-weight: bold; width: 100%; text-align: center;">Study Guide</div>
+						<d2l-menu>
+							<d2l-menu-item-radio text="Introduction" value=0></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 1" value=1></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 2" value=2></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 3" value=3></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 4" value=4></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 5" value=5 selected></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 6" value=6></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 7" value=7></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 8" value=8></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 9" value=9></d2l-menu-item-radio>
+							<d2l-menu-item-radio text="Chapter 10" value=10></d2l-menu-item-radio>
+						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
 			</template>
