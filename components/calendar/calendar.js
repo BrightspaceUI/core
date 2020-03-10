@@ -41,6 +41,13 @@ export function checkIfDatesEqual(date1, date2) {
 	return date1.getTime() === date2.getTime();
 }
 
+export function formatDateInISO(year, month, date) {
+	month = parseInt(month) + 1;
+	if (month < 10) month = `0${month}`;
+	if (date < 10) date = `0${date}`;
+	return `${year}-${month}-${date}`;
+}
+
 export function getDatesInMonthArray(shownMonth, shownYear) {
 	const dates = [];
 	const numDays = getNumberOfDaysInMonth(shownMonth, shownYear);
@@ -399,18 +406,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	_onDateSelected(e) {
 		const selectedDate = e.composedPath()[0];
 		const year = selectedDate.getAttribute('data-year');
-		let month = selectedDate.getAttribute('data-month');
-		let date = selectedDate.getAttribute('data-date');
-		this._focusDate = new Date(year, month, date);
-		month = (parseInt(month) + 1).toString();
-		if (month.length < 2) {
-			month = `0${month}`;
-		}
-		if (date.length < 2) {
-			date = `0${date}`;
-		}
+		const month = selectedDate.getAttribute('data-month');
+		const date = selectedDate.getAttribute('data-date');
 
-		this.selectedValue = [year, month, date].join('-');
+		this._focusDate = new Date(year, month, date);
+		this.selectedValue = formatDateInISO(year, month, date);
 
 		const eventDetails = {
 			bubbles: true,

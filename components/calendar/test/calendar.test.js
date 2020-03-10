@@ -1,5 +1,6 @@
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { checkIfDatesEqual,
+	formatDateInISO,
 	getDatesInMonthArray,
 	getNextMonth,
 	getNumberOfDaysFromPrevMonthToShow,
@@ -255,6 +256,16 @@ describe('d2l-calendar', () => {
 				const date1 = new Date(2019, 1, 1, 0);
 				const date2 = null;
 				expect(checkIfDatesEqual(date1, date2)).to.be.false;
+			});
+		});
+
+		describe('formatDateInISO', () => {
+			it('should return the correct date', () => {
+				expect(formatDateInISO('2020', '2', '1')).to.equal('2020-03-01');
+			});
+
+			it('should return the correct date', () => {
+				expect(formatDateInISO('2020', '9', '10')).to.equal('2020-10-10');
 			});
 		});
 
