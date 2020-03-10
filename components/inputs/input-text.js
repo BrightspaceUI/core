@@ -6,8 +6,6 @@ import { inputStyles } from './input-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-const documentFontSize = parseInt(getComputedStyle(document.documentElement).fontSize);
-
 class InputText extends RtlMixin(LitElement) {
 
 	static get properties() {
@@ -66,9 +64,6 @@ class InputText extends RtlMixin(LitElement) {
 					top: 50%;
 					transform: translateY(-50%);
 				}
-				:host([label]) ::slotted(*) {
-					transform: translateY(20%);
-				}
 			`
 		];
 	}
@@ -88,38 +83,14 @@ class InputText extends RtlMixin(LitElement) {
 		this._focused = false;
 		this._hasSlot = false;
 		this._hovered = false;
-		this._slotElems = [];
-		this._padding = [];
+		this._slotContent = {};
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const slots = this.shadowRoot.querySelectorAll('slot');
-		slots.forEach((slot) => slot.addEventListener('slotchange', this._onSlotChange.bind(this)));
-
-		this.addEventListener('blur', this._handleBlur);
-		this.addEventListener('focus', this._handleFocus);
-
-		this._handleFocus = this._handleFocus.bind(this);
-		this._handleBlur = this._handleBlur.bind(this);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-
-		this._slotElems.forEach((elem) => {
-			elem.removeEventListener('focus', this._handleFocus);
-			elem.removeEventListener('blur', this._handleBlur);
-		});
-	}
-
-	_handleBlur() {
-		this._focused = false;
-	}
-
-	_handleFocus() {
-		this._focused = true;
+		this.addEventListener('blur', this._handleBlur, true);
+		this.addEventListener('focus', this._handleFocus, true);
 	}
 
 	render() {
@@ -129,45 +100,49 @@ class InputText extends RtlMixin(LitElement) {
 			'd2l-input-focus': isFocusedOrHovered
 		};
 		const ariaRequired = this.required ? 'true' : undefined;
-		let styles;
-		if (this._hasSlot) {
-			if (isFocusedOrHovered) {
-				styles = {
-					paddingLeft: `calc(${this._padding['left']} - 1px)`,
-					paddingRight: `calc(${this._padding['right']} - 1px`
-				};
-			} else {
-				styles = { paddingLeft: this._padding['left'], paddingRight: this._padding['right'] };
-			}
+
+		const inputStyles = {};
+		if (this._slotContent['left']) {
+			this._slotContent['left'].style.left = `calc((${this.slotPaddingWidth}rem - ${this._slotContent['left'].offsetWidth}px) / 2)`;
+			inputStyles.paddingLeft = isFocusedOrHovered ? `calc(${this.slotPaddingWidth}rem - 1px)` : `${this.slotPaddingWidth}rem`;
 		}
+		if (this._slotContent['right']) {
+			this._slotContent['right'].style.right = `calc((${this.slotPaddingWidth}rem - ${this._slotContent['right'].offsetWidth}px) / 2)`;
+			inputStyles.paddingRight = isFocusedOrHovered ? `calc(${this.slotPaddingWidth}rem - 1px)` : `${this.slotPaddingWidth}rem`;
+		}
+
 		let input = html`
-			<input aria-invalid="${ifDefined(this.ariaInvalid)}"
-				aria-label="${ifDefined(this._getAriaLabel())}"
-				aria-required="${ifDefined(ariaRequired)}"
-				autocomplete="${ifDefined(this.autocomplete)}"
-				?autofocus="${this.autofocus}"
-				@change="${this._handleChange}"
-				class="${classMap(inputClasses)}"
-				?disabled="${this.disabled}"
-				@input="${this._handleInput}"
-				@invalid="${this._handleInvalid}"
-				@keypress="${this._handleKeypress}"
-				max="${ifDefined(this.max)}"
-				maxlength="${ifDefined(this.maxlength)}"
-				min="${ifDefined(this.min)}"
-				minlength="${ifDefined(this.minlength)}"
-				name="${ifDefined(this.name)}"
-				pattern="${ifDefined(this.pattern)}"
-				placeholder="${ifDefined(this.placeholder)}"
-				?readonly="${this.readonly}"
-				size="${ifDefined(this.size)}"
-				step="${ifDefined(this.step)}"
-				style="${styleMap(styles)}"
-				tabindex="${ifDefined(this.tabindex)}"
-				type="${this._getType()}"
-				.value="${this.value}">
-				<slot name="left"></slot>
-				<slot name="right"></slot>
+			<div class="d2l-input-text-container"
+						@mouseout="${this._handleMouseLeave}"
+						@mouseover="${this._handleMouseEnter}">
+				<input aria-invalid="${ifDefined(this.ariaInvalid)}"
+					aria-label="${ifDefined(this._getAriaLabel())}"
+					aria-required="${ifDefined(ariaRequired)}"
+					autocomplete="${ifDefined(this.autocomplete)}"
+					?autofocus="${this.autofocus}"
+					@change="${this._handleChange}"
+					class="${classMap(inputClasses)}"
+					?disabled="${this.disabled}"
+					@input="${this._handleInput}"
+					@invalid="${this._handleInvalid}"
+					@keypress="${this._handleKeypress}"
+					max="${ifDefined(this.max)}"
+					maxlength="${ifDefined(this.maxlength)}"
+					min="${ifDefined(this.min)}"
+					minlength="${ifDefined(this.minlength)}"
+					name="${ifDefined(this.name)}"
+					pattern="${ifDefined(this.pattern)}"
+					placeholder="${ifDefined(this.placeholder)}"
+					?readonly="${this.readonly}"
+					size="${ifDefined(this.size)}"
+					step="${ifDefined(this.step)}"
+					style="${styleMap(inputStyles)}"
+					tabindex="${ifDefined(this.tabindex)}"
+					type="${this._getType()}"
+					.value="${this.value}">
+					<slot name="left" @slotchange="${this._onSlotChange}"></slot>
+					<slot name="right" @slotchange="${this._onSlotChange}"></slot>
+			</div>
 		`;
 		if (this.label && !this.labelHidden) {
 			input = html`
@@ -175,15 +150,6 @@ class InputText extends RtlMixin(LitElement) {
 					<span class="d2l-input-label">${this.label}</span>
 					${input}
 				</label>`;
-		}
-
-		if (this._hasSlot) {
-			input = html`
-				<div class="d2l-input-text-container"
-					@mouseout="${this._handleMouseLeave}"
-					@mouseover="${this._handleMouseEnter}">
-					${input}
-				</div>`;
 		}
 		return input;
 	}
@@ -215,6 +181,10 @@ class InputText extends RtlMixin(LitElement) {
 		return 'text';
 	}
 
+	_handleBlur() {
+		this._focused = false;
+	}
+
 	_handleChange() {
 		// Change events aren't composed, so we need to re-dispatch
 		this.dispatchEvent(new CustomEvent(
@@ -223,9 +193,12 @@ class InputText extends RtlMixin(LitElement) {
 		));
 	}
 
+	_handleFocus() {
+		this._focused = true;
+	}
+
 	_handleInput(e) {
 		this.value = e.target.value;
-		this.dispatchEvent(new CustomEvent('d2l-input-container-input', { bubbles: true, composed: true }));
 		return true;
 	}
 
@@ -260,20 +233,10 @@ class InputText extends RtlMixin(LitElement) {
 	_onSlotChange(e) {
 		const children = e.target.assignedNodes();
 		if (children.length > 0) {
-			const slotName = e.target.name;
-			const affectedSlotName = this.dir !== 'rtl' ? slotName : (slotName === 'left' ? 'right' : 'left');
-			const slotContent = children[0];
-			const slotContentWidth = slotContent.offsetWidth;
-			const diff = (this.slotPaddingWidth * documentFontSize - slotContentWidth) / 2;
-
-			slotContent.style[affectedSlotName] = `${diff}px`;
-			slotContent.addEventListener('focus', this._handleFocus);
-			slotContent.addEventListener('blur', this._handleBlur);
-			this._slotElems.push(slotContent);
-
-			this._padding[affectedSlotName] = `${this.slotPaddingWidth}rem`;
-			this._hasSlot = true;
+			const slotName = this.dir !== 'rtl' ? e.target.name : (e.target.name === 'left' ? 'right' : 'left');
+			this._slotContent[slotName] = children[0];
 		}
+		this._hasSlot = true;
 	}
 
 }

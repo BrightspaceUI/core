@@ -54,7 +54,16 @@ describe('d2l-input-text', () => {
 		'wc-required',
 		'wc-label-hidden',
 		'wc-override-height',
-		'wc-override-padding'
+		'wc-override-padding',
+		'wc-icon-left',
+		'wc-icon-left-rtl',
+		'wc-icon-right',
+		'wc-icon-right-rtl',
+		'wc-icon-left-label',
+		'wc-icon-right-label',
+		'wc-icon-left-right',
+		'wc-button-icon-left',
+		'wc-button-icon-right'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
