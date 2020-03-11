@@ -19,13 +19,13 @@ class Tooltip extends RtlMixin(LitElement) {
 			/* -------*/
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			boundary: { type: Object },
-			offset: { type: Number },
+			offset: { type: Number }, /* tooltipOffset */
 			position: { type: String }, /* Deprecated, use boundary instead. Valid values are: 'top', 'bottom', 'left' and 'right' */
 			_viewportMargin: { type: Number },
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
 			_targetRect: { type: Object },
-			_position: { type: Number }
+			_tooltipShift: { type: Number }
 		};
 	}
 
@@ -275,7 +275,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._addListeners();
 
 		if (this.showing) {
-			this.__positionTooltip();
+			this._layoutTooltip();
 		}
 	}
 
@@ -301,7 +301,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this._target.addEventListener('focus', this._onFocus);
 			this._target.addEventListener('blur', this._onBlur);
 
-			this._targetSizeObserver = new ResizeObserver(() => this.__positionTooltip());
+			this._targetSizeObserver = new ResizeObserver(() => this._layoutTooltip());
 			this._targetSizeObserver.observe(this._target);
 		}
 	}
@@ -351,7 +351,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this.showing) {
 			return;
 		}
-		this.__positionTooltip();
+		this._layoutTooltip();
 	}
 
 	_updateShowing() {
@@ -362,7 +362,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		clearTimeout(this._hoverTimeout);
 		if (newValue) {
 			await this.updateComplete;
-			await this.__positionTooltip();
+			await this._layoutTooltip();
 			this._dismissibleId = setDismissible(() => this.hide());
 		} else {
 			if (this._dismissibleId) {
@@ -374,13 +374,12 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	render() {
 
-		const targetPositionStyle = {};
-		if (this._targetRect) {
-			targetPositionStyle.left = `${this._targetRect.x}px`,
-			targetPositionStyle.top = `${this._targetRect.y}px`,
-			targetPositionStyle.width = `${this._targetRect.width}px`;
-			targetPositionStyle.height = `${this._targetRect.height}px`;
-		}
+		const targetPositionStyle = {
+			left: this._targetRect ? `${this._targetRect.x}px` : null,
+			top: this._targetRect ? `${this._targetRect.y}px` : null,
+			width: this._targetRect ? `${this._targetRect.width}px` : null,
+			height: this._targetRect ? `${this._targetRect.height}px` : null,
+		};
 
 		const tooltipPositionStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : '',
@@ -388,15 +387,14 @@ class Tooltip extends RtlMixin(LitElement) {
 			width: this._maxWidth ? `${this._maxWidth}px` : '',
 			height: this._maxHeight ? `${this._maxHeight}px` : ''
 		};
-		if (this._position) {
-			if (this._isVerticalOpen()) {
-				if (this.getAttribute('dir') === 'rtl') {
-					tooltipPositionStyle.right = `${this._position}px`;
-				} else {
-					tooltipPositionStyle.left = `${this._position}px`;
-				}
+
+		if (this._tooltipShift !== undefined) {
+			if (this._isAboveOrBelow()) {
+				const isRtl = this.getAttribute('dir') === 'rtl';
+				tooltipPositionStyle.left = !isRtl ? `${this._tooltipShift}px` : null;
+				tooltipPositionStyle.right = !isRtl ? null : `${this._tooltipShift}px`;
 			} else {
-				tooltipPositionStyle.top = `${this._position}px`;
+				tooltipPositionStyle.top = `${this._tooltipShift}px`;
 			}
 		}
 
@@ -429,7 +427,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this.shadowRoot.querySelector('.d2l-tooltip-target-position');
 	}
 
-	async __positionTooltip() {
+	async _layoutTooltip() {
 
 		const target = this._target;
 		if (!target) {
@@ -491,22 +489,24 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const tooltipRect = tooltipTarget.getBoundingClientRect();
 
-		let position;
-		if (this._isVerticalOpen()) {
-			const centerDelta = contentRect.width - targetRect.width;
-			position = this._getPosition(spaceAround, centerDelta);
+		const isVertical = this._isAboveOrBelow();
+		let spaceLeft, spaceRight, centerDelta;
+		if (isVertical) {
+			const isRtl = this.getAttribute('dir') === 'rtl';
+			spaceLeft = !isRtl ? spaceAround.left : spaceAround.right;
+			spaceRight = !isRtl ? spaceAround.right : spaceAround.left;
+			centerDelta = contentRect.width - targetRect.width;
 		} else {
-			const centerDelta = contentRect.height - targetRect.height;
-			position = this._getPositionHorizontal(spaceAround, centerDelta);
+			spaceLeft = spaceAround.above;
+			spaceRight = spaceAround.below;
+			centerDelta = contentRect.height - targetRect.height;
 		}
-		if (position !== null) {
-			this._position = position;
-		}
+		this._tooltipShift = this._computeTooltipShift(centerDelta, spaceLeft, spaceRight);
 
 		const top = targetRect.top - tooltipRect.top + tooltipTarget.offsetTop;
 		const left = targetRect.left - tooltipRect.left + tooltipTarget.offsetLeft;
 
-		if (this._isVerticalOpen()) {
+		if (this._isAboveOrBelow()) {
 			this._targetRect = {
 				x: left,
 				y: this.openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
@@ -554,59 +554,27 @@ class Tooltip extends RtlMixin(LitElement) {
 		return constrained;
 	}
 
-	_getPosition(spaceAround, centerDelta) {
+	_computeTooltipShift(centerDelta, spaceLeft, spaceRight) {
 
 		const contentXAdjustment = centerDelta / 2;
 		if (centerDelta <= 0) {
 			return contentXAdjustment * -1;
 		}
-		if (spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
+		if (spaceLeft > contentXAdjustment && spaceRight > contentXAdjustment) {
 			// center with target
 			return contentXAdjustment * -1;
 		}
-		const isRTL = this.getAttribute('dir') === 'rtl';
-		if (!isRTL) {
-			if (spaceAround.left < contentXAdjustment) {
-				// slide content right (not enough space to center)
-				return spaceAround.left * -1;
-			} else if (spaceAround.right < contentXAdjustment) {
-				// slide content left (not enough space to center)
-				return (centerDelta * -1) + spaceAround.right;
-			}
-		} else {
-			if (spaceAround.left < contentXAdjustment) {
-				// slide content right (not enough space to center)
-				return (centerDelta * -1) + spaceAround.left;
-			} else if (spaceAround.right < contentXAdjustment) {
-				// slide content left (not enough space to center)
-				return spaceAround.right * -1;
-			}
+		if (spaceLeft < contentXAdjustment) {
+			// shift content right (not enough space to center)
+			return spaceLeft * -1;
+		} else if (spaceRight < contentXAdjustment) {
+			// shift content left (not enough space to center)
+			return (centerDelta * -1) + spaceRight;
 		}
-		return null;
+		return undefined;
 	}
 
-	_getPositionHorizontal(spaceAround, centerDelta) {
-
-		const contentXAdjustment = centerDelta / 2;
-		if (centerDelta <= 0) {
-			// target height is larger than content height
-			return contentXAdjustment * -1;
-		}
-		if (spaceAround.above >= contentXAdjustment && spaceAround.below >= contentXAdjustment) {
-			// center with target
-			return contentXAdjustment * -1;
-		}
-		if (spaceAround.above < contentXAdjustment) {
-			// slide content right (not enough space to center)
-			return spaceAround.above * -1;
-		} else if (spaceAround.below < contentXAdjustment) {
-			// slide content left (not enough space to center)
-			return (centerDelta * -1) + spaceAround.below;
-		}
-		return null;
-	}
-
-	_isVerticalOpen() {
+	_isAboveOrBelow() {
 		return this.openDir === 'bottom' || this.openDir === 'top';
 	}
 }
