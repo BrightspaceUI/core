@@ -1,9 +1,8 @@
 import '../icons/icon.js';
+import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { inputLabelStyles } from './input-label-styles.js';
-import { inputStyles } from './input-styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -40,60 +39,25 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ inputStyles, inputLabelStyles,
-			css`
-				:host {
-					display: inline-block;
-					min-width: 7rem;
-					width: 100%;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				label {
-					display: block;
-				}
-				.d2l-input-date-container {
-					position: relative;
-				}
-				.d2l-input {
-					padding-left: 2.4rem;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					-webkit-appearance: textfield;
-				}
-				:host([dir="rtl"]) .d2l-input {
-					padding-left: 0.8rem;
-					padding-right: 2.4rem;
-				}
-				.d2l-input:hover,
-				.d2l-input:focus,
-				:host([disabled]) .d2l-input {
-					padding-left: calc(2.4rem - 1px);
-					padding-right: calc(0.8rem - 1px);
-				}
-				:host([dir="rtl"]) .d2l-input:hover,
-				:host([dir="rtl"]) .d2l-input:focus {
-					padding-left: calc(0.8rem - 1px);
-					padding-right: calc(2.4rem - 1px);
-				}
-				d2l-icon {
-					--d2l-icon-height: 0.8rem;
-					--d2l-icon-width: 0.8rem;
-					left: 0rem;
-					padding-left: 0.8rem;
-					position: absolute;
-					top: 50%;
-					transform: translateY(-50%);
-				}
-				:host([dir="rtl"]) d2l-icon {
-					padding-left: 0;
-					padding-right: 0.8rem;
-					right: 0rem;
-				}
-			`
-		];
+		return css`
+			:host {
+				display: inline-block;
+				min-width: 7rem;
+				width: 100%;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			d2l-icon {
+				--d2l-icon-height: 0.8rem;
+				--d2l-icon-width: 0.8rem;
+				margin-left: 0.6rem;
+				margin-right: 0.6rem;
+			}
+			:host([disabled]) d2l-icon {
+				opacity: 0.5;
+			}
+		`;
 	}
 
 	static get resources() {
@@ -123,34 +87,27 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	render() {
 		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
+		const label = (this.label && !this.labelHidden) ? this.label : undefined;
 		const placeholder = this.placeholder || this.localize('chooseDate');
-		const input = html`
-			<div class="d2l-input-date-container">
-				<input
-					aria-label="${ifDefined(ariaLabel)}"
-					@change="${this._handleChange}"
-					class="d2l-input"
-					?disabled="${this.disabled}"
-					@keypress="${this._handleKeypress}"
-					placeholder="${placeholder}"
-					.value="${this._formattedValue}">
+
+		return html`
+			<d2l-input-text
+				aria-label="${ifDefined(ariaLabel)}"
+				@change="${this._handleChange}"
+				?disabled="${this.disabled}"
+				label="${ifDefined(label)}"
+				placeholder="${placeholder}"
+				.value="${this._formattedValue}">
 				<d2l-icon
 					?disabled="${this.disabled}"
-					icon="tier1:calendar"></d2l-icon>
-			</div>
+					icon="tier1:calendar"
+					slot="left"></d2l-icon>
+			</d2l-input-text>
 		`;
-		if (this.label && !this.labelHidden) {
-			return html`
-				<label>
-					<span class="d2l-input-label">${this.label}</span>
-					${input}
-				</label>`;
-		}
-		return input;
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('.d2l-input');
+		const elem = this.shadowRoot.querySelector('d2l-input-text');
 		if (elem) elem.focus();
 	}
 

@@ -13,7 +13,7 @@ function dispatchEvent(elem, eventType, composed) {
 }
 
 function getInput(elem) {
-	return elem.shadowRoot.querySelector('.d2l-input');
+	return elem.shadowRoot.querySelector('d2l-input-text');
 }
 
 describe('d2l-input-date', () => {
@@ -41,22 +41,9 @@ describe('d2l-input-date', () => {
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
 		});
-	});
-
-	describe('labelling', () => {
-
-		function getLabel(elem) {
-			return elem.shadowRoot.querySelector('.d2l-input-label');
-		}
-
-		it('should display visible label', async() => {
-			const elem = await fixture(basicFixture);
-			expect(getLabel(elem).innerText).to.equal('label text');
-		});
 
 		it('should put hidden label on "aria-label"', async() => {
 			const elem = await fixture(labelHiddenFixture);
-			expect(getLabel(elem)).to.be.null;
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label text');
 		});
 	});
