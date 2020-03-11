@@ -1,5 +1,6 @@
 import '../menu.js';
 import '../menu-item.js';
+import './custom-slots.js';
 import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 
 function dispatchKeyEvent(elem, key) {
@@ -202,6 +203,26 @@ describe('d2l-menu', () => {
 			setTimeout(() => returnItem.click());
 			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
 			expect(elem.isActive()).to.be.true;
+		});
+
+	});
+
+	describe('slots', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<d2l-custom-slots>
+					<d2l-menu-item id="item1" text="1"></d2l-menu-item>
+					<d2l-menu-item id="item2" text="2"></d2l-menu-item>
+				</d2l-custom-slots>
+			`);
+			await nextFrame();
+		});
+
+		it('initializes menu items in nested slots', async() => {
+			expect(elem.querySelector('#item1').getAttribute('tabindex')).to.equal('0');
+			expect(elem.querySelector('#item2').getAttribute('tabindex')).to.equal('-1');
 		});
 
 	});

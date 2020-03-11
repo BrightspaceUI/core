@@ -180,7 +180,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	_getMenuItems() {
 		const slot = this.shadowRoot.querySelector('slot');
 		if (!slot) return;
-		const items = slot.assignedNodes().filter((node) => node.nodeType === Node.ELEMENT_NODE);
+		const items = slot.assignedNodes({flatten: true}).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 
 		const returnItem = this._getMenuItemReturn();
 		if (returnItem) {
