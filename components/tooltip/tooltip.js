@@ -199,7 +199,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		this._isFocusing = false;
 		this._isHovering = false;
-
 		this._viewportMargin = 12;
 	}
 
@@ -253,14 +252,61 @@ class Tooltip extends RtlMixin(LitElement) {
 		window.removeEventListener('resize', this._onResize);
 	}
 
-	show() {
-		this.showing = true;
+	render() {
+
+		const targetPositionStyle = {
+			left: this._targetRect ? `${this._targetRect.x}px` : null,
+			top: this._targetRect ? `${this._targetRect.y}px` : null,
+			width: this._targetRect ? `${this._targetRect.width}px` : null,
+			height: this._targetRect ? `${this._targetRect.height}px` : null,
+		};
+
+		const tooltipPositionStyle = {
+			maxWidth: this._maxWidth ? `${this._maxWidth}px` : '',
+			maxHeight: this._maxHeight ? `${this._maxHeight}px` : '',
+			width: this._maxWidth ? `${this._maxWidth}px` : '',
+			height: this._maxHeight ? `${this._maxHeight}px` : ''
+		};
+
+		if (this._tooltipShift !== undefined) {
+			if (this._isAboveOrBelow()) {
+				const isRtl = this.getAttribute('dir') === 'rtl';
+				tooltipPositionStyle.left = !isRtl ? `${this._tooltipShift}px` : null;
+				tooltipPositionStyle.right = !isRtl ? null : `${this._tooltipShift}px`;
+			} else {
+				tooltipPositionStyle.top = `${this._tooltipShift}px`;
+			}
+		}
+
+		const contentStyle = {
+			maxWidth: this._maxWidth ? `${this._maxWidth}px` : '',
+			maxHeight: this._maxHeight ? `${this._maxHeight}px` : ''
+		};
+
+		return html`
+			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
+				<div class="d2l-tooltip-container">
+					<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
+						<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(contentStyle)}>
+							<slot></slot>
+						</div>
+					</div>
+					<div class="d2l-tooltip-pointer">
+						<div></div>
+					</div>
+				</div>
+			</div>`
+		;
 	}
 
 	hide() {
 		this._isHovering = false;
 		this._isFocusing = false;
 		this._updateShowing();
+	}
+
+	show() {
+		this.showing = true;
 	}
 
 	_updateTarget() {
@@ -371,53 +417,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				this._dismissibleId = null;
 			}
 		}
-	}
-
-	render() {
-
-		const targetPositionStyle = {
-			left: this._targetRect ? `${this._targetRect.x}px` : null,
-			top: this._targetRect ? `${this._targetRect.y}px` : null,
-			width: this._targetRect ? `${this._targetRect.width}px` : null,
-			height: this._targetRect ? `${this._targetRect.height}px` : null,
-		};
-
-		const tooltipPositionStyle = {
-			maxWidth: this._maxWidth ? `${this._maxWidth}px` : '',
-			maxHeight: this._maxHeight ? `${this._maxHeight}px` : '',
-			width: this._maxWidth ? `${this._maxWidth}px` : '',
-			height: this._maxHeight ? `${this._maxHeight}px` : ''
-		};
-
-		if (this._tooltipShift !== undefined) {
-			if (this._isAboveOrBelow()) {
-				const isRtl = this.getAttribute('dir') === 'rtl';
-				tooltipPositionStyle.left = !isRtl ? `${this._tooltipShift}px` : null;
-				tooltipPositionStyle.right = !isRtl ? null : `${this._tooltipShift}px`;
-			} else {
-				tooltipPositionStyle.top = `${this._tooltipShift}px`;
-			}
-		}
-
-		const contentStyle = {
-			maxWidth: this._maxWidth ? `${this._maxWidth}px` : '',
-			maxHeight: this._maxHeight ? `${this._maxHeight}px` : ''
-		};
-
-		return html`
-			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
-				<div class="d2l-tooltip-container">
-					<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-						<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(contentStyle)}>
-							<slot></slot>
-						</div>
-					</div>
-					<div class="d2l-tooltip-pointer">
-						<div></div>
-					</div>
-				</div>
-			</div>`
-		;
 	}
 
 	_getContent() {
