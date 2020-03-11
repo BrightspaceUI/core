@@ -102,6 +102,7 @@ class ListItem extends RtlMixin(LitElement) {
 				margin: 0.15rem 0.9rem 0.15rem 0;
 				max-height: 2.6rem;
 				max-width: 4.5rem;
+				border-radius: 6px;
 				overflow: hidden;
 			}
 
