@@ -10,22 +10,21 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			boundary: { type: Object },
 			delay: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
 			forceShow: { type: Boolean, attribute: 'force-show' },
-			showing: { type: Boolean, reflect: true, attribute: 'showing' },
-			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
-			/* -------*/
-			openDir: { type: String, reflect: true, attribute: 'open-dir' },
-			boundary: { type: Object },
 			offset: { type: Number }, /* tooltipOffset */
 			position: { type: String }, /* Deprecated, use boundary instead. Valid values are: 'top', 'bottom', 'left' and 'right' */
-			_viewportMargin: { type: Number },
-			_maxWidth: { type: Number },
+			showing: { type: Boolean, reflect: true, attribute: 'showing' },
+			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			_maxHeight: { type: Number },
+			_maxWidth: { type: Number },
+			_openDir: { type: String, reflect: true, attribute: '_open-dir' },
 			_targetRect: { type: Object },
-			_tooltipShift: { type: Number }
+			_tooltipShift: { type: Number },
+			_viewportMargin: { type: Number }
 		};
 	}
 
@@ -65,32 +64,32 @@ class Tooltip extends RtlMixin(LitElement) {
 				z-index: 1;
 			}
 
-			:host([open-dir="top"]) .d2l-tooltip-pointer,
-			:host([open-dir="bottom"]) .d2l-tooltip-pointer {
+			:host([_open-dir="top"]) .d2l-tooltip-pointer,
+			:host([_open-dir="bottom"]) .d2l-tooltip-pointer {
 				left: calc(50% - 7px);
 			}
 
-			:host([open-dir="top"]) .d2l-tooltip-pointer {
+			:host([_open-dir="top"]) .d2l-tooltip-pointer {
 				clip: rect(9px, 21px, 22px, -3px);
 				bottom: -7px;
 			}
 
-			:host([open-dir="bottom"]) .d2l-tooltip-pointer {
+			:host([_open-dir="bottom"]) .d2l-tooltip-pointer {
 				clip: rect(-5px, 21px, 8px, -7px);
 				top: -7px;
 			}
 
-			:host([open-dir="left"]) .d2l-tooltip-pointer,
-			:host([open-dir="right"]) .d2l-tooltip-pointer {
+			:host([_open-dir="left"]) .d2l-tooltip-pointer,
+			:host([_open-dir="right"]) .d2l-tooltip-pointer {
 				top: calc(50% - 7px);
 			}
 
-			:host([open-dir="left"]) .d2l-tooltip-pointer {
+			:host([_open-dir="left"]) .d2l-tooltip-pointer {
 				clip: rect(-3px, 21px, 21px, 9px);
 				right: -7px;
 			}
 
-			:host([open-dir="right"]) .d2l-tooltip-pointer {
+			:host([_open-dir="right"]) .d2l-tooltip-pointer {
 				clip: rect(-3px, 9px, 21px, -3px);
 				left: -7px;
 			}
@@ -105,7 +104,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				width: 16px;
 			}
 
-			:host([open-dir="top"]) .d2l-tooltip-pointer > div {
+			:host([_open-dir="top"]) .d2l-tooltip-pointer > div {
 				box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, .2); /* ferrite */
 			}
 
@@ -127,14 +126,14 @@ class Tooltip extends RtlMixin(LitElement) {
 				overflow: hidden;
 			}
 
-			:host([open-dir="top"]) .d2l-tooltip-position {
+			:host([_open-dir="top"]) .d2l-tooltip-position {
 				bottom: 100%;
 			}
 
-			:host([open-dir="left"]) .d2l-tooltip-position {
+			:host([_open-dir="left"]) .d2l-tooltip-position {
 				right: 100%;
 			}
-			:host([dir="rtl"][open-dir="right"]) .d2l-tooltip-position {
+			:host([dir="rtl"][_open-dir="right"]) .d2l-tooltip-position {
 				left: 100%;
 			}
 
@@ -143,22 +142,22 @@ class Tooltip extends RtlMixin(LitElement) {
 				width: 100%;
 			}
 
-			:host([open-dir="bottom"]) .d2l-tooltip-container {
+			:host([_open-dir="bottom"]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-bottom-animation 200ms ease;
 				animation: d2l-tooltip-bottom-animation 200ms ease;
 			}
 
-			:host([open-dir="top"]) .d2l-tooltip-container {
+			:host([_open-dir="top"]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-top-animation 200ms ease;
 				animation: d2l-tooltip-top-animation 200ms ease;
 			}
 
-			:host([open-dir="left"]) .d2l-tooltip-container {
+			:host([_open-dir="left"]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-left-animation 200ms ease;
 				animation: d2l-tooltip-left-animation 200ms ease;
 			}
 
-			:host([open-dir="right"]) .d2l-tooltip-container {
+			:host([_open-dir="right"]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-right-animation 200ms ease;
 				animation: d2l-tooltip-right-animation 200ms ease;
 			}
@@ -284,7 +283,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		const ownerRoot = this.getRootNode();
 
 		let target;
-		if (this._for) {
+		if (this.for) {
 			const targetSelector = `#${this.for}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
@@ -295,28 +294,30 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_addListeners() {
-		if (this._target) {
-			this._target.addEventListener('mouseenter', this._onMouseEnter);
-			this._target.addEventListener('mouseleave', this._onMouseLeave);
-			this._target.addEventListener('focus', this._onFocus);
-			this._target.addEventListener('blur', this._onBlur);
-
-			this._targetSizeObserver = new ResizeObserver(() => this._layoutTooltip());
-			this._targetSizeObserver.observe(this._target);
+		if (!this._target) {
+			return;
 		}
+		this._target.addEventListener('mouseenter', this._onMouseEnter);
+		this._target.addEventListener('mouseleave', this._onMouseLeave);
+		this._target.addEventListener('focus', this._onFocus);
+		this._target.addEventListener('blur', this._onBlur);
+
+		this._targetSizeObserver = new ResizeObserver(() => this._layoutTooltip());
+		this._targetSizeObserver.observe(this._target);
 	}
 
 	_removeListeners() {
-		if (this._target) {
-			this._target.removeEventListener('mouseenter', this._onMouseEnter);
-			this._target.removeEventListener('mouseleave', this._onMouseLeave);
-			this._target.removeEventListener('focus', this._onFocus);
-			this._target.removeEventListener('blur', this._onBlur);
+		if (!this._target) {
+			return;
+		}
+		this._target.removeEventListener('mouseenter', this._onMouseEnter);
+		this._target.removeEventListener('mouseleave', this._onMouseLeave);
+		this._target.removeEventListener('focus', this._onFocus);
+		this._target.removeEventListener('blur', this._onBlur);
 
-			if (this._targetSizeObserver) {
-				this._targetSizeObserver.disconnect();
-				this._targetSizeObserver = null;
-			}
+		if (this._targetSizeObserver) {
+			this._targetSizeObserver.disconnect();
+			this._targetSizeObserver = null;
 		}
 	}
 
@@ -450,7 +451,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		const contentRect = content.getBoundingClientRect();
 		this._maxWidth = Math.max(contentRect.width, content.scrollWidth);
 		this._maxHeight = contentRect.height;
-		this.openDir = space.dir;
+		this._openDir = space.dir;
 
 		// Compute how much the tooltip is shifted relative to its pointer
 		const isVertical = this._isAboveOrBelow();
@@ -476,13 +477,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._isAboveOrBelow()) {
 			this._targetRect = {
 				x: left,
-				y: this.openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
+				y: this._openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
 				width: targetRect.width,
 				height: 0,
 			};
 		} else {
 			this._targetRect = {
-				x: this.openDir === 'left' ? left - this.offset : left + targetRect.width + this.offset,
+				x: this._openDir === 'left' ? left - this.offset : left + targetRect.width + this.offset,
 				y: top,
 				height: targetRect.height,
 				width: 0,
@@ -591,7 +592,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_isAboveOrBelow() {
-		return this.openDir === 'bottom' || this.openDir === 'top';
+		return this._openDir === 'bottom' || this._openDir === 'top';
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
