@@ -10,6 +10,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			delay: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
 			forceShow: { type: Boolean, attribute: 'force-show' },
@@ -235,7 +236,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (oldVal !== val) {
 			this._showing = val;
 			this.requestUpdate('showing', oldVal);
-			this._openedChanged(val);
+			this._showingChanged(val);
 		}
 	}
 
@@ -346,15 +347,29 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._updateShowing();
 	}
 
-	_updateShowing() {
-		this.showing = this._isFocusing || this._isHovering || this.forceShow;
-	}
-
 	_onResize() {
 		if (!this.showing) {
 			return;
 		}
 		this.__positionTooltip();
+	}
+
+	_updateShowing() {
+		this.showing = this._isFocusing || this._isHovering || this.forceShow;
+	}
+
+	async _showingChanged(newValue) {
+		clearTimeout(this._hoverTimeout);
+		if (newValue) {
+			await this.updateComplete;
+			await this.__positionTooltip();
+			this._dismissibleId = setDismissible(() => this.hide());
+		} else {
+			if (this._dismissibleId) {
+				clearDismissible(this._dismissibleId);
+				this._dismissibleId = null;
+			}
+		}
 	}
 
 	render() {
@@ -413,20 +428,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	__getTooltipTarget() {
 		return this.shadowRoot.querySelector('.d2l-tooltip-target-position');
-	}
-
-	async _openedChanged(newValue) {
-		clearTimeout(this._hoverTimeout);
-		if (newValue) {
-			await this.updateComplete;
-			await this.__positionTooltip();
-			this._dismissibleId = setDismissible(() => this.hide());
-		} else {
-			if (this._dismissibleId) {
-				clearDismissible(this._dismissibleId);
-				this._dismissibleId = null;
-			}
-		}
 	}
 
 	async __positionTooltip() {
