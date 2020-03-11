@@ -348,7 +348,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('focus', this._onFocus);
 		this._target.addEventListener('blur', this._onBlur);
 
-		this._targetSizeObserver = new ResizeObserver(() => this._layoutTooltip());
+		this._targetSizeObserver = new ResizeObserver(this._onResize);
 		this._targetSizeObserver.observe(this._target);
 	}
 
