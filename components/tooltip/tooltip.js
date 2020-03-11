@@ -419,11 +419,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		;
 	}
 
-	__getContentContainer() {
+	_getContent() {
 		return this.shadowRoot.querySelector('.d2l-tooltip-content');
 	}
 
-	__getTooltipTarget() {
+	_getTargetPosition() {
 		return this.shadowRoot.querySelector('.d2l-tooltip-target-position');
 	}
 
@@ -431,10 +431,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const target = this._target;
 		if (!target) {
-			return;
-		}
-		const tooltipTarget = this.__getTooltipTarget();
-		if (!tooltipTarget) {
 			return;
 		}
 
@@ -447,7 +443,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		});
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
-		const content = this.__getContentContainer();
+		const content = this._getContent();
 		const spaces = this._computeAvailableSpaces(targetRect, spaceAround);
 		const space = await this._fitContentToSpace(content, spaces);
 
@@ -472,9 +468,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._tooltipShift = this._computeTooltipShift(centerDelta, spaceLeft, spaceRight);
 
 		// Compute the x and y position of the tooltip relative to its target
-		const tooltipRect = tooltipTarget.getBoundingClientRect();
-		const top = targetRect.top - tooltipRect.top + tooltipTarget.offsetTop;
-		const left = targetRect.left - tooltipRect.left + tooltipTarget.offsetLeft;
+		const targetPosition = this._getTargetPosition();
+		const tooltipRect = targetPosition.getBoundingClientRect();
+		const top = targetRect.top - tooltipRect.top + targetPosition.offsetTop;
+		const left = targetRect.left - tooltipRect.left + targetPosition.offsetLeft;
 
 		if (this._isAboveOrBelow()) {
 			this._targetRect = {
