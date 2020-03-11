@@ -32,6 +32,7 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="1"]');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+			await aTimeout(1);
 
 			expect(detail.date).to.equal('2015-09-01');
 			expect(calendar.selectedValue).to.equal('2015-09-01');
@@ -45,6 +46,7 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="31"][data-month="7"]');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+			await aTimeout(1);
 
 			expect(detail.date).to.equal('2015-08-31');
 			expect(calendar.selectedValue).to.equal('2015-08-31');
@@ -58,6 +60,7 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="1"][data-month="9"]');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+			await aTimeout(1);
 
 			expect(detail.date).to.equal('2015-10-01');
 			expect(calendar.selectedValue).to.equal('2015-10-01');
@@ -71,6 +74,7 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="20"]');
 			setTimeout(() => dispatchKeyEvent(el, 13));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+			await aTimeout(1);
 
 			expect(detail.date).to.equal('2015-09-20');
 			expect(calendar.selectedValue).to.equal('2015-09-20');
@@ -84,6 +88,7 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('div[data-date="2"]');
 			setTimeout(() => dispatchKeyEvent(el, 32));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
+			await aTimeout(1);
 
 			expect(detail.date).to.equal('2015-09-02');
 			expect(calendar.selectedValue).to.equal('2015-09-02');
@@ -98,6 +103,13 @@ describe('d2l-calendar', () => {
 			const calendar = await fixture(normalFixture);
 			const expectedFocusDate = new Date(2015, 8, 2);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('updates _focusDate when selected-value changes', async() => {
+			const calendar = await fixture(normalFixture);
+			calendar.selectedValue = '2015-09-10';
+			await aTimeout(1);
+			expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 10));
 		});
 
 		it('has initial correct _focusDate when on month with no selected-value', async() => {
@@ -136,6 +148,7 @@ describe('d2l-calendar', () => {
 			const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show October"]');
 			setTimeout(() => el.click());
 			await oneEvent(el, 'click');
+			await aTimeout(1);
 
 			const expectedFocusDate = new Date(2015, 9, 1);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
@@ -143,13 +156,27 @@ describe('d2l-calendar', () => {
 		});
 
 		it('has correct _focusDate when user changes month to previous month using button', async() => {
+			const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-15"></d2l-calendar>`);
+			const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show August"]');
+			setTimeout(() => el.click());
+			await oneEvent(el, 'click');
+			await aTimeout(1);
+
+			const expectedFocusDate = new Date(2015, 7, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(7);
+		});
+
+		it('has correct _focusDate when user changes month to previous month that contains the selected date from a different month', async() => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show August"]');
 			setTimeout(() => el.click());
 			await oneEvent(el, 'click');
+			await calendar.updateComplete;
 
-			const expectedFocusDate = new Date(2015, 7, 1);
+			const expectedFocusDate = new Date(2015, 8, 2);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			expect(calendar._shownMonth).to.equal(7);
 		});
 
 		it('has correct _focusDate when user changes to previous month using left arrow key 4 times', async() => {

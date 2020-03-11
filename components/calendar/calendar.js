@@ -304,6 +304,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_shownMonth') {
 				this._focusDateAddFocus();
+			} else if (prop === 'selectedValue') {
+				this._updateFocusDate();
 			}
 		});
 	}
@@ -391,16 +393,17 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		return this.localize('show', {month: calendarData.descriptor.calendar.months.long[month]});
 	}
 
-	_focusDateAddFocus() {
-		const date = this._getFocusDateElement();
+	async _focusDateAddFocus() {
+		const date = await this._getDateElement(this._focusDate);
 		if (date && this._keyboardTriggeredMonthChange) {
 			date.focus();
 			this._keyboardTriggeredMonthChange = false;
 		}
 	}
 
-	_getFocusDateElement() {
-		return this.shadowRoot.querySelector(`div[data-date="${this._focusDate.getDate()}"][data-month="${this._focusDate.getMonth()}"][data-year="${this._focusDate.getFullYear()}"]`);
+	async _getDateElement(date) {
+		await this.updateComplete;
+		return this.shadowRoot.querySelector(`div[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
 	}
 
 	_onDateSelected(e) {
@@ -409,7 +412,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
 
-		this._focusDate = new Date(year, month, date);
 		this.selectedValue = formatDateInISO(year, month, date);
 
 		const eventDetails = {
@@ -531,26 +533,25 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	_onNextMonthButtonClick() {
 		this._updateShownMonthIncrease();
-		this._updateFocusDateOnMonthButtonClick();
+		this._updateFocusDate();
 	}
 
 	_onPrevMonthButtonClick() {
 		this._updateShownMonthDecrease();
-		this._updateFocusDateOnMonthButtonClick();
+		this._updateFocusDate();
 	}
 
-	_updateFocusDateOnMonthButtonClick() {
-		// if selectedValue is in the month, that should be the focus date,
-		// else the 1st of the month should be
+	async _updateFocusDate() {
 		const selectedValueDate = this.selectedValue ? parseISODate(this.selectedValue) : null;
-		if (selectedValueDate && selectedValueDate.getMonth() === this._shownMonth) {
+		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
+		if (dateElem) {
 			this._focusDate = new Date(selectedValueDate.getFullYear(), selectedValueDate.getMonth(), selectedValueDate.getDate());
 		} else {
 			this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
 		}
 	}
 
-	_updateFocusDateOnKeyDown(numDays) {
+	async _updateFocusDateOnKeyDown(numDays) {
 		const oldFocusDate = new Date(this._focusDate);
 		this._focusDate = new Date(
 			this._focusDate.getFullYear(),
@@ -558,7 +559,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			this._focusDate.getDate() + numDays
 		);
 		this._keyboardTriggeredMonthChange = true;
-		const date = this._getFocusDateElement();
+		const date = await this._getDateElement(this._focusDate);
 		if (!date) {
 			if (oldFocusDate < this._focusDate) {
 				this._updateShownMonthIncrease();
