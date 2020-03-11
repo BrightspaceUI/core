@@ -20,7 +20,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			openDir: { type: String, reflect: true, attribute: 'open-dir' },
 			boundary: { type: Object },
 			offset: { type: Number },
-			position: { type: String },
+			position: { type: String }, /* Deprecated, use boundary instead. Valid values are: 'top', 'bottom', 'left' and 'right' */
 			_viewportMargin: { type: Number },
 			_maxWidth: { type: Number },
 			_maxHeight: { type: Number },
@@ -32,7 +32,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	static get styles() {
 		return [bodyCompactStyles, css`
 			:host {
-				--d2l-tooltip-background-color: var(--d2l-color-ferrite);
+				--d2l-tooltip-background-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
 				box-sizing: border-box;
 				color: white;
 				display: none;
@@ -401,7 +401,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 
 		const contentStyle = {
-			/* add 2 to content width since scrollWidth does not include border */
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : '',
 			maxHeight: this._maxHeight ? `${this._maxHeight}px` : ''
 		};
