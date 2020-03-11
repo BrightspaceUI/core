@@ -65,6 +65,15 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 				menu.focus();
 			}, 0);
 		}
+
+		if (menu.getMenuType() === 'menu-radio') {
+			const selected = menu.querySelector('[selected]');
+			if (selected !== null) {
+				setTimeout(() => selected.scrollIntoView({
+					block: 'center'
+				}), 0);
+			}
+		}
 	}
 
 	_onChange(e) {

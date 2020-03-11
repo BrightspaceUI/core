@@ -61,6 +61,11 @@ export const dialogStyles = css`
 		opacity: 0.7;
 	}
 
+	d2l-focus-trap {
+		display: block;
+		height: 100%;
+	}
+
 	.d2l-dialog-inner {
 		display: flex;
 		flex-direction: column;

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../inputs/input-checkbox.js';
+			import '../../link/link.js';
+			import '../focus-trap.js';
+		</script>
+		<style>
+			d2l-focus-trap {
+				border: 2px dashed var(--d2l-color-celestine);
+				border-radius: 6px;
+				display: block;
+				padding: 0.6rem;
+				margin: 0.6rem 0;
+			}
+			d2l-link {
+				display: block;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-focus-trap">
+
+			<h2>Focus Trap</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-link href="http://www.d2l.com">Before Trap</d2l-link>
+					<d2l-focus-trap trap>
+						<d2l-link href="http://www.d2l.com">Inside Trap</d2l-link>
+						<d2l-input-checkbox checked>Trapping</d2l-input-checkbox>
+						Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway.
+						<d2l-link href="http://www.d2l.com">Inside Trap</d2l-link>
+					</d2l-focus-trap>
+					<d2l-link href="http://www.d2l.com">After Trap</d2l-link>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Focus Trap (Custom Focus First)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-link href="http://www.d2l.com">Before Trap</d2l-link>
+					<d2l-focus-trap id="custom">
+						<d2l-link href="http://www.d2l.com">Inside Trap</d2l-link>
+						<d2l-input-checkbox>Trapping</d2l-input-checkbox>
+						Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway.
+						<d2l-link href="http://www.d2l.com">Inside Trap</d2l-link>
+					</d2l-focus-trap>
+					<d2l-link href="http://www.d2l.com">After Trap</d2l-link>
+					<script>
+						document.querySelector('#custom').addEventListener('d2l-focus-trap-enter', (e) => {
+							e.target.querySelector('d2l-input-checkbox').focus();
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('change', (e) => {
+				const focusTrap = e.target.parentNode;
+				focusTrap.trap = e.target.checked;
+			});
+		</script>
+
+	</body>
+</html>
