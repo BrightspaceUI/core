@@ -200,6 +200,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._isFocusing = false;
 		this._isHovering = false;
 		this._viewportMargin = 12;
+		this._dismissibleId = null;
 	}
 
 	get for() {
@@ -250,6 +251,8 @@ class Tooltip extends RtlMixin(LitElement) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('resize', this._onResize);
+		clearDismissible(this._dismissibleId);
+		this._dismissibleId = null;
 	}
 
 	render() {
@@ -411,11 +414,17 @@ class Tooltip extends RtlMixin(LitElement) {
 			await this.updateComplete;
 			await this._layoutTooltip();
 			this._dismissibleId = setDismissible(() => this.hide());
+			this.dispatchEvent(new CustomEvent(
+				'd2l-tooltip-show', { bubbles: true, composed: true }
+			));
 		} else {
 			if (this._dismissibleId) {
 				clearDismissible(this._dismissibleId);
 				this._dismissibleId = null;
 			}
+			this.dispatchEvent(new CustomEvent(
+				'd2l-tooltip-hide', { bubbles: true, composed: true }
+			));
 		}
 	}
 
