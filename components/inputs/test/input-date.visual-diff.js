@@ -21,7 +21,6 @@ describe('d2l-input-date', () => {
 		'basic',
 		'disabled',
 		'labelled',
-		'labelled-rtl',
 		'label-hidden',
 		'placeholder-default',
 		'placeholder-specified'
