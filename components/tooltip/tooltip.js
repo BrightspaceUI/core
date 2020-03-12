@@ -451,6 +451,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._maxWidth = Math.max(contentRect.width, content.scrollWidth);
 		this._maxHeight = contentRect.height;
 		this._openDir = space.dir;
+		await this.updateComplete;
 
 		// Compute how much the tooltip is shifted relative to its pointer
 		const isVertical = this._isAboveOrBelow();
@@ -470,6 +471,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		// Compute the x and y position of the tooltip relative to its target
 		const targetPosition = this._getTargetPosition();
 		const tooltipRect = targetPosition.getBoundingClientRect();
+
 		const top = targetRect.top - tooltipRect.top + targetPosition.offsetTop;
 		const left = targetRect.left - tooltipRect.left + targetPosition.offsetLeft;
 
