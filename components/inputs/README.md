@@ -134,6 +134,10 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 
 The `d2l-input-text` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
 
+**Slots:**
+* `left`: Slot within the input on the left side. Useful for an `icon` or `button-icon`.
+* `right`: Slot within the input on the right side. Useful for an `icon` or `button-icon`.
+
 
 ```javascript
 // fired when value changes are committed
@@ -356,7 +360,7 @@ class MyElem extends RtlMixin(LitElement) {
   render() {
     return html`
       <label class="d2l-input-radio-label">
-        <input type="radio" name="myGroup" selected>
+        <input type="radio" name="myGroup" checked>
         Option 1 (selected)
       </label>
       <label class="d2l-input-radio-label d2l-input-radio-label-disabled">

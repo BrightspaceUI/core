@@ -5,6 +5,8 @@
 		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
+			import '../../button/button-icon.js';
+			import '../../icons/icon.js';
 			import '../../typography/typography.js';
 			import '../input-text.js';
 		</script>
@@ -19,6 +21,10 @@
 		}
 		#wc-override-height {
 			--d2l-input-height: 100px;
+		}
+		d2l-icon[slot="left"], d2l-icon[slot="right"] {
+			margin-left: 0.55rem;
+			margin-right: 0.55rem;
 		}
 		</style>
 	</head>
@@ -80,6 +86,52 @@
 			</div>
 			<div class="visual-diff">
 				<d2l-input-text id="wc-override-padding" value="text"></d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-icon-left" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
+					<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-icon-left-rtl" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit" dir="rtl">
+					<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-icon-right" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
+					<d2l-icon icon="tier1:calendar" slot="right"></d2l-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-icon-right-rtl" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit" dir="rtl">
+					<d2l-icon icon="tier1:calendar" slot="right"></d2l-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-icon-left-label" label="Name" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
+					<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-icon-right-label" label="Name" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
+					<d2l-icon icon="tier1:calendar" slot="right"></d2l-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-icon-left-right" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
+					<d2l-icon icon="tier1:search" slot="left"></d2l-icon>
+					<d2l-icon icon="tier1:search" slot="right"></d2l-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-button-icon-left" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
+					<d2l-button-icon icon="tier1:search" slot="left"></d2l-button-icon>
+				</d2l-input-text>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-text id="wc-button-icon-right" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
+					<d2l-button-icon icon="tier1:search" slot="right"></d2l-button-icon>
+				</d2l-input-text>
 			</div>
 			<div class="visual-diff">
 				<input id="sass-basic" class="d2l-test-input-text" type="text" value="text">
