@@ -121,18 +121,35 @@ class InputTime extends LitElement {
 	render() {
 		const input = html`
 			<d2l-dropdown>
-				<input
-					aria-label="${ifDefined(this._getAriaLabel())}"
-					@change="${this._handleChange}"
-					class="d2l-input d2l-dropdown-opener"
-					?disabled="${this.disabled}"
-					@keypress="${this._handleKeypress}"
-					.value="${this._formattedValue}">
+				<div
+					role="combobox"
+					aria-owns="id1"
+					class=" d2l-dropdown-opener">
+					<input
+						aria-controls="id1"
+						aria-activedescendant-id="${ifDefined(this._getSelectedIntervalId())}"
+						aria-label="${ifDefined(this._getAriaLabel())}"
+						@change="${this._handleChange}"
+						class="d2l-input"
+						?disabled="${this.disabled}"
+						@keypress="${this._handleKeypress}"
+						.value="${this._formattedValue}">
+				</div>
 				<d2l-dropdown-menu id="dropdown" no-padding-footer min-width="195">
 					<d2l-menu
+						id="id1"
+						role="listbox"
 						class="d2l-input-time-menu"
+						aria-label="${ifDefined(this.label)}"
 						@d2l-menu-item-change="${this._handleDropdownChange}">
-  					${INTERVALS.map(i => html`<d2l-menu-item-radio text="${formatTime(i)}" value="${formatValue(i)}" ?selected=${this._value === formatValue(i)}></d2l-menu-item-radio>`)}
+						${INTERVALS.map(i => html`
+							<d2l-menu-item-radio
+								id="time-option-${INTERVALS.indexOf(i)}"
+								text="${formatTime(i)}"
+								value="${formatValue(i)}"
+								?selected=${this._value === formatValue(i)}>
+							</d2l-menu-item-radio>
+						`)}
 					</d2l-menu>
 					<div class="d2l-input-time-timezone d2l-body-small" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
@@ -165,6 +182,14 @@ class InputTime extends LitElement {
 	_getAriaLabel() {
 		if (this.label && this.labelHidden) {
 			return this.label;
+		}
+		return undefined;
+	}
+
+	_getSelectedIntervalId() {
+		const index = INTERVALS.map(Number).indexOf(+parseTime(this._value));
+		if (index >= 0) {
+			return `time-option-${index}`;
 		}
 		return undefined;
 	}
