@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../calendar.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-calendar">
+
+			<h2>Calendar (Sept 8 2015 selected)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-calendar selected-value="2018-09-08"></d2l-calendar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Calendar (no selected date)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-calendar></d2l-calendar>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
