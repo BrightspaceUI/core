@@ -76,7 +76,29 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	}
 
 	focus() {
-		this._focusFirst();
+		if (this.getMenuType() === 'menu-radio') {
+			this._focusSelected();
+		} else {
+			this._focusFirst();
+		}
+	}
+
+	getMenuType() {
+		if (this._items.length === 0) {
+			return 'menu';
+		}
+
+		switch (this._items[0].role) {
+			case 'menuitemradio':
+				return 'menu-radio';
+
+			case 'menuitemcheckbox':
+				return 'menu-checkbox';
+
+			case 'menuitem':
+			default:
+				return 'menu';
+		}
 	}
 
 	render() {
@@ -127,6 +149,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		item ? item.focus() : this._focusFirst();
 	}
 
+	_focusSelected() {
+		const selected = this.querySelector('[selected]');
+		if (selected) selected.focus();
+	}
+
 	_focusPrevious(item) {
 		item = this._tryGetPreviousFocusable(item);
 		item ? item.focus() : this._focusLast();
@@ -153,7 +180,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	_getMenuItems() {
 		const slot = this.shadowRoot.querySelector('slot');
 		if (!slot) return;
-		const items = slot.assignedNodes().filter((node) => node.nodeType === Node.ELEMENT_NODE);
+		const items = slot.assignedNodes({flatten: true}).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 
 		const returnItem = this._getMenuItemReturn();
 		if (returnItem) {

@@ -360,7 +360,7 @@ class MyElem extends RtlMixin(LitElement) {
   render() {
     return html`
       <label class="d2l-input-radio-label">
-        <input type="radio" name="myGroup" selected>
+        <input type="radio" name="myGroup" checked>
         Option 1 (selected)
       </label>
       <label class="d2l-input-radio-label d2l-input-radio-label-disabled">

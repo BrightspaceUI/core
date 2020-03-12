@@ -1,5 +1,6 @@
 import '../menu.js';
 import '../menu-item.js';
+import './custom-slots.js';
 import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 
 function dispatchKeyEvent(elem, key) {
@@ -69,27 +70,27 @@ describe('d2l-menu', () => {
 			}
 		});
 
-		it('focus method sets focus to first visible menu item', () => {
+		it('focuses on first visible menu item when focus() is called', () => {
 			elem.focus();
 			expect(document.activeElement).to.equal(elem.querySelector('#a1'));
 		});
 
-		it('down arrow moves focus to next focusable item', () => {
+		it('moves focus to next focusable item when down arrow is pressed', () => {
 			dispatchKeyEvent(elem.querySelector('#c1'), 40);
 			expect(document.activeElement).to.equal(elem.querySelector('#d1'));
 		});
 
-		it('up arrow moves focus to previous focusable item', () => {
+		it('moves focus to previous focusable item when up arrow is pressed', () => {
 			dispatchKeyEvent(elem.querySelector('#d1'), 38);
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
 
-		it('down arrow on last focusable item moves focus to first focusable item', () => {
+		it('moves focus to first focusable item when down arrow is pressed on last focusable item', () => {
 			dispatchKeyEvent(elem.querySelector('#d1'), 40);
 			expect(document.activeElement).to.equal(elem.querySelector('#a1'));
 		});
 
-		it('up arrow on first focusable item moves focus to last focusable item', () => {
+		it('moves focus to last focusable item when up arrow is pressed on first focusable item', () => {
 			dispatchKeyEvent(elem.querySelector('#a1'), 38);
 			expect(document.activeElement).to.equal(elem.querySelector('#d1'));
 		});
@@ -113,6 +114,20 @@ describe('d2l-menu', () => {
 			eventObj.charCode = 98;
 			elem.querySelector('#c1').dispatchEvent(eventObj);
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));
+		});
+
+		it('focuses on the selected radio menu item when focus() is called', async() => {
+			elem = await fixture(html`
+				<d2l-menu>
+					<d2l-menu-item-radio id="r1" text="1"></d2l-menu-item-radio>
+					<d2l-menu-item-radio id="r2" text="2"></d2l-menu-item-radio>
+					<d2l-menu-item-radio id="r3" text="3" selected></d2l-menu-item-radio>
+					<d2l-menu-item-radio id="r4" text="4"></d2l-menu-item-radio>
+				</d2l-menu>
+			`);
+			await nextFrame();
+			elem.focus();
+			await expect(document.activeElement).to.equal(elem.querySelector('#r3'));
 		});
 
 	});
@@ -188,6 +203,26 @@ describe('d2l-menu', () => {
 			setTimeout(() => returnItem.click());
 			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
 			expect(elem.isActive()).to.be.true;
+		});
+
+	});
+
+	describe('slots', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<d2l-custom-slots>
+					<d2l-menu-item id="item1" text="1"></d2l-menu-item>
+					<d2l-menu-item id="item2" text="2"></d2l-menu-item>
+				</d2l-custom-slots>
+			`);
+			await nextFrame();
+		});
+
+		it('initializes menu items in nested slots', async() => {
+			expect(elem.querySelector('#item1').getAttribute('tabindex')).to.equal('0');
+			expect(elem.querySelector('#item2').getAttribute('tabindex')).to.equal('-1');
 		});
 
 	});
