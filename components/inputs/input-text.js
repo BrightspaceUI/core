@@ -147,8 +147,8 @@ class InputText extends RtlMixin(LitElement) {
 					tabindex="${ifDefined(this.tabindex)}"
 					type="${this._getType()}"
 					.value="${this.value}">
-					<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-					<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
+				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
+				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {
@@ -210,14 +210,6 @@ class InputText extends RtlMixin(LitElement) {
 	}
 
 	_handleKeypress(e) {
-		const eventDetails = {
-			bubbles: true,
-			composed: true,
-			detail: {
-				keyCode: e.keyCode
-			}
-		};
-		this.dispatchEvent(new CustomEvent('d2l-input-container-keypress', eventDetails));
 		if (this.preventSubmit && e.keyCode === 13) {
 			e.preventDefault();
 			return false;
