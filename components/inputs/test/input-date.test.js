@@ -1,5 +1,5 @@
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
-import { formatDateInISO, parseISODate } from '../input-date.js';
+import { formatDateInISO, formatISODateInUserCalDescriptor } from '../input-date.js';
 
 const basicFixture = '<d2l-input-date label="label text"></d2l-input-date>';
 const labelHiddenFixture = '<d2l-input-date label="label text" label-hidden></d2l-input-date>';
@@ -61,14 +61,14 @@ describe('d2l-input-date', () => {
 			});
 		});
 
-		describe('parseISODate', () => {
+		describe('formatISODateInUserCalDescriptor', () => {
 			it('should return correct date when input is valid', () => {
-				expect(parseISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
+				expect(formatISODateInUserCalDescriptor('2019-01-30')).to.equal('1/30/2019');
 			});
 
 			it('should throw when invalid date format', () => {
 				expect(() => {
-					parseISODate('2019/01/30');
+					formatISODateInUserCalDescriptor('2019/01/30');
 				}).to.throw('Invalid value: Expected format is YYYY-MM-DD');
 			});
 		});

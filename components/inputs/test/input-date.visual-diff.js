@@ -37,4 +37,47 @@ describe('d2l-input-date', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	describe('with calendar open', () => {
+		[
+			'basic',
+			'labelled',
+			'label-hidden',
+			'placeholder-default',
+			'placeholder-specified'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.click());
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+
+		it('selects correctly', async function() {
+			await page.$eval('#basic', (elem) => {
+				// click a date
+				elem.click();
+			});
+			const rect = await visualDiff.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('sets to today', async function() {
+			await page.$eval('#basic', (elem) => {
+				// click "Set to Today"
+				elem.click();
+			});
+			const rect = await visualDiff.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('clears', async function() {
+			await page.$eval('#basic', (elem) => {
+				// click "clear"
+				elem.click();
+			});
+			const rect = await visualDiff.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 });

@@ -1,7 +1,7 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
-import { convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+import { convertUTCToLocalDateTime, formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -173,7 +173,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		return [bodySmallStyles, heading4Styles, css`
 			:host {
 				display: block;
-				min-width: 18rem;
+				min-width: 16rem;
 			}
 
 			table {
@@ -187,6 +187,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
 				padding-bottom: 0.6rem;
 				padding-top: 0.3rem;
+				text-align: center;
 			}
 
 			abbr {
@@ -215,7 +216,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			.d2l-calendar-date {
 				align-items: center;
 				border: 2px solid transparent;
-				border-radius: 8px;
+				border-radius: 0.3rem;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
 				display: flex;
@@ -335,12 +336,14 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				return html`
 					<td>
 						<div
+							aria-label="${formatDate(day, {format: 'full'})}"
 							@click="${this._onDateSelected}"
 							@keydown="${this._onKeyDown}"
 							class=${classMap(classes)}
 							data-date=${day.getDate()}
 							data-month=${day.getMonth()}
 							data-year=${day.getFullYear()}
+							role="gridcell"
 							tabindex=${focused ? '0' : '-1'}>
 							${day.getDate()}
 						</div>
