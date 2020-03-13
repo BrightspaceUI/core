@@ -18,7 +18,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	static get properties() {
 		return {
 			active: { type: Boolean, reflect: true },
-			label: { type: String }
+			label: { type: String },
+			role: { type: String, attribute: 'role' }
 		};
 	}
 
@@ -43,7 +44,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 	constructor() {
 		super();
-
+		this.role = 'menu';
 		this._items = [];
 	}
 
@@ -72,7 +73,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			this._onMenuItemsChanged();
 		});
 
-		this.setAttribute('role', 'menu');
+		this.setAttribute('role', this.role);
 	}
 
 	focus() {

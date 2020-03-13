@@ -107,6 +107,9 @@ class InputTime extends LitElement {
 		this._value = formatValue(DEFAULT_VALUE);
 		this._formattedValue = formatTime(DEFAULT_VALUE);
 		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
+
+		this.addEventListener('d2l-dropdown-open', this.__onOpened);
+		this.addEventListener('d2l-dropdown-close', this.__onClosed);
 	}
 
 	get value() { return this._value; }
@@ -122,12 +125,13 @@ class InputTime extends LitElement {
 		const input = html`
 			<d2l-dropdown>
 				<div
+					id="combo-container"
 					role="combobox"
 					aria-owns="id1"
-					class=" d2l-dropdown-opener">
+					class="d2l-dropdown-opener"
+					aria-expanded="false">
 					<input
 						aria-controls="id1"
-						aria-activedescendant-id="${ifDefined(this._getSelectedIntervalId())}"
 						aria-label="${ifDefined(this._getAriaLabel())}"
 						@change="${this._handleChange}"
 						class="d2l-input"
@@ -144,7 +148,6 @@ class InputTime extends LitElement {
 						@d2l-menu-item-change="${this._handleDropdownChange}">
 						${INTERVALS.map(i => html`
 							<d2l-menu-item-radio
-								id="time-option-${INTERVALS.indexOf(i)}"
 								text="${formatTime(i)}"
 								value="${formatValue(i)}"
 								?selected=${this._value === formatValue(i)}>
@@ -186,12 +189,12 @@ class InputTime extends LitElement {
 		return undefined;
 	}
 
-	_getSelectedIntervalId() {
-		const index = INTERVALS.map(Number).indexOf(+parseTime(this._value));
-		if (index >= 0) {
-			return `time-option-${index}`;
-		}
-		return undefined;
+	__onOpened() {
+		this.shadowRoot.getElementById("combo-container").setAttribute('aria-expanded', 'true');
+	}
+
+	__onClosed() {
+		this.shadowRoot.getElementById("combo-container").setAttribute('aria-expanded', 'false');
 	}
 
 	async _handleChange(e) {
