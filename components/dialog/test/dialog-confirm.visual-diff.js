@@ -69,7 +69,8 @@ describe('d2l-dialog-confirm', () => {
 					{ name: 'short', selector: '#confirm' },
 					{ name: 'long title', selector: '#confirmLongTitle' },
 					{ name: 'no title', selector: '#confirmNoTitle' },
-					{ name: 'long text', selector: '#confirmLongText' }
+					{ name: 'long text', selector: '#confirmLongText' },
+					{ name: 'long buttons', selector: '#confirmLongButtons' }
 				].forEach((info) => {
 
 					it(info.name, async function() {
