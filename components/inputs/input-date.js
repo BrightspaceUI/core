@@ -86,16 +86,14 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
-		const label = (this.label && !this.labelHidden) ? this.label : undefined;
 		const placeholder = this.placeholder || this.localize('chooseDate');
 
 		return html`
 			<d2l-input-text
-				aria-label="${ifDefined(ariaLabel)}"
 				@change="${this._handleChange}"
 				?disabled="${this.disabled}"
-				label="${ifDefined(label)}"
+				label="${ifDefined(this.label)}"
+				?label-hidden="${this.labelHidden}"
 				placeholder="${placeholder}"
 				.value="${this._formattedValue}">
 				<d2l-icon

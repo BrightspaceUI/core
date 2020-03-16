@@ -41,11 +41,6 @@ describe('d2l-input-date', () => {
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
 		});
-
-		it('should put hidden label on "aria-label"', async() => {
-			const elem = await fixture(labelHiddenFixture);
-			expect(getInput(elem).getAttribute('aria-label')).to.equal('label text');
-		});
 	});
 
 	describe('utility function', () => {
