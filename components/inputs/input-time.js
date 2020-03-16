@@ -127,11 +127,11 @@ class InputTime extends LitElement {
 				<div
 					id="combo-container"
 					role="combobox"
-					aria-owns="id1"
+					aria-owns="time-menu"
 					class="d2l-dropdown-opener"
 					aria-expanded="false">
 					<input
-						aria-controls="id1"
+						aria-controls="time-menu"
 						aria-label="${ifDefined(this._getAriaLabel())}"
 						@change="${this._handleChange}"
 						class="d2l-input"
@@ -141,7 +141,7 @@ class InputTime extends LitElement {
 				</div>
 				<d2l-dropdown-menu id="dropdown" no-padding-footer min-width="195">
 					<d2l-menu
-						id="id1"
+						id="time-menu"
 						role="listbox"
 						class="d2l-input-time-menu"
 						aria-label="${ifDefined(this.label)}"
@@ -190,11 +190,11 @@ class InputTime extends LitElement {
 	}
 
 	__onOpened() {
-		this.shadowRoot.getElementById("combo-container").setAttribute('aria-expanded', 'true');
+		this.shadowRoot.getElementById('combo-container').setAttribute('aria-expanded', 'true');
 	}
 
 	__onClosed() {
-		this.shadowRoot.getElementById("combo-container").setAttribute('aria-expanded', 'false');
+		this.shadowRoot.getElementById('combo-container').setAttribute('aria-expanded', 'false');
 	}
 
 	async _handleChange(e) {
