@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../../button/button.js';
+		import '../tooltip.js';
+	</script>
+	<title>d2l-tooltip</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+
+		html, body {
+			height: 100%;
+			margin: 0;
+			box-sizing: border-box;
+		}
+		.visual-diff {
+			margin: 0;
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+		.tooltip-target {
+			background-color: gray;
+			border-color: black;
+			border-radius: 50%;
+			border-style: solid;
+			border-width: 2px;
+			box-sizing: border-box;
+			height: 30px;
+			position: absolute;
+			width: 30px;
+		}
+
+		.top {
+			top: 0;
+		}
+		.bottom {
+			bottom: 0;
+		}
+		.left {
+			left: 0;
+		}
+		.right {
+			right: 0;
+		}
+		.middle-horizontal {
+			left: calc(50% - 15px);
+		}
+		.middle-vertical {
+			top: calc(50% - 15px);
+		}
+		.wide-target {
+			border-radius: 5px;
+			z-index: -1;
+		}
+		#wide-target-horizontal-target {
+			width: 100%;
+		}
+		#wide-target-vertical-target {
+			height: 100%;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff">
+
+		<div id="position-top">
+			<div class="tooltip-target middle-horizontal middle-vertical" id="position-top-target"></div>
+			<d2l-tooltip for="position-top-target" position="top">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+				magna aliqua.
+			</d2l-tooltip>
+		</div>
+
+		<div id="position-bottom">
+			<div class="tooltip-target middle-horizontal middle-vertical">
+				<d2l-tooltip position="bottom">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+					magna aliqua.
+				</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="position-right">
+			<div class="tooltip-target middle-horizontal middle-vertical" id="position-right-target"></div>
+			<d2l-tooltip for="position-right-target" position="right">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+				magna aliqua.
+			</d2l-tooltip>
+		</div>
+
+		<div id="position-left">
+			<div class="tooltip-target middle-horizontal middle-vertical">
+				<d2l-tooltip position="left">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+					magna aliqua.
+				</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="top-left">
+			<div class="tooltip-target top left" id="top-left-target"></div>
+			<d2l-tooltip for="top-left-target">Lorem ipsum dolor sit amet.</d2l-tooltip>
+		</div>
+
+		<div id="top-middle">
+			<div class="tooltip-target top middle-horizontal" id="top-middle-target"></div>
+			<d2l-tooltip for="top-middle-target">Lorem ipsum dolor sit amet.</d2l-tooltip>
+		</div>
+
+		<div id="top-right">
+			<div class="tooltip-target top right">
+				<d2l-tooltip>Lorem ipsum dolor sit amet.</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="bottom-left">
+			<div class="tooltip-target bottom left">
+				<d2l-tooltip>Lorem ipsum dolor sit amet.</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="bottom-middle">
+			<div class="tooltip-target bottom middle-horizontal">
+				<d2l-tooltip>Lorem ipsum dolor sit amet.</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="bottom-right">
+			<div class="tooltip-target bottom right" id="bottom-right-target"></div>
+			<d2l-tooltip for="bottom-right-target">Lorem ipsum dolor sit amet.</d2l-tooltip>
+		</div>
+
+		<div id="middle-left">
+			<div class="tooltip-target middle-vertical left">
+				<d2l-tooltip>Lorem ipsum dolor sit amet.</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="middle-right">
+			<div class="tooltip-target middle-vertical right" id="middle-right-target"></div>
+			<d2l-tooltip for="middle-right-target">Lorem ipsum dolor sit amet.</d2l-tooltip>
+		</div>
+
+		<div id="boundary-top-right">
+			<div class="tooltip-target middle-horizontal middle-vertical" id="boundary-top-right-target"></div>
+			<d2l-tooltip for="boundary-top-right-target" boundary="{&quot;above&quot;:0, &quot;right&quot;:50}">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+				magna aliqua.
+			</d2l-tooltip>
+		</div>
+
+		<div id="boundary-bottom-left">
+			<div class="tooltip-target middle-horizontal middle-vertical">
+				<d2l-tooltip boundary="{&quot;below&quot;:0, &quot;left&quot;:50}">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+					magna aliqua.
+				</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="min-width">
+			<div class="tooltip-target middle-horizontal middle-vertical">
+				<d2l-tooltip state="error">:)</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="max-width">
+			<div class="tooltip-target middle-horizontal middle-vertical" id="max-width-target"></div>
+			<d2l-tooltip for="max-width-target" state="error">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+				aliqua. Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
+			</d2l-tooltip>
+		</div>
+
+		<div id="horizontal">
+			<div class="tooltip-target middle-horizontal middle-vertical" id="horizontal-target"></div>
+			<d2l-tooltip for="horizontal-target" boundary="{&quot;below&quot;:20, &quot;above&quot;:20}">
+				Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
+			</d2l-tooltip>
+		</div>
+
+		<div id="horizontal-rtl">
+			<div class="tooltip-target middle-horizontal middle-vertical">
+				<d2l-tooltip boundary="{&quot;below&quot;:20, &quot;above&quot;:20}" dir="rtl">
+					Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
+				</d2l-tooltip>
+			</div>
+		</div>
+
+		<div id="wide-target-horizontal">
+			<div class="tooltip-target left right top wide-target" id="wide-target-horizontal-target">
+				<d2l-tooltip>Lorem ipsum dolor sit amet.</d2l-tooltip>
+			</div>
+		<div>
+
+		<div id="wide-target-vertical">
+			<div class="tooltip-target left top bottom wide-target" id="wide-target-vertical-target"></div>
+			<d2l-tooltip for="wide-target-vertical-target">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+				aliqua. Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
+			</d2l-tooltip>
+		<div>
+
+		<div id="too-big-for-space">
+			<div class="tooltip-target middle-horizontal middle-vertical" id="too-big-for-space-target"></div>
+			<d2l-tooltip for="too-big-for-space-target" boundary="{&quot;below&quot;:10, &quot;above&quot;:20, &quot;left&quot;:40, &quot;right&quot;:20}">
+				Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
+			</d2l-tooltip>
+		</div>
+
+	</div>
+</body>
+</html>
