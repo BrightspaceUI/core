@@ -204,9 +204,9 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			}
 
 			.d2l-calendar-title {
-				border-top-left-radius: 4px;
-				border-top-right-radius: 4px;
-				text-align: center;
+				align-items: center;
+				display: flex;
+				justify-content: space-between;
 			}
 
 			.d2l-calendar-title .d2l-heading-4 {
@@ -318,7 +318,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		}
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
-			<th role="columnheader" abbr="${calendarData.descriptor.calendar.days.long[index]}">
+			<th scope="col" role="columnheader" abbr="${calendarData.descriptor.calendar.days.long[index]}" id="${this._labelId}-weekday-${index}">
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
 					${calendarData.descriptor.calendar.days.short[index]}
 				</abbr>
@@ -327,7 +327,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
-			const weekHtml = week.map((day) => {
+			const weekHtml = week.map((day, index) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false;
 				const classes = {
@@ -349,6 +349,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 							data-date=${date}
 							data-month=${month}
 							data-year=${year}
+							headers="${this._labelId}-weekday-${index}"
 							id="${this._labelId}-${year}-${month}-${date}"
 							role="gridcell"
 							tabindex=${focused ? '0' : '-1'}>
@@ -363,28 +364,22 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const active = `${this._labelId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		return html`
 			<div aria-labelledby="${this._labelId}" class="d2l-calendar">
-				<table summary="${ifDefined(this.summary)}" role="grid" aria-activedescendant="${active}">
-					<thead>
-						<tr class="d2l-calendar-title">
-							<td>
-								<d2l-button-icon
-									@click="${this._onPrevMonthButtonClick}"
-									text="${this._computeText(getPrevMonth(this._shownMonth))}"
-									icon="tier1:chevron-left">
-								</d2l-button-icon>
-							</td>
-							<th colspan="5">
-								<h2 class="d2l-heading-4" aria-live="polite" id="${this._labelId}">${heading}</h2>
-							</th>
-							<td>
-								<d2l-button-icon
-									@click="${this._onNextMonthButtonClick}"
-									text="${this._computeText(getNextMonth(this._shownMonth))}"
-									icon="tier1:chevron-right">
-								</d2l-button-icon>
-							</td>
-						</tr>
-						<tr>${weekdayHeaders}</tr>
+				<div class="d2l-calendar-title">
+					<d2l-button-icon
+						@click="${this._onPrevMonthButtonClick}"
+						text="${this._computeText(getPrevMonth(this._shownMonth))}"
+						icon="tier1:chevron-left">
+					</d2l-button-icon>
+					<h2 class="d2l-heading-4" aria-live="polite" id="${this._labelId}" aria-atomic="true">${heading}</h2>
+					<d2l-button-icon
+						@click="${this._onNextMonthButtonClick}"
+						text="${this._computeText(getNextMonth(this._shownMonth))}"
+						icon="tier1:chevron-right">
+					</d2l-button-icon>
+				</div>
+				<table aria-labelledby="${this._labelId}" summary="${ifDefined(this.summary)}" role="grid" aria-activedescendant="${active}">
+					<thead role="presentation" aria-hidden="false">
+						<tr role="row">${weekdayHeaders}</tr>
 					</thead>
 					<tbody role="presentation">
 						${dayRows}
