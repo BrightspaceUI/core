@@ -56,8 +56,8 @@ describe('d2l-input-time', () => {
 	});
 
 	[
-		'time-dropdown',
-		'time-dropdown-scrolled',
+		'dropdown',
+		'dropdown-scrolled',
 	].forEach((name) => {
 		it(name, async function() {
 			await open(page, `#${name}`);
