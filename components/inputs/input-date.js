@@ -5,7 +5,7 @@ import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDate, getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getToday } from '../calendar/calendar.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
@@ -95,7 +95,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				setToToday: 'Set to Today'
 			},
 			'en': {
-				ariaLabel: 'Arrow down or press enter to access calendar',
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Clear',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
@@ -164,6 +164,9 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		super.firstUpdated(changedProperties);
 
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+
+		const descriptor = getDateTimeDescriptor();
+		this.placeholder = descriptor.formats.dateFormats.short;
 	}
 
 	render() {
@@ -181,6 +184,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					?disabled="${this.disabled}"
 					label="${ifDefined(label)}"
 					placeholder="${placeholder}"
+					title="${this.localize('ariaLabel')}"
 					.value="${this._formattedValue}">
 					<d2l-icon
 						?disabled="${this.disabled}"

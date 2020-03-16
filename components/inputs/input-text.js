@@ -10,8 +10,8 @@ class InputText extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
+			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean, reflect: true },

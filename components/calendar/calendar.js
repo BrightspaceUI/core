@@ -5,6 +5,7 @@ import { convertUTCToLocalDateTime, formatDate, getDateTimeDescriptor } from '@b
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 const daysInWeek = 7;
@@ -327,35 +328,42 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
+				const focused = checkIfDatesEqual(day, this._focusDate);
+				const selected = this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-selected': this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false,
+					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
-				const focused = checkIfDatesEqual(day, this._focusDate);
+				const year = day.getFullYear();
+				const month = day.getMonth();
+				const date = day.getDate();
 				return html`
 					<td>
 						<div
 							aria-label="${formatDate(day, {format: 'full'})}"
+							aria-selected="${selected}"
 							@click="${this._onDateSelected}"
 							@keydown="${this._onKeyDown}"
 							class=${classMap(classes)}
-							data-date=${day.getDate()}
-							data-month=${day.getMonth()}
-							data-year=${day.getFullYear()}
+							data-date=${date}
+							data-month=${month}
+							data-year=${year}
+							id="${this._labelId}-${year}-${month}-${date}"
 							role="gridcell"
 							tabindex=${focused ? '0' : '-1'}>
-							${day.getDate()}
+							${date}
 						</div>
 					</td>`;
 			});
 
-			return html`<tr>${weekHtml}</tr>`;
+			return html`<tr role="row">${weekHtml}</tr>`;
 		});
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
+		const active = `${this._labelId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		return html`
 			<div aria-labelledby="${this._labelId}" class="d2l-calendar">
-				<table summary="${this.summary}" role="grid">
+				<table summary="${ifDefined(this.summary)}" role="grid" aria-activedescendant="${active}">
 					<thead>
 						<tr class="d2l-calendar-title">
 							<td>
@@ -378,7 +386,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 						</tr>
 						<tr>${weekdayHeaders}</tr>
 					</thead>
-					<tbody>
+					<tbody role="presentation">
 						${dayRows}
 					</tbody>
 				</table>
