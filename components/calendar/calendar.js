@@ -1,10 +1,11 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
-import { convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+import { convertUTCToLocalDateTime, formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 const daysInWeek = 7;
@@ -173,7 +174,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		return [bodySmallStyles, heading4Styles, css`
 			:host {
 				display: block;
-				min-width: 18rem;
+				min-width: 16rem;
 			}
 
 			table {
@@ -187,6 +188,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
 				padding-bottom: 0.6rem;
 				padding-top: 0.3rem;
+				text-align: center;
 			}
 
 			abbr {
@@ -202,9 +204,9 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			}
 
 			.d2l-calendar-title {
-				border-top-left-radius: 4px;
-				border-top-right-radius: 4px;
-				text-align: center;
+				align-items: center;
+				display: flex;
+				justify-content: space-between;
 			}
 
 			.d2l-calendar-title .d2l-heading-4 {
@@ -215,7 +217,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			.d2l-calendar-date {
 				align-items: center;
 				border: 2px solid transparent;
-				border-radius: 8px;
+				border-radius: 0.3rem;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
 				display: flex;
@@ -274,7 +276,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
-		this._labelId = getUniqueId();
+		this._tableInfoId = getUniqueId();
 		getCalendarData();
 	}
 
@@ -316,7 +318,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		}
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
-			<th role="columnheader" abbr="${calendarData.descriptor.calendar.days.long[index]}">
+			<th
+				abbr="${calendarData.descriptor.calendar.days.long[index]}"
+				id="${this._tableInfoId}-weekday-${index}"
+				role="columnheader"
+				scope="col">
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
 					${calendarData.descriptor.calendar.days.short[index]}
 				</abbr>
@@ -325,57 +331,65 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
-			const weekHtml = week.map((day) => {
+			const weekHtml = week.map((day, index) => {
+				const focused = checkIfDatesEqual(day, this._focusDate);
+				const selected = this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-selected': this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false,
+					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
-				const focused = checkIfDatesEqual(day, this._focusDate);
+				const year = day.getFullYear();
+				const month = day.getMonth();
+				const date = day.getDate();
 				return html`
 					<td>
 						<div
+							aria-label="${formatDate(day, {format: 'full'})}"
+							aria-selected="${selected}"
 							@click="${this._onDateSelected}"
 							@keydown="${this._onKeyDown}"
 							class=${classMap(classes)}
-							data-date=${day.getDate()}
-							data-month=${day.getMonth()}
-							data-year=${day.getFullYear()}
+							data-date=${date}
+							data-month=${month}
+							data-year=${year}
+							headers="${this._tableInfoId}-weekday-${index}"
+							id="${this._tableInfoId}-${year}-${month}-${date}"
+							role="gridcell"
 							tabindex=${focused ? '0' : '-1'}>
-							${day.getDate()}
+							${date}
 						</div>
 					</td>`;
 			});
 
-			return html`<tr>${weekHtml}</tr>`;
+			return html`<tr role="row">${weekHtml}</tr>`;
 		});
+		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
 		return html`
-			<div aria-labelledby="${this._labelId}" class="d2l-calendar">
-				<table summary="${this.summary}" role="grid">
-					<thead>
-						<tr class="d2l-calendar-title">
-							<td>
-								<d2l-button-icon
-									@click="${this._onPrevMonthButtonClick}"
-									text="${this._computeText(getPrevMonth(this._shownMonth))}"
-									icon="tier1:chevron-left">
-								</d2l-button-icon>
-							</td>
-							<th colspan="5">
-								<h2 class="d2l-heading-4" aria-live="polite" id="${this._labelId}">${heading}</h2>
-							</th>
-							<td>
-								<d2l-button-icon
-									@click="${this._onNextMonthButtonClick}"
-									text="${this._computeText(getNextMonth(this._shownMonth))}"
-									icon="tier1:chevron-right">
-								</d2l-button-icon>
-							</td>
-						</tr>
-						<tr>${weekdayHeaders}</tr>
+			<div aria-labelledby="${this._tableInfoId}-heading" class="d2l-calendar">
+				<div class="d2l-calendar-title">
+					<d2l-button-icon
+						@click="${this._onPrevMonthButtonClick}"
+						text="${this._computeText(getPrevMonth(this._shownMonth))}"
+						icon="tier1:chevron-left">
+					</d2l-button-icon>
+					<h2 aria-live="polite" class="d2l-heading-4" id="${this._tableInfoId}-heading">${heading}</h2>
+					<d2l-button-icon
+						@click="${this._onNextMonthButtonClick}"
+						text="${this._computeText(getNextMonth(this._shownMonth))}"
+						icon="tier1:chevron-right">
+					</d2l-button-icon>
+				</div>
+				<table
+					aria-activedescendant="${activeDate}"
+					aria-labelledby="${this._tableInfoId}-heading"
+					role="grid"
+					summary="${ifDefined(this.summary)}">
+					<thead aria-hidden="false" role="presentation">
+						<tr role="row">${weekdayHeaders}</tr>
 					</thead>
-					<tbody>
+					<tbody role="presentation">
 						${dayRows}
 					</tbody>
 				</table>
