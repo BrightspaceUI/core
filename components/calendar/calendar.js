@@ -374,7 +374,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 						text="${this._computeText(getPrevMonth(this._shownMonth))}"
 						icon="tier1:chevron-left">
 					</d2l-button-icon>
-					<h2 aria-live="polite" class="d2l-heading-4" id="${this._tableInfoId}-heading">${heading}</h2>
+					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${this._tableInfoId}-heading">${heading}</h2>
 					<d2l-button-icon
 						@click="${this._onNextMonthButtonClick}"
 						text="${this._computeText(getNextMonth(this._shownMonth))}"
@@ -384,6 +384,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				<table
 					aria-activedescendant="${activeDate}"
 					aria-labelledby="${this._tableInfoId}-heading"
+					aria-readonly="true"
 					role="grid"
 					summary="${ifDefined(this.summary)}">
 					<thead aria-hidden="false" role="presentation">
@@ -463,6 +464,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				} else {
 					numDaysChange = -1;
 				}
+				preventDefault = true;
 				break;
 			case keyCodes.RIGHT:
 				if (getComputedStyle(this).direction === 'rtl') {
@@ -470,6 +472,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				} else {
 					numDaysChange = 1;
 				}
+				preventDefault = true;
 				break;
 			case keyCodes.HOME: {
 				const dayOfTheWeek = this._focusDate.getDay();
