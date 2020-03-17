@@ -25,10 +25,16 @@ describe('d2l-tooltip', () => {
 			await expect(tooltip).to.be.accessible;
 		});
 
-		it('should pass all aXe tests (show)', async() => {
-			tooltip.setAttribute('showing', 'showing');
-			await tooltip.updateComplete;
-			await expect(tooltip).to.be.accessible;
+		[
+			'info',
+			'error'
+		].forEach(state => {
+			it(`should pass all aXe tests for state ${state} (show)`, async() => {
+				tooltip.setAttribute('state', state);
+				tooltip.setAttribute('showing', 'showing');
+				await tooltip.updateComplete;
+				await expect(tooltip).to.be.accessible;
+			});
 		});
 	});
 
@@ -139,13 +145,16 @@ describe('d2l-tooltip', () => {
 		].forEach((testCase) => {
 			it(`should hide when ESC key is pressed while ${testCase.case}`, async() => {
 				const target = tooltipFixture.querySelector('#explicit-target');
-				if (testCase.hover) {
-					target.dispatchEvent(new Event('mouseenter'));
-				}
-				if (testCase.focus) {
-					await triggerFocusFor(target);
-				}
+				setTimeout(() => {
+					if (testCase.focus) {
+						triggerFocusFor(target);
+					}
+					if (testCase.hover) {
+						target.dispatchEvent(new Event('mouseenter'));
+					}
+				}, 0);
 				await oneEvent(tooltipFixture, 'd2l-tooltip-show');
+				await aTimeout();
 
 				const eventObj = document.createEvent('Events');
 				eventObj.initEvent('keyup', true, true);

@@ -12,7 +12,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
 			forceShow: { type: Boolean, attribute: 'force-show' },
-			showing: { type: Boolean, reflect: true, attribute: 'showing' },
+			showing: { type: Boolean, reflect: true },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 		};
 	}
