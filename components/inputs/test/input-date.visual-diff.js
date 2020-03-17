@@ -38,53 +38,63 @@ describe('d2l-input-date', () => {
 	});
 
 	describe('calendar dropdown', () => {
-		afterEach(async() => {
+		before(async() => {
 			await page.reload();
 		});
 
-		it('looks correct open', async function() {
+		it('open with value', async function() {
 			await open(page, '#basic');
 			const rect = await getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await reset(page, '#basic');
 		});
 
-		it.skip('selects correctly', async function() {
+		it('open with placeholder', async function() {
+			await open(page, '#placeholder-default');
+			const rect = await getRect(page, '#placeholder-default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await reset(page, '#placeholder-default');
+		});
+
+		it('clicks date', async function() {
+			await open(page, '#basic');
 			await page.$eval('#basic', (elem) => {
-				// click a date
-				elem.click();
+				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
+				const date = calendar.shadowRoot.querySelector('div[data-date="20"]');
+				date.click();
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await reset(page, '#basic');
 		});
 
-		it.skip('sets to today', async function() {
+		it('sets to today', async function() {
 			await page.$eval('#basic', (elem) => {
-				// click "Set to Today"
-				elem.click();
+				const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Set to Today"]');
+				button.click();
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await reset(page, '#basic');
 		});
 
-		it.skip('clears', async function() {
+		it('clears', async function() {
 			await page.$eval('#basic', (elem) => {
-				// click "clear"
-				elem.click();
+				const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Clear"]');
+				button.click();
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await reset(page, '#basic');
 		});
 
-		function getOpenEvent(page, selector) {
-			return page.$eval(selector, (elem) => {
+		async function open(page, selector) {
+			const openEvent = page.$eval(selector, (elem) => {
 				return new Promise((resolve) => {
 					elem.shadowRoot.querySelector('d2l-dropdown').addEventListener('d2l-dropdown-open', resolve, { once: true });
 				});
 			});
-		}
 
-		async function open(page, selector) {
-			const openEvent = getOpenEvent(page, selector);
 			await page.$eval(selector, (elem) => {
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 				return new Promise((resolve) => {
@@ -93,6 +103,22 @@ describe('d2l-input-date', () => {
 				});
 			});
 			return openEvent;
+		}
+
+		async function reset(page, selector) {
+			await page.$eval(selector, (elem) => {
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
+				return new Promise((resolve) => {
+					const content = dropdown.querySelector('[dropdown-content]');
+					content.scrollTo(0);
+					if (content.opened) {
+						content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
+						content.opened = false;
+					} else {
+						resolve();
+					}
+				});
+			});
 		}
 
 		function getRect(page, selector) {
