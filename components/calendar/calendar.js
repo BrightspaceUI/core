@@ -214,7 +214,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				margin: 0;
 			}
 
-			.d2l-calendar-date {
+			.d2l-calendar-date div {
 				align-items: center;
 				border: 2px solid transparent;
 				border-radius: 0.3rem;
@@ -231,23 +231,26 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				width: 2rem;
 			}
 
-			.d2l-calendar-date:hover:not(.d2l-calendar-date-selected),
-			.d2l-calendar-date.d2l-calendar-date-hover:not(.d2l-calendar-date-selected) {
+			.d2l-calendar-date:hover div:not(.d2l-calendar-date-selected),
+			.d2l-calendar-date.d2l-calendar-date-hover div:not(.d2l-calendar-date-selected) {
 				background-color: var(--d2l-color-gypsum);
 			}
 
 			.d2l-calendar-date:focus {
-				border: 2px solid var(--d2l-color-celestine);
 				outline: none;
 			}
 
-			.d2l-calendar-date-selected {
+			.d2l-calendar-date:focus div {
+				border: 2px solid var(--d2l-color-celestine);
+			}
+
+			div.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
 			}
 
-			.d2l-calendar-date-today,
-			.d2l-calendar-date-selected {
+			div.d2l-calendar-date-today,
+			div.d2l-calendar-date-selected {
 				font-size: 1rem;
 				font-weight: 700;
 			}
@@ -320,7 +323,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
 			<th
 				abbr="${calendarData.descriptor.calendar.days.long[index]}"
-				id="${this._tableInfoId}-weekday-${index}"
 				role="columnheader"
 				scope="col">
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
@@ -331,11 +333,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
-			const weekHtml = week.map((day, index) => {
+			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false;
 				const classes = {
-					'd2l-calendar-date': true,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
@@ -343,31 +344,28 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const month = day.getMonth();
 				const date = day.getDate();
 				return html`
-					<td>
-						<div
-							aria-label="${formatDate(day, {format: 'full'})}"
-							aria-selected="${selected}"
-							@click="${this._onDateSelected}"
-							@keydown="${this._onKeyDown}"
-							class=${classMap(classes)}
-							data-date=${date}
-							data-month=${month}
-							data-year=${year}
-							headers="${this._tableInfoId}-weekday-${index}"
-							id="${this._tableInfoId}-${year}-${month}-${date}"
-							role="gridcell"
-							tabindex=${focused ? '0' : '-1'}>
-							${date}
-						</div>
+					<td
+						aria-label="${formatDate(day, {format: 'medium'})}"
+						aria-selected="${selected}"
+						class="d2l-calendar-date"
+						@click="${this._onDateSelected}"
+						data-date=${date}
+						data-month=${month}
+						data-year=${year}
+						id="${this._tableInfoId}-${year}-${month}-${date}"
+						@keydown="${this._onKeyDown}"
+						role="gridcell"
+						tabindex=${focused ? '0' : '-1'}>
+						<div class="${classMap(classes)}">${date}</div>
 					</td>`;
 			});
 
-			return html`<tr role="row">${weekHtml}</tr>`;
+			return html`<tr>${weekHtml}</tr>`;
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
 		return html`
-			<div aria-labelledby="${this._tableInfoId}-heading" class="d2l-calendar">
+			<div class="d2l-calendar">
 				<div class="d2l-calendar-title">
 					<d2l-button-icon
 						@click="${this._onPrevMonthButtonClick}"
@@ -387,10 +385,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					aria-readonly="true"
 					role="grid"
 					summary="${ifDefined(this.summary)}">
-					<thead aria-hidden="false" role="presentation">
-						<tr role="row">${weekdayHeaders}</tr>
+					<thead>
+						<tr>${weekdayHeaders}</tr>
 					</thead>
-					<tbody role="presentation">
+					<tbody>
 						${dayRows}
 					</tbody>
 				</table>
@@ -418,11 +416,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	async _getDateElement(date) {
 		await this.updateComplete;
-		return this.shadowRoot.querySelector(`div[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
+		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
 	}
 
 	_onDateSelected(e) {
-		const selectedDate = e.composedPath()[0];
+		let selectedDate = e.composedPath()[0];
+		if (selectedDate.tagName === 'DIV') selectedDate = selectedDate.parentNode;
 		const year = selectedDate.getAttribute('data-year');
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
@@ -464,7 +463,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				} else {
 					numDaysChange = -1;
 				}
-				preventDefault = true;
+				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
 				break;
 			case keyCodes.RIGHT:
 				if (getComputedStyle(this).direction === 'rtl') {
@@ -472,7 +471,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				} else {
 					numDaysChange = 1;
 				}
-				preventDefault = true;
+				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
 				break;
 			case keyCodes.HOME: {
 				const dayOfTheWeek = this._focusDate.getDay();
