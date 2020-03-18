@@ -48,10 +48,10 @@ class Tooltip extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 
-		this._onMouseEnter = this._onMouseEnter.bind(this);
-		this._onMouseLeave = this._onMouseLeave.bind(this);
-		this._onFocus = this._onFocus.bind(this);
-		this._onBlur = this._onBlur.bind(this);
+		this._onTargetMouseEnter = this._onTargetMouseEnter.bind(this);
+		this._onTargetMouseLeave = this._onTargetMouseLeave.bind(this);
+		this._onTargetFocus = this._onTargetFocus.bind(this);
+		this._onTargetBlur = this._onTargetBlur.bind(this);
 
 		this.delay = 0;
 		this.disableFocusLock = false;
@@ -62,30 +62,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._isFocusing = false;
 		this._isHovering = false;
 		this._dismissibleId = null;
-	}
-
-	get for() {
-		return this._for;
-	}
-	set for(val) {
-		const oldVal = this._for;
-		if (oldVal !== val) {
-			this._for = val;
-			this.requestUpdate('for', oldVal);
-			this._updateTarget();
-		}
-	}
-
-	get forceShow() {
-		return this._forceShow;
-	}
-	set forceShow(val) {
-		const oldVal = this._forceShow;
-		if (oldVal !== val) {
-			this._forceShow = val;
-			this.requestUpdate('force-show', oldVal);
-			this._updateShowing();
-		}
 	}
 
 	get showing() {
@@ -110,16 +86,9 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		this._removeListeners();
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
-	}
-
-	render() {
-
-		return html`
-			<slot>
-			</slot>`
-		;
 	}
 
 	hide() {
@@ -128,27 +97,40 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._updateShowing();
 	}
 
+	render() {
+		return html`
+			<slot>
+			</slot>`
+		;
+	}
+
 	show() {
 		this.showing = true;
 	}
 
-	_updateTarget() {
-		this._removeListeners();
-		const target = this._findTarget();
-		if (target) {
-			this.id = this.id || getUniqueId();
-			target.setAttribute('aria-describedby', this.id);
-		}
-		this._target = target;
-		this._addListeners();
+	updated(changedProperties) {
+		super.updated(changedProperties);
 
-		if (this.showing) {
-			// TODO: Perform layout
+		changedProperties.forEach((_, prop) => {
+			if (prop === 'for') {
+				this._updateTarget();
+			} else if (prop === 'forceShow') {
+				this._updateShowing();
+			}
+		});
+	}
+
+	_addListeners() {
+		if (!this._target) {
+			return;
 		}
+		this._target.addEventListener('mouseenter', this._onTargetMouseEnter);
+		this._target.addEventListener('mouseleave', this._onTargetMouseLeave);
+		this._target.addEventListener('focus', this._onTargetFocus);
+		this._target.addEventListener('blur', this._onTargetBlur);
 	}
 
 	_findTarget() {
-		const parentNode = this.parentNode;
 		const ownerRoot = this.getRootNode();
 
 		let target;
@@ -157,45 +139,18 @@ class Tooltip extends RtlMixin(LitElement) {
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
 		} else {
+			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
 		return target;
 	}
 
-	_addListeners() {
-		if (!this._target) {
-			return;
-		}
-		this._target.addEventListener('mouseenter', this._onMouseEnter);
-		this._target.addEventListener('mouseleave', this._onMouseLeave);
-		this._target.addEventListener('focus', this._onFocus);
-		this._target.addEventListener('blur', this._onBlur);
-	}
-
-	_removeListeners() {
-		if (!this._target) {
-			return;
-		}
-		this._target.removeEventListener('mouseenter', this._onMouseEnter);
-		this._target.removeEventListener('mouseleave', this._onMouseLeave);
-		this._target.removeEventListener('focus', this._onFocus);
-		this._target.removeEventListener('blur', this._onBlur);
-	}
-
-	_onMouseEnter() {
-		this._hoverTimeout = setTimeout(() => {
-			this._isHovering = true;
-			this._updateShowing();
-		}, this.delay);
-	}
-
-	_onMouseLeave() {
-		clearTimeout(this._hoverTimeout);
-		this._isHovering = false;
+	_onTargetBlur() {
+		this._isFocusing = false;
 		this._updateShowing();
 	}
 
-	_onFocus() {
+	_onTargetFocus() {
 		if (this.disableFocusLock) {
 			this.showing = true;
 		} else {
@@ -204,13 +159,27 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	_onBlur() {
-		this._isFocusing = false;
+	_onTargetMouseEnter() {
+		this._hoverTimeout = setTimeout(() => {
+			this._isHovering = true;
+			this._updateShowing();
+		}, this.delay);
+	}
+
+	_onTargetMouseLeave() {
+		clearTimeout(this._hoverTimeout);
+		this._isHovering = false;
 		this._updateShowing();
 	}
 
-	_updateShowing() {
-		this.showing = this._isFocusing || this._isHovering || this.forceShow;
+	_removeListeners() {
+		if (!this._target) {
+			return;
+		}
+		this._target.removeEventListener('mouseenter', this._onTargetMouseEnter);
+		this._target.removeEventListener('mouseleave', this._onTargetMouseLeave);
+		this._target.removeEventListener('focus', this._onTargetFocus);
+		this._target.removeEventListener('blur', this._onTargetBlur);
 	}
 
 	async _showingChanged(newValue) {
@@ -232,6 +201,25 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-hide', { bubbles: true, composed: true }
 			));
+		}
+	}
+
+	_updateShowing() {
+		this.showing = this._isFocusing || this._isHovering || this.forceShow;
+	}
+
+	_updateTarget() {
+		this._removeListeners();
+		const target = this._findTarget();
+		if (target) {
+			this.id = this.id || getUniqueId();
+			target.setAttribute('aria-describedby', this.id);
+		}
+		this._target = target;
+		this._addListeners();
+
+		if (this.showing) {
+			// TODO: Perform layout
 		}
 	}
 }
