@@ -231,8 +231,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				width: 2rem;
 			}
 
-			.d2l-calendar-date:hover div:not(.d2l-calendar-date-selected),
-			.d2l-calendar-date.d2l-calendar-date-hover div:not(.d2l-calendar-date-selected) {
+			.d2l-calendar-date div:not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				background-color: var(--d2l-color-gypsum);
 			}
 
