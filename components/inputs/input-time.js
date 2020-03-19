@@ -13,7 +13,7 @@ import { inputStyles } from './input-styles.js';
 const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
 const TODAY = new Date();
 const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
-const INTERVALS = getIntervals();
+let INTERVALS = null;
 
 function getIntervals() {
 	const intervals = [];
@@ -86,10 +86,6 @@ class InputTime extends LitElement {
 				label {
 					display: block;
 				}
-				.d2l-input-time-menu {
-					border-top: 1px solid var(--d2l-color-gypsum);
-					border-bottom: 1px solid var(--d2l-color-gypsum);
-				}
 				.d2l-input-time-timezone {
 					width: auto;
 					line-height: 1.8rem;
@@ -107,9 +103,6 @@ class InputTime extends LitElement {
 		this._value = formatValue(DEFAULT_VALUE);
 		this._formattedValue = formatTime(DEFAULT_VALUE);
 		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
-
-		this.addEventListener('d2l-dropdown-open', this.__onOpened);
-		this.addEventListener('d2l-dropdown-close', this.__onClosed);
 	}
 
 	get value() { return this._value; }
@@ -122,6 +115,10 @@ class InputTime extends LitElement {
 	}
 
 	render() {
+		if (INTERVALS === null) {
+			INTERVALS = getIntervals();
+		}
+
 		const input = html`
 			<d2l-dropdown>
 				<div
@@ -187,14 +184,6 @@ class InputTime extends LitElement {
 			return this.label;
 		}
 		return undefined;
-	}
-
-	__onOpened() {
-		this.shadowRoot.getElementById('combo-container').setAttribute('aria-expanded', 'true');
-	}
-
-	__onClosed() {
-		this.shadowRoot.getElementById('combo-container').setAttribute('aria-expanded', 'false');
 	}
 
 	async _handleChange(e) {

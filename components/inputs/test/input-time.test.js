@@ -27,24 +27,24 @@ describe('d2l-input-time', () => {
 		it('passes all axe tests', async() => {
 			const elem = await fixture(basicFixture);
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when label is hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when disabled', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" disabled></d2l-input-time>');
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when focused', async() => {
 			const elem = await fixture(basicFixture);
 			setTimeout(() => getInput(elem).focus());
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 	});
 
 	describe('labelling', () => {
