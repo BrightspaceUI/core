@@ -44,7 +44,7 @@ describe('d2l-input-time', () => {
 			setTimeout(() => getInput(elem).focus());
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
-		}).timeout(4000);
+		}).timeout(5000);
 	});
 
 	describe('labelling', () => {
