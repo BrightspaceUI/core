@@ -1,6 +1,6 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyCompactStyles } from '../typography/styles.js';
+import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -39,11 +39,10 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, css`
+		return [bodySmallStyles, css`
 			:host {
 				--d2l-tooltip-background-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
 				box-sizing: border-box;
-				color: white;
 				display: none;
 				position: absolute;
 				text-align: left;
@@ -128,10 +127,11 @@ class Tooltip extends RtlMixin(LitElement) {
 				background-color: var(--d2l-tooltip-background-color);
 				border-radius: ${contentBorderRadius}px;
 				box-sizing: border-box;
+				color: white;
 				min-height: 2.1rem;
 				min-width: 2.1rem;
 				overflow: hidden;
-				padding: 9px 15px;
+				padding: 11px 15px;
 				position: absolute;
 			}
 
@@ -272,7 +272,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
 				<div class="d2l-tooltip-container">
 					<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-						<div class="d2l-tooltip-content d2l-body-compact" style=${styleMap(contentStyle)}>
+						<div class=" d2l-body-small d2l-tooltip-content" style=${styleMap(contentStyle)}>
 							<slot></slot>
 						</div>
 					</div>
