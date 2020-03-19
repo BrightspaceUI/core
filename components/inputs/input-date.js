@@ -40,8 +40,8 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			placeholder: { type: String },
 			value: { type: String },
-			_formattedValue: { type: String },
-			_trap: { type: Boolean }
+			_dropdownOpened: { type: Boolean },
+			_formattedValue: { type: String }
 		};
 	}
 
@@ -157,7 +157,6 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 
-		this._trap = false;
 		this._formattedValue = '';
 		this._labelId = getUniqueId();
 	}
@@ -184,6 +183,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					placeholder="${placeholder}"
+					title="${this.localize('ariaLabel')}"
 					.value="${this._formattedValue}">
 					<d2l-icon
 						?disabled="${this.disabled}"
@@ -196,20 +196,16 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					min-width="300"
 					no-auto-fit>
-					<d2l-focus-trap ?trap="${this._trap}">
-						<d2l-calendar
-							aria-labelledby="${this._labelId}"
-							aria-modal="true"
-							@d2l-calendar-selected="${this._handleDateSelected}"
-							label-id="${this._labelId}"
-							selected-value="${ifDefined(this.value)}"
-							role="dialog">
-						</d2l-calendar>
-							<div class="d2l-calendar-slot-buttons">
-								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
-								<d2l-button-subtle text="${this.localize('clear')}" @click="${this._handleClear}"></d2l-button-subtle>
-							</div>
-					</d2l-focus-trap>
+					<d2l-calendar
+						@d2l-calendar-selected="${this._handleDateSelected}"
+						dialog
+						dialog-opened="${ifDefined(this._dropdownOpened)}"
+						selected-value="${ifDefined(this.value)}">
+						<div class="d2l-calendar-slot-buttons">
+							<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+							<d2l-button-subtle text="${this.localize('clear')}" @click="${this._handleClear}"></d2l-button-subtle>
+						</div>
+					</d2l-calendar>
 				</d2l-dropdown-content>
 			</d2l-dropdown>
 		`;
@@ -263,11 +259,11 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_handleDropdownClose() {
-		this._trap = false;
+		this._dropdownOpened = undefined;
 	}
 
 	_handleDropdownOpen() {
-		this._trap = true;
+		this._dropdownOpened = true;
 	}
 
 	_handleSetToToday() {

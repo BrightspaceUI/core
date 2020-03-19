@@ -29,6 +29,7 @@ class InputText extends RtlMixin(LitElement) {
 			required: { type: Boolean, reflect: true },
 			size: { type: Number },
 			step: { type: String },
+			title: { type: String },
 			type: { type: String },
 			value: { type: String },
 			_firstSlotWidth: { type: Number },
@@ -147,6 +148,7 @@ class InputText extends RtlMixin(LitElement) {
 					step="${ifDefined(this.step)}"
 					style="${styleMap(inputStyles)}"
 					tabindex="${ifDefined(this.tabindex)}"
+					title="${ifDefined(this.title)}"
 					type="${this._getType()}"
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>

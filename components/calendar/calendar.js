@@ -163,7 +163,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
-			labelId: { type: String, attribute: 'label-id' },
+			dialog: { type: Boolean },
+			dialogOpened: { type: Boolean, attribute: 'dialog-opened' },
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
 			_focusDate: { type: Object },
@@ -280,6 +281,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
+		this._handleFocusTrapEnter = this._handleFocusTrapEnter.bind(this);
+
+		this.dialog = false;
+		this.dialogOpened = false;
+
 		this._tableInfoId = getUniqueId();
 		getCalendarData();
 	}
@@ -312,6 +318,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
 				this._updateFocusDate();
+			} else if (prop === 'dialogOpened' && this.dialogOpened) {
+				this.shadowRoot.querySelector('d2l-focus-trap').addEventListener('focusin', this._handleFocusTrapEnter);
 			}
 		});
 	}
@@ -321,11 +329,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			return html``;
 		}
 
-		const labelId = this.labelId || `${this._tableInfoId}-heading`;
-
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
 			<th
 				abbr="${calendarData.descriptor.calendar.days.long[index]}"
+				aria-label="${calendarData.descriptor.calendar.days.long[index]}"
 				role="columnheader"
 				scope="col">
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
@@ -363,46 +370,57 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 					</td>`;
 			});
 
-			return html`<tr role="row">${weekHtml}</tr>`;
+			return html`<tr>${weekHtml}</tr>`;
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
+		const role = this.dialog ? 'dialog' : undefined;
+		const labelId = `${this._tableInfoId}-heading`;
+		const labelledBy = this.dialog ? labelId : undefined;
+
 		return html`
-			<div class="d2l-calendar">
-				<div class="d2l-calendar-title">
-					<d2l-button-icon
-						@click="${this._onPrevMonthButtonClick}"
-						text="${this._computeText(getPrevMonth(this._shownMonth))}"
-						icon="tier1:chevron-left">
-					</d2l-button-icon>
-					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
-					<d2l-button-icon
-						@click="${this._onNextMonthButtonClick}"
-						text="${this._computeText(getNextMonth(this._shownMonth))}"
-						icon="tier1:chevron-right">
-					</d2l-button-icon>
+			<d2l-focus-trap ?trap="${this.dialog && this.dialogOpened}">
+				<div aria-labelledby="${ifDefined(labelledBy)}" aria-modal="${ifDefined(this.dialog)}" class="d2l-calendar" role="${ifDefined(role)}">
+					<div class="d2l-calendar-title">
+						<d2l-button-icon
+							@click="${this._onPrevMonthButtonClick}"
+							text="${this._computeText(getPrevMonth(this._shownMonth))}"
+							icon="tier1:chevron-left">
+						</d2l-button-icon>
+						<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
+						<d2l-button-icon
+							@click="${this._onNextMonthButtonClick}"
+							text="${this._computeText(getNextMonth(this._shownMonth))}"
+							icon="tier1:chevron-right">
+						</d2l-button-icon>
+					</div>
+					<table
+						aria-activedescendant="${activeDate}"
+						aria-labelledby="${labelId}"
+						aria-readonly="true"
+						role="grid"
+						summary="${ifDefined(this.summary)}">
+						<thead>
+							<tr>${weekdayHeaders}</tr>
+						</thead>
+						<tbody>
+							${dayRows}
+						</tbody>
+					</table>
+					<slot></slot>
 				</div>
-				<table
-					aria-activedescendant="${activeDate}"
-					aria-labelledby="${labelId}"
-					aria-readonly="true"
-					role="grid"
-					summary="${ifDefined(this.summary)}">
-					<thead>
-						<tr>${weekdayHeaders}</tr>
-					</thead>
-					<tbody role="presentation">
-						${dayRows}
-					</tbody>
-				</table>
-				<slot></slot>
-			</div>
+			</d2l-focus-trap>
 		`;
 	}
 
 	focus() {
-		const firstButton = this.shadowRoot.querySelector('d2l-button-icon');
-		if (firstButton) firstButton.focus();
+		if (this.dialog) {
+			this._keyboardTriggeredFocusChange = true;
+			this._focusDateAddFocus();
+		} else {
+			const button = this.shadowRoot.querySelector('d2l-button-icon');
+			if (button) button.focus();
+		}
 	}
 
 	_computeText(month) {
@@ -411,15 +429,21 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	async _focusDateAddFocus() {
 		const date = await this._getDateElement(this._focusDate);
-		if (date && this._keyboardTriggeredMonthChange) {
+		if (date && this._keyboardTriggeredFocusChange) {
 			date.focus();
-			this._keyboardTriggeredMonthChange = false;
+			this._keyboardTriggeredFocusChange = false;
 		}
 	}
 
 	async _getDateElement(date) {
 		await this.updateComplete;
 		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
+	}
+
+	_handleFocusTrapEnter() {
+		this.shadowRoot.querySelector('d2l-focus-trap').removeEventListener('focusin', this._handleFocusTrapEnter);
+		this._keyboardTriggeredFocusChange = true;
+		this._focusDateAddFocus();
 	}
 
 	_onDateSelected(e) {
@@ -512,7 +536,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear);
 
 				this._focusDate.setDate(this._focusDate.getDate() - diff);
-				this._keyboardTriggeredMonthChange = true;
+				this._keyboardTriggeredFocusChange = true;
 
 				// handle when current month has more weeks than previous month and page up pressed from last week
 				if (this._focusDate.getMonth() === this._shownMonth) this._focusDate.setDate(this._focusDate.getDate() - 7);
@@ -525,7 +549,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear);
 
 				this._focusDate.setDate(this._focusDate.getDate() + diff);
-				this._keyboardTriggeredMonthChange = true;
+				this._keyboardTriggeredFocusChange = true;
 
 				// handle when current month has more weeks than next month and page down pressed from last week
 				const newFocusDateMonth = this._focusDate.getMonth();
@@ -577,7 +601,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			this._focusDate.getMonth(),
 			this._focusDate.getDate() + numDays
 		);
-		this._keyboardTriggeredMonthChange = true;
+		this._keyboardTriggeredFocusChange = true;
 		const date = await this._getDateElement(this._focusDate);
 		if (!date) {
 			if (oldFocusDate < this._focusDate) {
