@@ -150,19 +150,18 @@
 
 		<div id="boundary-top-right">
 			<div class="tooltip-target middle-horizontal middle-vertical" id="boundary-top-right-target"></div>
-			<d2l-tooltip for="boundary-top-right-target" boundary="{&quot;above&quot;:0, &quot;right&quot;:50}">
+			<d2l-tooltip for="boundary-top-right-target" boundary="{&quot;top&quot;:150, &quot;right&quot;:205}">
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
 				magna aliqua.
 			</d2l-tooltip>
 		</div>
 
 		<div id="boundary-bottom-left">
-			<div class="tooltip-target middle-horizontal middle-vertical">
-				<d2l-tooltip boundary="{&quot;below&quot;:0, &quot;left&quot;:50}">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-					magna aliqua.
-				</d2l-tooltip>
-			</div>
+			<div class="tooltip-target middle-horizontal middle-vertical" id="boundary-bottom-left-target"></div>
+			<d2l-tooltip for="boundary-bottom-left-target" boundary="{&quot;bottom&quot;:150, &quot;left&quot;:135}">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+				magna aliqua.
+			</d2l-tooltip>
 		</div>
 
 		<div id="min-width">
@@ -181,17 +180,16 @@
 
 		<div id="horizontal">
 			<div class="tooltip-target middle-horizontal middle-vertical" id="horizontal-target"></div>
-			<d2l-tooltip for="horizontal-target" boundary="{&quot;below&quot;:20, &quot;above&quot;:20}">
-				Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
+			<d2l-tooltip for="horizontal-target" boundary="{&quot;top&quot;:145, &quot;bottom&quot;:105}">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 			</d2l-tooltip>
 		</div>
 
 		<div id="horizontal-rtl">
-			<div class="tooltip-target middle-horizontal middle-vertical">
-				<d2l-tooltip boundary="{&quot;below&quot;:20, &quot;above&quot;:20}" dir="rtl">
-					Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
-				</d2l-tooltip>
-			</div>
+			<div class="tooltip-target middle-horizontal middle-vertical" id="horizontal-rtl-target"></div>
+			<d2l-tooltip for="horizontal-rtl-target" boundary="{&quot;top&quot;:145, &quot;bottom&quot;:105}" dir="rtl">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			</d2l-tooltip>
 		</div>
 
 		<div id="wide-target-horizontal">
@@ -210,7 +208,7 @@
 
 		<div id="too-big-for-space">
 			<div class="tooltip-target middle-horizontal middle-vertical" id="too-big-for-space-target"></div>
-			<d2l-tooltip for="too-big-for-space-target" boundary="{&quot;below&quot;:10, &quot;above&quot;:20, &quot;left&quot;:40, &quot;right&quot;:20}">
+			<d2l-tooltip for="too-big-for-space-target" boundary="{&quot;bottom&quot;:150, &quot;top&quot;:130, &quot;left&quot;:35, &quot;right&quot;:220}">
 				Aliquam ut porttitor leo a diam sollicitudin tempor id eu.
 			</d2l-tooltip>
 		</div>

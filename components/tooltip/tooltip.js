@@ -1,6 +1,7 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -251,9 +252,10 @@ class Tooltip extends RtlMixin(LitElement) {
 			height: this._targetRect ? `${this._targetRect.height}px` : null,
 		};
 
-		const tooltipPositionStyle = {
+		const contentStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : null
 		};
+		const tooltipPositionStyle = { ...contentStyle };
 		if (this._tooltipShift !== undefined) {
 			if (this._isAboveOrBelow()) {
 				const isRtl = this.getAttribute('dir') === 'rtl';
@@ -263,10 +265,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				tooltipPositionStyle.top = `${this._tooltipShift}px`;
 			}
 		}
-
-		const contentStyle = {
-			maxWidth: this._maxWidth ? `${this._maxWidth}px` : null
-		};
 
 		return html`
 			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
@@ -330,35 +328,49 @@ class Tooltip extends RtlMixin(LitElement) {
 		return spaces;
 	}
 
+	_computeSpaceAround(targetRect) {
+		const spaceAround = {
+			above: targetRect.top - this._viewportMargin,
+			below: window.innerHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
+			left: targetRect.left - this._viewportMargin,
+			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
+		};
+		const offsetParent = getOffsetParent(this);
+		if (this.boundary && offsetParent) {
+			const parentRect = offsetParent.getBoundingClientRect();
+			if (!isNaN(this.boundary.left)) {
+				spaceAround.left = Math.min(targetRect.left - parentRect.left - this.boundary.left, spaceAround.left);
+			}
+			if (!isNaN(this.boundary.right) && (isNaN(this.boundary.left) || this.boundary.right >= this.boundary.left)) {
+				spaceAround.right = Math.min(parentRect.left + this.boundary.right - targetRect.right, spaceAround.right);
+			}
+			if (!isNaN(this.boundary.top)) {
+				spaceAround.above = Math.min(targetRect.top - parentRect.top - this.boundary.top, spaceAround.above);
+			}
+			if (!isNaN(this.boundary.bottom)) {
+				spaceAround.below = Math.min(parentRect.bottom - targetRect.bottom - this.boundary.bottom, spaceAround.below);
+			}
+		}
+		return spaceAround;
+	}
+
 	_computeTooltipShift(centerDelta, spaceLeft, spaceRight) {
 
 		const contentXAdjustment = centerDelta / 2;
 		if (centerDelta <= 0) {
 			return contentXAdjustment * -1;
 		}
-		if (spaceLeft > contentXAdjustment && spaceRight > contentXAdjustment) {
+		if (spaceLeft >= contentXAdjustment && spaceRight >= contentXAdjustment) {
 			// center with target
 			return contentXAdjustment * -1;
 		}
-		if (spaceLeft < contentXAdjustment) {
+		if (spaceLeft <= contentXAdjustment) {
 			// shift content right (not enough space to center)
 			return spaceLeft * -1;
-		} else if (spaceRight < contentXAdjustment) {
+		} else {
 			// shift content left (not enough space to center)
 			return (centerDelta * -1) + spaceRight;
 		}
-		return undefined;
-	}
-
-	_constrainSpaceAround(spaceAround) {
-		const constrained = { ...spaceAround };
-		if (this.boundary) {
-			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
-			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
-			constrained.left = this.boundary.left >= 0 ? Math.min(spaceAround.left, this.boundary.left) : spaceAround.left;
-			constrained.right = this.boundary.right >= 0 ? Math.min(spaceAround.right, this.boundary.right) : spaceAround.right;
-		}
-		return constrained;
 	}
 
 	_findTarget() {
@@ -445,12 +457,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 
 		const targetRect = target.getBoundingClientRect();
-		const spaceAround = this._constrainSpaceAround({
-			above: targetRect.top - this._viewportMargin,
-			below: window.innerHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
-			left: targetRect.left - this._viewportMargin,
-			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
-		});
+		const spaceAround = this._computeSpaceAround(targetRect);
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
 		const content = this._getContent();

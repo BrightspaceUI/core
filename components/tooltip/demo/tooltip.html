@@ -20,13 +20,14 @@
 		}
 
 		.boundary {
+			position: relative;
 			background-color: var(--d2l-color-citrine);
 			box-sizing: border-box;
 			display: inline-block;
-			padding-bottom: 75px;
-			padding-left: 200px;
-			padding-right: 25px;
-			padding-top: 40px;
+			padding-left: 150px;
+			padding-top: 60px;
+			width: 350px;
+			height: 175px;
 		}
 	</style>
 </head>
@@ -61,7 +62,7 @@
 				<div class="boundary">
 					<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
 					<d2l-tooltip for="tooltip-boundary"
-						boundary="{&quot;above&quot;:40, &quot;below&quot;:75, &quot;left&quot;:200, &quot;right&quot;:25}">
+						boundary="{&quot;top&quot;:0, &quot;bottom&quot;:0, &quot;left&quot;:0, &quot;right&quot;:350}">
 						This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
 					</d2l-tooltip>
 				</div>
