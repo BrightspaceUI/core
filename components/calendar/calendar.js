@@ -214,7 +214,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				margin: 0;
 			}
 
-			.d2l-calendar-date {
+			.d2l-calendar-date div {
 				align-items: center;
 				border: 2px solid transparent;
 				border-radius: 0.3rem;
@@ -231,23 +231,26 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				width: 2rem;
 			}
 
-			.d2l-calendar-date:hover:not(.d2l-calendar-date-selected),
-			.d2l-calendar-date.d2l-calendar-date-hover:not(.d2l-calendar-date-selected) {
+			.d2l-calendar-date:hover div:not(.d2l-calendar-date-selected),
+			.d2l-calendar-date.d2l-calendar-date-hover div:not(.d2l-calendar-date-selected) {
 				background-color: var(--d2l-color-gypsum);
 			}
 
 			.d2l-calendar-date:focus {
-				border: 2px solid var(--d2l-color-celestine);
 				outline: none;
 			}
 
-			.d2l-calendar-date-selected {
+			.d2l-calendar-date:focus div {
+				border: 2px solid var(--d2l-color-celestine);
+			}
+
+			div.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
 			}
 
-			.d2l-calendar-date-today,
-			.d2l-calendar-date-selected {
+			div.d2l-calendar-date-today,
+			div.d2l-calendar-date-selected {
 				font-size: 1rem;
 				font-weight: 700;
 			}
@@ -276,7 +279,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
-		this._labelId = getUniqueId();
+		this._tableInfoId = getUniqueId();
 		getCalendarData();
 	}
 
@@ -318,7 +321,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		}
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
-			<th scope="col" role="columnheader" abbr="${calendarData.descriptor.calendar.days.long[index]}" id="${this._labelId}-weekday-${index}">
+			<th
+				abbr="${calendarData.descriptor.calendar.days.long[index]}"
+				role="columnheader"
+				scope="col">
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
 					${calendarData.descriptor.calendar.days.short[index]}
 				</abbr>
@@ -327,11 +333,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
-			const weekHtml = week.map((day, index) => {
+			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false;
 				const classes = {
-					'd2l-calendar-date': true,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
@@ -339,47 +344,49 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const month = day.getMonth();
 				const date = day.getDate();
 				return html`
-					<td>
-						<div
-							aria-label="${formatDate(day, {format: 'full'})}"
-							aria-selected="${selected}"
-							@click="${this._onDateSelected}"
-							@keydown="${this._onKeyDown}"
-							class=${classMap(classes)}
-							data-date=${date}
-							data-month=${month}
-							data-year=${year}
-							headers="${this._labelId}-weekday-${index}"
-							id="${this._labelId}-${year}-${month}-${date}"
-							role="gridcell"
-							tabindex=${focused ? '0' : '-1'}>
-							${date}
-						</div>
+					<td
+						aria-label="${formatDate(day, {format: 'medium'})}"
+						aria-selected="${selected}"
+						class="d2l-calendar-date"
+						@click="${this._onDateSelected}"
+						data-date=${date}
+						data-month=${month}
+						data-year=${year}
+						id="${this._tableInfoId}-${year}-${month}-${date}"
+						@keydown="${this._onKeyDown}"
+						role="gridcell"
+						tabindex=${focused ? '0' : '-1'}>
+						<div class="${classMap(classes)}">${date}</div>
 					</td>`;
 			});
 
 			return html`<tr role="row">${weekHtml}</tr>`;
 		});
+		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
-		const active = `${this._labelId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		return html`
-			<div aria-labelledby="${this._labelId}" class="d2l-calendar">
+			<div class="d2l-calendar">
 				<div class="d2l-calendar-title">
 					<d2l-button-icon
 						@click="${this._onPrevMonthButtonClick}"
 						text="${this._computeText(getPrevMonth(this._shownMonth))}"
 						icon="tier1:chevron-left">
 					</d2l-button-icon>
-					<h2 class="d2l-heading-4" aria-live="polite" id="${this._labelId}" aria-atomic="true">${heading}</h2>
+					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${this._tableInfoId}-heading">${heading}</h2>
 					<d2l-button-icon
 						@click="${this._onNextMonthButtonClick}"
 						text="${this._computeText(getNextMonth(this._shownMonth))}"
 						icon="tier1:chevron-right">
 					</d2l-button-icon>
 				</div>
-				<table aria-labelledby="${this._labelId}" summary="${ifDefined(this.summary)}" role="grid" aria-activedescendant="${active}">
-					<thead role="presentation" aria-hidden="false">
-						<tr role="row">${weekdayHeaders}</tr>
+				<table
+					aria-activedescendant="${activeDate}"
+					aria-labelledby="${this._tableInfoId}-heading"
+					aria-readonly="true"
+					role="grid"
+					summary="${ifDefined(this.summary)}">
+					<thead>
+						<tr>${weekdayHeaders}</tr>
 					</thead>
 					<tbody role="presentation">
 						${dayRows}
@@ -409,11 +416,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	async _getDateElement(date) {
 		await this.updateComplete;
-		return this.shadowRoot.querySelector(`div[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
+		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
 	}
 
 	_onDateSelected(e) {
-		const selectedDate = e.composedPath()[0];
+		let selectedDate = e.composedPath()[0];
+		if (selectedDate.tagName === 'DIV') selectedDate = selectedDate.parentNode;
 		const year = selectedDate.getAttribute('data-year');
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
@@ -455,6 +463,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				} else {
 					numDaysChange = -1;
 				}
+				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
 				break;
 			case keyCodes.RIGHT:
 				if (getComputedStyle(this).direction === 'rtl') {
@@ -462,6 +471,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				} else {
 					numDaysChange = 1;
 				}
+				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
 				break;
 			case keyCodes.HOME: {
 				const dayOfTheWeek = this._focusDate.getDay();
