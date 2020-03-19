@@ -163,6 +163,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
+			labelId: { type: String, attribute: 'label-id' },
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
 			_focusDate: { type: Object },
@@ -320,6 +321,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			return html``;
 		}
 
+		const labelId = this.labelId || `${this._tableInfoId}-heading`;
+
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
 			<th
 				abbr="${calendarData.descriptor.calendar.days.long[index]}"
@@ -372,7 +375,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 						text="${this._computeText(getPrevMonth(this._shownMonth))}"
 						icon="tier1:chevron-left">
 					</d2l-button-icon>
-					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${this._tableInfoId}-heading">${heading}</h2>
+					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
 					<d2l-button-icon
 						@click="${this._onNextMonthButtonClick}"
 						text="${this._computeText(getNextMonth(this._shownMonth))}"
@@ -381,7 +384,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				</div>
 				<table
 					aria-activedescendant="${activeDate}"
-					aria-labelledby="${this._tableInfoId}-heading"
+					aria-labelledby="${labelId}"
 					aria-readonly="true"
 					role="grid"
 					summary="${ifDefined(this.summary)}">
