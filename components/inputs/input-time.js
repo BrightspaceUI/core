@@ -6,6 +6,7 @@ import '../menu/menu-item-radio.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
@@ -16,13 +17,16 @@ const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getD
 let INTERVALS = null;
 
 function getIntervals() {
-	const intervals = [];
-	for (let i = 0; i < 24; i++) {
-		intervals.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 0, 0));
-		intervals.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 30, 0));
+	if (INTERVALS !== null) {
+		return;
 	}
-	intervals.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59));
-	return intervals;
+
+	INTERVALS = [];
+	for (let i = 0; i < 24; i++) {
+		INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 0, 0));
+		INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 30, 0));
+	}
+	INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59));
 }
 
 function formatValue(time) {
@@ -103,6 +107,7 @@ class InputTime extends LitElement {
 		this._value = formatValue(DEFAULT_VALUE);
 		this._formattedValue = formatTime(DEFAULT_VALUE);
 		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
+		this._dropdownId = getUniqueId();
 	}
 
 	get value() { return this._value; }
@@ -115,20 +120,16 @@ class InputTime extends LitElement {
 	}
 
 	render() {
-		if (INTERVALS === null) {
-			INTERVALS = getIntervals();
-		}
-
+		getIntervals();
 		const input = html`
 			<d2l-dropdown>
 				<div
-					id="combo-container"
 					role="combobox"
-					aria-owns="time-menu"
+					aria-owns="${this._dropdownId}"
 					class="d2l-dropdown-opener"
 					aria-expanded="false">
 					<input
-						aria-controls="time-menu"
+						aria-controls="${this._dropdownId}"
 						aria-label="${ifDefined(this._getAriaLabel())}"
 						@change="${this._handleChange}"
 						class="d2l-input"
@@ -138,7 +139,7 @@ class InputTime extends LitElement {
 				</div>
 				<d2l-dropdown-menu id="dropdown" no-padding-footer min-width="195">
 					<d2l-menu
-						id="time-menu"
+						id="${this._dropdownId}"
 						role="listbox"
 						class="d2l-input-time-menu"
 						aria-label="${ifDefined(this.label)}"
