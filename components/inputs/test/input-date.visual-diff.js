@@ -10,7 +10,7 @@ describe('d2l-input-date', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+		await page.setViewport({width: 800, height: 900, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
@@ -56,11 +56,19 @@ describe('d2l-input-date', () => {
 			await reset(page, '#placeholder-default');
 		});
 
+		it('tabs correctly on open', async function() {
+			await open(page, '#placeholder-default');
+			await page.keyboard.press('Tab');
+			const rect = await getRect(page, '#placeholder-default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await reset(page, '#placeholder-default');
+		});
+
 		it('clicks date', async function() {
 			await open(page, '#basic');
 			await page.$eval('#basic', (elem) => {
 				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				const date = calendar.shadowRoot.querySelector('div[data-date="20"]');
+				const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
 				date.click();
 			});
 			const rect = await visualDiff.getRect(page, '#basic');

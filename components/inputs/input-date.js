@@ -12,6 +12,14 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+let calendarDataDescriptor;
+function getCalendarDescriptor() {
+	if (!calendarDataDescriptor) {
+		calendarDataDescriptor = getDateTimeDescriptor();
+	}
+	return calendarDataDescriptor;
+}
+
 export function formatDateInISO(val) {
 	let month = parseInt(val.getMonth()) + 1;
 	let date = val.getDate();
@@ -64,7 +72,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
 			}
-			d2l-focus-trap {
+			d2l-calendar {
 				margin-bottom: -0.7rem;
 				margin-top: -0.7rem;
 			}
@@ -157,21 +165,21 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 
+		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._labelId = getUniqueId();
+
+		getCalendarDescriptor();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-
-		const descriptor = getDateTimeDescriptor();
-		this.placeholder = descriptor.formats.dateFormats.short;
 	}
 
 	render() {
-		const placeholder = this.placeholder || this.localize('chooseDate');
+		const placeholder = this.placeholder || calendarDataDescriptor.formats.dateFormats.short;
 
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}">
@@ -199,7 +207,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					<d2l-calendar
 						@d2l-calendar-selected="${this._handleDateSelected}"
 						dialog
-						dialog-opened="${ifDefined(this._dropdownOpened)}"
+						?dialog-opened="${this._dropdownOpened}"
 						selected-value="${ifDefined(this.value)}">
 						<div class="d2l-calendar-slot-buttons">
 							<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
