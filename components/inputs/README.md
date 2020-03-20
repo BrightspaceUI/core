@@ -8,6 +8,7 @@ There are various input components available:
 - [Select Lists](#select-lists)
 - [Checkboxes](#checkboxes)
 - [Radio Buttons](#radio-buttons)
+- [Date] (#date)
 
 ## Labelling Inputs
 
@@ -109,6 +110,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 
 **Properties:**
 
+- `aria-haspopup` (String):  indicates that the input has a popup menu
 - `aria-invalid` (String): indicates that the input value is invalid
 - `autocomplete` (String): specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser
 - `autofocus` (Boolean): when set, will automatically place focus on the input
@@ -127,6 +129,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 - `required` (Boolean): indicates that a value is required
 - `size` (Number): size of the input
 - `step` (String): for number inputs, sets the step size
+- `title` (String): text for additional screenreader and mouseover context
 - `type` (String, default: `'text'`): can be one of `text`, `email`, `number`, `password`, `tel`, `url`
 - `value` (String, default: `''`): value of the input
 
@@ -398,6 +401,35 @@ class MyElem extends LitElement {
 
 }
 ```
+
+## Date Inputs
+
+The `<d2l-input-date>` component consists of a text input field for typing a date, and an attached calendar (`<d2l-calendar>`) dropdown. The dropdown opens on click of the text input, or on enter or down arrow if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the `calendar` or entered in the text input.
+
+![example screenshot of date input](./screenshots/date.gif?raw=true)
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-date.js';
+</script>
+<d2l-input-date
+  label="Start Date"
+  value="2020-11-20"
+  placeholder="Enter a start date">
+</d2l-input-date>
+```
+
+**Properties:**
+
+- `label` (String, required): accessible label for the input
+- `disabled` (Boolean): disables the input
+- `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
+- `placeholder` (String): placeholder text
+- `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
+
+**Events:**
+
+* `d2l-input-date-change`: dispatched when a date is selected or typed. `value` reflects the selected value and is in ISO 8601 calendar date format (`YYYY-MM-DD`).
 
 ## Future Enhancements
 
