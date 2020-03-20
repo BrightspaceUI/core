@@ -18,6 +18,25 @@ const pointerGap = 6; /* spacing between pointer and target */
 const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
 
+const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
+
+	const contentXAdjustment = centerDelta / 2;
+	if (centerDelta <= 0) {
+		return contentXAdjustment * -1;
+	}
+	if (spaceLeft >= contentXAdjustment && spaceRight >= contentXAdjustment) {
+		// center with target
+		return contentXAdjustment * -1;
+	}
+	if (spaceLeft <= contentXAdjustment) {
+		// shift content right (not enough space to center)
+		return spaceLeft * -1;
+	} else {
+		// shift content left (not enough space to center)
+		return (centerDelta * -1) + spaceRight;
+	}
+};
+
 class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
@@ -354,25 +373,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		return spaceAround;
 	}
 
-	_computeTooltipShift(centerDelta, spaceLeft, spaceRight) {
-
-		const contentXAdjustment = centerDelta / 2;
-		if (centerDelta <= 0) {
-			return contentXAdjustment * -1;
-		}
-		if (spaceLeft >= contentXAdjustment && spaceRight >= contentXAdjustment) {
-			// center with target
-			return contentXAdjustment * -1;
-		}
-		if (spaceLeft <= contentXAdjustment) {
-			// shift content right (not enough space to center)
-			return spaceLeft * -1;
-		} else {
-			// shift content left (not enough space to center)
-			return (centerDelta * -1) + spaceRight;
-		}
-	}
-
 	_findTarget() {
 		const ownerRoot = this.getRootNode();
 
@@ -509,7 +509,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			maxShift = targetRect.height / 2;
 			minShift = maxShift - contentRect.height;
 		}
-		const shift = this._computeTooltipShift(centerDelta, spaceLeft, spaceRight);
+		const shift = computeTooltipShift(centerDelta, spaceLeft, spaceRight);
 		const shiftMargin = (pointerRotatedLength / 2) + contentBorderRadius;
 		this._tooltipShift = Math.min(Math.max(shift, minShift + shiftMargin), maxShift - shiftMargin);
 	}
