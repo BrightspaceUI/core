@@ -164,7 +164,6 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	constructor() {
 		super();
-		this.autoSelect = false;
 		this.maxToShow = -1;
 		this._tabInfos = [];
 	}
