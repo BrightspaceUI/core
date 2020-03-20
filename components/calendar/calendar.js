@@ -281,13 +281,14 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
+		getCalendarData();
+
 		this._handleFocusTrapEnter = this._handleFocusTrapEnter.bind(this);
 
 		this.dialog = false;
 		this.dialogOpened = false;
 
 		this._tableInfoId = getUniqueId();
-		getCalendarData();
 	}
 
 	firstUpdated(changedProperties) {
@@ -373,10 +374,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			return html`<tr>${weekHtml}</tr>`;
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
-		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
-		const role = this.dialog ? 'dialog' : undefined;
 		const labelId = `${this._tableInfoId}-heading`;
 		const labelledBy = this.dialog ? labelId : undefined;
+		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
+		const role = this.dialog ? 'dialog' : undefined;
 
 		return html`
 			<d2l-focus-trap ?trap="${this.dialog && this.dialogOpened}">

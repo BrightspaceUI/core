@@ -89,16 +89,19 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	static get resources() {
 		return {
 			'ar': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'مسح',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'da': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Ryd',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'de': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Löschen',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
@@ -110,51 +113,61 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				setToToday: 'Set to Today'
 			},
 			'es': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Borrar',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'fr': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Effacer',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'ja': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'クリア',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'ko': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: '지우기',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'nl': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Wissen',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'pt': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Desmarcar',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'sv': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Rensa',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'tr': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Temizle',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'zh': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: '清除',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
 			},
 			'zh-tw': {
+				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: '清除',
 				chooseDate: 'Choose Date',
 				setToToday: 'Set to Today'
@@ -267,7 +280,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_handleDropdownClose() {
-		this._dropdownOpened = undefined;
+		this._dropdownOpened = false;
 	}
 
 	_handleDropdownOpen() {

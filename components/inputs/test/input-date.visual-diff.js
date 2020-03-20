@@ -56,7 +56,7 @@ describe('d2l-input-date', () => {
 			await reset(page, '#placeholder-default');
 		});
 
-		it('tabs correctly on open', async function() {
+		it('tab on open', async function() {
 			await open(page, '#placeholder-default');
 			await page.keyboard.press('Tab');
 			const rect = await getRect(page, '#placeholder-default');
@@ -64,7 +64,7 @@ describe('d2l-input-date', () => {
 			await reset(page, '#placeholder-default');
 		});
 
-		it('clicks date', async function() {
+		it('click date', async function() {
 			await open(page, '#basic');
 			await page.$eval('#basic', (elem) => {
 				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
@@ -76,7 +76,7 @@ describe('d2l-input-date', () => {
 			await reset(page, '#basic');
 		});
 
-		it('sets to today', async function() {
+		it('set to today', async function() {
 			await page.$eval('#basic', (elem) => {
 				const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Set to Today"]');
 				button.click();
@@ -86,7 +86,7 @@ describe('d2l-input-date', () => {
 			await reset(page, '#basic');
 		});
 
-		it('clears', async function() {
+		it('clear', async function() {
 			await page.$eval('#basic', (elem) => {
 				const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Clear"]');
 				button.click();
