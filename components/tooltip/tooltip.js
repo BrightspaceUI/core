@@ -95,7 +95,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([_open-dir="top"]) .d2l-tooltip-pointer,
 			:host([_open-dir="bottom"]) .d2l-tooltip-pointer {
-				left: calc(50% - ${pointerOverhang}px);
+				left: calc(50% - ${pointerLength / 2}px);
 			}
 
 			:host([_open-dir="top"]) .d2l-tooltip-pointer {
@@ -110,7 +110,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([_open-dir="left"]) .d2l-tooltip-pointer,
 			:host([_open-dir="right"]) .d2l-tooltip-pointer {
-				top: calc(50% - ${pointerOverhang}px);
+				top: calc(50% - ${pointerLength / 2}px);
 			}
 
 			:host([_open-dir="left"]) .d2l-tooltip-pointer {
