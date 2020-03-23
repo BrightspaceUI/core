@@ -183,7 +183,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.arrowKeysFocusablesProvider = async() => {
-			return [...this.shadowRoot.querySelectorAll('d2l-tab')];
+			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
 		};
 		/*
 		this.arrowKeysOnBeforeFocus = async(tab) => {
@@ -204,7 +204,6 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	render() {
-
 		return html`
 			<div class="d2l-tabs-layout d2l-body-compact">
 				<div class="d2l-tabs-container">
@@ -217,10 +216,10 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 							@d2l-tab-selected="${this._handleTabSelected}"
 							role="tablist">
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
-								<d2l-tab aria-selected="${tabInfo.selected ? 'true' : 'false'}"
+								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
 									text="${tabInfo.text}">
-								</d2l-tab>
+								</d2l-tab-internal>
 							`)}
 						</div>
 					`)}
@@ -240,7 +239,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	_focusSelected() {
-		const selectedTab = this.shadowRoot.querySelector('d2l-tab[aria-selected="true"]');
+		const selectedTab = this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
 		if (selectedTab) {
 			/*
 				update the virtual scroll position so that the browser doesn't force a scroll then...

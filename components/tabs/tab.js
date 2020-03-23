@@ -129,4 +129,4 @@ class Tab extends RtlMixin(LitElement) {
 
 }
 
-customElements.define('d2l-tab', Tab);
+customElements.define('d2l-tab-internal', Tab);
