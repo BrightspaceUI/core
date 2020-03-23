@@ -281,10 +281,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	_getTabInfo(id) {
-		for (let i = 0; i < this._tabInfos.length; i++) {
-			if (this._tabInfos[i].id === id) return this._tabInfos[i];
-		}
-		return null;
+		return this._tabInfos.find((t) => t.id === id);
 	}
 
 	_handleFocusEnd(e) {
@@ -373,14 +370,13 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		*/
 
 		selectedPanel.selected = true;
-		for (let i = 0; i < this._tabInfos.length; i++) {
-			const tabInfo = this._tabInfos[i];
+		this._tabInfos.forEach((tabInfo) => {
 			if (tabInfo.selected && tabInfo.id !== selectedTab.controlsPanel) {
 				tabInfo.selected = false;
-				this.requestUpdate();
 				this._getPanel(tabInfo.id).selected = false;
 			}
-		}
+		});
+		this.requestUpdate();
 	}
 
 }
