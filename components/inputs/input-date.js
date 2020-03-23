@@ -216,8 +216,8 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					min-width="300"
-					no-auto-focus
-					no-auto-fit>
+					no-auto-fit
+					no-auto-focus>
 					<d2l-focus-trap aria-labelledby="${this._calendarLabelId}" aria-modal="true" @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}" role="dialog">
 						<d2l-calendar
 							@d2l-calendar-selected="${this._handleDateSelected}"

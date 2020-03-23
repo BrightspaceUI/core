@@ -8,7 +8,7 @@ There are various input components available:
 - [Select Lists](#select-lists)
 - [Checkboxes](#checkboxes)
 - [Radio Buttons](#radio-buttons)
-- [Date] (#date)
+- [Date](#date-inputs)
 
 ## Labelling Inputs
 
@@ -404,7 +404,7 @@ class MyElem extends LitElement {
 
 ## Date Inputs
 
-The `<d2l-input-date>` component consists of a text input field for typing a date, and an attached calendar (`<d2l-calendar>`) dropdown. The dropdown opens on click of the text input, or on enter or down arrow if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the `calendar` or entered in the text input.
+The `<d2l-input-date>` component consists of a text input field for typing a date and an attached calendar (`<d2l-calendar>`) dropdown. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the `calendar` or entered in the text input.
 
 ![example screenshot of date input](./screenshots/date.gif?raw=true)
 

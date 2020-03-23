@@ -282,9 +282,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		getCalendarData();
 
-		this.dialog = false;
-		this.dialogOpened = false;
-
 		this._tableInfoId = getUniqueId();
 	}
 
@@ -312,7 +309,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === '_shownMonth') {
+			if (prop === '_shownMonth' && this._keyboardTriggeredFocusChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
 				this._updateFocusDate();
@@ -371,7 +368,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const labelId = this.calendarLabelId || `${this._tableInfoId}-heading`;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
-
 		return html`
 			<div class="d2l-calendar">
 				<div class="d2l-calendar-title">
@@ -407,7 +403,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	focus(focusOnDate) {
 		if (focusOnDate) {
-			this._keyboardTriggeredFocusChange = true;
 			this._focusDateAddFocus();
 		} else {
 			const button = this.shadowRoot.querySelector('d2l-button-icon');
@@ -424,8 +419,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	async _focusDateAddFocus() {
-		const date = await this._getDateElement(this._focusDate);
-		if (date && this._keyboardTriggeredFocusChange) {
+		const date = await this.getFocusDateElement();
+		if (date) {
 			date.focus();
 			this._keyboardTriggeredFocusChange = false;
 		}
@@ -592,7 +587,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			this._focusDate.getDate() + numDays
 		);
 		this._keyboardTriggeredFocusChange = true;
-		const date = await this._getDateElement(this._focusDate);
+		const date = await this.getFocusDateElement();
 		if (!date) {
 			if (oldFocusDate < this._focusDate) {
 				this._updateShownMonthIncrease();
