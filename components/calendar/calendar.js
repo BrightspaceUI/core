@@ -163,8 +163,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
-			dialog: { type: Boolean },
-			dialogOpened: { type: Boolean, attribute: 'dialog-opened' },
+			calendarLabelId: { type: String, attribute: 'calendar-label-id' },
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
 			_focusDate: { type: Object },
@@ -283,8 +282,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		getCalendarData();
 
-		this._handleFocusTrapEnter = this._handleFocusTrapEnter.bind(this);
-
 		this.dialog = false;
 		this.dialogOpened = false;
 
@@ -319,8 +316,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
 				this._updateFocusDate();
-			} else if (prop === 'dialogOpened' && this.dialogOpened) {
-				this.shadowRoot.querySelector('d2l-focus-trap').addEventListener('focusin', this._handleFocusTrapEnter);
 			}
 		});
 	}
@@ -374,54 +369,54 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			return html`<tr>${weekHtml}</tr>`;
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
-		const labelId = `${this._tableInfoId}-heading`;
-		const labelledBy = this.dialog ? labelId : undefined;
+		const labelId = this.calendarLabelId || `${this._tableInfoId}-heading`;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
-		const role = this.dialog ? 'dialog' : undefined;
 
 		return html`
-			<d2l-focus-trap ?trap="${this.dialog && this.dialogOpened}">
-				<div aria-labelledby="${ifDefined(labelledBy)}" aria-modal="${ifDefined(this.dialog)}" class="d2l-calendar" role="${ifDefined(role)}">
-					<div class="d2l-calendar-title">
-						<d2l-button-icon
-							@click="${this._onPrevMonthButtonClick}"
-							text="${this._computeText(getPrevMonth(this._shownMonth))}"
-							icon="tier1:chevron-left">
-						</d2l-button-icon>
-						<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
-						<d2l-button-icon
-							@click="${this._onNextMonthButtonClick}"
-							text="${this._computeText(getNextMonth(this._shownMonth))}"
-							icon="tier1:chevron-right">
-						</d2l-button-icon>
-					</div>
-					<table
-						aria-activedescendant="${activeDate}"
-						aria-labelledby="${labelId}"
-						aria-readonly="true"
-						role="grid"
-						summary="${ifDefined(this.summary)}">
-						<thead>
-							<tr>${weekdayHeaders}</tr>
-						</thead>
-						<tbody>
-							${dayRows}
-						</tbody>
-					</table>
-					<slot></slot>
+			<div class="d2l-calendar">
+				<div class="d2l-calendar-title">
+					<d2l-button-icon
+						@click="${this._onPrevMonthButtonClick}"
+						text="${this._computeText(getPrevMonth(this._shownMonth))}"
+						icon="tier1:chevron-left">
+					</d2l-button-icon>
+					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
+					<d2l-button-icon
+						@click="${this._onNextMonthButtonClick}"
+						text="${this._computeText(getNextMonth(this._shownMonth))}"
+						icon="tier1:chevron-right">
+					</d2l-button-icon>
 				</div>
-			</d2l-focus-trap>
+				<table
+					aria-activedescendant="${activeDate}"
+					aria-labelledby="${labelId}"
+					aria-readonly="true"
+					role="grid"
+					summary="${ifDefined(this.summary)}">
+					<thead>
+						<tr>${weekdayHeaders}</tr>
+					</thead>
+					<tbody>
+						${dayRows}
+					</tbody>
+				</table>
+				<slot></slot>
+			</div>
 		`;
 	}
 
-	focus() {
-		if (this.dialog) {
+	focus(focusOnDate) {
+		if (focusOnDate) {
 			this._keyboardTriggeredFocusChange = true;
 			this._focusDateAddFocus();
 		} else {
 			const button = this.shadowRoot.querySelector('d2l-button-icon');
 			if (button) button.focus();
 		}
+	}
+
+	async getFocusDateElement() {
+		return await this._getDateElement(this._focusDate);
 	}
 
 	_computeText(month) {
@@ -439,12 +434,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	async _getDateElement(date) {
 		await this.updateComplete;
 		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
-	}
-
-	_handleFocusTrapEnter() {
-		this.shadowRoot.querySelector('d2l-focus-trap').removeEventListener('focusin', this._handleFocusTrapEnter);
-		this._keyboardTriggeredFocusChange = true;
-		this._focusDateAddFocus();
 	}
 
 	_onDateSelected(e) {

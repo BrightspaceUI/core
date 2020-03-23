@@ -29,34 +29,6 @@ describe('d2l-calendar', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	describe('dialog and dialog-opened', () => {
-		before(async() => {
-			await page.$eval(firstCalendarOfPage, (calendar) => calendar.setAttribute('dialog-opened', 'true'));
-			await page.$eval(firstCalendarOfPage, (calendar) => calendar.setAttribute('dialog', 'true'));
-		});
-
-		after(async() => {
-			await page.$eval(firstCalendarOfPage, (calendar) => calendar.removeAttribute('dialog-opened'));
-			await page.$eval(firstCalendarOfPage, (calendar) => calendar.removeAttribute('dialog'));
-		});
-
-		afterEach(async() => {
-			await page.$eval(firstCalendarOfPage, (elem) => elem.blur());
-		});
-
-		it('tab starts on focus date', async function() {
-			await page.keyboard.press('Tab'); // only one tab press needed to get to focus date instead of 3
-			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('focus', async function() {
-			await page.$eval(firstCalendarOfPage, (elem) => elem.focus());
-			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-	});
-
 	describe('localization', () => {
 
 		after(async() => {

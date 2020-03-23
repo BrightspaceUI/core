@@ -63,7 +63,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-			d2l-icon[slot="left"] {
+			d2l-icon {
 				--d2l-icon-height: 0.8rem;
 				--d2l-icon-width: 0.8rem;
 				margin-left: 0.6rem;
@@ -72,7 +72,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
 			}
-			d2l-calendar {
+			d2l-focus-trap {
 				margin-bottom: -0.7rem;
 				margin-top: -0.7rem;
 			}
@@ -180,7 +180,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 		this._dropdownOpened = false;
 		this._formattedValue = '';
-		this._labelId = getUniqueId();
+		this._calendarLabelId = getUniqueId();
 
 		getCalendarDescriptor();
 	}
@@ -216,17 +216,19 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					min-width="300"
+					no-auto-focus
 					no-auto-fit>
-					<d2l-calendar
-						@d2l-calendar-selected="${this._handleDateSelected}"
-						dialog
-						?dialog-opened="${this._dropdownOpened}"
-						selected-value="${ifDefined(this.value)}">
-						<div class="d2l-calendar-slot-buttons">
-							<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
-							<d2l-button-subtle text="${this.localize('clear')}" @click="${this._handleClear}"></d2l-button-subtle>
-						</div>
-					</d2l-calendar>
+					<d2l-focus-trap aria-labelledby="${this._calendarLabelId}" aria-modal="true" @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}" role="dialog">
+						<d2l-calendar
+							@d2l-calendar-selected="${this._handleDateSelected}"
+							calendar-label-id="${this._calendarLabelId}"
+							selected-value="${ifDefined(this.value)}">
+							<div class="d2l-calendar-slot-buttons">
+								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+								<d2l-button-subtle text="${this.localize('clear')}" @click="${this._handleClear}"></d2l-button-subtle>
+							</div>
+						</d2l-calendar>
+					</d2l-focus-trap>
 				</d2l-dropdown-content>
 			</d2l-dropdown>
 		`;
@@ -249,10 +251,18 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		});
 	}
 
+	async _handleFocusTrapEnter() {
+		const date = await this.shadowRoot.querySelector('d2l-calendar').getFocusDateElement();
+		if (date) {
+			date.focus();
+		}
+	}
+
 	_handleKeydown(e) {
-		// open dropdown on keydown
-		if (e.keyCode === 40) {
+		// open dropdown on down arrow or enter and focus on calendar focus date
+		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
+			this.shadowRoot.querySelector('d2l-calendar').focus(true);
 		}
 	}
 

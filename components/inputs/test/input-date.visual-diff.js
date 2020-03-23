@@ -57,11 +57,11 @@ describe('d2l-input-date', () => {
 		});
 
 		it('tab on open', async function() {
-			await open(page, '#placeholder-default');
+			await open(page, '#basic');
 			await page.keyboard.press('Tab');
-			const rect = await getRect(page, '#placeholder-default');
+			const rect = await getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await reset(page, '#placeholder-default');
+			await reset(page, '#basic');
 		});
 
 		it('click date', async function() {
