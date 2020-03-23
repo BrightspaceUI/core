@@ -88,87 +88,73 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	static get resources() {
 		return {
 			'ar': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'مسح',
-				chooseDate: 'Choose Date',
-				setToToday: 'Set to Today'
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today',
 			},
 			'da': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Ryd',
-				chooseDate: 'Choose Date',
-				setToToday: 'Set to Today'
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today',
 			},
 			'de': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Löschen',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'en': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Clear',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'es': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Borrar',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'fr': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Effacer',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'ja': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'クリア',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'ko': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: '지우기',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'nl': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Wissen',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'pt': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Desmarcar',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'sv': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Rensa',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'tr': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: 'Temizle',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'zh': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: '清除',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			},
 			'zh-tw': {
-				ariaLabel: 'Arrow down or press enter to access mini-calendar',
 				clear: '清除',
-				chooseDate: 'Choose Date',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
 				setToToday: 'Set to Today'
 			}
 		};
@@ -202,7 +188,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					placeholder="${placeholder}"
-					title="${this.localize('ariaLabel')}"
+					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
 					<d2l-icon
 						?disabled="${this.disabled}"
@@ -250,10 +236,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	async _handleFocusTrapEnter() {
-		const date = await this.shadowRoot.querySelector('d2l-calendar').getFocusDateElement();
-		if (date) {
-			date.focus();
-		}
+		this.shadowRoot.querySelector('d2l-calendar').focus(true);
 	}
 
 	_handleKeydown(e) {

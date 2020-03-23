@@ -308,7 +308,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === '_shownMonth' && this._keyboardTriggeredFocusChange) {
+			if (prop === '_shownMonth' && this._keyboardTriggeredMonthChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
 				this._updateFocusDate();
@@ -411,19 +411,15 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		}
 	}
 
-	async getFocusDateElement() {
-		return await this._getDateElement(this._focusDate);
-	}
-
 	_computeText(month) {
 		return this.localize('show', {month: calendarData.descriptor.calendar.months.long[month]});
 	}
 
 	async _focusDateAddFocus() {
-		const date = await this.getFocusDateElement();
+		const date = await this._getDateElement(this._focusDate);
 		if (date) {
 			date.focus();
-			this._keyboardTriggeredFocusChange = false;
+			this._keyboardTriggeredMonthChange = false;
 		}
 	}
 
@@ -522,7 +518,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear);
 
 				this._focusDate.setDate(this._focusDate.getDate() - diff);
-				this._keyboardTriggeredFocusChange = true;
+				this._keyboardTriggeredMonthChange = true;
 
 				// handle when current month has more weeks than previous month and page up pressed from last week
 				if (this._focusDate.getMonth() === this._shownMonth) this._focusDate.setDate(this._focusDate.getDate() - 7);
@@ -535,7 +531,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear);
 
 				this._focusDate.setDate(this._focusDate.getDate() + diff);
-				this._keyboardTriggeredFocusChange = true;
+				this._keyboardTriggeredMonthChange = true;
 
 				// handle when current month has more weeks than next month and page down pressed from last week
 				const newFocusDateMonth = this._focusDate.getMonth();
@@ -587,9 +583,9 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			this._focusDate.getMonth(),
 			this._focusDate.getDate() + numDays
 		);
-		this._keyboardTriggeredFocusChange = true;
-		const date = await this.getFocusDateElement();
+		const date = await this._getDateElement(this._focusDate);
 		if (!date) {
+			this._keyboardTriggeredMonthChange = true;
 			if (oldFocusDate < this._focusDate) {
 				this._updateShownMonthIncrease();
 			} else {
