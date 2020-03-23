@@ -17,6 +17,7 @@ const pointerRotatedOverhang = ((pointerRotatedLength - pointerLength) / 2) + po
 const pointerGap = 6; /* spacing between pointer and target */
 const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
+const contentBorderSize = 1;
 
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 
@@ -62,7 +63,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		return [bodySmallStyles, css`
 			:host {
 				--d2l-tooltip-background-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
+				--d2l-tooltip-border-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
 				box-sizing: border-box;
+				color: white;
 				display: none;
 				position: absolute;
 				text-align: left;
@@ -72,6 +75,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([state="error"]) {
 				--d2l-tooltip-background-color: var(--d2l-color-cinnabar);
+				--d2l-tooltip-border-color: var(--d2l-color-cinnabar);
 			}
 
 			:host([dir="rtl"]) {
@@ -100,11 +104,11 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([_open-dir="top"]) .d2l-tooltip-pointer {
 				bottom: -${pointerOverhang}px;
-				clip: rect(9px, 21px, 22px, -3px);
+				clip: rect(${pointerOverhang + contentBorderSize}px, 21px, 22px, -3px);
 			}
 
 			:host([_open-dir="bottom"]) .d2l-tooltip-pointer {
-				clip: rect(-5px, 21px, 8px, -7px);
+				clip: rect(-5px, 21px, ${pointerOverhang + contentBorderSize}px, -7px);
 				top: -${pointerOverhang}px;
 			}
 
@@ -114,12 +118,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			:host([_open-dir="left"]) .d2l-tooltip-pointer {
-				clip: rect(-3px, 21px, 21px, 9px);
+				clip: rect(-3px, 21px, 21px, ${pointerOverhang + contentBorderSize}px);
 				right: -${pointerOverhang}px;
 			}
 
 			:host([_open-dir="right"]) .d2l-tooltip-pointer {
-				clip: rect(-3px, 9px, 21px, -3px);
+				clip: rect(-3px, ${pointerOverhang + contentBorderSize}px, 21px, -3px);
 				left: -${pointerOverhang}px;
 			}
 
@@ -127,6 +131,8 @@ class Tooltip extends RtlMixin(LitElement) {
 				-webkit-transform: rotate(45deg);
 				background-color: var(--d2l-tooltip-background-color);
 				border-radius: 0.1rem;
+				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
+				box-sizing: border-box;
 				height: ${pointerLength}px;
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
@@ -146,12 +152,13 @@ class Tooltip extends RtlMixin(LitElement) {
 			.d2l-tooltip-content {
 				background-color: var(--d2l-tooltip-background-color);
 				border-radius: ${contentBorderRadius}px;
+				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
 				box-sizing: border-box;
-				color: white;
+				color: inherit;
 				min-height: 2.1rem;
 				min-width: 2.1rem;
 				overflow: hidden;
-				padding: 11px 15px;
+				padding: 10px 15px;
 				position: absolute;
 			}
 
@@ -271,10 +278,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			height: this._targetRect ? `${this._targetRect.height}px` : null,
 		};
 
-		const contentStyle = {
+		const tooltipPositionStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : null
 		};
-		const tooltipPositionStyle = { ...contentStyle };
 		if (this._tooltipShift !== undefined) {
 			if (this._isAboveOrBelow()) {
 				const isRtl = this.getAttribute('dir') === 'rtl';
@@ -289,7 +295,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
 				<div class="d2l-tooltip-container">
 					<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-						<div class=" d2l-body-small d2l-tooltip-content" style=${styleMap(contentStyle)}>
+						<div class=" d2l-body-small d2l-tooltip-content">
 							<slot></slot>
 						</div>
 					</div>
@@ -394,7 +400,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this._maxWidth = space.width;
 			await this.updateComplete;
 
-			if (content.scrollWidth <= this._maxWidth && content.scrollHeight <= space.height) {
+			if (content.scrollWidth + 2 * contentBorderSize <= space.width && content.scrollHeight + 2 * contentBorderSize <= space.height) {
 				return space;
 			}
 		}
@@ -466,7 +472,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const contentRect = content.getBoundingClientRect();
 		// + 1 because scrollWidth does not give sub-pixel measurements and half a pixel may cause text to unexpectedly wrap
-		this._maxWidth = content.scrollWidth + 1;
+		this._maxWidth = content.scrollWidth + 2 * contentBorderSize + 1;
 		this._openDir = space.dir;
 		await this.updateComplete;
 
