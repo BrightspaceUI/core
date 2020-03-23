@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
-import './tab.js';
+import './tab-internal.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
