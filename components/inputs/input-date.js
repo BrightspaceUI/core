@@ -7,7 +7,6 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getToday } from '../calendar/calendar.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -180,7 +179,6 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 		this._dropdownOpened = false;
 		this._formattedValue = '';
-		this._calendarLabelId = getUniqueId();
 
 		getCalendarDescriptor();
 	}
@@ -218,10 +216,10 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					min-width="300"
 					no-auto-fit
 					no-auto-focus>
-					<d2l-focus-trap aria-labelledby="${this._calendarLabelId}" aria-modal="true" @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}" role="dialog">
+					<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
 						<d2l-calendar
 							@d2l-calendar-selected="${this._handleDateSelected}"
-							calendar-label-id="${this._calendarLabelId}"
+							dialog
 							selected-value="${ifDefined(this.value)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>

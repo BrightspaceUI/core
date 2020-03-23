@@ -163,7 +163,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
-			calendarLabelId: { type: String, attribute: 'calendar-label-id' },
+			dialog: { type: Boolean },
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
 			_focusDate: { type: Object },
@@ -280,9 +280,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
-		getCalendarData();
-
 		this._tableInfoId = getUniqueId();
+		getCalendarData();
 	}
 
 	firstUpdated(changedProperties) {
@@ -366,10 +365,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			return html`<tr>${weekHtml}</tr>`;
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
-		const labelId = this.calendarLabelId || `${this._tableInfoId}-heading`;
+		const labelId = `${this._tableInfoId}-heading`;
+		const labelledBy = this.dialog ? labelId : undefined;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
+		const role = this.dialog ? 'dialog' : undefined;
 		return html`
-			<div class="d2l-calendar">
+			<div aria-labelledby="${ifDefined(labelledBy)}" aria-modal="${ifDefined(this.dialog)}" class="d2l-calendar" role="${ifDefined(role)}">
 				<div class="d2l-calendar-title">
 					<d2l-button-icon
 						@click="${this._onPrevMonthButtonClick}"
