@@ -129,6 +129,7 @@ describe('d2l-input-time', () => {
 			const elem = await fixture(fixtureWithValue);
 			setTimeout(() => getFirstOption(elem).click());
 			await oneEvent(elem, 'change');
+			await elem.updateComplete;
 			expect(getInput(elem).value).to.equal('12:00 AM');
 		});
 
