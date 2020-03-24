@@ -20,7 +20,7 @@ function getFirstOption(elem) {
 	return [...elem.shadowRoot.querySelector('.d2l-input-time-menu').childNodes].find(item => item.role === 'menuitemradio');
 }
 
-describe.only('d2l-input-time', () => {
+describe('d2l-input-time', () => {
 
 	describe('accessibility', () => {
 
@@ -112,7 +112,7 @@ describe.only('d2l-input-time', () => {
 		it('should not save input seconds after time changes', async() => {
 			//Seconds are saved when value is assigned directly, not when input by user (for EOD)
 			const elem = await fixture(fixtureWithValue);
-			getInput(elem).value = '11:45 AM';
+			getInput(elem).value = '11:45:15 AM';
 			dispatchEvent(elem, 'change', false);
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('11:45:00');
@@ -120,15 +120,15 @@ describe.only('d2l-input-time', () => {
 
 		it('should update value when dropdown changes', async() => {
 			const elem = await fixture(fixtureWithValue);
-			getFirstOption(elem).click();
-			await aTimeout(1);
+			setTimeout(() => getFirstOption(elem).click());
+			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('0:00:00');
 		});
 
 		it('should update textbox value when dropdown changes', async() => {
 			const elem = await fixture(fixtureWithValue);
-			getFirstOption(elem).click();
-			await aTimeout(1);
+			setTimeout(() => getFirstOption(elem).click());
+			await oneEvent(elem, 'change');
 			expect(getInput(elem).value).to.equal('12:00 AM');
 		});
 
