@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
+const helper = require('./input-helper.js');
 
 describe('d2l-input-date', () => {
 
@@ -43,29 +44,29 @@ describe('d2l-input-date', () => {
 		});
 
 		it('open with value', async function() {
-			await open(page, '#basic');
-			const rect = await getRect(page, '#basic');
+			await helper.open(page, '#basic');
+			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await reset(page, '#basic');
+			await helper.reset(page, '#basic');
 		});
 
 		it('open with placeholder', async function() {
-			await open(page, '#placeholder-default');
-			const rect = await getRect(page, '#placeholder-default');
+			await helper.open(page, '#placeholder-default');
+			const rect = await helper.getRect(page, '#placeholder-default');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await reset(page, '#placeholder-default');
+			await helper.reset(page, '#placeholder-default');
 		});
 
 		it('tab on open', async function() {
-			await open(page, '#basic');
+			await helper.open(page, '#basic');
 			await page.keyboard.press('Tab');
-			const rect = await getRect(page, '#basic');
+			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await reset(page, '#basic');
+			await helper.reset(page, '#basic');
 		});
 
 		it('click date', async function() {
-			await open(page, '#basic');
+			await helper.open(page, '#basic');
 			await page.$eval('#basic', (elem) => {
 				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
 				const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
@@ -73,7 +74,7 @@ describe('d2l-input-date', () => {
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await reset(page, '#basic');
+			await helper.reset(page, '#basic');
 		});
 
 		it('set to today', async function() {
@@ -83,7 +84,7 @@ describe('d2l-input-date', () => {
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await reset(page, '#basic');
+			await helper.reset(page, '#basic');
 		});
 
 		it('clear', async function() {
@@ -93,61 +94,8 @@ describe('d2l-input-date', () => {
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await reset(page, '#basic');
+			await helper.reset(page, '#basic');
 		});
-
-		async function open(page, selector) {
-			const openEvent = page.$eval(selector, (elem) => {
-				return new Promise((resolve) => {
-					elem.shadowRoot.querySelector('d2l-dropdown').addEventListener('d2l-dropdown-open', resolve, { once: true });
-				});
-			});
-
-			await page.$eval(selector, (elem) => {
-				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
-				return new Promise((resolve) => {
-					dropdown.querySelector('[dropdown-content]').addEventListener('animationend', () => resolve(), { once: true });
-					dropdown.toggleOpen();
-				});
-			});
-			return openEvent;
-		}
-
-		async function reset(page, selector) {
-			await page.$eval(selector, (elem) => {
-				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
-				return new Promise((resolve) => {
-					const content = dropdown.querySelector('[dropdown-content]');
-					content.scrollTo(0);
-					if (content.opened) {
-						content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
-						content.opened = false;
-					} else {
-						resolve();
-					}
-				});
-			});
-		}
-
-		function getRect(page, selector) {
-			return page.$eval(selector, (elem) => {
-				const content = elem.shadowRoot.querySelector('[dropdown-content]');
-				const opener = content.__getOpener();
-				const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
-				const openerRect = opener.getBoundingClientRect();
-				const contentRect = contentWidth.getBoundingClientRect();
-				const x = Math.min(openerRect.x, contentRect.x);
-				const y = Math.min(openerRect.y, contentRect.y);
-				const width = Math.max(openerRect.right, contentRect.right) - x;
-				const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
-				return {
-					x: x - 10,
-					y: y - 10,
-					width: width + 20,
-					height: height + 20
-				};
-			});
-		}
 	});
 
 });
