@@ -31,7 +31,6 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			disabled: { type: Boolean },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			placeholder: { type: String },
 			value: { type: String },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
@@ -161,8 +160,6 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		const placeholder = this.placeholder || calendarDataDescriptor.formats.dateFormats.short;
-
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}">
 				<d2l-input-text
@@ -172,7 +169,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
-					placeholder="${placeholder}"
+					placeholder="${calendarDataDescriptor.formats.dateFormats.short}"
 					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
 					<d2l-icon

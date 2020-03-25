@@ -23,8 +23,7 @@ describe('d2l-input-date', () => {
 		'disabled',
 		'labelled',
 		'label-hidden',
-		'placeholder-default',
-		'placeholder-specified'
+		'no-value'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -90,8 +89,8 @@ describe('d2l-input-date', () => {
 		});
 
 		it('open with placeholder', async function() {
-			await helper.open(page, '#placeholder-default');
-			const rect = await helper.getRect(page, '#placeholder-default');
+			await helper.open(page, '#no-value');
+			const rect = await helper.getRect(page, '#no-value');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});

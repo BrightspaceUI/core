@@ -124,8 +124,8 @@ class InputText extends RtlMixin(LitElement) {
 
 		const input = html`
 			<div class="d2l-input-text-container">
-				<input aria-invalid="${ifDefined(this.ariaInvalid)}"
-					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
+				<input aria-haspopup="${ifDefined(this.ariaHaspopup)}"
+					aria-invalid="${ifDefined(this.ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-required="${ifDefined(ariaRequired)}"
 					autocomplete="${ifDefined(this.autocomplete)}"

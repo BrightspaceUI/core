@@ -414,8 +414,7 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 </script>
 <d2l-input-date
   label="Start Date"
-  value="2020-11-20"
-  placeholder="Enter a start date">
+  value="2020-11-20">
 </d2l-input-date>
 ```
 
@@ -424,7 +423,6 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 - `label` (String, required): accessible label for the input
 - `disabled` (Boolean): disables the input
 - `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
-- `placeholder` (String): placeholder text
 - `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
 
 **Events:**
