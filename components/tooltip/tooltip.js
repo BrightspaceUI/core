@@ -43,6 +43,13 @@ class Tooltip extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			boundary: { type: Object },
+			customTarget: {
+				type: Object, attribute: 'custom-target', converter: {
+					/* required because some places are setting custom-target="" to prevent _findTarget
+					from falling back to its parent when the 'for' attribute is missing */
+					fromAttribute: value => (value === undefined ? undefined : value === '' ? '' : JSON.parse(value))
+				}
+			},
 			delay: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
@@ -315,7 +322,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((_, prop) => {
-			if (prop === 'for') {
+			if (prop === 'for' || prop === 'customTarget') {
 				this._updateTarget();
 			} else if (prop === 'forceShow') {
 				this._updateShowing();
@@ -387,7 +394,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			const targetSelector = `#${this.for}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
-		} else {
+		} else if (this.customTarget === undefined) {
 			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
@@ -457,12 +464,27 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	async _layoutTooltip() {
 
-		const target = this._target;
-		if (!target) {
+		if (!this._target && !this.customTarget) {
 			return;
 		}
 
-		const targetRect = target.getBoundingClientRect();
+		let targetRect;
+		if (this.customTarget) {
+			const offsetParent = getOffsetParent(this);
+			const { left, top } = offsetParent.getBoundingClientRect();
+			const targetLeft = left + this.customTarget.left;
+			const targetTop = top + this.customTarget.top;
+			targetRect = {
+				left: targetLeft,
+				top: targetTop,
+				width: this.customTarget.width,
+				height: this.customTarget.height,
+				right: targetLeft + this.customTarget.width,
+				bottom: targetTop + this.customTarget.height
+			};
+		} else {
+			targetRect = this._target.getBoundingClientRect();
+		}
 		const spaceAround = this._computeSpaceAround(targetRect);
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in

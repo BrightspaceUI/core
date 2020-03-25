@@ -254,4 +254,17 @@ describe('d2l-tooltip', () => {
 			expect(tooltip.showing).to.be.false;
 		});
 	});
+
+	describe('custom-target', () => {
+
+		beforeEach(async() => {
+			tooltip.removeAttribute('for');
+			tooltip.setAttribute('custom-target', '');
+			await tooltip.updateComplete;
+		});
+
+		it('should not use parent as target for empty custom-target', async() => {
+			expect(tooltip._target).to.be.undefined;
+		});
+	});
 });
