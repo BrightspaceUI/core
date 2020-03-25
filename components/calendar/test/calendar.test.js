@@ -1,14 +1,11 @@
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { checkIfDatesEqual,
-	formatDateInISO,
 	getDatesInMonthArray,
 	getNextMonth,
 	getNumberOfDaysFromPrevMonthToShow,
 	getNumberOfDaysInMonth,
 	getNumberOfDaysToSameWeekPrevMonth,
-	getPrevMonth,
-	getToday,
-	parseISODate
+	getPrevMonth
 } from '../calendar.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
@@ -286,16 +283,6 @@ describe('d2l-calendar', () => {
 			});
 		});
 
-		describe('formatDateInISO', () => {
-			it('should return the correct date', () => {
-				expect(formatDateInISO('2020', '2', '1')).to.equal('2020-03-01');
-			});
-
-			it('should return the correct date', () => {
-				expect(formatDateInISO('2020', '9', '10')).to.equal('2020-10-10');
-			});
-		});
-
 		describe('getDatesInMonthArray', () => {
 			it('returns expected array for Feb 2020 (days from prev month, no days from next month', () => {
 				const dates = [[
@@ -506,41 +493,6 @@ describe('d2l-calendar', () => {
 				expect(getPrevMonth(11)).to.equal(10);
 			});
 		});
-
-		describe('getToday', () => {
-			let clock;
-			beforeEach(() => {
-				const newToday = new Date('2018-02-12T20:00:00Z');
-				clock = sinon.useFakeTimers(newToday.getTime());
-			});
-
-			afterEach(() => {
-				clock.restore();
-				documentLocaleSettings.timezone.identifier = 'America/Toronto';
-			});
-
-			it('should return expected day in America/Toronto timezone', () => {
-				expect(getToday()).to.deep.equal(new Date(2018, 1, 12));
-			});
-
-			it('should return expected day in Australia/Eucla timezone', () => {
-				documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
-				expect(getToday()).to.deep.equal(new Date(2018, 1, 13));
-			});
-		});
-
-		describe('parseDate', () => {
-			it('should return correct date if date and time provided', () => {
-				expect(parseISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
-			});
-
-			it('should throw when invalid date format', () => {
-				expect(() => {
-					parseISODate('2019/01/30');
-				}).to.throw('Invalid selected-value date input: Expected format is YYYY-MM-DD');
-			});
-		});
-
 	});
 
 	function dispatchKeyEvent(el, key) {

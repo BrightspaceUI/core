@@ -1,9 +1,11 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
-import { convertUTCToLocalDateTime, formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateInISO, getToday, parseISODate } from '../../helpers/dateTime.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
@@ -40,13 +42,6 @@ function getCalendarData() {
 export function checkIfDatesEqual(date1, date2) {
 	if (!date1 || !date2) return false;
 	return date1.getTime() === date2.getTime();
-}
-
-export function formatDateInISO(year, month, date) {
-	month = parseInt(month) + 1;
-	if (month < 10) month = `0${month}`;
-	if (date < 10) date = `0${date}`;
-	return `${year}-${month}-${date}`;
 }
 
 export function getDatesInMonthArray(shownMonth, shownYear) {
@@ -131,41 +126,13 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
-export function getToday() {
-	const val = new Date().toISOString();
-	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/;
-	const match = val.match(re);
-	const dateTime = {
-		year: parseInt(match[1]),
-		month: parseInt(match[2]),
-		date: parseInt(match[3]),
-		hours: parseInt(match[4]),
-		minutes: parseInt(match[5]),
-		seconds: parseInt(match[6])
-	};
-
-	const valInLocalDateTime = convertUTCToLocalDateTime(dateTime);
-	return new Date(valInLocalDateTime.year, valInLocalDateTime.month - 1, valInLocalDateTime.date);
-}
-
-export function parseISODate(val) {
-	if (!val) return null;
-	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
-	const match = val.match(re);
-	if (!match || match.length !== 4) {
-		throw new Error('Invalid selected-value date input: Expected format is YYYY-MM-DD');
-	}
-
-	return new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
-}
-
 class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
-			dialog: { type: Boolean },
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
+			_dialog: { type: Boolean },
 			_focusDate: { type: Object },
 			_shownMonth: { type: Number }
 		};
@@ -297,6 +264,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 
+		const dropdownContent = findComposedAncestor(
+			this.parentNode,
+			(node) => { return (node.tagName === 'D2L-DROPDOWN-CONTENT'); }
+		);
+		if (dropdownContent) this._dialog = true;
+
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			calendarData = null;
 			getCalendarData();
@@ -366,11 +339,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const labelId = `${this._tableInfoId}-heading`;
-		const labelledBy = this.dialog ? labelId : undefined;
+		const labelledBy = this._dialog ? labelId : undefined;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
-		const role = this.dialog ? 'dialog' : undefined;
+		const role = this._dialog ? 'dialog' : undefined;
 		return html`
-			<div aria-labelledby="${ifDefined(labelledBy)}" aria-modal="${ifDefined(this.dialog)}" class="d2l-calendar" role="${ifDefined(role)}">
+			<div aria-labelledby="${ifDefined(labelledBy)}" aria-modal="${ifDefined(this._dialog ? 'true' : undefined)}" class="d2l-calendar" role="${ifDefined(role)}">
 				<div class="d2l-calendar-title">
 					<d2l-button-icon
 						@click="${this._onPrevMonthButtonClick}"
@@ -402,8 +375,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		`;
 	}
 
-	focus(focusOnDate) {
-		if (focusOnDate) {
+	focus() {
+		if (this._dialog) {
 			this._focusDateAddFocus();
 		} else {
 			const button = this.shadowRoot.querySelector('d2l-button-icon');
@@ -435,7 +408,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
 
-		this.selectedValue = formatDateInISO(year, month, date);
+		this.selectedValue = formatDateInISO(new Date(year, month, date));
 
 		const eventDetails = {
 			bubbles: true,

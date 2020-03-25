@@ -1,4 +1,5 @@
 import '../button/button-subtle.js';
+import '../calendar/calendar.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
@@ -6,7 +7,7 @@ import '../icons/icon.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { getToday } from '../calendar/calendar.js';
+import { formatDateInISO, getToday, parseISODate } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -19,23 +20,8 @@ function getCalendarDescriptor() {
 	return calendarDataDescriptor;
 }
 
-export function formatDateInISO(val) {
-	let month = parseInt(val.getMonth()) + 1;
-	let date = val.getDate();
-	if (month < 10) month = `0${month}`;
-	if (date < 10) date = `0${date}`;
-	return `${val.getFullYear()}-${month}-${date}`;
-}
-
 export function formatISODateInUserCalDescriptor(val) {
-	if (!val) return null;
-	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
-	const match = val.match(re);
-	if (!match || match.length !== 4) {
-		throw new Error('Invalid value: Expected format is YYYY-MM-DD');
-	}
-
-	return formatDate(new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3])));
+	return formatDate(parseISODate(val));
 }
 
 class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
@@ -72,8 +58,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				opacity: 0.5;
 			}
 			d2l-focus-trap {
-				margin-bottom: -0.7rem;
-				margin-top: -0.7rem;
+				padding: 0.6rem;
 			}
 			.d2l-calendar-slot-buttons {
 				border-top: 1px solid var(--d2l-color-gypsum);
@@ -201,11 +186,11 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					min-width="300"
 					no-auto-fit
-					no-auto-focus>
+					no-auto-focus
+					no-padding>
 					<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
 						<d2l-calendar
 							@d2l-calendar-selected="${this._handleDateSelected}"
-							dialog
 							selected-value="${ifDefined(this.value)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
@@ -228,22 +213,21 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
-				if (this.value) this._formattedValue = formatISODateInUserCalDescriptor(this.value);
-				else this._formattedValue = '';
+				this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
 
 			}
 		});
 	}
 
 	async _handleFocusTrapEnter() {
-		this.shadowRoot.querySelector('d2l-calendar').focus(true);
+		this.shadowRoot.querySelector('d2l-calendar').focus();
 	}
 
 	_handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
-			this.shadowRoot.querySelector('d2l-calendar').focus(true);
+			this.shadowRoot.querySelector('d2l-calendar').focus();
 		}
 	}
 

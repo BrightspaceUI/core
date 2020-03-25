@@ -1,5 +1,5 @@
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
-import { formatDateInISO, formatISODateInUserCalDescriptor } from '../input-date.js';
+import { formatISODateInUserCalDescriptor } from '../input-date.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
@@ -70,27 +70,9 @@ describe('d2l-input-date', () => {
 	});
 
 	describe('utility functions', () => {
-		describe('formatDateInISO', () => {
-			it('should return the correct date', () => {
-				const testDate = new Date(2020, 2, 1);
-				expect(formatDateInISO(testDate)).to.equal('2020-03-01');
-			});
-
-			it('should return the correct date', () => {
-				const testDate = new Date(2020, 9, 10);
-				expect(formatDateInISO(testDate)).to.equal('2020-10-10');
-			});
-		});
-
 		describe('formatISODateInUserCalDescriptor', () => {
 			it('should return correct date when input is valid', () => {
 				expect(formatISODateInUserCalDescriptor('2019-01-30')).to.equal('1/30/2019');
-			});
-
-			it('should throw when invalid date format', () => {
-				expect(() => {
-					formatISODateInUserCalDescriptor('2019/01/30');
-				}).to.throw('Invalid value: Expected format is YYYY-MM-DD');
 			});
 		});
 	});

@@ -17,7 +17,6 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 
 **Properties:**
 
-- `dialog` (Boolean): Indicates that the calendar is displayed within a dialog.
 - `selected-value` (String): Currently selected date. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
 - `summary` (String): Summary of the calendar for accessibility.
 

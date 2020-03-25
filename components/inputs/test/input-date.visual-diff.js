@@ -43,18 +43,14 @@ describe('d2l-input-date', () => {
 			await page.reload();
 		});
 
+		afterEach(async() => {
+			await helper.reset(page, '#basic');
+		});
+
 		it('open with value', async function() {
 			await helper.open(page, '#basic');
 			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#basic');
-		});
-
-		it('open with placeholder', async function() {
-			await helper.open(page, '#placeholder-default');
-			const rect = await helper.getRect(page, '#placeholder-default');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#placeholder-default');
 		});
 
 		it('tab on open', async function() {
@@ -62,7 +58,6 @@ describe('d2l-input-date', () => {
 			await page.keyboard.press('Tab');
 			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#basic');
 		});
 
 		it('click date', async function() {
@@ -74,7 +69,6 @@ describe('d2l-input-date', () => {
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#basic');
 		});
 
 		it('set to today', async function() {
@@ -84,7 +78,6 @@ describe('d2l-input-date', () => {
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#basic');
 		});
 
 		it('clear', async function() {
@@ -94,7 +87,12 @@ describe('d2l-input-date', () => {
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#basic');
+		});
+
+		it('open with placeholder', async function() {
+			await helper.open(page, '#placeholder-default');
+			const rect = await helper.getRect(page, '#placeholder-default');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
