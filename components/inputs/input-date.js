@@ -6,25 +6,16 @@ import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDate, getDateTimeDescriptor, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getToday, parseISODate } from '../../helpers/dateTime.js';
+import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateInISO, getDateTimeDescriptorShared, getToday, parseISODate } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
-
-let calendarDataDescriptor;
-function getCalendarDescriptor() {
-	if (!calendarDataDescriptor) {
-		calendarDataDescriptor = getDateTimeDescriptor();
-	}
-	return calendarDataDescriptor;
-}
 
 export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(parseISODate(val));
 }
 
-class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -150,13 +141,18 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 
-		getCalendarDescriptor();
+		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+
+		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
+			this.requestUpdate();
+		});
 	}
 
 	render() {
@@ -169,7 +165,7 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
-					placeholder="${calendarDataDescriptor.formats.dateFormats.short}"
+					placeholder="${this._dateTimeDescriptor.formats.dateFormats.short}"
 					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
 					<d2l-icon

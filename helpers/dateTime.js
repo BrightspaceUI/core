@@ -1,4 +1,10 @@
-import { convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+
+let dateTimeDescriptor = null;
+export function getDateTimeDescriptorShared(refresh) {
+	if (!dateTimeDescriptor || refresh) dateTimeDescriptor = getDateTimeDescriptor();
+	return dateTimeDescriptor;
+}
 
 export function formatDateInISO(val) {
 	let month = parseInt(val.getMonth()) + 1;

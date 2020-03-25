@@ -2,10 +2,10 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getToday, parseISODate } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateTimeDescriptorShared, getToday, parseISODate } from '../../helpers/dateTime.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
+import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
@@ -26,10 +26,10 @@ const keyCodes = {
 };
 
 let calendarData;
-function getCalendarData() {
+function getCalendarData(refresh) {
 	if (!calendarData) {
 		calendarData = {};
-		calendarData.descriptor = getDateTimeDescriptor();
+		calendarData.descriptor = getDateTimeDescriptorShared(refresh);
 		calendarData.firstDayOfWeek = calendarData.descriptor.calendar.firstDayOfWeek;
 		calendarData.daysOfWeekIndex = [];
 		for (let i = calendarData.firstDayOfWeek; i < calendarData.firstDayOfWeek + daysInWeek; i++) {
@@ -272,7 +272,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			calendarData = null;
-			getCalendarData();
+			getCalendarData(true);
 			this.requestUpdate();
 		});
 	}
