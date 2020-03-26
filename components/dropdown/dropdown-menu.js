@@ -93,7 +93,8 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 	__getMenuElement() {
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot')
 			.assignedNodes()
-			.filter(node => node.hasAttribute && node.getAttribute('role') === 'menu')[0];
+			.filter(node => node.hasAttribute
+				&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 	}
 
 }
