@@ -343,7 +343,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
-			<div aria-labelledby="${ifDefined(labelledBy)}" aria-modal="${ifDefined(this._dialog ? 'true' : undefined)}" class="d2l-calendar" role="${ifDefined(role)}">
+			<div aria-labelledby="${ifDefined(labelledBy)}" class="d2l-calendar" role="${ifDefined(role)}">
 				<div class="d2l-calendar-title">
 					<d2l-button-icon
 						@click="${this._onPrevMonthButtonClick}"
