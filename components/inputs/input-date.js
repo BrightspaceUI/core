@@ -207,7 +207,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
-
 			}
 		});
 	}
@@ -233,8 +232,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			this._updateValueDispatchEvent(formatDateInISO(date));
 		} catch (e) {
 			// leave value the same when invalid input
-			this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
 		}
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 	}
 
 	_handleClear() {
