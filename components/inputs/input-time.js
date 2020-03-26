@@ -174,9 +174,9 @@ class InputTime extends LitElement {
 	getTime() {
 		const time = parseValue(this.value);
 		return {
-			hour: time.getHours(),
-			minute: time.getMinutes(),
-			second: time.getSeconds()
+			hours: time.getHours(),
+			minutes: time.getMinutes(),
+			seconds: time.getSeconds()
 		};
 	}
 
