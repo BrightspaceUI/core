@@ -458,6 +458,15 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this.shadowRoot.querySelector('.d2l-tooltip-target-position');
 	}
 
+	async _getUpdateComplete() {
+		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+		await super._getUpdateComplete();
+		/* wait for the fonts to load because browsers have a font block period
+		where they will render an invisible fallback font face that may result in
+		improper width calculations before the real font is loaded */
+		await fontsPromise;
+	}
+
 	_isAboveOrBelow() {
 		return this._openDir === 'bottom' || this._openDir === 'top';
 	}
