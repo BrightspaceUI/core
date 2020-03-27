@@ -162,6 +162,12 @@ class InputTime extends LitElement {
 		return input;
 	}
 
+	firstUpdated() {
+		if (this.label === null) {
+			console.warn('d2l-input-time component requires label text');
+		}
+	}
+
 	focus() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		if (elem) elem.focus();

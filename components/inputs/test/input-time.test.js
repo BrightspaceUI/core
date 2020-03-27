@@ -54,7 +54,7 @@ describe('d2l-input-time', () => {
 			expect(elem.shadowRoot.querySelector('.d2l-input-label').innerText).to.equal('label text');
 		});
 
-		it('should created offscreen label when label-hidden', async() => {
+		it('should create offscreen label when label-hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
 			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('label text');
 		});
