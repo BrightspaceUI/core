@@ -3,10 +3,18 @@ import './input-fieldset.js';
 import './input-time.js';
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, formatDateTimeObjectInISO, formatTimeInISO, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
+import { formatDateInISO, formatTimeInISO, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputDateTime extends LitElement {
+export function formatDateTimeInISO(val) {
+	if (!val) {
+		throw new Error('Invalid input: Expected input to be an object');
+	}
+	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000Z`;
+}
+
+class InputDateTime extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -32,6 +40,10 @@ class InputDateTime extends LitElement {
 				max-width: 10rem;
 				padding-right: 0.3rem;
 			}
+			:host([dir="rtl"]) d2l-input-date {
+				padding-right: 0;
+				padding-left: 0.3rem;
+			}
 			d2l-input-time {
 				max-width: 7rem;
 			}
@@ -51,8 +63,8 @@ class InputDateTime extends LitElement {
 
 		if (this.value) {
 			const localDateTime = convertUTCToLocalDateTime(parseISODateTime(this.value));
-			this._parsedDate = formatDateInISO(localDateTime.year, localDateTime.month, localDateTime.date);
-			this._parsedTime = formatTimeInISO(localDateTime.hours, localDateTime.minutes, localDateTime.seconds);
+			this._parsedDate = formatDateInISO({year: localDateTime.year, month: localDateTime.month, date: localDateTime.date});
+			this._parsedTime = formatTimeInISO({hours: localDateTime.hours, minutes: localDateTime.minutes, seconds: localDateTime.seconds});
 		}
 	}
 
@@ -102,7 +114,7 @@ class InputDateTime extends LitElement {
 			const time = this._parsedTime ? parseISOTime(this._parsedTime) : this.shadowRoot.querySelector('d2l-input-time').getTime();
 			const date = parseISODate(this._parsedDate);
 			const converted = convertLocalToUTCDateTime(Object.assign(date, time));
-			this.value = formatDateTimeObjectInISO(converted);
+			this.value = formatDateTimeInISO(converted);
 		}
 
 		this.dispatchEvent(new CustomEvent(

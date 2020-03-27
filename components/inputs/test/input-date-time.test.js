@@ -46,14 +46,6 @@ describe('d2l-input-date-time', () => {
 		});
 	});
 
-	describe('utility functions', () => {
-		// describe('formatISODateInUserCalDescriptor', () => {
-		// 	it('should return correct date when input is valid', () => {
-		// 		expect(formatISODateInUserCalDescriptor('2019-01-30')).to.equal('1/30/2019');
-		// 	});
-		// });
-	});
-
 	describe('value', () => {
 		let _setTimeout, clock;
 
@@ -97,6 +89,19 @@ describe('d2l-input-date-time', () => {
 		it('should default to undefined', async() => {
 			const elem = await fixture(basicFixture);
 			expect(elem.value).to.equal(undefined);
+		});
+
+		describe('timezone', () => {
+			it('should return expected day in Australia/Eucla timezone', async() => {
+				documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
+				const elem = await fixture('<d2l-input-date-time label="label text" value="2018-03-03T08:00:00.000Z"></d2l-input-date-time>');
+				const inputElem = getChildElem(elem, 'd2l-input-time');
+				inputElem.value = '03:00:00';
+				_setTimeout(() => dispatchEvent(inputElem, 'change'));
+				await oneEvent(elem, 'd2l-input-date-time-change');
+				expect(elem.value).to.equal('2018-03-02T18:15:00.000Z');
+				documentLocaleSettings.timezone.identifier = 'America/Toronto';
+			});
 		});
 
 	});

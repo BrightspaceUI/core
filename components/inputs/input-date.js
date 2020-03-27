@@ -230,7 +230,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			this._updateValueDispatchEvent(formatDateInISO(date.getFullYear(), parseInt(date.getMonth()) + 1, date.getDate()));
+			this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
 		} catch (e) {
 			// leave value the same when invalid input
 			this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
@@ -257,8 +257,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleSetToToday() {
-		const date = getToday();
-		this._updateValueDispatchEvent(formatDateInISO(date.getFullYear(), parseInt(date.getMonth()) + 1, date.getDate()));
+		this._updateValueDispatchEvent(formatDateInISO(getToday()));
 		this._dropdown.close();
 	}
 

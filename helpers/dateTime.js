@@ -1,16 +1,35 @@
 import { convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 
-export function formatDateInISO(year, month, date) {
-	if (month.toString().length < 2) month = `0${month}`;
-	if (date.toString().length < 2) date = `0${date}`;
-	return `${year}-${month}-${date}`;
+// val is an object containing year, month, date
+export function formatDateInISO(val) {
+	if (!val
+		|| !Object.prototype.hasOwnProperty.call(val, 'year')
+		|| !Object.prototype.hasOwnProperty.call(val, 'month')
+		|| !Object.prototype.hasOwnProperty.call(val, 'date')
+	) {
+		throw new Error('Invalid input: Expected input to be object containing year, month, and date');
+	}
+
+	let month = val.month,
+		date = val.date;
+	if (val.month.toString().length < 2) month = `0${month}`;
+	if (val.date.toString().length < 2) date = `0${date}`;
+	return `${val.year}-${month}-${date}`;
 }
 
-export function formatDateTimeObjectInISO(obj) {
-	return `${formatDateInISO(obj.year, obj.month, obj.date)}T${formatTimeInISO(obj.hours, obj.minutes, obj.seconds)}.000Z`;
-}
+// val is an object containing hours, minutes, seconds
+export function formatTimeInISO(val) {
+	if (!val
+		|| !Object.prototype.hasOwnProperty.call(val, 'hours')
+		|| !Object.prototype.hasOwnProperty.call(val, 'minutes')
+		|| !Object.prototype.hasOwnProperty.call(val, 'seconds')
+	) {
+		throw new Error('Invalid input: Expected input to be object containing hours, minutes, and seconds');
+	}
 
-export function formatTimeInISO(hours, minutes, seconds) {
+	let hours = val.hours,
+		minutes = val.minutes,
+		seconds = val.seconds;
 	if (hours.toString().length < 2) hours = `0${hours}`;
 	if (minutes.toString().length < 2) minutes = `0${minutes}`;
 	if (seconds.toString().length < 2) seconds = `0${seconds}`;
@@ -24,8 +43,8 @@ export function getDateFromISODate(val) {
 	return getDateFromDateObj(date);
 }
 
-export function getDateFromDateObj(obj) {
-	return new Date(obj.year, obj.month - 1, obj.date);
+export function getDateFromDateObj(val) {
+	return new Date(val.year, parseInt(val.month) - 1, val.date);
 }
 
 let dateTimeDescriptor = null;
@@ -37,9 +56,7 @@ export function getDateTimeDescriptorShared(refresh) {
 export function getToday() {
 	const val = new Date().toISOString();
 	const dateTime = parseISODateTime(val);
-
-	const valInLocalDateTime = convertUTCToLocalDateTime(dateTime);
-	return getDateFromDateObj(valInLocalDateTime);
+	return convertUTCToLocalDateTime(dateTime);
 }
 
 export function parseISODate(val) {
