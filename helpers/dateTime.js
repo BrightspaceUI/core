@@ -1,13 +1,31 @@
 import { convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 
-const dateTimeRe = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/;
+export function formatDateInISO(year, month, date) {
+	if (month.toString().length < 2) month = `0${month}`;
+	if (date.toString().length < 2) date = `0${date}`;
+	return `${year}-${month}-${date}`;
+}
 
-export function formatDateInISO(val) {
-	let month = parseInt(val.getMonth()) + 1;
-	let date = val.getDate();
-	if (month < 10) month = `0${month}`;
-	if (date < 10) date = `0${date}`;
-	return `${val.getFullYear()}-${month}-${date}`;
+export function formatDateTimeObjectInISO(obj) {
+	return `${formatDateInISO(obj.year, obj.month, obj.date)}T${formatTimeInISO(obj.hours, obj.minutes, obj.seconds)}.000Z`;
+}
+
+export function formatTimeInISO(hours, minutes, seconds) {
+	if (hours.toString().length < 2) hours = `0${hours}`;
+	if (minutes.toString().length < 2) minutes = `0${minutes}`;
+	if (seconds.toString().length < 2) seconds = `0${seconds}`;
+	return `${hours}:${minutes}:${seconds}`;
+}
+
+export function getDateFromISODate(val) {
+	if (!val) return null;
+	const date = parseISODate(val);
+
+	return getDateFromDateObj(date);
+}
+
+export function getDateFromDateObj(obj) {
+	return new Date(obj.year, obj.month - 1, obj.date);
 }
 
 let dateTimeDescriptor = null;
@@ -21,10 +39,10 @@ export function getToday() {
 	const dateTime = parseISODateTime(val);
 
 	const valInLocalDateTime = convertUTCToLocalDateTime(dateTime);
-	return new Date(valInLocalDateTime.year, valInLocalDateTime.month - 1, valInLocalDateTime.date);
+	return getDateFromDateObj(valInLocalDateTime);
 }
 
-export function parseDateIntoObject(val) {
+export function parseISODate(val) {
 	if (!val) return null;
 	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
 	const match = val.match(re);
@@ -38,16 +56,10 @@ export function parseDateIntoObject(val) {
 	};
 }
 
-export function parseISODate(val) {
-	if (!val) return null;
-	const date = parseDateIntoObject(val);
-
-	return new Date(date.year, date.month - 1, date.date);
-}
-
 export function parseISODateTime(val) {
 	if (!val) return null;
-	const match = val.match(dateTimeRe);
+	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/;
+	const match = val.match(re);
 	if (!match || match.length !== 7) {
 		throw new Error('Invalid input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ');
 	}
@@ -62,7 +74,7 @@ export function parseISODateTime(val) {
 	};
 }
 
-export function parseTimeIntoObject(val) {
+export function parseISOTime(val) {
 	if (!val) return null;
 	const re = /^([0-9]{1,2}):([0-9]{2}):([0-9]{2})?$/;
 	const match = val.match(re);

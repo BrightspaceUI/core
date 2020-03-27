@@ -3,21 +3,8 @@ import './input-fieldset.js';
 import './input-time.js';
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { parseDateIntoObject, parseISODateTime, parseTimeIntoObject } from '../../helpers/dateTime.js';
+import { formatDateInISO, formatDateTimeObjectInISO, formatTimeInISO, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-
-function formatDateInISO(year, month, date) {
-	if (month < 10) month = `0${month}`;
-	if (date < 10) date = `0${date}`;
-	return `${year}-${month}-${date}`;
-}
-
-function formatTimeInISO(hours, minutes, seconds) {
-	if (hours < 10) hours = `0${hours}`;
-	if (minutes < 10) minutes = `0${minutes}`;
-	if (seconds < 10) seconds = `0${seconds}`;
-	return `${hours}:${minutes}:${seconds}`;
-}
 
 class InputDateTime extends LitElement {
 
@@ -112,12 +99,10 @@ class InputDateTime extends LitElement {
 			this.value = '';
 			this._parsedTime = '';
 		} else {
-			const time = this._parsedTime ? parseTimeIntoObject(this._parsedTime) : this.shadowRoot.querySelector('d2l-input-time').getTime();
-			const date = parseDateIntoObject(this._parsedDate);
+			const time = this._parsedTime ? parseISOTime(this._parsedTime) : this.shadowRoot.querySelector('d2l-input-time').getTime();
+			const date = parseISODate(this._parsedDate);
 			const converted = convertLocalToUTCDateTime(Object.assign(date, time));
-			const utcDate = formatDateInISO(converted.year, converted.month, converted.date);
-			const utcTime = formatTimeInISO(converted.hours, converted.minutes, converted.seconds);
-			this.value = `${utcDate}T${utcTime}.000Z`;
+			this.value = formatDateTimeObjectInISO(converted);
 		}
 
 		this.dispatchEvent(new CustomEvent(

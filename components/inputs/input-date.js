@@ -7,12 +7,12 @@ import '../icons/icon.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getDateTimeDescriptorShared, getToday, parseISODate } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 export function formatISODateInUserCalDescriptor(val) {
-	return formatDate(parseISODate(val));
+	return formatDate(getDateFromISODate(val));
 }
 
 class InputDate extends LocalizeStaticMixin(LitElement) {
@@ -230,7 +230,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			this._updateValueDispatchEvent(formatDateInISO(date));
+			this._updateValueDispatchEvent(formatDateInISO(date.getFullYear(), parseInt(date.getMonth()) + 1, date.getDate()));
 		} catch (e) {
 			// leave value the same when invalid input
 			this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
@@ -258,7 +258,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	_handleSetToToday() {
 		const date = getToday();
-		this._updateValueDispatchEvent(formatDateInISO(date));
+		this._updateValueDispatchEvent(formatDateInISO(date.getFullYear(), parseInt(date.getMonth()) + 1, date.getDate()));
 		this._dropdown.close();
 	}
 
