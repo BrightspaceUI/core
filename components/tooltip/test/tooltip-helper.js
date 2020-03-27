@@ -12,10 +12,6 @@ module.exports = {
 		return getEvent(page, selector, 'd2l-tooltip-show');
 	},
 
-	getHideEvent(page, selector) {
-		return getEvent(page, selector, 'd2l-tooltip-hide');
-	},
-
 	async show(page, selector) {
 		const openEvent = this.getShowEvent(page, selector);
 		const tooltipSelector = `${selector} d2l-tooltip`;
@@ -27,12 +23,5 @@ module.exports = {
 		});
 		return openEvent;
 	},
-
-	async hide(page, selector) {
-		const hideEvent = this.getHideEvent(page, selector);
-		const tooltipSelector = `${selector} d2l-tooltip`;
-		await page.$eval(tooltipSelector, tooltip => tooltip.hide());
-		return hideEvent;
-	}
 
 };

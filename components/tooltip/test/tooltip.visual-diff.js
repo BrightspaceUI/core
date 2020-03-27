@@ -16,6 +16,10 @@ describe('d2l-tooltip', () => {
 		await page.bringToFront();
 	});
 
+	afterEach(async() => {
+		await page.reload();
+	});
+
 	after(() => browser.close());
 
 	[
@@ -43,14 +47,13 @@ describe('d2l-tooltip', () => {
 		'align-start',
 		'align-start-rtl',
 		'align-end',
-		'align-end-rtl',
+		'align-end-rtl'
 	].forEach((testName) => {
 
 		it(testName, async function() {
 			const selector = `#${testName}`;
 			await helper.show(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-			await helper.hide(page, selector);
 		});
 
 	});
