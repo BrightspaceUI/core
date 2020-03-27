@@ -123,7 +123,7 @@ getUniqueId();
 
 ## asyncStateEvent
 
-A simple helper class that returns a `pending-state` event for a given pending promise. Can be used in conjunction with the AsyncContainerMixin to track pending work.
+A simple helper class that returns a `pending-state` event for a given pending promise. Can be used in conjunction with the `AsyncContainerMixin` to track pending work.
 
 ```js
 import { AsyncStateEvent } from '@brightspace-ui/core/helpers/asyncStateEvent.js';

@@ -6,4 +6,4 @@ export class AsyncStateEvent extends CustomEvent {
 			detail: { promise }
 		});
 	}
-};
+}
