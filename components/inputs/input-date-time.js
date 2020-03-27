@@ -4,6 +4,7 @@ import './input-time.js';
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { parseDateIntoObject, parseISODateTime, parseTimeIntoObject } from '../../helpers/dateTime.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 function formatDateInISO(year, month, date) {
 	if (month < 10) month = `0${month}`;
@@ -24,7 +25,7 @@ class InputDateTime extends LitElement {
 		return {
 			disabled: { type: Boolean },
 			label: { type: String },
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			required: { type: Boolean },
 			value: { type: String },
 			_parsedDate: { type: String },
 			_parsedTime: { type: String }
@@ -55,6 +56,7 @@ class InputDateTime extends LitElement {
 
 		this._parsedDate = '';
 		this._parsedTime = '';
+		this.required = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -70,7 +72,7 @@ class InputDateTime extends LitElement {
 	render() {
 		const timeHidden = !this._parsedDate;
 		return html`
-			<d2l-input-fieldset label="${this.label}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?required="${this.required}">
 				<d2l-input-date
 					@d2l-input-date-change="${this._handleDateChange}"
 					?disabled="${this.disabled}"
@@ -91,7 +93,7 @@ class InputDateTime extends LitElement {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-fieldset');
+		const elem = this.shadowRoot.querySelector('d2l-input-date');
 		if (elem) elem.focus();
 	}
 
@@ -108,6 +110,7 @@ class InputDateTime extends LitElement {
 	_updateValueDispatchEvent() {
 		if (!this._parsedDate) {
 			this.value = '';
+			this._parsedTime = '';
 		} else {
 			const time = this._parsedTime ? parseTimeIntoObject(this._parsedTime) : this.shadowRoot.querySelector('d2l-input-time').getTime();
 			const date = parseDateIntoObject(this._parsedDate);
@@ -116,7 +119,6 @@ class InputDateTime extends LitElement {
 			const utcTime = formatTimeInISO(converted.hours, converted.minutes, converted.seconds);
 			this.value = `${utcDate}T${utcTime}.000Z`;
 		}
-		console.log('value ' + this.value)
 
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-time-change',
