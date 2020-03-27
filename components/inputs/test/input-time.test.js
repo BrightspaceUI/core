@@ -49,19 +49,14 @@ describe('d2l-input-time', () => {
 
 	describe('labelling', () => {
 
-		function getLabel(elem) {
-			return elem.shadowRoot.querySelector('.d2l-input-label');
-		}
-
 		it('should display visible label', async() => {
 			const elem = await fixture(basicFixture);
-			expect(getLabel(elem).innerText).to.equal('label text');
+			expect(elem.shadowRoot.querySelector('.d2l-input-label').innerText).to.equal('label text');
 		});
 
-		it('should put hidden label on "aria-label"', async() => {
+		it('should create offscreen label when label-hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
-			expect(getLabel(elem)).to.be.null;
-			expect(getInput(elem).getAttribute('aria-label')).to.equal('label text');
+			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('label text');
 		});
 	});
 
