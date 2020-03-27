@@ -30,14 +30,10 @@ class MyComponent extends AsyncContainerMixin(LitElement) {
 }
 ```
 
-Async children may dispatch the promise-carrying `pending-state` event through a variety of methods, for example by calling `dispatchEvent` directly.
+Async children may dispatch the promise-carrying `pending-state` event through a variety of methods, for example by using the `AsyncStateEvent` helper class to create the event and then calling `dispatchEvent` directly.
 
 ```js
-this.dispatchEvent(new CustomEvent('pending-state', {
-  composed: true,
-  bubbles: true,
-  detail: { promise: pendingPromise }
-}));
+this.dispatchEvent(new AsyncStateEvent(pendingPromise));
 ```
 
 **Properties:**

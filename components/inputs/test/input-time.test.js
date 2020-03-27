@@ -3,6 +3,7 @@ import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
 const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden></d2l-input-time>';
+const fixtureWithValue = '<d2l-input-time value="11:22:33"></d2l-input-time>';
 
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
@@ -15,6 +16,9 @@ function dispatchEvent(elem, eventType, composed) {
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('.d2l-input');
 }
+function getFirstOption(elem) {
+	return [...elem.shadowRoot.querySelector('.d2l-input-time-menu').childNodes].find(item => item.role === 'menuitemradio');
+}
 
 describe('d2l-input-time', () => {
 
@@ -23,41 +27,36 @@ describe('d2l-input-time', () => {
 		it('passes all axe tests', async() => {
 			const elem = await fixture(basicFixture);
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when label is hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when disabled', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" disabled></d2l-input-time>');
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when focused', async() => {
 			const elem = await fixture(basicFixture);
 			setTimeout(() => getInput(elem).focus());
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(5000);
 	});
 
 	describe('labelling', () => {
 
-		function getLabel(elem) {
-			return elem.shadowRoot.querySelector('.d2l-input-label');
-		}
-
 		it('should display visible label', async() => {
 			const elem = await fixture(basicFixture);
-			expect(getLabel(elem).innerText).to.equal('label text');
+			expect(elem.shadowRoot.querySelector('.d2l-input-label').innerText).to.equal('label text');
 		});
 
-		it('should put hidden label on "aria-label"', async() => {
+		it('should create offscreen label when label-hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
-			expect(getLabel(elem)).to.be.null;
-			expect(getInput(elem).getAttribute('aria-label')).to.equal('label text');
+			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('label text');
 		});
 	});
 
@@ -91,7 +90,7 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should provide a time object with hour, minute and second', async() => {
-			const elem = await fixture('<d2l-input-time value="11:22:33"></d2l-input-time>');
+			const elem = await fixture(fixtureWithValue);
 			expect(elem.getTime()).to.deep.equal({ hour: 11, minute: 22, second: 33 });
 		});
 
@@ -100,14 +99,33 @@ describe('d2l-input-time', () => {
 			expect(elem.value).to.equal('0:00:00');
 		});
 
+		it('should correctly set given value', async() => {
+			const elem = await fixture(fixtureWithValue);
+			expect(getInput(elem).value).to.equal('11:22 AM');
+		});
+
 		it('should not save input seconds after time changes', async() => {
 			//Seconds are saved when value is assigned directly, not when input by user (for EOD)
-			const elem = await fixture('<d2l-input-time value="11:22:33"></d2l-input-time>');
-			expect(elem.getTime().second).to.equal(33);
-			getInput(elem).value = '11:45 AM';
+			const elem = await fixture(fixtureWithValue);
+			getInput(elem).value = '11:45:15 AM';
 			dispatchEvent(elem, 'change', false);
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('11:45:00');
+		});
+
+		it('should update value when dropdown changes', async() => {
+			const elem = await fixture(fixtureWithValue);
+			setTimeout(() => getFirstOption(elem).click());
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('0:00:00');
+		});
+
+		it('should update textbox value when dropdown changes', async() => {
+			const elem = await fixture(fixtureWithValue);
+			setTimeout(() => getFirstOption(elem).click());
+			await oneEvent(elem, 'change');
+			await elem.updateComplete;
+			expect(getInput(elem).value).to.equal('12:00 AM');
 		});
 
 	});
