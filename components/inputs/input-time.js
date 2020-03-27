@@ -79,7 +79,7 @@ class InputTime extends LitElement {
 	}
 
 	static get styles() {
-		return [ inputStyles, inputLabelStyles, bodySmallStyles, offscreenStyles, 
+		return [ inputStyles, inputLabelStyles, bodySmallStyles, offscreenStyles,
 			css`
 				:host {
 					display: inline-block;
