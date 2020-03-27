@@ -7,7 +7,6 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen-styles.js';
@@ -133,7 +132,7 @@ class InputTime extends LitElement {
 						aria-expanded="false">
 						<input
 							aria-controls="${this._dropdownId}"
-							aria-labelledby="${ifDefined(this._getAriaLabel())}"
+							aria-labelledby="${this._dropdownId}-label"
 							@change="${this._handleChange}"
 							class="d2l-input"
 							?disabled="${this.disabled}"
