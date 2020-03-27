@@ -88,7 +88,7 @@ async function flushQueue() {
 
 	} else {
 
-		for (const request in requests) {
+		for (const request of requests) {
 
 			request.reject(BatchFailedReason);
 		}
@@ -191,6 +191,12 @@ function filterOverride(language) {
 		config.batch !== null ||
 		config.collection !== null
 
+	// Temporary hack until we can sort out which language we should fetch
+	// overrides for. We'll try for any two-part code (e.g. en-US) and the LMS
+	// will match directly against the language packs (not ideal, because we
+	// really want the _locale_'s language pack not the built-in language
+	// packs).
+
 	const shouldFetchOverride =
 		isOsloAvailable &&
 		language.length >= 5;
@@ -200,28 +206,38 @@ function filterOverride(language) {
 
 function fetchOverride(language, formatFunc, fetchFunc) {
 
-	// If batching is available, pool requests together.
+	let url, res;
 
 	if (config.batch !== null) {
 
-		let url, res;
+		// If batching is available, pool requests together.
 
 		url = formatFunc(language);
 		url = new URL(url).pathname;
 
 		res = fetchWithPooling(url);
-		res = res.then(fetchFunc);
 
-		return res;
+	} else {
+
+		// Otherwise, fetch it directly and let the LMS manage the cache.
+
+		url = formatFunc(language);
+		url = new URL(url).pathname;
+		url = config.collection + url;
+
+		res = Promise.resolve(url);
+
 	}
 
-	// Otherwise, fetch it directly and let the LMS manage the cache.
-
-	url = formatFunc(language);
-	url = new URL(url).pathname;
-	url = config.collection + url;
+	res = res.then(fetchFunc);
+	res = res.catch(coalesceToNull);
 
 	return res;
+}
+
+function coalesceToNull() {
+
+	return null;
 }
 
 export async function getLocalizeResources(
@@ -240,7 +256,8 @@ export async function getLocalizeResources(
 
 		if (filterOverride(language)) {
 
-			promises.push(fetchOverride(language, formatFunc, fetchFunc));
+			const overrides = fetchOverride(language, formatFunc, fetchFunc);
+			promises.push(overrides);
 		}
 
 		if (filterFunc(language)) {
@@ -249,7 +266,8 @@ export async function getLocalizeResources(
 				supportedLanguage = language;
 			}
 
-			promises.push(fetchFunc(formatFunc(language)));
+			const translations = fetchFunc(formatFunc(language));
+			promises.push(translations);
 		}
 	}
 
