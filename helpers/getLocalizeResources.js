@@ -3,7 +3,7 @@ import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 const CacheName = 'd2l-oslo';
 const ContentTypeHeader = 'Content-Type';
 const ContentTypeJson = 'application/json';
-const DebounceTime = 16;
+const DebounceTime = 150;
 const StateFetching = 2;
 const StateIdle = 1;
 
@@ -12,72 +12,36 @@ const SingleFailedReason = new Error('Failed to fetch overrides.');
 
 let blobs = new Map();
 let cache = undefined;
+let cachePromise = undefined;
 let config = undefined;
 let queue = [];
 let state = StateIdle;
 let timer = 0;
 
-function publish(request, cacheValue) {
+async function publish(request, response) {
 
-	if (!cacheValue.ok) {
-		request.reject(SingleFailedReason);
-		return;
-	}
-
-	const blob = new Blob([cacheValue.body], {
-		type: cacheValue.headers.get(ContentTypeHeader)
-	});
-	const objectUrl = URL.createObjectURL(blob);
-
-	request.resolve(objectUrl);
-}
-
-function reschedule() {
-
-	if (queue.length > 0) {
-		setTimeout(flush, 0);
+	if (response.ok) {
+		const blob = await response.blob();
+		const objectUrl = URL.createObjectURL(blob);
+		request.resolve(objectUrl);
 	} else {
-		state = StateIdle;
+		request.reject(SingleFailedReason);
 	}
 }
 
-async function flush() {
+async function flushQueue() {
 
-	const batch = queue;
-	const requests = [];
-
-	state = StateFetching;
-	queue = [];
 	timer = 0;
+	state = StateFetching;
 
-	if (cache === undefined) {
-		cache = await caches.open(CacheName);
-	}
-
-	// Check the shared cache first.
-
-	for (const request of batch) {
-
-		const cacheKey = new Request(config.collection + request.resource);
-		const cacheValue = await cache.match(cacheKey);
-		if (cacheValue === undefined) {
-			console.log(`[Oslo] cache miss: ${request.resource}`);
-			requests.push(request);
-		} else {
-			console.log(`[Oslo] cache hit: ${request.resource}`);
-			publish(request, cacheValue);
-		}
-	}
-
-	// Served from cache :-)
-
-	if (requests.length <= 0) {
-
-		reschedule();
+	if (queue.length <= 0) {
+		state = StateIdle;
 		return;
 	}
 
-	// Anything not already in the shared cache will be bulk-fetched.
+	const requests = queue;
+
+	queue = [];
 
 	const resources = requests.map(item => item.resource);
 	const bodyObject = { resources };
@@ -89,41 +53,55 @@ async function flush() {
 		headers: { [ContentTypeHeader]: ContentTypeJson }
 	});
 
-	const tasks = [];
-
 	if (res.ok) {
 
 		const responses = (await res.json()).resources;
+
+		const tasks = [];
 
 		for (let i = 0; i < responses.length; ++i) {
 
 			const response = responses[i];
 			const request = requests[i];
 
-			const cacheKey = new Request(config.collection + request.resource);
-			const cacheValue = new Response(response.body, {
+			const responseValue = new Response(response.body, {
 				status: response.status,
 				headers: response.headers
 			});
 
+			const cacheKey = new Request(config.collection + request.resource);
+			const cacheValue = responseValue.clone();
+
+			if (cache === undefined) {
+				if (cachePromise === undefined) {
+					cachePromise = caches.open(CacheName);
+				}
+				cache = await cachePromise;
+			}
+
 			console.log(`[Oslo] cache prime: ${request.resource}`);
 			tasks.push(cache.put(cacheKey, cacheValue));
-			publish(request, cacheValue);
+			tasks.push(publish(request, responseValue));
 		}
+
+		await Promise.all(tasks);
 
 	} else {
 
-		for (const { reject } in requests) {
-			reject(BatchFailedReason);
+		for (const request in requests) {
+
+			request.reject(BatchFailedReason);
 		}
 	}
 
-	await Promise.all(tasks);
-
-	reschedule();
+	if (queue.length > 0) {
+		setTimeout(flushQueue, 0);
+	} else {
+		state = StateIdle;
+	}
 }
 
-function debounce() {
+function debounceQueue() {
 
 	if (state !== StateIdle) {
 		return;
@@ -133,28 +111,54 @@ function debounce() {
 		clearTimeout(timer);
 	}
 
-	timer = setTimeout(flush, DebounceTime);
+	timer = setTimeout(flushQueue, DebounceTime);
 }
 
-function enqueue(resource) {
+function fetchWithQueuing(resource) {
 
 	const promise = new Promise((resolve, reject) => {
 
 		queue.push({ resource, resolve, reject });
 	});
 
-	debounce();
+	debounceQueue();
 
 	return promise;
 }
 
-function pool(resource) {
+async function fetchWithCaching(resource) {
+
+	if (cache === undefined) {
+		if (cachePromise === undefined) {
+			cachePromise = caches.open(CacheName);
+		}
+		cache = await cachePromise;
+	}
+
+	const cacheKey = new Request(config.collection + resource);
+	const cacheValue = await cache.match(cacheKey);
+	if (cacheValue === undefined) {
+		console.log(`[Oslo] cache miss: ${resource}`);
+		return fetchWithQueuing(resource);
+	}
+
+	console.log(`[Oslo] cache hit: ${resource}`);
+	if (!cacheValue.ok) {
+		throw SingleFailedReason;
+	}
+
+	const blob = await cacheValue.blob();
+	const objectUrl = URL.createObjectURL(blob);
+	return objectUrl;
+}
+
+function fetchWithPooling(resource) {
 
 	// At most one request per resource.
 
 	let promise = blobs.get(resource);
 	if (promise === undefined) {
-		promise = enqueue(resource);
+		promise = fetchWithCaching(resource);
 		blobs.set(resource, promise);
 	}
 	return promise;
@@ -205,7 +209,7 @@ function fetchOverride(language, formatFunc, fetchFunc) {
 		url = formatFunc(language);
 		url = new URL(url).pathname;
 
-		res = pool(url);
+		res = fetchWithPooling(url);
 		res = res.then(fetchFunc);
 
 		return res;
