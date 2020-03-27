@@ -120,3 +120,13 @@ import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 // gets a unique indexed id (for lifetime of page)
 getUniqueId();
 ```
+
+## asyncStateEvent
+
+A simple helper class that returns a `pending-state` event for a given pending promise. Can be used in conjunction with the AsyncContainerMixin to track pending work.
+
+```js
+import { AsyncStateEvent } from '@brightspace-ui/core/helpers/asyncStateEvent.js';
+
+const asyncStateEvent = new AsyncStateEvent(pendingPromise);
+```
