@@ -18,6 +18,7 @@ const pointerGap = 6; /* spacing between pointer and target */
 const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
 const contentBorderSize = 1;
+const contentHorizontalPadding = 15;
 
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 
@@ -42,6 +43,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			align: { type: String }, /* Valid values are: 'start' and 'end' */
 			boundary: { type: Object },
 			customTarget: {
 				type: Object, attribute: 'custom-target', converter: {
@@ -55,7 +57,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			for: { type: String },
 			forceShow: { type: Boolean, attribute: 'force-show' },
 			offset: { type: Number }, /* tooltipOffset */
-			position: { type: String }, /* Deprecated, use boundary instead. Valid values are: 'top', 'bottom', 'left' and 'right' */
+			position: { type: String }, /* Valid values are: 'top', 'bottom', 'left' and 'right' */
 			showing: { type: Boolean, reflect: true },
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			_maxWidth: { type: Number },
@@ -107,6 +109,24 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([_open-dir="top"]) .d2l-tooltip-pointer,
 			:host([_open-dir="bottom"]) .d2l-tooltip-pointer {
 				left: calc(50% - ${pointerLength / 2}px);
+			}
+
+			:host([_open-dir="top"][align="start"]) .d2l-tooltip-pointer,
+			:host([_open-dir="bottom"][align="start"]) .d2l-tooltip-pointer,
+			:host([_open-dir="top"][align="end"][dir="rtl"]) .d2l-tooltip-pointer,
+			:host([_open-dir="bottom"][align="end"][dir="rtl"]) .d2l-tooltip-pointer {
+				left: ${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px; /* needed for browsers that don't support min like IE11 and Edge Legacy */
+				left: min(${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px, calc(50% - ${pointerLength / 2}px));
+				right: auto;
+			}
+
+			:host([_open-dir="top"][align="end"]) .d2l-tooltip-pointer,
+			:host([_open-dir="bottom"][align="end"]) .d2l-tooltip-pointer,
+			:host([_open-dir="top"][align="start"][dir="rtl"]) .d2l-tooltip-pointer,
+			:host([_open-dir="bottom"][align="start"][dir="rtl"]) .d2l-tooltip-pointer {
+				left: auto;
+				right: ${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px; /* needed for browsers that don't support min like IE11 and Edge Legacy */
+				right: min(${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px, calc(50% - ${pointerLength / 2}px));
 			}
 
 			:host([_open-dir="top"]) .d2l-tooltip-pointer {
@@ -165,7 +185,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				min-height: 2.1rem;
 				min-width: 2.1rem;
 				overflow: hidden;
-				padding: 10px 15px;
+				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
 			}
 
@@ -216,6 +236,13 @@ class Tooltip extends RtlMixin(LitElement) {
 			@keyframes d2l-tooltip-right-animation {
 				0% { transform: translate(10px,0); opacity: 0; }
 				100% { transform: translate(0,0); opacity: 1; }
+			}
+
+			@media (max-width: 615px) {
+				.d2l-tooltip-content {
+					padding-top: ${12 - contentBorderSize}px;
+					padding-bottom: ${12 - contentBorderSize}px;
+				}
 			}
 		`];
 	}
@@ -383,6 +410,12 @@ class Tooltip extends RtlMixin(LitElement) {
 				spaceAround.below = Math.min(parentRect.bottom - targetRect.bottom - this.boundary.bottom, spaceAround.below);
 			}
 		}
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
+			spaceAround.left = 0;
+		} else if ((this.align === 'start' && isRTL) || (this.align === 'end' && !isRTL)) {
+			spaceAround.right = 0;
+		}
 		return spaceAround;
 	}
 
@@ -531,24 +564,30 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 
 		// Compute how much the tooltip is shifted relative to its pointer
-		let spaceLeft, spaceRight, centerDelta, maxShift, minShift;
-		if (this._isAboveOrBelow()) {
-			const isRtl = this.getAttribute('dir') === 'rtl';
-			spaceLeft = !isRtl ? spaceAround.left : spaceAround.right;
-			spaceRight = !isRtl ? spaceAround.right : spaceAround.left;
-			centerDelta = this._maxWidth - targetRect.width;
-			maxShift = targetRect.width / 2;
-			minShift = maxShift - this._maxWidth;
+		if (this._isAboveOrBelow() && this.align === 'start') {
+			this._tooltipShift = 0;
+		} else if (this._isAboveOrBelow() && this.align === 'end') {
+			this._tooltipShift = targetRect.width - this._maxWidth;
 		} else {
-			spaceLeft = spaceAround.above;
-			spaceRight = spaceAround.below;
-			centerDelta = contentRect.height - targetRect.height;
-			maxShift = targetRect.height / 2;
-			minShift = maxShift - contentRect.height;
+			let spaceLeft, spaceRight, centerDelta, maxShift, minShift;
+			if (this._isAboveOrBelow()) {
+				const isRtl = this.getAttribute('dir') === 'rtl';
+				spaceLeft = !isRtl ? spaceAround.left : spaceAround.right;
+				spaceRight = !isRtl ? spaceAround.right : spaceAround.left;
+				centerDelta = this._maxWidth - targetRect.width;
+				maxShift = targetRect.width / 2;
+				minShift = maxShift - this._maxWidth;
+			} else {
+				spaceLeft = spaceAround.above;
+				spaceRight = spaceAround.below;
+				centerDelta = contentRect.height - targetRect.height;
+				maxShift = targetRect.height / 2;
+				minShift = maxShift - contentRect.height;
+			}
+			const shift = computeTooltipShift(centerDelta, spaceLeft, spaceRight);
+			const shiftMargin = (pointerRotatedLength / 2) + contentBorderRadius;
+			this._tooltipShift = Math.min(Math.max(shift, minShift + shiftMargin), maxShift - shiftMargin);
 		}
-		const shift = computeTooltipShift(centerDelta, spaceLeft, spaceRight);
-		const shiftMargin = (pointerRotatedLength / 2) + contentBorderRadius;
-		this._tooltipShift = Math.min(Math.max(shift, minShift + shiftMargin), maxShift - shiftMargin);
 	}
 
 	_onTargetBlur() {

@@ -39,7 +39,11 @@ describe('d2l-tooltip', () => {
 		'horizontal-rtl',
 		'wide-target-horizontal',
 		'wide-target-vertical',
-		'too-big-for-space'
+		'too-big-for-space',
+		'align-start',
+		'align-start-rtl',
+		'align-end',
+		'align-end-rtl',
 	].forEach((testName) => {
 
 		it(testName, async function() {

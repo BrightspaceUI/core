@@ -15,10 +15,6 @@
 		import '../tooltip.js';
 	</script>
 	<style>
-		#tooltip-error {
-			width: auto;
-		}
-
 		.boundary {
 			position: relative;
 			background-color: var(--d2l-color-citrine);
@@ -50,7 +46,7 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-input-text placeholder="Hover for Error" id="tooltip-error"></d2l-input-text>
-				<d2l-tooltip for="tooltip-error" state="error">
+				<d2l-tooltip for="tooltip-error" state="error" align="start" offset="10">
 					Your error message will display here
 				</d2l-tooltip>
 			</template>
