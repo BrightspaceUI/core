@@ -8,7 +8,8 @@ import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
-import {repeat} from 'lit-html/directives/repeat';
+import { repeat } from 'lit-html/directives/repeat';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -209,7 +210,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		this.arrowKeysOnBeforeFocus = async(tab) => {
 			const tabInfo = this._getTabInfo(tab.controlsPanel);
 			if (!this._scrollCollapsed) {
-			 	return this._updateScrollPosition(tabInfo);
+				return this._updateScrollPosition(tabInfo);
 			} else {
 				const measures = this._getMeasures();
 				const newTranslationValue = this._calculateScrollPosition(tabInfo, measures);
@@ -228,6 +229,11 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				}
 			}
 		};
+
+		this._handleResize = this._handleResize.bind(this);
+		this._resizeObserver = new ResizeObserver(this._handleResize);
+		this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
+
 	}
 
 	render() {
@@ -487,17 +493,24 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		this.requestUpdate();
 	}
 
-	_handlePanelTextChange() {
-		/*
-			update text of the corrsponding d2l-tab
-			update measurements
-			update virtual scroll button visibility
-		*/
+	async _handlePanelTextChange(e) {
+		this._getTabInfo(e.target.id).text = e.target.text;
+		this.requestUpdate();
+		await this.updateComplete;
+		this._updateMeasures();
+		await this._updateScrollVisibility(this._getMeasures());
+	}
+
+	_handleResize(entries) {
+		const measures = this._getMeasures();
+		if (entries.length === 1 && entries[0].contentRect.width === measures.tabsContainerListRect.width) return;
+		this._updateMeasures();
+		this._updateScrollVisibility(this._getMeasures());
 	}
 
 	async _handleScrollNext() {
 
-		let measures = this._getMeasures();
+		const measures = this._getMeasures();
 
 		const expanded = await this._tryExpandTabsContainer(measures);
 		const newMeasures = expanded ? this._getMeasures() : measures;
@@ -541,7 +554,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	async _handleScrollPrevious() {
 
-		let measures = this._getMeasures();
+		const measures = this._getMeasures();
 
 		const expanded = await this._tryExpandTabsContainer(measures);
 		const newMeasures = expanded ? this._getMeasures() : measures;
@@ -686,7 +699,6 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		if (reduceMotion) return this.updateComplete;
 
 		return new Promise((resolve) => {
-			//resolve();
 			const tabList = this.shadowRoot.querySelector('.d2l-tabs-container-list');
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'transform') {

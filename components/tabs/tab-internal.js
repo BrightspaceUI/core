@@ -122,7 +122,6 @@ class Tab extends RtlMixin(LitElement) {
 				));
 			} else if (prop === 'text') {
 				this.title = this.text;
-				// need to measure again
 			}
 		});
 	}
