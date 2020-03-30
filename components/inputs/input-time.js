@@ -16,17 +16,43 @@ const TODAY = new Date();
 const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
 let INTERVALS = null;
 
-function getIntervals() {
-	if (INTERVALS !== null) {
+function getIntervals(size) {
+	if (INTERVALS != null && INTERVALS[size] != null) {
 		return;
+	} else if (INTERVALS == null) {
+		INTERVALS = [];
 	}
 
-	INTERVALS = [];
-	for (let i = 0; i < 24; i++) {
-		INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 0, 0));
-		INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 30, 0));
+	INTERVALS[size] = [];
+	let minutes = 0;
+	switch(size) {
+		case 'five':
+			minutes = 5;
+			break;
+		case 'ten':
+			minutes = 10;
+			break;
+		case 'fifteen':
+			minutes = 15;
+			break;
+		case 'twenty':
+			minutes = 20;
+			break;
+		case 'sixty':
+			minutes = 60;
+			break;
+		case 'thirty':
+		default:
+			minutes = 30;
 	}
-	INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59));
+
+	let intervalTime = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
+	const endOfDay = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59)
+	while (intervalTime < endOfDay) {
+		INTERVALS[size].push(new Date(intervalTime));
+		intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
+	}
+	INTERVALS[size].push(endOfDay);
 }
 
 function formatValue(time) {
@@ -70,6 +96,7 @@ class InputTime extends LitElement {
 	static get properties() {
 		return {
 			disabled: { type: Boolean },
+			intervals: { type: String },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			value: { type: String },
@@ -104,10 +131,11 @@ class InputTime extends LitElement {
 		super();
 		this.disabled = false;
 		this.labelHidden = false;
-		this._value = formatValue(DEFAULT_VALUE);
-		this._formattedValue = formatTime(DEFAULT_VALUE);
-		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
 		this._dropdownId = getUniqueId();
+		this._formattedValue = formatTime(DEFAULT_VALUE);
+		this.intervals = 'thirty';
+		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
+		this._value = formatValue(DEFAULT_VALUE);
 	}
 
 	get value() { return this._value; }
@@ -120,7 +148,8 @@ class InputTime extends LitElement {
 	}
 
 	render() {
-		getIntervals();
+		getIntervals(this.intervals);
+		console.log(this.intervals);
 		const input = html`
 			<label>
 				<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
@@ -146,7 +175,7 @@ class InputTime extends LitElement {
 							class="d2l-input-time-menu"
 							aria-labelledby="${this._dropdownId}-label"
 							@d2l-menu-item-change="${this._handleDropdownChange}">
-							${INTERVALS.map(i => html`
+							${INTERVALS[this.intervals].map(i => html`
 								<d2l-menu-item-radio
 									text="${formatTime(i)}"
 									value="${formatValue(i)}"
@@ -162,7 +191,8 @@ class InputTime extends LitElement {
 		return input;
 	}
 
-	firstUpdated() {
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
 		if (this.label === null) {
 			console.warn('d2l-input-time component requires label text');
 		}
