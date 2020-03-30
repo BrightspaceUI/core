@@ -175,6 +175,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([_open-dir="left"]) .d2l-tooltip-position {
 				right: 100%;
 			}
+			:host([_open-dir="right"][dir="rtl"]) .d2l-tooltip-position {
+				left: 100%;
+			}
 
 			.d2l-tooltip-content {
 				background-color: var(--d2l-tooltip-background-color);
@@ -194,6 +197,9 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 			:host([_open-dir="left"]) .d2l-tooltip-content {
 				right: 0;
+			}
+			:host([_open-dir="right"][dir="rtl"]) .d2l-tooltip-content {
+				left: 0;
 			}
 
 			.d2l-tooltip-container {

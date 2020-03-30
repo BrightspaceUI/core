@@ -27,6 +27,8 @@ describe('d2l-tooltip', () => {
 		'position-bottom',
 		'position-right',
 		'position-left',
+		'position-right-rtl',
+		'position-left-rtl',
 		'top-left',
 		'top-middle',
 		'top-right',
