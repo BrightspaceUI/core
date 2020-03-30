@@ -32,7 +32,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return css`
 			:host {
 				display: inline-block;
-				max-width: 10rem;
+				max-width: 9rem;
 				min-width: 7rem;
 				width: 100%;
 			}
@@ -170,7 +170,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
-					placeholder="${this._dateTimeDescriptor.formats.dateFormats.short}"
+					placeholder="${(this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase()}"
 					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
 					<d2l-icon
