@@ -93,14 +93,37 @@ export function parseISODateTime(val) {
 
 export function parseISOTime(val) {
 	if (!val) return null;
-	const re = /^([0-9]{1,2}):([0-9]{2}):([0-9]{2})?$/;
+	let hours = 0;
+	let minutes = 0;
+	let seconds = 0;
+	const re = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
 	const match = val.match(re);
-	if (!match || match.length !== 4) {
+	if (!match || match.length > 5) {
 		throw new Error('Invalid input: Expected format is HH:MM:SS');
 	}
+	if (match !== null) {
+		if (match.length > 1) {
+			hours = parseInt(match[1]);
+			if (isNaN(hours) || hours < 0 || hours > 23) {
+				hours = 0;
+			}
+		}
+		if (match.length > 2) {
+			minutes = parseInt(match[2]);
+			if (isNaN(minutes) || minutes < 0 || minutes > 59) {
+				minutes = 0;
+			}
+		}
+		if (match.length > 3) {
+			seconds = parseInt(match[4]);
+			if (isNaN(seconds) || seconds < 0 || seconds > 59) {
+				seconds = 0;
+			}
+		}
+	}
 	return {
-		hours: parseInt(match[1]),
-		minutes: parseInt(match[2]),
-		seconds: parseInt(match[3])
+		hours: hours,
+		minutes: minutes,
+		seconds: seconds
 	};
 }

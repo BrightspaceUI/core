@@ -34,19 +34,19 @@ describe('date-time', () => {
 
 		it('should throw when no year', () => {
 			expect(() => {
-				formatDateInISO({ month: 10, date: 20});
+				formatDateInISO({month: 10, date: 20});
 			}).to.throw('Invalid input: Expected input to be object containing year, month, and date');
 		});
 
 		it('should throw when no month', () => {
 			expect(() => {
-				formatDateInISO({ year: 2013, date: 20});
+				formatDateInISO({year: 2013, date: 20});
 			}).to.throw('Invalid input: Expected input to be object containing year, month, and date');
 		});
 
 		it('should throw when no date', () => {
 			expect(() => {
-				formatDateInISO({ year: 2013, month: 3});
+				formatDateInISO({year: 2013, month: 3});
 			}).to.throw('Invalid input: Expected input to be object containing year, month, and date');
 		});
 	});
@@ -78,19 +78,19 @@ describe('date-time', () => {
 
 		it('should throw when no hours', () => {
 			expect(() => {
-				formatTimeInISO({ minutes: 10, seconds: 20});
+				formatTimeInISO({minutes: 10, seconds: 20});
 			}).to.throw('Invalid input: Expected input to be object containing hours, minutes, and seconds');
 		});
 
 		it('should throw when no minutes', () => {
 			expect(() => {
-				formatTimeInISO({ hours: 2013, seconds: 20});
+				formatTimeInISO({hours: 2013, seconds: 20});
 			}).to.throw('Invalid input: Expected input to be object containing hours, minutes, and seconds');
 		});
 
 		it('should throw when no seconds', () => {
 			expect(() => {
-				formatTimeInISO({ hours: 2013, minutes: 3});
+				formatTimeInISO({hours: 2013, minutes: 3});
 			}).to.throw('Invalid input: Expected input to be object containing hours, minutes, and seconds');
 		});
 	});
@@ -137,12 +137,12 @@ describe('date-time', () => {
 		});
 
 		it('should return expected day in America/Toronto timezone', () => {
-			expect(getToday()).to.deep.equal({ year: 2018, month: 2, date: 12, hours: 15, minutes: 0, seconds: 0});
+			expect(getToday()).to.deep.equal({year: 2018, month: 2, date: 12, hours: 15, minutes: 0, seconds: 0});
 		});
 
 		it('should return expected day in Australia/Eucla timezone', () => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
-			expect(getToday()).to.deep.equal({ year: 2018, month: 2, date: 13, hours: 4, minutes: 45, seconds: 0});
+			expect(getToday()).to.deep.equal({year: 2018, month: 2, date: 13, hours: 4, minutes: 45, seconds: 0});
 		});
 	});
 
@@ -171,13 +171,23 @@ describe('date-time', () => {
 	});
 
 	describe('parseISOTime', () => {
-		it('should return correct date if date and time provided', () => {
+		it('should return correct time when hours, minutes, seconds', () => {
 			expect(parseISOTime('12:10:30')).to.deep.equal({hours: 12, minutes: 10, seconds: 30});
+		});
+
+		it('should return correct time when hours, minutes', () => {
+			expect(parseISOTime('12:10')).to.deep.equal({hours: 12, minutes: 10, seconds: 0});
+		});
+
+		it('should throw when just hours', () => {
+			expect(() => {
+				parseISOTime('13');
+			}).to.throw('Invalid input: Expected format is HH:MM:SS');
 		});
 
 		it('should throw when invalid date format', () => {
 			expect(() => {
-				parseISOTime('12:00');
+				parseISOTime('hello');
 			}).to.throw('Invalid input: Expected format is HH:MM:SS');
 		});
 	});

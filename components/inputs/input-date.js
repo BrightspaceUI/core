@@ -256,7 +256,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleSetToToday() {
-		this._updateValueDispatchEvent(formatDateInISO(getToday()));
+		const date = getToday();
+		this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
 	}
 

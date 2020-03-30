@@ -5,15 +5,15 @@ import '../menu/menu-item-radio.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { getToday, parseISOTime } from '../../helpers/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen-styles.js';
 
-const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
-const TODAY = new Date();
-const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
+const TODAY = getToday();
+const DEFAULT_VALUE = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
 let INTERVALS = null;
 
 function getIntervals() {
@@ -23,10 +23,10 @@ function getIntervals() {
 
 	INTERVALS = [];
 	for (let i = 0; i < 24; i++) {
-		INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 0, 0));
-		INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), i, 30, 0));
+		INTERVALS.push(new Date(TODAY.year, TODAY.month, TODAY.date, i, 0, 0));
+		INTERVALS.push(new Date(TODAY.year, TODAY.month, TODAY.date, i, 30, 0));
 	}
-	INTERVALS.push(new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59));
+	INTERVALS.push(new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59));
 }
 
 function formatValue(time) {
@@ -37,31 +37,8 @@ function formatValue(time) {
 }
 
 function parseValue(val) {
-	let hour = 0;
-	let minute = 0;
-	let second = 0;
-	const match = VALUE_RE.exec(val);
-	if (match !== null) {
-		if (match.length > 1) {
-			hour = parseInt(match[1]);
-			if (isNaN(hour) || hour < 0 || hour > 23) {
-				hour = 0;
-			}
-		}
-		if (match.length > 2) {
-			minute = parseInt(match[2]);
-			if (isNaN(minute) || minute < 0 || minute > 59) {
-				minute = 0;
-			}
-		}
-		if (match.length > 3) {
-			second = parseInt(match[4]);
-			if (isNaN(second) || second < 0 || second > 59) {
-				second = 0;
-			}
-		}
-	}
-	const time = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), hour, minute, second);
+	const parsed = parseISOTime(val);
+	const time = new Date(TODAY.year, TODAY.month, TODAY.date, parsed.hours, parsed.minutes, parsed.seconds);
 	return time;
 }
 

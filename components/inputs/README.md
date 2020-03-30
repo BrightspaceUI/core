@@ -432,7 +432,7 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 
 ## Date-Time Inputs
 
-The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. It displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
+The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. This component displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
 
 ```html
 <script type="module">
@@ -453,7 +453,7 @@ The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d
 
 **Events:**
 
-* `d2l-input-date-time-change`: dispatched when a change in selected date or time (when date is already selected). `value` reflects the selected value and is in ISO 8601 calendar date-time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
+* `d2l-input-date-time-change`: dispatched when a change in selected date or selected time (when date is already selected). `value` reflects the selected value and is in ISO 8601 calendar date-time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
 
 ## Future Enhancements
 
