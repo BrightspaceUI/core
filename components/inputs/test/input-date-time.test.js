@@ -27,11 +27,6 @@ describe('d2l-input-date-time', () => {
 			await expect(elem).to.be.accessible();
 		});
 
-		it('passes all axe tests when label is hidden', async() => {
-			const elem = await fixture('<d2l-input-date-time label="label text" label-hidden></d2l-input-date-time>');
-			await expect(elem).to.be.accessible();
-		});
-
 		it('passes all axe tests when disabled', async() => {
 			const elem = await fixture('<d2l-input-date-time label="label text" disabled></d2l-input-date-time>');
 			await expect(elem).to.be.accessible();

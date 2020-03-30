@@ -58,6 +58,7 @@ class InputTime extends LitElement {
 			css`
 				:host {
 					display: inline-block;
+					max-width: 7rem;
 					width: 100%;
 				}
 				:host([hidden]) {

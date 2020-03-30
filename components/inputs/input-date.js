@@ -32,6 +32,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return css`
 			:host {
 				display: inline-block;
+				max-width: 10rem;
 				min-width: 7rem;
 				width: 100%;
 			}
@@ -146,6 +147,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		if (!this.label) {
+			console.warn('d2l-input-date component requires label text');
+		}
 
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 

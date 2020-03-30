@@ -448,8 +448,7 @@ The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d
 
 - `label` (String, required): accessible label for the input
 - `disabled` (Boolean): disables the input
-- `required` (Boolean): indicates that a value is required
-- `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date-time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
+- `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date-time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
 
 **Events:**
 
