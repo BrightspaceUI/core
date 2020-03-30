@@ -9,6 +9,7 @@ There are various input components available:
 - [Checkboxes](#checkboxes)
 - [Radio Buttons](#radio-buttons)
 - [Date](#date-inputs)
+- [Date-Time](#date-time-inputs)
 
 ## Labelling Inputs
 
@@ -429,11 +430,34 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 
 * `d2l-input-date-change`: dispatched when a date is selected or typed. `value` reflects the selected value and is in ISO 8601 calendar date format (`YYYY-MM-DD`).
 
+## Date-Time Inputs
+
+The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. It displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-date-time.js';
+</script>
+<d2l-input-date-time
+  label="Start Date"
+  value="2020-11-20T12:00:00.000Z">
+</d2l-input-date-time>
+```
+
+**Properties:**
+
+- `label` (String, required): accessible label for the input
+- `disabled` (Boolean): disables the input
+- `required` (Boolean): indicates that a value is required
+- `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date-time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
+
+**Events:**
+
+* `d2l-input-date-time-change`: dispatched when a change in selected date or time (when date is already selected). `value` reflects the selected value and is in ISO 8601 calendar date-time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
+
 ## Future Enhancements
 
-- Date input
 - Time input
-- Date/time input
 - Date & time range with validation
 - Numeric input
 - Color input with contrast analysis

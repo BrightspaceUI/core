@@ -36,15 +36,15 @@ export function formatTimeInISO(val) {
 	return `${hours}:${minutes}:${seconds}`;
 }
 
+export function getDateFromDateObj(val) {
+	return new Date(val.year, parseInt(val.month) - 1, val.date);
+}
+
 export function getDateFromISODate(val) {
 	if (!val) return null;
 	const date = parseISODate(val);
 
 	return getDateFromDateObj(date);
-}
-
-export function getDateFromDateObj(val) {
-	return new Date(val.year, parseInt(val.month) - 1, val.date);
 }
 
 let dateTimeDescriptor = null;
