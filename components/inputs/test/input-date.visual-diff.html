@@ -7,6 +7,10 @@
 		<script type="module">
 			import '../../typography/typography.js';
 			import '../input-date.js';
+			import sinon from 'sinon';
+
+			const newToday = new Date('2018-02-12T12:00Z');
+			sinon.useFakeTimers(newToday.getTime());
 		</script>
 		<title>d2l-input-date visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,11 +32,7 @@
 				<d2l-input-date id="disabled" disabled value="1990-01-01"></d2l-input-date>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-date id="placeholder-default"></d2l-input-date>
-			</div>
-
-			<div class="visual-diff">
-				<d2l-input-date id="placeholder-specified" placeholder="No Start Date"></d2l-input-date>
+				<d2l-input-date id="no-value"></d2l-input-date>
 			</div>
 		</div>
 	</body>
