@@ -1,9 +1,11 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
-import { convertUTCToLocalDateTime, formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatDateInISO, getDateTimeDescriptorShared, getToday, parseISODate } from '../../helpers/dateTime.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
+import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
@@ -24,10 +26,10 @@ const keyCodes = {
 };
 
 let calendarData;
-function getCalendarData() {
+function getCalendarData(refresh) {
 	if (!calendarData) {
 		calendarData = {};
-		calendarData.descriptor = getDateTimeDescriptor();
+		calendarData.descriptor = getDateTimeDescriptorShared(refresh);
 		calendarData.firstDayOfWeek = calendarData.descriptor.calendar.firstDayOfWeek;
 		calendarData.daysOfWeekIndex = [];
 		for (let i = calendarData.firstDayOfWeek; i < calendarData.firstDayOfWeek + daysInWeek; i++) {
@@ -40,13 +42,6 @@ function getCalendarData() {
 export function checkIfDatesEqual(date1, date2) {
 	if (!date1 || !date2) return false;
 	return date1.getTime() === date2.getTime();
-}
-
-export function formatDateInISO(year, month, date) {
-	month = parseInt(month) + 1;
-	if (month < 10) month = `0${month}`;
-	if (date < 10) date = `0${date}`;
-	return `${year}-${month}-${date}`;
 }
 
 export function getDatesInMonthArray(shownMonth, shownYear) {
@@ -131,40 +126,13 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
-export function getToday() {
-	const val = new Date().toISOString();
-	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/;
-	const match = val.match(re);
-	const dateTime = {
-		year: parseInt(match[1]),
-		month: parseInt(match[2]),
-		date: parseInt(match[3]),
-		hours: parseInt(match[4]),
-		minutes: parseInt(match[5]),
-		seconds: parseInt(match[6])
-	};
-
-	const valInLocalDateTime = convertUTCToLocalDateTime(dateTime);
-	return new Date(valInLocalDateTime.year, valInLocalDateTime.month - 1, valInLocalDateTime.date);
-}
-
-export function parseISODate(val) {
-	if (!val) return null;
-	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
-	const match = val.match(re);
-	if (!match || match.length !== 4) {
-		throw new Error('Invalid selected-value date input: Expected format is YYYY-MM-DD');
-	}
-
-	return new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
-}
-
 class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
+			_dialog: { type: Boolean },
 			_focusDate: { type: Object },
 			_shownMonth: { type: Number }
 		};
@@ -296,9 +264,15 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 
+		const dropdownContent = findComposedAncestor(
+			this.parentNode,
+			(node) => { return (node.tagName === 'D2L-DROPDOWN-CONTENT'); }
+		);
+		if (dropdownContent) this._dialog = true;
+
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			calendarData = null;
-			getCalendarData();
+			getCalendarData(true);
 			this.requestUpdate();
 		});
 	}
@@ -307,7 +281,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === '_shownMonth') {
+			if (prop === '_shownMonth' && this._keyboardTriggeredMonthChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
 				this._updateFocusDate();
@@ -323,6 +297,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
 			<th
 				abbr="${calendarData.descriptor.calendar.days.long[index]}"
+				aria-label="${calendarData.descriptor.calendar.days.long[index]}"
 				role="columnheader"
 				scope="col">
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
@@ -363,16 +338,19 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			return html`<tr>${weekHtml}</tr>`;
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
+		const labelId = `${this._tableInfoId}-heading`;
+		const labelledBy = this._dialog ? labelId : undefined;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
+		const role = this._dialog ? 'dialog' : undefined;
 		return html`
-			<div class="d2l-calendar">
+			<div aria-labelledby="${ifDefined(labelledBy)}" class="d2l-calendar" role="${ifDefined(role)}">
 				<div class="d2l-calendar-title">
 					<d2l-button-icon
 						@click="${this._onPrevMonthButtonClick}"
 						text="${this._computeText(getPrevMonth(this._shownMonth))}"
 						icon="tier1:chevron-left">
 					</d2l-button-icon>
-					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${this._tableInfoId}-heading">${heading}</h2>
+					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
 					<d2l-button-icon
 						@click="${this._onNextMonthButtonClick}"
 						text="${this._computeText(getNextMonth(this._shownMonth))}"
@@ -381,7 +359,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				</div>
 				<table
 					aria-activedescendant="${activeDate}"
-					aria-labelledby="${this._tableInfoId}-heading"
+					aria-labelledby="${labelId}"
 					aria-readonly="true"
 					role="grid"
 					summary="${ifDefined(this.summary)}">
@@ -398,8 +376,12 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	focus() {
-		const firstButton = this.shadowRoot.querySelector('d2l-button-icon');
-		if (firstButton) firstButton.focus();
+		if (this._dialog) {
+			this._focusDateAddFocus();
+		} else {
+			const button = this.shadowRoot.querySelector('d2l-button-icon');
+			if (button) button.focus();
+		}
 	}
 
 	_computeText(month) {
@@ -408,7 +390,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 	async _focusDateAddFocus() {
 		const date = await this._getDateElement(this._focusDate);
-		if (date && this._keyboardTriggeredMonthChange) {
+		if (date) {
 			date.focus();
 			this._keyboardTriggeredMonthChange = false;
 		}
@@ -426,7 +408,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
 
-		this.selectedValue = formatDateInISO(year, month, date);
+		this.selectedValue = formatDateInISO(new Date(year, month, date));
 
 		const eventDetails = {
 			bubbles: true,
@@ -574,9 +556,9 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			this._focusDate.getMonth(),
 			this._focusDate.getDate() + numDays
 		);
-		this._keyboardTriggeredMonthChange = true;
 		const date = await this._getDateElement(this._focusDate);
 		if (!date) {
+			this._keyboardTriggeredMonthChange = true;
 			if (oldFocusDate < this._focusDate) {
 				this._updateShownMonthIncrease();
 			} else {

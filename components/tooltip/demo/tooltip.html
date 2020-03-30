@@ -15,18 +15,15 @@
 		import '../tooltip.js';
 	</script>
 	<style>
-		#tooltip-error {
-			width: auto;
-		}
-
 		.boundary {
+			position: relative;
 			background-color: var(--d2l-color-citrine);
 			box-sizing: border-box;
 			display: inline-block;
-			padding-bottom: 75px;
-			padding-left: 200px;
-			padding-right: 25px;
-			padding-top: 40px;
+			padding-left: 150px;
+			padding-top: 60px;
+			width: 350px;
+			height: 175px;
 		}
 	</style>
 </head>
@@ -49,9 +46,22 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-input-text placeholder="Hover for Error" id="tooltip-error"></d2l-input-text>
-				<d2l-tooltip for="tooltip-error" state="error">
+				<d2l-tooltip for="tooltip-error" state="error" align="start" offset="10">
 					Your error message will display here
 				</d2l-tooltip>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Tooltip (boundary)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="boundary">
+					<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
+					<d2l-tooltip for="tooltip-boundary"
+						boundary="{&quot;top&quot;:0, &quot;bottom&quot;:0, &quot;left&quot;:0, &quot;right&quot;:350}">
+						This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
+					</d2l-tooltip>
+				</div>
 			</template>
 		</d2l-demo-snippet>
 

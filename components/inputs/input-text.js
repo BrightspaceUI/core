@@ -10,6 +10,7 @@ class InputText extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
@@ -28,6 +29,7 @@ class InputText extends RtlMixin(LitElement) {
 			required: { type: Boolean, reflect: true },
 			size: { type: Number },
 			step: { type: String },
+			title: { type: String },
 			type: { type: String },
 			value: { type: String },
 			_firstSlotWidth: { type: Number },
@@ -122,7 +124,8 @@ class InputText extends RtlMixin(LitElement) {
 
 		const input = html`
 			<div class="d2l-input-text-container">
-				<input aria-invalid="${ifDefined(this.ariaInvalid)}"
+				<input aria-haspopup="${ifDefined(this.ariaHaspopup)}"
+					aria-invalid="${ifDefined(this.ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-required="${ifDefined(ariaRequired)}"
 					autocomplete="${ifDefined(this.autocomplete)}"
@@ -145,6 +148,7 @@ class InputText extends RtlMixin(LitElement) {
 					step="${ifDefined(this.step)}"
 					style="${styleMap(inputStyles)}"
 					tabindex="${ifDefined(this.tabindex)}"
+					title="${ifDefined(this.title)}"
 					type="${this._getType()}"
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>

@@ -1,39 +1,29 @@
+import '../button/button-subtle.js';
+import '../calendar/calendar.js';
+import '../dropdown/dropdown.js';
+import '../dropdown/dropdown-content.js';
+import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateInISO, getDateTimeDescriptorShared, getToday, parseISODate } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-export function formatDateInISO(val) {
-	let month = parseInt(val.getMonth()) + 1;
-	let date = val.getDate();
-	if (month < 10) month = `0${month}`;
-	if (date < 10) date = `0${date}`;
-	return `${val.getFullYear()}-${month}-${date}`;
+export function formatISODateInUserCalDescriptor(val) {
+	return formatDate(parseISODate(val));
 }
 
-export function parseISODate(val) {
-	if (!val) return null;
-	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;
-	const match = val.match(re);
-	if (!match || match.length !== 4) {
-		throw new Error('Invalid value: Expected format is YYYY-MM-DD');
-	}
-
-	return new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
-}
-
-class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	static get properties() {
 		return {
 			disabled: { type: Boolean },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			placeholder: { type: String },
 			value: { type: String },
+			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
 		};
 	}
@@ -57,50 +47,152 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
 			}
+			d2l-focus-trap {
+				padding: 0.6rem;
+			}
+			.d2l-calendar-slot-buttons {
+				border-top: 1px solid var(--d2l-color-gypsum);
+				display: flex;
+				justify-content: flex-end;
+				margin-top: 0.3rem;
+				padding-top: 0.3rem;
+			}
 		`;
 	}
 
 	static get resources() {
 		return {
-			'ar': { chooseDate: 'Choose Date' },
-			'da': { chooseDate: 'Choose Date' },
-			'de': { chooseDate: 'Choose Date' },
-			'en': { chooseDate: 'Choose Date' },
-			'es': { chooseDate: 'Choose Date' },
-			'fr': { chooseDate: 'Choose Date' },
-			'ja': { chooseDate: 'Choose Date' },
-			'ko': { chooseDate: 'Choose Date' },
-			'nl': { chooseDate: 'Choose Date' },
-			'pt': { chooseDate: 'Choose Date' },
-			'sv': { chooseDate: 'Choose Date' },
-			'tr': { chooseDate: 'Choose Date' },
-			'zh': { chooseDate: 'Choose Date' },
-			'zh-tw': { chooseDate: 'Choose Date' }
+			'ar': {
+				clear: 'مسح',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today',
+			},
+			'da': {
+				clear: 'Ryd',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today',
+			},
+			'de': {
+				clear: 'Löschen',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'en': {
+				clear: 'Clear',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'es': {
+				clear: 'Borrar',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'fr': {
+				clear: 'Effacer',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'ja': {
+				clear: 'クリア',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'ko': {
+				clear: '지우기',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'nl': {
+				clear: 'Wissen',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'pt': {
+				clear: 'Desmarcar',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'sv': {
+				clear: 'Rensa',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'tr': {
+				clear: 'Temizle',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'zh': {
+				clear: '清除',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			},
+			'zh-tw': {
+				clear: '清除',
+				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				setToToday: 'Set to Today'
+			}
 		};
+	}
+
+	constructor() {
+		super();
+
+		this._dropdownOpened = false;
+		this._formattedValue = '';
+
+		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this._formattedValue = this.value ? formatDate(parseISODate(this.value)) : '';
+		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+
+		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
+			this.requestUpdate();
+		});
 	}
 
 	render() {
-		const placeholder = this.placeholder || this.localize('chooseDate');
-
 		return html`
-			<d2l-input-text
-				@change="${this._handleChange}"
-				?disabled="${this.disabled}"
-				label="${ifDefined(this.label)}"
-				?label-hidden="${this.labelHidden}"
-				placeholder="${placeholder}"
-				.value="${this._formattedValue}">
-				<d2l-icon
+			<d2l-dropdown ?disabled="${this.disabled}">
+				<d2l-input-text
+					@change="${this._handleChange}"
+					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
-					icon="tier1:calendar"
-					slot="left"></d2l-icon>
-			</d2l-input-text>
+					@keydown="${this._handleKeydown}"
+					label="${ifDefined(this.label)}"
+					?label-hidden="${this.labelHidden}"
+					placeholder="${this._dateTimeDescriptor.formats.dateFormats.short}"
+					title="${this.localize('openInstructions')}"
+					.value="${this._formattedValue}">
+					<d2l-icon
+						?disabled="${this.disabled}"
+						icon="tier1:calendar"
+						slot="left"></d2l-icon>
+				</d2l-input-text>
+				<d2l-dropdown-content
+					boundary="{&quot;above&quot;:0}"
+					@d2l-dropdown-close="${this._handleDropdownClose}"
+					@d2l-dropdown-open="${this._handleDropdownOpen}"
+					min-width="300"
+					no-auto-fit
+					no-auto-focus
+					no-padding>
+					<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
+						<d2l-calendar
+							@d2l-calendar-selected="${this._handleDateSelected}"
+							selected-value="${ifDefined(this.value)}">
+							<div class="d2l-calendar-slot-buttons">
+								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+								<d2l-button-subtle text="${this.localize('clear')}" @click="${this._handleClear}"></d2l-button-subtle>
+							</div>
+						</d2l-calendar>
+					</d2l-focus-trap>
+				</d2l-dropdown-content>
+			</d2l-dropdown>
 		`;
 	}
 
@@ -109,21 +201,74 @@ class InputDate extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (elem) elem.focus();
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+			}
+		});
+	}
+
+	async _handleFocusTrapEnter() {
+		this.shadowRoot.querySelector('d2l-calendar').focus();
+	}
+
+	_handleKeydown(e) {
+		// open dropdown on down arrow or enter and focus on calendar focus date
+		if (e.keyCode === 40 || e.keyCode === 13) {
+			this._dropdown.open();
+			this.shadowRoot.querySelector('d2l-calendar').focus();
+
+			if (e.keyCode === 40) e.preventDefault();
+		}
+	}
+
 	async _handleChange(e) {
 		const value = e.target.value;
 		this._formattedValue = value;
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			this.value = formatDateInISO(date);
-			this.dispatchEvent(new CustomEvent(
-				'd2l-input-date-change',
-				{ bubbles: true, composed: false }
-			));
+			this._updateValueDispatchEvent(formatDateInISO(date));
 		} catch (e) {
 			// leave value the same when invalid input
 		}
-		this._formattedValue = this.value ? formatDate(parseISODate(this.value)) : '';
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
+	}
+
+	_handleClear() {
+		this._updateValueDispatchEvent('');
+		this._dropdown.close();
+	}
+
+	_handleDateSelected(e) {
+		const value = e.target.selectedValue;
+		this._updateValueDispatchEvent(value);
+		this._dropdown.close();
+	}
+
+	_handleDropdownClose() {
+		this._dropdownOpened = false;
+	}
+
+	_handleDropdownOpen() {
+		this._dropdownOpened = true;
+	}
+
+	_handleSetToToday() {
+		const date = getToday();
+		this._updateValueDispatchEvent(formatDateInISO(date));
+		this._dropdown.close();
+	}
+
+	_updateValueDispatchEvent(dateInISO) {
+		this.value = dateInISO;
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-date-change',
+			{ bubbles: true, composed: false }
+		));
 	}
 
 }
