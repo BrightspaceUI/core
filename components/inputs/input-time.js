@@ -16,7 +16,25 @@ const TODAY = new Date();
 const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
 let INTERVALS = null;
 
-function getIntervals(size) {
+function getIntervalNumber(size) {
+		switch(size) {
+		case 'five':
+			return 5;
+		case 'ten':
+			return 10;
+		case 'fifteen':
+			return 15;
+		case 'twenty':
+			return 20;
+		case 'sixty':
+			return 60;
+		case 'thirty':
+		default:
+			return 30;
+	}
+}
+
+function getIntervals(size, enforceIntervals) {
 	if (INTERVALS != null && INTERVALS[size] != null) {
 		return;
 	} else if (INTERVALS == null) {
@@ -24,27 +42,7 @@ function getIntervals(size) {
 	}
 
 	INTERVALS[size] = [];
-	let minutes = 0;
-	switch(size) {
-		case 'five':
-			minutes = 5;
-			break;
-		case 'ten':
-			minutes = 10;
-			break;
-		case 'fifteen':
-			minutes = 15;
-			break;
-		case 'twenty':
-			minutes = 20;
-			break;
-		case 'sixty':
-			minutes = 60;
-			break;
-		case 'thirty':
-		default:
-			minutes = 30;
-	}
+	let minutes = getIntervalNumber(size);
 
 	let intervalTime = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
 	const endOfDay = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59)
@@ -52,7 +50,9 @@ function getIntervals(size) {
 		INTERVALS[size].push(new Date(intervalTime));
 		intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
 	}
-	INTERVALS[size].push(endOfDay);
+	if (!enforceIntervals) {
+		INTERVALS[size].push(endOfDay);
+	}
 }
 
 function formatValue(time) {
@@ -96,6 +96,7 @@ class InputTime extends LitElement {
 	static get properties() {
 		return {
 			disabled: { type: Boolean },
+			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
 			intervals: { type: String },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -130,10 +131,11 @@ class InputTime extends LitElement {
 	constructor() {
 		super();
 		this.disabled = false;
+		this.enforceIntervals = false;
+		this.intervals = 'thirty';
 		this.labelHidden = false;
 		this._dropdownId = getUniqueId();
 		this._formattedValue = formatTime(DEFAULT_VALUE);
-		this.intervals = 'thirty';
 		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
 		this._value = formatValue(DEFAULT_VALUE);
 	}
@@ -141,15 +143,19 @@ class InputTime extends LitElement {
 	get value() { return this._value; }
 	set value(val) {
 		const oldValue = this.value;
-		const time = parseValue(val);
+		let time = parseValue(val);
+		if (this.enforceTimeIntervals) {
+			const interval = getIntervalNumber(this.intervals);
+			const difference = time.getMinutes() % interval;
+			time.setMinutes(time.getMinutes() + interval - difference);
+		}
 		this._value = formatValue(time);
 		this._formattedValue = formatTime(time);
 		this.requestUpdate('value', oldValue);
 	}
 
 	render() {
-		getIntervals(this.intervals);
-		console.log(this.intervals);
+		getIntervals(this.intervals, this.enforceIntervals);
 		const input = html`
 			<label>
 				<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
