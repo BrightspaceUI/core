@@ -220,6 +220,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
 			this.shadowRoot.querySelector('d2l-calendar').focus();
+
+			if (e.keyCode === 40) e.preventDefault();
 		}
 	}
 
