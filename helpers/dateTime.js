@@ -92,15 +92,11 @@ export function parseISODateTime(val) {
 }
 
 export function parseISOTime(val) {
-	if (!val) return null;
 	let hours = 0;
 	let minutes = 0;
 	let seconds = 0;
 	const re = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
 	const match = val.match(re);
-	if (!match || match.length > 5) {
-		throw new Error('Invalid input: Expected format is HH:MM:SS');
-	}
 	if (match !== null) {
 		if (match.length > 1) {
 			hours = parseInt(match[1]);

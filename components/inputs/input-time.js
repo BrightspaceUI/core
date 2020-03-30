@@ -38,8 +38,7 @@ function formatValue(time) {
 
 function parseValue(val) {
 	const parsed = parseISOTime(val);
-	const time = new Date(TODAY.year, TODAY.month, TODAY.date, parsed.hours, parsed.minutes, parsed.seconds);
-	return time;
+	return new Date(TODAY.year, TODAY.month, TODAY.date, parsed.hours, parsed.minutes, parsed.seconds);
 }
 
 class InputTime extends LitElement {

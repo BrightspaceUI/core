@@ -179,16 +179,16 @@ describe('date-time', () => {
 			expect(parseISOTime('12:10')).to.deep.equal({hours: 12, minutes: 10, seconds: 0});
 		});
 
-		it('should throw when just hours', () => {
-			expect(() => {
-				parseISOTime('13');
-			}).to.throw('Invalid input: Expected format is HH:MM:SS');
+		it('should return all 0 when just hours', () => {
+			expect(parseISOTime('13')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
 		});
 
-		it('should throw when invalid date format', () => {
-			expect(() => {
-				parseISOTime('hello');
-			}).to.throw('Invalid input: Expected format is HH:MM:SS');
+		it('should return all 0 when empty input', () => {
+			expect(parseISOTime('')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
+		});
+
+		it('should return all 0 when no input', () => {
+			expect(parseISOTime('')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
 		});
 	});
 
