@@ -123,33 +123,34 @@ export const LocalizeMixin = superclass => class extends superclass {
 	}
 
 	_generatePossibleLanguages() {
-		const langs = [];
+		const langs = new Set();
 
 		let docLang = this.__documentLocaleSettings.language;
 		if (docLang) {
 			docLang = docLang.toLowerCase();
-			langs.push(docLang);
+			langs.add(docLang);
 
 			if (docLang.indexOf('-') !== -1) {
 				const baseDocLang = docLang.split('-')[0];
-				langs.push(baseDocLang);
+				langs.add(baseDocLang);
 			}
 		}
 
 		let docFallbackLang = this.__documentLocaleSettings.fallbackLanguage;
 		if (docFallbackLang) {
 			docFallbackLang = docFallbackLang.toLowerCase();
-			langs.push(docFallbackLang);
+			langs.add(docFallbackLang);
 
 			if (docFallbackLang.indexOf('-') !== -1) {
 				const baseDocFallbackLang = docFallbackLang.split('-')[0];
-				langs.push(baseDocFallbackLang);
+				langs.add(baseDocFallbackLang);
 			}
 		}
 
-		langs.push('en-us', 'en');
+		langs.add('en-us');
+		langs.add('en');
 
-		return langs;
+		return Array.from(langs);
 	}
 
 	_hasResources() {
