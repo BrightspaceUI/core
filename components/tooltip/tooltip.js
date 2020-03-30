@@ -329,7 +329,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
 				<div class="d2l-tooltip-container">
 					<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-						<div class=" d2l-body-small d2l-tooltip-content">
+						<div class="d2l-body-small d2l-tooltip-content">
 							<slot></slot>
 						</div>
 					</div>
