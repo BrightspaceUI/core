@@ -127,7 +127,10 @@ class DemoSnippet extends LitElement {
 				const demoContainer = document.createElement('div');
 				demoContainer.setAttribute('slot', '_demo');
 				demoContainer.appendChild(document.importNode(nodes[i].content, true));
-				this.appendChild(demoContainer);
+				/* must insert before template, else getPreviousFocusable (in consumer code)
+				will walk composed dom from template, thereby returning last focusable in
+				element due to order of slots */
+				this.insertBefore(demoContainer, nodes[i]);
 			}
 
 			tempContainer.appendChild(nodes[i].cloneNode(true));
