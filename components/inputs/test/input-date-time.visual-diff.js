@@ -21,6 +21,7 @@ describe('d2l-input-date-time', () => {
 		'basic',
 		'disabled',
 		'labelled',
+		'invalid-value',
 		'required',
 		'no-value'
 	].forEach((name) => {

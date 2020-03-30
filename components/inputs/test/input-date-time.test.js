@@ -134,6 +134,11 @@ describe('d2l-input-date-time', () => {
 			expect(elem.value).to.equal(undefined);
 		});
 
+		it('should set value to empty when invalid initial value', async() => {
+			const elem = await fixture('<d2l-input-date-time label="label text" value="2018-03-03"></d2l-input-date-time>');
+			expect(elem.value).to.equal('');
+		});
+
 		describe('timezone', () => {
 			it('should return expected day in Australia/Eucla timezone', async() => {
 				documentLocaleSettings.timezone.identifier = 'Australia/Eucla';

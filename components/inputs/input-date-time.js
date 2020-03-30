@@ -62,9 +62,16 @@ class InputDateTime extends RtlMixin(LitElement) {
 		super.firstUpdated(changedProperties);
 
 		if (this.value) {
-			const localDateTime = convertUTCToLocalDateTime(parseISODateTime(this.value));
-			this._parsedDate = formatDateInISO({year: localDateTime.year, month: localDateTime.month, date: localDateTime.date});
-			this._parsedTime = formatTimeInISO({hours: localDateTime.hours, minutes: localDateTime.minutes, seconds: localDateTime.seconds});
+			try {
+				const parsed = parseISODateTime(this.value);
+				const localDateTime = convertUTCToLocalDateTime(parsed);
+				this._parsedDate = formatDateInISO({year: localDateTime.year, month: localDateTime.month, date: localDateTime.date});
+				this._parsedTime = formatTimeInISO({hours: localDateTime.hours, minutes: localDateTime.minutes, seconds: localDateTime.seconds});
+			} catch (e) {
+				// set value to empty if invalid initial value
+				this.value = '';
+			}
+
 		}
 	}
 
