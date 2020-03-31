@@ -10,10 +10,11 @@ const StateIdle = 1;
 const BatchFailedReason = new Error('Failed to fetch batch overrides.');
 const SingleFailedReason = new Error('Failed to fetch overrides.');
 
-let blobs = new Map();
+const blobs = new Map();
+
 let cache = undefined;
 let cachePromise = undefined;
-let config = undefined;
+let documentLocaleSettings = undefined;
 let queue = [];
 let state = StateIdle;
 let timer = 0;
@@ -47,7 +48,7 @@ async function flushQueue() {
 	const bodyObject = { resources };
 	const bodyText = JSON.stringify(bodyObject);
 
-	const res = await fetch(config.batch, {
+	const res = await fetch(documentLocaleSettings.oslo.batch, {
 		method: 'POST',
 		body: bodyText,
 		headers: { [ContentTypeHeader]: ContentTypeJson }
@@ -69,7 +70,7 @@ async function flushQueue() {
 				headers: response.headers
 			});
 
-			const cacheKey = new Request(config.collection + request.resource);
+			const cacheKey = new Request(formatCacheKey(request.resource));
 			const cacheValue = responseValue.clone();
 
 			if (cache === undefined) {
@@ -126,6 +127,11 @@ function fetchWithQueuing(resource) {
 	return promise;
 }
 
+function formatCacheKey(resource) {
+
+	return documentLocaleSettings.oslo.collection + resource;
+}
+
 async function fetchWithCaching(resource) {
 
 	if (cache === undefined) {
@@ -135,7 +141,7 @@ async function fetchWithCaching(resource) {
 		cache = await cachePromise;
 	}
 
-	const cacheKey = new Request(config.collection + resource);
+	const cacheKey = new Request(formatCacheKey(resource));
 	const cacheValue = await cache.match(cacheKey);
 	if (cacheValue === undefined) {
 		console.log(`[Oslo] cache miss: ${resource}`);
@@ -164,32 +170,40 @@ function fetchWithPooling(resource) {
 	return promise;
 }
 
-function ensureInitialized() {
+function shouldUseBatchFetch() {
 
-	if (config !== undefined) {
-		return;
+	if (documentLocaleSettings === undefined) {
+		documentLocaleSettings = getDocumentLocaleSettings();
 	}
 
-	const localeSettings = getDocumentLocaleSettings();
-	if (localeSettings.oslo !== undefined) {
-		config = Object.assign({}, localeSettings.oslo);
-	} else {
-		config = { batch: null, collection: null };
+	if (documentLocaleSettings.oslo === undefined) {
+		return false;
 	}
 
 	// Only batch if we can do client-side caching, otherwise it's worse on each
 	// subsequent page navigation.
 
-	if (!('CacheStorage' in window)) {
-		config.batch = null;
+	return documentLocaleSettings.oslo.batch !== null && 'CacheStorage' in window;
+}
+
+function shouldUseCollectionFetch() {
+
+	if (documentLocaleSettings === undefined) {
+		documentLocaleSettings = getDocumentLocaleSettings();
 	}
+
+	if (documentLocaleSettings.oslo === undefined) {
+		return false;
+	}
+
+	return documentLocaleSettings.oslo.collection !== null;
 }
 
 function filterOverride(language) {
 
 	const isOsloAvailable =
-		config.batch !== null ||
-		config.collection !== null
+		shouldUseBatchFetch() ||
+		shouldUseCollectionFetch();
 
 	// Temporary hack until we can sort out which language we should fetch
 	// overrides for. We'll try for any two-part code (e.g. en-US) and the LMS
@@ -208,7 +222,7 @@ function fetchOverride(language, formatFunc, fetchFunc) {
 
 	let url, res;
 
-	if (config.batch !== null) {
+	if (shouldUseBatchFetch()) {
 
 		// If batching is available, pool requests together.
 
@@ -217,13 +231,13 @@ function fetchOverride(language, formatFunc, fetchFunc) {
 
 		res = fetchWithPooling(url);
 
-	} else {
+	} else /* shouldUseCollectionFetch() == true */ {
 
 		// Otherwise, fetch it directly and let the LMS manage the cache.
 
 		url = formatFunc(language);
 		url = new URL(url).pathname;
-		url = config.collection + url;
+		url = documentLocaleSettings.oslo.collection + url;
 
 		res = Promise.resolve(url);
 
@@ -235,9 +249,18 @@ function fetchOverride(language, formatFunc, fetchFunc) {
 	return res;
 }
 
-function coalesceToNull() {
+function coalesceToNull(err) {
 
 	return null;
+}
+
+export function __clearWindowCache() {
+
+	// Used to reset state for tests.
+
+	blobs.clear();
+	cache = undefined;
+	cachePromise = undefined;
 }
 
 export async function getLocalizeResources(
@@ -246,8 +269,6 @@ export async function getLocalizeResources(
 	formatFunc,
 	fetchFunc
 ) {
-
-	ensureInitialized();
 
 	const promises = [];
 	let supportedLanguage;
