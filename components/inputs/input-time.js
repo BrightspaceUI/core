@@ -36,7 +36,7 @@ function getIntervalNumber(size) {
 }
 
 function getIntervals(size) {
-	if (INTERVALS !== null && INTERVALS[size] !== null) {
+	if (INTERVALS !== null && INTERVALS[size] !== undefined) {
 		return;
 	} else if (INTERVALS === null) {
 		INTERVALS = [];
