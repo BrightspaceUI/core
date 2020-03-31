@@ -17,7 +17,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			:host {
 				box-sizing: border-box;
 				display: none;
-				margin: 1.2rem 0;
+				margin: 1.2rem 0 0 0;
 			}
 			:host([no-padding]) {
 				margin: 0;

@@ -1,11 +1,15 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 
 class DropdownTabs extends DropdownContentMixin(LitElement) {
 
 	static get styles() {
-		return dropdownContentStyles;
+		return [ dropdownContentStyles, css`
+			::slotted(d2l-tabs) {
+				margin-bottom: 0;
+			}
+		`];
 	}
 
 	firstUpdated(changedProperties) {
@@ -25,17 +29,21 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 		`;
 	}
 
-	_onMenuResize() {
-		this.__position(false);
+	_onMenuResize(e) {
+		const tabs = this._getTabsElement();
+		const tabListRect = tabs.getTabListRect();
+		// need to include height of tablist, dropdown padding, tab margins
+		const rect = {
+			height: e.detail.height + tabListRect.height + 52,
+			width: e.detail.width
+		};
+		this.__position(!this._initializingHeight, rect);
+		this._initializingHeight = false;
 	}
 
 	_onOpen(e) {
-
-		if (e.target !== this) {
-			return;
-		}
-		const tabs = this._getTabsElement();
-		tabs.resize();
+		if (e.target !== this) return;
+		this._initializingHeight = true;
 	}
 
 	_onTabSelected() {
@@ -45,7 +53,7 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 	_getTabsElement() {
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot')
 			.assignedNodes()
-			.filter(node => node.hasAttribute && node.getAttribute('role') === 'tablist')[0];
+			.filter(node => node.hasAttribute && node.tagName === 'D2L-TABS')[0];
 	}
 
 }

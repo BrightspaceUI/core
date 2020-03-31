@@ -37,6 +37,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				--d2l-tabs-background-color: white;
 				box-sizing: border-box;
 				display: block;
+				margin-bottom: 1.2rem;
 			}
 			.d2l-tabs-layout {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
@@ -234,6 +235,10 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		this._resizeObserver = new ResizeObserver(this._handleResize);
 		this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
 
+	}
+
+	getTabListRect() {
+		return this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect();
 	}
 
 	render() {
