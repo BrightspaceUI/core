@@ -31,7 +31,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this.role = 'tabpanel';
-		if (this.id.length === 0) this.id = getUniqueId();
 	}
 
 	async attributeChangedCallback(name, oldval, newval) {
@@ -44,6 +43,11 @@ export const TabPanelMixin = superclass => class extends superclass {
 				'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
 			));
 		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		if (this.id.length === 0) this.id = getUniqueId();
 	}
 
 	_dispatchSelected() {
