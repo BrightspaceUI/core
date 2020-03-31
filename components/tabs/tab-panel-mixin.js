@@ -46,16 +46,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		/*
-		if (this.selected) {
-			 wait a frame??
-			this._dispatchSelected();
-		}
-		*/
-	}
-
 	_dispatchSelected() {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tab-panel-selected', { bubbles: true, composed: true }
