@@ -75,7 +75,7 @@ describe('getLocalizeResources', () => {
 		__clearWindowCache();
 	});
 
-	it('does not fetch overrides when oslo is disabled', async () => {
+	it('does not fetch overrides when oslo is disabled', async() => {
 
 		sinon.stub(documentLocaleSettings, 'oslo').get(() => OsloDisabled);
 
