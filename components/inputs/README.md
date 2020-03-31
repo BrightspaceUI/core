@@ -434,6 +434,8 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 
 The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. This component displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
 
+![example screenshot of date input](./screenshots/date-time.gif?raw=true)
+
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time.js';
