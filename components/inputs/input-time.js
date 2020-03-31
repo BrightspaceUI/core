@@ -18,7 +18,7 @@ const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getD
 let INTERVALS = null;
 
 function getIntervalNumber(size) {
-		switch(size) {
+	switch (size) {
 		case 'five':
 			return 5;
 		case 'ten':
@@ -36,15 +36,15 @@ function getIntervalNumber(size) {
 }
 
 function getIntervals(size) {
-	if (INTERVALS != null && INTERVALS[size] != null) {
+	if (INTERVALS !== null && INTERVALS[size] !== null) {
 		return;
-	} else if (INTERVALS == null) {
+	} else if (INTERVALS === null) {
 		INTERVALS = [];
 	}
 
 	INTERVALS[size] = [];
-	let minutes = getIntervalNumber(size);
-	let intervalTime = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
+	const minutes = getIntervalNumber(size);
+	const intervalTime = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
 
 	while (intervalTime < END_OF_DAY) {
 		INTERVALS[size].push({
@@ -147,7 +147,7 @@ class InputTime extends LitElement {
 	get value() { return this._value; }
 	set value(val) {
 		const oldValue = this.value;
-		let time = parseValue(val);
+		const time = parseValue(val);
 		if (this.enforceTimeIntervals) {
 			const interval = getIntervalNumber(this.timeInterval);
 			const difference = time.getMinutes() % interval;
@@ -194,8 +194,7 @@ class InputTime extends LitElement {
 									?selected=${this._value === i.value}>
 								</d2l-menu-item-radio>
 							`)}
-							${this.enforceTimeIntervals ? ''
-								: html`
+							${this.enforceTimeIntervals ? '' : html`
 									<d2l-menu-item-radio
 										text="${formatTime(END_OF_DAY)}"
 										value="${formatValue(END_OF_DAY)}"
