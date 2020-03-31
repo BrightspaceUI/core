@@ -249,7 +249,7 @@ function fetchOverride(language, formatFunc, fetchFunc) {
 	return res;
 }
 
-function coalesceToNull(err) {
+function coalesceToNull() {
 
 	return null;
 }
