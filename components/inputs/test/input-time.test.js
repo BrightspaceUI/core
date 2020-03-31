@@ -32,7 +32,7 @@ describe('d2l-input-time', () => {
 		it('passes all axe tests when label is hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
 			await expect(elem).to.be.accessible();
-		}).timeout(3000);
+		}).timeout(4000);
 
 		it('passes all axe tests when disabled', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" disabled></d2l-input-time>');
@@ -91,7 +91,7 @@ describe('d2l-input-time', () => {
 
 		it('should provide a time object with hour, minute and second', async() => {
 			const elem = await fixture(fixtureWithValue);
-			expect(elem.getTime()).to.deep.equal({ hour: 11, minute: 22, second: 33 });
+			expect(elem.getTime()).to.deep.equal({ hours: 11, minutes: 22, seconds: 33 });
 		});
 
 		it('should default to 12 AM', async() => {

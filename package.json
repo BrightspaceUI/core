@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.37.0",
+  "version": "1.38.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -56,7 +56,7 @@
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
     "frau-ci": "^1",
-    "karma-sauce-launcher": "^2",
+    "karma-sauce-launcher": "^4",
     "lit-analyzer": "^1",
     "mocha": "^7",
     "node-sass": "^4",
