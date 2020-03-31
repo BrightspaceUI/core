@@ -48,12 +48,7 @@ module.exports = config => {
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
 			reporters: ['dots', 'saucelabs'],
-			singleRun: true,
-			client: {
-				mocha: {
-					timeout : 4000 // increased to 4 seconds from default 2 seconds
-				}
-			}
+			singleRun: true
 		}),
 	);
 	return config;
