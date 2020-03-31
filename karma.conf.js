@@ -20,6 +20,11 @@ module.exports = config => {
 				// if you are using 'bare module imports' you will need this option
 				nodeResolve: true,
 			},
+			client: {
+				mocha: {
+					timeout : 4000 // increased to 4 seconds from default 2 seconds
+				}
+			},
 		}),
 	);
 	return config;
