@@ -466,8 +466,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		const verticalWidth = Math.max(spaceAround.left + targetRect.width + spaceAround.right, 0);
 		const horizontalHeight = Math.max(spaceAround.above + targetRect.height + spaceAround.below, 0);
 		const spaces = [
-			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this.offset, 0) },
 			{ dir: 'bottom', width: verticalWidth, height: Math.max(spaceAround.below - this.offset, 0) },
+			{ dir: 'top', width: verticalWidth, height: Math.max(spaceAround.above - this.offset, 0) },
 			{ dir: 'right', width: Math.max(spaceAround.right - this.offset, 0), height: horizontalHeight },
 			{ dir: 'left', width: Math.max(spaceAround.left - this.offset, 0), height: horizontalHeight }
 		];
