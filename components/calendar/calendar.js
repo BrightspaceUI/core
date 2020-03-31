@@ -180,6 +180,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			.d2l-calendar-title .d2l-heading-4 {
 				height: 100%;
 				margin: 0;
+				opacity: 0;
 			}
 
 			.d2l-calendar-date div {
@@ -190,13 +191,53 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				cursor: pointer;
 				display: flex;
 				font-size: 0.8rem;
-				height: 2rem;
+				height: 1.7rem;
 				justify-content: center;
 				margin-left: auto;
 				margin-right: auto;
+				opacity: 0;
+				padding: 0.15rem;
 				position: relative;
 				text-align: center;
-				width: 2rem;
+				width: 1.7rem;
+			}
+
+			:host(.d2l-calendar-next) .d2l-heading-4,
+			:host(.d2l-calendar-prev) .d2l-heading-4,
+			:host(.d2l-calendar-initial-month) .d2l-heading-4,
+			:host(.d2l-calendar-next) .d2l-calendar-date div,
+			:host(.d2l-calendar-prev) .d2l-calendar-date div,
+			:host(.d2l-calendar-initial-month) .d2l-calendar-date div {
+				opacity: 1;
+				transition: opacity 200ms ease-out;
+			}
+
+			:host(.d2l-calendar-next) .d2l-heading-4,
+			:host(.d2l-calendar-next) .d2l-calendar-date div {
+				-webkit-animation: d2l-calendar-next-animation 400ms ease-out;
+				animation: d2l-calendar-next-animation 400ms ease-out;
+			}
+			@keyframes d2l-calendar-next-animation {
+				0% { transform: translate(20px,0); }
+				100% { transform: translate(0,0); }
+			}
+			@-webkit-keyframes d2l-calendar-next-animation {
+				0% { -webkit-transform: translate(20px,0); }
+				100% { -webkit-transform: translate(0,0); }
+			}
+
+			:host(.d2l-calendar-prev) .d2l-heading-4,
+			:host(.d2l-calendar-prev) .d2l-calendar-date div {
+				-webkit-animation: d2l-calendar-prev-animation 400ms ease-out;
+				animation: d2l-calendar-prev-animation 400ms ease-out;
+			}
+			@keyframes d2l-calendar-prev-animation {
+				0% { transform: translate(-20px,0); }
+				100% { transform: translate(0,0);  }
+			}
+			@-webkit-keyframes d2l-calendar-prev-animation {
+				0% { -webkit-transform: translate(-20px,0); }
+				100% { -webkit-transform: translate(0,0); }
 			}
 
 			.d2l-calendar-date div:not(.d2l-calendar-date-selected):hover,
@@ -210,6 +251,19 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 			.d2l-calendar-date:focus div {
 				border: 2px solid var(--d2l-color-celestine);
+			}
+
+			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
+				transition: border-width 200ms ease-in;
+			}
+
+			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected) {
+				height: 2rem;
+				padding: 0;
+				width: 2rem;
+				transition: border-color, height, width;
+				transition-duration: 200ms;
+				transition-timing-function: ease-in;
 			}
 
 			div.d2l-calendar-date-selected {
@@ -275,6 +329,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			getCalendarData(true);
 			this.requestUpdate();
 		});
+
+		this.classList.add('d2l-calendar-initial-month');
 	}
 
 	updated(changedProperties) {
@@ -572,11 +628,23 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	_updateShownMonthDecrease() {
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
+		this.classList.remove('d2l-calendar-initial-month');
+		this.classList.remove('d2l-calendar-prev');
+		this.classList.remove('d2l-calendar-next');
+		setTimeout(() => {
+			this.classList.add('d2l-calendar-prev');
+		}, 100); // timeout for firefox
 	}
 
 	_updateShownMonthIncrease() {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
+		this.classList.remove('d2l-calendar-initial-month');
+		this.classList.remove('d2l-calendar-prev');
+		this.classList.remove('d2l-calendar-next');
+		setTimeout(() => {
+			this.classList.add('d2l-calendar-next');
+		}, 100); // timeout for firefox
 	}
 
 }
