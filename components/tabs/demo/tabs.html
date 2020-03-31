@@ -19,6 +19,31 @@
 
 			<h2>Tabs</h2>
 
+			<div style="margin-bottom: 30px;">
+				<d2l-button-subtle id="add" text="Add"></d2l-button-subtle>
+				<d2l-button-subtle id="remove" text="Remove"></d2l-button-subtle>
+			</div>
+			<script>
+				let newPanelId = 0;
+				document.querySelector('#add').addEventListener('click', () => {
+					newPanelId += 1;
+					const panel = document.createElement('d2l-tab-panel');
+					panel.text = `New Panel ${newPanelId}`;
+					panel.textContent = `Content for new panel ${newPanelId}`;
+					const tabs = document.querySelector('d2l-tabs');
+					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
+					if (panels.length < 2) tabs.appendChild(panel);
+					else tabs.insertBefore(panel, panels[1]);
+				});
+				document.querySelector('#remove').addEventListener('click', () => {
+					const tabs = document.querySelector('d2l-tabs');
+					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
+					if (panels.length === 0) return;
+					if (panels.length === 1) tabs.removeChild(panels[0]);
+					tabs.removeChild(panels[1]);
+				});
+			</script>
+
 			<d2l-demo-snippet>
 				<template>
 					<d2l-tabs>

@@ -6,6 +6,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { repeat } from 'lit-html/directives/repeat';
@@ -26,6 +27,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			_allowScrollPrevious: { type: Boolean },
 			_maxWidth: { type: Number },
 			_scrollCollapsed: { type: Boolean },
+			_state: { type: String },
 			_tabInfos: { type: Array },
 			_translationValue: {}
 		};
@@ -41,8 +43,22 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-tabs-layout {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
-				display: flex;
 				width: 100%;
+				display: none;
+				max-height: 0;
+				opacity: 0;
+				transform: translateY(-10px);
+				-webkit-transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
+				transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
+			}
+			.d2l-tabs-layout-anim {
+				display: flex;
+			}
+			.d2l-tabs-layout-shown {
+				display: flex;
+				max-height: 49px;
+				opacity: 1;
+				transform: translateY(0);
 			}
 			.d2l-tabs-container {
 				box-sizing: border-box;
@@ -144,15 +160,27 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			.d2l-tabs-scroll-button:focus {
 				border-color: var(--d2l-color-celestine);
 			}
+			.d2l-panels-container-no-whitespace ::slotted(*) {
+				margin-top: 0;
+				-webkit-transition: margin-top 200ms ease-out;
+				transition: margin-top 200ms ease-out;
+			}
 
 			@media (prefers-reduced-motion: reduce) {
 
+				.d2l-tabs-layout {
+					-webkit-transition: none;
+					transition: none;
+				}
 				.d2l-tabs-container {
 					-webkit-transition: none;
 					transition: none;
 				}
-
 				.d2l-tabs-container-list {
+					-webkit-transition: none;
+					transition: none;
+				}
+				.d2l-panels-container-no-whitespace ::slotted(*) {
 					-webkit-transition: none;
 					transition: none;
 				}
@@ -185,6 +213,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		this._allowScrollPrevious = false;
 		this._maxWidth = null;
 		this._scrollCollapsed = false;
+		this._state = 'shown';
 		this._tabInfos = [];
 		this._translationValue = 0;
 	}
@@ -242,6 +271,18 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	render() {
+
+		const tabsLayoutClasses = {
+			'd2l-tabs-layout': true,
+			'd2l-body-compact': true,
+			'd2l-tabs-layout-anim': this._state === 'anim',
+			'd2l-tabs-layout-shown': this._state === 'shown'
+		};
+		const panelContainerClasses = {
+			'd2l-panels-container': true,
+			'd2l-panels-container-no-whitespace': this._state !== 'shown'
+		};
+
 		const tabsContainerStyles = {};
 		if (this._maxWidth) tabsContainerStyles['max-width'] = `${this._maxWidth}px`;
 
@@ -250,7 +291,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		};
 
 		return html`
-			<div class="d2l-tabs-layout d2l-body-compact">
+			<div class="${classMap(tabsLayoutClasses)}">
 				<div ?allow-scroll-next="${this._allowScrollNext}"
 					?allow-scroll-previous="${this._allowScrollPrevious}"
 					class="d2l-tabs-container"
@@ -288,7 +329,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				</div>
 				<div class="d2l-tabs-container-ext"><slot name="ext"></slot></div>
 			</div>
-			<div class="d2l-panels-container"
+			<div class="${classMap(panelContainerClasses)}"
 				@d2l-tab-panel-selected="${this._handlePanelSelected}"
 				@d2l-tab-panel-text-changed="${this._handlePanelTextChange}">
 				<slot @slotchange="${this._handlePanelsSlotChange}"></slot>
@@ -449,7 +490,6 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	async _handlePanelsSlotChange(e) {
 
 		const panels = this._getPanels(e.target);
-
 		/*
 		// do fancy remove the panels
 		const removedPanels = this._tabInfos.filter(info => {
@@ -461,6 +501,32 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		*/
 
 		// consider hidden panels?
+
+		if (this._initialized) {
+			if (this._state === 'shown' && panels.length < 2) {
+				if (reduceMotion) {
+					this._state = 'hidden';
+				} else {
+					const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
+					const handleTransitionEnd = (e) => {
+						if (e.propertyName !== 'max-height') return;
+						layout.removeEventListener('transitionend', handleTransitionEnd);
+						this._state = 'hidden';
+					};
+					layout.addEventListener('transitionend', handleTransitionEnd);
+					this._state = 'anim';
+				}
+			} else if (this._state === 'hidden' && panels.length > 1) {
+				if (reduceMotion) {
+					this._state = 'shown';
+				} else {
+					this._state = 'anim';
+					requestAnimationFrame(() => {
+						this._state = 'shown';
+					});
+				}
+			}
+		}
 
 		let selectedTabInfo = null;
 		this._tabInfos = [];
@@ -485,6 +551,9 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			await this._updateTabsContainerWidth(selectedTabInfo);
 			this._updateMeasures();
 			await this._updateScrollPosition(selectedTabInfo);
+		} else {
+			await this.updateComplete;
+			this._updateMeasures();
 		}
 
 		this.dispatchEvent(new CustomEvent(
