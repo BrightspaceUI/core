@@ -2,7 +2,7 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, getDateTimeDescriptorShared, getToday, parseISODate } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -254,8 +254,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this._today = getToday();
-		const date = this.selectedValue ? parseISODate(this.selectedValue) : this._today;
+		this._today = getDateFromDateObj(getToday());
+		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
 		this._focusDate = new Date(
 			date.getFullYear(),
 			date.getMonth(),
@@ -310,7 +310,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
-				const selected = this.selectedValue ? checkIfDatesEqual(day, parseISODate(this.selectedValue)) : false;
+				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
@@ -408,7 +408,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
 
-		this.selectedValue = formatDateInISO(new Date(year, month, date));
+		this.selectedValue = formatDateInISO({year: year, month: (parseInt(month) + 1), date: date});
 
 		const eventDetails = {
 			bubbles: true,
@@ -540,10 +540,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	}
 
 	async _updateFocusDate() {
-		const selectedValueDate = this.selectedValue ? parseISODate(this.selectedValue) : null;
+		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
 		if (dateElem) {
-			this._focusDate = new Date(selectedValueDate.getFullYear(), selectedValueDate.getMonth(), selectedValueDate.getDate());
+			this._focusDate = selectedValueDate;
 		} else {
 			this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
 		}

@@ -7,12 +7,12 @@ import '../icons/icon.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getDateTimeDescriptorShared, getToday, parseISODate } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 export function formatISODateInUserCalDescriptor(val) {
-	return formatDate(parseISODate(val));
+	return formatDate(getDateFromISODate(val));
 }
 
 class InputDate extends LocalizeStaticMixin(LitElement) {
@@ -32,6 +32,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return css`
 			:host {
 				display: inline-block;
+				max-width: 9rem;
 				min-width: 7rem;
 				width: 100%;
 			}
@@ -147,6 +148,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
+		if (!this.label) {
+			console.warn('d2l-input-date component requires label text');
+		}
+
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
@@ -165,7 +170,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
-					placeholder="${this._dateTimeDescriptor.formats.dateFormats.short}"
+					placeholder="${(this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase()}"
 					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
 					<d2l-icon
@@ -231,7 +236,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			this._updateValueDispatchEvent(formatDateInISO(date));
+			this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
 		} catch (e) {
 			// leave value the same when invalid input
 		}

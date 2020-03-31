@@ -5,16 +5,16 @@ import '../menu/menu-item-radio.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { getToday, parseISOTime } from '../../helpers/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen-styles.js';
 
-const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
-const TODAY = new Date();
-const END_OF_DAY = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59);
-const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
+const TODAY = getToday();
+const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
+const DEFAULT_VALUE = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
 let INTERVALS = null;
 
 function getIntervalNumber(size) {
@@ -44,7 +44,7 @@ function getIntervals(size) {
 
 	INTERVALS[size] = [];
 	const minutes = getIntervalNumber(size);
-	const intervalTime = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
+	const intervalTime = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
 
 	while (intervalTime < END_OF_DAY) {
 		INTERVALS[size].push({
@@ -63,32 +63,8 @@ function formatValue(time) {
 }
 
 function parseValue(val) {
-	let hour = 0;
-	let minute = 0;
-	let second = 0;
-	const match = VALUE_RE.exec(val);
-	if (match !== null) {
-		if (match.length > 1) {
-			hour = parseInt(match[1]);
-			if (isNaN(hour) || hour < 0 || hour > 23) {
-				hour = 0;
-			}
-		}
-		if (match.length > 2) {
-			minute = parseInt(match[2]);
-			if (isNaN(minute) || minute < 0 || minute > 59) {
-				minute = 0;
-			}
-		}
-		if (match.length > 3) {
-			second = parseInt(match[4]);
-			if (isNaN(second) || second < 0 || second > 59) {
-				second = 0;
-			}
-		}
-	}
-	const time = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), hour, minute, second);
-	return time;
+	const parsed = parseISOTime(val);
+	return new Date(TODAY.year, TODAY.month, TODAY.date, parsed.hours, parsed.minutes, parsed.seconds);
 }
 
 class InputTime extends LitElement {
@@ -114,6 +90,7 @@ class InputTime extends LitElement {
 			css`
 				:host {
 					display: inline-block;
+					max-width: 6rem;
 					width: 100%;
 				}
 				:host([hidden]) {
@@ -225,9 +202,9 @@ class InputTime extends LitElement {
 	getTime() {
 		const time = parseValue(this.value);
 		return {
-			hour: time.getHours(),
-			minute: time.getMinutes(),
-			second: time.getSeconds()
+			hours: time.getHours(),
+			minutes: time.getMinutes(),
+			seconds: time.getSeconds()
 		};
 	}
 
