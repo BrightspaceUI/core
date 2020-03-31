@@ -30,6 +30,7 @@ npm install @brightspace-ui/core
   * [More/less](components/more-less/): constrain long bits of content
   * [Off-screen](components/offscreen/): component and styles for positioning content off-screen
   * [Status Indicator](components/status-indicator/): status-indicator components
+  * [Tooltip](components/tooltip/): tooltip components
   * [Typography](components/typography/): typography styles and components
 * Helpers
   * [Helpers](helpers/): helpers for composed DOM, unique ids, etc.
