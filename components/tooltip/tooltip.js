@@ -363,6 +363,92 @@ class Tooltip extends RtlMixin(LitElement) {
 		});
 	}
 
+	async updatePosition() {
+
+		if (!this._target && !this.customTarget) {
+			return;
+		}
+
+		let targetRect;
+		if (this.customTarget) {
+			const offsetParent = getOffsetParent(this);
+			const { left, top } = offsetParent.getBoundingClientRect();
+			const targetLeft = left + this.customTarget.left;
+			const targetTop = top + this.customTarget.top;
+			targetRect = {
+				left: targetLeft,
+				top: targetTop,
+				width: this.customTarget.width,
+				height: this.customTarget.height,
+				right: targetLeft + this.customTarget.width,
+				bottom: targetTop + this.customTarget.height
+			};
+		} else {
+			targetRect = this._target.getBoundingClientRect();
+		}
+		const spaceAround = this._computeSpaceAround(targetRect);
+
+		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
+		const content = this._getContent();
+		const spaces = this._computeAvailableSpaces(targetRect, spaceAround);
+		const space = await this._fitContentToSpace(content, spaces);
+
+		const contentRect = content.getBoundingClientRect();
+		// + 1 because scrollWidth does not give sub-pixel measurements and half a pixel may cause text to unexpectedly wrap
+		this._maxWidth = content.scrollWidth + 2 * contentBorderSize + 1;
+		this._openDir = space.dir;
+		await this.updateComplete;
+
+		// Compute the x and y position of the tooltip relative to its target
+		const targetPosition = this._getTargetPosition();
+		const tooltipRect = targetPosition.getBoundingClientRect();
+
+		const top = targetRect.top - tooltipRect.top + targetPosition.offsetTop;
+		const left = targetRect.left - tooltipRect.left + targetPosition.offsetLeft;
+
+		if (this._isAboveOrBelow()) {
+			this._targetRect = {
+				x: left,
+				y: this._openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
+				width: targetRect.width,
+				height: 0,
+			};
+		} else {
+			this._targetRect = {
+				x: this._openDir === 'left' ? left - this.offset : left + targetRect.width + this.offset,
+				y: top,
+				height: targetRect.height,
+				width: 0,
+			};
+		}
+
+		// Compute how much the tooltip is shifted relative to its pointer
+		if (this._isAboveOrBelow() && this.align === 'start') {
+			this._tooltipShift = 0;
+		} else if (this._isAboveOrBelow() && this.align === 'end') {
+			this._tooltipShift = targetRect.width - this._maxWidth;
+		} else {
+			let spaceLeft, spaceRight, centerDelta, maxShift, minShift;
+			if (this._isAboveOrBelow()) {
+				const isRtl = this.getAttribute('dir') === 'rtl';
+				spaceLeft = !isRtl ? spaceAround.left : spaceAround.right;
+				spaceRight = !isRtl ? spaceAround.right : spaceAround.left;
+				centerDelta = this._maxWidth - targetRect.width;
+				maxShift = targetRect.width / 2;
+				minShift = maxShift - this._maxWidth;
+			} else {
+				spaceLeft = spaceAround.above;
+				spaceRight = spaceAround.below;
+				centerDelta = contentRect.height - targetRect.height;
+				maxShift = targetRect.height / 2;
+				minShift = maxShift - contentRect.height;
+			}
+			const shift = computeTooltipShift(centerDelta, spaceLeft, spaceRight);
+			const shiftMargin = (pointerRotatedLength / 2) + contentBorderRadius;
+			this._tooltipShift = Math.min(Math.max(shift, minShift + shiftMargin), maxShift - shiftMargin);
+		}
+	}
+
 	_addListeners() {
 		if (!this._target) {
 			return;
@@ -510,92 +596,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this._openDir === 'bottom' || this._openDir === 'top';
 	}
 
-	async _layoutTooltip() {
-
-		if (!this._target && !this.customTarget) {
-			return;
-		}
-
-		let targetRect;
-		if (this.customTarget) {
-			const offsetParent = getOffsetParent(this);
-			const { left, top } = offsetParent.getBoundingClientRect();
-			const targetLeft = left + this.customTarget.left;
-			const targetTop = top + this.customTarget.top;
-			targetRect = {
-				left: targetLeft,
-				top: targetTop,
-				width: this.customTarget.width,
-				height: this.customTarget.height,
-				right: targetLeft + this.customTarget.width,
-				bottom: targetTop + this.customTarget.height
-			};
-		} else {
-			targetRect = this._target.getBoundingClientRect();
-		}
-		const spaceAround = this._computeSpaceAround(targetRect);
-
-		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
-		const content = this._getContent();
-		const spaces = this._computeAvailableSpaces(targetRect, spaceAround);
-		const space = await this._fitContentToSpace(content, spaces);
-
-		const contentRect = content.getBoundingClientRect();
-		// + 1 because scrollWidth does not give sub-pixel measurements and half a pixel may cause text to unexpectedly wrap
-		this._maxWidth = content.scrollWidth + 2 * contentBorderSize + 1;
-		this._openDir = space.dir;
-		await this.updateComplete;
-
-		// Compute the x and y position of the tooltip relative to its target
-		const targetPosition = this._getTargetPosition();
-		const tooltipRect = targetPosition.getBoundingClientRect();
-
-		const top = targetRect.top - tooltipRect.top + targetPosition.offsetTop;
-		const left = targetRect.left - tooltipRect.left + targetPosition.offsetLeft;
-
-		if (this._isAboveOrBelow()) {
-			this._targetRect = {
-				x: left,
-				y: this._openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
-				width: targetRect.width,
-				height: 0,
-			};
-		} else {
-			this._targetRect = {
-				x: this._openDir === 'left' ? left - this.offset : left + targetRect.width + this.offset,
-				y: top,
-				height: targetRect.height,
-				width: 0,
-			};
-		}
-
-		// Compute how much the tooltip is shifted relative to its pointer
-		if (this._isAboveOrBelow() && this.align === 'start') {
-			this._tooltipShift = 0;
-		} else if (this._isAboveOrBelow() && this.align === 'end') {
-			this._tooltipShift = targetRect.width - this._maxWidth;
-		} else {
-			let spaceLeft, spaceRight, centerDelta, maxShift, minShift;
-			if (this._isAboveOrBelow()) {
-				const isRtl = this.getAttribute('dir') === 'rtl';
-				spaceLeft = !isRtl ? spaceAround.left : spaceAround.right;
-				spaceRight = !isRtl ? spaceAround.right : spaceAround.left;
-				centerDelta = this._maxWidth - targetRect.width;
-				maxShift = targetRect.width / 2;
-				minShift = maxShift - this._maxWidth;
-			} else {
-				spaceLeft = spaceAround.above;
-				spaceRight = spaceAround.below;
-				centerDelta = contentRect.height - targetRect.height;
-				maxShift = targetRect.height / 2;
-				minShift = maxShift - contentRect.height;
-			}
-			const shift = computeTooltipShift(centerDelta, spaceLeft, spaceRight);
-			const shiftMargin = (pointerRotatedLength / 2) + contentBorderRadius;
-			this._tooltipShift = Math.min(Math.max(shift, minShift + shiftMargin), maxShift - shiftMargin);
-		}
-	}
-
 	_onTargetBlur() {
 		this._isFocusing = false;
 		this._updateShowing();
@@ -627,7 +627,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this.showing) {
 			return;
 		}
-		this._layoutTooltip();
+		this.updatePosition();
 	}
 
 	_removeListeners() {
@@ -649,7 +649,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		clearTimeout(this._hoverTimeout);
 		if (newValue) {
 			await this.updateComplete;
-			await this._layoutTooltip();
+			await this.updatePosition();
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
@@ -680,7 +680,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._addListeners();
 
 		if (this.showing) {
-			this._layoutTooltip();
+			this.updatePosition();
 		}
 	}
 }
