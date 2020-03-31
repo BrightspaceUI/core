@@ -13,6 +13,7 @@ import { offscreenStyles } from '../offscreen/offscreen-styles.js';
 
 const VALUE_RE = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
 const TODAY = new Date();
+const END_OF_DAY = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59);
 const DEFAULT_VALUE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
 let INTERVALS = null;
 
@@ -34,7 +35,7 @@ function getIntervalNumber(size) {
 	}
 }
 
-function getIntervals(size, enforceIntervals) {
+function getIntervals(size) {
 	if (INTERVALS != null && INTERVALS[size] != null) {
 		return;
 	} else if (INTERVALS == null) {
@@ -43,15 +44,14 @@ function getIntervals(size, enforceIntervals) {
 
 	INTERVALS[size] = [];
 	let minutes = getIntervalNumber(size);
-
 	let intervalTime = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 0, 0, 0);
-	const endOfDay = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate(), 23, 59, 59)
-	while (intervalTime < endOfDay) {
-		INTERVALS[size].push(new Date(intervalTime));
+
+	while (intervalTime < END_OF_DAY) {
+		INTERVALS[size].push({
+			text: formatTime(intervalTime),
+			value: formatValue(intervalTime)
+		});
 		intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
-	}
-	if (!enforceIntervals) {
-		INTERVALS[size].push(endOfDay);
 	}
 }
 
@@ -97,7 +97,7 @@ class InputTime extends LitElement {
 		return {
 			disabled: { type: Boolean },
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
-			intervals: { type: String },
+			timeInterval: { type: String, attribute: 'time-interval' },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			value: { type: String },
@@ -106,7 +106,11 @@ class InputTime extends LitElement {
 	}
 
 	static get styles() {
-		return [ inputStyles, inputLabelStyles, bodySmallStyles, offscreenStyles,
+		return [
+			bodySmallStyles,
+			inputLabelStyles,
+			inputStyles,
+			offscreenStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -131,8 +135,8 @@ class InputTime extends LitElement {
 	constructor() {
 		super();
 		this.disabled = false;
-		this.enforceIntervals = false;
-		this.intervals = 'thirty';
+		this.enforceTimeIntervals = false;
+		this.timeInterval = 'thirty';
 		this.labelHidden = false;
 		this._dropdownId = getUniqueId();
 		this._formattedValue = formatTime(DEFAULT_VALUE);
@@ -145,9 +149,11 @@ class InputTime extends LitElement {
 		const oldValue = this.value;
 		let time = parseValue(val);
 		if (this.enforceTimeIntervals) {
-			const interval = getIntervalNumber(this.intervals);
+			const interval = getIntervalNumber(this.timeInterval);
 			const difference = time.getMinutes() % interval;
-			time.setMinutes(time.getMinutes() + interval - difference);
+			if (difference > 0) {
+				time.setMinutes(time.getMinutes() + interval - difference);
+			}
 		}
 		this._value = formatValue(time);
 		this._formattedValue = formatTime(time);
@@ -155,7 +161,7 @@ class InputTime extends LitElement {
 	}
 
 	render() {
-		getIntervals(this.intervals, this.enforceIntervals);
+		getIntervals(this.timeInterval);
 		const input = html`
 			<label>
 				<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
@@ -181,13 +187,21 @@ class InputTime extends LitElement {
 							class="d2l-input-time-menu"
 							aria-labelledby="${this._dropdownId}-label"
 							@d2l-menu-item-change="${this._handleDropdownChange}">
-							${INTERVALS[this.intervals].map(i => html`
+							${INTERVALS[this.timeInterval].map(i => html`
 								<d2l-menu-item-radio
-									text="${formatTime(i)}"
-									value="${formatValue(i)}"
-									?selected=${this._value === formatValue(i)}>
+									text="${i.text}"
+									value="${i.value}"
+									?selected=${this._value === i.value}>
 								</d2l-menu-item-radio>
 							`)}
+							${this.enforceTimeIntervals ? ''
+								: html`
+									<d2l-menu-item-radio
+										text="${formatTime(END_OF_DAY)}"
+										value="${formatValue(END_OF_DAY)}"
+										?selected=${this._value === formatValue(END_OF_DAY)}>
+									</d2l-menu-item-radio>
+								`}
 						</d2l-menu>
 						<div class="d2l-input-time-timezone d2l-body-small" slot="footer">${this._timezone}</div>
 					</d2l-dropdown-menu>
