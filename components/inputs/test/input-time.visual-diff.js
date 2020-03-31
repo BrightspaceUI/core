@@ -1,25 +1,6 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
-
-function getOpenEvent(page, selector) {
-	return page.$eval(selector, (elem) => {
-		return new Promise((resolve) => {
-			elem.shadowRoot.querySelector('d2l-dropdown').addEventListener('d2l-dropdown-open', resolve, { once: true });
-		});
-	});
-}
-
-async function open(page, selector) {
-	const openEvent = getOpenEvent(page, selector);
-	await page.$eval(selector, (elem) => {
-		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
-		return new Promise((resolve) => {
-			dropdown.querySelector('[dropdown-content]').addEventListener('animationend', () => resolve(), { once: true });
-			dropdown.toggleOpen();
-		});
-	});
-	return openEvent;
-}
+const helper = require('./input-helper.js');
 
 describe('d2l-input-time', () => {
 
@@ -60,8 +41,9 @@ describe('d2l-input-time', () => {
 		'dropdown-scrolled',
 	].forEach((name) => {
 		it(name, async function() {
-			await open(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+			await helper.open(page, `#${name}`);
+			const rect = await helper.getRect(page, `#${name}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 

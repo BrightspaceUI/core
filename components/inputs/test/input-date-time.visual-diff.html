@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" data-timezone='{"name": "est", "identifier": "America/Toronto"}'>
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-date-time.js';
+			import sinon from 'sinon';
+
+			const newToday = new Date('2018-02-12T12:00Z');
+			sinon.useFakeTimers(newToday.getTime());
+		</script>
+		<title>d2l-input-date-time visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div style="width: 400px;">
+			<div class="visual-diff">
+				<d2l-input-date-time id="basic" value="2019-02-01T12:00:00.000Z"></d2l-input-date-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time id="labelled" label="Start Date" value="2019-03-02T05:00:00.000Z"></d2l-input-date-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time id="invalid-value" label="Start Date" value="2019-03-02"></d2l-input-date-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time id="disabled" disabled label="End Date" value="1990-01-01T23:00:00.000Z"></d2l-input-date-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time id="no-value"></d2l-input-date-time>
+			</div>
+		</div>
+	</body>
+</html>
