@@ -25,19 +25,19 @@ describe('d2l-input-date-time', () => {
 		it('passes all axe tests', async() => {
 			const elem = await fixture(basicFixture);
 			await expect(elem).to.be.accessible();
-		}).timeout(5000);
+		}).timeout(3000);
 
 		it('passes all axe tests when disabled', async() => {
 			const elem = await fixture('<d2l-input-date-time label="label text" disabled></d2l-input-date-time>');
 			await expect(elem).to.be.accessible();
-		}).timeout(5000);
+		}).timeout(3000);
 
 		it('passes all axe tests when focused', async() => {
 			const elem = await fixture(basicFixture);
 			setTimeout(() => elem.focus());
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
-		}).timeout(5000);
+		}).timeout(7500);
 	});
 
 	describe('utility function', () => {
