@@ -185,20 +185,21 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 			.d2l-calendar-date div {
 				align-items: center;
-				border: 2px solid transparent;
+				background-color: white;
 				border-radius: 0.3rem;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
 				display: flex;
 				font-size: 0.8rem;
-				height: 2rem;
+				height: calc(2rem - 4px);
 				justify-content: center;
 				margin-left: auto;
 				margin-right: auto;
 				opacity: 0;
+				padding: 4px;
 				position: relative;
 				text-align: center;
-				width: 2rem;
+				width: calc(2rem - 4px);
 			}
 
 			:host(.d2l-calendar-next) .d2l-calendar-title .d2l-heading-4,
@@ -213,9 +214,64 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 			:host(.d2l-calendar-next) .d2l-heading-4,
 			:host(.d2l-calendar-next) .d2l-calendar-date div {
-				-webkit-animation: d2l-calendar-next-animation 400ms ease-out;
-				animation: d2l-calendar-next-animation 400ms ease-out;
+				-webkit-animation: d2l-calendar-next-animation 200ms ease-out;
+				animation: d2l-calendar-next-animation 200ms ease-out;
 			}
+
+			:host(.d2l-calendar-prev) .d2l-heading-4,
+			:host(.d2l-calendar-prev) .d2l-calendar-date div {
+				-webkit-animation: d2l-calendar-prev-animation 200ms ease-out;
+				animation: d2l-calendar-prev-animation 200ms ease-out;
+			}
+
+			.d2l-calendar-date div:not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+				background-color: var(--d2l-color-gypsum);
+			}
+
+			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px #006fbf;
+				transition: none;
+			}
+
+			.d2l-calendar-date:focus {
+				outline: none;
+			}
+
+			.d2l-calendar-date:focus div {
+				padding: 0;
+			}
+
+			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected) {
+				transition: box-shadow 200ms ease-in;
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
+				border-radius: 0.16rem;
+			}
+
+			div.d2l-calendar-date-selected {
+				background-color: var(--d2l-color-celestine-plus-2);
+				border: 1px solid var(--d2l-color-celestine);
+				height: 2rem;
+				width: 2rem;
+				padding: 0;
+			}
+
+			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
+				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px #006fbf;
+				border-radius: 0.12rem;
+				border-width: 0;
+				height: calc(2rem - 4px);
+				transition: box-shadow 200ms ease-in;
+				width: calc(2rem - 4px);
+			}
+
+			div.d2l-calendar-date-today,
+			div.d2l-calendar-date-selected {
+				font-size: 1rem;
+				font-weight: 700;
+			}
+
 			@keyframes d2l-calendar-next-animation {
 				0% { transform: translate(10px,0); }
 				100% { transform: translate(0,0); }
@@ -225,11 +281,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				100% { -webkit-transform: translate(0,0); }
 			}
 
-			:host(.d2l-calendar-prev) .d2l-heading-4,
-			:host(.d2l-calendar-prev) .d2l-calendar-date div {
-				-webkit-animation: d2l-calendar-prev-animation 400ms ease-out;
-				animation: d2l-calendar-prev-animation 400ms ease-out;
-			}
 			@keyframes d2l-calendar-prev-animation {
 				0% { transform: translate(-10px,0); }
 				100% { transform: translate(0,0);  }
@@ -237,34 +288,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			@-webkit-keyframes d2l-calendar-prev-animation {
 				0% { -webkit-transform: translate(-10px,0); }
 				100% { -webkit-transform: translate(0,0); }
-			}
-
-			.d2l-calendar-date div:not(.d2l-calendar-date-selected):hover,
-			.d2l-calendar-date div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
-				background-color: var(--d2l-color-gypsum);
-			}
-
-			.d2l-calendar-date:focus {
-				outline: none;
-			}
-
-			.d2l-calendar-date:focus div {
-				border: 2px solid var(--d2l-color-celestine);
-			}
-
-			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected) {
-				transition: border-color 200ms ease-in;
-			}
-
-			div.d2l-calendar-date-selected {
-				background-color: var(--d2l-color-celestine-plus-2);
-				border: 1px solid var(--d2l-color-celestine);
-			}
-
-			div.d2l-calendar-date-today,
-			div.d2l-calendar-date-selected {
-				font-size: 1rem;
-				font-weight: 700;
 			}
 		`];
 	}

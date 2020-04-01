@@ -121,7 +121,6 @@ describe('d2l-calendar', () => {
 					const dateParent = date.parentNode;
 					dateParent.focus();
 				});
-				await getEvent(page, firstCalendarOfPage, 'transitionend');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
@@ -133,7 +132,6 @@ describe('d2l-calendar', () => {
 					const dateParent = date.parentNode;
 					dateParent.focus();
 				});
-				await getEvent(page, firstCalendarOfPage, 'transitionend');
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
