@@ -231,7 +231,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected):hover,
 			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
-				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px #006fbf;
+				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
 
@@ -239,31 +239,22 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				outline: none;
 			}
 
-			.d2l-calendar-date:focus div {
-				padding: 0;
-			}
-
-			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected) {
-				transition: box-shadow 200ms ease-in;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
+			.d2l-calendar-date:focus div.d2l-calendar-date-inner {
 				border-radius: 0.16rem;
+				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
+				padding: 0;
+				transition: box-shadow 200ms ease-in;
 			}
 
 			div.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
-				height: 2rem;
-				width: 2rem;
-				padding: 0;
+				padding: 2px;
 			}
 
 			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
-				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px #006fbf;
-				border-radius: 0.12rem;
 				border-width: 0;
-				height: calc(2rem - 4px);
-				transition: box-shadow 200ms ease-in;
-				width: calc(2rem - 4px);
+				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px var(--d2l-color-celestine);
 			}
 
 			div.d2l-calendar-date-today,
@@ -381,6 +372,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
+					'd2l-calendar-date-inner': true,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
