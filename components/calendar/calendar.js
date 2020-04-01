@@ -191,15 +191,14 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				cursor: pointer;
 				display: flex;
 				font-size: 0.8rem;
-				height: 1.7rem;
+				height: 2rem;
 				justify-content: center;
 				margin-left: auto;
 				margin-right: auto;
 				opacity: 0;
-				padding: 0.15rem;
 				position: relative;
 				text-align: center;
-				width: 1.7rem;
+				width: 2rem;
 			}
 
 			:host(.d2l-calendar-next) .d2l-calendar-title .d2l-heading-4,
@@ -218,11 +217,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				animation: d2l-calendar-next-animation 400ms ease-out;
 			}
 			@keyframes d2l-calendar-next-animation {
-				0% { transform: translate(20px,0); }
+				0% { transform: translate(10px,0); }
 				100% { transform: translate(0,0); }
 			}
 			@-webkit-keyframes d2l-calendar-next-animation {
-				0% { -webkit-transform: translate(20px,0); }
+				0% { -webkit-transform: translate(10px,0); }
 				100% { -webkit-transform: translate(0,0); }
 			}
 
@@ -232,11 +231,11 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				animation: d2l-calendar-prev-animation 400ms ease-out;
 			}
 			@keyframes d2l-calendar-prev-animation {
-				0% { transform: translate(-20px,0); }
+				0% { transform: translate(-10px,0); }
 				100% { transform: translate(0,0);  }
 			}
 			@-webkit-keyframes d2l-calendar-prev-animation {
-				0% { -webkit-transform: translate(-20px,0); }
+				0% { -webkit-transform: translate(-10px,0); }
 				100% { -webkit-transform: translate(0,0); }
 			}
 
@@ -253,17 +252,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				border: 2px solid var(--d2l-color-celestine);
 			}
 
-			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
-				transition: border-width 200ms ease-in;
-			}
-
 			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected) {
-				height: 2rem;
-				padding: 0;
-				width: 2rem;
-				transition: border-color, height, width;
-				transition-duration: 200ms;
-				transition-timing-function: ease-in;
+				transition: border-color 200ms ease-in;
 			}
 
 			div.d2l-calendar-date-selected {
