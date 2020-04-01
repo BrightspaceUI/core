@@ -202,9 +202,9 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				width: 1.7rem;
 			}
 
-			:host(.d2l-calendar-next) .d2l-heading-4,
-			:host(.d2l-calendar-prev) .d2l-heading-4,
-			:host(.d2l-calendar-initial-month) .d2l-heading-4,
+			:host(.d2l-calendar-next) .d2l-calendar-title .d2l-heading-4,
+			:host(.d2l-calendar-prev) .d2l-calendar-title .d2l-heading-4,
+			:host(.d2l-calendar-initial-month) .d2l-calendar-title .d2l-heading-4,
 			:host(.d2l-calendar-next) .d2l-calendar-date div,
 			:host(.d2l-calendar-prev) .d2l-calendar-date div,
 			:host(.d2l-calendar-initial-month) .d2l-calendar-date div {
