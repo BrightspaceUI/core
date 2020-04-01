@@ -126,11 +126,15 @@ describe('d2l-calendar', () => {
 			});
 
 			it('hover and focus on selected-value', async function() {
-				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
-					date.classList.add('d2l-calendar-date-hover');
+				let date;
+				await page.$eval(firstCalendarOfPage, async(calendar) => {
+					date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
 					const dateParent = date.parentNode;
 					dateParent.focus();
+				});
+				await getEvent(page, firstCalendarOfPage, 'transitionend');
+				await page.$eval(firstCalendarOfPage, async() => {
+					date.classList.add('d2l-calendar-date-hover');
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
