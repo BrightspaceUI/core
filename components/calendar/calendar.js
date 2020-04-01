@@ -183,6 +183,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				opacity: 0;
 			}
 
+			.d2l-calendar-date {
+				opacity: 0;
+			}
+
 			.d2l-calendar-date div {
 				align-items: center;
 				background-color: white;
@@ -195,7 +199,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				justify-content: center;
 				margin-left: auto;
 				margin-right: auto;
-				opacity: 0;
 				padding: 4px;
 				position: relative;
 				text-align: center;
@@ -205,9 +208,9 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			:host(.d2l-calendar-next) .d2l-calendar-title .d2l-heading-4,
 			:host(.d2l-calendar-prev) .d2l-calendar-title .d2l-heading-4,
 			:host(.d2l-calendar-initial-month) .d2l-calendar-title .d2l-heading-4,
-			:host(.d2l-calendar-next) .d2l-calendar-date div,
-			:host(.d2l-calendar-prev) .d2l-calendar-date div,
-			:host(.d2l-calendar-initial-month) .d2l-calendar-date div {
+			:host(.d2l-calendar-next) .d2l-calendar-date,
+			:host(.d2l-calendar-prev) .d2l-calendar-date,
+			:host(.d2l-calendar-initial-month) .d2l-calendar-date {
 				opacity: 1;
 				transition: opacity 200ms ease-out;
 			}
