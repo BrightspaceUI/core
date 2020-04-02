@@ -234,8 +234,11 @@ class InputText extends RtlMixin(LitElement) {
 	}
 
 	_onSlotChange() {
-		this._firstSlotWidth = this.shadowRoot.querySelector('#first-slot').offsetWidth;
-		this._lastSlotWidth = this.shadowRoot.querySelector('#last-slot').offsetWidth;
+		this.requestUpdate(); // needed for legacy Edge
+		this.updateComplete.then(() => {
+			this._firstSlotWidth = this.shadowRoot.querySelector('#first-slot').offsetWidth;
+			this._lastSlotWidth = this.shadowRoot.querySelector('#last-slot').offsetWidth;
+		});
 	}
 
 }
