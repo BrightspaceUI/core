@@ -152,7 +152,7 @@ describe('d2l-calendar', () => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
 			});
-			await getEvent(page, '#contains-today-diff-selected', 'animationend');
+			await getEvent(page, '#contains-today-diff-selected', 'transitionend');
 			const rect = await visualDiff.getRect(page, '#contains-today-diff-selected');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -162,7 +162,7 @@ describe('d2l-calendar', () => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
 			});
-			await getEvent(page, '#dec-2019', 'animationend');
+			await getEvent(page, '#dec-2019', 'transitionend');
 			const rect = await visualDiff.getRect(page, '#dec-2019');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -180,7 +180,7 @@ describe('d2l-calendar', () => {
 				arrow.click();
 			});
 			await tabToDates();
-			await getEvent(page, firstCalendarOfPage, 'animationend');
+			await getEvent(page, firstCalendarOfPage, 'transitionend');
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -223,7 +223,7 @@ describe('d2l-calendar', () => {
 					await page.keyboard.press('ArrowUp');
 					await page.keyboard.press('ArrowUp');
 					await page.keyboard.press('ArrowUp');
-					await getEvent(page, firstCalendarOfPage, 'animationend');
+					await getEvent(page, firstCalendarOfPage, 'transitionend');
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
@@ -233,7 +233,7 @@ describe('d2l-calendar', () => {
 					for (let i = 0; i < 18; i++) {
 						await page.keyboard.press('ArrowLeft');
 					}
-					await getEvent(page, firstCalendarOfPage, 'animationend');
+					await getEvent(page, firstCalendarOfPage, 'transitionend');
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
@@ -243,7 +243,7 @@ describe('d2l-calendar', () => {
 					await page.keyboard.press('ArrowDown');
 					await page.keyboard.press('ArrowDown');
 					await page.keyboard.press('ArrowDown');
-					await getEvent(page, firstCalendarOfPage, 'animationend');
+					await getEvent(page, firstCalendarOfPage, 'transitionend');
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
@@ -253,7 +253,7 @@ describe('d2l-calendar', () => {
 					for (let i = 0; i < 18; i++) {
 						await page.keyboard.press('ArrowRight');
 					}
-					await getEvent(page, firstCalendarOfPage, 'animationend');
+					await getEvent(page, firstCalendarOfPage, 'transitionend');
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
@@ -285,7 +285,7 @@ describe('d2l-calendar', () => {
 					});
 					await tabToDates();
 					await page.keyboard.press('PageDown');
-					await getEvent(page, firstCalendarOfPage, 'animationend');
+					await getEvent(page, firstCalendarOfPage, 'transitionend');
 
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -306,7 +306,7 @@ describe('d2l-calendar', () => {
 
 					await tabToDates();
 					await page.keyboard.press('PageUp');
-					await getEvent(page, firstCalendarOfPage, 'animationend');
+					await getEvent(page, firstCalendarOfPage, 'transitionend');
 
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
