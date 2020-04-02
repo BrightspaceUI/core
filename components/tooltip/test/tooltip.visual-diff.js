@@ -47,8 +47,10 @@ describe('d2l-tooltip', () => {
 		'wide-target-vertical',
 		'too-big-for-space',
 		'align-start',
+		'align-start-narrow',
 		'align-start-rtl',
 		'align-end',
+		'align-end-narrow',
 		'align-end-rtl'
 	].forEach((testName) => {
 
