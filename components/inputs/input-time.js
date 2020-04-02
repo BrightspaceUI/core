@@ -15,7 +15,7 @@ import { offscreenStyles } from '../offscreen/offscreen-styles.js';
 const TODAY = getToday();
 const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
 const DEFAULT_VALUE = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
-let INTERVALS = null;
+const INTERVALS = new Map();
 
 function getIntervalNumber(size) {
 	switch (size) {
@@ -35,24 +35,24 @@ function getIntervalNumber(size) {
 	}
 }
 
-function getIntervals(size) {
-	if (INTERVALS !== null && INTERVALS[size] !== undefined) {
-		return;
-	} else if (INTERVALS === null) {
-		INTERVALS = [];
+function initIntervals(size) {
+	if (!INTERVALS.has(size)) {
+		const intervalList = [];
+		const minutes = getIntervalNumber(size);
+		const intervalTime = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
+
+		while (intervalTime < END_OF_DAY) {
+			intervalList.push({
+				text: formatTime(intervalTime),
+				value: formatValue(intervalTime)
+			});
+			intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
+		}
+
+		INTERVALS.set(size, intervalList);
 	}
 
-	INTERVALS[size] = [];
-	const minutes = getIntervalNumber(size);
-	const intervalTime = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
-
-	while (intervalTime < END_OF_DAY) {
-		INTERVALS[size].push({
-			text: formatTime(intervalTime),
-			value: formatValue(intervalTime)
-		});
-		intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
-	}
+	return INTERVALS.get(size);
 }
 
 function formatValue(time) {
@@ -138,7 +138,7 @@ class InputTime extends LitElement {
 	}
 
 	render() {
-		getIntervals(this.timeInterval);
+		initIntervals(this.timeInterval);
 		const input = html`
 			<label>
 				<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
@@ -164,7 +164,7 @@ class InputTime extends LitElement {
 							class="d2l-input-time-menu"
 							aria-labelledby="${this._dropdownId}-label"
 							@d2l-menu-item-change="${this._handleDropdownChange}">
-							${INTERVALS[this.timeInterval].map(i => html`
+							${INTERVALS.get(this.timeInterval).map(i => html`
 								<d2l-menu-item-radio
 									text="${i.text}"
 									value="${i.value}"
