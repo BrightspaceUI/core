@@ -179,6 +179,7 @@ describe('d2l-calendar', () => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
 				arrow.click();
 			});
+			await monthChangeEvent(page, firstCalendarOfPage);
 			await tabToDates();
 			await dateChangeEvent(page, firstCalendarOfPage);
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
