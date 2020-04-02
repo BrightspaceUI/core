@@ -91,8 +91,15 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 	}
 
 	__getMenuElement() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot')
-			.assignedNodes()
+		let slot = this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot');
+
+		//Legacy Edge structures the dom differently re: slots
+		if (slot === null) {
+			slot = this.shadowRoot.querySelector('.d2l-dropdown-content-container')
+			.childNodes.filter(node => node.tagName === 'SLOT')[0]
+		}
+
+		return slot.assignedNodes()
 			.filter(node => node.hasAttribute
 				&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 	}
