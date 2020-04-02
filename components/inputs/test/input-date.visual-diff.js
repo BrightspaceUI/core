@@ -55,6 +55,11 @@ describe('d2l-input-date', () => {
 		it('tab on open', async function() {
 			await helper.open(page, '#basic');
 			await page.keyboard.press('Tab');
+			await page.$eval('#basic', (elem) => {
+				return new Promise((resolve) => {
+					elem.shadowRoot.querySelector('d2l-calendar').shadowRoot.addEventListener('transitionend', resolve, { once: true });
+				});
+			});
 			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
