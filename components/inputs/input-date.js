@@ -232,12 +232,16 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	async _handleChange(e) {
 		const value = e.target.value;
+		if (value === '') {
+			this._updateValueDispatchEvent('');
+			return;
+		}
 		this._formattedValue = value;
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
 			this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
-		} catch (e) {
+		} catch (err) {
 			// leave value the same when invalid input
 		}
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date

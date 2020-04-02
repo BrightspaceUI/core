@@ -119,6 +119,15 @@ describe('d2l-input-date', () => {
 			expect(elem.value).to.equal('');
 		});
 
+		it('should fire "d2l-input-date-change" event when input-text value is changed to empty', async() => {
+			const elem = await fixture(basicFixture);
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			inputElem.value = '';
+			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			await oneEvent(elem, 'd2l-input-date-change');
+			expect(elem.value).to.equal('');
+		});
+
 		it('should not fire "d2l-input-date-change" event when input value is invalid', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
