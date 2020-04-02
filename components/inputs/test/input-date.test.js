@@ -141,6 +141,20 @@ describe('d2l-input-date', () => {
 			expect(fired).to.be.false;
 		});
 
+		it('should not fire "d2l-input-date-change" event when input value does not change', async() => {
+			const elem = await fixture(basicFixture);
+			elem.value = '2019-01-01';
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			let fired = false;
+			elem.addEventListener('d2l-input-date-change', () => {
+				fired = true;
+			});
+			inputElem.value = '01/01/2019';
+			dispatchEvent(inputElem, 'change', false);
+			await aTimeout(1);
+			expect(fired).to.be.false;
+		});
+
 		it('should change "value" property when input value changes', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
