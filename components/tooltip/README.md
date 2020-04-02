@@ -10,7 +10,7 @@ The `d2l-tooltip` component is used to display additional information when users
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
-<input type="text" placeholder="Hover for Error" id="tooltip-error">
+<d2l-input-text placeholder="Hover for Error" id="tooltip-error" aria-invalid="true"></d2l-input-text>
 <d2l-tooltip for="tooltip-error" state="error" align="start" offset="10">
 	Your error message will display here
 </d2l-tooltip>
@@ -44,7 +44,7 @@ In the following example the tooltip's orange offset parent has a width of `450p
 </script>
 
 <div class="offset-parent">
-	<button id="tooltip-boundary">Tooltip boundary</button>
+	<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
 	<d2l-tooltip for="tooltip-boundary"
 		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:450}">
 		This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
