@@ -104,6 +104,16 @@ class InputText extends RtlMixin(LitElement) {
 		this.addEventListener('mouseout', this._handleMouseLeave);
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				this._prevValue = oldVal;
+			}
+		});
+	}
+
 	render() {
 		const isFocusedOrHovered = !this.disabled && (this._focused || this._hovered);
 		const inputClasses = {
@@ -192,8 +202,17 @@ class InputText extends RtlMixin(LitElement) {
 		return 'text';
 	}
 
-	_handleBlur() {
+	_handleBlur(e) {
 		this._focused = false;
+
+		/**
+		 * This is needed only for IE11 and Edge
+		 * the _handleChange function is NOT triggered, therefore we have to detect the blur and handle it ourselves.
+		 */
+		const browserType = window.navigator.userAgent;
+		if (this._prevValue !== e.target.value && (browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) {
+			this._handleChange();
+		}
 	}
 
 	_handleChange() {
