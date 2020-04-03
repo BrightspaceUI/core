@@ -638,7 +638,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		this._shownMonth = getPrevMonth(this._shownMonth);
 		this._monthNav = undefined;
 		setTimeout(() => {
-			this._monthNav = 'prev';
+			this._monthNav = (getComputedStyle(this).direction !== 'rtl') ? 'prev' : 'next';
 		}, 100); // timeout for firefox
 	}
 
@@ -647,7 +647,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		this._shownMonth = getNextMonth(this._shownMonth);
 		this._monthNav = undefined;
 		setTimeout(() => {
-			this._monthNav = 'next';
+			this._monthNav = (getComputedStyle(this).direction !== 'rtl') ? 'next' : 'prev';
 		}, 100); // timeout for firefox
 	}
 
