@@ -423,10 +423,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 
 		// Compute how much the tooltip is shifted relative to its pointer
-		if (this._isAboveOrBelow() && this.align === 'start') {
-			this._tooltipShift = 0;
-		} else if (this._isAboveOrBelow() && this.align === 'end') {
-			this._tooltipShift = targetRect.width - this._maxWidth;
+		if (this._isAboveOrBelow() && (this.align === 'start' || this.align === 'end')) {
+			const shift = Math.min((targetRect.width / 2) - (contentHorizontalPadding + pointerRotatedLength / 2), 0);
+			if (this.align === 'start') {
+				this._tooltipShift = shift;
+			} else {
+				this._tooltipShift = targetRect.width - this._maxWidth - shift;
+			}
 		} else {
 			let spaceLeft, spaceRight, centerDelta, maxShift, minShift;
 			if (this._isAboveOrBelow()) {
