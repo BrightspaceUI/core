@@ -62,16 +62,16 @@ describe('d2l-tabs', () => {
 
 	});
 
-	['ltr', 'rtl'].forEach((dir) => {
+	describe('overflow', () => {
 
-		describe(dir, () => {
+		['ltr', 'rtl'].forEach((dir) => {
 
-			before(async() => {
-				await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html?dir=${dir}`, {waitUntil: ['networkidle0', 'load']});
-				await page.bringToFront();
-			});
+			describe(dir, () => {
 
-			describe('overflow', () => {
+				before(async() => {
+					await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html?dir=${dir}`, {waitUntil: ['networkidle0', 'load']});
+					await page.bringToFront();
+				});
 
 				it('scroll next', async function() {
 					const rect = await visualDiff.getRect(page, '#scroll-next');
@@ -106,82 +106,93 @@ describe('d2l-tabs', () => {
 
 			});
 
-			describe('max-to-show', () => {
-
-				it('initial', async function() {
-					const rect = await visualDiff.getRect(page, '#max-to-show');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('expands on focus to overflow', async function() {
-					await focusTabs('#max-to-show-expand-focus');
-					await page.keyboard.press('ArrowRight');
-					const rect = await visualDiff.getRect(page, '#max-to-show-expand-focus');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('expands on scroll next click', async function() {
-					await focusTabs('#max-to-show-expand-click');
-					await page.$eval('#max-to-show-expand-click', (elem) => {
-						elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button').click();
-					});
-					const rect = await visualDiff.getRect(page, '#max-to-show-expand-click');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-			});
-
-			describe('keyboard', () => {
-
-				it('focuses next on right arrow', async function() {
-					await focusTabs('#keyboard');
-					await page.keyboard.press('ArrowRight');
-					const rect = await visualDiff.getRect(page, '#keyboard');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('focuses previous on left arrow', async function() {
-					await focusTabs('#keyboard');
-					await page.keyboard.press('ArrowLeft');
-					const rect = await visualDiff.getRect(page, '#keyboard');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('focuses first on right arrow from last', async function() {
-					await focusTabs('#keyboard');
-					await page.keyboard.press('ArrowRight');
-					await page.keyboard.press('ArrowRight');
-					const rect = await visualDiff.getRect(page, '#keyboard');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('focuses last on left arrow from first', async function() {
-					await focusTabs('#keyboard');
-					await page.keyboard.press('ArrowLeft');
-					await page.keyboard.press('ArrowLeft');
-					const rect = await visualDiff.getRect(page, '#keyboard');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('selects on space', async function() {
-					await focusTabs('#keyboard-space');
-					await page.keyboard.press('ArrowRight');
-					await page.keyboard.press('Space');
-					const rect = await visualDiff.getRect(page, '#keyboard-space');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('selects on enter', async function() {
-					await focusTabs('#keyboard-enter');
-					await page.keyboard.press('ArrowRight');
-					await page.keyboard.press('Enter');
-					const rect = await visualDiff.getRect(page, '#keyboard-enter');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-			});
-
 		});
+
+	});
+
+	describe('max-to-show', () => {
+
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+			await page.bringToFront();
+		});
+
+		it('initial', async function() {
+			const rect = await visualDiff.getRect(page, '#max-to-show');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('expands on focus to overflow', async function() {
+			await focusTabs('#max-to-show-expand-focus');
+			await page.keyboard.press('ArrowRight');
+			const rect = await visualDiff.getRect(page, '#max-to-show-expand-focus');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('expands on scroll next click', async function() {
+			await focusTabs('#max-to-show-expand-click');
+			await page.$eval('#max-to-show-expand-click', (elem) => {
+				elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button').click();
+			});
+			const rect = await visualDiff.getRect(page, '#max-to-show-expand-click');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
+	describe('keyboard', () => {
+
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+			await page.bringToFront();
+		});
+
+		it('focuses next on right arrow', async function() {
+			await focusTabs('#keyboard');
+			await page.keyboard.press('ArrowRight');
+			const rect = await visualDiff.getRect(page, '#keyboard');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focuses previous on left arrow', async function() {
+			await focusTabs('#keyboard');
+			await page.keyboard.press('ArrowLeft');
+			const rect = await visualDiff.getRect(page, '#keyboard');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focuses first on right arrow from last', async function() {
+			await focusTabs('#keyboard');
+			await page.keyboard.press('ArrowRight');
+			await page.keyboard.press('ArrowRight');
+			const rect = await visualDiff.getRect(page, '#keyboard');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focuses last on left arrow from first', async function() {
+			await focusTabs('#keyboard');
+			await page.keyboard.press('ArrowLeft');
+			await page.keyboard.press('ArrowLeft');
+			const rect = await visualDiff.getRect(page, '#keyboard');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('selects on space', async function() {
+			await focusTabs('#keyboard-space');
+			await page.keyboard.press('ArrowRight');
+			await page.keyboard.press('Space');
+			const rect = await visualDiff.getRect(page, '#keyboard-space');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('selects on enter', async function() {
+			await focusTabs('#keyboard-enter');
+			await page.keyboard.press('ArrowRight');
+			await page.keyboard.press('Enter');
+			const rect = await visualDiff.getRect(page, '#keyboard-enter');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 	});
 
 	const focusTabs = (selector) => {

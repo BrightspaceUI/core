@@ -83,6 +83,13 @@ class Tab extends RtlMixin(LitElement) {
 				border-top-color: var(--d2l-color-celestine);
 				box-shadow: 0 0 0 1px #ffffff, 0 0 0 2px var(--d2l-color-celestine);
 			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.d2l-tab-selected-indicator {
+					-webkit-transition: none;
+					transition: none;
+				}
+			}
 		`;
 	}
 
