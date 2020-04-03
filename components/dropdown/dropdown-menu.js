@@ -96,7 +96,7 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		//Legacy Edge structures the dom differently re: slots
 		if (slot === null) {
 			slot = this.shadowRoot.querySelector('.d2l-dropdown-content-container')
-			.childNodes.filter(node => node.tagName === 'SLOT')[0]
+				.childNodes.filter(node => node.tagName === 'SLOT')[0];
 		}
 
 		return slot.assignedNodes()
