@@ -98,11 +98,13 @@ class Tab extends RtlMixin(LitElement) {
 		this.addEventListener('click', () => {
 			this.ariaSelected = 'true';
 		});
-		// perhaps this should be keyup?
 		this.addEventListener('keydown', (e) => {
-			if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
+			if (e.keyCode !== keyCodes.SPACE) return;
 			e.stopPropagation();
 			e.preventDefault();
+		});
+		this.addEventListener('keyup', (e) => {
+			if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
 			this.ariaSelected = 'true';
 		});
 	}
