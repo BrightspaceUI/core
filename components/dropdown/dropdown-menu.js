@@ -70,7 +70,7 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 			const selected = menu.querySelector('[selected]');
 			if (selected !== null) {
 				setTimeout(() => selected.scrollIntoView({
-					block: 'center'
+					block: 'nearest'
 				}), 0);
 			}
 		}
