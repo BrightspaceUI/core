@@ -252,7 +252,7 @@ describe('d2l-input-text', () => {
 			getInput(elem).value = 'hello';
 			setTimeout(() => dispatchEvent(elem, 'blur', true));
 			await oneEvent(elem, 'change');
-			expect(elem.value).to.equal('hello');
+			expect(elem.value).to.not.equal('hello');
 		});
 
 		it('should NOT change "value" property when input value changes because of blur event on non-edge', async() => {
