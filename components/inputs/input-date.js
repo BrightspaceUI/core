@@ -162,7 +162,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-dropdown ?disabled="${this.disabled}">
+			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
@@ -170,6 +170,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
+					@mouseup="${this._handleMouseup}"
 					placeholder="${(this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase()}"
 					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
@@ -264,6 +265,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	_handleDropdownOpen() {
 		this._dropdownOpened = true;
+	}
+
+	_handleMouseup() {
+		this._dropdown.toggleOpen(false);
 	}
 
 	_handleSetToToday() {

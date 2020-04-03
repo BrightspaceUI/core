@@ -47,7 +47,7 @@
     "@open-wc/testing-karma": "^3",
     "axe-core": "^3",
     "babel-eslint": "^10",
-    "chalk": "^3",
+    "chalk": "^4",
     "deepmerge": "^4.2.2",
     "es-dev-server": "^1",
     "eslint": "^6",
