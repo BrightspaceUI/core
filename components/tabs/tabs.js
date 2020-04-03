@@ -266,6 +266,10 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	}
 
+	focus() {
+		return this._focusSelected();
+	}
+
 	getTabListRect() {
 		return this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect();
 	}
