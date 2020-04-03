@@ -24,7 +24,7 @@ describe('ButtonMixin', () => {
 	});
 
 	after(() => {
-		document.removeEventListener('click', documentClickHandler);
+		document.removeEventListener('click', documentClickHandler, {once: true});
 	});
 
 	describe('default property values', () => {
