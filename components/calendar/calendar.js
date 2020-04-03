@@ -134,9 +134,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			summary: { type: String },
 			_dialog: { type: Boolean },
 			_focusDate: { type: Object },
-			_initialMonth: { type: Boolean },
-			_nextMonthNav: { type: Boolean },
-			_prevMonthNav: { type: Boolean },
+			_monthNav: { type: String },
 			_shownMonth: { type: Number }
 		};
 	}
@@ -223,12 +221,8 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				left: -10px;
 			}
 
-			.d2l-calendar-next .d2l-calendar-title .d2l-heading-4,
-			.d2l-calendar-prev .d2l-calendar-title .d2l-heading-4,
-			.d2l-calendar-initial-month .d2l-calendar-title .d2l-heading-4,
-			.d2l-calendar-next .d2l-calendar-date div,
-			.d2l-calendar-prev .d2l-calendar-date div,
-			.d2l-calendar-initial-month .d2l-calendar-date div {
+			.d2l-calendar-animating .d2l-calendar-title .d2l-heading-4,
+			.d2l-calendar-animating .d2l-calendar-date div {
 				opacity: 1;
 				transition-duration: 200ms;
 				transition-timing-function: ease-out;
@@ -309,7 +303,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		super();
 
 		this._tableInfoId = getUniqueId();
-		this._initialMonth = true;
+		this._monthNav = 'initial';
 		getCalendarData();
 	}
 
@@ -403,9 +397,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const calendarClasses = {
 			'd2l-calendar': true,
-			'd2l-calendar-initial-month': this._initialMonth,
-			'd2l-calendar-next': this._nextMonthNav,
-			'd2l-calendar-prev': this._prevMonthNav
+			'd2l-calendar-animating': (this._monthNav === 'next' || this._monthNav === 'prev' || this._monthNav === 'initial'),
+			'd2l-calendar-initial-month': this._monthNav === 'initial',
+			'd2l-calendar-next': this._monthNav === 'next',
+			'd2l-calendar-prev': this._monthNav === 'prev'
 		};
 		const labelId = `${this._tableInfoId}-heading`;
 		const labelledBy = this._dialog ? labelId : undefined;
@@ -641,22 +636,18 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	_updateShownMonthDecrease() {
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
-		this._initialMonth = false;
-		this._nextMonthNav = false;
-		this._prevMonthNav = false;
+		this._monthNav = undefined;
 		setTimeout(() => {
-			this._prevMonthNav = true;
+			this._monthNav = 'prev';
 		}, 100); // timeout for firefox
 	}
 
-	_updateShownMonthIncrease() {
+	async _updateShownMonthIncrease() {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
-		this._initialMonth = false;
-		this._nextMonthNav = false;
-		this._prevMonthNav = false;
+		this._monthNav = undefined;
 		setTimeout(() => {
-			this._nextMonthNav = true;
+			this._monthNav = 'next';
 		}, 100); // timeout for firefox
 	}
 
