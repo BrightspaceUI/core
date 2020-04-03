@@ -192,6 +192,8 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	static get resources() {
 		return {
 			'ar': { 'scroll.previous': 'التمرير إلى اليسار', 'scroll.next':'التمرير إلى اليمين' },
+			'da': { 'scroll.previous': 'Rul tilbage', 'scroll.next': 'Rul frem' },
+			'de': { 'scroll.previous': 'Scrollen Sie rückwärts', 'scroll.next': 'Vorwärts scrollen' },
 			'en': { 'scroll.previous': 'Scroll Backward', 'scroll.next': 'Scroll Forward' },
 			'es': { 'scroll.previous': 'Desplácese a la izquierda', 'scroll.next': 'Desplácese a la derecha' },
 			'fr': { 'scroll.previous': 'Défilement vers la gauche', 'scroll.next': 'Défilement vers la droite' },
