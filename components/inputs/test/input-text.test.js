@@ -171,7 +171,7 @@ describe('d2l-input-text', () => {
 			{name: 'max', value: '5'},
 			{name: 'maxlength', propName: 'maxLength', value: 10},
 			{name: 'min', value: '1'},
-			{name: 'minLength', propName: 'minLength', value: 3},
+			{name: 'minlength', propName: 'minLength', value: 3},
 			{name: 'name', value: 'jim'},
 			{name: 'pattern', value: '[A-Za-z]+'},
 			{name: 'placeholder', value: 'enter something'},
@@ -244,18 +244,21 @@ describe('d2l-input-text', () => {
 			expect(elem.value).to.equal('hello');
 		});
 
-		it('should change "value" property when input value changes because of blur event on edge', async() => {
+		it('should fire "change" event because of blur event on edge', async() => {
 			const browserType = window.navigator.userAgent;
 			if (!(browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) return;
 
 			const elem = await fixture(normalFixture);
 			getInput(elem).value = 'hello';
-			setTimeout(() => dispatchEvent(elem, 'blur', true));
+			setTimeout(() => {
+				dispatchEvent(elem, 'input', true);
+				dispatchEvent(elem, 'blur', true);
+			});
 			await oneEvent(elem, 'change');
-			expect(elem.value).to.not.equal('hello');
+			expect(elem.value).to.equal('hello');
 		});
 
-		it('should NOT change "value" property when input value changes because of blur event on non-edge', async() => {
+		it('should NOT fire "change" event because of blur event on non-edge', async() => {
 			const browserType = window.navigator.userAgent;
 			if ((browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) return;
 
@@ -265,10 +268,12 @@ describe('d2l-input-text', () => {
 				fired = true;
 			});
 			getInput(elem).value = 'hello';
-			setTimeout(() => dispatchEvent(elem, 'blur', true));
+			setTimeout(() => {
+				dispatchEvent(elem, 'input', true);
+				dispatchEvent(elem, 'blur', true);
+			});
 			await aTimeout(1);
 			expect(fired).to.be.false;
-			expect(elem.value).to.not.equal('hello');
 		});
 
 	});
