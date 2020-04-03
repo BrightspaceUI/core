@@ -13,6 +13,7 @@ class Tab extends RtlMixin(LitElement) {
 		return {
 			ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
 			controlsPanel: { type: String, reflect: true, attribute: 'controls-panel' },
+			role: { type: String, reflect: true },
 			text: { type: String }
 		};
 	}
