@@ -249,13 +249,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
-		const transitionEnd = () => {
-			dialog.removeEventListener('transitionend', transitionEnd);
-			this.dispatchEvent(new CustomEvent(
-				'd2l-dialog-open', { bubbles: true, composed: true }
-			));
-		};
-		dialog.addEventListener('transitionend', transitionEnd);
+		const animPromise = new Promise((resolve) => {
+			const transitionEnd = () => {
+				dialog.removeEventListener('transitionend', transitionEnd);
+				resolve();
+			};
+			dialog.addEventListener('transitionend', transitionEnd);
+		});
 
 		if (this._useNative) {
 			dialog.showModal();
@@ -268,10 +268,14 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialog backdrop does not prevent body scrolling
 		this._bodyScrollKey = preventBodyScroll();
 
-		requestAnimationFrame(() => {
-			this._updateSize();
+		requestAnimationFrame(async() => {
+			await this._updateSize();
 			this._state = 'showing';
 			this._focusInitial();
+			await animPromise;
+			this.dispatchEvent(new CustomEvent(
+				'd2l-dialog-open', { bubbles: true, composed: true }
+			));
 		});
 
 	}
@@ -358,6 +362,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._height = this._getHeight();
 		await this.updateComplete;
 		this._updateOverflow();
+		await this.updateComplete;
 	}
 
 };
