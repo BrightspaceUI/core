@@ -10,7 +10,7 @@ module.exports = {
 
 	async close(page, selector) {
 		const closeEvent = this.getCloseEvent(page, selector);
-		await page.$eval(selector, (dialog) => dialog.opened = false);
+		await page.$eval(selector, (dialog) => dialog.removeAttribute('opened'));
 		return closeEvent;
 	},
 
@@ -36,7 +36,7 @@ module.exports = {
 
 	async open(page, selector) {
 		const openEvent = this.getOpenEvent(page, selector);
-		await page.$eval(selector, (dialog) => dialog.opened = true);
+		await page.$eval(selector, (dialog) => dialog.setAttribute('opened', 'opened'));
 		return openEvent;
 	},
 
@@ -46,7 +46,7 @@ module.exports = {
 				dialog.shadowRoot.querySelector('.d2l-dialog-content').scrollTo(0, 0);
 				if (dialog._state) {
 					dialog.addEventListener('d2l-dialog-close', () => resolve(), { once: true });
-					dialog.opened = false;
+					dialog.removeAttribute('opened');
 				} else {
 					resolve();
 				}
