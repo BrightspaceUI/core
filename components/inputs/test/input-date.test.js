@@ -109,7 +109,7 @@ describe('d2l-input-date', () => {
 			expect(elem.value).to.equal('2018-02-12');
 
 			clock.restore();
-		}).timeout(3000);
+		});
 
 		it('should fire "d2l-input-date-change" event when "Clear" is clicked', async() => {
 			const elem = await fixture(basicFixture);
@@ -117,7 +117,7 @@ describe('d2l-input-date', () => {
 			setTimeout(() => button.click());
 			await oneEvent(elem, 'd2l-input-date-change');
 			expect(elem.value).to.equal('');
-		}).timeout(3000);
+		});
 
 		it('should fire "d2l-input-date-change" event when input-text value is changed to empty', async() => {
 			const elem = await fixture(basicFixture);
@@ -126,7 +126,7 @@ describe('d2l-input-date', () => {
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
 			await oneEvent(elem, 'd2l-input-date-change');
 			expect(elem.value).to.equal('');
-		}).timeout(3000);
+		});
 
 		it('should not fire "d2l-input-date-change" event when input value is invalid', async() => {
 			const elem = await fixture(basicFixture);
@@ -139,7 +139,7 @@ describe('d2l-input-date', () => {
 			dispatchEvent(inputElem, 'change', false);
 			await aTimeout(1);
 			expect(fired).to.be.false;
-		}).timeout(3000);
+		});
 
 		it('should not fire "d2l-input-date-change" event when input value does not change', async() => {
 			const elem = await fixture(basicFixture);
@@ -153,7 +153,7 @@ describe('d2l-input-date', () => {
 			dispatchEvent(inputElem, 'change', false);
 			await aTimeout(1);
 			expect(fired).to.be.false;
-		}).timeout(3000);
+		});
 
 		it('should change "value" property when input value changes', async() => {
 			const elem = await fixture(basicFixture);
@@ -162,7 +162,7 @@ describe('d2l-input-date', () => {
 			dispatchEvent(inputElem, 'change', false);
 			await oneEvent(elem, 'd2l-input-date-change');
 			expect(elem.value).to.equal('2019-02-08');
-		}).timeout(3000);
+		});
 
 		it('should default to undefined', async() => {
 			const elem = await fixture(basicFixture);
