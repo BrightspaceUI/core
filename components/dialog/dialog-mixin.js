@@ -268,9 +268,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialog backdrop does not prevent body scrolling
 		this._bodyScrollKey = preventBodyScroll();
 
-		this._updateSize();
-		this._state = 'showing';
-		this._focusInitial();
+		requestAnimationFrame(() => {
+			this._updateSize();
+			this._state = 'showing';
+			this._focusInitial();
+		});
+
 	}
 
 	_removeHandlers() {
