@@ -540,32 +540,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 		const panels = this._getPanels(e.target);
 
-		if (this._initialized) {
-
-			if (this._state === 'shown' && panels.length < 2) {
-				if (reduceMotion) {
-					this._state = 'hidden';
-				} else {
-					const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
-					const handleTransitionEnd = (e) => {
-						if (e.propertyName !== 'max-height') return;
-						layout.removeEventListener('transitionend', handleTransitionEnd);
-						this._state = 'hidden';
-					};
-					layout.addEventListener('transitionend', handleTransitionEnd);
-					this._state = 'anim';
-				}
-			} else if (this._state === 'hidden' && panels.length > 1) {
-				if (reduceMotion) {
-					this._state = 'shown';
-				} else {
-					this._state = 'anim';
-					requestAnimationFrame(() => {
-						this._state = 'shown';
-					});
-				}
-			}
-		}
+		if (this._initialized) this._updateTabListVisibility(panels);
 
 		let selectedTabInfo = null;
 
@@ -901,6 +876,32 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		this._measures = null;
 
 		return this.updateComplete;
+	}
+
+	_updateTabListVisibility(panels) {
+		if (this._state === 'shown' && panels.length < 2) {
+			if (reduceMotion) {
+				this._state = 'hidden';
+			} else {
+				const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
+				const handleTransitionEnd = (e) => {
+					if (e.propertyName !== 'max-height') return;
+					layout.removeEventListener('transitionend', handleTransitionEnd);
+					this._state = 'hidden';
+				};
+				layout.addEventListener('transitionend', handleTransitionEnd);
+				this._state = 'anim';
+			}
+		} else if (this._state === 'hidden' && panels.length > 1) {
+			if (reduceMotion) {
+				this._state = 'shown';
+			} else {
+				this._state = 'anim';
+				requestAnimationFrame(() => {
+					this._state = 'shown';
+				});
+			}
+		}
 	}
 
 }
