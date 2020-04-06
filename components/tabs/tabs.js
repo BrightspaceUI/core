@@ -568,9 +568,8 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		}
 
 		let selectedTabInfo = null;
-		const newTabInfos = [];
 
-		panels.forEach(panel => {
+		const newTabInfos = panels.map((panel) => {
 			let state = '';
 			if (this._initialized && !reduceMotion && panels.length !== this._tabInfos.length) {
 				// if it's a new tab, update state to animate addition
@@ -585,7 +584,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				state: state
 			};
 			if (tabInfo.selected) selectedTabInfo = tabInfo;
-			newTabInfos.push(tabInfo);
+			return tabInfo;
 		});
 
 		if (this._initialized && !reduceMotion && this._tabInfos.length !== newTabInfos.length) {
