@@ -56,7 +56,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-tabs-layout-shown {
 				display: flex;
-				max-height: 49px;
+				max-height: 60px;
 				opacity: 1;
 				transform: translateY(0);
 			}
