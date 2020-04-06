@@ -62,7 +62,7 @@ describe('d2l-input-search', () => {
 			const elem = await fixture(normalFixture);
 			elem.focus();
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 	});
 
@@ -88,7 +88,7 @@ describe('d2l-input-search', () => {
 			setTimeout(() => getSearchButton(elem).click());
 			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
 			expect(detail.value).to.equal('bar');
-		});
+		}).timeout(3000);
 
 		it('should fire "search" event when ENTER is pressed', async() => {
 			const elem = await fixture(normalFixture);
@@ -96,14 +96,14 @@ describe('d2l-input-search', () => {
 			setTimeout(() => pressEnter(elem));
 			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
 			expect(detail.value).to.equal('bar');
-		});
+		}).timeout(3000);
 
 		it('should fire "search" event when clear button is pressed', async() => {
 			const elem = await fixture(valueSetFixture);
 			setTimeout(() => getClearButton(elem).click());
 			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
 			expect(detail.value).to.equal('');
-		});
+		}).timeout(3000);
 
 		it('should fire "search" event on empty value search', async() => {
 			const elem = await fixture(valueSetFixture);
@@ -112,7 +112,7 @@ describe('d2l-input-search', () => {
 			setTimeout(() => getSearchButton(elem).click());
 			const { detail } = await oneEvent(elem, 'd2l-input-search-searched');
 			expect(detail.value).to.equal('');
-		});
+		}).timeout(3000);
 
 	});
 
