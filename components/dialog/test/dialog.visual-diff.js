@@ -27,10 +27,7 @@ describe('d2l-dialog', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#dialog');
-				await helper.reset(page, '#dialogLong');
-				await helper.reset(page, '#dialogRtl');
-				await helper.reset(page, '#dialogResize');
+				await page.reload();
 			});
 
 			[

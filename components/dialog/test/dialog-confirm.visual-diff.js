@@ -27,11 +27,7 @@ describe('d2l-dialog-confirm', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#confirm');
-				await helper.reset(page, '#confirmLongTitle');
-				await helper.reset(page, '#confirmNoTitle');
-				await helper.reset(page, '#confirmLongText');
-				await helper.reset(page, '#confirmRtl');
+				await page.reload();
 			});
 
 			[

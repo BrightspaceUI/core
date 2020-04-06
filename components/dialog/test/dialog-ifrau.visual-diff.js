@@ -28,7 +28,7 @@ describe('d2l-dialog-ifrau', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#ifrau-dialog');
+				await page.reload();
 			});
 
 			[
