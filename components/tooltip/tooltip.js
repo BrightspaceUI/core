@@ -185,6 +185,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
 				box-sizing: border-box;
 				color: inherit;
+				max-width: 17.5rem;
 				min-height: 2.1rem;
 				min-width: 2.1rem;
 				overflow: hidden;
