@@ -184,13 +184,17 @@ class Tooltip extends RtlMixin(LitElement) {
 				border-radius: ${contentBorderRadius}px;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
 				box-sizing: border-box;
-				color: inherit;
 				max-width: 17.5rem;
 				min-height: 2.1rem;
 				min-width: 2.1rem;
 				overflow: hidden;
 				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
+			}
+
+			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it*/
+			.d2l-tooltip-content.d2l-tooltip-content {
+				color: inherit;
 			}
 
 			:host([_open-dir="top"]) .d2l-tooltip-content {
