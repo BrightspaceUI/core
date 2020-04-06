@@ -28,17 +28,15 @@ describe('d2l-tabs', () => {
 		it('dispatches d2l-tab-panel-selected', async() => {
 			const el = await fixture(normalFixture);
 			const panel = el.querySelectorAll('d2l-tab-panel')[1];
-			const promise = oneEvent(panel, 'd2l-tab-panel-selected');
-			panel.selected = true;
-			return promise;
+			setTimeout(() => panel.selected = true);
+			await oneEvent(panel, 'd2l-tab-panel-selected');
 		});
 
 		it('dispatches d2l-tab-panel-text-changed', async() => {
 			const el = await fixture(normalFixture);
 			const panel = el.querySelector('d2l-tab-panel');
-			const promise = oneEvent(panel, 'd2l-tab-panel-text-changed');
-			panel.setAttribute('text', 'new text');
-			return promise;
+			setTimeout(() => panel.setAttribute('text', 'new text'));
+			await oneEvent(panel, 'd2l-tab-panel-text-changed');
 		});
 
 	});
