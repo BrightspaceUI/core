@@ -52,7 +52,7 @@ describe('d2l-input-date', () => {
 			const elem = await fixture(basicFixture);
 			const dropdown = getChildElem(elem, 'd2l-dropdown');
 			dropdown.toggleOpen();
-			await aTimeout(1);
+			await oneEvent(dropdown, 'd2l-dropdown-open');
 			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
 			expect(focusTrap.trap).to.be.true;
 		});
@@ -61,9 +61,9 @@ describe('d2l-input-date', () => {
 			const elem = await fixture(basicFixture);
 			const dropdown = getChildElem(elem, 'd2l-dropdown');
 			dropdown.toggleOpen();
-			await aTimeout(1);
+			await oneEvent(dropdown, 'd2l-dropdown-open');
 			dropdown.toggleOpen();
-			await aTimeout(1);
+			await oneEvent(dropdown, 'd2l-dropdown-close');
 			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
 			expect(focusTrap.trap).to.be.false;
 		});
