@@ -59,12 +59,10 @@ module.exports = config => {
 			browserNoActivityTimeout: 120000,
 			browserDisconnectTimeout : 10000, // default 2000
 			browserDisconnectTolerance : 1, // default 0
-			processKillTimeout: 120000,
 			captureTimeout : 120000, //default 60000
-			pingTimeout: 120000,
 			client: {
 				mocha: {
-					timeout : 20000 // 20 seconds
+					timeout : 10000 // 20 seconds
 				}
 			}
 		}),

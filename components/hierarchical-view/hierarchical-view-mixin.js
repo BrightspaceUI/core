@@ -79,6 +79,14 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		super.connectedCallback();
 
 		this.__isChildView();
+
+		/* On Edge, the children are upgraded before the ancestors, so it's not possible
+			to reliably check for ancestor hierarchical view here. For Edge, we rely on the
+			mutation observer below. */
+		if (!this.childView) {
+			this.__startMutationObserver();
+		}
+
 		requestAnimationFrame(() => {
 			this.__autoSize(this);
 			this.__startResizeObserver();
@@ -433,6 +441,19 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.removeEventListener('focus', this.__focusCapture);
 		this.removeEventListener('focusout', this.__focusOutCapture);
 		window.removeEventListener('resize', this.__onWindowResize);
+	}
+
+	/* Edge only - since children are upgraded before ancestors */
+	__startMutationObserver() {
+		this.__bound_onParentMutation = this.__bound_onParentMutation || this.__onParentMutation.bind(this);
+
+		this.__mutationObserver = this.__mutationObserver || new MutationObserver(this.__bound_onParentMutation);
+		this.__mutationObserver.disconnect();
+
+		// mutation is triggered when parent (e.g., d2l-menu-item) sets an attribute (e.g., aria-haspopup)
+		this.__mutationObserver.observe(this.parentNode, {
+			attributes: true
+		});
 	}
 
 	__startResizeObserver() {
