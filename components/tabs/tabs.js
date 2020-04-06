@@ -166,6 +166,16 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				transition: margin-top 200ms ease-out;
 			}
 
+			d2l-tab-internal {
+				-webkit-transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
+				transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
+			}
+			d2l-tab-internal[state="adding"], d2l-tab-internal[state="removing"] {
+				max-width: 0;
+				opacity: 0;
+				transform: translateY(20px);
+			}
+
 			@media (prefers-reduced-motion: reduce) {
 
 				.d2l-tabs-layout {
@@ -181,6 +191,10 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 					transition: none;
 				}
 				.d2l-panels-container-no-whitespace ::slotted(*) {
+					-webkit-transition: none;
+					transition: none;
+				}
+				d2l-tab-internal {
 					-webkit-transition: none;
 					transition: none;
 				}
@@ -319,6 +333,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
+									state="${tabInfo.state}"
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
 							`)}
@@ -341,6 +356,34 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				<slot @slotchange="${this._handlePanelsSlotChange}"></slot>
 			</div>
 		`;
+	}
+
+	_animateTabAddition(tabInfo) {
+		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${tabInfo.id}"]`);
+		return new Promise((resolve) => {
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'max-width') return;
+				tab.removeEventListener('transitionend', handleTransitionEnd);
+				resolve();
+			};
+			tab.addEventListener('transitionend', handleTransitionEnd);
+			tabInfo.state = '';
+			this.requestUpdate();
+		});
+	}
+
+	_animateTabRemoval(tabInfo) {
+		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${tabInfo.id}"]`);
+		return new Promise((resolve) => {
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'max-width') return;
+				tab.removeEventListener('transitionend', handleTransitionEnd);
+				this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
+				this.requestUpdate();
+				resolve();
+			};
+			tab.addEventListener('transitionend', handleTransitionEnd);
+		});
 	}
 
 	_calculateScrollPosition(selectedTabInfo, measures) {
@@ -496,19 +539,9 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	async _handlePanelsSlotChange(e) {
 
 		const panels = this._getPanels(e.target);
-		/*
-		// do fancy remove the panels
-		const removedPanels = this._tabInfos.filter(info => {
-			for (let i = 0; i < panels.length; i++) {
-				if (panels[i].id === info.id) return false;
-			}
-			return true;
-		});
-		*/
-
-		// consider hidden panels?
 
 		if (this._initialized) {
+
 			if (this._state === 'shown' && panels.length < 2) {
 				if (reduceMotion) {
 					this._state = 'hidden';
@@ -535,18 +568,39 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		}
 
 		let selectedTabInfo = null;
-		this._tabInfos = [];
+		const newTabInfos = [];
+
 		panels.forEach(panel => {
+			let state = '';
+			if (this._initialized && !reduceMotion && panels.length !== this._tabInfos.length) {
+				// if it's a new tab, update state to animate addition
+				if (this._tabInfos.findIndex(info => info.id === panel.id) === -1) {
+					state = 'adding';
+				}
+			}
 			const tabInfo = {
 				id: panel.id,
 				text: panel.text,
-				selected: panel.selected
+				selected: panel.selected,
+				state: state
 			};
 			if (tabInfo.selected) selectedTabInfo = tabInfo;
-			this._tabInfos.push(tabInfo);
+			newTabInfos.push(tabInfo);
 		});
 
+		if (this._initialized && !reduceMotion && this._tabInfos.length !== newTabInfos.length) {
+			this._tabInfos.forEach((info, index) => {
+				// if a tab was removed, include old info to animate it away
+				if (newTabInfos.findIndex(newInfo => newInfo.id === info.id) === -1) {
+					info.state = 'removing';
+					newTabInfos.splice(index, 0, info);
+				}
+			});
+		}
+		this._tabInfos = newTabInfos;
+
 		if (!this._initialized && this._tabInfos.length > 0) {
+
 			this._initialized = true;
 			if (!selectedTabInfo) {
 				this._tabInfos[0].selected = true;
@@ -554,11 +608,26 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			}
 
 			await this.updateComplete;
+
 			await this._updateTabsContainerWidth(selectedTabInfo);
 			this._updateMeasures();
 			await this._updateScrollPosition(selectedTabInfo);
+
 		} else {
+
 			await this.updateComplete;
+
+			const animPromises = [];
+			this._tabInfos.forEach((info) => {
+				if (info.state === 'adding') animPromises.push(this._animateTabAddition(info));
+				else if (info.state === 'removing') animPromises.push(this._animateTabRemoval(info));
+			});
+
+			Promise.all(animPromises).then(() => {
+				this._updateMeasures();
+				return this._updateScrollPosition(selectedTabInfo);
+			});
+
 			this._updateMeasures();
 		}
 
