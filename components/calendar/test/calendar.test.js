@@ -165,10 +165,13 @@ describe('d2l-calendar', () => {
 		});
 
 		it('has correct _focusDate when user changes month to previous month then back to month with today', async() => {
-			const newToday = new Date('2018-05-10');
+			const newToday = new Date('2018-05-10T12:00Z');
 			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
+			const expectedFocusDate1 = new Date(2018, 4, 10);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate1);
+
 			const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show April"]');
 			setTimeout(() => el.click());
 			await oneEvent(el, 'click');
@@ -179,8 +182,8 @@ describe('d2l-calendar', () => {
 			await oneEvent(el2, 'click');
 			await aTimeout(1);
 
-			const expectedFocusDate = new Date(2018, 4, 1);
-			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+			const expectedFocusDate2 = new Date(2018, 4, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate2);
 
 			clock.restore();
 		});
