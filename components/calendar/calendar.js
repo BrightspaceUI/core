@@ -311,10 +311,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		super.firstUpdated(changedProperties);
 
 		this._today = getDateFromDateObj(getToday());
-		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
-		this._focusDate = new Date(date);
-		this._shownMonth = date.getMonth();
-		this._shownYear = date.getFullYear();
+		this.reset();
 
 		const dropdownContent = findComposedAncestor(
 			this.parentNode,
@@ -442,6 +439,13 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			const button = this.shadowRoot.querySelector('d2l-button-icon');
 			if (button) button.focus();
 		}
+	}
+
+	reset() {
+		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
+		this._focusDate = new Date(date);
+		this._shownMonth = date.getMonth();
+		this._shownYear = date.getFullYear();
 	}
 
 	_computeText(month) {
