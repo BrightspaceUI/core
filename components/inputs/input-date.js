@@ -268,7 +268,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleMouseup() {
-		this._dropdown.toggleOpen(false);
+		if (!this.disabled) this._dropdown.toggleOpen(false);
 	}
 
 	_handleSetToToday() {
