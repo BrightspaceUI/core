@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../button/button-subtle.js';
+			import '../tabs.js';
+			import '../tab-panel.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-tabs">
+
+			<h2>Tabs</h2>
+
+			<div style="margin-bottom: 30px;">
+				<d2l-button-subtle id="add" text="Add"></d2l-button-subtle>
+				<d2l-button-subtle id="remove" text="Remove"></d2l-button-subtle>
+			</div>
+			<script>
+				let newPanelId = 0;
+				document.querySelector('#add').addEventListener('click', () => {
+					newPanelId += 1;
+					const panel = document.createElement('d2l-tab-panel');
+					panel.text = `New Panel ${newPanelId}`;
+					panel.textContent = `Content for new panel ${newPanelId}`;
+					const tabs = document.querySelector('d2l-tabs');
+					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
+					if (panels.length < 2) tabs.appendChild(panel);
+					else tabs.insertBefore(panel, panels[1]);
+				});
+				document.querySelector('#remove').addEventListener('click', () => {
+					const tabs = document.querySelector('d2l-tabs');
+					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
+					if (panels.length === 0) return;
+					if (panels.length === 1) tabs.removeChild(panels[0]);
+					tabs.removeChild(panels[1]);
+				});
+			</script>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs>
+						<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel text="Earth &amp; Planetary Sciences">Tab content for Earth &amp; Planetary Sciences</d2l-tab-panel>
+						<d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
+					</d2l-tabs>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Tabs (with slot)</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs>
+						<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel text="Earth Sciences">Tab content for Earth Sciences</d2l-tab-panel>
+						<d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
+						<d2l-button-subtle slot="ext" text="Search" icon="tier1:search"></d2l-button-subtle>
+					</d2l-tabs>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Tabs (responsive)</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs>
+						<d2l-tab-panel text="S18">Tab content for S18</d2l-tab-panel>
+						<d2l-tab-panel text="W18">Tab content for W18</d2l-tab-panel>
+						<d2l-tab-panel text="F17">Tab content for F17</d2l-tab-panel>
+						<d2l-tab-panel text="S17">Tab content for S17</d2l-tab-panel>
+						<d2l-tab-panel text="W17">Tab content for W17</d2l-tab-panel>
+						<d2l-tab-panel text="F16">Tab content for F16</d2l-tab-panel>
+						<d2l-tab-panel text="S16">Tab content for S16</d2l-tab-panel>
+						<d2l-tab-panel text="W16">Tab content for W16</d2l-tab-panel>
+						<d2l-tab-panel text="F15">Tab content for F15</d2l-tab-panel>
+						<d2l-tab-panel text="S15">Tab content for S15</d2l-tab-panel>
+						<d2l-tab-panel text="W15">Tab content for W15</d2l-tab-panel>
+						<d2l-tab-panel text="F14">Tab content for F14</d2l-tab-panel>
+						<d2l-tab-panel text="S14">Tab content for S14</d2l-tab-panel>
+						<d2l-tab-panel text="W14">Tab content for W14</d2l-tab-panel>
+						<d2l-tab-panel text="F13">Tab content for F13</d2l-tab-panel>
+						<d2l-tab-panel text="S13">Tab content for S13</d2l-tab-panel>
+						<d2l-tab-panel text="W13">Tab content for W13</d2l-tab-panel>
+						<d2l-tab-panel text="F12">Tab content for F12</d2l-tab-panel>
+						<d2l-tab-panel text="S12">Tab content for S12</d2l-tab-panel>
+						<d2l-tab-panel text="W12">Tab content for W12</d2l-tab-panel>
+						<d2l-tab-panel text="F11">Tab content for F11</d2l-tab-panel>
+						<d2l-tab-panel text="S11">Tab content for S11</d2l-tab-panel>
+					</d2l-tabs>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Tabs (max-to-show)</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs max-to-show="3">
+						<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
+						<d2l-tab-panel selected text="Biology">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel text="Earth Sciences">Tab content for Earth Sciences</d2l-tab-panel>
+						<d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
+						<d2l-tab-panel text="Community">Tab content for Community</d2l-tab-panel>
+					</d2l-tabs>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('d2l-tab-panel-selected', (e) => {
+				console.log('tab panel selected', e);
+			});
+			document.addEventListener('d2l-tab-panel-text-changed', (e) => {
+				console.log('tab panel text changed', e);
+			});
+		</script>
+
+	</body>
+</html>
