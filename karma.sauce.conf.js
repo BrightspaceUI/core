@@ -56,8 +56,10 @@ module.exports = config => {
 			browsers: Object.keys(customLaunchers),
 			reporters: ['dots', 'saucelabs'],
 			singleRun: true,
+			browserNoActivityTimeout: 120000,
 			browserDisconnectTimeout : 10000, // default 2000
 			browserDisconnectTolerance : 1, // default 0
+			captureTimeout : 120000, //default 60000
 			pingTimeout: 120000,
 			client: {
 				mocha: {
