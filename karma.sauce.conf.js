@@ -59,7 +59,12 @@ module.exports = config => {
 			browserDisconnectTimeout : 4000, // default 2000
 			browserDisconnectTolerance : 1, // default 0
 			browserNoActivityTimeout: 20000, // default 10000
-			captureTimeout: 120000 // default 60000
+			captureTimeout: 120000, // default 60000
+			client: {
+				mocha: {
+					timeout : 10000
+				}
+			}
 		}),
 	);
 	return config;
