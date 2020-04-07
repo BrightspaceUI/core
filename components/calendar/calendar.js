@@ -134,6 +134,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			summary: { type: String },
 			_dialog: { type: Boolean },
 			_focusDate: { type: Object },
+			_monthNav: { type: String },
 			_shownMonth: { type: Number }
 		};
 	}
@@ -183,8 +184,14 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				opacity: 0;
 			}
 
-			.d2l-calendar-date {
-				opacity: 0;
+			.d2l-calendar-next .d2l-calendar-title .d2l-heading-4 {
+				padding-left: 20px;
+				padding-right: 0;
+			}
+
+			.d2l-calendar-prev .d2l-calendar-title .d2l-heading-4 {
+				padding-left: 0;
+				padding-right: 20px;
 			}
 
 			.d2l-calendar-date div {
@@ -199,32 +206,37 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				justify-content: center;
 				margin-left: auto;
 				margin-right: auto;
+				opacity: 0;
 				padding: 4px;
 				position: relative;
 				text-align: center;
 				width: calc(2rem - 4px);
 			}
 
-			:host(.d2l-calendar-next) .d2l-calendar-title .d2l-heading-4,
-			:host(.d2l-calendar-prev) .d2l-calendar-title .d2l-heading-4,
-			:host(.d2l-calendar-initial-month) .d2l-calendar-title .d2l-heading-4,
-			:host(.d2l-calendar-next) .d2l-calendar-date,
-			:host(.d2l-calendar-prev) .d2l-calendar-date,
-			:host(.d2l-calendar-initial-month) .d2l-calendar-date {
+			.d2l-calendar-next .d2l-calendar-date div {
+				left: 10px;
+			}
+
+			.d2l-calendar-prev .d2l-calendar-date div {
+				left: -10px;
+			}
+
+			.d2l-calendar-animating .d2l-calendar-title .d2l-heading-4,
+			.d2l-calendar-animating .d2l-calendar-date div {
 				opacity: 1;
-				transition: opacity 200ms ease-out;
+				transition-duration: 200ms;
+				transition-timing-function: ease-out;
+				transition-property: opacity, transform;
 			}
 
-			:host(.d2l-calendar-next) .d2l-heading-4,
-			:host(.d2l-calendar-next) .d2l-calendar-date div {
-				-webkit-animation: d2l-calendar-next-animation 200ms ease-out;
-				animation: d2l-calendar-next-animation 200ms ease-out;
+			.d2l-calendar-next .d2l-heading-4,
+			.d2l-calendar-next .d2l-calendar-date div {
+				transform: translateX(-10px);
 			}
 
-			:host(.d2l-calendar-prev) .d2l-heading-4,
-			:host(.d2l-calendar-prev) .d2l-calendar-date div {
-				-webkit-animation: d2l-calendar-prev-animation 200ms ease-out;
-				animation: d2l-calendar-prev-animation 200ms ease-out;
+			.d2l-calendar-prev .d2l-heading-4,
+			.d2l-calendar-prev .d2l-calendar-date div {
+				transform: translateX(10px);
 			}
 
 			.d2l-calendar-date div:not(.d2l-calendar-date-selected):hover,
@@ -249,7 +261,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				transition: box-shadow 200ms ease-in;
 			}
 
-			div.d2l-calendar-date-selected {
+			.d2l-calendar-date div.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
 				padding: 2px;
@@ -260,28 +272,10 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px var(--d2l-color-celestine);
 			}
 
-			div.d2l-calendar-date-today,
-			div.d2l-calendar-date-selected {
+			.d2l-calendar-date div.d2l-calendar-date-today,
+			.d2l-calendar-date div.d2l-calendar-date-selected {
 				font-size: 1rem;
 				font-weight: 700;
-			}
-
-			@keyframes d2l-calendar-next-animation {
-				0% { transform: translate(10px,0); }
-				100% { transform: translate(0,0); }
-			}
-			@-webkit-keyframes d2l-calendar-next-animation {
-				0% { -webkit-transform: translate(10px,0); }
-				100% { -webkit-transform: translate(0,0); }
-			}
-
-			@keyframes d2l-calendar-prev-animation {
-				0% { transform: translate(-10px,0); }
-				100% { transform: translate(0,0);  }
-			}
-			@-webkit-keyframes d2l-calendar-prev-animation {
-				0% { -webkit-transform: translate(-10px,0); }
-				100% { -webkit-transform: translate(0,0); }
 			}
 		`];
 	}
@@ -309,6 +303,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		super();
 
 		this._tableInfoId = getUniqueId();
+		this._monthNav = 'initial';
 		getCalendarData();
 	}
 
@@ -336,8 +331,6 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			getCalendarData(true);
 			this.requestUpdate();
 		});
-
-		this.classList.add('d2l-calendar-initial-month');
 	}
 
 	updated(changedProperties) {
@@ -402,12 +395,19 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 			return html`<tr>${weekHtml}</tr>`;
 		});
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
+		const calendarClasses = {
+			'd2l-calendar': true,
+			'd2l-calendar-animating': (this._monthNav === 'next' || this._monthNav === 'prev' || this._monthNav === 'initial'),
+			'd2l-calendar-initial-month': this._monthNav === 'initial',
+			'd2l-calendar-next': this._monthNav === 'next',
+			'd2l-calendar-prev': this._monthNav === 'prev'
+		};
 		const labelId = `${this._tableInfoId}-heading`;
 		const labelledBy = this._dialog ? labelId : undefined;
 		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
-			<div aria-labelledby="${ifDefined(labelledBy)}" class="d2l-calendar" role="${ifDefined(role)}">
+			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
 				<div class="d2l-calendar-title">
 					<d2l-button-icon
 						@click="${this._onPrevMonthButtonClick}"
@@ -636,22 +636,18 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 	_updateShownMonthDecrease() {
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
-		this.classList.remove('d2l-calendar-initial-month');
-		this.classList.remove('d2l-calendar-prev');
-		this.classList.remove('d2l-calendar-next');
+		this._monthNav = undefined;
 		setTimeout(() => {
-			this.classList.add('d2l-calendar-prev');
+			this._monthNav = (getComputedStyle(this).direction !== 'rtl') ? 'prev' : 'next';
 		}, 100); // timeout for firefox
 	}
 
-	_updateShownMonthIncrease() {
+	async _updateShownMonthIncrease() {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
-		this.classList.remove('d2l-calendar-initial-month');
-		this.classList.remove('d2l-calendar-prev');
-		this.classList.remove('d2l-calendar-next');
+		this._monthNav = undefined;
 		setTimeout(() => {
-			this.classList.add('d2l-calendar-next');
+			this._monthNav = (getComputedStyle(this).direction !== 'rtl') ? 'next' : 'prev';
 		}, 100); // timeout for firefox
 	}
 
