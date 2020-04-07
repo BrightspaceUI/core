@@ -45,11 +45,12 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 **Properties:**
 - `width` (Number): The maximum width (unit-less) that the content will be confined to
+- `backLinkHref` (String): Href for the navigation Back link
+- `backLinkText` (String): Optional text for the navigation Back link. Will override the navigation's default Back text  
 
 ## Future Enhancements
 
 - Optional draggable divider between the primary and secondary panels
 - For smaller devices, the primary and secondary panels will move into collapsible drawers
-- Option to specify a maximum width for the template (in Desktop view), so that the template does not always take 100% of the viewport width.
 
 Looking for an enhancement not listed here? Create a GitHub issue!
