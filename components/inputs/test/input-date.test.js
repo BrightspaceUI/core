@@ -119,6 +119,15 @@ describe('d2l-input-date', () => {
 			expect(elem.value).to.equal('');
 		});
 
+		it('should fire "d2l-input-date-change" event when input-text value is changed to empty', async() => {
+			const elem = await fixture(basicFixture);
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			inputElem.value = '';
+			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			await oneEvent(elem, 'd2l-input-date-change');
+			expect(elem.value).to.equal('');
+		});
+
 		it('should not fire "d2l-input-date-change" event when input value is invalid', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
@@ -127,6 +136,20 @@ describe('d2l-input-date', () => {
 				fired = true;
 			});
 			inputElem.value = 'invalid input text';
+			dispatchEvent(inputElem, 'change', false);
+			await aTimeout(1);
+			expect(fired).to.be.false;
+		});
+
+		it('should not fire "d2l-input-date-change" event when input value does not change', async() => {
+			const elem = await fixture(basicFixture);
+			elem.value = '2019-01-01';
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			let fired = false;
+			elem.addEventListener('d2l-input-date-change', () => {
+				fired = true;
+			});
+			inputElem.value = '01/01/2019';
 			dispatchEvent(inputElem, 'change', false);
 			await aTimeout(1);
 			expect(fired).to.be.false;
