@@ -59,8 +59,6 @@ module.exports = config => {
 			browserNoActivityTimeout: 120000, // edge_legacy.
 			browserDisconnectTimeout : 10000, // edge_legacy. default 2000
 			browserDisconnectTolerance : 1, // edge_legacy. default 0
-			captureTimeout : 120000, // edge_legacy. default 60000
-			pingTimeout: 120000, // edge_legacy
 			client: {
 				mocha: {
 					timeout : 10000 // edge_legacy
