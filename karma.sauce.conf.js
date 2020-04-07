@@ -57,13 +57,13 @@ module.exports = config => {
 			reporters: ['dots', 'saucelabs'],
 			singleRun: true,
 			browserNoActivityTimeout: 120000, // edge_legacy.
-			browserDisconnectTimeout : 120000, // edge_legacy. default 2000
+			browserDisconnectTimeout : 10000, // edge_legacy. default 2000
 			browserDisconnectTolerance : 1, // edge_legacy. default 0
 			captureTimeout : 120000, // edge_legacy. default 60000
 			pingTimeout: 120000, // edge_legacy
 			client: {
 				mocha: {
-					timeout : 20000 // edge_legacy
+					timeout : 10000 // edge_legacy
 				}
 			}
 		}),
