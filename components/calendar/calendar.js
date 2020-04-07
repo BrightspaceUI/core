@@ -312,11 +312,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 
 		this._today = getDateFromDateObj(getToday());
 		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
-		this._focusDate = new Date(
-			date.getFullYear(),
-			date.getMonth(),
-			this.selectedValue ? date.getDate() : 1
-		);
+		this._focusDate = new Date(date);
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 
