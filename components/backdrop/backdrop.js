@@ -78,7 +78,7 @@ class Backdrop extends LitElement {
 			this._state = null;
 		};
 
-		if (animate) {
+		if (animate && this.offsetParent) {
 			this.addEventListener('transitionend', hide);
 			this._state = 'hiding';
 		} else {
