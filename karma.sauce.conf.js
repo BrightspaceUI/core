@@ -63,7 +63,7 @@ module.exports = config => {
 			pingTimeout: 120000,
 			client: {
 				mocha: {
-					timeout : 10000 // 10 seconds
+					timeout : 20000 // 20 seconds
 				}
 			}
 		}),
