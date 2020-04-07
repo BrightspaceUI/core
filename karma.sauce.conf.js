@@ -56,14 +56,10 @@ module.exports = config => {
 			browsers: Object.keys(customLaunchers),
 			reporters: ['dots', 'saucelabs'],
 			singleRun: true,
-			browserNoActivityTimeout: 120000, // edge_legacy.
-			browserDisconnectTimeout : 10000, // edge_legacy. default 2000
-			browserDisconnectTolerance : 1, // edge_legacy. default 0
-			client: {
-				mocha: {
-					timeout : 10000 // edge_legacy
-				}
-			}
+			browserDisconnectTimeout : 4000, // default 2000
+			browserDisconnectTolerance : 1, // default 0
+			browserNoActivityTimeout: 20000, // default 10000
+			captureTimeout: 120000 // default 60000
 		}),
 	);
 	return config;
