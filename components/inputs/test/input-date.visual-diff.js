@@ -46,6 +46,19 @@ describe('d2l-input-date', () => {
 			await helper.reset(page, '#basic');
 		});
 
+		it('disabled does not open', async function() {
+			await page.$eval('#disabled', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				const e = new Event(
+					'mouseup',
+					{ bubbles: true, composed: true }
+				);
+				input.dispatchEvent(e);
+			});
+			const rect = await helper.getRect(page, '#disabled');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('open with value', async function() {
 			await helper.open(page, '#basic');
 			const rect = await helper.getRect(page, '#basic');
