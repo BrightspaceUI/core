@@ -1,10 +1,12 @@
 import '../../components/colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 class TemplatePrimarySecondary extends LitElement {
 
 	static get properties() {
 		return {
+			width: { type: Number },
 			_hasFooter: { type: Boolean }
 		};
 	}
@@ -26,6 +28,9 @@ class TemplatePrimarySecondary extends LitElement {
 				"primary divider secondary"
 				"footer footer footer";
 				height: 100vh;
+				margin-left: auto;
+				margin-right: auto;
+				min-width: min-content;
 			}
 			header {
 				grid-area: header;
@@ -52,8 +57,11 @@ class TemplatePrimarySecondary extends LitElement {
 	}
 
 	render() {
+		const widthStyles = {};
+		if (this.width) widthStyles.maxWidth = `${this.width}px`;
+
 		return html`
-			<div class="container">
+			<div class="container" style="${styleMap(widthStyles)}">
 				<header><slot name="header"></slot></header>
 				<main><slot name="primary"></slot></main>
 				<div class="d2l-template-primary-secondary-divider"></div>

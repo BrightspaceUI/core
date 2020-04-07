@@ -43,6 +43,9 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 **Note:** this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
+**Properties:**
+- `width` (Number): The maximum width (unit-less) that the content will be confined to
+
 ## Future Enhancements
 
 - Optional draggable divider between the primary and secondary panels
