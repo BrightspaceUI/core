@@ -20,6 +20,7 @@ let documentLocaleSettings = undefined;
 let queue = [];
 let state = StateIdle;
 let timer = 0;
+let debug = false;
 
 async function publish(request, response) {
 
@@ -90,7 +91,7 @@ async function flushQueue() {
 				cache = await cachePromise;
 			}
 
-			console.log(`[Oslo] cache prime: ${request.resource}`);
+			debug && console.log(`[Oslo] cache prime: ${request.resource}`);
 			tasks.push(cache.put(cacheKey, cacheValue));
 			tasks.push(publish(request, responseValue));
 		}
@@ -154,11 +155,11 @@ async function fetchWithCaching(resource) {
 	const cacheKey = new Request(formatCacheKey(resource));
 	const cacheValue = await cache.match(cacheKey);
 	if (cacheValue === undefined) {
-		console.log(`[Oslo] cache miss: ${resource}`);
+		debug && console.log(`[Oslo] cache miss: ${resource}`);
 		return fetchWithQueuing(resource);
 	}
 
-	console.log(`[Oslo] cache hit: ${resource}`);
+	debug && console.log(`[Oslo] cache hit: ${resource}`);
 	if (!cacheValue.ok) {
 		throw SingleFailedReason;
 	}
@@ -178,7 +179,7 @@ async function fetchWithCaching(resource) {
 		const previousVersion = cacheValue.headers.get(ETagHeader);
 		if (previousVersion !== currentVersion) {
 
-			console.log(`[Oslo] cache stale: ${resource}`);
+			debug && console.log(`[Oslo] cache stale: ${resource}`);
 			fetchWithQueuing(resource).then(url => URL.revokeObjectURL(url));
 		}
 	}
@@ -310,6 +311,13 @@ export function __clearWindowCache() {
 	blobs.clear();
 	cache = undefined;
 	cachePromise = undefined;
+}
+
+export function __enableDebugging() {
+
+	// Used to enable debug logging during development.
+
+	debug = true;
 }
 
 export async function getLocalizeResources(
