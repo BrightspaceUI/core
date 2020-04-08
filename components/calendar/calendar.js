@@ -9,6 +9,7 @@ import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const daysInWeek = 7;
 const keyCodes = {
@@ -126,7 +127,7 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
-class Calendar extends LocalizeStaticMixin(LitElement) {
+class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -500,7 +501,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				preventDefault = true;
 				break;
 			case keyCodes.LEFT:
-				if (getComputedStyle(this).direction === 'rtl') {
+				if (this.dir === 'rtl') {
 					numDaysChange = 1;
 				} else {
 					numDaysChange = -1;
@@ -508,7 +509,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
 				break;
 			case keyCodes.RIGHT:
-				if (getComputedStyle(this).direction === 'rtl') {
+				if (this.dir === 'rtl') {
 					numDaysChange = -1;
 				} else {
 					numDaysChange = 1;
@@ -517,7 +518,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				break;
 			case keyCodes.HOME: {
 				const dayOfTheWeek = this._focusDate.getDay();
-				if (getComputedStyle(this).direction === 'rtl') {
+				if (this.dir === 'rtl') {
 					numDaysChange = 6 - dayOfTheWeek + calendarData.firstDayOfWeek;
 					if (numDaysChange > 6) {
 						numDaysChange -= daysInWeek;
@@ -533,7 +534,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 				break;
 			} case keyCodes.END: {
 				const dayOfTheWeek = this._focusDate.getDay();
-				if (getComputedStyle(this).direction === 'rtl') {
+				if (this.dir === 'rtl') {
 					numDaysChange = dayOfTheWeek - calendarData.firstDayOfWeek;
 					if (numDaysChange < 0) {
 						numDaysChange += daysInWeek;
@@ -634,7 +635,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		this._shownMonth = getPrevMonth(this._shownMonth);
 		this._monthNav = undefined;
 		setTimeout(() => {
-			this._monthNav = (getComputedStyle(this).direction !== 'rtl') ? 'prev' : 'next';
+			this._monthNav = (this.dir !== 'rtl') ? 'prev' : 'next';
 		}, 100); // timeout for firefox
 	}
 
@@ -643,7 +644,7 @@ class Calendar extends LocalizeStaticMixin(LitElement) {
 		this._shownMonth = getNextMonth(this._shownMonth);
 		this._monthNav = undefined;
 		setTimeout(() => {
-			this._monthNav = (getComputedStyle(this).direction !== 'rtl') ? 'next' : 'prev';
+			this._monthNav = (this.dir !== 'rtl') ? 'next' : 'prev';
 		}, 100); // timeout for firefox
 	}
 
