@@ -2,7 +2,7 @@
 
 ## d2l-backdrop
 
-The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target by applying `role="presentation"` and `aria-hidden="true"`.
+The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying `role="presentation"` and `aria-hidden="true"`.
 
 ```html
 <script type="module">
