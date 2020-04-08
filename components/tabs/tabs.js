@@ -574,37 +574,36 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		}
 		this._tabInfos = newTabInfos;
 
+		if (this._tabInfos.length > 0 && !selectedTabInfo) {
+			this._tabInfos[0].selected = true;
+			selectedTabInfo = this._tabInfos[0];
+		}
+
+		await this.updateComplete;
+
+		const animPromises = [];
 		if (!this._initialized && this._tabInfos.length > 0) {
 
 			this._initialized = true;
-			if (!selectedTabInfo) {
-				this._tabInfos[0].selected = true;
-				selectedTabInfo = this._tabInfos[0];
-			}
-
-			await this.updateComplete;
-
 			await this._updateTabsContainerWidth(selectedTabInfo);
-			this._updateMeasures();
-			await this._updateScrollPosition(selectedTabInfo);
 
 		} else {
 
-			await this.updateComplete;
+			if (this._tabInfos.length > 1) {
+				this._tabInfos.forEach((info) => {
+					if (info.state === 'adding') animPromises.push(this._animateTabAddition(info));
+					else if (info.state === 'removing') animPromises.push(this._animateTabRemoval(info));
+				});
+			}
 
-			const animPromises = [];
-			this._tabInfos.forEach((info) => {
-				if (info.state === 'adding') animPromises.push(this._animateTabAddition(info));
-				else if (info.state === 'removing') animPromises.push(this._animateTabRemoval(info));
-			});
-
-			Promise.all(animPromises).then(() => {
-				this._updateMeasures();
-				return this._updateScrollPosition(selectedTabInfo);
-			});
-
+			// required for animation
 			this._updateMeasures();
 		}
+
+		Promise.all(animPromises).then(() => {
+			this._updateMeasures();
+			return this._updateScrollPosition(selectedTabInfo);
+		});
 
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tabs-initialized', { bubbles: true, composed: true }
@@ -723,7 +722,9 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		this._tabInfos.forEach((tabInfo) => {
 			if (tabInfo.selected && tabInfo.id !== selectedTab.controlsPanel) {
 				tabInfo.selected = false;
-				this._getPanel(tabInfo.id).selected = false;
+				const panel = this._getPanel(tabInfo.id);
+				// panel may not exist if it's being removed
+				if (panel) panel.selected = false;
 			}
 		});
 		this.requestUpdate();
