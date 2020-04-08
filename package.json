@@ -72,7 +72,6 @@
     "intl-messageformat": "^7",
     "lit-element": "^2",
     "prismjs": "^1",
-    "resize-observer-polyfill": "^1",
-    "d2l-navigation": "github:BrightspaceUI/navigation#semver:^4"
+    "resize-observer-polyfill": "^1"
   }
 }

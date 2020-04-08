@@ -1,5 +1,4 @@
 import '../../components/colors/colors.js';
-import 'd2l-navigation/d2l-navigation-immersive.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -7,7 +6,7 @@ class TemplatePrimarySecondary extends LitElement {
 
 	static get properties() {
 		return {
-			width: { type: Number },
+			widthType: { type: String },
 			_hasFooter: { type: Boolean }
 		};
 	}
@@ -59,20 +58,17 @@ class TemplatePrimarySecondary extends LitElement {
 
 	render() {
 		const containerStyles = {};
-		const navigationStyles = {};
-		if (this.width) {
-			containerStyles.maxWidth = `${this.width}px`;
-			navigationStyles['--d2l-navigation-immersive-content-max-width'] = `${this.width}px`;
+		switch (this.widthType) {
+			case 'normal':
+				containerStyles.maxWidth = '1230px';
+				break;
+			default:
+				containerStyles.maxWidth = 'none';
 		}
 
 		return html`
 			<div class="container" style="${styleMap(containerStyles)}">
-				<header>
-					<d2l-navigation-immersive style="${styleMap(navigationStyles)}" back-link-href="${this.backLinkHref}" back-link-text="${this.backLinkText}">
-						<slot name="navigation-immersive-middle" slot="middle"></slot>
-						<slot name="navigation-immersive-right" slot="right"></slot>
-					</d2l-navigation-immersive>
-				</header>
+				<header><slot name="header"></slot></header>
 				<main><slot name="primary"></slot></main>
 				<div class="d2l-template-primary-secondary-divider"></div>
 				<aside><slot name="secondary"></slot></aside>

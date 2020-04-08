@@ -44,9 +44,7 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 **Note:** this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
 **Properties:**
-- `width` (Number): The maximum width (unit-less) that the content will be confined to
-- `backLinkHref` (String): Href for the navigation Back link
-- `backLinkText` (String): Optional text for the navigation Back link. Will override the navigation's default Back text  
+- `widthType` (string, default: `fullscreen`): The width that the template content will be constrained to. Accepts `fullscreen` or `normal`. Normal constrains width to `1230px`. 
 
 ## Future Enhancements
 
