@@ -3,11 +3,11 @@ import { expect } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
-const DefaultsEllinika = { txtOne: 'One (el)', txtTwo: 'Two (el)' };
+const DefaultsGreek = { txtOne: 'One (el)', txtTwo: 'Two (el)' };
 const DefaultsEnglish = { txtOne: 'One (en)', txtTwo: 'Two (en)' };
 const LanguagesGreekEnglish = ['el-GR', 'el', 'en-GB', 'en', 'en-US'];
 const Overrides = { txtTwo: 'Two (override)' };
-const ResourceEllinika = '/resolved/to/el.json';
+const ResourceGreek = '/resolved/to/el.json';
 const ResourceEnglish = '/resolved/to/en.json';
 const ResourceOverrides = '/resolved/to/overrides.json';
 const UrlBatch = 'http://lms/path/to/batch';
@@ -21,7 +21,7 @@ const OsloSingle = { batch: null, collection: UrlCollection, version: null };
 const SupportedLanguages = new Set(['el', 'en']);
 const UrlOverrides = `${UrlCollection}${ResourceOverrides}`;
 const UrlResourceEnglish = `http://cdn${ResourceEnglish}`;
-const UrlResourceGreek = `http://cdn${ResourceEllinika}`;
+const UrlResourceGreek = `http://cdn${ResourceGreek}`;
 
 function filterFunc(language) {
 
@@ -44,7 +44,7 @@ function fetchFunc(url) {
 			return DefaultsEnglish;
 
 		case UrlResourceGreek:
-			return DefaultsEllinika;
+			return DefaultsGreek;
 
 		default:
 			throw new Error(`Invalid resource: ${url}`);
@@ -75,7 +75,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: DefaultsEllinika
+			resources: DefaultsGreek
 		};
 
 		const actual = await getLocalizeResources(
@@ -85,11 +85,9 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.calledTwice;
+		expect(formatFuncSpy).to.have.been.callCount(1);
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.calledTwice;
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(1);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchStub).to.have.not.been.called;
 		expect(actual).to.deep.equal(expected);
@@ -105,7 +103,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: Object.assign({}, DefaultsEllinika, Overrides)
+			resources: Object.assign({}, DefaultsGreek, Overrides)
 		};
 
 		const actual = await getLocalizeResources(
@@ -115,13 +113,11 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(fetchFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlOverrides);
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchStub).to.have.not.been.called;
 		expect(actual).to.deep.equal(expected);
@@ -137,7 +133,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: Object.assign({}, DefaultsEllinika, Overrides)
+			resources: Object.assign({}, DefaultsGreek, Overrides)
 		};
 
 		// first call to prime cache - discarded
@@ -148,8 +144,8 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
-		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
+		expect(fetchFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
 		expect(fetchStub).to.have.not.been.called;
 
 		formatFuncSpy.resetHistory();
@@ -162,8 +158,8 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
-		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
+		expect(fetchFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
 		expect(fetchStub).to.have.not.been.called;
 
 		expect(actual).to.deep.equal(expected);
@@ -241,7 +237,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: Object.assign({}, DefaultsEllinika, Overrides)
+			resources: Object.assign({}, DefaultsGreek, Overrides)
 		};
 
 		// Stage 1: novel request
@@ -253,12 +249,10 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 blob
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 blob
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-1');
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
@@ -292,12 +286,10 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 cache key
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 blob
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 blob
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-1');
 		expect(openSpy).to.have.not.been.called; // in the window cache
@@ -323,12 +315,10 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 cache key
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 blob
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 blob
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-2');
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
@@ -386,7 +376,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: DefaultsEllinika
+			resources: DefaultsGreek
 		};
 
 		let actual = await getLocalizeResources(
@@ -396,12 +386,10 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(1); // 1 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchStub).to.have.been.calledOnce;
 		expect(fetchStub).to.have.been.calledWithExactly(UrlBatch, {
@@ -428,12 +416,10 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 cache key
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(1); // 1 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchStub).to.have.not.been.called;
 		expect(putSpy).to.have.not.been.called;
@@ -470,7 +456,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: DefaultsEllinika
+			resources: DefaultsGreek
 		};
 
 		let actual = await getLocalizeResources(
@@ -480,12 +466,10 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 lms
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(1); // 1 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchStub).to.have.been.calledOnce;
 		expect(fetchStub).to.have.been.calledWithExactly(UrlBatch, {
@@ -512,12 +496,10 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.callCount(2); // 1 cdn, 1 cache key
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
+		expect(fetchFuncSpy).to.have.been.callCount(1); // 1 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchStub).to.have.not.been.called;
 		expect(putSpy).to.have.not.been.called;

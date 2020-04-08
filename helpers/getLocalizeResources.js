@@ -346,6 +346,8 @@ export async function getLocalizeResources(
 
 			const translations = fetchFunc(formatFunc(language));
 			promises.push(translations);
+
+			break;
 		}
 	}
 
