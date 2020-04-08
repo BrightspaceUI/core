@@ -4,6 +4,8 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const scrollKeys = [];
 let scrollOverflow = null;
 
@@ -36,6 +38,11 @@ class Backdrop extends LitElement {
 			}
 			:host([_state="showing"]) {
 				opacity: 0.7;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				:host {
+					transition: none;
+				}
 			}
 		`];
 	}
@@ -73,7 +80,7 @@ class Backdrop extends LitElement {
 
 	_hide(animate) {
 		const hide = () => {
-			if (animate) this.removeEventListener('transitionend', hide);
+			if (animate && !reduceMotion) this.removeEventListener('transitionend', hide);
 
 			allowBodyScroll(this._bodyScrollKey);
 			this._bodyScrollKey = null;
@@ -84,7 +91,7 @@ class Backdrop extends LitElement {
 		};
 
 		queueMicrotask(() => {
-			if (animate && isVisible(this)) {
+			if (animate && !reduceMotion && isVisible(this)) {
 				this.addEventListener('transitionend', hide);
 				this._state = 'hiding';
 			} else {
