@@ -20,7 +20,7 @@ Set the visible state of the backdrop by using the `shown` attribute/property.
 
 ```javascript
 button.addEventListener('click', () => {
-  backdrop.shown = true;
+  backdrop.shown = !backdrop.shown;
 });
 ```
 

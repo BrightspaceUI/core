@@ -13,7 +13,7 @@ class Backdrop extends LitElement {
 
 	static get properties() {
 		return {
-			shown: { type: Boolean, attribute: true },
+			shown: { type: Boolean },
 			forTarget: { type: String, attribute: 'for-target' },
 			_state: { type: String, reflect: true }
 		};
