@@ -22,7 +22,14 @@ const customLaunchers = {
 	edge: {
 		base: 'SauceLabs',
 		browserName: 'microsoftedge',
-		platform: 'Windows 10'
+		platform: 'Windows 10',
+		version: 'latest'
+	},
+	edge_legacy: {
+		base: 'SauceLabs',
+		browserName: 'microsoftedge',
+		platform: 'Windows 10',
+		version: '18.17763'
 	}
 };
 
@@ -48,7 +55,16 @@ module.exports = config => {
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
 			reporters: ['dots', 'saucelabs'],
-			singleRun: true
+			singleRun: true,
+			browserDisconnectTimeout : 10000, // default 2000
+			browserDisconnectTolerance : 1, // default 0
+			browserNoActivityTimeout: 120000, // default 10000
+			captureTimeout: 120000, // default 60000
+			client: {
+				mocha: {
+					timeout : 10000
+				}
+			}
 		}),
 	);
 	return config;

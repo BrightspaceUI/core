@@ -233,12 +233,16 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	async _handleChange(e) {
 		const value = e.target.value;
+		if (value === '') {
+			this._updateValueDispatchEvent('');
+			return;
+		}
 		this._formattedValue = value;
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
 			this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
-		} catch (e) {
+		} catch (err) {
 			// leave value the same when invalid input
 		}
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
@@ -264,7 +268,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleMouseup() {
-		this._dropdown.toggleOpen(false);
+		if (!this.disabled) this._dropdown.toggleOpen(false);
 	}
 
 	_handleSetToToday() {
@@ -274,6 +278,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_updateValueDispatchEvent(dateInISO) {
+		if (dateInISO === this.value) return;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-change',

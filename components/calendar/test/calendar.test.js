@@ -110,11 +110,11 @@ describe('d2l-calendar', () => {
 		});
 
 		it('has initial correct _focusDate when on month with no selected-value', async() => {
-			const newToday = new Date('2018-02-12');
+			const newToday = new Date('2018-02-12T12:00Z');
 			const clock = sinon.useFakeTimers(newToday.getTime());
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
-			const expectedFocusDate = new Date(2018, 1, 1);
+			const expectedFocusDate = new Date(2018, 1, 12);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 
 			clock.restore();
@@ -162,6 +162,30 @@ describe('d2l-calendar', () => {
 			const expectedFocusDate = new Date(2015, 7, 1);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(7);
+		});
+
+		it('has correct _focusDate when user changes month to previous month then back to month with today', async() => {
+			const newToday = new Date('2018-05-10T12:00Z');
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
+
+			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
+			const expectedFocusDate1 = new Date(2018, 4, 10);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate1);
+
+			const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show April"]');
+			setTimeout(() => el.click());
+			await oneEvent(el, 'click');
+			await aTimeout(1);
+
+			const el2 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show May"]');
+			setTimeout(() => el2.click());
+			await oneEvent(el2, 'click');
+			await aTimeout(1);
+
+			const expectedFocusDate2 = new Date(2018, 4, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate2);
+
+			clock.restore();
 		});
 
 		it('has correct _focusDate when user changes month to previous month that contains the selected date from a different month', async() => {

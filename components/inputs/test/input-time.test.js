@@ -162,7 +162,6 @@ describe('d2l-input-time', () => {
 		it('should round-up to next interval when intervals are enforced and value is set', async() => {
 			const elem = await fixture(hourLongIntervalsEnforced);
 			elem.value = '2:01:00';
-			console.log(elem);
 			await elem.updateComplete;
 			expect(elem.value).to.equal('3:00:00');
 		});
