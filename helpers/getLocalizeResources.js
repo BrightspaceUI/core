@@ -4,6 +4,8 @@ const CacheName = 'd2l-oslo';
 const ContentTypeHeader = 'Content-Type';
 const ContentTypeJson = 'application/json';
 const DebounceTime = 150;
+const ETagHeader = 'ETag';
+const OverrideLanguage = 'overrides';
 const StateFetching = 2;
 const StateIdle = 1;
 
@@ -69,6 +71,14 @@ async function flushQueue() {
 				status: response.status,
 				headers: response.headers
 			});
+
+			// New version might be available since the page loaded, so make a
+			// record of it.
+
+			const nextVersion = responseValue.headers.get(ETagHeader);
+			if (nextVersion) {
+				setVersion(nextVersion);
+			}
 
 			const cacheKey = new Request(formatCacheKey(request.resource));
 			const cacheValue = responseValue.clone();
@@ -153,6 +163,26 @@ async function fetchWithCaching(resource) {
 		throw SingleFailedReason;
 	}
 
+	// Check if the cache response is stale based on either the document init or
+	// any requests we've made to the LMS since init. We'll still serve stale
+	// from cache for this page, but we'll update it in the background for the
+	// next page.
+	//
+	// TODO: Respect other cache headers, such as max-age and Expires. We're not
+	// "re-implementing" the browser cache, just the directives that we support
+	// for this interaction.
+
+	const currentVersion = getVersion();
+	if (currentVersion) {
+
+		const previousVersion = cacheValue.headers.get(ETagHeader);
+		if (previousVersion !== currentVersion) {
+
+			console.log(`[Oslo] cache stale: ${resource}`);
+			fetchWithQueuing(resource).then(url => URL.revokeObjectURL(url));
+		}
+	}
+
 	const blob = await cacheValue.blob();
 	const objectUrl = URL.createObjectURL(blob);
 	return objectUrl;
@@ -176,14 +206,14 @@ function shouldUseBatchFetch() {
 		documentLocaleSettings = getDocumentLocaleSettings();
 	}
 
-	if (documentLocaleSettings.oslo === undefined) {
+	if (!documentLocaleSettings.oslo) {
 		return false;
 	}
 
 	// Only batch if we can do client-side caching, otherwise it's worse on each
 	// subsequent page navigation.
 
-	return documentLocaleSettings.oslo.batch !== null && 'CacheStorage' in window;
+	return Boolean(documentLocaleSettings.oslo.batch) && 'CacheStorage' in window;
 }
 
 function shouldUseCollectionFetch() {
@@ -192,33 +222,52 @@ function shouldUseCollectionFetch() {
 		documentLocaleSettings = getDocumentLocaleSettings();
 	}
 
-	if (documentLocaleSettings.oslo === undefined) {
+	if (!documentLocaleSettings.oslo) {
 		return false;
 	}
 
-	return documentLocaleSettings.oslo.collection !== null;
+	return Boolean(documentLocaleSettings.oslo.collection);
 }
 
-function filterOverride(language) {
+function setVersion(version) {
+
+	if (documentLocaleSettings === undefined) {
+		documentLocaleSettings = getDocumentLocaleSettings();
+	}
+
+	if (!documentLocaleSettings.oslo) {
+		return;
+	}
+
+	documentLocaleSettings.oslo.version = version;
+}
+
+function getVersion() {
+
+	if (documentLocaleSettings === undefined) {
+		documentLocaleSettings = getDocumentLocaleSettings();
+	}
+
+	const shouldReturnVersion =
+		documentLocaleSettings.oslo &&
+		documentLocaleSettings.oslo.version;
+	if (!shouldReturnVersion) {
+		return null;
+	}
+
+	return documentLocaleSettings.oslo.version;
+}
+
+function shouldFetchOverrides() {
 
 	const isOsloAvailable =
 		shouldUseBatchFetch() ||
 		shouldUseCollectionFetch();
 
-	// Temporary hack until we can sort out which language we should fetch
-	// overrides for. We'll try for any two-part code (e.g. en-US) and the LMS
-	// will match directly against the language packs (not ideal, because we
-	// really want the _locale_'s language pack not the built-in language
-	// packs).
-
-	const shouldFetchOverride =
-		isOsloAvailable &&
-		language.length >= 5;
-
-	return shouldFetchOverride;
+	return isOsloAvailable;
 }
 
-function fetchOverride(language, formatFunc, fetchFunc) {
+function fetchOverride(formatFunc, fetchFunc) {
 
 	let url, res;
 
@@ -226,7 +275,7 @@ function fetchOverride(language, formatFunc, fetchFunc) {
 
 		// If batching is available, pool requests together.
 
-		url = formatFunc(language);
+		url = formatFunc(OverrideLanguage);
 		url = new URL(url).pathname;
 
 		res = fetchWithPooling(url);
@@ -235,7 +284,7 @@ function fetchOverride(language, formatFunc, fetchFunc) {
 
 		// Otherwise, fetch it directly and let the LMS manage the cache.
 
-		url = formatFunc(language);
+		url = formatFunc(OverrideLanguage);
 		url = new URL(url).pathname;
 		url = documentLocaleSettings.oslo.collection + url;
 
@@ -273,13 +322,13 @@ export async function getLocalizeResources(
 	const promises = [];
 	let supportedLanguage;
 
+	if (shouldFetchOverrides()) {
+
+		const overrides = fetchOverride(formatFunc, fetchFunc);
+		promises.push(overrides);
+	}
+
 	for (const language of possibleLanguages) {
-
-		if (filterOverride(language)) {
-
-			const overrides = fetchOverride(language, formatFunc, fetchFunc);
-			promises.push(overrides);
-		}
 
 		if (filterFunc(language)) {
 

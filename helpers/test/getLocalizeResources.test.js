@@ -6,24 +6,20 @@ import sinon from 'sinon';
 const DefaultsEllinika = { txtOne: 'One (el)', txtTwo: 'Two (el)' };
 const DefaultsEnglish = { txtOne: 'One (en)', txtTwo: 'Two (en)' };
 const LanguagesGreekEnglish = ['el-GR', 'el', 'en-GB', 'en', 'en-US'];
-const OverridesAmerican = { txtOne: 'One (en-US, override)' };
-const OverridesBritish = { txtOne: 'One (en-GB, override)' };
-const OverridesGreek = { txtTwo: 'Two (el-GR, override)' };
-const ResourceAmerican = '/resolved/to/en-US.json';
-const ResourceBritish = '/resolved/to/en-GB.json';
+const Overrides = { txtTwo: 'Two (override)' };
 const ResourceEllinika = '/resolved/to/el.json';
 const ResourceEnglish = '/resolved/to/en.json';
-const ResourceGreek = '/resolved/to/el-GR.json';
+const ResourceOverrides = '/resolved/to/overrides.json';
 const UrlBatch = 'http://lms/path/to/batch';
 const UrlCollection = 'http://lms/path/to/collection';
+const VersionNext = 'W\\"abc124"';
+const VersionPrev = 'W\\"abc123"';
 
-const OsloBatch = { batch: UrlBatch, collection: UrlCollection };
-const OsloDisabled = { batch: null, collection: null };
-const OsloSingle = { batch: null, collection: UrlCollection };
+const OsloBatch = { batch: UrlBatch, collection: UrlCollection, version: VersionPrev };
+const OsloDisabled = { batch: null, collection: null, version: null };
+const OsloSingle = { batch: null, collection: UrlCollection, version: null };
 const SupportedLanguages = new Set(['el', 'en']);
-const UrlOverridesAmerican = `${UrlCollection}/resolved/to/en-US.json`;
-const UrlOverridesBritish = `${UrlCollection}/resolved/to/en-GB.json`;
-const UrlOverridesGreek = `${UrlCollection}/resolved/to/el-GR.json`;
+const UrlOverrides = `${UrlCollection}${ResourceOverrides}`;
 const UrlResourceEnglish = `http://cdn${ResourceEnglish}`;
 const UrlResourceGreek = `http://cdn${ResourceEllinika}`;
 
@@ -41,14 +37,8 @@ function fetchFunc(url) {
 
 	switch (url) {
 
-		case UrlOverridesAmerican:
-			return OverridesAmerican;
-
-		case UrlOverridesBritish:
-			return OverridesBritish;
-
-		case UrlOverridesGreek:
-			return OverridesGreek;
+		case UrlOverrides:
+			return Overrides;
 
 		case UrlResourceEnglish:
 			return DefaultsEnglish;
@@ -115,7 +105,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: Object.assign({}, DefaultsEllinika, OverridesGreek)
+			resources: Object.assign({}, DefaultsEllinika, Overrides)
 		};
 
 		const actual = await getLocalizeResources(
@@ -125,16 +115,12 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlOverridesAmerican);
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlOverridesBritish);
-		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlOverridesGreek);
+		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlOverrides);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchStub).to.have.not.been.called;
@@ -151,7 +137,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: Object.assign({}, DefaultsEllinika, OverridesGreek)
+			resources: Object.assign({}, DefaultsEllinika, Overrides)
 		};
 
 		// first call to prime cache - discarded
@@ -162,8 +148,8 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
-		expect(fetchFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
 		expect(fetchStub).to.have.not.been.called;
 
 		formatFuncSpy.resetHistory();
@@ -176,8 +162,8 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
-		expect(fetchFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
 		expect(fetchStub).to.have.not.been.called;
 
 		expect(actual).to.deep.equal(expected);
@@ -185,7 +171,8 @@ describe('getLocalizeResources', () => {
 
 	it('fetches batch overrides when enabled, and caches them', async() => {
 
-		sinon.stub(documentLocaleSettings, 'oslo').get(() => OsloBatch);
+		const config = Object.assign({}, OsloBatch); // version gets mutated
+		sinon.stub(documentLocaleSettings, 'oslo').get(() => config);
 
 		const cache = new Map();
 
@@ -219,16 +206,8 @@ describe('getLocalizeResources', () => {
 			switch (url) {
 
 				case 'blob://fake-1':
-				case 'blob://fake-4':
-					return OverridesGreek;
-
 				case 'blob://fake-2':
-				case 'blob://fake-5':
-					return OverridesBritish;
-
-				case 'blob://fake-3':
-				case 'blob://fake-6':
-					return OverridesAmerican;
+					return Overrides;
 
 				default:
 					return fetchFunc(url);
@@ -249,18 +228,11 @@ describe('getLocalizeResources', () => {
 					resources: [
 						{
 							status: 200,
-							headers: [['Content-Type', 'application/json']],
-							body: JSON.stringify(OverridesGreek)
-						},
-						{
-							status: 200,
-							headers: [['Content-Type', 'application/json']],
-							body: JSON.stringify(OverridesBritish)
-						},
-						{
-							status: 200,
-							headers: [['Content-Type', 'application/json']],
-							body: JSON.stringify(OverridesAmerican)
+							headers: [
+								['Content-Type', 'application/json'],
+								['ETag', VersionNext],
+							],
+							body: JSON.stringify(Overrides)
 						}
 					]
 				});
@@ -269,7 +241,7 @@ describe('getLocalizeResources', () => {
 
 		const expected = {
 			language: 'el',
-			resources: Object.assign({}, DefaultsEllinika, OverridesGreek)
+			resources: Object.assign({}, DefaultsEllinika, Overrides)
 		};
 
 		// Stage 1: novel request
@@ -281,33 +253,27 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 blobs
+		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 blob
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-1');
-		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-2');
-		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-3');
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
-		expect(matchSpy).to.have.been.callCount(3);
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverridesAmerican });
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverridesBritish });
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverridesGreek });
+		expect(matchSpy).to.have.been.callCount(1);
+		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverrides });
 		expect(fetchStub).to.have.been.calledOnceWithExactly(UrlBatch, {
 			method: 'POST',
 			body: JSON.stringify({
-				resources: [ResourceGreek, ResourceBritish, ResourceAmerican]
+				resources: [ResourceOverrides]
 			}),
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		});
-		expect(putSpy).to.have.been.callCount(3);
+		expect(putSpy).to.have.been.callCount(1);
 		expect(actual).to.deep.equal(expected);
 
 		fetchFuncSpy.resetHistory();
@@ -326,18 +292,14 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 cache keys
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 blobs
+		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 blob
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-1');
-		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-2');
-		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-3');
 		expect(openSpy).to.have.not.been.called; // in the window cache
 		expect(matchSpy).to.have.not.been.called;
 		expect(fetchStub).to.have.not.been.called;
@@ -361,24 +323,18 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 cache keys
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
-		expect(fetchFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 blobs
+		expect(fetchFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 blob
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceGreek);
-		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-4');
-		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-5');
-		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-6');
+		expect(fetchFuncSpy).to.have.been.calledWithExactly('blob://fake-2');
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
-		expect(matchSpy).to.have.been.callCount(3);
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverridesAmerican });
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverridesBritish });
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverridesGreek });
-		expect(fetchStub).to.have.not.been.called;
+		expect(matchSpy).to.have.been.callCount(1);
+		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverrides });
+		expect(fetchStub).to.have.not.been.called; // worker updated version with NextVersion
 		expect(putSpy).to.have.not.been.called;
 		expect(actual).to.deep.equal(expected);
 	});
@@ -422,16 +378,6 @@ describe('getLocalizeResources', () => {
 							status: 404,
 							headers: [],
 							body: ''
-						},
-						{
-							status: 404,
-							headers: [],
-							body: ''
-						},
-						{
-							status: 404,
-							headers: [],
-							body: ''
 						}
 					]
 				});
@@ -450,11 +396,9 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
 		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
@@ -463,13 +407,13 @@ describe('getLocalizeResources', () => {
 		expect(fetchStub).to.have.been.calledWithExactly(UrlBatch, {
 			method: 'POST',
 			body: JSON.stringify({
-				resources: [ResourceGreek, ResourceBritish, ResourceAmerican]
+				resources: [ResourceOverrides]
 			}),
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		});
-		expect(putSpy).to.have.been.callCount(3);
+		expect(putSpy).to.have.been.callCount(1);
 		expect(actual).to.deep.equal(expected);
 
 		formatFuncSpy.resetHistory();
@@ -484,11 +428,9 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 cache keys
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
 		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
@@ -538,11 +480,9 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 lms
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
 		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
@@ -551,7 +491,7 @@ describe('getLocalizeResources', () => {
 		expect(fetchStub).to.have.been.calledWithExactly(UrlBatch, {
 			method: 'POST',
 			body: JSON.stringify({
-				resources: [ResourceGreek, ResourceBritish, ResourceAmerican]
+				resources: [ResourceOverrides]
 			}),
 			headers: {
 				'Content-Type': 'application/json'
@@ -572,11 +512,9 @@ describe('getLocalizeResources', () => {
 			fetchFuncSpy
 		);
 
-		expect(formatFuncSpy).to.have.been.callCount(5); // 2 cdn, 3 cache keys
-		expect(formatFuncSpy).to.have.been.calledWithExactly('el-GR');
+		expect(formatFuncSpy).to.have.been.callCount(3); // 2 cdn, 1 cache key
+		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('el');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-GB');
-		expect(formatFuncSpy).to.have.been.calledWithExactly('en-US');
 		expect(formatFuncSpy).to.have.been.calledWithExactly('en');
 		expect(fetchFuncSpy).to.have.been.callCount(2); // 2 cdn
 		expect(fetchFuncSpy).to.have.been.calledWithExactly(UrlResourceEnglish);
