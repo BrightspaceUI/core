@@ -488,7 +488,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				spaceAround.left = Math.min(targetRect.left - parentRect.left - this.boundary.left, spaceAround.left);
 			}
 			if (!isNaN(this.boundary.right)) {
-				spaceAround.right = Math.min(parentRect.left + this.boundary.right - targetRect.right, spaceAround.right);
+				spaceAround.right = Math.min(parentRect.right - targetRect.right - this.boundary.right, spaceAround.right);
 			}
 			if (!isNaN(this.boundary.top)) {
 				spaceAround.above = Math.min(targetRect.top - parentRect.top - this.boundary.top, spaceAround.above);
