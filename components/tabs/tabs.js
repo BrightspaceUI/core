@@ -541,6 +541,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		const panels = this._getPanels(e.target);
 
 		if (this._initialized) this._updateTabListVisibility(panels);
+		else if (panels.length === 0) return;
 
 		let selectedTabInfo = null;
 
