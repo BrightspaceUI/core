@@ -1,7 +1,10 @@
 import '../colors/colors.js';
+import '../../helpers/queueMicrotask.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollKeys = [];
 let scrollOverflow = null;
@@ -36,22 +39,32 @@ class Backdrop extends LitElement {
 			:host([_state="showing"]) {
 				opacity: 0.7;
 			}
+			@media (prefers-reduced-motion: reduce) {
+				:host {
+					transition: none;
+				}
+			}
 		`];
 	}
 
 	constructor() {
 		super();
-		this.shown = false;
+		this._shown = false;
 		this._state = null;
 	}
 
-	attributeChangedCallback(name, oldval, newval) {
-		super.attributeChangedCallback(name, oldval, newval);
+	get shown() {
+		return this._shown;
+	}
 
-		if (name !== 'shown') return;
-
-		if (this.shown) this._show();
-		else this._hide(true);
+	set shown(val) {
+		const oldVal = this._shown;
+		if (oldVal !== val) {
+			this._shown = val;
+			this.requestUpdate();
+			if (this._shown) this._show();
+			else this._hide(true);
+		}
 	}
 
 	disconnectedCallback() {
@@ -66,9 +79,8 @@ class Backdrop extends LitElement {
 	}
 
 	_hide(animate) {
-
 		const hide = () => {
-			if (animate) this.removeEventListener('transitionend', hide);
+			if (animate && !reduceMotion) this.removeEventListener('transitionend', hide);
 
 			allowBodyScroll(this._bodyScrollKey);
 			this._bodyScrollKey = null;
@@ -78,21 +90,23 @@ class Backdrop extends LitElement {
 			this._state = null;
 		};
 
-		if (animate && this.offsetParent) {
-			this.addEventListener('transitionend', hide);
-			this._state = 'hiding';
-		} else {
-			hide();
-		}
-
+		queueMicrotask(() => {
+			if (animate && !reduceMotion && isVisible(this)) {
+				this.addEventListener('transitionend', hide);
+				this._state = 'hiding';
+			} else {
+				hide();
+			}
+		});
 	}
 
-	_show() {
-
+	async _show() {
 		this._bodyScrollKey = preventBodyScroll();
 		this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
-		this._state = 'showing';
 
+		queueMicrotask(() => {
+			this._state = 'showing';
+		});
 	}
 
 }
