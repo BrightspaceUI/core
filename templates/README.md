@@ -1,7 +1,7 @@
 # Templates
 Page templates to provide common ways to arrange content on a page
 
-## Primary-Secondary - NOT READY
+## Primary-Secondary
 Two Panel (primary and secondary) page template with header and optional footer
 
 Use this template when: 
