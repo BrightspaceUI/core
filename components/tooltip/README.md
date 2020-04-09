@@ -31,11 +31,11 @@ The `d2l-tooltip` component is used to display additional information when users
 
 **Boundaries:**
 
-Custom boundaries should be used sparingly. If no boundaries are provided, the viewport will be used. However, it might be necessary to constrain a tooltip to improve user experience or to prevent it from being cut off if it has an ancestor with `overflow: hidden;`.
+If no boundaries are provided the union of the `window` or `iframe` document and the viewport will be used. Custom boundaries should be used sparingly; however, it might be necessary to constrain a tooltip to improve user experience or to prevent it from being cut off if it has an ancestor with `overflow: hidden;`.
 
-This can be done with the `boundary` attribute that allows any of the tooltip's `"top"`, `"bottom"`, `"left"` and `"right"` to be constrained. Boundaries are defined relative on the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent) so a boundary of `{"top": 0, "bottom": 0, "left": 0, "right": tooltip.offsetParent.width}` will constrain the tooltip so that it opens within its parent element's bounds. Note, `boundary.right` is defined relative to the offset parent's left side.
+This can be done with the `boundary` attribute that allows any of the tooltip's `"top"`, `"bottom"`, `"left"` and `"right"` to be constrained. Boundaries are defined relative on the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent) meaning a boundary of `{"top": 0, "bottom": 0, "left": 0, "right": 0}` will constrain the tooltip so that it opens within its offset parent's bounds.
 
-In the following example the tooltip's orange offset parent has a width of `450px`. To constrain the tooltip to the dashed boundary we can set the top boundary to `50`, the bottom boundary to `10`, the left boundary to `100`, and the right boundary to `450`.
+In the following example to constrain the tooltip to the dashed boundary we can set the top boundary to `50`, the bottom boundary to `10`, the left boundary to `100`, and the right boundary to `0`.
 
 ![screenshot of a tooltip with custom boundaries](./screenshots/tooltip-boundary.png)
 ```html
@@ -46,7 +46,7 @@ In the following example the tooltip's orange offset parent has a width of `450p
 <div class="offset-parent">
 	<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
 	<d2l-tooltip for="tooltip-boundary"
-		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:450}">
+		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:-}">
 		This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
 	</d2l-tooltip>
 </div>

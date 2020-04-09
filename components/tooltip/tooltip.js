@@ -45,13 +45,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		return {
 			align: { type: String }, /* Valid values are: 'start' and 'end' */
 			boundary: { type: Object },
-			customTarget: {
-				type: Object, attribute: 'custom-target', converter: {
-					/* required because some places are setting custom-target="" to prevent _findTarget
-					from falling back to its parent when the 'for' attribute is missing */
-					fromAttribute: value => (value === undefined ? undefined : value === '' ? '' : JSON.parse(value))
-				}
-			},
 			delay: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
@@ -345,7 +338,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((_, prop) => {
-			if (prop === 'for' || prop === 'customTarget') {
+			if (prop === 'for') {
 				this._updateTarget();
 			} else if (prop === 'forceShow') {
 				this._updateShowing();
@@ -355,27 +348,11 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	async updatePosition() {
 
-		if (!this._target && !this.customTarget) {
+		if (!this._target) {
 			return;
 		}
 
-		let targetRect;
-		if (this.customTarget) {
-			const offsetParent = getOffsetParent(this);
-			const { left, top } = offsetParent.getBoundingClientRect();
-			const targetLeft = left + this.customTarget.left;
-			const targetTop = top + this.customTarget.top;
-			targetRect = {
-				left: targetLeft,
-				top: targetTop,
-				width: this.customTarget.width,
-				height: this.customTarget.height,
-				right: targetLeft + this.customTarget.width,
-				bottom: targetTop + this.customTarget.height
-			};
-		} else {
-			targetRect = this._target.getBoundingClientRect();
-		}
+		const targetRect = this._target.getBoundingClientRect();
 		const spaceAround = this._computeSpaceAround(targetRect);
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
@@ -488,7 +465,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				spaceAround.left = Math.min(targetRect.left - parentRect.left - this.boundary.left, spaceAround.left);
 			}
 			if (!isNaN(this.boundary.right)) {
-				spaceAround.right = Math.min(parentRect.left + this.boundary.right - targetRect.right, spaceAround.right);
+				spaceAround.right = Math.min(parentRect.right - targetRect.right - this.boundary.right, spaceAround.right);
 			}
 			if (!isNaN(this.boundary.top)) {
 				spaceAround.above = Math.min(targetRect.top - parentRect.top - this.boundary.top, spaceAround.above);
@@ -514,7 +491,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			const targetSelector = `#${this.for}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
-		} else if (this.customTarget === undefined) {
+		} else {
 			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
