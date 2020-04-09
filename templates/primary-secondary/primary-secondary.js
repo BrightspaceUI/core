@@ -1,12 +1,11 @@
 import '../../components/colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
-import { styleMap } from 'lit-html/directives/style-map.js';
 
 class TemplatePrimarySecondary extends LitElement {
 
 	static get properties() {
 		return {
-			widthType: { type: String },
+			widthType: { type: String, attribute: 'width-type', reflect: true },
 			_hasFooter: { type: Boolean }
 		};
 	}
@@ -19,21 +18,32 @@ class TemplatePrimarySecondary extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
+			:host([width-type="normal"]) .content-container,
+			:host([width-type="normal"]) .footer-container {
+				max-width: 1230px;
+				margin: 0 auto;
+			}
 			.container {
 				display: grid;
-				grid-template-columns: minmax(320px, 2fr) 1px minmax(320px, 1fr);
+				grid-template-columns: auto;
 				grid-template-rows: auto 1fr auto;
 				grid-template-areas:
-				"header header header"
-				"primary divider secondary"
-				"footer footer footer";
+				"header"
+				"content"
+				"footer";
 				height: 100vh;
-				margin-left: auto;
-				margin-right: auto;
-				min-width: min-content;
 			}
 			header {
 				grid-area: header;
+			}
+			.content-container {
+				display: grid;
+				grid-template-columns: minmax(320px, 2fr) 1px minmax(320px, 1fr);
+				grid-template-rows: auto;
+				grid-template-areas:
+				"primary divider secondary";
+				grid-area: content;
+				overflow: hidden;
 			}
 			main {
 				grid-area: primary;
@@ -56,23 +66,23 @@ class TemplatePrimarySecondary extends LitElement {
 		`;
 	}
 
-	render() {
-		const containerStyles = {};
-		switch (this.widthType) {
-			case 'normal':
-				containerStyles.maxWidth = '1230px';
-				break;
-			default:
-				containerStyles.maxWidth = 'none';
-		}
+	constructor() {
+		super();
+		this.widthType = 'fullscreen';
+	}
 
+	render() {
 		return html`
-			<div class="container" style="${styleMap(containerStyles)}">
+			<div class="container">
 				<header><slot name="header"></slot></header>
-				<main><slot name="primary"></slot></main>
-				<div class="d2l-template-primary-secondary-divider"></div>
-				<aside><slot name="secondary"></slot></aside>
-				<footer ?hidden="${!this._hasFooter}"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot></footer>
+				<div class="content-container">
+					<main><slot name="primary"></slot></main>
+					<div class="d2l-template-primary-secondary-divider"></div>
+					<aside><slot name="secondary"></slot></aside>
+				</div>
+				<footer ?hidden="${!this._hasFooter}">
+					<div class="footer-container"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></div></slot>
+				</footer>
 			</div>
 		`;
 	}

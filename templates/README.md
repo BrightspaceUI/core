@@ -43,8 +43,10 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 **Note:** this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
-**Properties:**
-- `widthType` (string, default: `fullscreen`): The width that the template content will be constrained to. Accepts `fullscreen` or `normal`. Normal constrains width to `1230px`. 
+### Width ###
+The template accepts a `width-type` attribute. When set to `normal`, the width of the template is constrained to `1230px`.
+
+```<d2l-template-primary-secondary width-type="normal"></d2l-template-primary-secondary>```
 
 ## Future Enhancements
 
