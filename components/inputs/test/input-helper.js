@@ -23,7 +23,7 @@ module.exports = {
 				const content = dropdown.querySelector('[dropdown-content]');
 				content.scrollTo(0);
 				if (content.opened) {
-					content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
+					content.addEventListener('d2l-dropdown-close', () => { setTimeout(resolve, 10); }, { once: true });
 					content.opened = false;
 				} else {
 					resolve();
