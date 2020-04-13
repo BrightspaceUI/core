@@ -183,7 +183,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					boundary="{&quot;above&quot;:0}"
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
-					max-width="350"
+					max-width="320"
 					no-auto-fit
 					no-auto-focus
 					no-padding>
