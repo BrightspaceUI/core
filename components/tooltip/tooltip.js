@@ -1,5 +1,6 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -19,6 +20,13 @@ const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
+
+const interactiveElements = {
+	'input': true,
+	'select': true,
+	'textarea': true,
+	'button': true
+};
 
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 
@@ -296,6 +304,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._dismissibleId = null;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this.setAttribute('role', 'tooltip');
+	}
+
 	hide() {
 		this._isHovering = false;
 		this._isFocusing = false;
@@ -564,17 +577,29 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this._openDir === 'bottom' || this._openDir === 'top';
 	}
 
+	_isInteractive(ele) {
+		if (ele.nodeType !== Node.ELEMENT_NODE) {
+			return false;
+		}
+		const nodeName = ele.nodeName.toLowerCase();
+		return !!interactiveElements[nodeName];
+	}
+
 	_onTargetBlur() {
 		this._isFocusing = false;
 		this._updateShowing();
 	}
 
 	_onTargetFocus() {
+		const prevFocusing = this._isFocusing;
 		if (this.disableFocusLock) {
 			this.showing = true;
 		} else {
 			this._isFocusing = true;
 			this._updateShowing();
+		}
+		if (!prevFocusing && !this._isInteractive(this._target)) {
+			announce(this.textContent);
 		}
 	}
 
@@ -619,10 +644,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			await this.updateComplete;
 			await this.updatePosition();
 			this._dismissibleId = setDismissible(() => this.hide());
+			this.setAttribute('aria-hidden', 'false');
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
 		} else {
+			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
 				clearDismissible(this._dismissibleId);
 				this._dismissibleId = null;
@@ -640,7 +667,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	_updateTarget() {
 		this._removeListeners();
 		const target = this._findTarget();
-		if (target) {
+		if (target && this._isInteractive(target)) {
 			this.id = this.id || getUniqueId();
 			target.setAttribute('aria-describedby', this.id);
 		}
