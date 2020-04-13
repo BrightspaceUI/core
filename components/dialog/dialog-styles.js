@@ -119,19 +119,23 @@ export const dialogStyles = css`
 	}
 
 	@media (max-width: 615px) {
-
 		.d2l-dialog-header {
 			padding: 14px 20px 16px 20px;
 		}
-
 		.d2l-dialog-content {
 			padding: 0 20px;
 		}
-
 		.d2l-dialog-footer {
 			padding: 20px;
 		}
-
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		.d2l-dialog-outer {
+			transition: none;
+		}
+		dialog::backdrop {
+			transition: none;
+		}
+	}
 `;

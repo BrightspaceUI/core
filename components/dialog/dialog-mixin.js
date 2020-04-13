@@ -17,6 +17,7 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
 
@@ -108,16 +109,28 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_close(action) {
 		if (!this._state) return;
 		this._action = action;
+
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
+
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
-		const transitionEnd = () => {
-			dialog.removeEventListener('transitionend', transitionEnd);
+
+		const doClose = () => {
 			if (this._useNative) dialog.close();
 			else this._handleClose();
 		};
-		dialog.addEventListener('transitionend', transitionEnd);
-		this._state = 'hiding';
+
+		if (!reduceMotion) {
+			const transitionEnd = () => {
+				dialog.removeEventListener('transitionend', transitionEnd);
+				doClose();
+			};
+			dialog.addEventListener('transitionend', transitionEnd);
+			this._state = 'hiding';
+		} else {
+			this._state = 'hiding';
+			doClose();
+		}
 	}
 
 	async _focusOpener() {
@@ -272,7 +285,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			await this._updateSize();
 			this._state = 'showing';
 			this._focusInitial();
-			await animPromise;
+			if (!reduceMotion) await animPromise;
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
 			));
