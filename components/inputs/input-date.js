@@ -153,7 +153,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		}
 
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
 
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
@@ -219,14 +218,14 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	async _handleFocusTrapEnter() {
-		this._calendar.focus();
+		this.shadowRoot.querySelector('d2l-calendar').focus();
 	}
 
 	_handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
-			this._calendar.focus();
+			this.shadowRoot.querySelector('d2l-calendar').focus();
 
 			if (e.keyCode === 40) e.preventDefault();
 		}
@@ -261,7 +260,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleDropdownClose() {
-		this._calendar.reset();
 		this._dropdownOpened = false;
 	}
 

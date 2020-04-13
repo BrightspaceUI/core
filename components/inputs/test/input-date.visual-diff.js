@@ -106,47 +106,11 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('opens then changes month then closes then reopens', async function() {
-			// open
-			await helper.open(page, '#basic');
-
-			// change month
-			await page.$eval('#basic', (elem) => {
-				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
-				button.click();
-			});
-			await monthChangeEvent(page, '#basic');
-
-			// close
-			await helper.reset(page, '#basic');
-
-			// re-open
-			await helper.open(page, '#basic');
-
-			const rect = await helper.getRect(page, '#basic');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
 		it('open with placeholder', async function() {
 			await helper.open(page, '#no-value');
 			const rect = await helper.getRect(page, '#no-value');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-
-		const monthChangeEvent = (page, selector) => {
-			return page.$eval(selector, (elem) => {
-				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				return new Promise((resolve) => {
-					let opacityTransitioned, transformTransitioned;
-					calendar.shadowRoot.addEventListener('transitionend', (e) => {
-						if (e.propertyName === 'opacity') opacityTransitioned = true;
-						if (e.propertyName === 'transform') transformTransitioned = true;
-						if (opacityTransitioned && transformTransitioned) resolve();
-					});
-				});
-			});
-		};
 	});
 
 });
