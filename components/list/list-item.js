@@ -323,7 +323,8 @@ class ListItem extends RtlMixin(LitElement) {
 	_dispatchSelected(value) {
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: { key: this.key, selected: value },
-			bubbles: true
+			bubbles: true,
+			composed: true
 		}));
 	}
 
