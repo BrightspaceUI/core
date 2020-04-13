@@ -58,7 +58,21 @@ describe('d2l-dialog-mixin', () => {
 				it('escape', async function() {
 					await helper.open(page, '#dialog');
 					const closeEvent = helper.getCloseEvent(page, '#dialog');
-					await page.keyboard.up('Escape');
+
+					/* test handler for dialog's custom close event strangely does not get
+					invoked when using puppeteer's keyboard api for the escape key for the
+					custom dialog impl even though it gets dispatched. use custom event instead. */
+					page.$eval('#dialog', (dialog) => {
+						const event = new CustomEvent('keyup', {
+							bubbles: true,
+							cancelable: true,
+							composed: true
+						});
+						event.keyCode = 27;
+						event.code = 27;
+						dialog.querySelector('d2l-button').dispatchEvent(event);
+					});
+
 					await closeEvent;
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
