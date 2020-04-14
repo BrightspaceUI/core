@@ -61,16 +61,14 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		menu.resize();
 
 		if (this.__applyFocus) {
-			setTimeout(() => {
-				menu.focus();
-			}, 0);
+			menu.focus();
 		}
 
 		if (menu.getMenuType() === 'menu-radio') {
 			const selected = menu.querySelector('[selected]');
 			if (selected !== null) {
 				setTimeout(() => selected.scrollIntoView({
-					block: 'center'
+					block: 'nearest'
 				}), 0);
 			}
 		}
