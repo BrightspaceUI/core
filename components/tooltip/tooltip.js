@@ -15,7 +15,7 @@ const pointerOverhang = 7; /* how far the pointer extends outside the content */
 const pointerRotatedLength = Math.SQRT2 * pointerLength;
 const pointerRotatedOverhang = ((pointerRotatedLength - pointerLength) / 2) + pointerOverhang;
 
-const pointerGap = 6; /* spacing between pointer and target */
+const pointerGap = 0; /* spacing between pointer and target */
 const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
 const contentBorderSize = 1;
