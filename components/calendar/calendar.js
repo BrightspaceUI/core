@@ -258,8 +258,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			.d2l-calendar-date:focus div.d2l-calendar-date-inner {
 				border-radius: 0.16rem;
 				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
-				margin-left: 4px;
-				margin-right: 4px;
 				padding: 0;
 				transition: box-shadow 200ms ease-in;
 			}
