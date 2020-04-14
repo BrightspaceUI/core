@@ -61,6 +61,9 @@ getOffsetParent(node);
 
 // returns true/false whether the specified ancestorNode is an ancestor of node
 isComposedAncestor(ancestorNode, node);
+
+// returns true/false whether the element is visible regardless of positioning
+isVisible(node);
 ```
 
 ## Gesture - Swipe

@@ -43,8 +43,11 @@
 						document.querySelector('#open').addEventListener('click', () => {
 							document.querySelector('#dialog').opened = true;
 						});
+						document.querySelector('#dialog').addEventListener('d2l-dialog-open', (e) => {
+							console.log('dialog open', e);
+						});
 						document.querySelector('#dialog').addEventListener('d2l-dialog-close', (e) => {
-							console.log('dialog action:', e.detail.action);
+							console.log('dialog close', e.detail.action);
 						});
 					</script>
 				</template>
