@@ -45,13 +45,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		return {
 			align: { type: String }, /* Valid values are: 'start' and 'end' */
 			boundary: { type: Object },
-			customTarget: {
-				type: Object, attribute: 'custom-target', converter: {
-					/* required because some places are setting custom-target="" to prevent _findTarget
-					from falling back to its parent when the 'for' attribute is missing */
-					fromAttribute: value => (value === undefined ? undefined : value === '' ? '' : JSON.parse(value))
-				}
-			},
 			delay: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
@@ -62,7 +55,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
 			_maxWidth: { type: Number },
 			_openDir: { type: String, reflect: true, attribute: '_open-dir' },
-			_targetRect: { type: Object },
 			_tooltipShift: { type: Number },
 			_viewportMargin: { type: Number }
 		};
@@ -93,11 +85,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			:host([showing]) {
 				display: inline-block;
-			}
-
-			.d2l-tooltip-target-position {
-				display: inline-block;
-				position: absolute;
 			}
 
 			.d2l-tooltip-pointer {
@@ -184,12 +171,17 @@ class Tooltip extends RtlMixin(LitElement) {
 				border-radius: ${contentBorderRadius}px;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
 				box-sizing: border-box;
-				color: inherit;
+				max-width: 17.5rem;
 				min-height: 2.1rem;
 				min-width: 2.1rem;
 				overflow: hidden;
 				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
+			}
+
+			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it*/
+			.d2l-tooltip-content.d2l-tooltip-content {
+				color: inherit;
 			}
 
 			:host([_open-dir="top"]) .d2l-tooltip-content {
@@ -311,13 +303,6 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const targetPositionStyle = {
-			left: this._targetRect ? `${this._targetRect.x}px` : null,
-			top: this._targetRect ? `${this._targetRect.y}px` : null,
-			width: this._targetRect ? `${this._targetRect.width}px` : null,
-			height: this._targetRect ? `${this._targetRect.height}px` : null,
-		};
-
 		const tooltipPositionStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : null
 		};
@@ -332,16 +317,14 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 
 		return html`
-			<div class="d2l-tooltip-target-position" style=${styleMap(targetPositionStyle)}>
-				<div class="d2l-tooltip-container">
-					<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-						<div class="d2l-body-small d2l-tooltip-content">
-							<slot></slot>
-						</div>
+			<div class="d2l-tooltip-container">
+				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
+					<div class="d2l-body-small d2l-tooltip-content">
+						<slot></slot>
 					</div>
-					<div class="d2l-tooltip-pointer">
-						<div></div>
-					</div>
+				</div>
+				<div class="d2l-tooltip-pointer">
+					<div></div>
 				</div>
 			</div>`
 		;
@@ -355,7 +338,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((_, prop) => {
-			if (prop === 'for' || prop === 'customTarget') {
+			if (prop === 'for') {
 				this._updateTarget();
 			} else if (prop === 'forceShow') {
 				this._updateShowing();
@@ -365,27 +348,11 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	async updatePosition() {
 
-		if (!this._target && !this.customTarget) {
+		if (!this._target) {
 			return;
 		}
 
-		let targetRect;
-		if (this.customTarget) {
-			const offsetParent = getOffsetParent(this);
-			const { left, top } = offsetParent.getBoundingClientRect();
-			const targetLeft = left + this.customTarget.left;
-			const targetTop = top + this.customTarget.top;
-			targetRect = {
-				left: targetLeft,
-				top: targetTop,
-				width: this.customTarget.width,
-				height: this.customTarget.height,
-				right: targetLeft + this.customTarget.width,
-				bottom: targetTop + this.customTarget.height
-			};
-		} else {
-			targetRect = this._target.getBoundingClientRect();
-		}
+		const targetRect = this._target.getBoundingClientRect();
 		const spaceAround = this._computeSpaceAround(targetRect);
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
@@ -397,26 +364,24 @@ class Tooltip extends RtlMixin(LitElement) {
 		// + 1 because scrollWidth does not give sub-pixel measurements and half a pixel may cause text to unexpectedly wrap
 		this._maxWidth = content.scrollWidth + 2 * contentBorderSize + 1;
 		this._openDir = space.dir;
-		await this.updateComplete;
 
 		// Compute the x and y position of the tooltip relative to its target
-		const targetPosition = this._getTargetPosition();
-		const tooltipRect = targetPosition.getBoundingClientRect();
+		const tooltipRect = this.getBoundingClientRect();
+		const top = targetRect.top - tooltipRect.top + this.offsetTop;
+		const left = targetRect.left - tooltipRect.left + this.offsetLeft;
 
-		const top = targetRect.top - tooltipRect.top + targetPosition.offsetTop;
-		const left = targetRect.left - tooltipRect.left + targetPosition.offsetLeft;
-
+		let positionRect;
 		if (this._isAboveOrBelow()) {
-			this._targetRect = {
-				x: left,
-				y: this._openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
+			positionRect = {
+				left,
+				top: this._openDir === 'top' ? top - this.offset : top + targetRect.height + this.offset,
 				width: targetRect.width,
 				height: 0,
 			};
 		} else {
-			this._targetRect = {
-				x: this._openDir === 'left' ? left - this.offset : left + targetRect.width + this.offset,
-				y: top,
+			positionRect = {
+				left: this._openDir === 'left' ? left - this.offset : left + targetRect.width + this.offset,
+				top,
 				height: targetRect.height,
 				width: 0,
 			};
@@ -450,6 +415,10 @@ class Tooltip extends RtlMixin(LitElement) {
 			const shiftMargin = (pointerRotatedLength / 2) + contentBorderRadius;
 			this._tooltipShift = Math.min(Math.max(shift, minShift + shiftMargin), maxShift - shiftMargin);
 		}
+		this.style.left = `${positionRect.left}px`;
+		this.style.top = `${positionRect.top}px`;
+		this.style.width = `${positionRect.width}px`;
+		this.style.height = `${positionRect.height}px`;
 	}
 
 	_addListeners() {
@@ -496,7 +465,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				spaceAround.left = Math.min(targetRect.left - parentRect.left - this.boundary.left, spaceAround.left);
 			}
 			if (!isNaN(this.boundary.right)) {
-				spaceAround.right = Math.min(parentRect.left + this.boundary.right - targetRect.right, spaceAround.right);
+				spaceAround.right = Math.min(parentRect.right - targetRect.right - this.boundary.right, spaceAround.right);
 			}
 			if (!isNaN(this.boundary.top)) {
 				spaceAround.above = Math.min(targetRect.top - parentRect.top - this.boundary.top, spaceAround.above);
@@ -522,7 +491,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			const targetSelector = `#${this.for}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
-		} else if (this.customTarget === undefined) {
+		} else {
 			const parentNode = this.parentNode;
 			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
 		}
@@ -580,10 +549,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_getContent() {
 		return this.shadowRoot.querySelector('.d2l-tooltip-content');
-	}
-
-	_getTargetPosition() {
-		return this.shadowRoot.querySelector('.d2l-tooltip-target-position');
 	}
 
 	async _getUpdateComplete() {

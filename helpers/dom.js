@@ -108,3 +108,27 @@ export function isComposedAncestor(ancestorNode, node) {
 		return (node === ancestorNode);
 	}) !== null;
 }
+
+export function isVisible(node) {
+
+	/* this helper is different from checking offsetParent because offsetParent
+	returns null for fixed position elements regardless of visibility */
+
+	if (!node) return false;
+
+	if (!node.host) {
+		if (node.style === undefined) return true;
+		if (node.style.display === 'none') 	return false;
+		if (node.style.visibility === 'hidden') return false;
+
+		const computedStyle = window.getComputedStyle(node, null);
+		if (computedStyle.getPropertyValue('display') === 'none') return false;
+		if (computedStyle.getPropertyValue('visibility') === 'hidden') return false;
+	}
+
+	const parentNode = getComposedParent(node);
+	if (parentNode) return isVisible(parentNode);
+
+	return true;
+
+}

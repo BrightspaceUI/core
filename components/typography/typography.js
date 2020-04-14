@@ -1,7 +1,11 @@
 import '@webcomponents/shadycss/entrypoints/custom-style-interface.js';
 import '../colors/colors.js';
 
-const importUrl = 'https://s.brightspace.com/lib/fonts/0.5.0/assets/';
+export const importUrl = 'https://s.brightspace.com/lib/fonts/0.5.0/assets/';
+export const fonts = {
+	regular: 'Lato-400',
+	bold: 'Lato-700'
+};
 
 if (!document.head.querySelector('#d2l-typography-font-face')) {
 	const style = document.createElement('style');
@@ -11,13 +15,13 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			font-family: 'Lato';
 			font-style: normal;
 			font-weight: 400;
-			src: local('Lato Regular'), local('Lato-Regular'), url(${new URL('Lato-400.woff2', importUrl)}) format('woff2'), url(${new URL('Lato-400.woff', importUrl)}) format('woff'), url(${new URL('Lato-400.ttf', importUrl)}) format('truetype');
+			src: local('Lato Regular'), local('Lato-Regular'), url(${new URL(`${fonts.regular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.regular}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.regular}.ttf`, importUrl)}) format('truetype');
 		}
 		@font-face {
 			font-family: 'Lato';
 			font-style: normal;
 			font-weight: 700;
-			src: local('Lato Bold'), local('Lato-Bold'), url(${new URL('Lato-700.woff2', importUrl)}) format('woff2'), url(${new URL('Lato-700.woff', importUrl)}) format('woff'), url(${new URL('Lato-700.ttf', importUrl)}) format('truetype');
+			src: local('Lato Bold'), local('Lato-Bold'), url(${new URL(`${fonts.bold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.bold}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.bold}.ttf`, importUrl)}) format('truetype');
 		}
 
 		.d2l-typography {

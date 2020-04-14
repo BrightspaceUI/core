@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
 import { classMap} from 'lit-html/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -235,9 +236,15 @@ class ListItem extends RtlMixin(LitElement) {
 	connectedCallback() {
 		super.connectedCallback();
 
-		const separators = this.parentNode.getAttribute('separators');
-		if (separators) this._separators = separators;
-		this._extendSeparators = this.parentNode.hasAttribute('extend-separators');
+		const parent = findComposedAncestor(this.parentNode, (node) => {
+			if (!node || node.nodeType !== 1) return false;
+			return node.tagName === 'D2L-LIST';
+		});
+		if (parent !== null) {
+			const separators = parent.getAttribute('separators');
+			if (separators) this._separators = separators;
+			this._extendSeparators = parent.hasAttribute('extend-separators');
+		}
 
 		ro.observe(this);
 	}
