@@ -183,7 +183,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					boundary="{&quot;above&quot;:0}"
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
-					min-width="300"
+					max-width="335"
 					no-auto-fit
 					no-auto-focus
 					no-padding>
@@ -264,6 +264,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleDropdownOpen() {
+		this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		this._dropdownOpened = true;
 	}
 

@@ -399,7 +399,9 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				}
 			}
 
-			this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+			setTimeout(() =>
+				this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true})), 0
+			);
 
 			this.__dismissibleId = setDismissible(() => {
 				this.close();

@@ -144,7 +144,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return [bodySmallStyles, heading4Styles, css`
 			:host {
 				display: block;
-				min-width: 16rem;
+				min-width: 14rem;
 			}
 
 			table {
@@ -203,7 +203,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				cursor: pointer;
 				display: flex;
 				font-size: 0.8rem;
-				height: calc(2rem - 4px);
+				height: calc(2rem - 6px);
 				justify-content: center;
 				margin-left: auto;
 				margin-right: auto;
@@ -211,7 +211,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				padding: 4px;
 				position: relative;
 				text-align: center;
-				width: calc(2rem - 4px);
+				width: calc(2rem - 6px);
 			}
 
 			.d2l-calendar-next .d2l-calendar-date div {
@@ -265,7 +265,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			.d2l-calendar-date div.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
-				padding: 2px;
+				padding: 3px;
 			}
 
 			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
