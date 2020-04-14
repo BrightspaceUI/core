@@ -21,7 +21,7 @@ The `d2l-button` element can be used just like the native button element, but al
 
 **Accessibility:**
 
-To make your `d2l-button` accessible to screen reader users, use the following properties when applicable:
+To make your `d2l-button` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |--|--|
@@ -55,7 +55,7 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 
 **Accessibility:**
 
-To make your `d2l-button-subtle` accessible to screen reader users, use the following properties when applicable:
+To make your `d2l-button-subtle` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |--|--|
@@ -86,7 +86,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 
 **Accessibility:**
 
-To make your `d2l-button-icon` accessible to screen reader users, use the following properties when applicable:
+To make your `d2l-button-icon` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |--|--|
