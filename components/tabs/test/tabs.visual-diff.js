@@ -9,8 +9,7 @@ describe('d2l-tabs', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+		page = await visualDiff.createPage(browser);
 		await page.setViewport({width: 800, height: 2000, deviceScaleFactor: 2});
 	});
 

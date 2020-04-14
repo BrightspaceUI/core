@@ -109,7 +109,7 @@ class InputText extends RtlMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
-				this._prevValue = oldVal;
+				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			}
 		});
 	}
