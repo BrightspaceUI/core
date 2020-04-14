@@ -1,5 +1,8 @@
 # Buttons
 
+## Accessibility
+[Button Accessibility](accessibility.md)
+
 ## d2l-button
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
