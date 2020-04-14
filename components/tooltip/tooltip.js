@@ -304,11 +304,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._dismissibleId = null;
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this.setAttribute('role', 'tooltip');
-	}
-
 	hide() {
 		this._isHovering = false;
 		this._isFocusing = false;
@@ -669,7 +664,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		const target = this._findTarget();
 		if (target && this._isInteractive(target)) {
 			this.id = this.id || getUniqueId();
+			this.setAttribute('role', 'tooltip');
 			target.setAttribute('aria-describedby', this.id);
+		} else {
+			this.removeAttribute('role');
 		}
 		this._target = target;
 		this._addListeners();
