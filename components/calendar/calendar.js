@@ -372,7 +372,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				return html`
 					<td
 						aria-label="${formatDate(day, {format: 'medium'})}"
-						aria-selected="${selected}"
+						aria-selected="${selected ? 'true' : 'false'}"
 						class="d2l-calendar-date"
 						@click="${this._onDateSelected}"
 						data-date=${date}
