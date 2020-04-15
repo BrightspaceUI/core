@@ -44,7 +44,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 					font-weight: 400;
 					line-height: 1.2rem;
 					margin-left: 0.5rem;
-					margin-top: 0.15rem;
+					margin-top: 0.1rem;
 					vertical-align: top;
 					white-space: normal;
 				}
