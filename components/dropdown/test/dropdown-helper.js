@@ -14,12 +14,7 @@ module.exports = {
 
 	async open(page, selector) {
 		const openEvent = this.getOpenEvent(page, selector);
-		await page.$eval(selector, (dropdown) => {
-			return new Promise((resolve) => {
-				dropdown.querySelector('[dropdown-content]').addEventListener('animationend', () => resolve(), { once: true });
-				dropdown.toggleOpen();
-			});
-		});
+		await page.$eval(selector, dropdown => dropdown.toggleOpen());
 		return openEvent;
 	},
 
