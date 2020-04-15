@@ -49,7 +49,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 				opacity: 0.5;
 			}
 			d2l-focus-trap {
-				padding: 0.6rem;
+				padding: 0.25rem 0.6rem;
 			}
 			.d2l-calendar-slot-buttons {
 				border-top: 1px solid var(--d2l-color-gypsum);
