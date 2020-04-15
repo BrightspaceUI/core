@@ -420,7 +420,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		if (reduceMotion) {
 
 			content.classList.add('d2l-child-view-show');
-			e.detail.sourceView.__dispatchShowComplete(e.detail.data, e.detail);
+			requestAnimationFrame(() => {
+				e.detail.sourceView.__dispatchShowComplete(e.detail.data, e.detail);
+			});
 
 		} else {
 
