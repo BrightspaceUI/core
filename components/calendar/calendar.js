@@ -312,10 +312,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		super.firstUpdated(changedProperties);
 
 		this._today = getDateFromDateObj(getToday());
-		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
-		this._focusDate = new Date(date);
-		this._shownMonth = date.getMonth();
-		this._shownYear = date.getFullYear();
+		this.reset();
 
 		const dropdownContent = findComposedAncestor(
 			this.parentNode,
@@ -375,7 +372,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				return html`
 					<td
 						aria-label="${formatDate(day, {format: 'medium'})}"
-						aria-selected="${selected}"
+						aria-selected="${selected ? 'true' : 'false'}"
 						class="d2l-calendar-date"
 						@click="${this._onDateSelected}"
 						data-date=${date}
@@ -443,6 +440,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			const button = this.shadowRoot.querySelector('d2l-button-icon');
 			if (button) button.focus();
 		}
+	}
+
+	reset() {
+		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
+		this._focusDate = new Date(date);
+		this._shownMonth = date.getMonth();
+		this._shownYear = date.getFullYear();
 	}
 
 	_computeText(month) {
