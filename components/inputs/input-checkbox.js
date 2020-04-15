@@ -15,7 +15,8 @@ class InputCheckbox extends RtlMixin(LitElement) {
 			indeterminate: { type: Boolean },
 			name: { type: String },
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
-			value: { type: String }
+			value: { type: String },
+			alignTop: { type: Boolean, attribute: 'align-top' }
 		};
 	}
 
@@ -62,6 +63,10 @@ class InputCheckbox extends RtlMixin(LitElement) {
 				.d2l-input-checkbox-text-disabled {
 					opacity: 0.5;
 				}
+				input.d2l-input-checkbox.align-top {
+					vertical-align: top;
+					margin-top: 0.2em;
+				}
 			`
 		];
 	}
@@ -73,6 +78,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 		this.indeterminate = false;
 		this.name = '';
 		this.notTabbable = false;
+		this.alignTop = false;
 		this.value = 'on';
 	}
 
@@ -83,13 +89,17 @@ class InputCheckbox extends RtlMixin(LitElement) {
 			'd2l-input-checkbox-text-disabled': this.disabled
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
+		const inputClasses = {
+			'd2l-input-checkbox': true,
+			'align-top': this.alignTop
+		};
 		return html`
 			<label>
 				<input
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-label="${ifDefined(this.ariaLabel)}"
 					@change="${this._handleChange}"
-					class="d2l-input-checkbox"
+					class="${classMap(inputClasses)}"
 					@click="${this._handleClick}"
 					.checked="${this.checked}"
 					?disabled="${this.disabled}"
