@@ -283,11 +283,15 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				outline: none;
 			}
 
+			.d2l-calendar-date:focus div.d2l-calendar-date-inner.d2l-calendar-date-initial {
+				transition: box-shadow 200ms ease-in;
+			}
+
 			.d2l-calendar-date:focus div.d2l-calendar-date-inner {
 				border-radius: 0.16rem;
 				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
-				transition: box-shadow 200ms ease-in;
+				transition: none;
 			}
 
 			.d2l-calendar-date div.d2l-calendar-date-selected {
@@ -331,6 +335,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 
+		this._isInitialFocusDate = true;
 		this._tableInfoId = getUniqueId();
 		this._monthNav = 'initial';
 		getCalendarData();
@@ -391,6 +396,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date-inner': true,
+					'd2l-calendar-date-initial': this._isInitialFocusDate,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
 				};
@@ -615,6 +621,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 
 		if (numDaysChange) {
+			this._isInitialFocusDate = false;
 			this._updateFocusDateOnKeyDown(numDaysChange);
 		}
 
@@ -657,7 +664,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			if (oldFocusDate < this._focusDate) {
 				this._updateShownMonthIncrease(true);
 			} else {
-				console.log('here!')
 				this._updateShownMonthDecrease(true);
 			}
 		} else {
@@ -669,6 +675,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
 		this._monthNav = undefined;
+		if (!keyboardTriggered) this._isInitialFocusDate = true;
 		setTimeout(() => {
 			this._monthNav = `${(this.dir !== 'rtl') ? 'prev' : 'next'}${keyboardTriggered ? '-keyboard' : ''}`;
 		}, 100); // timeout for firefox
@@ -678,6 +685,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
 		this._monthNav = undefined;
+		if (!keyboardTriggered) this._isInitialFocusDate = true;
 		setTimeout(() => {
 			this._monthNav = `${(this.dir !== 'rtl') ? 'next' : 'prev'}${keyboardTriggered ? '-keyboard' : ''}`;
 		}, 100); // timeout for firefox
