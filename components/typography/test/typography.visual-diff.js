@@ -9,7 +9,7 @@ describe('d2l-typography', function() {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
+		page = await visualDiff.createPage(browser);
 	});
 
 	after(() => browser.close());
