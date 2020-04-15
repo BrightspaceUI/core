@@ -195,12 +195,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				padding-right: 20px;
 			}
 
-			.d2l-calendar-next-keyboard .d2l-calendar-title .d2l-heading-4 {
+			.d2l-calendar-next-updown .d2l-calendar-title .d2l-heading-4 {
 				padding-top: 20px;
 				padding-bottom: 0;
 			}
 
-			.d2l-calendar-prev-keyboard .d2l-calendar-title .d2l-heading-4 {
+			.d2l-calendar-prev-updown .d2l-calendar-title .d2l-heading-4 {
 				padding-top: 0;
 				padding-bottom: 20px;
 			}
@@ -228,7 +228,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				left: 10px;
 			}
 
-			.d2l-calendar-next-keyboard .d2l-calendar-date div {
+			.d2l-calendar-next-updown .d2l-calendar-date div {
 				top: 10px;
 			}
 
@@ -236,7 +236,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				left: -10px;
 			}
 
-			.d2l-calendar-prev-keyboard .d2l-calendar-date div {
+			.d2l-calendar-prev-updown .d2l-calendar-date div {
 				top: -10px;
 			}
 
@@ -253,8 +253,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				transform: translateX(-10px);
 			}
 
-			.d2l-calendar-next-keyboard .d2l-heading-4,
-			.d2l-calendar-next-keyboard .d2l-calendar-date div {
+			.d2l-calendar-next-updown .d2l-heading-4,
+			.d2l-calendar-next-updown .d2l-calendar-date div {
 				transform: translateY(-10px)
 			}
 
@@ -263,8 +263,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				transform: translateX(10px);
 			}
 
-			.d2l-calendar-prev-keyboard .d2l-heading-4,
-			.d2l-calendar-prev-keyboard .d2l-calendar-date div {
+			.d2l-calendar-prev-updown .d2l-heading-4,
+			.d2l-calendar-prev-updown .d2l-calendar-date div {
 				transform: translateY(10px);
 			}
 
@@ -425,12 +425,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const calendarClasses = {
 			'd2l-calendar': true,
-			'd2l-calendar-animating': (this._monthNav === 'next' || this._monthNav === 'next-keyboard' || this._monthNav === 'prev' || this._monthNav === 'prev-keyboard' || this._monthNav === 'initial'),
+			'd2l-calendar-animating': (this._monthNav === 'next' || this._monthNav === 'next-updown' || this._monthNav === 'prev' || this._monthNav === 'prev-updown' || this._monthNav === 'initial'),
 			'd2l-calendar-initial-month': this._monthNav === 'initial',
 			'd2l-calendar-next': this._monthNav === 'next',
-			'd2l-calendar-next-keyboard': this._monthNav === 'next-keyboard',
+			'd2l-calendar-next-updown': this._monthNav === 'next-updown',
 			'd2l-calendar-prev': this._monthNav === 'prev',
-			'd2l-calendar-prev-keyboard': this._monthNav === 'prev-keyboard'
+			'd2l-calendar-prev-updown': this._monthNav === 'prev-updown'
 		};
 		const labelId = `${this._tableInfoId}-heading`;
 		const labelledBy = this._dialog ? labelId : undefined;
@@ -597,7 +597,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				// handle when current month has more weeks than previous month and page up pressed from last week
 				if (this._focusDate.getMonth() === this._shownMonth) this._focusDate.setDate(this._focusDate.getDate() - 7);
 
-				this._updateShownMonthDecrease(true);
+				this._updateShownMonthDecrease(true, true);
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEDOWN: {
@@ -614,7 +614,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				) {
 					this._focusDate.setDate(this._focusDate.getDate() - 7);
 				}
-				this._updateShownMonthIncrease(true);
+				this._updateShownMonthIncrease(true, true);
 				preventDefault = true;
 				break;
 			}
@@ -661,33 +661,34 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const date = await this._getDateElement(this._focusDate);
 		if (!date) {
 			this._keyboardTriggeredMonthChange = true;
+			const upDown = Math.abs(numDays) !== 1; // use left/right animation if difference is 1 day
 			if (oldFocusDate < this._focusDate) {
-				this._updateShownMonthIncrease(true);
+				this._updateShownMonthIncrease(true, upDown);
 			} else {
-				this._updateShownMonthDecrease(true);
+				this._updateShownMonthDecrease(true, upDown);
 			}
 		} else {
 			this._focusDateAddFocus();
 		}
 	}
 
-	_updateShownMonthDecrease(keyboardTriggered) {
+	_updateShownMonthDecrease(keyboardTriggered, transitionUpDown) {
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
 		this._monthNav = undefined;
 		if (!keyboardTriggered) this._isInitialFocusDate = true;
 		setTimeout(() => {
-			this._monthNav = `${(this.dir !== 'rtl') ? 'prev' : 'next'}${keyboardTriggered ? '-keyboard' : ''}`;
+			this._monthNav = `${(this.dir !== 'rtl') ? 'prev' : 'next'}${transitionUpDown ? '-updown' : ''}`;
 		}, 100); // timeout for firefox
 	}
 
-	async _updateShownMonthIncrease(keyboardTriggered) {
+	async _updateShownMonthIncrease(keyboardTriggered, transitionUpDown) {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
 		this._monthNav = undefined;
 		if (!keyboardTriggered) this._isInitialFocusDate = true;
 		setTimeout(() => {
-			this._monthNav = `${(this.dir !== 'rtl') ? 'next' : 'prev'}${keyboardTriggered ? '-keyboard' : ''}`;
+			this._monthNav = `${(this.dir !== 'rtl') ? 'next' : 'prev'}${transitionUpDown ? '-updown' : ''}`;
 		}, 100); // timeout for firefox
 	}
 
