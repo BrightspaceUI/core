@@ -44,7 +44,7 @@ describe('d2l-input-checkbox', () => {
 			elem = await fixture(uncheckedFixture);
 		});
 
-		['checked', 'disabled', 'indeterminate', 'notTabbable', 'alignTop'].forEach((name) => {
+		['checked', 'disabled', 'indeterminate', 'notTabbable'].forEach((name) => {
 			it(`should default "${name}" property to "false"`, () => {
 				expect(elem[name]).to.be.false;
 			});

@@ -15,8 +15,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 			indeterminate: { type: Boolean },
 			name: { type: String },
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
-			value: { type: String },
-			alignTop: { type: Boolean, attribute: 'align-top', reflect: true }
+			value: { type: String }
 		};
 	}
 
@@ -45,7 +44,8 @@ class InputCheckbox extends RtlMixin(LitElement) {
 					font-weight: 400;
 					line-height: 1.2rem;
 					margin-left: 0.5rem;
-					vertical-align: middle;
+					margin-top: 0.2rem;
+					vertical-align: top;
 					white-space: normal;
 				}
 				:host([dir="rtl"]) .d2l-input-checkbox-text {
@@ -63,10 +63,6 @@ class InputCheckbox extends RtlMixin(LitElement) {
 				.d2l-input-checkbox-text-disabled {
 					opacity: 0.5;
 				}
-				:host([align-top]) .d2l-input-checkbox-text {
-					vertical-align: top;
-					margin-top: 0.2em;
-				}
 			`
 		];
 	}
@@ -78,7 +74,6 @@ class InputCheckbox extends RtlMixin(LitElement) {
 		this.indeterminate = false;
 		this.name = '';
 		this.notTabbable = false;
-		this.alignTop = false;
 		this.value = 'on';
 	}
 
