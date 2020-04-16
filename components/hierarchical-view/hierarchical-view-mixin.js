@@ -365,10 +365,13 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 
 			const data = e.detail.data;
+			console.log(`reduceMotion ${reduceMotion}`);
 			const animate = (!!content.offsetParent && !reduceMotion);
 			const hideRoot = () => {
 				rootTarget.shown = false;
-				rootTarget.__dispatchHideComplete(data);
+				requestAnimationFrame(() => {
+					rootTarget.__dispatchHideComplete(data);
+				});
 			};
 			if (animate) {
 				const animationEnd = () => {
