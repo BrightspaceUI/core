@@ -135,6 +135,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			summary: { type: String },
 			_dialog: { type: Boolean },
 			_focusDate: { type: Object },
+			_isInitialFocusDate: { type: Boolean },
 			_monthNav: { type: String },
 			_shownMonth: { type: Number }
 		};
@@ -670,6 +671,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		} else {
 			this._focusDateAddFocus();
 		}
+		await this.updateComplete;
+		this._isInitialFocusDate = true;
 	}
 
 	_updateShownMonthDecrease(keyboardTriggered, transitionUpDown) {
