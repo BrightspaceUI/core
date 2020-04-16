@@ -9,7 +9,7 @@ describe('d2l-input-radio', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
+		page = await visualDiff.createPage(browser);
 		await page.setViewport({width: 800, height: 1600, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-radio.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
