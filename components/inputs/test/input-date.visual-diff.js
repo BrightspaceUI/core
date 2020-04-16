@@ -114,6 +114,7 @@ describe('d2l-input-date', () => {
 
 			// close
 			await helper.reset(page, '#basic');
+			await page.waitFor('#basic');
 
 			// re-open
 			await helper.open(page, '#basic');
