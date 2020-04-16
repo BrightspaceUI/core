@@ -9,13 +9,13 @@ describe('d2l-input-label', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
+		page = await visualDiff.createPage(browser);
 		await page.setViewport({width: 800, height: 1500, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-label.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'wc-wrap',

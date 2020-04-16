@@ -15,7 +15,7 @@ describe('d2l-backdrop', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('not shown', async function() {
 		const rect = await visualDiff.getRect(page, '.visual-diff');

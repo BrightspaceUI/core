@@ -1,6 +1,8 @@
 import { findComposedAncestor, isComposedAncestor } from '../helpers/dom.js';
 import { css } from 'lit-element/lit-element.js';
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export const visibleOnAncestorStyles = css`
 
 	:host([__voa-state="hidden"]),
@@ -70,12 +72,6 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 		this.__voaShow();
 	}
 
-	__voaHandleHideEnd(e) {
-		if (e.propertyName !== 'transform') return;
-		this.removeEventListener('transitionend', this.__voaHandleHideEnd);
-		this.__voaState = 'hidden';
-	}
-
 	__voaHandleMouseEnter() {
 		this.__voaMouseOver = true;
 		this.__voaShow();
@@ -86,16 +82,19 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 		this.__voaHide();
 	}
 
-	__voaHandleShowEnd(e) {
-		if (e.propertyName !== 'transform') return;
-		this.removeEventListener('transitionend', this.__voaHandleShowEnd);
-		this.__voaState = 'shown';
-	}
-
 	__voaHide() {
 		if (this.__voaFocusIn || this.__voaMouseOver) return;
-		this.addEventListener('transitionend', this.__voaHandleHideEnd);
-		this.__voaState = 'hiding';
+		if (reduceMotion) {
+			this.__voaState = 'hidden';
+		} else {
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'transform') return;
+				this.removeEventListener('transitionend', handleTransitionEnd);
+				this.__voaState = 'hidden';
+			};
+			this.addEventListener('transitionend', handleTransitionEnd);
+			this.__voaState = 'hiding';
+		}
 	}
 
 	__voaInit() {
@@ -115,8 +114,6 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 		this.__voaHandleFocus = this.__voaHandleFocus.bind(this);
 		this.__voaHandleMouseEnter = this.__voaHandleMouseEnter.bind(this);
 		this.__voaHandleMouseLeave = this.__voaHandleMouseLeave.bind(this);
-		this.__voaHandleHideEnd = this.__voaHandleHideEnd.bind(this);
-		this.__voaHandleShowEnd = this.__voaHandleShowEnd.bind(this);
 
 		this.__voaTarget.addEventListener('focus', this.__voaHandleFocus, true);
 		this.__voaTarget.addEventListener('blur', this.__voaHandleBlur, true);
@@ -128,8 +125,17 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	}
 
 	__voaShow() {
-		this.addEventListener('transitionend', this.__voaHandleShowEnd);
-		this.__voaState = 'showing';
+		if (reduceMotion) {
+			this.__voaState = 'shown';
+		} else {
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'transform') return;
+				this.removeEventListener('transitionend', handleTransitionEnd);
+				this.__voaState = 'shown';
+			};
+			this.addEventListener('transitionend', handleTransitionEnd);
+			this.__voaState = 'showing';
+		}
 	}
 
 	__voaUninit() {

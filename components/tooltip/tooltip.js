@@ -227,6 +227,16 @@ class Tooltip extends RtlMixin(LitElement) {
 				animation: d2l-tooltip-right-animation 200ms ease;
 			}
 
+			@media (prefers-reduced-motion: reduce) {
+				:host([_open-dir="bottom"]) .d2l-tooltip-container,
+				:host([_open-dir="top"]) .d2l-tooltip-container,
+				:host([_open-dir="left"]) .d2l-tooltip-container,
+				:host([_open-dir="right"]) .d2l-tooltip-container {
+					-webkit-animation: none;
+					animation: none;
+				}
+			}
+
 			@keyframes d2l-tooltip-top-animation {
 				0% { transform: translate(0,-10px); opacity: 0; }
 				100% { transform: translate(0,0); opacity: 1; }
