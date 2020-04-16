@@ -21,13 +21,6 @@ const contentBorderRadius = 6;
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
 
-const interactiveElements = {
-	'input': true,
-	'select': true,
-	'textarea': true,
-	'button': true
-};
-
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 
 	const contentXAdjustment = centerDelta / 2;
@@ -582,12 +575,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this._openDir === 'bottom' || this._openDir === 'top';
 	}
 
-	_isInteractive(ele) {
-		if (ele.nodeType !== Node.ELEMENT_NODE) {
-			return false;
-		}
-		const nodeName = ele.nodeName.toLowerCase();
-		return !!interactiveElements[nodeName];
+	_isInteractive() {
+		return true;
 	}
 
 	_onTargetBlur() {
