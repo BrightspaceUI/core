@@ -17,7 +17,7 @@ describe('d2l-calendar', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('no selected value', async function() {
 		const rect = await visualDiff.getRect(page, '#no-selected');

@@ -81,6 +81,12 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				margin-left: 0.75rem !important;
 				margin-right: 0 !important;
 			}
+
+			@media (prefers-reduced-motion: reduce) {
+				:host([_floating]:not([always-float])) .d2l-floating-buttons-container {
+					transition: none;
+				}
+			}
 		`;
 	}
 

@@ -9,14 +9,13 @@ describe('d2l-floating-buttons', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await visualDiff.disableAnimations(page);
+		page = await visualDiff.createPage(browser);
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/floating-buttons.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('floats', async function() {
 		await scroll(page, '#floating-buttons');
@@ -35,13 +34,11 @@ describe('d2l-floating-buttons', () => {
 	});
 
 	it('floats when content added to dom', async function() {
-		const transition = waitForTransition(page, '#floating-buttons-short-buttons');
 		await page.evaluate(() => {
 			const elem = document.querySelector('#floating-buttons-short-content').querySelector('p');
 			elem.innerHTML += '<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>I love Coffe<br><br>';
 		});
 		await scroll(page, '#floating-buttons-short');
-		await transition;
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
@@ -51,13 +48,12 @@ describe('d2l-floating-buttons', () => {
 	});
 
 	it('is correct with rtl', async function() {
-		const transition = waitForTransition(page, '#floating-buttons-rtl-buttons');
 		await scroll(page, '#floating-buttons-rtl');
-		await transition;
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
 	describe('window less than min-height (500px)', () => {
+
 		before(async() => {
 			await page.setViewport({width: 800, height: 499, deviceScaleFactor: 2});
 		});
@@ -71,6 +67,7 @@ describe('d2l-floating-buttons', () => {
 			await scroll(page, '#floating-buttons-always-float-bottom', false);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
+
 	});
 
 	const scroll = async(page, selector, alignToTop) => {
@@ -79,18 +76,4 @@ describe('d2l-floating-buttons', () => {
 		}, selector, alignToTop);
 	};
 
-	const waitForTransition = (page, selector) => {
-		return page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				let transformTransitioned, borderTopColorTransitioned, backgroundColorTransitioned;
-				elem.shadowRoot.querySelector('.d2l-floating-buttons-container').addEventListener('transitionend', (e) => {
-					if (e.propertyName === 'transform') transformTransitioned = true;
-					if (e.propertyName === 'border-top-color') borderTopColorTransitioned = true;
-					if (e.propertyName === 'background-color') backgroundColorTransitioned = true;
-					if (transformTransitioned && borderTopColorTransitioned && backgroundColorTransitioned) resolve();
-				});
-			});
-		}, selector);
-	};
 });

@@ -11,7 +11,7 @@ describe('d2l-template-primary-secondary', () => {
 		page = await browser.newPage();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	describe('desktop', () => {
 		before(async() => {

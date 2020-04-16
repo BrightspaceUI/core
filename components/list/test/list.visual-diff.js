@@ -9,7 +9,7 @@ describe('d2l-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
+		page = await visualDiff.createPage(browser);
 		await page.setViewport({width: 1000, height: 3700, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
@@ -19,7 +19,7 @@ describe('d2l-list', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		{ category: 'general', tests: [

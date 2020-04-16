@@ -9,7 +9,7 @@ describe('d2l-button-icon', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
+		page = await visualDiff.createPage(browser);
 		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/button-icon.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
@@ -19,7 +19,7 @@ describe('d2l-button-icon', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},
@@ -29,20 +29,10 @@ describe('d2l-button-icon', () => {
 		describe(entry.category, () => {
 			entry.tests.forEach((name) => {
 				it(name, async function() {
+					const selector = (entry.category === 'translucent-enabled') ? '#translucent-enabled > d2l-button-icon' : `#${entry.category}`;
 
-					if (name === 'hover') {
-						if (entry.category === 'translucent-enabled') {
-							await hover(page, '#translucent-enabled > d2l-button-icon');
-						} else {
-							await page.hover(`#${entry.category}`);
-						}
-					} else if (name === 'focus') {
-						if (entry.category === 'translucent-enabled') {
-							await focus(page, '#translucent-enabled > d2l-button-icon');
-						} else {
-							await page.$eval(`#${entry.category}`, (elem) => elem.focus());
-						}
-					}
+					if (name === 'hover') await page.hover(selector);
+					else if (name === 'focus') await page.$eval(selector, (elem) => elem.focus());
 
 					const rectId = (name.indexOf('disabled') !== -1) ? name : entry.category;
 					const rect = await visualDiff.getRect(page, `#${rectId}`);
@@ -51,31 +41,5 @@ describe('d2l-button-icon', () => {
 			});
 		});
 	});
-
-	const hover = (page, selector) => {
-		const p = page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				let backgroundTransitioned, boxShadowTransitioned;
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', (e) => {
-					if (e.propertyName === 'background-color') backgroundTransitioned = true;
-					if (e.propertyName === 'box-shadow') boxShadowTransitioned = true;
-					if (backgroundTransitioned && boxShadowTransitioned) resolve();
-				});
-			});
-		}, selector);
-		page.hover(selector);
-		return p;
-	};
-
-	const focus = (page, selector) => {
-		return page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('button').addEventListener('transitionend', resolve);
-				elem.focus();
-			});
-		}, selector);
-	};
 
 });
