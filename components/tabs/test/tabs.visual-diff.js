@@ -17,7 +17,7 @@ describe('d2l-tabs', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	describe('basic', () => {
 

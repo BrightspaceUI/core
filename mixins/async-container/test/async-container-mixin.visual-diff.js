@@ -15,7 +15,7 @@ describe('d2l-async-container-mixin', function() {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('initial', async function() {
 		const rect = await visualDiff.getRect(page, '#initial');

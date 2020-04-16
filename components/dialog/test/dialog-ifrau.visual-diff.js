@@ -13,7 +13,7 @@ describe('d2l-dialog-ifrau', () => {
 		page = await visualDiff.createPage(browser);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	['native', 'custom'].forEach((name) => {
 
