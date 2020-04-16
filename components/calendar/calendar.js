@@ -249,6 +249,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				transition-property: opacity, transform;
 			}
 
+			@media (prefers-reduced-motion: reduce) {
+				.d2l-calendar-animating .d2l-calendar-title .d2l-heading-4,
+				.d2l-calendar-animating .d2l-calendar-date div {
+					transition: none;
+				}
+			}
+
 			.d2l-calendar-next .d2l-heading-4,
 			.d2l-calendar-next .d2l-calendar-date div {
 				transform: translateX(-10px);
@@ -286,6 +293,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			.d2l-calendar-date:focus div.d2l-calendar-date-inner.d2l-calendar-date-initial {
 				transition: box-shadow 200ms ease-in;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.d2l-calendar-date:focus div.d2l-calendar-date-inner.d2l-calendar-date-initial {
+					transition: none;
+				}
 			}
 
 			.d2l-calendar-date:focus div.d2l-calendar-date-inner {
