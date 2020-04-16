@@ -12,7 +12,7 @@ describe('d2l-typography', function() {
 		page = await visualDiff.createPage(browser);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	const runDiff = () => {
 

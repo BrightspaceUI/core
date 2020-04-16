@@ -15,7 +15,7 @@ describe('d2l-offscreen', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'wc',

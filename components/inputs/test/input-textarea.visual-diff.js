@@ -15,7 +15,7 @@ describe('d2l-input-textarea', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	['wc', 'sass'].forEach((type) => {
 		[

@@ -15,7 +15,7 @@ describe('d2l-input-date-time', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'basic',

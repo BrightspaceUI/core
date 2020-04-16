@@ -15,7 +15,7 @@ describe('d2l-input-label', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'wc-wrap',

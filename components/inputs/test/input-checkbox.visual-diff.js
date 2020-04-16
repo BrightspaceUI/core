@@ -15,7 +15,7 @@ describe('d2l-input-checkbox', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	['wc', 'sass'].forEach((type) => {
 		['default', 'disabled'].forEach((state) => {

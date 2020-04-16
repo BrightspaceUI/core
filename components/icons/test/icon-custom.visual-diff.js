@@ -15,7 +15,7 @@ describe('d2l-icon-custom', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'tier1',

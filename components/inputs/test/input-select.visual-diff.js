@@ -15,7 +15,7 @@ describe('d2l-input-select', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	beforeEach(async() => {
 		await visualDiff.resetFocus(page);

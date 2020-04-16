@@ -15,7 +15,7 @@ describe('d2l-menu radio', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('normal', async function() {
 		const rect = await visualDiff.getRect(page, '#normal');

@@ -20,7 +20,7 @@ describe('d2l-dropdown-menu', () => {
 		await helper.reset(page, '#dropdown-menu');
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('first-page', async function() {
 		await helper.open(page, '#dropdown-menu');

@@ -20,7 +20,7 @@ describe('d2l-tooltip', () => {
 		await page.reload();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'position-top',

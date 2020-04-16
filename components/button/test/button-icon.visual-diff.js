@@ -19,7 +19,7 @@ describe('d2l-button-icon', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},

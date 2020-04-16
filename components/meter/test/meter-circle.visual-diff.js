@@ -15,7 +15,7 @@ describe('d2l-meter-circle', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		{ title: 'no-progress', fixture: '#no-progress'},

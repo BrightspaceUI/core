@@ -19,7 +19,7 @@ describe('d2l-list', () => {
 		await visualDiff.resetFocus(page);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		{ category: 'general', tests: [

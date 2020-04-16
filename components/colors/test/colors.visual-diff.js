@@ -15,7 +15,7 @@ describe('colors', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('palette', async function() {
 		const rect = await visualDiff.getRect(page, '#palette');

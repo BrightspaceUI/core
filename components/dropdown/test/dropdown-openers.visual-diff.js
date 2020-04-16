@@ -16,7 +16,7 @@ describe('d2l-dropdown-openers', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'button-primary',

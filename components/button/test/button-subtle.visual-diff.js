@@ -15,7 +15,7 @@ describe('d2l-button-subtle', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},

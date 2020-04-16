@@ -15,7 +15,7 @@ describe('d2l-menu', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('separator', async function() {
 		const rect = await visualDiff.getRect(page, '#separator');

@@ -15,7 +15,7 @@ describe('d2l-status-indicator', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'no-state-subtle',

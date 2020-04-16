@@ -16,7 +16,7 @@ describe('d2l-floating-buttons', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('floats', async function() {
 		await scroll(page, '#floating-buttons');
