@@ -247,6 +247,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			// leave value the same when invalid input
 		}
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
+		await this.updateComplete;
+		this._calendar.reset();
 	}
 
 	_handleClear() {
