@@ -116,34 +116,50 @@ describe('d2l-menu', () => {
 
 		it('opens submenu on click', async function() {
 			// this scenario also tests height change when going from 1 menu item to 2 within nested menu
-			await page.$eval('#nested-item', item => item.click());
+			await page.$eval('#nested-item', item => {
+				return new Promise((resolve) => {
+					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					item.click();
+				});
+			});
 			const rect = await visualDiff.getRect(page, '#nested');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('leaves submenu when return clicked', async function() {
-			await page.$eval('#nested-menu', item => item.shadowRoot.querySelector('d2l-menu-item-return').click());
+			await page.$eval('#nested-menu', item => {
+				return new Promise((resolve) => {
+					item.addEventListener('d2l-hierarchical-view-hide-complete', resolve, { once: true });
+					item.shadowRoot.querySelector('d2l-menu-item-return').click();
+				});
+			});
 			const rect = await visualDiff.getRect(page, '#nested');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('opens submenu on enter', async function() {
 			await page.$eval('#nested-item', item => {
-				const eventObj = document.createEvent('Events');
-				eventObj.initEvent('keydown', true, true);
-				eventObj.keyCode = 13;
-				item.dispatchEvent(eventObj);
+				return new Promise((resolve) => {
+					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 13;
+					item.dispatchEvent(eventObj);
+				});
 			});
 			const rect = await visualDiff.getRect(page, '#nested');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('leaves submenu on escape', async function() {
-			await page.$eval('#nested-menu', item => {
-				const eventObj = document.createEvent('Events');
-				eventObj.initEvent('keyup', true, true);
-				eventObj.keyCode = 27;
-				item.querySelector('#b2').dispatchEvent(eventObj);
+			await page.$eval('#nested-menu', (item) => {
+				return new Promise((resolve) => {
+					item.addEventListener('d2l-hierarchical-view-hide-complete', resolve, { once: true });
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keyup', true, true);
+					eventObj.keyCode = 27;
+					item.querySelector('#b2').dispatchEvent(eventObj);
+				});
 			});
 			const rect = await visualDiff.getRect(page, '#nested');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -156,7 +172,12 @@ describe('d2l-menu', () => {
 
 		it('opens long menu item submenu on click', async function() {
 			// this scenario also tests height change going from 3 menu items to 2 within nested menu
-			await page.$eval('#nested-item-long', item => item.click());
+			await page.$eval('#nested-item-long', item => {
+				return new Promise((resolve) => {
+					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					item.click();
+				});
+			});
 			const rect = await visualDiff.getRect(page, '#nested-long');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -167,7 +188,12 @@ describe('d2l-menu', () => {
 		});
 
 		it('opens custom submenu on click', async function() {
-			await page.$eval('#custom-view-item', item => item.click());
+			await page.$eval('#custom-view-item', item => {
+				return new Promise((resolve) => {
+					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					item.click();
+				});
+			});
 			const rect = await visualDiff.getRect(page, '#custom-view');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
