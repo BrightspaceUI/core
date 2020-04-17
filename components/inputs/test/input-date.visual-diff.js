@@ -107,12 +107,9 @@ describe('d2l-input-date', () => {
 
 			// change month
 			await page.$eval('#basic', (elem) => {
-				return new Promise((resolve) => {
-					const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-					calendar.addEventListener('d2l-calendar-show-month-complete', resolve, { once: true });
-					const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
-					button.click();
-				});
+				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
+				const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
+				button.click();
 			});
 
 			// close
