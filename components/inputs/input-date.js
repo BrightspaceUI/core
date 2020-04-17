@@ -226,7 +226,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
-			this._calendar.focus();
+			requestAnimationFrame(async() => {
+				this._calendar.focus();
+			});
 
 			if (e.keyCode === 40) e.preventDefault();
 		}
