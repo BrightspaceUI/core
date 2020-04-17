@@ -25,6 +25,7 @@ const keyCodes = {
 	RIGHT: 39,
 	UP: 38
 };
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let calendarData;
 function getCalendarData(refresh) {
@@ -183,7 +184,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			.d2l-calendar-title .d2l-heading-4 {
 				height: 100%;
 				margin: 0;
-				// opacity: 0;
+				opacity: 0;
 			}
 
 			.d2l-calendar-next .d2l-calendar-title .d2l-heading-4 {
@@ -218,11 +219,18 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				justify-content: center;
 				margin-left: auto;
 				margin-right: auto;
-				// opacity: 0;
+				opacity: 0;
 				padding: 4px;
 				position: relative;
 				text-align: center;
 				width: calc(2rem - 6px);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.d2l-calendar-title .d2l-heading-4,
+				.d2l-calendar-date div {
+					opacity: 1;
+				}
 			}
 
 			.d2l-calendar-next .d2l-calendar-date div {
@@ -243,17 +251,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			.d2l-calendar-animating .d2l-calendar-title .d2l-heading-4,
 			.d2l-calendar-animating .d2l-calendar-date div {
-				// opacity: 1;
+				opacity: 1;
 				transition-duration: 200ms;
 				transition-timing-function: ease-out;
-				transition-property: transform;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-calendar-animating .d2l-calendar-title .d2l-heading-4,
-				.d2l-calendar-animating .d2l-calendar-date div {
-					transition: none;
-				}
+				transition-property: opacity, transform;
 			}
 
 			.d2l-calendar-next .d2l-heading-4,
@@ -693,9 +694,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._shownMonth = getPrevMonth(this._shownMonth);
 		this._monthNav = undefined;
 		if (!keyboardTriggered) this._isInitialFocusDate = true;
-		setTimeout(() => {
-			this._monthNav = `${(this.dir !== 'rtl') ? 'prev' : 'next'}${transitionUpDown ? '-updown' : ''}`;
-		}, 100); // timeout for firefox
+		if (!reduceMotion) {
+			setTimeout(() => {
+				this._monthNav = `${(this.dir !== 'rtl') ? 'prev' : 'next'}${transitionUpDown ? '-updown' : ''}`;
+			}, 100); // timeout for firefox
+		}
 	}
 
 	async _updateShownMonthIncrease(keyboardTriggered, transitionUpDown) {
@@ -703,9 +706,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._shownMonth = getNextMonth(this._shownMonth);
 		this._monthNav = undefined;
 		if (!keyboardTriggered) this._isInitialFocusDate = true;
-		setTimeout(() => {
-			this._monthNav = `${(this.dir !== 'rtl') ? 'next' : 'prev'}${transitionUpDown ? '-updown' : ''}`;
-		}, 100); // timeout for firefox
+		if (!reduceMotion) {
+			setTimeout(() => {
+				this._monthNav = `${(this.dir !== 'rtl') ? 'next' : 'prev'}${transitionUpDown ? '-updown' : ''}`;
+			}, 100); // timeout for firefox
+		}
 	}
 
 }
