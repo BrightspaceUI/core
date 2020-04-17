@@ -292,6 +292,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				outline: none;
 			}
 
+			.d2l-calendar-date:focus div.d2l-calendar-date-inner {
+				border-radius: 0.16rem;
+				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
+				padding: 0;
+				transition: none;
+			}
+
 			.d2l-calendar-date:focus div.d2l-calendar-date-inner.d2l-calendar-date-initial {
 				transition: box-shadow 200ms ease-in;
 			}
@@ -300,13 +307,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				.d2l-calendar-date:focus div.d2l-calendar-date-inner.d2l-calendar-date-initial {
 					transition: none;
 				}
-			}
-
-			.d2l-calendar-date:focus div.d2l-calendar-date-inner {
-				border-radius: 0.16rem;
-				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
-				padding: 0;
-				transition: none;
 			}
 
 			.d2l-calendar-date div.d2l-calendar-date-selected {
