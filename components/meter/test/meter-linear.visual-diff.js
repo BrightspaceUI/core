@@ -9,8 +9,7 @@ describe('d2l-meter-linear', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser);
-		await page.setViewport({width: 800, height: 1000, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 1000}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/meter/test/meter-linear.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
