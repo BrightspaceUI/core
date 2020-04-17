@@ -696,6 +696,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		setTimeout(() => {
 			this._monthNav = `${(this.dir !== 'rtl') ? 'prev' : 'next'}${transitionUpDown ? '-updown' : ''}`;
 		}, 100); // timeout for firefox
+
+		requestAnimationFrame(() => {
+			const eventDetails = {
+				bubbles: true,
+				composed: true
+			};
+			this.dispatchEvent(new CustomEvent('d2l-calendar-show-month-complete', eventDetails));
+		});
 	}
 
 	async _updateShownMonthIncrease(keyboardTriggered, transitionUpDown) {
@@ -706,6 +714,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		setTimeout(() => {
 			this._monthNav = `${(this.dir !== 'rtl') ? 'next' : 'prev'}${transitionUpDown ? '-updown' : ''}`;
 		}, 100); // timeout for firefox
+
+		requestAnimationFrame(() => {
+			const eventDetails = {
+				bubbles: true,
+				composed: true
+			};
+			this.dispatchEvent(new CustomEvent('d2l-calendar-show-month-complete', eventDetails));
+		});
 	}
 
 }

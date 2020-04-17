@@ -107,14 +107,16 @@ describe('d2l-input-date', () => {
 
 			// change month
 			await page.$eval('#basic', (elem) => {
-				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
-				button.click();
+				return new Promise((resolve) => {
+					const calendar = elem.shadowRoot.querySelector('d2l-calendar');
+					calendar.addEventListener('d2l-calendar-show-month-complete', resolve, { once: true });
+					const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
+					button.click();
+				});
 			});
 
 			// close
 			await helper.reset(page, '#basic');
-			await page.waitFor('#basic');
 
 			// re-open
 			await helper.open(page, '#basic');

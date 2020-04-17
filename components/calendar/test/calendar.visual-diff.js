@@ -146,8 +146,11 @@ describe('d2l-calendar', () => {
 
 		it('click left arrow', async function() {
 			await page.$eval('#contains-today-diff-selected', (calendar) => {
-				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
-				arrow.click();
+				return new Promise((resolve) => {
+					calendar.addEventListener('d2l-calendar-show-month-complete', resolve, { once: true });
+					const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
+					arrow.click();
+				});
 			});
 			const rect = await visualDiff.getRect(page, '#contains-today-diff-selected');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -155,8 +158,11 @@ describe('d2l-calendar', () => {
 
 		it('click right arrow', async function() {
 			await page.$eval('#dec-2019', (calendar) => {
-				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
-				arrow.click();
+				return new Promise((resolve) => {
+					calendar.addEventListener('d2l-calendar-show-month-complete', resolve, { once: true });
+					const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
+					arrow.click();
+				});
 			});
 			const rect = await visualDiff.getRect(page, '#dec-2019');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -211,36 +217,44 @@ describe('d2l-calendar', () => {
 			describe('arrow', () => {
 				it('up to prev month', async function() {
 					await tabToDates();
+					const complete = showMonthComplete(firstCalendarOfPage);
 					await page.keyboard.press('ArrowUp');
 					await page.keyboard.press('ArrowUp');
 					await page.keyboard.press('ArrowUp');
+					await complete;
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
 				it('left to prev month', async function() {
 					await tabToDates();
+					const complete = showMonthComplete(firstCalendarOfPage);
 					for (let i = 0; i < 18; i++) {
 						await page.keyboard.press('ArrowLeft');
 					}
+					await complete;
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
 				it('down to next month', async function() {
 					await tabToDates();
+					const complete = showMonthComplete(firstCalendarOfPage);
 					await page.keyboard.press('ArrowDown');
 					await page.keyboard.press('ArrowDown');
 					await page.keyboard.press('ArrowDown');
+					await complete;
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
 				it('right to next month', async function() {
 					await tabToDates();
+					const complete = showMonthComplete(firstCalendarOfPage);
 					for (let i = 0; i < 18; i++) {
 						await page.keyboard.press('ArrowRight');
 					}
+					await complete;
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
@@ -269,7 +283,9 @@ describe('d2l-calendar', () => {
 						arrow2.click();
 					});
 					await tabToDates();
+					const complete = showMonthComplete(firstCalendarOfPage);
 					await page.keyboard.press('PageDown');
+					await complete;
 
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -289,7 +305,9 @@ describe('d2l-calendar', () => {
 					});
 
 					await tabToDates();
+					const complete = showMonthComplete(firstCalendarOfPage);
 					await page.keyboard.press('PageUp');
+					await complete;
 
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -297,6 +315,14 @@ describe('d2l-calendar', () => {
 			});
 		});
 	});
+
+	const showMonthComplete = function(selector) {
+		return page.$eval(selector, (calendar) => {
+			return new Promise((resolve) => {
+				calendar.addEventListener('d2l-calendar-show-month-complete', resolve, { once: true });
+			});
+		});
+	};
 
 	const tabToDates = async function() {
 		await page.keyboard.press('Tab');
