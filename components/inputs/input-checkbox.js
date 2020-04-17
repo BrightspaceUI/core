@@ -24,6 +24,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 			css`
 				:host {
 					display: block;
+					line-height: 1.2rem;
 					margin-bottom: 0.9rem;
 				}
 				:host([hidden]) {
@@ -42,9 +43,8 @@ class InputCheckbox extends RtlMixin(LitElement) {
 					display: inline-block;
 					font-size: 0.8rem;
 					font-weight: 400;
-					line-height: 1.2rem;
 					margin-left: 0.5rem;
-					vertical-align: middle;
+					vertical-align: top;
 					white-space: normal;
 				}
 				:host([dir="rtl"]) .d2l-input-checkbox-text {
@@ -61,6 +61,9 @@ class InputCheckbox extends RtlMixin(LitElement) {
 				}
 				.d2l-input-checkbox-text-disabled {
 					opacity: 0.5;
+				}
+				input[type="checkbox"].d2l-input-checkbox {
+					vertical-align: top;
 				}
 			`
 		];
