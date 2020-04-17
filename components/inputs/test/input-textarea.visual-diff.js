@@ -9,8 +9,7 @@ describe('d2l-input-textarea', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser);
-		await page.setViewport({width: 800, height: 1200, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 1200}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-textarea.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});

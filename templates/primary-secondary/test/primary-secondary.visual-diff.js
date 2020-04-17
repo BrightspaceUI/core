@@ -8,7 +8,7 @@ describe('d2l-template-primary-secondary', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
+		page = await visualDiff.createPage(browser);
 	});
 
 	after(async() => await browser.close());

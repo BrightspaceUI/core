@@ -10,7 +10,6 @@ describe('d2l-menu radio', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu-radio.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
