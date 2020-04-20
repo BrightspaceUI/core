@@ -236,9 +236,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	async _handleChange(e) {
 		const value = e.target.value;
-		if (!value) return;
-		if (value === '') {
-			this._updateValueDispatchEvent('');
+		if (!value) {
+			if (value !== this.value) {
+				this._updateValueDispatchEvent('');
+				await this.updateComplete;
+				this._calendar.reset();
+			}
 			return;
 		}
 		this._formattedValue = value;
