@@ -121,6 +121,20 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('open with click after text input', async function() {
+			await page.$eval('#basic', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				input.value = '01/10/2030';
+				const e = new Event(
+					'mouseup',
+					{ bubbles: true, composed: true }
+				);
+				input.dispatchEvent(e);
+			});
+			const rect = await helper.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('open with placeholder', async function() {
 			await helper.open(page, '#no-value');
 			const rect = await helper.getRect(page, '#no-value');
