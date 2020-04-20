@@ -1,6 +1,7 @@
 import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { formatDateTimeInISO } from '../input-date-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-date-time label="label text"></d2l-input-date-time>';
 
@@ -38,6 +39,14 @@ describe('d2l-input-date-time', () => {
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible({ignoredRules: ['color-contrast']}); // color-contrast takes a while and should be covered by axe tests in the individual components
 		}).timeout(4000);
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-date-time');
+		});
+
 	});
 
 	describe('utility function', () => {

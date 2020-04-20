@@ -1,6 +1,7 @@
 import '../link.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-link href="https://www.d2l.com">Link Test</d2l-link>`;
 
@@ -73,6 +74,14 @@ describe('d2l-link', () => {
 				await elem.updateComplete;
 				expect(elem.hasAttribute(attrName)).to.be.true;
 			});
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-link');
 		});
 
 	});
