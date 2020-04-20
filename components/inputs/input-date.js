@@ -236,6 +236,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	async _handleChange(e) {
 		const value = e.target.value;
+		if (!value) return;
 		if (value === '') {
 			this._updateValueDispatchEvent('');
 			return;
@@ -274,8 +275,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdownOpened = true;
 	}
 
-	_handleMouseup() {
-		if (!this.disabled) this._dropdown.toggleOpen(false);
+	_handleMouseup(e) {
+		if (!this.disabled) {
+			if (!this._dropdownOpened) this._handleChange(e);
+			this._dropdown.toggleOpen(false);
+		}
 	}
 
 	_handleSetToToday() {
