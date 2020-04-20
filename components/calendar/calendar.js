@@ -382,8 +382,9 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			if (prop === '_shownMonth' && this._keyboardTriggeredMonthChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
-				if (this.selectedValue) this._focusDate = getDateFromISODate(this.selectedValue);
-				else this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
+				requestAnimationFrame(async() => {
+					this._updateFocusDate();
+				});
 			}
 		});
 	}
