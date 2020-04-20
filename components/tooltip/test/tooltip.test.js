@@ -1,5 +1,6 @@
 import '../tooltip.js';
 import { aTimeout, expect, fixture, html, oneEvent, triggerBlurFor, triggerFocusFor } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
 	<div>
@@ -36,6 +37,14 @@ describe('d2l-tooltip', () => {
 				await expect(tooltip).to.be.accessible;
 			});
 		});
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-tooltip');
+		});
+
 	});
 
 	describe('events', () => {

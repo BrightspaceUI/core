@@ -1,5 +1,6 @@
 import '../more-less.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 function waitForHeight(elem) {
 	return new Promise((resolve) => {
@@ -37,6 +38,14 @@ describe('d2l-more-less', () => {
 			await waitForRender(elem);
 			await waitForHeight(elem);
 			await expect(elem).to.be.accessible();
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-more-less');
 		});
 
 	});
