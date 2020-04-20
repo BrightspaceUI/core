@@ -269,7 +269,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.disableFocusLock = false;
 		this.forceShow = false;
 		this.offset = pointerRotatedOverhang + pointerGap;
-		this.showing = false;
 		this.state = 'info';
 
 		this._dismissibleId = null;
@@ -292,6 +291,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
+		this.showing = false;
 		window.addEventListener('resize', this._onTargetResize);
 
 		requestAnimationFrame(() => {
