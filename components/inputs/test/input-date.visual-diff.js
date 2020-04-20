@@ -10,13 +10,12 @@ describe('d2l-input-date', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 900, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 900}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'basic',
@@ -68,11 +67,6 @@ describe('d2l-input-date', () => {
 		it('tab on open', async function() {
 			await helper.open(page, '#basic');
 			await page.keyboard.press('Tab');
-			await page.$eval('#basic', (elem) => {
-				return new Promise((resolve) => {
-					elem.shadowRoot.querySelector('d2l-calendar').shadowRoot.addEventListener('transitionend', resolve, { once: true });
-				});
-			});
 			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -106,8 +100,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		// TODO: enable once animations can be skipped
-		it.skip('opens then changes month then closes then reopens', async function() {
+		it('opens then changes month then closes then reopens', async function() {
 			// open
 			await helper.open(page, '#basic');
 
@@ -117,7 +110,6 @@ describe('d2l-input-date', () => {
 				const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
 				button.click();
 			});
-			await monthChangeEvent(page, '#basic');
 
 			// close
 			await helper.reset(page, '#basic');
@@ -134,20 +126,6 @@ describe('d2l-input-date', () => {
 			const rect = await helper.getRect(page, '#no-value');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-
-		const monthChangeEvent = (page, selector) => {
-			return page.$eval(selector, (elem) => {
-				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				return new Promise((resolve) => {
-					let opacityTransitioned, transformTransitioned;
-					calendar.shadowRoot.addEventListener('transitionend', (e) => {
-						if (e.propertyName === 'opacity') opacityTransitioned = true;
-						if (e.propertyName === 'transform') transformTransitioned = true;
-						if (opacityTransitioned && transformTransitioned) resolve();
-					});
-				});
-			});
-		};
 	});
 
 });

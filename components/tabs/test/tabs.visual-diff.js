@@ -9,15 +9,14 @@ describe('d2l-tabs', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser);
-		await page.setViewport({width: 800, height: 2000, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 2000}});
 	});
 
 	beforeEach(async() => {
 		await visualDiff.resetFocus(page);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	describe('basic', () => {
 

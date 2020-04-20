@@ -14,14 +14,8 @@ module.exports = {
 
 	async show(page, selector) {
 		const openEvent = this.getShowEvent(page, selector);
-		const tooltipSelector = `${selector} d2l-tooltip`;
-		await page.$eval(tooltipSelector, tooltip => {
-			return new Promise(resolve => {
-				tooltip.shadowRoot.addEventListener('animationend', () => resolve(), { once: true });
-				tooltip.show();
-			});
-		});
+		page.$eval(`${selector} d2l-tooltip`, tooltip => tooltip.show());
 		return openEvent;
-	},
+	}
 
 };

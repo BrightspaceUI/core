@@ -21,13 +21,6 @@ const contentBorderRadius = 6;
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
 
-const interactiveElements = {
-	'input': true,
-	'select': true,
-	'textarea': true,
-	'button': true
-};
-
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 
 	const contentXAdjustment = centerDelta / 2;
@@ -225,6 +218,16 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([_open-dir="right"]) .d2l-tooltip-container {
 				-webkit-animation: d2l-tooltip-right-animation 200ms ease;
 				animation: d2l-tooltip-right-animation 200ms ease;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				:host([_open-dir="bottom"]) .d2l-tooltip-container,
+				:host([_open-dir="top"]) .d2l-tooltip-container,
+				:host([_open-dir="left"]) .d2l-tooltip-container,
+				:host([_open-dir="right"]) .d2l-tooltip-container {
+					-webkit-animation: none;
+					animation: none;
+				}
 			}
 
 			@keyframes d2l-tooltip-top-animation {
@@ -572,12 +575,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this._openDir === 'bottom' || this._openDir === 'top';
 	}
 
-	_isInteractive(ele) {
-		if (ele.nodeType !== Node.ELEMENT_NODE) {
-			return false;
-		}
-		const nodeName = ele.nodeName.toLowerCase();
-		return !!interactiveElements[nodeName];
+	_isInteractive() {
+		return true;
 	}
 
 	_onTargetBlur() {
