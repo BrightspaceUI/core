@@ -456,7 +456,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 			const targetRect = target.getBoundingClientRect();
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
-			const headerFooterHeight = Math.floor(header.getBoundingClientRect().height + footer.getBoundingClientRect().height);
+			const headerFooterHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
 			const spaceAround = this._constrainSpaceAround({
 				above: targetRect.top - 50,
@@ -484,7 +484,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			const maxHeight = Math.floor((this.openedAbove ? spaceAround.above : spaceAround.below) - headerFooterHeight);
 			if (!this.noAutoFit && maxHeight && maxHeight > 0) {
 				this._height = this.maxHeight !== null && maxHeight > this.maxHeight && headerFooterHeight < this.maxHeight
-					? this.maxHeight - headerFooterHeight : maxHeight;
+					? this.maxHeight - headerFooterHeight - 2 : maxHeight;
 				this.__toggleOverflowY(contentRect.height + headerFooterHeight > maxHeight);
 
 				// ensure the content height has updated when the __toggleScrollStyles event handler runs
