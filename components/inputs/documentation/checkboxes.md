@@ -21,6 +21,14 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 - `not-tabbable` (optional, Boolean): sets `tabindex="-1"` on the checkbox
 - `value` (optional, String): value of the input
 
+**Accessibility:**
+
+To make your usage of `d2l-input-checkbox` accessible, use the following property when applicable:
+
+| Attribute | Description |
+|--|--|
+| `aria-label` | Use when text on checkbox does not provide enough context |
+
 **Methods:**
 
 - `simulateClick()`: useful for testing, it simulates the user clicking on the checkbox, which toggles the state of the checkbox and fires the `change` event

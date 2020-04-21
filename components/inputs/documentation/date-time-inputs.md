@@ -23,6 +23,15 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 - `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
 - `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
 
+**Accessibility:**
+
+To make your usage of `d2l-input-date` accessible, use the following properties when applicable:
+
+| Attribute | Description |
+|--|--|
+| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
+| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
+
 **Events:**
 
 * `d2l-input-date-change`: dispatched when a date is selected or typed. `value` reflects the selected value and is in ISO 8601 calendar date format (`YYYY-MM-DD`).
@@ -48,6 +57,14 @@ The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d
 - `label` (String, required): accessible label for the input
 - `disabled` (Boolean): disables the input
 - `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date-time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
+
+**Accessibility:**
+
+To make your usage of `d2l-input-date-time` accessible, use the following property:
+
+| Attribute | Description |
+|--|--|
+| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/) |
 
 **Events:**
 

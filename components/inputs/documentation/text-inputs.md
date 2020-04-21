@@ -39,6 +39,19 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 - `type` (String, default: `'text'`): can be one of `text`, `email`, `number`, `password`, `tel`, `url`
 - `value` (String, default: `''`): value of the input
 
+**Accessibility:**
+
+To make your usage of `d2l-input-text` accessible, use the following properties when applicable:
+
+| Attribute | Description |
+|--|--|
+| `aria-haspopup` | [Indicate clicking the input opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). |
+| `aria-invalid` | [Indicate that the input value is invalid](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-invalid) |
+| `aria-label` | Use when `label` does not provide enough context. Only applies if no `label-hidden`. |
+| `label` | **REQUIRED**  [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
+| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
+| `title` | Text for additional screen reader and mouseover context |
+
 **Events:**
 
 The `d2l-input-text` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
