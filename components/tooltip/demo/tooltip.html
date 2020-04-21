@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../button/button.js';
+		import '../../colors/colors.js';
+		import '../../demo/demo-page.js';
+		import '../../inputs/input-text.js';
+		import '../tooltip.js';
+	</script>
+	<style>
+		.boundary {
+			position: relative;
+			background-color: var(--d2l-color-citrine);
+			box-sizing: border-box;
+			display: inline-block;
+			padding-left: 150px;
+			padding-top: 60px;
+			width: 350px;
+			height: 175px;
+		}
+	</style>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-tooltip">
+
+		<h2>Tooltip (info)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button id="tooltip-info">Hover for Info</d2l-button>
+				<d2l-tooltip for="tooltip-info">
+					Your info message will display here
+				</d2l-tooltip>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Tooltip (error)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-input-text placeholder="Hover for Error" id="tooltip-error" aria-invalid="true"></d2l-input-text>
+				<d2l-tooltip for="tooltip-error" state="error" align="start" offset="10">
+					Your error message will display here
+				</d2l-tooltip>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Tooltip (boundary)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="boundary">
+					<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
+					<d2l-tooltip for="tooltip-boundary"
+						boundary="{&quot;top&quot;:0, &quot;bottom&quot;:0, &quot;left&quot;:0, &quot;right&quot;:0}">
+						This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
+					</d2l-tooltip>
+				</div>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Tooltip (delay)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button id="tooltip-delay">Hover and Wait</d2l-button>
+				<d2l-tooltip for="tooltip-delay" delay="1000">
+					Your delayed message will display here
+				</d2l-tooltip>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Tooltip (force-show)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button id="tooltip-force-show">Always visible</d2l-button>
+				<d2l-tooltip for="tooltip-force-show" force-show>
+					Always visible message
+				</d2l-tooltip>
+			</template>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
+
+</body>
+
+</html>

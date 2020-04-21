@@ -1,5 +1,6 @@
 import '../button-subtle.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>`;
 const iconFixture = html`<d2l-button-subtle text="Subtle Button with Icon" icon="d2l-tier1:gear"></d2l-button-subtle>`;
@@ -40,6 +41,14 @@ describe('d2l-button', () => {
 			setTimeout(() => el.shadowRoot.querySelector('button').focus());
 			await oneEvent(el, 'focus');
 			await expect(el).to.be.accessible();
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-button-subtle');
 		});
 
 	});

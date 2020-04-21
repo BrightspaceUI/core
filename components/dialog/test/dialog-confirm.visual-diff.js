@@ -10,11 +10,10 @@ describe('d2l-dialog-confirm', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await visualDiff.disableAnimations(page);
+		page = await visualDiff.createPage(browser);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	['native', 'custom'].forEach((name) => {
 
@@ -69,7 +68,8 @@ describe('d2l-dialog-confirm', () => {
 					{ name: 'short', selector: '#confirm' },
 					{ name: 'long title', selector: '#confirmLongTitle' },
 					{ name: 'no title', selector: '#confirmNoTitle' },
-					{ name: 'long text', selector: '#confirmLongText' }
+					{ name: 'long text', selector: '#confirmLongText' },
+					{ name: 'long buttons', selector: '#confirmLongButtons' }
 				].forEach((info) => {
 
 					it(info.name, async function() {

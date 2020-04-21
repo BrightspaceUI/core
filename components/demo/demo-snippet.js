@@ -47,7 +47,7 @@ class DemoSnippet extends LitElement {
 		// remove the leading and trailing template tags
 		text = text.replace(/^[\t]*\n/, '').replace(/\n[\t]*$/, '');
 		const templateMatch = text.match(/^[\t]*<template>[\n]*/);
-		const isTemplate = templateMatch && templateMatch.length > 0;
+		this._isTemplate = templateMatch && templateMatch.length > 0;
 		text = text.replace(/^[\t]*<template>[\n]*/, '').replace(/[\n]*[\t]*<\/template>$/, '');
 
 		// fix script whitespace (for some reason brower keeps <script> indent but not the rest)
@@ -61,7 +61,7 @@ class DemoSnippet extends LitElement {
 				const nl = this._repeat(' ', scriptIndent) + l ;
 				scriptIndent = 0;
 				return nl;
-			} else if (scriptIndent && !isTemplate) {
+			} else if (scriptIndent && !this._isTemplate) {
 				return this._repeat(' ', scriptIndent + 2) + l;
 			} else {
 				return l;
@@ -77,7 +77,8 @@ class DemoSnippet extends LitElement {
 	_handleDirChange() {
 		this._dir = this._dir === 'rtl' ? 'ltr' : 'rtl';
 		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
-		const nodes = this.shadowRoot.querySelector('slot').assignedNodes();
+		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
 		if (nodes.length === 0) return;
 		const applyDir = (nodes, isRoot) => {
 			for (let i = 0; i < nodes.length; i++) {
@@ -127,7 +128,10 @@ class DemoSnippet extends LitElement {
 				const demoContainer = document.createElement('div');
 				demoContainer.setAttribute('slot', '_demo');
 				demoContainer.appendChild(document.importNode(nodes[i].content, true));
-				this.appendChild(demoContainer);
+				/* must insert before template, else getPreviousFocusable (in consumer code)
+				will walk composed dom from template, thereby returning last focusable in
+				element due to order of slots */
+				this.insertBefore(demoContainer, nodes[i]);
 			}
 
 			tempContainer.appendChild(nodes[i].cloneNode(true));

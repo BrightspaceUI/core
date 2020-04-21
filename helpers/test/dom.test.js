@@ -5,7 +5,8 @@ import {
 	getComposedChildren,
 	getComposedParent,
 	getOffsetParent,
-	isComposedAncestor
+	isComposedAncestor,
+	isVisible
 } from '../dom.js';
 
 const testElemTag = defineCE(
@@ -45,7 +46,12 @@ const offsetParentWrapperTag = defineCE(
 	}
 );
 
-const simpleFixture = html`<div id="light1"><div id="light2"></div>some text</div>`;
+const simpleFixture = html`
+	<div id="light1">
+		<div id="light2"></div>
+		some text
+	</div>`
+;
 const wcFixture = `
 	<${testElemTag}>
 		<div id="light1"></div>
@@ -61,7 +67,61 @@ const mixedFixture = `
 	</div>
 `;
 
+const visibilityFixture = html`
+	<div>
+		<div id="default"></div>
+		<div id="fixedPosition" style="position:fixed;"></div>
+		<div id="visibilityHidden" style="visibility:hidden;"></div>
+		<div id="displayNone" style="display:none;"></div>
+		<div style="display:none;"><div id="parentDisplayNone"></div></div>
+		<div style="visibility:hidden;"><div id="parentVisibilityNone"></div></div>
+	</div>
+`;
+
 describe('dom', () => {
+
+	describe('isVisible', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(visibilityFixture);
+		});
+
+		it('returns true if it and all ancestors are visible', () => {
+			expect(isVisible(elem.querySelector('#default'))).to.be.true;
+		});
+
+		it('returns false if web component ancestor has display:none', () => {
+			elem.style.display = 'none';
+			expect(isVisible(elem.querySelector('#default'))).to.be.false;
+		});
+
+		it('returns true if position fixed and all ancestors are visible', () => {
+			expect(isVisible(elem.querySelector('#fixedPosition'))).to.be.true;
+		});
+
+		it('returns false if position fixed and ancestor has display: none', () => {
+			elem.style.display = 'none';
+			expect(isVisible(elem.querySelector('#fixedPosition'))).to.be.false;
+		});
+
+		it('returns false if inline style has visibility:hidden', () => {
+			expect(isVisible(elem.querySelector('#visibilityHidden'))).to.be.false;
+		});
+
+		it('returns false if inline style has display:none', () => {
+			expect(isVisible(elem.querySelector('#displayNone'))).to.be.false;
+		});
+
+		it('returns false if parent has display:none', () => {
+			expect(isVisible(elem.querySelector('#parentDisplayNone'))).to.be.false;
+		});
+
+		it('returns false if parent has visibility:hidden', () => {
+			expect(isVisible(elem.querySelector('#parentVisibilityNone'))).to.be.false;
+		});
+
+	});
 
 	describe('findComposedAncestor', () => {
 

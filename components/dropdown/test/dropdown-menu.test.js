@@ -4,6 +4,7 @@ import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../../menu/menu-item-radio';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const itemFixture = html`
 	<div>
@@ -53,6 +54,14 @@ describe('d2l-dropdown-menu', () => {
 				expect(content.opened).to.be.false;
 			});
 		});
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-dropdown-menu');
+		});
+
 	});
 
 });

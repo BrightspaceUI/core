@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../backdrop.js';
+	</script>
+	<title>d2l-backdrop</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		.visual-diff {
+			background-color: orange;
+			height: 100px;
+			padding: 1rem;
+			width: 300px;
+		}
+		#target {
+			position: relative;
+			z-index: 1000;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		Background content
+		<div id="target">Target content</div>
+		<d2l-backdrop for-target="target"></d2l-backdrop>
+	</div>
+
+</body>
+</html>

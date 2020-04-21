@@ -17,6 +17,7 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
 
@@ -108,16 +109,28 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_close(action) {
 		if (!this._state) return;
 		this._action = action;
+
 		clearDismissible(this._dismissibleId);
 		this._dismissibleId = null;
+
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
-		const transitionEnd = () => {
-			dialog.removeEventListener('transitionend', transitionEnd);
+
+		const doClose = () => {
 			if (this._useNative) dialog.close();
 			else this._handleClose();
 		};
-		dialog.addEventListener('transitionend', transitionEnd);
-		this._state = 'hiding';
+
+		if (!reduceMotion) {
+			const transitionEnd = () => {
+				dialog.removeEventListener('transitionend', transitionEnd);
+				doClose();
+			};
+			dialog.addEventListener('transitionend', transitionEnd);
+			this._state = 'hiding';
+		} else {
+			this._state = 'hiding';
+			doClose();
+		}
 	}
 
 	async _focusOpener() {
@@ -249,13 +262,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
 
-		const transitionEnd = () => {
-			dialog.removeEventListener('transitionend', transitionEnd);
-			this.dispatchEvent(new CustomEvent(
-				'd2l-dialog-open', { bubbles: true, composed: true }
-			));
-		};
-		dialog.addEventListener('transitionend', transitionEnd);
+		const animPromise = new Promise((resolve) => {
+			const transitionEnd = () => {
+				dialog.removeEventListener('transitionend', transitionEnd);
+				resolve();
+			};
+			dialog.addEventListener('transitionend', transitionEnd);
+		});
 
 		if (this._useNative) {
 			dialog.showModal();
@@ -268,9 +281,16 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialog backdrop does not prevent body scrolling
 		this._bodyScrollKey = preventBodyScroll();
 
-		this._updateSize();
-		this._state = 'showing';
-		this._focusInitial();
+		requestAnimationFrame(async() => {
+			await this._updateSize();
+			this._state = 'showing';
+			this._focusInitial();
+			if (!reduceMotion) await animPromise;
+			this.dispatchEvent(new CustomEvent(
+				'd2l-dialog-open', { bubbles: true, composed: true }
+			));
+		});
+
 	}
 
 	_removeHandlers() {
@@ -355,6 +375,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._height = this._getHeight();
 		await this.updateComplete;
 		this._updateOverflow();
+		await this.updateComplete;
 	}
 
 };

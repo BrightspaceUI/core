@@ -11,6 +11,7 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
+import { AsyncStateEvent } from '../helpers/asyncStateEvent.js';
 import { directive } from 'lit-html/lit-html.js';
 
 const hasAbortController = typeof AbortController === 'function';
@@ -110,11 +111,7 @@ export const runAsync = directive((key, task, templates, options) => (part) => {
 			if (currentRunState === runState && currentRunState.state === 'pending') {
 				const element = part.startNode.parentNode.nodeType === Node.ELEMENT_NODE ? part.startNode.parentNode : part.startNode.parentNode.host;
 				if (directiveOptions.pendingState) {
-					element.dispatchEvent(new CustomEvent('pending-state', {
-						composed: true,
-						bubbles: true,
-						detail: { promise: pendingPromise }
-					}));
+					element.dispatchEvent(new AsyncStateEvent(pendingPromise));
 				}
 			}
 		})();

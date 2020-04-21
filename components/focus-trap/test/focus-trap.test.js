@@ -1,5 +1,6 @@
 import '../focus-trap.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`
 	<div>
@@ -21,6 +22,14 @@ describe('d2l-focus-trap', () => {
 	beforeEach(async() => {
 		elem = await fixture(normalFixture);
 		focusTrap = elem.querySelector('d2l-focus-trap');
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-focus-trap');
+		});
+
 	});
 
 	describe('not trapping', () => {

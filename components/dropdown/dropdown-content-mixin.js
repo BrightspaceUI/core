@@ -268,7 +268,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
 					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
-						<slot></slot>
+						<slot class="d2l-dropdown-content-slot"></slot>
 					</div>
 					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
@@ -399,7 +399,9 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				}
 			}
 
-			this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+			setTimeout(() =>
+				this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true})), 0
+			);
 
 			this.__dismissibleId = setDismissible(() => {
 				this.close();

@@ -1,7 +1,7 @@
 # Templates
 Page templates to provide common ways to arrange content on a page
 
-## Primary-Secondary - NOT READY
+## Primary-Secondary
 Two Panel (primary and secondary) page template with header and optional footer
 
 Use this template when: 
@@ -43,10 +43,14 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 **Note:** this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
+### Width ###
+The template accepts a `width-type` attribute. When set to `normal`, the width of the template is constrained to `1230px`.
+
+```<d2l-template-primary-secondary width-type="normal"></d2l-template-primary-secondary>```
+
 ## Future Enhancements
 
 - Optional draggable divider between the primary and secondary panels
 - For smaller devices, the primary and secondary panels will move into collapsible drawers
-- Option to specify a maximum width for the template (in Desktop view), so that the template does not always take 100% of the viewport width.
 
 Looking for an enhancement not listed here? Create a GitHub issue!
