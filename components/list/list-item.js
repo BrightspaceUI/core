@@ -112,21 +112,6 @@ class ListItem extends RtlMixin(LitElement) {
 				margin-right: 0;
 			}
 
-			:host([illustration-outside]) .d2l-list-item-content-flex {
-				padding: 0.55rem 0;
-			}
-
-			:host([illustration-outside]) .d2l-list-item-container ::slotted([slot="illustration"]),
-			:host([illustration-outside]) .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
-				margin-bottom: 0.7rem;
-				margin-top: 0.7rem;
-			}
-
-			:host([illustration-outside]) input[type="checkbox"].d2l-input-checkbox {
-				margin-bottom: 1.15rem;
-				margin-top: 1.15rem;
-			}
-
 			.d2l-list-item-main {
 				flex-grow: 1;
 				margin-top: 0.05rem;
