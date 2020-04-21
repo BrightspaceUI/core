@@ -1,6 +1,6 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
-import { LitElement } from 'lit-element/lit-element.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
+import { LitElement } from 'lit-element/lit-element.js';
 
 const tag = defineCE(
 	class extends ListItemCheckboxMixin(LitElement) {

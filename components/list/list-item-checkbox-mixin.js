@@ -1,13 +1,8 @@
 import { css, html } from 'lit-element/lit-element.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 
 export const ListItemCheckboxMixin = superclass => class extends superclass {
-
-	constructor() {
-		super();
-		this._checkboxId = getUniqueId();
-	}
 
 	/**
 	 * https://lit-element.polymer-project.org/guide/properties#declare
@@ -40,6 +35,11 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			cursor: default;
 		}
 		`];
+	}
+
+	constructor() {
+		super();
+		this._checkboxId = getUniqueId();
 	}
 
 	/**
@@ -118,6 +118,6 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 					?disabled="${this.disabled}">
 			</div>
 			<div class="list-item-checkbox-action" @click="${this._handleCheckboxActionClick}"></div>
-			` : ``;
+			` : '';
 	}
 };

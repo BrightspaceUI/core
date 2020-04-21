@@ -11,7 +11,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			_breakpoint: { type: Number }
-		}
+		};
 	}
 
 	static get styles() {
@@ -44,7 +44,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				<div class="d2l-list-item-actions"></div>
 			</div>
 		`;
-	};
+	}
 }
 
 customElements.define('d2l-list-item-sample', ListItemSample);
