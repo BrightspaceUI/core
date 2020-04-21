@@ -94,7 +94,6 @@ Alternately, the `<d2l-input-fieldset>` component can accomplish this for you:
 
 ## Future Enhancements
 
-- Time input
 - Date & time range with validation
 - Numeric input
 - Color input with contrast analysis
