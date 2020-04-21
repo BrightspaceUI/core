@@ -121,10 +121,91 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('open with click after text input', async function() {
+			await page.$eval('#basic', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				input.value = '01/10/2030';
+				const e = new Event(
+					'mouseup',
+					{ bubbles: true, composed: true }
+				);
+				input.dispatchEvent(e);
+			});
+			const rect = await helper.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('open with click after empty text input', async function() {
+			await page.$eval('#basic', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				input.value = '';
+				const e = new Event(
+					'mouseup',
+					{ bubbles: true, composed: true }
+				);
+				input.dispatchEvent(e);
+			});
+			const rect = await helper.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('open with enter after text input', async function() {
+			await page.$eval('#basic', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				input.value = '11/21/2031';
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				input.dispatchEvent(eventObj);
+			});
+			const rect = await helper.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('open with enter after empty text input', async function() {
+			await page.$eval('#basic', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				input.value = '';
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				input.dispatchEvent(eventObj);
+			});
+			const rect = await helper.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('open with down arrow after text input', async function() {
+			await page.$eval('#basic', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				input.value = '08/30/2032';
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 40;
+				input.dispatchEvent(eventObj);
+			});
+			const rect = await helper.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('open with down arrow after empty text input', async function() {
+			await page.$eval('#basic', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				input.value = '';
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 40;
+				input.dispatchEvent(eventObj);
+			});
+			const rect = await helper.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('open with placeholder', async function() {
 			await helper.open(page, '#no-value');
 			const rect = await helper.getRect(page, '#no-value');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await helper.reset(page, '#basic');
 		});
 	});
 

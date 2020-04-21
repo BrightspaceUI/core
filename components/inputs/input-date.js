@@ -222,10 +222,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._calendar.focus();
 	}
 
-	_handleKeydown(e) {
+	async _handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
+			await this._handleChange(e);
 			this._calendar.focus();
 
 			if (e.keyCode === 40) e.preventDefault();
@@ -234,8 +235,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	async _handleChange(e) {
 		const value = e.target.value;
-		if (value === '') {
-			this._updateValueDispatchEvent('');
+		if (!value) {
+			if (value !== this.value) {
+				this._updateValueDispatchEvent('');
+				await this.updateComplete;
+				this._calendar.reset();
+			}
 			return;
 		}
 		this._formattedValue = value;
@@ -247,6 +252,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			// leave value the same when invalid input
 		}
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
+		await this.updateComplete;
+		this._calendar.reset();
 	}
 
 	_handleClear() {
@@ -270,8 +277,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdownOpened = true;
 	}
 
-	_handleMouseup() {
-		if (!this.disabled) this._dropdown.toggleOpen(false);
+	_handleMouseup(e) {
+		if (!this.disabled) {
+			if (!this._dropdownOpened) this._handleChange(e);
+			this._dropdown.toggleOpen(false);
+		}
 	}
 
 	_handleSetToToday() {
