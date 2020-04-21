@@ -29,7 +29,6 @@ describe('d2l-list', () => {
 		]},
 		{ category: 'illustration', tests: [
 			{ name: 'default', selector: '#illustration' },
-			{ name: 'outside', selector: '#illustrationOutside' }
 		]},
 		{ category: 'separators', tests: [
 			{ name: 'default', selector: '#simple' },

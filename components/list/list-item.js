@@ -27,7 +27,6 @@ class ListItem extends RtlMixin(LitElement) {
 			breakpoints: { type: Array },
 			disabled: {type: Boolean },
 			href: { type: String },
-			illustrationOutside: { type: Boolean, attribute: 'illustration-outside' },
 			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
@@ -269,21 +268,20 @@ class ListItem extends RtlMixin(LitElement) {
 
 		const classes = {
 			'd2l-list-item-container': true,
-			'd2l-list-item-flex': label || link || this.illustrationOutside,
+			'd2l-list-item-flex': label || link,
 			'd2l-visible-on-ancestor-target': true
 		};
 
 		return html`
 			<div class="${classMap(classes)}" breakpoint="${this._breakpoint}">
 				${label}
-				${this.illustrationOutside ? beforeContent : null}
 				${link}
 				<div id="${this._contentId}"
 					class="d2l-list-item-content"
 					?extend-separators="${this._extendSeparators}"
 					separators="${ifDefined(this._separators)}">
 					<div class="d2l-list-item-content-flex">
-						${!this.illustrationOutside ? beforeContent : null}
+						${beforeContent}
 						<div class="d2l-list-item-main"><slot></slot></div>
 						<slot name="actions"></slot>
 					</div>
