@@ -1,5 +1,6 @@
 import '../menu-item-checkbox.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 function dispatchItemSelectEvent(elem) {
 	const e = new CustomEvent(
@@ -16,6 +17,14 @@ describe('d2l-menu-item-checkbox', () => {
 		it('has role="menuitemcheckbox"', async() => {
 			const elem = await fixture(html`<d2l-menu-item-checkbox></d2l-menu-item-checkbox>`);
 			expect(elem.getAttribute('role')).to.equal('menuitemcheckbox');
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-menu-item-checkbox');
 		});
 
 	});

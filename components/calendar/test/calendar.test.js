@@ -8,6 +8,7 @@ import { checkIfDatesEqual,
 	getPrevMonth
 } from '../calendar.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const normalFixture = html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`;
@@ -20,6 +21,12 @@ describe('d2l-calendar', () => {
 		it('passes all axe tests', async() => {
 			const calendar = await fixture(normalFixture);
 			await expect(calendar).to.be.accessible();
+		});
+	});
+
+	describe('constructor', () => {
+		it('should construct', () => {
+			runConstructor('d2l-calendar');
 		});
 	});
 

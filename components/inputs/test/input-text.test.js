@@ -1,6 +1,7 @@
 import '../input-text.js';
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-text label="label"></d2l-input-text>`;
 
@@ -65,6 +66,14 @@ describe('d2l-input-text', () => {
 		it('should pass all aXe tests (hidden label)', async() => {
 			const elem = await fixture(html`<d2l-input-text label="label" label-hidden></d2l-input-text>`);
 			await expect(elem).to.be.accessible;
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-text');
 		});
 
 	});

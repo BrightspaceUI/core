@@ -1,6 +1,7 @@
 import '../tabs.js';
 import '../tab-panel.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`
 	<div>
@@ -19,6 +20,18 @@ describe('d2l-tabs', () => {
 		it('passes all aXe tests', async() => {
 			const el = await fixture(normalFixture);
 			await expect(el).to.be.accessible();
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct tabs', () => {
+			runConstructor('d2l-tabs');
+		});
+
+		it('should construct tab-panel', () => {
+			runConstructor('d2l-tab-panel');
 		});
 
 	});

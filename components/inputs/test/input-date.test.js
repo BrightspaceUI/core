@@ -1,6 +1,7 @@
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 import { formatISODateInUserCalDescriptor } from '../input-date.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-date label="label text"></d2l-input-date>';
@@ -45,6 +46,14 @@ describe('d2l-input-date', () => {
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
 		});
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-date');
+		});
+
 	});
 
 	describe('focus trap', () => {
