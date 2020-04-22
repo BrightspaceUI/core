@@ -1,9 +1,8 @@
 import './input-date.js';
 import './input-fieldset.js';
 import './input-time.js';
-import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, formatDateTimeInISO, formatTimeInISO, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
+import { getLocalDateFromUTCDateTime, getLocalTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -74,10 +73,8 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 		if (this.value) {
 			try {
-				const parsed = parseISODateTime(this.value);
-				const localDateTime = convertUTCToLocalDateTime(parsed);
-				this._parsedDate = formatDateInISO({year: localDateTime.year, month: localDateTime.month, date: localDateTime.date});
-				this._parsedTime = formatTimeInISO({hours: localDateTime.hours, minutes: localDateTime.minutes, seconds: localDateTime.seconds});
+				this._parsedDate = getLocalDateFromUTCDateTime(this.value);
+				this._parsedTime = getLocalTimeFromUTCDateTime(this.value);
 			} catch (e) {
 				// set value to empty if invalid initial value
 				this.value = '';
@@ -128,10 +125,8 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			this.value = '';
 			this._parsedTime = '';
 		} else {
-			const time = this._parsedTime ? parseISOTime(this._parsedTime) : this.shadowRoot.querySelector('d2l-input-time').getTime();
-			const date = parseISODate(this._parsedDate);
-			const converted = convertLocalToUTCDateTime(Object.assign(date, time));
-			this.value = formatDateTimeInISO(converted);
+			const time = this._parsedTime ? this._parsedTime : this.shadowRoot.querySelector('d2l-input-time').value;
+			this.value = getUTCDateTimeFromLocalDateTime(this._parsedDate, time);
 		}
 
 		this.dispatchEvent(new CustomEvent(
