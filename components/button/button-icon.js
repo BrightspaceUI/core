@@ -100,6 +100,12 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 					cursor: default;
 					opacity: 0.5;
 				}
+
+				@media (prefers-reduced-motion: reduce) {
+					:host([translucent]) button {
+						transition: none;
+					}
+				}
 			`
 		];
 	}

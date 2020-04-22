@@ -9,13 +9,12 @@ describe('d2l-meter-circle', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 2500, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 2500}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/meter/test/meter-circle.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		{ title: 'no-progress', fixture: '#no-progress'},

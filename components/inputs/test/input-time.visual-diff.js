@@ -10,13 +10,12 @@ describe('d2l-input-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 300, height: 600, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 300, height: 600}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'basic',

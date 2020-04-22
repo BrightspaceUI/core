@@ -10,8 +10,7 @@ describe('d2l-dropdown-menu', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({ width: 800, height: 800, deviceScaleFactor: 2 });
+		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/dropdown/test/dropdown-menu.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -20,7 +19,7 @@ describe('d2l-dropdown-menu', () => {
 		await helper.reset(page, '#dropdown-menu');
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('first-page', async function() {
 		await helper.open(page, '#dropdown-menu');

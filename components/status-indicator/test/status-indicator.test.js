@@ -1,5 +1,6 @@
 import '../status-indicator.js';
 import { expect, fixture, html } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-status-indicator', () => {
 
@@ -40,6 +41,14 @@ describe('d2l-status-indicator', () => {
 			elem.bold = true;
 			await elem.updateComplete;
 			expect(elem.hasAttribute('bold')).to.be.true;
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-status-indicator');
 		});
 
 	});

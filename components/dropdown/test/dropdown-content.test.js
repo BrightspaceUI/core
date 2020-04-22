@@ -1,6 +1,7 @@
 import '../dropdown.js';
 import '../dropdown-content.js';
 import { aTimeout, expect, fixture, html, nextFrame, oneEvent, triggerFocusFor } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`
 	<div>
@@ -25,6 +26,14 @@ describe('d2l-dropdown', () => {
 	beforeEach(async() => {
 		dropdown = await fixture(normalFixture);
 		content = dropdown.querySelector('d2l-dropdown-content');
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-dropdown-content');
+		});
+
 	});
 
 	describe('opener', () => {

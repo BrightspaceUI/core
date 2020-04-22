@@ -1,5 +1,6 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -14,7 +15,7 @@ const pointerOverhang = 7; /* how far the pointer extends outside the content */
 const pointerRotatedLength = Math.SQRT2 * pointerLength;
 const pointerRotatedOverhang = ((pointerRotatedLength - pointerLength) / 2) + pointerOverhang;
 
-const pointerGap = 6; /* spacing between pointer and target */
+const pointerGap = 0; /* spacing between pointer and target */
 const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
 const contentBorderSize = 1;
@@ -219,6 +220,16 @@ class Tooltip extends RtlMixin(LitElement) {
 				animation: d2l-tooltip-right-animation 200ms ease;
 			}
 
+			@media (prefers-reduced-motion: reduce) {
+				:host([_open-dir="bottom"]) .d2l-tooltip-container,
+				:host([_open-dir="top"]) .d2l-tooltip-container,
+				:host([_open-dir="left"]) .d2l-tooltip-container,
+				:host([_open-dir="right"]) .d2l-tooltip-container {
+					-webkit-animation: none;
+					animation: none;
+				}
+			}
+
 			@keyframes d2l-tooltip-top-animation {
 				0% { transform: translate(0,-10px); opacity: 0; }
 				100% { transform: translate(0,0); opacity: 1; }
@@ -258,7 +269,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.disableFocusLock = false;
 		this.forceShow = false;
 		this.offset = pointerRotatedOverhang + pointerGap;
-		this.showing = false;
 		this.state = 'info';
 
 		this._dismissibleId = null;
@@ -281,6 +291,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
+		this.showing = false;
 		window.addEventListener('resize', this._onTargetResize);
 
 		requestAnimationFrame(() => {
@@ -564,17 +575,25 @@ class Tooltip extends RtlMixin(LitElement) {
 		return this._openDir === 'bottom' || this._openDir === 'top';
 	}
 
+	_isInteractive() {
+		return true;
+	}
+
 	_onTargetBlur() {
 		this._isFocusing = false;
 		this._updateShowing();
 	}
 
 	_onTargetFocus() {
+		const prevFocusing = this._isFocusing;
 		if (this.disableFocusLock) {
 			this.showing = true;
 		} else {
 			this._isFocusing = true;
 			this._updateShowing();
+		}
+		if (!prevFocusing && !this._isInteractive(this._target)) {
+			announce(this.textContent);
 		}
 	}
 
@@ -619,10 +638,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			await this.updateComplete;
 			await this.updatePosition();
 			this._dismissibleId = setDismissible(() => this.hide());
+			this.setAttribute('aria-hidden', 'false');
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
 		} else {
+			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
 				clearDismissible(this._dismissibleId);
 				this._dismissibleId = null;
@@ -640,9 +661,12 @@ class Tooltip extends RtlMixin(LitElement) {
 	_updateTarget() {
 		this._removeListeners();
 		const target = this._findTarget();
-		if (target) {
+		if (target && this._isInteractive(target)) {
 			this.id = this.id || getUniqueId();
+			this.setAttribute('role', 'tooltip');
 			target.setAttribute('aria-describedby', this.id);
+		} else {
+			this.removeAttribute('role');
 		}
 		this._target = target;
 		this._addListeners();
