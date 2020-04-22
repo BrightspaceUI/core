@@ -110,14 +110,14 @@ To make your usage of `d2l-input-date-time` accessible, use the following proper
 
 ## Timezone
 
-The `input-date` and `input-time` components do not handle timezone and so require the input to be in the user's timezone, which corresponds to the timezone on the `data-timezone` attribute on the `html` element.
+The `input-date` and `input-time` components do not handle timezone and so require the input to be in the user's timezone, which corresponds to the timezone in the `data-timezone` attribute on the `html` element.
 
-### Convert UTC Date and Time to Local Date or Time
+### Convert UTC Date/Time to Local Date
 
-To convert a UTC date/time (presumably in ISO 8601 format, adjust if not) to the user's timezone:
+To convert a UTC date/time (presumably in ISO 8601 format, `YYYY-MM-DDTHH:mm:ss.sssZ`, adjust if not) to a date in the user's timezone for use in `input-date`:
 - Parse into object (`parseISODateTime` from `helpers/dateTime.js`)
 - Convert UTC object into local timezone object (`convertUTCToLocalDateTime` from the [intl library](https://github.com/BrightspaceUI/intl#datetime-conversion-based-on-user-timezone))
-- Format as ISO 8601 date or time (`formatDateInISO` or `formatTimeInISO` method in `helpers/dateTime.js`) depending on if using `input-date` or `input-time`
+- Format as ISO 8601 date (`formatDateInISO` from `helpers/dateTime.js`)
 
 ```javascript
 import {convertUTCToLocalDateTime} from '@brightspace-ui/intl/lib/dateTime.js';
@@ -126,27 +126,66 @@ import {formatDateInISO, parseISODateTime} from '@brightspace-ui/core/helpers/da
 const UTCDateTime = '2018-03-01T12:20:00.000Z';
 const UTCDateTimeObject = parseISODateTime(UTCDateTime);
 const localDateTime = convertUTCToLocalDateTime(UTCDateTimeObject);
-const isoFormattedLocalDate = formatDateInISO(localDateTime);
+const value = formatDateInISO(localDateTime); // use as value in input-date
+```
+### Convert UTC Date/Time to Local Time
+
+To convert a UTC date/time (presumably in ISO 8601 format, `YYYY-MM-DDTHH:mm:ss.sssZ`, adjust if not) to a time in the user's timezone for use in `input-time`:
+- Parse into object (`parseISODateTime` from `helpers/dateTime.js`)
+- Convert UTC object into local timezone object (`convertUTCToLocalDateTime` from the [intl library](https://github.com/BrightspaceUI/intl#datetime-conversion-based-on-user-timezone))
+- Format as ISO 8601 date or time (`formatTimeInISO` from `helpers/dateTime.js`)
+
+```javascript
+import {convertUTCToLocalDateTime} from '@brightspace-ui/intl/lib/dateTime.js';
+import {formatTimeInISO, parseISODateTime} from '@brightspace-ui/core/helpers/dateTime.js';
+
+const UTCDateTime = '2018-03-01T12:20:00.000Z';
+const UTCDateTimeObject = parseISODateTime(UTCDateTime);
+const localDateTime = convertUTCToLocalDateTime(UTCDateTimeObject);
+const value = formatTimeInISO(localDateTime); // use as value in input-time
 ```
 
-### Convert Local Date or Time to UTC Date and Time
+### Convert Local Date to UTC Date/Time
 
-To convert a local timezone date/time back to UTC. For example, with a date:
+To convert a date in local timezone (obtained from `input-date`) back to UTC:
 - Parse date into object (`parseISODate` from `helpers/dateTime.js`)
-- Use initial local date or time that was obtained from `convertUTCToLocalDateTime` as in above example
-- Convert UTC object into local timezone object (`convertUTCToLocalDateTime` from the [intl library](https://github.com/BrightspaceUI/intl#datetime-conversion-based-on-user-timezone))
+- Use initial local time that was obtained from `convertUTCToLocalDateTime` (as in above example "Convert UTC Date/Time to Local Date") in object form and merge with date object
+- Convert local date/time object into UTC object (`convertLocalToUTCDateTime` from the [intl library](https://github.com/BrightspaceUI/intl#datetime-conversion-based-on-user-timezone))
 - Format as ISO 8601 combined date and time (`formatDateTimeInISO` from `helpers/dateTime.js`)
 
 ```javascript
 import {convertLocalToUTCDateTime} from '@brightspace-ui/intl/lib/dateTime.js';
-import {formatDateTimeInISO} from '@brightspace-ui/core/helpers/dateTime.js';
+import {formatDateTimeInISO, parseISODate} from '@brightspace-ui/core/helpers/dateTime.js';
 
-const localDate = '2018-03-01'; // obtained through input-date
-const date = parseISODate(this._parsedDate);
+const value = '2018-04-10'; // value output from input-date
+const date = parseISODate(value);
 const time = {
 	hours: localDateTime.hours,
 	minutes: localDateTime.minutes,
 	seconds: localDateTime.seconds
+};
+const utcDateTime = convertLocalToUTCDateTime(Object.assign(date, time));
+const isoFormattedUTCDateTime = formatDateTimeInISO(utcDateTime);
+```
+
+### Convert Local Time to UTC Date/Time
+
+To convert a time in local timezone (obtained from `input-time`) back to UTC:
+- Parse time into object (`parseISOTime` from `helpers/dateTime.js`)
+- Use initial local date that was obtained from `convertUTCToLocalDateTime` (as in above example "Convert UTC Date/Time to Local Time") in object form and merge with time object
+- Convert local date/time object into UTC object (`convertLocalToUTCDateTime` from the [intl library](https://github.com/BrightspaceUI/intl#datetime-conversion-based-on-user-timezone))
+- Format as ISO 8601 combined date and time (`formatDateTimeInISO` from `helpers/dateTime.js`)
+
+```javascript
+import {convertLocalToUTCDateTime} from '@brightspace-ui/intl/lib/dateTime.js';
+import {formatDateTimeInISO, parseISOTime} from '@brightspace-ui/core/helpers/dateTime.js';
+
+const value = '12:20:00'; // value output from input-time
+const time = parseISOTime(value);
+const date = {
+	year: localDateTime.year,
+	month: localDateTime.month,
+	date: localDateTime.date
 };
 const utcDateTime = convertLocalToUTCDateTime(Object.assign(date, time));
 const isoFormattedUTCDateTime = formatDateTimeInISO(utcDateTime);
