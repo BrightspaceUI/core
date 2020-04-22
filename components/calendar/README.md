@@ -20,6 +20,14 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 - `selected-value` (String): Currently selected date. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
 - `summary` (String): Summary of the calendar for accessibility.
 
+**Accessibility:**
+
+To make your usage of `d2l-calendar` accessible, use the following property when applicable:
+
+| Attribute | Description |
+|--|--|
+| `summary` | Use to provide more context on the calendar usage. |
+
 **Events:**
 
 * `d2l-calendar-selected`: dispatched when a date is selected through click, space, or enter. `e.detail.date` is in ISO 8601 calendar date format (`YYYY-MM-DD`).
