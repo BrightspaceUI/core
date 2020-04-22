@@ -17,6 +17,14 @@ export function formatDateInISO(val) {
 	return `${val.year}-${month}-${date}`;
 }
 
+// val is an object containing year, month, date, hours, minutes, seconds
+export function formatDateTimeInISO(val) {
+	if (!val) {
+		throw new Error('Invalid input: Expected input to be an object');
+	}
+	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000Z`;
+}
+
 // val is an object containing hours, minutes, seconds
 export function formatTimeInISO(val) {
 	if (!val

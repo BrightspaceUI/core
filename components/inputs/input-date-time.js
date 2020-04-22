@@ -3,17 +3,10 @@ import './input-fieldset.js';
 import './input-time.js';
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, formatTimeInISO, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
+import { formatDateInISO, formatDateTimeInISO, formatTimeInISO, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-
-export function formatDateTimeInISO(val) {
-	if (!val) {
-		throw new Error('Invalid input: Expected input to be an object');
-	}
-	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000Z`;
-}
 
 class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
@@ -97,7 +90,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return html`
 			<d2l-input-fieldset label="${ifDefined(this.label)}">
 				<d2l-input-date
-					@d2l-input-date-change="${this._handleDateChange}"
+					@change="${this._handleDateChange}"
 					?disabled="${this.disabled}"
 					label="${this.localize('date')}"
 					label-hidden
@@ -142,7 +135,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 
 		this.dispatchEvent(new CustomEvent(
-			'd2l-input-date-time-change',
+			'change',
 			{ bubbles: true, composed: false }
 		));
 	}
