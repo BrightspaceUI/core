@@ -3,7 +3,10 @@ import { formatDateInISO,
 	formatTimeInISO,
 	getDateFromDateObj,
 	getDateFromISODate,
+	getLocalDateFromUTCDateTime,
+	getLocalTimeFromUTCDateTime,
 	getToday,
+	getUTCDateTimeFromLocalDateTime,
 	parseISODate,
 	parseISODateTime,
 	parseISOTime } from '../dateTime.js';
@@ -157,18 +160,6 @@ describe('date-time', () => {
 		});
 	});
 
-	describe('getDateFromISODate', () => {
-		it('should return the correct date', () => {
-			expect(getDateFromISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
-		});
-
-		it('should throw when invalid date format', () => {
-			expect(() => {
-				getDateFromISODate('2019/01/30');
-			}).to.throw('Invalid input: Expected format is YYYY-MM-DD');
-		});
-	});
-
 	describe('getDateFromDateObj', () => {
 		it('should return the correct date', () => {
 			const date = {
@@ -183,6 +174,38 @@ describe('date-time', () => {
 			expect(() => {
 				getDateFromDateObj();
 			}).to.throw();
+		});
+	});
+
+	describe('getDateFromISODate', () => {
+		it('should return the correct date', () => {
+			expect(getDateFromISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
+		});
+
+		it('should throw when invalid date format', () => {
+			expect(() => {
+				getDateFromISODate('2019/01/30');
+			}).to.throw('Invalid input: Expected format is YYYY-MM-DD');
+		});
+	});
+
+	describe('getLocalDateFromUTCDateTime', () => {
+		it('should return the correct date', () => {
+			expect(getLocalDateFromUTCDateTime('2019-01-30T12:00:00.000Z')).to.equal('2019-01-30');
+		});
+
+		it('should return the correct date', () => {
+			expect(getLocalDateFromUTCDateTime('2019-11-02T03:00:00.000Z')).to.equal('2019-11-01');
+		});
+	});
+
+	describe('getLocalTimeFromUTCDateTime', () => {
+		it('should return the correct time', () => {
+			expect(getLocalTimeFromUTCDateTime('2019-01-30T12:05:10.000Z')).to.equal('07:05:10');
+		});
+
+		it('should return the correct time', () => {
+			expect(getLocalTimeFromUTCDateTime('2019-10-02T15:00:00.000Z')).to.equal('11:00:00');
 		});
 	});
 
@@ -205,6 +228,26 @@ describe('date-time', () => {
 		it('should return expected day in Australia/Eucla timezone', () => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 			expect(getToday()).to.deep.equal({year: 2018, month: 2, date: 13, hours: 4, minutes: 45, seconds: 0});
+		});
+	});
+
+	describe('getUTCDateTimeFromLocalDateTime', () => {
+		it('should return the correct result when date is object and time is string', () => {
+			const date = '2019-02-10';
+			const time = '14:20:30';
+			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2019-02-10T19:20:30.000Z');
+		});
+
+		it('should return the correct time', () => {
+			const date = '2030-01-20';
+			const time = '2:3:4';
+			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2030-01-20T07:03:04.000Z');
+		});
+
+		it('should throw when no time', () => {
+			expect(() => {
+				getUTCDateTimeFromLocalDateTime('2019-01-03');
+			}).to.throw('Invalid input: Expected date and time');
 		});
 	});
 

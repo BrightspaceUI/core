@@ -1,4 +1,4 @@
-import { convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+import { convertLocalToUTCDateTime, convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 
 // val is an object containing year, month, date
 export function formatDateInISO(val) {
@@ -61,10 +61,32 @@ export function getDateTimeDescriptorShared(refresh) {
 	return dateTimeDescriptor;
 }
 
+export function getLocalDateFromUTCDateTime(date) {
+	const dateObj = parseISODateTime(date);
+	const localDateTime = convertUTCToLocalDateTime(dateObj);
+	return formatDateInISO(localDateTime);
+}
+
+export function getLocalTimeFromUTCDateTime(date) {
+	const dateObj = parseISODateTime(date);
+	const localDateTime = convertUTCToLocalDateTime(dateObj);
+	return formatTimeInISO(localDateTime);
+}
+
 export function getToday() {
 	const val = new Date().toISOString();
 	const dateTime = parseISODateTime(val);
 	return convertUTCToLocalDateTime(dateTime);
+}
+
+export function getUTCDateTimeFromLocalDateTime(date, time) {
+	if (!date || !time) throw new Error('Invalid input: Expected date and time');
+
+	const dateObj = parseISODate(date);
+	const timeObj = parseISOTime(time);
+
+	const utcDateTime = convertLocalToUTCDateTime(Object.assign(dateObj, timeObj));
+	return formatDateTimeInISO(utcDateTime);
 }
 
 export function parseISODate(val) {
