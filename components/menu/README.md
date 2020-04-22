@@ -26,6 +26,14 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 
 * `label` (required for root menu, String): Text to be applied to menu `aria-label` for use with screen readers; for nested menus, the label is automatically applied based on its parent menu-item
 
+**Accessibility:**
+
+To make your usage of `d2l-menu` accessible, use the following property:
+
+| Attribute | Description |
+|--|--|
+| `label` | **REQUIRED** Acts as a primary label for the menu |
+
 **Events:**
 
 * `d2l-menu-resize`: dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
