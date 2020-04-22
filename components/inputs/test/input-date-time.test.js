@@ -1,3 +1,4 @@
+import '../input-date-time.js';
 import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
