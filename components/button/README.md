@@ -79,7 +79,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 **Properties:**
 
 - `icon` (required, String): [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`)
-- `text` (required, String): Accessible text for the button
+- `text` (required, String): Accessible text for the button displayed on hover and focus
 - `disabled` (Boolean): disables the button
 - `h-align` (String): `text` aligns the leading edge of text
 - `translucent` (Boolean): Indicates to display translucent (ex. on rich backgrounds)

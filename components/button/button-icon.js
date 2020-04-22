@@ -1,8 +1,10 @@
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -13,7 +15,8 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 			icon: { type: String, reflect: true },
 			text: { type: String, reflect: true },
-			translucent: { type: Boolean, reflect: true }
+			translucent: { type: Boolean, reflect: true },
+			_buttonId: { type: String }
 		};
 	}
 
@@ -110,12 +113,21 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 		];
 	}
 
+	constructor() {
+		super();
+		this._buttonId = getUniqueId();
+	}
+
 	render() {
+		const tooltipType = this.text && this.ariaLabel ? 'descriptor' : 'label';
+		const tooltipText = this.text || this.ariaLabel;
+		const label = this.text ? this.ariaLabel : undefined;
 		return html`
 			<button
+				id=${this._buttonId}
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
+				aria-label="${ifDefined(label)}"
 				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
 				?disabled="${this.disabled}"
@@ -126,9 +138,9 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
 				name="${ifDefined(this.name)}"
-				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
 				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>
+				${tooltipText ? html`<d2l-tooltip for=${this._buttonId} for-type=${tooltipType} disable-focus-lock>${tooltipText}</d2l-tooltip>` : null}
 		</button>
 		`;
 	}
