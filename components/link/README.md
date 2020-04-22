@@ -44,6 +44,14 @@ Import and use the `<d2l-link>` web component instead of the native `<a>` elemen
 - `small` (Boolean): whether to apply the "small" link style
 - `target` (String): where to display the linked URL
 
+**Accessibility:**
+
+To make your usage of `d2l-link` accessible, use the following property when applicable:
+
+| Attribute | Description |
+|--|--|
+| `aria-label` | Use when text in link does not provide enough context. |
+
 ## Applying link styles to native `<a>` elements
 
 Alternately, you can apply link styles to a native `<a>` element by importing the styles and placing the `d2l-link` CSS class on the element.
