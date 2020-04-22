@@ -37,7 +37,6 @@ To make your usage of `d2l-input-checkbox` accessible, use the following propert
 
 When the checkbox's state changes, it dispatches the `change` event:
 
-
 ```javascript
 checkbox.addEventListener('change', (e) => {
   console.log(checkbox.checked);
