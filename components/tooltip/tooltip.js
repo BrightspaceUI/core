@@ -709,7 +709,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			target.setAttribute('aria-describedby', this.id);
 			if (!this._isInteractive(target)) {
 				console.warn(
-					'd2l-tooltip may be used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
+					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
 					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.'
 				);
 			}

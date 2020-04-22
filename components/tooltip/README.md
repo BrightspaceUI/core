@@ -35,7 +35,7 @@ If the tooltip's target is an interactive element then it will automatically be 
 
 **Static / Custom Target Elements:**
 
-If the tooltip's target is a static or custom element then the target must be both focusable and given an interactive aria role. Note, a role should only be added to an element if the role semantically aligns with what the element represents. [A list of interactive roles can be found here.](./tooltip.js#L38)
+If the tooltip's target is a static or custom element then the target must be both focusable and given an interactive ARIA role. Note, a role should only be added to an element if the role semantically aligns with what the element represents. [A list of interactive roles can be found here.](./tooltip.js#L38)
 
 Adding roles to custom elements that contain internal interactive elements should be avoided to prevent the element type being announced twice. In situations like these, the tooltip should be moved inside the custom element so that it can be attached directly as shown below:
 ```html
@@ -49,7 +49,7 @@ Adding roles to custom elements that contain internal interactive elements shoul
 ```
 If you need a tooltip in a core component that does not currently support it please create a Github issue.
 
-If you are unable to add a semantically aligned aria role or attach the tooltip to an interactive element then accessibility may be inconsistent across different screen readers. In these scenarios, putting critical information inside the tooltip should be avoided because some users may not be able to access it.
+If you are unable to add a semantically aligned ARIA role or attach the tooltip to an interactive element then accessibility may be inconsistent across different screen readers. In these scenarios, putting critical information inside the tooltip should be avoided because some users may not be able to access it.
 
 ### Advanced Usages
 
