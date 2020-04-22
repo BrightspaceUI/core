@@ -57,7 +57,7 @@ describe('d2l-input-date-time', () => {
 				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
 				dateSelector.value = '2020-12-15';
 				const e = new Event(
-					'd2l-input-date-change',
+					'change',
 					{ bubbles: true, composed: true }
 				);
 				dateSelector.dispatchEvent(e);
@@ -71,7 +71,7 @@ describe('d2l-input-date-time', () => {
 				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
 				dateSelector.value = '';
 				const e = new Event(
-					'd2l-input-date-change',
+					'change',
 					{ bubbles: true, composed: true }
 				);
 				dateSelector.dispatchEvent(e);
@@ -85,7 +85,7 @@ describe('d2l-input-date-time', () => {
 				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
 				dateSelector.value = '2018-01-20';
 				const e = new Event(
-					'd2l-input-date-change',
+					'change',
 					{ bubbles: true, composed: true }
 				);
 				dateSelector.dispatchEvent(e);

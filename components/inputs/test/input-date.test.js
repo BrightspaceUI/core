@@ -82,24 +82,24 @@ describe('d2l-input-date', () => {
 	describe('value', () => {
 		const dateInput = '2/8/2019';
 
-		it('should fire "d2l-input-date-change" event when input value changes', async() => {
+		it('should fire "change" event when input value changes', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = dateInput;
 			dispatchEvent(inputElem, 'change', false);
-			await oneEvent(elem, 'd2l-input-date-change');
+			await oneEvent(elem, 'change');
 		});
 
-		it('should fire "d2l-input-date-change" event when calendar value selected', async() => {
+		it('should fire "change" event when calendar value selected', async() => {
 			const elem = await fixture(basicFixture);
 			const calendarElem = getChildElem(elem, 'd2l-calendar');
 			calendarElem.selectedValue = '2018-03-24';
 			setTimeout(() => dispatchEvent(calendarElem, 'd2l-calendar-selected', false));
-			await oneEvent(elem, 'd2l-input-date-change');
+			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2018-03-24');
 		});
 
-		it('should fire "d2l-input-date-change" event when "Set to Today" is clicked', async() => {
+		it('should fire "change" event when "Set to Today" is clicked', async() => {
 			const _setTimeout = setTimeout; // useFakeTimers causes setTimeout to not behave as expected
 			const newToday = new Date('2018-02-12T20:00:00Z');
 			const clock = sinon.useFakeTimers(newToday.getTime());
@@ -107,34 +107,34 @@ describe('d2l-input-date', () => {
 			const elem = await fixture(basicFixture);
 			const button = getChildElem(elem, 'd2l-button-subtle[text="Set to Today"]');
 			_setTimeout(() => button.click());
-			await oneEvent(elem, 'd2l-input-date-change');
+			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2018-02-12');
 
 			clock.restore();
 		});
 
-		it('should fire "d2l-input-date-change" event when "Clear" is clicked', async() => {
+		it('should fire "change" event when "Clear" is clicked', async() => {
 			const elem = await fixture(basicFixture);
 			const button = getChildElem(elem, 'd2l-button-subtle[text="Clear"]');
 			setTimeout(() => button.click());
-			await oneEvent(elem, 'd2l-input-date-change');
+			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('');
 		});
 
-		it('should fire "d2l-input-date-change" event when input-text value is changed to empty', async() => {
+		it('should fire "change" event when input-text value is changed to empty', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
-			await oneEvent(elem, 'd2l-input-date-change');
+			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('');
 		});
 
-		it('should not fire "d2l-input-date-change" event when input value is invalid', async() => {
+		it('should not fire "change" event when input value is invalid', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			let fired = false;
-			elem.addEventListener('d2l-input-date-change', () => {
+			elem.addEventListener('change', () => {
 				fired = true;
 			});
 			inputElem.value = 'invalid input text';
@@ -143,12 +143,12 @@ describe('d2l-input-date', () => {
 			expect(fired).to.be.false;
 		});
 
-		it('should not fire "d2l-input-date-change" event when input value does not change', async() => {
+		it('should not fire "change" event when input value does not change', async() => {
 			const elem = await fixture(basicFixture);
 			elem.value = '2019-01-01';
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			let fired = false;
-			elem.addEventListener('d2l-input-date-change', () => {
+			elem.addEventListener('change', () => {
 				fired = true;
 			});
 			inputElem.value = '01/01/2019';
@@ -162,7 +162,7 @@ describe('d2l-input-date', () => {
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = dateInput;
 			dispatchEvent(inputElem, 'change', false);
-			await oneEvent(elem, 'd2l-input-date-change');
+			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2019-02-08');
 		});
 

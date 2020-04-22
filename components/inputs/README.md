@@ -2,13 +2,12 @@
 
 There are various input components available:
 
-- [Text](documentation/text-inputs.md)
-- [Text Areas](documentation/text-areas.md)
-- [Search](documentation/search-inputs.md)
-- [Select Lists](documentation/select-lists.md)
-- [Checkboxes](documentation/checkboxes.md)
-- [Radio Buttons](documentation/radio-buttons.md)
-- [Date & Time Inputs](documentation/date-time-inputs.md)
+- [Checkboxes (input-checkbox*)](docs/input-checkbox.md)
+- [Date & Time Inputs (input-date, input-time, input-date-time)](docs/input-date-time.md)
+- [Radio Buttons (input-radio-*)](docs/input-radio.md)
+- [Search (input-search)](docs/input-search.md)
+- [Select Lists (input-select-styles)](docs/input-select-styles.md)
+- [Text & Text Areas (input-text, input-styles)](docs/input-text.md)
 
 ## Labelling Inputs
 

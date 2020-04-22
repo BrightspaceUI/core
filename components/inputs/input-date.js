@@ -282,7 +282,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		if (dateInISO === this.value) return;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
-			'd2l-input-date-change',
+			'change',
 			{ bubbles: true, composed: false }
 		));
 	}
