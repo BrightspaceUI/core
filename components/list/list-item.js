@@ -266,7 +266,7 @@ class ListItem extends RtlMixin(LitElement) {
 					?extend-separators="${this._extendSeparators}"
 					separators="${ifDefined(this._separators)}">
 					<div class="d2l-list-item-content-flex">
-						${!this.illustrationOutside ? beforeContent : null}
+						${beforeContent}
 						<div class="d2l-list-item-main"><slot></slot></div>
 						<slot name="actions"></slot>
 					</div>
