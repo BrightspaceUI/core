@@ -13,13 +13,10 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	 */
 	static get properties() {
 		return {
-			breakpoints: { type: Array },
 			disabled: {type: Boolean },
 			key: { type: String, reflect: true },
-			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
-			selected: { type: Boolean, reflect: true },
-			_breakpoint: { type: Number }
+			selected: { type: Boolean, reflect: true }
 		};
 	}
 
