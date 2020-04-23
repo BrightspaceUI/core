@@ -7,6 +7,7 @@
 @import '../components/inputs/sass/textarea.scss';
 @import '../components/link/link.scss';
 @import '../components/offscreen/offscreen.scss';
+@import '../components/skeleton/skeleton.scss';
 @import '../components/typography/typography.scss';
 
 @include d2l-typography-font-face();
@@ -64,4 +65,7 @@
 }
 .d2l-test-offscreen {
 	@include d2l-offscreen();
+}
+.d2l-test-skeleton {
+	@include d2l-skeleton();
 }

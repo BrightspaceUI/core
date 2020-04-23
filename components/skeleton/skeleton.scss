@@ -1,0 +1,35 @@
+@import '../colors/colors.scss';
+
+@keyframes d2lLoadingShimmer {
+	0% { transform: translate3d(-100%, 0, 0); }
+	100% { transform: translate3d(100%, 0, 0); }
+}
+
+@-webkit-keyframes d2lLoadingShimmer {
+	0% { -webkit-transform: translate3d(-100%, 0, 0); }
+	100% { -webkit-transform: translate3d(100%, 0, 0); }
+}
+
+@mixin d2l-skeleton() {
+	display: block;
+	border-radius: 4px;
+	background-color: var(--d2l-color-sylvite);
+	overflow: hidden;
+	position: relative;
+
+	&::after {
+		animation: d2lLoadingShimmer 1.8s ease-in-out infinite;
+		-webkit-animation: d2lLoadingShimmer 1.8s ease-in-out infinite;
+		background: linear-gradient(90deg, var(--d2l-color-sylvite), var(--d2l-color-regolith), var(--d2l-color-sylvite));
+		background-color: var(--d2l-color-sylvite);
+		content: '';
+		height: 100%;
+		width: 100%;
+		left: 0;
+		top: 0;
+		position: absolute;
+	}
+	&[hidden] {
+		display: none;
+	}
+}

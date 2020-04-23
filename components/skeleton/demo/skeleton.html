@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../skeleton.js';
+		</script>
+		<style>
+			d2l-skeleton {
+				margin: 8px;
+			}
+
+			#text-skeleton {
+				height: 1rem;
+				width: 400px;
+			}
+
+			#heading-skeleton {
+				height: 1.5rem;
+				width: 200px;
+			}
+
+			#paragraph-1-skeleton {
+				height: 1rem;
+				width: 400px;
+			}
+
+			#paragraph-2-skeleton {
+				height: 1rem;
+				width: 350px;
+			}
+
+			#image-skeleton {
+				height: 250px;
+				width: 300px;
+				border-radius: 10px;
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-skeleton">
+
+			<h2>Text Skeleton</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-skeleton id="text-skeleton"></d2l-skeleton>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Multiple Text Skeletons</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-skeleton id="heading-skeleton"></d2l-skeleton>
+					<d2l-skeleton id="paragraph-1-skeleton"></d2l-skeleton>
+					<d2l-skeleton id="paragraph-2-skeleton"></d2l-skeleton>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Image Skeleton</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-skeleton id="image-skeleton"></d2l-skeleton>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
