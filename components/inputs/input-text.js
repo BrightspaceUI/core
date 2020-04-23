@@ -186,7 +186,7 @@ class InputText extends RtlMixin(LitElement) {
 	}
 
 	_getAriaLabel() {
-		if (this.label && this.labelHidden) {
+		if (this.label && (this.labelHidden || !this.hasAttribute('aria-label'))) {
 			return this.label;
 		}
 		if (this.hasAttribute('aria-label')) {
