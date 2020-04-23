@@ -1,5 +1,6 @@
 import '../input-search.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
 const valueSetFixture = html`<d2l-input-search value="foo"></d2l-input-search>`;
@@ -62,6 +63,14 @@ describe('d2l-input-search', () => {
 			const elem = await fixture(normalFixture);
 			elem.focus();
 			await expect(elem).to.be.accessible();
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-search');
 		});
 
 	});

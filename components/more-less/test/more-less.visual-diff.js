@@ -16,7 +16,7 @@ describe('d2l-more-less', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('collapsed', async function() {
 		const rect = await visualDiff.getRect(page, '#collapsed');

@@ -10,11 +10,10 @@ describe('d2l-dialog', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await visualDiff.disableAnimations(page);
+		page = await visualDiff.createPage(browser);
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	['native', 'custom'].forEach((name) => {
 

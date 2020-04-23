@@ -2,6 +2,7 @@ import '../menu.js';
 import '../menu-item.js';
 import './custom-slots.js';
 import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 function dispatchKeyEvent(elem, key) {
 	const eventObj = document.createEvent('Events');
@@ -34,6 +35,18 @@ describe('d2l-menu', () => {
 
 		it('has "aria-label" equal to label text', () => {
 			expect(elem.getAttribute('aria-label')).to.equal('menu label');
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct menu', () => {
+			runConstructor('d2l-menu');
+		});
+
+		it('should construct menu-item', () => {
+			runConstructor('d2l-menu-item');
 		});
 
 	});

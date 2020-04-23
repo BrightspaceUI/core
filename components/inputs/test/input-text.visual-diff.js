@@ -9,13 +9,12 @@ describe('d2l-input-text', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 2700, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 4500}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-text.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	['wc', 'sass'].forEach((type) => {
 		[
@@ -54,7 +53,16 @@ describe('d2l-input-text', () => {
 		'wc-required',
 		'wc-label-hidden',
 		'wc-override-height',
-		'wc-override-padding'
+		'wc-override-padding',
+		'wc-icon-left',
+		'wc-icon-left-rtl',
+		'wc-icon-right',
+		'wc-icon-right-rtl',
+		'wc-icon-left-label',
+		'wc-icon-right-label',
+		'wc-icon-left-right',
+		'wc-button-icon-left',
+		'wc-button-icon-right'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);

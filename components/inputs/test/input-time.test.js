@@ -1,8 +1,12 @@
 import '../input-time.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
-const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden></d2l-input-time>';
+const fixtureWithValue = '<d2l-input-time value="11:22:33"></d2l-input-time>';
+const hourLongIntervals = '<d2l-input-time label="label text" time-interval="sixty"></d2l-input-time>';
+const hourLongIntervalsEnforced = '<d2l-input-time label="label text" time-interval="sixty" enforce-time-intervals></d2l-input-time>';
+const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden time-interval="sixty"></d2l-input-time>';
 
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
@@ -15,49 +19,58 @@ function dispatchEvent(elem, eventType, composed) {
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('.d2l-input');
 }
+function getFirstOption(elem) {
+	return [...elem.shadowRoot.querySelector('.d2l-input-time-menu').childNodes].find(item => item.role === 'menuitemradio');
+}
+function getNumberOfIntervals(elem) {
+	return elem.shadowRoot.querySelectorAll('.d2l-input-time-menu d2l-menu-item-radio').length;
+}
 
 describe('d2l-input-time', () => {
 
-	describe('accessibility', () => {
+	describe('accessibility', () => { //Fixtures use larger intervals for faster aXe tests
 
 		it('passes all axe tests', async() => {
-			const elem = await fixture(basicFixture);
+			const elem = await fixture(hourLongIntervals);
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when label is hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
-			await expect(elem).to.be.accessible();
-		});
+			await expect(elem).to.be.accessible({ignoredRules: ['color-contrast']}); //Color-contrast is slow and hidden label uses the same colors as default
+		}).timeout(4000);
 
 		it('passes all axe tests when disabled', async() => {
-			const elem = await fixture('<d2l-input-time label="label text" disabled></d2l-input-time>');
+			const elem = await fixture('<d2l-input-time label="label text" time-interval="sixty" disabled></d2l-input-time>');
 			await expect(elem).to.be.accessible();
-		});
+		}).timeout(3000);
 
 		it('passes all axe tests when focused', async() => {
-			const elem = await fixture(basicFixture);
+			const elem = await fixture(hourLongIntervals);
 			setTimeout(() => getInput(elem).focus());
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
+		}).timeout(5000);
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-time');
 		});
+
 	});
 
 	describe('labelling', () => {
 
-		function getLabel(elem) {
-			return elem.shadowRoot.querySelector('.d2l-input-label');
-		}
-
 		it('should display visible label', async() => {
 			const elem = await fixture(basicFixture);
-			expect(getLabel(elem).innerText).to.equal('label text');
+			expect(elem.shadowRoot.querySelector('.d2l-input-label').innerText).to.equal('label text');
 		});
 
-		it('should put hidden label on "aria-label"', async() => {
+		it('should create offscreen label when label-hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
-			expect(getLabel(elem)).to.be.null;
-			expect(getInput(elem).getAttribute('aria-label')).to.equal('label text');
+			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('label text');
 		});
 	});
 
@@ -91,8 +104,8 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should provide a time object with hour, minute and second', async() => {
-			const elem = await fixture('<d2l-input-time value="11:22:33"></d2l-input-time>');
-			expect(elem.getTime()).to.deep.equal({ hour: 11, minute: 22, second: 33 });
+			const elem = await fixture(fixtureWithValue);
+			expect(elem.getTime()).to.deep.equal({ hours: 11, minutes: 22, seconds: 33 });
 		});
 
 		it('should default to 12 AM', async() => {
@@ -100,16 +113,67 @@ describe('d2l-input-time', () => {
 			expect(elem.value).to.equal('0:00:00');
 		});
 
+		it('should correctly set given value', async() => {
+			const elem = await fixture(fixtureWithValue);
+			expect(getInput(elem).value).to.equal('11:22 AM');
+		});
+
 		it('should not save input seconds after time changes', async() => {
 			//Seconds are saved when value is assigned directly, not when input by user (for EOD)
-			const elem = await fixture('<d2l-input-time value="11:22:33"></d2l-input-time>');
-			expect(elem.getTime().second).to.equal(33);
-			getInput(elem).value = '11:45 AM';
+			const elem = await fixture(fixtureWithValue);
+			getInput(elem).value = '11:45:15 AM';
 			dispatchEvent(elem, 'change', false);
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('11:45:00');
 		});
 
+		it('should update value when dropdown changes', async() => {
+			const elem = await fixture(fixtureWithValue);
+			setTimeout(() => getFirstOption(elem).click());
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('0:00:00');
+		});
+
+		it('should update textbox value when dropdown changes', async() => {
+			const elem = await fixture(fixtureWithValue);
+			setTimeout(() => getFirstOption(elem).click());
+			await oneEvent(elem, 'change');
+			await elem.updateComplete;
+			expect(getInput(elem).value).to.equal('12:00 AM');
+		});
+	});
+
+	describe('intervals', () => {
+
+		it('should default to half-hour intervals', async() => {
+			const elem = await fixture(basicFixture);
+			expect(getNumberOfIntervals(elem)).to.equal(49); //24 hours x 2 30-minute intervals + EOD
+		});
+
+		it('should respect time-intervals property', async() => {
+			const elem = await fixture(hourLongIntervals);
+			expect(getNumberOfIntervals(elem)).to.equal(25); //24 60-minute intervals + EOD
+		});
+
+		it('should not offer end-of-day option when intervals are enforced', async() => {
+			const elem = await fixture(hourLongIntervalsEnforced);
+			expect(getNumberOfIntervals(elem)).to.equal(24);
+		});
+
+		it('should round-up to next interval when intervals are enforced', async() => {
+			const elem = await fixture(hourLongIntervalsEnforced);
+			getInput(elem).value = '2:01AM';
+			dispatchEvent(elem, 'change', false);
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('3:00:00');
+		});
+
+		it('should round-up to next interval when intervals are enforced and value is set', async() => {
+			const elem = await fixture(hourLongIntervalsEnforced);
+			elem.value = '2:01:00';
+			await elem.updateComplete;
+			expect(elem.value).to.equal('3:00:00');
+		});
 	});
 
 });

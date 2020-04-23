@@ -9,13 +9,12 @@ describe('d2l-async-container-mixin', function() {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 800, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/mixins/async-container/test/async-container-mixin.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	it('initial', async function() {
 		const rect = await visualDiff.getRect(page, '#initial');

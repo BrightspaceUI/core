@@ -1,6 +1,7 @@
 import '../input-text.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-text label="label"></d2l-input-text>`;
 
@@ -65,6 +66,14 @@ describe('d2l-input-text', () => {
 		it('should pass all aXe tests (hidden label)', async() => {
 			const elem = await fixture(html`<d2l-input-text label="label" label-hidden></d2l-input-text>`);
 			await expect(elem).to.be.accessible;
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-text');
 		});
 
 	});
@@ -171,7 +180,7 @@ describe('d2l-input-text', () => {
 			{name: 'max', value: '5'},
 			{name: 'maxlength', propName: 'maxLength', value: 10},
 			{name: 'min', value: '1'},
-			{name: 'minLength', propName: 'minLength', value: 3},
+			{name: 'minlength', propName: 'minLength', value: 3},
 			{name: 'name', value: 'jim'},
 			{name: 'pattern', value: '[A-Za-z]+'},
 			{name: 'placeholder', value: 'enter something'},
@@ -242,6 +251,55 @@ describe('d2l-input-text', () => {
 			getInput(elem).value = 'hello';
 			dispatchEvent(elem, 'input', true);
 			expect(elem.value).to.equal('hello');
+		});
+
+		it('should fire "change" event because of blur event on edge', async() => {
+			const browserType = window.navigator.userAgent;
+			if (!(browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) return;
+
+			const elem = await fixture(normalFixture);
+			getInput(elem).value = 'hello';
+			setTimeout(() => {
+				dispatchEvent(elem, 'input', true);
+				dispatchEvent(elem, 'blur', true);
+			});
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('hello');
+		});
+
+		it('should NOT fire "change" event on initial blur event on edge if no change made', async() => {
+			const browserType = window.navigator.userAgent;
+			if (!(browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) return;
+
+			const elem = await fixture(normalFixture);
+			let fired = false;
+			elem.addEventListener('change', () => {
+				fired = true;
+			});
+			setTimeout(() => {
+				dispatchEvent(elem, 'blur', true);
+			});
+			await aTimeout(1);
+			expect(fired).to.be.false;
+			expect(elem.value).to.equal('');
+		});
+
+		it('should NOT fire "change" event because of blur event on non-edge', async() => {
+			const browserType = window.navigator.userAgent;
+			if ((browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) return;
+
+			const elem = await fixture(normalFixture);
+			let fired = false;
+			elem.addEventListener('change', () => {
+				fired = true;
+			});
+			getInput(elem).value = 'hello';
+			setTimeout(() => {
+				dispatchEvent(elem, 'input', true);
+				dispatchEvent(elem, 'blur', true);
+			});
+			await aTimeout(1);
+			expect(fired).to.be.false;
 		});
 
 	});

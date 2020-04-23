@@ -101,7 +101,7 @@ export const dialogStyles = css`
 	.d2l-dialog-footer {
 		box-sizing: border-box;
 		flex: none;
-		padding: 30px;
+		padding: 30px 30px 12px 30px; /* 18px margin below footer children */
 	}
 
 	[overflow-bottom] .d2l-dialog-footer {
@@ -109,6 +109,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-footer ::slotted(*) {
+		margin-bottom: 18px;
 		margin-right: 18px;
 	}
 
@@ -118,19 +119,23 @@ export const dialogStyles = css`
 	}
 
 	@media (max-width: 615px) {
-
 		.d2l-dialog-header {
 			padding: 14px 20px 16px 20px;
 		}
-
 		.d2l-dialog-content {
 			padding: 0 20px;
 		}
-
 		.d2l-dialog-footer {
 			padding: 20px;
 		}
-
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		.d2l-dialog-outer {
+			transition: none;
+		}
+		dialog::backdrop {
+			transition: none;
+		}
+	}
 `;

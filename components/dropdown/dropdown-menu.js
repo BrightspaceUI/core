@@ -36,6 +36,14 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 	_onMenuResize(e) {
 		this.__position(!this._initializingHeight, e.detail);
 		this._initializingHeight = false;
+
+		const menu = this.__getMenuElement();
+		if (menu.getMenuType() === 'menu-radio') {
+			const selected = menu.querySelector('[selected]');
+			if (selected !== null) {
+				setTimeout(() => selected.scrollIntoView({ block: 'nearest'}), 0);
+			}
+		}
 	}
 
 	_onClose(e) {
@@ -61,18 +69,7 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		menu.resize();
 
 		if (this.__applyFocus) {
-			setTimeout(() => {
-				menu.focus();
-			}, 0);
-		}
-
-		if (menu.getMenuType() === 'menu-radio') {
-			const selected = menu.querySelector('[selected]');
-			if (selected !== null) {
-				setTimeout(() => selected.scrollIntoView({
-					block: 'center'
-				}), 0);
-			}
+			menu.focus();
 		}
 	}
 
@@ -91,9 +88,9 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 	}
 
 	__getMenuElement() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot')
-			.assignedNodes()
-			.filter(node => node.hasAttribute && node.getAttribute('role') === 'menu')[0];
+		return this.shadowRoot.querySelector('.d2l-dropdown-content-slot')
+			.assignedNodes().filter(node => node.hasAttribute
+				&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 	}
 
 }
