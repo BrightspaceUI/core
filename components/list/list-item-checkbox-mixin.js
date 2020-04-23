@@ -1,6 +1,7 @@
 import { css, html } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { nothing } from 'lit-html';
 
 export const ListItemCheckboxMixin = superclass => class extends superclass {
 
@@ -12,26 +13,29 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	 */
 	static get properties() {
 		return {
+			breakpoints: { type: Array },
 			disabled: {type: Boolean },
 			key: { type: String, reflect: true },
+			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
-			selected: { type: Boolean, reflect: true }
+			selected: { type: Boolean, reflect: true },
+			_breakpoint: { type: Number }
 		};
 	}
 
 	static get styles() {
 		return [ checkboxStyles, css`
-		.list-item-checkbox {
+		.control-area {
 			grid-column: control-start / control-end;
 			grid-row: 1 / 2;
 		}
-		.list-item-checkbox-action {
+		.control-action-area {
 			grid-column: control-start / end;
 			grid-row: 1 / 2;
 			z-index: 2;
 			cursor: pointer;
 		}
-		:host([disabled]) .list-item-checkbox-action {
+		:host([disabled]) .control-action-area {
 			cursor: default;
 		}
 		`];
@@ -40,6 +44,29 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._checkboxId = getUniqueId();
+	}
+
+	/**
+	 * Lifecycle callback. Prevent event dispatch if key isn't set
+	 * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#Using_the_lifecycle_callbacks
+	 */
+	connectedCallback() {
+		super.connectedCallback();
+		if (this.key === undefined) {
+			this.setSelected(undefined, true);
+		}
+	}
+
+	/**
+	 * Sets whether the item is selected. Requests an event dispatch
+	 * unless suppressEvent is true
+	 *
+	 * @param {*} selected
+	 * @param {*} suppressEvent
+	 */
+	setSelected(selected, suppressEvent = false) {
+		this.selected = selected;
+		if (!suppressEvent) this._dispatchSelected(selected);
 	}
 
 	/**
@@ -57,15 +84,15 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	}
 
 	/**
-	 * Sets whether the item is selected. Requests an event dispatch
-	 * unless suppressEvent is true
+	 * Handler for checkbox action area.
+	 * Toggles the checkbox.
 	 *
-	 * @param {*} selected
-	 * @param {*} suppressEvent
 	 */
-	setSelected(selected, suppressEvent) {
-		this.selected = selected;
-		if (!suppressEvent) this._dispatchSelected(selected);
+	_handleCheckboxActionClick() {
+		if (this.disabled) {
+			return;
+		}
+		this.setSelected(!this.selected);
 	}
 
 	/**
@@ -78,29 +105,6 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	}
 
 	/**
-	 * Handler for checkbox action area.
-	 * Toggles the checkbox.
-	 *
-	 */
-	_handleCheckboxActionClick() {
-		if (this.disabled) {
-			return false;
-		}
-		this.setSelected(!this.selected);
-	}
-
-	/**
-	 * Lifecycle callback. Prevent event dispatch if key isn't set
-	 * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#Using_the_lifecycle_callbacks
-	 */
-	connectedCallback() {
-		super.connectedCallback();
-		if (this.key === undefined) {
-			this.setSelected(undefined, true);
-		}
-	}
-
-	/**
 	 * Renders the checkbox between control-start and control-end, as well as a clickable area
 	 * between control-start to end
 	 *
@@ -108,7 +112,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	 */
 	_renderCheckbox() {
 		return this.selectable ? html`
-			<div class="list-item-checkbox">
+			<div class="control-area">
 				<input
 					id="${this._checkBoxId}"
 					class="d2l-input-checkbox"
@@ -117,7 +121,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 					.checked="${this.selected}"
 					?disabled="${this.disabled}">
 			</div>
-			<div class="list-item-checkbox-action" @click="${this._handleCheckboxActionClick}"></div>
-			` : '';
+			<div class="control-action-area" @click="${this._handleCheckboxActionClick}"></div>
+			` : nothing;
 	}
 };

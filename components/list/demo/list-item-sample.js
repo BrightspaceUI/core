@@ -5,12 +5,7 @@ import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	static get properties() {
 		return {
-			breakpoints: { type: Array },
-			disabled: {type: Boolean },
-			href: { type: String },
-			key: { type: String, reflect: true },
-			role: { type: String, reflect: true },
-			_breakpoint: { type: Number }
+			href: { type: String }
 		};
 	}
 
