@@ -85,6 +85,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
 			forceShow: { type: Boolean, attribute: 'force-show' },
+			forType: { type: String, attribute: 'for-type' },
 			offset: { type: Number }, /* tooltipOffset */
 			position: { type: String }, /* Valid values are: 'top', 'bottom', 'left' and 'right' */
 			showing: { type: Boolean, reflect: true },
@@ -307,6 +308,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.delay = 0;
 		this.disableFocusLock = false;
 		this.forceShow = false;
+		this.forType = 'descriptor';
 		this.offset = pointerRotatedOverhang + pointerGap;
 		this.state = 'info';
 
@@ -736,7 +738,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (target) {
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
-			target.setAttribute('aria-describedby', this.id);
+			if (this.forType === 'label') {
+				target.setAttribute('aria-labelledby', this.id);
+			} else {
+				target.setAttribute('aria-describedby', this.id);
+			}
 			if (!this._isInteractive(target)) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
