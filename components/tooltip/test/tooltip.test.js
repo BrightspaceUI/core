@@ -4,7 +4,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
 	<div>
-		<div id="implicit-target" tabindex="-1">
+		<div id="implicit-target" tabindex="-1" role="button">
 			<button id="explicit-target">Hover me for tips</button>
 			<d2l-tooltip for="explicit-target" for-type="descriptor">If I got a problem then a problem's got a problem.</d2l-tooltip>
 		</div>

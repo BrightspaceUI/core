@@ -621,19 +621,19 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_isInteractive(ele) {
-		if (!isFocusable(ele)) {
+		if (!isFocusable(ele, true, false, true)) {
 			return false;
 		}
 		if (ele.nodeType !== Node.ELEMENT_NODE) {
 			return false;
 		}
 		const nodeName = ele.nodeName.toLowerCase();
-		const isInteractive = !!interactiveElements[nodeName];
+		const isInteractive = interactiveElements[nodeName];
 		if (isInteractive) {
 			return true;
 		}
 		const role = (ele.getAttribute('role') || '');
-		return (nodeName === 'a' && ele.hasAttribute('href')) || !!interactiveRoles[role];
+		return (nodeName === 'a' && ele.hasAttribute('href')) || interactiveRoles[role];
 	}
 
 	_onTargetBlur() {
