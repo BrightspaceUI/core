@@ -232,13 +232,13 @@ describe('date-time', () => {
 	});
 
 	describe('getUTCDateTimeFromLocalDateTime', () => {
-		it('should return the correct result when date is object and time is string', () => {
+		it('should return the correct result', () => {
 			const date = '2019-02-10';
 			const time = '14:20:30';
 			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2019-02-10T19:20:30.000Z');
 		});
 
-		it('should return the correct time', () => {
+		it('should return the correct result', () => {
 			const date = '2030-01-20';
 			const time = '2:3:4';
 			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2030-01-20T07:03:04.000Z');
