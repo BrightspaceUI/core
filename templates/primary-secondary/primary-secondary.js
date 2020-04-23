@@ -20,6 +20,7 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			:host([width-type="normal"]) .d2l-template-primary-secondary-content-container,
 			:host([width-type="normal"]) .d2l-template-primary-secondary-footer-container {
+				width: 100%;
 				max-width: 1230px;
 				margin: 0 auto;
 			}
