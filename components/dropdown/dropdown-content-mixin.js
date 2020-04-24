@@ -465,9 +465,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			});
 
 			const spaceRequired = {
-				height: this.maxHeight !== null && contentRect.height + headerFooterHeight > this.maxHeight
-					? this.maxHeight + 10
-					: contentRect.height + headerFooterHeight + 10,
+				height: Math.min(this.maxHeight ?? Number.MAX_VALUE, contentRect.height + headerFooterHeight) + 10,
 				width: contentRect.width
 			};
 
