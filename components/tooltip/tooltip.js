@@ -300,6 +300,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetMouseLeave = this._onTargetMouseLeave.bind(this);
 		this._onTargetResize = this._onTargetResize.bind(this);
 		this._onTargetClick = this._onTargetClick.bind(this);
+		this._onTargetTouchStart = this._onTargetTouchStart.bind(this);
+		this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
 
 		this.closeOnClick = false;
 		this.delay = 0;
@@ -478,6 +480,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('focus', this._onTargetFocus);
 		this._target.addEventListener('blur', this._onTargetBlur);
 		this._target.addEventListener('click', this._onTargetClick);
+		this._target.addEventListener('touchstart', this._onTargetTouchStart);
+		this._target.addEventListener('touchcancel', this._onTargetTouchEnd);
+		this._target.addEventListener('touchend', this._onTargetTouchEnd);
 
 		this._targetSizeObserver = new ResizeObserver(this._onTargetResize);
 		this._targetSizeObserver.observe(this._target);
@@ -669,6 +674,16 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.updatePosition();
 	}
 
+	_onTargetTouchEnd() {
+		clearTimeout(this._longPressTimeout);
+	}
+
+	_onTargetTouchStart() {
+		this._longPressTimeout = setTimeout(() => {
+			this._target.focus();
+		}, 500);
+	}
+
 	_removeListeners() {
 		if (!this._target) {
 			return;
@@ -678,6 +693,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.removeEventListener('focus', this._onTargetFocus);
 		this._target.removeEventListener('blur', this._onTargetBlur);
 		this._target.removeEventListener('click', this._onTargetClick);
+		this._target.removeEventListener('touchstart', this._onTargetTouchStart);
+		this._target.removeEventListener('touchcancel', this._onTargetTouchEnd);
+		this._target.removeEventListener('touchend', this._onTargetTouchEnd);
 
 		if (this._targetSizeObserver) {
 			this._targetSizeObserver.disconnect();
@@ -687,6 +705,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	async _showingChanged(newValue) {
 		clearTimeout(this._hoverTimeout);
+		clearTimeout(this._longPressTimeout);
 		if (newValue) {
 			await this.updateComplete;
 			await this.updatePosition();
