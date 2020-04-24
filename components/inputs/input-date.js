@@ -22,6 +22,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			disabled: { type: Boolean },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			validEmptyState: { type: String, attribute: 'valid-empty-state'},
 			value: { type: String },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
@@ -139,6 +140,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
+		this.value = '';
+
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 
@@ -159,16 +162,20 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate();
 		});
+
+		this._formattedValue = this.validEmptyState ? this.validEmptyState : '';
 	}
 
 	render() {
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
 					@keydown="${this._handleKeydown}"
+					@focus="${this._handleInputTextFocus}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					@mouseup="${this._handleMouseup}"
@@ -213,9 +220,13 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
-				this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+				this._getFormattedValue();
 			}
 		});
+	}
+
+	_getFormattedValue() {
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.validEmptyState ? this.validEmptyState : '');
 	}
 
 	async _handleFocusTrapEnter() {
@@ -251,7 +262,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		} catch (err) {
 			// leave value the same when invalid input
 		}
-		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
+		this._getFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
 		this._calendar.reset();
 	}
@@ -275,6 +286,14 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	_handleDropdownOpen() {
 		this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		this._dropdownOpened = true;
+	}
+
+	_handleInputTextFocus() {
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+	}
+
+	_handleInputTextBlur() {
+		this._getFormattedValue();
 	}
 
 	_handleMouseup(e) {
