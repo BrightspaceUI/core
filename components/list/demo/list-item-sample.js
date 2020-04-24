@@ -3,15 +3,14 @@ import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 
 class ListItemSample extends ListItemCheckboxMixin(LitElement) {
+	// TODO: Role and breakpoints to live elsewhere
 	static get properties() {
 		return {
-			breakpoints: { type: Array },
-			href: { type: String },
-			role: { type: String, reflect: true },
-			_breakpoint: { type: Number }
+			href: { type: String }
 		};
 	}
 
+	// TODO: Placeholder grid styles to be replaced with list-item-generic
 	static get styles() {
 		return [ (super.styles ? super.styles : css``), css`
 			.list-grid {
