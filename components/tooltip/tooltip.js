@@ -80,6 +80,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		return {
 			align: { type: String }, /* Valid values are: 'start' and 'end' */
 			boundary: { type: Object },
+			closeOnClick: { type: Boolean, attribute: 'close-on-click' },
 			delay: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
@@ -106,7 +107,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 				text-align: left;
 				white-space: normal;
-				z-index: 1000; /* position on top of floating buttons */
+				z-index: 1001; /* position on top of floating buttons */
 			}
 
 			:host([state="error"]) {
@@ -298,7 +299,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetMouseEnter = this._onTargetMouseEnter.bind(this);
 		this._onTargetMouseLeave = this._onTargetMouseLeave.bind(this);
 		this._onTargetResize = this._onTargetResize.bind(this);
+		this._onTargetClick = this._onTargetClick.bind(this);
 
+		this.closeOnClick = false;
 		this.delay = 0;
 		this.disableFocusLock = false;
 		this.forceShow = false;
@@ -474,6 +477,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('mouseleave', this._onTargetMouseLeave);
 		this._target.addEventListener('focus', this._onTargetFocus);
 		this._target.addEventListener('blur', this._onTargetBlur);
+		this._target.addEventListener('click', this._onTargetClick);
 
 		this._targetSizeObserver = new ResizeObserver(this._onTargetResize);
 		this._targetSizeObserver.observe(this._target);
@@ -630,6 +634,12 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._updateShowing();
 	}
 
+	_onTargetClick() {
+		if (this.closeOnClick) {
+			this.hide();
+		}
+	}
+
 	_onTargetFocus() {
 		if (this.disableFocusLock) {
 			this.showing = true;
@@ -667,6 +677,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.removeEventListener('mouseleave', this._onTargetMouseLeave);
 		this._target.removeEventListener('focus', this._onTargetFocus);
 		this._target.removeEventListener('blur', this._onTargetBlur);
+		this._target.removeEventListener('click', this._onTargetClick);
 
 		if (this._targetSizeObserver) {
 			this._targetSizeObserver.disconnect();
