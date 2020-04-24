@@ -1,19 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-const defaultBreakpoints = [842, 636, 580, 0];
-
-export class ListItemGeneric extends RtlMixin(LitElement) {
-
-	static get properties() {
-		return {
-			breakpoints: { type: Array },
-			href: { type: String },
-			role: { type: String, reflect: true },
-			_breakpoint: { type: Number }
-		};
-	}
+export class ListItemGeneric extends LitElement {
 
 	static get styles() {
 		return css`
@@ -75,14 +62,6 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 				z-index: 3;
 			}
 		`;
-	}
-
-	constructor() {
-		super();
-		this._breakpoint = 0;
-		this.breakpoints = defaultBreakpoints;
-		this.role = 'listitem';
-		this._contentId = getUniqueId();
 	}
 
 	render() {

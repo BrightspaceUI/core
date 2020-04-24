@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script type="module">
+		import '../../button/button-icon.js';
 		import '../../demo/demo-page.js';
 		import '../list-item-content.js';
 		import './list-item-sample.js';
@@ -15,7 +16,6 @@
 	</script>
 	<style>
 		.extra-padding { padding-left: 50px }
-		.border { border: 1px solid red }
 	</style>
 </head>
 
@@ -32,16 +32,19 @@
 						key="foobar"
 						selectable
 						draggable>
-						<d2l-list-item-content slot="content-area">
+						<d2l-list-item-content>
 							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 							<div slot="secondary">Specific Expectation B2.1</div>
 						</d2l-list-item-content>
+						<div slot="actions">
+							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
+						</div>
 					</d2l-list-item-sample>
 				</d2l-list>
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Padding and border added to show the outside-control extends beyond the component outline</h2>
+		<h2>Padding added to show the outside-control extends beyond the component outline</h2>
 		<d2l-demo-snippet>
 			<template>
 				<div class="extra-padding">
@@ -51,10 +54,7 @@
 							selectable
 							draggable
 							class="border">
-							<d2l-list-item-content slot="content-area">
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="secondary">Specific Expectation B2.1</div>
-							</d2l-list-item-content>
+						Some random content
 						</d2l-list-item-sample>
 					</d2l-list>
 				</div>
