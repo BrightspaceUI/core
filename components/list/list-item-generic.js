@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-export class ListItemGeneric extends LitElement {
+export class ListItemGeneric extends RtlMixin(LitElement) {
 
 	static get styles() {
 		return css`
@@ -22,6 +23,10 @@ export class ListItemGeneric extends LitElement {
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
 				margin-left: -40px
+			}
+			:host([dir="rtl"]) ::slotted([slot="outside-control"]) {
+				margin-left: 0;
+				margin-right: -40px;
 			}
 
 			::slotted([slot="control"]) {
