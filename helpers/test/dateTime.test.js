@@ -1,4 +1,12 @@
-import { formatDateInISO, formatTimeInISO, getDateFromDateObj, getDateFromISODate, getToday, parseISODate, parseISODateTime, parseISOTime } from '../dateTime.js';
+import { formatDateInISO,
+	formatDateTimeInISO,
+	formatTimeInISO,
+	getDateFromDateObj,
+	getDateFromISODate,
+	getToday,
+	parseISODate,
+	parseISODateTime,
+	parseISOTime } from '../dateTime.js';
 import { expect } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
@@ -48,6 +56,60 @@ describe('date-time', () => {
 			expect(() => {
 				formatDateInISO({year: 2013, month: 3});
 			}).to.throw('Invalid input: Expected input to be object containing year, month, and date');
+		});
+	});
+
+	describe('formatDateTimeInISO', () => {
+		it('should return the correct date-time', () => {
+			const date = {
+				year: 2020,
+				month: 3,
+				date: 1,
+				hours: 12,
+				minutes: 24,
+				seconds: 36
+			};
+			expect(formatDateTimeInISO(date)).to.equal('2020-03-01T12:24:36.000Z');
+		});
+
+		it('should return the correct date', () => {
+			const date = {
+				year: 2020,
+				month: 12,
+				date: 20,
+				hours: 1,
+				minutes: 2,
+				seconds: 3
+			};
+			expect(formatDateTimeInISO(date)).to.equal('2020-12-20T01:02:03.000Z');
+		});
+
+		it('should throw when no input', () => {
+			expect(() => {
+				formatDateTimeInISO();
+			}).to.throw('Invalid input: Expected input to be an object');
+		});
+
+		it('should throw when missing time data', () => {
+			const date = {
+				year: 2020,
+				month: 12,
+				date: 20
+			};
+			expect(() => {
+				formatDateTimeInISO(date);
+			}).to.throw();
+		});
+
+		it('should throw when missing date data', () => {
+			const date = {
+				hours: 1,
+				minutes: 2,
+				seconds: 3
+			};
+			expect(() => {
+				formatDateTimeInISO(date);
+			}).to.throw();
 		});
 	});
 

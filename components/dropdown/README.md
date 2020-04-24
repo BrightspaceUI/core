@@ -112,6 +112,14 @@ dropdown.addEventListener('click', function() {
 - `translucent` (Boolean, default: `false`): attribute for busy/rich backgrounds
 - `visible-on-ancestor` (Boolean, default: `false`): See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior.
 
+**Accessibility:**
+
+To make your usage of `d2l-dropdown-context-menu` accessible, use the following property:
+
+| Attribute | Description |
+|--|--|
+| `text` | Acts as a primary label and tooltip and is **REQUIRED**. |
+
 ### d2l-dropdown-more
 `d2l-dropdown-more` is a simple/minimal opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
 
@@ -136,6 +144,14 @@ dropdown.addEventListener('click', function() {
 - `text` (String): ARIA label for the button
 - `translucent` (Boolean, default: `false`): attribute for busy/rich backgrounds
 - `visible-on-ancestor` (Boolean, default: `false`): See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior.
+
+**Accessibility:**
+
+To make your usage of `d2l-dropdown-more` accessible, use the following property:
+
+| Attribute | Description |
+|--|--|
+| `text` | Acts as a primary label and tooltip and is **REQUIRED**. |
 
 ## Dropdown Contents
 
