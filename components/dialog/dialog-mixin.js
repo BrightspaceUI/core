@@ -281,6 +281,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialog backdrop does not prevent body scrolling
 		this._bodyScrollKey = preventBodyScroll();
 
+		// native dialogs have their own _focusInitial logic causing the close button to be focused
+		// and the tooltip to be factored into height calculations so clear focus until our own
+		// _focusInitial logic runs
+		if (document.activeElement) {
+			document.activeElement.blur();
+		}
 		requestAnimationFrame(async() => {
 			await this._updateSize();
 			this._state = 'showing';
