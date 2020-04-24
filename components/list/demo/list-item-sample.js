@@ -1,3 +1,4 @@
+import '../list-item-generic.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 //import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
@@ -15,34 +16,19 @@ class ListItemSample extends LitElement {
 	}
 
 	static get styles() {
-		return [ (super.styles ? super.styles : css``), css`
-			.list-grid {
-				display: grid;
-				grid-template-columns:
-					[start outside-control-start] 40px
-					[control-start outside-control-end] 40px
-					[control-end content-start] auto
-					[content-end actions-start] auto
-					[end actions-end];
-			}
-			.d2l-list-item-content {
-				grid-column: content-start / content-end;
-				grid-row: 1 / 2;
-			}
-			.d2l-list-item-actions {
-				grid-column: actions-start / actions-end;
-				grid-row: 1 / 2;
-			}
-		`];
+		return [ (super.styles ? super.styles : css``)];
 	}
+
 	render() {
 		return html`
-			<div class="list-grid">
+			<d2l-list-item-generic>
 				${ this._renderDragHandle ? this._renderDragHandle() : '' }
 				${ this._renderCheckbox ? this._renderCheckbox() : '' }
-				<div class="d2l-list-item-content"></div>
-				<div class="d2l-list-item-actions"></div>
-			</div>
+				<div slot="outside-control-area">=</div>
+				<div slot="control-area">[ ]</div>
+				<div slot="content-area"></div>
+				<div slot="actions-area">Actions</div>
+			</d2l-list-item-generic>
 		`;
 	};
 }

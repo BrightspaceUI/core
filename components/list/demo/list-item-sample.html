@@ -11,7 +11,12 @@
 		import '../../demo/demo-page.js';
 		import '../list-item-content.js';
 		import './list-item-sample.js';
+		import '../list-item-generic.js';
 	</script>
+	<style>
+		.extra-padding { padding-left: 50px }
+		.border { border: 1px solid red }
+	</style>
 </head>
 
 <body unresolved>
@@ -22,15 +27,37 @@
 
 		<d2l-demo-snippet>
 			<template>
-				<d2l-list-item-sample
-					key="foobar"
-					selectable="true"
-					draggable="true">
-					<d2l-list-item-content>
-						<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-						<div slot="secondary">Specific Expectation B2.1</div>
-					</d2l-list-item-content>
-				</d2l-list-item-sample>
+				<d2l-list>
+					<d2l-list-item-sample
+						key="foobar"
+						selectable
+						draggable>
+						<d2l-list-item-content slot="content-area">
+							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+							<div slot="secondary">Specific Expectation B2.1</div>
+						</d2l-list-item-content>
+					</d2l-list-item-sample>
+				</d2l-list>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Padding and border added to show the outside-control extends beyond the component outline</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div class="extra-padding">
+					<d2l-list>
+						<d2l-list-item-sample
+							key="123"
+							selectable
+							draggable
+							class="border">
+							<d2l-list-item-content slot="content-area">
+								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+								<div slot="secondary">Specific Expectation B2.1</div>
+							</d2l-list-item-content>
+						</d2l-list-item-sample>
+					</d2l-list>
+				</div>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>
