@@ -4,6 +4,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 export class ListItemGeneric extends RtlMixin(LitElement) {
 
 	static get styles() {
+		const outsideControlWidth = css`40px`;
 		return css`
 			:host {
 				display: grid;
@@ -13,20 +14,25 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 					[control-end content-start] auto
 					[content-end actions-start] auto
 					[end actions-end];
+				padding-left: ${outsideControlWidth};
+			}
+			:host([dir="rtl"]) {
+				padding-left: 0;
+				padding-right: ${outsideControlWidth};
 			}
 			::slotted([slot="outside-control"]),
-			::slotted([slot="control"]) ,
-			::slotted([slot="content"]) ,
-			::slotted([slot="actions"])  {
+			::slotted([slot="control"]),
+			::slotted([slot="content"]),
+			::slotted([slot="actions"]) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
-				margin-left: -40px
+				margin-left: -${outsideControlWidth};
 			}
 			:host([dir="rtl"]) ::slotted([slot="outside-control"]) {
 				margin-left: 0;
-				margin-right: -40px;
+				margin-right: -${outsideControlWidth};
 			}
 
 			::slotted([slot="control"]) {
@@ -70,6 +76,7 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		console.log(this.$slots);
 		return html`
 		<slot name="outside-control"></slot>
 		<slot name="control"></slot>

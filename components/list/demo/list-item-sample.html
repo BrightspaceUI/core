@@ -44,20 +44,21 @@
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Padding added to show the outside-control extends beyond the component outline</h2>
+		<h2>Padding still included if no outside control exists</h2>
+
 		<d2l-demo-snippet>
 			<template>
-				<div class="extra-padding">
-					<d2l-list>
-						<d2l-list-item-sample
-							key="123"
-							selectable
-							draggable
-							class="border">
-						Some random content
-						</d2l-list-item-sample>
-					</d2l-list>
-				</div>
+				<d2l-list>
+					<d2l-list-item-generic>
+						<div slot="control">[ ]</div>
+						<div slot="content">
+							Content and things
+						</div>
+						<div slot="actions">
+							<slot name="actions">Actions</slot>
+						</div>
+					</d2l-list-item-generic>
+				</d2l-list>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>
