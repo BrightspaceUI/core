@@ -5,12 +5,6 @@ import { nothing } from 'lit-html';
 
 export const ListItemCheckboxMixin = superclass => class extends superclass {
 
-	/**
-	 * https://lit-element.polymer-project.org/guide/properties#declare
-	 *
-	 * @readonly
-	 * @static
-	 */
 	static get properties() {
 		return {
 			disabled: {type: Boolean },
@@ -20,12 +14,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		};
 	}
 
-	/**
-	 * TODO: Remove grid styles after list-item-generic is created
-	 *
-	 * @readonly
-	 * @static
-	 */
+	// TODO: Remove grid styles after list-item-generic is created
 	static get styles() {
 		return [ checkboxStyles, css`
 		[slot="control-area"] {
@@ -49,10 +38,6 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		this._checkboxId = getUniqueId();
 	}
 
-	/**
-	 * Lifecycle callback. Prevent event dispatch if key isn't set
-	 * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#Using_the_lifecycle_callbacks
-	 */
 	connectedCallback() {
 		super.connectedCallback();
 		if (this.key === undefined) {
@@ -60,25 +45,11 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		}
 	}
 
-	/**
-	 * Sets whether the item is selected. Requests an event dispatch
-	 * unless suppressEvent is true
-	 *
-	 * @param {*} selected
-	 * @param {*} suppressEvent
-	 */
 	setSelected(selected, suppressEvent = false) {
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
 
-	/**
-	 * Dispatches a custom event with information on what
-	 * items are selected and their keys.
-	 * https://lit-element.polymer-project.org/guide/events
-	 *
-	 * @param {*} value New state of checkbox
-	 */
 	_dispatchSelected(value) {
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: { key: this.key, selected: value },
@@ -86,11 +57,6 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		}));
 	}
 
-	/**
-	 * Handler for checkbox action area.
-	 * Toggles the checkbox.
-	 *
-	 */
 	_handleCheckboxActionClick() {
 		if (this.disabled) {
 			return;
@@ -98,21 +64,10 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		this.setSelected(!this.selected);
 	}
 
-	/**
-	 * Handler for checkbox user change
-	 *
-	 * @param {*} event
-	 */
 	_handleCheckboxChange(event) {
 		this.setSelected(event.target.checked);
 	}
 
-	/**
-	 * Renders the checkbox between control-start and control-end, as well as a clickable area
-	 * between control-start to end
-	 *
-	 * @returns {String} Rendered checkbox
-	 */
 	_renderCheckbox() {
 		return this.selectable ? html`
 			<div slot="control-area">
