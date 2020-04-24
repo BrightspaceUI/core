@@ -59,15 +59,6 @@ describe('d2l-input-date-time', () => {
 			expect(elem.value).to.equal('2018-02-02T05:00:00.000Z');
 		});
 
-		it('should fire "change" event with empty value when time value changes but no date', async() => {
-			const elem = await fixture(basicFixture);
-			const inputElem = getChildElem(elem, 'd2l-input-time');
-			inputElem.value = '14:00:00';
-			setTimeout(() => dispatchEvent(inputElem, 'change'));
-			await oneEvent(elem, 'change');
-			expect(elem.value).to.equal('');
-		});
-
 		it('should fire "change" event when time value changes and there is a date', async() => {
 			const elem = await fixture('<d2l-input-date-time label="label text" value="2018-03-03T08:00:00.000Z"></d2l-input-date-time>');
 			const inputElem = getChildElem(elem, 'd2l-input-time');
