@@ -2,7 +2,7 @@ import './input-date.js';
 import './input-fieldset.js';
 import './input-time.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getLocalDateFromUTCDateTime, getLocalTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
+import { getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -14,8 +14,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			disabled: { type: Boolean },
 			label: { type: String },
 			value: { type: String },
-			_parsedDate: { type: String },
-			_parsedTime: { type: String }
+			_parsedDateTime: { type: String }
 		};
 	}
 
@@ -60,8 +59,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 
-		this._parsedDate = '';
-		this._parsedTime = '';
+		this._parsedDateTime = '';
 	}
 
 	firstUpdated(changedProperties) {
@@ -70,20 +68,26 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (!this.label) {
 			console.warn('d2l-input-date-time component requires label text');
 		}
+	}
 
-		if (this.value) {
-			try {
-				this._parsedDate = getLocalDateFromUTCDateTime(this.value);
-				this._parsedTime = getLocalTimeFromUTCDateTime(this.value);
-			} catch (e) {
-				// set value to empty if invalid initial value
-				this.value = '';
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				try {
+					this._parsedDateTime = getLocalDateTimeFromUTCDateTime(this.value);
+				} catch (e) {
+					// set value to empty if invalid value
+					this.value = '';
+					this._parsedDateTime = '';
+				}
 			}
-		}
+		});
 	}
 
 	render() {
-		const timeHidden = !this._parsedDate;
+		const timeHidden = !this._parsedDateTime;
 		return html`
 			<d2l-input-fieldset label="${ifDefined(this.label)}">
 				<d2l-input-date
@@ -91,7 +95,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					?disabled="${this.disabled}"
 					label="${this.localize('date')}"
 					label-hidden
-					.value="${this._parsedDate}">
+					.value="${this._parsedDateTime}">
 				</d2l-input-date>
 				<d2l-input-time
 					@change="${this._handleTimeChange}"
@@ -99,7 +103,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					?hidden="${timeHidden}"
 					label="${this.localize('time')}"
 					label-hidden
-					.value="${this._parsedTime}">
+					.value="${this._parsedDateTime}">
 				</d2l-input-time>
 			</d2l-input-fieldset>
 		`;
@@ -111,24 +115,22 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_handleDateChange(e) {
-		this._parsedDate = e.target.value;
-		this._updateValueDispatchEvent();
+		const newDate = e.target.value;
+		if (!newDate) {
+			this.value = '';
+		} else {
+			const time = this.shadowRoot.querySelector('d2l-input-time').value;
+			this.value = getUTCDateTimeFromLocalDateTime(newDate, time);
+		}
+		this._dispatchChangeEvent();
 	}
 
 	_handleTimeChange(e) {
-		this._parsedTime = e.target.value;
-		this._updateValueDispatchEvent();
+		this.value = getUTCDateTimeFromLocalDateTime(this._parsedDateTime, e.target.value);
+		this._dispatchChangeEvent();
 	}
 
-	_updateValueDispatchEvent() {
-		if (!this._parsedDate) {
-			this.value = '';
-			this._parsedTime = '';
-		} else {
-			const time = this._parsedTime ? this._parsedTime : this.shadowRoot.querySelector('d2l-input-time').value;
-			this.value = getUTCDateTimeFromLocalDateTime(this._parsedDate, time);
-		}
-
+	_dispatchChangeEvent() {
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

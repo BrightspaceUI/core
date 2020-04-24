@@ -18,11 +18,12 @@ export function formatDateInISO(val) {
 }
 
 // val is an object containing year, month, date, hours, minutes, seconds
-export function formatDateTimeInISO(val) {
+// if local is true, no Z since not in UTC
+export function formatDateTimeInISO(val, local) {
 	if (!val) {
 		throw new Error('Invalid input: Expected input to be an object');
 	}
-	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000Z`;
+	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000${local ? '' : 'Z'}`;
 }
 
 // val is an object containing hours, minutes, seconds
@@ -61,16 +62,10 @@ export function getDateTimeDescriptorShared(refresh) {
 	return dateTimeDescriptor;
 }
 
-export function getLocalDateFromUTCDateTime(date) {
-	const dateObj = parseISODateTime(date);
+export function getLocalDateTimeFromUTCDateTime(dateTime) {
+	const dateObj = parseISODateTime(dateTime);
 	const localDateTime = convertUTCToLocalDateTime(dateObj);
-	return formatDateInISO(localDateTime);
-}
-
-export function getLocalTimeFromUTCDateTime(date) {
-	const dateObj = parseISODateTime(date);
-	const localDateTime = convertUTCToLocalDateTime(dateObj);
-	return formatTimeInISO(localDateTime);
+	return formatDateTimeInISO(localDateTime, true);
 }
 
 export function getToday() {
@@ -125,7 +120,7 @@ export function parseISOTime(val) {
 	let hours = 0;
 	let minutes = 0;
 	let seconds = 0;
-	const re = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
+	const re = /([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?/;
 	const match = val.match(re);
 	if (match !== null) {
 		if (match.length > 1) {
