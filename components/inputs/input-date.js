@@ -22,7 +22,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			disabled: { type: Boolean },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			validEmptyState: { type: String, attribute: 'valid-empty-state'},
+			emptyStateText: { type: String, attribute: 'empty-state-text'},
 			value: { type: String },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
@@ -140,6 +140,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
+		this.emptyStateText = '';
 		this.value = '';
 
 		this._dropdownOpened = false;
@@ -163,7 +164,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			this.requestUpdate();
 		});
 
-		this._formattedValue = this.validEmptyState ? this.validEmptyState : '';
+		this._formattedValue = this.emptyStateText ? this.emptyStateText : '';
 	}
 
 	render() {
@@ -226,7 +227,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_getFormattedValue() {
-		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.validEmptyState ? this.validEmptyState : '');
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyStateText ? this.emptyStateText : '');
 	}
 
 	async _handleFocusTrapEnter() {
