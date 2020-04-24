@@ -19,12 +19,12 @@ class ListItemSample extends LitElement {
 			<d2l-list-item-generic>
 				${ this._renderDragHandle ? this._renderDragHandle() : '' }
 				${ this._renderCheckbox ? this._renderCheckbox() : '' }
-				<div slot="outside-control-area">=</div>
-				<div slot="control-area">[ ]</div>
-				<div slot="content-area">
+				<div slot="outside-control">=</div>
+				<div slot="control">[ ]</div>
+				<div slot="content">
 					<slot></slot>
 				</div>
-				<div slot="actions-area">
+				<div slot="actions">
 					<slot name="actions">Actions</slot>
 				</div>
 			</d2l-list-item-generic>
