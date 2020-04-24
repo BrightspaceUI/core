@@ -7,7 +7,7 @@ class ListItemSample extends LitElement {
 	static get properties() {
 		return {
 			href: { type: String }
-		}
+		};
 	}
 
 	static get styles() {
@@ -20,7 +20,7 @@ class ListItemSample extends LitElement {
 				${ this._renderDragHandle ? this._renderDragHandle() : '' }
 				${ this._renderCheckbox ? this._renderCheckbox() : '' }
 				<div slot="outside-control">=</div>
-				<div slot="control">[ ]</div>
+				<div slot="control">[x]</div>
 				<div slot="content">
 					<slot></slot>
 				</div>
@@ -29,7 +29,7 @@ class ListItemSample extends LitElement {
 				</div>
 			</d2l-list-item-generic>
 		`;
-	};
+	}
 }
 
 customElements.define('d2l-list-item-sample', ListItemSample);

@@ -4,21 +4,15 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 export class ListItemGeneric extends RtlMixin(LitElement) {
 
 	static get styles() {
-		const outsideControlWidth = css`40px`;
 		return css`
 			:host {
 				display: grid;
 				grid-template-columns:
-					[start outside-control-start] 0
-					[control-start outside-control-end] 40px
+					[start outside-control-start] minmax(0, min-content)
+					[control-start outside-control-end] minmax(0, min-content)
 					[control-end content-start] auto
 					[content-end actions-start] auto
 					[end actions-end];
-				padding-left: ${outsideControlWidth};
-			}
-			:host([dir="rtl"]) {
-				padding-left: 0;
-				padding-right: ${outsideControlWidth};
 			}
 			::slotted([slot="outside-control"]),
 			::slotted([slot="control"]),
@@ -28,11 +22,6 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 			}
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
-				margin-left: -${outsideControlWidth};
-			}
-			:host([dir="rtl"]) ::slotted([slot="outside-control"]) {
-				margin-left: 0;
-				margin-right: -${outsideControlWidth};
 			}
 
 			::slotted([slot="control"]) {
@@ -62,7 +51,6 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 			::slotted[slot="outside-control-action"] {
 				grid-column: start / end;
 				z-index: 1;
-				margin-left:-40px;
 			}
 			::slotted([slot="control-action"]) {
 				grid-column: control-start / end;
@@ -76,7 +64,6 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		console.log(this.$slots);
 		return html`
 		<slot name="outside-control"></slot>
 		<slot name="control"></slot>
