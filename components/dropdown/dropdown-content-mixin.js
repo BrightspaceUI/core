@@ -27,6 +27,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				reflect: true,
 				attribute: 'min-width'
 			},
+			maxHeight: {
+				type: Number,
+				attribute: 'max-height'
+			},
 			noAutoClose: {
 				type: Boolean,
 				reflect: true,
@@ -85,7 +89,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			_hasFooter: {
 				type: Boolean
 			},
-			_maxHeight: {
+			_contentHeight: {
 				type: Number
 			},
 			_position: {
@@ -246,7 +250,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: this._maxHeight ? `${this._maxHeight}px` : 'none',
+			maxHeight: this._contentHeight ? `${this._contentHeight}px` : 'none',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
@@ -441,7 +445,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		const footer = this.__getContentBottom();
 
 		if (!this.noAutoFit) {
-			this._maxHeight = null;
+			this._contentHeight = null;
 		}
 		/* don't let dropdown content horizontally overflow viewport */
 		this._width = null;
@@ -461,7 +465,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			});
 
 			const spaceRequired = {
-				height: contentRect.height + headerFooterHeight + 10,
+				height: Math.min(this.maxHeight ?? Number.MAX_VALUE, contentRect.height + headerFooterHeight) + 10,
 				width: contentRect.width
 			};
 
@@ -475,10 +479,16 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				this._position = position;
 			}
 
-			const maxHeight = Math.floor((this.openedAbove ? spaceAround.above : spaceAround.below) - headerFooterHeight);
-			if (!this.noAutoFit && maxHeight && maxHeight > 0) {
-				this._maxHeight = maxHeight;
-				this.__toggleOverflowY(contentRect.height > maxHeight);
+			//Calculate height available to the dropdown contents for overflow because that is the only area capable of scrolling
+			const availableHeight = this.openedAbove ? spaceAround.above : spaceAround.below;
+			if (!this.noAutoFit && availableHeight && availableHeight > 0) {
+				//Only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
+				this._contentHeight = this.maxHeight !== null
+					&& availableHeight > this.maxHeight
+					&& headerFooterHeight < this.maxHeight
+					? this.maxHeight - headerFooterHeight - 2
+					: availableHeight - headerFooterHeight;
+				this.__toggleOverflowY(contentRect.height + headerFooterHeight > availableHeight);
 
 				// ensure the content height has updated when the __toggleScrollStyles event handler runs
 				await this.updateComplete;
@@ -560,10 +570,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		if (!this.__content) {
 			return;
 		}
-		if (!this._maxHeight) {
+		if (!this._contentHeight) {
 			return;
 		}
-		this._contentOverflow = isOverflowing || this.__content.scrollHeight > this._maxHeight;
+		this._contentOverflow = isOverflowing || this.__content.scrollHeight > this._contentHeight;
 	}
 
 	__toggleScrollStyles() {
