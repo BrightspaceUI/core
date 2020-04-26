@@ -27,7 +27,6 @@ class ListItem extends RtlMixin(LitElement) {
 			breakpoints: { type: Array },
 			disabled: {type: Boolean },
 			href: { type: String },
-			illustrationOutside: { type: Boolean, attribute: 'illustration-outside' },
 			key: { type: String, reflect: true },
 			role: { type: String, reflect: true },
 			selectable: {type: Boolean },
@@ -111,21 +110,6 @@ class ListItem extends RtlMixin(LitElement) {
 			:host([dir="rtl"]) .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 0.9rem;
 				margin-right: 0;
-			}
-
-			:host([illustration-outside]) .d2l-list-item-content-flex {
-				padding: 0.55rem 0;
-			}
-
-			:host([illustration-outside]) .d2l-list-item-container ::slotted([slot="illustration"]),
-			:host([illustration-outside]) .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
-				margin-bottom: 0.7rem;
-				margin-top: 0.7rem;
-			}
-
-			:host([illustration-outside]) input[type="checkbox"].d2l-input-checkbox {
-				margin-bottom: 1.15rem;
-				margin-top: 1.15rem;
 			}
 
 			.d2l-list-item-main {
@@ -269,21 +253,20 @@ class ListItem extends RtlMixin(LitElement) {
 
 		const classes = {
 			'd2l-list-item-container': true,
-			'd2l-list-item-flex': label || link || this.illustrationOutside,
+			'd2l-list-item-flex': label || link,
 			'd2l-visible-on-ancestor-target': true
 		};
 
 		return html`
 			<div class="${classMap(classes)}" breakpoint="${this._breakpoint}">
 				${label}
-				${this.illustrationOutside ? beforeContent : null}
 				${link}
 				<div id="${this._contentId}"
 					class="d2l-list-item-content"
 					?extend-separators="${this._extendSeparators}"
 					separators="${ifDefined(this._separators)}">
 					<div class="d2l-list-item-content-flex">
-						${!this.illustrationOutside ? beforeContent : null}
+						${beforeContent}
 						<div class="d2l-list-item-main"><slot></slot></div>
 						<slot name="actions"></slot>
 					</div>
