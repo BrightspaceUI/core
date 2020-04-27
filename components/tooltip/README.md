@@ -70,7 +70,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 <div class="offset-parent">
 	<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
 	<d2l-tooltip for="tooltip-boundary"
-		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:-}">
+		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:0}">
 		This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
 	</d2l-tooltip>
 </div>
@@ -78,6 +78,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 
 **Advanced Properties:**
 * `boundary` (Object) - optionally provide boundaries to constrain where the tooltip will appear. Valid properties are `"top"`, `"bottom"`, `"left"` and `"right"`. The boundary is relative to the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent).
+* `close-on-click` (Boolean, default: `false`) - causes the tooltip to close when its target is clicked
 * `disable-focus-lock` (Boolean, default: `false`) - disables focus lock so that the tooltip will automatically close when no longer hovered even if it still has focus
 * `force-show` (Boolean, default: `false`): force the tooltip to stay open as long as it remains `true`
 * `position` (String): optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
