@@ -131,9 +131,13 @@ class InputText extends RtlMixin(LitElement) {
 		if (this._lastSlotWidth > 0) {
 			inputStyles.paddingRight = isFocusedOrHovered ? `${this._lastSlotWidth - 1}px` : `${this._lastSlotWidth}px`;
 		}
-		if (this._totalContentWidth) {
-			inputStyles.width = `${this._totalContentWidth}`;
+		if (this.contentWidth) {
+			const paddingLeft = (this._firstSlotWidth > 0) ? `${this._firstSlotWidth}px` : window.getComputedStyle(this.shadowRoot.querySelector('input')).getPropertyValue('padding-left');
+			const paddingRight = (this._lastSlotWidth > 0) ? `${this._lastSlotWidth}px` : window.getComputedStyle(this.shadowRoot.querySelector('input')).getPropertyValue('padding-right');
+			const totalContentWidth = `calc(${paddingLeft} + ${paddingRight} + ${this.contentWidth}px)`;
+			inputStyles.width = `${totalContentWidth}`;
 		}
+
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
@@ -262,12 +266,6 @@ class InputText extends RtlMixin(LitElement) {
 		this.updateComplete.then(() => {
 			this._firstSlotWidth = this.shadowRoot.querySelector('#first-slot').offsetWidth;
 			this._lastSlotWidth = this.shadowRoot.querySelector('#last-slot').offsetWidth;
-
-			if (this.contentWidth) {
-				const paddingLeft = (this._firstSlotWidth > 0) ? `${this._firstSlotWidth}px` : window.getComputedStyle(this.shadowRoot.querySelector('input')).getPropertyValue('padding-left');
-				const paddingRight = (this._lastSlotWidth > 0) ? `${this._lastSlotWidth}px` : window.getComputedStyle(this.shadowRoot.querySelector('input')).getPropertyValue('padding-right');
-				this._totalContentWidth = `calc(${paddingLeft} + ${paddingRight} + ${this.contentWidth}px)`;
-			}
 		});
 	}
 

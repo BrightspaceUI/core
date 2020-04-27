@@ -25,6 +25,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			emptyStateText: { type: String, attribute: 'empty-state-text'},
 			value: { type: String },
 			_contentWidth: { type: Number },
+			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
 		};
@@ -34,9 +35,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return css`
 			:host {
 				display: inline-block;
-				max-width: 9rem;
-				min-width: 7rem;
-				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
@@ -163,25 +161,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate();
+			this._getContentWidth();
 		});
 
 		this._formattedValue = this.emptyStateText ? this.emptyStateText : '';
-
-		const text = document.createElement('div');
-		document.body.appendChild(text);
-		text.style.fontSize = '0.8rem';
-		text.style.width = 'auto';
-		text.style.position = 'absolute';
-		text.innerHTML = formatISODateInUserCalDescriptor('2020-12-22');
-		const placeholderWidth = text.clientWidth;
-
-		let emptyStateWidth = 0;
-		if (this.emptyStateText) {
-			text.innerHTML = this.emptyStateText;
-			emptyStateWidth = text.clientWidth;
-		}
-		this._contentWidth = Math.max(placeholderWidth, emptyStateWidth) + 10;
-		document.body.removeChild(text);
+		this._getContentWidth();
 	}
 
 	render() {
@@ -238,10 +222,33 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'value') {
+			if (prop === '_dateTimeDescriptor' || prop === 'value') {
 				this._getFormattedValue();
 			}
 		});
+	}
+
+	_getContentWidth() {
+		const text = document.createElement('div');
+		document.body.appendChild(text);
+		text.style.fontSize = '0.8rem';
+		text.style.width = 'auto';
+		text.style.position = 'absolute';
+
+		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
+		text.innerHTML = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+		const placeholderWidth = text.clientWidth;
+		text.innerHTML = formatISODateInUserCalDescriptor('2020-12-20');
+		const contentWidth = text.clientWidth;
+
+		let emptyStateWidth = 0;
+		if (this.emptyStateText) {
+			text.innerHTML = this.emptyStateText;
+			emptyStateWidth = text.clientWidth;
+		}
+		const width = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
+		this._contentWidth = width + 10;
+		document.body.removeChild(text);
 	}
 
 	_getFormattedValue() {

@@ -43,6 +43,42 @@ describe('d2l-input-date', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	describe('localization', () => {
+
+		after(async() => {
+			await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
+		});
+
+		[
+			'ar',
+			'da',
+			'de',
+			'en',
+			'es',
+			'fr',
+			'ja',
+			'ko',
+			'nl',
+			'pt',
+			'sv',
+			'tr',
+			'zh',
+			'zh-tw'
+		].forEach((lang) => {
+			it(`${lang} empty`, async function() {
+				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
+				const rect = await visualDiff.getRect(page, '#no-value');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it(`${lang} value`, async function() {
+				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
+				const rect = await visualDiff.getRect(page, '#basic');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
 	describe('calendar dropdown', () => {
 		before(async() => {
 			await page.reload();
@@ -114,7 +150,7 @@ describe('d2l-input-date', () => {
 			// change month
 			await page.$eval('#basic', (elem) => {
 				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
+				const button = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				button.click();
 			});
 
@@ -212,7 +248,7 @@ describe('d2l-input-date', () => {
 			await helper.open(page, '#no-value');
 			const rect = await helper.getRect(page, '#no-value');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#basic');
+			await helper.reset(page, '#no-value');
 		});
 	});
 
