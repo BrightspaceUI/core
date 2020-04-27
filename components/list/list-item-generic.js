@@ -48,7 +48,7 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 			:host[disabled] ::slotted([slot="content-action"]) {
 				cursor: default;
 			}
-			::slotted[slot="outside-control-action"] {
+			::slotted([slot="outside-control-action"]) {
 				grid-column: start / end;
 				z-index: 1;
 			}
