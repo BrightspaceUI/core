@@ -679,10 +679,10 @@ class Tooltip extends RtlMixin(LitElement) {
 	async _showingChanged(newValue) {
 		clearTimeout(this._hoverTimeout);
 		if (newValue) {
-			await this.updateComplete;
-			await this.updatePosition();
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.setAttribute('aria-hidden', 'false');
+			await this.updateComplete;
+			await this.updatePosition();
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
