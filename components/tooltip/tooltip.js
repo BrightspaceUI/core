@@ -85,6 +85,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
 			forceShow: { type: Boolean, attribute: 'force-show' },
+			forType: { type: String, attribute: 'for-type' },
 			offset: { type: Number }, /* tooltipOffset */
 			position: { type: String }, /* Valid values are: 'top', 'bottom', 'left' and 'right' */
 			showing: { type: Boolean, reflect: true },
@@ -307,6 +308,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.delay = 0;
 		this.disableFocusLock = false;
 		this.forceShow = false;
+		this.forType = 'descriptor';
 		this.offset = pointerRotatedOverhang + pointerGap;
 		this.state = 'info';
 
@@ -619,19 +621,19 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_isInteractive(ele) {
-		if (!isFocusable(ele)) {
+		if (!isFocusable(ele, true, false, true)) {
 			return false;
 		}
 		if (ele.nodeType !== Node.ELEMENT_NODE) {
 			return false;
 		}
 		const nodeName = ele.nodeName.toLowerCase();
-		const isInteractive = !!interactiveElements[nodeName];
+		const isInteractive = interactiveElements[nodeName];
 		if (isInteractive) {
 			return true;
 		}
 		const role = (ele.getAttribute('role') || '');
-		return (nodeName === 'a' && ele.hasAttribute('href')) || !!interactiveRoles[role];
+		return (nodeName === 'a' && ele.hasAttribute('href')) || interactiveRoles[role];
 	}
 
 	_onTargetBlur() {
@@ -707,10 +709,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		clearTimeout(this._hoverTimeout);
 		clearTimeout(this._longPressTimeout);
 		if (newValue) {
-			await this.updateComplete;
-			await this.updatePosition();
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.setAttribute('aria-hidden', 'false');
+			await this.updateComplete;
+			await this.updatePosition();
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
@@ -736,7 +738,11 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (target) {
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
-			target.setAttribute('aria-describedby', this.id);
+			if (this.forType === 'label') {
+				target.setAttribute('aria-labelledby', this.id);
+			} else {
+				target.setAttribute('aria-describedby', this.id);
+			}
 			if (!this._isInteractive(target)) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
