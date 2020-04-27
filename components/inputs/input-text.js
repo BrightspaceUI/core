@@ -170,9 +170,7 @@ class InputText extends RtlMixin(LitElement) {
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<label for="${this._inputId}">
-					<span class="d2l-input-label">${this.label}</span>
-				</label>
+				<label class="d2l-input-label" for="${this._inputId}">${this.label}</label>
 				${input}`;
 		}
 		return input;
