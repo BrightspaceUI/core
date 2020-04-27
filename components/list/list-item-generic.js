@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 
-export class ListItemGeneric extends RtlMixin(LitElement) {
+export class ListItemGeneric extends LitElement {
 
 	static get styles() {
 		return css`
@@ -48,7 +48,7 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 			:host[disabled] ::slotted([slot="content-action"]) {
 				cursor: default;
 			}
-			::slotted[slot="outside-control-action"] {
+			::slotted([slot="outside-control-action"]) {
 				grid-column: start / end;
 				z-index: 1;
 			}
@@ -63,16 +63,22 @@ export class ListItemGeneric extends RtlMixin(LitElement) {
 		`;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+
+		console.log(this.shadowRoot);
+	}
+
 	render() {
 		return html`
+		<slot name="content-action"></slot>
+		<slot name="outside-control-action"></slot>
+		<slot name="control-action"></slot>
+		<slot name="actions"></slot>
+
 		<slot name="outside-control"></slot>
 		<slot name="control"></slot>
 		<slot name="content"></slot>
-		<slot name="actions"></slot>
-
-		<slot name="outside-control-action"></slot>
-		<slot name="control-action"></slot>
-		<slot name="content-action"></slot>
 		`;
 	}
 }

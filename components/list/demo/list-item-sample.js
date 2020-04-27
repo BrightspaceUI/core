@@ -20,10 +20,13 @@ class ListItemSample extends LitElement {
 				${ this._renderDragHandle ? this._renderDragHandle() : '' }
 				${ this._renderCheckbox ? this._renderCheckbox() : '' }
 				<div slot="outside-control">=</div>
-				<div slot="control">[x]</div>
+				<div slot="outside-control-action"><a href="#">a1</a></div>
+				<div slot="control">X</div>
+				<div slot="control-action"><a href="#">a2</a></div>
 				<div slot="content">
 					<slot></slot>
 				</div>
+				<a href="#" slot="content-action"></a>
 				<div slot="actions">
 					<slot name="actions">Actions</slot>
 				</div>
