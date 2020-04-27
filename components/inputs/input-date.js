@@ -24,6 +24,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			emptyStateText: { type: String, attribute: 'empty-state-text'},
 			value: { type: String },
+			_contentWidth: { type: Number },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
 		};
@@ -165,6 +166,22 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 
 		this._formattedValue = this.emptyStateText ? this.emptyStateText : '';
+
+		const text = document.createElement('div');
+		document.body.appendChild(text);
+		text.style.fontSize = '0.8rem';
+		text.style.width = 'auto';
+		text.style.position = 'absolute';
+		text.innerHTML = formatISODateInUserCalDescriptor('2020-12-22');
+		const placeholderWidth = text.clientWidth;
+
+		let emptyStateWidth = 0;
+		if (this.emptyStateText) {
+			text.innerHTML = this.emptyStateText;
+			emptyStateWidth = text.clientWidth;
+		}
+		this._contentWidth = Math.max(placeholderWidth, emptyStateWidth) + 10;
+		document.body.removeChild(text);
 	}
 
 	render() {
@@ -174,6 +191,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
+					content-width="${ifDefined(this._contentWidth)}"
 					?disabled="${this.disabled}"
 					@keydown="${this._handleKeydown}"
 					@focus="${this._handleInputTextFocus}"
