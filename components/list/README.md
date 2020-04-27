@@ -42,7 +42,6 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ```html
 <d2l-list-item breakpoints="array"
   href="http://www.d2l.com"
-  illustration-outside
   key="item1"
   selectable
   selected
@@ -72,7 +71,6 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
     - default break: `843px < x`  where `x` is the width of the component.
 - `href` (String): Address of item link if navigable
-- `illustration-outside` (Boolean): Whether the illustration is rendered outside of the separators
 - `key` (String): Value to identify item if selectable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
