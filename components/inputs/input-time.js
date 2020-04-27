@@ -116,7 +116,6 @@ class InputTime extends LitElement {
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
-		this.maxHeight = "";
 		this.timeInterval = 'thirty';
 		this._dropdownId = getUniqueId();
 		this._formattedValue = formatTime(DEFAULT_VALUE);
