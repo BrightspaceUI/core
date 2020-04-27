@@ -20,9 +20,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean },
+			emptyStateText: { type: String, attribute: 'empty-state-text'},
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			emptyStateText: { type: String, attribute: 'empty-state-text'},
 			value: { type: String },
 			_contentWidth: { type: Number },
 			_dateTimeDescriptor: { type: Object },
@@ -223,7 +223,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_dateTimeDescriptor' || prop === 'value') {
-				this._getFormattedValue();
+				this._setFormattedValue();
 			}
 		});
 	}
@@ -249,10 +249,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const width = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
 		this._contentWidth = width + 10;
 		document.body.removeChild(text);
-	}
-
-	_getFormattedValue() {
-		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyStateText ? this.emptyStateText : '');
 	}
 
 	async _handleFocusTrapEnter() {
@@ -288,7 +284,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		} catch (err) {
 			// leave value the same when invalid input
 		}
-		this._getFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
+		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
 		this._calendar.reset();
 	}
@@ -319,7 +315,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleInputTextBlur() {
-		this._getFormattedValue();
+		this._setFormattedValue();
 	}
 
 	_handleMouseup(e) {
@@ -333,6 +329,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const date = getToday();
 		this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
+	}
+
+	_setFormattedValue() {
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyStateText ? this.emptyStateText : '');
 	}
 
 	_updateValueDispatchEvent(dateInISO) {
