@@ -170,6 +170,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	render() {
+		const width = `calc(${this._contentWidth}px + 0.75rem + 2px)`; // text and icon width + paddingRight + border width
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
@@ -183,7 +184,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					?label-hidden="${this.labelHidden}"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${(this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase()}"
-					style="${styleMap({maxWidth: `calc(${this._contentWidth}px + 0.75rem)`})}"
+					style="${styleMap({maxWidth: width})}"
 					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
 					<d2l-icon
@@ -233,28 +234,29 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const text = document.createElement('div');
 		document.body.appendChild(text);
 		text.style.fontSize = '0.8rem';
-		text.style.width = 'auto';
+		text.style.letterSpacing = '0.02rem';
 		text.style.position = 'absolute';
+		text.style.width = 'auto';
 
 		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
-		text.innerHTML = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const placeholderWidth = text.clientWidth;
-		text.innerHTML = formatISODateInUserCalDescriptor('2020-12-20');
-		const contentWidth = text.clientWidth;
+		text.innerText = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+		const placeholderWidth = text.getBoundingClientRect().width;
+		text.innerText = formatISODateInUserCalDescriptor('2020-12-20');
+		const contentWidth = text.getBoundingClientRect().width;
 
 		let emptyStateWidth = 0;
 		if (this.emptyStateText) {
-			text.innerHTML = this.emptyStateText;
-			emptyStateWidth = text.clientWidth;
+			text.innerText = this.emptyStateText;
+			emptyStateWidth = text.getBoundingClientRect().width;
 		}
 		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
 		document.body.removeChild(text);
 
 		const icon = this.shadowRoot.querySelector('d2l-icon');
 		const iconStyle = getComputedStyle(icon);
-		const iconTotalWidth = parseInt(iconStyle.width) + parseInt(iconStyle.marginLeft) + parseInt(iconStyle.marginRight);
+		const iconTotalWidth = parseFloat(iconStyle.width) + parseFloat(iconStyle.marginLeft) + parseFloat(iconStyle.marginRight);
 
-		this._contentWidth = textWidth + 10 + iconTotalWidth;
+		this._contentWidth = Math.ceil(textWidth + iconTotalWidth);
 	}
 
 	async _handleFocusTrapEnter() {
