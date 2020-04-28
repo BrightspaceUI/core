@@ -15,7 +15,6 @@ class InputText extends RtlMixin(LitElement) {
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
-			contentWidth: { type: Number, attribute: 'content-width' },
 			disabled: { type: Boolean, reflect: true },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -37,8 +36,7 @@ class InputText extends RtlMixin(LitElement) {
 			_firstSlotWidth: { type: Number },
 			_focused: { type: Boolean },
 			_hovered: { type: Boolean },
-			_lastSlotWidth: { type: Number },
-			_totalContentWidth: { type: String }
+			_lastSlotWidth: { type: Number }
 		};
 	}
 
@@ -114,10 +112,6 @@ class InputText extends RtlMixin(LitElement) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
-			} else if ((prop === 'contentWidth' || prop === '_firstSlotWidth' || prop === '_lastSlotWidth') && this.contentWidth) {
-				const paddingLeft = (this._firstSlotWidth > 0) ? `${this._firstSlotWidth}px` : window.getComputedStyle(this.shadowRoot.querySelector('input')).getPropertyValue('padding-left');
-				const paddingRight = (this._lastSlotWidth > 0) ? `${this._lastSlotWidth}px` : window.getComputedStyle(this.shadowRoot.querySelector('input')).getPropertyValue('padding-right');
-				this._totalContentWidth = `calc(${paddingLeft} + ${paddingRight} + ${this.contentWidth}px)`;
 			}
 		});
 	}
@@ -136,9 +130,6 @@ class InputText extends RtlMixin(LitElement) {
 		}
 		if (this._lastSlotWidth > 0) {
 			inputStyles.paddingRight = isFocusedOrHovered ? `${this._lastSlotWidth - 1}px` : `${this._lastSlotWidth}px`;
-		}
-		if (this._totalContentWidth) {
-			inputStyles.width = this._totalContentWidth;
 		}
 
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';

@@ -10,6 +10,7 @@ import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(getDateFromISODate(val));
@@ -175,7 +176,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
-					content-width="${ifDefined(this._contentWidth)}"
 					?disabled="${this.disabled}"
 					@keydown="${this._handleKeydown}"
 					@focus="${this._handleInputTextFocus}"
@@ -183,6 +183,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					?label-hidden="${this.labelHidden}"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${(this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase()}"
+					style="${styleMap({maxWidth: `calc(${this._contentWidth}px + 0.75rem)`})}"
 					title="${this.localize('openInstructions')}"
 					.value="${this._formattedValue}">
 					<d2l-icon
@@ -246,9 +247,14 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			text.innerHTML = this.emptyStateText;
 			emptyStateWidth = text.clientWidth;
 		}
-		const width = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
-		this._contentWidth = width + 10;
+		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
 		document.body.removeChild(text);
+
+		const icon = this.shadowRoot.querySelector('d2l-icon');
+		const iconStyle = getComputedStyle(icon);
+		const iconTotalWidth = parseInt(iconStyle.width) + parseInt(iconStyle.marginLeft) + parseInt(iconStyle.marginRight);
+
+		this._contentWidth = textWidth + 10 + iconTotalWidth;
 	}
 
 	async _handleFocusTrapEnter() {
