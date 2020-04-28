@@ -21,7 +21,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean },
-			emptyStateText: { type: String, attribute: 'empty-state-text'},
+			emptyText: { type: String, attribute: 'empty-text'},
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			value: { type: String },
@@ -66,72 +66,72 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return {
 			'ar': {
 				clear: 'مسح',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today',
 			},
 			'da': {
 				clear: 'Ryd',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today',
 			},
 			'de': {
 				clear: 'Löschen',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'en': {
 				clear: 'Clear',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'es': {
 				clear: 'Borrar',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'fr': {
 				clear: 'Effacer',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'ja': {
 				clear: 'クリア',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'ko': {
 				clear: '지우기',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'nl': {
 				clear: 'Wissen',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'pt': {
 				clear: 'Desmarcar',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'sv': {
 				clear: 'Rensa',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'tr': {
 				clear: 'Temizle',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'zh': {
 				clear: '清除',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'zh-tw': {
 				clear: '清除',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			}
 		};
@@ -140,7 +140,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
-		this.emptyStateText = '';
+		this.emptyText = '';
 		this.value = '';
 
 		this._dropdownOpened = false;
@@ -165,11 +165,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			this._getContentWidth();
 		});
 
-		this._formattedValue = this.emptyStateText ? this.emptyStateText : '';
+		this._formattedValue = this.emptyText ? this.emptyText : '';
 		this._getContentWidth();
 	}
 
 	render() {
+		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		const width = `calc(${this._contentWidth}px + 0.75rem + 2px)`; // text and icon width + paddingRight + border width
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
@@ -183,9 +184,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					@mouseup="${this._handleMouseup}"
-					placeholder="${(this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase()}"
+					placeholder="${shortDateFormat}"
 					style="${styleMap({maxWidth: width})}"
-					title="${this.localize('openInstructions')}"
+					title="${this.localize('openInstructions', {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
 						?disabled="${this.disabled}"
@@ -245,8 +246,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const contentWidth = text.getBoundingClientRect().width;
 
 		let emptyStateWidth = 0;
-		if (this.emptyStateText) {
-			text.innerText = this.emptyStateText;
+		if (this.emptyText) {
+			text.innerText = this.emptyText;
 			emptyStateWidth = text.getBoundingClientRect().width;
 		}
 		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
@@ -340,7 +341,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_setFormattedValue() {
-		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyStateText ? this.emptyStateText : '');
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyText ? this.emptyText : '');
 	}
 
 	_updateValueDispatchEvent(dateInISO) {

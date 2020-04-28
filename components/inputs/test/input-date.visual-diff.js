@@ -20,7 +20,7 @@ describe('d2l-input-date', () => {
 	[
 		'basic',
 		'disabled',
-		'empty-state-text',
+		'empty-text',
 		'labelled',
 		'label-hidden',
 		'no-value'
@@ -37,9 +37,9 @@ describe('d2l-input-date', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it('empty-state-text-focus', async function() {
-		await page.$eval('#empty-state-text', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#empty-state-text');
+	it('empty-text-focus', async function() {
+		await page.$eval('#empty-text', (elem) => elem.focus());
+		const rect = await visualDiff.getRect(page, '#empty-text');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
