@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
@@ -92,6 +93,7 @@ class InputText extends RtlMixin(LitElement) {
 
 		this._focused = false;
 		this._hovered = false;
+		this._inputId = getUniqueId();
 		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
 	}
@@ -153,6 +155,7 @@ class InputText extends RtlMixin(LitElement) {
 					@change="${this._handleChange}"
 					class="${classMap(inputClasses)}"
 					?disabled="${this.disabled}"
+					id="${this._inputId}"
 					@input="${this._handleInput}"
 					@invalid="${this._handleInvalid}"
 					@keypress="${this._handleKeypress}"
@@ -177,10 +180,8 @@ class InputText extends RtlMixin(LitElement) {
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<label>
-					<span class="d2l-input-label">${this.label}</span>
-					${input}
-				</label>`;
+				<label class="d2l-input-label" for="${this._inputId}">${this.label}</label>
+				${input}`;
 		}
 		return input;
 	}

@@ -3,7 +3,9 @@ import { formatDateInISO,
 	formatTimeInISO,
 	getDateFromDateObj,
 	getDateFromISODate,
+	getLocalDateTimeFromUTCDateTime,
 	getToday,
+	getUTCDateTimeFromLocalDateTime,
 	parseISODate,
 	parseISODateTime,
 	parseISOTime } from '../dateTime.js';
@@ -157,18 +159,6 @@ describe('date-time', () => {
 		});
 	});
 
-	describe('getDateFromISODate', () => {
-		it('should return the correct date', () => {
-			expect(getDateFromISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
-		});
-
-		it('should throw when invalid date format', () => {
-			expect(() => {
-				getDateFromISODate('2019/01/30');
-			}).to.throw('Invalid input: Expected format is YYYY-MM-DD');
-		});
-	});
-
 	describe('getDateFromDateObj', () => {
 		it('should return the correct date', () => {
 			const date = {
@@ -183,6 +173,28 @@ describe('date-time', () => {
 			expect(() => {
 				getDateFromDateObj();
 			}).to.throw();
+		});
+	});
+
+	describe('getDateFromISODate', () => {
+		it('should return the correct date', () => {
+			expect(getDateFromISODate('2019-01-30')).to.deep.equal(new Date(2019, 0, 30));
+		});
+
+		it('should throw when invalid date format', () => {
+			expect(() => {
+				getDateFromISODate('2019/01/30');
+			}).to.throw('Invalid input: Expected format is YYYY-MM-DD');
+		});
+	});
+
+	describe('getLocalDateTimeFromUTCDateTime', () => {
+		it('should return the correct date and time', () => {
+			expect(getLocalDateTimeFromUTCDateTime('2019-01-30T12:05:10.000Z')).to.equal('2019-01-30T07:05:10.000');
+		});
+
+		it('should return the correct date and time', () => {
+			expect(getLocalDateTimeFromUTCDateTime('2019-11-02T03:00:00.000Z')).to.equal('2019-11-01T23:00:00.000');
 		});
 	});
 
@@ -208,9 +220,45 @@ describe('date-time', () => {
 		});
 	});
 
+	describe('getUTCDateTimeFromLocalDateTime', () => {
+		it('should return the correct result', () => {
+			const date = '2019-02-10';
+			const time = '14:20:30';
+			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2019-02-10T19:20:30.000Z');
+		});
+
+		it('should return the correct result', () => {
+			const date = '2030-01-20';
+			const time = '2:3:4';
+			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2030-01-20T07:03:04.000Z');
+		});
+
+		it('should return the correct result when date contains time', () => {
+			const date = '2030-01-20T12:00:00';
+			const time = '2:3:4';
+			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2030-01-20T07:03:04.000Z');
+		});
+
+		it('should return the correct result when time contains date', () => {
+			const date = '2030-01-20';
+			const time = '2012-01-10T2:3:4';
+			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2030-01-20T07:03:04.000Z');
+		});
+
+		it('should throw when no time', () => {
+			expect(() => {
+				getUTCDateTimeFromLocalDateTime('2019-01-03');
+			}).to.throw('Invalid input: Expected date and time');
+		});
+	});
+
 	describe('parseISODate', () => {
 		it('should return correct date', () => {
 			expect(parseISODate('2019-01-30')).to.deep.equal({year: 2019, month: 1, date: 30});
+		});
+
+		it('should return correct date when full ISO date', () => {
+			expect(parseISODate('2019-01-30T15:00:00.000Z')).to.deep.equal({year: 2019, month: 1, date: 30});
 		});
 
 		it('should throw when invalid date format', () => {
@@ -233,6 +281,10 @@ describe('date-time', () => {
 	});
 
 	describe('parseISOTime', () => {
+		it('should return correct time when full ISO date', () => {
+			expect(parseISOTime('2019-02-12T18:00:00.000Z')).to.deep.equal({hours: 18, minutes: 0, seconds: 0});
+		});
+
 		it('should return correct time when hours, minutes, seconds', () => {
 			expect(parseISOTime('12:10:30')).to.deep.equal({hours: 12, minutes: 10, seconds: 30});
 		});
@@ -247,6 +299,10 @@ describe('date-time', () => {
 
 		it('should return all 0 when empty input', () => {
 			expect(parseISOTime('')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
+		});
+
+		it('should return all 0 when just date', () => {
+			expect(parseISOTime('2019-02-12')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
 		});
 
 		it('should return all 0 when no input', () => {
