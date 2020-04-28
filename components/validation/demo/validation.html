@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+			import '../../inputs/input-checkbox.js';
+			import '../../inputs/input-text.js';
+			import '../../typography/typography.js';
+			import '../../button/button.js';
+			import '../../colors/colors.js';
+	</script>
+	<style>
+		body {
+			padding: 30px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<form action="/action" onsubmit="return validate()">
+		<label for="fname">First name:</label><br>
+		<d2l-input-text type="text" required id="fname" name="fname" value="John"></d2l-input-text><br>
+		<label for="lname">Last name:</label><br>
+		<input type="text" id="lname" name="lname" value="Doe"><br><br>
+		<d2l-input-checkbox checked name="chcke">Checked item</d2l-input-checkbox>
+		<d2l-input-checkbox name="chbox2">Unchecked item</d2l-input-checkbox>
+		<button type="submit">Submit</button>
+	</form>
+	<script>
+		function validate() {
+			console.log('perform synchronous validation');
+			return true;
+		}
+	</script>
+</body>
+
+</html>
