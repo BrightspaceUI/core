@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getFirstFocusableDescendant } from '../../helpers/focus.js';
+import { getFirstFocusableDescendant, getNextFocusable, isFocusable } from '../../helpers/focus.js';
 
 export class ListItemGeneric extends LitElement {
 
@@ -66,7 +66,7 @@ export class ListItemGeneric extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 
-		console.log(this.shadowRoot);
+		this._preventFocusFromNonActions();
 	}
 
 	render() {
@@ -81,6 +81,50 @@ export class ListItemGeneric extends LitElement {
 		<slot name="content"></slot>
 		`;
 	}
+
+	_preventFocusFromNonActions() {
+		const slots = [
+			'content',
+			'control',
+			'outside-control'
+		];
+		for (const slot of slots) {
+			const content = this.querySelector(`[slot="${slot}"]`);
+			const focusables = content ? getAllFocusableDescendants(content) : [];
+			for (const focusable of focusables) {
+				focusable.setAttribute('tabindex', '-1');
+				focusable.addEventListener('click', (event) => {
+					event.preventDefault();
+					return false;
+				});
+			}
+		}
+	}
+}
+
+function getAllFocusableDescendants(node) {
+	if (!node) {
+		return [];
+	}
+	const _getFocusableDescendants = (node, focusables = []) => {
+		if (!node.children || !node.childNodes) {
+			return [];
+		}
+		let children;
+		if (node.tagName === 'SLOT') {
+			children = node.assignedNodes();
+		} else {
+			children = node.children || node.childNodes;
+		}
+		for (const child of children) {
+			if (isFocusable(child, true)) {
+				focusables.push(child);
+			}
+			_getFocusableDescendants(child, focusables);
+		}
+		return focusables;
+	};
+	return _getFocusableDescendants(node);
 }
 
 customElements.define('d2l-list-item-generic', ListItemGeneric);

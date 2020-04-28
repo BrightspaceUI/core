@@ -24,6 +24,7 @@ class ListItemSample extends LitElement {
 				<div slot="control">X</div>
 				<div slot="control-action"><a href="#">a2</a></div>
 				<div slot="content">
+					<a href="#">Default link</a>
 					<slot></slot>
 				</div>
 				<a href="#" slot="content-action"></a>
