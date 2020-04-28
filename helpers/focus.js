@@ -14,6 +14,31 @@ const focusableElements = {
 	textarea: true
 };
 
+export function getAllFocusableDescendants(node, includeHidden = true) {
+	if (!node) {
+		return [];
+	}
+	const _getFocusableDescendants = (node, focusables = []) => {
+		if (!node.children || !node.childNodes) {
+			return [];
+		}
+		let children;
+		if (node.tagName === 'SLOT') {
+			children = node.assignedNodes();
+		} else {
+			children = node.children || node.childNodes;
+		}
+		for (const child of children) {
+			if (isFocusable(child, includeHidden)) {
+				focusables.push(child);
+			}
+			_getFocusableDescendants(child, focusables);
+		}
+		return focusables;
+	};
+	return _getFocusableDescendants(node);
+}
+
 export function getComposedActiveElement() {
 	let node = document.activeElement;
 

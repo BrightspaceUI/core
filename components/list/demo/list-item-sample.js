@@ -20,9 +20,9 @@ class ListItemSample extends LitElement {
 				${ this._renderDragHandle ? this._renderDragHandle() : '' }
 				${ this._renderCheckbox ? this._renderCheckbox() : '' }
 				<div slot="outside-control">=</div>
-				<div slot="outside-control-action"><a href="#">a1</a></div>
-				<div slot="control">X</div>
-				<div slot="control-action"><a href="#">a2</a></div>
+				<div slot="outside-control-action" tabindex="0"></div>
+				<div slot="control"><input type="checkbox"></div>
+				<div slot="control-action" tabindex="0"></div>
 				<div slot="content">
 					<a href="#">Default link</a>
 					<slot></slot>

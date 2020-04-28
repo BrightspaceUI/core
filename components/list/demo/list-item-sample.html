@@ -67,11 +67,12 @@
 				<d2l-list>
 					<d2l-list-item-generic>
 						<div slot="control">[x]</div>
+						<a href="#" slot="control-action"></a>
 						<div slot="content">
-							Content and things
+							<a href="#">A link that shouldn't be clickable</a>
 						</div>
 						<div slot="actions">
-							<slot name="actions">Actions</slot>
+							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
 						</div>
 					</d2l-list-item-generic>
 				</d2l-list>
@@ -85,8 +86,9 @@
 				<d2l-list>
 					<d2l-list-item-generic>
 						<div slot="content">
-							Content and things
+							Content and things that are associated with a link
 						</div>
+						<a href="#" slot="content-action"></a>
 						<div slot="actions">
 							<slot name="actions">Actions</slot>
 						</div>

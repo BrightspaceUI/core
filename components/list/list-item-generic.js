@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getFirstFocusableDescendant, getNextFocusable, isFocusable } from '../../helpers/focus.js';
+import { getAllFocusableDescendants } from '../../helpers/focus.js';
 
 export class ListItemGeneric extends LitElement {
 
@@ -100,31 +100,6 @@ export class ListItemGeneric extends LitElement {
 			}
 		}
 	}
-}
-
-function getAllFocusableDescendants(node) {
-	if (!node) {
-		return [];
-	}
-	const _getFocusableDescendants = (node, focusables = []) => {
-		if (!node.children || !node.childNodes) {
-			return [];
-		}
-		let children;
-		if (node.tagName === 'SLOT') {
-			children = node.assignedNodes();
-		} else {
-			children = node.children || node.childNodes;
-		}
-		for (const child of children) {
-			if (isFocusable(child, true)) {
-				focusables.push(child);
-			}
-			_getFocusableDescendants(child, focusables);
-		}
-		return focusables;
-	};
-	return _getFocusableDescendants(node);
 }
 
 customElements.define('d2l-list-item-generic', ListItemGeneric);
