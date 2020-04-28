@@ -11,7 +11,7 @@ class SvgSkeleton extends LitElement {
 					display: block;
 				}
 				:host([hidden]) {
-					display: none;
+					display: none !important;
 				}
 				svg {
 					height: 100%;

@@ -11,7 +11,7 @@ class Skeleton extends LitElement {
 					display: block;
 				}
 				:host([hidden]) {
-					display: none;
+					display: none !important;
 				}
 				div.d2l-skeleton {
 					height: 100%;

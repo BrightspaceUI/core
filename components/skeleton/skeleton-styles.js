@@ -52,6 +52,6 @@ export const skeletonStyles = css`
 	}
 
 	.d2l-skeleton[hidden] {
-		display: none;
+		display: none !important;
 	}
 `;
