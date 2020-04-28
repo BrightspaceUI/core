@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FormElementMixin } from '../validation/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
@@ -7,7 +8,7 @@ import { inputStyles } from './input-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-class InputText extends RtlMixin(LitElement) {
+class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -111,6 +112,7 @@ class InputText extends RtlMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
+				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			}
 		});
