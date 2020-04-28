@@ -27,6 +27,30 @@ The `d2l-tooltip` component is used to display additional information when users
 * `d2l-tooltip-show`: dispatched when the tooltip is opened
 * `d2l-tooltip-hide`: dispatched when the tooltip is closed
 
+### Accessibility
+
+**Interactive Target Elements:**
+
+If the tooltip's target is an interactive element then it will automatically be accessibile. [A list of interactive elements can be found here.](./tooltip.js#L24)
+
+**Static / Custom Target Elements:**
+
+If the tooltip's target is a static or custom element then the target must be both focusable and given an interactive ARIA role. Note, a role should only be added to an element if the role semantically aligns with what the element represents. [A list of interactive roles can be found here.](./tooltip.js#L38)
+
+Adding roles to custom elements that contain internal interactive elements should be avoided to prevent the element type being announced twice. In situations like these, the tooltip should be moved inside the custom element so that it can be attached directly as shown below:
+```html
+<my-custom-button>
+	#shadow-root (open)
+		<!---->
+		<button id="my-button">Click Me</button>
+		<d2l-tooltip for="my-button">Your tooltip message.</d2l-tooltip>
+		<!---->
+</my-custom-button>
+```
+If you need a tooltip in a core component that does not currently support it please create a Github issue.
+
+If you are unable to add a semantically aligned ARIA role or attach the tooltip to an interactive element then accessibility may be inconsistent across different screen readers. In these scenarios, putting critical information inside the tooltip should be avoided because some users may not be able to access it.
+
 ### Advanced Usages
 
 **Boundaries:**
@@ -46,7 +70,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 <div class="offset-parent">
 	<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
 	<d2l-tooltip for="tooltip-boundary"
-		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:-}">
+		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:0}">
 		This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
 	</d2l-tooltip>
 </div>
@@ -54,8 +78,10 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 
 **Advanced Properties:**
 * `boundary` (Object) - optionally provide boundaries to constrain where the tooltip will appear. Valid properties are `"top"`, `"bottom"`, `"left"` and `"right"`. The boundary is relative to the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent).
+* `close-on-click` (Boolean, default: `false`) - causes the tooltip to close when its target is clicked
 * `disable-focus-lock` (Boolean, default: `false`) - disables focus lock so that the tooltip will automatically close when no longer hovered even if it still has focus
 * `force-show` (Boolean, default: `false`): force the tooltip to stay open as long as it remains `true`
+* `for-type` (String, default: `descriptor`) accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor. Valid values are: `label` and `descriptor`.
 * `position` (String): optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
 
 ## Future Enhancements

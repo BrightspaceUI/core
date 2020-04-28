@@ -25,11 +25,9 @@ describe('d2l-list', () => {
 			{ name: 'simple', selector: '#simple' },
 			{ name: 'actions', selector: '#actions' },
 			{ name: 'rtl', selector: '#rtl' },
-			{ name: 'rtl outside', selector: '#rtlOutside' }
 		]},
 		{ category: 'illustration', tests: [
 			{ name: 'default', selector: '#illustration' },
-			{ name: 'outside', selector: '#illustrationOutside' }
 		]},
 		{ category: 'separators', tests: [
 			{ name: 'default', selector: '#simple' },

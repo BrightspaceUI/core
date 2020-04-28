@@ -34,7 +34,7 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 
 	render() {
 		return html`
-			<d2l-button-icon aria-label=${this.text} ?disabled=${this.disabled} icon="tier1:more" text=${this.text} ?translucent=${this.translucent}>
+			<d2l-button-icon ?disabled=${this.disabled} icon="tier1:more" text=${this.text} ?translucent=${this.translucent}>
 			</d2l-button-icon>
 			<slot></slot>
 		`;
