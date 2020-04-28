@@ -1,4 +1,3 @@
-import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { skeletonStyles } from './skeleton-styles.js';
 
@@ -10,6 +9,9 @@ class Skeleton extends LitElement {
 			css`
 				:host {
 					display: block;
+				}
+				:host([hidden]) {
+					display: none;
 				}
 				div.d2l-skeleton {
 					height: 100%;
