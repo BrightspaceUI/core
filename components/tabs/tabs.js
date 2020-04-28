@@ -612,12 +612,18 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	_handlePanelSelected(e) {
-		this._getTabInfo(e.target.id).selected = true;
+		const tabInfo = this._getTabInfo(e.target.id);
+		// event could be from nested tabs
+		if (!tabInfo) return;
+		tabInfo.selected = true;
 		this.requestUpdate();
 	}
 
 	async _handlePanelTextChange(e) {
-		this._getTabInfo(e.target.id).text = e.target.text;
+		const tabInfo = this._getTabInfo(e.target.id);
+		// event could be from nested tabs
+		if (!tabInfo) return;
+		tabInfo.text = e.target.text;
 		this.requestUpdate();
 		await this.updateComplete;
 		this._updateMeasures();
