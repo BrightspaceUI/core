@@ -44,34 +44,40 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', async function() {
-						await helper.open(page, '#dialog');
+						await page.$eval('#dialog', (dialog) => dialog.opened = true);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('scroll bottom shadow', async function() {
-						await helper.open(page, '#dialogLong');
+						await page.$eval('#dialogLong', (dialog) => dialog.opened = true);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('scroll top shadow', async function() {
-						await helper.open(page, '#dialogLong');
-						await page.$eval('#dialogLong #bottom', (bottom) => {
-							bottom.scrollIntoView();
+						await page.$eval('#dialogLong', (dialog) => {
+							dialog.opened = true;
+							return new Promise((resolve) => {
+								requestAnimationFrame(() => {
+									dialog.querySelector('#bottom').scrollIntoView();
+									resolve();
+								});
+							});
 						});
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('rtl', async function() {
-						await helper.open(page, '#dialogRtl');
+						await page.$eval('#dialogRtl', (dialog) => dialog.opened = true);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('resize', async function() {
-						await helper.open(page, '#dialogResize');
-						await page.$eval('#dialogResize', (dialog) => {
+						await page.$eval('#dialogResize', async(dialog) => {
+							dialog.opened = true;
 							dialog.querySelector('div').style.height = '60px';
 							dialog.width = 500;
 							dialog.resize();
+							return new Promise((resolve) => requestAnimationFrame(resolve));
 						});
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
