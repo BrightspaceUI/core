@@ -162,12 +162,13 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
-			this.requestUpdate();
 			this._getContentWidth();
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
-		this._getContentWidth();
+		requestAnimationFrame(() => {
+			this._getContentWidth();
+		});
 	}
 
 	render() {
