@@ -26,6 +26,7 @@ describe('d2l-input-date', () => {
 		'no-value'
 	].forEach((name) => {
 		it(name, async function() {
+			await page.waitFor(100);
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
