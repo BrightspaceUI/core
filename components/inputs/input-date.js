@@ -159,6 +159,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
 
+		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate();
@@ -175,7 +176,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
-					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
@@ -260,6 +260,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._contentWidth = Math.ceil(textWidth + iconTotalWidth);
 	}
 
+	_handleBlur() {
+		this._setFormattedValue();
+	}
+
 	async _handleFocusTrapEnter() {
 		this._calendar.focus();
 	}
@@ -270,6 +274,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			this._dropdown.open();
 			await this._handleChange(e);
 			this._calendar.focus();
+			this._setFormattedValue();
 
 			if (e.keyCode === 40) e.preventDefault();
 		}
@@ -321,10 +326,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	_handleInputTextFocus() {
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
-	}
-
-	_handleInputTextBlur() {
-		this._setFormattedValue();
 	}
 
 	_handleMouseup(e) {
