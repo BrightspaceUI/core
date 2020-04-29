@@ -17,6 +17,20 @@ describe('d2l-input-date', () => {
 
 	after(async() => await browser.close());
 
+	it('basic-focus', async function() {
+		await page.$eval('#basic', (elem) => elem.focus());
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await page.$eval('#basic', (elem) => elem.blur());
+	});
+
+	it('empty-text-focus', async function() {
+		await page.$eval('#empty-text', (elem) => elem.focus());
+		const rect = await visualDiff.getRect(page, '#empty-text');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await page.$eval('#empty-text', (elem) => elem.blur());
+	});
+
 	[
 		'basic',
 		'disabled',
@@ -26,22 +40,9 @@ describe('d2l-input-date', () => {
 		'no-value'
 	].forEach((name) => {
 		it(name, async function() {
-			await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-	});
-
-	it('basic-focus', async function() {
-		await page.$eval('#basic', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#basic');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('empty-text-focus', async function() {
-		await page.$eval('#empty-text', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#empty-text');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	describe('localization', () => {
