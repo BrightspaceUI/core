@@ -55,6 +55,7 @@ The `<d2l-input-time>` component consists of a text input field for typing a tim
 **Properties:**
 
 - `label` (String, required): accessible label for the input
+- `default-value` (String, default:`'00:00:00'`): set default value of input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`.
 - `disabled` (Boolean): disables the input
 - `enforce-time-intervals` (Boolean): rounds up to nearest valid interval time (specified with `time-interval`) when user types a time
 - `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
