@@ -171,7 +171,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	render() {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const width = this._contentWidth ? `calc(${this._contentWidth}px + 0.75rem + 2px)` : '9rem'; // text and icon width + paddingRight + border width
+		const width = this._contentWidth ? `calc(${this._contentWidth}px + 15px + 2px)` : '9rem'; // text and icon width + paddingRight + border width
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
