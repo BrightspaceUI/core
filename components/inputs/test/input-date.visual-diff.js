@@ -13,6 +13,7 @@ describe('d2l-input-date', () => {
 		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 900}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
+		await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
 	});
 
 	after(async() => await browser.close());
