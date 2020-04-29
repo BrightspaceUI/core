@@ -166,14 +166,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
-		requestAnimationFrame(() => {
-			this._getContentWidth();
-		});
+		setTimeout(() => { this._getContentWidth(); }, 10);
 	}
 
 	render() {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const width = `calc(${this._contentWidth}px + 0.75rem + 2px)`; // text and icon width + paddingRight + border width
+		const width = this._contentWidth ? `calc(${this._contentWidth}px + 0.75rem + 2px)` : '9rem'; // text and icon width + paddingRight + border width
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
