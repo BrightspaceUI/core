@@ -103,6 +103,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					?hidden="${timeHidden}"
 					label="${this.localize('time')}"
 					label-hidden
+					max-height="430"
 					.value="${this._parsedDateTime}">
 				</d2l-input-time>
 			</d2l-input-fieldset>
