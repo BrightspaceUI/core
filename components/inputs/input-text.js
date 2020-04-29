@@ -131,7 +131,6 @@ class InputText extends RtlMixin(LitElement) {
 		if (this._lastSlotWidth > 0) {
 			inputStyles.paddingRight = isFocusedOrHovered ? `${this._lastSlotWidth - 1}px` : `${this._lastSlotWidth}px`;
 		}
-
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
