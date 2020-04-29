@@ -234,6 +234,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const text = document.createElement('div');
 		document.body.appendChild(text);
 		text.style.fontSize = '0.8rem';
+		text.style.fontWeight = '400';
 		text.style.letterSpacing = '0.02rem';
 		text.style.position = 'absolute';
 		text.style.width = 'auto';
