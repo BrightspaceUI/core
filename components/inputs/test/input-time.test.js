@@ -113,9 +113,29 @@ describe('d2l-input-time', () => {
 			expect(elem.value).to.equal('0:00:00');
 		});
 
-		it('should apply custom default', async() => {
+		it('should apply custom default value', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" default-value="02:00:00"></d2l-input-time>');
 			expect(elem.value).to.equal('2:00:00');
+		});
+
+		it('should throw an error with invalid default value', async() => {
+			return fixture('<d2l-input-time label="label text" default-value="potato"></d2l-input-time>')
+				.then(
+					() => Promise.reject(new Error('Expected fixture to throw error')),
+					err => {
+						expect(err).to.be.instanceOf(Error);
+						expect(err.message).to.equal('Invalid input: Expected format is hh:mm:ss');
+					});
+		});
+
+		it('should apply default value from keyword: startOfDay', async() => {
+			const elem = await fixture('<d2l-input-time label="label text" default-value="startOfDay"></d2l-input-time>');
+			expect(elem.value).to.equal('0:00:00');
+		});
+
+		it('should apply custom default value from keyword: endOfDay', async() => {
+			const elem = await fixture('<d2l-input-time label="label text" default-value="endOfDay"></d2l-input-time>');
+			expect(elem.value).to.equal('23:59:59');
 		});
 
 		it('should correctly set given value', async() => {
@@ -123,7 +143,17 @@ describe('d2l-input-time', () => {
 			expect(getInput(elem).value).to.equal('11:22 AM');
 		});
 
-		it('should correctly set given value over custom default', async() => {
+		it('should throw an error with invalid given value', async() => {
+			return fixture('<d2l-input-time label="label text" value="potato"></d2l-input-time>')
+				.then(
+					() => Promise.reject(new Error('Expected fixture to throw error')),
+					err => {
+						expect(err).to.be.instanceOf(Error);
+						expect(err.message).to.equal('Invalid input: Expected format is hh:mm:ss');
+					});
+		});
+
+		it('should correctly set given value over default value', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" default-value="02:00:00" value="04:00:00"></d2l-input-time>');
 			expect(getInput(elem).value).to.equal('4:00 AM');
 		});

@@ -91,7 +91,8 @@ class InputTime extends LitElement {
 			maxHeight: { type: Number, attribute: 'max-height' },
 			timeInterval: { type: String, attribute: 'time-interval' },
 			value: { type: String },
-			_formattedValue: { type: String }
+			_formattedValue: { type: String },
+			_givenValue: { type: String }
 		};
 	}
 
@@ -135,6 +136,11 @@ class InputTime extends LitElement {
 
 	get value() { return this._value; }
 	set value(val) {
+		if (this.value === undefined) {
+			this._givenValue = val;
+			return;
+		}
+
 		const oldValue = this.value;
 		const time = parseValue(val);
 		if (this.enforceTimeIntervals) {
@@ -204,9 +210,10 @@ class InputTime extends LitElement {
 		if (this.label === null) {
 			console.warn('d2l-input-time component requires label text');
 		}
-		if (this.value === undefined) {
-			this.value = formatValue(getDefaultTime(this.defaultValue));
-		}
+
+		const time = this._givenValue === undefined ? getDefaultTime(this.defaultValue) : parseValue(this._givenValue);
+		this._value = formatValue(time);
+		this._formattedValue = formatTime(time);
 	}
 
 	focus() {
