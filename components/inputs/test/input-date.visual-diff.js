@@ -18,11 +18,11 @@ describe('d2l-input-date', () => {
 	after(async() => await browser.close());
 
 	it('basic', async function() {
-		// page.on('console', msg => {
-		// 	console.log(`${msg._args[0]}`);
-		// });
-		// const rect = await visualDiff.getRect(page, '#basic');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		page.on('console', msg => {
+			console.log(`${msg._args[0]}`);
+		});
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	[
