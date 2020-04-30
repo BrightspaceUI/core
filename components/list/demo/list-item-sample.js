@@ -22,23 +22,28 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 					[content-end actions-start] auto
 					[end actions-end];
 			}
-			.d2l-list-item-content {
+			[slot="content"]{
 				grid-column: content-start / content-end;
 				grid-row: 1 / 2;
 			}
-			.d2l-list-item-actions {
+			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				grid-row: 1 / 2;
+				z-index: 4;
 			}
 		`];
 	}
 	render() {
 		return html`
 			<div class="list-grid">
-				${ this._renderDragHandle ? this._renderDragHandle() : '' }
+				${ this._renderDragHandle ? this._renderDragHandle() : html`
+					<div>=</div>
+				` }
 				${ this._renderCheckbox() }
-				<div class="d2l-list-item-content"></div>
-				<div class="d2l-list-item-actions"></div>
+				<div slot="content">
+					<slot></slot>
+				</div>
+				<slot name="actions"></slot>
 			</div>
 		`;
 	}
