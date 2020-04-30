@@ -26,6 +26,19 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				grid-column: content-start / content-end;
 				grid-row: 1 / 2;
 			}
+			[slot="control"] {
+				grid-column: control-start / control-end;
+				grid-row: 1 / 2;
+			}
+			[slot="control-action"] {
+				grid-column: control-start / end;
+				grid-row: 1 / 2;
+				z-index: 2;
+				cursor: pointer;
+			}
+			:host([disabled]) [slot="control-action"] {
+				cursor: default;
+			}
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				grid-row: 1 / 2;
@@ -39,7 +52,8 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				${ this._renderDragHandle ? this._renderDragHandle() : html`
 					<div>=</div>
 				` }
-				${ this._renderCheckbox() }
+				<div slot="control">${ this._renderCheckbox() }</div>
+				<div slot="control-action">${ this._renderCheckboxAction() }</div>
 				<div slot="content">
 					<slot></slot>
 				</div>
