@@ -21,8 +21,8 @@ describe('d2l-input-date', () => {
 		page.on('console', msg => {
 			console.log(`${msg._args[0]}`);
 		});
-		const rect = await visualDiff.getRect(page, '#basic');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		// const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
 	[
@@ -78,7 +78,7 @@ describe('d2l-input-date', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it(`${lang} value`, async function() {
+			it.skip(`${lang} value`, async function() {
 				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
 				const rect = await visualDiff.getRect(page, '#basic');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
