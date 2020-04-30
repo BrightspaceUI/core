@@ -241,14 +241,17 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
 		text.textContent = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const placeholderWidth = text.getBoundingClientRect().width;
+		// const placeholderWidth = text.getBoundingClientRect().width;
+		const placeholderWidth = text.offsetWidth;
 		text.textContent = formatISODateInUserCalDescriptor('2020-12-20');
-		const contentWidth = text.getBoundingClientRect().width;
+		// const contentWidth = text.getBoundingClientRect().width;
+		const contentWidth = text.offsetWidth;
 
 		let emptyStateWidth = 0;
 		if (this.emptyText) {
 			text.textContent = this.emptyText;
-			emptyStateWidth = text.getBoundingClientRect().width;
+			emptyStateWidth = text.offsetWidth;
+			// emptyStateWidth = text.getBoundingClientRect().width;
 		}
 		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
 		document.body.removeChild(text);
