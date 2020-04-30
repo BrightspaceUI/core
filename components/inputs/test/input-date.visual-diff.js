@@ -34,8 +34,8 @@ describe('d2l-input-date', () => {
 		'no-value'
 	].forEach((name) => {
 		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			// const rect = await visualDiff.getRect(page, `#${name}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 	});
 
@@ -75,8 +75,7 @@ describe('d2l-input-date', () => {
 		].forEach((lang) => {
 			it(`${lang} empty`, async function() {
 				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
-				const rect = await visualDiff.getRect(page, '#no-value');
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 			});
 
 			it(`${lang} value`, async function() {
