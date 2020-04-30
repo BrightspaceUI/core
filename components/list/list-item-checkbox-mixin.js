@@ -72,7 +72,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		return this.selectable ? html`
 			<div slot="control">
 				<input
-					id="${this._checkBoxId}"
+					id="${this._checkboxId}"
 					class="d2l-input-checkbox"
 					@change="${this._handleCheckboxChange}"
 					type="checkbox"
