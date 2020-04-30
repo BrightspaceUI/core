@@ -237,6 +237,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		text.style.letterSpacing = '0.02rem';
 		text.style.position = 'absolute';
 		text.style.width = 'auto';
+		text.style.fontFamily = 'Lato';
+		text.style.fontWeight = '400';
+		text.style.lineHeight = '1.4rem';
 
 		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
 		text.innerText = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
@@ -255,7 +258,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const icon = this.shadowRoot.querySelector('d2l-icon');
 		const iconStyle = getComputedStyle(icon);
 		const iconTotalWidth = parseFloat(iconStyle.width) + parseFloat(iconStyle.marginLeft) + parseFloat(iconStyle.marginRight);
-		console.log(`TEXT: ${textWidth}, ICON: ${iconTotalWidth}, value: ${this._dateTimeDescriptor.formats.dateFormats.short}`);
+		console.log(`TEXT: ${textWidth}, CONTENT WIDTH: ${contentWidth}`);
 
 		this._contentWidth = Math.ceil(textWidth + iconTotalWidth);
 	}
