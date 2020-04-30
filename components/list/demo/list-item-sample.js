@@ -22,7 +22,9 @@ class ListItemSample extends LitElement {
 				<div slot="outside-control">=</div>
 				<div slot="outside-control-action" tabindex="0"></div>
 				<div slot="control"><input type="checkbox"></div>
-				<div slot="control-action" tabindex="0"></div>
+				<div slot="control-action">
+					<div tabindex="0" style="width:20px; height:100%;"></div>
+				</div>
 				<div slot="content">
 					<a href="#">Default link</a>
 					<slot></slot>

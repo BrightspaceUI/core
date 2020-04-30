@@ -41,12 +41,6 @@ export class ListItemGeneric extends LitElement {
 			::slotted([slot="control-action"]),
 			::slotted([slot="content-action"]) {
 				grid-row: 1 / 2;
-				cursor: pointer;
-			}
-			:host[disabled] ::slotted([slot="outside-control-action"]),
-			:host[disabled] ::slotted([slot="control-action"]),
-			:host[disabled] ::slotted([slot="content-action"]) {
-				cursor: default;
 			}
 			::slotted([slot="outside-control-action"]) {
 				grid-column: start / end;
@@ -92,6 +86,8 @@ export class ListItemGeneric extends LitElement {
 			const content = this.querySelector(`[slot="${slot}"]`);
 			const focusables = content ? getAllFocusableDescendants(content) : [];
 			for (const focusable of focusables) {
+				// remove focus and click events from focusable items.
+				// Items requiring focus MUST be placed within an action area
 				focusable.setAttribute('tabindex', '-1');
 				focusable.addEventListener('click', (event) => {
 					event.preventDefault();
