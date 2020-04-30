@@ -233,8 +233,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const text = document.createElement('span');
 		document.body.appendChild(text);
 		text.style.fontFamily = 'inherit';
+		text.style.fontWeight = '400';
 		text.style.fontSize = '0.8rem';
 		text.style.letterSpacing = '0.02rem';
+		text.style.lineHeight = '1.4rem';
 		text.style.position = 'absolute';
 		text.style.width = 'auto';
 
@@ -250,6 +252,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			emptyStateWidth = text.getBoundingClientRect().width;
 		}
 		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
+		console.log(`FONT FAMILY: ${getComputedStyle(text).fontFamily}, FONT SIZE: ${getComputedStyle(text).fontSize}`);
 		document.body.removeChild(text);
 
 		const icon = this.shadowRoot.querySelector('d2l-icon');
