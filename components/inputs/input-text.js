@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FormElementMixin } from '../validation/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
@@ -7,7 +8,7 @@ import { inputStyles } from './input-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-class InputText extends RtlMixin(LitElement) {
+class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -111,9 +112,19 @@ class InputText extends RtlMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
+				this.checkValidity();
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			}
 		});
+	}
+
+	async checkValidity() {
+		if (this.required && !this.value) {
+			this.setValidity({ valueMissing: true }, 'Oh no this value is required');
+		} else {
+			this.setValidity({ valid: true });
+		}
+		return this.validity.valid;
 	}
 
 	render() {
@@ -137,7 +148,7 @@ class InputText extends RtlMixin(LitElement) {
 		const input = html`
 			<div class="d2l-input-text-container">
 				<input aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-					aria-invalid="${ifDefined(this.ariaInvalid)}"
+					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-required="${ifDefined(ariaRequired)}"
 					autocomplete="${ifDefined(this.autocomplete)}"

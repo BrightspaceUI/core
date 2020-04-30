@@ -2,14 +2,16 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from './input-checkbox-styles.js';
 import { classMap} from 'lit-html/directives/class-map.js';
+import { FormElementMixin } from '../validation/form-element-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputCheckbox extends RtlMixin(LitElement) {
+class InputCheckbox extends RtlMixin(FormElementMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			ariaLabel: { type: String, attribute: 'aria-label' },
+			required: { type: Boolean },
 			checked: { type: Boolean },
 			disabled: { type: Boolean },
 			indeterminate: { type: Boolean },
@@ -89,6 +91,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 		return html`
 			<label>
 				<input
+					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-label="${ifDefined(this.ariaLabel)}"
 					@change="${this._handleChange}"
@@ -105,23 +108,44 @@ class InputCheckbox extends RtlMixin(LitElement) {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((_, prop) => {
+			if (prop === 'indeterminate') {
+				this.checkValidity();
+			}
+		});
+	}
+
+	async checkValidity() {
+		if (this.required && (!this.checked || this.indeterminate)) {
+			this.setValidity({ valueMissing: true }, 'Oh no this value is required');
+		} else {
+			this.setValidity({ valid: true });
+		}
+		return this.validity.valid;
+	}
+
 	focus() {
 		const elem = this.shadowRoot.querySelector('input.d2l-input-checkbox');
 		if (elem) elem.focus();
 	}
 
-	simulateClick() {
+	async simulateClick() {
 		this.checked = !this.checked;
 		this.indeterminate = false;
+		await this.checkValidity();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{bubbles: true, composed: false}
 		));
 	}
 
-	_handleChange(e) {
+	async _handleChange(e) {
 		this.checked = e.target.checked;
 		this.indeterminate = false;
+		await this.checkValidity();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{bubbles: true, composed: false}

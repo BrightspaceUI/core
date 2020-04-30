@@ -41,4 +41,7 @@ export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox:disabled {
 		opacity: 0.5;
 	}
+	:host(.d2l-dirty) input[type="checkbox"][aria-invalid="true"].d2l-input-checkbox {
+		border-color: var(--d2l-color-cinnabar);
+	}
 `;
