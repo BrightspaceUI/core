@@ -22,6 +22,7 @@ class TemplatePrimarySecondary extends LitElement {
 			:host([width-type="normal"]) .d2l-template-primary-secondary-footer-container {
 				max-width: 1230px;
 				margin: 0 auto;
+				width: 100%;
 			}
 			.container {
 				display: grid;
