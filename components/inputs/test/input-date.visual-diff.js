@@ -17,7 +17,7 @@ describe('d2l-input-date', () => {
 
 	after(async() => await browser.close());
 
-	it('basic', async function() {
+	it.skip('basic', async function() {
 		page.on('console', msg => {
 			console.log(`${msg._args[0]}`);
 		});
@@ -33,19 +33,19 @@ describe('d2l-input-date', () => {
 		'label-hidden',
 		'no-value'
 	].forEach((name) => {
-		it.skip(name, async function() {
+		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
-	it.skip('basic-focus', async function() {
+	it('basic-focus', async function() {
 		await page.$eval('#basic', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it.skip('empty-text-focus', async function() {
+	it('empty-text-focus', async function() {
 		await page.$eval('#empty-text', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#empty-text');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -73,13 +73,13 @@ describe('d2l-input-date', () => {
 			'zh',
 			'zh-tw'
 		].forEach((lang) => {
-			it.skip(`${lang} empty`, async function() {
+			it(`${lang} empty`, async function() {
 				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
 				const rect = await visualDiff.getRect(page, '#no-value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip(`${lang} value`, async function() {
+			it(`${lang} value`, async function() {
 				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
 				const rect = await visualDiff.getRect(page, '#basic');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -96,7 +96,7 @@ describe('d2l-input-date', () => {
 			await helper.reset(page, '#basic');
 		});
 
-		it.skip('disabled does not open', async function() {
+		it('disabled does not open', async function() {
 			await page.$eval('#disabled', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				const e = new Event(
@@ -109,20 +109,20 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with value', async function() {
+		it('open with value', async function() {
 			await helper.open(page, '#basic');
 			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('tab on open', async function() {
+		it('tab on open', async function() {
 			await helper.open(page, '#basic');
 			await page.keyboard.press('Tab');
 			const rect = await helper.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('click date', async function() {
+		it('click date', async function() {
 			await helper.open(page, '#basic');
 			await page.$eval('#basic', (elem) => {
 				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
@@ -133,7 +133,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('set to today', async function() {
+		it('set to today', async function() {
 			await page.$eval('#basic', (elem) => {
 				const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Set to Today"]');
 				button.click();
@@ -142,7 +142,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('clear', async function() {
+		it('clear', async function() {
 			await page.$eval('#basic', (elem) => {
 				const button = elem.shadowRoot.querySelector('d2l-button-subtle[text="Clear"]');
 				button.click();
@@ -151,7 +151,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('opens then changes month then closes then reopens', async function() {
+		it('opens then changes month then closes then reopens', async function() {
 			// open
 			await helper.open(page, '#basic');
 
@@ -172,7 +172,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with click after text input', async function() {
+		it('open with click after text input', async function() {
 			await page.$eval('#basic', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = '01/10/2030';
@@ -186,7 +186,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with click after empty text input', async function() {
+		it('open with click after empty text input', async function() {
 			await page.$eval('#basic', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = '';
@@ -200,7 +200,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with enter after text input', async function() {
+		it('open with enter after text input', async function() {
 			await page.$eval('#basic', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = '11/21/2031';
@@ -213,7 +213,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with enter after empty text input', async function() {
+		it('open with enter after empty text input', async function() {
 			await page.$eval('#basic', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = '';
@@ -226,7 +226,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with down arrow after text input', async function() {
+		it('open with down arrow after text input', async function() {
 			await page.$eval('#basic', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = '08/30/2032';
@@ -239,7 +239,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with down arrow after empty text input', async function() {
+		it('open with down arrow after empty text input', async function() {
 			await page.$eval('#basic', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = '';
@@ -252,7 +252,7 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('open with placeholder', async function() {
+		it('open with placeholder', async function() {
 			await helper.open(page, '#no-value');
 			const rect = await helper.getRect(page, '#no-value');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

@@ -166,7 +166,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
-		this._getContentWidth();
+		requestAnimationFrame(() => {
+			this._getContentWidth();
+		});
 	}
 
 	render() {
