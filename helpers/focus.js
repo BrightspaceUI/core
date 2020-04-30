@@ -163,9 +163,9 @@ export function getPreviousFocusableAncestor(node, includeHidden, includeTabbabl
 	return null;
 }
 
-export function isFocusable(node, includeHidden, includeTabbablesOnly) {
+export function isFocusable(node, includeHidden, includeTabbablesOnly, includeDisabled) {
 
-	if (!node || node.nodeType !== 1 || node.disabled) return false;
+	if (!node || node.nodeType !== 1 || (!includeDisabled && node.disabled)) return false;
 
 	if (includeTabbablesOnly === undefined) includeTabbablesOnly = true;
 

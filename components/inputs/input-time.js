@@ -8,6 +8,7 @@ import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getToday, parseISOTime } from '../../helpers/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen-styles.js';
@@ -73,9 +74,10 @@ class InputTime extends LitElement {
 		return {
 			disabled: { type: Boolean },
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
-			timeInterval: { type: String, attribute: 'time-interval' },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			maxHeight: { type: Number, attribute: 'max-height' },
+			timeInterval: { type: String, attribute: 'time-interval' },
 			value: { type: String },
 			_formattedValue: { type: String }
 		};
@@ -113,8 +115,8 @@ class InputTime extends LitElement {
 		super();
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
-		this.timeInterval = 'thirty';
 		this.labelHidden = false;
+		this.timeInterval = 'thirty';
 		this._dropdownId = getUniqueId();
 		this._formattedValue = formatTime(DEFAULT_VALUE);
 		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
@@ -157,7 +159,7 @@ class InputTime extends LitElement {
 							@keypress="${this._handleKeypress}"
 							.value="${this._formattedValue}">
 					</div>
-					<d2l-dropdown-menu id="dropdown" no-padding-footer min-width="195">
+					<d2l-dropdown-menu id="dropdown" no-padding-footer max-height="${ifDefined(this.maxHeight)}" min-width="195">
 						<d2l-menu
 							id="${this._dropdownId}"
 							role="listbox"

@@ -1,4 +1,4 @@
-import { convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+import { convertLocalToUTCDateTime, convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
 
 // val is an object containing year, month, date
 export function formatDateInISO(val) {
@@ -15,6 +15,15 @@ export function formatDateInISO(val) {
 	if (val.month.toString().length < 2) month = `0${month}`;
 	if (val.date.toString().length < 2) date = `0${date}`;
 	return `${val.year}-${month}-${date}`;
+}
+
+// val is an object containing year, month, date, hours, minutes, seconds
+// if local is true, no Z since not in UTC
+export function formatDateTimeInISO(val, local) {
+	if (!val) {
+		throw new Error('Invalid input: Expected input to be an object');
+	}
+	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000${local ? '' : 'Z'}`;
 }
 
 // val is an object containing hours, minutes, seconds
@@ -53,10 +62,26 @@ export function getDateTimeDescriptorShared(refresh) {
 	return dateTimeDescriptor;
 }
 
+export function getLocalDateTimeFromUTCDateTime(dateTime) {
+	const dateObj = parseISODateTime(dateTime);
+	const localDateTime = convertUTCToLocalDateTime(dateObj);
+	return formatDateTimeInISO(localDateTime, true);
+}
+
 export function getToday() {
 	const val = new Date().toISOString();
 	const dateTime = parseISODateTime(val);
 	return convertUTCToLocalDateTime(dateTime);
+}
+
+export function getUTCDateTimeFromLocalDateTime(date, time) {
+	if (!date || !time) throw new Error('Invalid input: Expected date and time');
+
+	const dateObj = parseISODate(date);
+	const timeObj = parseISOTime(time);
+
+	const utcDateTime = convertLocalToUTCDateTime(Object.assign(dateObj, timeObj));
+	return formatDateTimeInISO(utcDateTime);
 }
 
 export function parseISODate(val) {
@@ -95,7 +120,7 @@ export function parseISOTime(val) {
 	let hours = 0;
 	let minutes = 0;
 	let seconds = 0;
-	const re = /^([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?$/;
+	const re = /([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?/;
 	const match = val.match(re);
 	if (match !== null) {
 		if (match.length > 1) {
