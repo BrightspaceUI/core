@@ -252,8 +252,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			emptyStateWidth = text.getBoundingClientRect().width;
 		}
 		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
-		console.log(`FONT FAMILY: ${getComputedStyle(text).fontFamily}, FONT SIZE: ${getComputedStyle(text).fontSize}`);
-		document.body.removeChild(text);
+		// document.body.removeChild(text);
 
 		const icon = this.shadowRoot.querySelector('d2l-icon');
 		const iconStyle = getComputedStyle(icon);
