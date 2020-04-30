@@ -171,7 +171,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	render() {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const width = this._contentWidth ? `calc(${this._contentWidth}px + 15px + 2px)` : '9rem'; // text and icon width + paddingRight + border width
+		const width = this._contentWidth ? `calc(${this._contentWidth}px + 0.75rem + 2px)` : '9rem'; // text and icon width + paddingRight + border width
 		console.log(`WIDTH: ${width}`);
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
@@ -233,34 +233,36 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	_getContentWidth() {
 		const text = document.createElement('div');
 		document.body.appendChild(text);
-		text.style.fontSize = '16px';
-		text.style.letterSpacing = '0.4px';
+		text.style.fontSize = '0.8rem';
+		text.style.letterSpacing = '0.02rem';
 		text.style.position = 'absolute';
 		text.style.width = 'auto';
 		text.style.fontFamily = 'Lato';
 		text.style.fontWeight = '400';
-		text.style.lineHeight = '28px';
+		text.style.lineHeight = '1.4rem';
 
-		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
-		text.innerText = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const placeholderWidth = text.getBoundingClientRect().width;
-		text.innerText = formatISODateInUserCalDescriptor('2020-12-20');
-		const contentWidth = text.getBoundingClientRect().width;
+		requestAnimationFrame(() => {
+			// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
+			text.innerText = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+			const placeholderWidth = text.getBoundingClientRect().width;
+			text.innerText = formatISODateInUserCalDescriptor('2020-12-20');
+			const contentWidth = text.getBoundingClientRect().width;
 
-		let emptyStateWidth = 0;
-		if (this.emptyText) {
-			text.innerText = this.emptyText;
-			emptyStateWidth = text.getBoundingClientRect().width;
-		}
-		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
-		// document.body.removeChild(text);
+			let emptyStateWidth = 0;
+			if (this.emptyText) {
+				text.innerText = this.emptyText;
+				emptyStateWidth = text.getBoundingClientRect().width;
+			}
+			const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
+			// document.body.removeChild(text);
 
-		const icon = this.shadowRoot.querySelector('d2l-icon');
-		const iconStyle = getComputedStyle(icon);
-		const iconTotalWidth = parseFloat(iconStyle.width) + parseFloat(iconStyle.marginLeft) + parseFloat(iconStyle.marginRight);
-		console.log(`TEXT: ${textWidth}, CONTENT WIDTH: ${contentWidth}, CLIENT WIDTH: ${text.clientWidth}`);
+			const icon = this.shadowRoot.querySelector('d2l-icon');
+			const iconStyle = getComputedStyle(icon);
+			const iconTotalWidth = parseFloat(iconStyle.width) + parseFloat(iconStyle.marginLeft) + parseFloat(iconStyle.marginRight);
+			console.log(`TEXT: ${textWidth}, CONTENT WIDTH: ${contentWidth}, CLIENT WIDTH: ${text.clientWidth}`);
 
-		this._contentWidth = Math.ceil(textWidth + iconTotalWidth);
+			this._contentWidth = Math.ceil(textWidth + iconTotalWidth);
+		});
 	}
 
 	_handleBlur() {
