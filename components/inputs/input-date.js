@@ -254,6 +254,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const icon = this.shadowRoot.querySelector('d2l-icon');
 		const iconStyle = getComputedStyle(icon);
 		const iconTotalWidth = parseFloat(iconStyle.width) + parseFloat(iconStyle.marginLeft) + parseFloat(iconStyle.marginRight);
+		console.log(`TEXT: ${textWidth}, ICON: ${iconTotalWidth}, value: ${this._dateTimeDescriptor.formats.dateFormats.short}`);
 
 		this._contentWidth = Math.ceil(textWidth + iconTotalWidth);
 	}
