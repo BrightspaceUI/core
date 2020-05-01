@@ -166,9 +166,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
-		requestAnimationFrame(() => {
-			this._getContentWidth();
-		});
+		this._getContentWidth();
 	}
 
 	render() {
@@ -233,16 +231,14 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_getContentWidth() {
-		const text = document.createElement('span');
+		const text = document.createElement('div');
 		document.body.appendChild(text);
-		text.style.fontFamily = 'inherit';
+		text.style.fontFamily = getComputedStyle(this).fontFamily;
 		text.style.fontWeight = '400';
 		text.style.fontSize = '0.8rem';
-		text.style.left = '-10000px';
 		text.style.letterSpacing = '0.02rem';
 		text.style.lineHeight = '1.4rem';
 		text.style.position = 'absolute';
-		text.style.top = '-10000px';
 		text.style.width = 'auto';
 
 		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
