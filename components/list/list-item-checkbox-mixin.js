@@ -17,7 +17,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	// TODO: Remove grid styles after list-item-generic is created
 	static get styles() {
 		return [ checkboxStyles, css`
-			.checkbox-action { height: 100%}
+			.d2l-checkbox-action { height: 100%; }
 		` ];
 	}
 
@@ -70,7 +70,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
-			<div @click="${this._handleCheckboxActionClick}" class="checkbox-action">${inner}</div>
+			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action">${inner}</div>
 			` : nothing;
 	}
 };
