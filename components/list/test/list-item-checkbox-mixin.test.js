@@ -40,7 +40,7 @@ describe('ListItemCheckboxMixin', () => {
 		it('dispatches "d2l-list-item-selected" when action area is clicked', async() => {
 			// simulate an action area click
 			setTimeout(() => {
-				const actionArea = element.shadowRoot.querySelector('.checkbox-action');
+				const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
 				actionArea.dispatchEvent(new Event('click'));
 			});
 
@@ -54,7 +54,7 @@ describe('ListItemCheckboxMixin', () => {
 			element.disabled = true;
 			await element.updateComplete;
 			element.addEventListener('d2l-list-item-selected', () => dispatched = true);
-			const actionArea = element.shadowRoot.querySelector('.checkbox-action');
+			const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
 			// simulate an action area click
 			setTimeout(() => {
 				actionArea.dispatchEvent(new Event('click'));
