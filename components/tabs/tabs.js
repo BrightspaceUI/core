@@ -378,7 +378,12 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
 				tab.removeEventListener('transitionend', handleTransitionEnd);
-				this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
+				if (this._tabInfos.findIndex) {
+					this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
+				} else {
+					// IE11
+					this._tabInfos.splice(this._getTabInfoIndex(this._tabInfos, tabInfo.id), 1);
+				}
 				this.requestUpdate();
 				resolve();
 			};
@@ -514,8 +519,22 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel');
 	}
 
+	// IE11 only
+	_getTabInfoIndex(infos, id) {
+		for (let i = 0; i < infos.length; i++) {
+			if (infos[i].id === id) return i;
+		}
+		return -1;
+	}
+
 	_getTabInfo(id) {
-		return this._tabInfos.find((t) => t.id === id);
+		if (this._tabInfos.find) {
+			return this._tabInfos.find((t) => t.id === id);
+		} else {
+			// IE11
+			const index = this._getTabInfoIndex(this._tabInfos, id);
+			return index !== -1 ? this._tabInfos[index] : null;
+		}
 	}
 
 	_handleFocusEnd(e) {
@@ -549,8 +568,15 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 			let state = '';
 			if (this._initialized && !reduceMotion && panels.length !== this._tabInfos.length) {
 				// if it's a new tab, update state to animate addition
-				if (this._tabInfos.findIndex(info => info.id === panel.id) === -1) {
-					state = 'adding';
+				if (this._tabInfos.findIndex) {
+					if (this._tabInfos.findIndex(info => info.id === panel.id) === -1) {
+						state = 'adding';
+					}
+				} else {
+					// IE11
+					if (this._getTabInfoIndex(this._tabInfos, panel.id) === -1) {
+						state = 'adding';
+					}
 				}
 			}
 			const tabInfo = {
@@ -566,10 +592,19 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		if (this._initialized && !reduceMotion && this._tabInfos.length !== newTabInfos.length) {
 			this._tabInfos.forEach((info, index) => {
 				// if a tab was removed, include old info to animate it away
-				if (newTabInfos.findIndex(newInfo => newInfo.id === info.id) === -1) {
-					info.state = 'removing';
-					newTabInfos.splice(index, 0, info);
+				if (newTabInfos.findIndex) {
+					if (newTabInfos.findIndex(newInfo => newInfo.id === info.id) === -1) {
+						info.state = 'removing';
+						newTabInfos.splice(index, 0, info);
+					}
+				} else {
+					// IE11
+					if (this._getTabInfoIndex(newTabInfos, info.id) === -1) {
+						info.state = 'removing';
+						newTabInfos.splice(index, 0, info);
+					}
 				}
+
 			});
 		}
 		this._tabInfos = newTabInfos;
