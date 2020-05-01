@@ -17,18 +17,8 @@ describe('d2l-input-date', () => {
 
 	after(async() => await browser.close());
 
-	it('basic', async function() {
-		// page.on('console', msg => {
-		// 	console.log(`${msg._args[0]}`);
-		// });
-		await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), 'ar');
-		await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), 'en');
-		const rect = await visualDiff.getRect(page, '#basic');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
 	[
-		// 'basic',
+		'basic',
 		'disabled',
 		'empty-text',
 		'labelled',

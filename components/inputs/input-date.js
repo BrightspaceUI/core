@@ -173,20 +173,20 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	render() {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const width = this._contentWidth ? `calc(${this._contentWidth}px + 0.75rem + 2px)` : '9rem'; // text and icon width + paddingRight + border width
+		const inputTextWidth = this._contentWidth ? `calc(${this._contentWidth}px + 1.2rem + 0.75rem + 2px)` : '9rem'; // text and icon width + icon margin left and right + paddingRight + border width
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
-					@keydown="${this._handleKeydown}"
 					@focus="${this._handleInputTextFocus}"
+					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
-					style="${styleMap({maxWidth: width})}"
+					style="${styleMap({maxWidth: inputTextWidth})}"
 					title="${this.localize('openInstructions', {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
@@ -235,8 +235,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const text = document.createElement('div');
 		document.body.appendChild(text);
 		text.style.fontFamily = 'inherit';
-		text.style.fontWeight = '400';
 		text.style.fontSize = '0.8rem';
+		text.style.fontWeight = '400';
 		text.style.letterSpacing = '0.02rem';
 		text.style.lineHeight = '1.4rem';
 		text.style.position = 'absolute';
@@ -257,10 +257,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		document.body.removeChild(text);
 
 		const icon = this.shadowRoot.querySelector('d2l-icon');
-		const iconStyle = getComputedStyle(icon);
-		const iconTotalWidth = parseFloat(iconStyle.width) + parseFloat(iconStyle.marginLeft) + parseFloat(iconStyle.marginRight);
 
-		this._contentWidth = Math.ceil(textWidth + iconTotalWidth);
+		this._contentWidth = Math.ceil(textWidth + parseFloat(getComputedStyle(icon).width));
 	}
 
 	_handleBlur() {
