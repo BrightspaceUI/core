@@ -149,7 +149,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
-	firstUpdated(changedProperties) {
+	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		if (!this.label) {
@@ -166,13 +166,14 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
+		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+		await Promise.resolve(fontsPromise);
 		this._getContentWidth();
 	}
 
 	render() {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		const width = this._contentWidth ? `calc(${this._contentWidth}px + 0.75rem + 2px)` : '9rem'; // text and icon width + paddingRight + border width
-		console.log(`width ${width}`);
 		return html`
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
@@ -233,7 +234,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	_getContentWidth() {
 		const text = document.createElement('div');
 		document.body.appendChild(text);
-		text.style.fontFamily = getComputedStyle(this).fontFamily;
+		text.style.fontFamily = 'inherit';
 		text.style.fontWeight = '400';
 		text.style.fontSize = '0.8rem';
 		text.style.letterSpacing = '0.02rem';
