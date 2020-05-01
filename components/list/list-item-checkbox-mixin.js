@@ -57,18 +57,6 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckbox() {
 		return this.selectable ? html`
-<<<<<<< HEAD
-			<div slot="control">
-				<input
-					id="${this._checkBoxId}"
-					class="d2l-input-checkbox"
-					@change="${this._handleCheckboxChange}"
-					type="checkbox"
-					.checked="${this.selected}"
-					?disabled="${this.disabled}">
-			</div>
-			<div slot="control-action" @click="${this._handleCheckboxActionClick}"></div>
-=======
 			<input
 				id="${this._checkboxId}"
 				class="d2l-input-checkbox"
@@ -82,7 +70,6 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
 			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action">${inner}</div>
->>>>>>> master
 			` : nothing;
 	}
 };
