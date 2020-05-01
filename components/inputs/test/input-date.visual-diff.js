@@ -118,7 +118,7 @@ describe('d2l-input-date', () => {
 			await helper.open(page, '#basic');
 			await page.$eval('#basic', (elem) => {
 				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
+				const date = calendar.shadowRoot.querySelector('td[data-date="8"]');
 				date.click();
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
