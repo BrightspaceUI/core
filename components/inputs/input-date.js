@@ -166,8 +166,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
-		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
-		await Promise.resolve(fontsPromise);
+		await (document.fonts ? document.fonts.ready : Promise.resolve());
 		this._getContentWidth();
 	}
 
@@ -233,7 +232,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	_getContentWidth() {
 		const text = document.createElement('div');
-		document.body.appendChild(text);
 		text.style.fontFamily = 'inherit';
 		text.style.fontSize = '0.8rem';
 		text.style.fontWeight = '400';
@@ -241,6 +239,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		text.style.lineHeight = '1.4rem';
 		text.style.position = 'absolute';
 		text.style.width = 'auto';
+		document.body.appendChild(text);
 
 		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
 		text.textContent = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
@@ -248,12 +247,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		text.textContent = formatISODateInUserCalDescriptor('2020-12-20');
 		const contentWidth = text.getBoundingClientRect().width;
 
-		let emptyStateWidth = 0;
+		let emptyTextWidth = 0;
 		if (this.emptyText) {
 			text.textContent = this.emptyText;
-			emptyStateWidth = text.getBoundingClientRect().width;
+			emptyTextWidth = text.getBoundingClientRect().width;
 		}
-		const textWidth = Math.max(placeholderWidth, contentWidth, emptyStateWidth);
+		const textWidth = Math.max(placeholderWidth, contentWidth, emptyTextWidth);
 		document.body.removeChild(text);
 
 		const icon = this.shadowRoot.querySelector('d2l-icon');
