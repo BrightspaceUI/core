@@ -14,19 +14,10 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		};
 	}
 
-	// TODO: Remove grid styles after list-item-generic is created
 	static get styles() {
 		return [ checkboxStyles, css`
-		[slot="control"] {
-			width: 40px;
-		}
-		[slot="control-action"] {
-			cursor: pointer;
-		}
-		:host([disabled]) [slot="control-action"] {
-			cursor: default;
-		}
-		`];
+			.d2l-checkbox-action { height: 100%; }
+		` ];
 	}
 
 	constructor() {
@@ -66,6 +57,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckbox() {
 		return this.selectable ? html`
+<<<<<<< HEAD
 			<div slot="control">
 				<input
 					id="${this._checkBoxId}"
@@ -76,6 +68,21 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 					?disabled="${this.disabled}">
 			</div>
 			<div slot="control-action" @click="${this._handleCheckboxActionClick}"></div>
+=======
+			<input
+				id="${this._checkboxId}"
+				class="d2l-input-checkbox"
+				@change="${this._handleCheckboxChange}"
+				type="checkbox"
+				.checked="${this.selected}"
+				?disabled="${this.disabled}">
+			` : nothing;
+	}
+
+	_renderCheckboxAction(inner) {
+		return this.selectable ? html`
+			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action">${inner}</div>
+>>>>>>> master
 			` : nothing;
 	}
 };

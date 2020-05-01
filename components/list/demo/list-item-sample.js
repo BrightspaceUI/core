@@ -11,7 +11,6 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		};
 	}
 
-	// TODO: Placeholder grid styles to be replaced with list-item-generic
 	static get styles() {
 		return [ (super.styles ? super.styles : css``)];
 	}
@@ -22,12 +21,13 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				${ this._renderDragHandle ? this._renderDragHandle() : html`
 				<div slot="outside-control">=</div>
 				` }
-				${ this._renderCheckbox() }
+				<div slot="control">${ this._renderCheckbox() }</div>
+				<div slot="control-action">${ this._renderCheckboxAction() }</div>
 				<div slot="content">
 					<slot></slot>
 				</div>
 				<div slot="actions">
-					<slot name="actions">Actions</slot>
+					<slot name="actions"></slot>
 				</div>
 			</d2l-list-item-generic>
 		`;

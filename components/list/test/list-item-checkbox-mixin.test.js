@@ -1,11 +1,14 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { html, LitElement } from 'lit-element/lit-element.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
-import { LitElement } from 'lit-element/lit-element.js';
 
 const tag = defineCE(
 	class extends ListItemCheckboxMixin(LitElement) {
 		render() {
-			return this._renderCheckbox();
+			return html`
+				${this._renderCheckbox()}
+				${this._renderCheckboxAction()}
+			`;
 		}
 	}
 );
@@ -37,7 +40,7 @@ describe('ListItemCheckboxMixin', () => {
 		it('dispatches "d2l-list-item-selected" when action area is clicked', async() => {
 			// simulate an action area click
 			setTimeout(() => {
-				const actionArea = element.shadowRoot.querySelector('[slot="control-action"]');
+				const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
 				actionArea.dispatchEvent(new Event('click'));
 			});
 
@@ -51,7 +54,7 @@ describe('ListItemCheckboxMixin', () => {
 			element.disabled = true;
 			await element.updateComplete;
 			element.addEventListener('d2l-list-item-selected', () => dispatched = true);
-			const actionArea = element.shadowRoot.querySelector('[slot="control-action"]');
+			const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
 			// simulate an action area click
 			setTimeout(() => {
 				actionArea.dispatchEvent(new Event('click'));

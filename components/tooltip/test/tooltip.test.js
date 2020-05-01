@@ -4,10 +4,17 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = html`
 	<div>
-		<div id="implicit-target" tabindex="-1">
+		<div id="implicit-target" tabindex="-1" role="button">
 			<button id="explicit-target">Hover me for tips</button>
-			<d2l-tooltip for="explicit-target">If I got a problem then a problem's got a problem.</d2l-tooltip>
+			<d2l-tooltip for="explicit-target" for-type="descriptor">If I got a problem then a problem's got a problem.</d2l-tooltip>
 		</div>
+	</div>
+`;
+
+const labelFixture = html`
+	<div>
+		<button id="label-target">Hover me for tips</button>
+		<d2l-tooltip for="label-target" for-type="label">If I got a problem then a problem's got a problem.</d2l-tooltip>
 	</div>
 `;
 
@@ -37,6 +44,18 @@ describe('d2l-tooltip', () => {
 				await expect(tooltip).to.be.accessible;
 			});
 		});
+
+		it('should add aria-labelledby to its target if for-type is \'label\'', async() => {
+			const tooltipLabelFixture = await fixture(labelFixture);
+			const target = tooltipLabelFixture.querySelector('#label-target');
+			expect(target.hasAttribute('aria-labelledby')).to.be.true;
+		});
+
+		it('should add aria-describedby to its target if for-type is \'descriptor\'', async() => {
+			const target = tooltipFixture.querySelector('#explicit-target');
+			expect(target.hasAttribute('aria-describedby')).to.be.true;
+		});
+
 	});
 
 	describe('constructor', () => {
