@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../../button/button-icon.js';
+		import '../list.js';
+		import '../list-item-content.js';
+		import './list-item-sample.js';
+	</script>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-list-item-sample">
+
+		<h2>List item sample for development</h2>
+
+		<d2l-demo-snippet>
+			<template>
+				<d2l-list>
+					<d2l-list-item-sample
+						key="foobar"
+						selectable
+						draggable>
+						<d2l-list-item-content>
+							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+							<div slot="secondary">Specific Expectation B2.1</div>
+						</d2l-list-item-content>
+						<div slot="actions">
+							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
+						</div>
+					</d2l-list-item-sample>
+				</d2l-list>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Disabled</h2>
+
+		<d2l-demo-snippet>
+			<template>
+				<d2l-list>
+					<d2l-list-item-sample
+						key="foobar"
+						selectable
+						draggable
+						disabled>
+						<d2l-list-item-content>
+							<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+							<div slot="secondary">Specific Expectation B2.1</div>
+						</d2l-list-item-content>
+						<div slot="actions">
+							<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
+						</div>
+					</d2l-list-item-sample>
+				</d2l-list>
+			</template>
+		</d2l-demo-snippet>
+	</d2l-demo-page>
+</body>
+</html>
