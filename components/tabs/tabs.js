@@ -34,7 +34,7 @@ if (!Array.prototype.findIndex) {
 			let k = 0;
 
 			while (k < len) {
-				var kValue = o[k];
+				const kValue = o[k];
 				if (predicate.call(thisArg, kValue, k, o)) return k;
 				k++;
 			}
