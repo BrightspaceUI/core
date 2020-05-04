@@ -142,9 +142,7 @@ class InputTime extends LitElement {
 	render() {
 		initIntervals(this.timeInterval);
 		const input = html`
-			<label>
-				<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
-			</label>
+			<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
 			<d2l-dropdown ?disabled="${this.disabled}">
 				<div
 					role="combobox"
