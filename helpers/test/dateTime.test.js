@@ -293,20 +293,10 @@ describe('date-time', () => {
 			expect(parseISOTime('12:10')).to.deep.equal({hours: 12, minutes: 10, seconds: 0});
 		});
 
-		it('should return all 0 when just hours', () => {
-			expect(parseISOTime('13')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
-		});
-
-		it('should return all 0 when empty input', () => {
-			expect(parseISOTime('')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
-		});
-
-		it('should return all 0 when just date', () => {
-			expect(parseISOTime('2019-02-12')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
-		});
-
-		it('should return all 0 when no input', () => {
-			expect(parseISOTime('')).to.deep.equal({hours: 0, minutes: 0, seconds: 0});
+		it('should throw when invalid time format', () => {
+			expect(() => {
+				parseISOTime('12');
+			}).to.throw('Invalid input: Expected format is hh:mm:ss');
 		});
 	});
 
