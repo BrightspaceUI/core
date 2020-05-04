@@ -12,7 +12,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return {
 			buttonText: { type: String, attribute: 'button-text' },
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
-			hidden: { type: Boolean, reflect: true },
 			subtext: { type: String },
 			type: { type: String, reflect: true }
 		};
@@ -26,7 +25,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				border-radius: 0.3rem;
 				border: 1px solid var(--d2l-color-mica);
 				box-sizing: border-box;
-				display: block;
 				display: flex;
 				flex: 1;
 				max-width: 710px;
@@ -123,7 +121,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.hasCloseButton = false;
-		this.hidden = false;
 		this.type = 'default';
 	}
 

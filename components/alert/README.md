@@ -2,7 +2,7 @@
 
 ## d2l-alert
 
-The `d2l-alert` component can be used to communicate important information relating to the state of the system and the users’ work flow.
+The `d2l-alert` component can be used to communicate important information relating to the state of the system and the user's work flow.
 
 ![screenshot of a basic alert](./screenshots/alert.png)
 

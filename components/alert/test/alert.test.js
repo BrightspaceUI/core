@@ -21,7 +21,9 @@ describe('d2l-alert', () => {
 			'default',
 			'warning',
 			'critical',
-			'success'
+			'success',
+			'call-to-action',
+			'error'
 		].forEach((type) => {
 			it(`passes aXe tests for type "${type}"`, async() => {
 				alert.type = type;
@@ -46,7 +48,12 @@ describe('d2l-alert', () => {
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon.d2l-alert-action');
 			setTimeout(() => closeButton.click());
 			await oneEvent(alert, 'd2l-alert-closed');
-			await alert.updateComplete;
+			expect(alert.hasAttribute('hidden')).to.be.true;
+		});
+
+		it('should fire "d2l-alert-closed" event when close is called', async() => {
+			setTimeout(() => alert.close());
+			await oneEvent(alert, 'd2l-alert-closed');
 			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 

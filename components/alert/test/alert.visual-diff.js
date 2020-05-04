@@ -17,14 +17,17 @@ describe('d2l-alert', () => {
 	after(async() => await browser.close());
 
 	[
-		'default',
-		'success',
-		'critical',
-		'warning',
+		'type-default',
+		'type-success',
+		'type-critical',
+		'type-warning',
+		'type-error',
+		'type-call-to-action',
 		'close',
 		'button',
 		'button-close',
-		'rtl'
+		'rtl',
+		'hidden'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
