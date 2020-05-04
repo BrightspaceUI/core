@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
-class ListItemGeneric extends LitElement {
+class ListItemGenericLayout extends LitElement {
 
 	static get styles() {
 		return css`
@@ -31,7 +31,7 @@ class ListItemGeneric extends LitElement {
 				grid-column: content-start / content-end;
 			}
 
-			::slotted([slot="actions"])  {
+			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				z-index: 4;
 			}
@@ -70,4 +70,4 @@ class ListItemGeneric extends LitElement {
 	}
 }
 
-customElements.define('d2l-list-item-generic', ListItemGeneric);
+customElements.define('d2l-list-item-generic-layout', ListItemGenericLayout);

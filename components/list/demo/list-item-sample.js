@@ -1,4 +1,4 @@
-import '../list-item-generic.js';
+import '../list-item-generic-layout.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
@@ -24,7 +24,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-list-item-generic>
+			<d2l-list-item-generic-layout>
 				${ this.draggable ? html`
 				<div slot="outside-control">${ this._renderDragHandle ? this._renderDragHandle() : '=' }</div>
 				` : nothing }
@@ -38,7 +38,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				<div slot="actions">
 					<slot name="actions"></slot>
 				</div>
-			</d2l-list-item-generic>
+			</d2l-list-item-generic-layout>
 		`;
 	}
 }

@@ -7,7 +7,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			disabled: {type: Boolean },
+			disabled: { type: Boolean },
 			key: { type: String, reflect: true },
 			selectable: {type: Boolean },
 			selected: { type: Boolean, reflect: true }
@@ -16,7 +16,13 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	static get styles() {
 		return [ checkboxStyles, css`
-			.d2l-checkbox-action { height: 100%; }
+			.d2l-checkbox-action {
+				height: 100%;
+				cursor: pointer;
+			}
+			:host-context([disabled]) .d2l-checkbox-action {
+				cursor: default;
+			}
 		` ];
 	}
 
