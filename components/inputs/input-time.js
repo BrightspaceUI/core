@@ -142,47 +142,47 @@ class InputTime extends LitElement {
 		const input = html`
 			<label>
 				<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
-				<d2l-dropdown ?disabled="${this.disabled}">
-					<div
-						role="combobox"
-						aria-owns="${this._dropdownId}"
-						class="d2l-dropdown-opener"
-						aria-expanded="false">
-						<input
-							aria-controls="${this._dropdownId}"
-							aria-labelledby="${this._dropdownId}-label"
-							@change="${this._handleChange}"
-							class="d2l-input"
-							?disabled="${this.disabled}"
-							@keypress="${this._handleKeypress}"
-							.value="${this._formattedValue}">
-					</div>
-					<d2l-dropdown-menu id="dropdown" no-padding-footer min-width="195">
-						<d2l-menu
-							id="${this._dropdownId}"
-							role="listbox"
-							class="d2l-input-time-menu"
-							aria-labelledby="${this._dropdownId}-label"
-							@d2l-menu-item-change="${this._handleDropdownChange}">
-							${INTERVALS.get(this.timeInterval).map(i => html`
-								<d2l-menu-item-radio
-									text="${i.text}"
-									value="${i.value}"
-									?selected=${this._value === i.value}>
-								</d2l-menu-item-radio>
-							`)}
-							${this.enforceTimeIntervals ? '' : html`
-									<d2l-menu-item-radio
-										text="${formatTime(END_OF_DAY)}"
-										value="${formatValue(END_OF_DAY)}"
-										?selected=${this._value === formatValue(END_OF_DAY)}>
-									</d2l-menu-item-radio>
-								`}
-						</d2l-menu>
-						<div class="d2l-input-time-timezone d2l-body-small" slot="footer">${this._timezone}</div>
-					</d2l-dropdown-menu>
-				</d2l-dropdown>
 			</label>
+			<d2l-dropdown ?disabled="${this.disabled}">
+				<div
+					role="combobox"
+					aria-owns="${this._dropdownId}"
+					class="d2l-dropdown-opener"
+					aria-expanded="false">
+					<input
+						aria-controls="${this._dropdownId}"
+						aria-labelledby="${this._dropdownId}-label"
+						@change="${this._handleChange}"
+						class="d2l-input"
+						?disabled="${this.disabled}"
+						@keypress="${this._handleKeypress}"
+						.value="${this._formattedValue}">
+				</div>
+				<d2l-dropdown-menu id="dropdown" no-padding-footer min-width="195">
+					<d2l-menu
+						id="${this._dropdownId}"
+						role="listbox"
+						class="d2l-input-time-menu"
+						aria-labelledby="${this._dropdownId}-label"
+						@d2l-menu-item-change="${this._handleDropdownChange}">
+						${INTERVALS.get(this.timeInterval).map(i => html`
+							<d2l-menu-item-radio
+								text="${i.text}"
+								value="${i.value}"
+								?selected=${this._value === i.value}>
+							</d2l-menu-item-radio>
+						`)}
+						${this.enforceTimeIntervals ? '' : html`
+								<d2l-menu-item-radio
+									text="${formatTime(END_OF_DAY)}"
+									value="${formatValue(END_OF_DAY)}"
+									?selected=${this._value === formatValue(END_OF_DAY)}>
+								</d2l-menu-item-radio>
+							`}
+					</d2l-menu>
+					<div class="d2l-input-time-timezone d2l-body-small" slot="footer">${this._timezone}</div>
+				</d2l-dropdown-menu>
+			</d2l-dropdown>
 		`;
 		return input;
 	}
