@@ -22,6 +22,7 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		this.addEventListener('d2l-menu-resize', this._onMenuResize);
 		this.addEventListener('d2l-menu-item-select', this._onSelect);
 		this.addEventListener('d2l-menu-item-change', this._onChange);
+		this.addEventListener('focus', this._onFocus);
 	}
 
 	render() {
@@ -78,6 +79,10 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 			return;
 		}
 		this.close();
+	}
+
+	_onFocus() {
+		this.__getMenuElement().focus();
 	}
 
 	_onSelect(e) {
