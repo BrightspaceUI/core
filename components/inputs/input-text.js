@@ -258,9 +258,10 @@ class InputText extends RtlMixin(LitElement) {
 		if (!slotContent) return;
 		const id = e.target.parentNode.id;
 
-		this.requestUpdate(); // needed for legacy Edge
-		this.updateComplete.then(() => {
-			const slotWidth = parseFloat(getComputedStyle(slotContent).width) + parseFloat(getComputedStyle(slotContent).marginLeft) + parseFloat(getComputedStyle(slotContent).marginRight);
+		// requestUpdate needed for legacy Edge
+		this.requestUpdate().then(() => {
+			const style = getComputedStyle(slotContent);
+			const slotWidth = parseFloat(style.width) + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
 			if (id === 'first-slot') this._firstSlotWidth = slotWidth;
 			else this._lastSlotWidth = slotWidth;
 		});
