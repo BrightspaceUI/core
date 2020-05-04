@@ -142,7 +142,8 @@ class InputTime extends LitElement {
 		}
 
 		const oldValue = this.value;
-		const time = parseValue(val);
+		const time = val === '' ? getDefaultTime(this.defaultValue) : parseValue(val);
+
 		if (this.enforceTimeIntervals) {
 			const interval = getIntervalNumber(this.timeInterval);
 			const difference = time.getMinutes() % interval;
