@@ -209,7 +209,7 @@ class InputTime extends LitElement {
 			console.warn('d2l-input-time component requires label text');
 		}
 
-		const time = this._givenValue === undefined ? getDefaultTime(this.defaultValue) : parseValue(this._givenValue);
+		const time = this._givenValue === undefined || this._givenValue === '' ? getDefaultTime(this.defaultValue) : parseValue(this._givenValue);
 		this._value = formatValue(time);
 		this._formattedValue = formatTime(time);
 	}
