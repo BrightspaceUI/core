@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../alert.js';
+	</script>
+	<style>
+	</style>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-alert">
+
+		<h2>Default</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert type="default">A default message.</d2l-alert>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Success</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert type="success">A success message.</d2l-alert>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Critical</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert type="critical">A critical message.</d2l-alert>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Warning</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert type="warning">A warning message.</d2l-alert>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>With Close Button</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert type="default" has-close-button>A message.</d2l-alert>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>With Action Button</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert type="default" button-text="Do it!" has-close-button>A message.</d2l-alert>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>With Subtext</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert type="default" button-text="Do it!" has-close-button
+					subtext="I am subtext. I'm here to test the wrapping capabilities of adding subtext to these alerts, as well as other styling issues. Feel free to add to me!">
+					A message.
+				</d2l-alert>
+			</template>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
+
+</body>
+
+</html>
