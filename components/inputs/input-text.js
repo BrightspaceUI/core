@@ -253,11 +253,16 @@ class InputText extends RtlMixin(LitElement) {
 		this._hovered = false;
 	}
 
-	_onSlotChange() {
+	_onSlotChange(e) {
+		const slotContent = e.target.assignedNodes()[0];
+		if (!slotContent) return;
+		const id = e.target.parentNode.id;
+
 		this.requestUpdate(); // needed for legacy Edge
 		this.updateComplete.then(() => {
-			this._firstSlotWidth = this.shadowRoot.querySelector('#first-slot').offsetWidth;
-			this._lastSlotWidth = this.shadowRoot.querySelector('#last-slot').offsetWidth;
+			const slotWidth = parseFloat(getComputedStyle(slotContent).width) + parseFloat(getComputedStyle(slotContent).marginLeft) + parseFloat(getComputedStyle(slotContent).marginRight);
+			if (id === 'first-slot') this._firstSlotWidth = slotWidth;
+			else this._lastSlotWidth = slotWidth;
 		});
 	}
 
