@@ -112,6 +112,14 @@ dropdown.addEventListener('click', function() {
 - `translucent` (Boolean, default: `false`): attribute for busy/rich backgrounds
 - `visible-on-ancestor` (Boolean, default: `false`): See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior.
 
+**Accessibility:**
+
+To make your usage of `d2l-dropdown-context-menu` accessible, use the following property:
+
+| Attribute | Description |
+|--|--|
+| `text` | Acts as a primary label and tooltip and is **REQUIRED**. |
+
 ### d2l-dropdown-more
 `d2l-dropdown-more` is a simple/minimal opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
 
@@ -136,6 +144,14 @@ dropdown.addEventListener('click', function() {
 - `text` (String): ARIA label for the button
 - `translucent` (Boolean, default: `false`): attribute for busy/rich backgrounds
 - `visible-on-ancestor` (Boolean, default: `false`): See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior.
+
+**Accessibility:**
+
+To make your usage of `d2l-dropdown-more` accessible, use the following property:
+
+| Attribute | Description |
+|--|--|
+| `text` | Acts as a primary label and tooltip and is **REQUIRED**. |
 
 ## Dropdown Contents
 
@@ -163,6 +179,7 @@ dropdown.addEventListener('click', function() {
 **Properties:**
 * `min-width` (Number): override default min-width
 * `max-width` (Number): override default max-width
+* `max-height` (Number): override max-width. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed_
 * `no-auto-close` (Boolean, default: `false`): opt out of automatically closing on focus or click outside of the dropdown content
 * `no-auto-fit` (Boolean, default: `false`): opt out of auto-sizing
 * `no-auto-focus` (Boolean, default: `false`): opt out of focus being automatically moved to the first focusable element in the dropdown when opened

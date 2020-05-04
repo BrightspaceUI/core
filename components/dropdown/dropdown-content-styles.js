@@ -144,6 +144,13 @@ export const dropdownContentStyles = css`
 		text-align: right;
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		:host([opened]), :host([opened-above]) {
+			-webkit-animation: none;
+			animation: none;
+		}
+	}
+
 	@keyframes d2l-dropdown-animation {
 		0% { transform: translate(0,-10px); opacity: 0; }
 		100% { transform: translate(0,0); opacity: 1; }

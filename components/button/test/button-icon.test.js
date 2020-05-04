@@ -1,5 +1,6 @@
 import '../button-icon.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-button-icon icon="d2l-tier1:gear" text="Icon Button"></d2l-button-icon>`;
 
@@ -22,6 +23,14 @@ describe('d2l-button-icon', () => {
 			setTimeout(() => el.shadowRoot.querySelector('button').focus());
 			await oneEvent(el, 'focus');
 			await expect(el).to.be.accessible();
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-button-icon');
 		});
 
 	});

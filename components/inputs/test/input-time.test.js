@@ -1,5 +1,6 @@
 import '../input-time.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
 const fixtureWithValue = '<d2l-input-time value="11:22:33"></d2l-input-time>';
@@ -50,6 +51,14 @@ describe('d2l-input-time', () => {
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
 		}).timeout(5000);
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-time');
+		});
+
 	});
 
 	describe('labelling', () => {

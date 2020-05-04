@@ -10,8 +10,7 @@ describe('d2l-tooltip', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 400, height: 400, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 400, height: 400}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/tooltip/test/tooltip.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
@@ -20,7 +19,7 @@ describe('d2l-tooltip', () => {
 		await page.reload();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'position-top',

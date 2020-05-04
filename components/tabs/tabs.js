@@ -18,6 +18,34 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollButtonWidth = 56;
 
+// remove once IE11 is no longer supported
+if (!Array.prototype.findIndex) {
+	Object.defineProperty(Array.prototype, 'findIndex', {
+		value: function(predicate) {
+
+			if (this === null) throw new TypeError('"this" is null or not defined');
+
+			const o = Object(this);
+			const len = o.length >>> 0;
+
+			if (typeof predicate !== 'function') throw new TypeError('predicate must be a function');
+
+			const thisArg = arguments[1];
+			let k = 0;
+
+			while (k < len) {
+				const kValue = o[k];
+				if (predicate.call(thisArg, kValue, k, o)) return k;
+				k++;
+			}
+
+			return -1;
+		},
+		configurable: true,
+		writable: true
+	});
+}
+
 class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
@@ -515,7 +543,13 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	_getTabInfo(id) {
-		return this._tabInfos.find((t) => t.id === id);
+		if (this._tabInfos.find) {
+			return this._tabInfos.find((t) => t.id === id);
+		} else {
+			// IE11
+			const index = this._tabInfos.findIndex((t) => t.id === id);
+			return index !== -1 ? this._tabInfos[index] : null;
+		}
 	}
 
 	_handleFocusEnd(e) {
@@ -612,12 +646,18 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	_handlePanelSelected(e) {
-		this._getTabInfo(e.target.id).selected = true;
+		const tabInfo = this._getTabInfo(e.target.id);
+		// event could be from nested tabs
+		if (!tabInfo) return;
+		tabInfo.selected = true;
 		this.requestUpdate();
 	}
 
 	async _handlePanelTextChange(e) {
-		this._getTabInfo(e.target.id).text = e.target.text;
+		const tabInfo = this._getTabInfo(e.target.id);
+		// event could be from nested tabs
+		if (!tabInfo) return;
+		tabInfo.text = e.target.text;
 		this.requestUpdate();
 		await this.updateComplete;
 		this._updateMeasures();

@@ -10,18 +10,19 @@ describe('d2l-dropdown-content', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 400, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 400}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/dropdown/test/dropdown-content.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	after(async() => await browser.close());
 
 	[
 		'default-width',
 		'min-width',
 		'max-width',
+		'max-height',
+		'max-height-invalid',
 		'wide-opener',
 		'with-header-footer',
 		'no-padding-no-pointer',

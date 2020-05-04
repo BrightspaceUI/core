@@ -1,5 +1,6 @@
 import '../input-checkbox.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const uncheckedFixture = html`<d2l-input-checkbox aria-label="basic"></d2l-input-checkbox>`;
 const indeterminateCheckedFixture = html`<d2l-input-checkbox indeterminate checked></d2l-input-checkbox>`;
@@ -33,6 +34,14 @@ describe('d2l-input-checkbox', () => {
 			setTimeout(() => getInput(elem).focus());
 			await oneEvent(elem, 'focus');
 			await expect(elem).to.be.accessible();
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-input-checkbox');
 		});
 
 	});

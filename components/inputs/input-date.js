@@ -49,7 +49,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 				opacity: 0.5;
 			}
 			d2l-focus-trap {
-				padding: 0.6rem;
+				padding: 0.25rem 0.6rem;
 			}
 			.d2l-calendar-slot-buttons {
 				border-top: 1px solid var(--d2l-color-gypsum);
@@ -181,7 +181,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 						slot="left"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
-					boundary="{&quot;above&quot;:0}"
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					max-width="335"
@@ -222,10 +221,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._calendar.focus();
 	}
 
-	_handleKeydown(e) {
+	async _handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
+			await this._handleChange(e);
 			this._calendar.focus();
 
 			if (e.keyCode === 40) e.preventDefault();
@@ -234,8 +234,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 	async _handleChange(e) {
 		const value = e.target.value;
-		if (value === '') {
-			this._updateValueDispatchEvent('');
+		if (!value) {
+			if (value !== this.value) {
+				this._updateValueDispatchEvent('');
+				await this.updateComplete;
+				this._calendar.reset();
+			}
 			return;
 		}
 		this._formattedValue = value;
@@ -247,6 +251,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			// leave value the same when invalid input
 		}
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
+		await this.updateComplete;
+		this._calendar.reset();
 	}
 
 	_handleClear() {
@@ -270,8 +276,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdownOpened = true;
 	}
 
-	_handleMouseup() {
-		if (!this.disabled) this._dropdown.toggleOpen(false);
+	_handleMouseup(e) {
+		if (!this.disabled) {
+			if (!this._dropdownOpened) this._handleChange(e);
+			this._dropdown.toggleOpen(false);
+		}
 	}
 
 	_handleSetToToday() {
@@ -284,7 +293,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		if (dateInISO === this.value) return;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
-			'd2l-input-date-change',
+			'change',
 			{ bubbles: true, composed: false }
 		));
 	}

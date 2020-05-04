@@ -3,6 +3,7 @@ import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { css } from 'lit-element/lit-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const __nativeFocus = document.createElement('div').focus;
 const escapeKeyCode = 27;
 
@@ -46,6 +47,24 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			.d2l-hierarchical-view-content.d2l-child-view-hide {
 				-webkit-animation: hide-child-view-animation forwards 300ms linear;
 				animation: hide-child-view-animation 300ms forwards linear;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				:host {
+					-webkit-transition: none;
+					transition: none;
+				}
+				.d2l-hierarchical-view-content.d2l-child-view-show {
+					-webkit-animation: none;
+					animation: none;
+					-webkit-transform: translate(-100%,0);
+					transform: translate(-100%,0);
+				}
+				.d2l-hierarchical-view-content.d2l-child-view-hide {
+					-webkit-animation: none;
+					animation: none;
+					-webkit-transform: translate(0,0);
+					transform: translate(0,0);
+				}
 			}
 			@keyframes show-child-view-animation {
 				0% { transform: translate(0,0); }
@@ -346,10 +365,12 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 
 			const data = e.detail.data;
-			const animate = !!content.offsetParent;
+			const animate = (!!content.offsetParent && !reduceMotion);
 			const hideRoot = () => {
 				rootTarget.shown = false;
-				rootTarget.__dispatchHideComplete(data);
+				requestAnimationFrame(() => {
+					rootTarget.__dispatchHideComplete(data);
+				});
 			};
 			if (animate) {
 				const animationEnd = () => {
@@ -398,15 +419,25 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 
-		if (e.detail.isSource && this.__getParentViewFromEvent(e) === this) {
-			const animationEnd = () => {
-				content.removeEventListener('animationend', animationEnd);
-				e.detail.sourceView.__dispatchShowComplete(e.detail.data, e.detail);
-			};
-			content.addEventListener('animationend', animationEnd);
-		}
+		if (reduceMotion) {
 
-		content.classList.add('d2l-child-view-show');
+			content.classList.add('d2l-child-view-show');
+			requestAnimationFrame(() => {
+				e.detail.sourceView.__dispatchShowComplete(e.detail.data, e.detail);
+			});
+
+		} else {
+
+			if (e.detail.isSource && this.__getParentViewFromEvent(e) === this) {
+				const animationEnd = () => {
+					content.removeEventListener('animationend', animationEnd);
+					e.detail.sourceView.__dispatchShowComplete(e.detail.data, e.detail);
+				};
+				content.addEventListener('animationend', animationEnd);
+			}
+			content.classList.add('d2l-child-view-show');
+
+		}
 
 		if (e.detail.isSource && this.__getParentViewFromEvent(e) === this) {
 			e.detail.sourceView.__dispatchViewResize();

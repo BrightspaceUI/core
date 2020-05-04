@@ -1,5 +1,6 @@
 import '../menu-item-radio.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 function dispatchItemSelectEvent(elem) {
 	const e = new CustomEvent(
@@ -16,6 +17,14 @@ describe('d2l-menu-item-radio', () => {
 		it('has role="menuitemradio"', async() => {
 			const elem = await fixture(html`<d2l-menu-item-radio></d2l-menu-item-radio>`);
 			expect(elem.getAttribute('role')).to.equal('menuitemradio');
+		});
+
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-menu-item-radio');
 		});
 
 	});

@@ -8,10 +8,7 @@ module.exports = {
 
 		await page.$eval(selector, (elem) => {
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
-			return new Promise((resolve) => {
-				dropdown.querySelector('[dropdown-content]').addEventListener('animationend', () => resolve(), { once: true });
-				dropdown.toggleOpen();
-			});
+			dropdown.toggleOpen();
 		});
 		return openEvent;
 	},

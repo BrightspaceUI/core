@@ -1,5 +1,6 @@
 import '../hierarchical-view.js';
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import { spy } from 'sinon';
 
 const viewsFixture = html`
@@ -118,6 +119,14 @@ describe('d2l-hierarchical-view', () => {
 		setTimeout(() => view2_content.dispatchEvent(eventObj));
 		await oneEvent(view1, 'd2l-hierarchical-view-hide-complete');
 		expect(view1.isActive()).to.be.true;
+	});
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-hierarchical-view');
+		});
+
 	});
 
 	describe('focus management', () => {

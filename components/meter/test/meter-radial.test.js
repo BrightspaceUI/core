@@ -1,5 +1,6 @@
 import '../meter-radial.js';
 import { expect, fixture, html } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-meter-radial', () => {
 
@@ -22,4 +23,11 @@ describe('d2l-meter-radial', () => {
 
 	});
 
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-meter-radial');
+		});
+
+	});
 });

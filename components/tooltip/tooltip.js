@@ -1,9 +1,9 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -22,10 +22,37 @@ const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
 
 const interactiveElements = {
+	// 'a' only if an href is present
+	'button': true,
+	'h1': true,
+	'h2': true,
+	'h3': true,
+	'h4': true,
+	'h5': true,
+	'h6': true,
 	'input': true,
 	'select': true,
-	'textarea': true,
-	'button': true
+	'textarea': true
+};
+
+const interactiveRoles = {
+	'button': true,
+	'checkbox': true,
+	'combobox': true,
+	'heading': true,
+	'link': true,
+	'listbox': true,
+	'menuitem': true,
+	'menuitemcheckbox': true,
+	'menuitemradio': true,
+	'option': true,
+	'radio': true,
+	'slider': true,
+	'spinbutton': true,
+	'switch': true,
+	'tab:': true,
+	'textbox': true,
+	'treeitem': true
 };
 
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
@@ -53,10 +80,12 @@ class Tooltip extends RtlMixin(LitElement) {
 		return {
 			align: { type: String }, /* Valid values are: 'start' and 'end' */
 			boundary: { type: Object },
+			closeOnClick: { type: Boolean, attribute: 'close-on-click' },
 			delay: { type: Number },
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			for: { type: String },
 			forceShow: { type: Boolean, attribute: 'force-show' },
+			forType: { type: String, attribute: 'for-type' },
 			offset: { type: Number }, /* tooltipOffset */
 			position: { type: String }, /* Valid values are: 'top', 'bottom', 'left' and 'right' */
 			showing: { type: Boolean, reflect: true },
@@ -79,7 +108,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 				text-align: left;
 				white-space: normal;
-				z-index: 1000; /* position on top of floating buttons */
+				z-index: 1001; /* position on top of floating buttons */
 			}
 
 			:host([state="error"]) {
@@ -227,6 +256,16 @@ class Tooltip extends RtlMixin(LitElement) {
 				animation: d2l-tooltip-right-animation 200ms ease;
 			}
 
+			@media (prefers-reduced-motion: reduce) {
+				:host([_open-dir="bottom"]) .d2l-tooltip-container,
+				:host([_open-dir="top"]) .d2l-tooltip-container,
+				:host([_open-dir="left"]) .d2l-tooltip-container,
+				:host([_open-dir="right"]) .d2l-tooltip-container {
+					-webkit-animation: none;
+					animation: none;
+				}
+			}
+
 			@keyframes d2l-tooltip-top-animation {
 				0% { transform: translate(0,-10px); opacity: 0; }
 				100% { transform: translate(0,0); opacity: 1; }
@@ -261,12 +300,16 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetMouseEnter = this._onTargetMouseEnter.bind(this);
 		this._onTargetMouseLeave = this._onTargetMouseLeave.bind(this);
 		this._onTargetResize = this._onTargetResize.bind(this);
+		this._onTargetClick = this._onTargetClick.bind(this);
+		this._onTargetTouchStart = this._onTargetTouchStart.bind(this);
+		this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
 
+		this.closeOnClick = false;
 		this.delay = 0;
 		this.disableFocusLock = false;
 		this.forceShow = false;
+		this.forType = 'descriptor';
 		this.offset = pointerRotatedOverhang + pointerGap;
-		this.showing = false;
 		this.state = 'info';
 
 		this._dismissibleId = null;
@@ -289,6 +332,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
+		this.showing = false;
 		window.addEventListener('resize', this._onTargetResize);
 
 		requestAnimationFrame(() => {
@@ -437,6 +481,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('mouseleave', this._onTargetMouseLeave);
 		this._target.addEventListener('focus', this._onTargetFocus);
 		this._target.addEventListener('blur', this._onTargetBlur);
+		this._target.addEventListener('click', this._onTargetClick);
+		this._target.addEventListener('touchstart', this._onTargetTouchStart);
+		this._target.addEventListener('touchcancel', this._onTargetTouchEnd);
+		this._target.addEventListener('touchend', this._onTargetTouchEnd);
 
 		this._targetSizeObserver = new ResizeObserver(this._onTargetResize);
 		this._targetSizeObserver.observe(this._target);
@@ -573,11 +621,19 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_isInteractive(ele) {
+		if (!isFocusable(ele, true, false, true)) {
+			return false;
+		}
 		if (ele.nodeType !== Node.ELEMENT_NODE) {
 			return false;
 		}
 		const nodeName = ele.nodeName.toLowerCase();
-		return !!interactiveElements[nodeName];
+		const isInteractive = interactiveElements[nodeName];
+		if (isInteractive) {
+			return true;
+		}
+		const role = (ele.getAttribute('role') || '');
+		return (nodeName === 'a' && ele.hasAttribute('href')) || interactiveRoles[role];
 	}
 
 	_onTargetBlur() {
@@ -585,16 +641,18 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._updateShowing();
 	}
 
+	_onTargetClick() {
+		if (this.closeOnClick) {
+			this.hide();
+		}
+	}
+
 	_onTargetFocus() {
-		const prevFocusing = this._isFocusing;
 		if (this.disableFocusLock) {
 			this.showing = true;
 		} else {
 			this._isFocusing = true;
 			this._updateShowing();
-		}
-		if (!prevFocusing && !this._isInteractive(this._target)) {
-			announce(this.textContent);
 		}
 	}
 
@@ -618,6 +676,16 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.updatePosition();
 	}
 
+	_onTargetTouchEnd() {
+		clearTimeout(this._longPressTimeout);
+	}
+
+	_onTargetTouchStart() {
+		this._longPressTimeout = setTimeout(() => {
+			this._target.focus();
+		}, 500);
+	}
+
 	_removeListeners() {
 		if (!this._target) {
 			return;
@@ -626,6 +694,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.removeEventListener('mouseleave', this._onTargetMouseLeave);
 		this._target.removeEventListener('focus', this._onTargetFocus);
 		this._target.removeEventListener('blur', this._onTargetBlur);
+		this._target.removeEventListener('click', this._onTargetClick);
+		this._target.removeEventListener('touchstart', this._onTargetTouchStart);
+		this._target.removeEventListener('touchcancel', this._onTargetTouchEnd);
+		this._target.removeEventListener('touchend', this._onTargetTouchEnd);
 
 		if (this._targetSizeObserver) {
 			this._targetSizeObserver.disconnect();
@@ -635,11 +707,12 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	async _showingChanged(newValue) {
 		clearTimeout(this._hoverTimeout);
+		clearTimeout(this._longPressTimeout);
 		if (newValue) {
-			await this.updateComplete;
-			await this.updatePosition();
 			this._dismissibleId = setDismissible(() => this.hide());
 			this.setAttribute('aria-hidden', 'false');
+			await this.updateComplete;
+			await this.updatePosition();
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
@@ -662,12 +735,20 @@ class Tooltip extends RtlMixin(LitElement) {
 	_updateTarget() {
 		this._removeListeners();
 		const target = this._findTarget();
-		if (target && this._isInteractive(target)) {
+		if (target) {
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
-			target.setAttribute('aria-describedby', this.id);
-		} else {
-			this.removeAttribute('role');
+			if (this.forType === 'label') {
+				target.setAttribute('aria-labelledby', this.id);
+			} else {
+				target.setAttribute('aria-describedby', this.id);
+			}
+			if (!this._isInteractive(target)) {
+				console.warn(
+					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
+					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.'
+				);
+			}
 		}
 		this._target = target;
 		this._addListeners();
