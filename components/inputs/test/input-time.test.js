@@ -119,13 +119,10 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should throw an error with invalid default value', async() => {
-			return fixture('<d2l-input-time label="label text" default-value="potato"></d2l-input-time>')
-				.then(
-					() => Promise.reject(new Error('Expected fixture to throw error')),
-					err => {
-						expect(err).to.be.instanceOf(Error);
-						expect(err.message).to.equal('Invalid input: Expected format is hh:mm:ss');
-					});
+			const elem = await fixture('<d2l-input-time label="label text"></d2l-input-time>');
+			elem.defaultValue = 'potato';
+			expect(() => elem.value = '') //clear given value and parse/assign default
+				.to.throw('Invalid input: Expected format is hh:mm:ss');
 		});
 
 		it('should apply default value from keyword: startOfDay', async() => {
@@ -149,13 +146,9 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should throw an error with invalid given value', async() => {
-			return fixture('<d2l-input-time label="label text" value="potato"></d2l-input-time>')
-				.then(
-					() => Promise.reject(new Error('Expected fixture to throw error')),
-					err => {
-						expect(err).to.be.instanceOf(Error);
-						expect(err.message).to.equal('Invalid input: Expected format is hh:mm:ss');
-					});
+			const elem = await fixture('<d2l-input-time label="label text"></d2l-input-time>');
+			expect(() => elem.value = 'potato')
+				.to.throw('Invalid input: Expected format is hh:mm:ss');
 		});
 
 		it('should correctly set given value over default value', async() => {

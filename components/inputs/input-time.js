@@ -136,7 +136,7 @@ class InputTime extends LitElement {
 
 	get value() { return this._value; }
 	set value(val) {
-		if (this.value === undefined && val === undefined || val === '') {
+		if (this.value === undefined && (val === undefined || val === '')) {
 			return;
 		}
 

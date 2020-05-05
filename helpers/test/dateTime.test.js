@@ -298,6 +298,13 @@ describe('date-time', () => {
 				parseISOTime('12');
 			}).to.throw('Invalid input: Expected format is hh:mm:ss');
 		});
+
+		['12', '', '2019-02-12', 'text'].forEach((val) => {
+			it(`should throw when invalid time format: "${val}"`, () => {
+				expect(() => parseISOTime(val)).to.throw('Invalid input: Expected format is hh:mm:ss');
+			});
+		});
+
 	});
 
 });
