@@ -136,13 +136,12 @@ class InputTime extends LitElement {
 
 	get value() { return this._value; }
 	set value(val) {
-		if (this.value === undefined) {
-			this._givenValue = val;
+		if (this.value === undefined && val === undefined || val === '') {
 			return;
 		}
 
 		const oldValue = this.value;
-		const time = val === '' ? getDefaultTime(this.defaultValue) : parseValue(val);
+		const time = val === '' || val === null ? getDefaultTime(this.defaultValue) : parseValue(val);
 
 		if (this.enforceTimeIntervals) {
 			const interval = getIntervalNumber(this.timeInterval);
@@ -210,9 +209,11 @@ class InputTime extends LitElement {
 			console.warn('d2l-input-time component requires label text');
 		}
 
-		const time = this._givenValue === undefined || this._givenValue === '' ? getDefaultTime(this.defaultValue) : parseValue(this._givenValue);
-		this._value = formatValue(time);
-		this._formattedValue = formatTime(time);
+		if (this.value === undefined) {
+			const time = getDefaultTime(this.defaultValue);
+			this._value = formatValue(time);
+			this._formattedValue = formatTime(time);
+		}
 	}
 
 	focus() {

@@ -138,7 +138,7 @@ describe('d2l-input-time', () => {
 			expect(elem.value).to.equal('23:59:59');
 		});
 
-		it.only('should apply default when given value is empty', async() => {
+		it('should apply default when given value is empty', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" value=""></d2l-input-time>');
 			expect(getInput(elem).value).to.equal('12:00 AM');
 		});
