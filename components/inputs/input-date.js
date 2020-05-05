@@ -10,6 +10,7 @@ import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(getDateFromISODate(val));
@@ -20,9 +21,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean },
+			emptyText: { type: String, attribute: 'empty-text'},
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			value: { type: String },
+			_hiddenContentWidth: { type: String },
+			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
 		};
@@ -32,9 +36,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return css`
 			:host {
 				display: inline-block;
-				max-width: 9rem;
-				min-width: 7rem;
-				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
@@ -47,6 +48,16 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			}
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
+			}
+			.d2l-input-date-hidden-content {
+				font-family: inherit;
+				font-size: 0.8rem;
+				font-weight: 400;
+				letter-spacing: 0.02rem;
+				line-height: 1.4rem;
+				position: absolute;
+				visibility: hidden;
+				width: auto;
 			}
 			d2l-focus-trap {
 				padding: 0.25rem 0.6rem;
@@ -65,72 +76,72 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		return {
 			'ar': {
 				clear: 'مسح',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today',
 			},
 			'da': {
 				clear: 'Ryd',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today',
 			},
 			'de': {
 				clear: 'Löschen',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'en': {
 				clear: 'Clear',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'es': {
 				clear: 'Borrar',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'fr': {
 				clear: 'Effacer',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'ja': {
 				clear: 'クリア',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'ko': {
 				clear: '지우기',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'nl': {
 				clear: 'Wissen',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'pt': {
 				clear: 'Desmarcar',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'sv': {
 				clear: 'Rensa',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'tr': {
 				clear: 'Temizle',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'zh': {
 				clear: '清除',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			},
 			'zh-tw': {
 				clear: '清除',
-				openInstructions: 'Arrow down or press enter to access mini-calendar',
+				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
 				setToToday: 'Set to Today'
 			}
 		};
@@ -139,13 +150,17 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	constructor() {
 		super();
 
+		this.emptyText = '';
+		this.value = '';
+
 		this._dropdownOpened = false;
 		this._formattedValue = '';
+		this._hiddenContentWidth = '8rem';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
-	firstUpdated(changedProperties) {
+	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		if (!this.label) {
@@ -155,25 +170,44 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
 
+		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
-			this.requestUpdate();
+			this.requestUpdate().then(() => {
+				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
+				this._hiddenContentWidth = `${width}px`;
+			});
 		});
+
+		this._formattedValue = this.emptyText ? this.emptyText : '';
+
+		await (document.fonts ? document.fonts.ready : Promise.resolve());
+		const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
+		this._hiddenContentWidth = `${width}px`;
 	}
 
 	render() {
+		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 2px)`; // text and icon width + paddingRight + border width
 		return html`
+			<div aria-hidden="true" class="d2l-input-date-hidden-content">
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formatISODateInUserCalDescriptor('2020-12-20')}</div>
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
+			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
+					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					@mouseup="${this._handleMouseup}"
-					placeholder="${(this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase()}"
-					title="${this.localize('openInstructions')}"
+					placeholder="${shortDateFormat}"
+					style="${styleMap({maxWidth: inputTextWidth})}"
+					title="${this.localize('openInstructions', {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
 						?disabled="${this.disabled}"
@@ -211,10 +245,14 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'value') {
-				this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+			if (prop === '_dateTimeDescriptor' || prop === 'value') {
+				this._setFormattedValue();
 			}
 		});
+	}
+
+	_handleBlur() {
+		this._setFormattedValue();
 	}
 
 	async _handleFocusTrapEnter() {
@@ -227,6 +265,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			this._dropdown.open();
 			await this._handleChange(e);
 			this._calendar.focus();
+			this._setFormattedValue();
 
 			if (e.keyCode === 40) e.preventDefault();
 		}
@@ -250,7 +289,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		} catch (err) {
 			// leave value the same when invalid input
 		}
-		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : ''; // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
+		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
 		this._calendar.reset();
 	}
@@ -276,6 +315,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdownOpened = true;
 	}
 
+	_handleInputTextFocus() {
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+	}
+
 	_handleMouseup(e) {
 		if (!this.disabled) {
 			if (!this._dropdownOpened) this._handleChange(e);
@@ -287,6 +330,10 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const date = getToday();
 		this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
+	}
+
+	_setFormattedValue() {
+		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyText ? this.emptyText : '');
 	}
 
 	_updateValueDispatchEvent(dateInISO) {
