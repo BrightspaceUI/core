@@ -91,8 +91,7 @@ class InputTime extends LitElement {
 			maxHeight: { type: Number, attribute: 'max-height' },
 			timeInterval: { type: String, attribute: 'time-interval' },
 			value: { type: String },
-			_formattedValue: { type: String },
-			_givenValue: { type: String }
+			_formattedValue: { type: String }
 		};
 	}
 
