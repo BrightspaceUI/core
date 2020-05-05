@@ -20,6 +20,7 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 
 - `label` (String, required): accessible label for the input
 - `disabled` (Boolean): disables the input
+- `empty-text` (String): text to reassure users that they can choose not to provide a value in this field (usually not necessary)
 - `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
 - `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
 

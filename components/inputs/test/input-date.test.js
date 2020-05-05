@@ -123,7 +123,7 @@ describe('d2l-input-date', () => {
 		});
 
 		it('should fire "change" event when "Clear" is clicked', async() => {
-			const elem = await fixture(basicFixture);
+			const elem = await fixture('<d2l-input-date label="label text" value="2019-02-01"></d2l-input-date>');
 			const button = getChildElem(elem, 'd2l-button-subtle[text="Clear"]');
 			setTimeout(() => button.click());
 			await oneEvent(elem, 'change');
@@ -131,7 +131,7 @@ describe('d2l-input-date', () => {
 		});
 
 		it('should fire "change" event when input-text value is changed to empty', async() => {
-			const elem = await fixture(basicFixture);
+			const elem = await fixture('<d2l-input-date label="label text" value="2019-02-01"></d2l-input-date>');
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
@@ -175,9 +175,9 @@ describe('d2l-input-date', () => {
 			expect(elem.value).to.equal('2019-02-08');
 		});
 
-		it('should default to undefined', async() => {
+		it('should default to empty', async() => {
 			const elem = await fixture(basicFixture);
-			expect(elem.value).to.equal(undefined);
+			expect(elem.value).to.equal('');
 		});
 
 	});
