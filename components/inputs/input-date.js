@@ -25,7 +25,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			value: { type: String },
-			_contentWidth: { type: Number },
+			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String }
@@ -48,6 +48,16 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			}
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
+			}
+			.d2l-input-date-hidden-content {
+				font-family: inherit;
+				font-size: 0.8rem;
+				font-weight: 400;
+				letter-spacing: 0.02rem;
+				line-height: 1.4rem;
+				position: absolute;
+				visibility: hidden;
+				width: auto;
 			}
 			d2l-focus-trap {
 				padding: 0.25rem 0.6rem;
@@ -145,6 +155,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 
 		this._dropdownOpened = false;
 		this._formattedValue = '';
+		this._hiddenContentWidth = '8rem';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
@@ -162,18 +173,26 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
-			this._getContentWidth();
+			this.requestUpdate().then(() => {
+				this._hiddenContentWidth = getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).width;
+			});
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
+
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
-		this._getContentWidth();
+		this._hiddenContentWidth = getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).width;
 	}
 
 	render() {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const inputTextWidth = this._contentWidth ? `calc(${this._contentWidth}px + 1.2rem + 0.75rem + 2px)` : '9rem'; // text and icon width + icon margin left and right + paddingRight + border width
+		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 2px)`; // text and icon width + paddingRight + border width
 		return html`
+			<div class="d2l-input-date-hidden-content">
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formatISODateInUserCalDescriptor('2020-12-20')}</div>
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
+			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					@change="${this._handleChange}"
@@ -228,36 +247,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 				this._setFormattedValue();
 			}
 		});
-	}
-
-	_getContentWidth() {
-		const text = document.createElement('div');
-		text.style.fontFamily = 'inherit';
-		text.style.fontSize = '0.8rem';
-		text.style.fontWeight = '400';
-		text.style.letterSpacing = '0.02rem';
-		text.style.lineHeight = '1.4rem';
-		text.style.position = 'absolute';
-		text.style.width = 'auto';
-		document.body.appendChild(text);
-
-		// in some languages (e.g., fr) placeholderWidth is bigger, in others (e.g., zh) contentWidth is bigger
-		text.textContent = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-		const placeholderWidth = text.getBoundingClientRect().width;
-		text.textContent = formatISODateInUserCalDescriptor('2020-12-20');
-		const contentWidth = text.getBoundingClientRect().width;
-
-		let emptyTextWidth = 0;
-		if (this.emptyText) {
-			text.textContent = this.emptyText;
-			emptyTextWidth = text.getBoundingClientRect().width;
-		}
-		const textWidth = Math.max(placeholderWidth, contentWidth, emptyTextWidth);
-		document.body.removeChild(text);
-
-		const icon = this.shadowRoot.querySelector('d2l-icon');
-
-		this._contentWidth = Math.ceil(textWidth + parseFloat(getComputedStyle(icon).width));
 	}
 
 	_handleBlur() {
