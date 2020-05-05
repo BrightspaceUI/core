@@ -174,14 +174,16 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate().then(() => {
-				this._hiddenContentWidth = getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).width;
+				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
+				this._hiddenContentWidth = `${width}px`;
 			});
 		});
 
 		this._formattedValue = this.emptyText ? this.emptyText : '';
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
-		this._hiddenContentWidth = getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).width;
+		const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
+		this._hiddenContentWidth = `${width}px`;
 	}
 
 	render() {
