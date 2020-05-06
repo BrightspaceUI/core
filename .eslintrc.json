@@ -4,6 +4,15 @@
     "Prism": false
   },
   "rules": {
-    "linebreak-style": ["error", "unix"]
-  }
+    "linebreak-style": ["error", "unix"],
+    "no-console": ["error", { "allow": ["warn", "error"] }]
+  },
+  "overrides": [{
+    "files": [
+      "**/demo/**.html",
+      "helpers/getLocalizeResources.js" ],
+    "rules": {
+      "no-console": 0
+    }
+  }]
 }
