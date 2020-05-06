@@ -11,6 +11,16 @@ import { announce } from '@brightspace-ui/core/helpers/announce.js';
 announce('...');
 ```
 
+## AsyncStateEvent
+
+A simple helper class that returns a `pending-state` event for a given pending promise. Can be used in conjunction with the `AsyncContainerMixin` to track pending work.
+
+```js
+import { AsyncStateEvent } from '@brightspace-ui/core/helpers/asyncStateEvent.js';
+
+const asyncStateEvent = new AsyncStateEvent(pendingPromise);
+```
+
 ## Dismissible
 
 Dismissible components are those that should be dismissible when the user presses
@@ -64,6 +74,38 @@ isComposedAncestor(ancestorNode, node);
 
 // returns true/false whether the element is visible regardless of positioning
 isVisible(node);
+```
+
+## Focus
+
+Focus helper functions to easily select focusable DOM nodes
+
+```js
+import { ... } from '@brightspace-ui/core/helpers/focus.js';
+
+// gets an array of all focusable descendants given a node
+getAllFocusableDescendants(node, includeHidden = true)
+
+// gets the active element, including shadow DOM active elements
+getComposedActiveElement()
+
+// gets the first focusable descendant given a node, including those within the shadow DOM
+getFirstFocusableDescendant(node, includeHidden, predicate)
+
+// gets the last fusable descendant given a node, including those within the shadow DOM
+getLastFocusableDescendant(node, includeHidden)
+
+// gets the previous focusable node on the page given a node
+getPreviousFocusable(node, includeHidden)
+
+// gets the next focusable node on the page given a node
+getNextFocusable(node, includeHidden)
+
+// gets the ancestor of the given node that is focusable
+getPreviousFocusableAncestor(node, includeHidden, includeTabbablesOnly)
+
+// returns true/false whether the element is focusable
+isFocusable(node, includeHidden, includeTabbablesOnly, includeDisabled)
 ```
 
 ## Gesture - Swipe
@@ -122,14 +164,4 @@ import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 
 // gets a unique indexed id (for lifetime of page)
 getUniqueId();
-```
-
-## AsyncStateEvent
-
-A simple helper class that returns a `pending-state` event for a given pending promise. Can be used in conjunction with the `AsyncContainerMixin` to track pending work.
-
-```js
-import { AsyncStateEvent } from '@brightspace-ui/core/helpers/asyncStateEvent.js';
-
-const asyncStateEvent = new AsyncStateEvent(pendingPromise);
 ```
