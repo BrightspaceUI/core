@@ -64,6 +64,15 @@ class TemplatePrimarySecondary extends LitElement {
 				box-shadow: 0 -2px 4px rgba(73, 76, 78, .2); /* ferrite */
 				padding: 0.75rem 1rem;
 			}
+
+			@media only screen and (max-width: 768px) {
+				.container {
+					height: 100%;
+				}
+				.d2l-template-primary-secondary-content-container {
+					display: block;
+				}
+			}
 		`;
 	}
 
