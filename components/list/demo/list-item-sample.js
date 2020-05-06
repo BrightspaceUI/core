@@ -1,5 +1,6 @@
 import '../list-item-generic-layout.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 import { nothing } from 'lit-html';
@@ -19,7 +20,26 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 			[slot="control"] {
 				width: 40px;
 			}
+			.d2l-list-item-link {
+				display:block;
+				height:100%;
+			}
+			:host([href]) {
+				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
+			}
+			a[href]:focus + .d2l-list-item-content,
+			a[href]:hover + .d2l-list-item-content {
+				--d2l-list-item-content-text-decoration: underline;
+			}
+			:host([href]) .d2l-list-item-link:focus {
+				outline: none;
+			}
 		`];
+	}
+
+	constructor() {
+		super();
+		this._contentId = getUniqueId();
 	}
 
 	render() {
@@ -32,11 +52,12 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				<div slot="control">${ this._renderCheckbox() }</div>
 				<div slot="control-action">${ this._renderCheckboxAction() }</div>
 				` : nothing }
-				<div slot="content">
-					<a href="#">Default link</a>
+				${ this.href ? html`
+				<a slot="content-action" class="d2l-list-item-link" href="${this.href}" aria-labelledby="${this._contentId}"></a>
+				` : nothing }
+				<div slot="content" id="${this._contentId}" class="d2l-list-item-content">
 					<slot></slot>
 				</div>
-				<a href="#" slot="content-action"></a>
 				<div slot="actions">
 					<slot name="actions"></slot>
 				</div>
