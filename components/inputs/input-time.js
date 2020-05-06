@@ -175,6 +175,7 @@ class InputTime extends LitElement {
 				</div>
 				<d2l-dropdown-menu id="dropdown" no-padding-footer max-height="${ifDefined(this.maxHeight)}" min-width="195">
 					<d2l-menu
+						aria-describedby="${this._dropdownId}-timezone"
 						id="${this._dropdownId}"
 						role="listbox"
 						class="d2l-input-time-menu"
@@ -195,7 +196,7 @@ class InputTime extends LitElement {
 								</d2l-menu-item-radio>
 							`}
 					</d2l-menu>
-					<div class="d2l-input-time-timezone d2l-body-small" slot="footer">${this._timezone}</div>
+					<div class="d2l-input-time-timezone d2l-body-small" id="${this._dropdownId}-timezone" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
