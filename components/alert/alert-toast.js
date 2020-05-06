@@ -3,10 +3,17 @@ import '../button/button-subtle.js';
 import '../colors/colors.js';
 import './alert.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const states = {
+	CLOSED: 'closed', // the toast is closed
+	CLOSING: 'closing', // the close animation is running
+	PREOPENING: 'preopening', // a pause before running the opening animation because transitions won't run when changing from 'diplay: none' to 'display: block'
+	OPENING: 'opening', // the opening animation is running
+	OPEN: 'open' // the toast is open
+};
 
 class AlertToast extends LitElement {
 
@@ -18,7 +25,7 @@ class AlertToast extends LitElement {
 			open: { type: Boolean, reflect: true },
 			subtext: { type: String },
 			type: { type: String, reflect: true },
-			_visible: { type: Boolean }
+			_state: { type: String, reflect: true }
 		};
 	}
 
@@ -30,7 +37,7 @@ class AlertToast extends LitElement {
 
 			.d2l-alert-toast-container {
 				border-radius: 0.3rem;
-				bottom: 1rem;
+				bottom: 1.5rem;
 				box-shadow: 0 0.1rem 0.6rem 0 rgba(0,0,0,0.10);
 				display: none;
 				left: 0;
@@ -42,30 +49,32 @@ class AlertToast extends LitElement {
 				z-index: 10000;
 			}
 
-			:host([open]) .d2l-alert-toast-container {
+			:host(:not([_state="closed"])) .d2l-alert-toast-container {
 				display: block;
-				opacity: 0;
-				transform: translateY(0);
+			}
+
+			:host([_state="opening"]) .d2l-alert-toast-container,
+			:host([_state="closing"]) .d2l-alert-toast-container {
 				transition-duration: 250ms;
 				transition-property: transform, opacity, visibility;
 				transition-timing-function: ease-in;
+			}
+
+			:host([_state="preopening"]) .d2l-alert-toast-container,
+			:host([_state="closing"]) .d2l-alert-toast-container {
+				opacity: 0;
+				transform: translateY(0.5rem);
 				visibility: hidden;
 			}
 
-			:host([open]) .d2l-alert-toast-container.d2l-alert-toast-container-opened {
+			:host([_state="opening"]) .d2l-alert-toast-container {
 				opacity: 1;
-				transform: translateY(-0.5rem);
+				transform: translateY(0);
 				visibility: visible;
 			}
 
 			.d2l-alert-toast {
 				animation: none;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-alert-toast-container {
-					transition: none !important;
-				}
 			}
 		`;
 	}
@@ -75,7 +84,20 @@ class AlertToast extends LitElement {
 		this.hideCloseButton = false;
 		this.noAutoClose = false;
 		this.open = false;
-		this._visible = false;
+		this._state = states.CLOSED;
+	}
+
+	get _state() {
+		return this.__state;
+	}
+
+	set _state(val) {
+		const oldVal = this.__state;
+		if (oldVal !== val) {
+			this.__state = val;
+			this.requestUpdate('_state', oldVal);
+			this._stateChanged(val, oldVal);
+		}
 	}
 
 	get open() {
@@ -92,76 +114,69 @@ class AlertToast extends LitElement {
 	}
 
 	render() {
-		const classes = {
-			'd2l-alert-toast-container': true,
-			'd2l-alert-toast-container-opened': this._visible
-		};
 		return html`
-			<div class=${classMap(classes)} @transitionend=${this._onTransitionEnd}>
-				<d2l-alert class="d2l-alert-toast" type=${ifDefined(this.type)} @d2l-alert-closed=${this._close} button-text=${ifDefined(this.buttonText)} ?has-close-button=${!this.hideCloseButton} subtext=${ifDefined(this.subtext)}>
+			<div class="d2l-alert-toast-container" @transitionend=${this._onTransitionEnd}>
+				<d2l-alert class="d2l-alert-toast" type=${ifDefined(this.type)} @d2l-alert-closed=${this._onCloseClicked} button-text=${ifDefined(this.buttonText)} ?has-close-button=${!this.hideCloseButton} subtext=${ifDefined(this.subtext)}>
 					<slot></slot>
 				</d2l-alert>
 			</div>
 		`;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-	}
-
-	_close() {
+	_onCloseClicked(e) {
+		e.target.removeAttribute('hidden');
 		this.open = false;
-		const alert = this._getAlert();
-		if (alert && alert.hasAttribute('hidden')) {
-			alert.removeAttribute('hidden');
+	}
+
+	_onTransitionEnd() {
+		if (this._state === states.OPENING) {
+			this._state = states.OPEN;
+		} else if (this._state === states.CLOSING) {
+			this._state = states.CLOSED;
 		}
 	}
 
-	_onTransitionEnd(e) {
-		if (!this._visible && e.propertyName === 'visibility') {
-			this.open = false;
-		}
-	}
+	async _openChanged(newOpen) {
+		await this.updateComplete;
 
-	_getAlert() {
-		return this.shadowRoot.querySelector('.d2l-alert-toast');
-	}
-
-	_openChanged() {
-		if (this.open) {
-			if (reduceMotion) {
-				this._show();
-			} else {
-				requestAnimationFrame(() => {
-					requestAnimationFrame(() => {
-						this._show();
+		if (newOpen) {
+			if (this._state === states.CLOSING) {
+				this._state = states.OPENING;
+			} else if (this._state === states.CLOSED) {
+				if (!reduceMotion) {
+					this._state = states.PREOPENING;
+					// pause before running the opening animation because transitions won't run when changing from 'diplay: none' to 'display: block'
+					this._preopenFrame = requestAnimationFrame(() => {
+						this._preopenFrame = requestAnimationFrame(() => {
+							this._state = states.OPENING;
+						});
 					});
-				});
-			}
-		} else {
-			this._hide();
-		}
-	}
-
-	_show() {
-		this.setAttribute('role', 'status');
-		this._visible = true;
-
-		if (!this.noAutoClose || this.hideCloseButton) {
-			clearTimeout(this._setTimeoutId);
-			this._setTimeoutId = setTimeout(() => {
-				if (reduceMotion) {
-					this.open = false;
 				} else {
-					this._visible = false;
+					this._state = states.OPEN;
 				}
-			}, 2500);
+			}
+			this.setAttribute('role', 'status');
+		} else {
+			if (reduceMotion || this._state === states.PREOPENING) {
+				cancelAnimationFrame(this._preopenFrame);
+				this.removeAttribute('role');
+				this._state = states.CLOSED;
+			} else if (this._state === states.OPENING || this._state === states.OPEN) {
+				this._state = states.CLOSING;
+			}
 		}
 	}
 
-	_hide() {
-		this.removeAttribute('role', 'status');
-		this._visible = false;
+	_stateChanged(newState) {
+
+		clearTimeout(this._setTimeoutId);
+		if (newState === states.OPEN) {
+			if (!this.noAutoClose) {
+				this._setTimeoutId = setTimeout(() => {
+					this.open = false;
+				}, 2250);
+			}
+		}
 	}
 }
 
