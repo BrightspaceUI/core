@@ -20,7 +20,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 				height: 100%;
 				cursor: pointer;
 			}
-			:host-context([disabled]) .d2l-checkbox-action {
+			.d2l-checkbox-action[disabled] {
 				cursor: default;
 			}
 		` ];
@@ -76,7 +76,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
-			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action">${inner}</div>
+			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action" ?disabled="${this.disabled}">${inner}</div>
 			` : nothing;
 	}
 };
