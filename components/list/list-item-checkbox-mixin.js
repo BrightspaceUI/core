@@ -7,17 +7,22 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			disabled: {type: Boolean },
+			disabled: { type: Boolean },
 			key: { type: String, reflect: true },
 			selectable: {type: Boolean },
 			selected: { type: Boolean, reflect: true }
 		};
 	}
 
-	// TODO: Remove grid styles after list-item-generic is created
 	static get styles() {
 		return [ checkboxStyles, css`
-			.d2l-checkbox-action { height: 100%; }
+			.d2l-checkbox-action {
+				height: 100%;
+				cursor: pointer;
+			}
+			.d2l-checkbox-action[disabled] {
+				cursor: default;
+			}
 		` ];
 	}
 
@@ -28,7 +33,8 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (this.key === undefined) {
+		if (!this.key) {
+			console.warn('"key" property has not been set on selectable item');
 			this.setSelected(undefined, true);
 		}
 	}
@@ -70,7 +76,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
-			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action">${inner}</div>
+			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action" ?disabled="${this.disabled}">${inner}</div>
 			` : nothing;
 	}
 };

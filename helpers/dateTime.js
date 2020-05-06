@@ -122,26 +122,30 @@ export function parseISOTime(val) {
 	let seconds = 0;
 	const re = /([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?/;
 	const match = val.match(re);
-	if (match !== null) {
-		if (match.length > 1) {
-			hours = parseInt(match[1]);
-			if (isNaN(hours) || hours < 0 || hours > 23) {
-				hours = 0;
-			}
-		}
-		if (match.length > 2) {
-			minutes = parseInt(match[2]);
-			if (isNaN(minutes) || minutes < 0 || minutes > 59) {
-				minutes = 0;
-			}
-		}
-		if (match.length > 3) {
-			seconds = parseInt(match[4]);
-			if (isNaN(seconds) || seconds < 0 || seconds > 59) {
-				seconds = 0;
-			}
+
+	if (match === null) {
+		throw new Error('Invalid input: Expected format is hh:mm:ss');
+	}
+
+	if (match.length > 1) {
+		hours = parseInt(match[1]);
+		if (isNaN(hours) || hours < 0 || hours > 23) {
+			hours = 0;
 		}
 	}
+	if (match.length > 2) {
+		minutes = parseInt(match[2]);
+		if (isNaN(minutes) || minutes < 0 || minutes > 59) {
+			minutes = 0;
+		}
+	}
+	if (match.length > 3) {
+		seconds = parseInt(match[4]);
+		if (isNaN(seconds) || seconds < 0 || seconds > 59) {
+			seconds = 0;
+		}
+	}
+
 	return {
 		hours: hours,
 		minutes: minutes,

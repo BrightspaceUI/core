@@ -20,6 +20,7 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 
 - `label` (String, required): accessible label for the input
 - `disabled` (Boolean): disables the input
+- `empty-text` (String): text to reassure users that they can choose not to provide a value in this field (usually not necessary)
 - `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
 - `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
@@ -55,6 +56,7 @@ The `<d2l-input-time>` component consists of a text input field for typing a tim
 **Properties:**
 
 - `label` (String, required): accessible label for the input
+- `default-value` (String, default:`'00:00:00'`): set default value of input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`.
 - `disabled` (Boolean): disables the input
 - `enforce-time-intervals` (Boolean): rounds up to nearest valid interval time (specified with `time-interval`) when user types a time
 - `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
