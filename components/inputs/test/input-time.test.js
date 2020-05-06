@@ -113,9 +113,47 @@ describe('d2l-input-time', () => {
 			expect(elem.value).to.equal('0:00:00');
 		});
 
+		it('should apply custom default value', async() => {
+			const elem = await fixture('<d2l-input-time label="label text" default-value="02:00:00"></d2l-input-time>');
+			expect(elem.value).to.equal('2:00:00');
+		});
+
+		it('should throw an error with invalid default value', async() => {
+			const elem = await fixture('<d2l-input-time label="label text"></d2l-input-time>');
+			elem.defaultValue = 'potato';
+			expect(() => elem.value = '') //clear given value and parse/assign default
+				.to.throw('Invalid input: Expected format is hh:mm:ss');
+		});
+
+		it('should apply default value from keyword: startOfDay', async() => {
+			const elem = await fixture('<d2l-input-time label="label text" default-value="startOfDay"></d2l-input-time>');
+			expect(elem.value).to.equal('0:00:00');
+		});
+
+		it('should apply custom default value from keyword: endOfDay', async() => {
+			const elem = await fixture('<d2l-input-time label="label text" default-value="endOfDay"></d2l-input-time>');
+			expect(elem.value).to.equal('23:59:59');
+		});
+
+		it('should apply default when given value is empty', async() => {
+			const elem = await fixture('<d2l-input-time label="label text" value=""></d2l-input-time>');
+			expect(getInput(elem).value).to.equal('12:00 AM');
+		});
+
 		it('should correctly set given value', async() => {
 			const elem = await fixture(fixtureWithValue);
 			expect(getInput(elem).value).to.equal('11:22 AM');
+		});
+
+		it('should throw an error with invalid given value', async() => {
+			const elem = await fixture('<d2l-input-time label="label text"></d2l-input-time>');
+			expect(() => elem.value = 'potato')
+				.to.throw('Invalid input: Expected format is hh:mm:ss');
+		});
+
+		it('should correctly set given value over default value', async() => {
+			const elem = await fixture('<d2l-input-time label="label text" default-value="02:00:00" value="04:00:00"></d2l-input-time>');
+			expect(getInput(elem).value).to.equal('4:00 AM');
 		});
 
 		it('should not save input seconds after time changes', async() => {
