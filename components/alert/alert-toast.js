@@ -6,6 +6,8 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 class AlertToast extends LitElement {
 
 	static get properties() {
@@ -58,6 +60,12 @@ class AlertToast extends LitElement {
 
 			.d2l-alert-toast {
 				animation: none;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				.d2l-alert-toast-container {
+					transition: none !important;
+				}
 			}
 		`;
 	}
@@ -121,24 +129,39 @@ class AlertToast extends LitElement {
 
 	_openChanged() {
 		if (this.open) {
-			requestAnimationFrame(() => {
+			if (reduceMotion) {
+				this._show();
+			} else {
 				requestAnimationFrame(() => {
-
-					this.setAttribute('role', 'status');
-					this._visible = true;
-
-					if (!this.noAutoClose || this.hideCloseButton) {
-						clearTimeout(this._setTimeoutId);
-						this._setTimeoutId = setTimeout(() => {
-							this._visible = false;
-						}, 2500);
-					}
+					requestAnimationFrame(() => {
+						this._show();
+					});
 				});
-			});
+			}
 		} else {
-			this.removeAttribute('role', 'status');
-			this._visible = false;
+			this._hide();
 		}
+	}
+
+	_show() {
+		this.setAttribute('role', 'status');
+		this._visible = true;
+
+		if (!this.noAutoClose || this.hideCloseButton) {
+			clearTimeout(this._setTimeoutId);
+			this._setTimeoutId = setTimeout(() => {
+				if (reduceMotion) {
+					this.open = false;
+				} else {
+					this._visible = false;
+				}
+			}, 2500);
+		}
+	}
+
+	_hide() {
+		this.removeAttribute('role', 'status');
+		this._visible = false;
 	}
 }
 
