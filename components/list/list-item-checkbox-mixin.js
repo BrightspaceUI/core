@@ -18,6 +18,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		return [ checkboxStyles, css`
 			.d2l-checkbox-action {
 				height: 100%;
+				display: block;
 				cursor: pointer;
 			}
 			.d2l-checkbox-action[disabled] {
@@ -76,12 +77,13 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
-			<div @click="${this._handleCheckboxActionClick}"
+			<label @click="${this._handleCheckboxActionClick}"
 				class="d2l-checkbox-action"
 				?disabled="${this.disabled}"
+				for="${this._checkboxId}"
 				tabindex="0">
 				${inner}
-			</div>
+			</label>
 			` : nothing;
 	}
 };
