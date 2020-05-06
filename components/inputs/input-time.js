@@ -266,7 +266,6 @@ class InputTime extends LitElement {
 	}
 
 	async _handleKeydown(e) {
-		console.log(e.keyCode);
 		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
