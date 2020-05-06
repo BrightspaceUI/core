@@ -168,12 +168,16 @@ class InputTime extends LitElement {
 						aria-controls="${this._dropdownId}"
 						aria-labelledby="${this._dropdownId}-label"
 						@change="${this._handleChange}"
+						@keydown="${this._handleKeydown}"
 						class="d2l-input"
 						?disabled="${this.disabled}"
-						@keypress="${this._handleKeypress}"
 						.value="${this._formattedValue}">
 				</div>
-				<d2l-dropdown-menu id="dropdown" no-padding-footer max-height="${ifDefined(this.maxHeight)}" min-width="195">
+				<d2l-dropdown-menu
+					@d2l-dropdown-close="${this.focus}"
+					no-padding-footer
+					max-height="${ifDefined(this.maxHeight)}"
+					min-width="195">
 					<d2l-menu
 						aria-describedby="${this._dropdownId}-timezone"
 						id="${this._dropdownId}"
@@ -259,6 +263,16 @@ class InputTime extends LitElement {
 			'change',
 			{bubbles: true, composed: false}
 		));
+	}
+
+	async _handleKeydown(e) {
+		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
+		// open and focus dropdown on down arrow or enter
+		if (e.keyCode === 40 || e.keyCode === 13) {
+			dropdown.open(true);
+			this.shadowRoot.querySelector('d2l-menu').focus();
+			if (e.keyCode === 40) e.preventDefault();
+		}
 	}
 }
 customElements.define('d2l-input-time', InputTime);
