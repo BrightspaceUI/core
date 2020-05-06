@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../../test/typography-preload.js';
+		import '../alert-toast.js';
+	</script>
+	<title>d2l-alert-toast</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		#hidden {
+			width: 10px;
+			height: 10px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-alert-toast id="default" no-auto-close type="default">A default message.</d2l-alert-toast>
+	</div>
+	<div class="visual-diff">
+		<d2l-alert-toast id="no-close" no-auto-close type="default" type="success" hide-close-button>A message.</d2l-alert-toast>
+	</div>
+	<div class="visual-diff">
+		<d2l-alert-toast id="button-close" no-auto-close type="default" type="warning" button-text="Do it!">A message.</d2l-alert-toast>
+	</div>
+	<div class="visual-diff">
+		<d2l-alert-toast id="subtext-button-close" no-auto-close type="default" type="critical" button-text="Do it!"
+			subtext="I am subtext. I'm here to test the wrapping capabilities of adding subtext to these alerts, as well as other styling issues. Feel free to add to me!">
+			A message.
+		</d2l-alert-toast>
+	</div>
+</body>
+</html>
