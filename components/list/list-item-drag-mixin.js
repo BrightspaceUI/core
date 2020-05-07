@@ -44,7 +44,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 			<div
 				id="${this._itemDragId}"
 				class="d2l-list-item-drag"
-				.draggable="${this.draggable}"
+				?draggable="${this.draggable}"
 				@change="${this._handleDragChange}"
 			></div>
 		` : nothing;
