@@ -27,8 +27,8 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 			:host([href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			.d2l-list-item-content.hover,
-			.d2l-list-item-content.focus {
+			.d2l-list-item-content[hover],
+			.d2l-list-item-content[focus] {
 				--d2l-list-item-content-text-decoration: underline;
 			}
 			:host([href]) .d2l-list-item-link:focus {
@@ -42,18 +42,8 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		this._contentId = getUniqueId();
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-
-		this._attachAnchorEvents();
-	}
-	disconnectedCallback() {
-		this._detachAnchorEvents();
-
-		super.disconnectedCallback();
-	}
-
 	render() {
+		const content = this.shadowRoot.querySelector(`#${this._contentId}`);
 		return html`
 			<d2l-list-item-generic-layout>
 				${ this.draggable ? html`
@@ -64,7 +54,14 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				<div slot="control-action" aria-labelledby="${this._contentId}">${ this._renderCheckboxAction() }</div>
 				` : nothing }
 				${ this.href ? html`
-				<a slot="content-action" class="d2l-list-item-link" href="${this.href}" aria-labelledby="${this._contentId}"></a>
+				<a slot="content-action"
+					class="d2l-list-item-link"
+					href="${this.href}"
+					aria-labelledby="${this._contentId}"
+					@mouseover="${this._anchorEventHandler}"
+					@mouseout="${this._anchorEventHandler}"
+					@focus="${this._anchorEventHandler}"
+					@blur="${this._anchorEventHandler}"></a>
 				` : nothing }
 				<div slot="content" id="${this._contentId}" class="d2l-list-item-content">
 					<slot></slot>
@@ -77,43 +74,22 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		`;
 	}
 
-	async _attachAnchorEvents() {
-		if (!this.href) return;
-		await this.updateComplete;
-
-		const anchor = this.shadowRoot.querySelector('.d2l-list-item-link');
-		anchor.addEventListener('mouseover', this._anchorEventHandler.bind(this));
-		anchor.addEventListener('mouseout', this._anchorEventHandler.bind(this));
-		anchor.addEventListener('focus', this._anchorEventHandler.bind(this));
-		anchor.addEventListener('blur', this._anchorEventHandler.bind(this));
-	}
-
 	_anchorEventHandler(event) {
 		const content = this.shadowRoot.querySelector(`#${this._contentId}`);
 		switch (event.type) {
 			case 'mouseover':
-				content.classList.add('hover');
+				content.setAttribute('hover', '');
 				break;
 			case 'mouseout':
-				content.classList.remove('hover');
+				content.removeAttribute('hover');
 				break;
 			case 'focus':
-				content.classList.add('focus');
+				content.setAttribute('focus', '');
 				break;
 			case 'blur':
-				content.classList.remove('blur');
+				content.removeAttribute('focus', '');
 				break;
 		}
-	}
-
-	_detachAnchorEvents() {
-		if (!this.href) return;
-
-		const anchor = this.shadowRoot.querySelector('.d2l-list-item-link');
-		anchor.removeEventListener('mouseover', this._anchorEventHandler);
-		anchor.removeEventListener('mouseout', this._anchorEventHandler);
-		anchor.removeEventListener('focus', this._anchorEventHandler);
-		anchor.removeEventListener('blur', this._anchorEventHandler);
 	}
 }
 
