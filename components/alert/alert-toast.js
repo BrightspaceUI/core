@@ -1,6 +1,3 @@
-import '../button/button-icon.js';
-import '../button/button-subtle.js';
-import '../colors/colors.js';
 import './alert.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -25,7 +22,7 @@ class AlertToast extends LitElement {
 			open: { type: Boolean, reflect: true },
 			subtext: { type: String },
 			type: { type: String, reflect: true },
-			_state: { type: String, reflect: true }
+			_state: { type: String }
 		};
 	}
 
@@ -49,31 +46,29 @@ class AlertToast extends LitElement {
 				z-index: 10000;
 			}
 
-			:host(:not([_state="closed"])) .d2l-alert-toast-container {
+			.d2l-alert-toast-container:not([state="closed"]) {
 				display: block;
 			}
 
-			:host([_state="opening"]) .d2l-alert-toast-container,
-			:host([_state="closing"]) .d2l-alert-toast-container {
+			.d2l-alert-toast-container[state="opening"],
+			.d2l-alert-toast-container[state="closing"] {
 				transition-duration: 250ms;
-				transition-property: transform, opacity, visibility;
+				transition-property: transform, opacity;
 				transition-timing-function: ease-in;
 			}
 
-			:host([_state="preopening"]) .d2l-alert-toast-container,
-			:host([_state="closing"]) .d2l-alert-toast-container {
+			.d2l-alert-toast-container[state="preopening"],
+			.d2l-alert-toast-container[state="closing"] {
 				opacity: 0;
 				transform: translateY(0.5rem);
-				visibility: hidden;
 			}
 
-			:host([_state="opening"]) .d2l-alert-toast-container {
+			.d2l-alert-toast-container[state="opening"] {
 				opacity: 1;
 				transform: translateY(0);
-				visibility: visible;
 			}
 
-			.d2l-alert-toast {
+			d2l-alert {
 				animation: none;
 			}
 		`;
@@ -115,8 +110,8 @@ class AlertToast extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-alert-toast-container" @transitionend=${this._onTransitionEnd}>
-				<d2l-alert class="d2l-alert-toast" type=${ifDefined(this.type)} @d2l-alert-closed=${this._onCloseClicked} button-text=${ifDefined(this.buttonText)} ?has-close-button=${!this.hideCloseButton} subtext=${ifDefined(this.subtext)}>
+			<div class="d2l-alert-toast-container" state="${this._state}" @transitionend=${this._onTransitionEnd}>
+				<d2l-alert type="${ifDefined(this.type)}" @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
 					<slot></slot>
 				</d2l-alert>
 			</div>
@@ -124,7 +119,7 @@ class AlertToast extends LitElement {
 	}
 
 	_onCloseClicked(e) {
-		e.target.removeAttribute('hidden');
+		e.preventDefault();
 		this.open = false;
 	}
 
@@ -136,8 +131,7 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	async _openChanged(newOpen) {
-		await this.updateComplete;
+	_openChanged(newOpen) {
 
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
