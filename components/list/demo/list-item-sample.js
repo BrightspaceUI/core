@@ -43,7 +43,6 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	}
 
 	render() {
-		const content = this.shadowRoot.querySelector(`#${this._contentId}`);
 		return html`
 			<d2l-list-item-generic-layout>
 				${ this.draggable ? html`
