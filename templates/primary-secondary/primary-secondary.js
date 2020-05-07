@@ -64,6 +64,9 @@ class TemplatePrimarySecondary extends LitElement {
 				padding: 0.75rem 1rem;
 			}
 			@media only screen and (max-width: 768px) {
+				.d2l-template-primary-secondary-divider {
+					width: 100%;
+				}
 				.d2l-template-primary-secondary-content-container {
 					grid-template-areas:
 					"primary"
