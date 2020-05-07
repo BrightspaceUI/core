@@ -168,13 +168,18 @@ class InputTime extends LitElement {
 						aria-controls="${this._dropdownId}"
 						aria-labelledby="${this._dropdownId}-label"
 						@change="${this._handleChange}"
+						@keydown="${this._handleKeydown}"
 						class="d2l-input"
 						?disabled="${this.disabled}"
-						@keypress="${this._handleKeypress}"
 						.value="${this._formattedValue}">
 				</div>
-				<d2l-dropdown-menu id="dropdown" no-padding-footer max-height="${ifDefined(this.maxHeight)}" min-width="195">
+				<d2l-dropdown-menu
+					@d2l-dropdown-close="${this.focus}"
+					no-padding-footer
+					max-height="${ifDefined(this.maxHeight)}"
+					min-width="195">
 					<d2l-menu
+						aria-describedby="${this._dropdownId}-timezone"
 						id="${this._dropdownId}"
 						role="listbox"
 						class="d2l-input-time-menu"
@@ -195,7 +200,7 @@ class InputTime extends LitElement {
 								</d2l-menu-item-radio>
 							`}
 					</d2l-menu>
-					<div class="d2l-input-time-timezone d2l-body-small" slot="footer">${this._timezone}</div>
+					<div class="d2l-input-time-timezone d2l-body-small" id="${this._dropdownId}-timezone" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
@@ -258,6 +263,16 @@ class InputTime extends LitElement {
 			'change',
 			{bubbles: true, composed: false}
 		));
+	}
+
+	async _handleKeydown(e) {
+		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
+		// open and focus dropdown on down arrow or enter
+		if (e.keyCode === 40 || e.keyCode === 13) {
+			dropdown.open(true);
+			this.shadowRoot.querySelector('d2l-menu').focus();
+			if (e.keyCode === 40) e.preventDefault();
+		}
 	}
 }
 customElements.define('d2l-input-time', InputTime);
