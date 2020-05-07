@@ -19,7 +19,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		if (this.key === undefined) {
-			this.draggable === undefined;
+			this.draggable = undefined;
 		}
 	}
 
