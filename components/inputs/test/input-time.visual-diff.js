@@ -43,6 +43,7 @@ describe('d2l-input-time', () => {
 			await helper.open(page, `#${name}`);
 			const rect = await helper.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await helper.reset(page, `#${name}`); //Make sure the dropdown is closed before the next test
 		});
 	});
 
