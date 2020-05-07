@@ -96,7 +96,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	_removeCopy() {
 	}
 
-	_dropHanlders() {
+	_dropHandlers() {
 		this._dispatchDragEvent(null);
 	}
 
