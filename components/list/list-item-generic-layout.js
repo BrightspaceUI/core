@@ -63,6 +63,12 @@ class ListItemGenericLayout extends LitElement {
 		this._preventFocusFromNonActions();
 	}
 
+	disconnectedCallback() {
+		this._removeListenersFromNonActions();
+
+		super.disconnectedCallback();
+	}
+
 	render() {
 		return html`
 		<slot name="content-action"></slot>
@@ -76,24 +82,40 @@ class ListItemGenericLayout extends LitElement {
 		`;
 	}
 
-	_preventFocusFromNonActions() {
+	_getContentFocusables() {
 		const slots = [
 			'content',
 			'control',
 			'outside-control'
 		];
+		const focusables = [];
 		for (const slot of slots) {
 			const content = this.querySelector(`[slot="${slot}"]`);
-			const focusables = content ? getAllFocusableDescendants(content) : [];
-			for (const focusable of focusables) {
-				// remove focus and click events from focusable items.
-				// Items requiring focus MUST be placed within an action area
-				focusable.setAttribute('tabindex', '-1');
-				focusable.addEventListener('click', (event) => {
-					event.preventDefault();
-					return false;
-				});
-			}
+			const descendants = content ? getAllFocusableDescendants(content) : [];
+			focusables.push(...descendants);
+		}
+		return focusables;
+	}
+
+	_preventClick(event) {
+		event.preventDefault();
+		return false;
+	}
+
+	_preventFocusFromNonActions() {
+		const focusables = this._getContentFocusables();
+		for (const focusable of focusables) {
+			// remove focus and click events from focusable items.
+			// Items requiring focus MUST be placed within an action area
+			focusable.setAttribute('tabindex', '-1');
+			focusable.addEventListener('click', this._preventClick);
+		}
+	}
+
+	_removeListenersFromNonActions() {
+		const focusables = this._getContentFocusables();
+		for (const focusable of focusables) {
+			focusable.removeEventListener('click', this._preventClick);
 		}
 	}
 }
