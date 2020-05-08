@@ -152,7 +152,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 	_focusSelected() {
 		const selected = this.querySelector('[selected]');
-		if (selected) selected.focus();
+		if (selected) {
+			selected.focus();
+		} else {
+			this._focusFirst();
+		}
 	}
 
 	_focusPrevious(item) {
