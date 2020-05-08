@@ -122,7 +122,6 @@
 
 				render() {
 					const ariaRequired = this.required ? 'true' : undefined;
-					console.log(this.required);
 					return html`
 						<label for="name" class="d2l-input-label">Name</label>
 						<input id="name" type="text" class="d2l-input" aria-required="${ifDefined(ariaRequired)}">

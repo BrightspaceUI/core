@@ -5,5 +5,13 @@
   },
   "rules": {
     "linebreak-style": ["error", "unix"]
-  }
+  },
+  "overrides": [{
+    "files": [
+      "**/demo/**.html",
+      "helpers/getLocalizeResources.js" ],
+    "rules": {
+      "no-console": 0
+    }
+  }]
 }

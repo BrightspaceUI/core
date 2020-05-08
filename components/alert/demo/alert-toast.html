@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../button/button.js';
+		import '../../demo/demo-page.js';
+		import '../alert-toast.js';
+	</script>
+	<style>
+	</style>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-alert-toast">
+
+		<h2>Default</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert-toast id="toast1">A default toast alert.</d2l-alert-toast>
+				<d2l-button primary data-toast="toast1">Open alert</d2l-button>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Without Auto-Close</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert-toast id="toast2" no-auto-close >A default toast alert without autoclose.</d2l-alert-toast>
+				<d2l-button primary data-toast="toast2">Open alert</d2l-button>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Without Close Button</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert-toast id="toast3" hide-close-button>A default toast alert without close button.</d2l-alert-toast>
+				<d2l-button primary data-toast="toast3">Open alert</d2l-button>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>With Subtext</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-alert-toast id="toast4" type="success" button-text="Do it!" has-close-button
+					subtext="I am subtext. I'm here to test the wrapping capabilities of adding subtext to these alerts, as well as other styling issues. Feel free to add to me!">
+					A message.
+				</d2l-alert-toast>
+				<d2l-button primary data-toast="toast4">Open alert</d2l-button>
+			</template>
+		</d2l-demo-snippet>
+	</d2l-demo-page>
+
+</body>
+<script type="module">
+	function openToast(toastId) {
+		document.getElementById(toastId).setAttribute('open', '');
+	}
+
+	window.requestAnimationFrame(() => {
+		const buttons = document.querySelectorAll('d2l-button');
+		buttons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const toast = button.getAttribute('data-toast');
+				openToast(toast);
+			});
+		});
+	});
+</script>
+
+</html>
