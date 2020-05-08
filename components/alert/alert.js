@@ -125,10 +125,10 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	close() {
-		this.hidden = true;
-		this.dispatchEvent(new CustomEvent(
-			'd2l-alert-closed', { bubbles: true, composed: true }
-		));
+		const event = new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true });
+		if (this.dispatchEvent(event)) {
+			this.hidden = true;
+		}
 	}
 
 	_onButtonClick() {
