@@ -114,7 +114,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	_dragStartHandlers() {
 		this.moveBefore();
 	}
-	_dragStopHanlders() {
+	_dragStopHandlers() {
 		this.moveAfter();
 	}
 };
