@@ -100,7 +100,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		this._dispatchDragEvent(null);
 	}
 
-	_dragOverHanlders() {
+	_dragOverHandlers() {
 		this._dispatchDragEvent(null);
 	}
 
