@@ -106,15 +106,17 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	_dragExit() {
 		this._dispatchDragEvent(null);
-		this._dragStopHanlders();
+		this._dragStopHandler();
 	}
+
 	_dragEnter() {
-		this._dragStartHanlders();
+		this._dragStartHandler();
 	}
-	_dragStartHandlers() {
+
+	_dragStartHandler() {
 		this.moveBefore();
 	}
-	_dragStopHandlers() {
+	_dragStopHandler() {
 		this.moveAfter();
 	}
 };
