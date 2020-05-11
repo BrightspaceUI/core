@@ -19,7 +19,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		if (this.key === undefined) {
-			this.draggable = undefined;
+			this.draggable = false;
 		}
 	}
 
@@ -60,13 +60,13 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		if (!this.draggable) {
 			return;
 		}
-		this._dragStartHanlders();
+		this._dragStartHandler();
 	}
 
 	_handleDragChange() {
-		this._dragStartHanlders();
+		this._dragStartHandler();
 		this._dragEnter();
-		this._dragStopHanlders();
+		this._dragStopHandler();
 	}
 
 	moveBefore(itemKey) {
