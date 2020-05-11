@@ -76,6 +76,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		if (itemKey === null) {
 			this._dispatchDragEvent(null);
 		}
+		this._dispatchDragEvent(itemKey);
 	}
 
 	moveAfter(itemKey) {
@@ -85,6 +86,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		if (itemKey === null) {
 			this._dispatchDragEvent(null);
 		}
+		this._dispatchDragEvent(itemKey);
 	}
 
 	// TODO
