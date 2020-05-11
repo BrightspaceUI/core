@@ -45,6 +45,7 @@
 					button.addEventListener('click', () => {
 						const section = document.querySelector('d2l-expand-collapse');
 						section.expanded = !section.expanded;
+						button.setAttribute('aria-expanded', section.expanded ? 'true' : 'false');
 					});
 				</script>
 			</template>

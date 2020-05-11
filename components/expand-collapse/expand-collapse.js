@@ -33,7 +33,7 @@ class ExpandCollapse extends LitElement {
 
 			.d2l-expand-collapse-container {
 				display: none;
-				height: 0px;
+				height: 0;
 				overflow: hidden;
 				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
@@ -84,7 +84,7 @@ class ExpandCollapse extends LitElement {
 	firstUpdated() {
 		super.firstUpdated();
 
-		const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content');
+		const content = this._getContent();
 		this._resizeObserver = new ResizeObserver(this._onContentResize);
 		this._resizeObserver.observe(content);
 	}
