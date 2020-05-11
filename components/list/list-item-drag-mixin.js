@@ -44,7 +44,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 			<div
 				id="${this._itemDragId}"
 				class="d2l-list-item-drag"
-				?draggable="${this.draggable}"
 				@change="${this._handleDragChange}"
 			></div>
 		` : nothing;
@@ -64,6 +63,9 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	}
 
 	_handleDragChange() {
+		//test
+		this._dispatchDragEvent(null);
+
 		this._dragStartHandler();
 		this._dragEnter();
 		this._dragStopHandler();
