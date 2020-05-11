@@ -11,7 +11,9 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	static get properties() {
 		return {
 			href: { type: String },
-			draggable: { type: Boolean }
+			draggable: { type: Boolean },
+			_hovering: { type: Boolean },
+			_focusing: { type: Boolean }
 		};
 	}
 
@@ -27,8 +29,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 			:host([href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			.d2l-list-item-content[hover],
-			.d2l-list-item-content[focus] {
+			.d2l-list-item-content-active {
 				--d2l-list-item-content-text-decoration: underline;
 			}
 			:host([href]) .d2l-list-item-link:focus {
@@ -57,12 +58,14 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 					class="d2l-list-item-link"
 					href="${this.href}"
 					aria-labelledby="${this._contentId}"
-					@mouseover="${this._anchorEventHandler}"
-					@mouseout="${this._anchorEventHandler}"
-					@focus="${this._anchorEventHandler}"
-					@blur="${this._anchorEventHandler}"></a>
+					@mouseenter="${this._handleMouseEnter}"
+					@mouseleave="${this._handleMouseLeave}"
+					@focus="${this._handleFocus}"
+					@blur="${this._handleBlur}"></a>
 				` : nothing }
-				<div slot="content" id="${this._contentId}" class="d2l-list-item-content">
+				<div slot="content"
+					id="${this._contentId}"
+					class="d2l-list-item-content ${ this._hovering || this._focusing ? 'd2l-list-item-content-active' : ''}">
 					<slot></slot>
 				</div>
 
@@ -73,22 +76,20 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		`;
 	}
 
-	_anchorEventHandler(event) {
-		const content = this.shadowRoot.querySelector(`#${this._contentId}`);
-		switch (event.type) {
-			case 'mouseover':
-				content.setAttribute('hover', '');
-				break;
-			case 'mouseout':
-				content.removeAttribute('hover');
-				break;
-			case 'focus':
-				content.setAttribute('focus', '');
-				break;
-			case 'blur':
-				content.removeAttribute('focus', '');
-				break;
-		}
+	_handleMouseEnter() {
+		this._hovering = true;
+	}
+
+	_handleMouseLeave() {
+		this._hovering = false;
+	}
+
+	_handleFocus() {
+		this._focusing = true;
+	}
+
+	_handleBlur() {
+		this._focusing = false;
 	}
 }
 
