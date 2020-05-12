@@ -29,7 +29,6 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this.selected = false;
 		this._checkboxId = getUniqueId();
 	}
 
