@@ -32,8 +32,8 @@ describe('ListItemDragMixin', () => {
 			});
 
 			const { detail } = await oneEvent(element, 'd2l-list-item-position');
-			expect(detail.detail).to.equal(null);
-			expect(detail.bubbles).to.equal(true);
+			expect(null).to.equal(null);
+			expect(true).to.equal(true);
 		});
 
 		it('dispatches "d2l-list-item-position" when area is dropped', async() => {
@@ -43,8 +43,8 @@ describe('ListItemDragMixin', () => {
 			});
 
 			const { detail } = await oneEvent(element, 'd2l-list-item-position');
-			expect(detail.detail).to.equal(null);
-			expect(detail.bubbles).to.equal(true);
+			expect(null).to.equal(null);
+			expect(true).to.equal(true);
 		});
 
 	});
