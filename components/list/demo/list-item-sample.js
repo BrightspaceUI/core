@@ -6,7 +6,6 @@ import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 import { nothing } from 'lit-html';
 
-
 class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	// TODO: Role and breakpoints to live elsewhere
 	// TODO: draggable should be part of the ListItemDragMixin and removed here
@@ -47,7 +46,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	}
 
 	render() {
-		let classes = { hovering: this._hovering, focusing: this._focusing };
+		const classes = { hovering: this._hovering, focusing: this._focusing };
 
 		return html`
 			<d2l-list-item-generic-layout>

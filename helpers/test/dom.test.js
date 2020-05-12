@@ -4,8 +4,8 @@ import {
 	findComposedAncestor,
 	getComposedChildren,
 	getComposedParent,
-	getOffsetParent,
 	getNextAncestorSibling,
+	getOffsetParent,
 	isComposedAncestor,
 	isVisible
 } from '../dom.js';
