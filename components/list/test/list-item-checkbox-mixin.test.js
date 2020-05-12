@@ -37,18 +37,6 @@ describe('ListItemCheckboxMixin', () => {
 			expect(detail.selected).to.equal(true);
 		});
 
-		it('dispatches "d2l-list-item-selected" when action area is clicked', async() => {
-			// simulate an action area click
-			setTimeout(() => {
-				const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
-				actionArea.dispatchEvent(new Event('click'));
-			});
-
-			const { detail } = await oneEvent(element, 'd2l-list-item-selected');
-			expect(detail.key).to.equal('1234');
-			expect(detail.selected).to.equal(true);
-		});
-
 		it('does not dispatch when item is disabled', async() => {
 			let dispatched = false;
 			element.disabled = true;
