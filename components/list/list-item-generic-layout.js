@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getFirstFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
-import { getNextAncestorSibling } from '../../helpers/dom.js';
+import { findComposedAncestor, getNextAncestorSibling } from '../../helpers/dom.js';
 
 class ListItemGenericLayout extends LitElement {
 
@@ -62,20 +62,23 @@ class ListItemGenericLayout extends LitElement {
 		super();
 		this._preventFocus = {
 			handleEvent(event) {
-				console.log(event);
-				const slot = event.path.find(node => node.nodeName === 'SLOT' && node.name === 'content');
+				event.preventDefault();
+				// target content slot only for now - can add others later
+				// TODO findComposedAncestor should be replaced with event.path || event.composedPath() when supported
+				const slot = findComposedAncestor(event.target, (node) =>
+					node.nodeName === 'SLOT' && ['content'].includes(node.name)
+				);
 				const ancestorSibling = getNextAncestorSibling(slot);
 				const next = getNextFocusable(ancestorSibling, true);
+				// related target is often on the parent
 				const related = getFirstFocusableDescendant(event.relatedTarget);
-				console.log(related);
 				if (!event.relatedTarget) {
 					next.focus();
 				} else {
 					if (event.relatedTarget === next || related === next) {
-						console.log('nrrr');
-						getPreviousFocusable(slot, true).focus();
+						getPreviousFocusable(slot, true).focus(); // backward tab
 					} else {
-						next.focus();
+						next.focus(); // forward tab
 					}
 				}
 			},
