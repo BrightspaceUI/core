@@ -68,25 +68,18 @@ class ExpandCollapse extends LitElement {
 		this._state = states.COLLAPSED;
 	}
 
-	get expanded() {
-		return this._expanded;
-	}
-
-	set expanded(val) {
-		const oldVal = this._expanded;
-		if (oldVal !== val) {
-			this._expanded = val;
-			this.requestUpdate('expanded', oldVal);
-			this._expandedChanged(val);
-		}
-	}
-
 	firstUpdated() {
 		super.firstUpdated();
 
 		const content = this._getContent();
 		this._resizeObserver = new ResizeObserver(this._onContentResize);
 		this._resizeObserver.observe(content);
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('expanded')) {
+			this._expandedChanged(this.expanded);
+		}
 	}
 
 	render() {
@@ -102,10 +95,14 @@ class ExpandCollapse extends LitElement {
 		`;
 	}
 
-	_expandedChanged(val) {
+	async _expandedChanged(val) {
 		if (val) {
 			this._state = reduceMotion ? states.EXPANDED : states.EXPANDING;
-			this._updateHeight();
+			await this.updateComplete;
+			const content = this._getContent();
+			if (content) {
+				this._height = content.scrollHeight;
+			}
 		} else {
 			this._state = reduceMotion ? states.COLLAPSED : states.COLLAPSING;
 			this._height = null;
@@ -116,24 +113,22 @@ class ExpandCollapse extends LitElement {
 		return this.shadowRoot.querySelector('.d2l-expand-collapse-content');
 	}
 
+	_onContentResize(e) {
+		if (!this.expanded) {
+			return;
+		}
+		const entry = e[0];
+		if (entry.contentRect) {
+			this._height = entry.contentRect.height;
+		}
+	}
+
 	_onTransitionEnd() {
 		if (this._state === states.EXPANDING) {
 			this._state = states.EXPANDED;
 		} else if (this._state === states.COLLAPSING) {
 			this._state = states.COLLAPSED;
 		}
-	}
-
-	_onContentResize() {
-		if (!this.expanded) {
-			return;
-		}
-		this._updateHeight();
-	}
-
-	_updateHeight() {
-		const content = this._getContent();
-		this._height = content.scrollHeight;
 	}
 
 }
