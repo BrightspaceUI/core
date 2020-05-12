@@ -22,10 +22,12 @@ class ListItemGenericLayout extends LitElement {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
+				width: 40px;
 				grid-column: outside-control-start / outside-control-end;
 			}
 
 			::slotted([slot="control"]) {
+				width: 40px;
 				grid-column: control-start / control-end;
 			}
 
