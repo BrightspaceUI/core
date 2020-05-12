@@ -255,13 +255,15 @@ class InputText extends RtlMixin(LitElement) {
 
 	_onSlotChange(e) {
 		const slotContent = e.target.assignedNodes()[0];
-		if (!slotContent) return;
 		const id = e.target.parentNode.id;
 
 		// requestUpdate needed for legacy Edge
 		this.requestUpdate().then(() => {
-			const style = getComputedStyle(slotContent);
-			const slotWidth = parseFloat(style.width) + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+			let slotWidth = 0;
+			if (slotContent) {
+				const style = getComputedStyle(slotContent);
+				slotWidth = parseFloat(style.width) + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+			}
 			if (id === 'first-slot') this._firstSlotWidth = slotWidth;
 			else this._lastSlotWidth = slotWidth;
 		});
