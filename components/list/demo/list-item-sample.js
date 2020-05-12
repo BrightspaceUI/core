@@ -34,7 +34,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 			.d2l-list-item-content.focusing {
 				--d2l-list-item-content-text-decoration: underline;
 			}
-			:host([href]) .d2l-list-item-link:focus {
+			[slot="content-action"]:focus {
 				outline: none;
 			}
 		`];
@@ -59,7 +59,6 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				` : nothing }
 				${ this.href ? html`
 				<a slot="content-action"
-					class="d2l-list-item-link"
 					href="${this.href}"
 					aria-labelledby="${this._contentId}"
 					@mouseenter="${this._handleMouseEnter}"
