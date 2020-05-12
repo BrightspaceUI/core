@@ -79,20 +79,20 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		`;
 	}
 
-	_handleMouseEnter() {
-		this._hovering = true;
-	}
-
-	_handleMouseLeave() {
-		this._hovering = false;
+	_handleBlur() {
+		this._focusing = false;
 	}
 
 	_handleFocus() {
 		this._focusing = true;
 	}
 
-	_handleBlur() {
-		this._focusing = false;
+	_handleMouseEnter() {
+		this._hovering = true;
+	}
+
+	_handleMouseLeave() {
+		this._hovering = false;
 	}
 }
 
