@@ -53,7 +53,6 @@ class TemplatePrimarySecondary extends LitElement {
 			.d2l-template-primary-secondary-divider {
 				grid-area: divider;
 				background-color: var(--d2l-color-mica);
-				width: 1px;
 			}
 			aside {
 				grid-area: secondary;
@@ -63,6 +62,19 @@ class TemplatePrimarySecondary extends LitElement {
 				grid-area: footer;
 				box-shadow: 0 -2px 4px rgba(73, 76, 78, .2); /* ferrite */
 				padding: 0.75rem 1rem;
+			}
+			@media only screen and (max-width: 768px) {
+				.container {
+					height: 100%;
+				}
+				.d2l-template-primary-secondary-content-container {
+					grid-template-areas:
+					"primary"
+					"divider"
+					"secondary";
+					grid-template-columns: auto;
+					grid-template-rows: auto 1px auto;
+				}
 			}
 		`;
 	}
