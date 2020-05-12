@@ -80,8 +80,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			<label @click="${this._handleCheckboxActionClick}"
 				class="d2l-checkbox-action"
 				?disabled="${this.disabled}"
-				for="${this._checkboxId}"
-				tabindex="0">
+				for="${this._checkboxId}">
 				${inner}
 			</label>
 			` : nothing;

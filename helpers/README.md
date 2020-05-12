@@ -66,6 +66,9 @@ getComposedChildren(element);
 // gets the composed parent (including shadow host & insertion points)
 getComposedParent(node);
 
+// returns the closest composed sibling at least one dom level up
+getNextAncestorSibling(node, predicate = () => true);
+
 // browser consistent implementation of HTMLElement.offsetParent
 getOffsetParent(node);
 
@@ -82,9 +85,6 @@ Focus helper functions to easily select focusable DOM nodes
 
 ```js
 import { ... } from '@brightspace-ui/core/helpers/focus.js';
-
-// gets an array of all focusable descendants given a node
-getAllFocusableDescendants(node, includeHidden = true)
 
 // gets the active element, including shadow DOM active elements
 getComposedActiveElement()

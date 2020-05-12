@@ -1,6 +1,5 @@
 import { defineCE, expect, fixture, html } from '@open-wc/testing';
 import {
-	getAllFocusableDescendants,
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
 	getLastFocusableDescendant,
@@ -76,29 +75,6 @@ const focusableFixture = html`
 `;
 
 describe('focus', () => {
-
-	describe('getAllFocusableDescendents', () => {
-
-		it('returns an all anchors', async() => {
-			const elem = await fixture(nestedFixture);
-			const expected = Array.from(elem.querySelectorAll('a'));
-			expect(getAllFocusableDescendants(elem))
-				.to.deep.equal(expected);
-		});
-
-		it('returns the anchor children of nested div', async() => {
-			const elem = await fixture(nestedFixture);
-			const node = elem.firstElementChild;
-			const expected = Array.from(node.querySelectorAll('a'));
-			expect(getAllFocusableDescendants(node))
-				.to.deep.equal(expected);
-		});
-
-		it('returns empty if no focusable children', async() => {
-			const elem = await fixture(html`<div><div>Foo</div></div>`);
-			expect(getAllFocusableDescendants(elem)).to.be.empty;
-		});
-	});
 
 	describe('getComposedActiveElement', () => {
 

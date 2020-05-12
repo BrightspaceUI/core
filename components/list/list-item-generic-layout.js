@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getAllFocusableDescendants } from '../../helpers/focus.js';
+import { getFirstFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { getNextAncestorSibling } from '../../helpers/dom.js';
 
 class ListItemGenericLayout extends LitElement {
 
@@ -57,66 +58,49 @@ class ListItemGenericLayout extends LitElement {
 		`;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-
-		this._preventFocusFromNonActions();
-	}
-
-	disconnectedCallback() {
-		this._removeListenersFromNonActions();
-
-		super.disconnectedCallback();
+	constructor() {
+		super();
+		this._preventFocus = {
+			handleEvent(event) {
+				console.log(event);
+				const slot = event.path.find(node => node.nodeName === 'SLOT' && node.name === 'content');
+				const ancestorSibling = getNextAncestorSibling(slot);
+				const next = getNextFocusable(ancestorSibling, true);
+				const related = getFirstFocusableDescendant(event.relatedTarget);
+				console.log(related);
+				if (!event.relatedTarget) {
+					next.focus();
+				} else {
+					if (event.relatedTarget === next || related === next) {
+						console.log('nrrr');
+						getPreviousFocusable(slot, true).focus();
+					} else {
+						next.focus();
+					}
+				}
+			},
+			capture: true
+		};
+		this._preventClick = {
+			handleEvent(event) {
+				event.preventDefault();
+				return false;
+			},
+			capture: true
+		};
 	}
 
 	render() {
 		return html`
 		<slot name="content-action"></slot>
 		<slot name="outside-control-action"></slot>
+		<slot name="outside-control"></slot>
 		<slot name="control-action"></slot>
+		<slot name="control"></slot>
 		<slot name="actions"></slot>
 
-		<slot name="outside-control"></slot>
-		<slot name="control"></slot>
-		<slot name="content"></slot>
+		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
-	}
-
-	_getContentFocusables() {
-		const slots = [
-			'content',
-			'control',
-			'outside-control'
-		];
-		const focusables = [];
-		for (const slot of slots) {
-			const content = this.querySelector(`[slot="${slot}"]`);
-			const descendants = content ? getAllFocusableDescendants(content) : [];
-			focusables.push(...descendants);
-		}
-		return focusables;
-	}
-
-	_preventClick(event) {
-		event.preventDefault();
-		return false;
-	}
-
-	_preventFocusFromNonActions() {
-		const focusables = this._getContentFocusables();
-		for (const focusable of focusables) {
-			// remove focus and click events from focusable items.
-			// Items requiring focus MUST be placed within an action area
-			focusable.setAttribute('tabindex', '-1');
-			focusable.addEventListener('click', this._preventClick);
-		}
-	}
-
-	_removeListenersFromNonActions() {
-		const focusables = this._getContentFocusables();
-		for (const focusable of focusables) {
-			focusable.removeEventListener('click', this._preventClick);
-		}
 	}
 }
 

@@ -5,6 +5,7 @@ import {
 	getComposedChildren,
 	getComposedParent,
 	getOffsetParent,
+	getNextAncestorSibling,
 	isComposedAncestor,
 	isVisible
 } from '../dom.js';
@@ -435,6 +436,43 @@ describe('dom', () => {
 			expect(getOffsetParent(elem)).to.equal(document.body);
 		});
 
+	});
+
+	describe('getNextAncestorSibling', () => {
+
+		it('returns null when no siblings', async() => {
+			const elem = await fixture(simpleFixture);
+			expect(getNextAncestorSibling(elem)).to.be.null;
+		});
+
+		it('returns the ancestor sibling one level up', async() => {
+			const elem = await fixture(html`
+			<div id="parent">
+				<div>
+					<div id="target"></div>
+				</div>
+				<div id="expected"></div>
+				<div></div>
+			</div>
+			`);
+			expect(getNextAncestorSibling(elem.querySelector('#target')))
+				.to.be.equal(elem.querySelector('#expected'));
+		});
+
+		it('returns the ancestor sibling two levels up', async() => {
+			const elem = await fixture(html`
+			<div id="parent">
+				<div>
+					<div>
+						<div id="target"></div>
+					</div>
+				</div>
+				<div id="expected"></div>
+			</div>
+			`);
+			expect(getNextAncestorSibling(elem.querySelector('#target')))
+				.to.be.equal(elem.querySelector('#expected'));
+		});
 	});
 
 	describe('isComposedAncestor', () => {
