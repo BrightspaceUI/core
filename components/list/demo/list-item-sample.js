@@ -1,9 +1,11 @@
 import '../list-item-generic-layout.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 import { nothing } from 'lit-html';
+
 
 class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	// TODO: Role and breakpoints to live elsewhere
@@ -29,7 +31,8 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 			:host([href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			.d2l-list-item-content-active {
+			.d2l-list-item-content.hovering,
+			.d2l-list-item-content.focusing {
 				--d2l-list-item-content-text-decoration: underline;
 			}
 			:host([href]) .d2l-list-item-link:focus {
@@ -44,6 +47,8 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	}
 
 	render() {
+		let classes = { hovering: this._hovering, focusing: this._focusing };
+
 		return html`
 			<d2l-list-item-generic-layout>
 				${ this.draggable ? html`
@@ -65,7 +70,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				` : nothing }
 				<div slot="content"
 					id="${this._contentId}"
-					class="d2l-list-item-content ${ this._hovering || this._focusing ? 'd2l-list-item-content-active' : ''}">
+					class="d2l-list-item-content ${ classMap(classes) }">
 					<slot></slot>
 				</div>
 
