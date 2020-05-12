@@ -44,7 +44,10 @@ export const ListItemDragMixin = superclass => class extends superclass {
 			<div
 				id="${this._itemDragId}"
 				class="d2l-list-item-drag"
-				@change="${this._handleDragChange}"
+				@drop="${this._dropHandlers()}"
+				@dragover="${this._dragOverHandlers()}"
+				@dragenter="${this._dragEnter()}"
+				@dragleave="${this._dragExit()}"
 			></div>
 		` : nothing;
 	}
@@ -53,22 +56,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		return this.draggable ? html`
 			<div @click="${this._handleDragActionClick}" class="d2l-list-item-drag-action">${inner}</div>
 			` : nothing;
-	}
-
-	_handleDragActionClick() {
-		if (!this.draggable) {
-			return;
-		}
-		this._dragStartHandler();
-	}
-
-	_handleDragChange() {
-		//test
-		this._dispatchDragEvent(null);
-
-		this._dragStartHandler();
-		this._dragEnter();
-		this._dragStopHandler();
 	}
 
 	moveBefore(itemKey) {
@@ -110,7 +97,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	_dragExit() {
 		this._dispatchDragEvent(null);
-		this._dragStopHandler();
 	}
 
 	_dragEnter() {
@@ -118,9 +104,11 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	}
 
 	_dragStartHandler() {
-		this.moveBefore();
+		this.moveBefore(null);
+		this._dispatchDragEvent(null);
 	}
 	_dragStopHandler() {
-		this.moveAfter();
+		this._dispatchDragEvent(null);
+		this.moveafter(null);
 	}
 };

@@ -24,10 +24,11 @@ describe('ListItemDragMixin', () => {
 		beforeEach(async() => {
 			element = await fixture(`<${tag} key="1234" draggable="true"></${tag}>`);
 		});
+
 		it('dispatches "d2l-list-item-position" when area is dragged', async() => {
 			setTimeout(() => {
 				const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag');
-				dragArea.dispatchEvent(new Event('change'));
+				dragArea.dispatchEvent(new Event('dragover'));
 			});
 
 			const { detail } = await oneEvent(element, 'd2l-list-item-position');
@@ -35,10 +36,10 @@ describe('ListItemDragMixin', () => {
 			expect(detail.bubbles).to.equal(true);
 		});
 
-		it('dispatches "d2l-list-item-position" when action area is clicked', async() => {
+		it('dispatches "d2l-list-item-position" when area is dropped', async() => {
 			setTimeout(() => {
-				const actionArea = element.shadowRoot.querySelector('.d2l-list-item-drag-action');
-				actionArea.dispatchEvent(new Event('click'));
+				const actionArea = element.shadowRoot.querySelector('.d2l-list-item-drag');
+				actionArea.dispatchEvent(new Event('drop'));
 			});
 
 			const { detail } = await oneEvent(element, 'd2l-list-item-position');
