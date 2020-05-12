@@ -53,6 +53,12 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		}));
 	}
 
+	_handleCheckboxActionClick(event) {
+		event.preventDefault();
+		if (this.disabled) return;
+		this.setSelected(!this.selected);
+	}
+
 	_handleCheckboxChange(event) {
 		this.setSelected(event.target.checked);
 	}
@@ -71,7 +77,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
-			<label
+			<label @click="${this._handleCheckboxActionClick}"
 				class="d2l-checkbox-action"
 				?disabled="${this.disabled}"
 				for="${this._checkboxId}">
