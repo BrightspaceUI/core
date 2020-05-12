@@ -316,7 +316,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	_handleDropdownOpen() {
-		this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		// use setTimeout to wait for keyboard to open on mobile devices
+		setTimeout(() => {
+			this.shadowRoot.querySelector('d2l-input-text').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		}, 150);
 		this._dropdownOpened = true;
 	}
 
