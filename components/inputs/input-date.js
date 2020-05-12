@@ -171,8 +171,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			console.warn('d2l-input-date component requires label text');
 		}
 
-		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
+		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
 		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
@@ -242,8 +243,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-text');
-		if (elem) elem.focus();
+		if (this._textInput) this._textInput.focus();
 	}
 
 	updated(changedProperties) {
@@ -268,7 +268,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
-			await this._handleChange(e);
+			await this._handleChange();
 			this._calendar.focus();
 			this._setFormattedValue();
 
@@ -276,8 +276,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		}
 	}
 
-	async _handleChange(e) {
-		const value = e.target.value;
+	async _handleChange() {
+		const value = this._textInput.value;
 		if (!value) {
 			if (value !== this.value) {
 				this._updateValueDispatchEvent('');
@@ -313,13 +313,14 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	_handleDropdownClose() {
 		this._calendar.reset();
 		this._dropdownOpened = false;
+		this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 	}
 
 	_handleDropdownOpen() {
 		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		// use setTimeout to wait for keyboard to open on mobile devices
 		setTimeout(() => {
-			this.shadowRoot.querySelector('d2l-input-text').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+			this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		}, 150);
 		this._dropdownOpened = true;
 	}
@@ -328,9 +329,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
 	}
 
-	_handleMouseup(e) {
+	_handleMouseup() {
 		if (!this.disabled) {
-			if (!this._dropdownOpened) this._handleChange(e);
+			if (!this._dropdownOpened) this._handleChange();
 			this._dropdown.toggleOpen(false);
 		}
 	}
@@ -339,6 +340,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const date = getToday();
 		this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
+		this.focus();
 	}
 
 	_setFormattedValue() {
