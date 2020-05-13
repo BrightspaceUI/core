@@ -1,4 +1,6 @@
-export const ButtonMixin = superclass => class extends superclass {
+import { FormElementMixin } from '../form/form-element-mixin.js';
+
+export const ButtonMixin = superclass => class extends FormElementMixin(superclass) {
 
 	static get properties() {
 		return {
