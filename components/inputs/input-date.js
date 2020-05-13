@@ -192,7 +192,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	render() {
-		const formattedWideDate = formatISODateInUserCalDescriptor('2020-12-20');
+		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 
