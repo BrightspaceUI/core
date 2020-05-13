@@ -192,12 +192,15 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	render() {
-		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+		const formattedWideDate = formatISODateInUserCalDescriptor('2020-12-20');
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
+		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+
 		this.style.maxWidth = inputTextWidth;
+
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
-				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formatISODateInUserCalDescriptor('2020-12-20')}</div>
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
 			</div>
