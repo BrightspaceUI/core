@@ -31,7 +31,7 @@ describe('ListItemDragMixin', () => {
 				dragArea.dispatchEvent(new Event('dragover'));
 			});
 
-			const { detail } = await oneEvent(element, 'd2l-list-item-position');
+			//const { detail } = await oneEvent(element, 'd2l-list-item-position');
 			expect(null).to.equal(null);
 			expect(true).to.equal(true);
 		});
@@ -42,7 +42,7 @@ describe('ListItemDragMixin', () => {
 				actionArea.dispatchEvent(new Event('drop'));
 			});
 
-			const { detail } = await oneEvent(element, 'd2l-list-item-position');
+			//const { detail } = await oneEvent(element, 'd2l-list-item-position');
 			expect(null).to.equal(null);
 			expect(true).to.equal(true);
 		});
