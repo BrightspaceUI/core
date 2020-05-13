@@ -305,6 +305,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	_handleClear() {
 		this._updateValueDispatchEvent('');
 		this._dropdown.close();
+		this.focus();
 	}
 
 	_handleDateSelected(e) {
