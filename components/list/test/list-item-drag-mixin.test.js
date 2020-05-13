@@ -26,25 +26,28 @@ describe('ListItemDragMixin', () => {
 		});
 
 		it('dispatches "d2l-list-item-position" when area is dragged', async() => {
+			let dispatched = false;
+			element.addEventListener('d2l-list-item-positiond', () => dispatched = true);
+			await element.updateComplete;
+			const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag');
 			setTimeout(() => {
-				const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag');
 				dragArea.dispatchEvent(new Event('dragover'));
 			});
+			await oneEvent(dragArea, 'dragover');
 
-			//const { detail } = await oneEvent(element, 'd2l-list-item-position');
-			expect(null).to.equal(null);
-			expect(true).to.equal(true);
+			expect(dispatched).to.equal(true);
 		});
 
 		it('dispatches "d2l-list-item-position" when area is dropped', async() => {
+			let dispatched = false;
+			element.addEventListener('d2l-list-item-positiond', () => dispatched = true);
+			await element.updateComplete;
+			const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag');
 			setTimeout(() => {
-				const actionArea = element.shadowRoot.querySelector('.d2l-list-item-drag');
-				actionArea.dispatchEvent(new Event('drop'));
+				dragArea.dispatchEvent(new Event('drop'));
 			});
-
-			//const { detail } = await oneEvent(element, 'd2l-list-item-position');
-			expect(null).to.equal(null);
-			expect(true).to.equal(true);
+			await oneEvent(dragArea, 'drop');
+			expect(dispatched).to.equal(true);
 		});
 
 	});

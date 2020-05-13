@@ -25,7 +25,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	_dispatchDragEvent(detail) {
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
-			detail,
+			detail: detail,
 			bubbles: true
 		}));
 	}
