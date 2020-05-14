@@ -22,6 +22,7 @@ npm install @brightspace-ui/core
   * [Colors](components/colors/): color palette
   * [Dialogs](components/dialog/): generic and confirmation dialogs
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
+  * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible sections
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
