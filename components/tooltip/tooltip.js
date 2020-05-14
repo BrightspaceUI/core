@@ -8,6 +8,8 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+let logAccessibilityWarning = true;
+
 const pointerLength = 16;
 const pointerOverhang = 7; /* how far the pointer extends outside the content */
 
@@ -743,11 +745,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			} else {
 				target.setAttribute('aria-describedby', this.id);
 			}
-			if (!this._isInteractive(target)) {
+			if (logAccessibilityWarning && !this._isInteractive(target)) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
 					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.'
 				);
+				logAccessibilityWarning = false;
 			}
 		}
 		this._target = target;

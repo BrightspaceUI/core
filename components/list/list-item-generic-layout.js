@@ -1,4 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { findComposedAncestor, getNextAncestorSibling } from '../../helpers/dom.js';
+import { getFirstFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 
 class ListItemGenericLayout extends LitElement {
 
@@ -20,10 +22,12 @@ class ListItemGenericLayout extends LitElement {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
+				width: 40px;
 				grid-column: outside-control-start / outside-control-end;
 			}
 
 			::slotted([slot="control"]) {
+				width: 40px;
 				grid-column: control-start / control-end;
 			}
 
@@ -56,16 +60,51 @@ class ListItemGenericLayout extends LitElement {
 		`;
 	}
 
+	constructor() {
+		super();
+		this._preventFocus = {
+			handleEvent(event) {
+				event.preventDefault();
+				// target content slot only for now - can add others later
+				// TODO findComposedAncestor should be replaced with event.path || event.composedPath() when supported
+				const slot = findComposedAncestor(event.target, (node) =>
+					node.nodeName === 'SLOT' && ['content'].includes(node.name)
+				);
+				const ancestorSibling = getNextAncestorSibling(slot);
+				const next = getNextFocusable(ancestorSibling, true);
+				// related target is often on the parent
+				const related = getFirstFocusableDescendant(event.relatedTarget);
+				if (!event.relatedTarget) {
+					next.focus();
+				} else {
+					if (event.relatedTarget === next || related === next) {
+						getPreviousFocusable(slot, true).focus(); // backward tab
+					} else {
+						next.focus(); // forward tab
+					}
+				}
+			},
+			capture: true
+		};
+		this._preventClick = {
+			handleEvent(event) {
+				event.preventDefault();
+				return false;
+			},
+			capture: true
+		};
+	}
+
 	render() {
 		return html`
+		<slot name="content-action"></slot>
+		<slot name="outside-control-action"></slot>
 		<slot name="outside-control"></slot>
+		<slot name="control-action"></slot>
 		<slot name="control"></slot>
-		<slot name="content"></slot>
 		<slot name="actions"></slot>
 
-		<slot name="outside-control-action"></slot>
-		<slot name="control-action"></slot>
-		<slot name="content-action"></slot>
+		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
 	}
 }

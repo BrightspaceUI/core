@@ -64,6 +64,19 @@ export function getComposedParent(node) {
 
 }
 
+export function getNextAncestorSibling(node, predicate = () => true) {
+	let parentNode = getComposedParent(node);
+
+	while (parentNode) {
+		const nextParentSibling = parentNode.nextElementSibling;
+		if (nextParentSibling && predicate(nextParentSibling)) return nextParentSibling;
+
+		parentNode = getComposedParent(parentNode);
+	}
+
+	return null;
+}
+
 export function getOffsetParent(node) {
 
 	if (!window.ShadowRoot) {

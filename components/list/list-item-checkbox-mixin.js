@@ -18,6 +18,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		return [ checkboxStyles, css`
 			.d2l-checkbox-action {
 				height: 100%;
+				display: block;
 				cursor: pointer;
 			}
 			.d2l-checkbox-action[disabled] {
@@ -51,10 +52,9 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		}));
 	}
 
-	_handleCheckboxActionClick() {
-		if (this.disabled) {
-			return;
-		}
+	_handleCheckboxActionClick(event) {
+		event.preventDefault();
+		if (this.disabled) return;
 		this.setSelected(!this.selected);
 	}
 
@@ -76,7 +76,12 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
-			<div @click="${this._handleCheckboxActionClick}" class="d2l-checkbox-action" ?disabled="${this.disabled}">${inner}</div>
+			<label @click="${this._handleCheckboxActionClick}"
+				class="d2l-checkbox-action"
+				?disabled="${this.disabled}"
+				for="${this._checkboxId}">
+				${inner}
+			</label>
 			` : nothing;
 	}
 };

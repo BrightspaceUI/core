@@ -271,7 +271,7 @@ class InputTime extends LitElement {
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			dropdown.open(true);
 			this.shadowRoot.querySelector('d2l-menu').focus();
-			if (e.keyCode === 40) e.preventDefault();
+			e.preventDefault();
 		}
 	}
 }

@@ -46,24 +46,24 @@ class AlertToast extends LitElement {
 				z-index: 10000;
 			}
 
-			.d2l-alert-toast-container:not([state="closed"]) {
+			.d2l-alert-toast-container:not([data-state="closed"]) {
 				display: block;
 			}
 
-			.d2l-alert-toast-container[state="opening"],
-			.d2l-alert-toast-container[state="closing"] {
+			.d2l-alert-toast-container[data-state="opening"],
+			.d2l-alert-toast-container[data-state="closing"] {
 				transition-duration: 250ms;
 				transition-property: transform, opacity;
 				transition-timing-function: ease-in;
 			}
 
-			.d2l-alert-toast-container[state="preopening"],
-			.d2l-alert-toast-container[state="closing"] {
+			.d2l-alert-toast-container[data-state="preopening"],
+			.d2l-alert-toast-container[data-state="closing"] {
 				opacity: 0;
 				transform: translateY(0.5rem);
 			}
 
-			.d2l-alert-toast-container[state="opening"] {
+			.d2l-alert-toast-container[data-state="opening"] {
 				opacity: 1;
 				transform: translateY(0);
 			}
@@ -110,7 +110,7 @@ class AlertToast extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-alert-toast-container" state="${this._state}" @transitionend=${this._onTransitionEnd}>
+			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
 				<d2l-alert type="${ifDefined(this.type)}" @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
 					<slot></slot>
 				</d2l-alert>

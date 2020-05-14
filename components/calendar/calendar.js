@@ -312,7 +312,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			.d2l-calendar-date div.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
-				padding: 3px;
+				padding: 2px;
 			}
 
 			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
@@ -330,20 +330,76 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	static get resources() {
 		return {
-			'ar': { show: '{month} إظهار' },
-			'da': { show: 'Vis {month}' },
-			'de': { show: '{month} anzeigen' },
-			'en': { show: 'Show {month}' },
-			'es': { show: 'Mostrar {month}' },
-			'fr': { show: 'Afficher {month}' },
-			'ja': { show: '{month} の表示' },
-			'ko': { show: '{month} 표시' },
-			'nl': { show: '{month} tonen' },
-			'pt': { show: 'Mostrar {month}' },
-			'sv': { show: 'Visa {month}' },
-			'tr': { show: '{month} öğesini göster' },
-			'zh': { show: '显示 {month}' },
-			'zh-tw': { show: '顯示 {month}' }
+			'ar': {
+				notSelected: 'غير محدد.',
+				selected: 'محدد.',
+				show: '{month} إظهار'
+			},
+			'da': {
+				notSelected: 'Ikke valgt.',
+				selected: 'Valgt.',
+				show: 'Vis {month}'
+			},
+			'de': {
+				notSelected: 'Nicht ausgewählt.',
+				selected: 'Ausgewählt.',
+				show: '{month} anzeigen'
+			},
+			'en': {
+				notSelected: 'Not Selected.',
+				selected: 'Selected.',
+				show: 'Show {month}'
+			},
+			'es': {
+				notSelected: 'No seleccionado.',
+				selected: 'Seleccionado.',
+				show: 'Mostrar {month}'
+			},
+			'fr': {
+				notSelected: 'Pas sélectionné',
+				selected: 'Sélectionné',
+				show: 'Afficher {month}'
+			},
+			'ja': {
+				notSelected: '選択されていません。',
+				selected: '選択されています。',
+				show: '{month} の表示'
+			},
+			'ko': {
+				notSelected: '선택되지 않음.',
+				selected: '선택됨.',
+				show: '{month} 표시'
+			},
+			'nl': {
+				notSelected: 'Niet geselecteerd.',
+				selected: 'Geselecteerd.',
+				show: '{month} tonen'
+			},
+			'pt': {
+				notSelected: 'Não selecionado.',
+				selected: 'Selecionado.',
+				show: 'Mostrar {month}'
+			},
+			'sv': {
+				notSelected: 'Inte markerad.',
+				selected: 'Markerad.',
+				show: 'Visa {month}'
+			},
+			'tr': {
+				notSelected: 'Seçili değil.',
+				selected: 'Seçili.',
+				show: '{month} öğesini göster'
+			},
+			'zh': {
+				notSelected: '未选择。',
+				selected: '已选。',
+				show: '显示 {month}'
+			},
+			'zh-tw': {
+				notSelected: '未選取。',
+				selected: '已選取。',
+				show: '顯示 {month}'
+			}
 		};
 	}
 
@@ -419,9 +475,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const year = day.getFullYear();
 				const month = day.getMonth();
 				const date = day.getDate();
+				const description = `${formatDate(day, {format: 'medium'})}. ${selected ? this.localize('selected') : this.localize('notSelected')}`;
+				// role="gridcell" used for NVDA selected behavior to work properly
 				return html`
 					<td
-						aria-label="${formatDate(day, {format: 'medium'})}"
 						aria-selected="${selected ? 'true' : 'false'}"
 						class="d2l-calendar-date"
 						@click="${this._onDateSelected}"
@@ -432,13 +489,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 						@keydown="${this._onKeyDown}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
-						<div class="${classMap(classes)}">${date}</div>
+						<div aria-label="${description}" class="${classMap(classes)}" role="button">${date}</div>
 					</td>`;
 			});
 
 			return html`<tr>${weekHtml}</tr>`;
 		});
-		const activeDate = `${this._tableInfoId}-${this._focusDate.getFullYear()}-${this._focusDate.getMonth()}-${this._focusDate.getDate()}`;
 		const calendarClasses = {
 			'd2l-calendar': true,
 			'd2l-calendar-animating': (this._monthNav === 'next' || this._monthNav === 'next-updown' || this._monthNav === 'prev' || this._monthNav === 'prev-updown' || this._monthNav === 'initial'),
@@ -468,10 +524,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					</d2l-button-icon>
 				</div>
 				<table
-					aria-activedescendant="${activeDate}"
 					aria-labelledby="${labelId}"
-					aria-readonly="true"
-					role="grid"
 					summary="${ifDefined(this.summary)}">
 					<thead>
 						<tr>${weekdayHeaders}</tr>
