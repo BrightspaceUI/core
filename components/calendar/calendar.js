@@ -1,6 +1,5 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
-import '../offscreen/offscreen.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateInISO, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
@@ -313,7 +312,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			.d2l-calendar-date div.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
-				padding: 3px;
+				padding: 2px;
 			}
 
 			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
@@ -478,7 +477,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const date = day.getDate();
 				const description = `${formatDate(day, {format: 'medium'})}. ${selected ? this.localize('selected') : this.localize('notSelected')}`;
 				// role="gridcell" used for NVDA selected behavior to work properly
-				// d2l-offscreen used instead of aria-label for consistency in announcement across screen readers
 				return html`
 					<td
 						aria-selected="${selected ? 'true' : 'false'}"
@@ -491,8 +489,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 						@keydown="${this._onKeyDown}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
-						<div aria-hidden="true" class="${classMap(classes)}">${date}</div>
-						<d2l-offscreen>${description}</d2l-offscreen>
+						<div aria-label="${description}" class="${classMap(classes)}" role="button">${date}</div>
 					</td>`;
 			});
 
