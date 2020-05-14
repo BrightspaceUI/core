@@ -122,6 +122,15 @@ class ExpandCollapse extends LitElement {
 		return this.shadowRoot.querySelector('.d2l-expand-collapse-content');
 	}
 
+	async _getUpdateComplete() {
+		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+		await super._getUpdateComplete();
+		/* wait for the fonts to load because browsers have a font block period
+		where they will render an invisible fallback font face that may result in
+		improper height calculations if the expand-collapse starts expanded */
+		await fontsPromise;
+	}
+
 	_onTransitionEnd() {
 		if (this._state === states.EXPANDING) {
 			this._state = states.EXPANDED;
