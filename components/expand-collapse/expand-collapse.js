@@ -1,12 +1,13 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const states = {
+	PRECOLLAPSING: 'precollapsing', // setting up the styles so the collapse transition will run
 	COLLAPSING: 'collapsing', // in the process of collapsing
 	COLLAPSED: 'collapsed', // fully collapsed
+	PREEXPANDING: 'preexpanding', // setting up the styles so the expand transition will run
 	EXPANDING: 'expanding', // in the process of expanding
 	EXPANDED: 'expanded', // fully expanded
 };
@@ -16,7 +17,7 @@ class ExpandCollapse extends LitElement {
 	static get properties() {
 		return {
 			expanded: { type: Boolean, reflect: true },
-			_height: { type: Number },
+			_height: { type: String },
 			_state: { type: String }
 		};
 	}
@@ -33,7 +34,6 @@ class ExpandCollapse extends LitElement {
 
 			.d2l-expand-collapse-container {
 				display: none;
-				height: 0;
 				overflow: hidden;
 				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
@@ -63,17 +63,9 @@ class ExpandCollapse extends LitElement {
 
 	constructor() {
 		super();
-		this._onContentResize = this._onContentResize.bind(this);
 		this.expanded = false;
 		this._state = states.COLLAPSED;
-	}
-
-	firstUpdated() {
-		super.firstUpdated();
-
-		const content = this._getContent();
-		this._resizeObserver = new ResizeObserver(this._onContentResize);
-		this._resizeObserver.observe(content);
+		this._height = '0';
 	}
 
 	updated(changedProperties) {
@@ -83,9 +75,7 @@ class ExpandCollapse extends LitElement {
 	}
 
 	render() {
-		const styles = {
-			height: this.expanded ? `${this._height}px` : null
-		};
+		const styles = { height: this._height };
 		return html`
 			<div class="d2l-expand-collapse-container" data-state=${this._state} @transitionend=${this._onTransitionEnd} style=${styleMap(styles)}>
 				<div class="d2l-expand-collapse-content">
@@ -97,15 +87,34 @@ class ExpandCollapse extends LitElement {
 
 	async _expandedChanged(val) {
 		if (val) {
-			this._state = reduceMotion ? states.EXPANDED : states.EXPANDING;
-			await this.updateComplete;
-			const content = this._getContent();
-			if (content) {
-				this._height = content.scrollHeight;
+			if (reduceMotion) {
+				this._state = states.EXPANDED;
+				this._height = 'auto';
+			} else {
+				this._state = states.PREEXPANDING;
+				await this.updateComplete;
+				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+				if (this._state === states.PREEXPANDING) {
+					this._state = states.EXPANDING;
+					const content = this._getContent();
+					this._height = `${content.scrollHeight}px`;
+				}
 			}
 		} else {
-			this._state = reduceMotion ? states.COLLAPSED : states.COLLAPSING;
-			this._height = null;
+			if (reduceMotion) {
+				this._state = states.COLLAPSED;
+				this._height = '0';
+			} else {
+				this._state = states.PRECOLLAPSING;
+				const content = this._getContent();
+				this._height = `${content.scrollHeight}px`;
+				await this.updateComplete;
+				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+				if (this._state === states.PRECOLLAPSING) {
+					this._state = states.COLLAPSING;
+					this._height = '0';
+				}
+			}
 		}
 	}
 
@@ -113,19 +122,10 @@ class ExpandCollapse extends LitElement {
 		return this.shadowRoot.querySelector('.d2l-expand-collapse-content');
 	}
 
-	_onContentResize(e) {
-		if (!this.expanded) {
-			return;
-		}
-		const entry = e[0];
-		if (entry.contentRect) {
-			this._height = entry.contentRect.height;
-		}
-	}
-
 	_onTransitionEnd() {
 		if (this._state === states.EXPANDING) {
 			this._state = states.EXPANDED;
+			this._height = 'auto';
 		} else if (this._state === states.COLLAPSING) {
 			this._state = states.COLLAPSED;
 		}
