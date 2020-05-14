@@ -9,7 +9,7 @@ describe('d2l-list-item-drag-handle', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, {viewport: {width: 1000, height: 3700}});
+		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list-item-drag-handle.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
