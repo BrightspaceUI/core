@@ -35,8 +35,9 @@ class listItemDragHandle extends LitElement {
 
 	static get properties() {
 		return {
-			keyboardActive: { type: Boolean, attribute: 'keyboard-active', reflect: true },
-			text: { type: String }
+			disabled: { type: Boolean, reflect: true },
+			text: { type: String },
+			_keyboardActive: { type: Boolean },
 		};
 	}
 
@@ -53,7 +54,6 @@ class listItemDragHandle extends LitElement {
 			.d2l-list-item-drag-handle-dragger-button,
 			.d2l-list-item-drag-handle-keyboard-button {
 				display: grid;
-				grid-auto-columns: auto;
 				grid-auto-rows: 1fr 1fr;
 				margin: 0;
 				min-height: 1.8rem;
@@ -86,35 +86,23 @@ class listItemDragHandle extends LitElement {
 
 	constructor() {
 		super();
-		this.keyboardActive = false;
+		this._keyboardActive = false;
+		this.disabled = false;
 	}
 
 	focus() {
 		const node = getFirstFocusableDescendant(this);
-		if (node) {
-			node.focus();
-		}
+		if (node) node.focus();
 	}
 
 	render() {
-		return html`${this.keyboardActive ? this.renderKeyboardDragging() : this.renderDragger()}`;
+		return html`${this._keyboardActive && !this.disabled ? this._renderKeyboardDragging() : this._renderDragger()}`;
 	}
 
-	renderDragger() {
-		return html`
-			<button class="d2l-list-item-drag-handle-dragger-button" @click="${this._handleDeactiveKeyboard}" @keydown="${this._handleDeactiveKeyboard}" aria-label="${this.text}">
-				<d2l-icon icon="tier1:dragger"></d2l-icon>
-			</button>
-		`;
-	}
-
-	renderKeyboardDragging() {
-		return html`
-			<button class="d2l-list-item-drag-handle-keyboard-button" @blur="${this._onBlur}" @keydown="${this._handleActiveKeyboard}" aria-label="${this.text}">
-				<d2l-icon class="sub-icon" icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}"></d2l-icon>
-				<d2l-icon class="sub-icon" icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}"></d2l-icon>
-			</button>
-		`;
+	updated(changedProperties) {
+		if (changedProperties.has('_keyboardActive')) {
+			this.focus();
+		}
 	}
 
 	_dispatchAction(action) {
@@ -134,14 +122,14 @@ class listItemDragHandle extends LitElement {
 	}
 
 	_onBlur() {
-		this.keyboardActive = false;
+		this._keyboardActive = false;
 		if (!this._tabbing) {
 			this._dispatchAction(dragActions.save);
 		}
 	}
 
 	_handleActiveKeyboard(e) {
-		if (!this.keyboardActive) {
+		if (!this._keyboardActive) {
 			return;
 		}
 		let action = null;
@@ -163,13 +151,13 @@ class listItemDragHandle extends LitElement {
 				break;
 			case keyCodes.ESC:
 				action = dragActions.cancel;
-				this.updateComplete.then(() => this.keyboardActive = false);
+				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
 			case keyCodes.ENTER:
 			case keyCodes.SPACE:
 			case keyCodes.RIGHT:
 				action = dragActions.save;
-				this.updateComplete.then(() => this.keyboardActive = false);
+				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
 			default:
 				return;
@@ -178,18 +166,44 @@ class listItemDragHandle extends LitElement {
 		e.preventDefault();
 	}
 
-	_handleDeactiveKeyboard(e) {
+	_handleInactiveKeyboard(e) {
 		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
 			this._dispatchAction(dragActions.active);
-			this.keyboardActive = true;
+			this._keyboardActive = true;
 			e.preventDefault();
 		}
 	}
 
-	updated(changedProperties) {
-		if (changedProperties.has('keyboardActive')) {
-			this.focus();
-		}
+	_handlePreventDefault(e) {
+		e.preventDefault();
+	}
+
+	_renderDragger() {
+		return html`
+			<button
+				class="d2l-list-item-drag-handle-dragger-button"
+				@click="${this._handleInactiveKeyboard}"
+				@keyup="${this._handleInactiveKeyboard}"
+				@keydown="${this._handlePreventDefault}"
+				aria-label="${this.text}"
+				?disabled="${this.disabled}">
+				<d2l-icon icon="tier1:dragger"></d2l-icon>
+			</button>
+		`;
+	}
+
+	_renderKeyboardDragging() {
+		return html`
+			<button
+				class="d2l-list-item-drag-handle-keyboard-button"
+				@blur="${this._onBlur}"
+				@keyup="${this._handleActiveKeyboard}"
+				@keydown="${this._handlePreventDefault}"
+				aria-label="${this.text}">
+				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}"></d2l-icon>
+				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}"></d2l-icon>
+			</button>
+		`;
 	}
 }
 

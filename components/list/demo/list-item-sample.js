@@ -97,7 +97,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	}
 
 	_renderDragHandle() {
-		return html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`;
+		return html`<d2l-list-item-drag-handle ?disabled=${this.disabled}></d2l-list-item-drag-handle>`;
 	}
 }
 
