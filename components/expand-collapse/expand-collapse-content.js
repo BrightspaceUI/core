@@ -89,10 +89,18 @@ class ExpandCollapseContent extends LitElement {
 	}
 
 	async _expandedChanged(val, firstUpdate) {
+		const eventPromise = new Promise(resolve => this._eventPromiseResolve = resolve);
 		if (val) {
+			if (!firstUpdate) {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-expand-collapse-content-expand',
+					{ bubbles: true, detail: { expandComplete: eventPromise } }
+				));
+			}
 			if (reduceMotion || firstUpdate) {
 				this._state = states.EXPANDED;
 				this._height = 'auto';
+				this._eventPromiseResolve();
 			} else {
 				this._state = states.PREEXPANDING;
 				await this.updateComplete;
@@ -104,9 +112,16 @@ class ExpandCollapseContent extends LitElement {
 				}
 			}
 		} else {
+			if (!firstUpdate) {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-expand-collapse-content-collapse',
+					{ bubbles: true, detail: { collapseComplete: eventPromise } }
+				));
+			}
 			if (reduceMotion || firstUpdate) {
 				this._state = states.COLLAPSED;
 				this._height = '0';
+				this._eventPromiseResolve();
 			} else {
 				this._state = states.PRECOLLAPSING;
 				const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
@@ -125,8 +140,10 @@ class ExpandCollapseContent extends LitElement {
 		if (this._state === states.EXPANDING) {
 			this._state = states.EXPANDED;
 			this._height = 'auto';
+			this._eventPromiseResolve();
 		} else if (this._state === states.COLLAPSING) {
 			this._state = states.COLLAPSED;
+			this._eventPromiseResolve();
 		}
 	}
 

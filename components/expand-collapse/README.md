@@ -20,6 +20,11 @@ The `d2l-expand-collapse-content` element can be used to used to create expandab
 
 - `expanded` (Boolean, default: `false`): Specifies the expanded/collapsed state of the content
 
+**Events:**
+
+- `d2l-expand-collapse-content-expand`: dispatched when the content starts to expand. The `detail` contains an `expandComplete` promise that can be waited on to determine when the content has finished expanding.
+- `d2l-expand-collapse-content-collapse`: dispatched when the content starts to collapse. The `detail` contains a `collapseComplete` promise that can be waited on to determine when the content has finished collapsing.
+
 **Accessibility:**
 
 To make your usage of `d2l-expand-collapse-content` accessible, the [`aria-expanded` attribute](https://www.w3.org/TR/wai-aria/#aria-expanded) should be added to the element that controls expanding and collapsing the content with `"true"` or `"false"` to indicate that the content is expanded or collapsed.
