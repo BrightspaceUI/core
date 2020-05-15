@@ -12,7 +12,7 @@ const states = {
 	EXPANDED: 'expanded', // fully expanded
 };
 
-class ExpandCollapse extends LitElement {
+class ExpandCollapseContent extends LitElement {
 
 	static get properties() {
 		return {
@@ -32,29 +32,29 @@ class ExpandCollapse extends LitElement {
 				display: none;
 			}
 
-			.d2l-expand-collapse-container {
+			.d2l-expand-collapse-content-container {
 				display: none;
 				overflow: hidden;
 				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 
-			.d2l-expand-collapse-container:not([data-state="collapsed"]) {
+			.d2l-expand-collapse-content-container:not([data-state="collapsed"]) {
 				display: block;
 			}
 
-			.d2l-expand-collapse-container[data-state="expanded"] {
+			.d2l-expand-collapse-content-container[data-state="expanded"] {
 				overflow: visible;
 			}
 
 			/* prevent margin colapse on slotted children */
-			.d2l-expand-collapse-content:before,
-			.d2l-expand-collapse-content:after {
+			.d2l-expand-collapse-content-inner:before,
+			.d2l-expand-collapse-content-inner:after {
 				content: ' ';
 				display: table;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				.d2l-expand-collapse-container {
+				.d2l-expand-collapse-content-container {
 					transition: none;
 				}
 			}
@@ -80,8 +80,8 @@ class ExpandCollapse extends LitElement {
 	render() {
 		const styles = { height: this._height };
 		return html`
-			<div class="d2l-expand-collapse-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd} style=${styleMap(styles)}>
-				<div class="d2l-expand-collapse-content">
+			<div class="d2l-expand-collapse-content-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd} style=${styleMap(styles)}>
+				<div class="d2l-expand-collapse-content-inner">
 					<slot></slot>
 				</div>
 			</div>
@@ -99,7 +99,7 @@ class ExpandCollapse extends LitElement {
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 				if (this._state === states.PREEXPANDING) {
 					this._state = states.EXPANDING;
-					const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content');
+					const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
 					this._height = `${content.scrollHeight}px`;
 				}
 			}
@@ -109,7 +109,7 @@ class ExpandCollapse extends LitElement {
 				this._height = '0';
 			} else {
 				this._state = states.PRECOLLAPSING;
-				const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content');
+				const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
 				this._height = `${content.scrollHeight}px`;
 				await this.updateComplete;
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -131,4 +131,4 @@ class ExpandCollapse extends LitElement {
 	}
 
 }
-customElements.define('d2l-expand-collapse', ExpandCollapse);
+customElements.define('d2l-expand-collapse-content', ExpandCollapseContent);

@@ -10,19 +10,19 @@
 	<script type="module">
 		import '../../button/button.js';
 		import '../../demo/demo-page.js';
-		import '../expand-collapse.js';
+		import '../expand-collapse-content.js';
 	</script>
 </head>
 
 <body unresolved>
 
-	<d2l-demo-page page-title="d2l-expand-collapse">
+	<d2l-demo-page page-title="d2l-expand-collapse-content">
 
 		<h2>Default</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-button primary>Toggle</d2l-button>
-				<d2l-expand-collapse>
+				<d2l-expand-collapse-content>
 					<p>
 					Yar Pirate Ipsum
 					Crow's nest chase guns coxswain belay coffer jib Shiver me timbers tackle piracy Buccaneer. Overhaul topsail Cat o'nine
@@ -39,11 +39,11 @@
 					spyglass scurvy rope's end plunder lugger topmast trysail. Admiral of the Black cackle fruit hearties maroon bounty
 					Blimey yo-ho-ho sutler pillage boom.
 					</p>
-				</d2l-expand-collapse>
+				</d2l-expand-collapse-content>
 				<script type="module">
 					const button = document.querySelector('d2l-button');
 					button.addEventListener('click', () => {
-						const section = document.querySelector('d2l-expand-collapse');
+						const section = document.querySelector('d2l-expand-collapse-content');
 						section.expanded = !section.expanded;
 						button.setAttribute('aria-expanded', section.expanded ? 'true' : 'false');
 					});
