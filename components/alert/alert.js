@@ -53,9 +53,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			:host([type="error"]) .d2l-alert-highlight {
 				background-color: var(--d2l-color-feedback-error);
 			}
-			:host([type="warning"]) .d2l-alert-highlight {
-				background-color: var(--d2l-color-feedback-warning);
-			}
 			:host([type="default"]) .d2l-alert-highlight,
 			:host([type="call-to-action"]) .d2l-alert-highlight {
 				background-color: var(--d2l-color-feedback-action);

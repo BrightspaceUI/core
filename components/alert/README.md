@@ -22,7 +22,7 @@ The `d2l-alert` component can be used to communicate important information relat
 - `has-close-button` (Boolean, default: `false`) gives the alert a close button that will close the alert when clicked.
 - `hidden` (Boolean, default: `false`): Whether or not the alert is currently visible.
 - `subtext` (optional, String) The text that is displayed below the main alert message.
-- `type` (String, default: `'default'`): type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
+- `type` (String, default: `'default'`): type of the alert being displayed. Can be one of  `default`, `critical`, `success`
 
 **Events:**
 * `d2l-alert-closed`: dispatched when the alert's close button is clicked
@@ -50,7 +50,6 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 - `no-auto-close` (Boolean, default: `false`) prevents the alert from automatically closing 2.5 seconds after opening.
 - `open` (Boolean, default: `false`): open or close the toast alert.
 - `subtext` (optional, String) The text that is displayed below the main alert message.
-- `type` (String, default: `'default'`): type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
 
 ## Future Enhancements
 

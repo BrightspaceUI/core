@@ -20,7 +20,6 @@ describe('d2l-alert', () => {
 		'type-default',
 		'type-success',
 		'type-critical',
-		'type-warning',
 		'type-error',
 		'type-call-to-action',
 		'close',

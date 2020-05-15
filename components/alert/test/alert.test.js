@@ -19,7 +19,6 @@ describe('d2l-alert', () => {
 
 		[
 			'default',
-			'warning',
 			'critical',
 			'success',
 			'call-to-action',

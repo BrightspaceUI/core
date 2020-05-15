@@ -21,7 +21,6 @@ class AlertToast extends LitElement {
 			noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
 			open: { type: Boolean, reflect: true },
 			subtext: { type: String },
-			type: { type: String, reflect: true },
 			_state: { type: String }
 		};
 	}
@@ -111,7 +110,7 @@ class AlertToast extends LitElement {
 	render() {
 		return html`
 			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
-				<d2l-alert type="${ifDefined(this.type)}" @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
+				<d2l-alert @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
 					<slot></slot>
 				</d2l-alert>
 			</div>
