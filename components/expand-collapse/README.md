@@ -1,8 +1,8 @@
 # Expand Collapse
 
-The `d2l-expand-collapse` element can be used to used to create expandable and collapsible sections. This component only provides the logic to expand and collapse the section. Controlling when and how the section expands or collapses is the responsibility of the user.
+The `d2l-expand-collapse` element can be used to used to create expandable and collapsible content. This component only provides the logic to expand and collapse the content; controlling when and how it expands or collapses is the responsibility of the user.
 
-![More-Less](./screenshots/expand-collapse.gif?raw=true)
+![Expand Collapse](./screenshots/expand-collapse.gif?raw=true)
 
 ```html
 <script type="module">
@@ -30,7 +30,7 @@ The `d2l-expand-collapse` element can be used to used to create expandable and c
 
 **Accessibility:**
 
-To make your usage of `d2l-expand-collapse` accessible, the `aria-expanded` attribute should be added to the element that controls expanding and collapsing section with `"true"` or `"false"` to indicate that the section is expanded or collapsed.
+To make your usage of `d2l-expand-collapse` accessible, the [`aria-expanded` attribute](https://www.w3.org/TR/wai-aria/#aria-expanded) should be added to the element that controls expanding and collapsing the content with `"true"` or `"false"` to indicate that the content is expanded or collapsed.
 
 ## Future Enhancements
 

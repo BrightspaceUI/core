@@ -80,7 +80,7 @@ class ExpandCollapse extends LitElement {
 	render() {
 		const styles = { height: this._height };
 		return html`
-			<div class="d2l-expand-collapse-container" data-state=${this._state} @transitionend=${this._onTransitionEnd} style=${styleMap(styles)}>
+			<div class="d2l-expand-collapse-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd} style=${styleMap(styles)}>
 				<div class="d2l-expand-collapse-content">
 					<slot></slot>
 				</div>
@@ -99,7 +99,7 @@ class ExpandCollapse extends LitElement {
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 				if (this._state === states.PREEXPANDING) {
 					this._state = states.EXPANDING;
-					const content = this._getContent();
+					const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content');
 					this._height = `${content.scrollHeight}px`;
 				}
 			}
@@ -109,7 +109,7 @@ class ExpandCollapse extends LitElement {
 				this._height = '0';
 			} else {
 				this._state = states.PRECOLLAPSING;
-				const content = this._getContent();
+				const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content');
 				this._height = `${content.scrollHeight}px`;
 				await this.updateComplete;
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -119,10 +119,6 @@ class ExpandCollapse extends LitElement {
 				}
 			}
 		}
-	}
-
-	_getContent() {
-		return this.shadowRoot.querySelector('.d2l-expand-collapse-content');
 	}
 
 	_onTransitionEnd() {
