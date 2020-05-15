@@ -132,6 +132,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			maxValue: { type: String, attribute: 'max-value' },
+			minValue: { type: String, attribute: 'min-value' },
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
 			_dialog: { type: Boolean },
@@ -226,10 +228,18 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				width: calc(2rem - 6px);
 			}
 
+			.d2l-calendar-date div[disabled] {
+				cursor: not-allowed;
+			}
+
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-calendar-title .d2l-heading-4,
 				.d2l-calendar-date div {
 					opacity: 1;
+				}
+
+				.d2l-calendar-date div[disabled] {
+					opacity: 0.5;
 				}
 			}
 
@@ -257,6 +267,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				transition-property: opacity, transform;
 			}
 
+			.d2l-calendar-animating .d2l-calendar-date div[disabled] {
+				opacity: 0.5;
+			}
+
 			.d2l-calendar-next .d2l-heading-4,
 			.d2l-calendar-next .d2l-calendar-date div {
 				transform: translateX(-10px);
@@ -277,13 +291,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				transform: translateY(10px);
 			}
 
-			.d2l-calendar-date div:not(.d2l-calendar-date-selected):hover,
-			.d2l-calendar-date div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			.d2l-calendar-date div:not([disabled]):not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date div:not([disabled]):not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected):hover,
-			.d2l-calendar-date:focus div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			.d2l-calendar-date:focus div:not([disabled]):not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date:focus div:not([disabled]):not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
@@ -292,14 +306,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				outline: none;
 			}
 
-			.d2l-calendar-date:focus div.d2l-calendar-date-inner {
+			.d2l-calendar-date:focus div:not([disabled]).d2l-calendar-date-inner {
 				border-radius: 0.16rem;
 				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
 				transition: none;
 			}
 
-			.d2l-calendar-date:focus div.d2l-calendar-date-inner.d2l-calendar-date-initial {
+			.d2l-calendar-date:focus div:not([disabled]).d2l-calendar-date-inner.d2l-calendar-date-initial {
 				transition: box-shadow 200ms ease-in;
 			}
 
@@ -315,7 +329,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				padding: 2px;
 			}
 
-			.d2l-calendar-date:focus div.d2l-calendar-date-selected {
+			.d2l-calendar-date:focus div:not([disabled]).d2l-calendar-date-selected {
 				border-width: 0;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px var(--d2l-color-celestine);
 			}
@@ -465,6 +479,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
+				const invalid = (this.minValue && day.getTime() < getDateFromISODate(this.minValue).getTime())
+					|| (this.maxValue && day.getTime() > getDateFromISODate(this.maxValue).getTime());
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date-inner': true,
@@ -481,15 +497,15 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					<td
 						aria-selected="${selected ? 'true' : 'false'}"
 						class="d2l-calendar-date"
-						@click="${this._onDateSelected}"
+						@click="${ifDefined(!invalid ? this._onDateSelected : undefined)}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
 						id="${this._tableInfoId}-${year}-${month}-${date}"
-						@keydown="${this._onKeyDown}"
+						@keydown="${ifDefined(!invalid ? this._onKeyDown : undefined)}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
-						<div aria-label="${description}" class="${classMap(classes)}" role="button">${date}</div>
+						<div aria-label="${description}" class="${classMap(classes)}" ?disabled="${invalid}" role="button">${date}</div>
 					</td>`;
 			});
 
