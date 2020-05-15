@@ -64,13 +64,16 @@ class ExpandCollapse extends LitElement {
 	constructor() {
 		super();
 		this.expanded = false;
-		this._state = states.COLLAPSED;
 		this._height = '0';
+		this._isFirstUpdate = true;
+		this._state = states.COLLAPSED;
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
 		if (changedProperties.has('expanded')) {
-			this._expandedChanged(this.expanded);
+			this._expandedChanged(this.expanded, this._isFirstUpdate);
+			this._isFirstUpdate = false;
 		}
 	}
 
@@ -85,9 +88,9 @@ class ExpandCollapse extends LitElement {
 		`;
 	}
 
-	async _expandedChanged(val) {
+	async _expandedChanged(val, firstUpdate) {
 		if (val) {
-			if (reduceMotion) {
+			if (reduceMotion || firstUpdate) {
 				this._state = states.EXPANDED;
 				this._height = 'auto';
 			} else {
@@ -101,7 +104,7 @@ class ExpandCollapse extends LitElement {
 				}
 			}
 		} else {
-			if (reduceMotion) {
+			if (reduceMotion || firstUpdate) {
 				this._state = states.COLLAPSED;
 				this._height = '0';
 			} else {
@@ -120,15 +123,6 @@ class ExpandCollapse extends LitElement {
 
 	_getContent() {
 		return this.shadowRoot.querySelector('.d2l-expand-collapse-content');
-	}
-
-	async _getUpdateComplete() {
-		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
-		await super._getUpdateComplete();
-		/* wait for the fonts to load because browsers have a font block period
-		where they will render an invisible fallback font face that may result in
-		improper height calculations if the expand-collapse starts expanded */
-		await fontsPromise;
 	}
 
 	_onTransitionEnd() {
