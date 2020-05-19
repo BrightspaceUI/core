@@ -7,8 +7,8 @@ import { buttonStyles } from '../button/button-styles.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 
 export const dragActions = Object.freeze({
-	first: 'last',
-	end: 'first',
+	first: 'first',
+	last: 'last',
 	up: 'up',
 	down: 'down',
 	active: 'keyboard-active',
