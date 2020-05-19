@@ -574,10 +574,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	async _focusDateAddFocus() {
+		this._keyboardTriggeredMonthChange = false;
+		if (!this._focusDate) return;
 		const date = await this._getDateElement(this._focusDate);
 		if (date) {
 			date.focus();
-			this._keyboardTriggeredMonthChange = false;
 		}
 	}
 
@@ -610,7 +611,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
 	}
 
-	_onKeyDown(e) {
+	async _onKeyDown(e) {
 		const rootTarget = e.composedPath()[0];
 		if (!rootTarget.classList.contains('d2l-calendar-date')) return;
 
@@ -682,30 +683,40 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			} case keyCodes.PAGEUP: {
 				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear);
 
-				this._focusDate.setDate(this._focusDate.getDate() - diff);
+				const possibleFocusDate = new Date(this._focusDate);
+				possibleFocusDate.setDate(possibleFocusDate.getDate() - diff);
 				this._keyboardTriggeredMonthChange = true;
 
 				// handle when current month has more weeks than previous month and page up pressed from last week
-				if (this._focusDate.getMonth() === this._shownMonth) this._focusDate.setDate(this._focusDate.getDate() - 7);
+				if (possibleFocusDate.getMonth() === this._shownMonth) possibleFocusDate.setDate(possibleFocusDate.getDate() - 7);
 
 				this._updateShownMonthDecrease(true, true);
+				await this.updateComplete;
+				this._updateFocusDateOnMonthChange(possibleFocusDate);
+				this._focusDateAddFocus();
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEDOWN: {
 				const nextMonth = getNextMonth(this._shownMonth);
 				const diff = getNumberOfDaysToSameWeekPrevMonth(nextMonth, this._shownYear);
 
-				this._focusDate.setDate(this._focusDate.getDate() + diff);
+				const possibleFocusDate = new Date(this._focusDate);
+
+				possibleFocusDate.setDate(possibleFocusDate.getDate() + diff);
 				this._keyboardTriggeredMonthChange = true;
 
 				// handle when current month has more weeks than next month and page down pressed from last week
-				const newFocusDateMonth = this._focusDate.getMonth();
+				const newFocusDateMonth = possibleFocusDate.getMonth();
 				if ((newFocusDateMonth - this._shownMonth) > 1
 					|| (newFocusDateMonth === 1 && this._shownMonth === 11)
 				) {
-					this._focusDate.setDate(this._focusDate.getDate() - 7);
+					possibleFocusDate.setDate(possibleFocusDate.getDate() - 7);
 				}
 				this._updateShownMonthIncrease(true, true);
+				await this.updateComplete;
+
+				this._updateFocusDateOnMonthChange(possibleFocusDate, true);
+				this._focusDateAddFocus();
 				preventDefault = true;
 				break;
 			}
@@ -730,25 +741,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	_onPrevMonthButtonClick() {
 		this._updateShownMonthDecrease();
 		this._updateFocusDateOnMonthButtonClick();
-	}
-
-	async _updateFocusDateOnMonthButtonClick() {
-		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
-		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
-		if (dateElem && !this._getDisabled(selectedValueDate)) {
-			this._focusDate = selectedValueDate;
-		} else if (!this._getDisabled(new Date(this._shownYear, this._shownMonth, 1))) {
-			this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
-		} else if (this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])')) {
-			const validDate = this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])');
-			const focusDate = validDate.parentNode;
-			const year = focusDate.getAttribute('data-year');
-			const month = focusDate.getAttribute('data-month');
-			const date = focusDate.getAttribute('data-date');
-			this._focusDate = new Date(year, month, date);
-		} else {
-			this._focusDate = undefined;
-		}
 	}
 
 	async _updateFocusDateOnKeyDown(numDays) {
@@ -778,6 +770,31 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._isInitialFocusDate = true;
 	}
 
+	async _updateFocusDateOnMonthButtonClick() {
+		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
+		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
+		if (dateElem && !this._getDisabled(selectedValueDate)) {
+			this._focusDate = selectedValueDate;
+		} else {
+			this._updateFocusDateOnMonthChange(new Date (this._shownYear, this._shownMonth, 1));
+		}
+	}
+
+	_updateFocusDateOnMonthChange(possibleFocusDate, latestPossibleFocusDate) {
+		if (!this._getDisabled(possibleFocusDate)) {
+			this._focusDate = possibleFocusDate;
+		} else if (this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])')) {
+			const validDates = this.shadowRoot.querySelectorAll('div.d2l-calendar-date-inner:not([disabled])');
+			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
+			const year = focusDate.getAttribute('data-year');
+			const month = focusDate.getAttribute('data-month');
+			const date = focusDate.getAttribute('data-date');
+			this._focusDate = new Date(year, month, date);
+		} else {
+			this._focusDate = undefined;
+		}
+	}
+
 	_updateShownMonthDecrease(keyboardTriggered, transitionUpDown) {
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
@@ -790,7 +807,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	async _updateShownMonthIncrease(keyboardTriggered, transitionUpDown) {
+	_updateShownMonthIncrease(keyboardTriggered, transitionUpDown) {
 		if (this._shownMonth === 11) this._shownYear++;
 		this._shownMonth = getNextMonth(this._shownMonth);
 		this._monthNav = undefined;
