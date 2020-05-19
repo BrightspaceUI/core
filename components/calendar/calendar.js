@@ -479,7 +479,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
-				const disabled = this._getDisabled(day);
+				const disabled = this._getDisabled(day) ? true : false;
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date-inner': true,
@@ -496,12 +496,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					<td
 						aria-selected="${selected ? 'true' : 'false'}"
 						class="d2l-calendar-date"
-						@click="${ifDefined(!disabled ? this._onDateSelected : undefined)}"
+						@click="${!disabled ? this._onDateSelected : undefined}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
 						id="${this._tableInfoId}-${year}-${month}-${date}"
-						@keydown="${ifDefined(!disabled ? this._onKeyDown : undefined)}"
+						@keydown="${!disabled ? this._onKeyDown : undefined}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
 						<div aria-label="${description}" class="${classMap(classes)}" ?disabled="${disabled}" role="button">${date}</div>
@@ -588,7 +588,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_getDisabled(date) {
-		if (!date) return true;
+		if (!date) return false;
 		const max = this.maxValue ? getDateFromISODate(this.maxValue) : undefined;
 		const min = this.minValue ? getDateFromISODate(this.minValue) : undefined;
 		return (min && date.getTime() < min.getTime()) || (max && date.getTime() > max.getTime());
