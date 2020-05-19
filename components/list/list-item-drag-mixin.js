@@ -6,7 +6,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			draggable: {type: Boolean, reflect: true },
+			draggable: { type: Boolean, reflect: true },
 			key: { type: String, reflect: true }
 		};
 	}
@@ -44,10 +44,10 @@ export const ListItemDragMixin = superclass => class extends superclass {
 			<div
 				id="${this._itemDragId}"
 				class="d2l-list-item-drag"
-				@drop="${this._dropHandlers()}"
-				@dragover="${this._dragOverHandlers()}"
-				@dragenter="${this._dragEnter()}"
-				@dragleave="${this._dragExit()}"
+				@drop="${this._dropHandlers}"
+				@dragover="${this._dragOverHandlers}"
+				@dragenter="${this._dragEnter}"
+				@dragleave="${this._dragExit}"
 			></div>
 		` : nothing;
 	}
