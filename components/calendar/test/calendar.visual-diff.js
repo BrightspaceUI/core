@@ -18,12 +18,12 @@ describe('d2l-calendar', () => {
 
 	after(async() => await browser.close());
 
-	it.skip('no selected value', async function() {
+	it('no selected value', async function() {
 		const rect = await visualDiff.getRect(page, '#no-selected');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	it.skip('first row only current month days last row contains next month days', async function() {
+	it('first row only current month days last row contains next month days', async function() {
 		const rect = await visualDiff.getRect(page, '#dec-2019');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -50,7 +50,7 @@ describe('d2l-calendar', () => {
 			'zh',
 			'zh-tw'
 		].forEach((lang) => {
-			it.skip(`${lang}`, async function() {
+			it(`${lang}`, async function() {
 				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -63,12 +63,12 @@ describe('d2l-calendar', () => {
 			await page.reload();
 		});
 
-		it.skip('today selected', async function() {
+		it('today selected', async function() {
 			const rect = await visualDiff.getRect(page, '#today-selected');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('focus', async function() {
+		it('focus', async function() {
 			await page.$eval(firstCalendarOfPage, (elem) => elem.focus());
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -80,7 +80,7 @@ describe('d2l-calendar', () => {
 		});
 
 		describe('date', () => {
-			it.skip('hover on non-selected-value', async function() {
+			it('hover on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const date = calendar.shadowRoot.querySelector('td[data-date="20"] div');
 					date.classList.add('d2l-calendar-date-hover');
@@ -89,7 +89,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip('hover on selected-value', async function() {
+			it('hover on selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
 					date.classList.add('d2l-calendar-date-hover');
@@ -98,7 +98,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip('focus on non-selected-value', async function() {
+			it('focus on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
 					date.focus();
@@ -107,7 +107,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip('focus on selected-value', async function() {
+			it('focus on selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const date = calendar.shadowRoot.querySelector('td[data-date="14"]');
 					date.focus();
@@ -116,7 +116,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip('hover and focus on non-selected-value', async function() {
+			it('hover and focus on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const date = calendar.shadowRoot.querySelector('td[data-date="20"] div');
 					date.classList.add('d2l-calendar-date-hover');
@@ -127,7 +127,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip('hover and focus on selected-value', async function() {
+			it('hover and focus on selected-value', async function() {
 				let date;
 				await page.$eval(firstCalendarOfPage, async(calendar) => {
 					date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
@@ -148,7 +148,7 @@ describe('d2l-calendar', () => {
 			await page.reload();
 		});
 
-		it.skip('click left arrow', async function() {
+		it('click left arrow', async function() {
 			await page.$eval('#contains-today-diff-selected', (calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
@@ -157,7 +157,7 @@ describe('d2l-calendar', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('click right arrow', async function() {
+		it('click right arrow', async function() {
 			await page.$eval('#dec-2019', (calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
@@ -166,13 +166,13 @@ describe('d2l-calendar', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('initial focus date is selected-value', async function() {
+		it('initial focus date is selected-value', async function() {
 			await tabToDates();
 			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it.skip('initial focus date is 1st of month', async function() {
+		it('initial focus date is 1st of month', async function() {
 			await page.$eval(firstCalendarOfPage, (calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
 				arrow.click();
@@ -183,7 +183,7 @@ describe('d2l-calendar', () => {
 		});
 
 		describe('date selection', () => {
-			it.skip('click', async function() {
+			it('click', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
 					const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
 					date.click();
@@ -192,7 +192,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip('enter', async function() {
+			it('enter', async function() {
 				await tabToDates();
 				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('Enter');
@@ -201,7 +201,7 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip('space', async function() {
+			it('space', async function() {
 				await tabToDates();
 				await page.keyboard.press('ArrowRight');
 				await page.keyboard.press('Space');
@@ -213,7 +213,7 @@ describe('d2l-calendar', () => {
 
 		describe('keys', () => {
 			describe('arrow', () => {
-				it.skip('up to prev month', async function() {
+				it('up to prev month', async function() {
 					await tabToDates();
 					await page.keyboard.press('ArrowUp');
 					await page.keyboard.press('ArrowUp');
@@ -222,7 +222,7 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it.skip('left to prev month', async function() {
+				it('left to prev month', async function() {
 					await tabToDates();
 					for (let i = 0; i < 18; i++) {
 						await page.keyboard.press('ArrowLeft');
@@ -231,7 +231,7 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it.skip('down to next month', async function() {
+				it('down to next month', async function() {
 					await tabToDates();
 					await page.keyboard.press('ArrowDown');
 					await page.keyboard.press('ArrowDown');
@@ -240,7 +240,7 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it.skip('right to next month', async function() {
+				it('right to next month', async function() {
 					await tabToDates();
 					for (let i = 0; i < 18; i++) {
 						await page.keyboard.press('ArrowRight');
@@ -251,7 +251,7 @@ describe('d2l-calendar', () => {
 			});
 
 			describe('other', () => {
-				it.skip('END', async function() {
+				it('END', async function() {
 					await tabToDates();
 					await page.keyboard.press('End');
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -276,7 +276,7 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it.skip('HOME', async function() {
+				it('HOME', async function() {
 					await tabToDates();
 					await page.keyboard.press('Home');
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -300,7 +300,7 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it.skip('PAGEDOWN', async function() {
+				it('PAGEDOWN', async function() {
 					await page.$eval(firstCalendarOfPage, (calendar) => {
 						const arrow1 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 						arrow1.click();
@@ -326,7 +326,7 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it.skip('PAGEUP', async function() {
+				it('PAGEUP', async function() {
 					await page.$eval(firstCalendarOfPage, (calendar) => {
 						const arrow1 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 						arrow1.click();

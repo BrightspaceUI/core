@@ -696,7 +696,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 				this._updateShownMonthDecrease(true, true);
 				await this.updateComplete;
-				this._updateFocusDateOnMonthChange(possibleFocusDate);
+				this._updateFocusDateDependentOnDisabled(possibleFocusDate);
 				this._focusDateAddFocus();
 				preventDefault = true;
 				break;
@@ -719,21 +719,49 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				this._updateShownMonthIncrease(true, true);
 				await this.updateComplete;
 
-				this._updateFocusDateOnMonthChange(possibleFocusDate, true);
+				this._updateFocusDateDependentOnDisabled(possibleFocusDate, true);
 				this._focusDateAddFocus();
 				preventDefault = true;
 				break;
 			}
 		}
 
-		if (numDaysChange) {
-			this._isInitialFocusDate = false;
-			this._updateFocusDateOnKeyDown(numDaysChange);
-		}
-
 		if (preventDefault) {
 			e.preventDefault();
 			e.stopPropagation();
+		}
+
+		if (numDaysChange) {
+			const oldFocusDate = new Date(this._focusDate);
+			const possibleFocusDate = new Date(
+				this._focusDate.getFullYear(),
+				this._focusDate.getMonth(),
+				this._focusDate.getDate() + numDaysChange
+			);
+
+			// if HOME or END _focusDate becomes earliest or latest non-disabled date in the week as applicable
+			// if arrow keys change _focusDate only if intended target is not disabled
+			if (e.keyCode === keyCodes.END) this._updateFocusDateDependentOnDisabled(possibleFocusDate, true);
+			else if (e.keyCode === keyCodes.HOME) this._updateFocusDateDependentOnDisabled(possibleFocusDate);
+			else if (getDisabled(possibleFocusDate, this.minValue, this.maxValue)) return;
+			else this._focusDate = possibleFocusDate;
+
+			this._isInitialFocusDate = false;
+
+			const date = await this._getDateElement(this._focusDate);
+			if (!date) {
+				this._keyboardTriggeredMonthChange = true;
+				const upDown = Math.abs(numDaysChange) !== 1; // use left/right animation if difference is 1 day
+				if (oldFocusDate < this._focusDate) {
+					this._updateShownMonthIncrease(true, upDown);
+				} else {
+					this._updateShownMonthDecrease(true, upDown);
+				}
+			} else {
+				this._focusDateAddFocus();
+			}
+			await this.updateComplete;
+			this._isInitialFocusDate = true;
 		}
 	}
 
@@ -747,44 +775,17 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._updateFocusDateOnMonthButtonClick();
 	}
 
-	async _updateFocusDateOnKeyDown(numDays) {
-		const oldFocusDate = new Date(this._focusDate);
-		const possibleFocusDate = new Date(
-			this._focusDate.getFullYear(),
-			this._focusDate.getMonth(),
-			this._focusDate.getDate() + numDays
-		);
-
-		if (getDisabled(possibleFocusDate, this.minValue, this.maxValue)) return;
-		this._focusDate = possibleFocusDate;
-
-		const date = await this._getDateElement(this._focusDate);
-		if (!date) {
-			this._keyboardTriggeredMonthChange = true;
-			const upDown = Math.abs(numDays) !== 1; // use left/right animation if difference is 1 day
-			if (oldFocusDate < this._focusDate) {
-				this._updateShownMonthIncrease(true, upDown);
-			} else {
-				this._updateShownMonthDecrease(true, upDown);
-			}
-		} else {
-			this._focusDateAddFocus();
-		}
-		await this.updateComplete;
-		this._isInitialFocusDate = true;
-	}
-
 	async _updateFocusDateOnMonthButtonClick() {
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
 		if (dateElem && !getDisabled(selectedValueDate, this.minValue, this.maxValue)) {
 			this._focusDate = selectedValueDate;
 		} else {
-			this._updateFocusDateOnMonthChange(new Date (this._shownYear, this._shownMonth, 1));
+			this._updateFocusDateDependentOnDisabled(new Date (this._shownYear, this._shownMonth, 1));
 		}
 	}
 
-	_updateFocusDateOnMonthChange(possibleFocusDate, latestPossibleFocusDate) {
+	_updateFocusDateDependentOnDisabled(possibleFocusDate, latestPossibleFocusDate) {
 		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
 		} else if (this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])')) {
