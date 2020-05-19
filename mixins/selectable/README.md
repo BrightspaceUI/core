@@ -2,6 +2,8 @@
 
 The `SelectableMixin` allows the user to select a component by clicking on the provided `.d2l-select-action` label. The selectable component may or may not use a checkbox to inform the user of the selected status.
 
+![SelectableMixin](./screenshots/selectable.gif?raw=true)
+
 ## Usage
 
 Apply the mixin and call `this._renderSelectAction` where you would like to place the select action. You can optionally pass text/html to the action.
@@ -32,7 +34,7 @@ To turn the behaviour on, specify both `selectable` and a unique `key` for the c
 
 ### Events
 
-By default, the event name will be based on the component's constructor in **kebab case**. This event is fired when a user selects or deselects the component. You may change the event name by setting `this._selectedEventName`:
+By default, the event name will be based on the component's constructor in **kebab case**, e.g., `d2l-my-component-selected` for `MyComponent`. This event is fired when a user selects or deselects the component. You may change the event name by setting `this._selectedEventName`:
 
 ```js
 constructor() {

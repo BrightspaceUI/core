@@ -11,13 +11,15 @@ class SelectableItem extends SelectableMixin(LitElement) {
 				display:flex;
 			}
 			input[type="checkbox"].d2l-input-checkbox {
-				margin-right: 0.6rem;
+				margin: 0.6rem 0;
+				cursor: pointer;
+			}
+			input[type="checkbox"].d2l-input-checkbox[disabled] {
+				cursor: default;
 			}
 			.d2l-select-action {
-				position: absolute;
-				width: 100%;
-				padding-left: 0.9rem;
-
+				flex-grow: 1;
+				padding: 0.6rem 0 0 0.5rem;
 			}
 		`];
 	}
@@ -30,8 +32,7 @@ class SelectableItem extends SelectableMixin(LitElement) {
 	render() {
 		return html`
 			${this._renderCheckbox()}
-			<slot></slot>
-			${this._renderSelectAction()}
+			${this._renderSelectAction(html`<slot></slot>`)}
 		`;
 	}
 }

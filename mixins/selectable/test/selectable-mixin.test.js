@@ -13,7 +13,7 @@ const tag = defineCE(
 	}
 );
 
-describe.only('SelectableMixin', () => {
+describe('SelectableMixin', () => {
 	it('Sets checked status to undefined when no key is given', async() => {
 		const element = await fixture(`<${tag} selected="true"></${tag}>`);
 		expect(element.selected).to.be.undefined;
