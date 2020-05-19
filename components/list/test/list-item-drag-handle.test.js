@@ -1,19 +1,6 @@
+import { DOWN, END, ENTER, ESC, HOME, LEFT, RIGHT, SPACE, TAB, UP } from '../../../helpers/keyCodes.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { dragActions } from '../list-item-drag-handle.js';
-
-const keyCodes = Object.freeze({
-	END: 35,
-	HOME: 36,
-	UP: 38,
-	DOWN: 40,
-	SPACE: 32,
-	ENTER: 13,
-	ESC: 27,
-	TAB: 9,
-	LEFT: 37,
-	RIGHT: 39,
-
-});
 
 describe('ListItemDragHandle', () => {
 
@@ -37,9 +24,9 @@ describe('ListItemDragHandle', () => {
 		});
 
 		[
-			{ keyPress: keyCodes.ENTER },
-			{ keyPress: keyCodes.SPACE },
-			{ keyPress: keyCodes.LEFT }
+			{ keyPress: ENTER },
+			{ keyPress: SPACE },
+			{ keyPress: LEFT }
 		].forEach(testCase => {
 			it(`Expect event response ${dragActions.active} from keycode ${testCase.keyPress}`, async() => {
 				let action;
@@ -68,16 +55,16 @@ describe('ListItemDragHandle', () => {
 		});
 
 		[
-			{keyPress: keyCodes.UP, result: dragActions.up},
-			{keyPress: keyCodes.DOWN, result: dragActions.down},
-			{keyPress: keyCodes.HOME, result: dragActions.first},
-			{keyPress: keyCodes.END, result: dragActions.last},
-			{keyPress: keyCodes.TAB, result: dragActions.previousElement, shift: true},
-			{keyPress: keyCodes.TAB, result: dragActions.nextElement},
-			{keyPress: keyCodes.ESC, result: dragActions.cancel},
-			{keyPress: keyCodes.ENTER, result: dragActions.save},
-			{keyPress: keyCodes.SPACE, result: dragActions.save},
-			{keyPress: keyCodes.RIGHT, result: dragActions.save}
+			{keyPress: UP, result: dragActions.up},
+			{keyPress: DOWN, result: dragActions.down},
+			{keyPress: HOME, result: dragActions.first},
+			{keyPress: END, result: dragActions.last},
+			{keyPress: TAB, result: dragActions.previousElement, shift: true},
+			{keyPress: TAB, result: dragActions.nextElement},
+			{keyPress: ESC, result: dragActions.cancel},
+			{keyPress: ENTER, result: dragActions.save},
+			{keyPress: SPACE, result: dragActions.save},
+			{keyPress: RIGHT, result: dragActions.save}
 		].forEach(testCase => {
 			it(`Expect event response ${testCase.result} from keycode ${testCase.keyPress}`, async() => {
 				let action;

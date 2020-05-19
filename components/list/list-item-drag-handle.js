@@ -2,22 +2,9 @@
 import '../button/button-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { DOWN, END, ENTER, ESC, HOME, LEFT, RIGHT, SPACE, TAB, UP } from '../../helpers/keyCodes.js';
 import { buttonStyles } from '../button/button-styles.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
-
-const keyCodes = Object.freeze({
-	END: 35,
-	HOME: 36,
-	UP: 38,
-	DOWN: 40,
-	SPACE: 32,
-	ENTER: 13,
-	ESC: 27,
-	TAB: 9,
-	LEFT: 37,
-	RIGHT: 39,
-
-});
 
 export const dragActions = Object.freeze({
 	first: 'last',
@@ -134,28 +121,28 @@ class listItemDragHandle extends LitElement {
 		}
 		let action = null;
 		switch (e.keyCode) {
-			case keyCodes.UP:
+			case UP:
 				action = dragActions.up;
 				break;
-			case keyCodes.DOWN:
+			case DOWN:
 				action = dragActions.down;
 				break;
-			case keyCodes.HOME:
+			case HOME:
 				action = dragActions.first;
 				break;
-			case keyCodes.END:
+			case END:
 				action = dragActions.last;
 				break;
-			case keyCodes.TAB:
+			case TAB:
 				action = e.shiftKey ? dragActions.previousElement : dragActions.nextElement;
 				break;
-			case keyCodes.ESC:
+			case ESC:
 				action = dragActions.cancel;
 				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
-			case keyCodes.ENTER:
-			case keyCodes.SPACE:
-			case keyCodes.RIGHT:
+			case ENTER:
+			case SPACE:
+			case RIGHT:
 				action = dragActions.save;
 				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
@@ -167,7 +154,7 @@ class listItemDragHandle extends LitElement {
 	}
 
 	_handleInactiveKeyboard(e) {
-		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
+		if (e.type === 'click' || e.keyCode === ENTER || e.keyCode === SPACE || e.keyCode === LEFT) {
 			this._dispatchAction(dragActions.active);
 			this._keyboardActive = true;
 			e.preventDefault();
