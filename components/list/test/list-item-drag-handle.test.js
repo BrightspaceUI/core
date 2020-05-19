@@ -52,7 +52,6 @@ describe('ListItemDragHandle', () => {
 				actionArea.dispatchEvent(new Event('click'));
 			});
 			await oneEvent(actionArea, 'click');
-			await element.updateComplete;
 		});
 
 		[
