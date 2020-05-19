@@ -45,8 +45,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 			<div
 				id="${this._itemDragId}"
 				class="d2l-list-item-drag"
-				@drop="${this._dropHandlers}"
-				@dragover="${this._dragOverHandlers}"
 				@dragenter="${this._dragEnter}"
 				@dragleave="${this._dragExit}"
 			></div>
@@ -63,9 +61,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		if (itemKey === undefined) {
 			return;
 		}
-		if (itemKey === null) {
-			this._dispatchDragEvent(null);
-		}
+
 		this._dispatchDragEvent(itemKey);
 	}
 
@@ -86,14 +82,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	// TODO
 	_removeCopy() {
-	}
-
-	_dropHandlers() {
-		this._dispatchDragEvent(null);
-	}
-
-	_dragOverHandlers() {
-		this._dispatchDragEvent(null);
 	}
 
 	_dragExit() {
