@@ -92,6 +92,13 @@ export function getDatesInMonthArray(shownMonth, shownYear) {
 	return dates;
 }
 
+export function getDisabled(date, min, max) {
+	if (!date) return false;
+	const beforeMin = (min ? true : false) && (date.getTime() < getDateFromISODate(min).getTime());
+	const afterMax = (max ? true : false) && (date.getTime() > getDateFromISODate(max).getTime());
+	return beforeMin || afterMax;
+}
+
 export function getNextMonth(month) {
 	return (month === 11) ? 0 : (month + 1);
 }
@@ -443,6 +450,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			getCalendarData(true);
 			this.requestUpdate();
 		});
+
+		if (this.minValue && this.maxValue && (getDateFromISODate(this.minValue).getTime() > getDateFromISODate(this.maxValue).getTime())) {
+			console.warn('d2l-calendar component expects min-value to be before max-value');
+		}
 	}
 
 	updated(changedProperties) {
@@ -479,7 +490,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
-				const disabled = this._getDisabled(day) ? true : false;
+				const disabled = getDisabled(day, this.minValue, this.maxValue);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date-inner': true,
@@ -585,13 +596,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	async _getDateElement(date) {
 		await this.updateComplete;
 		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
-	}
-
-	_getDisabled(date) {
-		if (!date) return false;
-		const max = this.maxValue ? getDateFromISODate(this.maxValue) : undefined;
-		const min = this.minValue ? getDateFromISODate(this.minValue) : undefined;
-		return (min && date.getTime() < min.getTime()) || (max && date.getTime() > max.getTime());
 	}
 
 	_onDateSelected(e) {
@@ -751,7 +755,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			this._focusDate.getDate() + numDays
 		);
 
-		if (this._getDisabled(possibleFocusDate)) return;
+		if (getDisabled(possibleFocusDate, this.minValue, this.maxValue)) return;
 		this._focusDate = possibleFocusDate;
 
 		const date = await this._getDateElement(this._focusDate);
@@ -773,7 +777,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	async _updateFocusDateOnMonthButtonClick() {
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
-		if (dateElem && !this._getDisabled(selectedValueDate)) {
+		if (dateElem && !getDisabled(selectedValueDate, this.minValue, this.maxValue)) {
 			this._focusDate = selectedValueDate;
 		} else {
 			this._updateFocusDateOnMonthChange(new Date (this._shownYear, this._shownMonth, 1));
@@ -781,7 +785,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_updateFocusDateOnMonthChange(possibleFocusDate, latestPossibleFocusDate) {
-		if (!this._getDisabled(possibleFocusDate)) {
+		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
 		} else if (this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])')) {
 			const validDates = this.shadowRoot.querySelectorAll('div.d2l-calendar-date-inner:not([disabled])');
