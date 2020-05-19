@@ -175,8 +175,9 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 				if (this.required && !this.value) {
 					this.setValidity({ valueMissing: true }, 'Oh no this value is required');
 				} else {
-					this.setValidity({ valid: true });
+					this.setValidity({});
 				}
+				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			}
 		});

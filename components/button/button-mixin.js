@@ -23,6 +23,7 @@ export const ButtonMixin = superclass => class extends FormElementMixin(supercla
 
 	constructor() {
 		super();
+		this.setFormValue(this.value ? this.value : '');
 		this.type = 'button';
 	}
 

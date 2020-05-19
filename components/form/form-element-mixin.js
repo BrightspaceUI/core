@@ -12,15 +12,14 @@ export class FormElementValidityState {
 				rangeOverflow: false,
 				stepMismatch: false,
 				badInput: false,
-				customError: false,
-				valid: false
+				customError: false
 			},
 			...flags
 		};
 	}
 
 	get valid() {
-		return this.flags.valid;
+		return Object.values(this.flags).reduce((f1, f2) => !f1 && !f2);
 	}
 
 	get valueMissing() {
@@ -62,26 +61,13 @@ export const FormElementMixin = superclass => class extends superclass {
 		};
 	}
 
+	static formAssociated = true;
+
 	constructor() {
 		super();
-		this.__hiddenInput = document.createElement('input');
-		this.__hiddenInput.type = 'hidden';
-		this._validity = new FormElementValidityState({ valid: true });
+		this._validity = new FormElementValidityState({});
 		this._validationMessage = '';
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this.dispatchEvent(new CustomEvent(
-			'd2l-form-element-connected', { bubbles: true, composed: true }
-		));
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.dispatchEvent(new CustomEvent(
-			'd2l-form-element-disconnected', { bubbles: true, composed: true }
-		));
+		this.formValue = null;
 	}
 
 	checkValidity() {
@@ -94,6 +80,10 @@ export const FormElementMixin = superclass => class extends superclass {
 		}
 		this._validity = new FormElementValidityState(flags);
 		this.invalid = !this._validity.valid;
+	}
+
+	setFormValue(formValue) {
+		this.formValue = formValue;
 	}
 
 	get validity() {

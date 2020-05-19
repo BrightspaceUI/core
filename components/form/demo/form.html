@@ -35,6 +35,7 @@
 						<label for="sasquatch">Sasquatch</label><br />
 
 					</fieldset>
+					<input type="checkbox" id="kraken" name="checkers" value="red-black">
 					<div>
 						<label for="name">Name (4 to 8 characters):</label>
 						<input type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
@@ -51,7 +52,7 @@
 							</select>
 						</div>
 					</div>
-					<d2l-input-text required></d2l-input-text>
+					<d2l-input-text name="custom-input" required></d2l-input-text>
 					<div>
 						<h2>Secondary</h2>
 						<label for="story">Tell us your story:</label>
@@ -64,6 +65,7 @@
 					</div>
 					<d2l-button type="submit" name="action">Update</d2l-button>
 					<d2l-button type="submit" name="action" value="delete">Delete</d2l-button>
+					<button type="submit" name="abc">Wow</button>
 				</d2l-form>
 			</template>
 		</d2l-demo-snippet>
