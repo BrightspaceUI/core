@@ -46,6 +46,10 @@ export function checkIfDatesEqual(date1, date2) {
 	return date1.getTime() === date2.getTime();
 }
 
+export function checkIfInvalid(date, min, max) {
+	return (min && date.getTime() < min.getTime()) || (max && date.getTime() > max.getTime());
+}
+
 export function getDatesInMonthArray(shownMonth, shownYear) {
 	const dates = [];
 	const numDays = getNumberOfDaysInMonth(shownMonth, shownYear);
@@ -476,11 +480,12 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`);
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
+		const max = this.maxValue ? getDateFromISODate(this.maxValue) : undefined;
+		const min = this.minValue ? getDateFromISODate(this.minValue) : undefined;
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
-				const invalid = (this.minValue && day.getTime() < getDateFromISODate(this.minValue).getTime())
-					|| (this.maxValue && day.getTime() > getDateFromISODate(this.maxValue).getTime());
+				const invalid = checkIfInvalid(day, min, max);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date-inner': true,
