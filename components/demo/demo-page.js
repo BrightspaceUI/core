@@ -57,8 +57,10 @@ class DemoPage extends LitElement {
 
 	render() {
 		return html`
-			<h1 class="d2l-heading-2">${this.pageTitle}</h1>
-			<div><slot></slot></div>
+			<main>
+				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
+				<div><slot></slot></div>
+			</main>
 		`;
 	}
 
