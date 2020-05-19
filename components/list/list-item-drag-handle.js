@@ -120,7 +120,7 @@ class listItemDragHandle extends LitElement {
 			return;
 		}
 		let action = null;
-		switch (e.keyCode) {
+		switch (e.key) {
 			case UP:
 				action = dragActions.up;
 				break;
@@ -154,7 +154,7 @@ class listItemDragHandle extends LitElement {
 	}
 
 	_handleInactiveKeyboard(e) {
-		if (e.type === 'click' || e.keyCode === ENTER || e.keyCode === SPACE || e.keyCode === LEFT) {
+		if (e.type === 'click' || e.key === ENTER || e.key === SPACE || e.key === LEFT) {
 			this._dispatchAction(dragActions.active);
 			this._keyboardActive = true;
 			e.preventDefault();
@@ -166,7 +166,7 @@ class listItemDragHandle extends LitElement {
 	}
 
 	_handleInactiveKeyDown(e) {
-		if (e.type === 'click' || e.keyCode === ENTER || e.keyCode === SPACE || e.keyCode === LEFT) {
+		if (e.type === 'click' || e.key === ENTER || e.key === SPACE || e.key === LEFT) {
 			e.preventDefault();
 		}
 	}
@@ -178,6 +178,7 @@ class listItemDragHandle extends LitElement {
 				@click="${this._handleInactiveKeyboard}"
 				@keyup="${this._handleInactiveKeyboard}"
 				@keydown="${this._handleInactiveKeyDown}"
+				@customevent="${this._handleInactiveKeyboard}"
 				aria-label="${this.text}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger"></d2l-icon>
