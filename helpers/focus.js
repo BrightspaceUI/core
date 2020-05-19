@@ -1,4 +1,4 @@
-import { getComposedChildren, getComposedParent } from './dom.js';
+import { getComposedChildren, getComposedParent, getNextAncestorSibling } from './dom.js';
 
 const focusableElements = {
 	a: true,
@@ -105,19 +105,6 @@ export function getNextFocusable(node, includeHidden) {
 
 	if (includeHidden === undefined) includeHidden = false;
 
-	const _getNextAncestorSibling = (node) => {
-		let parentNode = getComposedParent(node);
-
-		while (parentNode) {
-			const nextParentSibling = parentNode.nextElementSibling;
-			if (nextParentSibling) return nextParentSibling;
-
-			parentNode = getComposedParent(parentNode);
-		}
-
-		return null;
-	};
-
 	const _getNextFocusable = (node, ignore, ignoreChildren) => {
 		if (!ignore && isFocusable(node, includeHidden)) return node;
 
@@ -133,7 +120,7 @@ export function getNextFocusable(node, includeHidden) {
 			return null;
 		}
 
-		const nextParentSibling = _getNextAncestorSibling(node);
+		const nextParentSibling = getNextAncestorSibling(node);
 		if (nextParentSibling) {
 			const parentSibingFocusable = _getNextFocusable(nextParentSibling, false, false);
 			if (parentSibingFocusable) return parentSibingFocusable;

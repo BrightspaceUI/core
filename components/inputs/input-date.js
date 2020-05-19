@@ -171,8 +171,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			console.warn('d2l-input-date component requires label text');
 		}
 
-		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
+		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
 		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
@@ -191,12 +192,15 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	render() {
-		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
+		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
+
 		this.style.maxWidth = inputTextWidth;
+
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
-				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formatISODateInUserCalDescriptor('2020-12-20')}</div>
+				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
 			</div>
@@ -242,8 +246,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-text');
-		if (elem) elem.focus();
+		if (this._textInput) this._textInput.focus();
 	}
 
 	updated(changedProperties) {
@@ -268,7 +271,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this._dropdown.open();
-			await this._handleChange(e);
+			await this._handleChange();
 			this._calendar.focus();
 			this._setFormattedValue();
 
@@ -276,8 +279,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		}
 	}
 
-	async _handleChange(e) {
-		const value = e.target.value;
+	async _handleChange() {
+		const value = this._textInput.value;
 		if (!value) {
 			if (value !== this.value) {
 				this._updateValueDispatchEvent('');
@@ -302,6 +305,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	_handleClear() {
 		this._updateValueDispatchEvent('');
 		this._dropdown.close();
+		this.focus();
 	}
 
 	_handleDateSelected(e) {
@@ -313,10 +317,15 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 	_handleDropdownClose() {
 		this._calendar.reset();
 		this._dropdownOpened = false;
+		this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 	}
 
 	_handleDropdownOpen() {
-		this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		// use setTimeout to wait for keyboard to open on mobile devices
+		setTimeout(() => {
+			this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		}, 150);
 		this._dropdownOpened = true;
 	}
 
@@ -324,9 +333,9 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
 	}
 
-	_handleMouseup(e) {
+	_handleMouseup() {
 		if (!this.disabled) {
-			if (!this._dropdownOpened) this._handleChange(e);
+			if (!this._dropdownOpened) this._handleChange();
 			this._dropdown.toggleOpen(false);
 		}
 	}
@@ -335,6 +344,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		const date = getToday();
 		this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
+		this.focus();
 	}
 
 	_setFormattedValue() {
