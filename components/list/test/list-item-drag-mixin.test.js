@@ -33,8 +33,8 @@ describe('ListItemDragMixin', () => {
 			setTimeout(() => {
 				dragArea.dispatchEvent(new Event('dragover'));
 			});
-			await oneEvent(dragArea, 'dragover');
-
+			const { detail } = await oneEvent(element, 'd2l-list-item-selected');
+			console.log(detail);
 			expect(dispatched).to.equal(true);
 		});
 
@@ -46,7 +46,8 @@ describe('ListItemDragMixin', () => {
 			setTimeout(() => {
 				dragArea.dispatchEvent(new Event('drop'));
 			});
-			await oneEvent(dragArea, 'drop');
+			const { detail } = await oneEvent(element, 'd2l-list-item-selected');
+			console.log(detail)
 			expect(dispatched).to.equal(true);
 		});
 
