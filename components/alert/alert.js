@@ -2,7 +2,7 @@ import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyCompactStyles } from '../typography/styles.js';
+import { bodyStandardStyles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -17,7 +17,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		};
 	}
 	static get styles() {
-		return [bodyCompactStyles, css`
+		return [bodyStandardStyles, css`
 
 			:host {
 				animation: 600ms ease drop-in;
@@ -75,7 +75,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 
 			.d2l-alert-action {
-				margin: 0.3rem;
+				margin: 0.6rem 0.6rem 0.6rem 0.9rem;
 			}
 
 			@keyframes drop-in {
@@ -92,6 +92,18 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			@media (prefers-reduced-motion: reduce) {
 				:host {
 					animation: none;
+				}
+			}
+
+			@media (max-width: 615px) {
+				.d2l-alert-text {
+					flex: 1;
+					padding: 1rem 1.2rem 1rem 1.5rem;
+					position: relative;
+				}
+				.d2l-alert-action {
+					margin-top: 0.5rem;
+					margin-bottom: 0.5rem;
 				}
 			}
 		`];
@@ -141,9 +153,11 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
-			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle class="d2l-alert-action" text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
-			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
-		`;
+			<div class="d2l-alert-action">
+			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
+			${this.hasCloseButton ? html`<d2l-button-icon icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
+			</div>
+			`;
 	}
 }
 
