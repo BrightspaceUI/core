@@ -14,7 +14,7 @@ const tag = defineCE(
 );
 
 describe('ListItemDragMixin', () => {
-	it('Sets checked status to false when no key is given', async () => {
+	it('Sets checked status to false when no key is given', async() => {
 		const element = await fixture(`<${tag} draggable="true"></${tag}>`);
 		expect(element.draggable).to.be.false;
 	});
