@@ -165,12 +165,19 @@ class listItemDragHandle extends LitElement {
 		e.preventDefault();
 	}
 
+	_handleInactiveKeyDown(e) {
+		if (e.type === 'click' || e.keyCode === ENTER || e.keyCode === SPACE || e.keyCode === LEFT) {
+			e.preventDefault();
+		}
+	}
+
 	_renderDragger() {
 		return html`
 			<button
 				class="d2l-list-item-drag-handle-dragger-button"
 				@click="${this._handleInactiveKeyboard}"
 				@keyup="${this._handleInactiveKeyboard}"
+				@keydown="${this._handleInactiveKeyDown}"
 				aria-label="${this.text}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger"></d2l-icon>
