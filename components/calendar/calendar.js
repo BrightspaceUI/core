@@ -46,10 +46,6 @@ export function checkIfDatesEqual(date1, date2) {
 	return date1.getTime() === date2.getTime();
 }
 
-export function checkIfInvalid(date, min, max) {
-	return (min && date.getTime() < min.getTime()) || (max && date.getTime() > max.getTime());
-}
-
 export function getDatesInMonthArray(shownMonth, shownYear) {
 	const dates = [];
 	const numDays = getNumberOfDaysInMonth(shownMonth, shownYear);
@@ -480,12 +476,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`);
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
-		const max = this.maxValue ? getDateFromISODate(this.maxValue) : undefined;
-		const min = this.minValue ? getDateFromISODate(this.minValue) : undefined;
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
 				const focused = checkIfDatesEqual(day, this._focusDate);
-				const invalid = checkIfInvalid(day, min, max);
+				const disabled = this._getDisabled(day);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date-inner': true,
@@ -502,15 +496,15 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					<td
 						aria-selected="${selected ? 'true' : 'false'}"
 						class="d2l-calendar-date"
-						@click="${ifDefined(!invalid ? this._onDateSelected : undefined)}"
+						@click="${ifDefined(!disabled ? this._onDateSelected : undefined)}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
 						id="${this._tableInfoId}-${year}-${month}-${date}"
-						@keydown="${ifDefined(!invalid ? this._onKeyDown : undefined)}"
+						@keydown="${ifDefined(!disabled ? this._onKeyDown : undefined)}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
-						<div aria-label="${description}" class="${classMap(classes)}" ?disabled="${invalid}" role="button">${date}</div>
+						<div aria-label="${description}" class="${classMap(classes)}" ?disabled="${disabled}" role="button">${date}</div>
 					</td>`;
 			});
 
@@ -590,6 +584,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	async _getDateElement(date) {
 		await this.updateComplete;
 		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
+	}
+
+	_getDisabled(date) {
+		if (!date) return true;
+		const max = this.maxValue ? getDateFromISODate(this.maxValue) : undefined;
+		const min = this.minValue ? getDateFromISODate(this.minValue) : undefined;
+		return (min && date.getTime() < min.getTime()) || (max && date.getTime() > max.getTime());
 	}
 
 	_onDateSelected(e) {
@@ -723,31 +724,44 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	_onNextMonthButtonClick() {
 		this._updateShownMonthIncrease();
-		this._updateFocusDate();
+		this._updateFocusDateOnMonthButtonClick();
 	}
 
 	_onPrevMonthButtonClick() {
 		this._updateShownMonthDecrease();
-		this._updateFocusDate();
+		this._updateFocusDateOnMonthButtonClick();
 	}
 
-	async _updateFocusDate() {
+	async _updateFocusDateOnMonthButtonClick() {
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
-		if (dateElem) {
+		if (dateElem && !this._getDisabled(selectedValueDate)) {
 			this._focusDate = selectedValueDate;
-		} else {
+		} else if (!this._getDisabled(new Date(this._shownYear, this._shownMonth, 1))) {
 			this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
+		} else if (this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])')) {
+			const validDate = this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])');
+			const focusDate = validDate.parentNode;
+			const year = focusDate.getAttribute('data-year');
+			const month = focusDate.getAttribute('data-month');
+			const date = focusDate.getAttribute('data-date');
+			this._focusDate = new Date(year, month, date);
+		} else {
+			this._focusDate = undefined;
 		}
 	}
 
 	async _updateFocusDateOnKeyDown(numDays) {
 		const oldFocusDate = new Date(this._focusDate);
-		this._focusDate = new Date(
+		const possibleFocusDate = new Date(
 			this._focusDate.getFullYear(),
 			this._focusDate.getMonth(),
 			this._focusDate.getDate() + numDays
 		);
+
+		if (this._getDisabled(possibleFocusDate)) return;
+		this._focusDate = possibleFocusDate;
+
 		const date = await this._getDateElement(this._focusDate);
 		if (!date) {
 			this._keyboardTriggeredMonthChange = true;
