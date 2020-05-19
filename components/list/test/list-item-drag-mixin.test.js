@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 
