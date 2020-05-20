@@ -434,11 +434,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		changedProperties.forEach((oldVal, prop) => {
+		changedProperties.forEach(async(oldVal, prop) => {
 			if (prop === '_shownMonth' && this._keyboardTriggeredMonthChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
+				const date = await this._getDateElement(this._today);
 				if (this.selectedValue) this._focusDate = getDateFromISODate(this.selectedValue);
+				else if (date) this._focusDate = new Date(this._today);
 				else this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
 			}
 		});
