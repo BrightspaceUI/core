@@ -18,7 +18,7 @@ export const dragActions = Object.freeze({
 	previousElement: 'previous-element'
 });
 
-class listItemDragHandle extends LitElement {
+class ListItemDragHandle extends LitElement {
 
 	static get properties() {
 		return {
@@ -201,4 +201,4 @@ class listItemDragHandle extends LitElement {
 	}
 }
 
-customElements.define('d2l-list-item-drag-handle', listItemDragHandle);
+customElements.define('d2l-list-item-drag-handle', ListItemDragHandle);
