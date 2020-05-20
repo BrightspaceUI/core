@@ -67,10 +67,8 @@
 					<button type="submit" name="abc">Wow</button>
 				</form>
 				<script type="module">
-					import {FormBehavior } from  '../form-behavior.js';
-					const form = document.querySelector('form');
-					const behavior = new FormBehavior();
-					behavior.install(form);
+					import { formInstall } from  '../form-behavior.js';
+					formInstall(document.querySelector('form'));
 				</script>
 			</template>
 		</d2l-demo-snippet>

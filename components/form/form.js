@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FormBehavior } from './form-behavior.js';
+import { formInstall, formUninstall } from './form-behavior.js';
 
 class Form extends LitElement {
 
@@ -13,20 +13,14 @@ class Form extends LitElement {
 		return css``;
 	}
 
-	constructor() {
-		super();
-
-		this._formBehavior = new FormBehavior();
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
-		this._formBehavior.install(this);
+		formInstall(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._formBehavior.uninstall(this);
+		formUninstall(this);
 	}
 
 	render() {

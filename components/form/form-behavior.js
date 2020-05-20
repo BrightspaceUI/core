@@ -1,6 +1,27 @@
 import { findFormElements, getFormElementData, installSubmitBehavior, submitFormData, uninstallSubmitBehavior } from './form-helpers.js';
 
-export class FormBehavior {
+const behaviors = new WeakMap();
+
+export const formInstall = (domNode) => {
+	if (behaviors.has(domNode)) {
+		return;
+	}
+	const behavior = new FormBehavior();
+	behavior.install(domNode);
+	behaviors.set(domNode, behavior);
+	return behavior;
+};
+
+export const formUninstall = (domNode) => {
+	const behavior = behaviors.get(domNode);
+	if (behavior === undefined) {
+		return;
+	}
+	behavior.uninstall();
+	behaviors.delete(domNode);
+};
+
+class FormBehavior {
 
 	constructor() {
 		this._mutationObserver = new MutationObserver(this._onMutation);
@@ -10,9 +31,8 @@ export class FormBehavior {
 	}
 
 	install(form) {
-		console.log('install');
-		console.log(form);
 		this._mutationObserver.observe(form, { childList: true, subtree: true, attributes: false });
+
 		const formElements = findFormElements(form);
 		for (const ele of formElements) {
 			installSubmitBehavior(ele, this._onSubmitClicked);
