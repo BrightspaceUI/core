@@ -1,4 +1,5 @@
 import { findFormElements, getFormElementData, installSubmitBehavior, submitFormData, uninstallSubmitBehavior } from './form-helpers.js';
+import { ValidationGroupBehavior } from './validation-group-behavior.js';
 
 const behaviors = new WeakMap();
 
@@ -24,6 +25,7 @@ export const formUninstall = (domNode) => {
 class FormBehavior {
 
 	constructor() {
+		this._validationGroup = new ValidationGroupBehavior();
 		this._mutationObserver = new MutationObserver(this._onMutation);
 		this._onMutation = this._onMutation.bind(this);
 		this._onSubmit = this._onSubmit.bind(this);
@@ -38,6 +40,7 @@ class FormBehavior {
 			installSubmitBehavior(ele, this._onSubmitClicked);
 		}
 		form.addEventListener('submit', this._onSubmit);
+		this._validationGroup.install(form);
 		this._form = form;
 	}
 
@@ -52,6 +55,7 @@ class FormBehavior {
 			uninstallSubmitBehavior(ele, this._onSubmitClicked);
 		}
 		this._form.removeEventListener('submit', this._onSubmit);
+		this._validationGroup.uninstall();
 		this._form = null;
 	}
 
@@ -79,23 +83,18 @@ class FormBehavior {
 
 	_submit() {
 
+		if (!this._validationGroup.reportValidity()) {
+			return;
+		}
+
 		const formElements = findFormElements(this._form);
 
-		const errors = [];
 		const formData = new FormData();
 		for (const ele of formElements) {
-			if (ele.checkValidity()) {
-				const eleData = getFormElementData(ele);
-				for (const pair of eleData) {
-					formData.append(pair[0], pair[1]);
-				}
-			} else {
-				errors.push({ ele, message: ele.validationMessage });
+			const eleData = getFormElementData(ele);
+			for (const pair of eleData) {
+				formData.append(pair[0], pair[1]);
 			}
-		}
-		if (errors.length !== 0) {
-			console.log(errors);
-			return;
 		}
 		submitFormData(this._form.method, this._form.location, formData);
 	}
