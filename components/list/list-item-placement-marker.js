@@ -11,13 +11,16 @@ class ListItemPlacementMarker extends LitElement {
 	constructor() {
 		super();
 		this.color = "blue";
+		this.strokeWidth = 4;
+		this.radius = this.strokeWidth * 2;
+		this.height = this.radius * 2 + this.strokeWidth * 2;
 	}
 
 	render() {
 	  return this.displayed ? html`
-		<svg height="10" width="100%">
-		  	<circle cx="5" cy="5" r="4" stroke="${this.color}" stroke-width="2" fill="white" />
-	  		<line x1="10" y1="5" x2="100%" y2="5" stroke="${this.color}" stroke-width="2" />
+		<svg height="${this.height}"  width="100%">
+		  	<circle cx="${this.strokeWidth + this.radius}" cy="${this.strokeWidth + this.radius}" r="${this.radius}" stroke="${this.color}" stroke-width="${this.strokeWidth}" fill="white" />
+	  		<line x1="${this.radius*2 + this.strokeWidth}" y1="${this.height/2}" x2="98%" y2="${this.height/2}" stroke="${this.color}" stroke-width="${this.strokeWidth}" stroke-linecap="round"/>
 	   	</svg>
 	  ` : ``;
 	}
