@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class ListItemPlacementMarker extends LitElement {
+class ListItemPlacementMarker extends RtlMixin(LitElement) {
 
 	static get styles() {
 		return css`
@@ -31,16 +32,31 @@ class ListItemPlacementMarker extends LitElement {
 
 	constructor() {
 		super();
-		this.strokeWidth = 4;
-		this.radius = this.strokeWidth * 2;
-		this.height = this.radius * 2 + this.strokeWidth * 2;
 	}
 
+
 	render() {
+
+		// TODO: figure out how to draw with RTL
+
+		// dimensions
+		const strokeWidth = 3;
+		const radius = strokeWidth * 1.5;
+		const height = radius * 2 + strokeWidth;
+
+		// circle coordinates
+		let cx = strokeWidth/2 + radius;
+		const cy = strokeWidth/2 + radius;;
+		let x1 = radius * 2 + strokeWidth;
+		const y1 = height / 2;
+		const y2 = y1;
+		let x2 = "99%"; // with 100% the round line cap is cut off because circle is drawn at x2 coordinate.
+
 		return html`
-			<svg height="${this.height}">
-				<circle cx="${this.strokeWidth + this.radius}" cy="${this.strokeWidth + this.radius}" r="${this.radius}" stroke-width="${this.strokeWidth}"/>
-				<line x1="${this.radius * 2 + this.strokeWidth}" y1="${this.height / 2}" x2="98%" y2="${this.height / 2}" stroke-width="${this.strokeWidth}"/>
+		   <p> clientWidth: ${this.shadowRoot.host.parentElement.clientWidth} </p>
+			<svg height="${height}">
+				<circle cx="${cx}" cy="${cy}" r="${radius}" stroke-width="${strokeWidth}"/>
+				<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="${strokeWidth}"/>
 			</svg>
 	  	`;
 	}
