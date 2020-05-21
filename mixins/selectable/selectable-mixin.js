@@ -81,9 +81,7 @@ export const SelectableMixin = superclass => class extends superclass {
 			<label @click="${this._handleSelectActionClick}"
 				class="d2l-select-action"
 				?disabled="${this.disabled}"
-				for="${this._checkboxId}">
-				${inner}
-			</label>
+				for="${this._checkboxId}">${inner ? inner : nothing}</label>
 			` : nothing;
 	}
 };
