@@ -256,7 +256,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		e.stopPropagation();
 
 		const startsWith = function(item, value) {
-			if (item.text && item.text.length > 0 && item.text.substr(0, 1) === value) {
+			if (item.text && item.text.length > 0 && item.text.toLowerCase().substr(0, 1) === value) {
 				return true;
 			}
 			return false;
@@ -275,7 +275,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		}.bind(this);
 
 		/* "charCode" is used instead of "key" due to Safari not supporting */
-		const searchChar = String.fromCharCode(e.charCode);
+		const searchChar = String.fromCharCode(e.charCode).toLowerCase();
 
 		let itemIndex = getNextOrFirstIndex(targetItemIndex);
 		while (itemIndex !== targetItemIndex) {
