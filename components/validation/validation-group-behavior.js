@@ -1,4 +1,4 @@
-import { findFormElements } from './form-helpers.js';
+import { findFormElements } from '../form/form-helpers.js';
 
 export class ValidationGroupBehavior {
 
@@ -37,8 +37,16 @@ export class ValidationGroupBehavior {
 		const formElements = findFormElements(this._domNode);
 		for (const ele of formElements) {
 			if (!ele.checkValidity()) {
-				// TODO: add tooltip
 				errors.push({ ele, message: ele.validationMessage });
+			}
+		}
+		const validationCustoms = this._domNode.querySelectorAll('d2l-validation-custom');
+		console.log(validationCustoms);
+		for (const custom of validationCustoms) {
+			if (!custom.validate()) {
+				console.log('INVALID');
+			} else {
+				console.log('VALID');
 			}
 		}
 		this._errors = errors;
@@ -59,8 +67,20 @@ export class ValidationGroupBehavior {
 		this._dirty = true;
 	}
 
+	commit() {
+		if (!this.checkValidity()) {
+			return false;
+		}
+		const formElements = findFormElements(this._domNode);
+		for (const ele of formElements) {
+			ele.classList.remove('d2l-dirty');
+		}
+		this._dirty = false;
+		return true;
+	}
+
 	_updateErrorSummary() {
-		const errorSummary = this._domNode.querySelector('.d2l-validation-group-error-summary');
+		const errorSummary = this._domNode.querySelector('d2l-validation-error-summary');
 		if (!errorSummary) {
 			return;
 		}

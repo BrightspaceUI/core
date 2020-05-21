@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
-class ErrorSummary extends LitElement {
+class ValidationErrorSummary extends LitElement {
 
 	static get properties() {
 		return {
@@ -26,4 +26,4 @@ class ErrorSummary extends LitElement {
 	}
 
 }
-customElements.define('d2l-error-summary', ErrorSummary);
+customElements.define('d2l-validation-error-summary', ValidationErrorSummary);
