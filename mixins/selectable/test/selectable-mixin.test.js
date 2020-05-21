@@ -13,7 +13,7 @@ const tag = defineCE(
 	}
 );
 
-describe.only('SelectableMixin', () => {
+describe('SelectableMixin', () => {
 	it('passes aXe test', async() => {
 		const element = await fixture(`<${tag} key="1234" selectable></${tag}>`);
 		expect(element).to.be.accessible();
