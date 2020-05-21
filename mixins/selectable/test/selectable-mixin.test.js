@@ -14,6 +14,11 @@ const tag = defineCE(
 );
 
 describe.only('SelectableMixin', () => {
+	it('passes aXe test', async() => {
+		const element = await fixture(`<${tag} key="1234" selectable></${tag}>`);
+		expect(element).to.be.accessible();
+	});
+
 	describe('Sets selected status to undefined when no key is given', () => {
 		const cases = [
 			'disabled selected',
