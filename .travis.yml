@@ -24,6 +24,7 @@ jobs:
       script:
       - npm run build
       - npm run lint
+      - npm run test:axe
       - |
         if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
             echo "Pull request with secure environment variables, running Sauce tests...";

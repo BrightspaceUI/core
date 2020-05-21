@@ -37,36 +37,6 @@ function pressEnter(elem) {
 
 describe('d2l-input-search', () => {
 
-	describe('accessibility', () => {
-
-		it('should pass all aXe tests (normal)', async() => {
-			const elem = await fixture(normalFixture);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (with value)', async() => {
-			const elem = await fixture(valueSetFixture);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (disabled)', async() => {
-			const elem = await fixture(html`<d2l-input-search label="search" disabled></d2l-input-search>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (invalid)', async() => {
-			const elem = await fixture(html`<d2l-input-search label="search" aria-invalid="true"></d2l-input-search>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (focused)', async() => {
-			const elem = await fixture(normalFixture);
-			elem.focus();
-			await expect(elem).to.be.accessible();
-		});
-
-	});
-
 	describe('constructor', () => {
 
 		it('should construct', () => {

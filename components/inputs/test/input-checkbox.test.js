@@ -12,32 +12,6 @@ function getInput(elem) {
 
 describe('d2l-input-checkbox', () => {
 
-	describe('accessibility', () => {
-
-		it('should pass all aXe tests (unchecked)', async() => {
-			const elem = await fixture(uncheckedFixture);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (checked)', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox checked></d2l-input-checkbox>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (disabled)', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox disabled></d2l-input-checkbox>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests when focused', async() => {
-			const elem = await fixture(uncheckedFixture);
-			setTimeout(() => getInput(elem).focus());
-			await oneEvent(elem, 'focus');
-			await expect(elem).to.be.accessible();
-		});
-
-	});
-
 	describe('constructor', () => {
 
 		it('should construct', () => {

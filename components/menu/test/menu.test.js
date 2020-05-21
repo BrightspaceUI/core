@@ -25,10 +25,6 @@ describe('d2l-menu', () => {
 			`);
 		});
 
-		it('should pass all aXe tests', async() => {
-			await expect(elem).to.be.accessible;
-		});
-
 		it('has role="menu"', () => {
 			expect(elem.getAttribute('role')).to.equal('menu');
 		});

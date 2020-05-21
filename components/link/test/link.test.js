@@ -11,32 +11,6 @@ function getAnchor(elem) {
 
 describe('d2l-link', () => {
 
-	describe('accessibility', () => {
-
-		it('should pass all aXe tests', async() => {
-			const elem = await fixture(normalFixture);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (main)', async() => {
-			const elem = await fixture(html`<d2l-link main>Main Link</d2l-link>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (small)', async() => {
-			const elem = await fixture(html`<d2l-link small>Small Link</d2l-link>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (focused)', async() => {
-			const elem = await fixture(normalFixture);
-			setTimeout(() => getAnchor(elem).focus());
-			await oneEvent(elem, 'focus');
-			await expect(elem).to.be.accessible();
-		});
-
-	});
-
 	describe('attribute binding', () => {
 
 		['download', 'href', 'main', 'small'].forEach((attrName) => {
