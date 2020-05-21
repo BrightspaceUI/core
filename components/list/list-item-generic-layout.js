@@ -1,8 +1,29 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { findComposedAncestor, getNextAncestorSibling } from '../../helpers/dom.js';
-import { getFirstFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { getNextAncestorSibling } from '../../helpers/dom.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getNextFocusable, getPreviousFocusable, isFocusable } from '../../helpers/focus.js';
+
+const keyCodes = {
+	DOWN: 40,
+	END: 35,
+	ENTER: 13,
+	ESCAPE: 27,
+	HOME: 36,
+	LEFT: 37,
+	PAGEUP: 33,
+	PAGEDOWN: 34,
+	SPACE: 32,
+	RIGHT: 39,
+	UP: 38
+};
 
 class ListItemGenericLayout extends LitElement {
+
+	static get properties() {
+		return {
+			role: { type: String, reflect: true },
+			gridActive: { type: Boolean, attribute: 'grid-active' }
+		};
+	}
 
 	static get styles() {
 		return css`
@@ -62,12 +83,14 @@ class ListItemGenericLayout extends LitElement {
 
 	constructor() {
 		super();
+		this.role = 'gridrow';
+		this.gridActive = true;
+
 		this._preventFocus = {
 			handleEvent(event) {
 				event.preventDefault();
 				// target content slot only for now - can add others later
-				// TODO findComposedAncestor should be replaced with event.path || event.composedPath() when supported
-				const slot = findComposedAncestor(event.target, (node) =>
+				const slot = (event.path || event.composedPath()).find((node) =>
 					node.nodeName === 'SLOT' && ['content'].includes(node.name)
 				);
 				const ancestorSibling = getNextAncestorSibling(slot);
@@ -95,18 +118,75 @@ class ListItemGenericLayout extends LitElement {
 		};
 	}
 
+	firstUpdated() {
+		this.addEventListener('keydown', this._handleKeydown.bind(this));
+		this.addEventListener('focusin', this._setFocusInfo.bind(this));
+	}
+
 	render() {
 		return html`
-		<slot name="content-action"></slot>
-		<slot name="outside-control-action"></slot>
-		<slot name="outside-control"></slot>
-		<slot name="control-action"></slot>
-		<slot name="control"></slot>
-		<slot name="actions"></slot>
+		<slot name="content-action" class="d2l-cell" cell-num="5"></slot>
+		<slot name="outside-control-action" class="d2l-cell" cell-num="1"></slot>
+		<slot name="outside-control" class="d2l-cell" cell-num="2"></slot>
+		<slot name="control-action" class="d2l-cell" cell-num="3"></slot>
+		<slot name="control" class="d2l-cell" cell-num="4"></slot>
+		<slot name="actions" class="d2l-cell" cell-num="6"></slot>
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
 	}
+
+	_handleKeydown(event) {
+		if (!this.gridActive) return;
+		//const active = getComposedActiveElement();
+
+		switch (event.keyCode) {
+			case keyCodes.RIGHT:
+				this._focusNext(this._cellNum + 1);
+				break;
+
+		}
+	}
+
+	_focusNextCell(num) {
+		let cell;
+		do {
+			let focusable;
+			cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
+			if (cell) focusable = getFirstFocusableDescendant(cell);
+			if (focusable) this._focusItem(focusable, num, 1);
+			++num;
+		} while (cell);
+	}
+
+	_focusItem(focusable, cellNum, cellFocusedItem) {
+		this._cellNum = cellNum;
+		this._cellFocusedItem = cellFocusedItem;
+		this._focusInfoSet = true;
+		focusable.focus();
+		this._focusInfoSet = false;
+	}
+
+	_setFocusInfo(event) {
+		if (this._focusInfoSet) return; //prevent unnecessary work
+		const slot = (event.path || event.composedPath()).find(node =>
+			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
+		this._cellNum = parseInt(slot.getAttribute('cell-num'));
+		//TODO: set the cellFocusedItem according to which siblings are focusable
+	}
+}
+
+function getNextFocusableSibling(node, includeHidden = true) {
+	if (!node) return null;
+	let focusable = null;
+	while (!focusable && (node = node.nextElementSibling) !== null) {
+		if (isFocusable(node, includeHidden)) {
+			focusable = node;
+		} else {
+			focusable = getFirstFocusableDescendant(node);
+		}
+	}
+	return focusable;
 }
 
 customElements.define('d2l-list-item-generic-layout', ListItemGenericLayout);
