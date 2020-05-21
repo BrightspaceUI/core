@@ -53,7 +53,6 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 		let x2 = "99%"; // with 100% the round line cap is cut off because circle is drawn at x2 coordinate.
 
 		return html`
-		   <p> clientWidth: ${this.shadowRoot.host.parentElement.clientWidth} </p>
 			<svg height="${height}">
 				<circle cx="${cx}" cy="${cy}" r="${radius}" stroke-width="${strokeWidth}"/>
 				<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="${strokeWidth}"/>
