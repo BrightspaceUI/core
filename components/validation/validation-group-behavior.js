@@ -24,15 +24,15 @@ export class ValidationGroupBehavior {
 		this._domNode = null;
 	}
 
-	reportValidity() {
-		const isValid = this.checkValidity();
+	async reportValidity() {
+		const isValid = await this.checkValidity();
 		if (!isValid) {
 			this._updateErrorSummary();
 		}
 		return isValid;
 	}
 
-	checkValidity() {
+	async checkValidity() {
 		const errors = [];
 		const formElements = findFormElements(this._domNode);
 		for (const ele of formElements) {
@@ -41,12 +41,9 @@ export class ValidationGroupBehavior {
 			}
 		}
 		const validationCustoms = this._domNode.querySelectorAll('d2l-validation-custom');
-		console.log(validationCustoms);
 		for (const custom of validationCustoms) {
-			if (!custom.validate()) {
-				console.log('INVALID');
-			} else {
-				console.log('VALID');
+			if (!await custom.validate()) {
+				errors.push({ ele: null, message: custom.failureText });
 			}
 		}
 		this._errors = errors;

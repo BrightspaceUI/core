@@ -8,9 +8,13 @@ class ValidationCustom extends LitElement {
 		};
 	}
 
-	validate() {
-		const event = new CustomEvent('d2l-validation-custom-validate', { bubbles: true, cancelable: true });
-		return this.dispatchEvent(event);
+	async validate() {
+		const validation = new Promise(resolve => {
+			const details = { bubbles: true, detail: { resolve } };
+			const event = new CustomEvent('d2l-validation-custom-validate', details);
+			return this.dispatchEvent(event);
+		});
+		return validation;
 	}
 
 }

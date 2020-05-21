@@ -28,7 +28,7 @@
 					<h1>My Form</h1>
 					<h2>Primary</h2>
 					<d2l-validation-error-summary></d2l-validation-error-summary>
-					<d2l-validation-custom id="custom"></d2l-validation-custom>
+					<d2l-validation-custom id="custom" failure-text="Validation custom failed"></d2l-validation-custom>
 					<fieldset>
 						<legend>Choose your favorite monster</legend>
 
@@ -79,10 +79,7 @@
 					});
 					const custom = document.querySelector('#custom');
 					custom.addEventListener('d2l-validation-custom-validate', (e) => {
-						console.log('PREVENT DEFAULT');
-						setTimeout(() => {
-							e.preventDefault();
-						}, 0);
+						e.detail.resolve(false);
 					});
 				</script>
 			</template>
