@@ -248,11 +248,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			width: this._width ? `${this._width + 18}px` : '',
 		};
 
-		const contentStyle = {
-			...contentWidthStyle,
+		const contentStyle = Object.assign({
 			maxHeight: this._contentHeight ? `${this._contentHeight}px` : 'none',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
-		};
+		}, contentWidthStyle);
 
 		const topClasses = {
 			'd2l-dropdown-content-top': true,
@@ -550,7 +549,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	_constrainSpaceAround(spaceAround) {
-		const constrained = {...spaceAround};
+		const constrained = Object.assign({}, spaceAround);
 		if (this.boundary) {
 			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
 			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
