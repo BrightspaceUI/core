@@ -33,11 +33,25 @@ export const TabPanelMixin = superclass => class extends superclass {
 		this.role = 'tabpanel';
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'selected') {
+				if (this.selected) {
+					requestAnimationFrame(() => {
+						this.dispatchEvent(new CustomEvent(
+							'd2l-tab-panel-selected', { bubbles: true, composed: true }
+						));
+					});
+				}
+			}
+		});
+	}
+
 	async attributeChangedCallback(name, oldval, newval) {
 		super.attributeChangedCallback(name, oldval, newval);
-		if (name === 'selected') {
-			if (this.selected) this._dispatchSelected();
-		} else if (name === 'text') {
+		if (name === 'text') {
 			this.setAttribute('aria-label', this.text);
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
@@ -48,12 +62,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		if (this.id.length === 0) this.id = getUniqueId();
-	}
-
-	_dispatchSelected() {
-		this.dispatchEvent(new CustomEvent(
-			'd2l-tab-panel-selected', { bubbles: true, composed: true }
-		));
 	}
 
 };
