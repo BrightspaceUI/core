@@ -40,7 +40,9 @@ export const TabPanelMixin = superclass => class extends superclass {
 			if (prop === 'selected') {
 				if (this.selected) {
 					requestAnimationFrame(() => {
-						this._dispatchSelected();
+						this.dispatchEvent(new CustomEvent(
+							'd2l-tab-panel-selected', { bubbles: true, composed: true }
+						));
 					});
 				}
 			}
@@ -60,12 +62,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		if (this.id.length === 0) this.id = getUniqueId();
-	}
-
-	_dispatchSelected() {
-		this.dispatchEvent(new CustomEvent(
-			'd2l-tab-panel-selected', { bubbles: true, composed: true }
-		));
 	}
 
 };
