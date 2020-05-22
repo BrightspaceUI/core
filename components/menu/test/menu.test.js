@@ -1,5 +1,6 @@
 import '../menu.js';
 import '../menu-item.js';
+import '../menu-item-radio.js';
 import './custom-slots.js';
 import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';

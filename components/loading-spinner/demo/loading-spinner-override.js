@@ -1,4 +1,5 @@
 import '../../colors/colors.js';
+import '../../loading-spinner/loading-spinner.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 class LoadingSpinnerOverride extends LitElement {
