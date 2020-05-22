@@ -1,6 +1,6 @@
 import { css, html } from 'lit-element/lit-element.js';
-import { classMap} from 'lit-html/directives/class-map.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
+import { classMap} from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { nothing } from 'lit-html';
 

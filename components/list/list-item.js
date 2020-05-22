@@ -60,15 +60,15 @@ class ListItem extends RtlMixin(LitElement) {
 				width: 100%;
 			}
 
-			:host(:first-child) .d2l-list-item-content[separators="between"] {
+			:host(:first-child) .d2l-list-item-content[data-separators="between"] {
 				border-top: 1px solid transparent;
 			}
 
-			:host(:last-child) .d2l-list-item-content[separators="between"] {
+			:host(:last-child) .d2l-list-item-content[data-separators="between"] {
 				border-bottom: 1px solid transparent;
 			}
 
-			.d2l-list-item-content[separators="none"] {
+			.d2l-list-item-content[data-separators="none"] {
 				border-top: 1px solid transparent;
 				border-bottom: 1px solid transparent;
 			}
@@ -79,7 +79,7 @@ class ListItem extends RtlMixin(LitElement) {
 				padding: 0.55rem 0;
 			}
 
-			.d2l-list-item-content[extend-separators] .d2l-list-item-content-flex {
+			.d2l-list-item-content.d2l-list-item-content-extend-separators .d2l-list-item-content-flex {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
@@ -256,15 +256,18 @@ class ListItem extends RtlMixin(LitElement) {
 			'd2l-list-item-flex': label || link,
 			'd2l-visible-on-ancestor-target': true
 		};
+		const contentClasses = {
+			'd2l-list-item-content': true,
+			'd2l-list-item-content-extend-separators': this._extendSeparators
+		};
 
 		return html`
 			<div class="${classMap(classes)}" data-breakpoint="${this._breakpoint}">
 				${label}
 				${link}
 				<div id="${this._contentId}"
-					class="d2l-list-item-content"
-					?extend-separators="${this._extendSeparators}"
-					separators="${ifDefined(this._separators)}">
+					class="${classMap(contentClasses)}"
+					data-separators="${ifDefined(this._separators)}">
 					<div class="d2l-list-item-content-flex">
 						${beforeContent}
 						<div class="d2l-list-item-main"><slot></slot></div>
