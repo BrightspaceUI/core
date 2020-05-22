@@ -34,7 +34,7 @@ describe('d2l-calendar', () => {
 	describe('events', () => {
 		it('dispatches event when date clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="1"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="1"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -48,7 +48,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when date in previous month clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="31"][data-month="7"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="31"][data-month="7"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -62,7 +62,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when date in next month clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="9"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="9"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -76,7 +76,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when enter key pressed on date', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="20"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 			setTimeout(() => dispatchKeyEvent(el, 13));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -90,7 +90,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when space key pressed on date', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 32));
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -130,7 +130,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user uses right arrow from a focused date', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			await aTimeout(1);
 
@@ -140,7 +140,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user uses left arrow from a focused date', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 37));
 			await aTimeout(1);
 
@@ -210,7 +210,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user changes to previous month using left arrow key 4 times', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 37));
 			setTimeout(() => dispatchKeyEvent(el, 37));
 			setTimeout(() => dispatchKeyEvent(el, 37));
@@ -224,7 +224,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user changes to next month using right arrow key 4 times', async() => {
 			const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-30"></d2l-calendar>`);
-			const el = calendar.shadowRoot.querySelector('td[data-date="30"][data-month="8"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="30"][data-month="8"] button');
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			setTimeout(() => dispatchKeyEvent(el, 39));
@@ -238,7 +238,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user presses PAGEUP', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 33));
 			await aTimeout(1);
 
@@ -249,7 +249,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user presses PAGEDOWN', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 34));
 			await aTimeout(1);
 
@@ -260,7 +260,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user presses HOME', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 36));
 			await aTimeout(1);
 
@@ -271,7 +271,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user presses END', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"] button');
 			setTimeout(() => dispatchKeyEvent(el, 35));
 			await aTimeout(1);
 
