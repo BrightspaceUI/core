@@ -129,12 +129,6 @@ element.addEventListener('d2l-gesture-swipe', (e) => {
     );
 });
 ```
-## keyCodes
-```js
-import { ESC, UP, DOWN } from '@brightspace-ui/core/helpers/keyCodes.js';
-```
-
-Check the file for which keys are already supported. If the key you need isn't there you can add it.
 
 ## queueMicrotask
 

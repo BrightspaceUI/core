@@ -2,9 +2,21 @@
 import '../button/button-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { DOWN, END, ENTER, ESC, HOME, LEFT, RIGHT, SPACE, TAB, UP } from '../../helpers/keyCodes.js';
 import { buttonStyles } from '../button/button-styles.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
+
+const keyCodes = Object.freeze({
+	END: 35,
+	HOME: 36,
+	UP: 38,
+	DOWN: 40,
+	SPACE: 32,
+	ENTER: 13,
+	ESC: 27,
+	TAB: 9,
+	LEFT: 37,
+	RIGHT: 39
+});
 
 export const dragActions = Object.freeze({
 	first: 'first',
@@ -54,6 +66,10 @@ class ListItemDragHandle extends LitElement {
 			.d2l-list-item-drag-handle-dragger-button {
 				background-color: unset;
 			}
+			.d2l-button-icon {
+				height: 0.9rem;
+				width: 0.9rem;
+			}
 			button,
 			button[disabled]:hover,
 			button[disabled]:focus {
@@ -87,9 +103,8 @@ class ListItemDragHandle extends LitElement {
 	}
 
 	updated(changedProperties) {
-		if (changedProperties.has('_keyboardActive')) {
-			this.focus();
-		}
+		super.updated(changedProperties);
+		if (changedProperties.has('_keyboardActive')) this.focus();
 	}
 
 	_dispatchAction(action) {
@@ -120,29 +135,29 @@ class ListItemDragHandle extends LitElement {
 			return;
 		}
 		let action = null;
-		switch (e.key) {
-			case UP:
+		switch (e.keyCode) {
+			case keyCodes.UP:
 				action = dragActions.up;
 				break;
-			case DOWN:
+			case keyCodes.DOWN:
 				action = dragActions.down;
 				break;
-			case HOME:
+			case keyCodes.HOME:
 				action = dragActions.first;
 				break;
-			case END:
+			case keyCodes.END:
 				action = dragActions.last;
 				break;
-			case TAB:
+			case keyCodes.TAB:
 				action = e.shiftKey ? dragActions.previousElement : dragActions.nextElement;
 				break;
-			case ESC:
+			case keyCodes.ESC:
 				action = dragActions.cancel;
 				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
-			case ENTER:
-			case SPACE:
-			case RIGHT:
+			case keyCodes.ENTER:
+			case keyCodes.SPACE:
+			case keyCodes.RIGHT:
 				action = dragActions.save;
 				this.updateComplete.then(() => this._keyboardActive = false);
 				break;
@@ -154,7 +169,7 @@ class ListItemDragHandle extends LitElement {
 	}
 
 	_handleInactiveKeyboard(e) {
-		if (e.type === 'click' || e.key === ENTER || e.key === SPACE || e.key === LEFT) {
+		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
 			this._dispatchAction(dragActions.active);
 			this._keyboardActive = true;
 			e.preventDefault();
@@ -166,7 +181,7 @@ class ListItemDragHandle extends LitElement {
 	}
 
 	_handleInactiveKeyDown(e) {
-		if (e.type === 'click' || e.key === ENTER || e.key === SPACE || e.key === LEFT) {
+		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
 			e.preventDefault();
 		}
 	}
@@ -181,7 +196,7 @@ class ListItemDragHandle extends LitElement {
 				@customevent="${this._handleInactiveKeyboard}"
 				aria-label="${this.text}"
 				?disabled="${this.disabled}">
-				<d2l-icon icon="tier1:dragger"></d2l-icon>
+				<d2l-icon icon="tier1:dragger" class="d2l-button-icon"></d2l-icon>
 			</button>
 		`;
 	}
@@ -194,8 +209,8 @@ class ListItemDragHandle extends LitElement {
 				@keyup="${this._handleActiveKeyboard}"
 				@keydown="${this._handlePreventDefault}"
 				aria-label="${this.text}">
-				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}"></d2l-icon>
-				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}"></d2l-icon>
+				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
+				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>
 			</button>
 		`;
 	}

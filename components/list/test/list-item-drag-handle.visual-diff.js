@@ -12,10 +12,13 @@ describe('d2l-list-item-drag-handle', () => {
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list-item-drag-handle.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
-		await visualDiff.resetFocus(page);
 	});
 
 	after(async() => await browser.close());
+
+	beforeEach(async() => {
+		await visualDiff.resetFocus(page);
+	});
 
 	describe('dragger', () => {
 		it('simple', async function() {

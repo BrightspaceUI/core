@@ -1,17 +1,29 @@
-import { DOWN, END, ENTER, ESC, HOME, LEFT, RIGHT, SPACE, TAB, UP } from '../../../helpers/keyCodes.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { dragActions } from '../list-item-drag-handle.js';
 
+const keyCodes = Object.freeze({
+	END: { key: 'end', code: 35 },
+	HOME: { key: 'home', code: 36 },
+	UP: { key: 'up arrow', code: 38 },
+	DOWN: { key: 'down arrow', code: 40 },
+	SPACE: { key: 'space', code: 32 },
+	ENTER: { key: 'enter', code: 13 },
+	ESC: { key: 'escape', code: 27 },
+	TAB: { key: 'tab', code: 9 },
+	LEFT: { key: 'left arrow', code: 37 },
+	RIGHT: { key: 'right arrow', code: 39 }
+});
+
 describe('ListItemDragHandle', () => {
 
-	describe('Events to activate keyboard mode', () => {
+	describe('Events to activate keyboard mode.', () => {
 		let element;
 		beforeEach(async() => {
 			element = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
 			element.focus();
 		});
 
-		it(`Expect ${dragActions.active} event results when clicked`, async() => {
+		it(`It dispatch drag handle action event for ${dragActions.active} event when clicked.`, async() => {
 			let action;
 			element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 			const actionArea = element.shadowRoot.querySelector('button');
@@ -24,17 +36,15 @@ describe('ListItemDragHandle', () => {
 		});
 
 		[
-			{ keyPress: ENTER },
-			{ keyPress: SPACE },
-			{ keyPress: LEFT }
+			{ keyPress: keyCodes.ENTER },
+			{ keyPress: keyCodes.SPACE },
+			{ keyPress: keyCodes.LEFT }
 		].forEach(testCase => {
-			it(`Expect event response ${dragActions.active} from keycode ${testCase.keyPress}`, async() => {
+			it(`It dispatch drag handle action event for ${dragActions.active} when ${testCase.keyPress.key} is pressed.`, async() => {
 				let action;
 				element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 				const actionArea = element.shadowRoot.querySelector('button');
-				setTimeout(() => {
-					actionArea.dispatchEvent(new KeyboardEvent('keyup', {key: testCase.keyPress, shiftKey: !!testCase.shift}));
-				});
+				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress.code));
 				await oneEvent(actionArea, 'keyup');
 
 				expect(action).to.equal(dragActions.active);
@@ -55,31 +65,29 @@ describe('ListItemDragHandle', () => {
 		});
 
 		[
-			{keyPress: UP, result: dragActions.up},
-			{keyPress: DOWN, result: dragActions.down},
-			{keyPress: HOME, result: dragActions.first},
-			{keyPress: END, result: dragActions.last},
-			{keyPress: TAB, result: dragActions.previousElement, shift: true},
-			{keyPress: TAB, result: dragActions.nextElement},
-			{keyPress: ESC, result: dragActions.cancel},
-			{keyPress: ENTER, result: dragActions.save},
-			{keyPress: SPACE, result: dragActions.save},
-			{keyPress: RIGHT, result: dragActions.save}
+			{keyPress: keyCodes.UP, result: dragActions.up},
+			{keyPress: keyCodes.DOWN, result: dragActions.down},
+			{keyPress: keyCodes.HOME, result: dragActions.first},
+			{keyPress: keyCodes.END, result: dragActions.last},
+			{keyPress: keyCodes.TAB, result: dragActions.previousElement, shift: true},
+			{keyPress: keyCodes.TAB, result: dragActions.nextElement},
+			{keyPress: keyCodes.ESC, result: dragActions.cancel},
+			{keyPress: keyCodes.ENTER, result: dragActions.save},
+			{keyPress: keyCodes.SPACE, result: dragActions.save},
+			{keyPress: keyCodes.RIGHT, result: dragActions.save}
 		].forEach(testCase => {
-			it(`Expect event response ${testCase.result} from keycode ${testCase.keyPress}`, async() => {
+			it(`It dispatch drag handle action event for ${testCase.result} when ${testCase.keyPress.key} is pressed.`, async() => {
 				let action;
 				element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 				const actionArea = element.shadowRoot.querySelector('button');
-				setTimeout(() => {
-					actionArea.dispatchEvent(new KeyboardEvent('keyup', {key: testCase.keyPress, shiftKey: !!testCase.shift}));
-				});
+				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress.code, !!testCase.shift));
 				await oneEvent(actionArea, 'keyup');
 
 				expect(action).to.equal(testCase.result);
 			});
 		});
 
-		it(`Expect event response ${dragActions.save} on blur`, async() => {
+		it(`It dispatch drag handle action event for ${dragActions.save} when element is blurred.`, async() => {
 			let action;
 			element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 			const actionArea = element.shadowRoot.querySelector('button');
@@ -91,4 +99,14 @@ describe('ListItemDragHandle', () => {
 			expect(action).to.equal(dragActions.save);
 		});
 	});
+
+	function dispatchKeyEvent(el, key, shiftKey = false) {
+		const eventObj = document.createEvent('Events');
+		eventObj.initEvent('keyup', true, true);
+		eventObj.which = key;
+		eventObj.keyCode = key;
+		eventObj.shiftKey = shiftKey;
+		el.dispatchEvent(eventObj);
+	}
+
 });
