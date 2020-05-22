@@ -9,6 +9,7 @@ import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const daysInWeek = 7;
@@ -143,7 +144,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodySmallStyles, heading4Styles, css`
+		return [bodySmallStyles, heading4Styles, offscreenStyles, css`
 			:host {
 				display: block;
 				min-width: 14rem;
@@ -496,6 +497,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			return html`<tr>${weekHtml}</tr>`;
 		});
+		const summary = this.summary ? html`<caption class="d2l-offscreen">${this.summary}</caption>` : '';
 		const calendarClasses = {
 			'd2l-calendar': true,
 			'd2l-calendar-animating': (this._monthNav === 'next' || this._monthNav === 'next-updown' || this._monthNav === 'prev' || this._monthNav === 'prev-updown' || this._monthNav === 'initial'),
@@ -525,8 +527,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					</d2l-button-icon>
 				</div>
 				<table
-					aria-labelledby="${labelId}"
-					summary="${ifDefined(this.summary)}">
+					aria-labelledby="${labelId}">
+					${summary}
 					<thead>
 						<tr>${weekdayHeaders}</tr>
 					</thead>
