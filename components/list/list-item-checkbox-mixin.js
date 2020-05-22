@@ -56,6 +56,8 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		event.preventDefault();
 		if (this.disabled) return;
 		this.setSelected(!this.selected);
+		const checkbox = this.shadowRoot.querySelector(`#${this._checkboxId}`);
+		if (checkbox) checkbox.focus();
 	}
 
 	_handleCheckboxChange(event) {

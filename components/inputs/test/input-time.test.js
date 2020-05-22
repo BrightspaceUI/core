@@ -28,31 +28,6 @@ function getNumberOfIntervals(elem) {
 
 describe('d2l-input-time', () => {
 
-	describe('accessibility', () => { //Fixtures use larger intervals for faster aXe tests
-
-		it('passes all axe tests', async() => {
-			const elem = await fixture(hourLongIntervals);
-			await expect(elem).to.be.accessible();
-		}).timeout(3000);
-
-		it('passes all axe tests when label is hidden', async() => {
-			const elem = await fixture(labelHiddenFixture);
-			await expect(elem).to.be.accessible({ignoredRules: ['color-contrast']}); //Color-contrast is slow and hidden label uses the same colors as default
-		}).timeout(4000);
-
-		it('passes all axe tests when disabled', async() => {
-			const elem = await fixture('<d2l-input-time label="label text" time-interval="sixty" disabled></d2l-input-time>');
-			await expect(elem).to.be.accessible();
-		}).timeout(3000);
-
-		it('passes all axe tests when focused', async() => {
-			const elem = await fixture(hourLongIntervals);
-			setTimeout(() => getInput(elem).focus());
-			await oneEvent(elem, 'focus');
-			await expect(elem).to.be.accessible();
-		}).timeout(5000);
-	});
-
 	describe('constructor', () => {
 
 		it('should construct', () => {

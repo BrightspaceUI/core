@@ -250,6 +250,19 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			await helper.reset(page, '#no-value');
 		});
+
+		it('open with enter with placeholder', async function() {
+			await page.$eval('#no-value', (elem) => {
+				const input = elem.shadowRoot.querySelector('d2l-input-text');
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				input.dispatchEvent(eventObj);
+			});
+
+			const rect = await helper.getRect(page, '#no-value');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 });

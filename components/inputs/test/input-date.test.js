@@ -5,7 +5,6 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-date label="label text"></d2l-input-date>';
-const labelHiddenFixture = '<d2l-input-date label="label text" label-hidden></d2l-input-date>';
 
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
@@ -22,31 +21,6 @@ function getChildElem(elem, selector) {
 describe('d2l-input-date', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
-
-	describe('accessibility', () => {
-
-		it('passes all axe tests', async() => {
-			const elem = await fixture(basicFixture);
-			await expect(elem).to.be.accessible();
-		});
-
-		it('passes all axe tests when label is hidden', async() => {
-			const elem = await fixture(labelHiddenFixture);
-			await expect(elem).to.be.accessible();
-		});
-
-		it('passes all axe tests when disabled', async() => {
-			const elem = await fixture('<d2l-input-date label="label text" disabled></d2l-input-date>');
-			await expect(elem).to.be.accessible();
-		});
-
-		it('passes all axe tests when focused', async() => {
-			const elem = await fixture(basicFixture);
-			setTimeout(() => getChildElem(elem, 'd2l-input-text').focus());
-			await oneEvent(elem, 'focus');
-			await expect(elem).to.be.accessible();
-		});
-	});
 
 	describe('constructor', () => {
 

@@ -464,6 +464,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue') {
 				if (this.selectedValue) this._focusDate = getDateFromISODate(this.selectedValue);
+				else if (this._today.getMonth() === this._shownMonth && this._today.getFullYear() === this._shownYear) this._focusDate = new Date(this._today);
 				else this._focusDate = new Date(this._shownYear, this._shownMonth, 1);
 			}
 		});
