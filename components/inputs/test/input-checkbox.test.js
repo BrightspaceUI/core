@@ -133,7 +133,7 @@ describe('d2l-input-checkbox', () => {
 		});
 
 		it('should apply -1 tabindex when set', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox not-tabbable label="not-tabbable"></d2l-input-checkbox>`);
+			const elem = await fixture(html`<d2l-input-checkbox not-tabbable aria-label="not-tabbable"></d2l-input-checkbox>`);
 			expect(getInput(elem).getAttribute('tabindex')).to.equal('-1');
 		});
 

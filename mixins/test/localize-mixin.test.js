@@ -142,15 +142,6 @@ describe('LocalizeMixin', () => {
 
 	});
 
-	describe('lang set', () => {
-
-		it('should ignore "__language" attribute and use default', async() => {
-			const elem = await fixture(html`<d2l-test-localize __language="fr"></d2l-test-localize>`);
-			expect(elem.__language).to.equal('en');
-		});
-
-	});
-
 	describe('shouldUpdate tracking', () => {
 
 		it('should pass all changed properties to updated()', () => {

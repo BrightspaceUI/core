@@ -12,7 +12,7 @@ describe('d2l-alert', () => {
 		'error'
 	].forEach((type) => {
 		it(`passes aXe tests for type "${type}"`, async() => {
-			const el = await fixture(html`<d2l-alert type="${type}" open>message</d2l-alert>`);
+			const el = await fixture(html`<d2l-alert type="${type}">message</d2l-alert>`);
 			await expect(el).to.be.accessible();
 		});
 	});
