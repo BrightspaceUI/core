@@ -19,7 +19,7 @@ Import and use the `<d2l-offscreen>` web component, the contents of which will b
 Alternately, you can apply off-screen styles to any element by importing the styles into your element and placing the `d2l-offscreen` CSS class on it.
 
 ```javascript
-import { offscreenStyles } from './offscreen-styles.js';
+import { offscreenStyles } from './offscreen.js';
 
 class MyElement extends LitElement {
 
