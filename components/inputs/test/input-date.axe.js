@@ -1,3 +1,4 @@
+import '../input-date.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
 describe('d2l-input-date', () => {

@@ -219,7 +219,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					title="${this.localize('openInstructions', {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						?disabled="${this.disabled}"
 						icon="tier1:calendar"
 						slot="left"></d2l-icon>
 				</d2l-input-text>
