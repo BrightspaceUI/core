@@ -13,7 +13,7 @@ describe('d2l-link', () => {
 
 	describe('attribute binding', () => {
 
-		['download', 'href', 'main', 'small'].forEach((attrName) => {
+		['download', 'href'].forEach((attrName) => {
 			it(`should bind "${attrName}" attribute to anchor attribute`, async() => {
 				const elem = await fixture(normalFixture);
 				elem.setAttribute(attrName, attrName);
@@ -35,6 +35,16 @@ describe('d2l-link', () => {
 		it('should bind "target" attribute to anchor attribute', async() => {
 			const elem = await fixture(html`<d2l-link target="_blank"></d2l-link>`);
 			expect(getAnchor(elem).getAttribute('target')).to.equal('_blank');
+		});
+
+		it('should bind "main" attribute to CSS class', async() => {
+			const elem = await fixture(html`<d2l-link main>Link</d2l-link>`);
+			expect(getAnchor(elem).classList.contains('d2l-link-main')).to.be.true;
+		});
+
+		it('should bind "small" attribute to CSS class', async() => {
+			const elem = await fixture(html`<d2l-link small>Link</d2l-link>`);
+			expect(getAnchor(elem).classList.contains('d2l-link-small')).to.be.true;
 		});
 
 	});
