@@ -43,7 +43,7 @@ export class ValidationGroupBehavior {
 		const validationCustoms = this._domNode.querySelectorAll('d2l-validation-custom');
 		for (const custom of validationCustoms) {
 			if (!await custom.validate()) {
-				errors.push({ ele: null, message: custom.failureText });
+				errors.push({ ele: custom.source, message: custom.failureText });
 			}
 		}
 		this._errors = errors;

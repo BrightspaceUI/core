@@ -4,18 +4,33 @@ class ValidationCustom extends LitElement {
 
 	static get properties() {
 		return {
-			failureText: { type: String, attribute: 'failure-text' }
+			failureText: { type: String, attribute: 'failure-text' },
+			for: { type: String }
 		};
 	}
 
 	async validate() {
 		const validation = new Promise(resolve => {
-			const details = { bubbles: true, detail: { resolve } };
+			const details = { bubbles: true, detail: { source: this._source, resolve } };
 			const event = new CustomEvent('d2l-validation-custom-validate', details);
 			return this.dispatchEvent(event);
 		});
 		return validation;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((_, prop) => {
+			if (prop === 'for') {
+				const root = this.getRootNode({ composed: true });
+				this._source = root.getElementById(this.for);
+			}
+		});
+	}
+
+	get source() {
+		return this._source;
+	}
 }
 customElements.define('d2l-validation-custom', ValidationCustom);
