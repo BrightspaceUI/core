@@ -57,7 +57,7 @@ describe('d2l-menu', () => {
 					<d2l-menu-item id="a1" text="a"></d2l-menu-item>
 					<d2l-menu-item id="b1" text="b" disabled></d2l-menu-item>
 					<d2l-menu-item id="a2" text="a"></d2l-menu-item>
-					<d2l-menu-item id="c1" text="c"></d2l-menu-item>
+					<d2l-menu-item id="c1" text="C"></d2l-menu-item>
 					<d2l-menu-item id="d1" text="d"></d2l-menu-item>
 				</d2l-menu>
 			`);
@@ -113,6 +113,14 @@ describe('d2l-menu', () => {
 			const eventObj = document.createEvent('Events');
 			eventObj.initEvent('keypress', true, true);
 			eventObj.charCode = 99;
+			elem.querySelector('#a1').dispatchEvent(eventObj);
+			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
+		});
+
+		it('sets focus to next item that starts with uppercase character pressed', () => {
+			const eventObj = document.createEvent('Events');
+			eventObj.initEvent('keypress', true, true);
+			eventObj.charCode = 67;
 			elem.querySelector('#a1').dispatchEvent(eventObj);
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
