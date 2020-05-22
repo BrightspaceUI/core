@@ -82,7 +82,7 @@ describe('d2l-calendar', () => {
 		describe('date', () => {
 			it('hover on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"] div');
+					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.classList.add('d2l-calendar-date-hover');
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -91,7 +91,7 @@ describe('d2l-calendar', () => {
 
 			it('hover on selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
+					const date = calendar.shadowRoot.querySelector('td[data-date="14"] button');
 					date.classList.add('d2l-calendar-date-hover');
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -100,7 +100,7 @@ describe('d2l-calendar', () => {
 
 			it('focus on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
+					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.focus();
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -109,7 +109,7 @@ describe('d2l-calendar', () => {
 
 			it('focus on selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="14"]');
+					const date = calendar.shadowRoot.querySelector('td[data-date="14"] button');
 					date.focus();
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -118,10 +118,9 @@ describe('d2l-calendar', () => {
 
 			it('hover and focus on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"] div');
+					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.classList.add('d2l-calendar-date-hover');
-					const dateParent = date.parentNode;
-					dateParent.focus();
+					date.focus();
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -130,9 +129,8 @@ describe('d2l-calendar', () => {
 			it('hover and focus on selected-value', async function() {
 				let date;
 				await page.$eval(firstCalendarOfPage, async(calendar) => {
-					date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
-					const dateParent = date.parentNode;
-					dateParent.focus();
+					date = calendar.shadowRoot.querySelector('td[data-date="14"] button');
+					date.focus();
 				});
 				await page.$eval(firstCalendarOfPage, async() => {
 					date.classList.add('d2l-calendar-date-hover');
@@ -185,7 +183,7 @@ describe('d2l-calendar', () => {
 		describe('date selection', () => {
 			it('click', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
+					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.click();
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -260,12 +258,12 @@ describe('d2l-calendar', () => {
 
 				it('END max value', async function() {
 					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"] button');
 						date.click();
 					});
 
 					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"] button');
 						const eventObj = document.createEvent('Events');
 						eventObj.initEvent('keydown', true, true);
 						eventObj.keyCode = 35;
@@ -285,12 +283,12 @@ describe('d2l-calendar', () => {
 
 				it('HOME min value', async function() {
 					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"] button');
 						date.click();
 					});
 
 					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"] button');
 						const eventObj = document.createEvent('Events');
 						eventObj.initEvent('keydown', true, true);
 						eventObj.keyCode = 36;
@@ -316,7 +314,7 @@ describe('d2l-calendar', () => {
 
 				it('PAGEDOWN max value', async function() {
 					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="17"] button');
 						const eventObj = document.createEvent('Events');
 						eventObj.initEvent('keydown', true, true);
 						eventObj.keyCode = 34;
@@ -335,7 +333,7 @@ describe('d2l-calendar', () => {
 					});
 
 					await page.$eval(firstCalendarOfPage, (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="3"][data-month="0"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="3"][data-month="0"] button');
 						date.click();
 					});
 
@@ -348,7 +346,7 @@ describe('d2l-calendar', () => {
 
 				it('PAGEUP min value', async function() {
 					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="17"] button');
 						const eventObj = document.createEvent('Events');
 						eventObj.initEvent('keydown', true, true);
 						eventObj.keyCode = 33;

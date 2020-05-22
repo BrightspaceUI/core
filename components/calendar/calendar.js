@@ -176,7 +176,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				text-decoration: none;
 			}
 
-			tbody > tr:first-child div {
+			tbody > tr:first-child button {
 				margin-top: 0.3rem;
 			}
 
@@ -216,133 +216,143 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				padding-bottom: 20px;
 			}
 
-			.d2l-calendar-date div {
+			.d2l-calendar-date {
 				align-items: center;
 				background-color: white;
+				border-style: none;
 				border-radius: 0.3rem;
+				box-sizing: content-box;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
 				display: flex;
+				font-family: inherit;
 				font-size: 0.8rem;
 				height: calc(2rem - 6px);
 				justify-content: center;
+				letter-spacing: inherit;
+				line-height: inherit;
 				margin-left: auto;
 				margin-right: auto;
 				opacity: 0;
 				padding: 4px;
 				position: relative;
 				text-align: center;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 				width: calc(2rem - 6px);
 			}
 
-			.d2l-calendar-date div[disabled] {
+			.d2l-calendar-date:disabled {
 				cursor: not-allowed;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-calendar-title .d2l-heading-4,
-				.d2l-calendar-date div {
+				.d2l-calendar-date {
 					opacity: 1;
 				}
 
-				.d2l-calendar-date div[disabled] {
+				.d2l-calendar-date:disabled {
 					opacity: 0.5;
 				}
 			}
 
-			.d2l-calendar-next .d2l-calendar-date div {
+			.d2l-calendar-next .d2l-calendar-date {
 				left: 10px;
 			}
 
-			.d2l-calendar-next-updown .d2l-calendar-date div {
+			.d2l-calendar-next-updown .d2l-calendar-date {
 				top: 10px;
 			}
 
-			.d2l-calendar-prev .d2l-calendar-date div {
+			.d2l-calendar-prev .d2l-calendar-date {
 				left: -10px;
 			}
 
-			.d2l-calendar-prev-updown .d2l-calendar-date div {
+			.d2l-calendar-prev-updown .d2l-calendar-date {
 				top: -10px;
 			}
 
 			.d2l-calendar-animating .d2l-calendar-title .d2l-heading-4,
-			.d2l-calendar-animating .d2l-calendar-date div {
+			.d2l-calendar-animating .d2l-calendar-date {
 				opacity: 1;
 				transition-duration: 200ms;
 				transition-timing-function: ease-out;
 				transition-property: opacity, transform;
 			}
 
-			.d2l-calendar-animating .d2l-calendar-date div[disabled] {
+			.d2l-calendar-animating .d2l-calendar-date:disabled {
 				opacity: 0.5;
 			}
 
 			.d2l-calendar-next .d2l-heading-4,
-			.d2l-calendar-next .d2l-calendar-date div {
+			.d2l-calendar-next .d2l-calendar-date {
 				transform: translateX(-10px);
 			}
 
 			.d2l-calendar-next-updown .d2l-heading-4,
-			.d2l-calendar-next-updown .d2l-calendar-date div {
+			.d2l-calendar-next-updown .d2l-calendar-date {
 				transform: translateY(-10px)
 			}
 
 			.d2l-calendar-prev .d2l-heading-4,
-			.d2l-calendar-prev .d2l-calendar-date div {
+			.d2l-calendar-prev .d2l-calendar-date {
 				transform: translateX(10px);
 			}
 
 			.d2l-calendar-prev-updown .d2l-heading-4,
-			.d2l-calendar-prev-updown .d2l-calendar-date div {
+			.d2l-calendar-prev-updown .d2l-calendar-date {
 				transform: translateY(10px);
 			}
 
-			.d2l-calendar-date div:not([disabled]):not(.d2l-calendar-date-selected):hover,
-			.d2l-calendar-date div:not([disabled]):not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			.d2l-calendar-date:not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			.d2l-calendar-date:focus div:not([disabled]):not(.d2l-calendar-date-selected):hover,
-			.d2l-calendar-date:focus div:not([disabled]):not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			button:focus:hover:not(.d2l-calendar-date-selected),
+			button:focus:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
 
-			.d2l-calendar-date:focus {
+			td, .d2l-calendar-date:focus {
 				outline: none;
 			}
 
-			.d2l-calendar-date:focus div:not([disabled]).d2l-calendar-date-inner {
+			.d2l-calendar-date:focus {
 				border-radius: 0.16rem;
 				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
 				transition: none;
 			}
 
-			.d2l-calendar-date:focus div:not([disabled]).d2l-calendar-date-inner.d2l-calendar-date-initial {
+			.d2l-calendar-date.d2l-calendar-date-initial:focus {
 				transition: box-shadow 200ms ease-in;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				.d2l-calendar-date:focus div.d2l-calendar-date-inner.d2l-calendar-date-initial {
+				.d2l-calendar-date.d2l-calendar-date-initial:focus {
 					transition: none;
 				}
 			}
 
-			.d2l-calendar-date div.d2l-calendar-date-selected {
+			.d2l-calendar-date.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border: 1px solid var(--d2l-color-celestine);
 				padding: 2px;
 			}
 
-			.d2l-calendar-date:focus div:not([disabled]).d2l-calendar-date-selected {
+			.d2l-calendar-date.d2l-calendar-date-selected:focus {
 				border-width: 0;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px var(--d2l-color-celestine);
+				padding: 0;
 			}
 
-			.d2l-calendar-date div.d2l-calendar-date-today,
-			.d2l-calendar-date div.d2l-calendar-date-selected {
+			.d2l-calendar-date.d2l-calendar-date-today,
+			.d2l-calendar-date.d2l-calendar-date-selected {
 				font-size: 1rem;
 				font-weight: 700;
 			}
@@ -494,7 +504,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const disabled = getDisabled(day, this.minValue, this.maxValue);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
-					'd2l-calendar-date-inner': true,
+					'd2l-calendar-date': true,
 					'd2l-calendar-date-initial': this._isInitialFocusDate,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
@@ -502,21 +512,22 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const year = day.getFullYear();
 				const month = day.getMonth();
 				const date = day.getDate();
-				const description = `${formatDate(day, {format: 'medium'})}. ${selected ? this.localize('selected') : this.localize('notSelected')}`;
-				// role="gridcell" used for NVDA selected behavior to work properly
+				const description = `${date}. ${selected ? this.localize('selected') : this.localize('notSelected')} ${formatDate(day, {format: 'monthYear'})}`;
 				return html`
 					<td
-						aria-selected="${selected ? 'true' : 'false'}"
-						class="d2l-calendar-date"
-						@click="${!disabled ? this._onDateSelected : undefined}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
-						id="${this._tableInfoId}-${year}-${month}-${date}"
-						@keydown="${!disabled ? this._onKeyDown : undefined}"
-						role="gridcell"
-						tabindex=${focused ? '0' : '-1'}>
-						<div aria-label="${description}" class="${classMap(classes)}" ?disabled="${disabled}" role="button">${date}</div>
+						id="${this._tableInfoId}-${year}-${month}-${date}">
+							<button
+								aria-label="${description}"
+								class="${classMap(classes)}"
+								@click="${this._onDateSelected}"
+								?disabled="${disabled}"
+								@keydown="${this._onKeyDown}"
+								tabindex=${focused ? '0' : '-1'}>
+								${date}
+							</button>
 					</td>`;
 			});
 
@@ -533,7 +544,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		};
 		const labelId = `${this._tableInfoId}-heading`;
 		const labelledBy = this._dialog ? labelId : undefined;
-		const heading = `${calendarData.descriptor.calendar.months.long[this._shownMonth]} ${this._shownYear}`;
+		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), {format: 'monthYear'});
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
 			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
@@ -590,7 +601,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (!this._focusDate) return;
 		const date = await this._getDateElement(this._focusDate);
 		if (date) {
-			date.focus();
+			date.querySelector('button').focus();
 		}
 	}
 
@@ -601,7 +612,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	_onDateSelected(e) {
 		let selectedDate = e.composedPath()[0];
-		if (selectedDate.tagName === 'DIV') selectedDate = selectedDate.parentNode;
+		if (selectedDate.tagName === 'BUTTON') selectedDate = selectedDate.parentNode;
 		const year = selectedDate.getAttribute('data-year');
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
@@ -789,8 +800,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	_updateFocusDateDependentOnDisabled(possibleFocusDate, latestPossibleFocusDate) {
 		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
-		} else if (this.shadowRoot.querySelector('div.d2l-calendar-date-inner:not([disabled])')) {
-			const validDates = this.shadowRoot.querySelectorAll('div.d2l-calendar-date-inner:not([disabled])');
+		} else if (this.shadowRoot.querySelector('button.d2l-calendar-date:enabled')) {
+			const validDates = this.shadowRoot.querySelectorAll('button.d2l-calendar-date:enabled');
 			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
 			const year = focusDate.getAttribute('data-year');
 			const month = focusDate.getAttribute('data-month');
