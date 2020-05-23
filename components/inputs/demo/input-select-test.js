@@ -25,11 +25,6 @@ class TestInputSelect extends RtlMixin(LitElement) {
 		];
 	}
 
-	focus() {
-		const elem = this.shadowRoot.querySelector('select');
-		if (elem) elem.focus();
-	}
-
 	render() {
 		const invalid = this.invalid ? 'true' : 'false';
 		return html`
@@ -43,6 +38,11 @@ class TestInputSelect extends RtlMixin(LitElement) {
 				<option>Deinonychus</option>
 			</select>
 		`;
+	}
+
+	focus() {
+		const elem = this.shadowRoot.querySelector('select');
+		if (elem) elem.focus();
 	}
 
 }

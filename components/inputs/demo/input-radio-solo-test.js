@@ -15,11 +15,6 @@ class TestInputRadioSolo extends LitElement {
 		return radioStyles;
 	}
 
-	focus() {
-		const elem = this.shadowRoot.querySelector('input');
-		if (elem) elem.focus();
-	}
-
 	render() {
 		const invalid = this.invalid ? 'true' : 'false';
 		return html`
@@ -31,6 +26,11 @@ class TestInputRadioSolo extends LitElement {
 				?disabled="${this.disabled}"
 				type="radio">
 		`;
+	}
+
+	focus() {
+		const elem = this.shadowRoot.querySelector('input');
+		if (elem) elem.focus();
 	}
 
 }

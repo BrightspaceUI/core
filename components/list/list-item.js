@@ -238,11 +238,6 @@ class ListItem extends RtlMixin(LitElement) {
 		ro.unobserve(this);
 	}
 
-	focus() {
-		const node = getFirstFocusableDescendant(this);
-		if (node) node.focus();
-	}
-
 	render() {
 
 		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
@@ -276,6 +271,23 @@ class ListItem extends RtlMixin(LitElement) {
 
 	}
 
+	updated(changedProperties) {
+		if (changedProperties.has('key')) {
+			const oldValue = changedProperties.get('key');
+			if (typeof oldValue !== 'undefined') {
+				this.setSelected(undefined, true);
+			}
+		}
+		if (changedProperties.has('breakpoints')) {
+			this.resizedCallback(this.offsetWidth);
+		}
+	}
+
+	focus() {
+		const node = getFirstFocusableDescendant(this);
+		if (node) node.focus();
+	}
+
 	resizedCallback(width) {
 		const lastBreakpointIndexToCheck = 3;
 		this.breakpoints.some((breakpoint, index) => {
@@ -289,18 +301,6 @@ class ListItem extends RtlMixin(LitElement) {
 	setSelected(selected, suppressEvent) {
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
-	}
-
-	updated(changedProperties) {
-		if (changedProperties.has('key')) {
-			const oldValue = changedProperties.get('key');
-			if (typeof oldValue !== 'undefined') {
-				this.setSelected(undefined, true);
-			}
-		}
-		if (changedProperties.has('breakpoints')) {
-			this.resizedCallback(this.offsetWidth);
-		}
 	}
 
 	_dispatchSelected(value) {

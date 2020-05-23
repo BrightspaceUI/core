@@ -23,11 +23,6 @@ class TestInputTextarea extends LitElement {
 		];
 	}
 
-	focus() {
-		const elem = this.shadowRoot.querySelector('textarea');
-		if (elem) elem.focus();
-	}
-
 	render() {
 		const invalid = this.invalid ? 'true' : 'false';
 		return html`
@@ -37,6 +32,11 @@ class TestInputTextarea extends LitElement {
 				?disabled="${this.disabled}"
 				placeholder="${ifDefined(this.placeholder)}">${this.value}</textarea>
 		`;
+	}
+
+	focus() {
+		const elem = this.shadowRoot.querySelector('textarea');
+		if (elem) elem.focus();
 	}
 
 }

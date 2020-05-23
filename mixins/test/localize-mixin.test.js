@@ -36,16 +36,6 @@ const asyncTag = defineCE(
 				}
 			});
 		}
-		updated(changedProperties) {
-			super.updated(changedProperties);
-			this.dispatchEvent(new CustomEvent('d2l-test-localize-updated', {
-				bubbles: false,
-				composed: false,
-				detail: {
-					props: changedProperties
-				}
-			}));
-		}
 		render() {
 			requestAnimationFrame(
 				() => this.dispatchEvent(new CustomEvent('d2l-test-localize-render', {
@@ -56,6 +46,16 @@ const asyncTag = defineCE(
 			return html`
 				<p>${this.localize('hello', {name: this.name})}</p>
 			`;
+		}
+		updated(changedProperties) {
+			super.updated(changedProperties);
+			this.dispatchEvent(new CustomEvent('d2l-test-localize-updated', {
+				bubbles: false,
+				composed: false,
+				detail: {
+					props: changedProperties
+				}
+			}));
 		}
 	}
 );
