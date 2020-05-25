@@ -273,8 +273,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			await this._handleChange();
 			this._calendar.focus();
 			this._setFormattedValue();
-
-			if (e.keyCode === 40) e.preventDefault();
+			e.preventDefault();
 		}
 	}
 

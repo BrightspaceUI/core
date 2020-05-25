@@ -514,6 +514,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const month = day.getMonth();
 				const date = day.getDate();
 				const description = `${date}. ${selected ? this.localize('selected') : this.localize('notSelected')} ${formatDate(day, {format: 'monthYear'})}`;
+				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
 						data-date=${date}
