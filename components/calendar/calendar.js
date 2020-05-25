@@ -518,14 +518,15 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
-						id="${this._tableInfoId}-${year}-${month}-${date}">
+						role="gridcell">
 							<button
 								aria-label="${description}"
 								class="${classMap(classes)}"
 								@click="${this._onDateSelected}"
 								?disabled="${disabled}"
 								@keydown="${this._onKeyDown}"
-								tabindex=${focused ? '0' : '-1'}>
+								tabindex=${focused ? '0' : '-1'}
+								type="button">
 								${date}
 							</button>
 					</td>`;
