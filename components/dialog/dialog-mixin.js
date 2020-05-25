@@ -3,6 +3,7 @@ import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
+import { classMap} from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -308,6 +309,14 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._width) styles.width = `${this._width}px`;
 		else styles.width = 'auto';
 
+		const dialogOuterClasses = {
+			'd2l-dialog-outer': true,
+			'd2l-dialog-outer-overflow-bottom': this._overflowBottom,
+			'd2l-dialog-outer-overflow-top': this._overflowTop,
+			'd2l-dialog-outer-nested': !this._useNative && this._parentDialog,
+			'd2l-dialog-outer-nested-showing': !this._useNative && this._nestedShowing
+		};
+
 		inner = html`<d2l-focus-trap
 			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
 			?trap="${this.opened}">
@@ -318,13 +327,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			html`<dialog
 				aria-describedby="${ifDefined(info.descId)}"
 				aria-labelledby="${info.labelId}"
-				class="d2l-dialog-outer"
+				class="${classMap(dialogOuterClasses)}"
 				@click="${this._handleClick}"
 				@close="${this._handleClose}"
 				id="${this._dialogId}"
 				@keydown="${this._handleKeyDown}"
-				?overflow-bottom="${this._overflowBottom}"
-				?overflow-top="${this._overflowTop}"
 				role="${info.role}"
 				style=${styleMap(styles)}>
 					${inner}
@@ -332,15 +339,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			html`<div
 				aria-describedby="${ifDefined(info.descId)}"
 				aria-labelledby="${info.labelId}"
-				class="d2l-dialog-outer"
+				class="${classMap(dialogOuterClasses)}"
 				@click="${this._handleClick}"
 				@d2l-dialog-close="${this._handleDialogClose}"
 				@d2l-dialog-open="${this._handleDialogOpen}"
 				id="${this._dialogId}"
-				?nested="${this._parentDialog}"
-				?nested-showing="${this._nestedShowing}"
-				?overflow-bottom="${this._overflowBottom}"
-				?overflow-top="${this._overflowTop}"
 				role="${info.role}"
 				style=${styleMap(styles)}>
 					${inner}
