@@ -1,8 +1,8 @@
 import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -143,8 +143,8 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
 			<div class="d2l-alert-action">
-			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
-			${this.hasCloseButton ? html`<d2l-button-icon icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
+				${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
+				${this.hasCloseButton ? html`<d2l-button-icon icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
 			</div>
 			`;
 	}
