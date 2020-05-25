@@ -103,6 +103,16 @@ class AlertToast extends LitElement {
 		}
 	}
 
+	render() {
+		return html`
+			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
+				<d2l-alert @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
+					<slot></slot>
+				</d2l-alert>
+			</div>
+		`;
+	}
+
 	get _state() {
 		return this.__state;
 	}
@@ -114,16 +124,6 @@ class AlertToast extends LitElement {
 			this.requestUpdate('_state', oldVal);
 			this._stateChanged(val, oldVal);
 		}
-	}
-
-	render() {
-		return html`
-			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
-				<d2l-alert @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
-					<slot></slot>
-				</d2l-alert>
-			</div>
-		`;
 	}
 
 	_onCloseClicked(e) {
