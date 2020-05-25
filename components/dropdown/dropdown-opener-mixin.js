@@ -27,13 +27,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.__onMouseUp = this.__onMouseUp.bind(this);
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('d2l-dropdown-open', this.__onOpened);
-		this.addEventListener('d2l-dropdown-close', this.__onClosed);
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
 
@@ -58,6 +51,13 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 		opener.removeEventListener('keypress', this.__onKeyPress);
 		opener.removeEventListener('mouseup', this.__onMouseUp);
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.addEventListener('d2l-dropdown-open', this.__onOpened);
+		this.addEventListener('d2l-dropdown-close', this.__onClosed);
 	}
 
 	focus() {
@@ -92,6 +92,15 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		return this.shadowRoot.querySelector('slot').assignedNodes().filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
 	}
 
+	__onClosed() {
+		const opener = this.getOpenerElement();
+		if (!opener) {
+			return;
+		}
+		opener.setAttribute('aria-expanded', 'false');
+		opener.removeAttribute('active');
+	}
+
 	__onKeyPress(e) {
 		if (e.keyCode !== 13) return;
 		if (this.noAutoOpen) return;
@@ -110,15 +119,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 		opener.setAttribute('aria-expanded', 'true');
 		opener.setAttribute('active', 'true');
-	}
-
-	__onClosed() {
-		const opener = this.getOpenerElement();
-		if (!opener) {
-			return;
-		}
-		opener.setAttribute('aria-expanded', 'false');
-		opener.removeAttribute('active');
 	}
 
 };

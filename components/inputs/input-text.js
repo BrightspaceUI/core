@@ -106,16 +106,6 @@ class InputText extends RtlMixin(LitElement) {
 		this.addEventListener('mouseout', this._handleMouseLeave);
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'value') {
-				this._prevValue = (oldVal === undefined) ? '' : oldVal;
-			}
-		});
-	}
-
 	render() {
 		const isFocusedOrHovered = !this.disabled && (this._focused || this._hovered);
 		const inputClasses = {
@@ -176,6 +166,16 @@ class InputText extends RtlMixin(LitElement) {
 		return input;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				this._prevValue = (oldVal === undefined) ? '' : oldVal;
+			}
+		});
+	}
+
 	async focus() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		if (elem) {
@@ -233,16 +233,16 @@ class InputText extends RtlMixin(LitElement) {
 		return true;
 	}
 
+	_handleInvalid(e) {
+		e.preventDefault();
+	}
+
 	_handleKeypress(e) {
 		if (this.preventSubmit && e.keyCode === 13) {
 			e.preventDefault();
 			return false;
 		}
 		return true;
-	}
-
-	_handleInvalid(e) {
-		e.preventDefault();
 	}
 
 	_handleMouseEnter() {

@@ -69,14 +69,6 @@ class ExpandCollapseContent extends LitElement {
 		this._state = states.COLLAPSED;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('expanded')) {
-			this._expandedChanged(this.expanded, this._isFirstUpdate);
-			this._isFirstUpdate = false;
-		}
-	}
-
 	render() {
 		const styles = { height: this._height };
 		return html`
@@ -86,6 +78,14 @@ class ExpandCollapseContent extends LitElement {
 				</div>
 			</div>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('expanded')) {
+			this._expandedChanged(this.expanded, this._isFirstUpdate);
+			this._isFirstUpdate = false;
+		}
 	}
 
 	async _expandedChanged(val, firstUpdate) {

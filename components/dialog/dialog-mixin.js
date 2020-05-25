@@ -133,16 +133,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		}
 	}
 
-	async _focusOpener() {
-		if (this._opener && this._opener.focus) {
-			// wait for inactive focus trap
-			requestAnimationFrame(() => {
-				this._opener.focus();
-				this._opener = null;
-			});
-		}
-	}
-
 	_focusFirst() {
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
 		if (content) {
@@ -157,6 +147,16 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_focusInitial() {
 		this._focusFirst();
+	}
+
+	async _focusOpener() {
+		if (this._opener && this._opener.focus) {
+			// wait for inactive focus trap
+			requestAnimationFrame(() => {
+				this._opener.focus();
+				this._opener = null;
+			});
+		}
 	}
 
 	_getHeight() {
@@ -225,13 +225,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		));
 	}
 
-	_handleDialogOpen(e) {
-		this._nestedShowing = true;
+	_handleDialogClose(e) {
+		this._nestedShowing = false;
 		e.stopPropagation();
 	}
 
-	_handleDialogClose(e) {
-		this._nestedShowing = false;
+	_handleDialogOpen(e) {
+		this._nestedShowing = true;
 		e.stopPropagation();
 	}
 

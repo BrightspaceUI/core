@@ -124,6 +124,18 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this.type = 'default';
 	}
 
+	render() {
+		return html`
+			<div class="d2l-alert-highlight"></div>
+			<div class="d2l-alert-text">
+				<slot></slot>
+				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
+			</div>
+			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle class="d2l-alert-action" text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
+			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
+		`;
+	}
+
 	close() {
 		const event = new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true });
 		if (this.dispatchEvent(event)) {
@@ -137,17 +149,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		));
 	}
 
-	render() {
-		return html`
-			<div class="d2l-alert-highlight"></div>
-			<div class="d2l-alert-text">
-				<slot></slot>
-				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
-			</div>
-			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle class="d2l-alert-action" text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
-			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
-		`;
-	}
 }
 
 customElements.define('d2l-alert', Alert);

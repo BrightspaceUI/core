@@ -38,10 +38,6 @@ class FocusTrap extends LitElement {
 		document.body.removeEventListener('focus', this._handleBodyFocus, true);
 	}
 
-	focus() {
-		this.shadowRoot.querySelector('.d2l-focus-trap-start').focus();
-	}
-
 	render() {
 		const tabindex = this.trap ? '0' : undefined;
 		return html`
@@ -49,6 +45,10 @@ class FocusTrap extends LitElement {
 			<slot></slot>
 			<span class="d2l-focus-trap-end" @focusin="${this._handleEndFocusIn}" tabindex="${ifDefined(tabindex)}"></span>
 		`;
+	}
+
+	focus() {
+		this.shadowRoot.querySelector('.d2l-focus-trap-start').focus();
 	}
 
 	_focusFirst() {
