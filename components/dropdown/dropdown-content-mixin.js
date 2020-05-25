@@ -152,14 +152,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.__content = this.__getContentContainer();
-		this.addEventListener('d2l-dropdown-close', this.__onClose);
-		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
 
@@ -175,6 +167,14 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		document.body.removeEventListener('click', this.__onAutoCloseClick, true);
 		clearDismissible(this.__dismissibleId);
 		this.__dismissibleId = null;
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.__content = this.__getContentContainer();
+		this.addEventListener('d2l-dropdown-close', this.__onClose);
+		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
 
 	updated(changedProperties) {
@@ -195,11 +195,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.opened = false;
 	}
 
-	open(applyFocus) {
-		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
-		this.opened = true;
-	}
-
 	/**
 	 * forceRender is no longer necessary, this is left as a stub so that
 	 * places calling it will not break. It will be removed once the Polymer
@@ -208,12 +203,16 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	 */
 	forceRender() {}
 
-	toggleOpen(applyFocus) {
-		if (this.opened) {
-			this.close();
-		} else {
-			this.open(applyFocus);
-		}
+	/**
+	 * Private.
+	 */
+	height() {
+		return this.__content && this.__content.offsetHeight;
+	}
+
+	open(applyFocus) {
+		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
+		this.opened = true;
 	}
 
 	/**
@@ -229,70 +228,16 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 	}
 
-	/**
-	 * Private.
-	 */
-	height() {
-		return this.__content && this.__content.offsetHeight;
+	toggleOpen(applyFocus) {
+		if (this.opened) {
+			this.close();
+		} else {
+			this.open(applyFocus);
+		}
 	}
 
-	_renderContent() {
-
-		const positionStyle = {};
-		if (this._position) {
-			const isRTL = this.getAttribute('dir') === 'rtl';
-			if (!isRTL) {
-				positionStyle.left = `${this._position}px`;
-			} else {
-				positionStyle.right = `${this._position}px`;
-			}
-		}
-
-		const widthStyle = {
-			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
-			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : ''
-		};
-
-		const contentWidthStyle = {
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
-			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: this._width ? `${this._width + 18}px` : '',
-		};
-
-		const contentStyle = {
-			...contentWidthStyle,
-			maxHeight: this._contentHeight ? `${this._contentHeight}px` : 'none',
-			overflowY: this._contentOverflow ? 'auto' : 'hidden'
-		};
-
-		const topClasses = {
-			'd2l-dropdown-content-top': true,
-			'd2l-dropdown-content-top-scroll': this._topOverflow,
-			'd2l-dropdown-content-header': this._hasHeader
-		};
-		const bottomClasses = {
-			'd2l-dropdown-content-bottom': true,
-			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
-			'd2l-dropdown-content-footer': this._hasFooter
-		};
-
-		return html`
-			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
-					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
-					</div>
-					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
-						<slot class="d2l-dropdown-content-slot"></slot>
-					</div>
-					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
-					</div>
-				</div>
-			</div>
-		`;
+	__getContentBottom() {
+		return this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
 	}
 
 	__getContentContainer() {
@@ -303,8 +248,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-top');
 	}
 
-	__getContentBottom() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-bottom');
+	__getOpener() {
+		const opener = findComposedAncestor(this, (elem) => {
+			if (elem.dropdownOpener) {
+				return true;
+			}
+		});
+		return opener;
 	}
 
 	__getPositionContainer() {
@@ -315,13 +265,29 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return this.shadowRoot.querySelector('.d2l-dropdown-content-width');
 	}
 
-	__getOpener() {
-		const opener = findComposedAncestor(this, (elem) => {
-			if (elem.dropdownOpener) {
-				return true;
-			}
-		});
-		return opener;
+	__handleFooterSlotChange(e) {
+		this._hasFooter = e.target.assignedNodes().length !== 0;
+	}
+
+	__handleHeaderSlotChange(e) {
+		this._hasHeader = e.target.assignedNodes().length !== 0;
+	}
+
+	__onAutoCloseClick(e) {
+		if (!this.opened || this.noAutoClose) {
+			return;
+		}
+		const rootTarget = e.composedPath()[0];
+		const content = this.__getContentContainer();
+		if (isComposedAncestor(content, rootTarget)) {
+			return;
+		}
+		const opener = this.__getOpener();
+		if (isComposedAncestor(opener.getOpenerElement(), rootTarget)) {
+			return;
+		}
+
+		this.opened = false;
 	}
 
 	__onAutoCloseFocus() {
@@ -345,23 +311,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 			this.opened = false;
 		}, 0);
-	}
-
-	__onAutoCloseClick(e) {
-		if (!this.opened || this.noAutoClose) {
-			return;
-		}
-		const rootTarget = e.composedPath()[0];
-		const content = this.__getContentContainer();
-		if (isComposedAncestor(content, rootTarget)) {
-			return;
-		}
-		const opener = this.__getOpener();
-		if (isComposedAncestor(opener.getOpenerElement(), rootTarget)) {
-			return;
-		}
-
-		this.opened = false;
 	}
 
 	__onClose(e) {
@@ -516,12 +465,44 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		await adjustPosition();
 	}
 
-	_getWidth(scrollWidth) {
-		let width = window.innerWidth - 40;
-		if (width > scrollWidth) {
-			width = scrollWidth;
+	__toggleOverflowY(isOverflowing) {
+		if (!this.__content) {
+			return;
 		}
-		return width;
+		if (!this._contentHeight) {
+			return;
+		}
+		this._contentOverflow = isOverflowing || this.__content.scrollHeight > this._contentHeight;
+	}
+
+	__toggleScrollStyles() {
+		/* scrollHeight incorrect in IE by 4px second time opened */
+		this._bottomOverflow = this.__content.scrollHeight - (this.__content.scrollTop + this.__content.clientHeight) >= 5;
+		this._topOverflow = this.__content.scrollTop !== 0;
+	}
+
+	_constrainSpaceAround(spaceAround) {
+		const constrained = {...spaceAround};
+		if (this.boundary) {
+			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
+			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
+			constrained.left = this.boundary.left >= 0 ? Math.min(spaceAround.left, this.boundary.left) : spaceAround.left;
+			constrained.right = this.boundary.right >= 0 ? Math.min(spaceAround.right, this.boundary.right) : spaceAround.right;
+		}
+		const isRTL = this.getAttribute('dir') === 'rtl';
+		if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
+			constrained.left = 0;
+		} else if ((this.align === 'start' && isRTL) || (this.align === 'end' && !isRTL)) {
+			constrained.right = 0;
+		}
+		return constrained;
+	}
+
+	_getOpenedAbove(spaceAround, spaceRequired) {
+		return (spaceAround.below < spaceRequired.height) && (
+			(spaceAround.above > spaceRequired.height) ||
+			(spaceAround.above > spaceAround.below)
+		);
 	}
 
 	_getPosition(spaceAround, centerDelta) {
@@ -555,51 +536,71 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return null;
 	}
 
-	_getOpenedAbove(spaceAround, spaceRequired) {
-		return (spaceAround.below < spaceRequired.height) && (
-			(spaceAround.above > spaceRequired.height) ||
-			(spaceAround.above > spaceAround.below)
-		);
-	}
-
-	_constrainSpaceAround(spaceAround) {
-		const constrained = {...spaceAround};
-		if (this.boundary) {
-			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
-			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;
-			constrained.left = this.boundary.left >= 0 ? Math.min(spaceAround.left, this.boundary.left) : spaceAround.left;
-			constrained.right = this.boundary.right >= 0 ? Math.min(spaceAround.right, this.boundary.right) : spaceAround.right;
+	_getWidth(scrollWidth) {
+		let width = window.innerWidth - 40;
+		if (width > scrollWidth) {
+			width = scrollWidth;
 		}
-		const isRTL = this.getAttribute('dir') === 'rtl';
-		if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
-			constrained.left = 0;
-		} else if ((this.align === 'start' && isRTL) || (this.align === 'end' && !isRTL)) {
-			constrained.right = 0;
+		return width;
+	}
+
+	_renderContent() {
+
+		const positionStyle = {};
+		if (this._position) {
+			const isRTL = this.getAttribute('dir') === 'rtl';
+			if (!isRTL) {
+				positionStyle.left = `${this._position}px`;
+			} else {
+				positionStyle.right = `${this._position}px`;
+			}
 		}
-		return constrained;
+
+		const widthStyle = {
+			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
+			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			/* add 2 to content width since scrollWidth does not include border */
+			width: this._width ? `${this._width + 20}px` : ''
+		};
+
+		const contentWidthStyle = {
+			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			/* set width of content in addition to width container so IE will render scroll inside border */
+			width: this._width ? `${this._width + 18}px` : '',
+		};
+
+		const contentStyle = {
+			...contentWidthStyle,
+			maxHeight: this._contentHeight ? `${this._contentHeight}px` : 'none',
+			overflowY: this._contentOverflow ? 'auto' : 'hidden'
+		};
+
+		const topClasses = {
+			'd2l-dropdown-content-top': true,
+			'd2l-dropdown-content-top-scroll': this._topOverflow,
+			'd2l-dropdown-content-header': this._hasHeader
+		};
+		const bottomClasses = {
+			'd2l-dropdown-content-bottom': true,
+			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
+			'd2l-dropdown-content-footer': this._hasFooter
+		};
+
+		return html`
+			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
+						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
+					</div>
+					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
+						<slot class="d2l-dropdown-content-slot"></slot>
+					</div>
+					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
+						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+					</div>
+				</div>
+			</div>
+		`;
 	}
 
-	__toggleOverflowY(isOverflowing) {
-		if (!this.__content) {
-			return;
-		}
-		if (!this._contentHeight) {
-			return;
-		}
-		this._contentOverflow = isOverflowing || this.__content.scrollHeight > this._contentHeight;
-	}
-
-	__toggleScrollStyles() {
-		/* scrollHeight incorrect in IE by 4px second time opened */
-		this._bottomOverflow = this.__content.scrollHeight - (this.__content.scrollTop + this.__content.clientHeight) >= 5;
-		this._topOverflow = this.__content.scrollTop !== 0;
-	}
-
-	__handleHeaderSlotChange(e) {
-		this._hasHeader = e.target.assignedNodes().length !== 0;
-	}
-
-	__handleFooterSlotChange(e) {
-		this._hasFooter = e.target.assignedNodes().length !== 0;
-	}
 };

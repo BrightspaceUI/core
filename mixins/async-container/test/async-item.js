@@ -31,10 +31,6 @@ class AsyncItem extends LitElement {
 		this.key = null;
 	}
 
-	reject() {
-		setTimeout(() => this._reject('error'), 0);
-	}
-
 	render() {
 		return html`${runAsync(this.key, (key) => this._getContent(key), {
 			initial: () => html`<div>init</div>`,
@@ -42,6 +38,10 @@ class AsyncItem extends LitElement {
 			success: (content) => content,
 			failure: () => html`<div>failure</div>`
 		})}`;
+	}
+
+	reject() {
+		setTimeout(() => this._reject('error'), 0);
 	}
 
 	resolve() {

@@ -89,24 +89,6 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 		this.__bound_transitionEvents = null;
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
-
-		this.__content = this.shadowRoot.querySelector('.more-less-content');
-		this.__contentSlot = this.shadowRoot.querySelector('.more-less-content slot');
-		if (this.__content.offsetParent !== null) {
-			this.__init_setBaseHeight();
-		}
-		this.__init_setupBlurColour();
-		this.__init_setupListeners();
-
-		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
-		this.shadowRoot.addEventListener('transitionstart', this.__bound_transitionEvents);
-		this.shadowRoot.addEventListener('transitionend', this.__bound_transitionEvents);
-		this.shadowRoot.addEventListener('transitioncancel', this.__bound_transitionEvents);
-		this.shadowRoot.addEventListener('transitionrun', this.__bound_transitionEvents);
-	}
-
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
@@ -133,6 +115,24 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 		this.shadowRoot.removeEventListener('transitionend', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitioncancel', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitionrun', this.__bound_transitionEvents);
+	}
+
+	firstUpdated() {
+		super.firstUpdated();
+
+		this.__content = this.shadowRoot.querySelector('.more-less-content');
+		this.__contentSlot = this.shadowRoot.querySelector('.more-less-content slot');
+		if (this.__content.offsetParent !== null) {
+			this.__init_setBaseHeight();
+		}
+		this.__init_setupBlurColour();
+		this.__init_setupListeners();
+
+		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
+		this.shadowRoot.addEventListener('transitionstart', this.__bound_transitionEvents);
+		this.shadowRoot.addEventListener('transitionend', this.__bound_transitionEvents);
+		this.shadowRoot.addEventListener('transitioncancel', this.__bound_transitionEvents);
+		this.shadowRoot.addEventListener('transitionrun', this.__bound_transitionEvents);
 	}
 
 	render() {
@@ -163,12 +163,84 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 		`;
 	}
 
-	__init_setBaseHeight() {
-		this.__contentHeight = this.height;
+	__adjustToContent() {
+		if (this.__baseHeight === 0) {
+			this.__init_setBaseHeight();
+			return;
+		}
 
-		requestAnimationFrame(() => {
-			this.__init_measureBaseHeight();
-		});
+		const contentHeight = this.__content.scrollHeight;
+		const currentHeight = this.__content.offsetHeight;
+
+		if (contentHeight <= this.__baseHeight) {
+			if (!this.inactive) {
+				this.__adjustToContent_makeInactive();
+			}
+			return;
+		}
+
+		if (this.expanded && contentHeight !== currentHeight) {
+			this.__adjustToContent_resize.bind(this, contentHeight)();
+			return;
+		}
+
+		if (this.inactive) {
+			this.__adjustToContent_makeActive();
+		}
+	}
+
+	__adjustToContent_makeActive() {
+		this.inactive = false;
+		this.__contentHeight = this.height;
+	}
+
+	__adjustToContent_makeInactive() {
+		this.inactive = true;
+		this.expanded = false;
+		this.__contentHeight = 'unset';
+	}
+
+	__adjustToContent_resize(contentHeight) {
+		this.__contentHeight = `${contentHeight}px`;
+	}
+
+	__computeAriaExpanded() {
+		return this.expanded ? 'true' : 'false';
+	}
+
+	__computeIcon() {
+		return this.expanded ? 'd2l-tier1:chevron-up' : 'd2l-tier1:chevron-down';
+	}
+
+	__computeText() {
+		return this.localize(this.expanded ? 'less' : 'more');
+	}
+
+	__expand() {
+		this.__transitionAdded = true;
+		this.__contentHeight = `${this.__content.scrollHeight}px`;
+		this.expanded = true;
+	}
+
+	__focusIn() {
+		if (this.inactive || this.expanded) {
+			return;
+		}
+
+		this.__expand();
+		this.__autoExpanded = true;
+	}
+
+	__focusOut(e) {
+		if (this.inactive
+			|| !this.__autoExpanded
+			|| isComposedAncestor(this.__content, e.relatedTarget)
+		) {
+			return;
+		}
+
+		this.__shrink();
+		this.__autoExpanded = false;
 	}
 
 	__init_measureBaseHeight() {
@@ -178,6 +250,14 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 		// react to images and whatnot loading
 		this.__bound_reactToChanges = this.__bound_reactToChanges || this.__reactToChanges.bind(this);
 		this.__content.addEventListener('load', this.__bound_reactToChanges, true);
+	}
+
+	__init_setBaseHeight() {
+		this.__contentHeight = this.height;
+
+		requestAnimationFrame(() => {
+			this.__init_measureBaseHeight();
+		});
 	}
 
 	__init_setupBlurColour() {
@@ -217,111 +297,9 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 		this.__content.addEventListener('focusout', this.__focusOut.bind(this));
 	}
 
-	__computeAriaExpanded() {
-		return this.expanded ? 'true' : 'false';
-	}
-
-	__computeText() {
-		return this.localize(this.expanded ? 'less' : 'more');
-	}
-
-	__computeIcon() {
-		return this.expanded ? 'd2l-tier1:chevron-up' : 'd2l-tier1:chevron-down';
-	}
-
-	__toggleOnClick() {
-		if (this.expanded) {
-			this.__shrink();
-		} else {
-			this.__expand();
-		}
-
-		this.__autoExpanded = false;
-	}
-
-	__shrink() {
-		this.__transitionAdded = true;
-		this.__contentHeight = this.height;
-		this.expanded = false;
-	}
-
-	__expand() {
-		this.__transitionAdded = true;
-		this.__contentHeight = `${this.__content.scrollHeight}px`;
-		this.expanded = true;
-	}
-
-	__focusIn() {
-		if (this.inactive || this.expanded) {
-			return;
-		}
-
-		this.__expand();
-		this.__autoExpanded = true;
-	}
-
-	__focusOut(e) {
-		if (this.inactive
-			|| !this.__autoExpanded
-			|| isComposedAncestor(this.__content, e.relatedTarget)
-		) {
-			return;
-		}
-
-		this.__shrink();
-		this.__autoExpanded = false;
-	}
-
-	__adjustToContent() {
-		if (this.__baseHeight === 0) {
-			this.__init_setBaseHeight();
-			return;
-		}
-
-		const contentHeight = this.__content.scrollHeight;
-		const currentHeight = this.__content.offsetHeight;
-
-		if (contentHeight <= this.__baseHeight) {
-			if (!this.inactive) {
-				this.__adjustToContent_makeInactive();
-			}
-			return;
-		}
-
-		if (this.expanded && contentHeight !== currentHeight) {
-			this.__adjustToContent_resize.bind(this, contentHeight)();
-			return;
-		}
-
-		if (this.inactive) {
-			this.__adjustToContent_makeActive();
-		}
-	}
-
-	__adjustToContent_makeInactive() {
-		this.inactive = true;
-		this.expanded = false;
-		this.__contentHeight = 'unset';
-	}
-
-	__adjustToContent_resize(contentHeight) {
-		this.__contentHeight = `${contentHeight}px`;
-	}
-
-	__adjustToContent_makeActive() {
-		this.inactive = false;
-		this.__contentHeight = this.height;
-	}
-
-	__reactToMutationChanges(mutations) {
-		if (mutations
-			&& Array.isArray(mutations)
-			&& mutations.every(this.__isOwnMutation.bind(this))
-		) {
-			return;
-		}
-
-		this.__reactToChanges();
+	__isOwnMutation(mutation) {
+		return mutation.target === this.__content
+			&& (mutation.type === 'style' || mutation.type === 'attributes');
 	}
 
 	__reactToChanges() {
@@ -337,9 +315,21 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 		this.__adjustToContent();
 	}
 
-	__isOwnMutation(mutation) {
-		return mutation.target === this.__content
-			&& (mutation.type === 'style' || mutation.type === 'attributes');
+	__reactToMutationChanges(mutations) {
+		if (mutations
+			&& Array.isArray(mutations)
+			&& mutations.every(this.__isOwnMutation.bind(this))
+		) {
+			return;
+		}
+
+		this.__reactToChanges();
+	}
+
+	__shrink() {
+		this.__transitionAdded = true;
+		this.__contentHeight = this.height;
+		this.expanded = false;
 	}
 
 	__startObserving() {
@@ -369,6 +359,16 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 			characterData: true,
 			attributes: true
 		});
+	}
+
+	__toggleOnClick() {
+		if (this.expanded) {
+			this.__shrink();
+		} else {
+			this.__expand();
+		}
+
+		this.__autoExpanded = false;
 	}
 
 	__transitionEvents(e) {
