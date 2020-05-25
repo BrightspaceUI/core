@@ -139,7 +139,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				margin-right: 4px;
 				right: 0;
 			}
-			.d2l-tabs-container[allow-scroll-previous] > .d2l-tabs-scroll-previous-container {
+			.d2l-tabs-container[data-allow-scroll-previous] > .d2l-tabs-scroll-previous-container {
 				display: inline-block;
 			}
 			.d2l-tabs-scroll-next-container {
@@ -152,7 +152,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				margin-right: 0;
 				right: auto;
 			}
-			.d2l-tabs-container[allow-scroll-next] > .d2l-tabs-scroll-next-container {
+			.d2l-tabs-container[data-allow-scroll-next] > .d2l-tabs-scroll-next-container {
 				display: inline-block;
 			}
 			.d2l-tabs-scroll-button {
@@ -198,7 +198,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				-webkit-transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 				transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 			}
-			d2l-tab-internal[state="adding"], d2l-tab-internal[state="removing"] {
+			d2l-tab-internal[data-state="adding"], d2l-tab-internal[data-state="removing"] {
 				max-width: 0;
 				opacity: 0;
 				transform: translateY(20px);
@@ -332,10 +332,9 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 		return html`
 			<div class="${classMap(tabsLayoutClasses)}">
-				<div ?allow-scroll-next="${this._allowScrollNext}"
-					?allow-scroll-previous="${this._allowScrollPrevious}"
+				<div ?data-allow-scroll-next="${this._allowScrollNext}"
+					?data-allow-scroll-previous="${this._allowScrollPrevious}"
 					class="d2l-tabs-container"
-					?scroll-collapsed="${this._scrollCollapsed}"
 					style="${styleMap(tabsContainerStyles)}">
 					<div class="d2l-tabs-scroll-previous-container">
 						<button class="d2l-tabs-scroll-button"
@@ -353,7 +352,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
-									state="${tabInfo.state}"
+									data-state="${tabInfo.state}"
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
 							`)}
