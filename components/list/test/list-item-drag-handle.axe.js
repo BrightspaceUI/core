@@ -15,15 +15,13 @@ describe('d2l-list-item-drag-handle', () => {
 
 	it('normal + focus', async() => {
 		const element = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
-		setTimeout(() => element.focus());
-		await oneEvent(element, 'focus');
+		element.focus();
 		await expect(element).to.be.accessible();
 	});
 
 	it('keyboard mode active', async() => {
 		const element = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
-		setTimeout(() => element.focus());
-		await oneEvent(element, 'focus');
+		element.focus();
 		const actionArea = element.shadowRoot.querySelector('button');
 		setTimeout(() => actionArea.dispatchEvent(new Event('click')));
 		await oneEvent(actionArea, 'click');
