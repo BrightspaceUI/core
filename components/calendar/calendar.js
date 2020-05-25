@@ -220,8 +220,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			.d2l-calendar-date {
 				align-items: center;
 				background-color: white;
-				border-style: none;
 				border-radius: 0.3rem;
+				border-style: none;
 				box-sizing: content-box;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
@@ -806,7 +806,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (dateElem && !getDisabled(selectedValueDate, this.minValue, this.maxValue)) {
 			this._focusDate = selectedValueDate;
 		} else {
-			this._updateFocusDateDependentOnDisabled(new Date (this._shownYear, this._shownMonth, 1));
+			this._updateFocusDateDependentOnDisabled(new Date(this._shownYear, this._shownMonth, 1));
 		}
 	}
 
