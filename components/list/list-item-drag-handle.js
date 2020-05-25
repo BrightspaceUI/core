@@ -93,13 +93,13 @@ class ListItemDragHandle extends LitElement {
 		this.disabled = false;
 	}
 
+	render() {
+		return html`${this._keyboardActive && !this.disabled ? this._renderKeyboardDragging() : this._renderDragger()}`;
+	}
+
 	focus() {
 		const node = getFirstFocusableDescendant(this);
 		if (node) node.focus();
-	}
-
-	render() {
-		return html`${this._keyboardActive && !this.disabled ? this._renderKeyboardDragging() : this._renderDragger()}`;
 	}
 
 	updated(changedProperties) {
@@ -121,13 +121,6 @@ class ListItemDragHandle extends LitElement {
 
 	_dispatchActionUp() {
 		this._dispatchAction(dragActions.up);
-	}
-
-	_onBlur() {
-		this._keyboardActive = false;
-		if (!this._tabbing) {
-			this._dispatchAction(dragActions.save);
-		}
 	}
 
 	_handleActiveKeyboard(e) {
@@ -176,13 +169,20 @@ class ListItemDragHandle extends LitElement {
 		}
 	}
 
+	_handleInactiveKeyDown(e) {
+		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
+			e.preventDefault();
+		}
+	}
+
 	_handlePreventDefault(e) {
 		e.preventDefault();
 	}
 
-	_handleInactiveKeyDown(e) {
-		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
-			e.preventDefault();
+	_onBlur() {
+		this._keyboardActive = false;
+		if (!this._tabbing) {
+			this._dispatchAction(dragActions.save);
 		}
 	}
 
