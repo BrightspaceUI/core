@@ -24,8 +24,9 @@ class DemoSnippet extends LitElement {
 	}
 
 	render() {
+		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
 		return html`
-			<div class="d2l-demo-snippet-demo" dir="${this._dir}">
+			<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
 				<div class="d2l-demo-snippet-actions">
 					<button id="d2l-demo-snippet-toggle-dir" @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
 				</div>
