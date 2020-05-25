@@ -245,6 +245,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				width: calc(2rem - 6px);
 			}
 
+			.d2l-calendar-date::-moz-focus-inner {
+				border: 0;
+			}
+
 			.d2l-calendar-date:disabled {
 				cursor: not-allowed;
 			}
@@ -308,8 +312,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				transform: translateY(10px);
 			}
 
-			.d2l-calendar-date:not(.d2l-calendar-date-selected):hover,
-			.d2l-calendar-date:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			.d2l-calendar-date:enabled:not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date:enabled:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				background-color: var(--d2l-color-gypsum);
 			}
 
@@ -713,7 +717,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				this._updateShownMonthDecrease(true, true);
 				await this.updateComplete;
 				this._updateFocusDateDependentOnDisabled(possibleFocusDate);
-				this._focusDateAddFocus();
+				if (this._focusDate) this._focusDateAddFocus();
+				else this.focus();
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEDOWN: {
@@ -736,7 +741,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				await this.updateComplete;
 
 				this._updateFocusDateDependentOnDisabled(possibleFocusDate, true);
-				this._focusDateAddFocus();
+				if (this._focusDate) this._focusDateAddFocus();
+				else {
+					const buttons = this.shadowRoot.querySelectorAll('d2l-button-icon');
+					if (buttons && buttons.length > 1) buttons[1].focus();
+				}
 				preventDefault = true;
 				break;
 			}

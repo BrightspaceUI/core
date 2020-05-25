@@ -324,6 +324,19 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
+				it('PAGEDOWN twice max value', async function() {
+					await page.$eval('#min-max', (calendar) => {
+						const date = calendar.shadowRoot.querySelector('td[data-date="17"] button');
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keydown', true, true);
+						eventObj.keyCode = 34;
+						date.dispatchEvent(eventObj);
+						date.dispatchEvent(eventObj);
+					});
+					const rect = await visualDiff.getRect(page, '#min-max');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
 				it('PAGEUP', async function() {
 					await page.$eval(firstCalendarOfPage, (calendar) => {
 						const arrow1 = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
@@ -350,6 +363,19 @@ describe('d2l-calendar', () => {
 						const eventObj = document.createEvent('Events');
 						eventObj.initEvent('keydown', true, true);
 						eventObj.keyCode = 33;
+						date.dispatchEvent(eventObj);
+					});
+					const rect = await visualDiff.getRect(page, '#min-max');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
+				it('PAGEUP twice min value', async function() {
+					await page.$eval('#min-max', (calendar) => {
+						const date = calendar.shadowRoot.querySelector('td[data-date="17"] button');
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keydown', true, true);
+						eventObj.keyCode = 33;
+						date.dispatchEvent(eventObj);
 						date.dispatchEvent(eventObj);
 					});
 					const rect = await visualDiff.getRect(page, '#min-max');
