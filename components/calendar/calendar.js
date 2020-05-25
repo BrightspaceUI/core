@@ -800,16 +800,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this._updateFocusDateOnMonthButtonClick();
 	}
 
-	async _updateFocusDateOnMonthButtonClick() {
-		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
-		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
-		if (dateElem && !getDisabled(selectedValueDate, this.minValue, this.maxValue)) {
-			this._focusDate = selectedValueDate;
-		} else {
-			this._updateFocusDateDependentOnDisabled(new Date(this._shownYear, this._shownMonth, 1));
-		}
-	}
-
 	_updateFocusDateDependentOnDisabled(possibleFocusDate, latestPossibleFocusDate) {
 		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
@@ -822,6 +812,16 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			this._focusDate = new Date(year, month, date);
 		} else {
 			this._focusDate = undefined;
+		}
+	}
+
+	async _updateFocusDateOnMonthButtonClick() {
+		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
+		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
+		if (dateElem && !getDisabled(selectedValueDate, this.minValue, this.maxValue)) {
+			this._focusDate = selectedValueDate;
+		} else {
+			this._updateFocusDateDependentOnDisabled(new Date(this._shownYear, this._shownMonth, 1));
 		}
 	}
 
