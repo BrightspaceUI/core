@@ -61,13 +61,15 @@ export const FormElementMixin = superclass => class extends superclass {
 		};
 	}
 
-	static formAssociated = true;
-
 	constructor() {
 		super();
 		this._validity = new FormElementValidityState({});
 		this._validationMessage = '';
 		this.formValue = null;
+	}
+
+	get formAssociated() {
+		return true;
 	}
 
 	checkValidity() {

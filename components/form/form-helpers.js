@@ -42,7 +42,7 @@ export const isElement = (node) => node && node.nodeType === Node.ELEMENT_NODE;
 
 export const isCustomElement = (node) => isElement(node) && node.nodeName.indexOf('-') !== -1;
 
-export const isCustomFormElement = (node) => isCustomElement(node) && node.constructor.formAssociated;
+export const isCustomFormElement = (node) => isCustomElement(node) && node.formAssociated;
 
 export const isNativeFormElement = (node) => {
 	if (!isElement(node)) {

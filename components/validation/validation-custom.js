@@ -23,7 +23,7 @@ class ValidationCustom extends LitElement {
 
 		changedProperties.forEach((_, prop) => {
 			if (prop === 'for') {
-				const root = this.getRootNode({ composed: true });
+				const root = this.getRootNode();
 				this._source = root.getElementById(this.for);
 			}
 		});

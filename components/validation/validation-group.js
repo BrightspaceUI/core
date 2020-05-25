@@ -1,33 +1,10 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { ValidationGroupBehavior } from './validation-group-behavior.js';
+import { ValidationGroupMixin } from './validation-group-mixin.js';
 
-class ValidationGroup extends LitElement {
-
-	constructor() {
-		super();
-		this._behavior = new ValidationGroupBehavior();
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this._behavior.install(this);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this._behavior.uninstall();
-	}
+class ValidationGroup extends ValidationGroupMixin(LitElement) {
 
 	render() {
 		return html`<slot></slot>`;
-	}
-
-	checkValidity() {
-		return this._behavior.checkValidity();
-	}
-
-	reportValidity() {
-		return this._behavior.reportValidity();
 	}
 
 }
