@@ -350,12 +350,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._dismissibleId = null;
 	}
 
-	hide() {
-		this._isHovering = false;
-		this._isFocusing = false;
-		this._updateShowing();
-	}
-
 	render() {
 		const tooltipPositionStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : null
@@ -384,10 +378,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		;
 	}
 
-	show() {
-		this.showing = true;
-	}
-
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -398,6 +388,16 @@ class Tooltip extends RtlMixin(LitElement) {
 				this._updateShowing();
 			}
 		});
+	}
+
+	hide() {
+		this._isHovering = false;
+		this._isFocusing = false;
+		this._updateShowing();
+	}
+
+	show() {
+		this.showing = true;
 	}
 
 	async updatePosition() {

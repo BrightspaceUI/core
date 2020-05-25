@@ -60,15 +60,15 @@ class ListItem extends RtlMixin(LitElement) {
 				width: 100%;
 			}
 
-			:host(:first-child) .d2l-list-item-content[separators="between"] {
+			:host(:first-child) .d2l-list-item-content[data-separators="between"] {
 				border-top: 1px solid transparent;
 			}
 
-			:host(:last-child) .d2l-list-item-content[separators="between"] {
+			:host(:last-child) .d2l-list-item-content[data-separators="between"] {
 				border-bottom: 1px solid transparent;
 			}
 
-			.d2l-list-item-content[separators="none"] {
+			.d2l-list-item-content[data-separators="none"] {
 				border-top: 1px solid transparent;
 				border-bottom: 1px solid transparent;
 			}
@@ -79,7 +79,7 @@ class ListItem extends RtlMixin(LitElement) {
 				padding: 0.55rem 0;
 			}
 
-			.d2l-list-item-content[extend-separators] .d2l-list-item-content-flex {
+			.d2l-list-item-content.d2l-list-item-content-extend-separators .d2l-list-item-content-flex {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
@@ -153,41 +153,41 @@ class ListItem extends RtlMixin(LitElement) {
 				outline: none;
 			}
 
-			.d2l-list-item-container[breakpoint="1"] ::slotted([slot="illustration"]),
-			.d2l-list-item-container[breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			.d2l-list-item-container[data-breakpoint="1"] ::slotted([slot="illustration"]),
+			.d2l-list-item-container[data-breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 3.55rem;
 				max-width: 6rem;
 			}
 
-			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="1"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="1"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 
-			.d2l-list-item-container[breakpoint="2"] ::slotted([slot="illustration"]),
-			.d2l-list-item-container[breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			.d2l-list-item-container[data-breakpoint="2"] ::slotted([slot="illustration"]),
+			.d2l-list-item-container[data-breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 5.1rem;
 				max-width: 9rem;
 			}
 
-			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="2"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="2"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
 
-			.d2l-list-item-container[breakpoint="3"] ::slotted([slot="illustration"]),
-			.d2l-list-item-container[breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			.d2l-list-item-container[data-breakpoint="3"] ::slotted([slot="illustration"]),
+			.d2l-list-item-container[data-breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 6rem;
 				max-width: 10.8rem;
 			}
 
-			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="3"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-list-item-container[breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="3"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
@@ -238,11 +238,6 @@ class ListItem extends RtlMixin(LitElement) {
 		ro.unobserve(this);
 	}
 
-	focus() {
-		const node = getFirstFocusableDescendant(this);
-		if (node) node.focus();
-	}
-
 	render() {
 
 		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
@@ -256,15 +251,18 @@ class ListItem extends RtlMixin(LitElement) {
 			'd2l-list-item-flex': label || link,
 			'd2l-visible-on-ancestor-target': true
 		};
+		const contentClasses = {
+			'd2l-list-item-content': true,
+			'd2l-list-item-content-extend-separators': this._extendSeparators
+		};
 
 		return html`
-			<div class="${classMap(classes)}" breakpoint="${this._breakpoint}">
+			<div class="${classMap(classes)}" data-breakpoint="${this._breakpoint}">
 				${label}
 				${link}
 				<div id="${this._contentId}"
-					class="d2l-list-item-content"
-					?extend-separators="${this._extendSeparators}"
-					separators="${ifDefined(this._separators)}">
+					class="${classMap(contentClasses)}"
+					data-separators="${ifDefined(this._separators)}">
 					<div class="d2l-list-item-content-flex">
 						${beforeContent}
 						<div class="d2l-list-item-main"><slot></slot></div>
@@ -274,6 +272,23 @@ class ListItem extends RtlMixin(LitElement) {
 			</div>
 		`;
 
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('key')) {
+			const oldValue = changedProperties.get('key');
+			if (typeof oldValue !== 'undefined') {
+				this.setSelected(undefined, true);
+			}
+		}
+		if (changedProperties.has('breakpoints')) {
+			this.resizedCallback(this.offsetWidth);
+		}
+	}
+
+	focus() {
+		const node = getFirstFocusableDescendant(this);
+		if (node) node.focus();
 	}
 
 	resizedCallback(width) {
@@ -289,18 +304,6 @@ class ListItem extends RtlMixin(LitElement) {
 	setSelected(selected, suppressEvent) {
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
-	}
-
-	updated(changedProperties) {
-		if (changedProperties.has('key')) {
-			const oldValue = changedProperties.get('key');
-			if (typeof oldValue !== 'undefined') {
-				this.setSelected(undefined, true);
-			}
-		}
-		if (changedProperties.has('breakpoints')) {
-			this.resizedCallback(this.offsetWidth);
-		}
 	}
 
 	_dispatchSelected(value) {

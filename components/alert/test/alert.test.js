@@ -15,24 +15,6 @@ describe('d2l-alert', () => {
 		alert = await fixture(alertFixture);
 	});
 
-	describe('accessibility', () => {
-
-		[
-			'default',
-			'critical',
-			'success',
-			'call-to-action',
-			'error'
-		].forEach((type) => {
-			it(`passes aXe tests for type "${type}"`, async() => {
-				alert.type = type;
-				await alert.updateComplete;
-				await expect(alert).to.be.accessible();
-			});
-		});
-
-	});
-
 	describe('constructor', () => {
 
 		it('should construct', () => {

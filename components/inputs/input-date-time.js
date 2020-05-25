@@ -70,22 +70,6 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'value') {
-				try {
-					this._parsedDateTime = getLocalDateTimeFromUTCDateTime(this.value);
-				} catch (e) {
-					// set value to empty if invalid value
-					this.value = '';
-					this._parsedDateTime = '';
-				}
-			}
-		});
-	}
-
 	render() {
 		const timeHidden = !this._parsedDateTime;
 		return html`
@@ -110,9 +94,32 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				try {
+					this._parsedDateTime = getLocalDateTimeFromUTCDateTime(this.value);
+				} catch (e) {
+					// set value to empty if invalid value
+					this.value = '';
+					this._parsedDateTime = '';
+				}
+			}
+		});
+	}
+
 	focus() {
 		const elem = this.shadowRoot.querySelector('d2l-input-date');
 		if (elem) elem.focus();
+	}
+
+	_dispatchChangeEvent() {
+		this.dispatchEvent(new CustomEvent(
+			'change',
+			{ bubbles: true, composed: false }
+		));
 	}
 
 	_handleDateChange(e) {
@@ -129,13 +136,6 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	_handleTimeChange(e) {
 		this.value = getUTCDateTimeFromLocalDateTime(this._parsedDateTime, e.target.value);
 		this._dispatchChangeEvent();
-	}
-
-	_dispatchChangeEvent() {
-		this.dispatchEvent(new CustomEvent(
-			'change',
-			{ bubbles: true, composed: false }
-		));
 	}
 
 }

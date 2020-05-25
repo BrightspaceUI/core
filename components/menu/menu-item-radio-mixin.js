@@ -13,15 +13,16 @@ export const MenuItemRadioMixin = superclass => class extends MenuItemSelectable
 		this.addEventListener('d2l-menu-item-select', this._onSelectRadio);
 	}
 
-	_onSelectRadio(e) {
-		this.selected = true;
-		this.__onSelect(e);
-	}
-
 	_onChange(e) {
 		const items = this.parentNode.querySelectorAll('[role="menuitemradio"]');
 		for (let i = 0; i < items.length; i++) {
 			items[i].selected = items[i].value === e.detail.value;
 		}
 	}
+
+	_onSelectRadio(e) {
+		this.selected = true;
+		this.__onSelect(e);
+	}
+
 };

@@ -34,17 +34,17 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		`;
 	}
 
-	_onMenuResize(e) {
-		this.__position(!this._initializingHeight, e.detail);
-		this._initializingHeight = false;
+	__getMenuElement() {
+		return this.shadowRoot.querySelector('.d2l-dropdown-content-slot')
+			.assignedNodes().filter(node => node.hasAttribute
+				&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
+	}
 
-		const menu = this.__getMenuElement();
-		if (menu.getMenuType() === 'menu-radio') {
-			const selected = menu.querySelector('[selected]');
-			if (selected !== null) {
-				setTimeout(() => selected.scrollIntoView({ block: 'nearest'}), 0);
-			}
+	_onChange(e) {
+		if (e.target.getAttribute('role') !== 'menuitemradio') {
+			return;
 		}
+		this.close();
 	}
 
 	_onClose(e) {
@@ -56,6 +56,23 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		// reset to root view
 		const menu = this.__getMenuElement();
 		menu.show({ preventFocus: true });
+	}
+
+	_onFocus() {
+		this.__getMenuElement().focus();
+	}
+
+	_onMenuResize(e) {
+		this.__position(!this._initializingHeight, e.detail);
+		this._initializingHeight = false;
+
+		const menu = this.__getMenuElement();
+		if (menu.getMenuType() === 'menu-radio') {
+			const selected = menu.querySelector('[selected]');
+			if (selected !== null) {
+				setTimeout(() => selected.scrollIntoView({ block: 'nearest'}), 0);
+			}
+		}
 	}
 
 	_onOpen(e) {
@@ -74,28 +91,11 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		}
 	}
 
-	_onChange(e) {
-		if (e.target.getAttribute('role') !== 'menuitemradio') {
-			return;
-		}
-		this.close();
-	}
-
-	_onFocus() {
-		this.__getMenuElement().focus();
-	}
-
 	_onSelect(e) {
 		if (e.target.tagName !== 'D2L-MENU-ITEM') {
 			return;
 		}
 		this.close();
-	}
-
-	__getMenuElement() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-slot')
-			.assignedNodes().filter(node => node.hasAttribute
-				&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 	}
 
 }

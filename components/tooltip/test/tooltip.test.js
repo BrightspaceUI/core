@@ -29,22 +29,6 @@ describe('d2l-tooltip', () => {
 
 	describe('accessibility', () => {
 
-		it('should pass all aXe tests (hide)', async() => {
-			await expect(tooltip).to.be.accessible;
-		});
-
-		[
-			'info',
-			'error'
-		].forEach(state => {
-			it(`should pass all aXe tests for state ${state} (show)`, async() => {
-				tooltip.setAttribute('state', state);
-				tooltip.setAttribute('showing', 'showing');
-				await tooltip.updateComplete;
-				await expect(tooltip).to.be.accessible;
-			});
-		});
-
 		it('should add aria-labelledby to its target if for-type is \'label\'', async() => {
 			const tooltipLabelFixture = await fixture(labelFixture);
 			const target = tooltipLabelFixture.querySelector('#label-target');

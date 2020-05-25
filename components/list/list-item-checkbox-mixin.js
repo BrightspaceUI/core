@@ -1,5 +1,6 @@
 import { css, html } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
+import { classMap} from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { nothing } from 'lit-html';
 
@@ -21,7 +22,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 				display: block;
 				cursor: pointer;
 			}
-			.d2l-checkbox-action[disabled] {
+			.d2l-checkbox-action.d2l-checkbox-action-disabled {
 				cursor: default;
 			}
 		` ];
@@ -56,6 +57,8 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		event.preventDefault();
 		if (this.disabled) return;
 		this.setSelected(!this.selected);
+		const checkbox = this.shadowRoot.querySelector(`#${this._checkboxId}`);
+		if (checkbox) checkbox.focus();
 	}
 
 	_handleCheckboxChange(event) {
@@ -75,10 +78,13 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	}
 
 	_renderCheckboxAction(inner) {
+		const labelClasses = {
+			'd2l-checkbox-action': true,
+			'd2l-checkbox-action-disabled': this.disabled
+		};
 		return this.selectable ? html`
 			<label @click="${this._handleCheckboxActionClick}"
-				class="d2l-checkbox-action"
-				?disabled="${this.disabled}"
+				class="${classMap(labelClasses)}"
 				for="${this._checkboxId}">
 				${inner}
 			</label>

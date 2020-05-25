@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.45.0",
+  "version": "1.46.2",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -15,7 +15,8 @@
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer components demo directives helpers mixins test tools",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
-    "test": "npm run lint && npm run test:headless && npm run test:diff",
+    "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
+    "test:axe": "karma start karma.axe.conf.js",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
@@ -51,7 +52,7 @@
     "deepmerge": "^4.2.2",
     "es-dev-server": "^1",
     "eslint": "^7",
-    "eslint-config-brightspace": "^0.7.0",
+    "eslint-config-brightspace": "^0.8.0",
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",

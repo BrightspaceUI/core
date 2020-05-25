@@ -9,26 +9,6 @@ describe('d2l-status-indicator', () => {
 		elem = await fixture(html`<d2l-status-indicator text="test subtle"></d2l-status-indicator>`);
 	});
 
-	describe('accessibility', () => {
-
-		[
-			'default',
-			'none',
-			'alert',
-			'success'
-		].forEach((state) => {
-			[true, false].forEach((bold) => {
-				it(`passes aXe tests for state "${state}" and bold ${bold}`, async() => {
-					elem.state = state;
-					elem.bold = bold;
-					await elem.updateComplete;
-					await expect(elem).to.be.accessible();
-				});
-			});
-		});
-
-	});
-
 	describe('attribute reflection', () => {
 
 		it('should reflect "state" property to attribute', async() => {

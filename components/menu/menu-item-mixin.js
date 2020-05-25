@@ -51,6 +51,19 @@ export const MenuItemMixin = superclass => class extends superclass {
 		});
 	}
 
+	__action() {
+		if (this.disabled) {
+			return;
+		}
+
+		if (this.__children && this.__children.length > 0 && this.__children[0].hierarchicalView) {
+			// assumption: single, focusable child view
+			this.__children[0].show();
+		} else {
+			this.dispatchEvent(new CustomEvent('d2l-menu-item-select', { bubbles: true, composed: true }));
+		}
+	}
+
 	__initializeItem() {
 		const slot = this.shadowRoot.querySelector('slot');
 		if (!slot) {
@@ -69,20 +82,6 @@ export const MenuItemMixin = superclass => class extends superclass {
 				this.__children[0].label = this.text;
 				break;
 			}
-		}
-	}
-
-	__action() {
-
-		if (this.disabled) {
-			return;
-		}
-
-		if (this.__children && this.__children.length > 0 && this.__children[0].hierarchicalView) {
-			// assumption: single, focusable child view
-			this.__children[0].show();
-		} else {
-			this.dispatchEvent(new CustomEvent('d2l-menu-item-select', { bubbles: true, composed: true }));
 		}
 	}
 
@@ -105,10 +104,6 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.focus();
 	}
 
-	_onHidden() {
-		this.dispatchEvent(new CustomEvent('d2l-menu-item-visibility-change', { bubbles: true, composed: true }));
-	}
-
 	__onKeyDown(e) {
 		if (e.target !== this) {
 			return;
@@ -124,6 +119,10 @@ export const MenuItemMixin = superclass => class extends superclass {
 			this.__action();
 			return;
 		}
+	}
+
+	_onHidden() {
+		this.dispatchEvent(new CustomEvent('d2l-menu-item-visibility-change', { bubbles: true, composed: true }));
 	}
 
 };

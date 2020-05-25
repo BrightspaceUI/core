@@ -22,12 +22,14 @@ npm install @brightspace-ui/core
   * [Colors](components/colors/): color palette
   * [Dialogs](components/dialog/): generic and confirmation dialogs
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
+  * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible content
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
   * [Links](components/link/): link component and styles
   * [List](components/list/): list and list-item components
   * [Loading Spinner](components/loading-spinner/): loading-spinner components
+  * [Menu](components/menu/): menu and menu item components
   * [Meter](components/meter/): linear, radial, circle meter web components
   * [More/less](components/more-less/): constrain long bits of content
   * [Off-screen](components/offscreen/): component and styles for positioning content off-screen

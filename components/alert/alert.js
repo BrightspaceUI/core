@@ -135,19 +135,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		this.type = 'default';
 	}
 
-	close() {
-		const event = new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true });
-		if (this.dispatchEvent(event)) {
-			this.hidden = true;
-		}
-	}
-
-	_onButtonClick() {
-		this.dispatchEvent(new CustomEvent(
-			'd2l-alert-button-pressed', { bubbles: true, composed: true }
-		));
-	}
-
 	render() {
 		return html`
 			<div class="d2l-alert-highlight"></div>
@@ -160,6 +147,19 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			${this.hasCloseButton ? html`<d2l-button-icon icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
 			</div>
 			`;
+	}
+
+	close() {
+		const event = new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true });
+		if (this.dispatchEvent(event)) {
+			this.hidden = true;
+		}
+	}
+
+	_onButtonClick() {
+		this.dispatchEvent(new CustomEvent(
+			'd2l-alert-button-pressed', { bubbles: true, composed: true }
+		));
 	}
 }
 
