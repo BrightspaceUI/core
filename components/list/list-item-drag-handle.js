@@ -97,14 +97,14 @@ class ListItemDragHandle extends LitElement {
 		return html`${this._keyboardActive && !this.disabled ? this._renderKeyboardDragging() : this._renderDragger()}`;
 	}
 
-	focus() {
-		const node = getFirstFocusableDescendant(this);
-		if (node) node.focus();
-	}
-
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (changedProperties.has('_keyboardActive')) this.focus();
+	}
+
+	focus() {
+		const node = getFirstFocusableDescendant(this);
+		if (node) node.focus();
 	}
 
 	_dispatchAction(action) {
