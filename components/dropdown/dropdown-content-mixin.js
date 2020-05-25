@@ -51,6 +51,16 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				reflect: true,
 				attribute: 'no-padding'
 			},
+			noPaddingFooter: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'no-padding-footer'
+			},
+			noPaddingHeader: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'no-padding-header'
+			},
 			noPointer: {
 				type: Boolean,
 				reflect: true,
@@ -106,6 +116,9 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	constructor() {
 		super();
+
+		this.noPaddingFooter = false;
+		this.noPaddingHeader = false;
 
 		this.__opened = false;
 		this.__content = null;

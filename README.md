@@ -29,6 +29,7 @@ npm install @brightspace-ui/core
   * [Links](components/link/): link component and styles
   * [List](components/list/): list and list-item components
   * [Loading Spinner](components/loading-spinner/): loading-spinner components
+  * [Menu](components/menu/): menu and menu item components
   * [Meter](components/meter/): linear, radial, circle meter web components
   * [More/less](components/more-less/): constrain long bits of content
   * [Off-screen](components/offscreen/): component and styles for positioning content off-screen

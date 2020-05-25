@@ -11,7 +11,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { offscreenStyles } from '../offscreen/offscreen-styles.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 
 const TODAY = getToday();
 const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
