@@ -2,7 +2,7 @@ import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyStandardStyles } from '../typography/styles.js';
+import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -17,7 +17,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		};
 	}
 	static get styles() {
-		return [bodyStandardStyles, css`
+		return [ bodyCompactStyles, bodyStandardStyles, css`
 
 			:host {
 				animation: 600ms ease drop-in;
@@ -63,8 +63,11 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			.d2l-alert-text {
 				flex: 1;
-				padding: 1rem 1.2rem 1rem 1.5rem;
+				padding: 0.9rem 1.2rem 0.9rem 1.2rem;
 				position: relative;
+			}
+			:host([has-close-button]) .d2l-alert-text {
+				padding-right: 0.9rem;
 			}
 			:host([dir="rtl"]) .d2l-alert-text {
 				padding-left: 1.2rem;
@@ -75,7 +78,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 
 			.d2l-alert-action {
-				margin: 0.6rem 0.6rem 0.6rem 0.9rem;
+				margin: 0.6rem 0.6rem 0.6rem 0;
 			}
 
 			@keyframes drop-in {
@@ -98,12 +101,11 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			@media (max-width: 615px) {
 				.d2l-alert-text {
 					flex: 1;
-					padding: 1rem 1.2rem 1rem 1.5rem;
 					position: relative;
 				}
 				.d2l-alert-action {
-					margin-top: 0.5rem;
-					margin-bottom: 0.5rem;
+					margin-top: 0.45rem;
+					margin-bottom: 0.45rem;
 				}
 			}
 		`];
@@ -149,7 +151,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	render() {
 		return html`
 			<div class="d2l-alert-highlight"></div>
-			<div class="d2l-alert-text">
+			<div class="d2l-alert-text d2l-body-standard">
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
