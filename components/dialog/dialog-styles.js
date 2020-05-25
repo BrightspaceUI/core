@@ -23,7 +23,7 @@ export const dialogStyles = css`
 		transition: transform 200ms ease-in;
 	}
 
-	[nested-showing].d2l-dialog-outer {
+	.d2l-dialog-outer.d2l-dialog-outer-nested-showing {
 		border-color: rgba(205, 213, 220, 0.35);
 		box-shadow: none;
 	}
@@ -36,7 +36,7 @@ export const dialogStyles = css`
 		z-index: 1000;
 	}
 
-	div[nested].d2l-dialog-outer {
+	.d2l-dialog-outer.d2l-dialog-outer-nested {
 		top: 0;
 	}
 
@@ -78,7 +78,7 @@ export const dialogStyles = css`
 		padding: 19px 30px 23px 30px;
 	}
 
-	[overflow-top] .d2l-dialog-header {
+	.d2l-dialog-outer.d2l-dialog-outer-overflow-top .d2l-dialog-header {
 		box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.05);
 	}
 
@@ -104,7 +104,7 @@ export const dialogStyles = css`
 		padding: 30px 30px 12px 30px; /* 18px margin below footer children */
 	}
 
-	[overflow-bottom] .d2l-dialog-footer {
+	.d2l-dialog-outer.d2l-dialog-outer-overflow-bottom .d2l-dialog-footer {
 		box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.05);
 	}
 
