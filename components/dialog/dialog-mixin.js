@@ -201,8 +201,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_handleClick(e) {
-		if (!e.target.hasAttribute('dialog-action')) return;
-		const action = e.target.getAttribute('dialog-action');
+		// handle "dialog-action" for backwards-compatibility
+		if (!e.target.hasAttribute('data-dialog-action') && !e.target.hasAttribute('dialog-action')) return;
+		const action = e.target.getAttribute('data-dialog-action') || e.target.getAttribute('dialog-action');
 		e.stopPropagation();
 		this._close(action);
 	}
