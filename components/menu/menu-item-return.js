@@ -97,6 +97,13 @@ class MenuItemReturn extends RtlMixin(LocalizeStaticMixin(MenuItemMixin(LitEleme
 		this.setAttribute('aria-label', this.localize('return'));
 	}
 
+	render() {
+		return html`
+			<d2l-icon icon="tier1:chevron-left"></d2l-icon>
+			<span aria-hidden="true">${this.text}</span>
+		`;
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -107,12 +114,6 @@ class MenuItemReturn extends RtlMixin(LocalizeStaticMixin(MenuItemMixin(LitEleme
 		});
 	}
 
-	render() {
-		return html`
-			<d2l-icon icon="tier1:chevron-left"></d2l-icon>
-			<span aria-hidden="true">${this.text}</span>
-		`;
-	}
 }
 
 customElements.define('d2l-menu-item-return', MenuItemReturn);

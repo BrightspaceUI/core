@@ -244,10 +244,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		`;
 	}
 
-	focus() {
-		if (this._textInput) this._textInput.focus();
-	}
-
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -258,23 +254,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 	}
 
+	focus() {
+		if (this._textInput) this._textInput.focus();
+	}
+
 	_handleBlur() {
 		this._setFormattedValue();
-	}
-
-	async _handleFocusTrapEnter() {
-		this._calendar.focus();
-	}
-
-	async _handleKeydown(e) {
-		// open dropdown on down arrow or enter and focus on calendar focus date
-		if (e.keyCode === 40 || e.keyCode === 13) {
-			this._dropdown.open();
-			await this._handleChange();
-			this._calendar.focus();
-			this._setFormattedValue();
-			e.preventDefault();
-		}
 	}
 
 	async _handleChange() {
@@ -327,8 +312,23 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdownOpened = true;
 	}
 
+	async _handleFocusTrapEnter() {
+		this._calendar.focus();
+	}
+
 	_handleInputTextFocus() {
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+	}
+
+	async _handleKeydown(e) {
+		// open dropdown on down arrow or enter and focus on calendar focus date
+		if (e.keyCode === 40 || e.keyCode === 13) {
+			this._dropdown.open();
+			await this._handleChange();
+			this._calendar.focus();
+			this._setFormattedValue();
+			e.preventDefault();
+		}
 	}
 
 	_handleMouseup() {

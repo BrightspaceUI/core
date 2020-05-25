@@ -41,16 +41,6 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	}
 
-	async _getUpdateComplete() {
-		await super._getUpdateComplete();
-		const hasResources = this._hasResources();
-		const resourcesLoaded = (this.__language !== undefined && this.__resources !== undefined);
-		if (!hasResources || resourcesLoaded) {
-			return;
-		}
-		await this.__resourcesLoadedPromise;
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
 		this.__documentLocaleSettings.addChangeListener(this.__languageChangeCallback);
@@ -151,6 +141,16 @@ export const LocalizeMixin = superclass => class extends superclass {
 		langs.add('en');
 
 		return Array.from(langs);
+	}
+
+	async _getUpdateComplete() {
+		await super._getUpdateComplete();
+		const hasResources = this._hasResources();
+		const resourcesLoaded = (this.__language !== undefined && this.__resources !== undefined);
+		if (!hasResources || resourcesLoaded) {
+			return;
+		}
+		await this.__resourcesLoadedPromise;
 	}
 
 	_hasResources() {

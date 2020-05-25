@@ -154,6 +154,19 @@ class InputTime extends LitElement {
 		this.requestUpdate('value', oldValue);
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		if (this.label === null) {
+			console.warn('d2l-input-time component requires label text');
+		}
+
+		if (this.value === undefined) {
+			const time = getDefaultTime(this.defaultValue);
+			this._value = formatValue(time);
+			this._formattedValue = formatTime(time);
+		}
+	}
+
 	render() {
 		initIntervals(this.timeInterval);
 		const input = html`
@@ -205,19 +218,6 @@ class InputTime extends LitElement {
 			</d2l-dropdown>
 		`;
 		return input;
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		if (this.label === null) {
-			console.warn('d2l-input-time component requires label text');
-		}
-
-		if (this.value === undefined) {
-			const time = getDefaultTime(this.defaultValue);
-			this._value = formatValue(time);
-			this._formattedValue = formatTime(time);
-		}
 	}
 
 	focus() {

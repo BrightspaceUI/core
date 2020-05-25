@@ -122,14 +122,24 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._startObserver();
 	}
 
-	_startObserver() {
-		this._resizeObserver = this._resizeObserver || new ResizeObserver(entries => {
-			for (let i = 0; i < entries.length; i++) {
-				this._calcContainerPosition();
-			}
-		});
-		const htmlElem = document.documentElement;
-		this._resizeObserver.observe(htmlElem);
+	render() {
+		const containerStyle = {
+			marginLeft: this._containerMarginLeft,
+			marginRight: this._containerMarginRight
+		};
+
+		const innerContainerStyle = {
+			marginLeft: this._innerContainerLeft,
+			marginRight: this._innerContainerRight
+		};
+
+		return html`
+			<div class="d2l-floating-buttons-container" style=${styleMap(containerStyle)}>
+				<div class="d2l-floating-buttons-inner-container" style=${styleMap(innerContainerStyle)}>
+					<slot></slot>
+				</div>
+			</div>
+		`;
 	}
 
 	_calcContainerPosition() {
@@ -196,25 +206,16 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		}
 	}
 
-	render() {
-		const containerStyle = {
-			marginLeft: this._containerMarginLeft,
-			marginRight: this._containerMarginRight
-		};
-
-		const innerContainerStyle = {
-			marginLeft: this._innerContainerLeft,
-			marginRight: this._innerContainerRight
-		};
-
-		return html`
-			<div class="d2l-floating-buttons-container" style=${styleMap(containerStyle)}>
-				<div class="d2l-floating-buttons-inner-container" style=${styleMap(innerContainerStyle)}>
-					<slot></slot>
-				</div>
-			</div>
-		`;
+	_startObserver() {
+		this._resizeObserver = this._resizeObserver || new ResizeObserver(entries => {
+			for (let i = 0; i < entries.length; i++) {
+				this._calcContainerPosition();
+			}
+		});
+		const htmlElem = document.documentElement;
+		this._resizeObserver.observe(htmlElem);
 	}
+
 }
 
 customElements.define('d2l-floating-buttons', FloatingButtons);
