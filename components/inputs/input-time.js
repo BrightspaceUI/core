@@ -11,7 +11,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { offscreenStyles } from '../offscreen/offscreen-styles.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 
 const TODAY = getToday();
 const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
@@ -154,6 +154,19 @@ class InputTime extends LitElement {
 		this.requestUpdate('value', oldValue);
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		if (this.label === null) {
+			console.warn('d2l-input-time component requires label text');
+		}
+
+		if (this.value === undefined) {
+			const time = getDefaultTime(this.defaultValue);
+			this._value = formatValue(time);
+			this._formattedValue = formatTime(time);
+		}
+	}
+
 	render() {
 		initIntervals(this.timeInterval);
 		const input = html`
@@ -205,19 +218,6 @@ class InputTime extends LitElement {
 			</d2l-dropdown>
 		`;
 		return input;
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		if (this.label === null) {
-			console.warn('d2l-input-time component requires label text');
-		}
-
-		if (this.value === undefined) {
-			const time = getDefaultTime(this.defaultValue);
-			this._value = formatValue(time);
-			this._formattedValue = formatTime(time);
-		}
 	}
 
 	focus() {

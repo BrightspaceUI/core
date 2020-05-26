@@ -29,6 +29,12 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 		`;
 	}
 
+	_getTabsElement() {
+		return this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot')
+			.assignedNodes()
+			.filter(node => node.hasAttribute && node.tagName === 'D2L-TABS')[0];
+	}
+
 	_onMenuResize(e) {
 		const tabs = this._getTabsElement();
 		const tabListRect = tabs.getTabListRect();
@@ -48,12 +54,6 @@ class DropdownTabs extends DropdownContentMixin(LitElement) {
 
 	_onTabSelected() {
 		this.__position(false);
-	}
-
-	_getTabsElement() {
-		return this.shadowRoot.querySelector('.d2l-dropdown-content-container > slot')
-			.assignedNodes()
-			.filter(node => node.hasAttribute && node.tagName === 'D2L-TABS')[0];
 	}
 
 }

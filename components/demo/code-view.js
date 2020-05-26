@@ -24,13 +24,6 @@ class CodeView extends LitElement {
 		this._dependenciesPromise = Promise.resolve();
 	}
 
-	render() {
-		return html`
-			<div class="d2l-code-view-src"><slot @slotchange="${this._handleSlotChange}"></slot></div>
-			<div language="${this.language}" class="d2l-code-view-code">${this._codeTemplate}</div>
-		`;
-	}
-
 	attributeChangedCallback(name, oldval, newval) {
 		if (name !== 'language' || oldval === newval) return;
 		const language = this._getLanguage(newval);
@@ -49,6 +42,13 @@ class CodeView extends LitElement {
 
 	firstUpdated() {
 		this._updateCode(this.shadowRoot.querySelector('slot'));
+	}
+
+	render() {
+		return html`
+			<div class="d2l-code-view-src"><slot @slotchange="${this._handleSlotChange}"></slot></div>
+			<div data-language="${this.language}" class="d2l-code-view-code">${this._codeTemplate}</div>
+		`;
 	}
 
 	get _codeTemplate() {

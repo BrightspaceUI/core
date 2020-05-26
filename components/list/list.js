@@ -33,6 +33,14 @@ class List extends LitElement {
 		});
 	}
 
+	render() {
+		return html`
+			<div role="list" class="d2l-list-container">
+				<slot></slot>
+			</div>
+		`;
+	}
+
 	getSelectionInfo() {
 		const items = this._getItems();
 		const selectedItems = items.filter(item => item.selected);
@@ -47,14 +55,6 @@ class List extends LitElement {
 			keys: selectedItems.map(item => item.key),
 			state: state
 		};
-	}
-
-	render() {
-		return html`
-			<div role="list" class="d2l-list-container">
-				<slot></slot>
-			</div>
-		`;
 	}
 
 	toggleSelectAll() {

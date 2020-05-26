@@ -18,7 +18,7 @@ export const styles = css`
 	:host .d2l-code-view-code::before {
 		box-sizing: border-box;
 		color: var(--d2l-color-tungsten);
-		content: attr(language);
+		content: attr(data-language);
 		font-size: 0.7rem;
 		padding: 0;
 		position: absolute;

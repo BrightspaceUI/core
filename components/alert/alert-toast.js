@@ -82,19 +82,6 @@ class AlertToast extends LitElement {
 		this._state = states.CLOSED;
 	}
 
-	get _state() {
-		return this.__state;
-	}
-
-	set _state(val) {
-		const oldVal = this.__state;
-		if (oldVal !== val) {
-			this.__state = val;
-			this.requestUpdate('_state', oldVal);
-			this._stateChanged(val, oldVal);
-		}
-	}
-
 	get open() {
 		return this._open;
 	}
@@ -116,6 +103,19 @@ class AlertToast extends LitElement {
 				</d2l-alert>
 			</div>
 		`;
+	}
+
+	get _state() {
+		return this.__state;
+	}
+
+	set _state(val) {
+		const oldVal = this.__state;
+		if (oldVal !== val) {
+			this.__state = val;
+			this.requestUpdate('_state', oldVal);
+			this._stateChanged(val, oldVal);
+		}
 	}
 
 	_onCloseClicked(e) {

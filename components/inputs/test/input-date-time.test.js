@@ -21,26 +21,6 @@ describe('d2l-input-date-time', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 
-	describe('accessibility', () => {
-
-		it('passes all axe tests', async() => {
-			const elem = await fixture(basicFixture);
-			await expect(elem).to.be.accessible({ignoredRules: ['color-contrast']}); // color-contrast takes a while and should be covered by axe tests in the individual components
-		}).timeout(4000);
-
-		it('passes all axe tests when disabled', async() => {
-			const elem = await fixture('<d2l-input-date-time label="label text" disabled></d2l-input-date-time>');
-			await expect(elem).to.be.accessible({ignoredRules: ['color-contrast']}); // color-contrast takes a while and should be covered by axe tests in the individual components
-		}).timeout(4000);
-
-		it('passes all axe tests when focused', async() => {
-			const elem = await fixture(basicFixture);
-			setTimeout(() => elem.focus());
-			await oneEvent(elem, 'focus');
-			await expect(elem).to.be.accessible({ignoredRules: ['color-contrast']}); // color-contrast takes a while and should be covered by axe tests in the individual components
-		}).timeout(4000);
-	});
-
 	describe('constructor', () => {
 
 		it('should construct', () => {

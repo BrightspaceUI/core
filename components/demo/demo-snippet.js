@@ -23,9 +23,14 @@ class DemoSnippet extends LitElement {
 		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
 	}
 
+	firstUpdated() {
+		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
+	}
+
 	render() {
+		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
 		return html`
-			<div class="d2l-demo-snippet-demo" dir="${this._dir}">
+			<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
 				<div class="d2l-demo-snippet-actions">
 					<button id="d2l-demo-snippet-toggle-dir" @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
 				</div>
@@ -34,10 +39,6 @@ class DemoSnippet extends LitElement {
 			</div>
 			<d2l-code-view language="html" hide-language>${this._code}</d2l-code-view>
 		`;
-	}
-
-	firstUpdated() {
-		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
 	}
 
 	_formatCode(text) {

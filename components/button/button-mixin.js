@@ -24,11 +24,6 @@ export const ButtonMixin = superclass => class extends superclass {
 		this.type = 'button';
 	}
 
-	focus() {
-		const button = this.shadowRoot.querySelector('button');
-		if (button) button.focus();
-	}
-
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('click', this._handleClick, true);
@@ -37,6 +32,11 @@ export const ButtonMixin = superclass => class extends superclass {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('click', this._handleClick, true);
+	}
+
+	focus() {
+		const button = this.shadowRoot.querySelector('button');
+		if (button) button.focus();
 	}
 
 	_getType() {
