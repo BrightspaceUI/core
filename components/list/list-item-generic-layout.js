@@ -6,7 +6,7 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 	isFocusable } from '../../helpers/focus.js';
-import { getNextAncestorSibling, getPreviousAncestorSibling } from '../../helpers/dom.js';
+import { getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -143,17 +143,19 @@ class ListItemGenericLayout extends LitElement {
 	}
 
 	_getPrevSiblingInCell(node) {
-		return node.previousElementSibling ||
-			getPreviousAncestorSibling(node, () => true,
-				// stop when we've reached the cell
-				(node) => node.assignedSlot && node.assignedSlot.classList.contains('d2l-cell'));
+		if (node.previousElementSibling) return node.previousElementSibling;
+		const sibling = getPreviousAncestorSibling(node);
+		return isComposedAncestor(this._getThisCell(), sibling) ? sibling : null;
 	}
 
 	_getNextSiblingInCell(node) {
-		return node.nextElementSibling ||
-			getNextAncestorSibling(node, () => true,
-				// stop when we've reached the cell
-				(node) => node.assignedSlot && node.assignedSlot.classList.contains('d2l-cell'));
+		if (node.nextElementSibling) return node.nextElementSibling;
+		const sibling = getNextAncestorSibling(node);
+		return isComposedAncestor(this._getThisCell(), sibling) ? sibling : null;
+	}
+
+	_getThisCell() {
+		return this.shadowRoot.querySelector(`.d2l-cell[cell-num="${this._cellNum}"]`);
 	}
 
 	_getFocusedItemPosition(node) {
@@ -161,6 +163,7 @@ class ListItemGenericLayout extends LitElement {
 		// walk the tree backwards until we hit the cell
 		do {
 			node = this._getPrevSiblingInCell(node);
+			console.log(node);
 			if (node) {
 				const focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
 				if (focusable) {
@@ -168,6 +171,7 @@ class ListItemGenericLayout extends LitElement {
 					node = focusable;
 				}
 			}
+			if (position > 20) break;
 		} while (node);
 		console.log('position', position);
 		return position;
@@ -219,9 +223,7 @@ class ListItemGenericLayout extends LitElement {
 	_focusNextCell(num, forward = true) {
 		let cell;
 		let focusable = null;
-		console.log('next cell', forward);
 		do {
-			console.log('num', num);
 			cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
 			if (cell) {
 				focusable = forward ? getFirstFocusableDescendant(cell) : getLastFocusableDescendant(cell);
@@ -229,38 +231,37 @@ class ListItemGenericLayout extends LitElement {
 			if (focusable) this._focusItem(focusable, num, 1);
 			forward ? ++num : --num;
 		} while (cell && !focusable);
+		console.log('next cell focusable', focusable);
 		return focusable;
 	}
 
 	_focusNextWithinCell(node, num = 1) {
-		if (!node || (node.assignedSlot && node.assignedSlot.classList.contains('d2l-cell'))) return null;
+		if (!node || node.assignedSlot === this._getThisCell()) return null;
 		let focusable = null;
 		let siblingNum = 0;
-		console.log('within cell', node);
 		while (!focusable || siblingNum < num) {
 			node = this._getNextSiblingInCell(node);
-			console.log('next node', node);
 			if (!node) break;
 			++siblingNum;
 			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
 		}
+		console.log('within cell focusable', focusable);
 		if (focusable) this._focusItem(focusable, this._cellNum, siblingNum);
 		return focusable;
 	}
 
 	_focusPreviousWithinCell(node) {
-		if (!node || (node.assignedSlot && node.assignedSlot.classList.contains('d2l-cell'))) return null;
+		if (!node || node.assignedSlot === this._getThisCell()) return null;
+		console.log('node', node);
 		let focusable = null;
 		let siblingNum = 0;
-		console.log('prev within cell', node);
 		while (!focusable) {
 			node = this._getPrevSiblingInCell(node);
-			console.log('prev node', node);
 			if (!node) break;
 			++siblingNum;
 			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
 		}
-
+		console.log('within cell focusable', focusable);
 		//todo: get sibling's position
 		if (focusable) this._focusItem(focusable, this._cellNum, siblingNum);
 		return focusable;
