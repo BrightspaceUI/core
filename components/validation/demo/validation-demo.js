@@ -13,7 +13,8 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 			'en': {
 				'checkTitle': 'My Checkbox',
 				'checkValidationFailure': '{subject} failed custom validation',
-				'nameTitle': 'Name'
+				'nameTitle': 'Name',
+				'customInputTitle': 'Custom Input',
 			},
 		};
 	}
@@ -53,13 +54,13 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 						</select>
 					</div>
 				</div>
-				<d2l-input-text name="custom-input" required></d2l-input-text>
+				<d2l-input-text data-subject="${this.localize('customInputTitle')}"  name="custom-input" required></d2l-input-text>
 				<div>
 					<h2>Secondary</h2>
 					<label for="story">Tell us your story:</label>
 					<textarea id="story" name="story" rows="5" cols="33">It was a dark and stormy night...</textarea>
 					<div>
-						<input type="range" id="b" name="b" value="50" /> +
+						<input type="range" id="b" name="b" value="50" max="100" min="15" /> +
 						<input type="number" id="a" name="a" value="10" /> =
 						<output name="result" for="a b">60</output>
 					</div>

@@ -9,6 +9,11 @@ class ValidationCustom extends LitElement {
 		};
 	}
 
+	constructor() {
+		super();
+		this._source = null;
+	}
+
 	async validate() {
 		const validation = new Promise(resolve => {
 			const details = { bubbles: true, detail: { source: this._source, resolve } };

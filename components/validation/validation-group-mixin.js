@@ -1,6 +1,26 @@
 import { findFormElements } from '../form/form-helpers.js';
+import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
-export const ValidationGroupMixin = superclass => class extends superclass {
+export const ValidationGroupMixin = superclass => class extends LocalizeStaticMixin(superclass) {
+
+	static get properties() {
+		return {};
+	}
+
+	static get resources() {
+		return {
+			'en': {
+				'valueMissingMessage': '{subject} is required',
+				'tooLongMessage': '{subject} must be at most {maxlength} characters',
+				'tooShortMessage': '{subject} must be at least {minlength} characters',
+				'badInputMessage': '{subject} has bad input',
+				'patternMismatchMessage': '{subject} has malformed input',
+				'rangeOverflowMessage': '{subject} must be less than {max}',
+				'rangeUnderflowMessage': '{subject} must be greater than {min}',
+				'typeMismatchMessage': '{subject} has an invalid type'
+			},
+		};
+	}
 
 	constructor() {
 		super();
@@ -54,7 +74,8 @@ export const ValidationGroupMixin = superclass => class extends superclass {
 		const validationsPromise = Promise.all(validations);
 		for (const ele of formElements) {
 			if (!ele.checkValidity()) {
-				errors.get(ele).push(ele.validationMessage);
+				const message = this._localizeValidity(ele);
+				errors.get(ele).push(message);
 			}
 		}
 		const validationResults = await validationsPromise;
@@ -96,15 +117,24 @@ export const ValidationGroupMixin = superclass => class extends superclass {
 		if (formElements.indexOf(ele) === -1) {
 			return;
 		}
-		const validationCustoms = ele.id ? this.querySelectorAll(`d2l-validation-custom[for="${ele.id}"]`) : [];
+		const validationCustoms = ele.id ? [...this.querySelectorAll(`d2l-validation-custom[for="${ele.id}"]`)] : [];
 		const validations = [];
 		for (const custom of validationCustoms) {
 			validations.push(custom.validate());
 		}
 		const validationsPromise = Promise.all(validations);
-		const validationResults = [ele.checkValidity(), ...await validationsPromise];
-		const isValid = validationResults.reduce((v1, v2) => v1 && v2, true);
-		if (isValid && this._errors.delete(ele)) {
+		const validationResults = await validationsPromise;
+		const isValid = validationResults.reduce((v1, v2) => v1 && v2, ele.checkValidity());
+		if (isValid) {
+			if (this._errors.delete(ele)) {
+				this._updateErrorSummary();
+			}
+		} else if (this._errors.has(ele)) {
+			const errors = validationCustoms.filter((_, i) => !validationResults[i]).map(custom => custom.failureText);
+			if (!ele.validity.valid) {
+				errors.push(this._localizeValidity(ele));
+			}
+			this._errors.set(ele, errors);
 			this._updateErrorSummary();
 		}
 		ele.classList.add('d2l-dirty');
@@ -113,7 +143,8 @@ export const ValidationGroupMixin = superclass => class extends superclass {
 
 	_onUnload(e) {
 		if (this._dirty) {
-			e.returnValue = 'You have unsaved changes!';
+			e.preventDefault();
+			e.returnValue = false;
 		}
 	}
 
@@ -122,5 +153,38 @@ export const ValidationGroupMixin = superclass => class extends superclass {
 			return;
 		}
 		this._errorSummary.errors = this.errors;
+	}
+
+	_localizeValidity(ele) {
+		const subject = ele.getAttribute('data-subject');
+		if (ele.validity.valueMissing) {
+			return this.localize('valueMissingMessage', { subject });
+		}
+		if (ele.validity.tooLong) {
+			const maxlength = ele.getAttribute('maxlength');
+			return this.localize('tooLongMessage', { subject, maxlength });
+		}
+		if (ele.validity.tooShort) {
+			const minlength = ele.getAttribute('minlength');
+			return this.localize('tooShortMessage', { subject, minlength });
+		}
+		if (ele.validity.badInput) {
+			return this.localize('badInputMessage', { subject });
+		}
+		if (ele.validity.patternMismatch) {
+			return this.localize('patternMismatchMessage', { subject });
+		}
+		if (ele.validity.rangeOverflow) {
+			const max = ele.getAttribute('max');
+			return this.localize('rangeOverflowMessage', { subject, max });
+		}
+		if (ele.validity.rangeUnderflow) {
+			const min = ele.getAttribute('min');
+			return this.localize('rangeUnderflowMessage', { subject, min });
+		}
+		if (ele.validity.typeMismatch) {
+			return this.localize('typeMismatchMessage', { subject });
+		}
+		return ele.validationMessage;
 	}
 };
