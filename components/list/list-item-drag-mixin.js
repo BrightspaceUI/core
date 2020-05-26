@@ -28,7 +28,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 			detail: detail,
 			bubbles: true
 		}));
-		return true;
 	}
 
 	keyboardMode(isEnabled) {
