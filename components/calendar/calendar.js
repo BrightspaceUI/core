@@ -491,8 +491,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day) => {
-				const focused = checkIfDatesEqual(day, this._focusDate);
 				const disabled = getDisabled(day, this.minValue, this.maxValue);
+				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date': true,
@@ -723,7 +723,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				await this.updateComplete;
 				this._updateFocusDateDependentOnDisabled(possibleFocusDate);
 				if (this._focusDate) this._focusDateAddFocus();
-				else this.focus();
+				else {
+					const buttons = this.shadowRoot.querySelectorAll('d2l-button-icon');
+					if (buttons && buttons.length > 0) buttons[0].focus();
+				}
 				preventDefault = true;
 				break;
 			} case keyCodes.PAGEDOWN: {
