@@ -57,7 +57,7 @@ To make your usage of `d2l-link` accessible, use the following property when app
 Alternately, you can apply link styles to a native `<a>` element by importing the styles and placing the `d2l-link` CSS class on the element.
 
 ```javascript
-import { linkStyles } from './link-styles.js';
+import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 
 class MyElement extends LitElement {
 
@@ -72,7 +72,7 @@ class MyElement extends LitElement {
 }
 ```
 
-Add the `main` or `small` attributes to the `<a>` element to apply those styles.
+Add the `d2l-link-main` or `d2l-link-small` CSS classes to the `<a>` element to apply those styles.
 
 ## Future Enhancements
 
