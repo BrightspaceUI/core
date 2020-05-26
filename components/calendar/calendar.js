@@ -317,8 +317,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			button:focus:hover:not(.d2l-calendar-date-selected),
-			button:focus:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			td:focus button:not(.d2l-calendar-date-selected):hover,
+			td:focus button:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
@@ -327,19 +327,19 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				outline: none;
 			}
 
-			.d2l-calendar-date:focus {
+			td:focus .d2l-calendar-date {
 				border-radius: 0.16rem;
 				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
 				transition: none;
 			}
 
-			.d2l-calendar-date.d2l-calendar-date-initial:focus {
+			td:focus .d2l-calendar-date.d2l-calendar-date-initial {
 				transition: box-shadow 200ms ease-in;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				.d2l-calendar-date.d2l-calendar-date-initial:focus {
+				td:focus .d2l-calendar-date.d2l-calendar-date-initial {
 					transition: none;
 				}
 			}
@@ -350,7 +350,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				padding: 2px;
 			}
 
-			.d2l-calendar-date.d2l-calendar-date-selected:focus {
+			td:focus .d2l-calendar-date.d2l-calendar-date-selected {
 				border-width: 0;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
@@ -507,17 +507,19 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
+						aria-selected="${selected ? 'true' : 'false'}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
-						role="gridcell">
+						@keydown="${this._onKeyDown}"
+						role="gridcell"
+						tabindex=${focused ? '0' : '-1'}>
 							<button
 								aria-label="${description}"
 								class="${classMap(classes)}"
 								@click="${this._onDateSelected}"
 								?disabled="${disabled}"
-								@keydown="${this._onKeyDown}"
-								tabindex=${focused ? '0' : '-1'}
+								tabindex="-1"
 								type="button">
 								${date}
 							</button>
@@ -609,7 +611,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		if (!this._focusDate) return;
 		const date = await this._getDateElement(this._focusDate);
 		if (date) {
-			date.querySelector('button').focus();
+			date.focus();
 		}
 	}
 
@@ -618,7 +620,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
 	}
 
-	_onDateSelected(e) {
+	async _onDateSelected(e) {
 		let selectedDate = e.composedPath()[0];
 		if (selectedDate.tagName === 'BUTTON') selectedDate = selectedDate.parentNode;
 		const year = selectedDate.getAttribute('data-year');
@@ -633,11 +635,14 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			detail: { date: this.selectedValue }
 		};
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
+
+		await this.updateComplete;
+		this._focusDateAddFocus();
 	}
 
 	async _onKeyDown(e) {
 		const rootTarget = e.composedPath()[0];
-		if (!rootTarget.classList.contains('d2l-calendar-date')) return;
+		if (rootTarget.tagName !== 'TD') return;
 
 		let preventDefault = false;
 		let numDaysChange;
