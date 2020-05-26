@@ -23,11 +23,9 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		}
 	}
 
-	_dispatchDragEvent(detail) {
-		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
-			detail: detail,
-			bubbles: true
-		}));
+	// TODO
+	_copy() {
+
 	}
 
 	keyboardMode(isEnabled) {
@@ -37,6 +35,55 @@ export const ListItemDragMixin = superclass => class extends superclass {
 				bubbles: true
 			}));
 		}
+	}
+
+	moveAfter(itemKey) {
+		if (itemKey === undefined) {
+			return;
+		}
+		this._dispatchDragEvent(itemKey);
+	}
+
+
+	moveBefore(itemKey) {
+		if (itemKey === undefined) {
+			return;
+		}
+
+		this._dispatchDragEvent(itemKey);
+	}
+
+
+
+	_dragEnter() {
+		this._dragStartHandler();
+	}
+
+	_dragExit() {
+		this._dispatchDragEvent(null);
+	}
+
+
+	// TODO
+	_removeCopy() {
+	}
+
+
+
+	_dragStartHandler() {
+		this.moveBefore(null);
+		this._dispatchDragEvent(null);
+	}
+	_dragStopHandler() {
+		this._dispatchDragEvent(null);
+		this.moveafter(null);
+	}
+
+	_dispatchDragEvent(detail) {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
+			detail: detail,
+			bubbles: true
+		}));
 	}
 
 	_renderDragHandle() {
@@ -54,46 +101,5 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		return this.draggable ? html`
 			<div @click="${this._handleDragActionClick}" class="d2l-list-item-drag-action">${inner}</div>
 			` : nothing;
-	}
-
-	moveBefore(itemKey) {
-		if (itemKey === undefined) {
-			return;
-		}
-
-		this._dispatchDragEvent(itemKey);
-	}
-
-	moveAfter(itemKey) {
-		if (itemKey === undefined) {
-			return;
-		}
-		this._dispatchDragEvent(itemKey);
-	}
-
-	// TODO
-	_copy() {
-
-	}
-
-	// TODO
-	_removeCopy() {
-	}
-
-	_dragExit() {
-		this._dispatchDragEvent(null);
-	}
-
-	_dragEnter() {
-		this._dragStartHandler();
-	}
-
-	_dragStartHandler() {
-		this.moveBefore(null);
-		this._dispatchDragEvent(null);
-	}
-	_dragStopHandler() {
-		this._dispatchDragEvent(null);
-		this.moveafter(null);
 	}
 };
