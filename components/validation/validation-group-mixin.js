@@ -1,5 +1,17 @@
+import { css } from 'lit-element/lit-element.js';
 import { findFormElements } from '../form/form-helpers.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import '../colors/colors.js';
+
+export const validationStyles = css`
+	:host {
+		display: block;
+	}
+
+	[aria-invalid='true'] {
+		border-color: var(--d2l-color-cinnabar);
+	}
+`;
 
 export const ValidationGroupMixin = superclass => class extends LocalizeStaticMixin(superclass) {
 
@@ -75,6 +87,7 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		for (const ele of formElements) {
 			if (!ele.checkValidity()) {
 				const message = this._localizeValidity(ele);
+				ele.setAttribute('aria-invalid', 'true');
 				errors.get(ele).push(message);
 			}
 		}
@@ -84,6 +97,7 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 			if (!valid) {
 				const custom = validationCustoms[i];
 				errors.get(custom.source).push(custom.failureText);
+				custom.source.setAttribute('aria-invalid','true');
 			}
 		}
 		this._errors = errors;
@@ -93,10 +107,6 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 	commit() {
 		if (!this.checkValidity()) {
 			return false;
-		}
-		const formElements = findFormElements(this);
-		for (const ele of formElements) {
-			ele.classList.remove('d2l-dirty');
 		}
 		this._dirty = false;
 		return true;
@@ -125,6 +135,8 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		const validationsPromise = Promise.all(validations);
 		const validationResults = await validationsPromise;
 		const isValid = validationResults.reduce((v1, v2) => v1 && v2, ele.checkValidity());
+		ele.setAttribute('aria-invalid', isValid ? 'false' : 'true');
+
 		if (isValid) {
 			if (this._errors.delete(ele)) {
 				this._updateErrorSummary();
