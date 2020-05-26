@@ -76,11 +76,15 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			` : nothing;
 	}
 
-	_renderCheckboxAction(inner) {
+	_renderCheckboxAction(inner, labelledBy = null) {
+		if (!inner && !labelledBy) {
+			console.warn('Label for list-item checkbox may not be accessible. Pass inner text to the label or pass labelledby.');
+		}
 		return this.selectable ? html`
 			<label @click="${this._handleCheckboxActionClick}"
 				class="d2l-checkbox-action"
 				?disabled="${this.disabled}"
+				.aria-labelledby="${labelledBy}"
 				for="${this._checkboxId}">
 				${inner}
 			</label>
