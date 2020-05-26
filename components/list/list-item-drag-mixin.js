@@ -23,11 +23,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		}
 	}
 
-	// TODO
-	_copy() {
-
-	}
-
 	keyboardMode(isEnabled) {
 		if (isEnabled) {
 			this.dispatchEvent(new CustomEvent('d2l-list-item-drag-keyboard-mode', {
@@ -44,7 +39,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		this._dispatchDragEvent(itemKey);
 	}
 
-
 	moveBefore(itemKey) {
 		if (itemKey === undefined) {
 			return;
@@ -53,30 +47,9 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		this._dispatchDragEvent(itemKey);
 	}
 
-
-
-	_dragEnter() {
-		this._dragStartHandler();
-	}
-
-	_dragExit() {
-		this._dispatchDragEvent(null);
-	}
-
-
 	// TODO
-	_removeCopy() {
-	}
+	_copy() {
 
-
-
-	_dragStartHandler() {
-		this.moveBefore(null);
-		this._dispatchDragEvent(null);
-	}
-	_dragStopHandler() {
-		this._dispatchDragEvent(null);
-		this.moveafter(null);
 	}
 
 	_dispatchDragEvent(detail) {
@@ -86,6 +59,34 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		}));
 	}
 
+	_dragEnter() {
+		this._dragStartHandler();
+	}
+
+	_dragExit() {
+		this._dispatchDragEvent(null);
+	}
+
+	_dragStartHandler() {
+		this.moveBefore(null);
+		this._dispatchDragEvent(null);
+	}
+
+	_dragStopHandler() {
+		this._dispatchDragEvent(null);
+		this.moveafter(null);
+	}
+
+	// TODO
+	_removeCopy() {
+
+	}
+
+	_renderDragAction(inner) {
+		return this.draggable ? html`
+			<div @click="${this._handleDragActionClick}" class="d2l-list-item-drag-action">${inner}</div>
+			` : nothing;
+	}
 	_renderDragHandle() {
 		return this.draggable ? html`
 			<div
@@ -95,11 +96,5 @@ export const ListItemDragMixin = superclass => class extends superclass {
 				@dragleave="${this._dragExit}"
 			></div>
 		` : nothing;
-	}
-
-	_renderDragAction(inner) {
-		return this.draggable ? html`
-			<div @click="${this._handleDragActionClick}" class="d2l-list-item-drag-action">${inner}</div>
-			` : nothing;
 	}
 };
