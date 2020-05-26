@@ -66,8 +66,15 @@ getComposedChildren(element);
 // gets the composed parent (including shadow host & insertion points)
 getComposedParent(node);
 
-// returns the closest composed sibling at least one dom level up
-getNextAncestorSibling(node, predicate = () => true);
+// returns the next composed sibling at least one dom level up
+// includes a predicate which will return the node when predicate(node) is true
+// includes a stop condition that will stop walking the DOM tree when stopOn(node) is true
+getNextAncestorSibling(node, predicate = () => true, stopOn = () => false);
+
+// returns the previous composed sibling at least one dom level up
+// includes a predicate which will return the node when predicate(node) is true
+// includes a stop condition that will stop walking the DOM tree when stopOn(node) is true
+getPreviousAncestorSibling(node, predicate = () => true, stopOn = () => false);
 
 // browser consistent implementation of HTMLElement.offsetParent
 getOffsetParent(node);
