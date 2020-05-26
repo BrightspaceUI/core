@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { findComposedAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
 import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
@@ -6,7 +7,7 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 	isFocusable } from '../../helpers/focus.js';
-import { getNextAncestorSibling, getPreviousAncestorSibling, isComposedAncestor } from '../../helpers/dom.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -22,7 +23,7 @@ const keyCodes = {
 	UP: 38
 };
 
-class ListItemGenericLayout extends LitElement {
+class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -143,15 +144,21 @@ class ListItemGenericLayout extends LitElement {
 	}
 
 	_getPrevSiblingInCell(node) {
+		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
+		if (cell.name === node.slot) return null;
 		if (node.previousElementSibling) return node.previousElementSibling;
+
 		const sibling = getPreviousAncestorSibling(node);
-		return isComposedAncestor(this._getThisCell(), sibling) ? sibling : null;
+		return isComposedAncestor(cell, sibling) ? sibling : null;
 	}
 
 	_getNextSiblingInCell(node) {
+		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
+		if (cell.name === node.slot) return null;
 		if (node.nextElementSibling) return node.nextElementSibling;
+
 		const sibling = getNextAncestorSibling(node);
-		return isComposedAncestor(this._getThisCell(), sibling) ? sibling : null;
+		return isComposedAncestor(cell, sibling) ? sibling : null;
 	}
 
 	_getThisCell() {
@@ -163,7 +170,6 @@ class ListItemGenericLayout extends LitElement {
 		// walk the tree backwards until we hit the cell
 		do {
 			node = this._getPrevSiblingInCell(node);
-			console.log(node);
 			if (node) {
 				const focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
 				if (focusable) {
@@ -171,9 +177,7 @@ class ListItemGenericLayout extends LitElement {
 					node = focusable;
 				}
 			}
-			if (position > 20) break;
 		} while (node);
-		console.log('position', position);
 		return position;
 	}
 
@@ -183,14 +187,26 @@ class ListItemGenericLayout extends LitElement {
 		switch (event.keyCode) {
 			case keyCodes.RIGHT:
 				node = getComposedActiveElement();
-				if (!this._focusNextWithinCell(node)) {
-					this._focusNextCell(this._cellNum + 1);
+				if (this.dir === 'rtl') {
+					if (!this._focusPreviousWithinCell(node)) {
+						this._focusNextCell(this._cellNum - 1, false);
+					}
+				} else {
+					if (!this._focusNextWithinCell(node)) {
+						this._focusNextCell(this._cellNum + 1);
+					}
 				}
 				break;
 			case keyCodes.LEFT:
 				node = getComposedActiveElement();
-				if (!this._focusPreviousWithinCell(node)) {
-					this._focusNextCell(this._cellNum - 1, false);
+				if (this.dir === 'rtl') {
+					if (!this._focusNextWithinCell(node)) {
+						this._focusNextCell(this._cellNum + 1);
+					}
+				} else {
+					if (!this._focusPreviousWithinCell(node)) {
+						this._focusNextCell(this._cellNum - 1, false);
+					}
 				}
 				break;
 			case keyCodes.UP:
@@ -228,10 +244,9 @@ class ListItemGenericLayout extends LitElement {
 			if (cell) {
 				focusable = forward ? getFirstFocusableDescendant(cell) : getLastFocusableDescendant(cell);
 			}
-			if (focusable) this._focusItem(focusable, num, 1);
+			if (focusable) this._focusItem(focusable, num, forward ? 1 : this._getFocusedItemPosition(focusable));
 			forward ? ++num : --num;
 		} while (cell && !focusable);
-		console.log('next cell focusable', focusable);
 		return focusable;
 	}
 
@@ -245,25 +260,19 @@ class ListItemGenericLayout extends LitElement {
 			++siblingNum;
 			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
 		}
-		console.log('within cell focusable', focusable);
 		if (focusable) this._focusItem(focusable, this._cellNum, siblingNum);
 		return focusable;
 	}
 
 	_focusPreviousWithinCell(node) {
 		if (!node || node.assignedSlot === this._getThisCell()) return null;
-		console.log('node', node);
 		let focusable = null;
-		let siblingNum = 0;
 		while (!focusable) {
 			node = this._getPrevSiblingInCell(node);
 			if (!node) break;
-			++siblingNum;
 			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
 		}
-		console.log('within cell focusable', focusable);
-		//todo: get sibling's position
-		if (focusable) this._focusItem(focusable, this._cellNum, siblingNum);
+		if (focusable) this._focusItem(focusable, this._cellNum, this._getFocusedItemPosition(focusable));
 		return focusable;
 	}
 
@@ -288,8 +297,7 @@ class ListItemGenericLayout extends LitElement {
 		const slot = (event.path || event.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('cell-num'));
-		//TODO: set the cellFocusedItem according to which siblings are focusable
-		//this._cellFocusedItem = this._getFocusedItemPosition(event.target);
+		this._cellFocusedItem = this._getFocusedItemPosition(event.target);
 	}
 }
 

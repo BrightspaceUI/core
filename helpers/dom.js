@@ -64,31 +64,25 @@ export function getComposedParent(node) {
 
 }
 
-export function getNextAncestorSibling(node, predicate = () => true, stopOn = () => false) {
+export function getNextAncestorSibling(node, predicate = () => true) {
 	let parentNode = getComposedParent(node);
-	if (stopOn(parentNode)) return;
 
 	while (parentNode) {
-		console.log('parent:', parentNode, parentNode.assignedSlot);
 		const nextParentSibling = parentNode.nextElementSibling;
 		if (nextParentSibling && predicate(nextParentSibling)) return nextParentSibling;
 		parentNode = getComposedParent(parentNode);
-		if (stopOn(parentNode)) break;
 	}
 
 	return null;
 }
 
-export function getPreviousAncestorSibling(node, predicate = () => true, stopOn = () => false) {
+export function getPreviousAncestorSibling(node, predicate = () => true) {
 	let parentNode = getComposedParent(node);
-	if (stopOn(parentNode)) return;
 
 	while (parentNode) {
-		console.log('parent:', parentNode, parentNode.assignedSlot);
 		const previousParentSibling = parentNode.previousElementSibling;
 		if (previousParentSibling && predicate(previousParentSibling)) return previousParentSibling;
 		parentNode = getComposedParent(parentNode);
-		if (stopOn(parentNode)) break;
 	}
 
 	return null;

@@ -68,13 +68,11 @@ getComposedParent(node);
 
 // returns the next composed sibling at least one dom level up
 // includes a predicate which will return the node when predicate(node) is true
-// includes a stop condition that will stop walking the DOM tree when stopOn(node) is true
-getNextAncestorSibling(node, predicate = () => true, stopOn = () => false);
+getNextAncestorSibling(node, predicate = () => true);
 
 // returns the previous composed sibling at least one dom level up
 // includes a predicate which will return the node when predicate(node) is true
-// includes a stop condition that will stop walking the DOM tree when stopOn(node) is true
-getPreviousAncestorSibling(node, predicate = () => true, stopOn = () => false);
+getPreviousAncestorSibling(node, predicate = () => true);
 
 // browser consistent implementation of HTMLElement.offsetParent
 getOffsetParent(node);
