@@ -89,7 +89,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			<label @click="${this._handleCheckboxActionClick}"
 				class="${classMap(labelClasses)}"
 				for="${this._checkboxId}"
-				.aria-labelledby="${labelledBy}">
+				aria-labelledby="${labelledBy}">
 				${inner}
 			</label>
 			` : nothing;
