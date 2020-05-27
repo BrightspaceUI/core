@@ -140,8 +140,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			maxValue: { type: String, attribute: 'max-value' },
-			minValue: { type: String, attribute: 'min-value' },
+			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			minValue: { attribute: 'min-value', reflect: true, type: String },
 			selectedValue: { type: String, attribute: 'selected-value' },
 			summary: { type: String },
 			_dialog: { type: Boolean },
@@ -451,6 +451,10 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
+		if (this.minValue && this.maxValue && (getDateFromISODate(this.minValue).getTime() > getDateFromISODate(this.maxValue).getTime())) {
+			throw new RangeError('d2l-calendar component expects min-value to be before max-value');
+		}
+
 		this._today = getDateFromDateObj(getToday());
 		this.reset();
 
@@ -465,10 +469,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			getCalendarData(true);
 			this.requestUpdate();
 		});
-
-		if (this.minValue && this.maxValue && (getDateFromISODate(this.minValue).getTime() > getDateFromISODate(this.maxValue).getTime())) {
-			console.warn('d2l-calendar component expects min-value to be before max-value');
-		}
 	}
 
 	render() {
