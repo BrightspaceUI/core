@@ -212,56 +212,69 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			case keyCodes.UP:
 				// move to above row, focus same item within the cell
 				this._focusNextRow(true);
-				event.preventDefault();
 				break;
 			case keyCodes.DOWN:
 				// move to below row, focus same item within the cell
 				this._focusNextRow();
-				event.preventDefault();
 				break;
 			case keyCodes.HOME:
-				if (event.ctrlKey) {
-					// focus first item of first row
-					this._focusFirstRow();
+				if (this.dir === 'rtl') {
+					if (event.ctrlKey) {
+						this._focusFirstRow();
+					} else {
+						// focus last item
+						this._focusLastItem();
+					}
 				} else {
-					// focus first item
-					this._focusNextCell(1);
+					if (event.ctrlKey) {
+						// focus first item of first row
+						this._focusFirstRow();
+					} else {
+						// focus first item
+						this._focusNextCell(1);
+					}
 				}
-				event.preventDefault();
 				break;
 			case keyCodes.END:
-				if (event.ctrlKey) {
-					// focus last item of last row
-					this._focusLastRow();
+				if (this.dir === 'rtl') {
+					if (event.ctrlKey) {
+						// focus first item of last row
+						this._focusLastRow();
+					} else {
+						// focus first item
+						this._focusNextCell(1);
+					}
 				} else {
-					// focus last item
-					this._focusLastItem();
+					if (event.ctrlKey) {
+						// focus last item of last row
+						this._focusLastRow();
+					} else {
+						// focus last item
+						this._focusLastItem();
+					}
 				}
-				event.preventDefault();
 				break;
 			case keyCodes.PAGEUP:
-				// focus five rows up
-				//this._focusPreviousRow(5);
+				// focus five rows ups
+				this._focusNextRow(true, 5);
 				break;
 			case keyCodes.PAGEDOWN:
 				// focus five rows down
-				//this._focusNextRow(5);
+				this._focusNextRow(false, 5);
 				break;
 		}
+		event.preventDefault();
 	}
 
 	_focusCellItem(num, itemNum) {
 		const cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
 		if (!cell) return;
+
 		const firstFocusable = getFirstFocusableDescendant(cell);
 		if (!firstFocusable) return;
-		if (itemNum === 1) {
-			this._focusItem(firstFocusable, num, 1);
-			return;
-		}
-		this._cellNum = num;
-		if (!this._focusNextWithinCell(firstFocusable, itemNum)) {
-			this._focusItem(firstFocusable, num, 1);
+
+		if (itemNum === 1 || !this._focusNextWithinCell(firstFocusable, itemNum)) {
+			firstFocusable.focus();
 		}
 	}
 
@@ -273,7 +286,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (cell) {
 				focusable = forward ? getFirstFocusableDescendant(cell) : getLastFocusableDescendant(cell);
 			}
-			if (focusable) this._focusItem(focusable, num, forward ? 1 : this._getFocusedItemPosition(focusable));
+			if (focusable) focusable.focus();
 			forward ? ++num : --num;
 		} while (cell && !focusable);
 		return focusable;
@@ -290,7 +303,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
 		}
 
-		if (focusable) this._focusItem(focusable, this._cellNum, this._getFocusedItemPosition(focusable));
+		if (focusable) focusable.focus();
 		return focusable;
 	}
 
@@ -302,22 +315,23 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (!node) break;
 			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
 		}
-		if (focusable) this._focusItem(focusable, this._cellNum, this._getFocusedItemPosition(focusable));
+		if (focusable) focusable.focus();
 		return focusable;
 	}
 
-	_focusItem(focusable, cellNum, cellFocusedItem) {
-		this._cellNum = cellNum;
-		this._cellFocusedItem = cellFocusedItem;
-		this._focusInfoSet = true;
-		focusable.focus();
-		this._focusInfoSet = false;
-	}
-
-	_focusNextRow(previous = false) {
-		const listItem = previous ? getPreviousAncestorSibling(this) : getNextAncestorSibling(this);
+	_focusNextRow(previous = false, num = 1) {
+		let listItem = previous ?
+			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE') :
+			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE');
 		if (!listItem || !listItem.shadowRoot) return;
-
+		while (num > 1) {
+			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
+			if (!nextItem) {
+				break; //we ran out of items
+			}
+			listItem = nextItem;
+			--num;
+		}
 		const row = listItem.shadowRoot.querySelector('[role="gridrow"]');
 		if (!row) return;
 
@@ -327,13 +341,21 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_focusFirstRow() {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
 		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
-		row._focusNextCell(1);
+		if (this.dir === 'rtl') {
+			row._focusLastItem();
+		} else {
+			row._focusNextCell(1);
+		}
 	}
 
 	_focusLastRow() {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
 		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
-		row._focusLastItem();
+		if (this.dir === 'rtl') {
+			row._focusNextCell(1);
+		} else {
+			row._focusLastItem();
+		}
 	}
 
 	_focusLastItem() {
