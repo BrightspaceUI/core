@@ -137,6 +137,7 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
 		if (!changedProperties.has('asyncState')) return;
 		if (this.asyncState === asyncStates.complete) {
 			this.resize();
