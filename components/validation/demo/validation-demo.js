@@ -80,7 +80,7 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 
 	_validate() {
 		const group = this.shadowRoot.querySelector('d2l-validation-group');
-		group.reportValidity();
+		group.validate();
 	}
 
 	_validateCheckbox(e) {

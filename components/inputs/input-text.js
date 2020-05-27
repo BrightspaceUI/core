@@ -7,6 +7,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import '../validation/validation-custom.js';
 
 class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 

@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { findFormElements, isCustomFormElement } from '../form/form-helpers.js';
+import { findFormElements, isCustomFormElement, isFormElement } from '../form/form-helpers.js';
 import { css } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
@@ -42,6 +42,10 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		this._onUnload = this._onUnload.bind(this);
 		this._errors = new Map();
 		this._tooltips = new Map();
+		this._validationCustoms = new Set();
+
+		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
 	}
 	connectedCallback() {
 		super.connectedCallback();
@@ -56,40 +60,6 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		this.addEventListener('change', this._onChangeEvent);
 		this._errorSummary = this._findErrorSummary();
 	}
-	async checkValidity() {
-		const errors = new Map();
-		errors.set(undefined, []);
-
-		const formElements = findFormElements(this);
-		for (const ele of formElements) {
-			errors.set(ele, []);
-		}
-		const validationCustoms = this.querySelectorAll('d2l-validation-custom');
-		const validations = [];
-		for (const custom of validationCustoms) {
-			validations.push(custom.validate());
-		}
-		const validationsPromise = Promise.all(validations);
-		for (const ele of formElements) {
-			if (!ele.checkValidity()) {
-				const message = this._localizeValidity(ele);
-				ele.setAttribute('aria-invalid', 'true');
-				errors.get(ele).push(message);
-				this._showTooltip(ele, message);
-			}
-		}
-		const validationResults = await validationsPromise;
-		for (let i = 0; i < validationResults.length; i += 1) {
-			const valid = validationResults[i];
-			if (!valid) {
-				const custom = validationCustoms[i];
-				errors.get(custom.source).push(custom.failureText);
-				custom.source.setAttribute('aria-invalid', 'true');
-			}
-		}
-		this._errors = errors;
-		return errors.size === 0;
-	}
 
 	commit() {
 		if (!this.checkValidity()) {
@@ -98,18 +68,26 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		this._dirty = false;
 		return true;
 	}
-
 	get errors() {
 		const errorLists = this._errors.values();
 		return [].concat(...errorLists);
 	}
+	async validate() {
+		const errors = new Map();
+		errors.set(undefined, []);
 
-	async reportValidity() {
-		const isValid = await this.checkValidity();
-		if (!isValid) {
-			this._updateErrorSummary();
+		const formElements = findFormElements(this);
+		for (const ele of formElements) {
+			const eleErrors = await this._validateFormElement(ele);
+			if (eleErrors.length > 0) {
+				ele.setAttribute('aria-invalid', 'true');
+				this._showTooltip(ele, eleErrors[0]);
+			}
+			errors.set(ele, eleErrors);
 		}
-		return isValid;
+		this._errors = errors;
+		this._updateErrorSummary();
+		return errors.size === 0;
 	}
 
 	_findErrorSummary() {
@@ -164,20 +142,12 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		}
 		return ele.validationMessage;
 	}
+
 	async _onChangeEvent(e) {
 		const ele = e.composedPath()[0];
-		const formElements = findFormElements(this);
-		if (formElements.indexOf(ele) === -1) {
-			return;
-		}
-		const validationCustoms = ele.id ? [...this.querySelectorAll(`d2l-validation-custom[for="${ele.id}"]`)] : [];
-		const validations = [];
-		for (const custom of validationCustoms) {
-			validations.push(custom.validate());
-		}
-		const validationsPromise = Promise.all(validations);
-		const validationResults = await validationsPromise;
-		const isValid = validationResults.reduce((v1, v2) => v1 && v2, ele.checkValidity());
+		const errors = await this._validateFormElement(ele);
+
+		const isValid = errors.length === 0;
 		ele.setAttribute('aria-invalid', isValid ? 'false' : 'true');
 
 		if (isValid) {
@@ -186,10 +156,6 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 			}
 			this._hideTooltip(ele);
 		} else {
-			const errors = validationCustoms.filter((_, i) => !validationResults[i]).map(custom => custom.failureText);
-			if (!ele.validity.valid) {
-				errors.push(this._localizeValidity(ele));
-			}
 			this._errors.set(ele, errors);
 			this._showTooltip(ele, errors[0]);
 			if (this._errors.has(ele)) {
@@ -230,6 +196,38 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 			return;
 		}
 		this._errorSummary.errors = this.errors;
+	}
+
+	async _validateFormElement(ele) {
+		if (!isFormElement(ele)) {
+			return [];
+		}
+		const externalCustoms = [...this._validationCustoms].filter(custom => custom.source === ele);
+		const externalCustomValidations = Promise.all(externalCustoms.map(custom => custom.validate()));
+		const internalCustomValidations = isCustomFormElement(ele) ? ele.validateInternalCustoms() : Promise.resolve([]);
+		const customValidations = Promise.all([externalCustomValidations, internalCustomValidations]);
+
+		const errors = [];
+		if (!ele.checkValidity()) {
+			errors.push(ele.validationMessage);
+		}
+		const validationResults = await customValidations;
+		const externalResults = validationResults[0];
+		const externalMessages = externalCustoms.map(custom => custom.failureText).filter((_, i) => !externalResults[i]);
+		const internalResults = validationResults[1];
+		return [...errors, ...internalResults, ...externalMessages];
+	}
+
+	_validationCustomConnected(e) {
+		e.stopPropagation();
+		const custom = e.composedPath()[0];
+		this._validationCustoms.add(custom);
+	}
+
+	_validationCustomDisconnected(e) {
+		e.stopPropagation();
+		const custom = e.composedPath()[0];
+		this._validationCustoms.delete(custom);
 	}
 
 };

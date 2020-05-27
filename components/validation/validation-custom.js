@@ -14,6 +14,18 @@ class ValidationCustom extends LitElement {
 		this._source = null;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		const connected = new CustomEvent('d2l-validation-custom-connected', { bubbles: true, composed: true });
+		this.dispatchEvent(connected);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		const disconnected = new CustomEvent('d2l-validation-custom-disconnected', { bubbles: true, composed: true });
+		this.dispatchEvent(disconnected);
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 

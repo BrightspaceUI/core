@@ -61,11 +61,16 @@ export const FormElementMixin = superclass => class extends superclass {
 		this._validity = new FormElementValidityState({});
 		this._validationMessage = '';
 		this.formValue = null;
+		this._validationCustoms = new Set();
+
+		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
 	}
 
 	checkValidity() {
 		return this._validity && this._validity.valid;
 	}
+
 	get formAssociated() {
 		return true;
 	}
@@ -73,9 +78,11 @@ export const FormElementMixin = superclass => class extends superclass {
 	hideValidationTooltip() {
 
 	}
+
 	setFormValue(formValue) {
 		this.formValue = formValue;
 	}
+
 	setValidity(flags, message) {
 		if (message !== undefined) {
 			this._validationMessage = message;
@@ -84,16 +91,35 @@ export const FormElementMixin = superclass => class extends superclass {
 		this.invalid = !this._validity.valid;
 	}
 
-	showValidationTooltip(message) {
+	showValidationTooltip() {
 		return false;
+	}
+
+	async validateInternalCustoms() {
+		const customs = [...this._validationCustoms];
+		const results = await Promise.all(customs.map(custom => custom.validate()));
+		return customs.map(custom => custom.failureMessage).filter((_, i) => !results[i]);
 	}
 
 	get validationMessage() {
 		// TODO: Generate message based on validity state or use custom
 		return this._validationMessage;
 	}
+
 	get validity() {
 		return this._validity;
+	}
+
+	_validationCustomConnected(e) {
+		e.stopPropagation();
+		const custom = e.composedPath()[0];
+		this._validationCustoms.add(custom);
+	}
+
+	_validationCustomDisconnected(e) {
+		e.stopPropagation();
+		const custom = e.composedPath()[0];
+		this._validationCustoms.delete(custom);
 	}
 
 };
