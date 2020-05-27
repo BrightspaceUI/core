@@ -1,6 +1,8 @@
 import '../colors/colors.js';
+import '../tooltip/tooltip.js';
 import { css } from 'lit-element/lit-element.js';
 import { findFormElements } from '../form/form-helpers.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 export const validationStyles = css`
@@ -39,6 +41,7 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		this._onChangeEvent = this._onChangeEvent.bind(this);
 		this._onUnload = this._onUnload.bind(this);
 		this._errors = new Map();
+		this._tooltips = new Map();
 	}
 	connectedCallback() {
 		super.connectedCallback();
@@ -72,6 +75,7 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 				const message = this._localizeValidity(ele);
 				ele.setAttribute('aria-invalid', 'true');
 				errors.get(ele).push(message);
+				this._showTooltip(ele, message);
 			}
 		}
 		const validationResults = await validationsPromise;
@@ -117,6 +121,13 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		return errorSummary;
 	}
 
+	_hideTooltip(ele) {
+		const tooltip = this._tooltips.get(ele);
+		if (tooltip) {
+			this._tooltips.delete(ele);
+			tooltip.remove();
+		}
+	}
 	_localizeValidity(ele) {
 		const subject = ele.getAttribute('data-subject');
 		if (ele.validity.valueMissing) {
@@ -169,15 +180,18 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 			if (this._errors.delete(ele)) {
 				this._updateErrorSummary();
 			}
-		} else if (this._errors.has(ele)) {
+			this._hideTooltip(ele);
+		} else {
 			const errors = validationCustoms.filter((_, i) => !validationResults[i]).map(custom => custom.failureText);
 			if (!ele.validity.valid) {
 				errors.push(this._localizeValidity(ele));
 			}
 			this._errors.set(ele, errors);
-			this._updateErrorSummary();
+			this._showTooltip(ele, errors[0]);
+			if (this._errors.has(ele)) {
+				this._updateErrorSummary();
+			}
 		}
-		ele.classList.add('d2l-dirty');
 		this._dirty = true;
 	}
 
@@ -186,6 +200,22 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 			e.preventDefault();
 			e.returnValue = false;
 		}
+	}
+
+	_showTooltip(ele, message) {
+		if (!ele.id) {
+			ele.id = getUniqueId();
+		}
+		let tooltip = this._tooltips.get(ele);
+		if (!tooltip) {
+			tooltip = document.createElement('d2l-tooltip');
+			tooltip.for = ele.id;
+			tooltip.setAttribute('align', 'start');
+			tooltip.state = 'error';
+			ele.parentNode.append(tooltip);
+			this._tooltips.set(ele, tooltip);
+		}
+		tooltip.innerText = message;
 	}
 
 	_updateErrorSummary() {

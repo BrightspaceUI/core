@@ -14,15 +14,6 @@ class ValidationCustom extends LitElement {
 		this._source = null;
 	}
 
-	async validate() {
-		const validation = new Promise(resolve => {
-			const details = { bubbles: true, detail: { source: this._source, resolve } };
-			const event = new CustomEvent('d2l-validation-custom-validate', details);
-			return this.dispatchEvent(event);
-		});
-		return validation;
-	}
-
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -37,5 +28,15 @@ class ValidationCustom extends LitElement {
 	get source() {
 		return this._source;
 	}
+
+	async validate() {
+		const validation = new Promise(resolve => {
+			const details = { bubbles: true, detail: { source: this._source, resolve } };
+			const event = new CustomEvent('d2l-validation-custom-validate', details);
+			return this.dispatchEvent(event);
+		});
+		return validation;
+	}
+
 }
 customElements.define('d2l-validation-custom', ValidationCustom);

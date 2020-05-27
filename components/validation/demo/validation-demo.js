@@ -3,13 +3,16 @@ import '../../inputs/input-text.js';
 import '../validation-group.js';
 import '../validation-error-summary.js';
 import '../validation-custom.js';
-import { selectStyles } from '../../inputs/input-select-styles.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeStaticMixin } from '../../../mixins/localize-static-mixin.js';
+import { selectStyles } from '../../inputs/input-select-styles.js';
 import { validationStyles } from '../validation-group-mixin.js';
 
 class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 
+	static get styles() {
+		return [validationStyles, selectStyles];
+	}
 	static get resources() {
 		return {
 			'en': {
@@ -20,10 +23,6 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 				'petsTitle': 'Pets'
 			},
 		};
-	}
-
-	static get styles() {
-		return [validationStyles, selectStyles];
 	}
 
 	render() {
@@ -82,8 +81,6 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 	_validate() {
 		const group = this.shadowRoot.querySelector('d2l-validation-group');
 		group.reportValidity();
-
-		console.log(this.localize('checkTitle'));
 	}
 
 	_validateCheckbox(e) {
