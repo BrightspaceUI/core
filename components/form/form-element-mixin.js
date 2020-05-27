@@ -70,6 +70,9 @@ export const FormElementMixin = superclass => class extends superclass {
 		return true;
 	}
 
+	hideValidationTooltip() {
+
+	}
 	setFormValue(formValue) {
 		this.formValue = formValue;
 	}
@@ -79,6 +82,10 @@ export const FormElementMixin = superclass => class extends superclass {
 		}
 		this._validity = new FormElementValidityState(flags);
 		this.invalid = !this._validity.valid;
+	}
+
+	showValidationTooltip(message) {
+		return false;
 	}
 
 	get validationMessage() {

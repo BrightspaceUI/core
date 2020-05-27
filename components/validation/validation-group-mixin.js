@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
+import { findFormElements, isCustomFormElement } from '../form/form-helpers.js';
 import { css } from 'lit-element/lit-element.js';
-import { findFormElements } from '../form/form-helpers.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
@@ -203,6 +203,9 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 	}
 
 	_showTooltip(ele, message) {
+		if (isCustomFormElement(ele) && ele.showValidationTooltip(message)) {
+			return;
+		}
 		if (!ele.id) {
 			ele.id = getUniqueId();
 		}
