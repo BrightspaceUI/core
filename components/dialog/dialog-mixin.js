@@ -60,29 +60,28 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._updateOverflow = this._updateOverflow.bind(this);
 	}
 
-	async attributeChangedCallback(name, oldval, newval) {
-		super.attributeChangedCallback(name, oldval, newval);
-		if (name === 'opened' && oldval !== newval) {
-			if (this.opened) {
-				if (this._ifrauDialogService) {
-					this._ifrauContextInfo = await this._ifrauDialogService.showBackdrop();
-				}
-				this._open();
-			} else {
-				if (this._ifrauDialogService) {
-					this._ifrauDialogService.hideBackdrop();
-					this._ifrauContextInfo = null;
-				}
-				this._close();
-			}
-		}
-	}
-
 	async connectedCallback() {
 		super.connectedCallback();
 		if (!window.ifrauclient) return;
 		const ifrauClient = await window.ifrauclient().connect();
 		this._ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
+	}
+
+	async updated(changedProperties) {
+		super.updated(changedProperties);
+		if (!changedProperties.has('opened')) return;
+		if (this.opened) {
+			if (this._ifrauDialogService) {
+				this._ifrauContextInfo = await this._ifrauDialogService.showBackdrop();
+			}
+			this._open();
+		} else {
+			if (this._ifrauDialogService) {
+				this._ifrauDialogService.hideBackdrop();
+				this._ifrauContextInfo = null;
+			}
+			this._close();
+		}
 	}
 
 	open() {
