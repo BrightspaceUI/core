@@ -61,21 +61,24 @@ class Backdrop extends LitElement {
 
 		if (!changedProperties.has('shown')) return;
 
-		if (this.shown && this._state === null) {
+		if (this.shown) {
 
-			this._bodyScrollKey = preventBodyScroll();
-			this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
+			if (this._state === null) {
+				this._bodyScrollKey = preventBodyScroll();
+				this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
+			}
 			this._state = 'showing';
 
-		} else if (!this.shown && this._state === 'showing') {
+		} else if (this._state === 'showing') {
 
 			const hide = () => {
-				allowBodyScroll(this._bodyScrollKey);
-				this._bodyScrollKey = null;
-
-				showAccessible(this._hiddenElements);
-				this._hiddenElements = null;
-				this._state = null;
+				if (!this.shown) {
+					allowBodyScroll(this._bodyScrollKey);
+					this._bodyScrollKey = null;
+					showAccessible(this._hiddenElements);
+					this._hiddenElements = null;
+					this._state = null;
+				}
 			};
 
 			if (!reduceMotion && isVisible(this)) {
