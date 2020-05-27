@@ -220,27 +220,32 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				event.preventDefault();
 				break;
 			case keyCodes.HOME:
-				// focus first item
-				this._focusNextCell(1);
 				if (event.ctrlKey) {
 					// focus first item of first row
 					this._focusFirstRow();
+				} else {
+					// focus first item
+					this._focusNextCell(1);
 				}
+				event.preventDefault();
 				break;
 			case keyCodes.END:
-				//focus last item
 				if (event.ctrlKey) {
 					// focus last item of last row
 					this._focusLastRow();
+				} else {
+					// focus last item
+					this._focusLastItem();
 				}
+				event.preventDefault();
 				break;
 			case keyCodes.PAGEUP:
 				// focus five rows up
-				this._focusPreviousRow(5);
+				//this._focusPreviousRow(5);
 				break;
 			case keyCodes.PAGEDOWN:
 				// focus five rows down
-				this._focusNextRow(5);
+				//this._focusNextRow(5);
 				break;
 		}
 	}
@@ -317,6 +322,31 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		if (!row) return;
 
 		row._focusCellItem(this._cellNum, this._cellFocusedItem);
+	}
+
+	_focusFirstRow() {
+		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
+		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		row._focusNextCell(1);
+	}
+
+	_focusLastRow() {
+		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
+		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		row._focusLastItem();
+	}
+
+	_focusLastItem() {
+		let cell = null;
+		let focusable = null;
+		let num = 1;
+		do {
+			cell = this.shadowRoot.querySelector(`[cell-num="${num++}"]`);
+			if (cell) {
+				focusable = getLastFocusableDescendant(cell) || focusable;
+			}
+		} while (cell);
+		focusable.focus();
 	}
 
 	_setFocusInfo(event) {
