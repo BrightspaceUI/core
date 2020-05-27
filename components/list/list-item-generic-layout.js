@@ -13,13 +13,12 @@ const keyCodes = {
 	DOWN: 40,
 	END: 35,
 	ENTER: 13,
-	ESCAPE: 27,
 	HOME: 36,
 	LEFT: 37,
 	PAGEUP: 33,
 	PAGEDOWN: 34,
-	SPACE: 32,
 	RIGHT: 39,
+	SPACE: 32,
 	UP: 38
 };
 
@@ -90,7 +89,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.role = 'gridrow';
 		this.gridActive = true;
 
 		this._preventFocus = {
@@ -143,26 +141,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		`;
 	}
 
-	_getPrevSiblingInCell(node) {
-		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
-		if (cell.name === node.slot) return null;
-		if (node.previousElementSibling) return node.previousElementSibling;
-
-		const sibling = getPreviousAncestorSibling(node);
-		return isComposedAncestor(cell, sibling) ? sibling : null;
-	}
-
-	_getNextSiblingInCell(node) {
-		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
-		if (cell.name === node.slot) return null;
-		if (node.nextElementSibling) return node.nextElementSibling;
-
-		const sibling = getNextAncestorSibling(node);
-		return isComposedAncestor(cell, sibling) ? sibling : null;
-	}
-
-	_getThisCell() {
-		return this.shadowRoot.querySelector(`.d2l-cell[cell-num="${this._cellNum}"]`);
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('gridActive')) this.role = 'gridrow';
 	}
 
 	_getFocusedItemPosition(node) {
@@ -181,10 +162,37 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		return position;
 	}
 
+	_getNextSiblingInCell(node) {
+		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
+		if (cell.name === node.slot) return null;
+		if (node.nextElementSibling) return node.nextElementSibling;
+
+		const sibling = getNextAncestorSibling(node);
+		return isComposedAncestor(cell, sibling) ? sibling : null;
+	}
+
+	_getPrevSiblingInCell(node) {
+		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
+		if (cell.name === node.slot) return null;
+		if (node.previousElementSibling) return node.previousElementSibling;
+
+		const sibling = getPreviousAncestorSibling(node);
+		return isComposedAncestor(cell, sibling) ? sibling : null;
+	}
+
+	_getThisCell() {
+		return this.shadowRoot.querySelector(`.d2l-cell[cell-num="${this._cellNum}"]`);
+	}
+
 	_handleKeydown(event) {
 		if (!this.gridActive) return;
 		let node = null;
 		switch (event.keyCode) {
+			case keyCodes.ENTER:
+			case keyCodes.SPACE:
+				node = getComposedActiveElement();
+				node.click();
+				break;
 			case keyCodes.RIGHT:
 				node = getComposedActiveElement();
 				if (this.dir === 'rtl') {
@@ -255,7 +263,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				}
 				break;
 			case keyCodes.PAGEUP:
-				// focus five rows ups
+				// focus five rows up
 				this._focusNextRow(true, 5);
 				break;
 			case keyCodes.PAGEDOWN:
@@ -278,6 +286,39 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 	}
 
+	_focusFirstRow() {
+		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
+		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		if (this.dir === 'rtl') {
+			row._focusLastItem();
+		} else {
+			row._focusNextCell(1);
+		}
+	}
+
+	_focusLastItem() {
+		let cell = null;
+		let focusable = null;
+		let num = 1;
+		do {
+			cell = this.shadowRoot.querySelector(`[cell-num="${num++}"]`);
+			if (cell) {
+				focusable = getLastFocusableDescendant(cell) || focusable;
+			}
+		} while (cell);
+		focusable.focus();
+	}
+
+	_focusLastRow() {
+		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
+		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		if (this.dir === 'rtl') {
+			row._focusNextCell(1);
+		} else {
+			row._focusLastItem();
+		}
+	}
+
 	_focusNextCell(num, forward = true) {
 		let cell = null;
 		let focusable = null;
@@ -289,33 +330,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (focusable) focusable.focus();
 			forward ? ++num : --num;
 		} while (cell && !focusable);
-		return focusable;
-	}
-
-	_focusNextWithinCell(node, num = 1) {
-		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
-		let focusable = null;
-		let siblingNum = 1;
-		while (!focusable || siblingNum < num) {
-			node = this._getNextSiblingInCell(node);
-			if (!node) break;
-			++siblingNum;
-			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
-		}
-
-		if (focusable) focusable.focus();
-		return focusable;
-	}
-
-	_focusPreviousWithinCell(node) {
-		if (!node || node.assignedSlot === this._getThisCell()) return null;
-		let focusable = null;
-		while (!focusable) {
-			node = this._getPrevSiblingInCell(node);
-			if (!node) break;
-			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
-		}
-		if (focusable) focusable.focus();
 		return focusable;
 	}
 
@@ -338,42 +352,34 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		row._focusCellItem(this._cellNum, this._cellFocusedItem);
 	}
 
-	_focusFirstRow() {
-		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
-		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
-		if (this.dir === 'rtl') {
-			row._focusLastItem();
-		} else {
-			row._focusNextCell(1);
-		}
-	}
-
-	_focusLastRow() {
-		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
-		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
-		if (this.dir === 'rtl') {
-			row._focusNextCell(1);
-		} else {
-			row._focusLastItem();
-		}
-	}
-
-	_focusLastItem() {
-		let cell = null;
+	_focusNextWithinCell(node, num = 1) {
+		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
 		let focusable = null;
-		let num = 1;
-		do {
-			cell = this.shadowRoot.querySelector(`[cell-num="${num++}"]`);
-			if (cell) {
-				focusable = getLastFocusableDescendant(cell) || focusable;
-			}
-		} while (cell);
-		focusable.focus();
+		let siblingNum = 1;
+		while (!focusable || siblingNum < num) {
+			node = this._getNextSiblingInCell(node);
+			if (!node) break;
+			++siblingNum;
+			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
+		}
+
+		if (focusable) focusable.focus();
+		return focusable;
+	}
+
+	_focusPreviousWithinCell(node) {
+		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
+		let focusable = null;
+		while (!focusable) {
+			node = this._getPrevSiblingInCell(node);
+			if (!node) break;
+			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
+		}
+		if (focusable) focusable.focus();
+		return focusable;
 	}
 
 	_setFocusInfo(event) {
-		if (this._focusInfoSet) return; //prevent unnecessary work
-
 		const slot = (event.path || event.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('cell-num'));
