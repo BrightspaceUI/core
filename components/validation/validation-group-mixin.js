@@ -123,11 +123,15 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 
 	_hideTooltip(ele) {
 		const tooltip = this._tooltips.get(ele);
+		if (isCustomFormElement(ele)) {
+			ele.hideValidationTooltip();
+		}
 		if (tooltip) {
 			this._tooltips.delete(ele);
 			tooltip.remove();
 		}
 	}
+
 	_localizeValidity(ele) {
 		const subject = ele.getAttribute('data-subject');
 		if (ele.validity.valueMissing) {

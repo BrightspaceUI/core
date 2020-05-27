@@ -37,7 +37,8 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 			_firstSlotWidth: { type: Number },
 			_focused: { type: Boolean },
 			_hovered: { type: Boolean },
-			_lastSlotWidth: { type: Number }
+			_lastSlotWidth: { type: Number },
+			_validationTooltipText: { type: String }
 		};
 	}
 
@@ -157,6 +158,7 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
+				${ this._validationTooltipText ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this._validationTooltipText}</d2l-tooltip>` : null }
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {
@@ -191,6 +193,14 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 			await this.updateComplete;
 			this.focus();
 		}
+	}
+
+	hideValidationTooltip() {
+		this._validationTooltipText = null;
+	}
+	showValidationTooltip(message) {
+		this._validationTooltipText = message;
+		return true;
 	}
 
 	_getAriaLabel() {
