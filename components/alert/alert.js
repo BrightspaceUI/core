@@ -63,7 +63,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			.d2l-alert-text {
 				flex: 1;
-				padding: 0.9rem 1.2rem 0.9rem 1.2rem;
+				padding: 0.9rem 1.2rem;
 				position: relative;
 			}
 			:host([has-close-button]) .d2l-alert-text {
@@ -71,14 +71,23 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 			:host([dir="rtl"]) .d2l-alert-text {
 				padding-left: 1.2rem;
-				padding-right: 1.5rem;
+				padding-right: 0.9rem;
 			}
+			:host([dir="rtl"][has-close-button]) .d2l-alert-text {
+				padding-left: 0.9rem;
+				padding-right: 12.rem;
+			}
+
 			.d2l-alert-subtext {
 				margin: 0.5rem 0 0;
 			}
 
 			.d2l-alert-action {
 				margin: 0.6rem 0.6rem 0.6rem 0;
+			}
+			:host([dir="rtl"]) .d2l-alert-action {
+				margin-left: 0.6rem;
+				margin-right: 0;
 			}
 
 			@keyframes drop-in {

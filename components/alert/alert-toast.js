@@ -73,10 +73,7 @@ class AlertToast extends LitElement {
 
 			@media (max-width: 615px) {
 				.d2l-alert-toast-container {
-					right: 8px;
-					left: 8px;
 					bottom: 12px;
-					width: calc(100% - 16px);
 				}
 			}
 		`;
