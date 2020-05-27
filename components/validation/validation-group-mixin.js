@@ -1,7 +1,7 @@
+import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
 import { findFormElements } from '../form/form-helpers.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
-import '../colors/colors.js';
 
 export const validationStyles = css`
 	:host {
@@ -40,36 +40,19 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		this._onUnload = this._onUnload.bind(this);
 		this._errors = new Map();
 	}
-
-	get errors() {
-		const errorLists = this._errors.values();
-		return [].concat(...errorLists);
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('beforeunload', this._onUnload);
 	}
-
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('beforeunload', this._onUnload);
+	}
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('change', this._onChangeEvent);
 		this._errorSummary = this._findErrorSummary();
 	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('beforeunload', this._onUnload);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		window.removeEventListener('beforeunload', this._onUnload);
-	}
-
-	async reportValidity() {
-		const isValid = await this.checkValidity();
-		if (!isValid) {
-			this._updateErrorSummary();
-		}
-		return isValid;
-	}
-
 	async checkValidity() {
 		const errors = new Map();
 		errors.set(undefined, []);
@@ -97,7 +80,7 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 			if (!valid) {
 				const custom = validationCustoms[i];
 				errors.get(custom.source).push(custom.failureText);
-				custom.source.setAttribute('aria-invalid','true');
+				custom.source.setAttribute('aria-invalid', 'true');
 			}
 		}
 		this._errors = errors;
@@ -112,6 +95,19 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		return true;
 	}
 
+	get errors() {
+		const errorLists = this._errors.values();
+		return [].concat(...errorLists);
+	}
+
+	async reportValidity() {
+		const isValid = await this.checkValidity();
+		if (!isValid) {
+			this._updateErrorSummary();
+		}
+		return isValid;
+	}
+
 	_findErrorSummary() {
 		let errorSummary = this.querySelector('d2l-validation-error-summary');
 		if (!errorSummary) {
@@ -121,6 +117,38 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		return errorSummary;
 	}
 
+	_localizeValidity(ele) {
+		const subject = ele.getAttribute('data-subject');
+		if (ele.validity.valueMissing) {
+			return this.localize('valueMissingMessage', { subject });
+		}
+		if (ele.validity.tooLong) {
+			const maxlength = ele.getAttribute('maxlength');
+			return this.localize('tooLongMessage', { subject, maxlength });
+		}
+		if (ele.validity.tooShort) {
+			const minlength = ele.getAttribute('minlength');
+			return this.localize('tooShortMessage', { subject, minlength });
+		}
+		if (ele.validity.badInput) {
+			return this.localize('badInputMessage', { subject });
+		}
+		if (ele.validity.patternMismatch) {
+			return this.localize('patternMismatchMessage', { subject });
+		}
+		if (ele.validity.rangeOverflow) {
+			const max = ele.getAttribute('max');
+			return this.localize('rangeOverflowMessage', { subject, max });
+		}
+		if (ele.validity.rangeUnderflow) {
+			const min = ele.getAttribute('min');
+			return this.localize('rangeUnderflowMessage', { subject, min });
+		}
+		if (ele.validity.typeMismatch) {
+			return this.localize('typeMismatchMessage', { subject });
+		}
+		return ele.validationMessage;
+	}
 	async _onChangeEvent(e) {
 		const ele = e.composedPath()[0];
 		const formElements = findFormElements(this);
@@ -167,36 +195,4 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		this._errorSummary.errors = this.errors;
 	}
 
-	_localizeValidity(ele) {
-		const subject = ele.getAttribute('data-subject');
-		if (ele.validity.valueMissing) {
-			return this.localize('valueMissingMessage', { subject });
-		}
-		if (ele.validity.tooLong) {
-			const maxlength = ele.getAttribute('maxlength');
-			return this.localize('tooLongMessage', { subject, maxlength });
-		}
-		if (ele.validity.tooShort) {
-			const minlength = ele.getAttribute('minlength');
-			return this.localize('tooShortMessage', { subject, minlength });
-		}
-		if (ele.validity.badInput) {
-			return this.localize('badInputMessage', { subject });
-		}
-		if (ele.validity.patternMismatch) {
-			return this.localize('patternMismatchMessage', { subject });
-		}
-		if (ele.validity.rangeOverflow) {
-			const max = ele.getAttribute('max');
-			return this.localize('rangeOverflowMessage', { subject, max });
-		}
-		if (ele.validity.rangeUnderflow) {
-			const min = ele.getAttribute('min');
-			return this.localize('rangeUnderflowMessage', { subject, min });
-		}
-		if (ele.validity.typeMismatch) {
-			return this.localize('typeMismatchMessage', { subject });
-		}
-		return ele.validationMessage;
-	}
 };

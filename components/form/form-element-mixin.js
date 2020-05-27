@@ -18,6 +18,24 @@ export class FormElementValidityState {
 		};
 	}
 
+	get badInput() {
+		return this.flags.badInput;
+	}
+	get customError() {
+		return this.flags.customError;
+	}
+	get patternMismatch() {
+		return this.flags.patternMismatch;
+	}
+	get stepMismatch() {
+		return this.flags.stepMismatch;
+	}
+	get tooLong() {
+		return this.flags.tooLong;
+	}
+	get tooShort() {
+		return this.flags.tooShort;
+	}
 	get valid() {
 		return Object.values(this.flags).reduce((f1, f2) => !f1 && !f2);
 	}
@@ -26,29 +44,6 @@ export class FormElementValidityState {
 		return this.flags.valueMissing;
 	}
 
-	get patternMismatch() {
-		return this.flags.patternMismatch;
-	}
-
-	get tooLong() {
-		return this.flags.tooLong;
-	}
-
-	get tooShort() {
-		return this.flags.tooShort;
-	}
-
-	get stepMismatch() {
-		return this.flags.stepMismatch;
-	}
-
-	get badInput() {
-		return this.flags.badInput;
-	}
-
-	get customError() {
-		return this.flags.customError;
-	}
 }
 
 export const FormElementMixin = superclass => class extends superclass {
@@ -68,14 +63,16 @@ export const FormElementMixin = superclass => class extends superclass {
 		this.formValue = null;
 	}
 
+	checkValidity() {
+		return this._validity && this._validity.valid;
+	}
 	get formAssociated() {
 		return true;
 	}
 
-	checkValidity() {
-		return this._validity && this._validity.valid;
+	setFormValue(formValue) {
+		this.formValue = formValue;
 	}
-
 	setValidity(flags, message) {
 		if (message !== undefined) {
 			this._validationMessage = message;
@@ -84,16 +81,12 @@ export const FormElementMixin = superclass => class extends superclass {
 		this.invalid = !this._validity.valid;
 	}
 
-	setFormValue(formValue) {
-		this.formValue = formValue;
-	}
-
-	get validity() {
-		return this._validity;
-	}
-
 	get validationMessage() {
 		// TODO: Generate message based on validity state or use custom
 		return this._validationMessage;
 	}
+	get validity() {
+		return this._validity;
+	}
+
 };
