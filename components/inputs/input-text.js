@@ -1,3 +1,4 @@
+import '../validation/validation-custom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
@@ -159,6 +160,7 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 			</div>
+			<d2l-validation-custom @d2l-validation-custom-validate=${this._customValidation} failure-text="Wrong value, try hunter2" ></d2l-validation-custom>
 			${ this._validationTooltipText ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this._validationTooltipText}</d2l-tooltip>` : null }
 		`;
 		if (this.label && !this.labelHidden) {
@@ -201,6 +203,12 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 	showValidationTooltip(message) {
 		this._validationTooltipText = message;
 		return true;
+	}
+
+	_customValidation(e) {
+		setTimeout(() => {
+			e.detail.resolve(this.value === 'hunter2');
+		}, 1000);
 	}
 
 	_getAriaLabel() {

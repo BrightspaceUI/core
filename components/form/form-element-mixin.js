@@ -100,7 +100,7 @@ export const FormElementMixin = superclass => class extends ValidationLocalizeMi
 	async validateInternalCustoms() {
 		const customs = [...this._validationCustoms];
 		const results = await Promise.all(customs.map(custom => custom.validate()));
-		return customs.map(custom => custom.failureMessage).filter((_, i) => !results[i]);
+		return customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
 	}
 
 	get validationMessage() {
