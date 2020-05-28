@@ -49,7 +49,7 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 					<input type="text" data-subject="${this.localize('nameTitle')}" id="name" name="name" required minlength="4" maxlength="8" size="10">
 
 					<div>
-						<select class="d2l-input-select" data-subject="${this.localize('petsTitle')}" name="pets" id="pet-select" required>
+						<select formnovalidate class="d2l-input-select" data-subject="${this.localize('petsTitle')}" name="pets" id="pet-select" required>
 							<option value="">--Please choose an option--</option>
 							<option value="dog">Dog</option>
 							<option value="cat">Cat</option>
@@ -60,7 +60,7 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 						</select>
 					</div>
 				</div>
-				<d2l-input-text data-subject="${this.localize('customInputTitle')}"  name="custom-input" required></d2l-input-text>
+				<d2l-input-text label="${this.localize('customInputTitle')}" data-subject="${this.localize('customInputTitle')}"  name="custom-input" required></d2l-input-text>
 				<div>
 					<h2>Secondary</h2>
 					<label for="story">Tell us your story:</label>

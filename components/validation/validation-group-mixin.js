@@ -3,7 +3,7 @@ import '../tooltip/tooltip.js';
 import { findFormElements, isCustomFormElement, isFormElement } from '../form/form-helpers.js';
 import { css } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { ValidationLocalizeMixin } from './validation-localize-mixin.js';
 
 export const validationStyles = css`
 	:host {
@@ -15,25 +15,10 @@ export const validationStyles = css`
 	}
 `;
 
-export const ValidationGroupMixin = superclass => class extends LocalizeStaticMixin(superclass) {
+export const ValidationGroupMixin = superclass => class extends ValidationLocalizeMixin(superclass) {
 
 	static get properties() {
 		return {};
-	}
-
-	static get resources() {
-		return {
-			'en': {
-				'valueMissingMessage': '{subject} is required',
-				'tooLongMessage': '{subject} must be at most {maxlength} characters',
-				'tooShortMessage': '{subject} must be at least {minlength} characters',
-				'badInputMessage': '{subject} has bad input',
-				'patternMismatchMessage': '{subject} has malformed input',
-				'rangeOverflowMessage': '{subject} must be less than {max}',
-				'rangeUnderflowMessage': '{subject} must be greater than {min}',
-				'typeMismatchMessage': '{subject} has an invalid type'
-			},
-		};
 	}
 
 	constructor() {
@@ -110,40 +95,8 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 		}
 	}
 
-	_localizeValidity(ele) {
-		const subject = ele.getAttribute('data-subject');
-		if (ele.validity.valueMissing) {
-			return this.localize('valueMissingMessage', { subject });
-		}
-		if (ele.validity.tooLong) {
-			const maxlength = ele.getAttribute('maxlength');
-			return this.localize('tooLongMessage', { subject, maxlength });
-		}
-		if (ele.validity.tooShort) {
-			const minlength = ele.getAttribute('minlength');
-			return this.localize('tooShortMessage', { subject, minlength });
-		}
-		if (ele.validity.badInput) {
-			return this.localize('badInputMessage', { subject });
-		}
-		if (ele.validity.patternMismatch) {
-			return this.localize('patternMismatchMessage', { subject });
-		}
-		if (ele.validity.rangeOverflow) {
-			const max = ele.getAttribute('max');
-			return this.localize('rangeOverflowMessage', { subject, max });
-		}
-		if (ele.validity.rangeUnderflow) {
-			const min = ele.getAttribute('min');
-			return this.localize('rangeUnderflowMessage', { subject, min });
-		}
-		if (ele.validity.typeMismatch) {
-			return this.localize('typeMismatchMessage', { subject });
-		}
-		return ele.validationMessage;
-	}
-
 	async _onChangeEvent(e) {
+		e.preventDefault();
 		const ele = e.composedPath()[0];
 		const errors = await this._validateFormElement(ele);
 
@@ -156,11 +109,11 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 			}
 			this._hideTooltip(ele);
 		} else {
-			this._errors.set(ele, errors);
-			this._showTooltip(ele, errors[0]);
 			if (this._errors.has(ele)) {
+				this._errors.set(ele, errors);
 				this._updateErrorSummary();
 			}
+			this._showTooltip(ele, errors[0]);
 		}
 		this._dirty = true;
 	}
@@ -209,7 +162,12 @@ export const ValidationGroupMixin = superclass => class extends LocalizeStaticMi
 
 		const errors = [];
 		if (!ele.checkValidity()) {
-			errors.push(ele.validationMessage);
+			if (isCustomFormElement(ele)) {
+				errors.push(ele.validationMessage);
+			} else {
+				const validationMessage = this.localizeValidity(ele);
+				errors.push(validationMessage);
+			}
 		}
 		const validationResults = await customValidations;
 		const externalResults = validationResults[0];

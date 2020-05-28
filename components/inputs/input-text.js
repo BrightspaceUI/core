@@ -7,7 +7,6 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import '../validation/validation-custom.js';
 
 class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 
@@ -159,8 +158,8 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-				${ this._validationTooltipText ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this._validationTooltipText}</d2l-tooltip>` : null }
 			</div>
+			${ this._validationTooltipText ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this._validationTooltipText}</d2l-tooltip>` : null }
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
@@ -176,7 +175,7 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				if (this.required && !this.value) {
-					this.setValidity({ valueMissing: true }, 'Oh no this value is required');
+					this.setValidity({ valueMissing: true });
 				} else {
 					this.setValidity({});
 				}

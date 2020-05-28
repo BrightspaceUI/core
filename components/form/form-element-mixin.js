@@ -1,3 +1,5 @@
+import { ValidationLocalizeMixin } from '../validation/validation-localize-mixin.js';
+
 export class FormElementValidityState {
 
 	constructor(flags) {
@@ -46,11 +48,10 @@ export class FormElementValidityState {
 
 }
 
-export const FormElementMixin = superclass => class extends superclass {
+export const FormElementMixin = superclass => class extends ValidationLocalizeMixin(superclass) {
 
 	static get properties() {
 		return {
-			invalid: { type: Boolean, reflect: true },
 			_validationMessage: { type: String },
 			_validity: { type: Object }
 		};
@@ -84,11 +85,12 @@ export const FormElementMixin = superclass => class extends superclass {
 	}
 
 	setValidity(flags, message) {
-		if (message !== undefined) {
-			this._validationMessage = message;
-		}
 		this._validity = new FormElementValidityState(flags);
-		this.invalid = !this._validity.valid;
+		if (!this._validity.valid) {
+			this._validationMessage = message === undefined ? this.localizeValidity() : message;
+		} else {
+			this._validationMessage = null;
+		}
 	}
 
 	showValidationTooltip() {
@@ -102,7 +104,6 @@ export const FormElementMixin = superclass => class extends superclass {
 	}
 
 	get validationMessage() {
-		// TODO: Generate message based on validity state or use custom
 		return this._validationMessage;
 	}
 
