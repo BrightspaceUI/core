@@ -3,7 +3,7 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
 describe('d2l-input-time', () => {
 
-	it('normall', async() => {
+	it('normal', async() => {
 		const elem = await fixture(html`<d2l-input-time label="label text" time-interval="sixty"></d2l-input-time>`);
 		await expect(elem).to.be.accessible();
 	});
