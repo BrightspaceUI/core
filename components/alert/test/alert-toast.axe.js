@@ -23,9 +23,9 @@ describe('d2l-alert-toast', () => {
 		await expect(el).to.be.accessible();
 	});
 
-	it('should have status role when open', async() => {
+	it('should have status alert when open', async() => {
 		const el = await fixture(html`<d2l-alert-toast open>message</d2l-alert-toast>`);
-		expect(el.getAttribute('role')).to.equal('status');
+		expect(el.getAttribute('role')).to.equal('alert');
 	});
 
 });

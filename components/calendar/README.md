@@ -17,8 +17,14 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 
 **Properties:**
 
-- `selected-value` (String): Currently selected date. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
-- `summary` (String): Summary of the calendar for accessibility.
+Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
+
+| Property | Type | Description |
+|--|--|--|
+| `max-value` | String | Maximum valid date that could be selected by a user. |
+| `min-value` | String |  Minimum valid date that could be selected by a user. |
+| `selected-value` | String | Currently selected date. |
+| `summary` | String | Summary of the calendar for accessibility. |
 
 **Accessibility:**
 
