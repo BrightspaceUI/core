@@ -94,7 +94,11 @@ const _getNativeFormElementData = (node) => {
 	const tagName = node.nodeName.toLowerCase();
 	if (tagName === 'input') {
 		const type = node.getAttribute('type');
-		if ((type === 'checkbox' || type === 'radio') && node.checked) {
+		if ((type === 'checkbox' || type === 'radio')) {
+			if (node.checked) {
+				eleData.append(node.name, node.value);
+			}
+		} else {
 			eleData.append(node.name, node.value);
 		}
 	} else if (node.name && tagName !== 'output') {
