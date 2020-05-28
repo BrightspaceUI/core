@@ -2,6 +2,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
 
 export const ListItemCheckboxMixin = superclass => class extends superclass {
@@ -77,7 +78,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			` : nothing;
 	}
 
-	_renderCheckboxAction(inner, labelledBy = null) {
+	_renderCheckboxAction(inner, labelledBy) {
 		if (!inner && !labelledBy) {
 			console.warn('Label for list-item checkbox may not be accessible. Pass inner text to the label or pass labelledby.');
 		}
@@ -89,7 +90,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			<label @click="${this._handleCheckboxActionClick}"
 				class="${classMap(labelClasses)}"
 				for="${this._checkboxId}"
-				aria-labelledby="${labelledBy}">
+				aria-labelledby="${ifDefined(labelledBy)}">
 				${inner}
 			</label>
 			` : nothing;
