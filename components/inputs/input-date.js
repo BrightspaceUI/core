@@ -272,7 +272,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			if (value !== this.value) {
 				this._updateValueDispatchEvent('');
 				await this.updateComplete;
-				this._calendar.reset();
+				await this._calendar.reset();
 			}
 			return;
 		}
@@ -286,7 +286,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
-		this._calendar.reset();
+		await this._calendar.reset();
 	}
 
 	_handleClear() {
