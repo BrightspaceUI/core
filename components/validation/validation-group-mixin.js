@@ -47,16 +47,18 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	commit() {
-		if (!this.checkValidity()) {
+		if (this.errors.length > 0) {
 			return false;
 		}
 		this._dirty = false;
 		return true;
 	}
+
 	get errors() {
 		const errorLists = this._errors.values();
 		return [].concat(...errorLists);
 	}
+
 	async validate() {
 		const errors = new Map();
 		errors.set(undefined, []);
@@ -67,12 +69,12 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 			if (eleErrors.length > 0) {
 				ele.setAttribute('aria-invalid', 'true');
 				this._showTooltip(ele, eleErrors[0]);
+				errors.set(ele, eleErrors);
 			}
-			errors.set(ele, eleErrors);
 		}
 		this._errors = errors;
 		this._updateErrorSummary();
-		return errors.size === 0;
+		return this.errors;
 	}
 
 	_findErrorSummary() {
@@ -96,7 +98,10 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	async _onChangeEvent(e) {
+
 		e.preventDefault();
+		this._dirty = true;
+
 		const ele = e.composedPath()[0];
 		const errors = await this._validateFormElement(ele);
 
@@ -115,7 +120,6 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 			}
 			this._showTooltip(ele, errors[0]);
 		}
-		this._dirty = true;
 	}
 
 	_onUnload(e) {

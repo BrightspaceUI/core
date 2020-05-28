@@ -64,7 +64,7 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 				<div>
 					<h2>Secondary</h2>
 					<label for="story">Tell us your story:</label>
-					<textarea id="story" name="story" rows="5" cols="33">It was a dark and stormy night...</textarea>
+					<textarea data-subject="Story" minlength="20" id="story" name="story" rows="5" cols="33">It was a dark and stormy night...</textarea>
 					<div>
 						<input type="range" id="b" name="b" value="50" max="100" min="15" /> +
 						<input type="number" id="a" name="a" value="10" /> =
@@ -78,13 +78,16 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 		`;
 	}
 
-	_validate() {
+	async _validate() {
 		const group = this.shadowRoot.querySelector('d2l-validation-group');
-		group.validate();
+		const errors = await group.validate();
+		if (errors.length === 0) {
+			group.commit();
+		}
 	}
 
 	_validateCheckbox(e) {
-		e.detail.resolve(false);
+		e.detail.resolve(e.detail.source.checked);
 	}
 }
 customElements.define('d2l-validation-demo', ValidationDemo);
