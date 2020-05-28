@@ -49,7 +49,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		const classes = { hovering: this._hovering, focusing: this._focusing };
 
 		return html`
-			<d2l-list-item-generic-layout>
+			<d2l-list-item-generic-layout gridActive>
 				${ this.draggable ? html`
 				<div slot="outside-control">${ this._renderDragHandle ? this._renderDragHandle() : '=' }</div>
 				` : nothing }

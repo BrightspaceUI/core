@@ -89,7 +89,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.gridActive = true;
 
 		this._preventFocus = {
 			handleEvent(event) {
@@ -143,7 +142,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('gridActive')) this.role = 'gridrow';
+		if (changedProperties.has('gridActive')) {
+			this.role = this.gridActive ? 'gridrow' : undefined;
+		}
 	}
 
 	_getFocusedItemPosition(node) {
