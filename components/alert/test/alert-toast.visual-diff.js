@@ -36,4 +36,21 @@ describe('d2l-alert-toast', () => {
 		});
 	});
 
+	describe('responsive-position', () => {
+		it('wide', async function() {
+			await helper.open(page, '#subtext-button-close');
+
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		});
+
+		it('narrow', async function() {
+			page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 400 } });
+			await page.goto(`${visualDiff.getBaseUrl()}/components/alert/test/alert-toast.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+			await page.bringToFront();
+			await helper.open(page, '#subtext-button-close');
+
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		});
+	});
+
 });
