@@ -24,6 +24,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			emptyText: { type: String, attribute: 'empty-text'},
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			minValue: { attribute: 'min-value', reflect: true, type: String },
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -232,6 +234,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
 						<d2l-calendar
 							@d2l-calendar-selected="${this._handleDateSelected}"
+							max-value="${ifDefined(this.maxValue)}"
+							min-value="${ifDefined(this.minValue)}"
 							selected-value="${ifDefined(this.value)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
@@ -268,7 +272,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			if (value !== this.value) {
 				this._updateValueDispatchEvent('');
 				await this.updateComplete;
-				this._calendar.reset();
+				await this._calendar.reset();
 			}
 			return;
 		}
@@ -282,7 +286,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
-		this._calendar.reset();
+		await this._calendar.reset();
 	}
 
 	_handleClear() {

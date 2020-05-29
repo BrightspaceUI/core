@@ -15,17 +15,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
+		<style>
+			.visual-diff {
+				margin-bottom: 50px;
+			}
+		</style>
 	</head>
 	<body class="d2l-typography">
 		<div style="width: 300px;">
 			<div class="visual-diff">
 				<d2l-input-date id="basic" value="2019-12-20"></d2l-input-date>
-			</div>
-			<div class="visual-diff">
-				<d2l-input-date id="labelled" label="Start Date" value="2019-03-02"></d2l-input-date>
-			</div>
-			<div class="visual-diff">
-				<d2l-input-date id="label-hidden" label="Start Date" label-hidden value="2020-12-30"></d2l-input-date>
 			</div>
 			<div class="visual-diff">
 				<d2l-input-date id="disabled" disabled value="1990-01-01"></d2l-input-date>
@@ -34,7 +33,16 @@
 				<d2l-input-date id="empty-text" empty-text="No reminder date ever entered"></d2l-input-date>
 			</div>
 			<div class="visual-diff">
-				<d2l-input-date id="no-value"></d2l-input-date>
+				<d2l-input-date id="label" label="Start Date" value="2019-03-02"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="label-hidden" label="Start Date" label-hidden value="2020-12-30"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="min-max" min-value="2018-02-13" max-value="2018-02-27"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="placeholder"></d2l-input-date>
 			</div>
 		</div>
 	</body>

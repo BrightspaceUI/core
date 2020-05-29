@@ -128,6 +128,17 @@ describe('d2l-calendar', () => {
 			clock.restore();
 		});
 
+		it('has initial correct _focusDate when on month with min-value', async() => {
+			const newToday = new Date('2018-02-12T12:00Z');
+			const clock = sinon.useFakeTimers(newToday.getTime());
+
+			const calendar = await fixture(html`<d2l-calendar min-value="2018-02-13"></d2l-calendar>`);
+			const expectedFocusDate = new Date(2018, 1, 13);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+
+			clock.restore();
+		});
+
 		it('has correct _focusDate when user uses right arrow from a focused date', async() => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
