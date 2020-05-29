@@ -172,32 +172,29 @@ class InputTime extends LitElement {
 		const input = html`
 			<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
 			<d2l-dropdown ?disabled="${this.disabled}">
-				<div
+				<input
+					aria-controls="${this._dropdownId}"
+					aria-describedby="${this._dropdownId}-timezone"
+					aria-expanded="false"
+					aria-haspopup="true"
+					aria-labelledby="${this._dropdownId}-label"
+					@change="${this._handleChange}"
+					class="d2l-input d2l-dropdown-opener"
+					?disabled="${this.disabled}"
+					@keydown="${this._handleKeydown}"
 					role="combobox"
-					aria-owns="${this._dropdownId}"
-					class="d2l-dropdown-opener"
-					aria-expanded="false">
-					<input
-						aria-controls="${this._dropdownId}"
-						aria-labelledby="${this._dropdownId}-label"
-						@change="${this._handleChange}"
-						@keydown="${this._handleKeydown}"
-						class="d2l-input"
-						?disabled="${this.disabled}"
-						.value="${this._formattedValue}">
-				</div>
+					.value="${this._formattedValue}">
 				<d2l-dropdown-menu
 					@d2l-dropdown-close="${this.focus}"
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195">
 					<d2l-menu
-						aria-describedby="${this._dropdownId}-timezone"
-						id="${this._dropdownId}"
-						role="listbox"
-						class="d2l-input-time-menu"
 						aria-labelledby="${this._dropdownId}-label"
-						@d2l-menu-item-change="${this._handleDropdownChange}">
+						class="d2l-input-time-menu"
+						@d2l-menu-item-change="${this._handleDropdownChange}"
+						id="${this._dropdownId}"
+						role="listbox">
 						${INTERVALS.get(this.timeInterval).map(i => html`
 							<d2l-menu-item-radio
 								text="${i.text}"
