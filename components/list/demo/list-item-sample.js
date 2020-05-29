@@ -55,7 +55,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				` : nothing }
 				${this.selectable ? html`
 				<div slot="control">${ this._renderCheckbox() }</div>
-				<div slot="control-action" aria-labelledby="${this._contentId}">${ this._renderCheckboxAction() }</div>
+				<div slot="control-action">${ this._renderCheckboxAction(null, this._contentId) }</div>
 				` : nothing }
 				${ this.href ? html`
 				<a slot="content-action"

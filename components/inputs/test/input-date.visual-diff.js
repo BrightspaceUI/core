@@ -21,9 +21,9 @@ describe('d2l-input-date', () => {
 		'basic',
 		'disabled',
 		'empty-text',
-		'labelled',
+		'label',
 		'label-hidden',
-		'no-value'
+		'placeholder'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -67,7 +67,7 @@ describe('d2l-input-date', () => {
 		].forEach((lang) => {
 			it(`${lang} empty`, async function() {
 				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
-				const rect = await visualDiff.getRect(page, '#no-value');
+				const rect = await visualDiff.getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -118,7 +118,7 @@ describe('d2l-input-date', () => {
 			await helper.open(page, '#basic');
 			await page.$eval('#basic', (elem) => {
 				const calendar = elem.shadowRoot.querySelector('d2l-calendar');
-				const date = calendar.shadowRoot.querySelector('td[data-date="8"]');
+				const date = calendar.shadowRoot.querySelector('td[data-date="8"] button');
 				date.click();
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
@@ -244,24 +244,55 @@ describe('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('open with placeholder', async function() {
-			await helper.open(page, '#no-value');
-			const rect = await helper.getRect(page, '#no-value');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#no-value');
-		});
-
-		it('open with enter with placeholder', async function() {
-			await page.$eval('#no-value', (elem) => {
-				const input = elem.shadowRoot.querySelector('d2l-input-text');
-				const eventObj = document.createEvent('Events');
-				eventObj.initEvent('keydown', true, true);
-				eventObj.keyCode = 13;
-				input.dispatchEvent(eventObj);
+		describe('placeholder', () => {
+			afterEach(async() => {
+				await helper.reset(page, '#placeholder');
 			});
 
-			const rect = await helper.getRect(page, '#no-value');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			it('open', async function() {
+				await helper.open(page, '#placeholder');
+				const rect = await helper.getRect(page, '#placeholder');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('open with enter', async function() {
+				await page.$eval('#placeholder', (elem) => {
+					const input = elem.shadowRoot.querySelector('d2l-input-text');
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 13;
+					input.dispatchEvent(eventObj);
+				});
+
+				const rect = await helper.getRect(page, '#placeholder');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+
+		describe('with min and max', () => {
+			afterEach(async() => {
+				await helper.reset(page, '#min-max');
+			});
+
+			it('open', async function() {
+				await helper.open(page, '#min-max');
+				const rect = await helper.getRect(page, '#min-max');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('open with enter', async function() {
+				await page.$eval('#min-max', (elem) => {
+					const input = elem.shadowRoot.querySelector('d2l-input-text');
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 13;
+					input.dispatchEvent(eventObj);
+				});
+
+				const rect = await helper.getRect(page, '#min-max');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				await helper.reset(page, '#min-max');
+			});
 		});
 	});
 

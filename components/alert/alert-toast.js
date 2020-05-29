@@ -155,7 +155,7 @@ class AlertToast extends LitElement {
 					this._state = states.OPEN;
 				}
 			}
-			this.setAttribute('role', 'status');
+			this.setAttribute('role', 'alert');
 		} else {
 			if (reduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
@@ -172,9 +172,10 @@ class AlertToast extends LitElement {
 		clearTimeout(this._setTimeoutId);
 		if (newState === states.OPEN) {
 			if (!this.noAutoClose) {
+				const duration = this.buttonText ? 10000 : 4000;
 				this._setTimeoutId = setTimeout(() => {
 					this.open = false;
-				}, 2250);
+				}, duration);
 			}
 		}
 	}

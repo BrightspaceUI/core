@@ -24,8 +24,8 @@
 					<d2l-button id="open">Show Dialog</d2l-button>
 					<d2l-dialog id="dialog" title-text="Dialog Title" async>
 						<d2l-dialog-demo-async-content></d2l-dialog-demo-async-content>
-						<d2l-button slot="footer" primary dialog-action="ok">Click Me!</d2l-button>
-						<d2l-button slot="footer" dialog-action>Cancel</d2l-button>
+						<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 					</d2l-dialog>
 					<script>
 						document.querySelector('#open').addEventListener('click', () => {
