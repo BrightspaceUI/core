@@ -20,9 +20,19 @@ class ValidationErrorSummary extends LitElement {
 	render() {
 		return html`
 			<ul>
-				${this.errors.map(error => html`<li>${error}</li>`)}
+				${this.errors.map(error => html`<li @click=${
+		// eslint-disable-next-line lit/no-template-arrow
+		() => this._onErrorClick(error)}><a href="#${error.id}">${error.message}</a></li>`)}
 			</ul>
 		`;
+	}
+
+	_onErrorClick(error) {
+		const root = this.getRootNode();
+		const ele = root.getElementById(error.id);
+		if (ele) {
+			ele.focus();
+		}
 	}
 
 }

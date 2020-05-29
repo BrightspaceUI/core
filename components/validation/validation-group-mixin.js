@@ -56,7 +56,7 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	get errors() {
-		return [...this._errors.values()].filter(list => list.length > 0).map(list => list[0]);
+		return [...this._errors].filter(entry => entry[1].length > 0).map(entry => ({ id: entry[0].id, message: entry[1][0]}));
 	}
 
 	async validate() {
@@ -65,6 +65,9 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 
 		const formElements = findFormElements(this);
 		for (const ele of formElements) {
+			if (!ele.id) {
+				ele.id = getUniqueId();
+			}
 			const eleErrors = await this._validateFormElement(ele);
 			if (eleErrors.length > 0) {
 				ele.setAttribute('aria-invalid', 'true');
@@ -106,6 +109,9 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		const errors = await this._validateFormElement(ele);
 
 		const isValid = errors.length === 0;
+		if (!ele.id) {
+			ele.id = getUniqueId();
+		}
 		ele.setAttribute('aria-invalid', isValid ? 'false' : 'true');
 
 		if (isValid) {
@@ -132,9 +138,6 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	_showTooltip(ele, message) {
 		if (isCustomFormElement(ele) && ele.showValidationTooltip(message)) {
 			return;
-		}
-		if (!ele.id) {
-			ele.id = getUniqueId();
 		}
 		let tooltip = this._tooltips.get(ele);
 		if (!tooltip) {
