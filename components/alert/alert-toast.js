@@ -103,8 +103,19 @@ class AlertToast extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
-				<d2l-alert @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
+			<div
+				class="d2l-alert-toast-container"
+				data-state="${this._state}"
+				@transitionend=${this._onTransitionEnd}>
+				<d2l-alert
+					@d2l-alert-closed=${this._onCloseClicked}
+					@blur=${this._closeTimerStop}
+					button-text="${ifDefined(this.buttonText)}"
+					@focus=${this._closeTimerStart}
+					?has-close-button="${!this.hideCloseButton}"
+					@mouseenter=${this._closeTimerStop}
+					@mouseleave=${this._closeTimerStart}
+					subtext="${ifDefined(this.subtext)}">
 					<slot></slot>
 				</d2l-alert>
 			</div>
@@ -122,6 +133,19 @@ class AlertToast extends LitElement {
 			this.requestUpdate('_state', oldVal);
 			this._stateChanged(val, oldVal);
 		}
+	}
+
+	_closeTimerStart() {
+		if (!this.noAutoClose) {
+			const duration = this.buttonText ? 10000 : 4000;
+			this._setTimeoutId = setTimeout(() => {
+				this.open = false;
+			}, duration);
+		}
+	}
+
+	_closeTimerStop() {
+		clearTimeout(this._setTimeoutId);
 	}
 
 	_onCloseClicked(e) {
@@ -168,15 +192,9 @@ class AlertToast extends LitElement {
 	}
 
 	_stateChanged(newState) {
-
-		clearTimeout(this._setTimeoutId);
+		this._closeTimerStop();
 		if (newState === states.OPEN) {
-			if (!this.noAutoClose) {
-				const duration = this.buttonText ? 10000 : 4000;
-				this._setTimeoutId = setTimeout(() => {
-					this.open = false;
-				}, duration);
-			}
+			this._closeTimerStart();
 		}
 	}
 }
