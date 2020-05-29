@@ -56,8 +56,7 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	get errors() {
-		const errorLists = this._errors.values();
-		return [].concat(...errorLists);
+		return [...this._errors.values()].filter(list => list.length > 0).map(list => list[0]);
 	}
 
 	async validate() {
