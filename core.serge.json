@@ -1,5 +1,5 @@
 {
-  "name": "d2l-my-courses",
+  "name": "core",
   "parser_plugin": {
     "plugin": "parse_js"
   },
