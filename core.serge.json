@@ -4,8 +4,8 @@
     "plugin": "parse_js"
   },
   "source_match": "en\\.js$",
-  "source_dir": "src/lang",
-  "output_file_path": "src/lang/%LANG%.js",
+  "source_dir": "lang",
+  "output_file_path": "lang/%LANG%.js",
   "output_lang_rewrite": [
     "ar-sa ar",
     "da-dk da-dk",
