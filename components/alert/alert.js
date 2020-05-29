@@ -75,7 +75,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 			:host([dir="rtl"][has-close-button]) .d2l-alert-text {
 				padding-left: 0.9rem;
-				padding-right: 12.rem;
+				padding-right: 1.2rem;
 			}
 
 			.d2l-alert-subtext {
