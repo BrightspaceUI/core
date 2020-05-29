@@ -1,0 +1,27 @@
+{
+  "name": "d2l-my-courses",
+  "parser_plugin": {
+    "plugin": "parse_js"
+  },
+  "source_match": "en\\.js$",
+  "source_dir": "src/lang",
+  "output_file_path": "src/lang/%LANG%.js",
+  "output_lang_rewrite": [
+    "ar-sa ar",
+    "da-dk da-dk",
+    "de-de de",
+    "es-mx es",
+    "fi-fi fi",
+    "fr-ca fr",
+    "fr-fr fr-fr",
+    "ja-jp ja",
+    "ko-kr ko",
+    "nb-no nb",
+    "nl-nl nl",
+    "pt-br pt",
+    "sv-se sv",
+    "tr-tr tr",
+    "zh-cn zh",
+    "zh-tw zh-tw"
+  ]
+}

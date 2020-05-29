@@ -9,14 +9,14 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(getDateFromISODate(val));
 }
 
-class InputDate extends LocalizeStaticMixin(LitElement) {
+class InputDate extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -76,80 +76,80 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		`;
 	}
 
-	static get resources() {
-		return {
-			'ar': {
-				clear: 'مسح',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today',
-			},
-			'da': {
-				clear: 'Ryd',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today',
-			},
-			'de': {
-				clear: 'Löschen',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'en': {
-				clear: 'Clear',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'es': {
-				clear: 'Borrar',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'fr': {
-				clear: 'Effacer',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'ja': {
-				clear: 'クリア',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'ko': {
-				clear: '지우기',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'nl': {
-				clear: 'Wissen',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'pt': {
-				clear: 'Desmarcar',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'sv': {
-				clear: 'Rensa',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'tr': {
-				clear: 'Temizle',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'zh': {
-				clear: '清除',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'zh-tw': {
-				clear: '清除',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			}
-		};
-	}
+	// static get resources() {
+	// 	return {
+	// 		'ar': {
+	// 			clear: 'مسح',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today',
+	// 		},
+	// 		'da': {
+	// 			clear: 'Ryd',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today',
+	// 		},
+	// 		'de': {
+	// 			clear: 'Löschen',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'en': {
+	// 			clear: 'Clear',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'es': {
+	// 			clear: 'Borrar',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'fr': {
+	// 			clear: 'Effacer',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'ja': {
+	// 			clear: 'クリア',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'ko': {
+	// 			clear: '지우기',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'nl': {
+	// 			clear: 'Wissen',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'pt': {
+	// 			clear: 'Desmarcar',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'sv': {
+	// 			clear: 'Rensa',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'tr': {
+	// 			clear: 'Temizle',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'zh': {
+	// 			clear: '清除',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		},
+	// 		'zh-tw': {
+	// 			clear: '清除',
+	// 			openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
+	// 			setToToday: 'Set to Today'
+	// 		}
+	// 	};
+	// }
 
 	constructor() {
 		super();
@@ -216,7 +216,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
 					style="${styleMap({maxWidth: inputTextWidth})}"
-					title="${this.localize('openInstructions', {format: shortDateFormat})}"
+					title="${this.localize('inputDate.openInstructions', {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
 						icon="tier1:calendar"
@@ -234,8 +234,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 							@d2l-calendar-selected="${this._handleDateSelected}"
 							selected-value="${ifDefined(this.value)}">
 							<div class="d2l-calendar-slot-buttons">
-								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
-								<d2l-button-subtle text="${this.localize('clear')}" @click="${this._handleClear}"></d2l-button-subtle>
+								<d2l-button-subtle text="${this.localize('inputDate.setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+								<d2l-button-subtle text="${this.localize('inputDate.clear')}" @click="${this._handleClear}"></d2l-button-subtle>
 							</div>
 						</d2l-calendar>
 					</d2l-focus-trap>

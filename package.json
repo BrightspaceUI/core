@@ -29,6 +29,7 @@
     "/directives",
     "/generated",
     "/helpers",
+    "/lang",
     "/mixins",
     "/templates",
     "/tools",
