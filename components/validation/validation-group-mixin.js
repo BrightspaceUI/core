@@ -43,6 +43,7 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('change', this._onChangeEvent);
+		this.addEventListener('input', this._onChangeEvent);
 		this._errorSummary = this._findErrorSummary();
 	}
 
@@ -102,7 +103,7 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		e.preventDefault();
 		this._dirty = true;
 
-		const ele = e.composedPath()[0];
+		const ele = e.target;
 		const errors = await this._validateFormElement(ele);
 
 		const isValid = errors.length === 0;
@@ -145,7 +146,10 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 			ele.parentNode.append(tooltip);
 			this._tooltips.set(ele, tooltip);
 		}
-		tooltip.innerText = message;
+		if (tooltip.innerText !== message) {
+			tooltip.innerText = message;
+			tooltip.updatePosition();
+		}
 	}
 
 	_updateErrorSummary() {

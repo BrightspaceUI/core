@@ -1,9 +1,9 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { isActiveElement, isFocusable } from '../../helpers/focus.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -336,10 +336,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		super.connectedCallback();
 		this.showing = false;
 		window.addEventListener('resize', this._onTargetResize);
-
-		requestAnimationFrame(() => {
-			this._updateTarget();
-		});
 	}
 
 	disconnectedCallback() {
@@ -756,7 +752,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target = target;
 		this._addListeners();
 
-		if (this.showing) {
+		if (isActiveElement(target)) {
+			this._onTargetFocus();
+		} else if (this.showing) {
 			this.updatePosition();
 		}
 	}

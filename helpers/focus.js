@@ -26,6 +26,24 @@ export function getComposedActiveElement() {
 	return node;
 }
 
+export function isActiveElement(ele) {
+	let node = document.activeElement;
+	if (ele === node) {
+		return true;
+	}
+	if (!node) {
+		return false;
+	}
+	while (node !== ele && node.shadowRoot) {
+		if (node.shadowRoot.activeElement) {
+			node = node.shadowRoot.activeElement;
+		} else {
+			break;
+		}
+	}
+	return node === ele;
+}
+
 export function getFirstFocusableDescendant(node, includeHidden, predicate) {
 	if (predicate === undefined) predicate = () => true;
 
