@@ -72,8 +72,6 @@ class FormDemo extends LocalizeStaticMixin(LitElement) {
 						<output name="result" for="a b">60</output>
 					</div>
 				</div>
-				<d2l-button type="submit" name="action">Update</d2l-button>
-				<d2l-button type="submit" name="action" value="delete">Delete</d2l-button>
 				<button type="submit" name="abc">Submit</button>
 			</d2l-form>
 		`;
