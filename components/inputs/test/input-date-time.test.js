@@ -29,6 +29,24 @@ describe('d2l-input-date-time', () => {
 
 	});
 
+	describe('min and max value', () => {
+		it('should set correct min and max on d2l-input-date', async() => {
+			const elem = await fixture('<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>');
+			const inputElem = getChildElem(elem, 'd2l-input-date');
+			expect(inputElem.minValue).to.equal('2018-08-26');
+			expect(inputElem.maxValue).to.equal('2018-09-30');
+		});
+
+		it('should set correct min and max on d2l-input-date in Australia/Eucla timezone', async() => {
+			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
+			const elem = await fixture('<d2l-input-date-time label="label text" min-value="2018-08-27T12:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>');
+			const inputElem = getChildElem(elem, 'd2l-input-date');
+			expect(inputElem.minValue).to.equal('2018-08-27');
+			expect(inputElem.maxValue).to.equal('2018-10-01');
+			documentLocaleSettings.timezone.identifier = 'America/Toronto';
+		});
+	});
+
 	describe('value', () => {
 		it('should fire "change" event when date value changes', async() => {
 			const elem = await fixture(basicFixture);

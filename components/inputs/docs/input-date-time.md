@@ -27,7 +27,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 | `empty-text` | String | Text to reassure users that they can choose not to provide a value in this field (usually not necessary) |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
-| `min-value` | String |  Minimum valid date that could be selected by a user. |
+| `min-value` | String | Minimum valid date that could be selected by a user. |
 | `value` | String, default `''` | Value of the input. |
 
 **Accessibility:**
@@ -102,11 +102,15 @@ The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d
 
 **Properties:**
 
+Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
+
 | Property | Type | Description |
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
-| `value` | String, default `''` | Value of the input. This should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone). |
+| `max-value` | String | Maximum valid date that could be selected by a user. |
+| `min-value` | String | Minimum valid date that could be selected by a user. |
+| `value` | String, default `''` | Value of the input. |
 
 **Accessibility:**
 

@@ -2,7 +2,8 @@ import './input-date.js';
 import './input-fieldset.js';
 import './input-time.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
+import { formatDateInISO, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODateTime } from '../../helpers/dateTime.js';
+import { convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -16,6 +17,8 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			value: { type: String },
+			_maxValueLocalized: { type: String },
+			_minValueLocalized: { type: String },
 			_parsedDateTime: { type: String }
 		};
 	}
@@ -81,8 +84,8 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					?disabled="${this.disabled}"
 					label="${this.localize('date')}"
 					label-hidden
-					max-value="${ifDefined(this.maxValue)}"
-					min-value="${ifDefined(this.minValue)}"
+					max-value="${ifDefined(this._maxValueLocalized)}"
+					min-value="${ifDefined(this._minValueLocalized)}"
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
 				<d2l-input-time
@@ -109,6 +112,22 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					// set value to empty if invalid value
 					this.value = '';
 					this._parsedDateTime = '';
+				}
+			} else if (prop === 'maxValue' && this.maxValue) {
+				try {
+					const dateObj = parseISODateTime(this.maxValue);
+					const localDateTime = convertUTCToLocalDateTime(dateObj);
+					this._maxValueLocalized = formatDateInISO(localDateTime);
+				} catch (e) {
+					this._maxValueLocalized = undefined;
+				}
+			} else if (prop === 'minValue' && this.minValue) {
+				try {
+					const dateObj = parseISODateTime(this.minValue);
+					const localDateTime = convertUTCToLocalDateTime(dateObj);
+					this._minValueLocalized = formatDateInISO(localDateTime);
+				} catch (e) {
+					this._minValueLocalized = undefined;
 				}
 			}
 		});
