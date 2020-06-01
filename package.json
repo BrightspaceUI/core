@@ -34,11 +34,9 @@
     "/templates",
     "/tools",
     "!demo",
-    "!lang",
     "!screenshots",
     "!test",
     "/components/demo",
-    "/generated/lang",
     "!/components/demo/demo"
   ],
   "author": "D2L Corporation",
