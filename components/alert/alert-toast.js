@@ -71,6 +71,13 @@ class AlertToast extends LitElement {
 			d2l-alert {
 				animation: none;
 			}
+
+			@media (max-width: 615px) {
+				.d2l-alert-toast-container {
+					bottom: 12px;
+					width: calc(100% - 16px);
+				}
+			}
 		`;
 	}
 
@@ -97,8 +104,20 @@ class AlertToast extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
-				<d2l-alert type="${ifDefined(this.type)}" @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
+			<div
+				class="d2l-alert-toast-container"
+				data-state="${this._state}"
+				@transitionend=${this._onTransitionEnd}>
+				<d2l-alert
+					@blur=${this._closeTimerStop}
+					button-text="${ifDefined(this.buttonText)}"
+					@d2l-alert-closed=${this._onCloseClicked}
+					@focus=${this._closeTimerStart}
+					?has-close-button="${!this.hideCloseButton}"
+					@mouseenter=${this._closeTimerStop}
+					@mouseleave=${this._closeTimerStart}
+					subtext="${ifDefined(this.subtext)}"
+					type="${ifDefined(this.type)}">
 					<slot></slot>
 				</d2l-alert>
 			</div>
@@ -118,6 +137,19 @@ class AlertToast extends LitElement {
 		}
 	}
 
+	_closeTimerStart() {
+		if (!this.noAutoClose) {
+			const duration = this.buttonText ? 10000 : 4000;
+			this._setTimeoutId = setTimeout(() => {
+				this.open = false;
+			}, duration);
+		}
+	}
+
+	_closeTimerStop() {
+		clearTimeout(this._setTimeoutId);
+	}
+
 	_onCloseClicked(e) {
 		e.preventDefault();
 		this.open = false;
@@ -132,7 +164,6 @@ class AlertToast extends LitElement {
 	}
 
 	_openChanged(newOpen) {
-
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -162,15 +193,9 @@ class AlertToast extends LitElement {
 	}
 
 	_stateChanged(newState) {
-
-		clearTimeout(this._setTimeoutId);
+		this._closeTimerStop();
 		if (newState === states.OPEN) {
-			if (!this.noAutoClose) {
-				const duration = this.buttonText ? 10000 : 4000;
-				this._setTimeoutId = setTimeout(() => {
-					this.open = false;
-				}, duration);
-			}
+			this._closeTimerStart();
 		}
 	}
 }

@@ -2,7 +2,7 @@ import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyCompactStyles } from '../typography/styles.js';
+import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -17,7 +17,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		};
 	}
 	static get styles() {
-		return [bodyCompactStyles, css`
+		return [bodyCompactStyles, bodyStandardStyles, css`
 
 			:host {
 				animation: 600ms ease drop-in;
@@ -66,19 +66,44 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			.d2l-alert-text {
 				flex: 1;
-				padding: 1rem 1.2rem 1rem 1.5rem;
+				padding: 0.9rem 1.2rem;
 				position: relative;
 			}
+			:host([has-close-button]) .d2l-alert-text {
+				padding-left: 0.9rem;
+				padding-right: 1.2rem;
+			}
+
 			:host([dir="rtl"]) .d2l-alert-text {
 				padding-left: 1.2rem;
-				padding-right: 1.5rem;
+				padding-right: 0.9rem;
 			}
+			:host([dir="rtl"][has-close-button]) .d2l-alert-text {
+				padding-left: 0.9rem;
+				padding-right: 1.2rem;
+			}
+
 			.d2l-alert-subtext {
 				margin: 0.5rem 0 0;
 			}
 
 			.d2l-alert-action {
-				margin: 0.3rem;
+				margin: 0.6rem 0.6rem 0.6rem 0;
+			}
+			:host([dir="rtl"]) .d2l-alert-action {
+				margin-left: 0.6rem;
+				margin-right: 0;
+			}
+
+			@media (max-width: 615px) {
+				.d2l-alert-text {
+					flex: 1;
+					position: relative;
+				}
+				.d2l-alert-action {
+					margin-top: 0.45rem;
+					margin-bottom: 0.45rem;
+				}
 			}
 
 			@keyframes drop-in {
@@ -127,12 +152,16 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	render() {
 		return html`
 			<div class="d2l-alert-highlight"></div>
-			<div class="d2l-alert-text">
+			<div class="d2l-alert-text d2l-body-standard">
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
-			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle class="d2l-alert-action" text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
-			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
+			<div class="d2l-alert-action">
+				${this.buttonText && this.buttonText.length > 0 ? html`
+					<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
+				${this.hasCloseButton ? html`
+					<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('close')}"></d2l-button-icon>`: null}
+			</div>
 		`;
 	}
 
