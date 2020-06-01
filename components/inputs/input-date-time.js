@@ -13,6 +13,8 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		return {
 			disabled: { type: Boolean },
 			label: { type: String },
+			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			minValue: { attribute: 'min-value', reflect: true, type: String },
 			value: { type: String },
 			_parsedDateTime: { type: String }
 		};
@@ -79,6 +81,8 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					?disabled="${this.disabled}"
 					label="${this.localize('date')}"
 					label-hidden
+					max-value="${ifDefined(this.maxValue)}"
+					min-value="${ifDefined(this.minValue)}"
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
 				<d2l-input-time
