@@ -3,10 +3,10 @@ import '../button/button-subtle.js';
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -100,28 +100,12 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': { 'close': 'إغلاق التنبيه'},
-			'de': { 'close': 'Benachrichtigung schließen' },
-			'en': { 'close': 'Close Alert'},
-			'es': { 'close': 'Alerta de cierre' },
-			'fr': { 'close': 'Fermer l\'alerte' },
-			'ja': { 'close': 'アラートを閉じる' },
-			'ko': { 'close': '경보 닫기' },
-			'nl': { 'close': 'Waarschuwing sluiten' },
-			'pt': { 'close': 'Fechar Alerta' },
-			'sv': { 'close': 'Stängningsvarning' },
-			'tr': { 'close': 'Kapatma Uyarısı' },
-			'zh-tw': { 'close': '關閉警示' },
-			'zh': { 'close': '关闭警报' }
-		};
-	}
-
 	constructor() {
 		super();
 		this.hasCloseButton = false;
 		this.type = 'default';
+
+		this._namespace = 'components.alert.alert';
 	}
 
 	render() {
@@ -132,7 +116,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
 			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle class="d2l-alert-action" text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
-			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
+			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize(`${this._namespace}.close`)}" @click=${this.close}></d2l-button-icon>` : null}
 		`;
 	}
 

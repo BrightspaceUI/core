@@ -4,10 +4,10 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -73,28 +73,12 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		];
 	}
 
-	static get resources() {
-		return {
-			'ar': { 'search': 'بحث', 'clear': 'مسح البحث' },
-			'en': { 'search': 'Search', 'clear': 'Clear Search' },
-			'es': { 'search': 'Buscar', 'clear': 'Borrar búsqueda' },
-			'fr': { 'search': 'Rechercher', 'clear': 'Effacer la recherche' },
-			'ja': { 'search': '検索', 'clear': '検索のクリア' },
-			'ko': { 'search': '검색', 'clear': '검색 지우기' },
-			'nl': { 'search': 'Zoeken', 'clear': 'Zoekopdracht wissen' },
-			'pt': { 'search': 'Pesquisar', 'clear': 'Limpar Pesquisa' },
-			'sv': { 'search': 'Sökning', 'clear': 'Rensa sökning' },
-			'tr': { 'search': 'Ara', 'clear': 'Aramayı Temizle' },
-			'zh': { 'search': '搜索', 'clear': '清除搜索' },
-			'zh-tw': { 'search': '搜尋', 'clear': '清除搜尋' }
-		};
-	}
-
 	constructor() {
 		super();
 		this._focussed = false;
 		this._hovered = false;
 		this._lastSearchValue = '';
+		this._namespace = 'components.inputs.search';
 		this.disabled = false;
 		this.noClear = false;
 		this.value = '';
@@ -141,12 +125,12 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 						?disabled="${this.disabled}"
 						icon="tier1:search"
 						@click="${this.search}"
-						text="${this.localize('search')}"></d2l-button-icon>` : html`
+						text="${this.localize(`${this._namespace}.search`)}"></d2l-button-icon>` : html`
 					<d2l-button-icon
 						@click="${this._handleClearClick}"
 						?disabled="${this.disabled}"
 						icon="tier1:close-default"
-						text="${this.localize('clear')}"></d2l-button-icon>`}
+						text="${this.localize(`${this._namespace}.clear`)}"></d2l-button-icon>`}
 			</div>
 		`;
 	}

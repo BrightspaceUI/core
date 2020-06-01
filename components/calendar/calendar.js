@@ -8,7 +8,7 @@ import { findComposedAncestor } from '../../helpers/dom.js';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -136,7 +136,7 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
-class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -364,87 +364,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': {
-				notSelected: 'غير محدد.',
-				selected: 'محدد.',
-				show: '{month} إظهار'
-			},
-			'da': {
-				notSelected: 'Ikke valgt.',
-				selected: 'Valgt.',
-				show: 'Vis {month}'
-			},
-			'de': {
-				notSelected: 'Nicht ausgewählt.',
-				selected: 'Ausgewählt.',
-				show: '{month} anzeigen'
-			},
-			'en': {
-				notSelected: 'Not Selected.',
-				selected: 'Selected.',
-				show: 'Show {month}'
-			},
-			'es': {
-				notSelected: 'No seleccionado.',
-				selected: 'Seleccionado.',
-				show: 'Mostrar {month}'
-			},
-			'fr': {
-				notSelected: 'Pas sélectionné',
-				selected: 'Sélectionné',
-				show: 'Afficher {month}'
-			},
-			'ja': {
-				notSelected: '選択されていません。',
-				selected: '選択されています。',
-				show: '{month} の表示'
-			},
-			'ko': {
-				notSelected: '선택되지 않음.',
-				selected: '선택됨.',
-				show: '{month} 표시'
-			},
-			'nl': {
-				notSelected: 'Niet geselecteerd.',
-				selected: 'Geselecteerd.',
-				show: '{month} tonen'
-			},
-			'pt': {
-				notSelected: 'Não selecionado.',
-				selected: 'Selecionado.',
-				show: 'Mostrar {month}'
-			},
-			'sv': {
-				notSelected: 'Inte markerad.',
-				selected: 'Markerad.',
-				show: 'Visa {month}'
-			},
-			'tr': {
-				notSelected: 'Seçili değil.',
-				selected: 'Seçili.',
-				show: '{month} öğesini göster'
-			},
-			'zh': {
-				notSelected: '未选择。',
-				selected: '已选。',
-				show: '显示 {month}'
-			},
-			'zh-tw': {
-				notSelected: '未選取。',
-				selected: '已選取。',
-				show: '顯示 {month}'
-			}
-		};
-	}
-
 	constructor() {
 		super();
 
 		this._isInitialFocusDate = true;
-		this._tableInfoId = getUniqueId();
 		this._monthNav = 'initial';
+		this._namespace = 'components.calendar.calendar';
+		this._tableInfoId = getUniqueId();
 		getCalendarData();
 	}
 
@@ -503,7 +429,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const year = day.getFullYear();
 				const month = day.getMonth();
 				const date = day.getDate();
-				const description = `${date}. ${selected ? this.localize('selected') : this.localize('notSelected')} ${formatDate(day, {format: 'monthYear'})}`;
+				const description = `${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, {format: 'monthYear'})}`;
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
@@ -603,7 +529,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_computeText(month) {
-		return this.localize('show', {month: calendarData.descriptor.calendar.months.long[month]});
+		return this.localize(`${this._namespace}.show`, {month: calendarData.descriptor.calendar.months.long[month]});
 	}
 
 	async _focusDateAddFocus() {

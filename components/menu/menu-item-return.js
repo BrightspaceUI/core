@@ -1,11 +1,11 @@
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class MenuItemReturn extends RtlMixin(LocalizeStaticMixin(MenuItemMixin(LitElement))) {
+class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitElement))) {
 
 	static get styles() {
 		return [ menuItemStyles,
@@ -39,62 +39,15 @@ class MenuItemReturn extends RtlMixin(LocalizeStaticMixin(MenuItemMixin(LitEleme
 		];
 	}
 
-	static get resources() {
-		return {
-			'ar': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'en': {
-				'return': 'Returns to previous menu.',
-				'returnCurrentlyShowing': 'Returns to previous menu. You are viewing {menuTitle}.'
-			},
-			'es': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'fi': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'fr': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'ja': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'ko': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'pt': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'sv': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'tr': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'zh': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			},
-			'zh-tw': {
-				'return': '',
-				'returnCurrentlyShowing': '{menuTitle}'
-			}
-		};
+	constructor() {
+		super();
+
+		this._namespace = 'components.menu.menuItemReturn';
 	}
 
 	firstUpdated() {
 		super.firstUpdated();
-		this.setAttribute('aria-label', this.localize('return'));
+		this.setAttribute('aria-label', this.localize(`${this._namespace}.return`));
 	}
 
 	render() {
@@ -109,7 +62,7 @@ class MenuItemReturn extends RtlMixin(LocalizeStaticMixin(MenuItemMixin(LitEleme
 
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'text') {
-				this.setAttribute('aria-label', this.localize('returnCurrentlyShowing', 'menuTitle', this.text));
+				this.setAttribute('aria-label', this.localize(`${this._namespace}.returnCurrentlyShowing`, 'menuTitle', this.text));
 			}
 		});
 	}
