@@ -1,8 +1,8 @@
 import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -160,7 +160,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				${this.buttonText && this.buttonText.length > 0 ? html`
 					<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
 				${this.hasCloseButton ? html`
-					<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('close')}"></d2l-button-icon>`: null}
+					<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('close')}"></d2l-button-icon>` : null}
 			</div>
 		`;
 	}
