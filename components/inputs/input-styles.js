@@ -54,6 +54,11 @@ export const inputStyles = css`
 	[aria-invalid="true"].d2l-input,
 	.d2l-input:invalid {
 		border-color: var(--d2l-color-cinnabar);
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' preserveAspectRatio='xMidYMid meet' focusable='false'%3E%3Cpath fill='%23cd2026' d='M17.79 15.11l-7-14a2 2 0 0 0-3.58 0l-7 14a1.975 1.975 0 0 0 .09 1.94A2 2 0 0 0 2 18h14a1.994 1.994 0 0 0 1.7-.95 1.967 1.967 0 0 0 .09-1.94zM9 16a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 16zm.98-4.806a1 1 0 0 1-1.96 0l-.99-5A1 1 0 0 1 8.01 5h1.983a1 1 0 0 1 .98 1.194z'%3E%3C/path%3E%3C/svg%3E");
+		padding-right: calc(0.5rem + 11px + 16px);
+		background-position: right 17px center;
+		background-repeat: no-repeat;
+		background-size: 18px 18px;
 	}
 	.d2l-input:disabled {
 		opacity: 0.5;
@@ -77,9 +82,13 @@ export const inputStyles = css`
 		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
 	}
+	textarea[aria-invalid="true"].d2l-input {
+		background-position: right 17px top 17px;
+	}
 	textarea.d2l-input:hover,
 	textarea.d2l-input:focus {
 		padding-top: calc(0.5rem - 1px);
 		padding-bottom: calc(0.5rem - 1px);
+		background-position: right 16px top 16px;
 	}
 `;
