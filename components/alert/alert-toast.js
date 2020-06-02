@@ -22,8 +22,6 @@ class AlertToast extends LitElement {
 			open: { type: Boolean, reflect: true },
 			subtext: { type: String },
 			type: { type: String, reflect: true },
-			_hasFocus: { type: Boolean },
-			_hasMouse: { type: Boolean },
 			_state: { type: String }
 		};
 	}
@@ -147,6 +145,8 @@ class AlertToast extends LitElement {
 			const duration = this.buttonText ? 10000 : 4000;
 			this._setTimeoutId = setTimeout(() => {
 				this.open = false;
+				this._hasFocus = false;
+				this._hasMouse = false;
 			}, duration);
 		}
 	}
@@ -163,6 +163,8 @@ class AlertToast extends LitElement {
 	_onCloseClicked(e) {
 		e.preventDefault();
 		this.open = false;
+		this._hasFocus = false;
+		this._hasMouse = false;
 	}
 
 	_onFocus() {
