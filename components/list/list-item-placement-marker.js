@@ -14,51 +14,55 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				display: none;
 			}
 
-			svg {
-				width: 100%;
+			.d2l-list-drag-marker-line {
+				height: 12px;
+				stroke: var(--d2l-color-celestine);
+				stroke-width: 3px;
 			}
 
-			circle {
-				stroke: var(--d2l-color-celestine);
-				fill: white;
+			.d2l-list-drag-marker-linecap {
+				height: 12px;
+				width: 3px;
+				stroke: none;
+				fill: var(--d2l-color-celestine);
+				margin-left: -1.5px;
+				margin-right: -1.5px;
+				stroke-width: 0px;
 			}
 
-			line {
+			.d2l-list-drag-marker-circle {
+				height: 12px;
+				width: 12px;
+				margin-left: -1.5px;
+				margin-right: -1.5px;
+				stroke-width: 3px;
 				stroke: var(--d2l-color-celestine);
-				stroke-linecap: round;
 			}
+
+			.d2l-list-drag-marker {
+				flex-wrap: nowrap;
+				display: flex;
+			 }
+
 		`;
 	}
 
-	constructor() {
-		super();
-	}
-
-
 	render() {
-
-		// TODO: figure out how to draw with RTL
-
-		// dimensions
-		const strokeWidth = 3;
-		const radius = strokeWidth * 1.5;
-		const height = radius * 2 + strokeWidth;
-
-		// circle coordinates
-		let cx = strokeWidth/2 + radius;
-		const cy = strokeWidth/2 + radius;;
-		let x1 = radius * 2 + strokeWidth;
-		const y1 = height / 2;
-		const y2 = y1;
-		let x2 = "99%"; // with 100% the round line cap is cut off because circle is drawn at x2 coordinate.
-
 		return html`
-			<svg height="${height}">
-				<circle cx="${cx}" cy="${cy}" r="${radius}" stroke-width="${strokeWidth}"/>
-				<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="${strokeWidth}"/>
-			</svg>
-	  	`;
+			<div class="d2l-list-drag-marker">
+				<svg class="d2l-list-drag-marker-circle">
+					<circle cx="50%" cy="50%" r="4px" fill="none"/>
+				</svg>
+				<svg class="d2l-list-drag-marker-line">
+					<line x1="0" y1="50%" x2="100%" y2="50%" />
+				</svg>
+				<svg class="d2l-list-drag-marker-linecap">
+					<circle cx="50%" cy="50%" r="1.5px"/>
+				</svg>
+			</div>
+		`;
 	}
+
 }
 
 customElements.define('d2l-list-item-placement-marker', ListItemPlacementMarker);
