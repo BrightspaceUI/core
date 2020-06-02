@@ -28,6 +28,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				display: flex;
 				flex: 1;
 				max-width: 710px;
+				position: relative;
 				width: 100%;
 			}
 
@@ -41,6 +42,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				left: 0;
 				margin: -1px;
 				min-width: 0.3rem;
+				position:absolute;
 				top: 0;
 				width: 0.3rem;
 			}
@@ -66,21 +68,15 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			.d2l-alert-text {
 				flex: 1;
-				padding: 0.9rem 1.2rem;
+				padding: 0.9rem 1.5rem;
 				position: relative;
 			}
-			:host([has-close-button]) .d2l-alert-text {
-				padding-left: 0.9rem;
-				padding-right: 1.2rem;
-			}
-
-			:host([dir="rtl"]) .d2l-alert-text {
-				padding-left: 1.2rem;
+			.d2l-alert-text-with-actions {
 				padding-right: 0.9rem;
 			}
-			:host([dir="rtl"][has-close-button]) .d2l-alert-text {
+
+			:host([dir="rtl"]) .d2l-alert-text-with-actions {
 				padding-left: 0.9rem;
-				padding-right: 1.2rem;
 			}
 
 			.d2l-alert-subtext {
@@ -88,11 +84,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 
 			.d2l-alert-action {
-				margin: 0.6rem 0.6rem 0.6rem 0;
-			}
-			:host([dir="rtl"]) .d2l-alert-action {
-				margin-left: 0.6rem;
-				margin-right: 0;
+				margin: 0.6rem;
 			}
 
 			@media (max-width: 615px) {
@@ -101,8 +93,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					position: relative;
 				}
 				.d2l-alert-action {
-					margin-top: 0.45rem;
-					margin-bottom: 0.45rem;
+					margin: 0.45rem;
 				}
 			}
 
@@ -150,18 +141,20 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
+		const hasActions = this.buttonText && this.buttonText.length > 0  || this.hasCloseButton;
 		return html`
 			<div class="d2l-alert-highlight"></div>
-			<div class="d2l-alert-text d2l-body-standard">
+			<div class="d2l-alert-text ${hasActions ? 'd2l-alert-text-with-actions' : null} d2l-body-standard">
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
-			<div class="d2l-alert-action">
-				${this.buttonText && this.buttonText.length > 0 ? html`
-					<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
-				${this.hasCloseButton ? html`
-					<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('close')}"></d2l-button-icon>` : null}
-			</div>
+			${hasActions ? html`
+				<div class="d2l-alert-action">
+					${this.buttonText && this.buttonText.length > 0 ? html`
+						<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
+					${this.hasCloseButton ? html`
+						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('close')}"></d2l-button-icon>` : null}
+				</div>` : null}
 		`;
 	}
 
