@@ -165,7 +165,7 @@ class AlertToast extends LitElement {
 		this.open = false;
 	}
 
-	_onFocus(){
+	_onFocus() {
 		this._hasFocus = true;
 		this._closeTimerStop();
 	}
