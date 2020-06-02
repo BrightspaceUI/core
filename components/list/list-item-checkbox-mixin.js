@@ -1,6 +1,8 @@
 import { css, html } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
 
 export const ListItemCheckboxMixin = superclass => class extends superclass {
@@ -21,7 +23,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 				display: block;
 				cursor: pointer;
 			}
-			.d2l-checkbox-action[disabled] {
+			.d2l-checkbox-action.d2l-checkbox-action-disabled {
 				cursor: default;
 			}
 		` ];
@@ -76,12 +78,19 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			` : nothing;
 	}
 
-	_renderCheckboxAction(inner) {
+	_renderCheckboxAction(inner, labelledBy) {
+		if (!inner && !labelledBy) {
+			console.warn('Label for list-item checkbox may not be accessible. Pass inner text to the label or pass labelledby.');
+		}
+		const labelClasses = {
+			'd2l-checkbox-action': true,
+			'd2l-checkbox-action-disabled': this.disabled
+		};
 		return this.selectable ? html`
 			<label @click="${this._handleCheckboxActionClick}"
-				class="d2l-checkbox-action"
-				?disabled="${this.disabled}"
-				for="${this._checkboxId}">
+				class="${classMap(labelClasses)}"
+				for="${this._checkboxId}"
+				aria-labelledby="${ifDefined(labelledBy)}">
 				${inner}
 			</label>
 			` : nothing;

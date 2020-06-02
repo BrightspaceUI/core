@@ -13,11 +13,13 @@ class InputText extends RtlMixin(LitElement) {
 		return {
 			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
+			atomic: { type: String },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean, reflect: true },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			live: { type: String },
 			max: { type: String },
 			maxlength: { type: Number },
 			min: { type: String },
@@ -106,16 +108,6 @@ class InputText extends RtlMixin(LitElement) {
 		this.addEventListener('mouseout', this._handleMouseLeave);
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'value') {
-				this._prevValue = (oldVal === undefined) ? '' : oldVal;
-			}
-		});
-	}
-
 	render() {
 		const isFocusedOrHovered = !this.disabled && (this._focused || this._hovered);
 		const inputClasses = {
@@ -136,9 +128,11 @@ class InputText extends RtlMixin(LitElement) {
 
 		const input = html`
 			<div class="d2l-input-text-container">
-				<input aria-haspopup="${ifDefined(this.ariaHaspopup)}"
+				<input aria-atomic="${ifDefined(this.atomic)}"
+					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 					aria-invalid="${ifDefined(this.ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
+					aria-live="${ifDefined(this.live)}"
 					aria-required="${ifDefined(ariaRequired)}"
 					autocomplete="${ifDefined(this.autocomplete)}"
 					?autofocus="${this.autofocus}"
@@ -174,6 +168,16 @@ class InputText extends RtlMixin(LitElement) {
 				${input}`;
 		}
 		return input;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				this._prevValue = (oldVal === undefined) ? '' : oldVal;
+			}
+		});
 	}
 
 	async focus() {
@@ -233,16 +237,16 @@ class InputText extends RtlMixin(LitElement) {
 		return true;
 	}
 
+	_handleInvalid(e) {
+		e.preventDefault();
+	}
+
 	_handleKeypress(e) {
 		if (this.preventSubmit && e.keyCode === 13) {
 			e.preventDefault();
 			return false;
 		}
 		return true;
-	}
-
-	_handleInvalid(e) {
-		e.preventDefault();
 	}
 
 	_handleMouseEnter() {

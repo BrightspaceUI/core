@@ -76,6 +76,29 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this.setAttribute('role', this.role);
 	}
 
+	render() {
+		return html`
+			<div class="d2l-menu-items d2l-hierarchical-view-content">
+				<slot></slot>
+			</div>
+		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldValue, propName) => {
+			if (propName === 'label') this._labelChanged();
+
+			if (propName === 'childView' && this.childView) {
+				const items = this.shadowRoot.querySelector('.d2l-menu-items');
+				items.insertBefore(this._createReturnItem(), items.childNodes[0]);
+
+				this._onMenuItemsChanged();
+			}
+		});
+	}
+
 	focus() {
 		if (this.getMenuType() === 'menu-radio') {
 			this._focusSelected();
@@ -100,29 +123,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			default:
 				return 'menu';
 		}
-	}
-
-	render() {
-		return html`
-			<div class="d2l-menu-items d2l-hierarchical-view-content">
-				<slot></slot>
-			</div>
-		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'label') this._labelChanged();
-
-			if (propName === 'childView' && this.childView) {
-				const items = this.shadowRoot.querySelector('.d2l-menu-items');
-				items.insertBefore(this._createReturnItem(), items.childNodes[0]);
-
-				this._onMenuItemsChanged();
-			}
-		});
 	}
 
 	_createReturnItem() {
@@ -150,6 +150,11 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		item ? item.focus() : this._focusFirst();
 	}
 
+	_focusPrevious(item) {
+		item = this._tryGetPreviousFocusable(item);
+		item ? item.focus() : this._focusLast();
+	}
+
 	_focusSelected() {
 		const selected = this.querySelector('[selected]');
 		if (selected) {
@@ -157,11 +162,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		} else {
 			this._focusFirst();
 		}
-	}
-
-	_focusPrevious(item) {
-		item = this._tryGetPreviousFocusable(item);
-		item ? item.focus() : this._focusLast();
 	}
 
 	_getFirstVisibleItem() {
@@ -182,6 +182,10 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		return null;
 	}
 
+	_getMenuItemReturn() {
+		return this.shadowRoot.querySelector('d2l-menu-item-return');
+	}
+
 	_getMenuItems() {
 		const slot = this.shadowRoot.querySelector('slot');
 		if (!slot) return;
@@ -195,10 +199,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			const role = item.getAttribute('role');
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
 		});
-	}
-
-	_getMenuItemReturn() {
-		return this.shadowRoot.querySelector('d2l-menu-item-return');
 	}
 
 	_isFocusable(item) {
@@ -256,7 +256,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		e.stopPropagation();
 
 		const startsWith = function(item, value) {
-			if (item.text && item.text.length > 0 && item.text.substr(0, 1) === value) {
+			if (item.text && item.text.length > 0 && item.text.toLowerCase().substr(0, 1) === value) {
 				return true;
 			}
 			return false;
@@ -275,7 +275,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		}.bind(this);
 
 		/* "charCode" is used instead of "key" due to Safari not supporting */
-		const searchChar = String.fromCharCode(e.charCode);
+		const searchChar = String.fromCharCode(e.charCode).toLowerCase();
 
 		let itemIndex = getNextOrFirstIndex(targetItemIndex);
 		while (itemIndex !== targetItemIndex) {
@@ -317,25 +317,6 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this.active = this.isActive();
 	}
 
-	_tryGetPreviousFocusable(item) {
-		const focusableItems = this._items.filter(this._isFocusable, this);
-		if (!focusableItems || focusableItems.length === 0) {
-			return;
-		}
-
-		if (!item) {
-			return focusableItems[focusableItems.length - 1];
-		}
-
-		const itemIndex = focusableItems.indexOf(item);
-		if (itemIndex === 0) {
-			return;
-		}
-
-		return focusableItems[itemIndex - 1];
-
-	}
-
 	_tryGetNextFocusable(item) {
 		const focusableItems = this._items.filter(this._isFocusable, this);
 		if (!focusableItems || focusableItems.length === 0) {
@@ -352,6 +333,25 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		}
 
 		return focusableItems[itemIndex + 1];
+
+	}
+
+	_tryGetPreviousFocusable(item) {
+		const focusableItems = this._items.filter(this._isFocusable, this);
+		if (!focusableItems || focusableItems.length === 0) {
+			return;
+		}
+
+		if (!item) {
+			return focusableItems[focusableItems.length - 1];
+		}
+
+		const itemIndex = focusableItems.indexOf(item);
+		if (itemIndex === 0) {
+			return;
+		}
+
+		return focusableItems[itemIndex - 1];
 
 	}
 

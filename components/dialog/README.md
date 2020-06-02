@@ -2,7 +2,7 @@
 
 ## d2l-dialog
 
-The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
+The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
 
 ![Dialog](./screenshots/dialog.png?raw=true)
 
@@ -15,8 +15,8 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 
 <d2l-dialog title-text="Dialog Title">
   <div>Some dialog content</div>
-  <d2l-button slot="footer" primary dialog-action="done">Done</d2l-button>
-  <d2l-button slot="footer" dialog-action>Cancel</d2l-button>
+  <d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
+  <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 </d2l-dialog>
 ```
 Open the dialog declaratively using a boolean attribute `opened`:
@@ -56,7 +56,7 @@ document.querySelector('d2l-dialog').addEventListener('d2l-dialog-close', (e) =>
 });
 ```
 
-*Note:* The user may close the dialog in a few different ways: clicking the dialog workflow buttons (marked up with `dialog-action`), by clicking the `[x]` button in the top-right corner, or by pressing the `escape` key. It is possible to listen for click events directly on the workflow buttons, however to be notified in any of these scenarios, it is best to either wait for the `open` method's promise, or listen for the `d2l-dialog-close` event:
+*Note:* The user may close the dialog in a few different ways: clicking the dialog workflow buttons (marked up with `data-dialog-action`), by clicking the `[x]` button in the top-right corner, or by pressing the `escape` key. It is possible to listen for click events directly on the workflow buttons, however to be notified in any of these scenarios, it is best to either wait for the `open` method's promise, or listen for the `d2l-dialog-close` event:
 
 ```html
 <d2l-dialog @d2l-dialog-close="${(e)=> console.log('dialog action:', e.detail.action)}">
@@ -81,7 +81,7 @@ document.querySelector('d2l-dialog').addEventListener('d2l-dialog-close', (e) =>
 
 ## d2l-dialog-confirm
 
-The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting the user. It provides properties for specifying the required `text` and optional `title-text`, and a `footer` slot for workflow buttons. Apply the `dialog-action` attribute to workflow buttons to automatically close the confirm dialog with the action value.
+The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting the user. It provides properties for specifying the required `text` and optional `title-text`, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the confirm dialog with the action value.
 
 ![Confirmation Dialog](./screenshots/dialog-confirm.png?raw=true)
 
@@ -93,8 +93,8 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 <d2l-button id="open">Show Confirm</d2l-button>
 
 <d2l-dialog-confirm title-text="Confirm Title" text="Are you sure?">
-  <d2l-button slot="footer" primary dialog-action="yes">Yes</d2l-button>
-  <d2l-button slot="footer" dialog-action>No</d2l-button>
+  <d2l-button slot="footer" primary data-dialog-action="yes">Yes</d2l-button>
+  <d2l-button slot="footer" data-dialog-action>No</d2l-button>
 </d2l-dialog-confirm>
 ```
 

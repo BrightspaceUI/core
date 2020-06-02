@@ -12,11 +12,11 @@ import {
 
 const testElemTag = defineCE(
 	class extends LitElement {
-		getContainer() {
-			return this.shadowRoot.querySelector('#container');
-		}
 		render() {
 			return html`<div id="container"><slot id="slot1"></slot></div>`;
+		}
+		getContainer() {
+			return this.shadowRoot.querySelector('#container');
 		}
 	},
 );

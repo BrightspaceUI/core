@@ -37,6 +37,11 @@ export const MeterMixin = superclass => class extends LocalizeStaticMixin(superc
 		this.value = 0;
 	}
 
+	_ariaLabel(primary, secondary) {
+		const mainLabel = this.localize('commaSeperatedAria', 'term1', primary, 'term2', this.localize('progressIndicator'));
+		return secondary ? this.localize('commaSeperatedAria', 'term1', secondary, 'term2', mainLabel) : mainLabel;
+	}
+
 	_primary(value, max, dir) {
 		const percentage = max > 0 ? value / max : 0;
 
@@ -59,8 +64,4 @@ export const MeterMixin = superclass => class extends LocalizeStaticMixin(superc
 		return context;
 	}
 
-	_ariaLabel(primary, secondary) {
-		const mainLabel = this.localize('commaSeperatedAria', 'term1', primary, 'term2', this.localize('progressIndicator'));
-		return secondary ? this.localize('commaSeperatedAria', 'term1', secondary, 'term2', mainLabel) : mainLabel;
-	}
 };

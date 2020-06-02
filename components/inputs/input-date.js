@@ -24,6 +24,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			emptyText: { type: String, attribute: 'empty-text'},
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			minValue: { attribute: 'min-value', reflect: true, type: String },
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -206,6 +208,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
@@ -213,13 +216,13 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
+					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
 					style="${styleMap({maxWidth: inputTextWidth})}"
 					title="${this.localize('openInstructions', {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						?disabled="${this.disabled}"
 						icon="tier1:calendar"
 						slot="left"></d2l-icon>
 				</d2l-input-text>
@@ -233,6 +236,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
 						<d2l-calendar
 							@d2l-calendar-selected="${this._handleDateSelected}"
+							max-value="${ifDefined(this.maxValue)}"
+							min-value="${ifDefined(this.minValue)}"
 							selected-value="${ifDefined(this.value)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
@@ -245,10 +250,6 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		`;
 	}
 
-	focus() {
-		if (this._textInput) this._textInput.focus();
-	}
-
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -259,24 +260,12 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		});
 	}
 
+	focus() {
+		if (this._textInput) this._textInput.focus();
+	}
+
 	_handleBlur() {
 		this._setFormattedValue();
-	}
-
-	async _handleFocusTrapEnter() {
-		this._calendar.focus();
-	}
-
-	async _handleKeydown(e) {
-		// open dropdown on down arrow or enter and focus on calendar focus date
-		if (e.keyCode === 40 || e.keyCode === 13) {
-			this._dropdown.open();
-			await this._handleChange();
-			this._calendar.focus();
-			this._setFormattedValue();
-
-			if (e.keyCode === 40) e.preventDefault();
-		}
 	}
 
 	async _handleChange() {
@@ -285,7 +274,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			if (value !== this.value) {
 				this._updateValueDispatchEvent('');
 				await this.updateComplete;
-				this._calendar.reset();
+				await this._calendar.reset();
 			}
 			return;
 		}
@@ -299,7 +288,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
-		this._calendar.reset();
+		await this._calendar.reset();
 	}
 
 	_handleClear() {
@@ -329,8 +318,23 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		this._dropdownOpened = true;
 	}
 
+	async _handleFocusTrapEnter() {
+		this._calendar.focus();
+	}
+
 	_handleInputTextFocus() {
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+	}
+
+	async _handleKeydown(e) {
+		// open dropdown on down arrow or enter and focus on calendar focus date
+		if (e.keyCode === 40 || e.keyCode === 13) {
+			this._dropdown.open();
+			await this._handleChange();
+			this._calendar.focus();
+			this._setFormattedValue();
+			e.preventDefault();
+		}
 	}
 
 	_handleMouseup() {

@@ -1,6 +1,7 @@
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
+	getDisabled,
 	getNextMonth,
 	getNumberOfDaysFromPrevMonthToShow,
 	getNumberOfDaysInMonth,
@@ -33,7 +34,7 @@ describe('d2l-calendar', () => {
 	describe('events', () => {
 		it('dispatches event when date clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="1"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="1"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -47,7 +48,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when date in previous month clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="31"][data-month="7"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="31"][data-month="7"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -61,7 +62,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when date in next month clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="9"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="9"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -122,6 +123,17 @@ describe('d2l-calendar', () => {
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
 			const expectedFocusDate = new Date(2018, 1, 12);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+
+			clock.restore();
+		});
+
+		it('has initial correct _focusDate when on month with min-value', async() => {
+			const newToday = new Date('2018-02-12T12:00Z');
+			const clock = sinon.useFakeTimers(newToday.getTime());
+
+			const calendar = await fixture(html`<d2l-calendar min-value="2018-02-13"></d2l-calendar>`);
+			const expectedFocusDate = new Date(2018, 1, 13);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 
 			clock.restore();
@@ -456,6 +468,65 @@ describe('d2l-calendar', () => {
 					new Date(2021, 1, 6)
 				]];
 				expect(getDatesInMonthArray(0, 2021)).to.deep.equal(dates);
+			});
+		});
+
+		describe('getDisabled', () => {
+			const date = new Date(2018, 2, 3);
+			it('should return false if no parameters', () => {
+				expect(getDisabled()).to.be.false;
+			});
+
+			it('should return false if no min and max', () => {
+				expect(getDisabled(date)).to.be.false;
+			});
+
+			it('should return false if min and date is after min', () => {
+				const min = '2018-01-30';
+				expect(getDisabled(date, min)).to.be.false;
+			});
+
+			it('should return false if min and date is equal to min', () => {
+				const min = '2018-03-03';
+				expect(getDisabled(date, min)).to.be.false;
+			});
+
+			it('should return false if max and date is before max', () => {
+				const max = '2018-05-01';
+				expect(getDisabled(date, undefined, max)).to.be.false;
+			});
+
+			it('should return false if max and date is equal to max', () => {
+				const max = '2018-03-03';
+				expect(getDisabled(date, undefined, max)).to.be.false;
+			});
+
+			it('should return false if date is between min and max', () => {
+				const min = '2018-03-02';
+				const max = '2018-03-04';
+				expect(getDisabled(date, min, max)).to.be.false;
+			});
+
+			it('should return true if min and date is before min', () => {
+				const min = '2018-03-04';
+				expect(getDisabled(date, min, undefined)).to.be.true;
+			});
+
+			it('should return true if max and date is after max', () => {
+				const max = '2018-03-01';
+				expect(getDisabled(date, undefined, max)).to.be.true;
+			});
+
+			it('should return true if min and max and date is before min', () => {
+				const min = '2018-05-02';
+				const max = '2018-05-28';
+				expect(getDisabled(date, min, max)).to.be.true;
+			});
+
+			it('should return true if min and max and date is after max', () => {
+				const min = '2018-01-02';
+				const max = '2018-01-28';
+				expect(getDisabled(date, min, max)).to.be.true;
 			});
 		});
 

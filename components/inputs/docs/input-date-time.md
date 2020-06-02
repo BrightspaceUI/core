@@ -18,11 +18,17 @@ The `<d2l-input-date>` component consists of a text input field for typing a dat
 
 **Properties:**
 
-- `label` (String, required): accessible label for the input
-- `disabled` (Boolean): disables the input
-- `empty-text` (String): text to reassure users that they can choose not to provide a value in this field (usually not necessary)
-- `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
-- `value` (String, default: `''`): value of the input. This should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
+Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
+
+| Property | Type | Description |
+|--|--|--|
+| `label` | String, **required** | Accessible label for the input |
+| `disabled` | Boolean | Disables the input |
+| `empty-text` | String | Text to reassure users that they can choose not to provide a value in this field (usually not necessary) |
+| `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
+| `max-value` | String | Maximum valid date that could be selected by a user. |
+| `min-value` | String |  Minimum valid date that could be selected by a user. |
+| `value` | String, default `''` | Value of the input. |
 
 **Accessibility:**
 
@@ -55,13 +61,15 @@ The `<d2l-input-time>` component consists of a text input field for typing a tim
 
 **Properties:**
 
-- `label` (String, required): accessible label for the input
-- `default-value` (String, default:`'00:00:00'`): set default value of input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`.
-- `disabled` (Boolean): disables the input
-- `enforce-time-intervals` (Boolean): rounds up to nearest valid interval time (specified with `time-interval`) when user types a time
-- `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
-- `time-interval` (String, default: `thirty`): number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`.
-- `value` (String, default: `''`): value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
+| Property | Type | Description |
+|--|--|--|
+| `label` | String, **required** | Accessible label for the input |
+| `default-value` | String, default:`'00:00:00'` | Set default value of input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`. |
+| `disabled` | Boolean | Disables the input |
+| `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
+| `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
+| `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
+| `value` | String, default `''` | Value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable). |
 
 **Accessibility:**
 
@@ -94,9 +102,11 @@ The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d
 
 **Properties:**
 
-- `label` (String, required): accessible label for the input
-- `disabled` (Boolean): disables the input
-- `value` (String, default: `''`): value of the input. This should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
+| Property | Type | Description |
+|--|--|--|
+| `label` | String, **required** | Accessible label for the input |
+| `disabled` | Boolean | Disables the input |
+| `value` | String, default `''` | Value of the input. This should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone). |
 
 **Accessibility:**
 
