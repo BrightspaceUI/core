@@ -3,6 +3,7 @@ import '../button/button-subtle.js';
 import '../colors/colors.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap} from 'lit-html/directives/class-map.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -42,7 +43,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				left: 0;
 				margin: -1px;
 				min-width: 0.3rem;
-				position:absolute;
+				position: absolute;
 				top: 0;
 				width: 0.3rem;
 			}
@@ -77,6 +78,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			:host([dir="rtl"]) .d2l-alert-text-with-actions {
 				padding-left: 0.9rem;
+				padding-right: 1.5rem;
 			}
 
 			.d2l-alert-subtext {
@@ -84,7 +86,11 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 
 			.d2l-alert-action {
-				margin: 0.6rem;
+				margin: 0.6rem 0.6rem 0.6rem 0;
+			}
+			:host([dir="rtl"]) .d2l-alert-action {
+				margin-left: 0.6rem;
+				margin-right: 0;
 			}
 
 			@media (max-width: 615px) {
@@ -142,9 +148,15 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	render() {
 		const hasActions = this.buttonText && this.buttonText.length > 0  || this.hasCloseButton;
+		const alertTextClasses = {
+			'd2l-alert-text': true,
+			'd2l-alert-text-with-actions': hasActions,
+			'd2l-body-standard': true
+		};
+
 		return html`
 			<div class="d2l-alert-highlight"></div>
-			<div class="d2l-alert-text ${hasActions ? 'd2l-alert-text-with-actions' : null} d2l-body-standard">
+			<div class="${classMap(alertTextClasses)}">
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>

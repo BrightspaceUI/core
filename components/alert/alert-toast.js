@@ -22,6 +22,8 @@ class AlertToast extends LitElement {
 			open: { type: Boolean, reflect: true },
 			subtext: { type: String },
 			type: { type: String, reflect: true },
+			_hasFocus: { type: Boolean },
+			_hasMouse: { type: Boolean },
 			_state: { type: String }
 		};
 	}
@@ -83,6 +85,8 @@ class AlertToast extends LitElement {
 
 	constructor() {
 		super();
+		this._hasFocus = false;
+		this._hasMouse = false;
 		this.hideCloseButton = false;
 		this.noAutoClose = false;
 		this.open = false;
@@ -109,13 +113,13 @@ class AlertToast extends LitElement {
 				data-state="${this._state}"
 				@transitionend=${this._onTransitionEnd}>
 				<d2l-alert
-					@blur=${this._closeTimerStart}
+					@blur=${this._onBlur}
 					button-text="${ifDefined(this.buttonText)}"
 					@d2l-alert-closed=${this._onCloseClicked}
-					@focus=${this._closeTimerStop}
+					@focus=${this._onFocus}
 					?has-close-button="${!this.hideCloseButton}"
-					@mouseenter=${this._closeTimerStop}
-					@mouseleave=${this._closeTimerStart}
+					@mouseenter=${this._onMouseEnter}
+					@mouseleave=${this._onMouseLeave}
 					subtext="${ifDefined(this.subtext)}"
 					type="${ifDefined(this.type)}">
 					<slot></slot>
@@ -138,7 +142,8 @@ class AlertToast extends LitElement {
 	}
 
 	_closeTimerStart() {
-		if (!this.noAutoClose) {
+		clearTimeout(this._setTimeoutId);
+		if (!this.noAutoClose && !this._hasFocus && !this._hasMouse) {
 			const duration = this.buttonText ? 10000 : 4000;
 			this._setTimeoutId = setTimeout(() => {
 				this.open = false;
@@ -150,9 +155,29 @@ class AlertToast extends LitElement {
 		clearTimeout(this._setTimeoutId);
 	}
 
+	_onBlur() {
+		this._hasFocus = false;
+		this._closeTimerStart();
+	}
+
 	_onCloseClicked(e) {
 		e.preventDefault();
 		this.open = false;
+	}
+
+	_onFocus(){
+		this._hasFocus = true;
+		this._closeTimerStop();
+	}
+
+	_onMouseEnter() {
+		this._hasMouse = true;
+		this._closeTimerStop();
+	}
+
+	_onMouseLeave() {
+		this._hasMouse = false;
+		this._closeTimerStart();
 	}
 
 	_onTransitionEnd() {
@@ -193,9 +218,10 @@ class AlertToast extends LitElement {
 	}
 
 	_stateChanged(newState) {
-		this._closeTimerStop();
 		if (newState === states.OPEN) {
 			this._closeTimerStart();
+		} else {
+			this._closeTimerStop();
 		}
 	}
 }
