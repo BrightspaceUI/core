@@ -13,7 +13,7 @@ class InputText extends RtlMixin(LitElement) {
 		return {
 			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
-			atomic: { type: Boolean },
+			atomic: { type: String },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean, reflect: true },
