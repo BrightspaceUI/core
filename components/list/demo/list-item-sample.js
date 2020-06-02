@@ -1,4 +1,5 @@
 import '../list-item-generic-layout.js';
+import '../list-item-drag-handle.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
@@ -93,6 +94,10 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 
 	_handleMouseLeave() {
 		this._hovering = false;
+	}
+
+	_renderDragHandle() {
+		return html`<d2l-list-item-drag-handle ?disabled="${this.disabled}"></d2l-list-item-drag-handle>`;
 	}
 }
 
