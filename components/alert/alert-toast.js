@@ -109,10 +109,10 @@ class AlertToast extends LitElement {
 				data-state="${this._state}"
 				@transitionend=${this._onTransitionEnd}>
 				<d2l-alert
-					@blur=${this._closeTimerStop}
+					@blur=${this._closeTimerStart}
 					button-text="${ifDefined(this.buttonText)}"
 					@d2l-alert-closed=${this._onCloseClicked}
-					@focus=${this._closeTimerStart}
+					@focus=${this._closeTimerStop}
 					?has-close-button="${!this.hideCloseButton}"
 					@mouseenter=${this._closeTimerStop}
 					@mouseleave=${this._closeTimerStart}
