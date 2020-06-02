@@ -1,5 +1,6 @@
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { dragActions } from '../list-item-drag-handle.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const keyCodes = Object.freeze({
 	END: { key: 'end', code: 35 },
@@ -15,6 +16,10 @@ const keyCodes = Object.freeze({
 });
 
 describe('ListItemDragHandle', () => {
+
+	it('should construct d2l-list-item-drag-handle', () => {
+		runConstructor('d2l-list-item-drag-handle');
+	});
 
 	describe('Events to activate keyboard mode.', () => {
 		let element;

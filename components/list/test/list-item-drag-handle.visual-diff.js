@@ -16,9 +16,7 @@ describe('d2l-list-item-drag-handle', () => {
 
 	after(async() => await browser.close());
 
-	beforeEach(async() => {
-		await visualDiff.resetFocus(page);
-	});
+	beforeEach(async() => await visualDiff.resetFocus(page));
 
 	describe('dragger', () => {
 		it('simple', async function() {

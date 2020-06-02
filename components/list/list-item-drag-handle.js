@@ -94,12 +94,12 @@ class ListItemDragHandle extends LitElement {
 	}
 
 	render() {
-		return html`${this._keyboardActive && !this.disabled ? this._renderKeyboardDragging() : this._renderDragger()}`;
+		return this._keyboardActive && !this.disabled ? this._renderKeyboardDragging() : this._renderDragger();
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('_keyboardActive')) this.focus();
+		if (changedProperties.has('_keyboardActive') && typeof changedProperties.get('_keyboardActive') !== 'undefined') this.focus();
 	}
 
 	focus() {
