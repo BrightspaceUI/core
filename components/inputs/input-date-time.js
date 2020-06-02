@@ -40,7 +40,6 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 
-		this._namespace = 'components.inputs.dateTime';
 		this._parsedDateTime = '';
 	}
 
@@ -59,7 +58,7 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				<d2l-input-date
 					@change="${this._handleDateChange}"
 					?disabled="${this.disabled}"
-					label="${this.localize(`${this._namespace}.date`)}"
+					label="${this.localize('components.input-date-time.date')}"
 					label-hidden
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
@@ -67,7 +66,7 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					@change="${this._handleTimeChange}"
 					?disabled="${this.disabled}"
 					?hidden="${timeHidden}"
-					label="${this.localize(`${this._namespace}.time`)}"
+					label="${this.localize('components.input-date-time.time')}"
 					label-hidden
 					max-height="430"
 					.value="${this._parsedDateTime}">

@@ -237,7 +237,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
 		this._maxWidth = null;
-		this._namespace = 'components.tabs.tabs';
 		this._scrollCollapsed = false;
 		this._state = 'shown';
 		this._tabInfos = [];
@@ -321,7 +320,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 					<div class="d2l-tabs-scroll-previous-container">
 						<button class="d2l-tabs-scroll-button"
 							@click="${this._handleScrollPrevious}"
-							title="${this.localize(`${this._namespace}.scroll.previous`)}">
+							title="${this.localize('components.tabs.previous')}">
 							<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 						</button>
 					</div>
@@ -344,7 +343,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 					<div class="d2l-tabs-scroll-next-container">
 						<button class="d2l-tabs-scroll-button"
 							@click="${this._handleScrollNext}"
-							title="${this.localize(`${this._namespace}.scroll.next`)}">
+							title="${this.localize('components.tabs.next')}">
 							<d2l-icon icon="tier1:chevron-right"></d2l-icon>
 						</button>
 					</div>

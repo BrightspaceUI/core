@@ -104,8 +104,6 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		super();
 		this.hasCloseButton = false;
 		this.type = 'default';
-
-		this._namespace = 'components.alert.alert';
 	}
 
 	render() {
@@ -116,7 +114,7 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
 			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle class="d2l-alert-action" text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
-			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize(`${this._namespace}.close`)}" @click=${this.close}></d2l-button-icon>` : null}
+			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize('components.alert.close')}" @click=${this.close}></d2l-button-icon>` : null}
 		`;
 	}
 

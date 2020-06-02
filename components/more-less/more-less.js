@@ -55,7 +55,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		super();
 
 		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
-		this.__namespace = 'components.moreLess.moreLess';
 		this.__transitionAdded = false;
 
 		this.expanded = false;
@@ -197,7 +196,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__computeText() {
-		return this.localize(this.expanded ? `${this.__namespace}.less` : `${this.__namespace}.more`);
+		return this.localize(this.expanded ? 'components.more-less.less' : 'components.more-less.more');
 	}
 
 	__expand() {

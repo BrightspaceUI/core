@@ -18,7 +18,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		this.percent = false;
 		this.value = 0;
 
-		this._namespace = 'components.meter.meterMixin';
+		this._namespace = 'components.meter-mixin';
 	}
 
 	_ariaLabel(primary, secondary) {

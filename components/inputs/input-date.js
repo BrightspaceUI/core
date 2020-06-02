@@ -87,7 +87,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
-		this._namespace = 'components.inputs.date';
+		this._namespace = 'components.input-date';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}

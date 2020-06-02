@@ -369,7 +369,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		this._isInitialFocusDate = true;
 		this._monthNav = 'initial';
-		this._namespace = 'components.calendar.calendar';
+		this._namespace = 'components.calendar';
 		this._tableInfoId = getUniqueId();
 		getCalendarData();
 	}

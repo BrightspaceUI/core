@@ -78,7 +78,6 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._focussed = false;
 		this._hovered = false;
 		this._lastSearchValue = '';
-		this._namespace = 'components.inputs.search';
 		this.disabled = false;
 		this.noClear = false;
 		this.value = '';
@@ -125,12 +124,12 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						?disabled="${this.disabled}"
 						icon="tier1:search"
 						@click="${this.search}"
-						text="${this.localize(`${this._namespace}.search`)}"></d2l-button-icon>` : html`
+						text="${this.localize('components.input-search.search')}"></d2l-button-icon>` : html`
 					<d2l-button-icon
 						@click="${this._handleClearClick}"
 						?disabled="${this.disabled}"
 						icon="tier1:close-default"
-						text="${this.localize(`${this._namespace}.clear`)}"></d2l-button-icon>`}
+						text="${this.localize('components.input-search.clear')}"></d2l-button-icon>`}
 			</div>
 		`;
 	}
