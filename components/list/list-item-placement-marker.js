@@ -37,6 +37,7 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				margin-right: -1.5px;
 				stroke-width: 3px;
 				stroke: var(--d2l-color-celestine);
+				fill: none;
 			}
 
 			.d2l-list-drag-marker {
@@ -51,7 +52,7 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 		return html`
 			<div class="d2l-list-drag-marker">
 				<svg class="d2l-list-drag-marker-circle">
-					<circle cx="50%" cy="50%" r="4px" fill="none"/>
+					<circle cx="50%" cy="50%" r="4px"/>
 				</svg>
 				<svg class="d2l-list-drag-marker-line">
 					<line x1="0" y1="50%" x2="100%" y2="50%" />
