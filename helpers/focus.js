@@ -6,7 +6,6 @@ const focusableElements = {
 	button: true,
 	frame: true,
 	iframe: true,
-	img: true,
 	input: true,
 	isindex: true,
 	object: true,
