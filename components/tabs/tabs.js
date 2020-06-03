@@ -581,8 +581,10 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 		const panels = this._getPanels(e.target);
 
-		if (this._initialized) this._updateTabListVisibility(panels);
-		else if (panels.length === 0) return;
+		// handle case where there are less than two tabs initially
+		this._updateTabListVisibility(panels);
+
+		if (!this._initialized && panels.length === 0) return;
 
 		let selectedTabInfo = null;
 
@@ -897,7 +899,8 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	_updateTabListVisibility(panels) {
 		if (this._state === 'shown' && panels.length < 2) {
-			if (reduceMotion) {
+			// don't animate the tabs list visibility if it's the inital render
+			if (reduceMotion || !this._initialized) {
 				this._state = 'hidden';
 			} else {
 				const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
@@ -910,7 +913,8 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 				this._state = 'anim';
 			}
 		} else if (this._state === 'hidden' && panels.length > 1) {
-			if (reduceMotion) {
+			// don't animate the tabs list visibility if it's the inital render
+			if (reduceMotion || !this._initialized) {
 				this._state = 'shown';
 			} else {
 				this._state = 'anim';
