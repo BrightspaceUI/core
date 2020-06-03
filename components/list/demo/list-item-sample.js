@@ -1,4 +1,5 @@
 import '../list-item-generic-layout.js';
+import '../list-item-placement-marker.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
@@ -49,6 +50,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		const classes = { hovering: this._hovering, focusing: this._focusing };
 
 		return html`
+			<d2l-list-item-placement-marker></d2l-list-item-placement-marker>
 			<d2l-list-item-generic-layout>
 				${ this.draggable ? html`
 				<div slot="outside-control">${ this._renderDragHandle ? this._renderDragHandle() : '=' }</div>
