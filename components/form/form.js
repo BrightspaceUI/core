@@ -44,6 +44,10 @@ class Form extends ValidationGroupMixin(LitElement) {
 		return html`<slot></slot>`;
 	}
 
+	getRootNode() {
+		return this;
+	}
+
 	submit() {
 		this._formBehavior.submit();
 	}

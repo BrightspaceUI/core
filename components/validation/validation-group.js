@@ -7,5 +7,9 @@ class ValidationGroup extends ValidationGroupMixin(LitElement) {
 		return html`<slot></slot>`;
 	}
 
+	getRootNode() {
+		return this;
+	}
+
 }
 customElements.define('d2l-validation-group', ValidationGroup);

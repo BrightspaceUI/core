@@ -59,11 +59,16 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		return [...this._errors].filter(entry => entry[1].length > 0).map(entry => ({ id: entry[0].id, message: entry[1][0]}));
 	}
 
+	getRootNode() {
+		return this.shadowRoot;
+	}
+
 	async validate() {
 		const errors = new Map();
 		errors.set(undefined, []);
 
-		const formElements = findFormElements(this);
+		const root = this.getRootNode();
+		const formElements = findFormElements(root);
 		for (const ele of formElements) {
 			if (!ele.id) {
 				ele.id = getUniqueId();
@@ -81,7 +86,8 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	_findErrorSummary() {
-		let errorSummary = this.querySelector('d2l-validation-error-summary');
+		const root = this.getRootNode();
+		let errorSummary = root.querySelector('d2l-validation-error-summary');
 		if (!errorSummary) {
 			errorSummary = document.createElement('d2l-validation-error-summary');
 			this.prepend(errorSummary);
