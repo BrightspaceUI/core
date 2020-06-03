@@ -60,7 +60,7 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 						</select>
 					</div>
 				</div>
-				<d2l-input-text label="${this.localize('customInputTitle')}" data-subject="${this.localize('customInputTitle')}"  name="custom-input" required></d2l-input-text>
+				<d2l-input-text label="${this.localize('customInputTitle')}" data-subject="${this.localize('customInputTitle')}"  name="custom-input" required minlength="4"></d2l-input-text>
 				<div>
 					<h2>Secondary</h2>
 					<label for="story">Tell us your story:</label>

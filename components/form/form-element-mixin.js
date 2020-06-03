@@ -87,7 +87,7 @@ export const FormElementMixin = superclass => class extends ValidationLocalizeMi
 	setValidity(flags, message) {
 		this._validity = new FormElementValidityState(flags);
 		if (!this._validity.valid) {
-			this._validationMessage = message === undefined ? this.localizeValidity() : message;
+			this._validationMessage = message;
 		} else {
 			this._validationMessage = null;
 		}
@@ -104,7 +104,7 @@ export const FormElementMixin = superclass => class extends ValidationLocalizeMi
 	}
 
 	get validationMessage() {
-		return this._validationMessage;
+		return this._validationMessage ? this._validationMessage :  this.localizeValidity();
 	}
 
 	get validity() {

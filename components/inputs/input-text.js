@@ -133,6 +133,7 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 					aria-invalid="${ifDefined(this.ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-required="${ifDefined(ariaRequired)}"
+					?required="${this.required}"
 					autocomplete="${ifDefined(this.autocomplete)}"
 					?autofocus="${this.autofocus}"
 					@change="${this._handleChange}"
@@ -155,12 +156,10 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 					style="${styleMap(inputStyles)}"
 					tabindex="${ifDefined(this.tabindex)}"
 					title="${ifDefined(this.title)}"
-					type="${this._getType()}"
-					.value="${this.value}">
+					type="${this._getType()}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 			</div>
-			<d2l-validation-custom @d2l-validation-custom-validate=${this._customValidation} failure-text="Wrong value, try hunter2" ></d2l-validation-custom>
 			${ this._validationTooltipText ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this._validationTooltipText}</d2l-tooltip>` : null }
 		`;
 		if (this.label && !this.labelHidden) {
@@ -176,15 +175,15 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
-				if (this.required && !this.value) {
-					this.setValidity({ valueMissing: true });
-				} else {
-					this.setValidity({});
-				}
 				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			}
 		});
+	}
+
+	checkValidity() {
+		const input = this.shadowRoot.getElementById(this._inputId);
+		return input.checkValidity();
 	}
 
 	async focus() {
@@ -196,7 +195,6 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 			this.focus();
 		}
 	}
-
 	hideValidationTooltip() {
 		this._validationTooltipText = null;
 	}
@@ -204,11 +202,9 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 		this._validationTooltipText = message;
 		return true;
 	}
-
-	_customValidation(e) {
-		setTimeout(() => {
-			e.detail.resolve(this.value === 'hunter2');
-		}, 1000);
+	get validity() {
+		const input = this.shadowRoot.getElementById(this._inputId);
+		return input.validity;
 	}
 
 	_getAriaLabel() {
