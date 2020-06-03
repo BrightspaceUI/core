@@ -47,5 +47,5 @@ try {
 } catch (err) {
 	console.error(chalk.red(err));
 	console.groupEnd();
-	process.exit(0);
+	process.exit(1);
 }
