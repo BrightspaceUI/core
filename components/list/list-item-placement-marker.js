@@ -16,6 +16,7 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 
 			.d2l-list-drag-marker-line {
 				height: 12px;
+				width: 100%;
 				stroke: var(--d2l-color-celestine);
 				stroke-width: 3px;
 			}
