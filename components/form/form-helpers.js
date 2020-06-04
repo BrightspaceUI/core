@@ -107,17 +107,17 @@ const _getNativeFormElementData = (node) => {
 	return eleData;
 };
 
-export const findFormElements = (root) => {
+export const findFormElements = (root, predicate) => {
 	const eles = [];
-	_findFormElementsHelper(root, eles);
+	_findFormElementsHelper(root, eles, predicate);
 	return eles;
 };
 
-const _findFormElementsHelper = (ele, eles) => {
-	if (isNativeFormElement(ele) || isCustomFormElement(ele)) {
+const _findFormElementsHelper = (ele, eles, predicate) => {
+	if (isNativeFormElement(ele) || isCustomFormElement(ele) || (predicate && predicate(ele))) {
 		eles.push(ele);
 	}
 	for (const child of ele.children) {
-		_findFormElementsHelper(child, eles);
+		_findFormElementsHelper(child, eles, predicate);
 	}
 };

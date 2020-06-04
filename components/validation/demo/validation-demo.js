@@ -1,5 +1,6 @@
 import '../../button/button.js';
 import '../../inputs/input-text.js';
+import './example-section.js';
 import '../validation-group.js';
 import '../validation-error-summary.js';
 import '../validation-custom.js';
@@ -28,6 +29,7 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 	render() {
 		return html`
 			<d2l-validation-group>
+				<d2l-example-section></d2l-example-section>
 				<h1>My Form</h1>
 				<d2l-validation-error-summary></d2l-validation-error-summary>
 				<h2>Primary</h2>
@@ -60,11 +62,12 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 						</select>
 					</div>
 				</div>
-				<d2l-input-text label="${this.localize('customInputTitle')}" data-subject="${this.localize('customInputTitle')}"  name="custom-input" required minlength="4"></d2l-input-text>
+				<d2l-validation-custom for="custom-input" @d2l-validation-custom-validate=${this._validateCheckbox} failure-text="${this.localize('checkValidationFailure', { subject: this.localize('customInputTitle') })}" ></d2l-validation-custom>
+				<d2l-input-text id="custom-input" label="${this.localize('customInputTitle')}" data-subject="${this.localize('customInputTitle')}"  name="custom-input" required minlength="4"></d2l-input-text>
 				<div>
 					<h2>Secondary</h2>
 					<label for="story">Tell us your story:</label>
-					<textarea data-subject="Story" minlength="20" id="story" name="story" rows="5" cols="33">It was a dark and stormy night...</textarea>
+					<textarea class="d2l-input" data-subject="Story" minlength="20" id="story" name="story" rows="5" cols="33">It was...</textarea>
 					<div>
 						<input type="range" id="b" name="b" value="50" max="100" min="15" /> +
 						<input type="number" id="a" name="a" value="10" /> =
