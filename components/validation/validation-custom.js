@@ -1,3 +1,4 @@
+import { isCustomFormElement } from '../form/form-helpers.js';
 import { LitElement } from 'lit-element/lit-element.js';
 
 class ValidationCustom extends LitElement {
@@ -32,7 +33,16 @@ class ValidationCustom extends LitElement {
 		changedProperties.forEach((_, prop) => {
 			if (prop === 'for') {
 				const root = this.getRootNode();
+				const oldSource = this._source;
 				this._source = root.getElementById(this.for);
+				if (this._source !== oldSource) {
+					if (isCustomFormElement(oldSource)) {
+						oldSource.validationCustomDisconnected(this);
+					}
+					if (isCustomFormElement(this._source)) {
+						this._source.validationCustomConnected(this);
+					}
+				}
 			}
 		});
 	}

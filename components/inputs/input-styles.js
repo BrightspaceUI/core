@@ -51,8 +51,7 @@ export const inputStyles = css`
 		outline-width: 0;
 		padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
 	}
-	[aria-invalid="true"].d2l-input,
-	.d2l-input:invalid {
+	[aria-invalid="true"].d2l-input {
 		border-color: var(--d2l-color-cinnabar);
 	}
 	.d2l-input:disabled {

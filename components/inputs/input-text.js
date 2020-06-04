@@ -195,13 +195,14 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 			this.focus();
 		}
 	}
-	hideValidationTooltip() {
+	validationTooltipHide() {
 		this._validationTooltipText = null;
 	}
-	showValidationTooltip(message) {
+
+	validationTooltipShow(message) {
 		this._validationTooltipText = message;
-		return true;
 	}
+
 	get validity() {
 		const input = this.shadowRoot.getElementById(this._inputId);
 		return input.validity;

@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { findFormElements, isCustomFormElement, isFormElement } from '../form/form-helpers.js';
+import { findFormElements, isCustomFormElement, isNativeFormElement } from '../form/form-helpers.js';
 import { css } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ValidationLocalizeMixin } from './validation-localize-mixin.js';
@@ -67,10 +67,9 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		for (const ele of formElements) {
 			const eleErrors = await this._validateFormElement(ele);
 			if (eleErrors.length > 0) {
-				ele.setAttribute('aria-invalid', 'true');
-				this._showTooltip(ele, eleErrors[0]);
 				errors.set(ele, eleErrors);
 			}
+			this._reportValidity(ele, eleErrors);
 		}
 		this._errors = errors;
 		this._updateErrorSummary();
@@ -88,10 +87,10 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	_hideTooltip(ele) {
-		const tooltip = this._tooltips.get(ele);
 		if (isCustomFormElement(ele)) {
-			ele.hideValidationTooltip();
+			return;
 		}
+		const tooltip = this._tooltips.get(ele);
 		if (tooltip) {
 			this._tooltips.delete(ele);
 			tooltip.remove();
@@ -107,22 +106,20 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		const errors = await this._validateFormElement(ele);
 
 		const isValid = errors.length === 0;
-		if (!ele.id) {
-			ele.id = getUniqueId();
+		const isNative = isNativeFormElement(ele);
+		if (isNative) {
+			ele.id = ele.id || getUniqueId();
+			this._reportValidity(ele, errors);
 		}
-		ele.setAttribute('aria-invalid', isValid ? 'false' : 'true');
-
 		if (isValid) {
 			if (this._errors.delete(ele)) {
 				this._updateErrorSummary();
 			}
-			this._hideTooltip(ele);
 		} else {
 			if (this._errors.has(ele)) {
 				this._errors.set(ele, errors);
 				this._updateErrorSummary();
 			}
-			this._showTooltip(ele, errors[0]);
 		}
 	}
 
@@ -133,8 +130,22 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		}
 	}
 
+	_reportValidity(ele, errors) {
+		if (isCustomFormElement(ele)) {
+			return;
+		}
+		const isValid = errors.length === 0;
+		if (isValid) {
+			this._hideTooltip(ele);
+			ele.setAttribute('aria-invalid', 'false');
+		} else {
+			this._showTooltip(ele, errors[0]);
+			ele.setAttribute('aria-invalid', 'true');
+		}
+	}
+
 	_showTooltip(ele, message) {
-		if (isCustomFormElement(ele) && ele.showValidationTooltip(message)) {
+		if (isCustomFormElement(ele)) {
 			return;
 		}
 		let tooltip = this._tooltips.get(ele);
@@ -160,28 +171,19 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	async _validateFormElement(ele) {
-		if (!isFormElement(ele)) {
-			return [];
-		}
-		const externalCustoms = [...this._validationCustoms].filter(custom => custom.source === ele);
-		const externalCustomValidations = Promise.all(externalCustoms.map(custom => custom.validate()));
-		const internalCustomValidations = isCustomFormElement(ele) ? ele.validateInternalCustoms() : Promise.resolve([]);
-		const customValidations = Promise.all([externalCustomValidations, internalCustomValidations]);
-
-		const errors = [];
-		if (!ele.checkValidity()) {
-			if (isCustomFormElement(ele)) {
-				errors.push(ele.validationMessage);
-			} else {
+		if (isCustomFormElement(ele)) {
+			return ele.validate();
+		} else if (isNativeFormElement(ele)) {
+			const customs = [...this._validationCustoms].filter(custom => custom.source === ele);
+			const results = await Promise.all(customs.map(custom => custom.validate()));
+			const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
+			if (!ele.checkValidity()) {
 				const validationMessage = this.localizeValidity(ele);
-				errors.push(validationMessage);
+				errors.unshift(validationMessage);
 			}
+			return errors;
 		}
-		const validationResults = await customValidations;
-		const externalResults = validationResults[0];
-		const externalMessages = externalCustoms.map(custom => custom.failureText).filter((_, i) => !externalResults[i]);
-		const internalResults = validationResults[1];
-		return [...errors, ...internalResults, ...externalMessages];
+		return [];
 	}
 
 	_validationCustomConnected(e) {

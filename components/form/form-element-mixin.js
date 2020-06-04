@@ -51,10 +51,7 @@ export class FormElementValidityState {
 export const FormElementMixin = superclass => class extends ValidationLocalizeMixin(superclass) {
 
 	static get properties() {
-		return {
-			_validationMessage: { type: String },
-			_validity: { type: Object }
-		};
+		return {};
 	}
 
 	constructor() {
@@ -76,36 +73,53 @@ export const FormElementMixin = superclass => class extends ValidationLocalizeMi
 		return true;
 	}
 
-	hideValidationTooltip() {
-
+	setCustomValidity(message) {
+		this._validity = new FormElementValidityState({ customError: true });
+		this._validationMessage = message;
 	}
 
 	setFormValue(formValue) {
 		this.formValue = formValue;
 	}
 
-	setValidity(flags, message) {
+	setValidity(flags) {
 		this._validity = new FormElementValidityState(flags);
-		if (!this._validity.valid) {
-			this._validationMessage = message;
-		} else {
-			this._validationMessage = null;
-		}
+		this._validationMessage = null;
 	}
 
-	showValidationTooltip() {
-		return false;
-	}
-
-	async validateInternalCustoms() {
+	async validate() {
 		const customs = [...this._validationCustoms];
 		const results = await Promise.all(customs.map(custom => custom.validate()));
-		return customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
+		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
+		if (!this.checkValidity()) {
+			errors.unshift(this.validationMessage);
+		}
+		if (errors.length > 0) {
+			this.validationTooltipShow(errors[0]);
+			this.setAttribute('aria-invalid', 'true');
+		} else {
+			this.validationTooltipHide();
+			this.setAttribute('aria-invalid', 'false');
+		}
+		return errors;
+	}
+
+	validationCustomConnected(custom) {
+		this._validationCustoms.add(custom);
+	}
+
+	validationCustomDisconnected(custom) {
+		this._validationCustoms.delete(custom);
 	}
 
 	get validationMessage() {
 		return this._validationMessage ? this._validationMessage :  this.localizeValidity();
 	}
+
+	validationTooltipHide() {}
+
+	// eslint-disable-next-line no-unused-vars
+	validationTooltipShow(message) {}
 
 	get validity() {
 		return this._validity;
@@ -114,13 +128,13 @@ export const FormElementMixin = superclass => class extends ValidationLocalizeMi
 	_validationCustomConnected(e) {
 		e.stopPropagation();
 		const custom = e.composedPath()[0];
-		this._validationCustoms.add(custom);
+		this.validationCustomConnected(custom);
 	}
 
 	_validationCustomDisconnected(e) {
 		e.stopPropagation();
 		const custom = e.composedPath()[0];
-		this._validationCustoms.delete(custom);
+		this.validationCustomDisconnected(custom);
 	}
 
 };
