@@ -123,7 +123,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 		it('disables grid on list-item-generic-layout elements', async() => {
 			el.grid = false;
-			await el.updateComplete;
+			await aTimeout(1);
 			el._getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.false;
 			});
