@@ -1,38 +1,30 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import '../link/link.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 
 class ValidationErrorSummary extends LitElement {
 
 	static get properties() {
 		return {
-			errors: { type: Array }
+			errors: { type: Object }
 		};
-	}
-
-	static get styles() {
-		return css``;
 	}
 
 	constructor() {
 		super();
-		this.errors = [];
+		this.errors = new Map();
 	}
 
 	render() {
+		const errors = [...this.errors];
 		return html`
 			<ul>
-				${this.errors.map(error => html`<li @click=${
-		// eslint-disable-next-line lit/no-template-arrow
-		() => this._onErrorClick(error)}><a href="#${error.id}">${error.message}</a></li>`)}
+				${errors.map(([ele, messages]) => html`
+					<li>
+						<d2l-link @click=${/* eslint-disable lit/no-template-arrow */() => ele.focus()}>${messages[0]}</d2l-link>
+					</li>
+				`)}
 			</ul>
 		`;
-	}
-
-	_onErrorClick(error) {
-		const root = this.getRootNode();
-		const ele = root.getElementById(error.id);
-		if (ele) {
-			ele.focus();
-		}
 	}
 
 }

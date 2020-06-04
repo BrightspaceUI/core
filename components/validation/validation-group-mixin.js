@@ -31,6 +31,7 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
+
 	}
 	connectedCallback() {
 		super.connectedCallback();
@@ -48,15 +49,11 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 	}
 
 	commit() {
-		if (this.errors.length > 0) {
+		if (this._errors.length > 0) {
 			return false;
 		}
 		this._dirty = false;
 		return true;
-	}
-
-	get errors() {
-		return [...this._errors].filter(entry => entry[1].length > 0).map(entry => ({ id: entry[0].id, message: entry[1][0]}));
 	}
 
 	getRootNode() {
@@ -65,14 +62,9 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 
 	async validate() {
 		const errors = new Map();
-		errors.set(undefined, []);
-
 		const root = this.getRootNode();
 		const formElements = findFormElements(root);
 		for (const ele of formElements) {
-			if (!ele.id) {
-				ele.id = getUniqueId();
-			}
 			const eleErrors = await this._validateFormElement(ele);
 			if (eleErrors.length > 0) {
 				ele.setAttribute('aria-invalid', 'true');
@@ -82,7 +74,7 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		}
 		this._errors = errors;
 		this._updateErrorSummary();
-		return this.errors;
+		return errors;
 	}
 
 	_findErrorSummary() {
@@ -164,7 +156,7 @@ export const ValidationGroupMixin = superclass => class extends ValidationLocali
 		if (!this._errorSummary) {
 			return;
 		}
-		this._errorSummary.errors = this.errors;
+		this._errorSummary.errors = new Map(this._errors);
 	}
 
 	async _validateFormElement(ele) {
