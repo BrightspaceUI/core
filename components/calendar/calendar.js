@@ -166,7 +166,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				width: 100%;
 			}
 
-			th[role="columnheader"] {
+			th {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
 				padding-bottom: 0.6rem;
 				padding-top: 0.3rem;
@@ -177,7 +177,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				text-decoration: none;
 			}
 
-			tbody > tr:first-child button {
+			tbody > tr:first-child div {
 				margin-top: 0.3rem;
 			}
 
@@ -317,8 +317,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			td:focus button:not(.d2l-calendar-date-selected):hover,
-			td:focus button:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			td:focus:not(.d2l-calendar-date-selected):hover,
+			td:focus:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
@@ -339,7 +339,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				td:focus .d2l-calendar-date.d2l-calendar-date-initial {
+				td:focus.d2l-calendar-date.d2l-calendar-date-initial {
 					transition: none;
 				}
 			}
@@ -350,7 +350,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				padding: 2px;
 			}
 
-			td:focus .d2l-calendar-date.d2l-calendar-date-selected {
+			td:focus.d2l-calendar-date.d2l-calendar-date-selected {
 				border-width: 0;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px var(--d2l-color-celestine);
 				padding: 0;
@@ -477,11 +477,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
-			<th
-				abbr="${calendarData.descriptor.calendar.days.long[index]}"
-				aria-label="${calendarData.descriptor.calendar.days.long[index]}"
-				role="columnheader"
-				scope="col">
+			<th>
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
 					${calendarData.descriptor.calendar.days.short[index]}
 				</abbr>
@@ -490,7 +486,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
-			const weekHtml = week.map((day) => {
+			const weekHtml = week.map((day, index) => {
 				const disabled = getDisabled(day, this.minValue, this.maxValue);
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
@@ -503,26 +499,20 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const year = day.getFullYear();
 				const month = day.getMonth();
 				const date = day.getDate();
-				const description = `${date}. ${selected ? this.localize('selected') : this.localize('notSelected')} ${formatDate(day, {format: 'monthYear'})}`;
-				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
+				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
+				const description = `${weekday} ${date}. ${selected ? this.localize('selected') : this.localize('notSelected')} ${formatDate(day, {format: 'monthYear'})}`;
 				return html`
 					<td
-						aria-selected="${selected ? 'true' : 'false'}"
+						aria-disabled="${disabled}"
+						aria-label="${description}"
+						@click="${this._onDateSelected}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
 						@keydown="${this._onKeyDown}"
-						role="gridcell"
+						role="button"
 						tabindex=${focused ? '0' : '-1'}>
-							<button
-								aria-label="${description}"
-								class="${classMap(classes)}"
-								@click="${this._onDateSelected}"
-								?disabled="${disabled}"
-								tabindex="-1"
-								type="button">
-								${date}
-							</button>
+						<div class="${classMap(classes)}">${date}</div>
 					</td>`;
 			});
 
@@ -544,29 +534,30 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
 			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
-				<div class="d2l-calendar-title">
-					<d2l-button-icon
-						@click="${this._onPrevMonthButtonClick}"
-						text="${this._computeText(getPrevMonth(this._shownMonth))}"
-						icon="tier1:chevron-left">
-					</d2l-button-icon>
-					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
-					<d2l-button-icon
-						@click="${this._onNextMonthButtonClick}"
-						text="${this._computeText(getNextMonth(this._shownMonth))}"
-						icon="tier1:chevron-right">
-					</d2l-button-icon>
+				<div role="application">
+					<div class="d2l-calendar-title">
+						<d2l-button-icon
+							@click="${this._onPrevMonthButtonClick}"
+							text="${this._computeText(getPrevMonth(this._shownMonth))}"
+							icon="tier1:chevron-left">
+						</d2l-button-icon>
+						<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
+						<d2l-button-icon
+							@click="${this._onNextMonthButtonClick}"
+							text="${this._computeText(getNextMonth(this._shownMonth))}"
+							icon="tier1:chevron-right">
+						</d2l-button-icon>
+					</div>
+					<table aria-hidden="true" role="presentation">
+						${weekdayHeaders}
+					</table>
+					<table aria-labelledby="${labelId}" role="presentation">
+						${summary}
+						<tbody>
+							${dayRows}
+						</tbody>
+					</table>
 				</div>
-				<table
-					aria-labelledby="${labelId}">
-					${summary}
-					<thead>
-						<tr>${weekdayHeaders}</tr>
-					</thead>
-					<tbody>
-						${dayRows}
-					</tbody>
-				</table>
 				<slot></slot>
 			</div>
 		`;
@@ -621,7 +612,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	async _onDateSelected(e) {
 		let selectedDate = e.composedPath()[0];
-		if (selectedDate.tagName === 'BUTTON') selectedDate = selectedDate.parentNode;
+		if (selectedDate.tagName === 'DIV') selectedDate = selectedDate.parentNode;
 		const year = selectedDate.getAttribute('data-year');
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
@@ -808,8 +799,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		await this.updateComplete;
 		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
-		} else if (this.shadowRoot.querySelector('button.d2l-calendar-date:enabled')) {
-			const validDates = this.shadowRoot.querySelectorAll('button.d2l-calendar-date:enabled');
+		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
+			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:enabled');
 			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
 			const year = focusDate.getAttribute('data-year');
 			const month = focusDate.getAttribute('data-month');
