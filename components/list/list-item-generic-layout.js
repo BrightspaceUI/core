@@ -129,12 +129,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-		<slot name="content-action" class="d2l-cell" cell-num="5"></slot>
-		<slot name="outside-control-action" class="d2l-cell" cell-num="1"></slot>
-		<slot name="outside-control" class="d2l-cell" cell-num="2"></slot>
-		<slot name="control-action" class="d2l-cell" cell-num="3"></slot>
-		<slot name="control" class="d2l-cell" cell-num="4"></slot>
-		<slot name="actions" class="d2l-cell" cell-num="6"></slot>
+		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
+		<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
+		<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
+		<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
+		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
+		<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
@@ -148,7 +148,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_focusCellItem(num, itemNum) {
-		const cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
+		const cell = this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
 		if (!cell) return;
 
 		const firstFocusable = getFirstFocusableDescendant(cell);
@@ -174,7 +174,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		let focusable = null;
 		let num = 1;
 		do {
-			cell = this.shadowRoot.querySelector(`[cell-num="${num++}"]`);
+			cell = this.shadowRoot.querySelector(`[data-cell-num="${num++}"]`);
 			if (cell) {
 				focusable = getLastFocusableDescendant(cell) || focusable;
 			}
@@ -196,7 +196,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		let cell = null;
 		let focusable = null;
 		do {
-			cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
+			cell = this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
 			if (cell) {
 				focusable = forward ? getFirstFocusableDescendant(cell) : getLastFocusableDescendant(cell);
 			}
@@ -287,7 +287,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_getThisCell() {
-		return this.shadowRoot.querySelector(`.d2l-cell[cell-num="${this._cellNum}"]`);
+		return this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
 	}
 
 	_handleKeydown(event) {
@@ -383,7 +383,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_setFocusInfo(event) {
 		const slot = (event.path || event.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
-		this._cellNum = parseInt(slot.getAttribute('cell-num'));
+		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
 		this._cellFocusedItem = this._getFocusedItemPosition(event.target);
 	}
 }
