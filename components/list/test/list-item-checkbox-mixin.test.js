@@ -15,7 +15,7 @@ const tag = defineCE(
 
 describe('ListItemCheckboxMixin', () => {
 	it('Sets checked status to undefined when no key is given', async() => {
-		const element = await fixture(`<${tag} selected="true"></${tag}>`);
+		const element = await fixture(`<${tag} selectable selected></${tag}>`);
 		expect(element.selected).to.be.undefined;
 	});
 

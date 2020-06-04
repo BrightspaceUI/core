@@ -70,9 +70,17 @@ class List extends LitElement {
 		}
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('grid')) {
+			const items = this._getItems();
+			items.forEach(item => item.role = this.grid ? 'rowgroup' : 'listitem');
+		}
+	}
+
 	_getItems() {
 		return this.shadowRoot.querySelector('slot').assignedNodes().filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && node.role === 'listitem';
+			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
 	}
 

@@ -7,10 +7,11 @@ import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 import { nothing } from 'lit-html';
 
 class ListItemSample extends ListItemCheckboxMixin(LitElement) {
-	// TODO: Role and breakpoints to live elsewhere
+	// TODO: Breakpoints to live elsewhere
 	// TODO: draggable should be part of the ListItemDragMixin and removed here
 	static get properties() {
 		return {
+			role: { type: String, reflect: true },
 			href: { type: String },
 			draggable: { type: Boolean },
 			_hovering: { type: Boolean },
@@ -49,7 +50,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 		const classes = { hovering: this._hovering, focusing: this._focusing };
 
 		return html`
-			<d2l-list-item-generic-layout gridActive>
+			<d2l-list-item-generic-layout ?grid-active="${this.role === 'rowgroup'}">
 				${ this.draggable ? html`
 				<div slot="outside-control">${ this._renderDragHandle ? this._renderDragHandle() : '=' }</div>
 				` : nothing }
