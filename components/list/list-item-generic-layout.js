@@ -147,6 +147,111 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 	}
 
+	_focusCellItem(num, itemNum) {
+		const cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
+		if (!cell) return;
+
+		const firstFocusable = getFirstFocusableDescendant(cell);
+		if (!firstFocusable) return;
+
+		if (itemNum === 1 || !this._focusNextWithinCell(firstFocusable, itemNum)) {
+			firstFocusable.focus();
+		}
+	}
+
+	_focusFirstRow() {
+		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
+		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		if (this.dir === 'rtl') {
+			row._focusLastItem();
+		} else {
+			row._focusNextCell(1);
+		}
+	}
+
+	_focusLastItem() {
+		let cell = null;
+		let focusable = null;
+		let num = 1;
+		do {
+			cell = this.shadowRoot.querySelector(`[cell-num="${num++}"]`);
+			if (cell) {
+				focusable = getLastFocusableDescendant(cell) || focusable;
+			}
+		} while (cell);
+		focusable.focus();
+	}
+
+	_focusLastRow() {
+		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
+		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		if (this.dir === 'rtl') {
+			row._focusNextCell(1);
+		} else {
+			row._focusLastItem();
+		}
+	}
+
+	_focusNextCell(num, forward = true) {
+		let cell = null;
+		let focusable = null;
+		do {
+			cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
+			if (cell) {
+				focusable = forward ? getFirstFocusableDescendant(cell) : getLastFocusableDescendant(cell);
+			}
+			if (focusable) focusable.focus();
+			forward ? ++num : --num;
+		} while (cell && !focusable);
+		return focusable;
+	}
+
+	_focusNextRow(previous = false, num = 1) {
+		let listItem = previous ?
+			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE') :
+			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE');
+		if (!listItem || !listItem.shadowRoot) return;
+		while (num > 1) {
+			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
+			if (!nextItem) {
+				break; //we ran out of items
+			}
+			listItem = nextItem;
+			--num;
+		}
+		const row = listItem.shadowRoot.querySelector('[role="gridrow"]');
+		if (!row) return;
+
+		row._focusCellItem(this._cellNum, this._cellFocusedItem);
+	}
+
+	_focusNextWithinCell(node, num = 1) {
+		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
+		let focusable = null;
+		let siblingNum = 1;
+		while (!focusable || siblingNum < num) {
+			node = this._getNextSiblingInCell(node);
+			if (!node) break;
+			++siblingNum;
+			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
+		}
+
+		if (focusable) focusable.focus();
+		return focusable;
+	}
+
+	_focusPreviousWithinCell(node) {
+		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
+		let focusable = null;
+		while (!focusable) {
+			node = this._getPrevSiblingInCell(node);
+			if (!node) break;
+			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
+		}
+		if (focusable) focusable.focus();
+		return focusable;
+	}
+
 	_getFocusedItemPosition(node) {
 		let position = 1;
 		// walk the tree backwards until we hit the cell
@@ -273,111 +378,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				break;
 		}
 		event.preventDefault();
-	}
-
-	_focusCellItem(num, itemNum) {
-		const cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
-		if (!cell) return;
-
-		const firstFocusable = getFirstFocusableDescendant(cell);
-		if (!firstFocusable) return;
-
-		if (itemNum === 1 || !this._focusNextWithinCell(firstFocusable, itemNum)) {
-			firstFocusable.focus();
-		}
-	}
-
-	_focusFirstRow() {
-		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
-		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
-		if (this.dir === 'rtl') {
-			row._focusLastItem();
-		} else {
-			row._focusNextCell(1);
-		}
-	}
-
-	_focusLastItem() {
-		let cell = null;
-		let focusable = null;
-		let num = 1;
-		do {
-			cell = this.shadowRoot.querySelector(`[cell-num="${num++}"]`);
-			if (cell) {
-				focusable = getLastFocusableDescendant(cell) || focusable;
-			}
-		} while (cell);
-		focusable.focus();
-	}
-
-	_focusLastRow() {
-		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
-		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
-		if (this.dir === 'rtl') {
-			row._focusNextCell(1);
-		} else {
-			row._focusLastItem();
-		}
-	}
-
-	_focusNextCell(num, forward = true) {
-		let cell = null;
-		let focusable = null;
-		do {
-			cell = this.shadowRoot.querySelector(`[cell-num="${num}"]`);
-			if (cell) {
-				focusable = forward ? getFirstFocusableDescendant(cell) : getLastFocusableDescendant(cell);
-			}
-			if (focusable) focusable.focus();
-			forward ? ++num : --num;
-		} while (cell && !focusable);
-		return focusable;
-	}
-
-	_focusNextRow(previous = false, num = 1) {
-		let listItem = previous ?
-			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE') :
-			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE');
-		if (!listItem || !listItem.shadowRoot) return;
-		while (num > 1) {
-			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
-			if (!nextItem) {
-				break; //we ran out of items
-			}
-			listItem = nextItem;
-			--num;
-		}
-		const row = listItem.shadowRoot.querySelector('[role="gridrow"]');
-		if (!row) return;
-
-		row._focusCellItem(this._cellNum, this._cellFocusedItem);
-	}
-
-	_focusNextWithinCell(node, num = 1) {
-		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
-		let focusable = null;
-		let siblingNum = 1;
-		while (!focusable || siblingNum < num) {
-			node = this._getNextSiblingInCell(node);
-			if (!node) break;
-			++siblingNum;
-			focusable = isFocusable(node, true) ? node : getFirstFocusableDescendant(node);
-		}
-
-		if (focusable) focusable.focus();
-		return focusable;
-	}
-
-	_focusPreviousWithinCell(node) {
-		if (!node || (node.assignedSlot && node.assignedSlot === this._getThisCell())) return null;
-		let focusable = null;
-		while (!focusable) {
-			node = this._getPrevSiblingInCell(node);
-			if (!node) break;
-			focusable = isFocusable(node, true) ? node : getLastFocusableDescendant(node);
-		}
-		if (focusable) focusable.focus();
-		return focusable;
 	}
 
 	_setFocusInfo(event) {

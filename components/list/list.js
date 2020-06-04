@@ -35,6 +35,23 @@ class List extends LitElement {
 		});
 	}
 
+	render() {
+		const role = !this.grid ? 'list' : undefined;
+		return html`
+			<div role="${ifDefined(role)}" class="d2l-list-container">
+				<slot></slot>
+			</div>
+		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('grid')) {
+			const items = this._getItems();
+			items.forEach(item => item.role = this.grid ? 'rowgroup' : 'listitem');
+		}
+	}
+
 	getSelectionInfo() {
 		const items = this._getItems();
 		const selectedItems = items.filter(item => item.selected);
@@ -51,15 +68,6 @@ class List extends LitElement {
 		};
 	}
 
-	render() {
-		const role = !this.grid ? 'list' : undefined;
-		return html`
-			<div role="${ifDefined(role)}" class="d2l-list-container">
-				<slot></slot>
-			</div>
-		`;
-	}
-
 	toggleSelectAll() {
 		const items = this._getItems();
 		const notSelectedItems = items.filter(item => !item.selected);
@@ -67,14 +75,6 @@ class List extends LitElement {
 			items.forEach(item => item.setSelected(false, true));
 		} else {
 			notSelectedItems.forEach(item => item.setSelected(true, true));
-		}
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('grid')) {
-			const items = this._getItems();
-			items.forEach(item => item.role = this.grid ? 'rowgroup' : 'listitem');
 		}
 	}
 
