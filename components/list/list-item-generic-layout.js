@@ -270,7 +270,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_getNextSiblingInCell(node) {
 		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
-		if (cell.name === node.slot) return null;
+		if (!cell || cell.name === node.slot) return null;
 		if (node.nextElementSibling) return node.nextElementSibling;
 
 		const sibling = getNextAncestorSibling(node);
@@ -279,7 +279,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_getPrevSiblingInCell(node) {
 		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
-		if (cell.name === node.slot) return null;
+		if (!cell || cell.name === node.slot) return null;
 		if (node.previousElementSibling) return node.previousElementSibling;
 
 		const sibling = getPreviousAncestorSibling(node);

@@ -178,8 +178,8 @@ describe('d2l-list-item-generic-layout', () => {
 				initial: () => layout.querySelector('[slot="content-action"]'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
-				expected: () => el.querySelector('[key="item1"]').shadowRoot
-					.querySelector('d2l-list-item-generic-layout [slot="content-action"]')
+				expected: () => el.querySelector('[key="item1"]')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"]')
 			},
 			{
 				key: { name: 'ArrowUp', code: keyCodes.UP },
@@ -206,8 +206,8 @@ describe('d2l-list-item-generic-layout', () => {
 				initial: () => layout.querySelector('[slot="content-action"]'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
-				expected: () => el.querySelector('[key="item2"]').shadowRoot
-					.querySelector('d2l-list-item-generic-layout [slot="content-action"]')
+				expected: () => el.querySelector('[key="item2"]')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"]')
 			},
 			{
 				key: { name: 'ArrowDown', code: keyCodes.DOWN },
