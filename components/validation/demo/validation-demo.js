@@ -4,14 +4,14 @@ import '../validation-group.js';
 import '../validation-error-summary.js';
 import '../validation-custom.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import { inputStyles } from '../../inputs/input-styles.js';
 import { LocalizeStaticMixin } from '../../../mixins/localize-static-mixin.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
-import { validationStyles } from '../validation-group-mixin.js';
 
 class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 
 	static get styles() {
-		return [validationStyles, selectStyles];
+		return [inputStyles, selectStyles];
 	}
 	static get resources() {
 		return {
@@ -46,10 +46,10 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 				<input data-subject="${this.localize('checkTitle')}" type="checkbox" id="mycheck" name="checkers" value="red-black">
 				<div>
 					<label for="name">${this.localize('nameTitle')}</label>
-					<input type="text" data-subject="${this.localize('nameTitle')}" id="name" name="name" required minlength="4" maxlength="8" size="10">
+					<input  class="d2l-input" type="text" data-subject="${this.localize('nameTitle')}" id="name" name="name" required minlength="4" maxlength="8" size="10">
 
 					<div>
-						<select formnovalidate class="d2l-input-select" data-subject="${this.localize('petsTitle')}" name="pets" id="pet-select" required>
+						<select class="d2l-input-select" data-subject="${this.localize('petsTitle')}" name="pets" id="pet-select" required>
 							<option value="">--Please choose an option--</option>
 							<option value="dog">Dog</option>
 							<option value="cat">Cat</option>

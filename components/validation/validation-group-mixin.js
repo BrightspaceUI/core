@@ -1,19 +1,8 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { findFormElements, isCustomFormElement, isNativeFormElement } from '../form/form-helpers.js';
-import { css } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ValidationLocalizeMixin } from './validation-localize-mixin.js';
-
-export const validationStyles = css`
-	:host {
-		display: block;
-	}
-
-	[aria-invalid='true'] {
-		border-color: var(--d2l-color-cinnabar);
-	}
-`;
 
 export const ValidationGroupMixin = superclass => class extends ValidationLocalizeMixin(superclass) {
 
