@@ -1,4 +1,5 @@
 import '../list-item-generic-layout.js';
+import '../list-item-drag-handle.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
@@ -56,7 +57,7 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 				` : nothing }
 				${this.selectable ? html`
 				<div slot="control">${ this._renderCheckbox() }</div>
-				<div slot="control-action" aria-labelledby="${this._contentId}">${ this._renderCheckboxAction() }</div>
+				<div slot="control-action">${ this._renderCheckboxAction(null, this._contentId) }</div>
 				` : nothing }
 				${ this.href ? html`
 				<a slot="content-action"
@@ -94,6 +95,10 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 
 	_handleMouseLeave() {
 		this._hovering = false;
+	}
+
+	_renderDragHandle() {
+		return html`<d2l-list-item-drag-handle ?disabled="${this.disabled}"></d2l-list-item-drag-handle>`;
 	}
 }
 

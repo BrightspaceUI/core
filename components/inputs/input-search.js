@@ -102,10 +102,19 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	get lastSearchValue() { return this._lastSearchValue; }
 	set lastSearchValue(val) {}
-	_setLastSearchValue(val) {
-		const oldVal = this._lastSearchValue;
-		this._lastSearchValue = val;
-		this.requestUpdate('lastSearchValue', oldVal);
+
+	connectedCallback() {
+		super.connectedCallback();
+		if (this.value !== undefined && this.value !== null) {
+			this._setLastSearchValue(this.value);
+		}
+		this.addEventListener('blur', this._handleBlur);
+		this.addEventListener('focus', this._handleFocus);
+	}
+
+	disconnectedCallback() {
+		this.removeEventListener('blur', this._handleBlur);
+		this.removeEventListener('focus', this._handleFocus);
 	}
 
 	render() {
@@ -140,20 +149,6 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 						text="${this.localize('clear')}"></d2l-button-icon>`}
 			</div>
 		`;
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		if (this.value !== undefined && this.value !== null) {
-			this._setLastSearchValue(this.value);
-		}
-		this.addEventListener('blur', this._handleBlur);
-		this.addEventListener('focus', this._handleFocus);
-	}
-
-	disconnectedCallback() {
-		this.removeEventListener('blur', this._handleBlur);
-		this.removeEventListener('focus', this._handleFocus);
 	}
 
 	focus() {
@@ -222,6 +217,12 @@ class InputSearch extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 	_handleMouseLeave() {
 		this._hovered = false;
+	}
+
+	_setLastSearchValue(val) {
+		const oldVal = this._lastSearchValue;
+		this._lastSearchValue = val;
+		this.requestUpdate('lastSearchValue', oldVal);
 	}
 
 }

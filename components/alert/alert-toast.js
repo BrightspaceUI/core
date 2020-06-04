@@ -71,28 +71,24 @@ class AlertToast extends LitElement {
 			d2l-alert {
 				animation: none;
 			}
+
+			@media (max-width: 615px) {
+				.d2l-alert-toast-container {
+					bottom: 12px;
+					width: calc(100% - 16px);
+				}
+			}
 		`;
 	}
 
 	constructor() {
 		super();
+		this._hasFocus = false;
+		this._hasMouse = false;
 		this.hideCloseButton = false;
 		this.noAutoClose = false;
 		this.open = false;
 		this._state = states.CLOSED;
-	}
-
-	get _state() {
-		return this.__state;
-	}
-
-	set _state(val) {
-		const oldVal = this.__state;
-		if (oldVal !== val) {
-			this.__state = val;
-			this.requestUpdate('_state', oldVal);
-			this._stateChanged(val, oldVal);
-		}
 	}
 
 	get open() {
@@ -110,17 +106,83 @@ class AlertToast extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
-				<d2l-alert type="${ifDefined(this.type)}" @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
+			<div
+				class="d2l-alert-toast-container"
+				data-state="${this._state}"
+				@transitionend=${this._onTransitionEnd}>
+				<d2l-alert
+					@blur=${this._onBlur}
+					button-text="${ifDefined(this.buttonText)}"
+					@d2l-alert-closed=${this._onCloseClicked}
+					@focus=${this._onFocus}
+					?has-close-button="${!this.hideCloseButton}"
+					@mouseenter=${this._onMouseEnter}
+					@mouseleave=${this._onMouseLeave}
+					subtext="${ifDefined(this.subtext)}"
+					type="${ifDefined(this.type)}">
 					<slot></slot>
 				</d2l-alert>
 			</div>
 		`;
 	}
 
+	updated(changedProperties) {
+		if (changedProperties.get('open') && this.open === false) {
+			this._hasFocus = false;
+			this._hasMouse = false;
+		}
+	}
+
+	get _state() {
+		return this.__state;
+	}
+
+	set _state(val) {
+		const oldVal = this.__state;
+		if (oldVal !== val) {
+			this.__state = val;
+			this.requestUpdate('_state', oldVal);
+			this._stateChanged(val, oldVal);
+		}
+	}
+
+	_closeTimerStart() {
+		clearTimeout(this._setTimeoutId);
+		if (!this.noAutoClose && !this._hasFocus && !this._hasMouse) {
+			const duration = this.buttonText ? 10000 : 4000;
+			this._setTimeoutId = setTimeout(() => {
+				this.open = false;
+			}, duration);
+		}
+	}
+
+	_closeTimerStop() {
+		clearTimeout(this._setTimeoutId);
+	}
+
+	_onBlur() {
+		this._hasFocus = false;
+		this._closeTimerStart();
+	}
+
 	_onCloseClicked(e) {
 		e.preventDefault();
 		this.open = false;
+	}
+
+	_onFocus() {
+		this._hasFocus = true;
+		this._closeTimerStop();
+	}
+
+	_onMouseEnter() {
+		this._hasMouse = true;
+		this._closeTimerStop();
+	}
+
+	_onMouseLeave() {
+		this._hasMouse = false;
+		this._closeTimerStart();
 	}
 
 	_onTransitionEnd() {
@@ -132,7 +194,6 @@ class AlertToast extends LitElement {
 	}
 
 	_openChanged(newOpen) {
-
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -149,7 +210,7 @@ class AlertToast extends LitElement {
 					this._state = states.OPEN;
 				}
 			}
-			this.setAttribute('role', 'status');
+			this.setAttribute('role', 'alert');
 		} else {
 			if (reduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
@@ -162,14 +223,10 @@ class AlertToast extends LitElement {
 	}
 
 	_stateChanged(newState) {
-
-		clearTimeout(this._setTimeoutId);
 		if (newState === states.OPEN) {
-			if (!this.noAutoClose) {
-				this._setTimeoutId = setTimeout(() => {
-					this.open = false;
-				}, 2250);
-			}
+			this._closeTimerStart();
+		} else {
+			this._closeTimerStop();
 		}
 	}
 }

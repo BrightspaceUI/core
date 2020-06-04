@@ -11,7 +11,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
-import { offscreenStyles } from '../offscreen/offscreen-styles.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 
 const TODAY = getToday();
 const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
@@ -154,37 +154,50 @@ class InputTime extends LitElement {
 		this.requestUpdate('value', oldValue);
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		if (this.label === null) {
+			console.warn('d2l-input-time component requires label text');
+		}
+
+		if (this.value === undefined) {
+			const time = getDefaultTime(this.defaultValue);
+			this._value = formatValue(time);
+			this._formattedValue = formatTime(time);
+		}
+	}
+
 	render() {
 		initIntervals(this.timeInterval);
 		const input = html`
-			<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
+			<label
+				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
+				for="${this._dropdownId}-input"
+				id="${this._dropdownId}-label">${this.label}</label>
 			<d2l-dropdown ?disabled="${this.disabled}">
-				<div
+				<input
+					aria-controls="${this._dropdownId}"
+					aria-describedby="${this._dropdownId}-timezone"
+					aria-expanded="false"
+					aria-haspopup="true"
+					@change="${this._handleChange}"
+					class="d2l-input d2l-dropdown-opener"
+					?disabled="${this.disabled}"
+					id="${this._dropdownId}-input"
+					@keydown="${this._handleKeydown}"
 					role="combobox"
-					aria-owns="${this._dropdownId}"
-					class="d2l-dropdown-opener"
-					aria-expanded="false">
-					<input
-						aria-controls="${this._dropdownId}"
-						aria-labelledby="${this._dropdownId}-label"
-						@change="${this._handleChange}"
-						@keydown="${this._handleKeydown}"
-						class="d2l-input"
-						?disabled="${this.disabled}"
-						.value="${this._formattedValue}">
-				</div>
+					.value="${this._formattedValue}">
 				<d2l-dropdown-menu
 					@d2l-dropdown-close="${this.focus}"
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195">
 					<d2l-menu
-						aria-describedby="${this._dropdownId}-timezone"
-						id="${this._dropdownId}"
-						role="listbox"
-						class="d2l-input-time-menu"
 						aria-labelledby="${this._dropdownId}-label"
-						@d2l-menu-item-change="${this._handleDropdownChange}">
+						class="d2l-input-time-menu"
+						@d2l-menu-item-change="${this._handleDropdownChange}"
+						id="${this._dropdownId}"
+						role="listbox">
 						${INTERVALS.get(this.timeInterval).map(i => html`
 							<d2l-menu-item-radio
 								text="${i.text}"
@@ -205,19 +218,6 @@ class InputTime extends LitElement {
 			</d2l-dropdown>
 		`;
 		return input;
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		if (this.label === null) {
-			console.warn('d2l-input-time component requires label text');
-		}
-
-		if (this.value === undefined) {
-			const time = getDefaultTime(this.defaultValue);
-			this._value = formatValue(time);
-			this._formattedValue = formatTime(time);
-		}
 	}
 
 	focus() {

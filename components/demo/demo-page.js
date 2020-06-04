@@ -34,15 +34,15 @@ class DemoPage extends LitElement {
 			.d2l-heading-2 {
 				margin-top: 0;
 			}
-			:host > div > ::slotted(h2),
-			:host > div > ::slotted(h3) {
+			.d2l-demo-page-content > ::slotted(h2),
+			.d2l-demo-page-content > ::slotted(h3) {
 				font-size: 0.8rem;
 				font-weight: 700;
 				line-height: 1.2rem;
 				margin: 1.5rem 0 1.5rem 0;
 			}
-			:host > div > ::slotted(d2l-code-view),
-			:host > div > ::slotted(d2l-demo-snippet) {
+			.d2l-demo-page-content > ::slotted(d2l-code-view),
+			.d2l-demo-page-content > ::slotted(d2l-demo-snippet) {
 				margin-bottom: 36px;
 			}
 		`];
@@ -59,7 +59,7 @@ class DemoPage extends LitElement {
 		return html`
 			<main>
 				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
-				<div><slot></slot></div>
+				<div class="d2l-demo-page-content"><slot></slot></div>
 			</main>
 		`;
 	}

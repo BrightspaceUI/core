@@ -34,34 +34,6 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		return [...this.shadowRoot.querySelectorAll('.d2l-arrowkeys-focusable')];
 	}
 
-	_handleArrowKeys(e) {
-		const target = e.target;
-		if (this.arrowKeysDirection.indexOf('left') >= 0 && e.keyCode === keyCodes.LEFT) {
-			if (getComputedStyle(this).direction === 'rtl') {
-				this._focusNext(target);
-			} else {
-				this._focusPrevious(target);
-			}
-		} else if (this.arrowKeysDirection.indexOf('right') >= 0 && e.keyCode === keyCodes.RIGHT) {
-			if (getComputedStyle(this).direction === 'rtl') {
-				this._focusPrevious(target);
-			} else {
-				this._focusNext(target);
-			}
-		} else if (this.arrowKeysDirection.indexOf('up') >= 0 && e.keyCode === keyCodes.UP) {
-			this._focusPrevious(target);
-		} else if (this.arrowKeysDirection.indexOf('down') >= 0 && e.keyCode === keyCodes.DOWN) {
-			this._focusNext(target);
-		} else if (e.keyCode === keyCodes.HOME) {
-			this._focusFirst();
-		} else if (e.keyCode === keyCodes.END) {
-			this._focusLast();
-		} else {
-			return;
-		}
-		e.preventDefault();
-	}
-
 	async _focus(elem) {
 		if (elem) {
 			if (this.arrowKeysOnBeforeFocus) await this.arrowKeysOnBeforeFocus(elem);
@@ -91,6 +63,34 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		return this._focus(previous);
 	}
 
+	_handleArrowKeys(e) {
+		const target = e.target;
+		if (this.arrowKeysDirection.indexOf('left') >= 0 && e.keyCode === keyCodes.LEFT) {
+			if (getComputedStyle(this).direction === 'rtl') {
+				this._focusNext(target);
+			} else {
+				this._focusPrevious(target);
+			}
+		} else if (this.arrowKeysDirection.indexOf('right') >= 0 && e.keyCode === keyCodes.RIGHT) {
+			if (getComputedStyle(this).direction === 'rtl') {
+				this._focusPrevious(target);
+			} else {
+				this._focusNext(target);
+			}
+		} else if (this.arrowKeysDirection.indexOf('up') >= 0 && e.keyCode === keyCodes.UP) {
+			this._focusPrevious(target);
+		} else if (this.arrowKeysDirection.indexOf('down') >= 0 && e.keyCode === keyCodes.DOWN) {
+			this._focusNext(target);
+		} else if (e.keyCode === keyCodes.HOME) {
+			this._focusFirst();
+		} else if (e.keyCode === keyCodes.END) {
+			this._focusLast();
+		} else {
+			return;
+		}
+		e.preventDefault();
+	}
+
 	_tryGetNextFocusable(elems, elem) {
 		if (!elems || elems.length === 0) return;
 
@@ -112,4 +112,5 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		}
 		return elems[index - 1];
 	}
+
 };
