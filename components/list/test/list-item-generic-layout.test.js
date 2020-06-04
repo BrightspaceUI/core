@@ -312,7 +312,7 @@ describe('d2l-list-item-generic-layout', () => {
 					.shadowRoot.querySelector('d2l-list-item-generic-layout');
 				test.initial().focus();
 				setTimeout(() => dispatchKeyEvent(layout, test.key.code, test.key.ctrl));
-				await test.event(),
+				await test.event();
 				expect(test.activeElement()).to.equal(test.expected());
 			});
 		}
