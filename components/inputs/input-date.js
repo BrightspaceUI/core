@@ -134,6 +134,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
@@ -141,6 +142,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
+					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
 					style="${styleMap({maxWidth: inputTextWidth})}"

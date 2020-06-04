@@ -170,17 +170,20 @@ class InputTime extends LitElement {
 	render() {
 		initIntervals(this.timeInterval);
 		const input = html`
-			<span class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}" id="${this._dropdownId}-label">${this.label}</span>
+			<label
+				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
+				for="${this._dropdownId}-input"
+				id="${this._dropdownId}-label">${this.label}</label>
 			<d2l-dropdown ?disabled="${this.disabled}">
 				<input
 					aria-controls="${this._dropdownId}"
 					aria-describedby="${this._dropdownId}-timezone"
 					aria-expanded="false"
 					aria-haspopup="true"
-					aria-labelledby="${this._dropdownId}-label"
 					@change="${this._handleChange}"
 					class="d2l-input d2l-dropdown-opener"
 					?disabled="${this.disabled}"
+					id="${this._dropdownId}-input"
 					@keydown="${this._handleKeydown}"
 					role="combobox"
 					.value="${this._formattedValue}">
