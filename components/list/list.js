@@ -39,7 +39,7 @@ class List extends LitElement {
 		const role = !this.grid ? 'list' : undefined;
 		return html`
 			<div role="${ifDefined(role)}" class="d2l-list-container">
-				<slot></slot>
+				<slot @slotchange="${this.toggleGrid}"></slot>
 			</div>
 		`;
 	}
@@ -47,8 +47,7 @@ class List extends LitElement {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (changedProperties.has('grid')) {
-			const items = this._getItems();
-			items.forEach(item => item.role = this.grid ? 'rowgroup' : 'listitem');
+			this.toggleGrid();
 		}
 	}
 
@@ -68,6 +67,11 @@ class List extends LitElement {
 		};
 	}
 
+	toggleGrid() {
+		const items = this._getItems();
+		items.forEach(item => item.role = this.grid ? 'rowgroup' : 'listitem');
+	}
+
 	toggleSelectAll() {
 		const items = this._getItems();
 		const notSelectedItems = items.filter(item => !item.selected);
@@ -79,7 +83,7 @@ class List extends LitElement {
 	}
 
 	_getItems() {
-		return this.shadowRoot.querySelector('slot').assignedNodes().filter((node) => {
+		return this.shadowRoot.querySelector('slot').assignedNodes({flatten: true}).filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
 	}

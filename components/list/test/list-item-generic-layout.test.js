@@ -211,7 +211,7 @@ describe('d2l-list-item-generic-layout', () => {
 			},
 			{
 				key: { name: 'ArrowDown', code: keyCodes.DOWN },
-				desc: 'focuses item in same position of same cell of above row',
+				desc: 'focuses item in same position of same cell of below row',
 				itemKey: 'item3',
 				initial: () => el.querySelector('[key="item3"] d2l-button-icon:nth-child(2)'),
 				activeElement: () => document.activeElement,
