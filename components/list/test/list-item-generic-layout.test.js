@@ -24,6 +24,23 @@ const normalFixture = html`
 	</d2l-list>
 `;
 
+const nonGridFixture = html`
+	<d2l-list>
+		<d2l-list-item-sample>
+			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+		</d2l-list-item-sample>
+		<d2l-list-item-sample>
+			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
+		</d2l-list-item-sample>
+		<d2l-list-item-sample>
+			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
+		</d2l-list-item-sample>
+	</d2l-list>
+`;
+
 const longFixture = html`
 	<d2l-list grid>
 		<d2l-list-item-sample selectable href="http://d2l.com" key="item1">
@@ -112,20 +129,18 @@ describe('d2l-list-item-generic-layout', () => {
 		});
 	});
 
-	describe('grid toggle', () => {
-		let el;
-		beforeEach(async() => el = await fixture(normalFixture));
-		it('toggles the list-item-generic-layout elements to have grid enabled', async() => {
+	describe('grid enabling', () => {
+		it('enables grid on list-item-generic-layout elements', async() => {
+			const el = await fixture(normalFixture);
 			el._getItems().forEach(item => {
 				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.true;
 			});
 		});
 
 		it('disables grid on list-item-generic-layout elements', async() => {
-			el.grid = false;
-			await aTimeout(1);
+			const el = await fixture(nonGridFixture);
 			el._getItems().forEach(item => {
-				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.false;
+				expect(item.shadowRoot.querySelector('d2l-list-item-generic-layout').gridActive).to.be.undefined;
 			});
 		});
 	});

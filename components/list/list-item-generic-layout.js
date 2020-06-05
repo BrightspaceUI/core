@@ -122,6 +122,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		};
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		this.role = this.gridActive ? 'gridrow' : undefined;
+	}
+
 	firstUpdated() {
 		this.addEventListener('keydown', this._handleKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
@@ -138,13 +143,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('gridActive')) {
-			this.role = this.gridActive ? 'gridrow' : undefined;
-		}
 	}
 
 	_focusCellItem(num, itemNum) {

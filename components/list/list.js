@@ -39,16 +39,9 @@ class List extends LitElement {
 		const role = !this.grid ? 'list' : undefined;
 		return html`
 			<div role="${ifDefined(role)}" class="d2l-list-container">
-				<slot @slotchange="${this.toggleGrid}"></slot>
+				<slot></slot>
 			</div>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('grid')) {
-			this.toggleGrid();
-		}
 	}
 
 	getSelectionInfo() {
@@ -65,11 +58,6 @@ class List extends LitElement {
 			keys: selectedItems.map(item => item.key),
 			state: state
 		};
-	}
-
-	toggleGrid() {
-		const items = this._getItems();
-		items.forEach(item => item.role = this.grid ? 'rowgroup' : 'listitem');
 	}
 
 	toggleSelectAll() {

@@ -2,6 +2,7 @@ import '../list-item-generic-layout.js';
 import '../list-item-drag-handle.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { findComposedAncestor } from '../../../helpers/dom.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
@@ -45,6 +46,14 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	constructor() {
 		super();
 		this._contentId = getUniqueId();
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
+		if (!parent) return;
+		this.role = parent.grid ? 'rowgroup' : 'listitem';
 	}
 
 	render() {
