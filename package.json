@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
-    "@formatjs/intl-pluralrules": "^1",
+    "@formatjs/intl-pluralrules": "^2",
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
     "intl-messageformat": "^7",
