@@ -27,5 +27,13 @@ describe('d2l-list-item-placement-marker', () => {
 			const rect = await visualDiff.getRect(page, '#placement-marker-rtl');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+		it('ltr-with-border', async function() {
+			const rect = await visualDiff.getRect(page, '#placement-marker-with-border');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+		it('rtl-with-border', async function() {
+			const rect = await visualDiff.getRect(page, '#placement-marker-rtl-with-border');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 });
