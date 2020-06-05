@@ -45,13 +45,13 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 				</fieldset>
 				<d2l-validation-custom for="mycheck" @d2l-validation-custom-validate=${this._validateCheckbox} failure-text="${this.localize('checkValidationFailure', { subject: this.localize('checkTitle') })}" ></d2l-validation-custom>
 				<label for="mycheck">${this.localize('checkTitle')}</label>
-				<input data-subject="${this.localize('checkTitle')}" type="checkbox" id="mycheck" name="checkers" value="red-black">
+				<input type="checkbox" id="mycheck" name="checkers" value="red-black">
 				<div>
 					<label for="name">${this.localize('nameTitle')}</label>
-					<input  class="d2l-input" type="text" data-subject="${this.localize('nameTitle')}" id="name" name="name" required minlength="4" maxlength="8" size="10">
+					<input  class="d2l-input" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
 
 					<div>
-						<select class="d2l-input-select" data-subject="${this.localize('petsTitle')}" name="pets" id="pet-select" required>
+						<select aria-label="${this.localize('petsTitle')}" class="d2l-input-select" name="pets" id="pet-select" required>
 							<option value="">--Please choose an option--</option>
 							<option value="dog">Dog</option>
 							<option value="cat">Cat</option>
@@ -63,11 +63,15 @@ class ValidationDemo extends LocalizeStaticMixin(LitElement) {
 					</div>
 				</div>
 				<d2l-validation-custom for="custom-input" @d2l-validation-custom-validate=${this._validateCheckbox} failure-text="${this.localize('checkValidationFailure', { subject: this.localize('customInputTitle') })}" ></d2l-validation-custom>
-				<d2l-input-text id="custom-input" label="${this.localize('customInputTitle')}" data-subject="${this.localize('customInputTitle')}"  name="custom-input" required minlength="4"></d2l-input-text>
+				<d2l-input-text id="custom-input" label="${this.localize('customInputTitle')}" name="custom-input" required minlength="4"></d2l-input-text>
 				<div>
 					<h2>Secondary</h2>
-					<label for="story">Tell us your story:</label>
-					<textarea class="d2l-input" data-subject="Story" minlength="20" id="story" name="story" rows="5" cols="33">It was...</textarea>
+					<label for="story">Tell us your story</label>
+					<label>
+						Implicit label
+						<textarea class="d2l-input" aria-labelledby="labelled-by" aria-label="my aria label" title="my title" minlength="20" id="story" name="story" rows="5" cols="33">It was...</textarea>
+					</label>
+					<div id="labelled-by">Labelled by tootlip</div>
 					<div>
 						<input type="range" id="b" name="b" value="50" max="100" min="15" /> +
 						<input type="number" id="a" name="a" value="10" /> =

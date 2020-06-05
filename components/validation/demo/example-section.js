@@ -26,7 +26,7 @@ class ExampleSection extends LocalizeStaticMixin(LitElement) {
 		return html`
 			<d2l-validation-group>
 				<h2>Example Section</h2>
-				<select class="d2l-input-select" data-subject="${this.localize('otherPetsTitle')}" name="pets" id="pet-select" required>
+				<select class="d2l-input-select" aria-label="${this.localize('otherPetsTitle')}" name="pets" id="pet-select" required>
 					<option value="">--Please choose an option--</option>
 					<option value="dog">Dog</option>
 					<option value="cat">Cat</option>
@@ -35,7 +35,7 @@ class ExampleSection extends LocalizeStaticMixin(LitElement) {
 					<option value="spider">Spider</option>
 					<option value="goldfish">Goldfish</option>
 				</select>
-				<d2l-input-text label="${this.localize('sectionInput')}" data-subject="${this.localize('sectionInput')}"  name="custom-input" required></d2l-input-text>
+				<d2l-input-text label="${this.localize('sectionInput')}" name="custom-input" required></d2l-input-text>
 			</d2l-validation-group>
 		`;
 	}

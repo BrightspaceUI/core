@@ -121,3 +121,39 @@ const _findFormElementsHelper = (ele, eles, predicate) => {
 		_findFormElementsHelper(child, eles, predicate);
 	}
 };
+
+export const getLabel = (ele) => {
+	if (isCustomFormElement(ele) && ele.label) {
+		return ele.label;
+	}
+	if (ele.labels && ele.labels.length > 0) {
+		return ele.labels[0].textContent;
+	}
+	if (ele.hasAttribute('aria-label')) {
+		return ele.getAttribute('aria-label');
+	}
+	if (ele.hasAttribute('aria-labelledby')) {
+		const labelledby = ele.getAttribute('aria-labelledby');
+		const ids = labelledby.split(' ');
+		const root = ele.getRootNode();
+		for (const id of ids) {
+			const label = root.getElementById(id);
+			if (label) {
+				return label.textContent;
+			}
+		}
+	}
+	if (ele.hasAttribute('title')) {
+		return ele.getAttribute('title');
+	}
+	const tagName = ele.nodeName.toLowerCase();
+	if (tagName === 'button' && ele.textContent) {
+		return ele.textContent;
+	}
+	if (ele.tagName === 'input') {
+		if (ele.type === 'button' || ele.type === 'submit' || ele.type === 'reset' && ele.value) {
+			return ele.value;
+		}
+	}
+	return null;
+};

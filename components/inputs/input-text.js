@@ -195,6 +195,7 @@ class InputText extends RtlMixin(FormElementMixin(LitElement)) {
 			this.focus();
 		}
 	}
+
 	validationTooltipHide() {
 		this._validationTooltipText = null;
 	}

@@ -73,6 +73,10 @@ export const FormElementMixin = superclass => class extends ValidationLocalizeMi
 		return true;
 	}
 
+	get label() {
+		return null;
+	}
+
 	setCustomValidity(message) {
 		this._validity = new FormElementValidityState({ customError: true });
 		this._validationMessage = message;

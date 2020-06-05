@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
+import { getLabel } from '../form/form-helpers.js';
 import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
 
 export const ValidationLocalizeMixin = superclass => class extends LocalizeStaticMixin(superclass) {
@@ -7,6 +8,7 @@ export const ValidationLocalizeMixin = superclass => class extends LocalizeStati
 	static get resources() {
 		return {
 			'en': {
+				'defaultSubject': 'Field',
 				'valueMissingMessage': '{subject} is required',
 				'tooLongMessage': '{subject} must be at most {maxlength} characters',
 				'tooShortMessage': '{subject} must be at least {minlength} characters',
@@ -21,7 +23,7 @@ export const ValidationLocalizeMixin = superclass => class extends LocalizeStati
 
 	localizeValidity(ele) {
 		ele = ele || this;
-		const subject = ele.getAttribute('data-subject');
+		const subject = getLabel(ele) || this.localize('defaultSubject');
 		if (ele.validity.valueMissing) {
 			return this.localize('valueMissingMessage', { subject });
 		}
