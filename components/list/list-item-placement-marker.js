@@ -8,7 +8,6 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 		return css`
 			:host {
 				display: block;
-				position: relative;
 			}
 
 			:host([hidden]) {
@@ -20,33 +19,43 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				width: 100%;
 				stroke: var(--d2l-color-celestine);
 				stroke-width: 3px;
+				margin-left: -1px;
+				margin-right: -1px;
 			}
 
 			.d2l-list-drag-marker-linecap {
 				height: 12px;
-				width: 3px;
+				width: 4px;
 				stroke: none;
 				fill: var(--d2l-color-celestine);
-				margin-left: -1.5px;
-				margin-right: -1.5px;
-				stroke-width: 0px;
+				margin-left: -1px;
+				margin-right: 0px;
+			}
+
+			:host([dir="rtl"]) .d2l-list-drag-marker-linecap {
+				margin-left: 0px;
+				margin-right: -1px;
 			}
 
 			.d2l-list-drag-marker-circle {
 				height: 12px;
 				width: 12px;
-				margin-left: -1.5px;
-				margin-right: -1.5px;
 				stroke-width: 3px;
 				stroke: var(--d2l-color-celestine);
 				fill: none;
+				margin-left: 0px;
+				margin-right: -1px;
+			}
+
+			:host([dir="rtl"]) .d2l-list-drag-marker-circle {
+				margin-left: -1px;
+				margin-right: 0px;
 			}
 
 			.d2l-list-drag-marker {
 				flex-wrap: nowrap;
 				display: flex;
-			 }
-
+			}
 		`;
 	}
 
