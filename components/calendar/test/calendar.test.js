@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
 	getDisabled,
@@ -106,6 +106,7 @@ describe('d2l-calendar', () => {
 	describe('focus date', () => {
 		it('has initial correct _focusDate when on month with selected-value', async() => {
 			const calendar = await fixture(normalFixture);
+			await waitUntil(() => calendar._focusDate, 'Focus date was never set');
 			const expectedFocusDate = new Date(2015, 8, 2);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
@@ -119,9 +120,10 @@ describe('d2l-calendar', () => {
 
 		it('has initial correct _focusDate when on month with no selected-value', async() => {
 			const newToday = new Date('2018-02-12T12:00Z');
-			const clock = sinon.useFakeTimers(newToday.getTime());
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
+			await waitUntil(() => calendar._focusDate, 'Focus date was never set');
 			const expectedFocusDate = new Date(2018, 1, 12);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 
@@ -130,9 +132,10 @@ describe('d2l-calendar', () => {
 
 		it('has initial correct _focusDate when on month with min-value', async() => {
 			const newToday = new Date('2018-02-12T12:00Z');
-			const clock = sinon.useFakeTimers(newToday.getTime());
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const calendar = await fixture(html`<d2l-calendar min-value="2018-02-13"></d2l-calendar>`);
+			await waitUntil(() => calendar._focusDate, 'Focus date was never set');
 			const expectedFocusDate = new Date(2018, 1, 13);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 
@@ -188,6 +191,7 @@ describe('d2l-calendar', () => {
 			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
+			await waitUntil(() => calendar._focusDate, 'Focus date was never set');
 			const expectedFocusDate1 = new Date(2018, 4, 10);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate1);
 

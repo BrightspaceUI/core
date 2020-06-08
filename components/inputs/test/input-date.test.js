@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent, waitUntil } from '@open-wc/testing';
 import { formatISODateInUserCalDescriptor } from '../input-date.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -116,6 +116,8 @@ describe('d2l-input-date', () => {
 		it('should not fire "change" event when input value is invalid', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
+			const calendarElem = getChildElem(elem, 'd2l-calendar');
+			await waitUntil(() => calendarElem._today, 'Today was never set');
 			let fired = false;
 			elem.addEventListener('change', () => {
 				fired = true;
