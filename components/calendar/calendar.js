@@ -502,6 +502,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const date = day.getDate();
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
 				const description = `${weekday} ${date}. ${selected ? this.localize('selected') : this.localize('notSelected')} ${formatDate(day, {format: 'monthYear'})}`;
+				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
 						aria-disabled="${disabled}"
@@ -534,7 +535,6 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const labelledBy = this._dialog ? labelId : undefined;
 		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), {format: 'monthYear'});
 		const role = this._dialog ? 'dialog' : undefined;
-		// separate header table for iOS + VoiceOver
 		return html`
 			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
 				<div role="application">
@@ -551,11 +551,11 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 							icon="tier1:chevron-right">
 						</d2l-button-icon>
 					</div>
-					<table aria-hidden="true">
-						${weekdayHeaders}
-					</table>
 					<table aria-labelledby="${labelId}" role="presentation">
 						${summary}
+						<thead aria-hidden="true">
+							<tr>${weekdayHeaders}</tr>
+						</thead>
 						<tbody>
 							${dayRows}
 						</tbody>
