@@ -34,7 +34,7 @@ describe('d2l-calendar', () => {
 	describe('events', () => {
 		it('dispatches event when date clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="1"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="1"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -48,7 +48,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when date in previous month clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="31"][data-month="7"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="31"][data-month="7"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);
@@ -62,7 +62,7 @@ describe('d2l-calendar', () => {
 
 		it('dispatches event when date in next month clicked', async() => {
 			const calendar = await fixture(normalFixture);
-			const el = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="9"]');
+			const el = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="9"] button');
 			setTimeout(() => el.click());
 			const { detail } = await oneEvent(calendar, 'd2l-calendar-selected');
 			await aTimeout(1);

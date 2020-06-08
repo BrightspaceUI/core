@@ -177,7 +177,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				text-decoration: none;
 			}
 
-			tbody > tr:first-child div {
+			tbody > tr:first-child button {
 				margin-top: 0.3rem;
 			}
 
@@ -249,7 +249,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				border: 0;
 			}
 
-			.d2l-calendar-date.d2l-calendar-date-disabled {
+			.d2l-calendar-date:disabled {
 				cursor: not-allowed;
 			}
 
@@ -259,7 +259,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					opacity: 1;
 				}
 
-				.d2l-calendar-date.d2l-calendar-date-disabled {
+				.d2l-calendar-date:disabled {
 					opacity: 0.5;
 				}
 			}
@@ -288,7 +288,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				transition-property: opacity, transform;
 			}
 
-			.d2l-calendar-animating .d2l-calendar-date.d2l-calendar-date-disabled {
+			.d2l-calendar-animating .d2l-calendar-date:disabled {
 				opacity: 0.5;
 			}
 
@@ -312,13 +312,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				transform: translateY(10px);
 			}
 
-			.d2l-calendar-date:not(.d2l-calendar-date-disabled):not(.d2l-calendar-date-selected):hover,
-			.d2l-calendar-date:not(.d2l-calendar-date-disabled):not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			.d2l-calendar-date:enabled:not(.d2l-calendar-date-selected):hover,
+			.d2l-calendar-date:enabled:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			td:focus div:not(.d2l-calendar-date-selected):hover,
-			td:focus div:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
+			td:focus button:not(.d2l-calendar-date-selected):hover,
+			td:focus button:not(.d2l-calendar-date-selected).d2l-calendar-date-hover {
 				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
 				transition: none;
 			}
@@ -418,7 +418,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
 					'd2l-calendar-date': true,
-					'd2l-calendar-date-disabled': disabled,
 					'd2l-calendar-date-initial': this._isInitialFocusDate,
 					'd2l-calendar-date-selected': selected,
 					'd2l-calendar-date-today': checkIfDatesEqual(day, this._today)
@@ -431,17 +430,22 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
-						aria-disabled="${disabled}"
-						aria-selected="${selected}"
-						@click="${this._onDateSelected}"
+						aria-selected="${selected ? 'true' : 'false'}"
 						data-date=${date}
 						data-month=${month}
 						data-year=${year}
 						@keydown="${this._onKeyDown}"
-						@mousedown="${this._onMousedown}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
-						<div aria-label="${description}" class="${classMap(classes)}" role="button">${date}</div>
+						<button
+							aria-label="${description}"
+							class="${classMap(classes)}"
+							@click="${this._onDateSelected}"
+							?disabled="${disabled}"
+							tabindex="-1"
+							type="button">
+							${date}
+						</button>
 					</td>`;
 			});
 
@@ -541,8 +545,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	async _onDateSelected(e) {
 		let selectedDate = e.composedPath()[0];
-		if (selectedDate.tagName === 'DIV') selectedDate = selectedDate.parentNode;
-		if (selectedDate.getAttribute('aria-disabled') === 'true') return;
+		if (selectedDate.tagName === 'BUTTON') selectedDate = selectedDate.parentNode;
 		const year = selectedDate.getAttribute('data-year');
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
@@ -715,10 +718,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
-	_onMousedown(e) {
-		e.preventDefault();
-	}
-
 	_onNextMonthButtonClick() {
 		this._updateShownMonthIncrease();
 		this._updateFocusDateOnChange();
@@ -733,8 +732,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		await this.updateComplete;
 		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
-		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:not(.d2l-calendar-date-disabled)')) {
-			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:not(.d2l-calendar-date-disabled)');
+		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
+			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:enabled');
 			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
 			const year = focusDate.getAttribute('data-year');
 			const month = focusDate.getAttribute('data-month');

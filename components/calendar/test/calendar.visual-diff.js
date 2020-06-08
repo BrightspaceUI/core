@@ -82,7 +82,7 @@ describe('d2l-calendar', () => {
 		describe('date', () => {
 			it('hover on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"] div');
+					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.classList.add('d2l-calendar-date-hover');
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -91,7 +91,7 @@ describe('d2l-calendar', () => {
 
 			it('hover on selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
+					const date = calendar.shadowRoot.querySelector('td[data-date="14"] button');
 					date.classList.add('d2l-calendar-date-hover');
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -118,7 +118,7 @@ describe('d2l-calendar', () => {
 
 			it('hover and focus on non-selected-value', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"] div');
+					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.classList.add('d2l-calendar-date-hover');
 					const dateParent = date.parentNode;
 					dateParent.focus();
@@ -130,7 +130,7 @@ describe('d2l-calendar', () => {
 			it('hover and focus on selected-value', async function() {
 				let date;
 				await page.$eval(firstCalendarOfPage, async(calendar) => {
-					date = calendar.shadowRoot.querySelector('td[data-date="14"] div');
+					date = calendar.shadowRoot.querySelector('td[data-date="14"] button');
 					const dateParent = date.parentNode;
 					dateParent.focus();
 				});
@@ -189,7 +189,7 @@ describe('d2l-calendar', () => {
 		describe('date selection', () => {
 			it('click', async function() {
 				await page.$eval(firstCalendarOfPage, (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="20"]');
+					const date = calendar.shadowRoot.querySelector('td[data-date="20"] button');
 					date.click();
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
@@ -198,8 +198,10 @@ describe('d2l-calendar', () => {
 
 			it('click disabled', async function() {
 				await page.$eval('#min-max', (calendar) => {
-					const date = calendar.shadowRoot.querySelector('td[data-date="30"]');
-					date.click();
+					const dateFocusable = calendar.shadowRoot.querySelector('td[data-date="1"] button');
+					dateFocusable.click();
+					const dateDisabled = calendar.shadowRoot.querySelector('td[data-date="30"] button');
+					dateDisabled.click();
 				});
 				const rect = await visualDiff.getRect(page, '#min-max');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -301,7 +303,7 @@ describe('d2l-calendar', () => {
 					});
 
 					await page.$eval(firstCalendarOfPage, (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="3"][data-month="0"]');
+						const date = calendar.shadowRoot.querySelector('td[data-date="3"][data-month="0"] button');
 						date.click();
 					});
 
