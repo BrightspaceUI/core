@@ -50,10 +50,15 @@ class ListItemDragHandle extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			.d2l-list-item-drag-handle-dragger-button,
+			.d2l-list-item-drag-handle-dragger-button {
+				display: block;
+			}
 			.d2l-list-item-drag-handle-keyboard-button {
 				display: grid;
 				grid-auto-rows: 1fr 1fr;
+			}
+			.d2l-list-item-drag-handle-dragger-button,
+			.d2l-list-item-drag-handle-keyboard-button {
 				margin: 0;
 				min-height: 1.8rem;
 				padding: 0;
