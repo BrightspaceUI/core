@@ -59,6 +59,17 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 		`;
 	}
 
+	static get properties() {
+		return {
+			role: {type: String, reflect: true}
+		}
+	}
+
+	constructor() {
+		super();
+		this.role = 'img';
+	}
+
 	render() {
 		return html`
 			<div class="d2l-list-drag-marker">
