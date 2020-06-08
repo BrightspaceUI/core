@@ -1,0 +1,24 @@
+{
+  "name": "core",
+  "parser_plugin": {
+    "plugin": "parse_js"
+  },
+  "source_match": "en\\.js$",
+  "source_dir": "lang",
+  "output_file_path": "lang/%LANG%.js",
+  "output_lang_rewrite": [
+    "ar-sa ar",
+    "da-dk da",
+    "de-de de",
+    "es-mx es",
+    "fr-ca fr",
+    "ja-jp ja",
+    "ko-kr ko",
+    "nl-nl nl",
+    "pt-br pt",
+    "sv-se sv",
+    "tr-tr tr",
+    "zh-cn zh",
+    "zh-tw zh-tw"
+  ]
+}
