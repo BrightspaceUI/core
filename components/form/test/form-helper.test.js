@@ -63,6 +63,8 @@ const d2lStatusIndicatorFixture = html`<d2l-status-indicator text="test subtle">
 
 const h1Fixture = html`<h1>Beetles</h1>`;
 
+const formElementFixture = html`<d2l-test-form-element></d2l-test-form-element>`;
+
 describe('form-helper', () => {
 
 	describe('elements', () => {
@@ -79,7 +81,8 @@ describe('form-helper', () => {
 			{ tag: 'label', fixture: labelFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
 			{ tag: 'form', fixture: formFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
 			{ tag: 'h1', fixture: h1Fixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'd2l-status-indicator', fixture: d2lStatusIndicatorFixture, expected: { isElement: true, isCustomElement: true, isCustomFormElement: false } }
+			{ tag: 'd2l-status-indicator', fixture: d2lStatusIndicatorFixture, expected: { isElement: true, isCustomElement: true, isCustomFormElement: false } },
+			{ tag: 'd2l-test-form-element', fixture: formElementFixture, expected: { isElement: true, isCustomElement: true, isCustomFormElement: true } }
 		].forEach(({ tag, fixture: eleFixture, expected }) => {
 
 			describe(tag, () => {
