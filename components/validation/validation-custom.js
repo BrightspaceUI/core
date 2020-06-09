@@ -6,7 +6,7 @@ class ValidationCustom extends ValidationCustomMixin(LitElement) {
 
 	async validate() {
 		const validation = new Promise(resolve => {
-			const details = { detail: { target: this.target, resolve } };
+			const details = { detail: { forElement: this.forElement, resolve } };
 			const event = new CustomEvent('d2l-validation-custom-validate', details);
 			return this.dispatchEvent(event);
 		});

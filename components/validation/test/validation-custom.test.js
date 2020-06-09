@@ -28,11 +28,11 @@ describe('d2l-validation-custom', () => {
 
 	});
 
-	describe('target', () => {
+	describe('for', () => {
 
-		it('should find target using for attribute', () => {
-			const expectedTarget = root.querySelector('#target');
-			expect(custom.target).to.equal(expectedTarget);
+		it('should find for-element using for attribute', () => {
+			const expectedForElement = root.querySelector('#target');
+			expect(custom.forElement).to.equal(expectedForElement);
 		});
 
 	});
@@ -40,22 +40,31 @@ describe('d2l-validation-custom', () => {
 	describe('events', () => {
 
 		it('should fire connected event', async() => {
-			const custom = document.createElement('d2l-validation-custom');
-			setTimeout(() => root.appendChild(custom), 0);
-			await oneEvent(custom, 'd2l-validation-custom-connected');
+			const unconnectedCustom = document.createElement('d2l-validation-custom');
+			setTimeout(() => root.appendChild(unconnectedCustom), 0);
+			await oneEvent(unconnectedCustom, 'd2l-validation-custom-connected');
 		});
 
 		it('should fire disconnected event', async() => {
 			setTimeout(() => custom.remove(), 0);
 			await oneEvent(custom, 'd2l-validation-custom-disconnected');
-			expect(custom.target).to.be.null;
+			expect(custom.forElement).to.be.null;
 		});
 
 		[true, false].forEach(expectedIsValid => {
 
-			it('should fire validate event', async() => {
+			it('should fire validate event for async handler', async() => {
 				const validationHandler = async(e) => {
 					await aTimeout(0);
+					e.detail.resolve(expectedIsValid);
+				};
+				custom.addEventListener('d2l-validation-custom-validate', validationHandler);
+				const isValid = await custom.validate();
+				expect(isValid).to.equal(expectedIsValid);
+			});
+
+			it('should fire validate event for sync handler', async() => {
+				const validationHandler = (e) => {
 					e.detail.resolve(expectedIsValid);
 				};
 				custom.addEventListener('d2l-validation-custom-validate', validationHandler);

@@ -10,19 +10,19 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this._target = null;
+		this._forElement = null;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._updateTarget();
+		this._updateForElement();
 		const connected = new CustomEvent('d2l-validation-custom-connected', { bubbles: true, composed: true });
 		this.dispatchEvent(connected);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._target = null;
+		this._forElement = null;
 		const disconnected = new CustomEvent('d2l-validation-custom-disconnected', { bubbles: true, composed: true });
 		this.dispatchEvent(disconnected);
 	}
@@ -32,20 +32,27 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 
 		changedProperties.forEach((_, prop) => {
 			if (prop === 'for') {
-				this._updateTarget();
+				this._updateForElement();
 			}
 		});
 	}
 
-	get target() {
-		return this._target;
+	get forElement() {
+		return this._forElement;
 	}
 
 	async validate() {}
 
-	_updateTarget() {
-		const root = this.getRootNode();
-		this._target = root.getElementById(this.for);
+	_updateForElement() {
+		if (this.for) {
+			const root = this.getRootNode();
+			this._forElement = root.getElementById(this.for);
+			if (!this._forElement) {
+				throw new Error(`validation-custom failed to find element with id ${this.for}`);
+			}
+		} else {
+			this._forElement = null;
+		}
 	}
 
 };
