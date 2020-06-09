@@ -196,6 +196,17 @@ describe('d2l-calendar', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
+			it('click disabled', async function() {
+				await page.$eval('#min-max', (calendar) => {
+					const dateFocusable = calendar.shadowRoot.querySelector('td[data-date="1"] button');
+					dateFocusable.click();
+					const dateDisabled = calendar.shadowRoot.querySelector('td[data-date="30"] button');
+					dateDisabled.click();
+				});
+				const rect = await visualDiff.getRect(page, '#min-max');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
 			it('enter', async function() {
 				await tabToDates();
 				await page.keyboard.press('ArrowRight');
