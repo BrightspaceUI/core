@@ -66,13 +66,18 @@ describe('d2l-input-date', () => {
 			'zh-tw'
 		].forEach((lang) => {
 			it(`${lang} empty`, async function() {
-				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
+				await page.evaluate(lang => {
+					const input = document.querySelector('#placeholder');
+					return new Promise((resolve) => {
+						input.addEventListener('d2l-localize-behavior-language-changed', resolve, { once: true });
+						document.querySelector('html').setAttribute('lang', lang);
+					});
+				}, lang);
 				const rect = await visualDiff.getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it(`${lang} value`, async function() {
-				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
 				const rect = await visualDiff.getRect(page, '#basic');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});

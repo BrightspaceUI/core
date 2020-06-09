@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.47.1",
+  "version": "1.48.1",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -14,6 +14,7 @@
     "lint": "npm run lint:eslint && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
+    "prepublishOnly": "node ./cli/verify-translations.js",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
     "test:axe": "karma start karma.axe.conf.js",
@@ -29,15 +30,14 @@
     "/directives",
     "/generated",
     "/helpers",
+    "/lang",
     "/mixins",
     "/templates",
     "/tools",
     "!demo",
-    "!lang",
     "!screenshots",
     "!test",
     "/components/demo",
-    "/generated/lang",
     "!/components/demo/demo"
   ],
   "author": "D2L Corporation",

@@ -4,10 +4,10 @@ import './input-time.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -37,25 +37,6 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`;
 	}
 
-	static get resources() {
-		return {
-			'ar': { date: 'التاريخ', time: 'الوقت' },
-			'da': { date: 'Dato', time: 'Tidspunkt' },
-			'de': { date: 'Datum', time: 'Uhrzeit' },
-			'en': { date: 'Date', time: 'Time' },
-			'es': { date: 'Fecha', time: 'Hora' },
-			'fr': { date: 'Date', time: 'Heure' },
-			'ja': { date: '日付', time: '時間' },
-			'ko': { date: '날짜', time: '시간' },
-			'nl': { date: 'Datum', time: 'Tijd' },
-			'pt': { date: 'Data', time: 'Tempo' },
-			'sv': { date: 'Datum', time: 'Tid' },
-			'tr': { date: 'Tarih', time: 'Saat' },
-			'zh': { date: '日期', time: '时间' },
-			'zh-tw': { date: '日期', time: '時間' }
-		};
-	}
-
 	constructor() {
 		super();
 
@@ -77,7 +58,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				<d2l-input-date
 					@change="${this._handleDateChange}"
 					?disabled="${this.disabled}"
-					label="${this.localize('date')}"
+					label="${this.localize('components.input-date-time.date')}"
 					label-hidden
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
@@ -85,7 +66,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@change="${this._handleTimeChange}"
 					?disabled="${this.disabled}"
 					?hidden="${timeHidden}"
-					label="${this.localize('time')}"
+					label="${this.localize('components.input-date-time.time')}"
 					label-hidden
 					max-height="430"
 					.value="${this._parsedDateTime}">
