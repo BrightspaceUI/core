@@ -1,3 +1,4 @@
+import { isCustomFormElement } from '../form/form-helper.js';
 
 export const ValidationCustomMixin = superclass => class extends superclass {
 
@@ -22,6 +23,9 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (isCustomFormElement(this._forElement)) {
+			this._forElement.validationCustomDisconnected(this);
+		}
 		this._forElement = null;
 		const disconnected = new CustomEvent('d2l-validation-custom-disconnected', { bubbles: true, composed: true });
 		this.dispatchEvent(disconnected);
@@ -46,6 +50,7 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 	}
 
 	_updateForElement() {
+		const oldForElement = this._forElement;
 		if (this.for) {
 			const root = this.getRootNode();
 			this._forElement = root.getElementById(this.for);
@@ -54,6 +59,14 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 			}
 		} else {
 			this._forElement = null;
+		}
+		if (this._forElement !== oldForElement) {
+			if (isCustomFormElement(oldForElement)) {
+				oldForElement.validationCustomDisconnected(this);
+			}
+			if (isCustomFormElement(this._forElement)) {
+				this._forElement.validationCustomConnected(this);
+			}
 		}
 	}
 
