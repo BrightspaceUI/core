@@ -77,11 +77,9 @@ class TemplatePrimarySecondary extends LitElement {
 					overflow-y: auto;
 				}
 				main {
-					grid-area: primary;
 					overflow-y: visible;
 				}
 				aside {
-					grid-area: secondary;
 					overflow-y: visible;
 				}
 			}
