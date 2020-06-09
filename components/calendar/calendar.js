@@ -166,7 +166,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				width: 100%;
 			}
 
-			th[role="columnheader"] {
+			th {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
 				padding-bottom: 0.6rem;
 				padding-top: 0.3rem;
@@ -403,11 +403,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
-			<th
-				abbr="${calendarData.descriptor.calendar.days.long[index]}"
-				aria-label="${calendarData.descriptor.calendar.days.long[index]}"
-				role="columnheader"
-				scope="col">
+			<th>
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
 					${calendarData.descriptor.calendar.days.short[index]}
 				</abbr>
@@ -416,7 +412,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
-			const weekHtml = week.map((day) => {
+			const weekHtml = week.map((day, index) => {
 				const disabled = getDisabled(day, this.minValue, this.maxValue);
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
@@ -429,7 +425,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const year = day.getFullYear();
 				const month = day.getMonth();
 				const date = day.getDate();
-				const description = `${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, {format: 'monthYear'})}`;
+				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
+				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, {format: 'monthYear'})}`;
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
@@ -440,15 +437,15 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						@keydown="${this._onKeyDown}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
-							<button
-								aria-label="${description}"
-								class="${classMap(classes)}"
-								@click="${this._onDateSelected}"
-								?disabled="${disabled}"
-								tabindex="-1"
-								type="button">
-								${date}
-							</button>
+						<button
+							aria-label="${description}"
+							class="${classMap(classes)}"
+							@click="${this._onDateSelected}"
+							?disabled="${disabled}"
+							tabindex="-1"
+							type="button">
+							${date}
+						</button>
 					</td>`;
 			});
 
@@ -470,29 +467,30 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
 			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
-				<div class="d2l-calendar-title">
-					<d2l-button-icon
-						@click="${this._onPrevMonthButtonClick}"
-						text="${this._computeText(getPrevMonth(this._shownMonth))}"
-						icon="tier1:chevron-left">
-					</d2l-button-icon>
-					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
-					<d2l-button-icon
-						@click="${this._onNextMonthButtonClick}"
-						text="${this._computeText(getNextMonth(this._shownMonth))}"
-						icon="tier1:chevron-right">
-					</d2l-button-icon>
+				<div role="application">
+					<div class="d2l-calendar-title">
+						<d2l-button-icon
+							@click="${this._onPrevMonthButtonClick}"
+							text="${this._computeText(getPrevMonth(this._shownMonth))}"
+							icon="tier1:chevron-left">
+						</d2l-button-icon>
+						<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
+						<d2l-button-icon
+							@click="${this._onNextMonthButtonClick}"
+							text="${this._computeText(getNextMonth(this._shownMonth))}"
+							icon="tier1:chevron-right">
+						</d2l-button-icon>
+					</div>
+					<table aria-labelledby="${labelId}" role="presentation">
+						${summary}
+						<thead aria-hidden="true">
+							<tr>${weekdayHeaders}</tr>
+						</thead>
+						<tbody>
+							${dayRows}
+						</tbody>
+					</table>
 				</div>
-				<table
-					aria-labelledby="${labelId}">
-					${summary}
-					<thead>
-						<tr>${weekdayHeaders}</tr>
-					</thead>
-					<tbody>
-						${dayRows}
-					</tbody>
-				</table>
 				<slot></slot>
 			</div>
 		`;
@@ -734,8 +732,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		await this.updateComplete;
 		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
-		} else if (this.shadowRoot.querySelector('button.d2l-calendar-date:enabled')) {
-			const validDates = this.shadowRoot.querySelectorAll('button.d2l-calendar-date:enabled');
+		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
+			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:enabled');
 			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
 			const year = focusDate.getAttribute('data-year');
 			const month = focusDate.getAttribute('data-month');
