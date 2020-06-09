@@ -41,7 +41,9 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 		return this._forElement;
 	}
 
-	async validate() {}
+	async validate() {
+		throw new Error('ValidationCustomMixin requires validate to be overridden');
+	}
 
 	_updateForElement() {
 		if (this.for) {
