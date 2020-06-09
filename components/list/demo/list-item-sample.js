@@ -2,18 +2,17 @@ import '../list-item-generic-layout.js';
 import '../list-item-drag-handle.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { findComposedAncestor } from '../../../helpers/dom.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
+import { ListChildMixin } from '../list-child-mixin.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 import { nothing } from 'lit-html';
 
-class ListItemSample extends ListItemCheckboxMixin(LitElement) {
+class ListItemSample extends ListChildMixin(ListItemCheckboxMixin(LitElement)) {
 	// TODO: Breakpoints to live elsewhere
 	// TODO: draggable should be part of the ListItemDragMixin and removed here
 	static get properties() {
 		return {
-			role: { type: String, reflect: true },
 			href: { type: String },
 			draggable: { type: Boolean },
 			_hovering: { type: Boolean },
@@ -46,14 +45,6 @@ class ListItemSample extends ListItemCheckboxMixin(LitElement) {
 	constructor() {
 		super();
 		this._contentId = getUniqueId();
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
-		if (!parent) return;
-		this.role = parent.grid ? 'rowgroup' : 'listitem';
 	}
 
 	render() {
