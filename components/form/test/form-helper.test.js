@@ -1,3 +1,5 @@
+import './form-element.js';
+import '../../status-indicator/status-indicator.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { getLabelText, isCustomElement, isCustomFormElement, isElement } from '../form-helper.js';
 
@@ -51,7 +53,7 @@ const labelFixture = html`
 `;
 
 const formFixture = html`
-	<form action="" method="get">
+	<form action="" method="GET">
 		<div>
 			<label for="name">Enter your name: </label>
 			<input type="text" name="name" id="name" required>
