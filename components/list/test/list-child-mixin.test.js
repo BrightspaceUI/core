@@ -11,7 +11,7 @@ const tag = defineCE(
 describe('ListChildMixin', () => {
 	it('leaves role as undefined if not a child of d2l-list', async() => {
 		const el = await fixture(`<div><${tag}></${tag}></div>`);
-		expect(el.role).to.be.undefined;
+		expect(el.querySelector(tag).role).to.be.undefined;
 	});
 
 	it('changes role to rowgroup when list parent has grid enabled', async() => {
