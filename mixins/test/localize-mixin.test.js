@@ -144,14 +144,14 @@ describe('LocalizeMixin', () => {
 
 	describe('shouldUpdate tracking', () => {
 
-		it('should pass all changed properties to updated()', () => {
+		it('should pass all changed properties to updated()', (done) => {
 			fixture('<div></div>').then(async(container) => {
 				const elem = document.createElement(asyncTag);
 				setTimeout(() => container.appendChild(elem));
 				const { detail } = await oneEvent(elem, 'd2l-test-localize-updated');
-				expect(detail.props.size).to.equal(2);
-				expect(detail.props.has('__language'));
+				expect(detail.props.size).to.equal(1);
 				expect(detail.props.has('__resources'));
+				done();
 			});
 		});
 
@@ -164,7 +164,7 @@ describe('LocalizeMixin', () => {
 					const props = e.detail.props;
 					if (first) {
 						first = false;
-						expect(props.size).to.equal(3);
+						expect(props.size).to.equal(2);
 						return;
 					}
 					expect(props.size).to.equal(1);
