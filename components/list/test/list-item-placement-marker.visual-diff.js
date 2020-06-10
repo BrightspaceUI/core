@@ -16,24 +16,16 @@ describe('d2l-list-item-placement-marker', () => {
 
 	after(async() => await browser.close());
 
-	beforeEach(async() => await visualDiff.resetFocus(page));
-
 	describe('placement-marker', () => {
-		it('ltr', async function() {
-			const rect = await visualDiff.getRect(page, '#placement-marker');
+		// rtl/ltr tests are combined with with broder/no-border to reduce test time and still cover both conditions
+		it('ltr and no border', async function() {
+			const rect = await visualDiff.getRect(page, '#placement-marker-ltr-no-border');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-		it('rtl', async function() {
-			const rect = await visualDiff.getRect(page, '#placement-marker-rtl');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-		it('ltr-with-border', async function() {
-			const rect = await visualDiff.getRect(page, '#placement-marker-with-border');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-		it('rtl-with-border', async function() {
+		it('rtl and border', async function() {
 			const rect = await visualDiff.getRect(page, '#placement-marker-rtl-with-border');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+
 	});
 });

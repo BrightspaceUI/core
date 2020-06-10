@@ -29,11 +29,11 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				stroke: none;
 				fill: var(--d2l-color-celestine);
 				margin-left: -1px;
-				margin-right: 0px;
+				margin-right: 0;
 			}
 
 			:host([dir="rtl"]) .d2l-list-drag-marker-linecap {
-				margin-left: 0px;
+				margin-left: 0;
 				margin-right: -1px;
 			}
 
@@ -43,13 +43,13 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				stroke-width: 3px;
 				stroke: var(--d2l-color-celestine);
 				fill: none;
-				margin-left: 0px;
+				margin-left: 0;
 				margin-right: -1px;
 			}
 
 			:host([dir="rtl"]) .d2l-list-drag-marker-circle {
 				margin-left: -1px;
-				margin-right: 0px;
+				margin-right: 0;
 			}
 
 			.d2l-list-drag-marker {
