@@ -26,11 +26,29 @@
 			<d2l-demo-snippet>
 				<template>
 					<div id="target"><button>toggle backdrop</button></div>
+					<div>
+						<input type="checkbox" id="slow-transition" name="slow-transition">
+						<label for="slow-transition">slow transition</label>
+					</div>
+					<div>
+						<input type="checkbox" id="cut-out" name="cut-out">
+						<label for="cut-out">cut out (no transition when hiding the backdrop)</label>
+					</div>
 					<d2l-backdrop for-target="target"></d2l-backdrop>
 					<script>
 						const backdrop = document.querySelector('d2l-backdrop');
 						document.querySelector('#target > button').addEventListener('click', () => {
 							backdrop.shown = !backdrop.shown;
+						});
+						document.querySelector('#cut-out').addEventListener('change', () => {
+							backdrop.cutOut = !backdrop.cutOut;
+						});
+						document.querySelector('#slow-transition').addEventListener('change', e => {
+							if (e.target.checked) {
+								backdrop.setAttribute('slow-transition', true);
+							} else {
+								backdrop.removeAttribute('slow-transition');
+							}
 						});
 					</script>
 				</template>

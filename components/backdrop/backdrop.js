@@ -14,6 +14,7 @@ class Backdrop extends LitElement {
 		return {
 			shown: { type: Boolean },
 			forTarget: { type: String, attribute: 'for-target' },
+			cutOut: { type: Boolean, attribute: 'cut-out' },
 			_state: { type: String, reflect: true }
 		};
 	}
@@ -30,6 +31,12 @@ class Backdrop extends LitElement {
 				transition: opacity 200ms ease-in;
 				width: 0;
 				z-index: 999;
+			}
+			:host([slow-transition]) {
+				transition: opacity 1200ms ease-in;
+			}
+			:host([_state="showing"][cut-out]) {
+				transition: none;
 			}
 			:host([_state="showing"]), :host([_state="hiding"]) {
 				height: 100%;
@@ -49,6 +56,7 @@ class Backdrop extends LitElement {
 	constructor() {
 		super();
 		this.shown = false;
+		this.cutOut = false;
 		this._state = null;
 	}
 
@@ -81,7 +89,7 @@ class Backdrop extends LitElement {
 				}
 			};
 
-			if (!reduceMotion && isVisible(this)) {
+			if (!reduceMotion && !this.cutOut && isVisible(this)) {
 				this.addEventListener('transitionend', hide, {once: true});
 				this._state = 'hiding';
 			} else {
