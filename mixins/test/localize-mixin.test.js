@@ -51,7 +51,6 @@ const Test3LocalizeMixin = superclass => class extends LocalizeMixin(superclass)
 
 };
 
-
 const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
 
 	static async getLocalizeResources(langs) {
@@ -80,7 +79,6 @@ const multiMixinTag = defineCE(
 
 	}
 );
-
 
 const asyncTag = defineCE(
 	class extends LocalizeMixin(LitElement) {
@@ -224,7 +222,7 @@ describe('LocalizeMixin', () => {
 		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
 
 		let elem;
-		beforeEach(async () => {
+		beforeEach(async() => {
 			elem = await fixture(multiMixinFixture);
 		});
 
@@ -265,7 +263,7 @@ describe('LocalizeMixin', () => {
 			elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
 			documentLocaleSettings.language = 'fr';
 		});
-	})
+	});
 
 	describe('shouldUpdate tracking', () => {
 

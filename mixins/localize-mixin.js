@@ -1,7 +1,7 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
-import {getDocumentLocaleSettings} from '@brightspace-ui/intl/lib/common.js';
-import IntlMessageFormat from 'intl-messageformat';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import IntlMessageFormat from 'intl-messageformat';
 
 export const LocalizeMixin = dedupeMixin(superclass => class extends superclass {
 
@@ -30,7 +30,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 						const resources = {};
 						for (const res of results) {
 							const language = res.language;
-							for (let [key, value] of Object.entries(res.resources)) {
+							for (const [key, value] of Object.entries(res.resources)) {
 								resources[key] = { language, value };
 							}
 						}
@@ -152,6 +152,22 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		return Array.from(langs);
 	}
 
+	static _getAllLocalizeResources(possibleLanguages) {
+		let resourcesLoadedPromises;
+		const superCtor = Object.getPrototypeOf(this);
+		if ('_getAllLocalizeResources' in superCtor) {
+			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages);
+		} else {
+			resourcesLoadedPromises = [];
+		}
+		// eslint-disable-next-line no-prototype-builtins
+		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
+			const res = this.getLocalizeResources([...possibleLanguages]);
+			resourcesLoadedPromises.push(res);
+		}
+		return resourcesLoadedPromises;
+	}
+
 	async _getUpdateComplete() {
 		await super._getUpdateComplete();
 		const hasResources = this._hasResources();
@@ -164,21 +180,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 
 	_hasResources() {
 		return this.constructor['getLocalizeResources'] !== undefined;
-	}
-
-	static _getAllLocalizeResources(possibleLanguages) {
-		let resourcesLoadedPromises;
-		const superCtor = Object.getPrototypeOf(this);
-		if ('_getAllLocalizeResources' in superCtor) {
-			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages);
-		} else {
-			resourcesLoadedPromises = [];
-		}
-		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
-			const res = this.getLocalizeResources([...possibleLanguages]);
-			resourcesLoadedPromises.push(res);
-		}
-		return resourcesLoadedPromises;
 	}
 
 	_languageChange() {
