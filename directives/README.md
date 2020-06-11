@@ -12,14 +12,14 @@ class SomeComponent extends LitElement {
   render() {
     const someNode = html`<div>A node with stuff in it</div>`;
 
-    return html`${duplicateOffscreen(someNode)};
+    return html`${duplicateOffscreen(someNode)}`;
   }
 }
 ```
 
 ### Parameters
 
-- `value` - The content node to duplicate.
+- `value` The content node to duplicate.
 
 ## runAsync
 

@@ -5,7 +5,9 @@ class DuplicateDemo extends LitElement {
 	render() {
 		const item = html`<div>This message is present in the DOM twice</div>`;
 
-		return html`${duplicateOffscreen(item)}`;
+		return html`
+			${duplicateOffscreen(item)}
+		`;
 	}
 }
 

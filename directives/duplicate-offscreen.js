@@ -37,10 +37,12 @@ export const duplicateOffscreen = directive((value) => (containerPart) => {
 	// nextSibling is how we access the actual node we need
 	// This is hardly intuitive and requires knowledge of Part's inner workings
 	// https://github.com/Polymer/lit-html/issues/388
+
 	const copyNode = copy.startNode.nextSibling;
 	copyNode.setAttribute('data-duplicate', '');
 	copyNode.setAttribute('aria-hidden', 'true');
 	copyNode.classList.add('d2l-offscreen');
+
 
 	// create and insert a style tag manually on the shadowRoot
 	// Doing this is actually efficient, as browsers automatically deduplicate
@@ -48,9 +50,17 @@ export const duplicateOffscreen = directive((value) => (containerPart) => {
 	// https://lit-html.polymer-project.org/guide/styling-templates#rendering-in-shadow-dom
 	const shadow = containerPart.options.eventContext.shadowRoot;
 	const style = document.createElement('style');
+
 	style.type = 'text/css';
 	style.appendChild(document.createTextNode(offscreenStyles));
-	shadow.prepend(style);
+
+	// workaround for polyfill issue. ShadowRoot isn't a real thing in polyfill land,
+	// so attach the style to the caller instead.
+	try {
+		shadow.prepend(style);
+	} catch (e) {
+		containerPart.options.eventContext.prepend(style);
+	}
 });
 
 function createAndAppend(containerPart) {
