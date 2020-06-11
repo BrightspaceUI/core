@@ -29,7 +29,7 @@ button.addEventListener('click', () => {
 - `for-target` (required, String): id of the target element to display backdrop behind
 - `shown` (Boolean): used to control whether the backdrop is shown
 - `slow-transition` (Boolean): Increases the fade transition time to 1200ms (default is 200ms)
-- `cut-out` (Boolean): disables the fade-out transition while the backdrop is being hidden
+- `no-animate-hide` (Boolean): disables the fade-out transition while the backdrop is being hidden
 
 ## Future Enhancements
 

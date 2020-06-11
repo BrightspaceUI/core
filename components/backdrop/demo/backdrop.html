@@ -31,8 +31,8 @@
 						<label for="slow-transition">slow transition</label>
 					</div>
 					<div>
-						<input type="checkbox" id="cut-out" name="cut-out">
-						<label for="cut-out">cut out (no transition when hiding the backdrop)</label>
+						<input type="checkbox" id="no-animate-hide" name="no-animate-hide">
+						<label for="no-animate-hide">no animation on hide</label>
 					</div>
 					<d2l-backdrop for-target="target"></d2l-backdrop>
 					<script>
@@ -40,8 +40,8 @@
 						document.querySelector('#target > button').addEventListener('click', () => {
 							backdrop.shown = !backdrop.shown;
 						});
-						document.querySelector('#cut-out').addEventListener('change', () => {
-							backdrop.cutOut = !backdrop.cutOut;
+						document.querySelector('#no-animate-hide').addEventListener('change', () => {
+							backdrop.noAnimateHide = !backdrop.noAnimateHide;
 						});
 						document.querySelector('#slow-transition').addEventListener('change', e => {
 							if (e.target.checked) {
