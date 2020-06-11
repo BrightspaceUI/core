@@ -8,7 +8,7 @@ import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { repeat } from 'lit-html/directives/repeat';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -46,7 +46,7 @@ if (!Array.prototype.findIndex) {
 	});
 }
 
-class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
+class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -231,25 +231,6 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': { 'scroll.previous': 'التمرير إلى اليسار', 'scroll.next':'التمرير إلى اليمين' },
-			'da': { 'scroll.previous': 'Rul tilbage', 'scroll.next': 'Rul frem' },
-			'de': { 'scroll.previous': 'Scrollen Sie rückwärts', 'scroll.next': 'Vorwärts scrollen' },
-			'en': { 'scroll.previous': 'Scroll Backward', 'scroll.next': 'Scroll Forward' },
-			'es': { 'scroll.previous': 'Desplácese a la izquierda', 'scroll.next': 'Desplácese a la derecha' },
-			'fr': { 'scroll.previous': 'Défilement vers la gauche', 'scroll.next': 'Défilement vers la droite' },
-			'ja': { 'scroll.previous': '左にスクロール', 'scroll.next': '右にスクロール' },
-			'ko': { 'scroll.previous': '왼쪽으로 스크롤', 'scroll.next': '오른쪽으로 스크롤' },
-			'nl': { 'scroll.previous': 'Naar links schuiven', 'scroll.next': 'Naar rechts schuiven' },
-			'pt': { 'scroll.previous': 'Rolar para Esquerda', 'scroll.next': 'Rolar para Direita' },
-			'sv': { 'scroll.previous': 'Rulla till vänster', 'scroll.next': 'Rulla till höger' },
-			'tr': { 'scroll.previous': 'Sola Kaydır', 'scroll.next': 'Sağa Kaydır' },
-			'zh': { 'scroll.previous': '向左滚动', 'scroll.next': '向右滚动' },
-			'zh-tw': { 'scroll.previous': '向左捲動', 'scroll.next': '向右捲動' }
-		};
-	}
-
 	constructor() {
 		super();
 		this.maxToShow = -1;
@@ -339,7 +320,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 					<div class="d2l-tabs-scroll-previous-container">
 						<button class="d2l-tabs-scroll-button"
 							@click="${this._handleScrollPrevious}"
-							title="${this.localize('scroll.previous')}">
+							title="${this.localize('components.tabs.previous')}">
 							<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 						</button>
 					</div>
@@ -362,7 +343,7 @@ class Tabs extends LocalizeStaticMixin(ArrowKeysMixin(RtlMixin(LitElement))) {
 					<div class="d2l-tabs-scroll-next-container">
 						<button class="d2l-tabs-scroll-button"
 							@click="${this._handleScrollNext}"
-							title="${this.localize('scroll.next')}">
+							title="${this.localize('components.tabs.next')}">
 							<d2l-icon icon="tier1:chevron-right"></d2l-icon>
 						</button>
 					</div>

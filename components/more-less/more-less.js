@@ -4,11 +4,11 @@ import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-class MoreLess extends LocalizeStaticMixin(LitElement)  {
+class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -49,23 +49,6 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 			:host([inactive]) .more-less-toggle {
 				display: none;
 			}`;
-	}
-
-	static get resources() {
-		return {
-			'ar': { more: 'المزيد', less: 'أقل' },
-			'en': { more: 'more', less: 'less' },
-			'es': { more: 'más', less: 'menos' },
-			'fr': { more: 'plus', less: 'moins' },
-			'ja': { more: 'より多い', less: 'より少ない' },
-			'ko': { more: '더 보기', less: '축소' },
-			'nl': { more: 'meer', less: 'minder' },
-			'pt': { more: 'mais', less: 'menos' },
-			'sv': { more: 'mer', less: 'mindre' },
-			'tr': { more: 'diğer', less: 'daha az' },
-			'zh': { more: '更多', less: '更少' },
-			'zh-tw': { more: '較多', less: '較少' }
-		};
 	}
 
 	constructor() {
@@ -213,7 +196,7 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 	}
 
 	__computeText() {
-		return this.localize(this.expanded ? 'less' : 'more');
+		return this.localize(this.expanded ? 'components.more-less.less' : 'components.more-less.more');
 	}
 
 	__expand() {
