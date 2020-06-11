@@ -93,7 +93,7 @@ describe('d2l-input-date', () => {
 			await helper.reset(page, '#basic');
 		});
 
-		it('disabled does not open', async function() {
+		it.skip('disabled does not open', async function() {
 			await page.$eval('#disabled', (elem) => {
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				const e = new Event(
