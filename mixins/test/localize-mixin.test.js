@@ -3,7 +3,84 @@ import { defineCE, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LitElement } from 'lit-element/lit-element.js';
 import { LocalizeMixin } from '../localize-mixin.js';
+import { LocalizeStaticMixin } from '../localize-static-mixin.js';
 import { stub } from 'sinon';
+
+const Test1LocalizeStaticMixin = superclass => class extends LocalizeStaticMixin(superclass) {
+
+	static get resources() {
+		return {
+			'en': { 'test1': 'This is English from Test1LocalizeStaticMixin' },
+			'fr': { 'test1': 'This is French from Test1LocalizeStaticMixin' }
+		};
+	}
+
+};
+
+const Test2LocalizeStaticMixin = superclass => class extends LocalizeStaticMixin(superclass) {
+
+	static get resources() {
+		return {
+			'en': { 'test2': 'This is English from Test2LocalizeStaticMixin' }
+		};
+	}
+
+};
+
+const Test3LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
+
+	static async getLocalizeResources(langs) {
+		return new Promise((resolve) => {
+			const langResources = {
+				'en': { 'test3': 'This is English from Test3LocalizeMixin' },
+				'fr': { 'test3': 'This is French from Test3LocalizeMixin' }
+			};
+			for (let i = 0; i < langs.length; i++) {
+				if (langResources[langs[i]]) {
+					const langVal = {
+						language: langs[i],
+						resources: langResources[langs[i]]
+					};
+					setTimeout(() => {
+						resolve(langVal);
+					}, 50);
+				}
+			}
+		});
+	}
+
+};
+
+
+const Test4LocalizeMixin = superclass => class extends LocalizeMixin(superclass) {
+
+	static async getLocalizeResources(langs) {
+		return new Promise((resolve) => {
+			const langResources = {
+				'en': { 'test4': 'This is English from Test4LocalizeMixin' }
+			};
+			for (let i = 0; i < langs.length; i++) {
+				if (langResources[langs[i]]) {
+					const langVal = {
+						language: langs[i],
+						resources: langResources[langs[i]]
+					};
+					setTimeout(() => {
+						resolve(langVal);
+					}, 50);
+				}
+			}
+		});
+	}
+
+};
+
+const multiMixinTag = defineCE(
+	class extends Test1LocalizeStaticMixin(Test3LocalizeMixin(Test2LocalizeStaticMixin(Test4LocalizeMixin(LitElement)))) {
+
+	}
+);
+
 
 const asyncTag = defineCE(
 	class extends LocalizeMixin(LitElement) {
@@ -141,6 +218,54 @@ describe('LocalizeMixin', () => {
 		});
 
 	});
+
+	describe('multiple localize and localize static mixin', () => {
+
+		const multiMixinFixture = `<${multiMixinTag}></${multiMixinTag}>`;
+
+		let elem;
+		beforeEach(async () => {
+			elem = await fixture(multiMixinFixture);
+		});
+
+		it('should localize text from all mixins', () => {
+			const val1 = elem.localize('test1');
+			const val2 = elem.localize('test2');
+			const val3 = elem.localize('test3');
+			const val4 = elem.localize('test4');
+
+			expect(val1).to.equal('This is English from Test1LocalizeStaticMixin');
+			expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
+			expect(val3).to.equal('This is English from Test3LocalizeMixin');
+			expect(val4).to.equal('This is English from Test4LocalizeMixin');
+		});
+
+		it('should re-localize text from all mixins when locale changes', (done) => {
+			const val1Initial = elem.localize('test1');
+			const val2Initial = elem.localize('test2');
+			const val3Initial = elem.localize('test3');
+			const val4Initial = elem.localize('test4');
+
+			expect(val1Initial).to.equal('This is English from Test1LocalizeStaticMixin');
+			expect(val2Initial).to.equal('This is English from Test2LocalizeStaticMixin');
+			expect(val3Initial).to.equal('This is English from Test3LocalizeMixin');
+			expect(val4Initial).to.equal('This is English from Test4LocalizeMixin');
+			const myEventListener = () => {
+				const val1 = elem.localize('test1');
+				const val2 = elem.localize('test2');
+				const val3 = elem.localize('test3');
+				const val4 = elem.localize('test4');
+				expect(val1).to.equal('This is French from Test1LocalizeStaticMixin');
+				expect(val2).to.equal('This is English from Test2LocalizeStaticMixin');
+				expect(val3).to.equal('This is French from Test3LocalizeMixin');
+				expect(val4).to.equal('This is English from Test4LocalizeMixin');
+				elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
+				done();
+			};
+			elem.addEventListener('d2l-localize-behavior-language-changed', myEventListener);
+			documentLocaleSettings.language = 'fr';
+		});
+	})
 
 	describe('shouldUpdate tracking', () => {
 
