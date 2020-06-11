@@ -43,14 +43,12 @@ export const duplicateOffscreen = directive((value) => (containerPart) => {
 	copyNode.setAttribute('aria-hidden', 'true');
 	copyNode.classList.add('d2l-offscreen');
 
-
 	// create and insert a style tag manually on the shadowRoot
 	// Doing this is actually efficient, as browsers automatically deduplicate
 	// multiple instances of the same style sheet
 	// https://lit-html.polymer-project.org/guide/styling-templates#rendering-in-shadow-dom
 	const shadow = containerPart.options.eventContext.shadowRoot;
 	const style = document.createElement('style');
-
 	style.type = 'text/css';
 	style.appendChild(document.createTextNode(offscreenStyles));
 
