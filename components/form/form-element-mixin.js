@@ -1,24 +1,35 @@
-import { getLabelText } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { tryGetLabelText } from './form-helper.js';
 
 export class FormElementValidityState {
 
-	constructor(flags) {
-		this.flags = {
-			...{
-				valueMissing: false,
-				typeMismatch: false,
-				patternMismatch: false,
-				tooLong: false,
-				tooShort: false,
-				rangeUnderflow: false,
-				rangeOverflow: false,
-				stepMismatch: false,
-				badInput: false,
-				customError: false
-			},
-			...flags
+	static get supportedFlags() {
+		return {
+			valueMissing: false,
+			typeMismatch: false,
+			patternMismatch: false,
+			tooLong: false,
+			tooShort: false,
+			rangeUnderflow: false,
+			rangeOverflow: false,
+			stepMismatch: false,
+			badInput: false,
+			customError: false
 		};
+	}
+	constructor(flags) {
+		const flagNames = Object.keys(flags);
+		const invalidFlags = flagNames.filter(name => !(name in FormElementValidityState.supportedFlags));
+		if (invalidFlags.length > 0) {
+			flags = flagNames
+				.filter(name => name in FormElementValidityState.supportedFlags)
+				.reduce((res, name) => {
+					res[name] = flags[name];
+					return res;
+				}, {});
+			console.warn(`validity state was constructed with invalid flags: ${invalidFlags}`);
+		}
+		this.flags = { ...this.constructor.supportedFlags, ...flags};
 	}
 
 	get badInput() {
@@ -89,7 +100,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	get labelText() {
-		const label = this.label || getLabelText(this);
+		const label = this.label || tryGetLabelText(this);
 		if (label) {
 			return label;
 		}
@@ -139,75 +150,65 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	get validationMessage() {
 		const validity = this.validity;
-		if (validity.valid) {
-			return null;
+		switch (true) {
+			case validity.valid:
+				return null;
+			case validity.customError:
+				return this._validationMessage;
+			case validity.badInput:
+				return this.validationMessageBadInput;
+			case validity.patternMismatch:
+				return this.validationMessagePatternMismatch;
+			case validity.rangeOverflow:
+				return this.validationMessageRangeOverflow;
+			case validity.rangeUnderflow:
+				return this.validationMessageRangeUnderflow;
+			case validity.stepMismatch:
+				return this.validationMessageStepMismatch;
+			case validity.tooLong:
+				return this.validationMessageTooLong;
+			case validity.tooShort:
+				return this.validationMessageTooShort;
+			case validity.typeMismatch:
+				return this.validationMessageTypeMismatch;
+			case validity.valueMissing:
+				return this.validationMessageValueMissing;
 		}
-		if (validity.customError) {
-			return this._validationMessage;
-		}
-		if (validity.badInput) {
-			return this.validationMessageBadInput;
-		}
-		if (validity.patternMismatch) {
-			return this.validationMessagePatternMismatch;
-		}
-		if (validity.rangeOverflow) {
-			return this.validationMessageRangeOverflow;
-		}
-		if (validity.rangeUnderflow) {
-			return this.validationMessageRangeUnderflow;
-		}
-		if (validity.stepMismatch) {
-			return this.validationMessageStepMismatch;
-		}
-		if (validity.tooLong) {
-			return this.validationMessageTooLong;
-		}
-		if (validity.tooShort) {
-			return this.validationMessageTooShort;
-		}
-		if (validity.typeMismatch) {
-			return this.validationMessageTypeMismatch;
-		}
-		if (validity.valueMissing) {
-			return this.validationMessageValueMissing;
-		}
-		console.warn(this, ' is using the default validation message for an unknown validity flag');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
 	get validationMessageBadInput() {
-		console.warn(this, ' is using the default \'badInput\' validation message, override \'validationMessageBadInput\'');
+		console.warn(this, ' is using the default validation message, override \'validationMessageBadInput\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
 	get validationMessagePatternMismatch() {
-		console.warn(this, ' is using the default \'patternMismatch\' validation message, override \'validationMessagePatternMismatch\'');
+		console.warn(this, ' is using the default validation message, override \'validationMessagePatternMismatch\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
 	get validationMessageRangeOverflow() {
-		console.warn(this, ' is using the default \'stepMismatch\' validation message, override \'validationMessageRangeOverflow\'');
+		console.warn(this, ' is using the default validation message, override \'validationMessageRangeOverflow\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
 	get validationMessageStepMismatch() {
-		console.warn(this, ' is using the default \'stepMismatch\' validation message, override \'validationMessageStepMismatch\'');
+		console.warn(this, ' is using the default validation message, override \'validationMessageStepMismatch\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
 	get validationMessageTooLong() {
-		console.warn(this, ' is using the default \'tooLong\' validation message, override \'validationMessageTooLong\'');
+		console.warn(this, ' is using the default validation message, override \'validationMessageTooLong\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
 	get validationMessageTooShort() {
-		console.warn(this, ' is using the default \'tooShort\' validation message, override \'validationMessageTooShort\'');
+		console.warn(this, ' is using the default validation message, override \'validationMessageTooShort\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
 	get validationMessageTypeMismatch() {
-		console.warn(this, ' is using the default \'tooShort\' validation message, override \'validationMessageTypeMismatch\'');
+		console.warn(this, ' is using the default validation message, override \'validationMessageTypeMismatch\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 

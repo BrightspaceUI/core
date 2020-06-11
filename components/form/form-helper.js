@@ -4,12 +4,18 @@ export const isCustomElement = (node) => isElement(node) && node.nodeName.indexO
 
 export const isCustomFormElement = (node) => isCustomElement(node) && !!node.formAssociated;
 
-export const getLabelText = (ele) => {
+export const tryGetLabelText = (ele) => {
 	if (ele.labels && ele.labels.length > 0) {
-		return ele.labels[0].textContent.trim();
+		const labelText = ele.labels[0].textContent.trim();
+		if (labelText) {
+			return labelText;
+		}
 	}
 	if (ele.hasAttribute('aria-label')) {
-		return ele.getAttribute('aria-label');
+		const labelText = ele.getAttribute('aria-label');
+		if (labelText) {
+			return labelText;
+		}
 	}
 	if (ele.hasAttribute('aria-labelledby')) {
 		const labelledby = ele.getAttribute('aria-labelledby');
@@ -18,23 +24,38 @@ export const getLabelText = (ele) => {
 		for (const id of ids) {
 			const label = root.getElementById(id);
 			if (label) {
-				return label.textContent.trim();
+				const labelText = label.textContent.trim();
+				if (labelText) {
+					return labelText;
+				}
 			}
 		}
 	}
 	if (ele.hasAttribute('title')) {
-		return ele.getAttribute('title');
+		const labelText = ele.getAttribute('title');
+		if (labelText) {
+			return labelText;
+		}
 	}
 	const tagName = ele.nodeName.toLowerCase();
 	if (tagName === 'button' && ele.textContent) {
-		return ele.textContent.trim();
+		const labelText = ele.textContent.trim();
+		if (labelText) {
+			return labelText;
+		}
 	}
 	if (tagName === 'input') {
 		if (ele.type === 'button' || ele.type === 'submit' || ele.type === 'reset' && ele.value) {
-			return ele.value;
+			const labelText = ele.value;
+			if (labelText) {
+				return labelText;
+			}
 		}
 		if (ele.type === 'image') {
-			return ele.alt;
+			const labelText = ele.alt;
+			if (labelText) {
+				return labelText;
+			}
 		}
 	}
 	return null;

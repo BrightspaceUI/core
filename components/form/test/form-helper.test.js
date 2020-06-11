@@ -1,7 +1,7 @@
 import './form-element.js';
 import '../../status-indicator/status-indicator.js';
 import { expect, fixture, html } from '@open-wc/testing';
-import { getLabelText, isCustomElement, isCustomFormElement, isElement } from '../form-helper.js';
+import { isCustomElement, isCustomFormElement, isElement, tryGetLabelText } from '../form-helper.js';
 
 const buttonFixture = html`<button type="button">Add to favorites</button>`;
 
@@ -113,7 +113,7 @@ describe('form-helper', () => {
 
 	});
 
-	describe('getLabelText', () => {
+	describe('tryGetLabelText', () => {
 
 		const implicitLabelFixture = html`
 			<label>Do you like peas?
@@ -177,6 +177,14 @@ describe('form-helper', () => {
 			</div>
 		`;
 
+		const emptyLabelFixture = html`
+			<div>
+				<label for="target">
+				</label>
+				<input id='target' type="checkbox" name="peas">
+			</div>
+		`;
+
 		[
 			{ type: 'implicit', fixture: implicitLabelFixture },
 			{ type: 'explicit', fixture: explicitLabelFixture },
@@ -192,7 +200,17 @@ describe('form-helper', () => {
 			it(`should find an ${type} label`, async() => {
 				const ele = await fixture(eleFixture);
 				const target = ele.querySelector('#target');
-				expect(getLabelText(target)).to.equal('Do you like peas?');
+				expect(tryGetLabelText(target)).to.equal('Do you like peas?');
+			});
+		});
+
+		[
+			{ type: 'empty', fixture: emptyLabelFixture },
+		].forEach(({ type, fixture: eleFixture }) => {
+			it(`shouldn't find an ${type} label`, async() => {
+				const ele = await fixture(eleFixture);
+				const target = ele.querySelector('#target');
+				expect(tryGetLabelText(target)).to.be.null;
 			});
 		});
 
