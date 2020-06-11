@@ -4,10 +4,10 @@ import '../colors/colors.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap} from 'lit-html/directives/class-map.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -122,24 +122,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': { 'close': 'إغلاق التنبيه'},
-			'de': { 'close': 'Benachrichtigung schließen' },
-			'en': { 'close': 'Close Alert'},
-			'es': { 'close': 'Alerta de cierre' },
-			'fr': { 'close': 'Fermer l\'alerte' },
-			'ja': { 'close': 'アラートを閉じる' },
-			'ko': { 'close': '경보 닫기' },
-			'nl': { 'close': 'Waarschuwing sluiten' },
-			'pt': { 'close': 'Fechar Alerta' },
-			'sv': { 'close': 'Stängningsvarning' },
-			'tr': { 'close': 'Kapatma Uyarısı' },
-			'zh-tw': { 'close': '關閉警示' },
-			'zh': { 'close': '关闭警报' }
-		};
-	}
-
 	constructor() {
 		super();
 		this.hasCloseButton = false;
@@ -165,7 +147,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					${this.buttonText && this.buttonText.length > 0 ? html`
 						<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
 					${this.hasCloseButton ? html`
-						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('close')}"></d2l-button-icon>` : null}
+						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('components.alert.close')}"></d2l-button-icon>` : null}
 				</div>` : null}
 		`;
 	}
