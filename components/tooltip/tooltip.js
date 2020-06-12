@@ -416,7 +416,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const contentRect = content.getBoundingClientRect();
 		// + 1 because scrollWidth does not give sub-pixel measurements and half a pixel may cause text to unexpectedly wrap
-		this._maxWidth = content.scrollWidth + 2 * contentBorderSize + 1;
+		this._maxWidth = Math.min(content.scrollWidth + 2 * contentBorderSize, 350) + 1;
 		this._openDir = space.dir;
 
 		// Compute the x and y position of the tooltip relative to its target
