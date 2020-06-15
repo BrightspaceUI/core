@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.51.0",
+  "version": "1.52.1",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -67,7 +67,8 @@
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
-    "@formatjs/intl-pluralrules": "^1",
+    "@formatjs/intl-pluralrules": "^2",
+    "@open-wc/dedupe-mixin": "^1.2.17",
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
     "intl-messageformat": "^7",
