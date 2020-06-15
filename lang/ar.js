@@ -5,7 +5,7 @@ export default {
 	"components.calendar.notSelected": "غير محدد.",
 	"components.calendar.selected": "محدد.",
 	"components.calendar.show": "{month} إظهار",
-	"components.dialog.close": "إغلاق مربع الحوار هذا",
+	"components.dialog.close": "إغلاق",
 	"components.input-date.clear": "مسح",
 	"components.input-date.openInstructions": "",
 	"components.input-date.setToToday": "",
