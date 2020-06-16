@@ -144,11 +144,12 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_handleKeyDown(e) {
-		// space pressed... prevent defaul browser scroll
+		// space pressed... prevent default browser scroll
 		if (e.keyCode === 32) e.preventDefault();
 	}
 
 	_handleKeyUp(e) {
+		// space pressed... toggle state
 		if (e.keyCode === 32) this.on = !this.on;
 	}
 
