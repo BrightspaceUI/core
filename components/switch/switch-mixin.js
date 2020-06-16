@@ -1,7 +1,8 @@
 import '../colors/colors.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-export const SwitchMixin = superclass => class extends superclass {
+export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -59,8 +60,15 @@ export const SwitchMixin = superclass => class extends superclass {
 				top: -0.2rem;
 				width: 1.2rem;
 			}
+			:host([dir="rtl"]) .d2l-switch-toggle > div {
+				left: auto;
+				right: -0.2rem;
+			}
 			:host([on]) .d2l-switch-toggle {
 				transform: translateX(1.2rem);
+			}
+			:host([dir="rtl"][on]) .d2l-switch-toggle {
+				transform: translateX(-1.2rem);
 			}
 			:host([on]) .d2l-switch-toggle > div {
 				border-color: var(--d2l-color-celestine);
@@ -79,6 +87,10 @@ export const SwitchMixin = superclass => class extends superclass {
 			}
 			.d2l-switch-icon-on {
 				margin-right: 0.4rem;
+			}
+			:host([dir="rtl"]) .d2l-switch-icon-on {
+				margin-left: 0.4rem;
+				margin-right: 0;
 			}
 			:host([on]) .d2l-switch-icon-on > d2l-icon,
 			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
