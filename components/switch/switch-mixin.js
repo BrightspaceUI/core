@@ -6,8 +6,8 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
-			label: { type: String },
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			label: { type: String, reflect: true },
+			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			on: { type: Boolean, reflect: true },
 			role: { type: String, reflect: true },
 			tabindex: { type: String, reflect: true }
