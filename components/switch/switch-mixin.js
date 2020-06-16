@@ -1,5 +1,7 @@
 import '../colors/colors.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
@@ -8,9 +10,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		return {
 			label: { type: String, reflect: true },
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
-			on: { type: Boolean, reflect: true },
-			role: { type: String, reflect: true },
-			tabindex: { type: String, reflect: true }
+			on: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -18,7 +18,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		return css`
 			:host {
 				display: inline-block;
-				outline-style: none;
 			}
 			:host([hidden]) {
 				display: none;
@@ -31,6 +30,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				display: inline-block;
 				font-size: 0;
 				line-height: 0;
+				outline-style: none;
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
@@ -73,8 +73,8 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 			:host([on]) .d2l-switch-toggle > div {
 				border-color: var(--d2l-color-celestine);
 			}
-			:host(:focus) .d2l-switch-container,
-			:host(:hover) .d2l-switch-container {
+			.d2l-switch-container:focus,
+			.d2l-switch-container:hover {
 				border-color: var(--d2l-color-celestine);
 				border-width: 2px;
 			}
@@ -108,46 +108,42 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		super();
 		this.labelHidden = false;
 		this.on = false;
-		this.role = 'switch';
-		this.tabindex = '0';
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this.addEventListener('click', () => {
-			this.on = !this.on;
-		});
-		this.addEventListener('keydown', (e) => {
-			// space pressed... prevent defaul browser scroll
-			if (e.keyCode === 32) e.preventDefault();
-		});
-		this.addEventListener('keyup', (e) => {
-			if (e.keyCode === 32) this.on = !this.on;
-		});
+		this._labelId = getUniqueId();
 	}
 
 	render() {
 		return html`
-			<div class="d2l-switch-container">
+			<div
+				aria-checked="${this.on ? 'true' : 'false'}"
+				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
+				aria-labelledby="${ifDefined(!this.labelHidden ? this._labelId : undefined)}"
+				class="d2l-switch-container"
+				@click="${this._handleClick}"
+				@keydown="${this._handleKeyDown}"
+				@keyup="${this._handleKeyUp}"
+				role="switch"
+				tabindex="0">
 				<div class="d2l-switch-inner">
 					<div class="d2l-switch-toggle"><div></div></div>
 					<div class="d2l-switch-icon-on">${this.onIcon}</div>
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${!this.labelHidden ? html`<span aria-hidden="true">${this.label}</span>` : ''}
+			${!this.labelHidden ? html`<span id="${this._labelId}">${this.label}</span>` : ''}
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('label')) {
-			this.setAttribute('aria-label', this.label);
-		}
-		if (changedProperties.has('on')) {
-			if (this.on) this.setAttribute('aria-checked', 'true');
-			else this.setAttribute('aria-checked', 'false');
-		}
+	_handleClick() {
+		this.on = !this.on;
+	}
+
+	_handleKeyDown(e) {
+		// space pressed... prevent defaul browser scroll
+		if (e.keyCode === 32) e.preventDefault();
+	}
+
+	_handleKeyUp(e) {
+		if (e.keyCode === 32) this.on = !this.on;
 	}
 
 };
