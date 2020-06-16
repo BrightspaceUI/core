@@ -21,6 +21,11 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-switch label="Tool" on></d2l-switch>
+					<script>
+						document.querySelector('d2l-switch').addEventListener('change', (e) => {
+							console.log('switch changed', e.target.on);
+						});
+					</script>
 				</template>
 			</d2l-demo-snippet>
 
