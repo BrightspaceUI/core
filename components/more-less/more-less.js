@@ -8,15 +8,41 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * The `d2l-more-less` element can be used to minimize the display of long content, while providing a way to reveal the full content.
+ * @slot - Default content placed inside of the component
+ * @fires d2l-more-less-render - Dispatched when the component finishes rendering
+ */
 class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
-			blurColor: { type: String, attribute: 'blur-color' }, // The gradient color of the blurring effect. Must be hex color code.
-			expanded: { type: Boolean, reflect: true }, // Indicates whether element is in "more" state.
-			hAlign: { type: String, attribute: 'h-align' }, // The h-align property of the more-less button.
-			height: { type: String }, // The maximum height of the content when in "less" state.
-			inactive: { type: Boolean, reflect: true }, // Whether the component is active or inactive.
+			/**
+			 * The gradient color of the blurring effect.
+			 * @type {"hex color code"}
+			 */
+			blurColor: { type: String, attribute: 'blur-color' },
+
+			/**
+			 * Indicates whether element is in "more" state.
+			 */
+			expanded: { type: Boolean, reflect: true },
+
+			/**
+			 * The h-align property of the more-less button.
+			 * @type {""|"text"}
+			 */
+			hAlign: { type: String, attribute: 'h-align' },
+
+			/**
+			 * The maximum height of the content when in "less" state.
+			 */
+			height: { type: String },
+
+			/**
+			 * Whether the component is active or inactive.
+			 */
+			inactive: { type: Boolean, reflect: true },
 			__blurBackground: { type: String },
 			__contentHeight: { type: String },
 			__transitionAdded: { type: Boolean }
