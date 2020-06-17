@@ -131,9 +131,11 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		this._labelId = getUniqueId();
 	}
 
-	focus() {
-		const elem = this.shadowRoot.querySelector('.d2l-switch-container');
-		if (elem) elem.focus();
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		if (!this.label || this.label.length === 0) {
+			console.warn('Switch components require an accessible label.');
+		}
 	}
 
 	render() {
@@ -162,6 +164,11 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('on') || changedProperties.get('on') === undefined) return;
 		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
+	}
+
+	focus() {
+		const elem = this.shadowRoot.querySelector('.d2l-switch-container');
+		if (elem) elem.focus();
 	}
 
 	_handleClick() {
