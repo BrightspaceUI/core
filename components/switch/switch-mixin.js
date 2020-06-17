@@ -8,6 +8,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
+			disabled: { type: Boolean, reflect: true },
 			label: { type: String, reflect: true },
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			on: { type: Boolean, reflect: true }
@@ -22,11 +23,13 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 			:host([hidden]) {
 				display: none;
 			}
+
 			.d2l-switch-container {
 				background-color: #ffffff;
 				border: 2px solid transparent;
 				border-radius: 1rem;
 				box-sizing: border-box;
+				cursor: pointer;
 				display: inline-block;
 				font-size: 0;
 				line-height: 0;
@@ -34,6 +37,19 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
+			.d2l-switch-container:focus,
+			.d2l-switch-container:hover {
+				border-color: var(--d2l-color-celestine);
+			}
+			:host([disabled]) .d2l-switch-container {
+				cursor: default;
+				opacity: 0.5;
+			}
+			:host([disabled]) .d2l-switch-container:focus,
+			:host([disabled]) .d2l-switch-container:hover {
+				border-color: transparent;
+			}
+
 			.d2l-switch-inner {
 				border: 1px solid var(--d2l-color-ferrite);
 				border-radius: 0.8rem;
@@ -44,6 +60,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				background-color: var(--d2l-color-celestine-plus-2);
 				border-color: var(--d2l-color-celestine);
 			}
+
 			.d2l-switch-toggle {
 				position: relative;
 				transition: transform 150ms linear;
@@ -73,11 +90,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 			:host([on]) .d2l-switch-toggle > div {
 				border-color: var(--d2l-color-celestine);
 			}
-			.d2l-switch-container:focus,
-			.d2l-switch-container:hover {
-				border-color: var(--d2l-color-celestine);
-				border-width: 2px;
-			}
+
 			d2l-icon, d2l-icon-custom {
 				height: 0.8rem;
 				width: 0.8rem;
@@ -96,6 +109,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
 				color: var(--d2l-color-celestine);
 			}
+
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-switch-toggle {
 					transition: none;
@@ -106,6 +120,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 
 	constructor() {
 		super();
+		this.disabled = false;
 		this.labelHidden = false;
 		this.on = false;
 		this._labelId = getUniqueId();
@@ -140,7 +155,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_handleClick() {
-		this.on = !this.on;
+		this._toggleState();
 	}
 
 	_handleKeyDown(e) {
@@ -150,7 +165,12 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 
 	_handleKeyUp(e) {
 		// space pressed... toggle state
-		if (e.keyCode === 32) this.on = !this.on;
+		if (e.keyCode === 32) this._toggleState();
+	}
+
+	_toggleState() {
+		if (this.disabled) return;
+		this.on = !this.on;
 	}
 
 };
