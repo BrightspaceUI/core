@@ -58,7 +58,7 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 
 **Accessibility:**
 
-To make your usage of `d2l-switch` accessible, use the following property:
+To make your usage of `d2l-switch-visibility` accessible, use the following property:
 
 | Attribute | Description |
 |--|--|
