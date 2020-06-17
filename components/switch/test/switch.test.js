@@ -16,6 +16,16 @@ describe('d2l-switch', () => {
 		expect(target).to.equal(elem);
 	});
 
+	it('renders focusable element if enabled', async() => {
+		const elem = await fixture(html`<d2l-switch label="some label"></d2l-switch>`);
+		expect(elem.shadowRoot.querySelector('[role="switch"]').getAttribute('tabindex')).to.equal('0');
+	});
+
+	it('renders non-focusable element if disabled', async() => {
+		const elem = await fixture(html`<d2l-switch label="some label" disabled></d2l-switch>`);
+		expect(elem.shadowRoot.querySelector('[role="switch"]').hasAttribute('tabindex')).to.equal(false);
+	});
+
 	it('delegates focus to underlying focusable', async() => {
 		const elem = await fixture(html`<d2l-switch label="some label"></d2l-switch>`);
 		elem.focus();

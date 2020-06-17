@@ -139,6 +139,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	render() {
+		const tabindex = (!this.disabled ? '0' : undefined);
 		return html`
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
@@ -149,7 +150,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				@keydown="${this._handleKeyDown}"
 				@keyup="${this._handleKeyUp}"
 				role="switch"
-				tabindex="0">
+				tabindex="${ifDefined(tabindex)}">
 				<div class="d2l-switch-inner">
 					<div class="d2l-switch-toggle"><div></div></div>
 					<div class="d2l-switch-icon-on">${this.onIcon}</div>
