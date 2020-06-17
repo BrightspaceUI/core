@@ -131,6 +131,11 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		this._labelId = getUniqueId();
 	}
 
+	focus() {
+		const elem = this.shadowRoot.querySelector('.d2l-switch-container');
+		if (elem) elem.focus();
+	}
+
 	render() {
 		return html`
 			<div
