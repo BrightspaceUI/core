@@ -150,7 +150,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (!changedProperties.has('on')) return;
+		if (!changedProperties.has('on') || changedProperties.get('on') === undefined) return;
 		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 	}
 
