@@ -405,9 +405,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this._target) {
 			return;
 		}
-
+		const offsetParent = getOffsetParent(this);
 		const targetRect = this._target.getBoundingClientRect();
-		const spaceAround = this._computeSpaceAround(targetRect);
+		const spaceAround = this._computeSpaceAround(offsetParent, targetRect);
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
 		const content = this._getContent();
@@ -416,13 +416,22 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const contentRect = content.getBoundingClientRect();
 		// + 1 because scrollWidth does not give sub-pixel measurements and half a pixel may cause text to unexpectedly wrap
-		this._maxWidth = content.scrollWidth + 2 * contentBorderSize + 1;
+		this._maxWidth = Math.min(content.scrollWidth + 2 * contentBorderSize, 350) + 1;
 		this._openDir = space.dir;
 
 		// Compute the x and y position of the tooltip relative to its target
-		const tooltipRect = this.getBoundingClientRect();
-		const top = targetRect.top - tooltipRect.top + this.offsetTop;
-		const left = targetRect.left - tooltipRect.left + this.offsetLeft;
+		let parentTop;
+		let parentLeft;
+		if (offsetParent) {
+			const parentRect = offsetParent.getBoundingClientRect();
+			parentTop = parentRect.top + offsetParent.clientTop;
+			parentLeft = parentRect.left + offsetParent.clientLeft;
+		} else {
+			parentTop = 0;
+			parentLeft = 0;
+		}
+		const top = targetRect.top - parentTop;
+		const left = targetRect.left - parentLeft;
 
 		let positionRect;
 		if (this._isAboveOrBelow()) {
@@ -509,14 +518,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		return spaces;
 	}
 
-	_computeSpaceAround(targetRect) {
+	_computeSpaceAround(offsetParent, targetRect) {
 		const spaceAround = {
 			above: targetRect.top - this._viewportMargin,
 			below: window.innerHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
 			left: targetRect.left - this._viewportMargin,
 			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
 		};
-		const offsetParent = getOffsetParent(this);
 		if (this.boundary && offsetParent) {
 			const parentRect = offsetParent.getBoundingClientRect();
 			if (!isNaN(this.boundary.left)) {
