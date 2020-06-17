@@ -51,18 +51,10 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 
 **Properties:**
 
-- `label` (String, required): accessible label for the switch
+- `label` (String): overrides the default label
 - `label-hidden` (Boolean): whether the label is visible or hidden
 - `disabled` (Boolean): disables the switch
 - `on` (Boolean): whether the switch is "on" or "off"
-
-**Accessibility:**
-
-To make your usage of `d2l-switch-visibility` accessible, use the following property:
-
-| Attribute | Description |
-|--|--|
-| label | **REQUIRED** [Acts as a primary label on the switch](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless label-hidden is also used. |
 
 **Events:**
 
