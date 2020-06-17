@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../switch.js';
+	</script>
+	<title>d2l-switch</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		.visual-diff {
+			width: 300px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-switch id="off" label="Test Label"></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="off-disabled" label="Test Label" disabled></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="on" label="Test Label" on></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="on-disabled" label="Test Label" on disabled></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="label-hidden" label="Test Label" label-hidden></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="off-rtl" label="Test Label" dir="rtl"></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="on-rtl" label="Test Label" on dir="rtl"></d2l-switch>
+	</div>
+
+</body>
+</html>
