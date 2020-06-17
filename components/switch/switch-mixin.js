@@ -110,6 +110,11 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				color: var(--d2l-color-celestine);
 			}
 
+			.d2l-switch-label {
+				font-size: 0.8rem;
+				font-weight: 400;
+			}
+
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-switch-toggle {
 					transition: none;
@@ -144,7 +149,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${!this.labelHidden ? html`<span id="${this._labelId}">${this.label}</span>` : ''}
+			${!this.labelHidden ? html`<span id="${this._labelId}" class="d2l-switch-label">${this.label}</span>` : ''}
 		`;
 	}
 
