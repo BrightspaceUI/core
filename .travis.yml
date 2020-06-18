@@ -52,21 +52,14 @@ jobs:
         - secure: hETcU1ZRPPz7ipofSeUj8fLkdM9JJda/Qg/oXU83FqZ/y/LZya6jMJjBfcHgEGsCLmVOPLw4lj2+pcyA6ZprJuujdS56elnbWPYUa4iwCbPN7ayfFQQjQx3jo3LYd7jFlCilgMT+Q+s+SnVfmV1Wa91N5WOpINpi7NzIarBRhWVeoiCQJmaabAX2pIn4G5VnBIE562SJULq+05Ucavl9zWrSFHDsMqMtcVcHG7TI6BExENJf76iutEk/YqWdaSvk5LY4xLrO29tThZBVJ7lX5wQGa3MkmlJkHZqxoONBWbGsKfrwh5I7QHExkj8PYYfvpYHQd+VugFrSkDTW3wHsoe/cmrzVe8aEbpHfUSPpO5HOkTdOqy92NVjyh4MOE7hJexmQsYRD+zjFzL4AS876hOdjrf/FS5ume843MvZseSZiCpK7uHTQWwVmitib/dNJdy8YyWoAyceWHpz46QOArrECVYOFhMKYuPrNy3gYY05kCLHCEW24pVN1ToRW2Gp6Z3Z3YblfWShjFHl3eU8riOPeCU9RaBV1k1UuP0C5POyFDPS12K8glPNIJ6dbp6GyI6KKW3iYuX/O3G4w/evO/AMy9nQPL4tUOPU5gQsPvr4Z77+bluP9VqEd3o1VBC6IBwLEcc8tzO+5EAeRbj9THU7zDmoIQH0oRHpIo+elg/8=
     - stage: deploy
       script: npm run build
-      after_success: frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
       env:
-        - REPO_NAME=core
-        - OWNER_NAME=BrightspaceUI
+        # NPM_TOKEN 31d4......fc2d
+        - secure: AIi7hXDWNoghxz7OWFTb7zkRBi+CcGmPLZm+3nb3FjIXqFSWJqogTeZwYeQuhuPJxEtHPK8cG4QAoN4atED/mhyJMnAuMpDvE7v7dBwqtck94sruOySH0arV9CU1mHVbTy5aS0nr+XQU2sQxdxNcmvc/9QUCvY2rhsXTGG9XlL4PA/mIMe4lxaOuZYFKi25KH3eqWz4XIeHe6LQim4jrw79Ve07RUyrcqVyk727u02BdXVpO/OpBNHxcoL9YH8CV2UlOh/VcA4eb7rnxXnNFJQDmLteOQFa44E4UdIUUd2qrzxgmSulqVVezkswkYQN5kQJJ+lfXmw5JaHvwQxb1EXl19Fq3mulczEcFSb0jKI1yHmGhHQ2EIfqUDN7u2wOexEym+oKHmq8b9pOFthq22I6phRLv4HDC5hz7a2SqxFEU3HCU8V1saDFLPFckO1/mwEP+ZrFUbLTlM4mCUQEvLGXNqeMRQG63EBGaMw54DCAuYW8xxjCNp9d7G3rOEhXLPfUMkV8tPbcM2HjU3AeYh/92ERpOyKwvYRYKxRiwFgDbCxFVw1+8/3yVY+lgkl/1MLv0wKxcbzIplLU+jFONICnj4RKVhb6FOUAtoKCzq3dREUJfjyUFGGjcHly+h/j9FtzeZfdI/Co09hMft1KqbIc7mDk7Wt9C9+7OsASOgbo=
       deploy:
-        provider: npm
-        email: d2ltravisdeploy@d2l.com
+        provider: script
         skip_cleanup: true
-        api_key:
-          # 57c4......d343
-          secure: IitMXMxHrtsjCy3eucLs/mxja8e27DRpxT1YnA7HM6nCpKEr+SzPaHqV4tSNfX8fmKvqhyR3SRijPWnGahaZNVAPlN0l01MSEaG419o3QIKFzSgpNZLjNe5BsGTH3CFC5yPgtrU6ILW2Et1pb1+oixghXSifybxxan4aJKwBuri1DnrijmBnlEyog1Wglra1e7GzwZnEohDitHWKqO2V6uE+v1LmDtnHMzKoEjEeD/iHk1/oKdfsbZLEcZ+l6xU3gORBMskG+XT8EPgPOpfnuCiL0tqJ+ZFcP2hbNrzMMKs/k5TAmvL0DJyvmDfjlBXLik4aHKX6GmYGfhfktBCEN4hl8rmo9eBoQxJuzWWnCJq5BxVRGxaBZg7yZK5qZYR8cUwS5t241LqDgMK4rQP6J6cImCZ1Fe93t9yMd3GsurSHIByHwwQ3tuY4Xj3f6Nr/skGYrS9azqRtREWsRY4rsiudcKuTQGsDfLMpEN6ZGZQBXrYgKZpCrgIUiK5PyggbzTfOfpSrxe4oBD6IIb6bITYPPU5rXnE4EMOLY6AUn5OBxR/ACkooccFa7gHxlgVaNAy+RRIFk4sW6NAbADZXzy1U+jp8QsCzZBU0gmjNLShD0uuUfWSdv75qq3eKlwBzrlI6TpADoGmsFxoO3Yc6d0YGOmcxWVu6ZRuqeyVTZ9I=
-        on:
-          repo: BrightspaceUI/core
-          tags: true
+        script: npx semantic-release
 env:
   global:
-  # GITHUB_RELEASE_TOKEN
-  - secure: AX/0lBWUVfZM8rxdyK1rmO5QP1oXIWS8m5pgcjNBxHtC1bWPQsyvLRyqdlcWmDfuJsVuUkwAO67njgnfacVsLi/P55dsd+amZuRmgb9IcdLEBy5IAerymeXT+OkhizDSVaYtRrDK5AHUPjDqUj2E554WwuPMdCulfwJ70PgAUjLYsJbUgpH1eym9SnoHjYj6OTajmOwxHZl09sEJL+qSHOX+j2vCVQhKMLPpnXodeonVGBCT29X1ad9OFZ/RFMliGNU89a/TysPfJP0IspA/CD7GG/cqPAhTt4Q6+ChccG34j+6fVWZM32tblYPGKgV5iVaLcI0wYzMZOwavlpgUb5Gw5KCxtHivsrCNwarFuNTKGepCQTcad0/3P/O4iRMg8cznIbpn+/D90MN/V/NGWZQylrIJeTJWWoYtaWLVnO77aRl1RQoTcGGz06jxkXdsq48qrQnhhdWfMoED40tv9sscB8fgit4WYxlvDhlNF0ybP26u5EArBN2E72QrQDMFKECdPQBuTsTB5Jr2YSpEy98qLqJ2Z382VfcQWRbcKctJsqNeK/WQhoT52c+IHEBR6N7Bvuy9aaPRvprVzFKhQv3vkE4566ud66NeYRrhVDj9cOhrHjh92CjZM549kV47IHZsyDOazmDEV+oXXqlDPXSJPywprnCWnOHxLY3ia0A=
+  # GITHUB_TOKEN
+  - secure: Mi5jJg+b1wMElx0La3VRE53oSnKYO7ot9cK0+qIUQYspWvCkdfab8vg0hThNlgRQQuFpORmorOyFLCNbnyv9q1g2GW1xEAd0AvumRPH/FDHHLTL5llhSH9ZzXIkTKo6yE5o0yCBD/PuQOyvuT5tIVw8VQ7nZWBoRSUUzVJrLEwHJA2X6b5hb+ZFhmwDYrNQcfKb2S0V/fw9woWolDfd14kJP91mf/HnqVeNw122C5xKCmmQjJZoOJ1P+eDKa5DwVaiUVFq7N3wYRirk/nx5HKfRPZx++8w2dFzSQ00K3K0WcIg/3beIoKz8bUb+XdNCrJGBla9RD4NyuXdhdI78ViIjsZfqkhQioVF+3ejRcaxZAl1Q55nD6OdgN3TPAiTXZqkyBXIc+8Wx9Qh5JtO3Ne0qx1xCwM1+chBrZM+3WzFETGGQAiNK51Q8C1obWCwn+kLXo7G3hAgmiehGLhgtCUnaciL3C4NI7szaOKiXIR+u8HnEfVA4HT0jeiEI8F18e/nGWdacpmlLJ9xscA9hZGGidXrpdtrlGl5OVKenp0nXuFbAWM/PnYFF5ekiUr1cNwMMD0pPzwCPzQxCT1dACAYsoAAHb6tOCpH47I0fk0F+eltsCj3MPvUeOOzVenwfOHcrxWBHFx4dtas0HNEmTRlnLDRuDP4L0Ld/aX+gABB4=

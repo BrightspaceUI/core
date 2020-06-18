@@ -46,6 +46,7 @@
     "@brightspace-ui/visual-diff": "^1",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^3",
+    "@semantic-release/git": "^9",
     "axe-core": "^3",
     "babel-eslint": "^10",
     "chalk": "^4",
@@ -56,12 +57,12 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "frau-ci": "^1",
     "karma-sauce-launcher": "^4.1.4",
     "lit-analyzer": "^1",
     "mocha": "^8",
     "node-sass": "^4",
     "puppeteer": "^4",
+    "semantic-release": "^17",
     "sinon": "^9",
     "whatwg-fetch": "^3"
   },
@@ -75,5 +76,22 @@
     "lit-element": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/github",
+      "@semantic-release/npm",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]"
+        }
+      ]
+    ]
   }
 }
