@@ -19,7 +19,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		return {
 			/**
 			 * The gradient color of the blurring effect.
-			 * @type {"hex color code"}
 			 */
 			blurColor: { type: String, attribute: 'blur-color' },
 
@@ -30,7 +29,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 			/**
 			 * The h-align property of the more-less button.
-			 * @type {""|"text"}
 			 */
 			hAlign: { type: String, attribute: 'h-align' },
 
@@ -85,6 +83,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		this.expanded = false;
 		this.height = '4em';
+		this.inactive = false;
 
 		this.__baseHeight = 0;
 		this.__contentId = getUniqueId();
