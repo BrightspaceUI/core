@@ -59,7 +59,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 				white-space: nowrap;
 			}
 
-			div.compact ::slotted(d2l-breadcrumb:not(:last-of-type)) {
+			:host([compact]) ::slotted(d2l-breadcrumb:not(:last-of-type)) {
 				display:none;
 			}
 		`;
@@ -76,23 +76,5 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 			</div>
 		`;
 	}
-	/*
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('compact') && this.compact) {
-			this._addCompactToChildren(this.compact);
-		}
-
-	}
-
-	_addCompactToChildren(compact) {
-		for (const child of Array.from(this.children)) {
-			console.log(child);
-			child.compact = compact;
-		}
-	}
-	*/
-
 }
 customElements.define('d2l-breadcrumbs', BreadCrumbs);
