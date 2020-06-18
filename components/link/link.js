@@ -17,7 +17,7 @@ export const linkStyles = css`
 	.d2l-link.d2l-link-main {
 		font-weight: 700;
 	}
-	.d2l-link.d2l-link-smalll {
+	.d2l-link.d2l-link-small {
 		font-size: 0.7rem;
 		line-height: 1.05rem;
 		letter-spacing: 0.01rem;
