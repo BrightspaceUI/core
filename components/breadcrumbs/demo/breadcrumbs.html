@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../breadcrumbs.js';
+	</script>
+	<style>
+		.align-item {
+			color: var(--d2l-color-tungsten);
+			font-size: 0.7rem;
+		}
+		.align-item.bullet::before {
+			color: var(--d2l-color-tungsten);
+			content: '\002022';
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+	</style>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-status-indicator">
+
+		<h2>Default</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-breadcrumbs>
+					<d2l-breadcrumb href="#" text="Basic Item 1"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Basic Item 2"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Basic Item 3" aria-label="Aria for Item 3"></d2l-breadcrumb>
+				</d2l-breadcrumbs>
+			</template>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
+
+</body>
+
+</html>
