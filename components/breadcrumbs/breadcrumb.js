@@ -82,7 +82,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 	}
 	render() {
 		const breadCrumbClasses = {
-			'd2l-breadcrumbs-wrapper': true,
+			'd2l-breadcrumb-wrapper': true,
 			'compact': this.compact
 		};
 		return html`

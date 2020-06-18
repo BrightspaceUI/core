@@ -60,7 +60,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 			}
 
 			div.compact ::slotted(d2l-breadcrumb:not(:last-of-type)) {
-				display: none;
+				display:none;
 			}
 		`;
 	}
@@ -72,22 +72,27 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		};
 		return html`
 			<div class="${classMap(breadCrumbClasses)}">
-				<slot @slotchange=${this._onSlotChange}></slot>
+				<slot></slot>
 			</div>
 		`;
 	}
-	updated() {
-		if (this.compact) {
-			for (const child of Array.from(this.children)) {
-				child.compact = true;
-			}
+	/*
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('compact') && this.compact) {
+			this._addCompactToChildren(this.compact);
 		}
 
 	}
 
-	_onSlotChange() {
-		this.requestUpdate();
+	_addCompactToChildren(compact) {
+		for (const child of Array.from(this.children)) {
+			console.log(child);
+			child.compact = compact;
+		}
 	}
+	*/
 
 }
 customElements.define('d2l-breadcrumbs', BreadCrumbs);
