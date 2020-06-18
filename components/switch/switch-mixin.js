@@ -19,6 +19,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		return css`
 			:host {
 				display: inline-block;
+				white-space: nowrap;
 			}
 			:host([hidden]) {
 				display: none;
