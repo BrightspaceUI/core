@@ -20,7 +20,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-switch label="Tool" on></d2l-switch>
+					<d2l-switch text="Dark Mode" on></d2l-switch>
 					<script>
 						document.querySelector('d2l-switch').addEventListener('change', (e) => {
 							console.log('switch changed', e.target.on);
@@ -29,11 +29,13 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>On/Off (hidden label)</h2>
+			<h2>On/Off (text-position)</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-switch label="Tool" label-hidden></d2l-switch>
+					<div><d2l-switch text="Dark Mode" text-position="start"></d2l-switch></div>
+					<div><d2l-switch text="Dark Mode" text-position="end"></d2l-switch></div>
+					<div><d2l-switch text="Dark Mode" text-position="hidden"></d2l-switch></div>
 				</template>
 			</d2l-demo-snippet>
 
@@ -41,7 +43,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-switch label="Tool" on disabled></d2l-switch>
+					<d2l-switch text="Dark Mode" on disabled></d2l-switch>
 				</template>
 			</d2l-demo-snippet>
 

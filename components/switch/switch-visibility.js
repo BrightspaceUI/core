@@ -6,7 +6,7 @@ class VisibilitySwitch extends SwitchMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.label = 'Visibility';
+		this.text = 'Visibility';
 	}
 
 	get offIcon() {

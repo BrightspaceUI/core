@@ -9,8 +9,8 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean, reflect: true },
-			label: { type: String, reflect: true },
-			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
+			text: { type: String, reflect: true },
+			textPosition: { type: String, attribute: 'text-position', reflect: true },
 			on: { type: Boolean, reflect: true }
 		};
 	}
@@ -111,7 +111,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				color: var(--d2l-color-celestine);
 			}
 
-			.d2l-switch-label {
+			.d2l-switch-text {
 				font-size: 0.8rem;
 				font-weight: 400;
 			}
@@ -129,23 +129,27 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		this.disabled = false;
 		this.labelHidden = false;
 		this.on = false;
-		this._labelId = getUniqueId();
+		this.textPosition = 'end';
+		this._textId = getUniqueId();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (!this.label || this.label.length === 0) {
-			console.warn('Switch components require an accessible label.');
+		if (!this.text || this.text.length === 0) {
+			console.warn('Switch components require accessible text.');
 		}
 	}
 
 	render() {
 		const tabindex = (!this.disabled ? '0' : undefined);
+		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
+			? this.textPosition : 'end');
 		return html`
+			${textPosition === 'start' ? html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>` : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
-				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
-				aria-labelledby="${ifDefined(!this.labelHidden ? this._labelId : undefined)}"
+				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
+				aria-labelledby="${ifDefined(textPosition !== 'hidden' ? this._textId : undefined)}"
 				class="d2l-switch-container"
 				@click="${this._handleClick}"
 				@keydown="${this._handleKeyDown}"
@@ -158,7 +162,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${!this.labelHidden ? html`<span id="${this._labelId}" class="d2l-switch-label">${this.label}</span>` : ''}
+			${textPosition === 'end' ? html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>` : ''}
 		`;
 	}
 

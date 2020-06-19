@@ -13,13 +13,13 @@ The `d2l-switch` element is a generic switch with on/off semantics.
   import '@brightspace-ui/core/components/switch/switch.js';
 </script>
 
-<d2l-switch label="Dark Mode" on></d2l-switch>
+<d2l-switch text="Dark Mode" on></d2l-switch>
 ```
 
 **Properties:**
 
-- `label` (String, required): accessible label for the switch
-- `label-hidden` (Boolean): whether the label is visible or hidden
+- `text` (String, required): accessible text for the switch
+- `text-position` (String): valid values are: `start`, `end` (default), and `hidden`
 - `disabled` (Boolean): disables the switch
 - `on` (Boolean): whether the switch is on or off
 
@@ -29,7 +29,7 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 | Attribute | Description |
 |--|--|
-| label | **REQUIRED** [Acts as a primary label on the switch](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless label-hidden is also used. |
+| text | **REQUIRED** [Acts as a primary label on the switch](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless text-position is `hidden`. |
 
 **Events:**
 
@@ -37,7 +37,7 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 ## d2l-switch-visibility
 
-The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and a default label for toggling "visibility".
+The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and a default text for toggling "visibility".
 
 ![Visibility Switch](./screenshots/switch-visibility.png?raw=true)
 
@@ -51,8 +51,8 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 
 **Properties:**
 
-- `label` (String): overrides the default label
-- `label-hidden` (Boolean): whether the label is visible or hidden
+- `text` (String, required): accessible text for the switch
+- `text-position` (String): valid values are: `start`, `end` (default), and `hidden`
 - `disabled` (Boolean): disables the switch
 - `on` (Boolean): whether the switch is "on" or "off"
 
