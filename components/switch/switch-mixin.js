@@ -142,10 +142,11 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 
 	render() {
 		const tabindex = (!this.disabled ? '0' : undefined);
+		const text = html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
 		return html`
-			${textPosition === 'start' ? html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>` : ''}
+			${textPosition === 'start' ? text : ''}
 			<div
 				aria-checked="${this.on ? 'true' : 'false'}"
 				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
@@ -162,7 +163,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
-			${textPosition === 'end' ? html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>` : ''}
+			${textPosition === 'end' ? text : ''}
 		`;
 	}
 
