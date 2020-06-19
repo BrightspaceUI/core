@@ -7,6 +7,7 @@
     "access": "public"
   },
   "scripts": {
+    "analyze": "wca analyze components/**/*.js --format json --outFile custom-elements.json",
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
@@ -14,7 +15,7 @@
     "lint": "npm run lint:eslint && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
-    "prepublishOnly": "node ./cli/verify-translations.js",
+    "prepublishOnly": "node ./cli/verify-translations.js && npm run analyze",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
     "test:axe": "karma start karma.axe.conf.js",
@@ -64,6 +65,7 @@
     "puppeteer": "^4",
     "semantic-release": "^17",
     "sinon": "^9",
+    "web-component-analyzer": "^1",
     "whatwg-fetch": "^3"
   },
   "dependencies": {
