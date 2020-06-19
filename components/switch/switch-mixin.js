@@ -9,9 +9,9 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean, reflect: true },
+			on: { type: Boolean, reflect: true },
 			text: { type: String, reflect: true },
-			textPosition: { type: String, attribute: 'text-position', reflect: true },
-			on: { type: Boolean, reflect: true }
+			textPosition: { type: String, attribute: 'text-position', reflect: true }
 		};
 	}
 
