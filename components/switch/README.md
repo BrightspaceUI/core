@@ -37,7 +37,7 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 ## d2l-switch-visibility
 
-The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and a default text for toggling "visibility".
+The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".
 
 ![Visibility Switch](./screenshots/switch-visibility.png?raw=true)
 
