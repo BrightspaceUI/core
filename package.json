@@ -27,6 +27,7 @@
     "test:sauce": "karma start karma.sauce.conf.js"
   },
   "files": [
+    "custom-elements.json",
     "/components",
     "/directives",
     "/generated",
