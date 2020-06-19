@@ -21,7 +21,7 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 - `text` (String, required): accessible text for the switch
 - `text-position` (String): valid values are: `start`, `end` (default), and `hidden`
 - `disabled` (Boolean): disables the switch
-- `on` (Boolean): whether the switch is on or off
+- `on` (Boolean): whether the switch is "on" or "off"
 
 **Accessibility:**
 
