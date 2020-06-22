@@ -4,16 +4,37 @@ import '../colors/colors.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap} from 'lit-html/directives/class-map.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+/**
+ * The `d2l-alert` component can be used to communicate important information relating to the state of the system and the user's work flow.
+ * @slot - Default content placed inside of the component
+ * @fires d2l-alert-closed - Dispatched when the alert's close button is clicked
+ * @fires d2l-alert-button-pressed - Dispatched when the alert's action button is clicked
+ */
+class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+			 */
 			buttonText: { type: String, attribute: 'button-text' },
+
+			/**
+			 * Gives the alert a close button that will close the alert when clicked.
+			 */
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
+
+			/**
+			 * The text that is displayed below the main alert message.
+			 */
 			subtext: { type: String },
+
+			/**
+			 * Type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
+			 */
 			type: { type: String, reflect: true }
 		};
 	}
@@ -122,24 +143,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': { 'close': 'إغلاق التنبيه'},
-			'de': { 'close': 'Benachrichtigung schließen' },
-			'en': { 'close': 'Close Alert'},
-			'es': { 'close': 'Alerta de cierre' },
-			'fr': { 'close': 'Fermer l\'alerte' },
-			'ja': { 'close': 'アラートを閉じる' },
-			'ko': { 'close': '경보 닫기' },
-			'nl': { 'close': 'Waarschuwing sluiten' },
-			'pt': { 'close': 'Fechar Alerta' },
-			'sv': { 'close': 'Stängningsvarning' },
-			'tr': { 'close': 'Kapatma Uyarısı' },
-			'zh-tw': { 'close': '關閉警示' },
-			'zh': { 'close': '关闭警报' }
-		};
-	}
-
 	constructor() {
 		super();
 		this.hasCloseButton = false;
@@ -165,7 +168,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					${this.buttonText && this.buttonText.length > 0 ? html`
 						<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
 					${this.hasCloseButton ? html`
-						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('close')}"></d2l-button-icon>` : null}
+						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('components.alert.close')}"></d2l-button-icon>` : null}
 				</div>` : null}
 		`;
 	}

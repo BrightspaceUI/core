@@ -145,15 +145,19 @@ describe('d2l-calendar', () => {
 
 	describe('interaction', () => {
 		afterEach(async() => {
-			await page.reload();
+			await page.$eval(firstCalendarOfPage, async(calendar) => {
+				calendar.selectedValue = '2018-02-14';
+				await calendar.reset();
+				calendar.focus();
+			});
 		});
 
 		it('click left arrow', async function() {
-			await page.$eval('#contains-today-diff-selected', (calendar) => {
+			await page.$eval(firstCalendarOfPage, (calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show January"]');
 				arrow.click();
 			});
-			const rect = await visualDiff.getRect(page, '#contains-today-diff-selected');
+			const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
@@ -173,7 +177,7 @@ describe('d2l-calendar', () => {
 		});
 
 		it('initial focus date is 1st of month', async function() {
-			await page.$eval(firstCalendarOfPage, (calendar) => {
+			await page.$eval(firstCalendarOfPage, async(calendar) => {
 				const arrow = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show March"]');
 				arrow.click();
 			});
@@ -189,6 +193,17 @@ describe('d2l-calendar', () => {
 					date.click();
 				});
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('click disabled', async function() {
+				await page.$eval('#min-max', (calendar) => {
+					const dateFocusable = calendar.shadowRoot.querySelector('td[data-date="1"] button');
+					dateFocusable.click();
+					const dateDisabled = calendar.shadowRoot.querySelector('td[data-date="30"] button');
+					dateDisabled.click();
+				});
+				const rect = await visualDiff.getRect(page, '#min-max');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -258,45 +273,10 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it('END max value', async function() {
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"] button');
-						date.click();
-					});
-
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"]');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 35;
-						date.dispatchEvent(eventObj);
-					});
-
-					const rect = await visualDiff.getRect(page, '#min-max');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
 				it('HOME', async function() {
 					await tabToDates();
 					await page.keyboard.press('Home');
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('HOME min value', async function() {
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"] button');
-						date.click();
-					});
-
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"]');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 36;
-						date.dispatchEvent(eventObj);
-					});
-					const rect = await visualDiff.getRect(page, '#min-max');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
@@ -311,31 +291,6 @@ describe('d2l-calendar', () => {
 					await page.keyboard.press('PageDown');
 
 					const rect = await visualDiff.getRect(page, firstCalendarOfPage);
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('PAGEDOWN max value', async function() {
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 34;
-						date.dispatchEvent(eventObj);
-					});
-					const rect = await visualDiff.getRect(page, '#min-max');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
-
-				it('PAGEDOWN twice max value', async function() {
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 34;
-						date.dispatchEvent(eventObj);
-						date.dispatchEvent(eventObj);
-					});
-					const rect = await visualDiff.getRect(page, '#min-max');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
@@ -358,36 +313,106 @@ describe('d2l-calendar', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
-				it('PAGEUP min value', async function() {
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 33;
-						date.dispatchEvent(eventObj);
+				describe('min-max', () => {
+					afterEach(async() => {
+						await page.$eval('#min-max', async(calendar) => {
+							calendar.selectedValue = '2018-02-14';
+							await calendar.reset();
+							calendar.focus();
+						});
 					});
-					const rect = await visualDiff.getRect(page, '#min-max');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				});
 
-				it('PAGEUP twice min value', async function() {
-					await page.$eval('#min-max', (calendar) => {
-						const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 33;
-						date.dispatchEvent(eventObj);
-						date.dispatchEvent(eventObj);
+					it('HOME min value', async function() {
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"] button');
+							date.click();
+						});
+
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="1"]');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 36;
+							date.dispatchEvent(eventObj);
+						});
+						const rect = await visualDiff.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
-					const rect = await visualDiff.getRect(page, '#min-max');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+
+					it('END max value', async function() {
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"] button');
+							date.click();
+						});
+
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="26"][data-month="1"]');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 35;
+							date.dispatchEvent(eventObj);
+						});
+
+						const rect = await visualDiff.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('PAGEDOWN max value', async function() {
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 34;
+							date.dispatchEvent(eventObj);
+						});
+						const rect = await visualDiff.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('PAGEDOWN twice max value', async function() {
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 34;
+							date.dispatchEvent(eventObj);
+							date.dispatchEvent(eventObj);
+						});
+						const rect = await visualDiff.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('PAGEUP min value', async function() {
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 33;
+							date.dispatchEvent(eventObj);
+						});
+						const rect = await visualDiff.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('PAGEUP twice min value', async function() {
+						await page.$eval('#min-max', (calendar) => {
+							const date = calendar.shadowRoot.querySelector('td[data-date="17"]');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 33;
+							date.dispatchEvent(eventObj);
+							date.dispatchEvent(eventObj);
+						});
+						const rect = await visualDiff.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
 				});
 			});
 		});
 	});
 
 	const tabToDates = async function() {
-		await page.keyboard.press('Tab');
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Tab');
 	};

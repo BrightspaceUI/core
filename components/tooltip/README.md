@@ -18,7 +18,7 @@ The `d2l-tooltip` component is used to display additional information when users
 
 **Basic Properties:**
 * `for` (required, String): provide the `id` of the tooltip's target element. If this attribute is not provided, the tooltip's parent element will be used as its target. Both the tooltip and its target element must be within the same shadow root.
-* `align` (String): optionally align the tooltip with either the start or end of its target. If not set, the dropdown will attempt be centred. Valid values are: `start` and `end`.
+* `align` (String): optionally align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered. Valid values are: `start` and `end`.
 * `delay` (Number, default: `0`) - provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus.
 * `offset`: (Number, default: `16.5`): adjust the size of the gap between the tooltip and its target.
 * `state` (String, default: `info`): the style of the tooltip based on the type of information it displays. Valid values are: `info` and `error`. If you find yourself needing a style that isn't supported by the `state` attribute please create a Github issue.

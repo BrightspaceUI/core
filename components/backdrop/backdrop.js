@@ -8,12 +8,27 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const scrollKeys = [];
 let scrollOverflow = null;
 
+/**
+ * The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying `role="presentation"` and `aria-hidden="true"`.
+ */
 class Backdrop extends LitElement {
 
 	static get properties() {
 		return {
-			shown: { type: Boolean },
+			/**
+			 * id of the target element to display backdrop behind
+			 */
 			forTarget: { type: String, attribute: 'for-target' },
+
+			/**
+			 * Disables the fade-out transition while the backdrop is being hidden
+			 */
+			noAnimateHide: { type: Boolean, attribute: 'no-animate-hide' },
+
+			/**
+			 * Used to control whether the backdrop is shown
+			 */
+			shown: { type: Boolean },
 			_state: { type: String, reflect: true }
 		};
 	}
@@ -30,6 +45,12 @@ class Backdrop extends LitElement {
 				transition: opacity 200ms ease-in;
 				width: 0;
 				z-index: 999;
+			}
+			:host([slow-transition]) {
+				transition: opacity 1200ms ease-in;
+			}
+			:host([_state=null][no-animate-hide]) {
+				transition: none;
 			}
 			:host([_state="showing"]), :host([_state="hiding"]) {
 				height: 100%;
@@ -49,6 +70,7 @@ class Backdrop extends LitElement {
 	constructor() {
 		super();
 		this.shown = false;
+		this.noAnimateHide = false;
 		this._state = null;
 	}
 
@@ -81,7 +103,7 @@ class Backdrop extends LitElement {
 				}
 			};
 
-			if (!reduceMotion && isVisible(this)) {
+			if (!reduceMotion && !this.noAnimateHide && isVisible(this)) {
 				this.addEventListener('transitionend', hide, {once: true});
 				this._state = 'hiding';
 			} else {
