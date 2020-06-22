@@ -103,8 +103,8 @@ export const ListItemDragMixin = superclass => class extends superclass {
 export class NewPositionEventDetails {
 	constructor(object) {
 		this.node = object.node;
-		this.oldPosition = object.oldPosition;
-		this.position = object.position;
+		this.origin = object.origin;
+		this.destination = object.destination;
 		this.temporaryMovement = object.tempMovement;
 	}
 
@@ -116,30 +116,30 @@ export class NewPositionEventDetails {
 	 *        This optional callback will be passed to announceMove if given.
 	 */
 	reorder(list, announceCallback = null) {
-		if (this.position === undefined || this.position === this.oldPosition) return;
+		if (this.destination === undefined || this.destination === this.origin) return;
 
-		if (list[this.position] === undefined || list[this.oldPosition] === undefined ) {
+		if (list[this.destination] === undefined || list[this.origin] === undefined ) {
 			throw new Error('Reorder failed. Position does not exist in list.');
 		}
 
 		// move the item in the list to a new position in place
-		const item = list[this.oldPosition];
+		const item = list[this.origin];
 		// now that we have a reference to the item, shove everything between the
-		// new position to the oldPosition over one
-		if (this.oldPosition > this.position) {
+		// destination to the origin over one
+		if (this.origin > this.destination) {
 			// shove to the right ♪┗ ( ･o･) ┓♪
-			for (let i = this.oldPosition; i > this.position; i--) {
+			for (let i = this.origin; i > this.destination; i--) {
 				list[i] = list[i - 1];
 			}
 		} else {
 			// shove to the left ♪┏(・o･)┛♪
-			for (let i = this.oldPosition; i < this.position; i++) {
+			for (let i = this.origin; i < this.destination; i++) {
 				list[i] = list[i + 1];
 			}
 		}
 		// there is now a copy of the left or rightmost item where the new
 		// position is; stick the item in this spot.
-		list[this.position] = item;
+		list[this.destination] = item;
 
 		if (announceCallback) {
 			this.announceMove(list, announceCallback);
