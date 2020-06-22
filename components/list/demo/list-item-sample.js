@@ -3,12 +3,12 @@ import '../list-item-drag-handle.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
-import { ListChildMixin } from '../list-child-mixin.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
+import { ListItemMixin } from '../list-item-mixin.js';
 //import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 import { nothing } from 'lit-html';
 
-class ListItemSample extends ListChildMixin(ListItemCheckboxMixin(LitElement)) {
+class ListItemSample extends ListItemMixin(ListItemCheckboxMixin(LitElement)) {
 	// TODO: Breakpoints to live elsewhere
 	// TODO: draggable should be part of the ListItemDragMixin and removed here
 	static get properties() {

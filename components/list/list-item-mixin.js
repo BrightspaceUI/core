@@ -1,6 +1,6 @@
 import { findComposedAncestor } from '../../helpers/dom.js';
 
-export const ListChildMixin = superclass => class extends superclass {
+export const ListItemMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {

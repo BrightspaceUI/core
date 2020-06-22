@@ -1,4 +1,3 @@
-import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
