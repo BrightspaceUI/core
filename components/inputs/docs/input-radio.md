@@ -83,10 +83,10 @@ class MyElem extends LitElement {
   render() {
     return html`
 	  <input type="radio" class="d2l-input-radio" aria-label="Option 1">
-	  <d2l-input-checkbox-spacer>
+	  <d2l-input-radio-spacer>
 		Additional content can go here and will
-		line up nicely with the edge of the checkbox.
-	  </d2l-input-checkbox-spacer>
+		line up nicely with the edge of the radio.
+	  </d2l-input-radio-spacer>
     `;
   }
 
