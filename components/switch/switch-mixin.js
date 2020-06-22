@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -11,7 +12,8 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 			disabled: { type: Boolean, reflect: true },
 			on: { type: Boolean, reflect: true },
 			text: { type: String, reflect: true },
-			textPosition: { type: String, attribute: 'text-position', reflect: true }
+			textPosition: { type: String, attribute: 'text-position', reflect: true },
+			tooltip: { type: String, reflect: true }
 		};
 	}
 
@@ -130,6 +132,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		this.labelHidden = false;
 		this.on = false;
 		this.textPosition = 'end';
+		this._switchId = getUniqueId();
 		this._textId = getUniqueId();
 	}
 
@@ -145,6 +148,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 		const text = html`<span id="${this._textId}" class="d2l-switch-text">${this.text}</span>`;
 		const textPosition = (this.textPosition === 'start' || this.textPosition === 'hidden'
 			? this.textPosition : 'end');
+		const tooltip = (this.tooltip ? html`<d2l-tooltip for="${this._switchId}">${this.tooltip}</d2l-tooltip>` : '');
 		return html`
 			${textPosition === 'start' ? text : ''}
 			<div
@@ -153,6 +157,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				aria-labelledby="${ifDefined(textPosition !== 'hidden' ? this._textId : undefined)}"
 				class="d2l-switch-container"
 				@click="${this._handleClick}"
+				id="${this._switchId}"
 				@keydown="${this._handleKeyDown}"
 				@keyup="${this._handleKeyUp}"
 				role="switch"
@@ -163,6 +168,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 					<div class="d2l-switch-icon-off">${this.offIcon}</div>
 				</div>
 			</div>
+			${tooltip}
 			${textPosition === 'end' ? text : ''}
 		`;
 	}
