@@ -91,28 +91,28 @@ export function getOffsetParent(node) {
 		return null;
 	}
 
+	let firstTableElement = null;
 	let currentNode = getComposedParent(node);
 	while (currentNode) {
 		if (currentNode instanceof ShadowRoot) {
 			currentNode = getComposedParent(currentNode);
 		} else if (currentNode instanceof DocumentFragment) {
-			return null;
+			return firstTableElement;
 		} else if (currentNode.tagName === 'BODY') {
-			return currentNode;
+			return firstTableElement || currentNode;
 		}
 
 		const position = window.getComputedStyle(currentNode).position;
 		const tagName = currentNode.tagName;
-		if (
-			(position && position !== 'static') ||
-			position === 'static' && (tagName === 'TD' || tagName === 'TH' || tagName === 'TABLE')
-		) {
+		if (position && position !== 'static') {
 			return currentNode;
+		} else if (firstTableElement === null && position === 'static' && (tagName === 'TD' || tagName === 'TH' || tagName === 'TABLE')) {
+			firstTableElement = currentNode;
 		}
 		currentNode = getComposedParent(currentNode);
 	}
 
-	return null;
+	return firstTableElement;
 
 }
 
