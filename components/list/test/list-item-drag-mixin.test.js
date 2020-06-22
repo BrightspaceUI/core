@@ -91,8 +91,8 @@ describe('NewPositionEventDetails', () => {
 		for (const test of tests) {
 			it(`${test.description}`, () => {
 				const event = new NewPositionEventDetails({
-					oldPosition: test.input.oldPosition,
-					position: test.input.newPosition
+					origin: test.input.oldPosition,
+					destination: test.input.newPosition
 				});
 				event.reorder(test.input.array);
 				expect(test.input.array).to.deep.equal(test.expected);
@@ -101,8 +101,8 @@ describe('NewPositionEventDetails', () => {
 
 		it('throws an error when a position does not exist', () => {
 			const event = new NewPositionEventDetails({
-				oldPosition: 1,
-				position: 10
+				origin: 1,
+				destination: 10
 			});
 			expect(() => event.reorder([1, 2, 3])).to.throw(Error);
 
