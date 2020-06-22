@@ -60,8 +60,8 @@ jobs:
         email: d2ltravisdeploy@d2l.com
         skip_cleanup: true
         api_key:
-          # 57c4......d343
-          secure: IitMXMxHrtsjCy3eucLs/mxja8e27DRpxT1YnA7HM6nCpKEr+SzPaHqV4tSNfX8fmKvqhyR3SRijPWnGahaZNVAPlN0l01MSEaG419o3QIKFzSgpNZLjNe5BsGTH3CFC5yPgtrU6ILW2Et1pb1+oixghXSifybxxan4aJKwBuri1DnrijmBnlEyog1Wglra1e7GzwZnEohDitHWKqO2V6uE+v1LmDtnHMzKoEjEeD/iHk1/oKdfsbZLEcZ+l6xU3gORBMskG+XT8EPgPOpfnuCiL0tqJ+ZFcP2hbNrzMMKs/k5TAmvL0DJyvmDfjlBXLik4aHKX6GmYGfhfktBCEN4hl8rmo9eBoQxJuzWWnCJq5BxVRGxaBZg7yZK5qZYR8cUwS5t241LqDgMK4rQP6J6cImCZ1Fe93t9yMd3GsurSHIByHwwQ3tuY4Xj3f6Nr/skGYrS9azqRtREWsRY4rsiudcKuTQGsDfLMpEN6ZGZQBXrYgKZpCrgIUiK5PyggbzTfOfpSrxe4oBD6IIb6bITYPPU5rXnE4EMOLY6AUn5OBxR/ACkooccFa7gHxlgVaNAy+RRIFk4sW6NAbADZXzy1U+jp8QsCzZBU0gmjNLShD0uuUfWSdv75qq3eKlwBzrlI6TpADoGmsFxoO3Yc6d0YGOmcxWVu6ZRuqeyVTZ9I=
+          # NPM_TOKEN 31d4......fc2d
+          secure: AIi7hXDWNoghxz7OWFTb7zkRBi+CcGmPLZm+3nb3FjIXqFSWJqogTeZwYeQuhuPJxEtHPK8cG4QAoN4atED/mhyJMnAuMpDvE7v7dBwqtck94sruOySH0arV9CU1mHVbTy5aS0nr+XQU2sQxdxNcmvc/9QUCvY2rhsXTGG9XlL4PA/mIMe4lxaOuZYFKi25KH3eqWz4XIeHe6LQim4jrw79Ve07RUyrcqVyk727u02BdXVpO/OpBNHxcoL9YH8CV2UlOh/VcA4eb7rnxXnNFJQDmLteOQFa44E4UdIUUd2qrzxgmSulqVVezkswkYQN5kQJJ+lfXmw5JaHvwQxb1EXl19Fq3mulczEcFSb0jKI1yHmGhHQ2EIfqUDN7u2wOexEym+oKHmq8b9pOFthq22I6phRLv4HDC5hz7a2SqxFEU3HCU8V1saDFLPFckO1/mwEP+ZrFUbLTlM4mCUQEvLGXNqeMRQG63EBGaMw54DCAuYW8xxjCNp9d7G3rOEhXLPfUMkV8tPbcM2HjU3AeYh/92ERpOyKwvYRYKxRiwFgDbCxFVw1+8/3yVY+lgkl/1MLv0wKxcbzIplLU+jFONICnj4RKVhb6FOUAtoKCzq3dREUJfjyUFGGjcHly+h/j9FtzeZfdI/Co09hMft1KqbIc7mDk7Wt9C9+7OsASOgbo=
         on:
           repo: BrightspaceUI/core
           tags: true
