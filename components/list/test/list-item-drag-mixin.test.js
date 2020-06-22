@@ -24,87 +24,88 @@ describe('NewPositionEventDetails', () => {
 	describe('reorder', () => {
 		const tests = [
 			{
-				description: 'does nothing when new and old position are the same',
+				description: 'does nothing when new and old key are the same',
 				input: {
-					array: [1, 2, 3],
-					oldPosition: 1,
-					newPosition: 1
+					array: ['one', 'two', 'three'],
+					targetKey: 'one',
+					destinationKey: 'one'
 				},
-				expected: [1, 2, 3]
+				expected: ['one', 'two', 'three']
 			},
 			{
 				description: 'moves item forward in the middle of an array',
 				input: {
-					array: [1, 2, 3, 4, 5, 6],
-					oldPosition: 2,
-					newPosition: 4
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'two',
+					destinationKey: 'four'
 				},
-				expected: [1, 2, 4, 5, 3, 6]
+				expected: ['one', 'three', 'four', 'two', 'five']
 			},
 			{
 				description: 'moves item backward in the middle of an array',
 				input: {
-					array: [1, 2, 3, 4, 5, 6],
-					oldPosition: 4,
-					newPosition: 2
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'four',
+					destinationKey: 'two'
 				},
-				expected: [1, 2, 5, 3, 4, 6]
+				expected: ['one', 'four', 'two', 'three', 'five']
 			},
 			{
 				description: 'moves item backward to beginning of an array',
 				input: {
-					array: [1, 2, 3, 4, 5, 6],
-					oldPosition: 4,
-					newPosition: 0
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'four',
+					destinationKey: 'one'
 				},
-				expected: [5, 1, 2, 3, 4, 6]
+				expected: ['four', 'one', 'two', 'three', 'five']
 			},
 			{
 				description: 'moves item forward to end of an array',
 				input: {
-					array: [1, 2, 3, 4, 5, 6],
-					oldPosition: 2,
-					newPosition: 5
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'two',
+					destinationKey: 'five'
 				},
-				expected: [1, 2, 4, 5, 6, 3]
+				expected: ['one', 'three', 'four', 'five', 'two']
 			},
 			{
 				description: 'moves last item to beginning of an array',
 				input: {
-					array: [1, 2, 3, 4, 5, 6],
-					oldPosition: 5,
-					newPosition: 0
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'five',
+					destinationKey: 'one'
 				},
-				expected: [6, 1, 2, 3, 4, 5]
+				expected: ['five', 'one', 'two', 'three', 'four']
 			},
 			{
 				description: 'moves first item to end of an array',
 				input: {
-					array: [1, 2, 3, 4, 5, 6],
-					oldPosition: 0,
-					newPosition: 5
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'one',
+					destinationKey: 'five'
 				},
-				expected: [2, 3, 4, 5, 6, 1]
+				expected: ['two', 'three', 'four', 'five', 'one']
 			}
 		];
 
 		for (const test of tests) {
 			it(`${test.description}`, () => {
 				const event = new NewPositionEventDetails({
-					origin: test.input.oldPosition,
-					destination: test.input.newPosition
+					targetKey: test.input.targetKey,
+					destinationKey: test.input.destinationKey
 				});
-				event.reorder(test.input.array);
-				expect(test.input.array).to.deep.equal(test.expected);
+				const objects = test.input.array.map(x => ({key : x }));
+				event.reorder(objects);
+				expect(objects.map(x => x.key)).to.deep.equal(test.expected);
 			});
 		}
 
 		it('throws an error when a position does not exist', () => {
 			const event = new NewPositionEventDetails({
-				origin: 1,
-				destination: 10
+				targetKey: 'bar',
+				destinationKey: 'foo'
 			});
-			expect(() => event.reorder([1, 2, 3])).to.throw(Error);
+			expect(() => event.reorder([{ key: 'key' }])).to.throw(Error);
 
 		});
 	});
