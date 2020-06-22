@@ -67,8 +67,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 
 	render() {
 		const breadCrumbClasses = {
-			'd2l-breadcrumbs-wrapper': true,
-			'compact': this.compact
+			'd2l-breadcrumbs-wrapper': true
 		};
 		return html`
 			<div class="${classMap(breadCrumbClasses)}">
