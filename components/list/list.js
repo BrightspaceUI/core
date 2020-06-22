@@ -1,5 +1,5 @@
-import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 export const listSelectionStates = {
 	none: 'none',
@@ -12,6 +12,7 @@ class List extends LitElement {
 	static get properties() {
 		return {
 			extendSeparators: { type: Boolean, reflect: true, attribute: 'extend-separators' },
+			grid: { type: Boolean },
 			separators: { type: String, reflect: true }
 		};
 	}
@@ -34,8 +35,9 @@ class List extends LitElement {
 	}
 
 	render() {
+		const role = !this.grid ? 'list' : undefined;
 		return html`
-			<div role="list" class="d2l-list-container">
+			<div role="${ifDefined(role)}" class="d2l-list-container">
 				<slot></slot>
 			</div>
 		`;
@@ -68,8 +70,8 @@ class List extends LitElement {
 	}
 
 	_getItems() {
-		return this.shadowRoot.querySelector('slot').assignedNodes().filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && node.role === 'listitem';
+		return this.shadowRoot.querySelector('slot').assignedNodes({flatten: true}).filter((node) => {
+			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
 	}
 
