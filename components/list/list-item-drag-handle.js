@@ -107,6 +107,11 @@ class ListItemDragHandle extends LitElement {
 		if (changedProperties.has('_keyboardActive') && typeof changedProperties.get('_keyboardActive') !== 'undefined') this.focus();
 	}
 
+	activateKeyboardMode() {
+		this._dispatchAction(dragActions.active);
+		this._keyboardActive = true;
+	}
+
 	focus() {
 		const node = getFirstFocusableDescendant(this);
 		if (node) node.focus();

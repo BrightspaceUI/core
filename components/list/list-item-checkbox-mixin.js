@@ -17,7 +17,8 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	}
 
 	static get styles() {
-		return [ checkboxStyles, css`
+
+		const styles = [ checkboxStyles, css`
 			.d2l-checkbox-action {
 				height: 100%;
 				display: block;
@@ -27,6 +28,9 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 				cursor: default;
 			}
 		` ];
+
+		super.styles && styles.unshift(super.styles);
+		return styles;
 	}
 
 	constructor() {

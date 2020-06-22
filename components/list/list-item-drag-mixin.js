@@ -1,6 +1,7 @@
+import { css, html } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
+import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { html } from 'lit-element/lit-element.js';
 import { nothing } from 'lit-html';
 
 export const ListItemDragMixin = superclass => class extends superclass {
@@ -8,8 +9,41 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			draggable: { type: Boolean, reflect: true },
-			key: { type: String, reflect: true }
+			key: { type: String, reflect: true },
+			_keyboardMode: { type: Boolean }
 		};
+	}
+
+	static get styles() {
+		const styles = [ css`
+			:host {
+				display: block;
+				position: relative;
+			}
+			:host[hidden] {
+				display: none;
+			}
+			.d2l-list-item-drag-area {
+				height: 100%;
+				cursor: grab;
+			}
+			.d2l-list-item-drag-drop-grid {
+				display: grid;
+				grid-template-columns: 100%;
+				grid-template-rows: 0.3rem 1fr 1fr 0.3rem;
+				height: 100%;
+				left: 0;
+				pointer-events: none;
+				position: absolute;
+				top: 0;
+				width: 100%;
+				z-index: 100;
+
+			}
+		` ];
+
+		super.styles && styles.unshift(super.styles);
+		return styles;
 	}
 
 	constructor() {
@@ -48,11 +82,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		this._dispatchDragEvent(itemKey);
 	}
 
-	// TODO
-	_copy() {
-
-	}
-
 	_dispatchDragEvent(detail) {
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
 			detail: detail,
@@ -78,25 +107,49 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		this.moveafter(null);
 	}
 
-	// TODO
-	_removeCopy() {
-
+	_handleDragAreaClick(e) {
+		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		e.preventDefault();
 	}
 
-	_renderDragAction(inner) {
-		return this.draggable ? html`
-			<div @click="${this._handleDragActionClick}" class="d2l-list-item-drag-action">${inner}</div>
-			` : nothing;
+	_handleDragHandleActions(e) {
+		if (e.detail.action === dragActions.active) {
+			this._keyboardMode = true;
+		} else if (e.detail.action === dragActions.cancel || e.detail.action === dragActions.save) {
+			this._keyboardMode = false;
+		}
 	}
-	_renderDragHandle() {
-		return this.draggable ? html`
+
+	_renderDraggableArea(templateMethod) {
+		templateMethod = templateMethod || (dragArea => dragArea);
+		return this.draggable && !this._keyboardMode ? templateMethod(html`
 			<div
-				id="${this._itemDragId}"
-				class="d2l-list-item-drag"
-				@dragenter="${this._dragEnter}"
-				@dragleave="${this._dragExit}"
-			></div>
-		` : nothing;
+				class="d2l-list-item-drag-area"
+				@click="${this._handleDragAreaClick}"
+				@dragstart="${this._handleDragStart}"
+				@dragend="${this._handleDragEnd}"
+				>
+			</div>
+		`) : nothing;
+	}
+
+	_renderDragHandle(templateMethod) {
+		templateMethod = templateMethod || (dragHandle => dragHandle);
+		return this.draggable ? templateMethod(html`
+			<d2l-list-item-drag-handle id="${this._itemDragId}" @d2l-list-item-drag-handle-action="${this._handleDragHandleActions}"></d2l-list-item-drag-handle>
+		`) : nothing;
+	}
+
+	_renderDropArea(templateMethod) {
+		templateMethod = templateMethod || (dropArea => dropArea);
+		return this.draggable && !this._keyboardMode ? templateMethod(html`
+			<div class="d2l-list-item-drag-drop-grid" @drop="${this._dropHandler}" @dragover="${this._dragOverHandler}">
+				<div @dragenter="${this._dragTopEnter}" @dragleave="${this._dragTopLeave}"></div>
+				<div @dragenter="${this._dragUpperEnter}" @dragleave="${this._dragUpperLeave}"></div>
+				<div @dragenter="${this._dragLowerEnter}" @dragleave="${this._dragLowerLeave}"></div>
+				<div @dragenter="${this._dragBottomEnter}" @dragleave="${this._dragBottomLeave}"></div>
+			</div>
+		`) : nothing;
 	}
 };
 
