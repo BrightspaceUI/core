@@ -65,3 +65,30 @@ class MyElem extends LitElement {
 
 }
 ```
+
+## Radio Spacer
+
+To align related content below radio buttons, the `d2l-input-radio-spacer` element can be used:
+
+```javascript
+import '@brightspace-ui/core/components/inputs/input-radio-spacer.js';
+import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
+
+class MyElem extends LitElement {
+
+  static get styles() {
+    return radioStyles;
+  }
+
+  render() {
+    return html`
+	  <input type="radio" class="d2l-input-radio" aria-label="Option 1">
+	  <d2l-input-checkbox-spacer>
+		Additional content can go here and will
+		line up nicely with the edge of the checkbox.
+	  </d2l-input-checkbox-spacer>
+    `;
+  }
+
+}
+```

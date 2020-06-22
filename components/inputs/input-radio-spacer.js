@@ -1,6 +1,10 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * Used to align related content below radio buttons
+ * @slot - Additional related content
+ */
 class InputRadioSpacer extends RtlMixin(LitElement) {
 
 	static get styles() {
