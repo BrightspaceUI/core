@@ -3,7 +3,7 @@ import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 
 /**
- * "d2l-dropdown" is a generic opener for dropdown content ("d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs") enabling alternate opener implementation using existing elements/components. Provide and indicate your own opener element with the class attribute value "d2l-dropdown-opener".  Wire-up is automatic.
+ * A generic opener for dropdown content, enabling alternate opener implementation using existing elements/components. Provide and indicate your own opener element with the class attribute value "d2l-dropdown-opener".  Wire-up is automatic.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  */
 class Dropdown extends DropdownOpenerMixin(LitElement) {

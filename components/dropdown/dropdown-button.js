@@ -6,7 +6,7 @@ import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * "d2l-dropdown-button" is a "d2l-button" opener for dropdown content.
+ * A "d2l-button" opener for dropdown content.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  */
 class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
