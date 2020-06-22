@@ -7,7 +7,7 @@
     "access": "public"
   },
   "scripts": {
-    "analyze": "wca analyze components/**/*.js --format json --outFile custom-elements.json",
+    "analyze": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
