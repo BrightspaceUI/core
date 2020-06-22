@@ -2,11 +2,21 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A component wrapper to be used when a page contains multiple inputs which are related (for example to form an address) to wrap those related inputs.
+ * @slot - Related input components
+ */
 class InputFieldset extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Label for the fieldset (REQUIRED)
+			 */
 			label: { type: String },
+			/**
+			 * Indicates that a value is required for inputs in the fieldset
+			 */
 			required: { type: Boolean, reflect: true }
 		};
 	}
