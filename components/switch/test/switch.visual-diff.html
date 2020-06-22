@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../switch.js';
+	</script>
+	<title>d2l-switch</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		.visual-diff {
+			width: 300px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-switch id="off" text="Test Text"></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="off-disabled" text="Test Text" disabled></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="on" text="Test Text" on></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="on-disabled" text="Test Text" on disabled></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="text-hidden" text="Test Text" text-position="hidden"></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="text-start" text="Test Text" text-position="start"></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="text-end" text="Test Text" text-position="end"></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="off-rtl" text="Test Text" dir="rtl"></d2l-switch>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-switch id="on-rtl" text="Test Text" on dir="rtl"></d2l-switch>
+	</div>
+
+</body>
+</html>
