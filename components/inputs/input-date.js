@@ -16,16 +16,41 @@ export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(getDateFromISODate(val));
 }
 
+/**
+ * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
+ * @fires change - Dispatched when a date is selected or typed. "value" reflects the selected value and is in ISO 8601 calendar date format ("YYYY-MM-DD").
+ */
 class InputDate extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Text to reassure users that they can choose not to provide a value in this field (usually not necessary)
+			 */
 			emptyText: { type: String, attribute: 'empty-text'},
+			/**
+			 * Accessible label for the input (REQUIRED)
+			 */
 			label: { type: String },
+			/**
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * Maximum valid date that could be selected by a user.
+			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			/**
+			 * Minimum valid date that could be selected by a user.
+			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+			/**
+			 * Value of the input.
+			 */
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -81,7 +106,9 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 	constructor() {
 		super();
 
+		this.disabled = false;
 		this.emptyText = '';
+		this.labelHidden = false;
 		this.value = '';
 
 		this._dropdownOpened = false;
