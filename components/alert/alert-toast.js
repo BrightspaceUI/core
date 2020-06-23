@@ -12,15 +12,42 @@ const states = {
 	OPEN: 'open' // the toast is open
 };
 
+/**
+ * The `d2l-alert-toast` component serves the same purpose as `d2l-alert`; however, it is displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
+ * @slot - Default content placed inside of the component
+ */
 class AlertToast extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+			 */
 			buttonText: { type: String, attribute: 'button-text' },
+
+			/**
+			 * Hide the close button to prevent users from manually closing the alert.
+			 */
 			hideCloseButton: { type: Boolean, attribute: 'hide-close-button' },
+
+			/**
+			 * Prevents the alert from automatically closing 4 seconds after opening.
+			 */
 			noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
+
+			/**
+			 * Open or close the toast alert.
+			 */
 			open: { type: Boolean, reflect: true },
+
+			/**
+			 * The text that is displayed below the main alert message.
+			 */
 			subtext: { type: String },
+
+			/**
+			 * Type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
+			 */
 			type: { type: String, reflect: true },
 			_state: { type: String }
 		};

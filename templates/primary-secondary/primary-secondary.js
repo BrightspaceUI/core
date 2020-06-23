@@ -65,7 +65,7 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			@media only screen and (max-width: 768px) {
 				.container {
-					height: 100vh;
+					height: 100%;
 				}
 				.d2l-template-primary-secondary-content-container {
 					grid-template-areas:
@@ -74,13 +74,6 @@ class TemplatePrimarySecondary extends LitElement {
 					"secondary";
 					grid-template-columns: auto;
 					grid-template-rows: auto 1px auto;
-					overflow-y: auto;
-				}
-				main {
-					overflow-y: visible;
-				}
-				aside {
-					overflow-y: visible;
 				}
 			}
 		`;

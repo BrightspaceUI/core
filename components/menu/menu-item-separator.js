@@ -1,6 +1,9 @@
 import '../colors/colors.js';
 import { css, LitElement } from 'lit-element/lit-element.js';
 
+/**
+ * A component for displaying a more distinct separator between menu items.
+ */
 class MenuItemSeparator extends LitElement {
 
 	static get styles() {

@@ -436,6 +436,57 @@ describe('dom', () => {
 			expect(getOffsetParent(elem)).to.equal(document.body);
 		});
 
+		it('td-with-relative-ancestor', async() => {
+			const elem = await fixture(html`
+				<div>
+					<div class="expected" style="position: relative">
+						<table>
+							<td style="position: static;">
+								<div class="child"></div>
+							</td>
+						</table>
+					</div>
+				</div>
+			`);
+			const child = elem.querySelector('.child');
+			const expected = elem.querySelector('.expected');
+			expect(getOffsetParent(child)).to.equal(expected);
+		});
+
+		it('th-with-relative-ancestor', async() => {
+			const elem = await fixture(html`
+				<div>
+					<div class="expected" style="position: relative">
+						<table>
+							<th style="position: static;">
+								<div class="child"></div>
+							</th>
+						</table>
+					</div>
+				</div>
+			`);
+			const child = elem.querySelector('.child');
+			const expected = elem.querySelector('.expected');
+			expect(getOffsetParent(child)).to.equal(expected);
+		});
+
+		it('table-with-relative-ancestor', async() => {
+			const elem = await fixture(html`
+				<div>
+					<div class="expected" style="position: relative">
+						<div>
+							<table style="position: static;">
+								<tbody class="child"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			`);
+			const child = elem.querySelector('.child');
+			const expected = elem.querySelector('.expected');
+			expect(getOffsetParent(child)).to.equal(expected);
+		});
+
 	});
 
 	describe('getNextAncestorSibling', () => {

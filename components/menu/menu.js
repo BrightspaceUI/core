@@ -13,12 +13,27 @@ const keyCodes = {
 	UP: 38
 };
 
+/**
+ * A wrapper component for a menu containing menu items.
+ * @slot - Menu items
+ * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
+ * @fires d2l-hierarchical-view-hide-start - @ignore
+ */
 class Menu extends HierarchicalViewMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			active: { type: Boolean, reflect: true },
+			/**
+			 * Text to be applied to menu "aria-label" for use with screen readers (REQUIRED for root menu)
+			 */
 			label: { type: String },
+			/**
+			 * @ignore
+			 */
 			role: { type: String, attribute: 'role' }
 		};
 	}

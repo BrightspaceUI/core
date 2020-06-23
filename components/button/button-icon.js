@@ -6,13 +6,31 @@ import { buttonStyles } from './button-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
+ */
 class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Aligns the leading edge of text if value is set to "text".
+			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
+
+			/**
+			 * Preset icon key (e.g. `tier1:gear`)
+			 */
 			icon: { type: String, reflect: true },
+
+			/**
+			 * Accessible text for the button
+			 */
 			text: { type: String, reflect: true },
+
+			/**
+			 * Indicates to display translucent (ex. on rich backgrounds)
+			 */
 			translucent: { type: Boolean, reflect: true }
 		};
 	}
@@ -108,6 +126,12 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				}
 			`
 		];
+	}
+
+	constructor() {
+		super();
+
+		this.translucent = false;
 	}
 
 	render() {
