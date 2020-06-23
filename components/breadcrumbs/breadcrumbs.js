@@ -1,6 +1,5 @@
 import './breadcrumb.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class BreadCrumbs extends RtlMixin(LitElement) {
@@ -78,11 +77,8 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const breadCrumbClasses = {
-			'd2l-breadcrumbs-wrapper': true
-		};
 		return html`
-			<div class="${classMap(breadCrumbClasses)}">
+			<div class="d2l-breadcrumbs-wrapper">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 			</div>
 		`;

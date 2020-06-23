@@ -2,7 +2,6 @@ import '../breadcrumbs.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
 describe('d2l-breadcrumbs', () => {
-
 	[
 		'max-width: 250px; width: 250px;',
 		'',

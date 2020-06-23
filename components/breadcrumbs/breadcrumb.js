@@ -1,7 +1,6 @@
 import '../icons/icon.js';
 import '../link/link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class BreadCrumb extends RtlMixin(LitElement) {
@@ -75,14 +74,15 @@ class BreadCrumb extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.href = '#';
+		this.compact = false;
+		this.text = '';
+		this.ariaLabel = null;
 	}
+
 	render() {
-		const breadCrumbClasses = {
-			'd2l-breadcrumb-wrapper': true
-		};
 		return html`
-			<div class="${classMap(breadCrumbClasses)}" role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
-				<d2l-link href="${this.href}" target="${this.text}">${this.text}</d2l-link>
+			<div class="d2l-breadcrumb-wrapper" role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
+				<d2l-link href="${this.href}" target="${this.target}">${this.text}</d2l-link>
 				${this.compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
 			</div>
 		`;
