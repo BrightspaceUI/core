@@ -13,7 +13,7 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 	static get properties() {
 		return {
 			/**
-			 * Label for the more button (REQUIRED for accessibility).
+			 * REQUIRED: Label for the more button
 			 */
 			text: {
 				type: String

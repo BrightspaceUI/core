@@ -33,7 +33,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 			 */
 			emptyText: { type: String, attribute: 'empty-text'},
 			/**
-			 * Accessible label for the input (REQUIRED)
+			 * REQUIRED: Accessible label for the input
 			 */
 			label: { type: String },
 			/**
@@ -49,7 +49,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Value of the input.
+			 * Value of the input
 			 */
 			value: { type: String },
 			_hiddenContentWidth: { type: String },

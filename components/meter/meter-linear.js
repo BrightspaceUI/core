@@ -98,6 +98,11 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
+	constructor() {
+		super();
+		this.textInline = false;
+	}
+
 	render() {
 		let percentage = this.max > 0 ? this.value / this.max * 100 : 0;
 		if (percentage < 0.5) {

@@ -9,7 +9,13 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			asyncPendingDelay: { type: Number, attribute: 'async-pending-delay' },
+			/**
+			 * @ignore
+			 */
 			asyncState: { type: String }
 		};
 	}

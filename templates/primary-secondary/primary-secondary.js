@@ -13,8 +13,8 @@ class TemplatePrimarySecondary extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Whether content fills the screen or not.
-			 * Valid values: "fullscreen", "normal"
+			 * Whether content fills the screen or not
+			 * @type {('fullscreen'|'normal')}
 			 */
 			widthType: { type: String, attribute: 'width-type', reflect: true },
 			_hasFooter: { type: Boolean }

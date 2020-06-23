@@ -108,7 +108,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			/**
-			 * (REQUIRED) The "id" of the tooltip's target element. Both elements must be within the same shadow root. If not provided, the tooltip's parent element will be used as its target.
+			 * REQUIRED: The "id" of the tooltip's target element. Both elements must be within the same shadow root. If not provided, the tooltip's parent element will be used as its target.
 			 */
 			for: { type: String },
 			/**
@@ -121,7 +121,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			forType: { type: String, attribute: 'for-type' },
 			/**
-			 * Adjust the size of the gap between the tooltip and its target.
+			 * Adjust the size of the gap between the tooltip and its target
 			 */
 			offset: { type: Number }, /* tooltipOffset */
 			/**
@@ -134,7 +134,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			showing: { type: Boolean, reflect: true },
 			/**
-			 * The style of the tooltip based on the type of information it displays.
+			 * The style of the tooltip based on the type of information it displays
 			 * @type {('info'|'error')}
 			 */
 			state: { type: String, reflect: true },

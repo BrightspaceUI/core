@@ -12,7 +12,7 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Text for the button (REQUIRED)
+			 * REQUIRED: Text for the button
 			 */
 			text: {
 				type: String

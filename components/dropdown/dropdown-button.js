@@ -22,7 +22,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 			},
 
 			/**
-			 * Text for the button (REQUIRED)
+			 * REQUIRED: Text for the button
 			 */
 			text: {
 				type: String

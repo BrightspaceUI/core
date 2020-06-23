@@ -31,7 +31,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			 */
 			tabindex: { type: String, reflect: true },
 			/**
-			 * Text displayed by the menu item (REQUIRED)
+			 * REQUIRED: Text displayed by the menu item
 			 */
 			text: { type: String }
 		};
