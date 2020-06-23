@@ -65,7 +65,7 @@ The `d2l-breadcrumbs` element can be used to help users understand where they ar
 
 **d2l-breadcrumbs Properties:**
 
-- `compact` (Boolean, default: `'false'`): indicates whether the component should render in compact mode
+- `compact` (Boolean, default: `'false'`): indicates whether the component should render in compact mode.
 
 
 **d2l-breadcrumb (child) Properties:**
