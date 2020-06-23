@@ -4,14 +4,16 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A horizontal progress bar.
+ */
 class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
-			max: { type: Number },
-			percent: { type: Boolean },
-			text: { type: String },
-			textInline: { type: Boolean, attribute: 'text-inline', reflect: true },
-			value: { type: Number }
+			/**
+			 * Keeps the meter to a single line
+			 */
+			textInline: { type: Boolean, attribute: 'text-inline', reflect: true }
 		};
 	}
 	static get styles() {

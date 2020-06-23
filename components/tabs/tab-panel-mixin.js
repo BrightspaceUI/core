@@ -5,9 +5,21 @@ export const TabPanelMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * Opt out of default padding/whitespace around the panel
+			 */
 			noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
+			/**
+			 * Use to select the tab
+			 */
 			selected: { type: Boolean, reflect: true },
+			/**
+			 * The text used for the tab, as well as labelling the panel (REQUIRED)
+			 */
 			text: { type: String }
 		};
 	}
@@ -30,7 +42,9 @@ export const TabPanelMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
+		this.noPadding = false;
 		this.role = 'tabpanel';
+		this.selected = false;
 	}
 
 	async attributeChangedCallback(name, oldval, newval) {
