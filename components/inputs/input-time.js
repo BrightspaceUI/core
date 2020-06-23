@@ -79,17 +79,45 @@ function parseValue(val) {
 	return new Date(TODAY.year, TODAY.month, TODAY.date, parsed.hours, parsed.minutes, parsed.seconds);
 }
 
+/**
+ * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
+ * @fires change - Dispatched when a time is selected or typed. "value" reflects the selected value and is in ISO 8601 time format ("hh:mm:ss").
+ */
 class InputTime extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Set default value of input. Valid values are times in ISO 8601 time format ("hh:mm:ss"), "startOfDay", "endOfDay".
+			 */
 			defaultValue: { type: String, attribute: 'default-value' },
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Rounds up to nearest valid interval time (specified with "time-interval") when user types a time
+			 */
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
+			/**
+			 * Accessible label for the input (REQUIRED)
+			 */
 			label: { type: String },
+			/**
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * Override max-height on the time dropdown menu
+			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
+			/**
+			 * Number of minutes between times shown in dropdown. Valid values are "five", "ten", "fifteen", "twenty", "thirty", "sixty".
+			 */
 			timeInterval: { type: String, attribute: 'time-interval' },
+			/**
+			 * Value of the input. This should be in ISO 8601 time format ("hh:mm:ss") and should be localized to the user's timezone if applicable.
+			 */
 			value: { type: String },
 			_formattedValue: { type: String }
 		};

@@ -17,22 +17,44 @@ export const linkStyles = css`
 	.d2l-link.d2l-link-main {
 		font-weight: 700;
 	}
-	.d2l-link.d2l-link-smalll {
+	.d2l-link.d2l-link-small {
 		font-size: 0.7rem;
 		line-height: 1.05rem;
 		letter-spacing: 0.01rem;
 	}
 `;
 
+/**
+ * This component can be used just like the native anchor tag.
+ * @slot - The content (e.g., text) that when selected causes navigation
+ */
 class Link extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Sets an accessible label
+			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
+			/**
+			 * Download a URL instead of navigating to it
+			 */
 			download: { type: Boolean },
+			/**
+			 * URL or URL fragment of the link (REQUIRED)
+			 */
 			href: { type: String },
+			/**
+			 * Whether to apply the "main" link style
+			 */
 			main: { type: Boolean, reflect: true },
+			/**
+			 * Whether to apply the "small" link style
+			 */
 			small: { type: Boolean, reflect: true },
+			/**
+			 * Where to display the linked URL
+			 */
 			target: { type: String }
 		};
 	}
@@ -57,6 +79,7 @@ class Link extends LitElement {
 
 	constructor() {
 		super();
+		this.download = false;
 		this.main = false;
 		this.small = false;
 	}
