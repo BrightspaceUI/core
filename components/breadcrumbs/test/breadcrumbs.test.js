@@ -45,6 +45,44 @@ describe('d2l-breadcrumbs', () => {
 		});
 	});
 
+	describe('nested children attributes', () => {
+		let elem;
+		const flatten = nodes => {
+			let flatResult = [...nodes];
+			nodes.forEach(node => {
+				if (node.children) {
+					flatResult = flatResult.concat(flatten([...node.children]));
+				}
+			});
+			return flatResult;
+		};
+
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<d2l-breadcrumbs>
+					<d2l-breadcrumb href="#" text="Basic Item 1"></d2l-breadcrumb>
+					<div>
+						<d2l-breadcrumb href="#" text="Basic Item 2"></d2l-breadcrumb>
+					</div>
+					<div>
+						<div>
+							<d2l-breadcrumb href="#" text="Basic Item 3" aria-label="Aria for Item 3"></d2l-breadcrumb>
+						</div>
+					<div>
+				</d2l-breadcrumbs>
+			`);
+		});
+
+		describe('attribute reflection', () => {
+			it('should reflect "compact" property to nested children', async() => {
+				elem.compact = true;
+				await elem.updateComplete;
+				const assignedNodes = elem.shadowRoot.querySelector('slot').assignedNodes();
+				expect(flatten(assignedNodes).filter(item => item.nodeName === 'D2L-BREADCRUMB' && item.hasAttribute('compact')).length).to.eq(3);
+			});
+		});
+	});
+
 	describe('basic', () => {
 		let list;
 		let items;
