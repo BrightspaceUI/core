@@ -58,7 +58,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 				white-space: nowrap;
 			}
 
-			:host([compact]) ::slotted(d2l-breadcrumb:not(:last-of-type)) {
+			:host([compact]) .d2l-breadcrumbs-wrapper ::slotted(d2l-breadcrumb:not(:last-of-type)) {
 				display:none;
 			}
 		`;
