@@ -47,7 +47,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				align-items: center;
 			}
 
-			div.d2l-breadcrumb-wrapper.compact {
+			:host([compact]) div.d2l-breadcrumb-wrapper {
 				display: flex;
 				flex-direction: row-reverse;
 			}
@@ -64,12 +64,12 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				padding-right: 10px;
 			}
 
-			div.d2l-breadcrumb-wrapper.compact d2l-icon {
+			:host([compact]) div.d2l-breadcrumb-wrapper d2l-icon {
 				padding-right: 10px;
 				padding-left: 0;
 			}
 
-			div.d2l-breadcrumb-wrapper.compact d2l-icon:dir(rtl) {
+			:host([compact]) div.d2l-breadcrumb-wrapper d2l-icon:dir(rtl) {
 				padding-right: 0;
 				padding-left: 10px;
 			}
@@ -82,8 +82,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 	}
 	render() {
 		const breadCrumbClasses = {
-			'd2l-breadcrumb-wrapper': true,
-			'compact': this.compact
+			'd2l-breadcrumb-wrapper': true
 		};
 		return html`
 			<div class="${classMap(breadCrumbClasses)}" role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
