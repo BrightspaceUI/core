@@ -1,7 +1,7 @@
 /* eslint quotes: 0 */
 
 export default {
-	"components.alert.close": "Fermer l’alerte",
+	"components.alert.close": "Fermer l'alerte",
 	"components.calendar.notSelected": "Non sélectionné(e)",
 	"components.calendar.selected": "Sélectionné(e).",
 	"components.calendar.show": "Afficher {month}",
