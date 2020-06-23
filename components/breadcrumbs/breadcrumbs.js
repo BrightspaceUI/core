@@ -99,7 +99,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 			const slot = this.shadowRoot.querySelector('slot');
 			if (slot) {
 				slot.assignedNodes().filter(item => item.nodeName === 'D2L-BREADCRUMB').forEach(node => {
-					node.compact = this.compact;
+					node.setAttribute('compact', this.compact);
 				});
 			}
 		}
