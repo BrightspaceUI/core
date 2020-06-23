@@ -90,6 +90,16 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		}
 	}
 
+	_findAllChildrenBreadCrumbs(nodes) {
+		let breadCrumbs = nodes.filter(item => item.nodeName === 'D2L-BREADCRUMB');
+		nodes.forEach(node => {
+			if (node.children) {
+				breadCrumbs = breadCrumbs.concat(this._findAllChildrenBreadCrumbs([...node.children]));
+			}
+		});
+		return breadCrumbs;
+	}
+
 	_handleSlotChange() {
 		this._setChildrenCompactProp();
 	}
@@ -98,7 +108,8 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		if (this.shadowRoot) {
 			const slot = this.shadowRoot.querySelector('slot');
 			if (slot) {
-				slot.assignedNodes().filter(item => item.nodeName === 'D2L-BREADCRUMB').forEach(node => {
+				const breadCrumbs = this._findAllChildrenBreadCrumbs(slot.assignedNodes());
+				breadCrumbs.forEach(node => {
 					node.setAttribute('compact', this.compact);
 				});
 			}
