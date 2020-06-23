@@ -71,9 +71,27 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		};
 		return html`
 			<div class="${classMap(breadCrumbClasses)}">
-				<slot></slot>
+				<slot @slotchange="${this._handleSlotChange}"></slot>
 			</div>
 		`;
 	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('compact')) {
+			this._setChildrenCompactProp();
+		}
+	}
+
+	_handleSlotChange() {
+		this._setChildrenCompactProp();
+	}
+
+	_setChildrenCompactProp() {
+		this.shadowRoot.querySelector('slot')
+			.assignedNodes().filter(item => item.nodeName === 'D2L-BREADCRUMB').forEach(node => {
+				node.compact = this.compact;
+			});
+	}
+
 }
 customElements.define('d2l-breadcrumbs', BreadCrumbs);

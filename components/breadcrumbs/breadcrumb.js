@@ -88,7 +88,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 		return html`
 			<div class="${classMap(breadCrumbClasses)}" role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
 				<d2l-link href="${this.href}" target="${this.text}">${this.text}</d2l-link>
-				<d2l-icon icon="${this._breadCrumbIcon}"></d2l-icon>
+				${this.compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
 			</div>
 		`;
 	}
