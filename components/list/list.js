@@ -7,11 +7,22 @@ export const listSelectionStates = {
 	all: 'all'
 };
 
+/**
+ * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
+ * @slot - List content (e.g., "listitem"s)
+ * @fires d2l-list-selection-change - Dispatched when the selection state changes
+ */
 class List extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether to extend the separators beyond the content's edge
+			 */
 			extendSeparators: { type: Boolean, reflect: true, attribute: 'extend-separators' },
+			/**
+			 * Display separators. Valid values are "all" (default), "between", "none"
+			 */
 			separators: { type: String, reflect: true }
 		};
 	}
@@ -22,6 +33,11 @@ class List extends LitElement {
 				display: block;
 			}
 		`;
+	}
+
+	constructor() {
+		super();
+		this.extendSeparators = false;
 	}
 
 	firstUpdated() {

@@ -2,6 +2,11 @@ import '../colors/colors.js';
 import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
+/**
+ * A component for consistent layout of primary and secondary text in a list item.
+ * @slot - Primary text of the list item
+ * @slot secondary - Secondary text of the list item
+ */
 class ListItemContent extends LitElement {
 
 	static get styles() {
