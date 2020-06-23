@@ -24,6 +24,12 @@ describe('d2l-breadcrumb', () => {
 			expect(elem.getAttribute('text')).to.equal('Awesome Url');
 		});
 
+		it('should reflect "target" property to attribute', async() => {
+			elem.target = 'Awesome Target';
+			await elem.updateComplete;
+			expect(elem.getAttribute('target')).to.equal('Awesome Target');
+		});
+
 		it('should reflect "ariaLabel" property to attribute', async() => {
 			elem.ariaLabel = 'Awesome Label';
 			await elem.updateComplete;
@@ -50,6 +56,10 @@ describe('d2l-breadcrumb', () => {
 
 		it('should default "text" property to "" when unset', () => {
 			expect(elem.text).to.equal('');
+		});
+
+		it('should default "target" property to "" when unset', () => {
+			expect(elem.target).to.equal('');
 		});
 
 		it('should default "ariaLabel" property to null when unset', () => {
