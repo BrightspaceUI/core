@@ -68,7 +68,7 @@ describe('d2l-breadcrumbs', () => {
 						<div>
 							<d2l-breadcrumb href="#" text="Basic Item 3" aria-label="Aria for Item 3"></d2l-breadcrumb>
 						</div>
-					<div>
+					</div>
 				</d2l-breadcrumbs>
 			`);
 		});
