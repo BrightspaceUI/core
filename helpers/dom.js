@@ -70,7 +70,18 @@ export function getNextAncestorSibling(node, predicate = () => true) {
 	while (parentNode) {
 		const nextParentSibling = parentNode.nextElementSibling;
 		if (nextParentSibling && predicate(nextParentSibling)) return nextParentSibling;
+		parentNode = getComposedParent(parentNode);
+	}
 
+	return null;
+}
+
+export function getPreviousAncestorSibling(node, predicate = () => true) {
+	let parentNode = getComposedParent(node);
+
+	while (parentNode) {
+		const previousParentSibling = parentNode.previousElementSibling;
+		if (previousParentSibling && predicate(previousParentSibling)) return previousParentSibling;
 		parentNode = getComposedParent(parentNode);
 	}
 

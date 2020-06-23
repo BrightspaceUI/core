@@ -18,6 +18,11 @@ describe('d2l-switch', () => {
 		await expect(elem).to.be.accessible;
 	});
 
+	it('tooltip', async() => {
+		const elem = await fixture(html`<d2l-switch text="some text" tooltip="tooltip text"></d2l-switch>`);
+		await expect(elem).to.be.accessible;
+	});
+
 	it('hidden label', async() => {
 		const elem = await fixture(html`<d2l-switch text="some text" text-position="hidden"></d2l-switch>`);
 		await expect(elem).to.be.accessible;

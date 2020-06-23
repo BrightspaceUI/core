@@ -37,7 +37,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		if (!this.key) {
-			console.warn('"key" property has not been set on selectable item');
+			if (this.selectable) console.warn('"key" property has not been set on selectable item');
 			this.setSelected(undefined, true);
 		}
 	}
