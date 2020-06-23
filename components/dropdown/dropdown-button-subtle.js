@@ -3,10 +3,17 @@ import { html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 
+/**
+ * A "d2l-button-subtle" opener for dropdown content.
+ * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
+ */
 class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Text for the button (REQUIRED)
+			 */
 			text: {
 				type: String
 			}

@@ -1,11 +1,20 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
+/**
+ * A loading spinner component.
+ */
 class LoadingSpinner extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Color of the animated bar. Default is "--d2l-color-celestine".
+			 */
 			color: { type: String },
+			/**
+			 * Height and width (px) of the spinner. Default is 50.
+			 */
 			size: { type: Number }
 		};
 	}
