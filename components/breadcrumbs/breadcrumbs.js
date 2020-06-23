@@ -65,6 +65,18 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		`;
 	}
 
+	constructor() {
+		super();
+		this.compact = false;
+		this._setChildrenCompactProp();
+	}
+
+	firstUpdated(changedProperties) {
+		if (changedProperties.has('compact')) {
+			this._setChildrenCompactProp();
+		}
+	}
+
 	render() {
 		const breadCrumbClasses = {
 			'd2l-breadcrumbs-wrapper': true
@@ -87,10 +99,15 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 	}
 
 	_setChildrenCompactProp() {
-		this.shadowRoot.querySelector('slot')
-			.assignedNodes().filter(item => item.nodeName === 'D2L-BREADCRUMB').forEach(node => {
-				node.compact = this.compact;
-			});
+		if (this.shadowRoot) {
+			const slot = this.shadowRoot.querySelector('slot');
+			if (slot) {
+				slot.assignedNodes().filter(item => item.nodeName === 'D2L-BREADCRUMB').forEach(node => {
+					node.compact = this.compact;
+				});
+			}
+		}
+
 	}
 
 }
