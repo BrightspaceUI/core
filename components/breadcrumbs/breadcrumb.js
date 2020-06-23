@@ -77,7 +77,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 		this.compact = false;
 		this.text = '';
 		this.target = '';
-		this.ariaLabel = null;
+		this.ariaLabel = '';
 	}
 
 	render() {
