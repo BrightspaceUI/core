@@ -22,6 +22,14 @@ describe('d2l-breadcrumbs', () => {
 			expect(elem.hasAttribute('compact')).to.be.true;
 		});
 
+		it('should reflect "compact" property to children', async() => {
+			elem.compact = true;
+			await elem.updateComplete;
+			expect(elem.shadowRoot.querySelector('slot').assignedNodes().filter(
+				item => item.nodeName === 'D2L-BREADCRUMB' &&
+				item.hasAttribute('compact')
+			).length).to.eq(3);
+		});
 	});
 
 	describe('constructor', () => {
