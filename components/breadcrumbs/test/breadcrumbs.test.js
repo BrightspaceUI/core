@@ -7,12 +7,12 @@ describe('d2l-breadcrumbs', () => {
 		let elem;
 		beforeEach(async() => {
 			elem = await fixture(html`
-			<d2l-breadcrumbs>
-				<d2l-breadcrumb href="#" text="Basic Item 1"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Basic Item 2"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Basic Item 3" aria-label="Aria for Item 3"></d2l-breadcrumb>
-			</d2l-breadcrumbs>
-		`);
+				<d2l-breadcrumbs>
+					<d2l-breadcrumb href="#" text="Basic Item 1"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Basic Item 2"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Basic Item 3" aria-label="Aria for Item 3"></d2l-breadcrumb>
+				</d2l-breadcrumbs>
+			`);
 		});
 
 		describe('attribute reflection', () => {
@@ -70,14 +70,14 @@ describe('d2l-breadcrumbs', () => {
 
 		before(async() => {
 			list = await fixture(html`
-			<d2l-breadcrumbs style="max-width: 250px; width: 250px;">
-				<d2l-breadcrumb href="#" text="Truncate Basic Item 1"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Truncate Basic Item 2"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Truncate Basic Item 3"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Truncate Basic Item 4"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Truncate Basic Item 5"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Truncate Basic Item 6"></d2l-breadcrumb>
-			</d2l-breadcrumbs>
+				<d2l-breadcrumbs style="max-width: 250px; width: 250px;">
+					<d2l-breadcrumb href="#" text="Truncate Basic Item 1"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Truncate Basic Item 2"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Truncate Basic Item 3"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Truncate Basic Item 4"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Truncate Basic Item 5"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Truncate Basic Item 6"></d2l-breadcrumb>
+				</d2l-breadcrumbs>
 			`);
 			const itemShadowRoot = list.shadowRoot;
 			wrapper = itemShadowRoot.querySelector('div.d2l-breadcrumbs-wrapper');
@@ -95,11 +95,11 @@ describe('d2l-breadcrumbs', () => {
 
 		before(async() => {
 			list = await fixture(html`
-			<d2l-breadcrumbs compact>
-				<d2l-breadcrumb href="#" text="Compact Item 1"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Compact Item 2"></d2l-breadcrumb>
-				<d2l-breadcrumb href="#" text="Compact Item 3"></d2l-breadcrumb>
-			</d2l-breadcrumbs>
+				<d2l-breadcrumbs compact>
+					<d2l-breadcrumb href="#" text="Compact Item 1"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Compact Item 2"></d2l-breadcrumb>
+					<d2l-breadcrumb href="#" text="Compact Item 3"></d2l-breadcrumb>
+				</d2l-breadcrumbs>
 			`);
 			items = list.querySelectorAll('d2l-breadcrumb');
 		});
