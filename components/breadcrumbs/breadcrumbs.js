@@ -90,11 +90,11 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		}
 	}
 
-	_findAllChildrenBreadCrumbs(nodes) {
+	_findBreadCrumbs(nodes) {
 		let breadCrumbs = nodes.filter(item => item.nodeName === 'D2L-BREADCRUMB');
 		nodes.forEach(node => {
 			if (node.children) {
-				breadCrumbs = breadCrumbs.concat(this._findAllChildrenBreadCrumbs([...node.children]));
+				breadCrumbs = breadCrumbs.concat(this._findBreadCrumbs([...node.children]));
 			}
 		});
 		return breadCrumbs;
@@ -108,7 +108,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		if (this.shadowRoot) {
 			const slot = this.shadowRoot.querySelector('slot');
 			if (slot) {
-				const breadCrumbs = this._findAllChildrenBreadCrumbs(slot.assignedNodes());
+				const breadCrumbs = this._findBreadCrumbs(slot.assignedNodes());
 				breadCrumbs.forEach(node => {
 					node.setAttribute('compact', this.compact);
 				});
