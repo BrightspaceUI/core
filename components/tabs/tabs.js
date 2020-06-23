@@ -46,10 +46,19 @@ if (!Array.prototype.findIndex) {
 	});
 }
 
+/**
+ * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
+ * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
+ * @slot ext - Additional content (e.g., a button) positioned at right
+ * @fires d2l-tabs-initialized - Dispatched when the component is initialized
+ */
 class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Limit the number of tabs to initially display
+			 */
 			maxToShow: { type: Number, attribute: 'max-to-show' },
 			_allowScrollNext: { type: Boolean },
 			_allowScrollPrevious: { type: Boolean },
