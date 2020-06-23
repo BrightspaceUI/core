@@ -28,10 +28,6 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				attribute: 'aria-label',
 				type: String,
 				reflect: true
-			},
-			_breadCrumbIcon: {
-				attribute: false,
-				type: String
 			}
 		};
 	}
@@ -90,9 +86,6 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				${this.compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
 			</div>
 		`;
-	}
-	get _breadCrumbIcon() {
-		return this.compact ? 'd2l-tier1:chevron-left' : 'd2l-tier1:chevron-right';
 	}
 
 }
