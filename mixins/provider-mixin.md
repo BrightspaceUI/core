@@ -23,7 +23,7 @@ class InterestingFactProvider extends ProviderMixin(LitElement) {
 Once this has been set up, child components can request your provider's data via the `RequesterMixin` mixin, using the same key as the provider. Since the event that is generated to request a provider is bubbled until it is fulfilled, this means there can be an arbitrary number of components in the hierarchy between the provider and the requester, none of which have any knowledge of the data being requested or provided.
 
 NB: before the first render (i.e. in the constructor) the event handler won't be attached to the DOM, so in practice `this.requestInstance()` needs
-to be called in `firstUpdated()`, which will cause a second render.
+to be called in `connectedCallback()` (or `firstUpdated()`).
 
 ```js
 import { RequesterMixin } from '@brightspace-ui/core/mixins/provider-mixin.js'
@@ -53,7 +53,7 @@ class InterestingFactUI extends RequesterMixin(LitElement) {
 		`;
 	}
 	
-	firstUpdated() {
+	connectedCallback() {
 		this._factString = this.requestInstance('d2l-interesting-fact-string');
 
 		const factObject = this.requestInstance('d2l-interesting-fact-object');
