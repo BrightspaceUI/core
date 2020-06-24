@@ -39,7 +39,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[start outside-control-start] minmax(0, min-content)
 					[control-start outside-control-end] minmax(0, min-content)
 					[control-end content-start] auto
-					[content-end actions-start] auto
+					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
 			}
 			::slotted([slot="outside-control"]),
@@ -49,12 +49,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 40px;
+				width: 42px;
 				grid-column: outside-control-start / outside-control-end;
 			}
 
 			::slotted([slot="control"]) {
-				width: 40px;
+				width: 42px;
 				grid-column: control-start / control-end;
 			}
 
