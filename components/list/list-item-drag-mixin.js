@@ -107,23 +107,30 @@ export class NewPositionEventDetails {
 	 * @param { String } object.destinationKey The item key of the list-item in the position we are moving to
 	 * @param { String } object.temporaryMovement Information on whether the item is entering or exiting temporary movement
 	 */
-	constructor(object) {
-		this.targetKey = object.targetKey;
-		this.destinationKey = object.destinationKey;
-		this.temporaryMovement = object.temporaryMovement;
+	constructor({targetKey, destinationKey, temporaryMovement}) {
+		if (!targetKey || !destinationKey) {
+			throw new Error(`NewPositionEventDetails must have a targetKey and destinationKey\nGiven: ${targetKey} and ${destinationKey}`);
+		}
+		this.targetKey = targetKey;
+		this.destinationKey = destinationKey;
+		this.temporaryMovement = temporaryMovement;
 	}
 
 	/**
 	 * Announces a move to screen readers on an array
 	 * @param { Array<Node> } list The array to announce the move on.
-	 * @param { function(any, Number): String } announceCallback Callback function that returns the announcement text
+	 * @param { Object } obj Object containing callback functions
+	 * @param { function(any, Number): String } obj.announceFn Callback function that returns the announcement text
 	 *        Takes the item in the array and the index as arguments. Should return the text to announce.
+	 * @param { function(Node): String } obj.keyFn Callback function that returns a key given a listitem
 	 */
-	announceMove(list, announceCallback) {
-		const index = this.fetchPosition(list, this.targetKey);
-		if (index === null) throw new Error('Item to announce move not found in given array.');
-		const item = list[index];
-		const message = announceCallback(item, index);
+	announceMove(list, {announceFn, keyFn}) {
+		const targetIndex = this.fetchPosition(list, this.targetKey, keyFn);
+		const destinationIndex = this.fetchPosition(list, this.destinationKey, keyFn);
+		if (targetIndex === null) throw new Error(`Target "${this.targetKey}" not found in array`);
+		if (destinationIndex === null) throw new Error(`Destination "${this.destinationKey}" not found in array`);
+
+		const message = announceFn(list[targetIndex], destinationIndex);
 		if (message) announce(message);
 	}
 
@@ -131,9 +138,10 @@ export class NewPositionEventDetails {
 	 * Fetches an index position within a list given an item key
 	 * @param { Array<Node> } list Array of nodes
 	 * @param { String } key Item key to fetch position of
+	 * @param { function(Node): String } keyFn Function that returns the key from a list item
 	 */
-	fetchPosition(list, key) {
-		const index = list.findIndex(x => x.key === key);
+	fetchPosition(list, key, keyFn) {
+		const index = list.findIndex(x => keyFn(x) === key);
 		return index === -1 ? null : index;
 	}
 
@@ -142,18 +150,20 @@ export class NewPositionEventDetails {
 	 * The item will be moved to the position of the destinationKey. Array elements shift
 	 * forward one to make room.
 	 * @param { Array<Node> } list The array to reorder
-	 * @param { function(any, Number): String } [announceCallback] Callback function that returns the announcement text
+	 * @param { Object } obj An object containing callback functions
+	 * @param { function(any, Number): String } obj.announceFn (Optional) Callback function that returns the announcement text
 	 *        Takes the item in the array and the index as arguments. Should return the text to announce.
 	 *        This optional callback will be passed to announceMove if given.
+	 * @param { function(Node): String } obj.keyFn Callback function that returns the key for the item.
 	 */
-	reorder(list, announceCallback = null) {
+	reorder(list, {announceFn, keyFn}) {
 		if (this.destinationKey === undefined || this.destinationKey === this.targetKey) return;
 
-		const origin = this.fetchPosition(list, this.targetKey);
-		const destination = this.fetchPosition(list, this.destinationKey);
+		const origin = this.fetchPosition(list, this.targetKey, keyFn);
+		const destination = this.fetchPosition(list, this.destinationKey, keyFn);
 
 		if (origin === null || destination === null) {
-			throw new Error('Reorder failed. Position does not exist in list.');
+			throw new Error(`Position not found in list:\n\torigin: ${this.targetKey} at ${origin}\n\tdestination: ${this.destinationKey} at ${destination}`);
 		}
 
 		// move the item in the list to a new position in place
@@ -161,12 +171,10 @@ export class NewPositionEventDetails {
 		// now that we have a reference to the item, shove everything between the
 		// destination to the origin over one
 		if (origin > destination) {
-			// shove to the right ♪┗ ( ･o･) ┓♪
 			for (let i = origin; i > destination; i--) {
 				list[i] = list[i - 1];
 			}
 		} else {
-			// shove to the left ♪┏(・o･)┛♪
 			for (let i = origin; i < destination; i++) {
 				list[i] = list[i + 1];
 			}
@@ -175,8 +183,8 @@ export class NewPositionEventDetails {
 		// position is; stick the item in this spot.
 		list[destination] = item;
 
-		if (announceCallback) {
-			this.announceMove(list, announceCallback);
+		if (announceFn) {
+			this.announceMove(list, announceFn);
 		}
 	}
 }
