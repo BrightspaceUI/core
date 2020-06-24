@@ -111,7 +111,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 				const breadCrumbs = this._findBreadCrumbs(slot.assignedNodes());
 				breadCrumbs.forEach(node => {
 					if (this.compact) {
-						node.setAttribute('compact', 'compact');
+						node.setAttribute('compact', '');
 					} else {
 						node.removeAttribute('compact');
 					}
