@@ -12,7 +12,6 @@ import { ProviderMixin } from '@brightspace-ui/core/mixins/provider-mixin.js';
 class InterestingFactProvider extends ProviderMixin(LitElement) {
 	constructor() {
 		super();
-
 		this.provide('d2l-interesting-fact-string', 'Olives are not the same as fish');
 		this.provide('d2l-interesting-fact-object', { fact: 'Olives are not the same as fish' });
 		this.provide('d2l-interesting-fact-function', x => `${x} are not the same as fish`);
@@ -22,8 +21,7 @@ class InterestingFactProvider extends ProviderMixin(LitElement) {
 
 Once this has been set up, child components can request your provider's data via the `RequesterMixin` mixin, using the same key as the provider. Since the event that is generated to request a provider is bubbled until it is fulfilled, this means there can be an arbitrary number of components in the hierarchy between the provider and the requester, none of which have any knowledge of the data being requested or provided.
 
-NB: before the first render (i.e. in the constructor) the event handler won't be attached to the DOM, so in practice `this.requestInstance()` needs
-to be called in `connectedCallback()` (or `firstUpdated()`).
+NB: due to its reliance on DOM events, `requestInstance()` needs to be called after the element has been attached to the DOM, such as in `connectedCallback()`.
 
 ```js
 import { RequesterMixin } from '@brightspace-ui/core/mixins/provider-mixin.js'
@@ -37,14 +35,6 @@ class InterestingFactUI extends RequesterMixin(LitElement) {
 		};
 	}
 
-	constructor() {
-		super();
-
-		this._factString = '';
-		this._factObjectString = '';
-		this._factFunctionString = '';
-	}
-
 	render() {
 		return html`
 			<p>Interesting fact from Interesting Fact Provider: ${this._factString}</p>
@@ -54,13 +44,10 @@ class InterestingFactUI extends RequesterMixin(LitElement) {
 	}
 	
 	connectedCallback() {
+		super.connectedCallback();
 		this._factString = this.requestInstance('d2l-interesting-fact-string');
-
-		const factObject = this.requestInstance('d2l-interesting-fact-object');
-		this._factObjectString = factObject.fact;
-
-		const factFunction = this.requestInstance('d2l-interesting-fact-function');
-		this._factFunctionString = factFunction('Olives');
+		this._factObjectString = this.requestInstance('d2l-interesting-fact-object').fact;
+		this._factFunctionString = this.requestInstance('d2l-interesting-fact-function')('Olives');
 	}
 }
 ```
