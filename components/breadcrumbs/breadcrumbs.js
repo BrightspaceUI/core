@@ -15,16 +15,12 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				--d2l-breadcrumbs-background-color: rgb(251, 252, 252);
 				display: block;
 				position: relative;
 			}
 
 			:host::after {
-				background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(var(--d2l-breadcrumbs-background-color)));
-				background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), var(--d2l-breadcrumbs-background-color));
-				background: -o-linear-gradient(left, rgba(255, 255, 255, 0), var(--d2l-breadcrumbs-background-color));
-				background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--d2l-breadcrumbs-background-color));
+				background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(251, 252, 252));
 				bottom: 0;
 				content: '';
 				pointer-events: none;
@@ -35,10 +31,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 			}
 
 			:host([dir="rtl"])::after {
-				background: -webkit-gradient(linear, right top, left top, from(rgba(255, 255, 255, 0)), to(var(--d2l-breadcrumbs-background-color)));
-				background: -webkit-linear-gradient(right, rgba(255, 255, 255, 0), var(--d2l-breadcrumbs-background-color));
-				background: -o-linear-gradient(right, rgba(255, 255, 255, 0), var(--d2l-breadcrumbs-background-color));
-				background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--d2l-breadcrumbs-background-color));
+				background: linear-gradient(to left, rgba(255, 255, 255, 0), rgb(251, 252, 252));
 				left: 0;
 				right: auto;
 			}
