@@ -10,7 +10,7 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 /**
- * The "d2l-dialog" element is a generic dialog that provides a slot for arbitrary content, and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
+ * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
  * @fires d2l-dialog-open - Dispatched when the dialog is opened

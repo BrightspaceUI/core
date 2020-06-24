@@ -2,9 +2,21 @@ export const ButtonMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * Indicate expansion state of a collapsible element
+			 */
 			ariaExpanded: { type: String, reflect: true, attribute: 'aria-expanded' },
+			/**
+			 * Indicate clicking the button opens a menu
+			 */
 			ariaHaspopup: { type: String, reflect: true, attribute: 'aria-haspopup' },
+			/**
+			 * Acts as a primary label
+			 */
 			ariaLabel: { type: String, reflect: true, attribute: 'aria-label' },
+			/**
+			 * Disables the button
+			 */
 			disabled: { type: Boolean, reflect: true },
 			autofocus: { type: Boolean, reflect: true },
 			form: { type: String, reflect: true },
@@ -14,6 +26,9 @@ export const ButtonMixin = superclass => class extends superclass {
 			formnovalidate: { type: String, reflect: true },
 			formtarget: { type: String, reflect: true },
 			name: { type: String, reflect: true },
+			/**
+			 * Styles the button as a primary button
+			 */
 			primary: { type: Boolean, reflect: true },
 			type: { type: String, reflect: true }
 		};
@@ -21,6 +36,9 @@ export const ButtonMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
+		this.autofocus = false;
+		this.disabled = false;
+		this.primary = false;
 		this.type = 'button';
 	}
 

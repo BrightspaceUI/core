@@ -32,7 +32,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			opened: { type: Boolean, reflect: true },
 
 			/**
-			 * The optional title for the confirmation dialog
+			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
 			_height: { type: Number },

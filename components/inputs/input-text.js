@@ -42,11 +42,11 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Label for the input (REQUIRED)
+			 * REQUIRED: Label for the input
 			 */
 			label: { type: String },
 			/**
-			 * Hides the label visually (moves it to the input's `aria-label` attribute)
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
@@ -106,7 +106,8 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			title: { type: String },
 			/**
-			 * Can be one of "text", "email", "number", "password", "tel", "url"
+			 * The type of the text input
+			 * @type {('text'|'email'|'number'|'password'|'tel'|'url')}
 			 */
 			type: { type: String },
 			/**

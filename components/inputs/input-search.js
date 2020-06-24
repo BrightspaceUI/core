@@ -20,7 +20,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Accessible label for the input (REQUIRED)
+			 * REQUIRED: Accessible label for the input
 			 */
 			label: { type: String },
 			/**

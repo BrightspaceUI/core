@@ -19,7 +19,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 */
 			text: { type: String },
 			/**
-			 * (REQUIRED) Current number of completed units.
+			 * REQUIRED: Current number of completed units.
 			 * Valid values: A number between 0 and max
 			 */
 			value: { type: Number }
