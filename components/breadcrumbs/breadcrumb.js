@@ -76,7 +76,8 @@ class Breadcrumb extends RtlMixin(LitElement) {
 		this.text = '';
 	}
 
-	firstUpdated() {
+	connectedCallback() {
+		super.connectedCallback();
 		const event = new CustomEvent(
 			'd2l-breadcrumb-connected', {
 				bubbles: true,
