@@ -3,6 +3,12 @@ import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-breadcrumbs', () => {
+	describe('constructor', () => {
+		it('should construct', () => {
+			runConstructor('d2l-breadcrumbs');
+		});
+	});
+
 	describe('basic attribute tests', () => {
 		let elem;
 		beforeEach(async() => {
@@ -29,12 +35,6 @@ describe('d2l-breadcrumbs', () => {
 					item => item.nodeName === 'D2L-BREADCRUMB' &&
 				item.hasAttribute('compact')
 				).length).to.eq(3);
-			});
-		});
-
-		describe('constructor', () => {
-			it('should construct', () => {
-				runConstructor('d2l-breadcrumbs');
 			});
 		});
 
