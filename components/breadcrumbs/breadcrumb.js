@@ -39,11 +39,11 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				display: inline-flex;
 			}
 
-			div.d2l-breadcrumb-wrapper {
+			.d2l-breadcrumb-wrapper {
 				align-items: center;
 			}
 
-			:host([compact]) div.d2l-breadcrumb-wrapper {
+			:host([compact]) .d2l-breadcrumb-wrapper {
 				display: flex;
 				flex-direction: row-reverse;
 			}
@@ -60,12 +60,12 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				padding-right: 10px;
 			}
 
-			:host([compact]) div.d2l-breadcrumb-wrapper d2l-icon {
+			:host([compact]) .d2l-breadcrumb-wrapper d2l-icon {
 				padding-right: 10px;
 				padding-left: 0;
 			}
 
-			:host([compact]) div.d2l-breadcrumb-wrapper d2l-icon:dir(rtl) {
+			:host([compact]) .d2l-breadcrumb-wrapper d2l-icon:dir(rtl) {
 				padding-right: 0;
 				padding-left: 10px;
 			}
