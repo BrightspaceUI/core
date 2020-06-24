@@ -14,17 +14,66 @@ const tag = defineCE(
 );
 
 describe('ListItemDragMixin', () => {
-	it('Sets checked status to false when no key is given', async() => {
+	it('sets checked status to false when no key is given', async() => {
 		const element = await fixture(`<${tag} draggable="true"></${tag}>`);
 		expect(element.draggable).to.be.false;
 	});
 });
 
 describe('NewPositionEventDetails', () => {
+	const keyFn = (item) => item.key;
+
+	const errorTests = [
+		{
+			description: 'throws an error when targetKey does not exist',
+			input: {
+				targetKey: 'foo',
+				destinationKey: 'one'
+			}
+		},
+		{
+			description: 'throws an error when destinationKey does not exist',
+			input: {
+				targetKey: 'one',
+				destinationKey: 'foo'
+			}
+		}
+	];
+
+	describe('announceMove', () => {
+		const list = ['one', 'two', 'three'].map(x => ({key : x }));
+		it('announces when given required arguments', () => {
+			const event = new NewPositionEventDetails({
+				targetKey: 'one',
+				destinationKey: 'three'
+			});
+			let msg = '';
+			const fn = (item, index) => {
+				msg = `${item.key} has moved to position ${index + 1}`
+				return msg;
+			}
+			event.announceMove(list, {
+				announceFn: fn,
+				keyFn: keyFn
+			});
+			expect(msg).to.equal('one has moved to position 3');
+		});
+
+		for (const test of errorTests) {
+			it(test.description, () => {
+				const event = new NewPositionEventDetails(test.input);
+				expect(() => event.announceMove(list, {
+					announceFn: () => {},
+					keyFn: keyFn
+				})).to.throw(Error);
+			});
+		}
+	});
+
 	describe('reorder', () => {
 		const tests = [
 			{
-				description: 'does nothing when new and old key are the same',
+				description: 'does nothing when targetKey and destinationKey are the same',
 				input: {
 					array: ['one', 'two', 'three'],
 					targetKey: 'one',
@@ -95,18 +144,20 @@ describe('NewPositionEventDetails', () => {
 					destinationKey: test.input.destinationKey
 				});
 				const objects = test.input.array.map(x => ({key : x }));
-				event.reorder(objects);
+				event.reorder(objects, {keyFn: keyFn});
 				expect(objects.map(x => x.key)).to.deep.equal(test.expected);
 			});
 		}
 
-		it('throws an error when a position does not exist', () => {
-			const event = new NewPositionEventDetails({
-				targetKey: 'bar',
-				destinationKey: 'foo'
+		for (const test of errorTests) {
+			it(test.description, () => {
+				const event = new NewPositionEventDetails(test.input);
+				expect(() => event.reorder([{ key: 'one' }], {keyFn: keyFn})).to.throw(Error);
 			});
-			expect(() => event.reorder([{ key: 'key' }])).to.throw(Error);
+		}
 
+		it('throws an error when keys are missing', () => {
+			expect(() => new NewPositionEventDetails({})).to.throw(Error);
 		});
 	});
 });
