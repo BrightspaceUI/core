@@ -2,9 +2,15 @@ import './breadcrumb.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A component to help users understand where they are within the LMS. would be used the parent of d2l-breadcrumb and will render them in a slot
+ */
 class BreadCrumbs extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
+			/**
+			 * indicates whether the breadcrumbs are redenred in compact mode (which means it will only display the last time and also includes some visual differences)
+			 */
 			compact: {
 				type: Boolean,
 				reflect: true
