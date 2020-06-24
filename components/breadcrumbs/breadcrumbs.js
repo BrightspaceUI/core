@@ -57,19 +57,9 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 		this.compact = false;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('d2l-breadcrumb-connected', this._handleBreadCrumbConnected, true);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('d2l-breadcrumb-connected', this._handleBreadCrumbConnected, true);
-	}
-
 	render() {
 		return html`
-			<div class="d2l-breadcrumbs-wrapper">
+			<div class="d2l-breadcrumbs-wrapper" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
 				<slot></slot>
 			</div>
 		`;
