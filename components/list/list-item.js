@@ -41,6 +41,9 @@ class ListItem extends RtlMixin(LitElement) {
 			 * Disables the checkbox
 			 */
 			disabled: {type: Boolean },
+			/**
+			 * Indicates a drag handle should be rendered for reordering an item
+			 */
 			draggable: { type: Boolean },
 			/**
 			 * Address of item link if navigable
