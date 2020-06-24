@@ -16,6 +16,10 @@ export const offscreenStyles = css`
 	}
 `;
 
+/**
+ * A component for positioning content offscreen to only be visible to screen readers.
+ * @slot - Default content placed inside of the component
+ */
 class Offscreen extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`

@@ -4,15 +4,10 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A half-circle progress indicator.
+ */
 class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
-	static get properties() {
-		return {
-			value: { type: Number },
-			max: { type: Number },
-			text: { type: String }
-		};
-	}
-
 	static get styles() {
 		return [ heading4Styles, bodySmallStyles, css`
 		:host {

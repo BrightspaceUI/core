@@ -7,29 +7,30 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
+ * A button component that can be used just like the native button for instances where only an icon is displayed.
  */
 class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Aligns the leading edge of text if value is set to "text".
+			 * Aligns the leading edge of text if value is set to "text"
+			 * @type {('text'|'')}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
-			 * Preset icon key (e.g. `tier1:gear`)
+			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
 			 */
 			icon: { type: String, reflect: true },
 
 			/**
-			 * Accessible text for the button
+			 * REQUIRED: Accessible text for the button
 			 */
 			text: { type: String, reflect: true },
 
 			/**
-			 * Indicates to display translucent (ex. on rich backgrounds)
+			 * Indicates to display translucent (e.g., on rich backgrounds)
 			 */
 			translucent: { type: Boolean, reflect: true }
 		};

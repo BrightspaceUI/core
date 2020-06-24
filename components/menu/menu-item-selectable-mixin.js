@@ -5,7 +5,7 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 	static get properties() {
 		return {
 			/**
-			 * This will set the item to be selected by default.
+			 * This will set the item to be selected by default
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**

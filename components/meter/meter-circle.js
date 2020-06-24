@@ -4,14 +4,10 @@ import { bodyStandardStyles } from '../typography/styles.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A circular progress indicator.
+ */
 class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
-	static get properties() {
-		return {
-			value: { type: Number },
-			max: { type: Number }
-		};
-	}
-
 	static get styles() {
 		return [ bodyStandardStyles, css`
 		:host {
