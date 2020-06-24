@@ -6,6 +6,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A component to help users understand where they are within the LMS. would be used as a child of d2l-breadcrumbs component (in slot)
+ * @fires d2l-breadcrumb-connected - Dispatched when the component is initialized to notify parent (so parent can set the compact attribute in event detail)
  */
 class Breadcrumb extends RtlMixin(LitElement) {
 
@@ -14,18 +15,36 @@ class Breadcrumb extends RtlMixin(LitElement) {
 			_compact: {
 				type: Boolean,
 			},
+
+			/**
+			 * The Url that breadcrumb is pointing to
+			 * @default "#"
+			 */
 			href: {
 				type: String,
 				reflect: true
 			},
+
+			/**
+			 * The target of breadcrumb link. Can be unspecified
+			 */
 			target: {
 				type: String,
 				reflect: true
 			},
+
+			/**
+			 * The text of the breadcrumb link. Mandatory Parameter.
+			 * @default ""
+			 */
 			text: {
 				type: String,
 				reflect: true
 			},
+
+			/**
+			 * The aria label of the breadcrumb. Will be replaced with the text if not specified
+			 */
 			ariaLabel: {
 				attribute: 'aria-label',
 				type: String,
