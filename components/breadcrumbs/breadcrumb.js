@@ -13,7 +13,6 @@ class Breadcrumb extends RtlMixin(LitElement) {
 		return {
 			_compact: {
 				type: Boolean,
-				reflect: false
 			},
 			href: {
 				type: String,
