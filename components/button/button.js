@@ -6,7 +6,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
 
 /**
- * The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
+ * A button component that can be used just like the native button element.
  * @slot - Default content placed inside of the button
  */
 class Button extends ButtonMixin(LitElement) {
@@ -14,7 +14,7 @@ class Button extends ButtonMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * A description to be added to the `button` for accessibility
+			 * A description to be added to the button for accessibility when text on button does not provide enough context
 			 */
 			description: { type: String }
 		};

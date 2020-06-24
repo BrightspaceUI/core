@@ -7,7 +7,7 @@ import { labelStyles } from '../typography/styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
+ * A button component that can be used just like the native button, but for advanced or de-emphasized actions.
  * @slot - Default content placed inside of the button
  */
 class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
@@ -15,17 +15,18 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * A description to be added to the `button` for accessibility
+			 * A description to be added to the button for accessibility when text on button does not provide enough context
 			 */
 			description: { type: String },
 
 			/**
-			 * Aligns the leading edge of text if value is set to "text".
+			 * Aligns the leading edge of text if value is set to "text"
+			 * @type {('text'|'')}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
-			 * Preset icon key (e.g. `tier1:gear`)
+			 * Preset icon key (e.g. "tier1:gear")
 			 */
 			icon: { type: String, reflect: true },
 
@@ -35,7 +36,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
 
 			/**
-			 * Text for the button
+			 * REQUIRED: Text for the button
 			 */
 			text: { type: String, reflect: true }
 		};
