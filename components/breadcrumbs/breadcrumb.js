@@ -4,13 +4,16 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A component to help users understand where they are within the LMS. would be used as a child of d2l-breadcrumbs component (in slot)
+ */
 class Breadcrumb extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
 			_compact: {
 				type: Boolean,
-				reflect: true
+				reflect: false
 			},
 			href: {
 				type: String,
