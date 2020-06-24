@@ -1,8 +1,8 @@
 import '../icons/icon.js';
 import '../link/link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class BreadCrumb extends RtlMixin(LitElement) {
 
