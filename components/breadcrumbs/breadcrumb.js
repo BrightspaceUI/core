@@ -39,13 +39,10 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				display: inline-flex;
 			}
 
-			.d2l-breadcrumb-wrapper {
-				align-items: center;
-			}
-
 			:host([compact]) .d2l-breadcrumb-wrapper {
 				display: flex;
 				flex-direction: row-reverse;
+				align-items: center;
 			}
 
 			d2l-icon {
