@@ -55,7 +55,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				width: 8px;
 			}
 
-			d2l-icon:dir(rtl) {
+			:host([dir="rtl"]) d2l-icon {
 				padding-left: 5px;
 				padding-right: 10px;
 			}
