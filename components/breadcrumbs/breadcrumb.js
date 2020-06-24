@@ -57,12 +57,12 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				padding-right: 10px;
 			}
 
-			:host([compact]) .d2l-breadcrumb-wrapper d2l-icon {
+			:host([compact]) d2l-icon {
 				padding-right: 10px;
 				padding-left: 0;
 			}
 
-			:host([dir="rtl"][compact]) .d2l-breadcrumb-wrapper d2l-icon {
+			:host([dir="rtl"][compact]) d2l-icon {
 				padding-right: 0;
 				padding-left: 10px;
 			}
