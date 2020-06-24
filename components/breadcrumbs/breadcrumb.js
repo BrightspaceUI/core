@@ -39,7 +39,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				display: inline-flex;
 			}
 
-			:host([compact]) .d2l-breadcrumb-wrapper {
+			.d2l-breadcrumb-wrapper[data-compact] {
 				display: flex;
 				flex-direction: row-reverse;
 				align-items: center;
@@ -57,12 +57,12 @@ class BreadCrumb extends RtlMixin(LitElement) {
 				padding-right: 10px;
 			}
 
-			:host([compact]) d2l-icon {
+			.d2l-breadcrumb-wrapper[data-compact] d2l-icon {
 				padding-right: 10px;
 				padding-left: 0;
 			}
 
-			:host([dir="rtl"][compact]) d2l-icon {
+			:host([dir="rtl"]) .d2l-breadcrumb-wrapper[data-compact] d2l-icon {
 				padding-right: 0;
 				padding-left: 10px;
 			}
@@ -78,7 +78,7 @@ class BreadCrumb extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<div class="d2l-breadcrumb-wrapper" role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
+			<div class="d2l-breadcrumb-wrapper" ?data-compact=${this.compact} role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
 				<d2l-link href="${this.href}" target="${ifDefined(this.target)}">${this.text}</d2l-link>
 				${this.compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
 			</div>
