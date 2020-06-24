@@ -49,9 +49,9 @@ describe('NewPositionEventDetails', () => {
 			});
 			let msg = '';
 			const fn = (item, index) => {
-				msg = `${item.key} has moved to position ${index + 1}`
+				msg = `${item.key} has moved to position ${index + 1}`;
 				return msg;
-			}
+			};
 			event.announceMove(list, {
 				announceFn: fn,
 				keyFn: keyFn
