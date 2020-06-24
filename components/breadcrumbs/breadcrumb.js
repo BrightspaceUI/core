@@ -4,11 +4,12 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class BreadCrumb extends RtlMixin(LitElement) {
+class Breadcrumb extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			compact: {
+			_compact: {
+				attribute: 'compact',
 				type: Boolean,
 				reflect: true
 			},
@@ -72,18 +73,18 @@ class BreadCrumb extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.href = '#';
-		this.compact = false;
+		this._compact = false;
 		this.text = '';
 	}
 
 	render() {
 		return html`
-			<div class="d2l-breadcrumb-wrapper" ?data-compact=${this.compact} role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
+			<div class="d2l-breadcrumb-wrapper" ?data-compact=${this._compact} role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
 				<d2l-link href="${this.href}" target="${ifDefined(this.target)}">${this.text}</d2l-link>
-				${this.compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
+				${this._compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
 			</div>
 		`;
 	}
 
 }
-customElements.define('d2l-breadcrumb', BreadCrumb);
+customElements.define('d2l-breadcrumb', Breadcrumb);

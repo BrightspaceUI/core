@@ -36,8 +36,8 @@ describe('d2l-breadcrumb', () => {
 			expect(elem.getAttribute('aria-label')).to.equal('Awesome Label');
 		});
 
-		it('should reflect "compact" property to attribute', async() => {
-			elem.compact = true;
+		it('should reflect "_compact" property to attribute', async() => {
+			elem._compact = true;
 			await elem.updateComplete;
 			expect(elem.hasAttribute('compact')).to.be.true;
 		});
@@ -58,8 +58,8 @@ describe('d2l-breadcrumb', () => {
 			expect(elem.text).to.equal('');
 		});
 
-		it('should default "compact" property to "false" when unset', () => {
-			expect(elem.compact).to.be.false;
+		it('should default "_compact" property to "false" when unset', () => {
+			expect(elem._compact).to.be.false;
 		});
 	});
 
