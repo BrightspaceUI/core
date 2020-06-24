@@ -19,6 +19,10 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 				position: relative;
 			}
 
+			:host([hidden]) {
+				display: none;
+			}
+
 			:host::after {
 				background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(251, 252, 252));
 				bottom: 0;
