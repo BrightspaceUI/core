@@ -2,6 +2,7 @@ import '../icons/icon.js';
 import '../link/link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 class BreadCrumb extends RtlMixin(LitElement) {
 
@@ -76,14 +77,12 @@ class BreadCrumb extends RtlMixin(LitElement) {
 		this.href = '#';
 		this.compact = false;
 		this.text = '';
-		this.target = '';
-		this.ariaLabel = '';
 	}
 
 	render() {
 		return html`
 			<div class="d2l-breadcrumb-wrapper" role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
-				<d2l-link href="${this.href}" target="${this.target}">${this.text}</d2l-link>
+				<d2l-link href="${this.href}" target="${ifDefined(this.target)}">${this.text}</d2l-link>
 				${this.compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
 			</div>
 		`;

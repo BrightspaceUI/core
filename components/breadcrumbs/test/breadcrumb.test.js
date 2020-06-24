@@ -58,14 +58,6 @@ describe('d2l-breadcrumb', () => {
 			expect(elem.text).to.equal('');
 		});
 
-		it('should default "target" property to "" when unset', () => {
-			expect(elem.target).to.equal('');
-		});
-
-		it('should default "ariaLabel" property to "" when unset', () => {
-			expect(elem.ariaLabel).to.equal('');
-		});
-
 		it('should default "compact" property to "false" when unset', () => {
 			expect(elem.compact).to.be.false;
 		});
