@@ -55,58 +55,28 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.compact = false;
-		this._setChildrenCompactProp();
 	}
 
-	firstUpdated(changedProperties) {
-		if (changedProperties.has('compact')) {
-			this._setChildrenCompactProp();
-		}
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('d2l-breadcrumb-connected', this._handleBreadCrumbConnected, true);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('d2l-breadcrumb-connected', this._handleBreadCrumbConnected, true);
 	}
 
 	render() {
 		return html`
 			<div class="d2l-breadcrumbs-wrapper">
-				<slot @slotchange="${this._handleSlotChange}"></slot>
+				<slot></slot>
 			</div>
 		`;
 	}
 
-	updated(changedProperties) {
-		if (changedProperties.has('compact')) {
-			this._setChildrenCompactProp();
-		}
-	}
-
-	_findBreadCrumbs(nodes) {
-		let breadCrumbs = nodes.filter(item => item.nodeName === 'D2L-BREADCRUMB');
-		nodes.forEach(node => {
-			if (node.children) {
-				breadCrumbs = breadCrumbs.concat(this._findBreadCrumbs([...node.children]));
-			}
-		});
-		return breadCrumbs;
-	}
-
-	_handleSlotChange() {
-		this._setChildrenCompactProp();
-	}
-
-	_setChildrenCompactProp() {
-		if (this.shadowRoot) {
-			const slot = this.shadowRoot.querySelector('slot');
-			if (slot) {
-				const breadCrumbs = this._findBreadCrumbs(slot.assignedNodes());
-				breadCrumbs.forEach(node => {
-					if (this.compact) {
-						node.setAttribute('compact', '');
-					} else {
-						node.removeAttribute('compact');
-					}
-				});
-			}
-		}
-
+	_handleBreadCrumbConnected(e) {
+		e.detail.compact = this.compact;
 	}
 
 }

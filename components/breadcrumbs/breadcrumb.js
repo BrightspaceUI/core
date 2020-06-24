@@ -9,7 +9,6 @@ class Breadcrumb extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			_compact: {
-				attribute: 'compact',
 				type: Boolean,
 				reflect: true
 			},
@@ -75,6 +74,18 @@ class Breadcrumb extends RtlMixin(LitElement) {
 		this.href = '#';
 		this._compact = false;
 		this.text = '';
+	}
+
+	firstUpdated() {
+		const event = new CustomEvent(
+			'd2l-breadcrumb-connected', {
+				bubbles: true,
+				composed: true,
+				detail: { }
+			}
+		);
+		this.dispatchEvent(event);
+		this._compact = !!event.detail.compact;
 	}
 
 	render() {
