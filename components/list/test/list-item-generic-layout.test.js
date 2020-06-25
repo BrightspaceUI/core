@@ -464,7 +464,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 		for (const test of tests) {
 			it(test.desc, async() => {
-				setTimeout(() => dispatchKeyEvent(layout, test.key));
+				setTimeout(() => dispatchKeyEvent(layout, {code: test.key}));
 				await oneEvent(actionable, 'click');
 			});
 		}
