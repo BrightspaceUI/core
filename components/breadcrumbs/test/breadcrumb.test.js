@@ -35,12 +35,6 @@ describe('d2l-breadcrumb', () => {
 			await elem.updateComplete;
 			expect(elem.getAttribute('aria-label')).to.equal('Awesome Label');
 		});
-
-		it('should reflect "_compact" property to attribute', async() => {
-			elem._compact = true;
-			await elem.updateComplete;
-			expect(elem.hasAttribute('compact')).to.be.true;
-		});
 	});
 
 	describe('constructor', () => {
