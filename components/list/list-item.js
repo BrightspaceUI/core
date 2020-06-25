@@ -66,8 +66,9 @@ class ListItem extends RtlMixin(LitElement) {
 			 */
 			selected: { type: Boolean, reflect: true },
 			_breakpoint: { type: Number },
-			_hovering: { type: Boolean },
-			_focusing: { type: Boolean }
+			_hoveringLink: { type: Boolean },
+			_focusing: { type: Boolean },
+			_focusingLink: { type: Boolean }
 		};
 	}
 
@@ -76,6 +77,7 @@ class ListItem extends RtlMixin(LitElement) {
 		return [ checkboxStyles, css`
 			:host {
 				display: block;
+				position: relative;
 				margin-top: -1px;
 			}
 			:host[hidden] {
@@ -95,6 +97,7 @@ class ListItem extends RtlMixin(LitElement) {
 				border-bottom: 1px solid transparent;
 			}
 			d2l-list-item-generic-layout {
+				position: relative;
 				border-bottom: 1px solid transparent;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
@@ -161,7 +164,6 @@ class ListItem extends RtlMixin(LitElement) {
 				max-height: 5.1rem;
 				max-width: 9rem;
 			}
-
 			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
@@ -171,20 +173,36 @@ class ListItem extends RtlMixin(LitElement) {
 				max-height: 6rem;
 				max-width: 10.8rem;
 			}
-
 			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-
 			input[type="checkbox"].d2l-input-checkbox {
 				margin: 1.15rem 0.9rem 1.15rem 0;
 			}
-
 			:host([dir="rtl"]) input[type="checkbox"].d2l-input-checkbox {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
+			:host([selectable]:not([disabled]):hover) d2l-list-item-generic-layout,
+			:host([selectable]:not([disabled])) d2l-list-item-generic-layout.focusing {
+				background-color: var(--d2l-color-regolith);
+			}
+			:host([selected]:not([disabled]):hover) d2l-list-item-generic-layout,
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.focusing {
+				background-color: #F3FBFF;
+				border-color: #79B5DF;
+			}
+			:host([selected]:not([disabled]):hover) .d2l-list-item-active-border,
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.focusing + .d2l-list-item-active-border {
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				height: 1px;
+				z-index: 5;
+				background: #79B5DF;
+			}
+
 		`];
 	}
 
@@ -233,17 +251,20 @@ class ListItem extends RtlMixin(LitElement) {
 
 	render() {
 		const classes = {
-			'd2l-visible-on-ancestor-target': true
+			'd2l-visible-on-ancestor-target': true,
+			'focusing': this._focusing,
 		};
 		const contentClasses = {
 			'd2l-list-item-content': true,
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
-			'hovering': this._hovering,
-			'focusing': this._focusing,
+			'hovering': this._hoveringLink,
+			'focusing': this._focusingLink,
 		};
 
 		return html`
 			<d2l-list-item-generic-layout
+				@focusin="${this._handleFocusIn}"
+				@focusout="${this._handleFocusOut}"
 				class="${classMap(classes)}"
 				data-breakpoint="${this._breakpoint}"
 				data-separators="${ifDefined(this._separators)}"
@@ -261,10 +282,10 @@ class ListItem extends RtlMixin(LitElement) {
 				<a slot="content-action"
 					href="${this.href}"
 					aria-labelledby="${this._contentId}"
-					@mouseenter="${this._handleMouseEnter}"
-					@mouseleave="${this._handleMouseLeave}"
-					@focus="${this._handleFocus}"
-					@blur="${this._handleBlur}"></a>
+					@mouseenter="${this._handleMouseEnterLink}"
+					@mouseleave="${this._handleMouseLeaveLink}"
+					@focus="${this._handleFocusLink}"
+					@blur="${this._handleBlurLink}"></a>
 				` : nothing }
 				<div slot="content"
 					class="${classMap(contentClasses)}"
@@ -277,6 +298,7 @@ class ListItem extends RtlMixin(LitElement) {
 					<slot name="actions"></slot>
 				</div>
 			</d2l-list-item-generic-layout>
+			<div class="d2l-list-item-active-border"></div>
 		`;
 
 	}
@@ -320,24 +342,32 @@ class ListItem extends RtlMixin(LitElement) {
 		}));
 	}
 
+	_handleBlurLink() {
+		this._focusingLink = false;
+	}
+
 	_handleCheckboxChange(e) {
 		this.setSelected(e.target.checked);
 	}
 
-	_handleBlur() {
-		this._focusing = false;
-	}
-
-	_handleFocus() {
+	_handleFocusIn() {
 		this._focusing = true;
 	}
 
-	_handleMouseEnter() {
-		this._hovering = true;
+	_handleFocusLink() {
+		this._focusingLink = true;
 	}
 
-	_handleMouseLeave() {
-		this._hovering = false;
+	_handleFocusOut() {
+		this._focusing = false;
+	}
+
+	_handleMouseEnterLink() {
+		this._hoveringLink = true;
+	}
+
+	_handleMouseLeaveLink() {
+		this._hoveringLink = false;
 	}
 
 }
