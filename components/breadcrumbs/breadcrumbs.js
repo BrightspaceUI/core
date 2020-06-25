@@ -5,7 +5,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 /**
  * A component to help users understand where they are within the LMS. would be used the parent of d2l-breadcrumb and will render them in a slot
  */
-class BreadCrumbs extends RtlMixin(LitElement) {
+class Breadcrumbs extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
@@ -46,19 +46,19 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 				right: auto;
 			}
 
-			.d2l-breadcrumbs-wrapper {
+			nav {
 				overflow: hidden;
 				position: relative;
 				white-space: nowrap;
 			}
 
-			.d2l-breadcrumbs-wrapper ol {
+			ol {
 				list-style: none;
 				margin: 0;
 				padding: 0;
 			}
 
-			:host([compact]) .d2l-breadcrumbs-wrapper ::slotted(d2l-breadcrumb:not(:last-of-type)) {
+			:host([compact]) nav ol ::slotted(d2l-breadcrumb:not(:last-of-type)) {
 				display:none;
 			}
 		`;
@@ -71,7 +71,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<nav aria-label="Breadcrumb" class="d2l-breadcrumbs-wrapper" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
+			<nav aria-label="Breadcrumb" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
 				<ol>
 					<slot></slot>
 				</ol>
@@ -84,4 +84,4 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 	}
 
 }
-customElements.define('d2l-breadcrumbs', BreadCrumbs);
+customElements.define('d2l-breadcrumbs', Breadcrumbs);
