@@ -55,6 +55,7 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 			.d2l-breadcrumbs-wrapper ol {
 				margin: 0;
 				padding-left: 0;
+				padding-right: 0;
 				list-style: none;
 			}
 
