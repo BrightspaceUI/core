@@ -17,6 +17,15 @@ class Breadcrumb extends RtlMixin(LitElement) {
 			},
 
 			/**
+			 * @ignore
+			 */
+			_role: {
+				type: 'string',
+				attribute: 'role',
+				reflect: true
+			},
+
+			/**
 			 * The Url that breadcrumb is pointing to
 			 * @default "#"
 			 */
@@ -95,6 +104,8 @@ class Breadcrumb extends RtlMixin(LitElement) {
 		this.href = '#';
 		this._compact = false;
 		this.text = '';
+		this._role = 'presentation';
+
 	}
 
 	connectedCallback() {
@@ -112,10 +123,10 @@ class Breadcrumb extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<div class="d2l-breadcrumb-wrapper" ?data-compact=${this._compact} role="navigation" aria-label="${this.ariaLabel ? this.ariaLabel : this.text}">
-				<d2l-link href="${this.href}" target="${ifDefined(this.target)}">${this.text}</d2l-link>
+			<li class="d2l-breadcrumb-wrapper" ?data-compact=${this._compact} role="navigation">
+				<d2l-link aria-label="${this.ariaLabel ? this.ariaLabel : this.text}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</d2l-link>
 				${this._compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
-			</div>
+			</li>
 		`;
 	}
 

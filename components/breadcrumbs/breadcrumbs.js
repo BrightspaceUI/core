@@ -52,6 +52,12 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 				white-space: nowrap;
 			}
 
+			.d2l-breadcrumbs-wrapper ol {
+				margin: 0;
+				padding-left: 0;
+				list-style: none;
+			}
+
 			:host([compact]) .d2l-breadcrumbs-wrapper ::slotted(d2l-breadcrumb:not(:last-of-type)) {
 				display:none;
 			}
@@ -65,9 +71,11 @@ class BreadCrumbs extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<div class="d2l-breadcrumbs-wrapper" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
-				<slot></slot>
-			</div>
+			<nav aria-label="Breadcrumb" class="d2l-breadcrumbs-wrapper" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
+				<ol>
+					<slot></slot>
+				</ol>
+			</nav>
 		`;
 	}
 
