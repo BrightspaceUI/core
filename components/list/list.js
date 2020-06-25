@@ -26,6 +26,8 @@ class List extends LitElement {
 			grid: { type: Boolean },
 			/**
 			 * Display separators. Valid values are "all" (default), "between", "none"
+			 * @type {('all'|'between'|'none')}
+			 * @default "all"
 			 */
 			separators: { type: String, reflect: true }
 		};
@@ -42,6 +44,7 @@ class List extends LitElement {
 	constructor() {
 		super();
 		this.extendSeparators = false;
+		this.grid = false;
 	}
 
 	firstUpdated() {

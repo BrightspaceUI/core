@@ -8,7 +8,7 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * The `d2l-alert` component can be used to communicate important information relating to the state of the system and the user's work flow.
+ * A component for communicating important information relating to the state of the system and the user's work flow.
  * @slot - Default content placed inside of the component
  * @fires d2l-alert-closed - Dispatched when the alert's close button is clicked
  * @fires d2l-alert-button-pressed - Dispatched when the alert's action button is clicked
@@ -23,17 +23,18 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			buttonText: { type: String, attribute: 'button-text' },
 
 			/**
-			 * Gives the alert a close button that will close the alert when clicked.
+			 * Gives the alert a close button that will close the alert when clicked
 			 */
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
 
 			/**
-			 * The text that is displayed below the main alert message.
+			 * The text that is displayed below the main alert message
 			 */
 			subtext: { type: String },
 
 			/**
-			 * Type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
+			 * Type of the alert being displayed
+			 * @type {('default'|'critical'|'success'|'warning')}
 			 */
 			type: { type: String, reflect: true }
 		};

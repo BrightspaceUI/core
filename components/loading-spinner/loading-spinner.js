@@ -9,16 +9,17 @@ class LoadingSpinner extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Color of the animated bar. Default is "--d2l-color-celestine".
+			 * Color of the animated bar
+			 * @default "--d2l-color-celestine"
 			 */
 			color: { type: String },
 			/**
-			 * Height and width (px) of the spinner. Default is 50.
+			 * Height and width (px) of the spinner
+			 * @default 50
 			 */
 			size: { type: Number }
 		};
 	}
-
 	static get styles() {
 		return css`
 

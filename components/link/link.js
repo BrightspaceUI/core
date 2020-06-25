@@ -41,7 +41,7 @@ class Link extends LitElement {
 			 */
 			download: { type: Boolean },
 			/**
-			 * URL or URL fragment of the link (REQUIRED)
+			 * REQUIRED: URL or URL fragment of the link
 			 */
 			href: { type: String },
 			/**
