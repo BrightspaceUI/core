@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "Stängningsvarning",
+	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.calendar.notSelected": "Inte markerad.",
 	"components.calendar.selected": "Markerad.",
 	"components.calendar.show": "Visa {month}",

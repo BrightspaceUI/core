@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "Waarschuwing sluiten",
+	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.calendar.notSelected": "Niet geselecteerd.",
 	"components.calendar.selected": "Geselecteerd.",
 	"components.calendar.show": "{month} tonen",

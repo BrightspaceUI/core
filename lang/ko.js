@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "경보 닫기",
+	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.calendar.notSelected": "선택되지 않음.",
 	"components.calendar.selected": "선택됨.",
 	"components.calendar.show": "{month} 표시",

@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "Fechar Alerta",
+	"components.breadcrumbs.breadcrumb": "Auxiliar de Navegação",
 	"components.calendar.notSelected": "Não selecionado.",
 	"components.calendar.selected": "Selecionado.",
 	"components.calendar.show": "Mostrar {month}",

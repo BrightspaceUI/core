@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "Kapatma Uyarısı",
+	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.calendar.notSelected": "Seçili değil.",
 	"components.calendar.selected": "Seçili.",
 	"components.calendar.show": "{month} öğesini göster",
