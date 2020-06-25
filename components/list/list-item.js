@@ -188,12 +188,14 @@ class ListItem extends RtlMixin(LitElement) {
 			:host([selectable]:not([disabled])) d2l-list-item-generic-layout.focusing {
 				background-color: var(--d2l-color-regolith);
 			}
-			:host([selected]:not([disabled]):hover) d2l-list-item-generic-layout,
-			:host([selected]:not([disabled])) d2l-list-item-generic-layout.focusing {
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
 				background-color: #F3FBFF;
+			}
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout,
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.focusing {
 				border-color: #79B5DF;
 			}
-			:host([selected]:not([disabled]):hover) .d2l-list-item-active-border,
+			:host([selected]:not([disabled])) .d2l-list-item-active-border,
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout.focusing + .d2l-list-item-active-border {
 				position: absolute;
 				width: 100%;
