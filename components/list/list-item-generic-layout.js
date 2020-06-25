@@ -380,7 +380,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 		if (preventDefault) {
 			event.preventDefault();
-			event.stopPropogation();
+			event.stopPropagation();
 		}
 	}
 
