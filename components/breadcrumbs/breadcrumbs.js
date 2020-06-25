@@ -1,11 +1,12 @@
 import './breadcrumb.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A component to help users understand where they are within the LMS. would be used the parent of d2l-breadcrumb and will render them in a slot
  */
-class Breadcrumbs extends RtlMixin(LitElement) {
+class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
@@ -65,7 +66,7 @@ class Breadcrumbs extends RtlMixin(LitElement) {
 
 	render() {
 		return html`
-			<nav aria-label="Breadcrumb" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
+			<nav aria-label="${this.localize('components.breadcrumbs.breadcrumb')}" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
 				<div role="list">
 					<slot></slot>
 				</div>
