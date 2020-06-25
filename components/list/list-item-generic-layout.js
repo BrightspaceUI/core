@@ -377,7 +377,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				break;
 			default:
 				preventDefault = false;
-				break;
 		}
 		if (preventDefault) {
 			event.preventDefault();
