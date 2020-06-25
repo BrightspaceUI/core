@@ -3,11 +3,6 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class ListItemPlacementMarker extends RtlMixin(LitElement) {
-	static get properties() {
-		return {
-			role: {type: String, reflect: true}
-		};
-	}
 
 	static get styles() {
 		return css`
@@ -62,11 +57,6 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				display: flex;
 			}
 		`;
-	}
-
-	constructor() {
-		super();
-		this.role = 'img';
 	}
 
 	render() {
