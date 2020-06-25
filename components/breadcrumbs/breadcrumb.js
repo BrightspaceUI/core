@@ -14,6 +14,7 @@ class Breadcrumb extends RtlMixin(LitElement) {
 		return {
 			_compact: {
 				type: Boolean,
+				attribute: false,
 			},
 
 			/**
