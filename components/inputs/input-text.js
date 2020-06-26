@@ -7,33 +7,112 @@ import { inputStyles } from './input-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * This component wraps the native "<input type="text">" tag and is intended primarily for inputting generic text, email addresses and URLs.
+ * @slot left - Slot within the input on the left side. Useful for an "icon" or "button-icon".
+ * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
+ */
 class InputText extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Indicates that the input has a popup menu
+			 */
 			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
+			/**
+			 * Indicates that the input value is invalid
+			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
+			/**
+			 * @ignore
+			 */
 			atomic: { type: String },
+			/**
+			 * Specifies which types of values can be autofilled by the browser
+			 */
 			autocomplete: { type: String },
+			/**
+			 * When set, will automatically place focus on the input
+			 */
 			autofocus: { type: Boolean },
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean, reflect: true },
+			/**
+			 * REQUIRED: Label for the input
+			 */
 			label: { type: String },
+			/**
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * @ignore
+			 */
 			live: { type: String },
+			/**
+			 * For number inputs, maximum value
+			 */
 			max: { type: String },
+			/**
+			 * Imposes an upper character limit
+			 */
 			maxlength: { type: Number },
+			/**
+			 * For number inputs, minimum value
+			 */
 			min: { type: String },
+			/**
+			 * Imposes a lower character limit
+			 */
 			minlength: { type: Number },
+			/**
+			 * Name of the input
+			 */
 			name: { type: String },
+			/**
+			 * Regular expression pattern to validate the value
+			 */
 			pattern: { type: String },
+			/**
+			 * Placeholder text
+			 */
 			placeholder: { type: String },
+			/**
+			 * Prevents pressing ENTER from submitting forms
+			 */
 			preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
+			/**
+			 * Makes the input read-only
+			 */
 			readonly: { type: Boolean },
+			/**
+			 * Indicates that a value is required
+			 */
 			required: { type: Boolean, reflect: true },
+			/**
+			 * Size of the input
+			 */
 			size: { type: Number },
+			/**
+			 * For number inputs, sets the step size
+			 */
 			step: { type: String },
+			/**
+			 * Text for additional screenreader and mouseover context
+			 */
 			title: { type: String },
+			/**
+			 * The type of the text input
+			 * @type {('text'|'email'|'number'|'password'|'tel'|'url')}
+			 */
 			type: { type: String },
+			/**
+			 * Value of the input
+			 */
 			value: { type: String },
 			_firstSlotWidth: { type: Number },
 			_focused: { type: Boolean },

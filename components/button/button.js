@@ -5,10 +5,17 @@ import { buttonStyles } from './button-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
 
+/**
+ * A button component that can be used just like the native button element.
+ * @slot - Default content placed inside of the button
+ */
 class Button extends ButtonMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * A description to be added to the button for accessibility when text on button does not provide enough context
+			 */
 			description: { type: String }
 		};
 	}

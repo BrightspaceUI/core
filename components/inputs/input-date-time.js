@@ -7,12 +7,25 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
+ * @fires change - Dispatched when there is a change in selected date or selected time. "value" reflects the selected value and is in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
+ */
 class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * REQUIRED: Accessible label for the input
+			 */
 			label: { type: String },
+			/**
+			 * Value of the input. This should be in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ") and in UTC time (i.e., do NOT localize to the user's timezone).
+			 */
 			value: { type: String },
 			_parsedDateTime: { type: String }
 		};
@@ -39,7 +52,7 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	constructor() {
 		super();
-
+		this.disabled = false;
 		this._parsedDateTime = '';
 	}
 

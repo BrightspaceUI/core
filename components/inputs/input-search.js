@@ -7,16 +7,41 @@ import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * This component wraps the native "<input type="search">"" element and is for text searching.
+ * @fires d2l-input-search-searched - Dispatched when a search is performed
+ */
 class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * REQUIRED: Accessible label for the input
+			 */
 			label: { type: String },
+			/**
+			 * @ignore
+			 */
 			lastSearchValue: { type: String, attribute: false },
+			/**
+			 * Imposes an upper character limit
+			 */
 			maxlength: { type: Number },
+			/**
+			 * Prevents the "clear" button from appearing
+			 */
 			noClear: { type: Boolean, attribute: 'no-clear' },
+			/**
+			 * Placeholder text
+			 */
 			placeholder: { type: String },
+			/**
+			 * Value of the input
+			 */
 			value: { type: String },
 			_focussed: { type: Boolean, attribute: false },
 			_hovered: { type: Boolean, attribute: false }

@@ -4,16 +4,24 @@ import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/vi
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 
+/**
+ * A simple/minimal opener for dropdown content.
+ * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
+ */
 class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			/**
-			 * Label for the context-menu button (required for accessibility).
+			 * REQUIRED: Label for the context-menu button
 			 */
 			text: {
 				type: String
 			},
+
+			/**
+			 * Attribute for busy/rich backgrounds
+			 */
 			translucent: {
 				type: Boolean
 			},

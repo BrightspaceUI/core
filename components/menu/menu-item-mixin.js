@@ -2,14 +2,38 @@ export const MenuItemMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the menu item
+			 */
 			disabled: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 */
 			first: { type: Boolean, reflect: true }, // set by d2l-menu
+			/**
+			 * @ignore
+			 */
 			hasChildView: { type: Boolean },
+			/**
+			 * @ignore
+			 */
 			hidden: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 */
 			last: { type: String, reflect: true }, // set by d2l-menu
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			tabindex: { type: String, reflect: true },
-			text: String
+			/**
+			 * REQUIRED: Text displayed by the menu item
+			 */
+			text: { type: String }
 		};
 	}
 
@@ -22,6 +46,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 			SPACE: 32
 		};
 		this.__children = null;
+
+		this.disabled = false;
 		this.role = 'menuitem';
 		this.tabindex = -1;
 	}
