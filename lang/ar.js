@@ -2,7 +2,7 @@
 
 export default {
 	"components.alert.close": "إغلاق التنبيه",
-  "components.breadcrumbs.breadcrumb": "فتات الخبز",
+	"components.breadcrumbs.breadcrumb": "فتات الخبز",
 	"components.calendar.notSelected": "لم يتم التحديد.",
 	"components.calendar.selected": "تم التحديد.",
 	"components.calendar.show": "إظهار {month}",
