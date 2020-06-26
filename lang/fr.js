@@ -10,7 +10,7 @@ export default {
 	"components.input-date.openInstructions": "Utiliser le format de date {format}. Utiliser la flèche vers le bas ou la touche d’entrée pour accéder au mini-calendrier.",
 	"components.input-date.setToToday": "Régler à aujourd’hui",
 	"components.input-date-time.date": "Date",
-	"components.input-date-time.time": "Durée",
+	"components.input-date-time.time": "Heure",
 	"components.input-search.clear": "Effacer la recherche",
 	"components.input-search.search": "Rechercher",
 	"components.menu-item-return.return": "Retour au menu précédent.",
