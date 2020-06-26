@@ -11,7 +11,7 @@ class InputFieldset extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Label for the fieldset (REQUIRED)
+			 * REQUIRED: Label for the fieldset
 			 */
 			label: { type: String },
 			/**

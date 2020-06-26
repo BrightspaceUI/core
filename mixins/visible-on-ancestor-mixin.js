@@ -35,7 +35,7 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
-			 * Component is initially hidden and becomes visible when user hovers or focuses within an ancestor marked with the `d2l-visible-on-ancestor-target` class.
+			 * @ignore
 			 */
 			visibleOnAncestor: { type: Boolean, reflect: true, attribute: 'visible-on-ancestor' },
 			__voaState: { type: String, reflect: true, attribute: '__voa-state' }

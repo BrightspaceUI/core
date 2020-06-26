@@ -13,7 +13,7 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 	static get properties() {
 		return {
 			/**
-			 * Label for the context-menu button (REQUIRED for accessibility).
+			 * REQUIRED: Label for the context-menu button
 			 */
 			text: {
 				type: String
