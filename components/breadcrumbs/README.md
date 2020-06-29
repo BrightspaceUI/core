@@ -71,10 +71,10 @@ The `d2l-breadcrumbs` element can be used to help users understand where they ar
 **d2l-breadcrumb (child) Properties:**
 
 - `compact` (Boolean, default: `'false'`): indicates whether the child component should render in compact mode (automatically set by parent)
-- `href` (String, default: `'#'`): Href of the breadcrumb item
-- `target` (String, default: `'#'`): Target of the breadcrumb item
-- `text` (String, default: `'#'`): Text of the breadcrumb item
-- `aria-label` (String, default: `'#'`): AriaLabel of breadcrumb item
+- `href` (String): Href of the breadcrumb item
+- `target` (String): Target of the breadcrumb item
+- `text` (String, default: `''`): Text of the breadcrumb item
+- `aria-label` (String): AriaLabel of breadcrumb item
 
 ## Future Enhancements
 

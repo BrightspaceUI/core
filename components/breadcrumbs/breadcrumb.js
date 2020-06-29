@@ -28,7 +28,6 @@ class Breadcrumb extends RtlMixin(LitElement) {
 
 			/**
 			 * The Url that breadcrumb is pointing to
-			 * @default "#"
 			 */
 			href: {
 				type: String,
@@ -102,7 +101,6 @@ class Breadcrumb extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.href = '#';
 		this._compact = false;
 		this.text = '';
 		this._role = 'listitem';

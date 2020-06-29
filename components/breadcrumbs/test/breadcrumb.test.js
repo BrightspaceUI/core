@@ -44,10 +44,6 @@ describe('d2l-breadcrumb', () => {
 	});
 
 	describe('default property values', () => {
-		it('should default "href" property to "#" when unset', () => {
-			expect(elem.href).to.equal('#');
-		});
-
 		it('should default "text" property to "" when unset', () => {
 			expect(elem.text).to.equal('');
 		});
