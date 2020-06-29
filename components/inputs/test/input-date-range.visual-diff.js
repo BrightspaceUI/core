@@ -22,6 +22,7 @@ describe('d2l-input-date-range', () => {
 		'disabled',
 		'invalid-start-value',
 		'labelled',
+		'label-hidden',
 		'start-end-label',
 		'start-end-label-long',
 		'start-end-value'

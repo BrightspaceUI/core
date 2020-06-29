@@ -4,19 +4,52 @@ import './input-fieldset.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
+/**
+ * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
+ * @fires change - Dispatched when a start or end date is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar date format ("YYYY-MM-DD").
+ */
+class InputDateRange extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
-			disabled: { type: Boolean },
+			/**
+			 * Disables the inputs
+			 */
+			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Label for the end date input
+			 * @default "End Date"
+			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
+			/**
+			 * Value of the end date input
+			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
-			label: { type: String },
+			/**
+			 * REQUIRED: Accessible label for the range
+			 */
+			label: { type: String, reflect: true },
+			/**
+			 * Hides the label visually
+			 */
+			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
+			/**
+			 * Maximum valid date that could be selected by a user
+			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			/**
+			 * Minimum valid date that could be selected by a user
+			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+			/**
+			 * Label for the start date input
+			 * @default "Start Date"
+			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
+			/**
+			 * Value of the start date input
+			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String }
 		};
 	}
@@ -25,19 +58,15 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return css`
 			:host {
 				display: inline-block;
-				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
 			}
 			d2l-input-date {
-				padding-right: 1rem;
-				padding-top: 0.25rem;
+				display: block;
 			}
-			:host([dir="rtl"]) d2l-input-date {
-				padding-left: 1rem;
-				padding-right: 0;
-				padding-top: 0.25rem;
+			.d2l-input-date-range-end {
+				padding-top: 1rem;
 			}
 		`;
 	}
@@ -54,7 +83,7 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
 		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
 		return html`
-			<d2l-input-fieldset label="${ifDefined(this.label)}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden=${this.labelHidden}>
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
@@ -78,7 +107,7 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	focus() {
-		const input = this.shadowRoot.querySelector('d2l-input-date');
+		const input = this.shadowRoot.querySelector('d2l-input-fieldset');
 		if (input) input.focus();
 	}
 
