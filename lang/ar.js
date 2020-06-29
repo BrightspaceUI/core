@@ -6,7 +6,7 @@ export default {
 	"components.calendar.notSelected": "لم يتم التحديد.",
 	"components.calendar.selected": "تم التحديد.",
 	"components.calendar.show": "إظهار {month}",
-	"components.dialog.close": "إغلاق مربع الحوار هذا",
+	"components.dialog.close": "إغلاق",
 	"components.input-date.clear": "مسح",
 	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
 	"components.input-date.setToToday": "تعيين إلى اليوم",
