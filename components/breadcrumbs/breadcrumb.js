@@ -119,10 +119,10 @@ class Breadcrumb extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const icon = this._compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`;
 		return html`
 			<div class="d2l-breadcrumb-wrapper" ?data-compact=${this._compact}>
-				<a class="d2l-link" aria-label="${ifDefined(this.ariaLabel)}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</a>
-				${this._compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
+				<a class="d2l-link" aria-label="${ifDefined(this.ariaLabel)}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</a>${icon}
 			</div>
 		`;
 	}
