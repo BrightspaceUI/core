@@ -12,53 +12,30 @@ class Breadcrumb extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			_compact: {
-				type: Boolean,
-				attribute: false,
-			},
-
 			/**
 			 * @ignore
 			 */
-			_role: {
-				type: 'string',
-				attribute: 'role',
-				reflect: true
-			},
-
+			_compact: { type: Boolean, attribute: false, },
+			/**
+			 * @ignore
+			 */
+			_role: { type: 'string', attribute: 'role', reflect: true },
 			/**
 			 * The Url that breadcrumb is pointing to
 			 */
-			href: {
-				type: String,
-				reflect: true
-			},
-
+			href: { type: String, reflect: true },
 			/**
-			 * The target of breadcrumb link. Can be unspecified
+			 * The target of breadcrumb link
 			 */
-			target: {
-				type: String,
-				reflect: true
-			},
-
+			target: { type: String, reflect: true },
 			/**
-			 * The text of the breadcrumb link. Mandatory Parameter.
-			 * @default ""
+			 * REQUIRED: text of the breadcrumb link
 			 */
-			text: {
-				type: String,
-				reflect: true
-			},
-
+			text: { type: String, reflect: true },
 			/**
-			 * The aria label of the breadcrumb. Will be replaced with the text if not specified
+			 * ARIA label of the breadcrumb
 			 */
-			ariaLabel: {
-				attribute: 'aria-label',
-				type: String,
-				reflect: true
-			}
+			ariaLabel: { attribute: 'aria-label', type: String, reflect: true }
 		};
 	}
 

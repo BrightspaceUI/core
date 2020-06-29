@@ -13,10 +13,7 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			/**
 			 * Renders in compact mode, displaying only the last item
 			 */
-			compact: {
-				type: Boolean,
-				reflect: true
-			}
+			compact: { type: Boolean, reflect: true }
 		};
 	}
 
