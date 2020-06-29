@@ -1,7 +1,7 @@
 import '../icons/icon.js';
-import '../link/link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { linkStyles } from '../link/link.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
@@ -64,7 +64,7 @@ class Breadcrumb extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return css`
+		return [linkStyles, css`
 			:host {
 				align-items: center;
 				display: inline-flex;
@@ -97,7 +97,7 @@ class Breadcrumb extends RtlMixin(LitElement) {
 				padding-right: 0;
 				padding-left: 10px;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -125,7 +125,7 @@ class Breadcrumb extends RtlMixin(LitElement) {
 	render() {
 		return html`
 			<div class="d2l-breadcrumb-wrapper" ?data-compact=${this._compact}>
-				<d2l-link aria-label="${ifDefined(this.ariaLabel)}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</d2l-link>
+				<a class="d2l-link" aria-label="${ifDefined(this.ariaLabel)}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</a>
 				${this._compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`}
 			</div>
 		`;
