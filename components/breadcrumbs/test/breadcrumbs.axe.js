@@ -1,7 +1,10 @@
+import '../breadcrumb.js';
+import '../breadcrumb-current-page.js';
 import '../breadcrumbs.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
 describe('d2l-breadcrumbs', () => {
+
 	[
 		'max-width: 250px; width: 250px;',
 		'',
@@ -18,6 +21,15 @@ describe('d2l-breadcrumbs', () => {
 				await expect(elem).to.be.accessible();
 			});
 		});
+	});
+
+	it('passes aXe for current page', async() => {
+		const elem = await fixture(html`
+			<d2l-breadcrumbs>
+				<d2l-breadcrumb href="page1.html" text="Page 1"></d2l-breadcrumb>
+				<d2l-breadcrumb-current-page text="Current Page"></d2l-breadcrumb-current-page>
+			</d2l-breadcrumbs>`);
+		await expect(elem).to.be.accessible();
 	});
 
 });
