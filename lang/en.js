@@ -17,7 +17,7 @@ export default {
 	"components.input-search.search": "Search",
 	"components.menu-item-return.return": "Returns to previous menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Returns to previous menu. You are viewing {menuTitle}.",
-	"components.meter-mixin.commaSeperatedAria": "{term1}، ‏{term2}",
+	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
 	"components.meter-mixin.progressIndicator": "Progress Indicator",
 	"components.more-less.less": "less",

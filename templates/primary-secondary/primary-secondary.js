@@ -1,10 +1,21 @@
 import '../../components/colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
 
+/**
+ * A two panel (primary and secondary) page template with header and optional footer
+ * @slot header - Page header content
+ * @slot footer - Page footer content
+ * @slot primary - Main page content
+ * @slot secondary - Supplementary page content
+ */
 class TemplatePrimarySecondary extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether content fills the screen or not
+			 * @type {('fullscreen'|'normal')}
+			 */
 			widthType: { type: String, attribute: 'width-type', reflect: true },
 			_hasFooter: { type: Boolean }
 		};
@@ -65,7 +76,7 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			@media only screen and (max-width: 768px) {
 				.container {
-					height: 100vh;
+					height: 100%;
 				}
 				.d2l-template-primary-secondary-content-container {
 					grid-template-areas:
@@ -74,13 +85,6 @@ class TemplatePrimarySecondary extends LitElement {
 					"secondary";
 					grid-template-columns: auto;
 					grid-template-rows: auto 1px auto;
-					overflow-y: auto;
-				}
-				main {
-					overflow-y: visible;
-				}
-				aside {
-					overflow-y: visible;
 				}
 			}
 		`;

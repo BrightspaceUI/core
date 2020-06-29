@@ -20,16 +20,44 @@ const ro = new ResizeObserver(entries => {
 
 const defaultBreakpoints = [842, 636, 580, 0];
 
+/**
+ * A component for a "listitem" child within a list. It provides semantics, basic layout, breakpoints for responsiveness, a link for navigation, and selection.
+ * @slot - Default content placed inside of the component
+ * @slot illustration - Image associated with the list item located at the left of the item
+ * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
+ * @fires d2l-list-item-selected - Dispatched when the component item is selected
+ */
 class ListItem extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
+			 */
 			breakpoints: { type: Array },
+			/**
+			 * Disables the checkbox
+			 */
 			disabled: {type: Boolean },
+			/**
+			 * Address of item link if navigable
+			 */
 			href: { type: String },
+			/**
+			 * Value to identify item if selectable
+			 */
 			key: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
+			/**
+			 * Indicates a checkbox should be rendered for selecting the item
+			 */
 			selectable: {type: Boolean },
+			/**
+			 * Whether the item is selected
+			 */
 			selected: { type: Boolean, reflect: true },
 			_breakpoint: { type: Number }
 		};
@@ -201,6 +229,7 @@ class ListItem extends RtlMixin(LitElement) {
 		this.breakpoints = defaultBreakpoints;
 		this.disabled = false;
 		this.role = 'listitem';
+		this.selected = false;
 		this.selectable = false;
 		this._contentId = getUniqueId();
 		this._checkBoxId = getUniqueId();

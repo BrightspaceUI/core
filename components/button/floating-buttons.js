@@ -4,11 +4,22 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * A wrapper component to display floating workflow buttons. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
+ * @slot - Content to be displayed in the floating container
+ */
 class FloatingButtons extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Indicates to display buttons as always floating
+			 */
 			alwaysFloat: { type: Boolean, attribute: 'always-float' },
+
+			/**
+			 * The minimum height of the viewport to display floating buttons at (where applicable)
+			 */
 			minHeight: { type: String, attribute: 'min-height' },
 			_containerMarginLeft: { type: String },
 			_containerMarginRight: { type: String },
@@ -92,6 +103,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.alwaysFloat = false;
 		this.minHeight = '500px';
 
 		this._calcContainerPosition = this._calcContainerPosition.bind(this);

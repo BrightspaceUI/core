@@ -7,13 +7,35 @@ import { classMap} from 'lit-html/directives/class-map.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A component for communicating important information relating to the state of the system and the user's work flow.
+ * @slot - Default content placed inside of the component
+ * @fires d2l-alert-closed - Dispatched when the alert's close button is clicked
+ * @fires d2l-alert-button-pressed - Dispatched when the alert's action button is clicked
+ */
 class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+			 */
 			buttonText: { type: String, attribute: 'button-text' },
+
+			/**
+			 * Gives the alert a close button that will close the alert when clicked
+			 */
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
+
+			/**
+			 * The text that is displayed below the main alert message
+			 */
 			subtext: { type: String },
+
+			/**
+			 * Type of the alert being displayed
+			 * @type {('default'|'critical'|'success'|'warning')}
+			 */
 			type: { type: String, reflect: true }
 		};
 	}

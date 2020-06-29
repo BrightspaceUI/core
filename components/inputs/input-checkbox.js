@@ -5,16 +5,42 @@ import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A component that can be used to show a checkbox and optional visible label.
+ * @slot - Checkbox information (e.g., text)
+ * @fires change - Dispatched when the checkbox's state changes
+ */
 class InputCheckbox extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Use when text on checkbox does not provide enough context
+			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
+			/**
+			 * Checked state
+			 */
 			checked: { type: Boolean },
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Sets checkbox to an indeterminate state
+			 */
 			indeterminate: { type: Boolean },
+			/**
+			 * Name of the input
+			 */
 			name: { type: String },
+			/**
+			 * Sets "tabindex="-1"" on the checkbox
+			 */
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
+			/**
+			 * Value of the input
+			 */
 			value: { type: String }
 		};
 	}

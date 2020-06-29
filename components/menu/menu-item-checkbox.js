@@ -4,6 +4,13 @@ import { MenuItemSelectableMixin } from './menu-item-selectable-mixin.js';
 import { menuItemSelectableStyles } from './menu-item-selectable-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * A menu item component used for selection. Multiple checkboxes can be selected at once.
+ * @fires click - Dispatched when the link is clicked
+ * @fires d2l-menu-item-change - Dispatched when the selected menu item changes
+ * @fires d2l-menu-item-select - Dispatched when the menu item is selected
+ * @fires d2l-menu-item-visibility-change - Dispatched when the visibility of the menu item changes
+ */
 class MenuItemCheckbox extends RtlMixin(MenuItemSelectableMixin(LitElement)) {
 
 	static get styles() {

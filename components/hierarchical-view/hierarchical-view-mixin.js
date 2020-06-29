@@ -11,9 +11,18 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			shown: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 */
 			childView: { type: Boolean, reflect: true, attribute: 'child-view' },
-			hierarchicalView: { type: Boolean }
+			/**
+			 * @ignore
+			 */
+			hierarchicalView: { type: Boolean },
+			/**
+			 * @ignore
+			 */
+			shown: { type: Boolean, reflect: true }
 		};
 	}
 
