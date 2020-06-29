@@ -79,24 +79,24 @@ class Breadcrumb extends RtlMixin(LitElement) {
 
 			d2l-icon {
 				height: 8px;
-				padding-left: 10px;
-				padding-right: 5px;
+				padding-left: 8px;
+				padding-right: 3px;
 				width: 8px;
 			}
 
 			:host([dir="rtl"]) d2l-icon {
-				padding-left: 5px;
-				padding-right: 10px;
+				padding-left: 3px;
+				padding-right: 8px;
 			}
 
 			.d2l-breadcrumb-wrapper[data-compact] d2l-icon {
-				padding-right: 10px;
+				padding-right: 8px;
 				padding-left: 0;
 			}
 
 			:host([dir="rtl"]) .d2l-breadcrumb-wrapper[data-compact] d2l-icon {
 				padding-right: 0;
-				padding-left: 10px;
+				padding-left: 8px;
 			}
 		`];
 	}
