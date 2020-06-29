@@ -1,12 +1,12 @@
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { linkStyles } from '../link/link.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A component to help users understand where they are within the LMS. would be used as a child of d2l-breadcrumbs component (in slot)
- * @fires d2l-breadcrumb-connected - Dispatched when the component is initialized to notify parent (so parent can set the compact attribute in event detail)
  */
 class Breadcrumb extends RtlMixin(LitElement) {
 
@@ -106,20 +106,15 @@ class Breadcrumb extends RtlMixin(LitElement) {
 		this._compact = false;
 		this.text = '';
 		this._role = 'listitem';
-
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		const event = new CustomEvent(
-			'd2l-breadcrumb-connected', {
-				bubbles: true,
-				composed: true,
-				detail: { }
+		findComposedAncestor(this, (node) => {
+			if (node.tagName === 'D2L-BREADCRUMBS') {
+				this._compact = node.hasAttribute('compact');
 			}
-		);
-		this.dispatchEvent(event);
-		this._compact = !!event.detail.compact;
+		});
 	}
 
 	render() {

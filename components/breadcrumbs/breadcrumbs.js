@@ -66,16 +66,12 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	render() {
 		return html`
-			<nav aria-label="${this.localize('components.breadcrumbs.breadcrumb')}" @d2l-breadcrumb-connected="${this._handleBreadCrumbConnected}">
+			<nav aria-label="${this.localize('components.breadcrumbs.breadcrumb')}">
 				<div role="list">
 					<slot></slot>
 				</div>
 			</nav>
 		`;
-	}
-
-	_handleBreadCrumbConnected(e) {
-		e.detail.compact = this.compact;
 	}
 
 }
