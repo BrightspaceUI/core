@@ -6,7 +6,7 @@ import { linkStyles } from '../link/link.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * A component to help users understand where they are within the LMS. would be used as a child of d2l-breadcrumbs component (in slot)
+ * An entry within a <d2l-breadcrumbs> parent.
  */
 class Breadcrumb extends RtlMixin(LitElement) {
 

@@ -4,13 +4,14 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * A component to help users understand where they are within the LMS. would be used the parent of d2l-breadcrumb and will render them in a slot
+ * Help users understand where they are within the application, and provide useful clues about how the space is organized. They also provide a convenient navigation mechanism.
+ * @slot - breadcrumb items
  */
 class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * indicates whether the breadcrumbs are redenred in compact mode (which means it will only display the last time and also includes some visual differences)
+			 * Renders in compact mode, displaying only the last item
 			 */
 			compact: {
 				type: Boolean,
@@ -25,7 +26,6 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				display: block;
 				position: relative;
 			}
-
 			:host([hidden]) {
 				display: none;
 			}
