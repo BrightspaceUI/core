@@ -107,7 +107,7 @@ class InputDateRange extends LocalizeCoreElement(LitElement) {
 	}
 
 	focus() {
-		const input = this.shadowRoot.querySelector('d2l-input-fieldset');
+		const input = this.shadowRoot.querySelector('d2l-input-date');
 		if (input) input.focus();
 	}
 
