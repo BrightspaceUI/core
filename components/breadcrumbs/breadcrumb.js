@@ -68,6 +68,7 @@ class Breadcrumb extends RtlMixin(LitElement) {
 			:host {
 				align-items: center;
 				display: inline-flex;
+				font-size: 0.7rem;
 			}
 
 			.d2l-breadcrumb-wrapper[data-compact] {
