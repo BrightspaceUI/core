@@ -19,10 +19,7 @@ describe('d2l-breadcrumbs', () => {
 	[
 		'default-mode',
 		'constrained-width',
-		'compact',
-		'default-mode-rtl',
-		'constrained-width-rtl',
-		'compact-rtl'
+		'compact'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
