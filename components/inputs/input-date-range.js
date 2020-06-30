@@ -71,6 +71,13 @@ class InputDateRange extends LocalizeCoreElement(LitElement) {
 		`;
 	}
 
+	constructor() {
+		super();
+
+		this.disabled = false;
+		this.labelHidden = false;
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
