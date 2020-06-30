@@ -3,12 +3,13 @@ import './input-fieldset.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
  * @fires change - Dispatched when a start or end date is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDateRange extends LocalizeCoreElement(LitElement) {
+class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
