@@ -13,6 +13,8 @@ export default {
 	"components.input-date-time.time": "Tid",
 	"components.input-search.clear": "Ryd søgning",
 	"components.input-search.search": "Søg",
+	"components.input-time-range.endTime": "Sluttidspunkt",
+	"components.input-time-range.startTime": "Starttidspunkt",
 	"components.menu-item-return.return": "Går tilbage til forrige menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Går tilbage til forrige menu. Du ser på {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",

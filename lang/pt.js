@@ -13,6 +13,8 @@ export default {
 	"components.input-date-time.time": "Hora",
 	"components.input-search.clear": "Limpar pesquisa",
 	"components.input-search.search": "Pesquisar",
+	"components.input-time-range.endTime": "Hora final",
+	"components.input-time-range.startTime": "Hora de início",
 	"components.menu-item-return.return": "Volta ao menu anterior.",
 	"components.menu-item-return.returnCurrentlyShowing": "Volta ao menu anterior. Você está visualizando {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",

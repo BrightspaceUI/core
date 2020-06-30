@@ -13,6 +13,8 @@ export default {
 	"components.input-date-time.time": "Saat",
 	"components.input-search.clear": "Aramayı Temizle",
 	"components.input-search.search": "Ara",
+	"components.input-time-range.endTime": "Bitiş Saati",
+	"components.input-time-range.startTime": "Başlangıç Saati",
 	"components.menu-item-return.return": "Önceki menüye döner.",
 	"components.menu-item-return.returnCurrentlyShowing": "Önceki menüye döner. {menuTitle} başlığını görüntülüyorsunuz.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
