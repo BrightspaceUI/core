@@ -53,11 +53,11 @@ The `<d2l-input-date-range>` component consists of two input-date components - o
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-range.js';
 </script>
-<d2l-input-date
+<d2l-input-date-range
   label="Assignment Dates"
-  start-value="2020-11-20"
-  end-value="2021-01-01">
-</d2l-input-date>
+  end-value="2021-01-01"
+  start-value="2020-11-20">
+</d2l-input-date-range>
 ```
 
 **Properties:**
@@ -78,14 +78,14 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 
 **Accessibility:**
 
-To make your usage of `d2l-input-date` accessible, use the following properties when applicable:
+To make your usage of `d2l-input-date-range` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |--|--|
 | `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `end-label` | String, default `'End Date'` | Accessible label for the second date input |
-| `start-label` | String, default `'Start Date'` | Accessible label for the first date input |
+| `end-label` | Accessible label for the second date input |
+| `start-label` | Accessible label for the first date input |
 
 **Events:**
 
