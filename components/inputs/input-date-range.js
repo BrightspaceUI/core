@@ -1,4 +1,3 @@
-
 import './input-date.js';
 import './input-fieldset.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -58,15 +57,26 @@ class InputDateRange extends LocalizeCoreElement(LitElement) {
 		return css`
 			:host {
 				display: inline-block;
+				margin-bottom: -1.2rem;
+				margin-right: -1.5rem;
+			}
+			:host([dir="rtl"]) {
+				margin-left: -1.5rem;
+				margin-right: 0;
 			}
 			:host([hidden]) {
 				display: none;
 			}
 			d2l-input-date {
-				display: block;
+				display: inline-block;
+				margin-bottom: 1.2rem;
 			}
-			.d2l-input-date-range-end {
-				padding-top: 1rem;
+			d2l-input-date.d2l-input-date-range-start {
+				margin-right: 1.5rem;
+			}
+			:host([dir="rtl"]) d2l-input-date.d2l-input-date-range-start {
+				margin-left: 1.5rem;
+				margin-right: 0;
 			}
 		`;
 	}
@@ -90,7 +100,7 @@ class InputDateRange extends LocalizeCoreElement(LitElement) {
 		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
 		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
 		return html`
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden=${this.labelHidden}>
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
