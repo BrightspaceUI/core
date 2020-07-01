@@ -16,6 +16,8 @@ export default {
 	"components.input-date.setToToday": "Set to Today",
 	"components.input-search.clear": "Clear Search",
 	"components.input-search.search": "Search",
+	"components.input-time-range.endTime": "End Time",
+	"components.input-time-range.startTime": "Start Time",
 	"components.menu-item-return.return": "Returns to previous menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Returns to previous menu. You are viewing {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",

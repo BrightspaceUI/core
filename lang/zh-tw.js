@@ -16,6 +16,8 @@ export default {
 	"components.input-date.setToToday": "設為今天",
 	"components.input-search.clear": "清除搜尋",
 	"components.input-search.search": "搜尋",
+	"components.input-time-range.endTime": "結束時間",
+	"components.input-time-range.startTime": "開始時間",
 	"components.menu-item-return.return": "返回上一個功能表。",
 	"components.menu-item-return.returnCurrentlyShowing": "返回上一個功能表。您正在檢視 {menuTitle}。",
 	"components.meter-mixin.commaSeperatedAria": "{term1}，{term2}",
