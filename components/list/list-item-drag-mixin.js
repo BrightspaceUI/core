@@ -10,7 +10,11 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		return {
 			draggable: { type: Boolean, reflect: true },
 			key: { type: String, reflect: true },
-			_keyboardMode: { type: Boolean }
+			beingDragged: { type: Boolean, reflect: true, attribute: 'being-dragged' },
+			_bottomPlacementMarker: { type: Boolean },
+			_dragTarget: { type: Boolean },
+			_keyboardMode: { type: Boolean },
+			_topPlacementMarker: { type: Boolean }
 		};
 	}
 
@@ -20,25 +24,35 @@ export const ListItemDragMixin = superclass => class extends superclass {
 				display: block;
 				position: relative;
 			}
-			:host[hidden] {
+			:host([hidden]) {
 				display: none;
+			}
+			.d2l-list-item-drag-bottom-marker,
+			.d2l-list-item-drag-top-marker {
+				position: absolute;
+				width: 100%;
+				z-index: 1;
+			}
+			.d2l-list-item-drag-bottom-marker {
+				bottom: -6px;
+			}
+			.d2l-list-item-drag-top-marker {
+				top: -6px;
 			}
 			.d2l-list-item-drag-area {
 				height: 100%;
-				cursor: grab;
 			}
 			.d2l-list-item-drag-drop-grid {
 				display: grid;
+				gap: 1px;
 				grid-template-columns: 100%;
 				grid-template-rows: 0.3rem 1fr 1fr 0.3rem;
 				height: 100%;
 				left: 0;
-				pointer-events: none;
 				position: absolute;
 				top: 0;
 				width: 100%;
 				z-index: 100;
-
 			}
 		` ];
 
@@ -49,6 +63,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._itemDragId = getUniqueId();
+		this.beingDragged = false;
 	}
 
 	connectedCallback() {
@@ -56,6 +71,12 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		if (!this.key) {
 			this.draggable = false;
 		}
+	}
+
+	firstUpdated(changedProperties) {
+		this.addEventListener('dragenter', this._hostDragEnter);
+		this.addEventListener('dragleave', this._hostDragLeave);
+		super.firstUpdated(changedProperties);
 	}
 
 	keyboardMode(isEnabled) {
@@ -67,57 +88,155 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		}
 	}
 
-	moveAfter(itemKey) {
+	moveItemAfterMe(itemKey) {
 		if (itemKey === undefined) {
 			return;
 		}
-		this._dispatchDragEvent(itemKey);
+		this._moveItem(itemKey, this.key);
 	}
 
-	moveBefore(itemKey) {
+	moveItemBeforeMe(itemKey) {
 		if (itemKey === undefined) {
 			return;
 		}
 
-		this._dispatchDragEvent(itemKey);
+		this._moveItem(itemKey, this.previousElementSibling && this.previousElementSibling.key);
 	}
 
-	_dispatchDragEvent(detail) {
-		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
-			detail: detail,
-			bubbles: true
-		}));
-	}
-
-	_dragEnter() {
-		this._dragStartHandler();
-	}
-
-	_dragExit() {
-		this._dispatchDragEvent(null);
-	}
-
-	_dragStartHandler() {
-		this.moveBefore(null);
-		this._dispatchDragEvent(null);
-	}
-
-	_dragStopHandler() {
-		this._dispatchDragEvent(null);
-		this.moveafter(null);
-	}
-
-	_handleDragAreaClick(e) {
+	_dragAreaClick(e) {
 		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 		e.preventDefault();
 	}
 
-	_handleDragHandleActions(e) {
-		if (e.detail.action === dragActions.active) {
-			this._keyboardMode = true;
-		} else if (e.detail.action === dragActions.cancel || e.detail.action === dragActions.save) {
-			this._keyboardMode = false;
+	_dragBottomEnter(e) {
+		this._inBottomArea = true;
+		e.dataTransfer.dropEffect = 'move';
+		this._bottomPlacementMarker = true;
+		this._topPlacementMarker = false;
+	}
+
+	_dragBottomLeave() {
+		this._inBottomArea = false;
+		setTimeout(() => this._bottomPlacementMarker = false);
+	}
+
+	_dragEnd() {
+		this.beingDragged = false;
+		this.tilt = false;
+	}
+
+	_dragHandleActions(e) {
+		let destinationKey;
+		switch (e.detail.action) {
+			case dragActions.active:
+				this._keyboardMode = true;
+				break;
+			case dragActions.cancel:
+			case dragActions.save:
+				this._keyboardMode = false;
+				break;
+			case dragActions.up:
+				destinationKey = this.previousElementSibling && this.previousElementSibling.previousElementSibling && this.previousElementSibling.previousElementSibling.key;
+				this._moveItem(this.key, destinationKey);
+				break;
+			case dragActions.down:
+				destinationKey = this.nextElementSibling && this.nextElementSibling.key;
+				this._moveItem(this.key, destinationKey);
+				break;
+			case dragActions.first:
+				this._moveItem(this.key, null);
+				break;
+			case dragActions.last:
+				while (this.nextElementSibling) {
+					destinationKey = this.nextElementSibling;
+				}
+				destinationKey = destinationKey && destinationKey.key;
+				this._moveItem(this.key, destinationKey);
+				break;
+			default:
+				break;
 		}
+
+	}
+
+	_dragLowerEnter(e) {
+		e.dataTransfer.dropEffect = 'move';
+		if (this._inBottomArea) {
+			this._topPlacementMarker = true;
+		}
+	}
+
+	_dragOver(e) {
+		e.preventDefault();
+	}
+
+	_dragStart(e) {
+		setTimeout(() => {
+			this.beingDragged = true;
+		});
+		e.dataTransfer.setData('text/plain', `${this.key}`);
+		e.dataTransfer.effectAllowed = 'move';
+		const node = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+		e.dataTransfer.setDragImage(node, 50, 50);
+	}
+
+	_dragTopEnter(e) {
+		this._inTopArea = true;
+		e.dataTransfer.dropEffect = 'move';
+		this._topPlacementMarker = true;
+		this._bottomPlacementMarker = false;
+	}
+
+	_dragTopLeave() {
+		this._inTopArea = false;
+		setTimeout(() => this._topPlacementMarker = false);
+	}
+
+	_dragUpperEnter(e) {
+		e.dataTransfer.dropEffect = 'move';
+		if (this._inTopArea) {
+			this._bottomPlacementMarker = true;
+		}
+	}
+
+	_drop(e) {
+		const originKey = e.dataTransfer.getData('text/plain');
+
+		if (this._topPlacementMarker) {
+			this.moveItemBeforeMe(originKey);
+		} else if (this._bottomPlacementMarker) {
+			this.moveItemAfterMe(originKey);
+		}
+		this._topPlacementMarker = false;
+		this._bottomPlacementMarker = false;
+		this._dragTarget = false;
+	}
+
+	_hostDragEnter(e) {
+		this._dragTarget = true;
+		e.dataTransfer.dropEffect = 'move';
+	}
+
+	_hostDragLeave() {
+		setTimeout(() => {
+			this._dragTarget = false;
+			this._topPlacementMarker = false;
+			this._bottomPlacementMarker = false;
+		});
+	}
+
+	_moveItem(origin, destination) {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
+			detail: {
+				origin,
+				destination
+			},
+			bubbles: true
+		}));
+	}
+
+	_renderBottomPlacementMarker(renderTemplate) {
+		return this._bottomPlacementMarker ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
 	}
 
 	_renderDraggableArea(templateMethod) {
@@ -125,9 +244,10 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		return this.draggable && !this._keyboardMode ? templateMethod(html`
 			<div
 				class="d2l-list-item-drag-area"
-				@click="${this._handleDragAreaClick}"
-				@dragstart="${this._handleDragStart}"
-				@dragend="${this._handleDragEnd}"
+				draggable="true"
+				@click="${this._dragAreaClick}"
+				@dragstart="${this._dragStart}"
+				@dragend="${this._dragEnd}"
 				>
 			</div>
 		`) : nothing;
@@ -136,20 +256,24 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	_renderDragHandle(templateMethod) {
 		templateMethod = templateMethod || (dragHandle => dragHandle);
 		return this.draggable ? templateMethod(html`
-			<d2l-list-item-drag-handle id="${this._itemDragId}" @d2l-list-item-drag-handle-action="${this._handleDragHandleActions}"></d2l-list-item-drag-handle>
+			<d2l-list-item-drag-handle id="${this._itemDragId}" @d2l-list-item-drag-handle-action="${this._dragHandleActions}"></d2l-list-item-drag-handle>
 		`) : nothing;
 	}
 
 	_renderDropArea(templateMethod) {
 		templateMethod = templateMethod || (dropArea => dropArea);
-		return this.draggable && !this._keyboardMode ? templateMethod(html`
-			<div class="d2l-list-item-drag-drop-grid" @drop="${this._dropHandler}" @dragover="${this._dragOverHandler}">
+		return this.draggable && this._dragTarget ? templateMethod(html`
+			<div class="d2l-list-item-drag-drop-grid" @drop="${this._drop}" @dragover="${this._dragOver}">
 				<div @dragenter="${this._dragTopEnter}" @dragleave="${this._dragTopLeave}"></div>
-				<div @dragenter="${this._dragUpperEnter}" @dragleave="${this._dragUpperLeave}"></div>
-				<div @dragenter="${this._dragLowerEnter}" @dragleave="${this._dragLowerLeave}"></div>
+				<div @dragenter="${this._dragUpperEnter}"></div>
+				<div @dragenter="${this._dragLowerEnter}"></div>
 				<div @dragenter="${this._dragBottomEnter}" @dragleave="${this._dragBottomLeave}"></div>
 			</div>
 		`) : nothing;
+	}
+
+	_renderTopPlacementMarker(renderTemplate) {
+		return this._topPlacementMarker ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
 	}
 };
 

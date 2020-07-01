@@ -64,6 +64,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
+				justify-self: end;
 				z-index: 4;
 			}
 
