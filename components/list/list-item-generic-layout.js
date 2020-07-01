@@ -291,6 +291,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_handleKeydown(event) {
 		if (!this.gridActive) return;
 		let node = null;
+		let preventDefault = true;
 		switch (event.keyCode) {
 			case keyCodes.ENTER:
 			case keyCodes.SPACE:
@@ -374,8 +375,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				// focus five rows down
 				this._focusNextRow(false, 5);
 				break;
+			default:
+				preventDefault = false;
 		}
-		event.preventDefault();
+		if (preventDefault) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 	}
 
 	_setFocusInfo(event) {
