@@ -200,8 +200,8 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
-| `max-value` | String | Maximum valid date that could be selected by a user. |
-| `min-value` | String | Minimum valid date that could be selected by a user. |
+| `max-value` | String | Maximum valid date/time that could be selected by a user |
+| `min-value` | String | Minimum valid date/time that could be selected by a user |
 | `value` | String, default `''` | Value of the input. |
 
 **Accessibility:**

@@ -126,4 +126,64 @@ describe('d2l-input-date-time', () => {
 
 	});
 
+	describe('validation', () => {
+		// TODO: enable after validation implemented
+		it.skip('set date to be before min-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
+				dateSelector.value = '2018-01-20';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				dateSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it.skip('set time to be before min-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				elem.value = '2018-02-13T20:00:00.000Z';
+				const timeSelector = elem.shadowRoot.querySelector('d2l-input-time');
+				timeSelector.value = '05:22:00';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				timeSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it.skip('set date to be after max-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
+				dateSelector.value = '2018-03-20';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				dateSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it.skip('set time to be after max-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				elem.value = '2018-02-27T07:00:00.000Z';
+				const timeSelector = elem.shadowRoot.querySelector('d2l-input-time');
+				timeSelector.value = '15:22:00';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				timeSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
 });

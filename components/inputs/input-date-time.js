@@ -24,7 +24,13 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * REQUIRED: Accessible label for the input
 			 */
 			label: { type: String },
+			/**
+			 * Maximum valid date/time that could be selected by a user.
+			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			/**
+			 * Minimum valid date/time that could be selected by a user.
+			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
 			 * Value of the input. This should be in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ") and in UTC time (i.e., do NOT localize to the user's timezone).
@@ -140,6 +146,7 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDateChange(e) {
+		// TODO: handle validation with min and max value
 		const newDate = e.target.value;
 		if (!newDate) {
 			this.value = '';
@@ -151,6 +158,7 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleTimeChange(e) {
+		// TODO: handle validation with min and max value
 		this.value = getUTCDateTimeFromLocalDateTime(this._parsedDateTime, e.target.value);
 		this._dispatchChangeEvent();
 	}
