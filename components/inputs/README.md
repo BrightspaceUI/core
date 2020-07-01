@@ -80,7 +80,7 @@ When a page contains multiple inputs which are related (for example to form an a
 </fieldset>
 ```
 
-Alternately, the `<d2l-input-fieldset>` component can accomplish this for you:
+Alternately, the `<d2l-input-fieldset>` component can accomplish this for you. The legend can be visually hidden by applying the `label-hidden` attribute to the component.
 
 ```html
 <script type="module">
