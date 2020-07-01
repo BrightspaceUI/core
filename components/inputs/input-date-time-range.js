@@ -85,8 +85,8 @@ class InputDateTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
-		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
-		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
+		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-date-time-range.startDate');
+		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-date-time-range.endDate');
 		return html`
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
 				<div class="d2l-input-date-time-range-start-container">
