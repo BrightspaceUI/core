@@ -8,6 +8,8 @@ export default {
 	"components.dialog.close": "Fechar esta caixa de diálogo",
 	"components.input-date-range.endDate": "Data Final",
 	"components.input-date-range.startDate": "Data de Início",
+	"components.input-date-time-range.endDate": "Data Final",
+	"components.input-date-time-range.startDate": "Data de Início",
 	"components.input-date-time.date": "Data",
 	"components.input-date-time.time": "Hora",
 	"components.input-date.clear": "Limpar",

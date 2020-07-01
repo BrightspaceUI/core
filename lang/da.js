@@ -8,6 +8,8 @@ export default {
 	"components.dialog.close": "Luk denne dialogboks",
 	"components.input-date-range.endDate": "Slutdato",
 	"components.input-date-range.startDate": "Startdato",
+	"components.input-date-time-range.endDate": "Slutdato",
+	"components.input-date-time-range.startDate": "Startdato",
 	"components.input-date-time.date": "Dato",
 	"components.input-date-time.time": "Tid",
 	"components.input-date.clear": "Ryd",

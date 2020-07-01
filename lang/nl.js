@@ -8,6 +8,8 @@ export default {
 	"components.dialog.close": "Dit dialoogvenster sluiten",
 	"components.input-date-range.endDate": "Einddatum",
 	"components.input-date-range.startDate": "Startdatum",
+	"components.input-date-time-range.endDate": "Einddatum",
+	"components.input-date-time-range.startDate": "Startdatum",
 	"components.input-date-time.date": "Datum",
 	"components.input-date-time.time": "Tijd",
 	"components.input-date.clear": "Wissen",
