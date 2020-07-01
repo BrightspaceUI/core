@@ -9,6 +9,8 @@ export default {
 	"components.dialog.close": "關閉此對話方塊",
 	"components.input-date-range.endDate": "結束日期",
 	"components.input-date-range.startDate": "開始日期",
+	"components.input-date-time-range.endDate": "結束日期",
+	"components.input-date-time-range.startDate": "開始日期",
 	"components.input-date-time.date": "日期",
 	"components.input-date-time.time": "時間",
 	"components.input-date.clear": "清除",

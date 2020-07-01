@@ -9,6 +9,8 @@ export default {
 	"components.dialog.close": "Dieses Dialogfeld schließen",
 	"components.input-date-range.endDate": "Enddatum",
 	"components.input-date-range.startDate": "Startdatum",
+	"components.input-date-time-range.endDate": "Enddatum",
+	"components.input-date-time-range.startDate": "Startdatum",
 	"components.input-date-time.date": "Datum",
 	"components.input-date-time.time": "Uhrzeit",
 	"components.input-date.clear": "Löschen",

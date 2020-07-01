@@ -9,6 +9,8 @@ export default {
 	"components.dialog.close": "Stäng dialogrutan",
 	"components.input-date-range.endDate": "Slutdatum",
 	"components.input-date-range.startDate": "Startdatum",
+	"components.input-date-time-range.endDate": "Slutdatum",
+	"components.input-date-time-range.startDate": "Startdatum",
 	"components.input-date-time.date": "Datum",
 	"components.input-date-time.time": "Tid",
 	"components.input-date.clear": "Rensa",

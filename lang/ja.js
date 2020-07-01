@@ -9,6 +9,8 @@ export default {
 	"components.dialog.close": "このダイアログを閉じる",
 	"components.input-date-range.endDate": "終了日",
 	"components.input-date-range.startDate": "開始日",
+	"components.input-date-time-range.endDate": "終了日",
+	"components.input-date-time-range.startDate": "開始日",
 	"components.input-date-time.date": "日付",
 	"components.input-date-time.time": "時刻",
 	"components.input-date.clear": "クリア",

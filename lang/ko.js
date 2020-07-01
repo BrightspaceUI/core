@@ -9,6 +9,8 @@ export default {
 	"components.dialog.close": "이 대화 상자 닫기",
 	"components.input-date-range.endDate": "종료일",
 	"components.input-date-range.startDate": "시작일",
+	"components.input-date-time-range.endDate": "종료일",
+	"components.input-date-time-range.startDate": "시작일",
 	"components.input-date-time.date": "날짜",
 	"components.input-date-time.time": "시간",
 	"components.input-date.clear": "지우기",
