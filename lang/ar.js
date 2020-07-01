@@ -8,6 +8,8 @@ export default {
 	"components.dialog.close": "إغلاق",
 	"components.input-date-range.endDate": "تاريخ النهاية",
 	"components.input-date-range.startDate": "تاريخ البدء",
+	"components.input-date-time-range.endDate": "تاريخ النهاية",
+	"components.input-date-time-range.startDate": "تاريخ البدء",
 	"components.input-date-time.date": "التاريخ",
 	"components.input-date-time.time": "الوقت",
 	"components.input-date.clear": "مسح",

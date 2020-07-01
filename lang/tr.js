@@ -8,6 +8,8 @@ export default {
 	"components.dialog.close": "Bu iletişim kutusunu kapat",
 	"components.input-date-range.endDate": "Bitiş Tarihi",
 	"components.input-date-range.startDate": "Başlangıç Tarihi",
+	"components.input-date-time-range.endDate": "Bitiş Tarihi",
+	"components.input-date-time-range.startDate": "Başlangıç Tarihi",
 	"components.input-date-time.date": "Tarih",
 	"components.input-date-time.time": "Saat",
 	"components.input-date.clear": "Temizle",
