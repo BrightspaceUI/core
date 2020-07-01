@@ -15,6 +15,8 @@ export default {
 	"components.input-date.setToToday": "设置为“今天”",
 	"components.input-search.clear": "清除搜索",
 	"components.input-search.search": "搜索",
+	"components.input-time-range.endTime": "结束时间",
+	"components.input-time-range.startTime": "开始时间]",
 	"components.menu-item-return.return": "返回至上级菜单。",
 	"components.menu-item-return.returnCurrentlyShowing": "返回至上级菜单。您正在浏览 {menuTitle}。",
 	"components.meter-mixin.commaSeperatedAria": "{term1}、{term2}",

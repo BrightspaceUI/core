@@ -15,6 +15,8 @@ export default {
 	"components.input-date.setToToday": "오늘로 설정",
 	"components.input-search.clear": "검색 지우기",
 	"components.input-search.search": "검색",
+	"components.input-time-range.endTime": "종료 시간",
+	"components.input-time-range.startTime": "시작 시간",
 	"components.menu-item-return.return": "이전 메뉴로 돌아갑니다.",
 	"components.menu-item-return.returnCurrentlyShowing": "이전 메뉴로 돌아갑니다. {menuTitle}을(를) 보고 있습니다.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
