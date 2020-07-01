@@ -132,6 +132,50 @@ To make your usage of `d2l-input-time` accessible, use the following properties 
 
 * `change`: dispatched when a time is selected or typed. `value` reflects the selected value and is in ISO 8601 time format (`hh:mm:ss`).
 
+### Time Range Inputs
+
+The `<d2l-input-time-range>` component consists of two input-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
+
+![example screenshot of time range input](../screenshots/time-range.gif?raw=true)
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-time-range.js';
+</script>
+<d2l-input-time-range
+  label="Times"
+  end-value="08:30:00"
+  start-value="13:00:00">
+</d2l-input-time-range>
+```
+
+**Properties:**
+
+Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
+
+| Property | Type | Description |
+|--|--|--|
+| `label` | String, **required** | Accessible label for the input fieldset that wraps the time inputs |
+| `disabled` | Boolean | Disables the inputs |
+| `end-label` | String, default `'End Time'` | Accessible label for the second time input |
+| `end-value` | String, default `''` | Value of the second time input |
+| `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
+| `label-hidden` | Boolean | Hides the fieldset label visually |
+| `start-label` | String, default `'Start Time'` | Accessible label for the first time input |
+| `start-value` | String, default `''` | Value of the first time input |
+| `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
+
+**Accessibility:**
+
+To make your usage of `d2l-input-time-range` accessible, use the following properties when applicable:
+
+| Attribute | Description |
+|--|--|
+| `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
+| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
+| `end-label` | Accessible label for the second time input |
+| `start-label` | Accessible label for the first time input |
+
 ## Date-Time Inputs
 
 The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. This component displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
