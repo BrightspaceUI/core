@@ -218,9 +218,9 @@ class InputText extends RtlMixin(LitElement) {
 
 		const isValid = (this.ariaInvalid !== 'true' && this._isInputValid) || this.disabled;
 		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
-		const invalidIconOffset = (this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth;
+		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
 		const invalidIconStyles = {
-			[invalidIconSide]: `${invalidIconOffset + 12}px`
+			[invalidIconSide]: `${invalidIconOffset}px`
 		};
 		const input = html`
 			<div class="d2l-input-text-container">
