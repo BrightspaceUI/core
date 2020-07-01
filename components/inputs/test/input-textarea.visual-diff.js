@@ -24,6 +24,7 @@ describe('d2l-input-textarea', () => {
 			'placeholder-disabled',
 			'invalid',
 			'invalid-disabled',
+			'rtl-invalid'
 		].forEach((name) => {
 			const id = `${type}-${name}`;
 			it(id, async function() {
