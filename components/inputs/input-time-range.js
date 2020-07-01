@@ -27,13 +27,17 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
+			 * Rounds up to nearest valid interval time (specified with "time-interval") when user types a time
+			 */
+			enforceTimeIntervals: { attribute: 'enforce-time-intervals', reflect: true, type: Boolean },
+			/**
 			 * REQUIRED: Accessible label for the range
 			 */
 			label: { type: String, reflect: true },
 			/**
 			 * Hides the label visually
 			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
+			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Label for the start time input
 			 * @default "Start Time"
@@ -42,7 +46,12 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Value of the start time input
 			 */
-			startValue: { attribute: 'start-value', reflect: true, type: String }
+			startValue: { attribute: 'start-value', reflect: true, type: String },
+			/**
+			 * Number of minutes between times shown in dropdown
+			 * @type {('five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty')}
+			 */
+			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
 		};
 	}
 
@@ -78,7 +87,9 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		super();
 
 		this.disabled = false;
+		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.timeInterval = 'thirty';
 	}
 
 	async firstUpdated(changedProperties) {
@@ -98,14 +109,18 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-start"
 					?disabled="${this.disabled}"
+					?enforce-time-intervals="${this.enforceTimeIntervals}"
 					label="${startLabel}"
+					time-interval="${ifDefined(this.timeInterval)}"
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-time>
 				<d2l-input-time
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-end"
 					?disabled="${this.disabled}"
+					?enforce-time-intervals="${this.enforceTimeIntervals}"
 					label="${endLabel}"
+					time-interval="${ifDefined(this.timeInterval)}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-time>
 			</d2l-input-fieldset>
