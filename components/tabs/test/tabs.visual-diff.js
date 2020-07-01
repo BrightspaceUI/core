@@ -35,6 +35,11 @@ describe('d2l-tabs', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('one tab', async function() {
+			const rect = await visualDiff.getRect(page, '#one-tab');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('non-selected tab focus', async function() {
 			await focusTabs('#no-panel-selected');
 			await page.keyboard.press('ArrowRight');

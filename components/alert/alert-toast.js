@@ -12,15 +12,44 @@ const states = {
 	OPEN: 'open' // the toast is open
 };
 
+/**
+ *  A component for communicating important information relating to the state of the system and the user's work flow, displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
+ * @slot - Default content placed inside of the component
+ */
 class AlertToast extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+			 */
 			buttonText: { type: String, attribute: 'button-text' },
+
+			/**
+			 * Hide the close button to prevent users from manually closing the alert
+			 */
 			hideCloseButton: { type: Boolean, attribute: 'hide-close-button' },
+
+			/**
+			 * Prevents the alert from automatically closing 4 seconds after opening
+			 */
 			noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
+
+			/**
+			 * Open or close the toast alert
+			 */
 			open: { type: Boolean, reflect: true },
+
+			/**
+			 * The text that is displayed below the main alert message
+			 */
 			subtext: { type: String },
+
+			/**
+			 * Type of the alert being displayed
+			 * @type {('default'|'critical'|'success'|'warning')}
+			 * @default "default"
+			 */
 			type: { type: String, reflect: true },
 			_state: { type: String }
 		};
@@ -71,11 +100,20 @@ class AlertToast extends LitElement {
 			d2l-alert {
 				animation: none;
 			}
+
+			@media (max-width: 615px) {
+				.d2l-alert-toast-container {
+					bottom: 12px;
+					width: calc(100% - 16px);
+				}
+			}
 		`;
 	}
 
 	constructor() {
 		super();
+		this._hasFocus = false;
+		this._hasMouse = false;
 		this.hideCloseButton = false;
 		this.noAutoClose = false;
 		this.open = false;
@@ -97,12 +135,31 @@ class AlertToast extends LitElement {
 
 	render() {
 		return html`
-			<div class="d2l-alert-toast-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd}>
-				<d2l-alert type="${ifDefined(this.type)}" @d2l-alert-closed=${this._onCloseClicked} button-text="${ifDefined(this.buttonText)}" ?has-close-button="${!this.hideCloseButton}" subtext="${ifDefined(this.subtext)}">
+			<div
+				class="d2l-alert-toast-container"
+				data-state="${this._state}"
+				@transitionend=${this._onTransitionEnd}>
+				<d2l-alert
+					@blur=${this._onBlur}
+					button-text="${ifDefined(this.buttonText)}"
+					@d2l-alert-closed=${this._onCloseClicked}
+					@focus=${this._onFocus}
+					?has-close-button="${!this.hideCloseButton}"
+					@mouseenter=${this._onMouseEnter}
+					@mouseleave=${this._onMouseLeave}
+					subtext="${ifDefined(this.subtext)}"
+					type="${ifDefined(this.type)}">
 					<slot></slot>
 				</d2l-alert>
 			</div>
 		`;
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.get('open') && this.open === false) {
+			this._hasFocus = false;
+			this._hasMouse = false;
+		}
 	}
 
 	get _state() {
@@ -118,9 +175,43 @@ class AlertToast extends LitElement {
 		}
 	}
 
+	_closeTimerStart() {
+		clearTimeout(this._setTimeoutId);
+		if (!this.noAutoClose && !this._hasFocus && !this._hasMouse) {
+			const duration = this.buttonText ? 10000 : 4000;
+			this._setTimeoutId = setTimeout(() => {
+				this.open = false;
+			}, duration);
+		}
+	}
+
+	_closeTimerStop() {
+		clearTimeout(this._setTimeoutId);
+	}
+
+	_onBlur() {
+		this._hasFocus = false;
+		this._closeTimerStart();
+	}
+
 	_onCloseClicked(e) {
 		e.preventDefault();
 		this.open = false;
+	}
+
+	_onFocus() {
+		this._hasFocus = true;
+		this._closeTimerStop();
+	}
+
+	_onMouseEnter() {
+		this._hasMouse = true;
+		this._closeTimerStop();
+	}
+
+	_onMouseLeave() {
+		this._hasMouse = false;
+		this._closeTimerStart();
 	}
 
 	_onTransitionEnd() {
@@ -132,7 +223,6 @@ class AlertToast extends LitElement {
 	}
 
 	_openChanged(newOpen) {
-
 		if (newOpen) {
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -162,15 +252,10 @@ class AlertToast extends LitElement {
 	}
 
 	_stateChanged(newState) {
-
-		clearTimeout(this._setTimeoutId);
 		if (newState === states.OPEN) {
-			if (!this.noAutoClose) {
-				const duration = this.buttonText ? 10000 : 4000;
-				this._setTimeoutId = setTimeout(() => {
-					this.open = false;
-				}, duration);
-			}
+			this._closeTimerStart();
+		} else {
+			this._closeTimerStop();
 		}
 	}
 }

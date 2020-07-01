@@ -1,23 +1,46 @@
 import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
+import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyCompactStyles } from '../typography/styles.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { classMap} from 'lit-html/directives/class-map.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+/**
+ * A component for communicating important information relating to the state of the system and the user's work flow.
+ * @slot - Default content placed inside of the component
+ * @fires d2l-alert-closed - Dispatched when the alert's close button is clicked
+ * @fires d2l-alert-button-pressed - Dispatched when the alert's action button is clicked
+ */
+class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+			 */
 			buttonText: { type: String, attribute: 'button-text' },
+
+			/**
+			 * Gives the alert a close button that will close the alert when clicked
+			 */
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
+
+			/**
+			 * The text that is displayed below the main alert message
+			 */
 			subtext: { type: String },
+
+			/**
+			 * Type of the alert being displayed
+			 * @type {('default'|'critical'|'success'|'warning')}
+			 */
 			type: { type: String, reflect: true }
 		};
 	}
 	static get styles() {
-		return [bodyCompactStyles, css`
+		return [bodyCompactStyles, bodyStandardStyles, css`
 
 			:host {
 				animation: 600ms ease drop-in;
@@ -28,6 +51,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				display: flex;
 				flex: 1;
 				max-width: 710px;
+				position: relative;
 				width: 100%;
 			}
 
@@ -41,6 +65,7 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				left: 0;
 				margin: -1px;
 				min-width: 0.3rem;
+				position: absolute;
 				top: 0;
 				width: 0.3rem;
 			}
@@ -66,19 +91,38 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 			.d2l-alert-text {
 				flex: 1;
-				padding: 1rem 1.2rem 1rem 1.5rem;
+				padding: 0.9rem 1.5rem;
 				position: relative;
 			}
-			:host([dir="rtl"]) .d2l-alert-text {
-				padding-left: 1.2rem;
+			.d2l-alert-text-with-actions {
+				padding-right: 0.9rem;
+			}
+
+			:host([dir="rtl"]) .d2l-alert-text-with-actions {
+				padding-left: 0.9rem;
 				padding-right: 1.5rem;
 			}
+
 			.d2l-alert-subtext {
 				margin: 0.5rem 0 0;
 			}
 
 			.d2l-alert-action {
-				margin: 0.3rem;
+				margin: 0.6rem 0.6rem 0.6rem 0;
+			}
+			:host([dir="rtl"]) .d2l-alert-action {
+				margin-left: 0.6rem;
+				margin-right: 0;
+			}
+
+			@media (max-width: 615px) {
+				.d2l-alert-text {
+					flex: 1;
+					position: relative;
+				}
+				.d2l-alert-action {
+					margin: 0.45rem;
+				}
 			}
 
 			@keyframes drop-in {
@@ -100,24 +144,6 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': { 'close': 'إغلاق التنبيه'},
-			'de': { 'close': 'Benachrichtigung schließen' },
-			'en': { 'close': 'Close Alert'},
-			'es': { 'close': 'Alerta de cierre' },
-			'fr': { 'close': 'Fermer l\'alerte' },
-			'ja': { 'close': 'アラートを閉じる' },
-			'ko': { 'close': '경보 닫기' },
-			'nl': { 'close': 'Waarschuwing sluiten' },
-			'pt': { 'close': 'Fechar Alerta' },
-			'sv': { 'close': 'Stängningsvarning' },
-			'tr': { 'close': 'Kapatma Uyarısı' },
-			'zh-tw': { 'close': '關閉警示' },
-			'zh': { 'close': '关闭警报' }
-		};
-	}
-
 	constructor() {
 		super();
 		this.hasCloseButton = false;
@@ -125,14 +151,26 @@ class Alert extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
+		const hasActions = this.buttonText && this.buttonText.length > 0  || this.hasCloseButton;
+		const alertTextClasses = {
+			'd2l-alert-text': true,
+			'd2l-alert-text-with-actions': hasActions,
+			'd2l-body-standard': true
+		};
+
 		return html`
 			<div class="d2l-alert-highlight"></div>
-			<div class="d2l-alert-text">
+			<div class="${classMap(alertTextClasses)}">
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
 			</div>
-			${this.buttonText && this.buttonText.length > 0 ? html`<d2l-button-subtle class="d2l-alert-action" text=${this.buttonText} @click=${this._onButtonClick}></d2l-button-subtle>` : null}
-			${this.hasCloseButton ? html`<d2l-button-icon class="d2l-alert-action" icon="d2l-tier1:close-default" text="${this.localize('close')}" @click=${this.close}></d2l-button-icon>` : null}
+			${hasActions ? html`
+				<div class="d2l-alert-action">
+					${this.buttonText && this.buttonText.length > 0 ? html`
+						<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
+					${this.hasCloseButton ? html`
+						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('components.alert.close')}"></d2l-button-icon>` : null}
+				</div>` : null}
 		`;
 	}
 

@@ -1,12 +1,12 @@
 import '@formatjs/intl-pluralrules/dist-es6/polyfill-locales.js';
-import {getDocumentLocaleSettings} from '@brightspace-ui/intl/lib/common.js';
+import { dedupeMixin } from '@open-wc/dedupe-mixin';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import IntlMessageFormat from 'intl-messageformat';
 
-export const LocalizeMixin = superclass => class extends superclass {
+export const LocalizeMixin = dedupeMixin(superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			__language: { type: String, attribute: false  },
 			__resources: { type: Object, attribute: false  }
 		};
 	}
@@ -20,13 +20,21 @@ export const LocalizeMixin = superclass => class extends superclass {
 			this.__languageChangeCallback = () => {
 				if (!this._hasResources()) return;
 				const possibleLanguages = this._generatePossibleLanguages();
-				this.constructor.getLocalizeResources(possibleLanguages)
-					.then((res) => {
-						if (!res) {
+				const localizeResources = this.constructor._getAllLocalizeResources(possibleLanguages);
+				const resourcesLoadedPromise = Promise.all(localizeResources);
+				resourcesLoadedPromise
+					.then((results) => {
+						if (results.length === 0) {
 							return;
 						}
-						this.__language = res.language;
-						this.__resources = res.resources;
+						const resources = {};
+						for (const res of results) {
+							const language = res.language;
+							for (const [key, value] of Object.entries(res.resources)) {
+								resources[key] = { language, value };
+							}
+						}
+						this.__resources = resources;
 						if (first) {
 							resolve();
 							first = false;
@@ -60,7 +68,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 			return super.shouldUpdate(changedProperties);
 		}
 
-		const ready = (this.__language !== undefined && this.__resources !== undefined);
+		const ready = this.__resources !== undefined;
 		if (!ready) {
 			changedProperties.forEach((oldValue, propName) => {
 				this.__updatedProperties.set(propName, oldValue);
@@ -81,14 +89,15 @@ export const LocalizeMixin = superclass => class extends superclass {
 
 	localize(key) {
 
-		if (!key || !this.__resources || !this.__language) {
+		if (!key || !this.__resources) {
 			return '';
 		}
 
-		const translatedValue = this.__resources[key];
-		if (!translatedValue) {
+		const resource = this.__resources[key];
+		if (!resource) {
 			return '';
 		}
+		const translatedValue = resource.value;
 
 		let params = {};
 		if (arguments.length > 1 && typeof arguments[1] === 'object') {
@@ -101,7 +110,7 @@ export const LocalizeMixin = superclass => class extends superclass {
 			}
 		}
 
-		const translatedMessage = new IntlMessageFormat(translatedValue, this.__language);
+		const translatedMessage = new IntlMessageFormat(translatedValue, resource.language);
 		let formattedMessage = translatedValue;
 		try {
 			formattedMessage = translatedMessage.format(params);
@@ -143,10 +152,26 @@ export const LocalizeMixin = superclass => class extends superclass {
 		return Array.from(langs);
 	}
 
+	static _getAllLocalizeResources(possibleLanguages) {
+		let resourcesLoadedPromises;
+		const superCtor = Object.getPrototypeOf(this);
+		if ('_getAllLocalizeResources' in superCtor) {
+			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages);
+		} else {
+			resourcesLoadedPromises = [];
+		}
+		// eslint-disable-next-line no-prototype-builtins
+		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
+			const res = this.getLocalizeResources([...possibleLanguages]);
+			resourcesLoadedPromises.push(res);
+		}
+		return resourcesLoadedPromises;
+	}
+
 	async _getUpdateComplete() {
 		await super._getUpdateComplete();
 		const hasResources = this._hasResources();
-		const resourcesLoaded = (this.__language !== undefined && this.__resources !== undefined);
+		const resourcesLoaded = this.__resources !== undefined;
 		if (!hasResources || resourcesLoaded) {
 			return;
 		}
@@ -163,4 +188,4 @@ export const LocalizeMixin = superclass => class extends superclass {
 		));
 	}
 
-};
+});

@@ -4,19 +4,44 @@ import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-class MoreLess extends LocalizeStaticMixin(LitElement)  {
+/**
+ * A component used to minimize the display of long content, while providing a way to reveal the full content.
+ * @slot - Default content placed inside of the component
+ * @fires d2l-more-less-render - Dispatched when the component finishes rendering
+ */
+class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
-			blurColor: { type: String, attribute: 'blur-color' }, // The gradient color of the blurring effect. Must be hex color code.
-			expanded: { type: Boolean, reflect: true }, // Indicates whether element is in "more" state.
-			hAlign: { type: String, attribute: 'h-align' }, // The h-align property of the more-less button.
-			height: { type: String }, // The maximum height of the content when in "less" state.
-			inactive: { type: Boolean, reflect: true }, // Whether the component is active or inactive.
+			/**
+			 * The gradient color of the blurring effect
+			 */
+			blurColor: { type: String, attribute: 'blur-color' },
+
+			/**
+			 * Indicates whether element is in "more" state
+			 */
+			expanded: { type: Boolean, reflect: true },
+
+			/**
+			 * The h-align property of the more-less button
+			 * @type {('text'|'')}
+			 */
+			hAlign: { type: String, attribute: 'h-align' },
+
+			/**
+			 * The maximum height of the content when in "less" state
+			 */
+			height: { type: String },
+
+			/**
+			 * Whether the component is active or inactive
+			 */
+			inactive: { type: Boolean, reflect: true },
 			__blurBackground: { type: String },
 			__contentHeight: { type: String },
 			__transitionAdded: { type: Boolean }
@@ -51,23 +76,6 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 			}`;
 	}
 
-	static get resources() {
-		return {
-			'ar': { more: 'المزيد', less: 'أقل' },
-			'en': { more: 'more', less: 'less' },
-			'es': { more: 'más', less: 'menos' },
-			'fr': { more: 'plus', less: 'moins' },
-			'ja': { more: 'より多い', less: 'より少ない' },
-			'ko': { more: '더 보기', less: '축소' },
-			'nl': { more: 'meer', less: 'minder' },
-			'pt': { more: 'mais', less: 'menos' },
-			'sv': { more: 'mer', less: 'mindre' },
-			'tr': { more: 'diğer', less: 'daha az' },
-			'zh': { more: '更多', less: '更少' },
-			'zh-tw': { more: '較多', less: '較少' }
-		};
-	}
-
 	constructor() {
 		super();
 
@@ -76,6 +84,7 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 
 		this.expanded = false;
 		this.height = '4em';
+		this.inactive = false;
 
 		this.__baseHeight = 0;
 		this.__contentId = getUniqueId();
@@ -213,7 +222,7 @@ class MoreLess extends LocalizeStaticMixin(LitElement)  {
 	}
 
 	__computeText() {
-		return this.localize(this.expanded ? 'less' : 'more');
+		return this.localize(this.expanded ? 'components.more-less.less' : 'components.more-less.more');
 	}
 
 	__expand() {

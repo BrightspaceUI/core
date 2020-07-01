@@ -1,4 +1,4 @@
-import { getComposedChildren, getComposedParent, getNextAncestorSibling } from './dom.js';
+import { getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling } from './dom.js';
 
 const focusableElements = {
 	a: true,
@@ -6,7 +6,6 @@ const focusableElements = {
 	button: true,
 	frame: true,
 	iframe: true,
-	img: true,
 	input: true,
 	isindex: true,
 	object: true,
@@ -59,18 +58,6 @@ export function getPreviousFocusable(node, includeHidden) {
 
 	if (includeHidden === undefined) includeHidden = false;
 
-	const _getPreviousAncestorSibling = (node) => {
-		let parentNode = getComposedParent(node);
-
-		while (parentNode) {
-			const previousParentSibling = parentNode.previousElementSibling;
-			if (previousParentSibling) return previousParentSibling;
-			parentNode = getComposedParent(parentNode);
-		}
-
-		return null;
-	};
-
 	const _getPreviousFocusable = (node, ignore, ignoreChildren) => {
 		if (!ignore && isFocusable(node, includeHidden)) return node;
 
@@ -86,7 +73,7 @@ export function getPreviousFocusable(node, includeHidden) {
 			return null;
 		}
 
-		const previousAncestorSibling = _getPreviousAncestorSibling(node);
+		const previousAncestorSibling = getPreviousAncestorSibling(node);
 		if (previousAncestorSibling) {
 			const parentSibingFocusable = _getPreviousFocusable(previousAncestorSibling, false, false);
 			if (parentSibingFocusable) return parentSibingFocusable;

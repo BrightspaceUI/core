@@ -6,14 +6,28 @@ import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElement))) {
+/**
+ * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
+ * @slot - Default slot for content inside dialog
+ * @slot footer - Slot for footer content such as workflow buttons
+ * @fires d2l-dialog-open - Dispatched when the dialog is opened
+ * @fires d2l-dialog-close - Dispatched with the action value when the dialog is closed for any reason
+ */
+class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
+			 */
 			async: { type: Boolean },
+
+			/**
+			 * The preferred width (unit-less) for the dialog
+			 */
 			width: { type: Number }
 		};
 	}
@@ -71,29 +85,9 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': { close: 'إغلاق مربع الحوار هذا' },
-			'da': { close: 'Luk denne dialogboks' },
-			'de': { close: 'Dieses Dialogfeld schließen' },
-			'en': { close: 'Close this dialog' },
-			'es': { close: 'Cerrar este cuadro de diálogo' },
-			'fr': { close: 'Fermer cette boîte de dialogue' },
-			'ja': { close: 'このダイアログを閉じる' },
-			'ko': { close: '이 대화 상자 닫기' },
-			'nl': { close: 'Dit dialoogvenster sluiten' },
-			'pt': { close: 'Fechar esta caixa de diálogo' },
-			'sv': { close: 'Stäng dialogrutan' },
-			'tr': { close: 'Bu iletişim kutusunu kapat' },
-			'tr-tr': { close: 'Bu diyalog kutusunu kapat' },
-			'zh': { close: '关闭此对话框' },
-			'zh-cn': { close: '关闭此对话' },
-			'zh-tw': { close: '關閉此對話方塊' }
-		};
-	}
-
 	constructor() {
 		super();
+		this.async = false;
 		this.width = 600;
 	}
 
@@ -121,7 +115,7 @@ class Dialog extends LocalizeStaticMixin(AsyncContainerMixin(DialogMixin(LitElem
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
-						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('close')}" @click="${this._abort}"></d2l-button-icon>
+						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content">${content}</div>

@@ -5,17 +5,30 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateInISO, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODateTime } from '../../helpers/dateTime.js';
 import { convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+/**
+ * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
+ * @fires change - Dispatched when there is a change in selected date or selected time. "value" reflects the selected value and is in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
+ */
+class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * REQUIRED: Accessible label for the input
+			 */
 			label: { type: String },
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+			/**
+			 * Value of the input. This should be in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ") and in UTC time (i.e., do NOT localize to the user's timezone).
+			 */
 			value: { type: String },
 			_maxValueLocalized: { type: String },
 			_minValueLocalized: { type: String },
@@ -42,28 +55,9 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`;
 	}
 
-	static get resources() {
-		return {
-			'ar': { date: 'التاريخ', time: 'الوقت' },
-			'da': { date: 'Dato', time: 'Tidspunkt' },
-			'de': { date: 'Datum', time: 'Uhrzeit' },
-			'en': { date: 'Date', time: 'Time' },
-			'es': { date: 'Fecha', time: 'Hora' },
-			'fr': { date: 'Date', time: 'Heure' },
-			'ja': { date: '日付', time: '時間' },
-			'ko': { date: '날짜', time: '시간' },
-			'nl': { date: 'Datum', time: 'Tijd' },
-			'pt': { date: 'Data', time: 'Tempo' },
-			'sv': { date: 'Datum', time: 'Tid' },
-			'tr': { date: 'Tarih', time: 'Saat' },
-			'zh': { date: '日期', time: '时间' },
-			'zh-tw': { date: '日期', time: '時間' }
-		};
-	}
-
 	constructor() {
 		super();
-
+		this.disabled = false;
 		this._parsedDateTime = '';
 	}
 
@@ -82,7 +76,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				<d2l-input-date
 					@change="${this._handleDateChange}"
 					?disabled="${this.disabled}"
-					label="${this.localize('date')}"
+					label="${this.localize('components.input-date-time.date')}"
 					label-hidden
 					max-value="${ifDefined(this._maxValueLocalized)}"
 					min-value="${ifDefined(this._minValueLocalized)}"
@@ -92,7 +86,7 @@ class InputDateTime extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 					@change="${this._handleTimeChange}"
 					?disabled="${this.disabled}"
 					?hidden="${timeHidden}"
-					label="${this.localize('time')}"
+					label="${this.localize('components.input-date-time.time')}"
 					label-hidden
 					max-height="430"
 					.value="${this._parsedDateTime}">

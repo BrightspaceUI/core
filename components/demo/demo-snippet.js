@@ -41,6 +41,18 @@ class DemoSnippet extends LitElement {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((_, prop) => {
+			if (prop === '_code') this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
+		});
+	}
+
+	forceCodeUpdate() {
+		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
+	}
+
 	_formatCode(text) {
 
 		if (!text) return text;

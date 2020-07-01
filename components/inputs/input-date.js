@@ -9,23 +9,48 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(getDateFromISODate(val));
 }
 
-class InputDate extends LocalizeStaticMixin(LitElement) {
+/**
+ * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
+ * @fires change - Dispatched when a date is selected or typed. "value" reflects the selected value and is in ISO 8601 calendar date format ("YYYY-MM-DD").
+ */
+class InputDate extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Text to reassure users that they can choose not to provide a value in this field (usually not necessary)
+			 */
 			emptyText: { type: String, attribute: 'empty-text'},
+			/**
+			 * REQUIRED: Accessible label for the input
+			 */
 			label: { type: String },
+			/**
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * Maximum valid date that could be selected by a user.
+			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
+			/**
+			 * Minimum valid date that could be selected by a user.
+			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+			/**
+			 * Value of the input
+			 */
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -78,90 +103,18 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 		`;
 	}
 
-	static get resources() {
-		return {
-			'ar': {
-				clear: 'مسح',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today',
-			},
-			'da': {
-				clear: 'Ryd',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today',
-			},
-			'de': {
-				clear: 'Löschen',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'en': {
-				clear: 'Clear',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'es': {
-				clear: 'Borrar',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'fr': {
-				clear: 'Effacer',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'ja': {
-				clear: 'クリア',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'ko': {
-				clear: '지우기',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'nl': {
-				clear: 'Wissen',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'pt': {
-				clear: 'Desmarcar',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'sv': {
-				clear: 'Rensa',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'tr': {
-				clear: 'Temizle',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'zh': {
-				clear: '清除',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			},
-			'zh-tw': {
-				clear: '清除',
-				openInstructions: 'Use date format {format}. Arrow down or press enter to access mini-calendar.',
-				setToToday: 'Set to Today'
-			}
-		};
-	}
-
 	constructor() {
 		super();
 
+		this.disabled = false;
 		this.emptyText = '';
+		this.labelHidden = false;
 		this.value = '';
 
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
+		this._namespace = 'components.input-date';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
@@ -208,6 +161,7 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
@@ -215,10 +169,11 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 					@keydown="${this._handleKeydown}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
+					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
 					style="${styleMap({maxWidth: inputTextWidth})}"
-					title="${this.localize('openInstructions', {format: shortDateFormat})}"
+					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
 						icon="tier1:calendar"
@@ -238,8 +193,8 @@ class InputDate extends LocalizeStaticMixin(LitElement) {
 							min-value="${ifDefined(this.minValue)}"
 							selected-value="${ifDefined(this.value)}">
 							<div class="d2l-calendar-slot-buttons">
-								<d2l-button-subtle text="${this.localize('setToToday')}" @click="${this._handleSetToToday}"></d2l-button-subtle>
-								<d2l-button-subtle text="${this.localize('clear')}" @click="${this._handleClear}"></d2l-button-subtle>
+								<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+								<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>
 							</div>
 						</d2l-calendar>
 					</d2l-focus-trap>

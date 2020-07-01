@@ -34,9 +34,18 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			visibleOnAncestor: { type: Boolean, reflect: true, attribute: 'visible-on-ancestor' },
 			__voaState: { type: String, reflect: true, attribute: '__voa-state' }
 		};
+	}
+
+	constructor() {
+		super();
+
+		this.visibleOnAncestor = false;
 	}
 
 	attributeChangedCallback(name, oldval, newval) {

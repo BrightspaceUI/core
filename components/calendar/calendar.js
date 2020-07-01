@@ -8,7 +8,7 @@ import { findComposedAncestor } from '../../helpers/dom.js';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { LocalizeStaticMixin } from '../../mixins/localize-static-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -136,13 +136,33 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
-class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
+/**
+ * A component can be used to display a responsively sized calendar that allows for date selection.
+ * @slot - Content displayed under the calendar (e.g., buttons)
+ * @fires d2l-calendar-selected - Dispatched when a date is selected through click, space, or enter. "e.detail.date" is in ISO 8601 calendar date format ("YYYY-MM-DD").
+ */
+class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Maximum valid date that could be selected by a user
+			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
+
+			/**
+			 * Minimum valid date that could be selected by a user
+			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+
+			/**
+			 * Currently selected date
+			 */
 			selectedValue: { type: String, attribute: 'selected-value' },
+
+			/**
+			 * Summary of the calendar for accessibility
+			 */
 			summary: { type: String },
 			_dialog: { type: Boolean },
 			_focusDate: { type: Object },
@@ -166,7 +186,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				width: 100%;
 			}
 
-			th[role="columnheader"] {
+			th {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
 				padding-bottom: 0.6rem;
 				padding-top: 0.3rem;
@@ -364,87 +384,13 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		`];
 	}
 
-	static get resources() {
-		return {
-			'ar': {
-				notSelected: 'غير محدد.',
-				selected: 'محدد.',
-				show: '{month} إظهار'
-			},
-			'da': {
-				notSelected: 'Ikke valgt.',
-				selected: 'Valgt.',
-				show: 'Vis {month}'
-			},
-			'de': {
-				notSelected: 'Nicht ausgewählt.',
-				selected: 'Ausgewählt.',
-				show: '{month} anzeigen'
-			},
-			'en': {
-				notSelected: 'Not Selected.',
-				selected: 'Selected.',
-				show: 'Show {month}'
-			},
-			'es': {
-				notSelected: 'No seleccionado.',
-				selected: 'Seleccionado.',
-				show: 'Mostrar {month}'
-			},
-			'fr': {
-				notSelected: 'Pas sélectionné',
-				selected: 'Sélectionné',
-				show: 'Afficher {month}'
-			},
-			'ja': {
-				notSelected: '選択されていません。',
-				selected: '選択されています。',
-				show: '{month} の表示'
-			},
-			'ko': {
-				notSelected: '선택되지 않음.',
-				selected: '선택됨.',
-				show: '{month} 표시'
-			},
-			'nl': {
-				notSelected: 'Niet geselecteerd.',
-				selected: 'Geselecteerd.',
-				show: '{month} tonen'
-			},
-			'pt': {
-				notSelected: 'Não selecionado.',
-				selected: 'Selecionado.',
-				show: 'Mostrar {month}'
-			},
-			'sv': {
-				notSelected: 'Inte markerad.',
-				selected: 'Markerad.',
-				show: 'Visa {month}'
-			},
-			'tr': {
-				notSelected: 'Seçili değil.',
-				selected: 'Seçili.',
-				show: '{month} öğesini göster'
-			},
-			'zh': {
-				notSelected: '未选择。',
-				selected: '已选。',
-				show: '显示 {month}'
-			},
-			'zh-tw': {
-				notSelected: '未選取。',
-				selected: '已選取。',
-				show: '顯示 {month}'
-			}
-		};
-	}
-
 	constructor() {
 		super();
 
 		this._isInitialFocusDate = true;
-		this._tableInfoId = getUniqueId();
 		this._monthNav = 'initial';
+		this._namespace = 'components.calendar';
+		this._tableInfoId = getUniqueId();
 		getCalendarData();
 	}
 
@@ -477,11 +423,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		}
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
-			<th
-				abbr="${calendarData.descriptor.calendar.days.long[index]}"
-				aria-label="${calendarData.descriptor.calendar.days.long[index]}"
-				role="columnheader"
-				scope="col">
+			<th>
 				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
 					${calendarData.descriptor.calendar.days.short[index]}
 				</abbr>
@@ -490,7 +432,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
-			const weekHtml = week.map((day) => {
+			const weekHtml = week.map((day, index) => {
 				const disabled = getDisabled(day, this.minValue, this.maxValue);
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
@@ -503,7 +445,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 				const year = day.getFullYear();
 				const month = day.getMonth();
 				const date = day.getDate();
-				const description = `${date}. ${selected ? this.localize('selected') : this.localize('notSelected')} ${formatDate(day, {format: 'monthYear'})}`;
+				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
+				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, {format: 'monthYear'})}`;
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
@@ -514,15 +457,15 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 						@keydown="${this._onKeyDown}"
 						role="gridcell"
 						tabindex=${focused ? '0' : '-1'}>
-							<button
-								aria-label="${description}"
-								class="${classMap(classes)}"
-								@click="${this._onDateSelected}"
-								?disabled="${disabled}"
-								tabindex="-1"
-								type="button">
-								${date}
-							</button>
+						<button
+							aria-label="${description}"
+							class="${classMap(classes)}"
+							@click="${this._onDateSelected}"
+							?disabled="${disabled}"
+							tabindex="-1"
+							type="button">
+							${date}
+						</button>
 					</td>`;
 			});
 
@@ -544,29 +487,30 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
 			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
-				<div class="d2l-calendar-title">
-					<d2l-button-icon
-						@click="${this._onPrevMonthButtonClick}"
-						text="${this._computeText(getPrevMonth(this._shownMonth))}"
-						icon="tier1:chevron-left">
-					</d2l-button-icon>
-					<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
-					<d2l-button-icon
-						@click="${this._onNextMonthButtonClick}"
-						text="${this._computeText(getNextMonth(this._shownMonth))}"
-						icon="tier1:chevron-right">
-					</d2l-button-icon>
+				<div role="application">
+					<div class="d2l-calendar-title">
+						<d2l-button-icon
+							@click="${this._onPrevMonthButtonClick}"
+							text="${this._computeText(getPrevMonth(this._shownMonth))}"
+							icon="tier1:chevron-left">
+						</d2l-button-icon>
+						<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
+						<d2l-button-icon
+							@click="${this._onNextMonthButtonClick}"
+							text="${this._computeText(getNextMonth(this._shownMonth))}"
+							icon="tier1:chevron-right">
+						</d2l-button-icon>
+					</div>
+					<table aria-labelledby="${labelId}" role="presentation">
+						${summary}
+						<thead aria-hidden="true">
+							<tr>${weekdayHeaders}</tr>
+						</thead>
+						<tbody>
+							${dayRows}
+						</tbody>
+					</table>
 				</div>
-				<table
-					aria-labelledby="${labelId}">
-					${summary}
-					<thead>
-						<tr>${weekdayHeaders}</tr>
-					</thead>
-					<tbody>
-						${dayRows}
-					</tbody>
-				</table>
 				<slot></slot>
 			</div>
 		`;
@@ -602,7 +546,7 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 	}
 
 	_computeText(month) {
-		return this.localize('show', {month: calendarData.descriptor.calendar.months.long[month]});
+		return this.localize(`${this._namespace}.show`, {month: calendarData.descriptor.calendar.months.long[month]});
 	}
 
 	async _focusDateAddFocus() {
@@ -808,8 +752,8 @@ class Calendar extends LocalizeStaticMixin(RtlMixin(LitElement)) {
 		await this.updateComplete;
 		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
 			this._focusDate = possibleFocusDate;
-		} else if (this.shadowRoot.querySelector('button.d2l-calendar-date:enabled')) {
-			const validDates = this.shadowRoot.querySelectorAll('button.d2l-calendar-date:enabled');
+		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
+			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:enabled');
 			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
 			const year = focusDate.getAttribute('data-year');
 			const month = focusDate.getAttribute('data-month');
