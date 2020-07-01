@@ -1,12 +1,12 @@
 import '../colors/colors.js';
 import './list-item-generic-layout.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
+import { ListItemMixin } from './list-item-mixin.js';
 import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -29,7 +29,7 @@ const defaultBreakpoints = [842, 636, 580, 0];
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
-class ListItem extends RtlMixin(LitElement) {
+class ListItem extends ListItemCheckboxMixin(ListItemMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -38,10 +38,6 @@ class ListItem extends RtlMixin(LitElement) {
 			 */
 			breakpoints: { type: Array },
 			/**
-			 * Disables the checkbox
-			 */
-			disabled: {type: Boolean },
-			/**
 			 * Indicates a drag handle should be rendered for reordering an item
 			 */
 			draggable: { type: Boolean },
@@ -49,22 +45,6 @@ class ListItem extends RtlMixin(LitElement) {
 			 * Address of item link if navigable
 			 */
 			href: { type: String },
-			/**
-			 * Value to identify item if selectable
-			 */
-			key: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			role: { type: String, reflect: true },
-			/**
-			 * Indicates a checkbox should be rendered for selecting the item
-			 */
-			selectable: {type: Boolean },
-			/**
-			 * Whether the item is selected
-			 */
-			selected: { type: Boolean, reflect: true },
 			_breakpoint: { type: Number },
 			_hoveringLink: { type: Boolean },
 			_focusing: { type: Boolean },
@@ -74,7 +54,7 @@ class ListItem extends RtlMixin(LitElement) {
 
 	static get styles() {
 
-		return [ checkboxStyles, css`
+		return [ super.styles, css`
 			:host {
 				display: block;
 				position: relative;
@@ -212,11 +192,7 @@ class ListItem extends RtlMixin(LitElement) {
 		super();
 		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
-		this.disabled = false;
-		this.selected = false;
-		this.selectable = false;
 		this._contentId = getUniqueId();
-		this._checkBoxId = getUniqueId();
 	}
 
 	get breakpoints() {
@@ -232,17 +208,6 @@ class ListItem extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-
-		const parent = findComposedAncestor(this.parentNode, (node) => {
-			if (!node || node.nodeType !== 1) return false;
-			return node.tagName === 'D2L-LIST';
-		});
-		if (parent !== null) {
-			const separators = parent.getAttribute('separators');
-			if (separators) this._separators = separators;
-			this._extendSeparators = parent.hasAttribute('extend-separators');
-		}
-
 		ro.observe(this);
 	}
 
@@ -276,9 +241,9 @@ class ListItem extends RtlMixin(LitElement) {
 				` : nothing }
 				${this.selectable ? html`
 				<div slot="control">
-					<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}" ?disabled="${this.disabled}">
+					${ this._renderCheckbox() }
 				</div>
-				<div slot="control-action"></div>
+				<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>
 				` : nothing }
 				${ this.href ? html`
 				<a slot="content-action"
@@ -306,12 +271,6 @@ class ListItem extends RtlMixin(LitElement) {
 	}
 
 	updated(changedProperties) {
-		if (changedProperties.has('key')) {
-			const oldValue = changedProperties.get('key');
-			if (typeof oldValue !== 'undefined') {
-				this.setSelected(undefined, true);
-			}
-		}
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
 		}
@@ -332,24 +291,8 @@ class ListItem extends RtlMixin(LitElement) {
 		});
 	}
 
-	setSelected(selected, suppressEvent) {
-		this.selected = selected;
-		if (!suppressEvent) this._dispatchSelected(selected);
-	}
-
-	_dispatchSelected(value) {
-		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
-			detail: { key: this.key, selected: value },
-			bubbles: true
-		}));
-	}
-
 	_handleBlurLink() {
 		this._focusingLink = false;
-	}
-
-	_handleCheckboxChange(e) {
-		this.setSelected(e.target.checked);
 	}
 
 	_handleFocusIn() {

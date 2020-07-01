@@ -9,9 +9,21 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the checkbox
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Value to identify item if selectable
+			 */
 			key: { type: String, reflect: true },
+			/**
+			 * Indicates a checkbox should be rendered for selecting the item
+			 */
 			selectable: {type: Boolean },
+			/**
+			 * Whether the item is selected
+			 */
 			selected: { type: Boolean, reflect: true }
 		};
 	}
