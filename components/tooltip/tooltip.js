@@ -468,7 +468,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		// Compute the x and y position of the tooltip relative to its target
 		let parentTop;
 		let parentLeft;
-		if (offsetParent) {
+		if (offsetParent && offsetParent.tagName !== 'BODY') {
 			const parentRect = offsetParent.getBoundingClientRect();
 			parentTop = parentRect.top + offsetParent.clientTop;
 			parentLeft = parentRect.left + offsetParent.clientLeft;
