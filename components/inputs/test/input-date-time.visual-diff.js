@@ -9,8 +9,7 @@ describe('d2l-input-date-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await browser.newPage();
-		await page.setViewport({width: 800, height: 900, deviceScaleFactor: 2});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 900}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
@@ -94,6 +93,97 @@ describe('d2l-input-date-time', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('open with min and max with enter', async function() {
+			await page.$eval('#min-max', (elem) => {
+				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
+				const input = dateSelector.shadowRoot.querySelector('d2l-input-text');
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				input.dispatchEvent(eventObj);
+			});
+
+			const rect = await page.$eval('#min-max', (elem) => {
+				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
+				const content = dateSelector.shadowRoot.querySelector('[dropdown-content]');
+				const opener = content.__getOpener();
+				const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
+				const openerRect = opener.getBoundingClientRect();
+				const contentRect = contentWidth.getBoundingClientRect();
+				const x = Math.min(openerRect.x, contentRect.x);
+				const y = Math.min(openerRect.y, contentRect.y);
+				const width = Math.max(openerRect.right, contentRect.right) - x;
+				const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
+				return {
+					x: x - 10,
+					y: y - 10,
+					width: width + 20,
+					height: height + 20
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 	});
 
+	describe('validation', () => {
+		// TODO: enable after validation implemented
+		it.skip('set date to be before min-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
+				dateSelector.value = '2018-01-20';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				dateSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it.skip('set time to be before min-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				elem.value = '2018-02-13T20:00:00.000Z';
+				const timeSelector = elem.shadowRoot.querySelector('d2l-input-time');
+				timeSelector.value = '05:22:00';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				timeSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it.skip('set date to be after max-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
+				dateSelector.value = '2018-03-20';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				dateSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it.skip('set time to be after max-value', async function() {
+			await page.$eval('#min-max', (elem) => {
+				elem.value = '2018-02-27T07:00:00.000Z';
+				const timeSelector = elem.shadowRoot.querySelector('d2l-input-time');
+				timeSelector.value = '15:22:00';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				timeSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#min-max');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
 });
