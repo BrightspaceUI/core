@@ -18,13 +18,6 @@ describe('d2l-calendar', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 
-	describe('accessibility', () => {
-		it('passes all axe tests', async() => {
-			const calendar = await fixture(normalFixture);
-			await expect(calendar).to.be.accessible();
-		});
-	});
-
 	describe('constructor', () => {
 		it('should construct', () => {
 			runConstructor('d2l-calendar');
