@@ -4,10 +4,13 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
+import '../validation/validation-custom.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday, isDateInRange } from '../../helpers/dateTime.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -20,7 +23,7 @@ export function formatISODateInUserCalDescriptor(val) {
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
  * @fires change - Dispatched when a date is selected or typed. "value" reflects the selected value and is in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDate extends LocalizeCoreElement(LitElement) {
+class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -51,6 +54,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 			/**
 			 * Value of the input
 			 */
+			validationCustomValid: { type: Boolean },
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -109,11 +113,13 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
+		this.validationCustomValid = true;
 		this.value = '';
 
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
+		this._inputId =  getUniqueId();
 		this._namespace = 'components.input-date';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
@@ -154,6 +160,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
+			<d2l-validation-custom for="${this._inputId}" @d2l-validation-custom-validate=${this._validate} failure-text="Pick in range"></d2l-validation-custom>
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
@@ -167,6 +174,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
+					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -218,7 +226,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 	}
 
 	_handleBlur() {
-		this._setFormattedValue();
+		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
 	}
 
 	async _handleChange() {
@@ -308,13 +316,19 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyText ? this.emptyText : '');
 	}
 
-	_updateValueDispatchEvent(dateInISO) {
-		if (dateInISO === this.value) return;
+	async _updateValueDispatchEvent(dateInISO) {
+		this.validationCustomValid = isDateInRange(getDateFromISODate(dateInISO), getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
+		await this.validate();
+		if (dateInISO === this.value || !this.validationCustomValid) return;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	async _validate(e) {
+		e.detail.resolve(this.validationCustomValid);
 	}
 
 }
