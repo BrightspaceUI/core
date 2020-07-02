@@ -23,7 +23,9 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				display: block;
 				font-size: 0.7rem;
 				line-height: 1.05rem;
+				overflow: hidden;
 				position: relative;
+				white-space: nowrap;
 			}
 			:host([hidden]) {
 				display: none;
@@ -39,17 +41,10 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				top: 0;
 				width: 10px;
 			}
-
 			:host([dir="rtl"])::after {
 				background: linear-gradient(to left, rgba(255, 255, 255, 0), rgb(251, 252, 252));
 				left: 0;
 				right: auto;
-			}
-
-			nav {
-				overflow: hidden;
-				position: relative;
-				white-space: nowrap;
 			}
 
 			:host([compact]) ::slotted(d2l-breadcrumb:not(:last-of-type)),
