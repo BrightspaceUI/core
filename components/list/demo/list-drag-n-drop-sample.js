@@ -34,21 +34,21 @@ class listDragNDropSample extends LitElement {
 			},
 			{
 				key: '4',
-				name: 'Introductory Earth Sciences',
+				name: 'Applied Complex Analysis',
 				secondary: 'This course explores the geological process of the Earth\'s interior and surface. These include volcanism, earthquakes, mountains...',
-				img: 'https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg'
+				img: 'https://s.brightspace.com/course-images/images/c63e7407-c3ba-4fa0-8383-08a8f4fa468b/tile-high-density-max-size.jpg'
 			},
 			{
 				key: '5',
-				name: 'Introductory Earth Sciences',
+				name: 'Basic French',
 				secondary: 'This course explores the geological process of the Earth\'s interior and surface. These include volcanism, earthquakes, mountains...',
-				img: 'https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg'
+				img: 'https://s.brightspace.com/course-images/images/9e319eb4-31af-4912-889d-92d9f2d82884/tile-high-density-max-size.jpg'
 			},
 			{
 				key: '6',
-				name: 'Introductory Earth Sciences',
+				name: 'Algebraic Number Theory',
 				secondary: 'This course explores the geological process of the Earth\'s interior and surface. These include volcanism, earthquakes, mountains...',
-				img: 'https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg'
+				img: 'https://s.brightspace.com/course-images/images/36c5813d-2ac3-4a73-8f39-3d6e1b381fe3/tile-high-density-max-size.jpg'
 			}
 		];
 	}
