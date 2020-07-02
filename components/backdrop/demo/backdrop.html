@@ -34,6 +34,10 @@
 						<input type="checkbox" id="no-animate-hide" name="no-animate-hide">
 						<label for="no-animate-hide">no animation on hide</label>
 					</div>
+					<div>
+						<input type="checkbox" id="delay-transition" name="delay-transition">
+						<label for="delay-transition">delay transition</label>
+					</div>
 					<d2l-backdrop for-target="target"></d2l-backdrop>
 					<script>
 						const backdrop = document.querySelector('d2l-backdrop');
@@ -48,6 +52,13 @@
 								backdrop.setAttribute('slow-transition', true);
 							} else {
 								backdrop.removeAttribute('slow-transition');
+							}
+						});
+						document.querySelector('#delay-transition').addEventListener('change', e => {
+							if (e.target.checked) {
+								backdrop.setAttribute('delay-transition', true);
+							} else {
+								backdrop.removeAttribute('delay-transition');
 							}
 						});
 					</script>

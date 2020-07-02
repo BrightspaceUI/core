@@ -30,6 +30,7 @@ button.addEventListener('click', () => {
 - `shown` (Boolean): used to control whether the backdrop is shown
 - `slow-transition` (Boolean): Increases the fade transition time to 1200ms (default is 200ms)
 - `no-animate-hide` (Boolean): disables the fade-out transition while the backdrop is being hidden
+- `delay-transition` (Boolean): Introduces a delay (800ms) between the shim rendering and the fade starting
 
 ## Future Enhancements
 

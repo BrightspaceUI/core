@@ -26,6 +26,11 @@ class Backdrop extends LitElement {
 			noAnimateHide: { type: Boolean, attribute: 'no-animate-hide' },
 
 			/**
+			 * Introduces a delay between the shim rendering and the fade starting
+			 */
+			delayTransition: { type: Boolean, attribute: 'delay-transition'},
+
+			/**
 			 * Used to control whether the backdrop is shown
 			 */
 			shown: { type: Boolean },
@@ -48,6 +53,9 @@ class Backdrop extends LitElement {
 			}
 			:host([slow-transition]) {
 				transition: opacity 1200ms ease-in;
+			}
+			:host([delay-transition]) {
+				transition-delay: 800ms;
 			}
 			:host([_state=null][no-animate-hide]) {
 				transition: none;
