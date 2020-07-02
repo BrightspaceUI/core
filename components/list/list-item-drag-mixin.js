@@ -280,7 +280,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 let dropSpots = null;
 
 function dropSpotsFactory(target) {
-	if (!dropSpots) dropSpots = new keepTrackOfThoseDropSpots(target);
+	if (!dropSpots) dropSpots = new DropSpotsState(target);
 	return dropSpots;
 
 }
@@ -294,7 +294,7 @@ function dropSpotsBlowUp() {
 	return dropSpotTemp;
 }
 
-class keepTrackOfThoseDropSpots {
+class DropSpotsState {
 	constructor(target) {
 		this._target = target;
 		this._destination = null;
