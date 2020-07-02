@@ -4,11 +4,13 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
+import '../validation/validation-custom.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -52,6 +54,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Value of the input
 			 */
+			validationCustomValid: { type: Boolean },
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -111,11 +114,13 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
+		this.validationCustomValid = true;
 		this.value = '';
 
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
+		this._inputId =  getUniqueId();
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
@@ -156,6 +161,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
+			<d2l-validation-custom for="${this._inputId}" @d2l-validation-custom-validate=${this._validate} failure-text="Pick in range"></d2l-validation-custom>
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
@@ -171,6 +177,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
 					hide-invalid-icon
+					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -365,6 +372,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			'change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	async _validate(e) {
+		e.detail.resolve(this.validationCustomValid);
 	}
 
 }
