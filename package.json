@@ -1,12 +1,13 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.48.1",
+  "version": "1.57.2",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
+    "analyze": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
@@ -14,7 +15,7 @@
     "lint": "npm run lint:eslint && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
-    "prepublishOnly": "node ./cli/verify-translations.js",
+    "prepublishOnly": "node ./cli/verify-translations.js && npm run analyze",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
     "test:axe": "karma start karma.axe.conf.js",
@@ -26,6 +27,7 @@
     "test:sauce": "karma start karma.sauce.conf.js"
   },
   "files": [
+    "custom-elements.json",
     "/components",
     "/directives",
     "/generated",
@@ -46,6 +48,7 @@
     "@brightspace-ui/visual-diff": "^1",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^3",
+    "@semantic-release/git": "^9",
     "axe-core": "^3",
     "babel-eslint": "^10",
     "chalk": "^4",
@@ -56,23 +59,42 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "frau-ci": "^1",
     "karma-sauce-launcher": "^4.1.4",
     "lit-analyzer": "^1",
-    "mocha": "^7",
+    "mocha": "^8",
     "node-sass": "^4",
-    "puppeteer": "^2",
+    "puppeteer": "^4",
+    "semantic-release": "^17",
     "sinon": "^9",
+    "web-component-analyzer": "^1",
     "whatwg-fetch": "^3"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
     "@formatjs/intl-pluralrules": "^1",
+    "@open-wc/dedupe-mixin": "^1.2.17",
     "@webcomponents/shadycss": "^1",
     "@webcomponents/webcomponentsjs": "^2",
     "intl-messageformat": "^7",
     "lit-element": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/github",
+      "@semantic-release/npm",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]"
+        }
+      ]
+    ]
   }
 }

@@ -9,11 +9,25 @@ import { heading3Styles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
+ * @slot - Default slot for content inside dialog
+ * @slot footer - Slot for footer content such as workflow buttons
+ * @fires d2l-dialog-open - Dispatched when the dialog is opened
+ * @fires d2l-dialog-close - Dispatched with the action value when the dialog is closed for any reason
+ */
 class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
+			 */
 			async: { type: Boolean },
+
+			/**
+			 * The preferred width (unit-less) for the dialog
+			 */
 			width: { type: Number }
 		};
 	}
@@ -73,6 +87,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 
 	constructor() {
 		super();
+		this.async = false;
 		this.width = 600;
 	}
 

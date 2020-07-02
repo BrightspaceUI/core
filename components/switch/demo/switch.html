@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../switch.js';
+			import '../switch-visibility.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-switch">
+
+			<h2>On/Off</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-switch text="Dark Mode" on></d2l-switch>
+					<script>
+						document.querySelector('d2l-switch').addEventListener('change', (e) => {
+							console.log('switch changed', e.target.on);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>On/Off (text-position)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<div><d2l-switch text="Dark Mode" text-position="start"></d2l-switch></div>
+					<div><d2l-switch text="Dark Mode" text-position="end"></d2l-switch></div>
+					<div><d2l-switch text="Dark Mode" text-position="hidden"></d2l-switch></div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>On/Off (disabled)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-switch text="Dark Mode" on disabled></d2l-switch>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>On/Off (with tooltip)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-switch text="Dark Mode" tooltip="Whether dark mode is turned on or off." on></d2l-switch>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Visibility</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-switch-visibility></d2l-switch-visibility>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>

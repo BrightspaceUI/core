@@ -136,13 +136,33 @@ export function getPrevMonth(month) {
 	return (month === 0) ? 11 : (month - 1);
 }
 
+/**
+ * A component can be used to display a responsively sized calendar that allows for date selection.
+ * @slot - Content displayed under the calendar (e.g., buttons)
+ * @fires d2l-calendar-selected - Dispatched when a date is selected through click, space, or enter. "e.detail.date" is in ISO 8601 calendar date format ("YYYY-MM-DD").
+ */
 class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
+			/**
+			 * Maximum valid date that could be selected by a user
+			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
+
+			/**
+			 * Minimum valid date that could be selected by a user
+			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+
+			/**
+			 * Currently selected date
+			 */
 			selectedValue: { type: String, attribute: 'selected-value' },
+
+			/**
+			 * Summary of the calendar for accessibility
+			 */
 			summary: { type: String },
 			_dialog: { type: Boolean },
 			_focusDate: { type: Object },

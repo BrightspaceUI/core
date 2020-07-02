@@ -51,6 +51,10 @@ class CodeView extends LitElement {
 		`;
 	}
 
+	forceUpdate() {
+		this._updateCode(this.shadowRoot.querySelector('slot'));
+	}
+
 	get _codeTemplate() {
 		return html`<pre class="language-${this.language}"><code class="language-${this.language}">${unsafeHTML(this._code)}</code></pre>`;
 	}

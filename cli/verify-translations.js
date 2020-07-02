@@ -36,7 +36,11 @@ function verify() {
 		});
 
 		if (changes) {
-			_writeChanges(lang, translations);
+			const ordered = {};
+			Object.keys(translations).sort().forEach((key) => {
+				ordered[key] = translations[key];
+			});
+			_writeChanges(lang, ordered);
 		}
 	});
 }

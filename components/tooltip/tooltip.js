@@ -76,22 +76,68 @@ const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 	}
 };
 
+/**
+ * A component used to display additional information when users focus or hover on a point of interest.
+ * @slot - Default content placed inside of the tooltip
+ * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
+ * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
+ */
 class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			align: { type: String }, /* Valid values are: 'start' and 'end' */
+			/**
+			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
+			 * @type {('start'|'end')}
+			 */
+			align: { type: String },
+			/**
+			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
+			 */
 			boundary: { type: Object },
+			/**
+			 * Causes the tooltip to close when its target is clicked
+			 */
 			closeOnClick: { type: Boolean, attribute: 'close-on-click' },
+			/**
+			 * Provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus.
+			 */
 			delay: { type: Number },
+			/**
+			 * Disables focus lock so the tooltip will automatically close when no longer hovered even if it still has focus
+			 */
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
+			/**
+			 * REQUIRED: The "id" of the tooltip's target element. Both elements must be within the same shadow root. If not provided, the tooltip's parent element will be used as its target.
+			 */
 			for: { type: String },
+			/**
+			 * Force the tooltip to stay open as long as it remains "true"
+			 */
 			forceShow: { type: Boolean, attribute: 'force-show' },
+			/**
+			 * Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor.
+			 * @type {('label'|'descriptor')}
+			 */
 			forType: { type: String, attribute: 'for-type' },
+			/**
+			 * Adjust the size of the gap between the tooltip and its target
+			 */
 			offset: { type: Number }, /* tooltipOffset */
-			position: { type: String }, /* Valid values are: 'top', 'bottom', 'left' and 'right' */
+			/**
+			 * Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+			 * @type {('top'|'bottom'|'left'|'right')}
+			 */
+			position: { type: String },
+			/**
+			 * @ignore
+			 */
 			showing: { type: Boolean, reflect: true },
-			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
+			/**
+			 * The style of the tooltip based on the type of information it displays
+			 * @type {('info'|'error')}
+			 */
+			state: { type: String, reflect: true },
 			_maxWidth: { type: Number },
 			_openDir: { type: String, reflect: true, attribute: '_open-dir' },
 			_tooltipShift: { type: Number },
@@ -405,9 +451,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this._target) {
 			return;
 		}
-
+		const offsetParent = getOffsetParent(this);
 		const targetRect = this._target.getBoundingClientRect();
-		const spaceAround = this._computeSpaceAround(targetRect);
+		const spaceAround = this._computeSpaceAround(offsetParent, targetRect);
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
 		const content = this._getContent();
@@ -416,13 +462,22 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const contentRect = content.getBoundingClientRect();
 		// + 1 because scrollWidth does not give sub-pixel measurements and half a pixel may cause text to unexpectedly wrap
-		this._maxWidth = content.scrollWidth + 2 * contentBorderSize + 1;
+		this._maxWidth = Math.min(content.scrollWidth + 2 * contentBorderSize, 350) + 1;
 		this._openDir = space.dir;
 
 		// Compute the x and y position of the tooltip relative to its target
-		const tooltipRect = this.getBoundingClientRect();
-		const top = targetRect.top - tooltipRect.top + this.offsetTop;
-		const left = targetRect.left - tooltipRect.left + this.offsetLeft;
+		let parentTop;
+		let parentLeft;
+		if (offsetParent && offsetParent.tagName !== 'BODY') {
+			const parentRect = offsetParent.getBoundingClientRect();
+			parentTop = parentRect.top + offsetParent.clientTop;
+			parentLeft = parentRect.left + offsetParent.clientLeft;
+		} else {
+			parentTop = 0;
+			parentLeft = 0;
+		}
+		const top = targetRect.top - parentTop;
+		const left = targetRect.left - parentLeft;
 
 		let positionRect;
 		if (this._isAboveOrBelow()) {
@@ -509,14 +564,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		return spaces;
 	}
 
-	_computeSpaceAround(targetRect) {
+	_computeSpaceAround(offsetParent, targetRect) {
 		const spaceAround = {
 			above: targetRect.top - this._viewportMargin,
 			below: window.innerHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
 			left: targetRect.left - this._viewportMargin,
 			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
 		};
-		const offsetParent = getOffsetParent(this);
 		if (this.boundary && offsetParent) {
 			const parentRect = offsetParent.getBoundingClientRect();
 			if (!isNaN(this.boundary.left)) {

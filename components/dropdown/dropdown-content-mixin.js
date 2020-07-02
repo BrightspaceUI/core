@@ -10,74 +10,118 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 	static get properties() {
 		return {
+			/**
+			 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt be centred.
+			 * @type {('start'|'end')}
+			 */
 			align: {
 				type: String,
 				reflect: true
 			},
+			/**
+			 * Optionally provide boundaries to where the dropdown will appear. Valid properties are "above", "below", "left", and "right".
+			 */
 			boundary: {
 				type: Object,
 			},
+			/**
+			 * Override default max-width (undefined). Specify a number that would be the px value.
+			 */
 			maxWidth: {
 				type: Number,
 				reflect: true,
 				attribute: 'max-width'
 			},
+			/**
+			 * Override default min-width (undefined). Specify a number that would be the px value.
+			 */
 			minWidth: {
 				type: Number,
 				reflect: true,
 				attribute: 'min-width'
 			},
+			/**
+			 * Override max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+			 */
 			maxHeight: {
 				type: Number,
 				attribute: 'max-height'
 			},
+			/**
+			 * Opt out of automatically closing on focus or click outside of the dropdown content
+			 */
 			noAutoClose: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'no-auto-close'
 			},
+			/**
+			 * Opt out of auto-sizing
+			 */
 			noAutoFit: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'no-auto-fit'
 			},
+			/**
+			 * Opt out of focus being automatically moved to the first focusable element in the dropdown when opened
+			 */
 			noAutoFocus: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'no-auto-focus'
 			},
+			/**
+			 * Render with no padding
+			 */
 			noPadding: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'no-padding'
 			},
+			/**
+			 * Render the footer with no padding (if it has content)
+			 */
 			noPaddingFooter: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'no-padding-footer'
 			},
+			/**
+			 * Render the header with no padding (if it has content)
+			 */
 			noPaddingHeader: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'no-padding-header'
 			},
+			/**
+			 * Render without a pointer
+			 */
 			noPointer: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'no-pointer'
 			},
+			/**
+			 * @ignore
+			 */
 			opened: {
 				type: Boolean,
 				reflect: true
 			},
 			/**
 			 * Private.
+			 * @ignore
 			 */
 			openedAbove: {
 				type: Boolean,
 				reflect: true,
 				attribute: 'opened-above'
 			},
+			/**
+			 * Provide custom offset, positive or negative
+			 */
 			verticalOffset: {
 				type: String,
 				attribute: 'vertical-offset'
@@ -117,8 +161,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	constructor() {
 		super();
 
+		this.noAutoClose = false;
+		this.noAutoFit = false;
+		this.noAutoFocus = false;
+		this.noPadding = false;
 		this.noPaddingFooter = false;
 		this.noPaddingHeader = false;
+		this.noPointer = false;
 
 		this.__opened = false;
 		this.__content = null;
