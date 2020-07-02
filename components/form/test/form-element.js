@@ -1,7 +1,6 @@
 import '../../validation/validation-custom.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormElementMixin } from '../form-element-mixin.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 class FormElement extends FormElementMixin(LitElement) {
 
@@ -16,13 +15,14 @@ class FormElement extends FormElementMixin(LitElement) {
 	constructor() {
 		super();
 		this.isValidationCustomValid = true;
+		this.value = '';
 	}
 
 	render() {
 		return html`
 			<div>
 				<h1>Test Form Element</h1>
-				<input type="text" required .value="${ifDefined(this.value)}"/>
+				<input type="text" required .value="${this.value}"/>
 				<d2l-validation-custom @d2l-validation-custom-validate=${this._validate} failure-text="Internal custom validation failed">
 				</d2l-validation-custom>
 			</div>

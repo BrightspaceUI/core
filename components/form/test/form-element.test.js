@@ -65,12 +65,12 @@ describe('form-element', () => {
 
 		it('should set tooltip message if validate has errors', async() => {
 			await formElement.validate();
-			expect(formElement.tooltipMessage).to.equal('Test form element is required');
+			expect(formElement.tooltipMessage).to.equal('Test form element is required.');
 		});
 
 		it('should remove aria-invalid if validate has no errors', async() => {
 			await formElement.validate();
-			expect(formElement.tooltipMessage).to.equal('Test form element is required');
+			expect(formElement.tooltipMessage).to.equal('Test form element is required.');
 			formElement.value = 'Non-empty';
 			await formElement.validate();
 			expect(formElement.tooltipMessage).to.null;
@@ -94,14 +94,14 @@ describe('form-element', () => {
 
 		it('should validate native element validity state', async() => {
 			const errors = await formElement.validate();
-			expect(errors).to.include.members(['Test form element is required']);
+			expect(errors).to.include.members(['Test form element is required.']);
 		});
 
 		it('should validate with default validity state message', async() => {
 			formElement.value = 'Non-empty';
 			formElement.setValidity({ badInput: true });
 			const errors = await formElement.validate();
-			expect(errors).to.include.members(['Test form element is invalid']);
+			expect(errors).to.include.members(['Test form element is invalid.']);
 		});
 
 		it('should validate with overridden validity state message', async() => {
