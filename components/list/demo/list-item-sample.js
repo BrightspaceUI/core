@@ -21,7 +21,7 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 
 	static get styles() {
 		return [ super.styles, css`
-			:host([being-dragged]) d2l-list-item-generic-layout {
+			:host([dragging]) d2l-list-item-generic-layout {
 				filter: grayscale(75%);
 				opacity: 0.4;
 			}
@@ -51,7 +51,7 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 			}
 			[slot="content"] {
 				justify-content: stretch;
-				padding: 0.55rem 0px;
+				padding: 0.55rem 0;
 				display: flex;
 			}
 			[slot="content"] ::slotted([slot="illustration"]) {

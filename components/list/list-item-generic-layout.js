@@ -129,7 +129,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	firstUpdated() {
-		this.addEventListener('keydown', this._handleKeydown.bind(this));
+		this.addEventListener('keydown', this._onKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
 	}
 
@@ -289,7 +289,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		return this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
 	}
 
-	_handleKeydown(event) {
+	_onKeydown(event) {
 		if (!this.gridActive) return;
 		let node = null;
 		switch (event.keyCode) {
