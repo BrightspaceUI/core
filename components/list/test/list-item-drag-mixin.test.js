@@ -6,16 +6,19 @@ const tag = defineCE(
 	class extends ListItemDragMixin(LitElement) {
 		render() {
 			return html`
+				${this._renderTopPlacementMarker(html`----`)}
 				${this._renderDragHandle()}
-				${this._renderDragAction()}
+				${this._renderDraggableArea()}
+				${this._renderBottomPlacementMarker(html`----`)}
 			`;
 		}
 	}
 );
 
 describe('ListItemDragMixin', () => {
-	it('sets checked status to false when no key is given', async() => {
+	it('sets draggable status to false when no key is given', async() => {
 		const element = await fixture(`<${tag} draggable="true"></${tag}>`);
+		await element.updateComplete;
 		expect(element.draggable).to.be.false;
 	});
 });
@@ -77,7 +80,8 @@ describe('NewPositionEventDetails', () => {
 				input: {
 					array: ['one', 'two', 'three'],
 					targetKey: 'one',
-					destinationKey: 'one'
+					destinationKey: 'one',
+					moveBeforeDestination: false
 				},
 				expected: ['one', 'two', 'three']
 			},
@@ -86,7 +90,8 @@ describe('NewPositionEventDetails', () => {
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'two',
-					destinationKey: 'four'
+					destinationKey: 'four',
+					moveBeforeDestination: false
 				},
 				expected: ['one', 'three', 'four', 'two', 'five']
 			},
@@ -95,7 +100,8 @@ describe('NewPositionEventDetails', () => {
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'four',
-					destinationKey: 'two'
+					destinationKey: 'two',
+					moveBeforeDestination: true
 				},
 				expected: ['one', 'four', 'two', 'three', 'five']
 			},
@@ -104,7 +110,8 @@ describe('NewPositionEventDetails', () => {
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'four',
-					destinationKey: 'one'
+					destinationKey: 'one',
+					moveBeforeDestination: true
 				},
 				expected: ['four', 'one', 'two', 'three', 'five']
 			},
@@ -113,7 +120,8 @@ describe('NewPositionEventDetails', () => {
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'two',
-					destinationKey: 'five'
+					destinationKey: 'five',
+					moveBeforeDestination: false
 				},
 				expected: ['one', 'three', 'four', 'five', 'two']
 			},
@@ -122,7 +130,8 @@ describe('NewPositionEventDetails', () => {
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'five',
-					destinationKey: 'one'
+					destinationKey: 'one',
+					moveBeforeDestination: true
 				},
 				expected: ['five', 'one', 'two', 'three', 'four']
 			},
@@ -131,9 +140,30 @@ describe('NewPositionEventDetails', () => {
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'one',
-					destinationKey: 'five'
+					destinationKey: 'five',
+					moveBeforeDestination: false
 				},
 				expected: ['two', 'three', 'four', 'five', 'one']
+			},
+			{
+				description: 'moves last item to second position of an array',
+				input: {
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'five',
+					destinationKey: 'one',
+					moveBeforeDestination: false
+				},
+				expected: ['one', 'five', 'two', 'three', 'four']
+			},
+			{
+				description: 'moves first item to second last position of an array',
+				input: {
+					array: ['one', 'two', 'three', 'four', 'five'],
+					targetKey: 'one',
+					destinationKey: 'five',
+					moveBeforeDestination: true
+				},
+				expected: ['two', 'three', 'four', 'one', 'five']
 			}
 		];
 
@@ -141,7 +171,8 @@ describe('NewPositionEventDetails', () => {
 			it(`${test.description}`, () => {
 				const event = new NewPositionEventDetails({
 					targetKey: test.input.targetKey,
-					destinationKey: test.input.destinationKey
+					destinationKey: test.input.destinationKey,
+					moveBeforeDestination: test.input.moveBeforeDestination
 				});
 				const objects = test.input.array.map(x => ({key : x }));
 				event.reorder(objects, {keyFn: keyFn});

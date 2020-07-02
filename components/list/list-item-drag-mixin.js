@@ -357,11 +357,12 @@ class DropSpotsState {
 	}
 }
 
-class NewPositionEventDetails {
+export class NewPositionEventDetails {
 	/**
 	 * @param { Object } object An simple object with the position event properties
 	 * @param { String } object.targetKey The item key of the list-item that is moving
 	 * @param { String } object.destinationKey The item key of the list-item in the position we are moving to
+	 * @param { Boolean } object.moveBeforeDestination Whether the target is moved before the destination
 	 * @param { String } object.temporaryMovement Information on whether the item is entering or exiting temporary movement
 	 */
 	constructor({targetKey, destinationKey, moveBeforeDestination, temporaryMovement}) {

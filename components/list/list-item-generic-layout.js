@@ -207,8 +207,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusNextRow(previous = false, num = 1) {
 		let listItem = previous ?
-			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE') :
-			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE');
+			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-DEMO-ITEM-SAMPLE') :
+			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-DEMO-ITEM-SAMPLE');
 		if (!listItem || !listItem.shadowRoot) return;
 		while (num > 1) {
 			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
