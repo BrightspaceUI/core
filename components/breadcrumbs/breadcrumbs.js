@@ -21,6 +21,8 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return css`
 			:host {
 				display: block;
+				font-size: 0.7rem;
+				line-height: 1.05rem;
 				position: relative;
 			}
 			:host([hidden]) {
