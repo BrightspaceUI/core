@@ -15,7 +15,7 @@ class Breadcrumb extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
-			_compact: { type: Boolean, attribute: false, },
+			_compact: { attribute: 'data-compact', reflect: true, type: Boolean  },
 			/**
 			 * @ignore
 			 */
@@ -45,11 +45,11 @@ class Breadcrumb extends RtlMixin(LitElement) {
 				align-items: center;
 				display: inline-flex;
 			}
-
-			.d2l-breadcrumb-wrapper[data-compact] {
-				display: flex;
+			:host([hidden]) {
+				display: none;
+			}
+			:host([data-compact]) {
 				flex-direction: row-reverse;
-				align-items: center;
 			}
 
 			d2l-icon {
@@ -58,18 +58,16 @@ class Breadcrumb extends RtlMixin(LitElement) {
 				padding-right: 3px;
 				width: 8px;
 			}
-
 			:host([dir="rtl"]) d2l-icon {
 				padding-left: 3px;
 				padding-right: 8px;
 			}
 
-			.d2l-breadcrumb-wrapper[data-compact] d2l-icon {
+			d2l-icon[icon="d2l-tier1:chevron-left"] {
 				padding-right: 8px;
 				padding-left: 0;
 			}
-
-			:host([dir="rtl"]) .d2l-breadcrumb-wrapper[data-compact] d2l-icon {
+			:host([dir="rtl"]) d2l-icon[icon="d2l-tier1:chevron-left"] {
 				padding-right: 0;
 				padding-left: 8px;
 			}
@@ -93,12 +91,8 @@ class Breadcrumb extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const icon = this._compact ? html`<d2l-icon icon="d2l-tier1:chevron-left"></d2l-icon>` : html`<d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`;
-		return html`
-			<div class="d2l-breadcrumb-wrapper" ?data-compact=${this._compact}>
-				<a class="d2l-link d2l-link-small" aria-label="${ifDefined(this.ariaLabel)}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</a>${icon}
-			</div>
-		`;
+		const icon = this._compact ? 'd2l-tier1:chevron-left' : 'd2l-tier1:chevron-right';
+		return html`<a class="d2l-link d2l-link-small" aria-label="${ifDefined(this.ariaLabel)}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</a><d2l-icon icon="${icon}"></d2l-icon>`;
 	}
 
 }
