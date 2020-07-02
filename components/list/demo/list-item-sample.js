@@ -1,4 +1,5 @@
 import '../list-item-generic-layout.js';
+import '../list-item-placement-marker.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
@@ -19,37 +20,7 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 	}
 
 	static get styles() {
-		const placementMarkerCss = css`
-			.d2l-list-drag-indicator-wrapper {
-				max-height: 12px;
-				display: flex;
-			}
-			.d2l-list-drag-indicator {
-				height: 12px;
-				width: 100%;
-			}
-			.d2l-list-drag-indicator line{
-				stroke: var(--d2l-color-celestine);
-				stroke-width: 3px;
-				stroke-linecap: round;
-			}
-			.d2l-list-drag-indicator-linecap {
-				height: 12px;
-				width: 5px;
-			}
-			.d2l-list-drag-indicator-circle {
-				height: 12px;
-				width: 12px;
-				margin-right: -1px;
-			}
-			.d2l-list-drag-indicator-linecap line,
-			.d2l-list-drag-indicator-circle circle{
-				stroke: var(--d2l-color-celestine);
-				stroke-width: 3px;
-				stroke-linecap: round;
-			}
-		`;
-		return [ super.styles, placementMarkerCss, css`
+		return [ super.styles, css`
 			:host([being-dragged]) d2l-list-item-generic-layout {
 				filter: grayscale(75%);
 				opacity: 0.4;
@@ -78,6 +49,25 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 				background: white;
 				transform: rotate(1deg);
 			}
+			[slot="content"] {
+				justify-content: stretch;
+				padding: 0.55rem 0px;
+				display: flex;
+			}
+			[slot="content"] ::slotted([slot="illustration"]) {
+				margin: 0.15rem 0.9rem 0.15rem 0;
+				border-radius: 6px;
+				overflow: hidden;
+				flex-grow: 0;
+				flex-shrink: 0;
+				margin-right: 1rem;
+				max-height: 5.1rem;
+				max-width: 9rem;
+			}
+			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
+				margin-left: 1rem;
+				margin-right: 0;
+			}
 		`];
 	}
 
@@ -90,7 +80,7 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 		const classes = { hovering: this._hovering, focusing: this._focusing };
 
 		return html`
-			${this._renderTopPlacementMarker(this._renderDivider())}
+			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 			${this._renderDropArea()}
 			<div class="d2l-list-item-drag-image">
 				<d2l-list-item-generic-layout ?grid-active="${this.role === 'rowgroup'}">
@@ -112,6 +102,7 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 					<div slot="content"
 						id="${this._contentId}"
 						class="d2l-list-item-content ${ classMap(classes) }">
+						<slot name="illustration"></slot>
 						<slot></slot>
 					</div>
 					<div slot="actions">
@@ -119,7 +110,7 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 					</div>
 				</d2l-list-item-generic-layout>
 			</div>
-			${this._renderBottomPlacementMarker(this._renderDivider())}
+			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 		`;
 	}
 
@@ -137,22 +128,6 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 
 	_handleMouseLeave() {
 		this._hovering = false;
-	}
-
-	_renderDivider() {
-		return html`
-			<div class="d2l-list-drag-indicator-wrapper">
-				<svg viewBox="0 0 12 12" class="d2l-list-drag-indicator-circle">
-					<circle cx="6" cy="6" r="4" fill="none"/>
-				</svg>
-				<svg class="d2l-list-drag-indicator">
-					<line x1="0" y1="50%" x2="100%" y2="50%" />
-				</svg>
-				<svg viewBox="0 0 5 12" class="d2l-list-drag-indicator-linecap">
-					<line x1="-5" y1="50%" x2="0" y2="50%" />
-				</svg>
-			</div>
-		`;
 	}
 }
 
