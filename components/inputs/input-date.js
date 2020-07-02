@@ -233,7 +233,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const value = this._textInput.value;
 		if (!value) {
 			if (value !== this.value) {
-				this._updateValueDispatchEvent('');
+				await this._updateValueDispatchEvent('');
 				await this.updateComplete;
 				await this._calendar.reset();
 			}
@@ -243,7 +243,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
+			await this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
 		} catch (err) {
 			// leave value the same when invalid input
 		}
@@ -252,15 +252,15 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		await this._calendar.reset();
 	}
 
-	_handleClear() {
-		this._updateValueDispatchEvent('');
+	async _handleClear() {
+		await this._updateValueDispatchEvent('');
 		this._dropdown.close();
 		this.focus();
 	}
 
-	_handleDateSelected(e) {
+	async _handleDateSelected(e) {
 		const value = e.target.selectedValue;
-		this._updateValueDispatchEvent(value);
+		await this._updateValueDispatchEvent(value);
 		this._dropdown.close();
 	}
 
@@ -305,9 +305,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
-	_handleSetToToday() {
+	async _handleSetToToday() {
 		const date = getToday();
-		this._updateValueDispatchEvent(formatDateInISO(date));
+		await this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
 		this.focus();
 	}
@@ -317,7 +317,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	async _updateValueDispatchEvent(dateInISO) {
-		this.validationCustomValid = isDateInRange(getDateFromISODate(dateInISO), getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
+		this.validationCustomValid = !dateInISO || isDateInRange(getDateFromISODate(dateInISO), getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
 		await this.validate();
 		if (dateInISO === this.value || !this.validationCustomValid) return;
 		this.value = dateInISO;
