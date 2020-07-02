@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "關閉警示",
+	"components.breadcrumbs.breadcrumb": "階層連結",
 	"components.calendar.notSelected": "未選取。",
 	"components.calendar.selected": "已選取。",
 	"components.calendar.show": "顯示{month}",

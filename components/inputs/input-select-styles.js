@@ -41,14 +41,14 @@ export const selectStyles = css`
 	.d2l-input-select:hover:disabled,
 	.d2l-input-select:focus:disabled {
 		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
-		padding-right: calc(0.5rem + 11px + 16px);
+		padding-right: calc(2px + 0.8rem + 1px + 11px + 16px);
 	}
 	:host([dir='rtl']) .d2l-input-select,
 	:host([dir='rtl']) .d2l-input-select:disabled,
 	:host([dir='rtl']) .d2l-input-select:hover:disabled,
 	:host([dir='rtl']) .d2l-input-select:focus:disabled {
 		padding-right: 0.75rem;
-		padding-left: calc(0.5rem + 11px + 16px);
+		padding-left: calc(2px + 0.8rem + 1px + 11px + 16px);
 	}
 	.d2l-input-select:hover,
 	.d2l-input-select:focus {
@@ -57,15 +57,22 @@ export const selectStyles = css`
 		outline-style: none; /* Safari */
 		outline-width: 0;
 		padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
-		padding-right: calc(0.5rem + 11px + 16px - 1px);
+		padding-right: calc(2px + 0.8rem + 1px + 11px + 16px - 1px);
 	}
 	:host([dir='rtl']) .d2l-input-select:hover,
 	:host([dir='rtl']) .d2l-input-select:focus {
-		padding-left: calc(0.5rem + 11px + 16px - 1px);
+		padding-left: calc(2px + 0.8rem + 1px + 11px + 16px - 1px);
 		padding-right: calc(0.75rem - 1px);
 	}
 	.d2l-input-select[aria-invalid='true'] {
 		border-color: var(--d2l-color-cinnabar);
+		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+"), url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE4IDE4Ij4KICA8cGF0aCBmaWxsPSIjY2QyMDI2IiBkPSJNMTcuNzkgMTUuMTFsLTctMTRhMiAyIDAgMCAwLTMuNTggMGwtNyAxNGExLjk3NSAxLjk3NSAwIDAgMCAuMDkgMS45NEEyIDIgMCAwIDAgMiAxOGgxNGExLjk5NCAxLjk5NCAwIDAgMCAxLjctLjk1IDEuOTY3IDEuOTY3IDAgMCAwIC4wOS0xLjk0ek05IDE2YTEuNSAxLjUgMCAxIDEgMS41LTEuNUExLjUgMS41IDAgMCAxIDkgMTZ6bS45OC00LjgwNmExIDEgMCAwIDEtMS45NiAwbC0uOTktNUExIDEgMCAwIDEgOC4wMSA1aDEuOTgzYTEgMSAwIDAgMSAuOTggMS4xOTR6Ii8+Cjwvc3ZnPgo=");
+		background-position: center right 17px, center right calc(1px + 11px + 17px);
+		background-size: 11px 7px, 0.8rem 0.8rem;
+		background-repeat: no-repeat, no-repeat;
+	}
+	:host([dir='rtl']) .d2l-input-select[aria-invalid='true'] {
+		background-position: center left 17px, center left calc(1px + 11px + 17px);
 	}
 	.d2l-input-select:disabled {
 		opacity: 0.5;

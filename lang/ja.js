@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "アラートを閉じる",
+	"components.breadcrumbs.breadcrumb": "階層",
 	"components.calendar.notSelected": "選択されていません。",
 	"components.calendar.selected": "選択されています。",
 	"components.calendar.show": "{month} を表示",

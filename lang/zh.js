@@ -2,6 +2,7 @@
 
 export default {
 	"components.alert.close": "关闭提醒",
+	"components.breadcrumbs.breadcrumb": "痕迹导航",
 	"components.calendar.notSelected": "未选择。",
 	"components.calendar.selected": "已选择。",
 	"components.calendar.show": "显示 {month}",
