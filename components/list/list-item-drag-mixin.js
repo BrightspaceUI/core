@@ -123,12 +123,13 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	}
 
 	_dragEnd(e) {
-		const dropSpot = dropSpotsBlowUp();
+		const dropSpot = dropSpotsFactory();
 		this.beingDragged = false;
 		this.tilt = false;
 		if (dropSpot.shouldDrop(e.timeStamp)) {
 			this._moveItem(dropSpot.targetKey, dropSpot.destinationKey, dropSpot.moveBeforeDestination);
 		}
+		dropSpotsBlowUp();
 	}
 
 	_dragHandleActions(e) {
@@ -286,12 +287,10 @@ function dropSpotsFactory(target) {
 }
 
 function dropSpotsBlowUp() {
-	const dropSpotTemp = dropSpots;
 	if (dropSpots) {
 		dropSpots.clear();
 	}
 	dropSpots = null;
-	return dropSpotTemp;
 }
 
 class DropSpotsState {
