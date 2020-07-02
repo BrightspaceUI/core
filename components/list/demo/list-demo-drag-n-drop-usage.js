@@ -4,7 +4,7 @@ import '../list.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { repeat } from 'lit-html/directives/repeat';
 
-class listDragNDropSample extends LitElement {
+class ListDemoDragNDropUsage extends LitElement {
 	static get properties() {
 		return {
 			list: { type: Array }
@@ -75,4 +75,4 @@ class listDragNDropSample extends LitElement {
 	}
 }
 
-customElements.define('d2l-list-drag-n-drop-sample', listDragNDropSample);
+customElements.define('d2l-list-demo-drag-n-drop-usage', ListDemoDragNDropUsage);

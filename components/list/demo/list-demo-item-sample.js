@@ -8,9 +8,7 @@ import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 import { ListItemMixin } from '../list-item-mixin.js';
 import { nothing } from 'lit-html';
 
-class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMixin(LitElement))) {
-	// TODO: Role and breakpoints to live elsewhere
-	// TODO: draggable should be part of the ListItemDragMixin and removed here
+class ListDemoItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMixin(LitElement))) {
 	static get properties() {
 		return {
 			href: { type: String },
@@ -131,4 +129,4 @@ class ListItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMix
 	}
 }
 
-customElements.define('d2l-list-item-sample', ListItemSample);
+customElements.define('d2l-list-demo-item-sample', ListDemoItemSample);
