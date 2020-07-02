@@ -1,6 +1,7 @@
 import '../../validation/validation-custom.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormElementMixin } from '../form-element-mixin.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 class FormElement extends FormElementMixin(LitElement) {
 
@@ -8,7 +9,7 @@ class FormElement extends FormElementMixin(LitElement) {
 		return {
 			isValidationCustomValid: { type: Boolean },
 			tooltipMessage: { type: String },
-			value: { type: String, reflect: true }
+			value: { type: String }
 		};
 	}
 
@@ -21,22 +22,11 @@ class FormElement extends FormElementMixin(LitElement) {
 		return html`
 			<div>
 				<h1>Test Form Element</h1>
-				<input type="text" required/>
+				<input type="text" required .value="${ifDefined(this.value)}"/>
 				<d2l-validation-custom @d2l-validation-custom-validate=${this._validate} failure-text="Internal custom validation failed">
 				</d2l-validation-custom>
 			</div>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		changedProperties.forEach((_, prop) => {
-			if (prop === 'value') {
-				const input = this.shadowRoot.querySelector('input');
-				input.value = this.value;
-			}
-		});
 	}
 
 	get label() {
