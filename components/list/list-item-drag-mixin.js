@@ -96,7 +96,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	}
 
 	_moveItem(targetKey, destinationKey, moveBeforeDestination = false, temporaryMovement = false) {
-		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
 			detail: new NewPositionEventDetails({targetKey, destinationKey, moveBeforeDestination, temporaryMovement}),
 			bubbles: true
 		}));

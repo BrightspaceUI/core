@@ -82,8 +82,8 @@ class ListDemoItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckbo
 			${this._renderDropArea()}
 			<div class="d2l-list-item-drag-image">
 				<d2l-list-item-generic-layout ?grid-active="${this.role === 'rowgroup'}">
-					${this._renderDragHandle((dragHandle) => html`<div slot="outside-control">${dragHandle}</div>`)}
-					${this._renderDraggableArea((dragArea) => html`<div slot="outside-control-action">${dragArea}</div>`)}
+					${this._renderDragHandle(this._renderOutsideControl)}
+					${this._renderDraggableArea(this._renderOutsideControlAction)}
 					${this.selectable ? html`
 					<div slot="control">${ this._renderCheckbox() }</div>
 					<div slot="control-action">${ this._renderCheckboxAction(null, this._contentId) }</div>
@@ -126,6 +126,14 @@ class ListDemoItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckbo
 
 	_handleMouseLeave() {
 		this._hovering = false;
+	}
+
+	_renderOutsideControl(dragHandle) {
+		return html`<div slot="outside-control">${dragHandle}</div>`;
+	}
+
+	_renderOutsideControlAction(dragArea) {
+		return html`<div slot="outside-control-action">${dragArea}</div>`;
 	}
 }
 
