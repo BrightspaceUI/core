@@ -13,7 +13,7 @@ class ColorSwatch extends LitElement {
 			:host {
 				border-radius: 8px;
 				box-sizing: border-box;
-				color: #fff;
+				color: #ffffff;
 				display: block;
 				font-size: 0.7rem;
 				font-weight: 400;
