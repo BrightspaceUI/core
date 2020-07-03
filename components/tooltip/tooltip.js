@@ -227,12 +227,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-pointer > div {
-				-webkit-transform: rotate(45deg);
 				background-color: var(--d2l-tooltip-background-color);
-				border-radius: 0.1rem;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
+				border-radius: 0.1rem;
 				box-sizing: border-box;
 				height: ${pointerLength}px;
+				-webkit-transform: rotate(45deg);
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
 			}
@@ -253,8 +253,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			.d2l-tooltip-content {
 				background-color: var(--d2l-tooltip-background-color);
-				border-radius: ${contentBorderRadius}px;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
+				border-radius: ${contentBorderRadius}px;
 				box-sizing: border-box;
 				max-width: 17.5rem;
 				min-height: 2.1rem;
@@ -264,7 +264,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 			}
 
-			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it*/
+			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it */
 			.d2l-tooltip-content.d2l-tooltip-content {
 				color: inherit;
 			}
@@ -315,26 +315,26 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			@keyframes d2l-tooltip-top-animation {
-				0% { transform: translate(0,-10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(0, -10px); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-bottom-animation {
-				0% { transform: translate(0,10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(0, 10px); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-left-animation {
-				0% { transform: translate(-10px,0); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(-10px, 0); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-right-animation {
-				0% { transform: translate(10px,0); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(10px, 0); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 
 			@media (max-width: 615px) {
 				.d2l-tooltip-content {
-					padding-top: ${12 - contentBorderSize}px;
 					padding-bottom: ${12 - contentBorderSize}px;
+					padding-top: ${12 - contentBorderSize}px;
 				}
 			}
 		`];
