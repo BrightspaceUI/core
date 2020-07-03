@@ -76,7 +76,7 @@ describe('d2l-more-less', () => {
 		return page.evaluate((selector) => {
 			return new Promise((resolve) => {
 				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('.more-less-content').addEventListener('transitionend', (e) => {
+				elem.shadowRoot.querySelector('.d2l-more-less-content').addEventListener('transitionend', (e) => {
 					if (e.propertyName === 'height') resolve();
 				});
 			});
