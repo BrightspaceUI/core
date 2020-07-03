@@ -29,21 +29,21 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	static get styles() {
 		return css`
 			:host {
+				--d2l-hierarchical-view-height-transition: height 300ms linear;
 				box-sizing: border-box;
 				display: none;
-				position: relative;
 				left: 0;
 				overflow: hidden;
-				width: 100%;
-				--d2l-hierarchical-view-height-transition: height 300ms linear;
+				position: relative;
 				-webkit-transition: var(--d2l-hierarchical-view-height-transition);
 				transition: var(--d2l-hierarchical-view-height-transition);
+				width: 100%;
 			}
 			:host([child-view]) {
 				display: none;
+				left: 100%;
 				position: absolute;
 				top: 0;
-				left: 100%;
 			}
 			:host([shown]) {
 				display: inline-block;
@@ -65,31 +65,31 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				.d2l-hierarchical-view-content.d2l-child-view-show {
 					-webkit-animation: none;
 					animation: none;
-					-webkit-transform: translate(-100%,0);
-					transform: translate(-100%,0);
+					-webkit-transform: translate(-100%, 0);
+					transform: translate(-100%, 0);
 				}
 				.d2l-hierarchical-view-content.d2l-child-view-hide {
 					-webkit-animation: none;
 					animation: none;
-					-webkit-transform: translate(0,0);
-					transform: translate(0,0);
+					-webkit-transform: translate(0, 0);
+					transform: translate(0, 0);
 				}
 			}
 			@keyframes show-child-view-animation {
-				0% { transform: translate(0,0); }
-				100% { transform: translate(-100%,0); }
+				0% { transform: translate(0, 0); }
+				100% { transform: translate(-100%, 0); }
 			}
 			@-webkit-keyframes show-child-view-animation {
-				0% { -webkit-transform: translate(0,0); }
-				100% { -webkit-transform: translate(-100%,0); }
+				0% { -webkit-transform: translate(0, 0); }
+				100% { -webkit-transform: translate(-100%, 0); }
 			}
 			@keyframes hide-child-view-animation {
-				0% { transform: translate(-100%,0); }
-				100% { transform: translate(0,0); }
+				0% { transform: translate(-100%, 0); }
+				100% { transform: translate(0, 0); }
 			}
 			@-webkit-keyframes hide-child-view-animation {
-				0% { -webkit-transform: translate(-100%,0); }
-				100% { -webkit-transform: translate(0,0); }
+				0% { -webkit-transform: translate(-100%, 0); }
+				100% { -webkit-transform: translate(0, 0); }
 			}
 		`;
 	}
