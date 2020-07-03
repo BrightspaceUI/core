@@ -241,6 +241,7 @@ class ListItem extends RtlMixin(LitElement) {
 			const separators = parent.getAttribute('separators');
 			if (separators) this._separators = separators;
 			this._extendSeparators = parent.hasAttribute('extend-separators');
+			this.role = parent.grid ? 'rowgroup' : 'listitem';
 		}
 
 		ro.observe(this);
