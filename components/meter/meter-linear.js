@@ -17,46 +17,44 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 		};
 	}
 	static get styles() {
-		return [
-			bodySmallStyles,
-			css`
+		return [bodySmallStyles, css`
 			:host {
 				display: block;
 				position: relative;
 			}
 
-			:host > div  {
+			:host > div {
 				display: block;
 			}
 
-			:host([text-inline]) > div  {
+			:host([text-inline]) > div {
 				align-items: center;
 				display: flex;
 				flex-direction: row;
 			}
 
-			:host([text-inline]) .d2l-meter-linear-full-bar  {
+			:host([text-inline]) .d2l-meter-linear-full-bar {
 				margin-bottom: 0;
 				margin-left: 0;
-				margin-right: .45rem;
+				margin-right: 0.45rem;
 			}
-			:host([dir="rtl"][text-inline]) .d2l-meter-linear-full-bar  {
-				margin-left: .45rem;
+			:host([dir="rtl"][text-inline]) .d2l-meter-linear-full-bar {
+				margin-left: 0.45rem;
 				margin-right: 0;
 			}
 
 			.d2l-meter-linear-full-bar,
 			.d2l-meter-linear-inner-bar {
-				border-radius: .225rem;
+				border-radius: 0.225rem;
 				flex-grow: 1;
 				flex-shrink: 1;
-				height: .45rem;
+				height: 0.45rem;
 			}
 
 			.d2l-meter-linear-full-bar {
-				position: relative;
 				background-color: var(--d2l-color-gypsum);
 				margin-bottom: 0.45rem;
+				position: relative;
 			}
 
 			:host([foreground-light]) .d2l-meter-linear-full-bar {
@@ -64,11 +62,11 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 			}
 
 			.d2l-meter-linear-inner-bar {
-				position: absolute;
-				left: 0;
-				top: 0;
 				background-color: var(--d2l-color-celestine);
+				left: 0;
 				max-width: 100%;
+				position: absolute;
+				top: 0;
 			}
 			:host([dir="rtl"]) .d2l-meter-linear-inner-bar {
 				right: 0;

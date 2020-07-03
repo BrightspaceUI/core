@@ -16,8 +16,8 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		}
 		.d2l-meter-radial {
 			display: flex;
-			justify-content: center;
 			flex-direction: column;
+			justify-content: center;
 		}
 		.d2l-meter-radial-full-bar,
 		.d2l-meter-radial-progress-bar {
