@@ -67,12 +67,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 1.4rem;
+				width: 2.1rem;
 				grid-column: outside-control-start / outside-control-end;
 			}
 
 			::slotted([slot="control"]) {
-				width: 1.4rem;
+				width: 2.1rem;
 				grid-column: control-start / control-end;
 			}
 
@@ -101,13 +101,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="content-action"]) {
 				grid-column: content-start / end;
 				z-index: 3;
-			}
-
-			@media screen and (min-width: 615px) {
-				::slotted([slot="outside-control"]),
-				::slotted([slot="control"]) {
-					width: 2.1rem;
-				}
 			}
 		`;
 	}
