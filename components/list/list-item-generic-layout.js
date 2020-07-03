@@ -22,11 +22,29 @@ const keyCodes = {
 	UP: 38
 };
 
+/**
+ * A component for generating a list item's layout with forced focus ordering and grid support.
+ * Focusable items placed in the "content" slot will have their focus removed; use the content-action
+ * slot for such items.
+ * @slot outside-control - Control associated on the far left, e.g., a drag-n-drop handle
+ * @slot outside-control-action - An action area associated with the outside control
+ * @slot control - Main control beside the outside control, e.g., a checkbox
+ * @slot control-action - Action area associated with the main control
+ * @slot content - Content of the list item, such as that in a list-item-content component.
+ * @slot content-action - Action associated with the content, such as a navigation link
+ * @slot actions - Other actions for the list item on the far right, such as a context menu
+ */
 class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
+			/**
+			 * Whether the keyboard grid is active
+			 */
 			gridActive: { type: Boolean, attribute: 'grid-active' }
 		};
 	}
@@ -206,13 +224,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusNextRow(previous = false, num = 1) {
 		let listItem = previous ?
-<<<<<<< HEAD
-			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM') :
-			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM');
-=======
 			getPreviousAncestorSibling(this, (node) => node.role === 'rowgroup') :
 			getNextAncestorSibling(this, (node) => node.role === 'rowgroup');
->>>>>>> polaris/updateListItem
 		if (!listItem || !listItem.shadowRoot) return;
 		while (num > 1) {
 			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
