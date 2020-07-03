@@ -63,7 +63,7 @@
     "lit-analyzer": "^1",
     "mocha": "^8",
     "node-sass": "^4",
-    "puppeteer": "^4",
+    "puppeteer": "^5",
     "semantic-release": "^17",
     "sinon": "^9",
     "web-component-analyzer": "^1",
