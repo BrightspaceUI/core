@@ -64,7 +64,7 @@
     "lit-analyzer": "^1",
     "mocha": "^8",
     "node-sass": "^4",
-    "puppeteer": "^4",
+    "puppeteer": "^5",
     "semantic-release": "^17",
     "sinon": "^9",
     "stylelint": "^13.6.1",
