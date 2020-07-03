@@ -144,10 +144,10 @@ class InputTime extends LitElement {
 					display: block;
 				}
 				.d2l-input-time-timezone {
-					width: auto;
 					line-height: 1.8rem;
 					text-align: center;
 					vertical-align: middle;
+					width: auto;
 				}
 			`
 		];

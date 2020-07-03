@@ -139,10 +139,10 @@ class InputText extends RtlMixin(LitElement) {
 					position: relative;
 				}
 				.d2l-input {
+					-webkit-appearance: textfield;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
-					-webkit-appearance: textfield;
 				}
 				#first-slot, #last-slot {
 					display: flex;

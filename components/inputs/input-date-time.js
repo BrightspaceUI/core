@@ -55,8 +55,8 @@ class InputDateTime extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				padding-right: 0.3rem;
 			}
 			:host([dir="rtl"]) d2l-input-date {
-				padding-right: 0;
 				padding-left: 0.3rem;
+				padding-right: 0;
 			}
 		`;
 	}
