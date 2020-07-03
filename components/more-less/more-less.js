@@ -54,24 +54,24 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				display: block;
 			}
 
-			.more-less-content {
+			.d2l-more-less-content {
 				overflow: hidden;
 			}
-			.more-less-transition {
+			.d2l-more-less-transition {
 				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
-			.more-less-blur {
+			.d2l-more-less-blur {
 				display: none;
 			}
-			:host(:not([expanded]):not([inactive])) .more-less-blur {
-				display: block;
-				content: "";
-				position: relative;
-				height: 1em;
+			:host(:not([expanded]):not([inactive])) .d2l-more-less-blur {
 				bottom: 1em;
+				content: "";
+				display: block;
+				height: 1em;
 				margin-bottom: -0.75em;
+				position: relative;
 			}
-			:host([inactive]) .more-less-toggle {
+			:host([inactive]) .d2l-more-less-toggle {
 				display: none;
 			}`;
 	}
@@ -129,8 +129,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	firstUpdated() {
 		super.firstUpdated();
 
-		this.__content = this.shadowRoot.querySelector('.more-less-content');
-		this.__contentSlot = this.shadowRoot.querySelector('.more-less-content slot');
+		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
+		this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
 		if (this.__content.offsetParent !== null) {
 			this.__init_setBaseHeight();
 		}
@@ -152,16 +152,16 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			}))
 		);
 		const contentClasses = {
-			'more-less-content': true,
-			'more-less-transition': this.__transitionAdded
+			'd2l-more-less-content': true,
+			'd2l-more-less-transition': this.__transitionAdded
 		};
 		return html`
 			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
 				<slot></slot>
 			</div>
-			<div class="more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
+			<div class="d2l-more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
 			<d2l-button-subtle
-				class="more-less-toggle"
+				class="d2l-more-less-toggle"
 				icon="${this.__computeIcon()}"
 				aria-controls="${this.__contentId}"
 				aria-expanded="${this.__computeAriaExpanded()}"
