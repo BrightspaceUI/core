@@ -95,9 +95,9 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		}
 	}
 
-	_moveItem(targetKey, destinationKey, moveBeforeDestination = false, temporaryMovement = false) {
+	_moveItem(targetKey, destinationKey, insertBefore = false, temporaryMovement = false) {
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
-			detail: new NewPositionEventDetails({targetKey, destinationKey, moveBeforeDestination, temporaryMovement}),
+			detail: new NewPositionEventDetails({targetKey, destinationKey, insertBefore, temporaryMovement}),
 			bubbles: true
 		}));
 	}
@@ -118,7 +118,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		const dropSpot = dropSpotsFactory();
 		this.dragging = false;
 		if (dropSpot.shouldDrop(e.timeStamp)) {
-			this._moveItem(dropSpot.targetKey, dropSpot.destinationKey, dropSpot.moveBeforeDestination);
+			this._moveItem(dropSpot.targetKey, dropSpot.destinationKey, dropSpot.insertBefore);
 		}
 		dropSpotsBlowUp();
 	}
@@ -207,7 +207,7 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	_onDrop() {
 		const dropSpots = dropSpotsFactory();
-		dropSpots.setDestination(this, dropSpots.moveBeforeDestination);
+		dropSpots.setDestination(this, dropSpots.insertBefore);
 	}
 
 	_onHostDragEnter(e) {
@@ -282,7 +282,7 @@ class DropSpotsState {
 		this._target = target;
 		this._destination = null;
 		this._visitedDestination = new Map();
-		this._moveBeforeDestination = false;
+		this._insertBefore = false;
 		this._time = 0;
 	}
 
@@ -306,12 +306,12 @@ class DropSpotsState {
 		return this._destination && this._destination.key;
 	}
 
-	get moveBeforeDestination() {
-		return this._moveBeforeDestination;
+	get insertBefore() {
+		return this._insertBefore;
 	}
 
-	setDestination(destination, moveBeforeDestination) {
-		this._moveBeforeDestination = moveBeforeDestination;
+	setDestination(destination, insertBefore) {
+		this._insertBefore = insertBefore;
 		if (this._destination === destination) {
 			this._setPlacementMarkers();
 			return;
@@ -352,8 +352,8 @@ class DropSpotsState {
 	}
 
 	_setPlacementMarkers() {
-		this._destination._topPlacementMarker = this.moveBeforeDestination;
-		this._destination._bottomPlacementMarker = !this.moveBeforeDestination;
+		this._destination._topPlacementMarker = this.insertBefore;
+		this._destination._bottomPlacementMarker = !this.insertBefore;
 	}
 }
 
@@ -362,16 +362,16 @@ export class NewPositionEventDetails {
 	 * @param { Object } object An simple object with the position event properties
 	 * @param { String } object.targetKey The item key of the list-item that is moving
 	 * @param { String } object.destinationKey The item key of the list-item in the position we are moving to
-	 * @param { Boolean } object.moveBeforeDestination Whether the target is moved before the destination
+	 * @param { Boolean } object.insertBefore Whether the target is moved before the destination
 	 * @param { String } object.temporaryMovement Information on whether the item is entering or exiting temporary movement
 	 */
-	constructor({targetKey, destinationKey, moveBeforeDestination, temporaryMovement}) {
+	constructor({targetKey, destinationKey, insertBefore, temporaryMovement}) {
 		if (!targetKey || !destinationKey) {
 			throw new Error(`NewPositionEventDetails must have a targetKey and destinationKey\nGiven: ${targetKey} and ${destinationKey}`);
 		}
 		this.targetKey = targetKey;
 		this.destinationKey = destinationKey;
-		this.moveBeforeDestination = moveBeforeDestination;
+		this.insertBefore = insertBefore;
 		this.temporaryMovement = temporaryMovement;
 	}
 
@@ -429,12 +429,12 @@ export class NewPositionEventDetails {
 		// now that we have a reference to the item, shove everything between the
 		// destination to the origin over one
 		if (origin > destination) {
-			destination = this.moveBeforeDestination ? destination : destination + 1;
+			destination = this.insertBefore ? destination : destination + 1;
 			for (let i = origin; i > destination; i--) {
 				list[i] = list[i - 1];
 			}
 		} else {
-			destination = this.moveBeforeDestination ? destination - 1 : destination;
+			destination = this.insertBefore ? destination - 1 : destination;
 			for (let i = origin; i < destination; i++) {
 				list[i] = list[i + 1];
 			}

@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { ListItemDragMixin, NewPositionEventDetails } from '../list-item-drag-mixin.js';
 
@@ -6,20 +6,130 @@ const tag = defineCE(
 	class extends ListItemDragMixin(LitElement) {
 		render() {
 			return html`
-				${this._renderTopPlacementMarker(html`----`)}
+				${this._renderTopPlacementMarker(html`<div id="top-placement-marker">----</div>`)}
+				${this._renderDropArea()}
 				${this._renderDragHandle()}
 				${this._renderDraggableArea()}
-				${this._renderBottomPlacementMarker(html`----`)}
+				${this._renderBottomPlacementMarker(html`<div id="bottom-placement-marker">----</div>`)}
 			`;
 		}
 	}
 );
 
 describe('ListItemDragMixin', () => {
-	it('sets draggable status to false when no key is given', async() => {
-		const element = await fixture(`<${tag} draggable="true"></${tag}>`);
+	it('It sets draggable to false when no key is given', async() => {
+		const element = await fixture(`<${tag} draggable></${tag}>`);
 		await element.updateComplete;
 		expect(element.draggable).to.be.false;
+	});
+
+	describe('Track placement as item is being moved', () => {
+		let element;
+		let dropGrid;
+		let dataTransfer;
+		before(async() => {
+			element = await fixture(`<${tag} draggable key="1"></${tag}>`);
+			dataTransfer = new DataTransfer();
+			dataTransfer.setData('text/plain', 'test');
+			dataTransfer.effectAllowed = 'move';
+		});
+
+		it('It will listen to dragEnter on host and show the real drop spots.', async() => {
+			setTimeout(() => {
+				element.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(element, 'dragenter');
+			await element.updateComplete;
+			dropGrid = element.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+			expect(dropGrid).not.be.null;
+		});
+
+		it('It will show the top placement marker after entering the top of the element.', async() => {
+			const topDropArea = dropGrid.querySelectorAll('div')[0];
+			setTimeout(() => {
+				topDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(topDropArea, 'dragenter');
+			await element.updateComplete;
+			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
+			expect(topPlacementMarker).not.be.null;
+		});
+
+		it('It will show the bottom placement marker after entering the top half of the element coming from the top.', async() => {
+			const topHalfDropArea = dropGrid.querySelectorAll('div')[1];
+			setTimeout(() => {
+				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(topHalfDropArea, 'dragenter');
+			await element.updateComplete;
+			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
+			expect(topPlacementMarker).be.null;
+			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
+			expect(bottomPlacementMarker).not.be.null;
+		});
+
+		it('It will show the bottom placement marker after entering the bottom half of the element coming from the top.', async() => {
+			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+			setTimeout(() => {
+				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(topHalfDropArea, 'dragenter');
+			await element.updateComplete;
+			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
+			expect(topPlacementMarker).be.null;
+			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
+			expect(bottomPlacementMarker).not.be.null;
+		});
+
+		it('It will show the bottom placement marker after entering the bottom of the element coming from the top.', async() => {
+			const topHalfDropArea = dropGrid.querySelectorAll('div')[3];
+			setTimeout(() => {
+				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(topHalfDropArea, 'dragenter');
+			await element.updateComplete;
+			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
+			expect(topPlacementMarker).be.null;
+			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
+			expect(bottomPlacementMarker).not.be.null;
+		});
+
+		it('It will show the top placement marker after entering the bottom half of the element coming from the bottom.', async() => {
+			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+			setTimeout(() => {
+				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(topHalfDropArea, 'dragenter');
+			await element.updateComplete;
+			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
+			expect(topPlacementMarker).not.be.null;
+			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
+			expect(bottomPlacementMarker).be.null;
+		});
+
+		it('It will show the top placement marker after entering the top half of the element coming from the bottom.', async() => {
+			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+			setTimeout(() => {
+				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(topHalfDropArea, 'dragenter');
+			await element.updateComplete;
+			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
+			expect(topPlacementMarker).not.be.null;
+			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
+			expect(bottomPlacementMarker).be.null;
+		});
+
+		it('It will have the list item go back to normal when dragging ends.', async() => {
+			const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag-area');
+			setTimeout(() => {
+				dragArea.dispatchEvent(new DragEvent('dragend', {dataTransfer}));
+			});
+			await oneEvent(dragArea, 'dragend');
+			await element.updateComplete;
+			dropGrid = element.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+			expect(dropGrid).be.null;
+		});
 	});
 });
 
@@ -81,7 +191,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three'],
 					targetKey: 'one',
 					destinationKey: 'one',
-					moveBeforeDestination: false
+					insertBefore: false
 				},
 				expected: ['one', 'two', 'three']
 			},
@@ -91,7 +201,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'two',
 					destinationKey: 'four',
-					moveBeforeDestination: false
+					insertBefore: false
 				},
 				expected: ['one', 'three', 'four', 'two', 'five']
 			},
@@ -101,7 +211,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'four',
 					destinationKey: 'two',
-					moveBeforeDestination: true
+					insertBefore: true
 				},
 				expected: ['one', 'four', 'two', 'three', 'five']
 			},
@@ -111,7 +221,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'four',
 					destinationKey: 'one',
-					moveBeforeDestination: true
+					insertBefore: true
 				},
 				expected: ['four', 'one', 'two', 'three', 'five']
 			},
@@ -121,7 +231,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'two',
 					destinationKey: 'five',
-					moveBeforeDestination: false
+					insertBefore: false
 				},
 				expected: ['one', 'three', 'four', 'five', 'two']
 			},
@@ -131,7 +241,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'five',
 					destinationKey: 'one',
-					moveBeforeDestination: true
+					insertBefore: true
 				},
 				expected: ['five', 'one', 'two', 'three', 'four']
 			},
@@ -141,7 +251,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'one',
 					destinationKey: 'five',
-					moveBeforeDestination: false
+					insertBefore: false
 				},
 				expected: ['two', 'three', 'four', 'five', 'one']
 			},
@@ -151,7 +261,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'five',
 					destinationKey: 'one',
-					moveBeforeDestination: false
+					insertBefore: false
 				},
 				expected: ['one', 'five', 'two', 'three', 'four']
 			},
@@ -161,7 +271,7 @@ describe('NewPositionEventDetails', () => {
 					array: ['one', 'two', 'three', 'four', 'five'],
 					targetKey: 'one',
 					destinationKey: 'five',
-					moveBeforeDestination: true
+					insertBefore: true
 				},
 				expected: ['two', 'three', 'four', 'one', 'five']
 			}
@@ -172,7 +282,7 @@ describe('NewPositionEventDetails', () => {
 				const event = new NewPositionEventDetails({
 					targetKey: test.input.targetKey,
 					destinationKey: test.input.destinationKey,
-					moveBeforeDestination: test.input.moveBeforeDestination
+					insertBefore: test.input.insertBefore
 				});
 				const objects = test.input.array.map(x => ({key : x }));
 				event.reorder(objects, {keyFn: keyFn});
