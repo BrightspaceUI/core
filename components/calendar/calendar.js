@@ -758,6 +758,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async _updateFocusDateOnChange() {
+		await this.updateComplete;
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
 		if (dateElem && isDateInRange(selectedValueDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) {
