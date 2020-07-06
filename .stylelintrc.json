@@ -1,0 +1,8 @@
+{
+  "extends": "@brightspace-ui/stylelint-config",
+	"ignoreFiles": [
+    "components/demo/code-dark-plus-styles.js",
+    "components/demo/code-tomorrow-styles.js",
+    "components/list/**/*.js"
+  ]
+}

@@ -64,12 +64,12 @@ class Breadcrumb extends RtlMixin(LitElement) {
 			}
 
 			d2l-icon[icon="d2l-tier1:chevron-left"] {
-				padding-right: 8px;
 				padding-left: 0;
+				padding-right: 8px;
 			}
 			:host([dir="rtl"]) d2l-icon[icon="d2l-tier1:chevron-left"] {
-				padding-right: 0;
 				padding-left: 8px;
+				padding-right: 0;
 			}
 		`];
 	}

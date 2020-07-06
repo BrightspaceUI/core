@@ -49,7 +49,7 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			:host([compact]) ::slotted(d2l-breadcrumb:not(:last-of-type)),
 			:host([compact]) ::slotted(d2l-breadcrumb-current-page) {
-				display:none;
+				display: none;
 			}
 		`;
 	}

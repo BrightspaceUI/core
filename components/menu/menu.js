@@ -44,8 +44,8 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 				box-sizing: border-box;
 				display: block;
 				min-width: 180px;
-				width: 100%;
 				padding-top: 1px;
+				width: 100%;
 			}
 
 			:host([active]) .d2l-menu-items d2l-menu-item-return[role="menuitem"],

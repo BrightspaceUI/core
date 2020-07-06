@@ -40,8 +40,8 @@ class DialogConfirm extends DialogMixin(LitElement) {
 
 				.d2l-dialog-outer {
 					bottom: 0;
-					top: 0;
 					margin: auto;
+					top: 0;
 				}
 
 				.d2l-dialog-content > div {

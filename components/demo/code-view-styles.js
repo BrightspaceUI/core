@@ -20,9 +20,9 @@ export const styles = css`
 		color: var(--d2l-color-tungsten);
 		content: attr(data-language);
 		font-size: 0.7rem;
+		margin: 0 0.4rem;
 		padding: 0;
 		position: absolute;
-		margin: 0 0.4rem;
 		right: 0;
 		top: 0;
 	}

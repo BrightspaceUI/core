@@ -10,10 +10,10 @@ export class ArrowKeysTest extends ArrowKeysMixin(LitElement) {
 				display: inline-block;
 			}
 			.d2l-arrowkeys-focusable {
-				display: inline-block;
-				padding: 1rem;
 				border: 2px solid var(--d2l-color-ferrite);
 				border-radius: 4px;
+				display: inline-block;
+				padding: 1rem;
 			}
 			.d2l-arrowkeys-focusable:focus {
 				border: 2px solid var(--d2l-color-celestine);
