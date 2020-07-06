@@ -221,13 +221,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-calendar-next-updown .d2l-calendar-title .d2l-heading-4 {
-				padding-top: 20px;
 				padding-bottom: 0;
+				padding-top: 20px;
 			}
 
 			.d2l-calendar-prev-updown .d2l-calendar-title .d2l-heading-4 {
-				padding-top: 0;
 				padding-bottom: 20px;
+				padding-top: 0;
 			}
 
 			.d2l-calendar-date {
@@ -297,8 +297,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			.d2l-calendar-animating .d2l-calendar-date {
 				opacity: 1;
 				transition-duration: 200ms;
-				transition-timing-function: ease-out;
 				transition-property: opacity, transform;
+				transition-timing-function: ease-out;
 			}
 
 			.d2l-calendar-animating .d2l-calendar-date:disabled {
@@ -312,7 +312,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			.d2l-calendar-next-updown .d2l-heading-4,
 			.d2l-calendar-next-updown .d2l-calendar-date {
-				transform: translateY(-10px)
+				transform: translateY(-10px);
 			}
 
 			.d2l-calendar-prev .d2l-heading-4,

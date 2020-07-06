@@ -5,7 +5,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 export function waitForHeight(elem) {
 	return new Promise((resolve) => {
 		function check() {
-			const content = elem.shadowRoot.querySelector('.more-less-content');
+			const content = elem.shadowRoot.querySelector('.d2l-more-less-content');
 			if (content.style.height === '') {
 				setTimeout(() => check(), 10);
 			} else {
@@ -46,7 +46,7 @@ describe('d2l-more-less', () => {
 
 		it('should expand when more content is dynamically added', async() => {
 
-			const content = elem.shadowRoot.querySelector('.more-less-content');
+			const content = elem.shadowRoot.querySelector('.d2l-more-less-content');
 			const previousContentHeight = content.scrollHeight;
 			expect(elem.offsetHeight).to.be.above(content.scrollHeight);
 

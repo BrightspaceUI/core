@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.57.3",
+  "version": "1.57.4",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -12,9 +12,10 @@
     "build:icons": "node ./cli/icon-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
     "build": "npm run build:clean && npm run build:icons && npm run build:sass",
-    "lint": "npm run lint:eslint && npm run lint:lit",
+    "lint": "npm run lint:eslint && npm run lint:style && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
+    "lint:style": "stylelint \"**/*.js\"",
     "prepublishOnly": "node ./cli/verify-translations.js && npm run analyze",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
@@ -45,6 +46,7 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@brightspace-ui/stylelint-config": "^0.0.1",
     "@brightspace-ui/visual-diff": "^1",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^3",
@@ -66,6 +68,7 @@
     "puppeteer": "^5",
     "semantic-release": "^17",
     "sinon": "^9",
+    "stylelint": "^13",
     "web-component-analyzer": "^1",
     "whatwg-fetch": "^3"
   },

@@ -61,24 +61,24 @@ export const radioStyles = css`
 		vertical-align: middle;
 	}
 	:host([dir="rtl"]) .d2l-input-radio-label {
-		padding-right: 1.7rem;
 		padding-left: 0;
+		padding-right: 1.7rem;
 	}
 	.d2l-input-radio-label-disabled {
 		opacity: 0.5;
 	}
 	.d2l-input-radio-label-disabled > .d2l-input-radio,
 	.d2l-input-radio-label-disabled > input[type="radio"] {
-		opacity: 1.0;
+		opacity: 1;
 	}
 	.d2l-input-radio-label:last-of-type {
 		margin-bottom: 0;
 	}
 	.d2l-input-radio-label > .d2l-input-radio,
 	.d2l-input-radio-label > input[type="radio"] {
-		margin-right: 0.5rem;
-		margin-left: -1.7rem;
 		flex: 0 0 auto;
+		margin-left: -1.7rem;
+		margin-right: 0.5rem;
 	}
 	:host([dir="rtl"]) .d2l-input-radio-label > .d2l-input-radio,
 	:host([dir="rtl"]) .d2l-input-radio-label > input[type="radio"] {

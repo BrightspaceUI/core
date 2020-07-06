@@ -32,8 +32,8 @@ class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitEleme
 				}
 
 				:host([dir="rtl"]) > d2l-icon {
-					margin-right: 0;
 					margin-left: 1rem;
+					margin-right: 0;
 				}
 			`
 		];

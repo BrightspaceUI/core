@@ -3,12 +3,12 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const offscreenStyles = css`
 	.d2l-offscreen {
-		position: absolute !important;
-		overflow: hidden;
-		width: 1px;
 		height: 1px;
-		white-space: nowrap;
 		left: -10000px;
+		overflow: hidden;
+		position: absolute !important;
+		white-space: nowrap;
+		width: 1px;
 	}
 	:host([dir="rtl"]) .d2l-offscreen {
 		left: 0;
@@ -24,12 +24,12 @@ class Offscreen extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				position: absolute !important;
-				overflow: hidden;
-				width: 1px;
 				height: 1px;
-				white-space: nowrap;
 				left: -10000px;
+				overflow: hidden;
+				position: absolute !important;
+				white-space: nowrap;
+				width: 1px;
 			}
 			:host([dir="rtl"]) {
 				left: 0;

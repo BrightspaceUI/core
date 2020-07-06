@@ -56,8 +56,8 @@ class Button extends ButtonMixin(LitElement) {
 				}
 
 				button[disabled] {
-					opacity: 0.5;
 					cursor: default;
+					opacity: 0.5;
 				}
 				:host([primary]) button,
 				:host([primary]) button[disabled]:hover,
@@ -68,7 +68,7 @@ class Button extends ButtonMixin(LitElement) {
 				}
 				:host([primary]) button:hover,
 				:host([primary]) button:focus,
-				:host([primary][active]) button{
+				:host([primary][active]) button {
 					background-color: var(--d2l-color-celestine-minus-1);
 				}
 			`

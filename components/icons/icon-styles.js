@@ -3,7 +3,6 @@ import { css } from 'lit-element/lit-element.js';
 
 export const iconStyles = css`
 	:host {
-		-ms-flex-align: center;
 		-webkit-align-items: center;
 		align-items: center;
 		color: var(--d2l-color-ferrite);
@@ -11,8 +10,9 @@ export const iconStyles = css`
 		display: -webkit-inline-flex;
 		display: inline-flex;
 		fill: var(--d2l-icon-fill-color, currentcolor);
-		height: var(--d2l-icon-height, 18px);
+		-ms-flex-align: center;
 		-ms-flex-pack: center;
+		height: var(--d2l-icon-height, 18px);
 		-webkit-justify-content: center;
 		justify-content: center;
 		stroke: var(--d2l-icon-stroke-color, none);
@@ -30,8 +30,8 @@ export const iconStyles = css`
 	}
 	:host([dir="rtl"]) svg[mirror-in-rtl],
 	:host([dir="rtl"]) ::slotted(svg[mirror-in-rtl]) {
-		-webkit-transform: scale(-1,1);
-		transform: scale(-1,1);
+		-webkit-transform: scale(-1, 1);
+		transform: scale(-1, 1);
 		transform-origin: center;
 	}
 `;

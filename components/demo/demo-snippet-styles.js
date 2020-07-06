@@ -23,8 +23,8 @@ export const styles = css`
 	:host .d2l-demo-snippet-actions {
 		background-color: var(--d2l-color-sylvite);
 		border-bottom: 1px solid var(--d2l-color-tungsten);
-		border-left: 1px solid var(--d2l-color-tungsten);
 		border-bottom-left-radius: 6px;
+		border-left: 1px solid var(--d2l-color-tungsten);
 		border-top-right-radius: 5px;
 		display: inline-block;
 		line-height: 0;
