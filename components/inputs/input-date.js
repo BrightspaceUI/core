@@ -162,7 +162,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		let failureText = '';
 		if (this.minValue && this.maxValue) {
 			failureText = this.localize(
-				`${this._namespace}.outsideRangeError`,
+				`${this._namespace}.errorOutsideRange`,
 				'minDate',
 				formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
 				'maxDate',
