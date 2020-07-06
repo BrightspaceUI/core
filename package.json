@@ -46,6 +46,7 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@brightspace-ui/stylelint-config": "^0.0.1",
     "@brightspace-ui/visual-diff": "^1",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^3",
@@ -67,9 +68,7 @@
     "puppeteer": "^5",
     "semantic-release": "^17",
     "sinon": "^9",
-    "stylelint": "^13.6.1",
-    "stylelint-config-standard": "^20.0.0",
-    "stylelint-order": "^4.1.0",
+    "stylelint": "^13",
     "web-component-analyzer": "^1",
     "whatwg-fetch": "^3"
   },
