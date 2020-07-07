@@ -38,7 +38,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
-			_cellNum: { type: Number }
+			_actionFocused: { type: Boolean }
 		};
 	}
 
@@ -144,13 +144,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	firstUpdated() {
 		this.addEventListener('keydown', this._handleKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
-		this.addEventListener('focusout', this._unsetFocusInfo.bind(this));
 	}
 
 	render() {
 		const actionClasses = {
 			'd2l-cell': true,
-			'focused': this._cellNum === 6
+			'focused': this._actionFocused
 		};
 		return html`
 		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
@@ -158,10 +157,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
 		<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
-		<slot name="actions" class="${classMap(actionClasses)}" data-cell-num="6"></slot>
+		<slot name="actions" class="${classMap(actionClasses)}" data-cell-num="6"
+			@click="${this._clickActionSlot}"
+			@focusout="${this._unclickActionSlot}"></slot>
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
+	}
+
+	_clickActionSlot() {
+		this._actionFocused = true;
 	}
 
 	_focusCellItem(num, itemNum) {
@@ -410,11 +415,15 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		this._cellFocusedItem = this._getFocusedItemPosition(event.target);
 	}
 
-	_unsetFocusInfo() {
-		setTimeout(() => {
-			this._cellNum = null;
-			this._cellFocusedItem = null;
-		}, 100);
+	_unclickActionSlot(event) {
+		const related = event.relatedTarget;
+		const slot = (event.path || event.composedPath()).find(node =>
+			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
+		if (!related || !isComposedAncestor(slot, related)) {
+			setTimeout(() => {
+				this._actionFocused = false;
+			}, 200);
+		}
 	}
 }
 
