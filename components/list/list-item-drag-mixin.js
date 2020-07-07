@@ -52,7 +52,6 @@ export const ListItemDragMixin = superclass => class extends superclass {
 			}
 			.d2l-list-item-drag-drop-grid {
 				display: grid;
-				gap: 1px;
 				grid-template-columns: 100%;
 				grid-template-rows: 1rem 1fr 1fr 1rem;
 				height: 100%;
@@ -179,8 +178,11 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		e.dataTransfer.setData('text/plain', `${this.dragText}`);
 		e.dataTransfer.effectAllowed = 'move';
 
-		const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
-		e.dataTransfer.setDragImage(nodeImage, 50, 50);
+		//legacy edge doesn't support setDragImage. Experience is not degraded for legacy edge by doing this fix.
+		if (e.dataTransfer.setDragImage) {
+			const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+			e.dataTransfer.setDragImage(nodeImage, 50, 50);
+		}
 
 		dropSpotsFactory(this);
 
