@@ -6,12 +6,12 @@ export const isCustomFormElement = (node) => isCustomElement(node) && !!node.for
 
 export const tryGetLabelText = (ele) => {
 	if (ele.labels && ele.labels.length > 0) {
-		const textNode = [...ele.labels[0].childNodes].find(node => node.nodeType === Node.TEXT_NODE);
-		if (textNode) {
-			const labelText = textNode.wholeText.trim();
-			if (labelText) {
-				return labelText;
-			}
+		const labelText = [...ele.labels[0].childNodes]
+			.filter(node => node.nodeType === Node.TEXT_NODE)
+			.reduce((acc, node) => acc + node.textContent, '')
+			.trim();
+		if (labelText) {
+			return labelText;
 		}
 	}
 	if (ele.hasAttribute('aria-label')) {
