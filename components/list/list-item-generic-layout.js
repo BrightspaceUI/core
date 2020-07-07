@@ -38,7 +38,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
-			_actionFocused: { type: Boolean }
+			_dropdownOpen: { type: Boolean },
+			/**
+			 * @ignore
+			 */
+			_tooltipShowing: { type: Boolean }
 		};
 	}
 
@@ -60,13 +64,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 2.1rem;
 				grid-column: outside-control-start / outside-control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="control"]) {
-				width: 2.1rem;
 				grid-column: control-start / control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="content"]) {
@@ -77,7 +81,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: actions-start / actions-end;
 				z-index: 4;
 			}
-			.focused::slotted([slot="actions"]) {
+			.d2l-dropdown-open::slotted([slot="actions"]),
+			.d2l-tooltip-showing::slotted([slot="actions"]) {
 				z-index: 5;
 			}
 
@@ -149,7 +154,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	render() {
 		const actionClasses = {
 			'd2l-cell': true,
-			'focused': this._actionFocused
+			'd2l-dropdown-open': this._dropdownOpen,
+			'd2l-tooltip-showing': this._tooltipShowing
 		};
 		return html`
 		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
@@ -158,15 +164,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
 		<slot name="actions" class="${classMap(actionClasses)}" data-cell-num="6"
-			@click="${this._clickActionSlot}"
-			@focusout="${this._unclickActionSlot}"></slot>
+			@d2l-dropdown-open="${this._onDropdownOpen}"
+			@d2l-dropdown-close="${this._onDropdownClose}"
+			@d2l-tooltip-show="${this._onTooltipShow}"
+			@d2l-tooltip-hide="${this._onTooltipHide}"></slot>
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
-	}
-
-	_clickActionSlot() {
-		this._actionFocused = true;
 	}
 
 	_focusCellItem(num, itemNum) {
@@ -408,22 +412,27 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 	}
 
+	_onDropdownClose() {
+		this._dropdownOpen = false;
+	}
+
+	_onDropdownOpen() {
+		this._dropdownOpen = true;
+	}
+
+	_onTooltipHide() {
+		this._tooltipShowing = false;
+	}
+
+	_onTooltipShow() {
+		this._tooltipShowing = true;
+	}
+
 	_setFocusInfo(event) {
 		const slot = (event.path || event.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
 		this._cellFocusedItem = this._getFocusedItemPosition(event.target);
-	}
-
-	_unclickActionSlot(event) {
-		const related = event.relatedTarget;
-		const slot = (event.path || event.composedPath()).find(node =>
-			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
-		if (!related || !isComposedAncestor(slot, related)) {
-			setTimeout(() => {
-				this._actionFocused = false;
-			}, 200);
-		}
 	}
 }
 

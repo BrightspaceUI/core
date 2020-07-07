@@ -446,32 +446,6 @@ describe('d2l-list-item-generic-layout', () => {
 				});
 			}
 		});
-
-		describe('action area focusing', () => {
-			beforeEach(() => {
-				el = el.querySelector('[key="item1"]');
-				layout = el.shadowRoot.querySelector('d2l-list-item-generic-layout');
-			});
-
-			it('adds focus class when action is clicked', async() => {
-				el.querySelector('d2l-button-icon').click();
-				expect(layout._actionFocused).to.be.true;
-				await layout.updateComplete;
-				expect(layout.shadowRoot.querySelector('[name="actions"]')).to.have.class('focused');
-			});
-
-			it('removes focus when action area is unfocused', async() => {
-				el.querySelector('d2l-button-icon').focus(); // simulate focus
-				layout._actionFocused = true;
-				await layout.updateComplete;
-				const actionSlot = layout.shadowRoot.querySelector('[name="actions"]');
-				expect(actionSlot).to.have.class('focused');
-				layout.querySelector('.d2l-input-checkbox').focus();
-				await aTimeout(300); // wait for the set timeout
-				expect(layout._actionFocused).to.be.false;
-				expect(actionSlot).to.not.have.class('focused');
-			});
-		});
 	});
 
 	describe('events', () => {
