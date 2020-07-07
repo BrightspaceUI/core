@@ -9,7 +9,6 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -117,7 +116,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
-		this._inputId =  getUniqueId();
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
@@ -171,7 +169,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
-					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -221,6 +218,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	focus() {
 		if (this._textInput) this._textInput.focus();
+	}
+
+	get label() {
+		return this.label;
 	}
 
 	get validationMessageRangeOverflow() {
