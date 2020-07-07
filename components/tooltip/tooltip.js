@@ -539,7 +539,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('focus', this._onTargetFocus);
 		this._target.addEventListener('blur', this._onTargetBlur);
 		this._target.addEventListener('click', this._onTargetClick);
-		this._target.addEventListener('touchstart', this._onTargetTouchStart);
+		this._target.addEventListener('touchstart', this._onTargetTouchStart, { passive: true });
 		this._target.addEventListener('touchcancel', this._onTargetTouchEnd);
 		this._target.addEventListener('touchend', this._onTargetTouchEnd);
 
