@@ -4,7 +4,6 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
-import '../validation/validation-custom.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -54,7 +53,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Value of the input
 			 */
-			validationCustomValid: { type: Boolean },
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -114,7 +112,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
-		this.validationCustomValid = true;
 		this.value = '';
 
 		this._dropdownOpened = false;
@@ -372,10 +369,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			'change',
 			{ bubbles: true, composed: false }
 		));
-	}
-
-	async _validate(e) {
-		e.detail.resolve(this.validationCustomValid);
 	}
 
 }
