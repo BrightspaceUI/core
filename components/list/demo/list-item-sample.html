@@ -9,6 +9,10 @@
 	<script type="module">
 		import '../../button/button-icon.js';
 		import '../../demo/demo-page.js';
+		import '../../dropdown/dropdown-menu.js';
+		import '../../dropdown/dropdown-more.js';
+		import '../../menu/menu.js';
+		import '../../menu/menu-item.js';
 		import '../list.js';
 		import '../list-item-content.js';
 		import './list-item-sample.js';
@@ -36,6 +40,30 @@
 						</d2l-list-item-content>
 						<div slot="actions">
 							<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+							<d2l-dropdown-more text="Open!">
+								<d2l-dropdown-menu id="dropdown">
+									<d2l-menu label="Astronomy">
+										<d2l-menu-item text="Introduction"></d2l-menu-item>
+										<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										<d2l-menu-item text="The Solar System">
+											<d2l-menu>
+												<d2l-menu-item text="Formation"></d2l-menu-item>
+												<d2l-menu-item text="Modern Solar System"></d2l-menu-item>
+												<d2l-menu-item text="Future Solar System"></d2l-menu-item>
+												<d2l-menu-item text="The Planets"></d2l-menu-item>
+												<d2l-menu-item text="The Sun"></d2l-menu-item>
+												<d2l-menu-item text="Solar &amp; Lunar Eclipses"></d2l-menu-item>
+												<d2l-menu-item text="Meteors &amp; Meteorites"></d2l-menu-item>
+												<d2l-menu-item text="Asteroids"></d2l-menu-item>
+												<d2l-menu-item text="Comets"></d2l-menu-item>
+											</d2l-menu>
+										</d2l-menu-item>
+										<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
+										<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+										<d2l-menu-item text="The Universe"></d2l-menu-item>
+									</d2l-menu>
+								</d2l-dropdown-menu>
+							</d2l-dropdown-more>
 						</div>
 					</d2l-list-item-sample>
 					<d2l-list-item-sample

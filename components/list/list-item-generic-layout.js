@@ -7,6 +7,7 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 	isFocusable } from '../../helpers/focus.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -26,8 +27,18 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
-			gridActive: { type: Boolean, attribute: 'grid-active' }
+			/**
+			 * Specifies whether the grid is active or not
+			 */
+			gridActive: { type: Boolean, attribute: 'grid-active' },
+			/**
+			 * @ignore
+			 */
+			_cellNum: { type: Number }
 		};
 	}
 
@@ -39,7 +50,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[start outside-control-start] minmax(0, min-content)
 					[control-start outside-control-end] minmax(0, min-content)
 					[control-end content-start] auto
-					[content-end actions-start] auto
+					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
 			}
 			::slotted([slot="outside-control"]),
@@ -49,12 +60,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 40px;
+				width: 2.1rem;
 				grid-column: outside-control-start / outside-control-end;
 			}
 
 			::slotted([slot="control"]) {
-				width: 40px;
+				width: 2.1rem;
 				grid-column: control-start / control-end;
 			}
 
@@ -65,6 +76,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				z-index: 4;
+			}
+			.focused::slotted([slot="actions"]) {
+				z-index: 5;
 			}
 
 			::slotted([slot="outside-control-action"]),
@@ -133,13 +147,17 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const actionClasses = {
+			'd2l-cell': true,
+			'focused': this._cellNum === 6
+		};
 		return html`
 		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
 		<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 		<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
 		<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
-		<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
+		<slot name="actions" class="${classMap(actionClasses)}" data-cell-num="6"></slot>
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
@@ -206,8 +224,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusNextRow(previous = false, num = 1) {
 		let listItem = previous ?
-			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE') :
-			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE');
+			getPreviousAncestorSibling(this, (node) => node.role === 'rowgroup') :
+			getNextAncestorSibling(this, (node) => node.role === 'rowgroup');
 		if (!listItem || !listItem.shadowRoot) return;
 		while (num > 1) {
 			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
