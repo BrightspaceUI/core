@@ -4,11 +4,10 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
-import '../validation/validation-custom.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday, isDateInRange } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -54,7 +53,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Value of the input
 			 */
-			validationCustomValid: { type: Boolean },
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
@@ -114,7 +112,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
-		this.validationCustomValid = true;
 		this.value = '';
 
 		this._dropdownOpened = false;
@@ -159,35 +156,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
-		let failureText = '';
-		if (this.minValue && this.maxValue) {
-			failureText = this.localize(
-				`${this._namespace}.errorOutsideRange`,
-				'minDate',
-				formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
-				'maxDate',
-				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
-			);
-		} else if (this.minValue) {
-			failureText = this.localize(
-				`${this._namespace}.errorMinDateOnly`,
-				'minDate',
-				formatDate(getDateFromISODate(this.minValue), {format: 'medium'})
-			);
-		} else if (this.maxValue) {
-			failureText = this.localize(
-				`${this._namespace}.errorMaxDateOnly`,
-				'maxDate',
-				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
-			);
-		}
 
 		return html`
-			<d2l-validation-custom
-				@d2l-validation-custom-validate=${this._validate}
-				failure-text="${failureText}"
-				for="${this._inputId}">
-			</d2l-validation-custom>
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
@@ -251,6 +221,46 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	focus() {
 		if (this._textInput) this._textInput.focus();
+	}
+
+	get validationMessageRangeOverflow() {
+		let failureText = '';
+		if (this.minValue && this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorOutsideRange`,
+				'minDate',
+				formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
+				'maxDate',
+				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+			);
+		} else if (this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorMaxDateOnly`,
+				'maxDate',
+				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+			);
+		}
+		return failureText;
+	}
+
+	get validationMessageRangeUnderflow() {
+		let failureText = '';
+		if (this.minValue && this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorOutsideRange`,
+				'minDate',
+				formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
+				'maxDate',
+				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+			);
+		} else if (this.minValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorMinDateOnly`,
+				'minDate',
+				formatDate(getDateFromISODate(this.minValue), {format: 'medium'})
+			);
+		}
+		return failureText;
 	}
 
 	_handleBlur() {
@@ -347,19 +357,21 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	async _updateValueDispatchEvent(dateInISO) {
 		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
 		this._shownValue = dateInISO;
-		this.validationCustomValid = !dateInISO || isDateInRange(getDateFromISODate(dateInISO), getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
+		if (this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime()) {
+			this.setValidity({ rangeUnderflow: true });
+		} else if (this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()) {
+			this.setValidity({ rangeOverflow: true });
+		} else {
+			this.setValidity({});
+		}
 		await this.validate();
 
-		if (!this.validationCustomValid) return;
+		if (!this.checkValidity()) return;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
 		));
-	}
-
-	async _validate(e) {
-		e.detail.resolve(this.validationCustomValid);
 	}
 
 }
