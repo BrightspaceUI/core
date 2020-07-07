@@ -144,6 +144,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	firstUpdated() {
 		this.addEventListener('keydown', this._handleKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
+		this.addEventListener('focusout', this._unsetFocusInfo.bind(this));
 	}
 
 	render() {
@@ -407,6 +408,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
 		this._cellFocusedItem = this._getFocusedItemPosition(event.target);
+	}
+
+	_unsetFocusInfo() {
+		setTimeout(() => {
+			this._cellNum = null;
+			this._cellFocusedItem = null;
+		}, 100);
 	}
 }
 
