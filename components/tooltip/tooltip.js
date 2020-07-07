@@ -90,7 +90,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
 			 * @type {('start'|'end')}
 			 */
-			align: { type: String },
+			align: { type: String, reflect: true },
 			/**
 			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
 			 */
