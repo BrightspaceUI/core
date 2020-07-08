@@ -6,7 +6,7 @@ import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
-import { ListItemMixin } from './list-item-mixin.js';
+import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -29,7 +29,7 @@ const defaultBreakpoints = [842, 636, 580, 0];
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
-class ListItem extends ListItemCheckboxMixin(ListItemMixin(RtlMixin(LitElement))) {
+class ListItem extends ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
