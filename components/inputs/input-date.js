@@ -363,9 +363,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		} else {
 			this.setValidity({});
 		}
-		await this.validate();
-
-		if (!this.checkValidity()) return;
+		const errors = await this.validate();
+		if (errors.length > 0) return;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',
