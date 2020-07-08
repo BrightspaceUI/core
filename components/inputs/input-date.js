@@ -220,25 +220,20 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		if (this._textInput) this._textInput.focus();
 	}
 
-	get label() {
-		return this.label;
-	}
-
 	get validationMessageRangeOverflow() {
 		let failureText = '';
 		if (this.minValue && this.maxValue) {
 			failureText = this.localize(
-				`${this._namespace}.errorOutsideRange`,
-				'minDate',
-				formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
-				'maxDate',
-				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				`${this._namespace}.errorOutsideRange`, {
+					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
+					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				}
 			);
 		} else if (this.maxValue) {
 			failureText = this.localize(
-				`${this._namespace}.errorMaxDateOnly`,
-				'maxDate',
-				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				`${this._namespace}.errorMaxDateOnly`, {
+					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				}
 			);
 		}
 		return failureText;
@@ -248,17 +243,16 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		let failureText = '';
 		if (this.minValue && this.maxValue) {
 			failureText = this.localize(
-				`${this._namespace}.errorOutsideRange`,
-				'minDate',
-				formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
-				'maxDate',
-				formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				`${this._namespace}.errorOutsideRange`, {
+					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
+					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				}
 			);
 		} else if (this.minValue) {
 			failureText = this.localize(
-				`${this._namespace}.errorMinDateOnly`,
-				'minDate',
-				formatDate(getDateFromISODate(this.minValue), {format: 'medium'})
+				`${this._namespace}.errorMinDateOnly`, {
+					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'})
+				}
 			);
 		}
 		return failureText;
