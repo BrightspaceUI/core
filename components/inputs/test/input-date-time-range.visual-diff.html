@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-timezone='{"name": "est", "identifier": "America/Toronto"}'>
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-date-time-range.js';
+			import sinon from 'sinon';
+
+			const newToday = new Date('2018-02-12T12:00Z');
+			sinon.useFakeTimers(newToday.getTime());
+		</script>
+		<title>d2l-input-date-time-range visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div style="width: 400px;">
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="basic"></d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="disabled" disabled></d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="invalid-start-value" start-value="asdf"></d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="labelled" label="Dates"></d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="label-hidden" label="Dates" label-hidden></d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="slotted-content">
+					<div slot="start">
+						First slot content
+					</div>
+					<div slot="end">
+						Second slot content
+					</div>
+				</d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="start-end-label" start-label="A long start date label explanation" end-label="Finish"></d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="start-end-value" start-value="2020-12-02T15:00:00.000Z" end-value="2021-01-12T08:30:00.000Z"></d2l-input-date-time-range>
+			</div>
+		</div>
+	</body>
+</html>
