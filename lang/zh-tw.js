@@ -30,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "進度指示器",
 	"components.more-less.less": "較少",
 	"components.more-less.more": "較多",
+	"components.switch.visibility": "能見度",
 	"components.tabs.next": "向前捲動",
 	"components.tabs.previous": "向後捲動"
 };
