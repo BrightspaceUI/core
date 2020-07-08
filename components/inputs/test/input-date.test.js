@@ -200,6 +200,15 @@ describe('d2l-input-date', () => {
 			expect(elem.validationError).to.be.null;
 		});
 
+		it('should change value to empty string if typed date between min and max values', async() => {
+			const elem = await fixture('<d2l-input-date min-value="2019-01-01" max-value="2020-12-02" label="Date" value="2019-10-01"></d2l-input-date>');
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			inputElem.value = '';
+			dispatchEvent(inputElem, 'change', false);
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('');
+		});
+
 	});
 
 });
