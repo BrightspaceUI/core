@@ -13,6 +13,7 @@
 		import '../../dropdown/dropdown-more.js';
 		import '../../menu/menu.js';
 		import '../../menu/menu-item.js';
+		import '../../tooltip/tooltip.js';
 		import '../list.js';
 		import '../list-item-content.js';
 		import './list-item-sample.js';
@@ -77,7 +78,8 @@
 							<div slot="secondary">Specific Expectation B2.1</div>
 						</d2l-list-item-content>
 						<div slot="actions">
-							<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+							<d2l-button-icon text="My Button" id="specialButton" icon="tier1:more"></d2l-button-icon>
+							<d2l-tooltip for="specialButton">Foobar</d2l-tooltip>
 							<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
 							<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
 							<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>

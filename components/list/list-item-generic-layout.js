@@ -38,11 +38,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
-			_dropdownOpen: { type: Boolean },
-			/**
-			 * @ignore
-			 */
-			_tooltipShowing: { type: Boolean }
+			_dropdownOpen: { type: Boolean }
 		};
 	}
 
@@ -81,8 +77,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: actions-start / actions-end;
 				z-index: 4;
 			}
-			.d2l-dropdown-open::slotted([slot="actions"]),
-			.d2l-tooltip-showing::slotted([slot="actions"]) {
+			.d2l-dropdown-open::slotted([slot="actions"]) {
 				z-index: 5;
 			}
 
@@ -154,8 +149,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	render() {
 		const actionClasses = {
 			'd2l-cell': true,
-			'd2l-dropdown-open': this._dropdownOpen,
-			'd2l-tooltip-showing': this._tooltipShowing
+			'd2l-dropdown-open': this._dropdownOpen
 		};
 		return html`
 		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
@@ -165,9 +159,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
 		<slot name="actions" class="${classMap(actionClasses)}" data-cell-num="6"
 			@d2l-dropdown-open="${this._onDropdownOpen}"
-			@d2l-dropdown-close="${this._onDropdownClose}"
-			@d2l-tooltip-show="${this._onTooltipShow}"
-			@d2l-tooltip-hide="${this._onTooltipHide}"></slot>
+			@d2l-dropdown-close="${this._onDropdownClose}"></slot>
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
@@ -418,14 +410,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_onDropdownOpen() {
 		this._dropdownOpen = true;
-	}
-
-	_onTooltipHide() {
-		this._tooltipShowing = false;
-	}
-
-	_onTooltipShow() {
-		this._tooltipShowing = true;
 	}
 
 	_setFocusInfo(event) {
