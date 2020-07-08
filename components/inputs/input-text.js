@@ -117,8 +117,7 @@ class InputText extends RtlMixin(LitElement) {
 			_firstSlotWidth: { type: Number },
 			_focused: { type: Boolean },
 			_hovered: { type: Boolean },
-			_lastSlotWidth: { type: Number },
-			_isInputValid: { type: Boolean }
+			_lastSlotWidth: { type: Number }
 		};
 	}
 
@@ -185,7 +184,6 @@ class InputText extends RtlMixin(LitElement) {
 		this._inputId = getUniqueId();
 		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
-		this._isInputValid = true;
 	}
 
 	firstUpdated(changedProperties) {
@@ -216,7 +214,7 @@ class InputText extends RtlMixin(LitElement) {
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
-		const isValid = (this.ariaInvalid !== 'true' && this._isInputValid) || this.disabled;
+		const isValid = this.ariaInvalid !== 'true' || this.disabled;
 		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
 		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
 		const invalidIconStyles = {
@@ -273,8 +271,6 @@ class InputText extends RtlMixin(LitElement) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
-				const input = this.shadowRoot.querySelector('input');
-				this._isInputValid = input.checkValidity();
 			}
 		});
 	}
