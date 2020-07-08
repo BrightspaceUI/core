@@ -96,7 +96,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	get label() {
-		return this.label ? this.label : null;
+		return null;
 	}
 
 	get labelText() {

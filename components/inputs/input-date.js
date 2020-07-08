@@ -352,10 +352,14 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	async _updateValueDispatchEvent(dateInISO) {
 		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
 		this._shownValue = dateInISO;
-		if (this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime()) {
-			this.setValidity({ rangeUnderflow: true });
-		} else if (this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()) {
-			this.setValidity({ rangeOverflow: true });
+		if (dateInISO) {
+			if (this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime()) {
+				this.setValidity({ rangeUnderflow: true });
+			} else if (this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()) {
+				this.setValidity({ rangeOverflow: true });
+			} else {
+				this.setValidity({});
+			}
 		} else {
 			this.setValidity({});
 		}
