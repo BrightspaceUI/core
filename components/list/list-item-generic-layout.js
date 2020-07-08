@@ -7,7 +7,6 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 	isFocusable } from '../../helpers/focus.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -30,15 +29,15 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			/**
 			 * @ignore
 			 */
+			frontRow: { type: Boolean, attribute: 'front-row', reflect: true },
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
 			/**
 			 * Specifies whether the grid is active or not
 			 */
-			gridActive: { type: Boolean, attribute: 'grid-active' },
-			/**
-			 * @ignore
-			 */
-			_dropdownOpen: { type: Boolean }
+			gridActive: { type: Boolean, attribute: 'grid-active' }
 		};
 	}
 
@@ -53,6 +52,24 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
 			}
+			:host([front-row]) ::slotted([slot="outside-control"]),
+			:host([front-row]) ::slotted([slot="control"]),
+			:host([front-row]) ::slotted([slot="content"]) {
+				z-index: 2;
+			}
+			:host([front-row]) ::slotted([slot="outside-control-action"]) {
+				z-index: 3;
+			}
+			:host([front-row]) ::slotted([slot="control-action"]) {
+				z-index: 4;
+			}
+			:host([front-row]) ::slotted([slot="content-action"]) {
+				z-index: 5;
+			}
+			:host([front-row]) ::slotted([slot="actions"]) {
+				z-index: 6;
+			}
+
 			::slotted([slot="outside-control"]),
 			::slotted([slot="control"]),
 			::slotted([slot="content"]),
@@ -76,9 +93,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
 				z-index: 4;
-			}
-			.d2l-dropdown-open::slotted([slot="actions"]) {
-				z-index: 5;
 			}
 
 			::slotted([slot="outside-control-action"]),
@@ -144,22 +158,20 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	firstUpdated() {
 		this.addEventListener('keydown', this._handleKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
+		this.addEventListener('d2l-dropdown-open', this._onDropdownOpen.bind(this));
+		this.addEventListener('d2l-dropdown-close', this._onDropdownClose.bind(this));
+		this.addEventListener('d2l-tooltip-show', this._onTooltipShow.bind(this));
+		this.addEventListener('d2l-tooltip-hide', this._onTooltipHide.bind(this));
 	}
 
 	render() {
-		const actionClasses = {
-			'd2l-cell': true,
-			'd2l-dropdown-open': this._dropdownOpen
-		};
 		return html`
 		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
 		<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 		<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
 		<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
-		<slot name="actions" class="${classMap(actionClasses)}" data-cell-num="6"
-			@d2l-dropdown-open="${this._onDropdownOpen}"
-			@d2l-dropdown-close="${this._onDropdownClose}"></slot>
+		<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
 		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
@@ -405,11 +417,19 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_onDropdownClose() {
-		this._dropdownOpen = false;
+		this.frontRow = false;
 	}
 
 	_onDropdownOpen() {
-		this._dropdownOpen = true;
+		this.frontRow = true;
+	}
+
+	_onTooltipHide() {
+		this.frontRow = false;
+	}
+
+	_onTooltipShow() {
+		this.frontRow = true;
 	}
 
 	_setFocusInfo(event) {
