@@ -2,6 +2,7 @@ import '../list-item-content.js';
 import './list-demo-item-sample.js';
 import '../list.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import {ifDefined} from 'lit-html/directives/if-defined';
 import { repeat } from 'lit-html/directives/repeat';
 
 class ListDemoDragNDropUsage extends LitElement {
@@ -57,7 +58,7 @@ class ListDemoDragNDropUsage extends LitElement {
 		return html`
 			<d2l-list>
 				${repeat(this.list, (item) => item.key, (item) => html`
-					<d2l-list-demo-item-sample key="${item.key}" draggable @d2l-list-item-position-change="${this._moveItems}">
+					<d2l-list-demo-item-sample key="${ifDefined(item.key)}" draggable @d2l-list-item-position-change="${this._moveItems}">
 						<img slot="illustration" src="${item.img}"></img>
 						<d2l-list-item-content>
 							<div>${item.name}</div>

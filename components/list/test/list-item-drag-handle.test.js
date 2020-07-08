@@ -28,7 +28,7 @@ describe('ListItemDragHandle', () => {
 			element.focus();
 		});
 
-		it(`It dispatch drag handle action event for ${dragActions.active} event when clicked.`, async() => {
+		it(`Dispatch drag handle action event for ${dragActions.active} event when clicked.`, async() => {
 			let action;
 			element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 			const actionArea = element.shadowRoot.querySelector('button');
@@ -45,7 +45,7 @@ describe('ListItemDragHandle', () => {
 			{ keyPress: keyCodes.SPACE },
 			{ keyPress: keyCodes.LEFT }
 		].forEach(testCase => {
-			it(`It dispatch drag handle action event for ${dragActions.active} when ${testCase.keyPress.key} is pressed.`, async() => {
+			it(`Dispatch drag handle action event for ${dragActions.active} when ${testCase.keyPress.key} is pressed.`, async() => {
 				let action;
 				element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 				const actionArea = element.shadowRoot.querySelector('button');
@@ -81,7 +81,7 @@ describe('ListItemDragHandle', () => {
 			{keyPress: keyCodes.SPACE, result: dragActions.save},
 			{keyPress: keyCodes.RIGHT, result: dragActions.save}
 		].forEach(testCase => {
-			it(`It dispatch drag handle action event for ${testCase.result} when ${testCase.keyPress.key} is pressed.`, async() => {
+			it(`Dispatch drag handle action event for ${testCase.result} when ${testCase.keyPress.key} is pressed.`, async() => {
 				let action;
 				element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 				const actionArea = element.shadowRoot.querySelector('button');
@@ -92,7 +92,7 @@ describe('ListItemDragHandle', () => {
 			});
 		});
 
-		it(`It dispatch drag handle action event for ${dragActions.save} when element is blurred.`, async() => {
+		it(`Dispatch drag handle action event for ${dragActions.save} when element is blurred.`, async() => {
 			let action;
 			element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 			const actionArea = element.shadowRoot.querySelector('button');

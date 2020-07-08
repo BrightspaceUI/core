@@ -6,28 +6,28 @@ import { buttonStyles } from '../button/button-styles.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 
 const keyCodes = Object.freeze({
-	END: 35,
-	HOME: 36,
-	UP: 38,
 	DOWN: 40,
-	SPACE: 32,
+	END: 35,
 	ENTER: 13,
 	ESC: 27,
-	TAB: 9,
+	HOME: 36,
 	LEFT: 37,
-	RIGHT: 39
+	RIGHT: 39,
+	SPACE: 32,
+	TAB: 9,
+	UP: 38
 });
 
 export const dragActions = Object.freeze({
+	active: 'keyboard-active',
+	cancel: 'keyboard-deactivate-cancel',
+	down: 'down',
 	first: 'first',
 	last: 'last',
-	up: 'up',
-	down: 'down',
-	active: 'keyboard-active',
-	save: 'keyboard-deactivate-save',
-	cancel: 'keyboard-deactivate-cancel',
 	nextElement: 'next-element',
-	previousElement: 'previous-element'
+	previousElement: 'previous-element',
+	save: 'keyboard-deactivate-save',
+	up: 'up'
 });
 
 class ListItemDragHandle extends LitElement {
@@ -203,7 +203,6 @@ class ListItemDragHandle extends LitElement {
 				@click="${this._onInactiveKeyboard}"
 				@keyup="${this._onInactiveKeyboard}"
 				@keydown="${this._onInactiveKeyDown}"
-				@customevent="${this._onInactiveKeyboard}"
 				aria-label="${this.text}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger" class="d2l-button-icon"></d2l-icon>
