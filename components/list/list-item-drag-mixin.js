@@ -25,10 +25,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
 			_dropLocation: { type: Number },
-			_bottomPlacementMarker: { type: Boolean },
 			_dropTarget: { type: Boolean },
-			_keyboardActive: { type: Boolean },
-			_topPlacementMarker: { type: Boolean }
+			_keyboardActive: { type: Boolean }
 		};
 	}
 
