@@ -110,6 +110,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.emptyText = '';
+		this.label = '';
 		this.labelHidden = false;
 		this.value = '';
 
@@ -169,7 +170,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
-					label="${ifDefined(this.label)}"
+					label="${ifDefined(this.label ? this.label : undefined)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
 					@mouseup="${this._handleMouseup}"
@@ -352,17 +353,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	async _updateValueDispatchEvent(dateInISO) {
 		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
 		this._shownValue = dateInISO;
-		if (dateInISO) {
-			if (this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime()) {
-				this.setValidity({ rangeUnderflow: true });
-			} else if (this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()) {
-				this.setValidity({ rangeOverflow: true });
-			} else {
-				this.setValidity({});
-			}
-		} else {
-			this.setValidity({});
-		}
+		this.setValidity({
+			rangeUnderflow: dateInISO && this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime(),
+			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
+		});
 		const errors = await this.validate();
 		if (errors.length > 0) return;
 		this.value = dateInISO;
