@@ -225,10 +225,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		if (this._textInput) this._textInput.focus();
 	}
 
-	get label() {
-		return this.label;
-	}
-
 	get validationMessageRangeOverflow() {
 		let failureText = '';
 		if (this.minValue && this.maxValue) {
