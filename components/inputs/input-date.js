@@ -110,6 +110,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.emptyText = '';
+		this.label = '';
 		this.labelHidden = false;
 		this.value = '';
 
