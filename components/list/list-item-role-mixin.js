@@ -1,9 +1,12 @@
 import { findComposedAncestor } from '../../helpers/dom.js';
 
-export const ListItemMixin = superclass => class extends superclass {
+export const ListItemRoleMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true }
 		};
 	}
@@ -13,6 +16,11 @@ export const ListItemMixin = superclass => class extends superclass {
 
 		const parent = findComposedAncestor(this.parentNode, node => node && node.tagName === 'D2L-LIST');
 		if (!parent) return;
+
+		const separators = parent.getAttribute('separators');
+
 		this.role = parent.grid ? 'rowgroup' : 'listitem';
+		this._separators = separators || undefined;
+		this._extendSeparators = parent.hasAttribute('extend-separators');
 	}
 };

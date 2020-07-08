@@ -1,14 +1,14 @@
 import '../list.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
-import { ListItemMixin } from '../list-item-mixin.js';
+import { ListItemRoleMixin } from '../list-item-role-mixin.js';
 import { LitElement } from 'lit-element/lit-element.js';
 
 const tag = defineCE(
-	class extends ListItemMixin(LitElement) {
+	class extends ListItemRoleMixin(LitElement) {
 	}
 );
 
-describe('ListItemMixin', () => {
+describe('ListItemRoleMixin', () => {
 	it('leaves role as undefined if not a child of d2l-list', async() => {
 		const el = await fixture(`<div><${tag}></${tag}></div>`);
 		expect(el.querySelector(tag).role).to.be.undefined;

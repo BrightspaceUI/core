@@ -22,11 +22,29 @@ const keyCodes = {
 	UP: 38
 };
 
+/**
+ * A component for generating a list item's layout with forced focus ordering and grid support.
+ * Focusable items placed in the "content" slot will have their focus removed; use the content-action
+ * slot for such items.
+ * @slot outside-control - Control associated on the far left, e.g., a drag-n-drop handle
+ * @slot outside-control-action - An action area associated with the outside control
+ * @slot control - Main control beside the outside control, e.g., a checkbox
+ * @slot control-action - Action area associated with the main control
+ * @slot content - Content of the list item, such as that in a list-item-content component.
+ * @slot content-action - Action associated with the content, such as a navigation link
+ * @slot actions - Other actions for the list item on the far right, such as a context menu
+ */
 class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
+			/**
+			 * Whether the keyboard grid is active
+			 */
 			gridActive: { type: Boolean, attribute: 'grid-active' }
 		};
 	}
@@ -49,12 +67,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 42px;
+				width: 2.1rem;
 				grid-column: outside-control-start / outside-control-end;
 			}
 
 			::slotted([slot="control"]) {
-				width: 42px;
+				width: 2.1rem;
 				grid-column: control-start / control-end;
 			}
 
