@@ -110,7 +110,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.emptyText = '';
-		this.label = '';
 		this.labelHidden = false;
 		this.value = '';
 
@@ -170,7 +169,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
-					label="${ifDefined(this.label ? this.label : undefined)}"
+					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
 					@mouseup="${this._handleMouseup}"

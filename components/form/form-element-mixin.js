@@ -95,10 +95,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return true;
 	}
 
-	get label() {
-		return null;
-	}
-
 	get labelText() {
 		const label = this.label || tryGetLabelText(this);
 		if (label) {
