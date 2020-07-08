@@ -37,7 +37,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			/**
 			 * Specifies whether the grid is active or not
 			 */
-			gridActive: { type: Boolean, attribute: 'grid-active' }
+			gridActive: { type: Boolean, attribute: 'grid-active' },
 		};
 	}
 
@@ -417,19 +417,23 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_onDropdownClose() {
-		this.frontRow = false;
+		if (!this._tooltipShowing) this.frontRow = false;
+		this._dropdownShowing = true;
 	}
 
 	_onDropdownOpen() {
 		this.frontRow = true;
+		this._dropdownShowing = true;
 	}
 
 	_onTooltipHide() {
-		this.frontRow = false;
+		if (!this._dropdownOpen) this.frontRow = false;
+		this._tooltipShowing = false;
 	}
 
 	_onTooltipShow() {
 		this.frontRow = true;
+		this._tooltipShowing = true;
 	}
 
 	_setFocusInfo(event) {
