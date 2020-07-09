@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 export const listSelectionStates = {
 	none: 'none',
@@ -59,7 +58,7 @@ class List extends LitElement {
 	render() {
 		const role = !this.grid ? 'list' : 'application';
 		return html`
-			<div role="${ifDefined(role)}" class="d2l-list-container">
+			<div role="${role}" class="d2l-list-container">
 				<slot></slot>
 			</div>
 		`;
