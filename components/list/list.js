@@ -57,7 +57,7 @@ class List extends LitElement {
 	}
 
 	render() {
-		const role = !this.grid ? 'list' : undefined;
+		const role = !this.grid ? 'list' : 'application';
 		return html`
 			<div role="${ifDefined(role)}" class="d2l-list-container">
 				<slot></slot>
