@@ -1,12 +1,13 @@
 import '../colors/colors.js';
 import './list-item-generic-layout.js';
+import './list-item-placement-marker.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
-import { ListItemDragMixin } from './list-item-drag-mixin.js';
+import { ListItemDragDropMixin } from './list-item-drag-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
@@ -30,7 +31,7 @@ const defaultBreakpoints = [842, 636, 580, 0];
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
-class ListItem extends ListItemDragMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(LitElement)))) {
+class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -175,8 +176,9 @@ class ListItem extends ListItemDragMixin(ListItemCheckboxMixin(ListItemRoleMixin
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
-			:host([selectable]:not([disabled]):hover) d2l-list-item-generic-layout,
-			:host([selectable]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing {
+			:host([selectable]:not([disabled]):not([draggable]):hover) d2l-list-item-generic-layout,
+			:host([selectable]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing,
+			:host([selectable][draggable]:not([disabled])) d2l-list-item-generic-layout.d2l-hovering {
 				background-color: var(--d2l-color-regolith);
 			}
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
@@ -231,6 +233,7 @@ class ListItem extends ListItemDragMixin(ListItemCheckboxMixin(ListItemRoleMixin
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-focusing': this._focusing,
+			'd2l-hovering': this._hovering,
 		};
 		const contentClasses = {
 			'd2l-list-item-content': true,
@@ -241,7 +244,7 @@ class ListItem extends ListItemDragMixin(ListItemCheckboxMixin(ListItemRoleMixin
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			${this._renderDropArea()}
+			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<d2l-list-item-generic-layout
 					@focusin="${this._onFocusIn}"

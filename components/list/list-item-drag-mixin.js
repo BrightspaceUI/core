@@ -30,6 +30,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number },
+			_focusingDragHandle: { type: Boolean },
+			_hovering: { type: Boolean },
 			_keyboardActive: { type: Boolean }
 		};
 	}
