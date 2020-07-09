@@ -1,5 +1,6 @@
 import { css, html } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { nothing } from 'lit-html';
@@ -15,12 +16,20 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether the item is draggable
+			 */
 			draggable: { type: Boolean, reflect: true },
 			dragText: { type: String, attribute: 'drag-text' },
 			key: { type: String, reflect: true },
+			/**
+			 * Whether the item is currently being dragged
+			 */
 			dragging: { type: Boolean, reflect: true, attribute: 'dragging' },
 			_bottomPlacementMarker: { type: Boolean },
 			_dropTarget: { type: Boolean },
+			_focusingDragHandle: { type: Boolean },
+			_hovering: { type: Boolean },
 			_keyboardMode: { type: Boolean },
 			_topPlacementMarker: { type: Boolean }
 		};
@@ -61,6 +70,13 @@ export const ListItemDragMixin = superclass => class extends superclass {
 				width: 100%;
 				z-index: 100;
 			}
+			d2l-list-item-drag-handle {
+				opacity: 0;
+			}
+			d2l-list-item-drag-handle.d2l-hovering,
+			d2l-list-item-drag-handle.d2l-focusing {
+				opacity: 1;
+			}
 		` ];
 
 		super.styles && styles.unshift(super.styles);
@@ -81,6 +97,8 @@ export const ListItemDragMixin = superclass => class extends superclass {
 	}
 
 	firstUpdated(changedProperties) {
+		this.addEventListener('mouseenter', this._onMouseEnter.bind(this));
+		this.addEventListener('mouseleave', this._onMouseLeave.bind(this));
 		this.addEventListener('dragenter', this._onHostDragEnter);
 		super.firstUpdated(changedProperties);
 	}
@@ -212,6 +230,14 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		dropSpots.setDestination(this, dropSpots.insertBefore);
 	}
 
+	_onFocusinDragHandle() {
+		this._focusingDragHandle = true;
+	}
+
+	_onFocusoutDragHandle() {
+		this._focusingDragHandle = false;
+	}
+
 	_onHostDragEnter(e) {
 		const dropSpots = dropSpotsFactory();
 		if (this === dropSpots.target) {
@@ -220,6 +246,14 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		dropSpots.addVisitor(this);
 		this._dropTarget = true;
 		e.dataTransfer.dropEffect = 'move';
+	}
+
+	_onMouseEnter() {
+		this._hovering = true;
+	}
+
+	_onMouseLeave() {
+		this._hovering = false;
 	}
 
 	_renderBottomPlacementMarker(renderTemplate) {
@@ -242,8 +276,18 @@ export const ListItemDragMixin = superclass => class extends superclass {
 
 	_renderDragHandle(templateMethod) {
 		templateMethod = templateMethod || (dragHandle => dragHandle);
+		const classes = {
+			'd2l-focusing': this._focusingDragHandle,
+			'd2l-hovering': this._hovering
+		};
 		return this.draggable ? templateMethod(html`
-			<d2l-list-item-drag-handle id="${this._itemDragId}" @d2l-list-item-drag-handle-action="${this._onDragHandleActions}"></d2l-list-item-drag-handle>
+			<d2l-list-item-drag-handle
+				id="${this._itemDragId}"
+				class="${classMap(classes)}"
+				@focusin="${this._onFocusinDragHandle}"
+				@focusout="${this._onFocusoutDragHandle}"
+				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
+			</d2l-list-item-drag-handle>
 		`) : nothing;
 	}
 

@@ -225,13 +225,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusNextRow(previous = false, num = 1) {
 		let listItem = previous ?
-<<<<<<< HEAD
 			getPreviousAncestorSibling(this, (node) => node.role === 'rowgroup') :
 			getNextAncestorSibling(this, (node) => node.role === 'rowgroup');
-=======
-			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-DEMO-ITEM-SAMPLE') :
-			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-DEMO-ITEM-SAMPLE');
->>>>>>> majones/dragndroplist
 		if (!listItem || !listItem.shadowRoot) return;
 		while (num > 1) {
 			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;

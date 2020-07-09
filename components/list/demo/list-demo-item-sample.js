@@ -5,10 +5,10 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 import { ListItemDragMixin } from '../list-item-drag-mixin.js';
-import { ListItemMixin } from '../list-item-mixin.js';
+import { ListItemRoleMixin } from '../list-item-role-mixin.js';
 import { nothing } from 'lit-html';
 
-class ListDemoItemSample extends ListItemMixin(ListItemDragMixin(ListItemCheckboxMixin(LitElement))) {
+class ListDemoItemSample extends ListItemRoleMixin(ListItemDragMixin(ListItemCheckboxMixin(LitElement))) {
 	static get properties() {
 		return {
 			href: { type: String },
