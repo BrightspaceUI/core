@@ -66,7 +66,7 @@ class ListDemoDragNDropUsage extends LitElement {
 
 	render() {
 		return html`
-			<d2l-list ?grid="${this.grid}">
+			<d2l-list ?grid="${this.grid}" @d2l-list-item-position-change="${this._moveItems}">
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
 						key="${ifDefined(item.key)}"

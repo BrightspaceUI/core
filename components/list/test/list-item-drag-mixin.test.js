@@ -9,7 +9,7 @@ const tag = defineCE(
 				${this._renderTopPlacementMarker(html`<div id="top-placement-marker">----</div>`)}
 				${this._renderDropTarget()}
 				${this._renderDragHandle()}
-				${this._renderDraggableArea()}
+				${this._renderDragTarget()}
 				${this._renderBottomPlacementMarker(html`<div id="bottom-placement-marker">----</div>`)}
 			`;
 		}

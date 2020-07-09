@@ -254,7 +254,7 @@ class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleM
 					data-separators="${ifDefined(this._separators)}"
 					?grid-active="${this.role === 'rowgroup'}">
 					${this._renderDragHandle(this._renderOutsideControl)}
-					${this._renderDraggableArea(this._renderOutsideControlAction)}
+					${this._renderDragTarget(this._renderOutsideControlAction)}
 					${this.selectable ? html`
 					<div slot="control">${ this._renderCheckbox() }</div>
 					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>
@@ -335,8 +335,8 @@ class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleM
 		return html`<div slot="outside-control">${dragHandle}</div>`;
 	}
 
-	_renderOutsideControlAction(dragArea) {
-		return html`<div slot="outside-control-action">${dragArea}</div>`;
+	_renderOutsideControlAction(dragTarget) {
+		return html`<div slot="outside-control-action">${dragTarget}</div>`;
 	}
 
 }

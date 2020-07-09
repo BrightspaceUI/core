@@ -25,7 +25,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 * Whether the item is draggable
 			 */
 			draggable: { type: Boolean, reflect: true },
-			dragging: { type: Boolean, reflect: true,  },
+			dragging: { type: Boolean, reflect: true },
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
@@ -111,7 +111,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}));
 	}
 
-	_onDragAreaClick(e) {
+	_onDragTargetClick(e) {
 		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 		e.preventDefault();
 	}
@@ -153,8 +153,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onDragOver(e) {
 		if (!this.key) return;
-		const dropSpots = getDragState();
-		dropSpots.updateTime(e.timeStamp);
+		const dragState = getDragState();
+		dragState.updateTime(e.timeStamp);
 		e.preventDefault();
 	}
 
@@ -176,29 +176,29 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDrop() {
-		const dropSpots = getDragState();
-		dropSpots.setActiveDropTarget(this, dropSpots.dropLocation);
+		const dragState = getDragState();
+		dragState.setActiveDropTarget(this, dragState.dropLocation);
 	}
 
 	_onDropTargetBottomDrag(e) {
 		e.dataTransfer.dropEffect = 'move';
-		const dropSpots = getDragState();
-		dropSpots.setActiveDropTarget(this, dropLocation.below);
+		const dragState = getDragState();
+		dragState.setActiveDropTarget(this, dropLocation.below);
 		this._inBottomArea = true;
 	}
 
 	_onDropTargetDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
-		const dropSpots = getDragState();
-		dropSpots.setActiveDropTarget(this, dropLocation.above);
+		const dragState = getDragState();
+		dragState.setActiveDropTarget(this, dropLocation.above);
 		this._inTopArea = true;
 	}
 
 	_onDropTargetLowerDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		if (this._inBottomArea) {
-			const dropSpots = getDragState();
-			dropSpots.setActiveDropTarget(this, dropLocation.above);
+			const dragState = getDragState();
+			dragState.setActiveDropTarget(this, dropLocation.above);
 			this._inBottomArea = false;
 		}
 	}
@@ -206,8 +206,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_onDropTargetUpperDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		if (this._inTopArea) {
-			const dropSpots = getDragState();
-			dropSpots.setActiveDropTarget(this, dropLocation.below);
+			const dragState = getDragState();
+			dragState.setActiveDropTarget(this, dropLocation.below);
 			this._inTopArea = false;
 		}
 	}
@@ -221,11 +221,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onHostDragEnter(e) {
-		const dropSpots = getDragState();
-		if (this === dropSpots.target) {
+		const dragState = getDragState();
+		if (this === dragState.target) {
 			return;
 		}
-		dropSpots.addDropTarget(this);
+		dragState.addDropTarget(this);
 		this._draggingOver = true;
 		e.dataTransfer.dropEffect = 'move';
 	}
@@ -242,13 +242,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this._dropLocation === dropLocation.below ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
 	}
 
-	_renderDraggableArea(templateMethod) {
-		templateMethod = templateMethod || (dragArea => dragArea);
+	_renderDragTarget(templateMethod) {
+		templateMethod = templateMethod || (dragTarget => dragTarget);
 		return this.draggable && !this._keyboardActive ? templateMethod(html`
 			<div
 				class="d2l-list-item-drag-area"
 				draggable="true"
-				@click="${this._onDragAreaClick}"
+				@click="${this._onDragTargetClick}"
 				@dragstart="${this._onDragStart}"
 				@dragend="${this._onDragEnd}"
 				>
