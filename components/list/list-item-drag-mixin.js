@@ -1,20 +1,80 @@
+import { css, html } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
+import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { html } from 'lit-element/lit-element.js';
 import { nothing } from 'lit-html';
 
-export const ListItemDragMixin = superclass => class extends superclass {
+export const dropLocation = Object.freeze({
+	above: 1,
+	below: 2,
+	first: 3,
+	last: 4,
+	shiftDown: 5,
+	shiftUp: 6,
+	void: 0
+});
+
+const dropTargetLeaveDelay = 1000; //ms
+
+export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
 			draggable: { type: Boolean, reflect: true },
-			key: { type: String, reflect: true }
+			dragging: { type: Boolean, reflect: true,  },
+			dropText: { type: String, attribute: 'drop-text' },
+			key: { type: String, reflect: true },
+			_draggingOver: { type: Boolean },
+			_dropLocation: { type: Number },
+			_keyboardActive: { type: Boolean }
 		};
+	}
+
+	static get styles() {
+		const styles = [ css`
+			:host {
+				display: block;
+				position: relative;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			.d2l-list-item-drag-bottom-marker,
+			.d2l-list-item-drag-top-marker {
+				position: absolute;
+				width: 100%;
+				z-index: 1;
+			}
+			.d2l-list-item-drag-bottom-marker {
+				bottom: -6px;
+			}
+			.d2l-list-item-drag-top-marker {
+				top: -6px;
+			}
+			.d2l-list-item-drag-area {
+				cursor: move;
+				height: 100%;
+			}
+			.d2l-list-item-drag-drop-grid {
+				display: grid;
+				grid-template-columns: 100%;
+				grid-template-rows: 1rem 1fr 1fr 1rem;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				width: 100%;
+				z-index: 100;
+			}
+		` ];
+
+		super.styles && styles.unshift(super.styles);
+		return styles;
 	}
 
 	constructor() {
 		super();
 		this._itemDragId = getUniqueId();
+		this.dragging = false;
 	}
 
 	connectedCallback() {
@@ -24,96 +84,284 @@ export const ListItemDragMixin = superclass => class extends superclass {
 		}
 	}
 
-	keyboardMode(isEnabled) {
-		if (isEnabled) {
-			this.dispatchEvent(new CustomEvent('d2l-list-item-drag-keyboard-mode', {
-				detail: null,
-				bubbles: true
-			}));
-		}
+	firstUpdated(changedProperties) {
+		this.addEventListener('dragenter', this._onHostDragEnter);
+		super.firstUpdated(changedProperties);
 	}
 
-	moveAfter(itemKey) {
-		if (itemKey === undefined) {
-			return;
-		}
-		this._dispatchDragEvent(itemKey);
-	}
-
-	moveBefore(itemKey) {
-		if (itemKey === undefined) {
-			return;
-		}
-
-		this._dispatchDragEvent(itemKey);
-	}
-
-	// TODO
-	_copy() {
-
-	}
-
-	_dispatchDragEvent(detail) {
-		this.dispatchEvent(new CustomEvent('d2l-list-item-position', {
-			detail: detail,
+	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
+			detail: new NewPositionEventDetails({dragTargetKey, dropTargetKey, dropLocation}),
 			bubbles: true
 		}));
 	}
 
-	_dragEnter() {
-		this._dragStartHandler();
+	_onDragAreaClick(e) {
+		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		e.preventDefault();
 	}
 
-	_dragExit() {
-		this._dispatchDragEvent(null);
+	_onDragEnd(e) {
+		const dropSpot = getDragState();
+		this.dragging = false;
+		if (dropSpot.shouldDrop(e.timeStamp)) {
+			this._annoucePositionChange(dropSpot.dragTargetKey, dropSpot.dropTargetKey, dropSpot.dropLocation);
+		}
+		clearDragState();
 	}
 
-	_dragStartHandler() {
-		this.moveBefore(null);
-		this._dispatchDragEvent(null);
+	_onDragHandleActions(e) {
+		switch (e.detail.action) {
+			case dragActions.active:
+				this._keyboardActive = true;
+				break;
+			case dragActions.cancel:
+			case dragActions.save:
+				this._keyboardActive = false;
+				break;
+			case dragActions.up:
+				this._annoucePositionChange(this.key, null, dropLocation.shiftUp);
+				break;
+			case dragActions.down:
+				this._annoucePositionChange(this.key, null, dropLocation.shiftDown);
+				break;
+			case dragActions.first:
+				this._annoucePositionChange(this.key, null, dropLocation.first);
+				break;
+			case dragActions.last:
+				this._annoucePositionChange(this.key, null, dropLocation.last);
+				break;
+			default:
+				break;
+		}
+
 	}
 
-	_dragStopHandler() {
-		this._dispatchDragEvent(null);
-		this.moveafter(null);
+	_onDragOver(e) {
+		if (!this.key) return;
+		const dropSpots = getDragState();
+		dropSpots.updateTime(e.timeStamp);
+		e.preventDefault();
 	}
 
-	// TODO
-	_removeCopy() {
+	_onDragStart(e) {
+		e.dataTransfer.setData('text/plain', `${this.dropText}`);
+		e.dataTransfer.effectAllowed = 'move';
 
+		//legacy edge doesn't support setDragImage. Experience is not degraded for legacy edge by doing this fix.
+		if (e.dataTransfer.setDragImage) {
+			const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
+			e.dataTransfer.setDragImage(nodeImage, 50, 50);
+		}
+
+		createDragState(this);
+
+		setTimeout(() => {
+			this.dragging = true;
+		});
 	}
 
-	_renderDragAction(inner) {
-		return this.draggable ? html`
-			<div @click="${this._handleDragActionClick}" class="d2l-list-item-drag-action">${inner}</div>
-			` : nothing;
+	_onDrop() {
+		const dropSpots = getDragState();
+		dropSpots.setActiveDropTarget(this, dropSpots.dropLocation);
 	}
-	_renderDragHandle() {
-		return this.draggable ? html`
+
+	_onDropTargetBottomDrag(e) {
+		e.dataTransfer.dropEffect = 'move';
+		const dropSpots = getDragState();
+		dropSpots.setActiveDropTarget(this, dropLocation.below);
+		this._inBottomArea = true;
+	}
+
+	_onDropTargetDragEnter(e) {
+		e.dataTransfer.dropEffect = 'move';
+		const dropSpots = getDragState();
+		dropSpots.setActiveDropTarget(this, dropLocation.above);
+		this._inTopArea = true;
+	}
+
+	_onDropTargetLowerDragEnter(e) {
+		e.dataTransfer.dropEffect = 'move';
+		if (this._inBottomArea) {
+			const dropSpots = getDragState();
+			dropSpots.setActiveDropTarget(this, dropLocation.above);
+			this._inBottomArea = false;
+		}
+	}
+
+	_onDropTargetUpperDragEnter(e) {
+		e.dataTransfer.dropEffect = 'move';
+		if (this._inTopArea) {
+			const dropSpots = getDragState();
+			dropSpots.setActiveDropTarget(this, dropLocation.below);
+			this._inTopArea = false;
+		}
+	}
+
+	_onHostDragEnter(e) {
+		const dropSpots = getDragState();
+		if (this === dropSpots.target) {
+			return;
+		}
+		dropSpots.addDropTarget(this);
+		this._draggingOver = true;
+		e.dataTransfer.dropEffect = 'move';
+	}
+
+	_renderBottomPlacementMarker(renderTemplate) {
+		return this._dropLocation === dropLocation.below ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
+	}
+
+	_renderDraggableArea(templateMethod) {
+		templateMethod = templateMethod || (dragArea => dragArea);
+		return this.draggable && !this._keyboardActive ? templateMethod(html`
 			<div
-				id="${this._itemDragId}"
-				class="d2l-list-item-drag"
-				@dragenter="${this._dragEnter}"
-				@dragleave="${this._dragExit}"
-			></div>
-		` : nothing;
+				class="d2l-list-item-drag-area"
+				draggable="true"
+				@click="${this._onDragAreaClick}"
+				@dragstart="${this._onDragStart}"
+				@dragend="${this._onDragEnd}"
+				>
+			</div>
+		`) : nothing;
+	}
+
+	_renderDragHandle(templateMethod) {
+		templateMethod = templateMethod || (dragHandle => dragHandle);
+		return this.draggable ? templateMethod(html`
+			<d2l-list-item-drag-handle id="${this._itemDragId}" @d2l-list-item-drag-handle-action="${this._onDragHandleActions}"></d2l-list-item-drag-handle>
+		`) : nothing;
+	}
+
+	_renderDropTarget(templateMethod) {
+		templateMethod = templateMethod || (DropTarget => DropTarget);
+		return this.draggable && this._draggingOver ? templateMethod(html`
+			<div class="d2l-list-item-drag-drop-grid" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
+				<div @dragenter="${this._onDropTargetDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetUpperDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetLowerDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetBottomDrag}"></div>
+			</div>
+		`) : nothing;
+	}
+
+	_renderTopPlacementMarker(renderTemplate) {
+		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
 	}
 };
+
+let dragState = null;
+
+function createDragState(target) {
+	clearDragState();
+	dragState = new DragState(target);
+	return dragState;
+}
+
+function getDragState() {
+	if (!dragState) createDragState();
+	return dragState;
+}
+
+function clearDragState() {
+	if (dragState) {
+		dragState.clear();
+	}
+	dragState = null;
+}
+
+class DragState {
+	constructor(dragTarget) {
+		this._dragTarget = dragTarget;
+		this._activeDropTarget = null;
+		this._dropTargets = new Map();
+		this._dropLocation = dropLocation.void;
+		this._time = 0;
+	}
+
+	addDropTarget(dropTarget) {
+		if (dropTarget && !this._dropTargets.has(dropTarget)) {
+			this._dropTargets.set(dropTarget, null);
+		}
+	}
+
+	clear() {
+		this._cleanUpOnLeave();
+		this._dropTargets.forEach((_, dropTarget) => dropTarget._draggingOver = false);
+		this._dropTargets.clear();
+	}
+
+	get dragTarget() {
+		return this._dragTarget;
+	}
+
+	get dragTargetKey() {
+		return this._dragTarget && this._dragTarget.key;
+	}
+
+	get dropLocation() {
+		return this._dropLocation;
+	}
+
+	get dropTarget() {
+		return this._activeDropTarget;
+	}
+
+	get dropTargetKey() {
+		return this._activeDropTarget && this._activeDropTarget.key;
+	}
+
+	setActiveDropTarget(dropTarget, dropLocation) {
+		this._dropLocation = dropLocation;
+		if (this._activeDropTarget === dropTarget) {
+			this._setPlacementMarkers();
+			return;
+		}
+		this._cleanUpOnLeave();
+		this._activeDropTarget = dropTarget;
+		this._setPlacementMarkers();
+		this.addDropTarget(dropTarget);
+	}
+
+	shouldDrop(time) {
+		return time - this._time < dropTargetLeaveDelay;
+	}
+
+	updateTime(time) {
+		this._time = time;
+		if (this._timeoutId) clearTimeout(this._timeoutId);
+		this._timeoutId = setTimeout(() => {
+			this._cleanUpOnLeave();
+			this._activeDropTarget = null;
+		}, dropTargetLeaveDelay);
+	}
+
+	_cleanUpOnLeave() {
+		if (!this._activeDropTarget) return;
+		this._activeDropTarget._dropLocation = dropLocation.void;
+		this._activeDropTarget._inTopArea = false;
+		this._activeDropTarget._inBottomArea = false;
+	}
+
+	_setPlacementMarkers() {
+		this._activeDropTarget._dropLocation = this.dropLocation;
+	}
+}
 
 export class NewPositionEventDetails {
 	/**
 	 * @param { Object } object An simple object with the position event properties
-	 * @param { String } object.targetKey The item key of the list-item that is moving
-	 * @param { String } object.destinationKey The item key of the list-item in the position we are moving to
-	 * @param { String } object.temporaryMovement Information on whether the item is entering or exiting temporary movement
+	 * @param { String } object.dragTargetKey The item key of the list-item that is moving
+	 * @param { String } object.dropTargetKey The item key of the list-item in the position we are moving to
+	 * @param { Boolean } object.dropLocation Whether the target is moved before the destination
 	 */
-	constructor({targetKey, destinationKey, temporaryMovement}) {
-		if (!targetKey || !destinationKey) {
-			throw new Error(`NewPositionEventDetails must have a targetKey and destinationKey\nGiven: ${targetKey} and ${destinationKey}`);
+	constructor({dragTargetKey, dropTargetKey, dropLocation}) {
+		if (!dragTargetKey) {
+			throw new Error(`NewPositionEventDetails must have a targetKey and destinationKey\nGiven: ${dragTargetKey}`);
 		}
-		this.targetKey = targetKey;
-		this.destinationKey = destinationKey;
-		this.temporaryMovement = temporaryMovement;
+		this.dragTargetKey = dragTargetKey;
+		this.dropTargetKey = dropTargetKey;
+		this.dropLocation = dropLocation;
 	}
 
 	/**
@@ -125,12 +373,12 @@ export class NewPositionEventDetails {
 	 * @param { function(Node): String } obj.keyFn Callback function that returns a key given a listitem
 	 */
 	announceMove(list, {announceFn, keyFn}) {
-		const targetIndex = this.fetchPosition(list, this.targetKey, keyFn);
-		const destinationIndex = this.fetchPosition(list, this.destinationKey, keyFn);
-		if (targetIndex === null) throw new Error(`Target "${this.targetKey}" not found in array`);
-		if (destinationIndex === null) throw new Error(`Destination "${this.destinationKey}" not found in array`);
+		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
+		if (origin === null) throw new Error(`Target "${this.dragTargetKey}" not found in array`);
+		const destination = this._fetchDropTargetPosition(list, origin, keyFn);
+		if (destination === null) throw new Error(`Destination "${this.dropTargetKey}" not found in array`);
 
-		const message = announceFn(list[targetIndex], destinationIndex);
+		const message = announceFn(list[origin], destination);
 		if (message) announce(message);
 	}
 
@@ -147,7 +395,7 @@ export class NewPositionEventDetails {
 
 	/**
 	 * Reorders an array in place with the current event information
-	 * The item will be moved to the position of the destinationKey. Array elements shift
+	 * The item will be moved to the position of the dropTargetKey. Array elements shift
 	 * forward one to make room.
 	 * @param { Array<Node> } list The array to reorder
 	 * @param { Object } obj An object containing callback functions
@@ -157,13 +405,17 @@ export class NewPositionEventDetails {
 	 * @param { function(Node): String } obj.keyFn Callback function that returns the key for the item.
 	 */
 	reorder(list, {announceFn, keyFn}) {
-		if (this.destinationKey === undefined || this.destinationKey === this.targetKey) return;
+		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
+		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
 
-		const origin = this.fetchPosition(list, this.targetKey, keyFn);
-		const destination = this.fetchPosition(list, this.destinationKey, keyFn);
+		if (origin === null) {
+			throw new Error(`Position not found in list:\n\torigin: ${this.dragTargetKey} at ${origin}`);
+		}
 
-		if (origin === null || destination === null) {
-			throw new Error(`Position not found in list:\n\torigin: ${this.targetKey} at ${origin}\n\tdestination: ${this.destinationKey} at ${destination}`);
+		let destination = this._fetchDropTargetPosition(list, origin, keyFn);
+
+		if (destination === null) {
+			throw new Error(`Position not found in list:\n\tdestination: ${this.dropTargetKey} at ${destination}`);
 		}
 
 		// move the item in the list to a new position in place
@@ -171,10 +423,12 @@ export class NewPositionEventDetails {
 		// now that we have a reference to the item, shove everything between the
 		// destination to the origin over one
 		if (origin > destination) {
+			destination = this.dropLocation === dropLocation.below ? Math.min(destination + 1, list.length - 1) : destination;
 			for (let i = origin; i > destination; i--) {
 				list[i] = list[i - 1];
 			}
 		} else {
+			destination = this.dropLocation === dropLocation.above  ? Math.max(destination - 1, 0) : destination;
 			for (let i = origin; i < destination; i++) {
 				list[i] = list[i + 1];
 			}
@@ -186,5 +440,24 @@ export class NewPositionEventDetails {
 		if (announceFn) {
 			this.announceMove(list, announceFn);
 		}
+	}
+
+	_fetchDropTargetPosition(list, originPosition, keyFn) {
+		if (this.dropTargetKey) {
+			return this.fetchPosition(list, this.dropTargetKey, keyFn);
+		}
+
+		switch (this.dropLocation) {
+			case dropLocation.shiftUp:
+				return Math.max(0, originPosition - 1);
+			case dropLocation.shiftDown:
+				return Math.min(list.length - 1, originPosition + 1);
+			case dropLocation.first:
+				return 0;
+			case dropLocation.last:
+				return list.length - 1;
+		}
+
+		return null;
 	}
 }

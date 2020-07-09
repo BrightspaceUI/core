@@ -17,16 +17,20 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	}
 
 	static get styles() {
-		return [ checkboxStyles, css`
+
+		const styles = [ checkboxStyles, css`
 			.d2l-checkbox-action {
-				height: 100%;
-				display: block;
 				cursor: pointer;
+				display: block;
+				height: 100%;
 			}
 			.d2l-checkbox-action.d2l-checkbox-action-disabled {
 				cursor: default;
 			}
 		` ];
+
+		super.styles && styles.unshift(super.styles);
+		return styles;
 	}
 
 	constructor() {
@@ -54,7 +58,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		}));
 	}
 
-	_handleCheckboxActionClick(event) {
+	_onCheckboxActionClick(event) {
 		event.preventDefault();
 		if (this.disabled) return;
 		this.setSelected(!this.selected);
@@ -62,7 +66,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 		if (checkbox) checkbox.focus();
 	}
 
-	_handleCheckboxChange(event) {
+	_onCheckboxChange(event) {
 		this.setSelected(event.target.checked);
 	}
 
@@ -71,7 +75,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			<input
 				id="${this._checkboxId}"
 				class="d2l-input-checkbox"
-				@change="${this._handleCheckboxChange}"
+				@change="${this._onCheckboxChange}"
 				type="checkbox"
 				.checked="${this.selected}"
 				?disabled="${this.disabled}">
@@ -87,7 +91,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			'd2l-checkbox-action-disabled': this.disabled
 		};
 		return this.selectable ? html`
-			<label @click="${this._handleCheckboxActionClick}"
+			<label @click="${this._onCheckboxActionClick}"
 				class="${classMap(labelClasses)}"
 				for="${this._checkboxId}"
 				aria-labelledby="${ifDefined(labelledBy)}">
