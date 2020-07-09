@@ -87,15 +87,15 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-header > div > h2 {
-		flex: 1 0 0px;
+		flex: 1 0 0;
 		margin: 0;
 	}
 
 	.d2l-dialog-content {
 		box-sizing: border-box;
-		flex: 1 0 0px;
-		padding: 0 30px;
+		flex: 1 0 0;
 		overflow: auto;
+		padding: 0 30px;
 	}
 
 	.d2l-dialog-footer {

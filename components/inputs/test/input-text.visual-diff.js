@@ -62,7 +62,9 @@ describe('d2l-input-text', () => {
 		'wc-icon-right-label',
 		'wc-icon-left-right',
 		'wc-button-icon-left',
-		'wc-button-icon-right'
+		'wc-button-icon-right',
+		'wc-icon-right-invalid',
+		'wc-icon-right-invalid-rtl'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);

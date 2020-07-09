@@ -9,14 +9,14 @@ const scrollKeys = [];
 let scrollOverflow = null;
 
 /**
- * The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying `role="presentation"` and `aria-hidden="true"`.
+ * A component for displaying a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying 'role="presentation"' and 'aria-hidden="true"'.
  */
 class Backdrop extends LitElement {
 
 	static get properties() {
 		return {
 			/**
-			 * id of the target element to display backdrop behind
+			 * REQUIRED: id of the target element to display backdrop behind
 			 */
 			forTarget: { type: String, attribute: 'for-target' },
 
@@ -49,15 +49,16 @@ class Backdrop extends LitElement {
 			:host([slow-transition]) {
 				transition: opacity 1200ms ease-in;
 			}
-			:host([_state=null][no-animate-hide]) {
-				transition: none;
+			:host([_state="showing"]) {
+				opacity: 0.7;
 			}
-			:host([_state="showing"]), :host([_state="hiding"]) {
+			:host([_state="showing"]),
+			:host([_state="hiding"]) {
 				height: 100%;
 				width: 100%;
 			}
-			:host([_state="showing"]) {
-				opacity: 0.7;
+			:host([_state=null][no-animate-hide]) {
+				transition: none;
 			}
 			@media (prefers-reduced-motion: reduce) {
 				:host {

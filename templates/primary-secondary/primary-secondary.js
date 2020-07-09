@@ -1,10 +1,21 @@
 import '../../components/colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
 
+/**
+ * A two panel (primary and secondary) page template with header and optional footer
+ * @slot header - Page header content
+ * @slot footer - Page footer content
+ * @slot primary - Main page content
+ * @slot secondary - Supplementary page content
+ */
 class TemplatePrimarySecondary extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether content fills the screen or not
+			 * @type {('fullscreen'|'normal')}
+			 */
 			widthType: { type: String, attribute: 'width-type', reflect: true },
 			_hasFooter: { type: Boolean }
 		};
@@ -18,32 +29,31 @@ class TemplatePrimarySecondary extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([width-type="normal"]) .d2l-template-primary-secondary-content-container,
-			:host([width-type="normal"]) .d2l-template-primary-secondary-footer-container {
+			:host([width-type="normal"]) .d2l-template-primary-secondary-content,
+			:host([width-type="normal"]) .d2l-template-primary-secondary-footer {
 				margin: 0 auto;
 				max-width: 1230px;
 				width: 100%;
 			}
-			.container {
+			.d2l-template-primary-secondary-container {
 				display: grid;
+				grid-template-areas:
+					"header"
+					"content"
+					"footer";
 				grid-template-columns: auto;
 				grid-template-rows: auto 1fr auto;
-				grid-template-areas:
-				"header"
-				"content"
-				"footer";
 				height: 100vh;
 			}
 			header {
 				grid-area: header;
 			}
-			.d2l-template-primary-secondary-content-container {
+			.d2l-template-primary-secondary-content {
 				display: grid;
+				grid-area: content;
+				grid-template-areas: "primary divider secondary";
 				grid-template-columns: minmax(320px, 2fr) 1px minmax(320px, 1fr);
 				grid-template-rows: auto;
-				grid-template-areas:
-				"primary divider secondary";
-				grid-area: content;
 				overflow: hidden;
 			}
 			main {
@@ -51,27 +61,27 @@ class TemplatePrimarySecondary extends LitElement {
 				overflow-y: auto;
 			}
 			.d2l-template-primary-secondary-divider {
-				grid-area: divider;
 				background-color: var(--d2l-color-mica);
+				grid-area: divider;
 			}
 			aside {
 				grid-area: secondary;
 				overflow-y: auto;
 			}
 			footer {
+				box-shadow: 0 -2px 4px rgba(73, 76, 78, 0.2); /* ferrite */
 				grid-area: footer;
-				box-shadow: 0 -2px 4px rgba(73, 76, 78, .2); /* ferrite */
 				padding: 0.75rem 1rem;
 			}
 			@media only screen and (max-width: 768px) {
-				.container {
+				.d2l-template-primary-secondary-container {
 					height: 100%;
 				}
-				.d2l-template-primary-secondary-content-container {
+				.d2l-template-primary-secondary-content {
 					grid-template-areas:
-					"primary"
-					"divider"
-					"secondary";
+						"primary"
+						"divider"
+						"secondary";
 					grid-template-columns: auto;
 					grid-template-rows: auto 1px auto;
 				}
@@ -86,15 +96,15 @@ class TemplatePrimarySecondary extends LitElement {
 
 	render() {
 		return html`
-			<div class="container">
+			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
-				<div class="d2l-template-primary-secondary-content-container">
+				<div class="d2l-template-primary-secondary-content">
 					<main><slot name="primary"></slot></main>
 					<div class="d2l-template-primary-secondary-divider"></div>
 					<aside><slot name="secondary"></slot></aside>
 				</div>
 				<footer ?hidden="${!this._hasFooter}">
-					<div class="d2l-template-primary-secondary-footer-container"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></div></slot>
+					<div class="d2l-template-primary-secondary-footer"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></div></slot>
 				</footer>
 			</div>
 		`;

@@ -9,16 +9,17 @@ class LoadingSpinner extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Color of the animated bar. Default is "--d2l-color-celestine".
+			 * Color of the animated bar
+			 * @default "--d2l-color-celestine"
 			 */
 			color: { type: String },
 			/**
-			 * Height and width (px) of the spinner. Default is 50.
+			 * Height and width (px) of the spinner
+			 * @default 50
 			 */
 			size: { type: Number }
 		};
 	}
-
 	static get styles() {
 		return css`
 
@@ -51,8 +52,8 @@ class LoadingSpinner extends LitElement {
 				stroke: #ededfa;
 			}
 			.d2l-loading-spinner-bg-blur {
-				opacity: 0.1;
 				filter: blur(calc(var(--d2l-loading-spinner-size, 50px) / 10));
+				opacity: 0.1;
 			}
 
 			.d2l-loading-spinner-slice1,
@@ -62,7 +63,7 @@ class LoadingSpinner extends LitElement {
 			.d2l-loading-spinner-slice5 {
 				animation-duration: 1.5s;
 				animation-iteration-count: infinite;
-				animation-timing-function: cubic-bezier(.5,0,.5,1);
+				animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
 				height: 50%;
 				left: 50%;
 				position: absolute;

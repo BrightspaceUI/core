@@ -42,11 +42,11 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Label for the input (REQUIRED)
+			 * REQUIRED: Label for the input
 			 */
 			label: { type: String },
 			/**
-			 * Hides the label visually (moves it to the input's `aria-label` attribute)
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
@@ -106,7 +106,8 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			title: { type: String },
 			/**
-			 * Can be one of "text", "email", "number", "password", "tel", "url"
+			 * The type of the text input
+			 * @type {('text'|'email'|'number'|'password'|'tel'|'url')}
 			 */
 			type: { type: String },
 			/**
@@ -137,10 +138,10 @@ class InputText extends RtlMixin(LitElement) {
 					position: relative;
 				}
 				.d2l-input {
+					-webkit-appearance: textfield;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
-					-webkit-appearance: textfield;
 				}
 				#first-slot, #last-slot {
 					display: flex;
@@ -153,6 +154,15 @@ class InputText extends RtlMixin(LitElement) {
 				}
 				#last-slot {
 					right: 0;
+				}
+				.d2l-input-text-invalid-icon {
+					background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0wIDBoMjJ2MjJIMHoiLz4KICAgIDxwYXRoIGQ9Ik0xOC44NjQgMTYuNDdMMTIuNjIzIDMuOTg5YTEuNzgzIDEuNzgzIDAgMDAtMy4xOTIgMEwzLjE4OSAxNi40N2ExLjc2MSAxLjc2MSAwIDAwLjA4IDEuNzNjLjMyNS41MjUuODk4Ljc5OCAxLjUxNi43OTloMTIuNDgzYy42MTggMCAxLjE5Mi0uMjczIDEuNTE2LS44LjIzNy0uMzM1LjI2NS0xLjM3LjA4LTEuNzN6IiBmaWxsPSIjQ0QyMDI2IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz4KICAgIDxwYXRoIGQ9Ik0xMS4wMjcgMTcuMjY0YTEuMzM3IDEuMzM3IDAgMTEwLTIuNjc1IDEuMzM3IDEuMzM3IDAgMDEwIDIuNjc1ek0xMS45IDEyLjk4YS44OTIuODkyIDAgMDEtMS43NDcgMEw5LjI3IDguNTJhLjg5Mi44OTIgMCAwMS44NzQtMS4wNjRoMS43NjhhLjg5Mi44OTIgMCAwMS44NzQgMS4wNjVsLS44ODYgNC40NTh6IiBmaWxsPSIjRkZGIi8+CiAgPC9nPgo8L3N2Zz4K");
+					display: flex;
+					height: 22px;
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+					width: 22px;
 				}
 			`
 		];
@@ -204,6 +214,12 @@ class InputText extends RtlMixin(LitElement) {
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
+		const isValid = this.ariaInvalid !== 'true' || this.disabled;
+		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
+		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
+		const invalidIconStyles = {
+			[invalidIconSide]: `${invalidIconOffset}px`
+		};
 		const input = html`
 			<div class="d2l-input-text-container">
 				<input aria-atomic="${ifDefined(this.atomic)}"
@@ -238,6 +254,7 @@ class InputText extends RtlMixin(LitElement) {
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
+				${ !isValid ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {

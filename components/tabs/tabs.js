@@ -46,10 +46,19 @@ if (!Array.prototype.findIndex) {
 	});
 }
 
+/**
+ * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
+ * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
+ * @slot ext - Additional content (e.g., a button) positioned at right
+ * @fires d2l-tabs-initialized - Dispatched when the component is initialized
+ */
 class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Limit the number of tabs to initially display
+			 */
 			maxToShow: { type: Number, attribute: 'max-to-show' },
 			_allowScrollNext: { type: Boolean },
 			_allowScrollPrevious: { type: Boolean },
@@ -71,13 +80,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-tabs-layout {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
-				width: 100%;
 				display: none;
 				max-height: 0;
 				opacity: 0;
 				transform: translateY(-10px);
 				-webkit-transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
 				transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
+				width: 100%;
 			}
 			.d2l-tabs-layout-anim {
 				display: flex;
@@ -91,14 +100,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 			.d2l-tabs-container {
 				box-sizing: border-box;
 				flex: auto;
+				margin-left: -3px;
 				overflow: hidden;
 				overflow-x: hidden;
-				margin-left: -3px;
 				padding-left: 3px;
 				position: relative;
-				white-space: nowrap;
 				-webkit-transition: max-width 200ms ease-in;
 				transition: max-width 200ms ease-in;
+				white-space: nowrap;
 			}
 			.d2l-tabs-container-ext {
 				flex: none;
@@ -110,14 +119,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-tabs-container-list {
 				display: block;
-				white-space: nowrap;
 				-webkit-transition: transform 200ms ease-out;
 				transition: transform 200ms ease-out;
+				white-space: nowrap;
 			}
 			.d2l-tabs-focus-start,
 			.d2l-tabs-focus-end {
-				position: absolute;
 				left: 0;
+				position: absolute;
 			}
 			.d2l-tabs-scroll-previous-container,
 			.d2l-tabs-scroll-next-container {

@@ -9,7 +9,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 /**
- * The `d2l-more-less` element can be used to minimize the display of long content, while providing a way to reveal the full content.
+ * A component used to minimize the display of long content, while providing a way to reveal the full content.
  * @slot - Default content placed inside of the component
  * @fires d2l-more-less-render - Dispatched when the component finishes rendering
  */
@@ -18,27 +18,28 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * The gradient color of the blurring effect.
+			 * The gradient color of the blurring effect
 			 */
 			blurColor: { type: String, attribute: 'blur-color' },
 
 			/**
-			 * Indicates whether element is in "more" state.
+			 * Indicates whether element is in "more" state
 			 */
 			expanded: { type: Boolean, reflect: true },
 
 			/**
-			 * The h-align property of the more-less button.
+			 * The h-align property of the more-less button
+			 * @type {('text'|'')}
 			 */
 			hAlign: { type: String, attribute: 'h-align' },
 
 			/**
-			 * The maximum height of the content when in "less" state.
+			 * The maximum height of the content when in "less" state
 			 */
 			height: { type: String },
 
 			/**
-			 * Whether the component is active or inactive.
+			 * Whether the component is active or inactive
 			 */
 			inactive: { type: Boolean, reflect: true },
 			__blurBackground: { type: String },
@@ -53,24 +54,24 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				display: block;
 			}
 
-			.more-less-content {
+			.d2l-more-less-content {
 				overflow: hidden;
 			}
-			.more-less-transition {
+			.d2l-more-less-transition {
 				transition: height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
-			.more-less-blur {
+			.d2l-more-less-blur {
 				display: none;
 			}
-			:host(:not([expanded]):not([inactive])) .more-less-blur {
-				display: block;
-				content: "";
-				position: relative;
-				height: 1em;
+			:host(:not([expanded]):not([inactive])) .d2l-more-less-blur {
 				bottom: 1em;
+				content: "";
+				display: block;
+				height: 1em;
 				margin-bottom: -0.75em;
+				position: relative;
 			}
-			:host([inactive]) .more-less-toggle {
+			:host([inactive]) .d2l-more-less-toggle {
 				display: none;
 			}`;
 	}
@@ -128,8 +129,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	firstUpdated() {
 		super.firstUpdated();
 
-		this.__content = this.shadowRoot.querySelector('.more-less-content');
-		this.__contentSlot = this.shadowRoot.querySelector('.more-less-content slot');
+		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
+		this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
 		if (this.__content.offsetParent !== null) {
 			this.__init_setBaseHeight();
 		}
@@ -151,16 +152,16 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			}))
 		);
 		const contentClasses = {
-			'more-less-content': true,
-			'more-less-transition': this.__transitionAdded
+			'd2l-more-less-content': true,
+			'd2l-more-less-transition': this.__transitionAdded
 		};
 		return html`
 			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
 				<slot></slot>
 			</div>
-			<div class="more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
+			<div class="d2l-more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
 			<d2l-button-subtle
-				class="more-less-toggle"
+				class="d2l-more-less-toggle"
 				icon="${this.__computeIcon()}"
 				aria-controls="${this.__contentId}"
 				aria-expanded="${this.__computeAriaExpanded()}"

@@ -5,7 +5,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 
 /**
- * The "d2l-dialog-confirm" element is a simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
+ * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
  * @slot footer - Slot for footer content such as workflow buttons
  * @fires d2l-dialog-open - Dispatched when the dialog is opened
  * @fires d2l-dialog-close - Dispatched with the action value when the dialog is closed for any reason
@@ -15,7 +15,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * The required text content for the confirmation dialog
+			 * REQUIRED: The text content for the confirmation dialog
 			 */
 			text: { type: String }
 		};
@@ -40,8 +40,8 @@ class DialogConfirm extends DialogMixin(LitElement) {
 
 				.d2l-dialog-outer {
 					bottom: 0;
-					top: 0;
 					margin: auto;
+					top: 0;
 				}
 
 				.d2l-dialog-content > div {

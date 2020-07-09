@@ -137,7 +137,7 @@ export function getPrevMonth(month) {
 }
 
 /**
- * The "d2l-calendar" component can be used to display a responsively sized calendar that allows for date selection.
+ * A component can be used to display a responsively sized calendar that allows for date selection.
  * @slot - Content displayed under the calendar (e.g., buttons)
  * @fires d2l-calendar-selected - Dispatched when a date is selected through click, space, or enter. "e.detail.date" is in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
@@ -146,22 +146,22 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Maximum valid date that could be selected by a user.
+			 * Maximum valid date that could be selected by a user
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 
 			/**
-			 * Minimum valid date that could be selected by a user.
+			 * Minimum valid date that could be selected by a user
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 
 			/**
-			 * Currently selected date.
+			 * Currently selected date
 			 */
 			selectedValue: { type: String, attribute: 'selected-value' },
 
 			/**
-			 * Summary of the calendar for accessibility.
+			 * Summary of the calendar for accessibility
 			 */
 			summary: { type: String },
 			_dialog: { type: Boolean },
@@ -228,13 +228,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-calendar-next-updown .d2l-calendar-title .d2l-heading-4 {
-				padding-top: 20px;
 				padding-bottom: 0;
+				padding-top: 20px;
 			}
 
 			.d2l-calendar-prev-updown .d2l-calendar-title .d2l-heading-4 {
-				padding-top: 0;
 				padding-bottom: 20px;
+				padding-top: 0;
 			}
 
 			.d2l-calendar-date {
@@ -304,8 +304,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			.d2l-calendar-animating .d2l-calendar-date {
 				opacity: 1;
 				transition-duration: 200ms;
-				transition-timing-function: ease-out;
 				transition-property: opacity, transform;
+				transition-timing-function: ease-out;
 			}
 
 			.d2l-calendar-animating .d2l-calendar-date:disabled {
@@ -319,7 +319,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			.d2l-calendar-next-updown .d2l-heading-4,
 			.d2l-calendar-next-updown .d2l-calendar-date {
-				transform: translateY(-10px)
+				transform: translateY(-10px);
 			}
 
 			.d2l-calendar-prev .d2l-heading-4,

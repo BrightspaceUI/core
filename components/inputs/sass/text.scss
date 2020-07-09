@@ -40,8 +40,7 @@
 		outline-width: 0;
 		padding: $padding-focus;
 	}
-	&[aria-invalid='true'],
-	&:invalid {
+	&[aria-invalid='true'] {
 		border-color: $d2l-color-cinnabar;
 	}
 	&,

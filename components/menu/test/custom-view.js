@@ -18,7 +18,7 @@ class CustomView extends HierarchicalViewMixin(LitElement) {
 					min-height: 100px;
 					padding: 1rem;
 				}
-				:host .back-container {
+				:host .d2l-custom-view-back-container {
 					margin-top: 1rem;
 				}
 				:host a {
@@ -40,7 +40,7 @@ class CustomView extends HierarchicalViewMixin(LitElement) {
 		return html`
 			<div class="d2l-hierarchical-view-content">
 				<slot></slot>
-				<div class="back-container">
+				<div class="d2l-custom-view-back-container">
 					<a href="javascript:void(0);" @click="${this._handleHide}" tabindex="-1">Go Back</a>
 				</div>
 			</div>
@@ -48,7 +48,7 @@ class CustomView extends HierarchicalViewMixin(LitElement) {
 	}
 
 	focus() {
-		this.shadowRoot.querySelector('.back-container > a').focus();
+		this.shadowRoot.querySelector('.d2l-custom-view-back-container > a').focus();
 	}
 
 	_handleHide(e) {

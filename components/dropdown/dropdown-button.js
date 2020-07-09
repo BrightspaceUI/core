@@ -22,7 +22,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 			},
 
 			/**
-			 * Text for the button (REQUIRED)
+			 * REQUIRED: Text for the button
 			 */
 			text: {
 				type: String
@@ -34,16 +34,16 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 		return [dropdownOpenerStyles, css`
 			d2l-icon {
 				height: 0.8rem;
-				width: 0.8rem;
 				margin-left: 0.6rem;
 				pointer-events: none;
+				width: 0.8rem;
 			}
 			:host([primary]) d2l-icon {
 				color: white;
 			}
 			:host([dir="rtl"]) d2l-icon {
-				margin-right: 0.6rem;
 				margin-left: 0;
+				margin-right: 0.6rem;
 			}
 		`];
 	}

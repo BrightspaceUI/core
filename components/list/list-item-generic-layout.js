@@ -43,9 +43,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 */
 			role: { type: String, reflect: true },
 			/**
-			 * Whether the keyboard grid is active
+			 * Specifies whether the grid is active or not
 			 */
-			gridActive: { type: Boolean, attribute: 'grid-active' }
+			gridActive: { type: Boolean, attribute: 'grid-active' },
+			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true  }
 		};
 	}
 
@@ -59,7 +61,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] auto
 					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
+				position: relative;
 			}
+			:host([_tooltip-showing]),
+			:host([_dropdown-open]) {
+				z-index: 6;
+			}
+
 			::slotted([slot="outside-control"]),
 			::slotted([slot="control"]),
 			::slotted([slot="content"]),
@@ -67,13 +75,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 2.1rem;
 				grid-column: outside-control-start / outside-control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="control"]) {
-				width: 2.1rem;
 				grid-column: control-start / control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="content"]) {
@@ -82,6 +90,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
+				justify-self: end;
 				z-index: 4;
 			}
 
@@ -102,6 +111,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				z-index: 3;
 			}
+
 		`;
 	}
 
@@ -148,18 +158,22 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	firstUpdated() {
 		this.addEventListener('keydown', this._handleKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
+		this.addEventListener('d2l-dropdown-open', this._onDropdownOpen.bind(this));
+		this.addEventListener('d2l-dropdown-close', this._onDropdownClose.bind(this));
+		this.addEventListener('d2l-tooltip-show', this._onTooltipShow.bind(this));
+		this.addEventListener('d2l-tooltip-hide', this._onTooltipHide.bind(this));
 	}
 
 	render() {
 		return html`
-		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
-		<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
-		<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
-		<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
-		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
-		<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
+			<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
+			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
+			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
+			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
+			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
+			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
-		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
+			<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
 	}
 
@@ -309,6 +323,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_handleKeydown(event) {
 		if (!this.gridActive) return;
 		let node = null;
+		let preventDefault = true;
 		switch (event.keyCode) {
 			case keyCodes.ENTER:
 			case keyCodes.SPACE:
@@ -392,8 +407,29 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				// focus five rows down
 				this._focusNextRow(false, 5);
 				break;
+			default:
+				preventDefault = false;
 		}
-		event.preventDefault();
+		if (preventDefault) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+	}
+
+	_onDropdownClose() {
+		this._dropdownOpen = false;
+	}
+
+	_onDropdownOpen() {
+		this._dropdownOpen = true;
+	}
+
+	_onTooltipHide() {
+		this._tooltipShowing = false;
+	}
+
+	_onTooltipShow() {
+		this._tooltipShowing = true;
 	}
 
 	_setFocusInfo(event) {

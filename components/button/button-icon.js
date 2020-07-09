@@ -7,29 +7,30 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
+ * A button component that can be used just like the native button for instances where only an icon is displayed.
  */
 class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Aligns the leading edge of text if value is set to "text".
+			 * Aligns the leading edge of text if value is set to "text"
+			 * @type {('text'|'')}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
-			 * Preset icon key (e.g. `tier1:gear`)
+			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
 			 */
 			icon: { type: String, reflect: true },
 
 			/**
-			 * Accessible text for the button
+			 * REQUIRED: Accessible text for the button
 			 */
 			text: { type: String, reflect: true },
 
 			/**
-			 * Indicates to display translucent (ex. on rich backgrounds)
+			 * Indicates to display translucent (e.g., on rich backgrounds)
 			 */
 			translucent: { type: Boolean, reflect: true }
 		};
@@ -39,12 +40,12 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 		return [ buttonStyles, visibleOnAncestorStyles,
 			css`
 				:host {
-					display: inline-block;
 					--d2l-button-icon-border-radius: 0.3rem;
 					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
+					display: inline-block;
 				}
 				:host([hidden]) {
 					display: none;
@@ -53,8 +54,8 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				button {
 					background-color: transparent;
 					border-color: transparent;
-					font-family: inherit;
 					border-radius: var(--d2l-button-icon-border-radius);
+					font-family: inherit;
 					min-height: var(--d2l-button-icon-min-height);
 					min-width: var(--d2l-button-icon-min-width);
 					padding: 0;
@@ -69,7 +70,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 					right: var(--d2l-button-icon-h-align);
 				}
 
-				// Firefox includes a hidden border which messes up button dimensions
+				/* Firefox includes a hidden border which messes up button dimensions */
 				button::-moz-focus-inner {
 					border: 0;
 				}
@@ -93,10 +94,10 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				}
 
 				:host([translucent]) button {
-					background-color: rgba(0,0,0,0.5);
-					transition-property: background-color, box-shadow;
+					background-color: rgba(0, 0, 0, 0.5);
+					box-shadow: inset 0 0 0 2px transparent, inset 0 0 0 3px transparent;
 					transition-duration: 0.2s, 0.2s;
-					box-shadow: inset 0px 0px 0px 2px transparent, inset 0px 0px 0px 3px transparent;
+					transition-property: background-color, box-shadow;
 				}
 				:host([translucent][visible-on-ancestor]) button {
 					transition-duration: 0.4s, 0.4s;
@@ -107,11 +108,11 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				:host([active][translucent]) button,
 				:host([translucent]) button:hover,
 				:host([translucent]) button:focus {
-					border: none;
 					background-color: var(--d2l-color-celestine);
+					border: none;
 				}
 				:host([translucent]) button:focus {
-					box-shadow: inset 0px 0px 0px 2px var(--d2l-color-celestine), inset 0px 0px 0px 3px white;
+					box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
 				}
 
 				button[disabled] {

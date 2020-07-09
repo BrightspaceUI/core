@@ -4,6 +4,24 @@ branches:
   only:
   - master
   - /^[0-9]+(\.[0-9]+|x)?\.x$/
+addons:
+  apt:
+    packages:
+      # Japanese
+      - language-pack-ja
+      - japan*
+      # Chinese
+      - language-pack-zh*
+      - chinese*
+      # Korean
+      - language-pack-ko
+      - korean*
+      # Fonts
+      - fonts-arphic-ukai
+      - fonts-arphic-uming
+      - fonts-ipafont-mincho
+      - fonts-ipafont-gothic
+      - fonts-unfonts-core
 jobs:
   include:
     - stage: tests
@@ -24,24 +42,6 @@ jobs:
         # SAUCE_ACCESS_KEY
         - secure: bwPUP8HCJ4x/VQHYT83fw28MF6fZqcCFYYLQIuYl5d8QXPuHNiON+36YSEkIix/2AjuQR8OtNqy7MPem013QUzEl9ayJ+P/Kto3hN84D6fNj4DXKUtDywDeAs6B0hv3OZZIUJ2ixqClyGDRoK9M51NzS3d9Nts8rEDTJY5CqnD7s+0mOUXfmr7ehStQfs4JdsGApdp5ByA7btC6t3vNAUSoGOlnfKGb4VP/cCXAS64Suy/8Q09fCCKr2BMswQwR6hwb52EJ50W9JbpXu/S0DwrwwM5ZGCG4+SSXqrMoaWXeoOjjQ+tdTx+Rj/cvYO0IE9vJvEMubFCzjs57d2r9IwoKmJg27Fh7YPlZk4YEhcge2vDO9AmlGKGDKeEYco4fXelAmmCcFjmrWXjH8Uc31n2wZj4yYg6AKU2M+GvMYNmh+aI1qGJ+urpQigYdf8IWpqryW19wiOzRm+N6JhdFGlfgnJMEv/OmdTwGOXKA1Qlmc0Bv8ZjWHa6bVMrwnueygoUwc7rWYQg0SjIaW8zhTWwy2JkBoCD1/TpKYTNOdL4VSaxpRSCQn4uAlJ2rNBIyv7FM0S7ycKMTVQGXIyaRo28vKUEGUDYGYWbu++5fBxRfaHWeE79ZFE823LyFQetTUmr7ms/i4pqkaM/m+q840s34lLwmupSoUoVBAGezVsk8=
     - stage: visual-difference-tests
-      addons:
-        apt:
-          packages:
-            # Japanese
-            - language-pack-ja
-            - japan*
-            # Chinese
-            - language-pack-zh*
-            - chinese*
-            # Korean
-            - language-pack-ko
-            - korean*
-            # Fonts
-            - fonts-arphic-ukai
-            - fonts-arphic-uming
-            - fonts-ipafont-mincho
-            - fonts-ipafont-gothic
-            - fonts-unfonts-core
       script:
       - npm run build
       - |

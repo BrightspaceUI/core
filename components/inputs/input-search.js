@@ -20,7 +20,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Accessible label for the input (REQUIRED)
+			 * REQUIRED: Accessible label for the input
 			 */
 			label: { type: String },
 			/**
@@ -61,15 +61,15 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					display: none;
 				}
 				.d2l-input {
-					padding-right: 2.2rem;
+					-webkit-appearance: textfield;
 					overflow: hidden;
+					padding-right: 2.2rem;
 					text-overflow: ellipsis;
 					white-space: nowrap;
-					-webkit-appearance: textfield;
 				}
 				:host([dir="rtl"]) .d2l-input {
-					padding-right: 0.75rem;
 					padding-left: 2.2rem;
+					padding-right: 0.75rem;
 				}
 				.d2l-input.d2l-input-focus {
 					padding-right: calc(2.2rem - 1px);
@@ -77,8 +77,8 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				:host([dir="rtl"]) .d2l-input:hover,
 				:host([dir="rtl"]) .d2l-input:focus,
 				:host([dir="rtl"]) .d2l-input.d2l-input-focus {
-					padding-right: calc(0.75rem - 1px);
 					padding-left: calc(2.2rem - 1px);
+					padding-right: calc(0.75rem - 1px);
 				}
 				d2l-button-icon {
 					--d2l-button-icon-min-height: 1.5rem;

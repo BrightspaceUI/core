@@ -74,8 +74,8 @@ class InputCheckbox extends RtlMixin(LitElement) {
 					white-space: normal;
 				}
 				:host([dir="rtl"]) .d2l-input-checkbox-text {
-					margin-right: 0.5rem;
 					margin-left: 0;
+					margin-right: 0.5rem;
 				}
 				:host([aria-label]) .d2l-input-checkbox-text {
 					margin-left: 0;

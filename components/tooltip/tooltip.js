@@ -76,22 +76,68 @@ const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
 	}
 };
 
+/**
+ * A component used to display additional information when users focus or hover on a point of interest.
+ * @slot - Default content placed inside of the tooltip
+ * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
+ * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
+ */
 class Tooltip extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			align: { type: String }, /* Valid values are: 'start' and 'end' */
+			/**
+			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
+			 * @type {('start'|'end')}
+			 */
+			align: { type: String, reflect: true },
+			/**
+			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
+			 */
 			boundary: { type: Object },
+			/**
+			 * Causes the tooltip to close when its target is clicked
+			 */
 			closeOnClick: { type: Boolean, attribute: 'close-on-click' },
+			/**
+			 * Provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus.
+			 */
 			delay: { type: Number },
+			/**
+			 * Disables focus lock so the tooltip will automatically close when no longer hovered even if it still has focus
+			 */
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
+			/**
+			 * REQUIRED: The "id" of the tooltip's target element. Both elements must be within the same shadow root. If not provided, the tooltip's parent element will be used as its target.
+			 */
 			for: { type: String },
+			/**
+			 * Force the tooltip to stay open as long as it remains "true"
+			 */
 			forceShow: { type: Boolean, attribute: 'force-show' },
+			/**
+			 * Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor.
+			 * @type {('label'|'descriptor')}
+			 */
 			forType: { type: String, attribute: 'for-type' },
+			/**
+			 * Adjust the size of the gap between the tooltip and its target
+			 */
 			offset: { type: Number }, /* tooltipOffset */
-			position: { type: String }, /* Valid values are: 'top', 'bottom', 'left' and 'right' */
+			/**
+			 * Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+			 * @type {('top'|'bottom'|'left'|'right')}
+			 */
+			position: { type: String },
+			/**
+			 * @ignore
+			 */
 			showing: { type: Boolean, reflect: true },
-			state: { type: String, reflect: true }, /* Valid values are: 'info' and 'error' */
+			/**
+			 * The style of the tooltip based on the type of information it displays
+			 * @type {('info'|'error')}
+			 */
+			state: { type: String, reflect: true },
 			_maxWidth: { type: Number },
 			_openDir: { type: String, reflect: true, attribute: '_open-dir' },
 			_tooltipShift: { type: Number },
@@ -181,12 +227,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-pointer > div {
-				-webkit-transform: rotate(45deg);
 				background-color: var(--d2l-tooltip-background-color);
-				border-radius: 0.1rem;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
+				border-radius: 0.1rem;
 				box-sizing: border-box;
 				height: ${pointerLength}px;
+				-webkit-transform: rotate(45deg);
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
 			}
@@ -207,8 +253,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			.d2l-tooltip-content {
 				background-color: var(--d2l-tooltip-background-color);
-				border-radius: ${contentBorderRadius}px;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
+				border-radius: ${contentBorderRadius}px;
 				box-sizing: border-box;
 				max-width: 17.5rem;
 				min-height: 2.1rem;
@@ -218,7 +264,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 			}
 
-			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it*/
+			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it */
 			.d2l-tooltip-content.d2l-tooltip-content {
 				color: inherit;
 			}
@@ -269,26 +315,26 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			@keyframes d2l-tooltip-top-animation {
-				0% { transform: translate(0,-10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(0, -10px); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-bottom-animation {
-				0% { transform: translate(0,10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(0, 10px); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-left-animation {
-				0% { transform: translate(-10px,0); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(-10px, 0); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-right-animation {
-				0% { transform: translate(10px,0); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(10px, 0); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 
 			@media (max-width: 615px) {
 				.d2l-tooltip-content {
-					padding-top: ${12 - contentBorderSize}px;
 					padding-bottom: ${12 - contentBorderSize}px;
+					padding-top: ${12 - contentBorderSize}px;
 				}
 			}
 		`];
@@ -422,7 +468,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		// Compute the x and y position of the tooltip relative to its target
 		let parentTop;
 		let parentLeft;
-		if (offsetParent) {
+		if (offsetParent && offsetParent.tagName !== 'BODY') {
 			const parentRect = offsetParent.getBoundingClientRect();
 			parentTop = parentRect.top + offsetParent.clientTop;
 			parentLeft = parentRect.left + offsetParent.clientLeft;
@@ -493,7 +539,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('focus', this._onTargetFocus);
 		this._target.addEventListener('blur', this._onTargetBlur);
 		this._target.addEventListener('click', this._onTargetClick);
-		this._target.addEventListener('touchstart', this._onTargetTouchStart);
+		this._target.addEventListener('touchstart', this._onTargetTouchStart, { passive: true });
 		this._target.addEventListener('touchcancel', this._onTargetTouchEnd);
 		this._target.addEventListener('touchend', this._onTargetTouchEnd);
 
