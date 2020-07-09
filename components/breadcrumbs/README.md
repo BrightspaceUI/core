@@ -68,19 +68,11 @@ Set a `max-width` to constrain breadcrumbs to a particular width:
 
 Alternately, add the `compact` attribute to only display the last breadcrumb. The `d2l-breadcrumb-current-page` will be hidden:
 
-<<<<<<< Updated upstream
-- `compact` (Boolean, default: `'false'`): indicates whether the child component should render in compact mode (automatically set by parent)
-- `href` (String): Href of the breadcrumb item
-- `target` (String): Target of the breadcrumb item
-- `text` (String, default: `''`): Text of the breadcrumb item
-- `aria-label` (String): AriaLabel of breadcrumb item
-=======
 ```html
 <d2l-breadcrumbs compact>
   ...
 </d2l-breadcrumbs>
 ```
->>>>>>> Stashed changes
 
 ## Future Enhancements
 
