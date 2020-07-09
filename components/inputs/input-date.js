@@ -193,7 +193,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 							@d2l-calendar-selected="${this._handleDateSelected}"
 							max-value="${ifDefined(this.maxValue)}"
 							min-value="${ifDefined(this.minValue)}"
-							selected-value="${ifDefined(this.value)}">
+							selected-value="${ifDefined(this._shownValue)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
 								<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>
@@ -282,7 +282,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
-		await this._calendar.reset();
+		await this._calendar.reset(true);
 	}
 
 	async _handleClear() {
