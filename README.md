@@ -28,12 +28,12 @@ npm install @brightspace-ui/core
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/):
-  	* [Checkbox](components/inputs/docs/input-checkbox.md)
-	* [Date and time pickers](components/inputs/docs/input-date-time.md)
-	* [Radio](components/inputs/docs/input-radio.md)
-	* [Search](components/inputs/docs/input-search.md)
-	* [Select styles](components/inputs/docs/input-select-styles.md)
-	* [Text](input-text.md)
+  	* [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
+	* [Date and time](components/inputs/docs/input-date-time.md): date and time picker components including ranges
+	* [Radio](components/inputs/docs/input-radio.md): radio input styles
+	* [Search](components/inputs/docs/input-search.md): search input component
+	* [Select styles](components/inputs/docs/input-select-styles.md): select input styles
+	* [Text](components/inputs/docs/input-text.md): text input component and styles
   * [Links](components/link/): link component and styles
   * [List](components/list/): list and list-item components
   * [Loading Spinner](components/loading-spinner/): loading-spinner components
