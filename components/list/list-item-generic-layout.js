@@ -320,6 +320,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		return this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
 	}
 
+	_onDropdownClose() {
+		this._dropdownOpen = false;
+	}
+
+	_onDropdownOpen() {
+		this._dropdownOpen = true;
+	}
+
 	_onKeydown(event) {
 		if (!this.gridActive) return;
 		let node = null;
@@ -414,14 +422,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-	}
-
-	_onDropdownClose() {
-		this._dropdownOpen = false;
-	}
-
-	_onDropdownOpen() {
-		this._dropdownOpen = true;
 	}
 
 	_onTooltipHide() {

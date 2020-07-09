@@ -149,7 +149,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			default:
 				break;
 		}
-
 	}
 
 	_onDragOver(e) {
@@ -459,10 +458,7 @@ export class NewPositionEventDetails {
 			throw new Error(`Position not found in list:\n\tdestination: ${this.dropTargetKey} at ${destination}`);
 		}
 
-		// move the item in the list to a new position in place
 		const item = list[origin];
-		// now that we have a reference to the item, shove everything between the
-		// destination to the origin over one
 		if (origin > destination) {
 			destination = this.dropLocation === dropLocation.below ? Math.min(destination + 1, list.length - 1) : destination;
 			for (let i = origin; i > destination; i--) {
@@ -474,8 +470,6 @@ export class NewPositionEventDetails {
 				list[i] = list[i + 1];
 			}
 		}
-		// there is now a copy of the left or rightmost item where the new
-		// position is; stick the item in this spot.
 		list[destination] = item;
 
 		if (announceFn) {
