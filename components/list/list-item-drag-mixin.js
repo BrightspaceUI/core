@@ -24,8 +24,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			dragging: { type: Boolean, reflect: true,  },
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
+			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number },
-			_dropTarget: { type: Boolean },
 			_keyboardActive: { type: Boolean }
 		};
 	}
@@ -204,7 +204,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			return;
 		}
 		dropSpots.addDropTarget(this);
-		this._dropTarget = true;
+		this._draggingOver = true;
 		e.dataTransfer.dropEffect = 'move';
 	}
 
@@ -235,7 +235,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_renderDropArea(templateMethod) {
 		templateMethod = templateMethod || (dropArea => dropArea);
-		return this.draggable && this._dropTarget ? templateMethod(html`
+		return this.draggable && this._draggingOver ? templateMethod(html`
 			<div class="d2l-list-item-drag-drop-grid" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
 				<div @dragenter="${this._onDropAreaDragEnter}"></div>
 				<div @dragenter="${this._onDropAreaUpperDragEnter}"></div>
@@ -288,7 +288,7 @@ class DragState {
 
 	clear() {
 		this._cleanUpOnLeave();
-		this._dropTargets.forEach((_, dropTarget) => dropTarget._dropTarget = false);
+		this._dropTargets.forEach((_, dropTarget) => dropTarget._draggingOver = false);
 		this._dropTargets.clear();
 	}
 
