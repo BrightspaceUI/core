@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "إغلاق التنبيه",
+	"components.breadcrumbs.breadcrumb": "فتات الخبز",
 	"components.calendar.notSelected": "لم يتم التحديد.",
 	"components.calendar.selected": "تم التحديد.",
 	"components.calendar.show": "إظهار {month}",
 	"components.dialog.close": "إغلاق",
+	"components.form-element-mixin.defaultFieldLabel": "الحقل",
+	"components.form-element-mixin.defaultValidationMessage": "{label} غير صالح.",
+	"components.form-element-mixin.valueMissingMessage": "{label} مطلوب.",
 	"components.input-date-range.endDate": "تاريخ النهاية",
 	"components.input-date-range.startDate": "تاريخ البدء",
 	"components.input-date-time-range.endDate": "تاريخ النهاية",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "مؤشر التقدم",
 	"components.more-less.less": "أقل",
 	"components.more-less.more": "المزيد",
+	"components.switch.visibility": "الرؤية",
 	"components.tabs.next": "التمرير إلى الأمام",
 	"components.tabs.previous": "التمرير إلى الخلف"
 };

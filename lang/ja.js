@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "アラートを閉じる",
+	"components.breadcrumbs.breadcrumb": "階層",
 	"components.calendar.notSelected": "選択されていません。",
 	"components.calendar.selected": "選択されています。",
 	"components.calendar.show": "{month} を表示",
 	"components.dialog.close": "このダイアログを閉じる",
+	"components.form-element-mixin.defaultFieldLabel": "フィールド",
+	"components.form-element-mixin.defaultValidationMessage": "{label} は無効です。",
+	"components.form-element-mixin.valueMissingMessage": "{label} が必要です。",
 	"components.input-date-range.endDate": "終了日",
 	"components.input-date-range.startDate": "開始日",
 	"components.input-date-time-range.endDate": "終了日",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "進捗状況インジケータ",
 	"components.more-less.less": "減らす",
 	"components.more-less.more": "増やす",
+	"components.switch.visibility": "表示",
 	"components.tabs.next": "前方にスクロール",
 	"components.tabs.previous": "後方にスクロール"
 };

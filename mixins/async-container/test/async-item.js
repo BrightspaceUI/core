@@ -18,10 +18,10 @@ class AsyncItem extends LitElement {
 				border: 1px solid var(--d2l-color-galena);
 				border-radius: 0.4rem;
 				color: white;
-				padding: 0.3rem;
-				width: 50px;
 				height: 50px;
+				padding: 0.3rem;
 				text-align: center;
+				width: 50px;
 			}
 		`;
 	}

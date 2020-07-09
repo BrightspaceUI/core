@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "Luk besked",
+	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.calendar.notSelected": "Ikke valgt.",
 	"components.calendar.selected": "Valgt.",
 	"components.calendar.show": "Vis {month}",
 	"components.dialog.close": "Luk denne dialogboks",
+	"components.form-element-mixin.defaultFieldLabel": "Felt",
+	"components.form-element-mixin.defaultValidationMessage": "{label} er ugyldigt.",
+	"components.form-element-mixin.valueMissingMessage": "{label} er påkrævet.",
 	"components.input-date-range.endDate": "Slutdato",
 	"components.input-date-range.startDate": "Startdato",
 	"components.input-date-time-range.endDate": "Slutdato",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Statusindikator",
 	"components.more-less.less": "færre",
 	"components.more-less.more": "flere",
+	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage"
 };

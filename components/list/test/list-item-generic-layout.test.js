@@ -5,6 +5,7 @@ import '../../button/button-icon.js';
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import sinon from 'sinon';
 
 const normalFixture = html`
 	<d2l-list grid>
@@ -110,16 +111,19 @@ describe('d2l-list-item-generic-layout', () => {
 		PAGEDOWN: 34,
 		RIGHT: 39,
 		SPACE: 32,
+		TAB: 9,
 		UP: 38
 	};
 
-	function dispatchKeyEvent(el, key, ctrl) {
+	function dispatchKeyEvent(el, {code, ctrl}) {
 		const eventObj = document.createEvent('Events');
 		eventObj.initEvent('keydown', true, true);
-		eventObj.which = key;
-		eventObj.keyCode = key;
+		eventObj.which = code;
+		eventObj.keyCode = code;
 		eventObj.ctrlKey = ctrl;
+		eventObj.preventDefault = sinon.spy();
 		el.dispatchEvent(eventObj);
+		return eventObj;
 	}
 
 	describe('constructor', () => {
@@ -325,11 +329,22 @@ describe('d2l-list-item-generic-layout', () => {
 				layout = el.querySelector(`[key="${test.itemKey}"]`)
 					.shadowRoot.querySelector('d2l-list-item-generic-layout');
 				test.initial().focus();
-				setTimeout(() => dispatchKeyEvent(layout, test.key.code, test.key.ctrl));
+				let event = null;
+				setTimeout(() => event = dispatchKeyEvent(layout, test.key));
 				await test.event();
 				expect(test.activeElement()).to.equal(test.expected());
+				expect(event.preventDefault).to.have.been.calledOnce;
 			});
 		}
+
+		it('does not preventDefault when Tab is pressed', async() => {
+			el = el.querySelector('[key="item4"]');
+			layout = el.shadowRoot.querySelector('d2l-list-item-generic-layout');
+			layout.querySelector('.d2l-input-checkbox').focus();
+			setTimeout(() => dispatchKeyEvent(layout, { code: keyCodes.TAB }));
+			const event = await oneEvent(layout, 'keydown');
+			expect(event.preventDefault).to.not.have.been.called;
+		});
 
 		describe('preventing focus move for end of content', () => {
 			const tests = [
@@ -424,7 +439,7 @@ describe('d2l-list-item-generic-layout', () => {
 					layout = el.querySelector(`[key="${test.itemKey}"]`)
 						.shadowRoot.querySelector('d2l-list-item-generic-layout');
 					test.initial().focus();
-					setTimeout(() => dispatchKeyEvent(layout, test.key.code));
+					setTimeout(() => dispatchKeyEvent(layout, test.key));
 					await aTimeout(1);
 					expect(test.activeElement()).to.equal(test.initial());
 				});
@@ -448,7 +463,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 		for (const test of tests) {
 			it(test.desc, async() => {
-				setTimeout(() => dispatchKeyEvent(layout, test.key));
+				setTimeout(() => dispatchKeyEvent(layout, {code: test.key}));
 				await oneEvent(actionable, 'click');
 			});
 		}

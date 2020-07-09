@@ -19,7 +19,7 @@ export const visibleOnAncestorStyles = css`
 		:host([__voa-state="hidden"]),
 		:host([__voa-state="hiding"]) {
 			opacity: 1 !important;
-			transform: translateY(0px) !important;
+			transform: translateY(0) !important;
 		}
 		:host([__voa-state="hidden"][d2l-visible-on-ancestor-no-hover-hide]),
 		:host([__voa-state="hiding"][d2l-visible-on-ancestor-no-hover-hide]) {

@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "Waarschuwing sluiten",
+	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.calendar.notSelected": "Niet geselecteerd.",
 	"components.calendar.selected": "Geselecteerd.",
 	"components.calendar.show": "{month} weergeven",
 	"components.dialog.close": "Dit dialoogvenster sluiten",
+	"components.form-element-mixin.defaultFieldLabel": "Veld",
+	"components.form-element-mixin.defaultValidationMessage": "{label} is ongeldig.",
+	"components.form-element-mixin.valueMissingMessage": "{label} is vereist.",
 	"components.input-date-range.endDate": "Einddatum",
 	"components.input-date-range.startDate": "Startdatum",
 	"components.input-date-time-range.endDate": "Einddatum",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Voortgangsindicator",
 	"components.more-less.less": "minder",
 	"components.more-less.more": "meer",
+	"components.switch.visibility": "Zichtbaarheid",
 	"components.tabs.next": "Naar voren scrollen",
 	"components.tabs.previous": "Naar achteren scrollen"
 };

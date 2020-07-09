@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "關閉警示",
+	"components.breadcrumbs.breadcrumb": "階層連結",
 	"components.calendar.notSelected": "未選取。",
 	"components.calendar.selected": "已選取。",
 	"components.calendar.show": "顯示{month}",
 	"components.dialog.close": "關閉此對話方塊",
+	"components.form-element-mixin.defaultFieldLabel": "欄位",
+	"components.form-element-mixin.defaultValidationMessage": "{label} 無效。",
+	"components.form-element-mixin.valueMissingMessage": "{label} 為必填。",
 	"components.input-date-range.endDate": "結束日期",
 	"components.input-date-range.startDate": "開始日期",
 	"components.input-date-time-range.endDate": "結束日期",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "進度指示器",
 	"components.more-less.less": "較少",
 	"components.more-less.more": "較多",
+	"components.switch.visibility": "能見度",
 	"components.tabs.next": "向前捲動",
 	"components.tabs.previous": "向後捲動"
 };

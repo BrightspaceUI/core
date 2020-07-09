@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "경보 닫기",
+	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.calendar.notSelected": "선택되지 않음.",
 	"components.calendar.selected": "선택됨.",
 	"components.calendar.show": "{month} 표시",
 	"components.dialog.close": "이 대화 상자 닫기",
+	"components.form-element-mixin.defaultFieldLabel": "필드",
+	"components.form-element-mixin.defaultValidationMessage": "{label}이(가) 유효하지 않습니다.",
+	"components.form-element-mixin.valueMissingMessage": "{label}이(가) 필요합니다.",
 	"components.input-date-range.endDate": "종료일",
 	"components.input-date-range.startDate": "시작일",
 	"components.input-date-time-range.endDate": "종료일",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "진도 표시기",
 	"components.more-less.less": "축소",
 	"components.more-less.more": "더 보기",
+	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤"
 };

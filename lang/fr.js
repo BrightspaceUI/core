@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "Fermer l'alerte",
+	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
 	"components.calendar.notSelected": "Non sélectionné(e)",
 	"components.calendar.selected": "Sélectionné(e).",
 	"components.calendar.show": "Afficher {month}",
 	"components.dialog.close": "Fermer cette boîte de dialogue",
+	"components.form-element-mixin.defaultFieldLabel": "Champ",
+	"components.form-element-mixin.defaultValidationMessage": "{label} n'est pas valide.",
+	"components.form-element-mixin.valueMissingMessage": "{label} est requis(e).",
 	"components.input-date-range.endDate": "Date de fin",
 	"components.input-date-range.startDate": "Date de début",
 	"components.input-date-time-range.endDate": "Date de fin",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Indicateur de progrès",
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
+	"components.switch.visibility": "Visibilité",
 	"components.tabs.next": "Défilement avant",
 	"components.tabs.previous": "Défilement arrière"
 };

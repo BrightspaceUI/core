@@ -6,7 +6,7 @@ export const inputStyles = css`
 		background-color: #ffffff;
 		border-radius: 0.3rem;
 		border-style: solid;
-		box-shadow: inset 0 2px 0 0 rgba(181, 189, 194, .2); /* corundum */
+		box-shadow: inset 0 2px 0 0 rgba(181, 189, 194, 0.2); /* corundum */
 		box-sizing: border-box;
 		color: var(--d2l-color-ferrite);
 		display: inline-block;
@@ -51,8 +51,7 @@ export const inputStyles = css`
 		outline-width: 0;
 		padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
 	}
-	[aria-invalid="true"].d2l-input,
-	.d2l-input:invalid {
+	[aria-invalid="true"].d2l-input {
 		border-color: var(--d2l-color-cinnabar);
 	}
 	.d2l-input:disabled {
@@ -64,8 +63,8 @@ export const inputStyles = css`
 	}
 	.d2l-input::-ms-clear {
 		display: none;
-		width: 0;
 		height: 0;
+		width: 0;
 	}
 	textarea.d2l-input {
 		line-height: normal;
@@ -74,12 +73,37 @@ export const inputStyles = css`
 	textarea.d2l-input:hover:disabled,
 	textarea.d2l-input:focus:disabled,
 	textarea[aria-invalid="true"].d2l-input:disabled {
-		padding-top: 0.5rem;
 		padding-bottom: 0.5rem;
+		padding-top: 0.5rem;
 	}
 	textarea.d2l-input:hover,
 	textarea.d2l-input:focus {
-		padding-top: calc(0.5rem - 1px);
 		padding-bottom: calc(0.5rem - 1px);
+		padding-top: calc(0.5rem - 1px);
+	}
+	textarea.d2l-input[aria-invalid="true"] {
+		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE4IDE4Ij4KICA8cGF0aCBmaWxsPSIjY2QyMDI2IiBkPSJNMTcuNzkgMTUuMTFsLTctMTRhMiAyIDAgMCAwLTMuNTggMGwtNyAxNGExLjk3NSAxLjk3NSAwIDAgMCAuMDkgMS45NEEyIDIgMCAwIDAgMiAxOGgxNGExLjk5NCAxLjk5NCAwIDAgMCAxLjctLjk1IDEuOTY3IDEuOTY3IDAgMCAwIC4wOS0xLjk0ek05IDE2YTEuNSAxLjUgMCAxIDEgMS41LTEuNUExLjUgMS41IDAgMCAxIDkgMTZ6bS45OC00LjgwNmExIDEgMCAwIDEtMS45NiAwbC0uOTktNUExIDEgMCAwIDEgOC4wMSA1aDEuOTgzYTEgMSAwIDAgMSAuOTggMS4xOTR6Ii8+Cjwvc3ZnPgo=");
+		background-position: top 12px right 18px;
+		background-repeat: no-repeat;
+		background-size: 0.8rem 0.8rem;
+		padding-right: calc(18px + 0.8rem);
+	}
+	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"] {
+		background-position: top 12px left 18px;
+		padding-left: calc(18px + 0.8rem);
+		padding-right: 0.75rem;
+	}
+	textarea.d2l-input[aria-invalid="true"]:hover,
+	textarea.d2l-input[aria-invalid="true"]:focus {
+		background-position: top calc(12px - 1px) right calc(18px - 1px);
+	}
+	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"]:hover,
+	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"]:focus {
+		background-position: top calc(12px - 1px) left calc(18px - 1px);
+		padding-left: calc(18px + 0.8rem - 1px);
+		padding-right: calc(0.75rem - 1px);
+	}
+	textarea[aria-invalid="true"].d2l-input:disabled {
+		background-image: none;
 	}
 `;

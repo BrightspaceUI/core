@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "Stängningsvarning",
+	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.calendar.notSelected": "Inte vald.",
 	"components.calendar.selected": "Markerad.",
 	"components.calendar.show": "Visa {month}",
 	"components.dialog.close": "Stäng dialogrutan",
+	"components.form-element-mixin.defaultFieldLabel": "Fält",
+	"components.form-element-mixin.defaultValidationMessage": "{label} är ogiltigt.",
+	"components.form-element-mixin.valueMissingMessage": "{label} krävs.",
 	"components.input-date-range.endDate": "Slutdatum",
 	"components.input-date-range.startDate": "Startdatum",
 	"components.input-date-time-range.endDate": "Slutdatum",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Förloppsindikator",
 	"components.more-less.less": "mindre",
 	"components.more-less.more": "mer",
+	"components.switch.visibility": "Synlighet",
 	"components.tabs.next": "Bläddra framåt",
 	"components.tabs.previous": "Bläddra bakåt"
 };

@@ -49,15 +49,16 @@ class Backdrop extends LitElement {
 			:host([slow-transition]) {
 				transition: opacity 1200ms ease-in;
 			}
-			:host([_state=null][no-animate-hide]) {
-				transition: none;
+			:host([_state="showing"]) {
+				opacity: 0.7;
 			}
-			:host([_state="showing"]), :host([_state="hiding"]) {
+			:host([_state="showing"]),
+			:host([_state="hiding"]) {
 				height: 100%;
 				width: 100%;
 			}
-			:host([_state="showing"]) {
-				opacity: 0.7;
+			:host([_state=null][no-animate-hide]) {
+				transition: none;
 			}
 			@media (prefers-reduced-motion: reduce) {
 				:host {

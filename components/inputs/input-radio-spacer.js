@@ -12,12 +12,12 @@ class InputRadioSpacer extends RtlMixin(LitElement) {
 				:host {
 					box-sizing: border-box;
 					display: block;
-					padding-left: 1.7rem;
 					margin-bottom: 0.9rem;
+					padding-left: 1.7rem;
 				}
 				:host([dir="rtl"]) {
-					padding-right: 1.7rem;
 					padding-left: 0;
+					padding-right: 1.7rem;
 				}
 			`;
 	}

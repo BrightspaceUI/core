@@ -96,8 +96,8 @@ export const heading4Styles = css`
 export const labelStyles = css`
 	.d2l-label-text {
 		font-size: 0.7rem;
-		line-height: 1rem;
 		font-weight: 700;
 		letter-spacing: 0.2px;
+		line-height: 1rem;
 	}
 `;

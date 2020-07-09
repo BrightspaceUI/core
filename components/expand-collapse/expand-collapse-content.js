@@ -47,8 +47,8 @@ class ExpandCollapseContent extends LitElement {
 			}
 
 			/* prevent margin colapse on slotted children */
-			.d2l-expand-collapse-content-inner:before,
-			.d2l-expand-collapse-content-inner:after {
+			.d2l-expand-collapse-content-inner::before,
+			.d2l-expand-collapse-content-inner::after {
 				content: ' ';
 				display: table;
 			}

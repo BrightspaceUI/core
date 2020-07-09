@@ -9,7 +9,7 @@ describe('d2l-input-select', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 1000}});
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 1100}});
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-select.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
@@ -21,7 +21,7 @@ describe('d2l-input-select', () => {
 	});
 
 	['wc', 'sass'].forEach((type) => {
-		['default', 'overflow', 'disabled', 'invalid', 'rtl', 'rtl-overflow'].forEach((name) => {
+		['default', 'overflow', 'disabled', 'invalid', 'rtl', 'rtl-overflow', 'rtl-invalid'].forEach((name) => {
 			const id = `${type}-${name}`;
 			it(id, async function() {
 				const rect = await visualDiff.getRect(page, `#${id}`);
@@ -29,7 +29,7 @@ describe('d2l-input-select', () => {
 			});
 		});
 
-		['default', 'overflow', 'invalid', 'rtl', 'rtl-overflow'].forEach((name) => {
+		['default', 'overflow', 'invalid', 'rtl', 'rtl-overflow', 'rtl-invalid'].forEach((name) => {
 			const id = `${type}-${name}`;
 			it(`${id}-focus`, async function() {
 				await page.$eval(`#${id}`, (elem) => elem.focus());

@@ -45,8 +45,8 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			:host {
 				animation: 600ms ease drop-in;
 				background: white;
-				border-radius: 0.3rem;
 				border: 1px solid var(--d2l-color-mica);
+				border-radius: 0.3rem;
 				box-sizing: border-box;
 				display: flex;
 				flex: 1;
@@ -127,12 +127,12 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			@keyframes drop-in {
 				from {
-					opacity: 0.0;
-					transform: translate(0,-10px);
+					opacity: 0;
+					transform: translate(0, -10px);
 				}
 				to {
 					opacity: 1;
-					transform: translate(0,0);
+					transform: translate(0, 0);
 				}
 			}
 

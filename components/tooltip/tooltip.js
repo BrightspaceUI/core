@@ -90,7 +90,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
 			 * @type {('start'|'end')}
 			 */
-			align: { type: String },
+			align: { type: String, reflect: true },
 			/**
 			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
 			 */
@@ -227,12 +227,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-pointer > div {
-				-webkit-transform: rotate(45deg);
 				background-color: var(--d2l-tooltip-background-color);
-				border-radius: 0.1rem;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
+				border-radius: 0.1rem;
 				box-sizing: border-box;
 				height: ${pointerLength}px;
+				-webkit-transform: rotate(45deg);
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
 			}
@@ -253,8 +253,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			.d2l-tooltip-content {
 				background-color: var(--d2l-tooltip-background-color);
-				border-radius: ${contentBorderRadius}px;
 				border: ${contentBorderSize}px solid var(--d2l-tooltip-border-color);
+				border-radius: ${contentBorderRadius}px;
 				box-sizing: border-box;
 				max-width: 17.5rem;
 				min-height: 2.1rem;
@@ -264,7 +264,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 			}
 
-			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it*/
+			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it */
 			.d2l-tooltip-content.d2l-tooltip-content {
 				color: inherit;
 			}
@@ -315,26 +315,26 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			@keyframes d2l-tooltip-top-animation {
-				0% { transform: translate(0,-10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(0, -10px); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-bottom-animation {
-				0% { transform: translate(0,10px); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(0, 10px); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-left-animation {
-				0% { transform: translate(-10px,0); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(-10px, 0); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 			@keyframes d2l-tooltip-right-animation {
-				0% { transform: translate(10px,0); opacity: 0; }
-				100% { transform: translate(0,0); opacity: 1; }
+				0% { opacity: 0; transform: translate(10px, 0); }
+				100% { opacity: 1; transform: translate(0, 0); }
 			}
 
 			@media (max-width: 615px) {
 				.d2l-tooltip-content {
-					padding-top: ${12 - contentBorderSize}px;
 					padding-bottom: ${12 - contentBorderSize}px;
+					padding-top: ${12 - contentBorderSize}px;
 				}
 			}
 		`];
@@ -468,7 +468,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		// Compute the x and y position of the tooltip relative to its target
 		let parentTop;
 		let parentLeft;
-		if (offsetParent) {
+		if (offsetParent && offsetParent.tagName !== 'BODY') {
 			const parentRect = offsetParent.getBoundingClientRect();
 			parentTop = parentRect.top + offsetParent.clientTop;
 			parentLeft = parentRect.left + offsetParent.clientLeft;
@@ -539,7 +539,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('focus', this._onTargetFocus);
 		this._target.addEventListener('blur', this._onTargetBlur);
 		this._target.addEventListener('click', this._onTargetClick);
-		this._target.addEventListener('touchstart', this._onTargetTouchStart);
+		this._target.addEventListener('touchstart', this._onTargetTouchStart, { passive: true });
 		this._target.addEventListener('touchcancel', this._onTargetTouchEnd);
 		this._target.addEventListener('touchend', this._onTargetTouchEnd);
 

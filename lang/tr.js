@@ -2,10 +2,14 @@
 
 export default {
 	"components.alert.close": "Kapatma Uyarısı",
+	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.calendar.notSelected": "Seçili Değil.",
 	"components.calendar.selected": "Seçili.",
 	"components.calendar.show": "{month} Göster",
 	"components.dialog.close": "Bu iletişim kutusunu kapat",
+	"components.form-element-mixin.defaultFieldLabel": "Alan",
+	"components.form-element-mixin.defaultValidationMessage": "{label} geçersiz.",
+	"components.form-element-mixin.valueMissingMessage": "{label} zorunludur.",
 	"components.input-date-range.endDate": "Bitiş Tarihi",
 	"components.input-date-range.startDate": "Başlangıç Tarihi",
 	"components.input-date-time-range.endDate": "Bitiş Tarihi",
@@ -26,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Gelişim Göstergesi",
 	"components.more-less.less": "daha az",
 	"components.more-less.more": "daha fazla",
+	"components.switch.visibility": "Görünürlük",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır"
 };
