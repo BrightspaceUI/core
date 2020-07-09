@@ -166,21 +166,21 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		dropSpots.setActiveDropTarget(this, dropSpots.dropLocation);
 	}
 
-	_onDropAreaBottomDrag(e) {
+	_onDropTargetBottomDrag(e) {
 		e.dataTransfer.dropEffect = 'move';
 		const dropSpots = getDragState();
 		dropSpots.setActiveDropTarget(this, dropLocation.below);
 		this._inBottomArea = true;
 	}
 
-	_onDropAreaDragEnter(e) {
+	_onDropTargetDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		const dropSpots = getDragState();
 		dropSpots.setActiveDropTarget(this, dropLocation.above);
 		this._inTopArea = true;
 	}
 
-	_onDropAreaLowerDragEnter(e) {
+	_onDropTargetLowerDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		if (this._inBottomArea) {
 			const dropSpots = getDragState();
@@ -189,7 +189,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}
 	}
 
-	_onDropAreaUpperDragEnter(e) {
+	_onDropTargetUpperDragEnter(e) {
 		e.dataTransfer.dropEffect = 'move';
 		if (this._inTopArea) {
 			const dropSpots = getDragState();
@@ -233,14 +233,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		`) : nothing;
 	}
 
-	_renderDropArea(templateMethod) {
-		templateMethod = templateMethod || (dropArea => dropArea);
+	_renderDropTarget(templateMethod) {
+		templateMethod = templateMethod || (DropTarget => DropTarget);
 		return this.draggable && this._draggingOver ? templateMethod(html`
 			<div class="d2l-list-item-drag-drop-grid" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
-				<div @dragenter="${this._onDropAreaDragEnter}"></div>
-				<div @dragenter="${this._onDropAreaUpperDragEnter}"></div>
-				<div @dragenter="${this._onDropAreaLowerDragEnter}"></div>
-				<div @dragenter="${this._onDropAreaBottomDrag}"></div>
+				<div @dragenter="${this._onDropTargetDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetUpperDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetLowerDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetBottomDrag}"></div>
 			</div>
 		`) : nothing;
 	}
@@ -261,7 +261,6 @@ function createDragState(target) {
 function getDragState() {
 	if (!dragState) createDragState();
 	return dragState;
-
 }
 
 function clearDragState() {

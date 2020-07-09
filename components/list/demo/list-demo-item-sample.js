@@ -79,7 +79,7 @@ class ListDemoItemSample extends ListItemMixin(ListItemDragDropMixin(ListItemChe
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			${this._renderDropArea()}
+			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<d2l-list-item-generic-layout ?grid-active="${this.role === 'rowgroup'}">
 					${this._renderDragHandle(this._renderOutsideControl)}

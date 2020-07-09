@@ -7,7 +7,7 @@ const tag = defineCE(
 		render() {
 			return html`
 				${this._renderTopPlacementMarker(html`<div id="top-placement-marker">----</div>`)}
-				${this._renderDropArea()}
+				${this._renderDropTarget()}
 				${this._renderDragHandle()}
 				${this._renderDraggableArea()}
 				${this._renderBottomPlacementMarker(html`<div id="bottom-placement-marker">----</div>`)}
@@ -45,22 +45,22 @@ describe('ListItemDragDropMixin', () => {
 		});
 
 		it('Will show the top placement marker after entering the top of the element.', async() => {
-			const topDropArea = dropGrid.querySelectorAll('div')[0];
+			const topDropTarget = dropGrid.querySelectorAll('div')[0];
 			setTimeout(() => {
-				topDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topDropArea, 'dragenter');
+			await oneEvent(topDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).not.be.null;
 		});
 
 		it('Will show the bottom placement marker after entering the top half of the element coming from the top.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[1];
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[1];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).be.null;
@@ -69,11 +69,11 @@ describe('ListItemDragDropMixin', () => {
 		});
 
 		it('Will show the bottom placement marker after entering the bottom half of the element coming from the top.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).be.null;
@@ -82,11 +82,11 @@ describe('ListItemDragDropMixin', () => {
 		});
 
 		it('Will show the bottom placement marker after entering the bottom of the element coming from the top.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[3];
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[3];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).be.null;
@@ -95,11 +95,11 @@ describe('ListItemDragDropMixin', () => {
 		});
 
 		it('Will show the top placement marker after entering the bottom half of the element coming from the bottom.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).not.be.null;
@@ -108,11 +108,11 @@ describe('ListItemDragDropMixin', () => {
 		});
 
 		it('Will show the top placement marker after entering the top half of the element coming from the bottom.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).not.be.null;
