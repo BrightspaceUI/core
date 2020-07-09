@@ -42,7 +42,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	static get styles() {
 		return css`
-			:host {
+			.d2l-grid-layout {
 				display: grid;
 				grid-template-columns:
 					[start outside-control-start] minmax(0, min-content)
@@ -50,6 +50,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] auto
 					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
+				position: relative;
+			}
+			.d2l-grid-layout.d2l-tooltip-showing,
+			.d2l-grid-layout.d2l-dropdown-open {
+				z-index: 10;
 			}
 
 			::slotted([slot="outside-control"]),
@@ -94,10 +99,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				z-index: 3;
 			}
-			.d2l-dropdown-open::slotted(*),
-			.d2l-tooltip-showing::slotted(*) {
-				z-index: 6;
-			}
+
 		`;
 	}
 
@@ -152,19 +154,21 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	render() {
 		const classes = {
-			'd2l-cell': true,
+			'd2l-grid-layout': true,
 			'd2l-dropdown-open': this._dropdownOpen,
 			'd2l-tooltip-showing': this._tooltipShowing
 		};
 		return html`
-		<slot name="content-action" class="${classMap(classes)}" data-cell-num="5"></slot>
-		<slot name="outside-control-action" class="${classMap(classes)}" data-cell-num="1"></slot>
-		<slot name="outside-control" class="${classMap(classes)}" data-cell-num="2"></slot>
-		<slot name="control-action" class="${classMap(classes)}" data-cell-num="3"></slot>
-		<slot name="control" class="${classMap(classes)}" data-cell-num="4"></slot>
-		<slot name="actions" class="${classMap(classes)}" data-cell-num="6"></slot>
+		<div class="${classMap(classes)}">
+			<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
+			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
+			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
+			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
+			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
+			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
-		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
+			<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
+		</div>
 		`;
 	}
 
@@ -408,7 +412,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_onDropdownClose() {
-		this._dropdownOpen = false;
+		//this._dropdownOpen = false;
 	}
 
 	_onDropdownOpen() {
