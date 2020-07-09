@@ -7,7 +7,6 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 	isFocusable } from '../../helpers/focus.js';
-import { classMap} from 'lit-html/directives/class-map.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -35,14 +34,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 * Specifies whether the grid is active or not
 			 */
 			gridActive: { type: Boolean, attribute: 'grid-active' },
-			_dropdownOpen: { type: Boolean },
-			_tooltipShowing: { type: Boolean }
+			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true  }
 		};
 	}
 
 	static get styles() {
 		return css`
-			.d2l-grid-layout {
+			:host {
 				display: grid;
 				grid-template-columns:
 					[start outside-control-start] minmax(0, min-content)
@@ -52,9 +51,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[end actions-end];
 				position: relative;
 			}
-			.d2l-grid-layout.d2l-tooltip-showing,
-			.d2l-grid-layout.d2l-dropdown-open {
-				z-index: 10;
+			:host([_tooltip-showing]),
+			:host([_dropdown-open]) {
+				z-index: 6;
 			}
 
 			::slotted([slot="outside-control"]),
@@ -79,6 +78,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
+				justify-self: end;
 				z-index: 4;
 			}
 
@@ -153,13 +153,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const classes = {
-			'd2l-grid-layout': true,
-			'd2l-dropdown-open': this._dropdownOpen,
-			'd2l-tooltip-showing': this._tooltipShowing
-		};
 		return html`
-		<div class="${classMap(classes)}">
 			<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
@@ -168,7 +162,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
 			<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
-		</div>
 		`;
 	}
 
@@ -412,7 +405,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_onDropdownClose() {
-		//this._dropdownOpen = false;
+		this._dropdownOpen = false;
 	}
 
 	_onDropdownOpen() {
