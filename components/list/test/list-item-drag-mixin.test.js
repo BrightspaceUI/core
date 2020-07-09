@@ -1,13 +1,13 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
+import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-mixin.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { ListItemDragMixin, NewPositionEventDetails } from '../list-item-drag-mixin.js';
 
 const tag = defineCE(
-	class extends ListItemDragMixin(LitElement) {
+	class extends ListItemDragDropMixin(LitElement) {
 		render() {
 			return html`
 				${this._renderTopPlacementMarker(html`<div id="top-placement-marker">----</div>`)}
-				${this._renderDropArea()}
+				${this._renderDropTarget()}
 				${this._renderDragHandle()}
 				${this._renderDraggableArea()}
 				${this._renderBottomPlacementMarker(html`<div id="bottom-placement-marker">----</div>`)}
@@ -16,8 +16,8 @@ const tag = defineCE(
 	}
 );
 
-describe('ListItemDragMixin', () => {
-	it('It sets draggable to false when no key is given', async() => {
+describe('ListItemDragDropMixin', () => {
+	it('Sets draggable to false when no key is given', async() => {
 		const element = await fixture(`<${tag} draggable></${tag}>`);
 		await element.updateComplete;
 		expect(element.draggable).to.be.false;
@@ -34,7 +34,7 @@ describe('ListItemDragMixin', () => {
 			dataTransfer.effectAllowed = 'move';
 		});
 
-		it('It will listen to dragEnter on host and show the real drop spots.', async() => {
+		it('Will listen to dragEnter on host and show the real drop spots.', async() => {
 			setTimeout(() => {
 				element.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
@@ -44,23 +44,23 @@ describe('ListItemDragMixin', () => {
 			expect(dropGrid).not.be.null;
 		});
 
-		it('It will show the top placement marker after entering the top of the element.', async() => {
-			const topDropArea = dropGrid.querySelectorAll('div')[0];
+		it('Will show the top placement marker after entering the top of the element.', async() => {
+			const topDropTarget = dropGrid.querySelectorAll('div')[0];
 			setTimeout(() => {
-				topDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topDropArea, 'dragenter');
+			await oneEvent(topDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).not.be.null;
 		});
 
-		it('It will show the bottom placement marker after entering the top half of the element coming from the top.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[1];
+		it('Will show the bottom placement marker after entering the top half of the element coming from the top.', async() => {
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[1];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).be.null;
@@ -68,12 +68,12 @@ describe('ListItemDragMixin', () => {
 			expect(bottomPlacementMarker).not.be.null;
 		});
 
-		it('It will show the bottom placement marker after entering the bottom half of the element coming from the top.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+		it('Will show the bottom placement marker after entering the bottom half of the element coming from the top.', async() => {
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).be.null;
@@ -81,12 +81,12 @@ describe('ListItemDragMixin', () => {
 			expect(bottomPlacementMarker).not.be.null;
 		});
 
-		it('It will show the bottom placement marker after entering the bottom of the element coming from the top.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[3];
+		it('Will show the bottom placement marker after entering the bottom of the element coming from the top.', async() => {
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[3];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).be.null;
@@ -94,25 +94,12 @@ describe('ListItemDragMixin', () => {
 			expect(bottomPlacementMarker).not.be.null;
 		});
 
-		it('It will show the top placement marker after entering the bottom half of the element coming from the bottom.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
+		it('Will show the top placement marker after entering the bottom half of the element coming from the bottom.', async() => {
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
 			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
 			});
-			await oneEvent(topHalfDropArea, 'dragenter');
-			await element.updateComplete;
-			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
-			expect(topPlacementMarker).not.be.null;
-			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
-			expect(bottomPlacementMarker).be.null;
-		});
-
-		it('It will show the top placement marker after entering the top half of the element coming from the bottom.', async() => {
-			const topHalfDropArea = dropGrid.querySelectorAll('div')[2];
-			setTimeout(() => {
-				topHalfDropArea.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
-			});
-			await oneEvent(topHalfDropArea, 'dragenter');
+			await oneEvent(topHalfDropTarget, 'dragenter');
 			await element.updateComplete;
 			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
 			expect(topPlacementMarker).not.be.null;
@@ -120,7 +107,20 @@ describe('ListItemDragMixin', () => {
 			expect(bottomPlacementMarker).be.null;
 		});
 
-		it('It will have the list item go back to normal when dragging ends.', async() => {
+		it('Will show the top placement marker after entering the top half of the element coming from the bottom.', async() => {
+			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
+			setTimeout(() => {
+				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+			await oneEvent(topHalfDropTarget, 'dragenter');
+			await element.updateComplete;
+			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
+			expect(topPlacementMarker).not.be.null;
+			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
+			expect(bottomPlacementMarker).be.null;
+		});
+
+		it('Will have the list item go back to normal when dragging ends.', async() => {
 			const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag-area');
 			setTimeout(() => {
 				dragArea.dispatchEvent(new DragEvent('dragend', {dataTransfer}));
@@ -138,17 +138,17 @@ describe('NewPositionEventDetails', () => {
 
 	const errorTests = [
 		{
-			description: 'throws an error when targetKey does not exist',
+			description: 'throws an error when dragTargetKey does not exist',
 			input: {
-				targetKey: 'foo',
-				destinationKey: 'one'
+				dragTargetKey: 'foo',
+				dropTargetKey: 'one'
 			}
 		},
 		{
-			description: 'throws an error when destinationKey does not exist',
+			description: 'throws an error when dropTargetKey does not exist',
 			input: {
-				targetKey: 'one',
-				destinationKey: 'foo'
+				dragTargetKey: 'one',
+				dropTargetKey: 'foo'
 			}
 		}
 	];
@@ -157,8 +157,8 @@ describe('NewPositionEventDetails', () => {
 		const list = ['one', 'two', 'three'].map(x => ({key : x }));
 		it('announces when given required arguments', () => {
 			const event = new NewPositionEventDetails({
-				targetKey: 'one',
-				destinationKey: 'three'
+				dragTargetKey: 'one',
+				dropTargetKey: 'three'
 			});
 			let msg = '';
 			const fn = (item, index) => {
@@ -186,12 +186,12 @@ describe('NewPositionEventDetails', () => {
 	describe('reorder', () => {
 		const tests = [
 			{
-				description: 'does nothing when targetKey and destinationKey are the same',
+				description: 'does nothing when dragTargetKey and dropTargetKey are the same',
 				input: {
 					array: ['one', 'two', 'three'],
-					targetKey: 'one',
-					destinationKey: 'one',
-					insertBefore: false
+					dragTargetKey: 'one',
+					dropTargetKey: 'one',
+					dropLocation: dropLocation.below
 				},
 				expected: ['one', 'two', 'three']
 			},
@@ -199,9 +199,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves item forward in the middle of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'two',
-					destinationKey: 'four',
-					insertBefore: false
+					dragTargetKey: 'two',
+					dropTargetKey: 'four',
+					dropLocation: dropLocation.below
 				},
 				expected: ['one', 'three', 'four', 'two', 'five']
 			},
@@ -209,9 +209,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves item backward in the middle of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'four',
-					destinationKey: 'two',
-					insertBefore: true
+					dragTargetKey: 'four',
+					dropTargetKey: 'two',
+					dropLocation: dropLocation.above
 				},
 				expected: ['one', 'four', 'two', 'three', 'five']
 			},
@@ -219,9 +219,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves item backward to beginning of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'four',
-					destinationKey: 'one',
-					insertBefore: true
+					dragTargetKey: 'four',
+					dropTargetKey: 'one',
+					dropLocation: dropLocation.above
 				},
 				expected: ['four', 'one', 'two', 'three', 'five']
 			},
@@ -229,9 +229,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves item forward to end of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'two',
-					destinationKey: 'five',
-					insertBefore: false
+					dragTargetKey: 'two',
+					dropTargetKey: 'five',
+					dropLocation: dropLocation.below
 				},
 				expected: ['one', 'three', 'four', 'five', 'two']
 			},
@@ -239,9 +239,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves last item to beginning of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'five',
-					destinationKey: 'one',
-					insertBefore: true
+					dragTargetKey: 'five',
+					dropTargetKey: 'one',
+					dropLocation: dropLocation.above
 				},
 				expected: ['five', 'one', 'two', 'three', 'four']
 			},
@@ -249,9 +249,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves first item to end of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'one',
-					destinationKey: 'five',
-					insertBefore: false
+					dragTargetKey: 'one',
+					dropTargetKey: 'five',
+					dropLocation: dropLocation.below
 				},
 				expected: ['two', 'three', 'four', 'five', 'one']
 			},
@@ -259,9 +259,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves last item to second position of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'five',
-					destinationKey: 'one',
-					insertBefore: false
+					dragTargetKey: 'five',
+					dropTargetKey: 'one',
+					dropLocation: dropLocation.below
 				},
 				expected: ['one', 'five', 'two', 'three', 'four']
 			},
@@ -269,9 +269,9 @@ describe('NewPositionEventDetails', () => {
 				description: 'moves first item to second last position of an array',
 				input: {
 					array: ['one', 'two', 'three', 'four', 'five'],
-					targetKey: 'one',
-					destinationKey: 'five',
-					insertBefore: true
+					dragTargetKey: 'one',
+					dropTargetKey: 'five',
+					dropLocation: dropLocation.above
 				},
 				expected: ['two', 'three', 'four', 'one', 'five']
 			}
@@ -280,9 +280,9 @@ describe('NewPositionEventDetails', () => {
 		for (const test of tests) {
 			it(`${test.description}`, () => {
 				const event = new NewPositionEventDetails({
-					targetKey: test.input.targetKey,
-					destinationKey: test.input.destinationKey,
-					insertBefore: test.input.insertBefore
+					dragTargetKey: test.input.dragTargetKey,
+					dropTargetKey: test.input.dropTargetKey,
+					dropLocation: test.input.dropLocation
 				});
 				const objects = test.input.array.map(x => ({key : x }));
 				event.reorder(objects, {keyFn: keyFn});

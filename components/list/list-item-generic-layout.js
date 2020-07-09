@@ -67,13 +67,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 2.1rem;
 				grid-column: outside-control-start / outside-control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="control"]) {
-				width: 2.1rem;
 				grid-column: control-start / control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="content"]) {

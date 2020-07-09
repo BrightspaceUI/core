@@ -69,7 +69,7 @@ class ListDemoDragNDropUsage extends LitElement {
 			<d2l-list ?grid="${this.grid}">
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
-						key="${item.key}"
+						key="${ifDefined(item.key)}"
 						draggable
 						?selectable="${this.selectable}"
 						href="${ifDefined(this.hrefs ? item.href : undefined)}"

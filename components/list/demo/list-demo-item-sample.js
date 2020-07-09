@@ -4,16 +4,24 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
+<<<<<<< HEAD
 import { ListItemDragMixin } from '../list-item-drag-mixin.js';
 import { ListItemRoleMixin } from '../list-item-role-mixin.js';
 import { nothing } from 'lit-html';
 
 class ListDemoItemSample extends ListItemRoleMixin(ListItemDragMixin(ListItemCheckboxMixin(LitElement))) {
+=======
+import { ListItemDragDropMixin } from '../list-item-drag-mixin.js';
+import { ListItemMixin } from '../list-item-mixin.js';
+import { nothing } from 'lit-html';
+
+class ListDemoItemSample extends ListItemMixin(ListItemDragDropMixin(ListItemCheckboxMixin(LitElement))) {
+>>>>>>> polaris/dragndrop
 	static get properties() {
 		return {
 			href: { type: String },
-			_hovering: { type: Boolean },
-			_focusing: { type: Boolean }
+			_focusing: { type: Boolean },
+			_hovering: { type: Boolean }
 		};
 	}
 
@@ -27,8 +35,8 @@ class ListDemoItemSample extends ListItemRoleMixin(ListItemDragMixin(ListItemChe
 				width: 40px;
 			}
 			a[href].d2l-list-item-link {
-				width: 100%;
 				height: 100%;
+				width: 100%;
 			}
 			:host([href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
@@ -48,19 +56,19 @@ class ListDemoItemSample extends ListItemRoleMixin(ListItemDragMixin(ListItemChe
 				transform: rotate(1deg);
 			}
 			[slot="content"] {
+				display: flex;
 				justify-content: stretch;
 				padding: 0.55rem 0;
-				display: flex;
 			}
 			[slot="content"] ::slotted([slot="illustration"]) {
-				margin: 0.15rem 0.9rem 0.15rem 0;
 				border-radius: 6px;
-				overflow: hidden;
 				flex-grow: 0;
 				flex-shrink: 0;
 				margin-right: 1rem;
+				margin: 0.15rem 0.9rem 0.15rem 0;
 				max-height: 5.1rem;
 				max-width: 9rem;
+				overflow: hidden;
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
@@ -79,7 +87,7 @@ class ListDemoItemSample extends ListItemRoleMixin(ListItemDragMixin(ListItemChe
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
-			${this._renderDropArea()}
+			${this._renderDropTarget()}
 			<div class="d2l-list-item-drag-image">
 				<d2l-list-item-generic-layout ?grid-active="${this.role === 'rowgroup'}">
 					${this._renderDragHandle(this._renderOutsideControl)}
