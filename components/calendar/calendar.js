@@ -593,7 +593,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		if (rootTarget.tagName !== 'TD') return;
 
 		let preventDefault = false;
-		let numDaysChange;
+		const oldFocusDate = new Date(this._focusDate);
 
 		switch (e.keyCode) {
 			case keyCodes.ENTER:
@@ -602,30 +602,28 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				this._onDateSelected(e);
 				break;
 			case keyCodes.DOWN:
-				numDaysChange = daysInWeek;
 				preventDefault = true;
+				await this._updateFocusDateFromNumDaysChanged(daysInWeek);
+				await this._updateShownMonthBasedOnFocusDate(oldFocusDate, true);
 				break;
 			case keyCodes.UP:
-				numDaysChange = -daysInWeek;
 				preventDefault = true;
+				await this._updateFocusDateFromNumDaysChanged(-daysInWeek);
+				await this._updateShownMonthBasedOnFocusDate(oldFocusDate, true);
 				break;
 			case keyCodes.LEFT:
-				if (this.dir === 'rtl') {
-					numDaysChange = 1;
-				} else {
-					numDaysChange = -1;
-				}
 				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
+				await this._updateFocusDateFromNumDaysChanged(this.dir === 'rtl' ? 1 : -1);
+				await this._updateShownMonthBasedOnFocusDate(oldFocusDate, false);
 				break;
 			case keyCodes.RIGHT:
-				if (this.dir === 'rtl') {
-					numDaysChange = -1;
-				} else {
-					numDaysChange = 1;
-				}
 				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
+				await this._updateFocusDateFromNumDaysChanged(this.dir === 'rtl' ? -1 : 1);
+				await this._updateShownMonthBasedOnFocusDate(oldFocusDate, false);
 				break;
 			case keyCodes.HOME: {
+				preventDefault = true;
+				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
 				if (this.dir === 'rtl') {
 					numDaysChange = 6 - dayOfTheWeek + calendarData.firstDayOfWeek;
@@ -639,9 +637,17 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					}
 					numDaysChange *= -1;
 				}
-				preventDefault = true;
+				const possibleFocusDate = new Date(
+					this._focusDate.getFullYear(),
+					this._focusDate.getMonth(),
+					this._focusDate.getDate() + numDaysChange
+				);
+				await this._updateFocusDateDependentOnDisabled(possibleFocusDate);
+				await this._updateShownMonthBasedOnFocusDate(oldFocusDate, true);
 				break;
 			} case keyCodes.END: {
+				preventDefault = true;
+				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
 				if (this.dir === 'rtl') {
 					numDaysChange = dayOfTheWeek - calendarData.firstDayOfWeek;
@@ -655,7 +661,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						numDaysChange -= daysInWeek;
 					}
 				}
-				preventDefault = true;
+				const possibleFocusDate = new Date(
+					this._focusDate.getFullYear(),
+					this._focusDate.getMonth(),
+					this._focusDate.getDate() + numDaysChange
+				);
+				await this._updateFocusDateDependentOnDisabled(possibleFocusDate, true);
+				await this._updateShownMonthBasedOnFocusDate(oldFocusDate, true);
 				break;
 			} case keyCodes.PAGEUP: {
 				const diff = getNumberOfDaysToSameWeekPrevMonth(this._shownMonth, this._shownYear);
@@ -710,50 +722,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
-
-		if (numDaysChange) {
-			const oldFocusDate = new Date(this._focusDate);
-			const possibleFocusDate = new Date(
-				this._focusDate.getFullYear(),
-				this._focusDate.getMonth(),
-				this._focusDate.getDate() + numDaysChange
-			);
-
-			// if HOME or END _focusDate becomes earliest or latest non-disabled date in the week as applicable
-			// if arrow keys change _focusDate only if intended target is not disabled
-			if (e.keyCode === keyCodes.END) this._updateFocusDateDependentOnDisabled(possibleFocusDate, true);
-			else if (e.keyCode === keyCodes.HOME) this._updateFocusDateDependentOnDisabled(possibleFocusDate);
-			else if (!isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) {
-				if (this._dialog) {
-					if (numDaysChange > 0 && getDateFromISODate(this.minValue) > possibleFocusDate) this._focusDate = getDateFromISODate(this.minValue);
-					else if (numDaysChange < 0 && getDateFromISODate(this.maxValue) < possibleFocusDate) this._focusDate = getDateFromISODate(this.maxValue);
-					else return;
-					this._keyboardTriggeredMonthChange = true;
-					this._shownMonth = this._focusDate.getMonth();
-					this._shownYear = this._focusDate.getFullYear();
-					await this.updateComplete;
-					return;
-				} else return;
-			}
-			else this._focusDate = possibleFocusDate;
-
-			this._isInitialFocusDate = false;
-
-			const date = await this._getDateElement(this._focusDate);
-			if (!date) {
-				this._keyboardTriggeredMonthChange = true;
-				const upDown = Math.abs(numDaysChange) !== 1; // use left/right animation if difference is 1 day
-				if (oldFocusDate < this._focusDate) {
-					this._updateShownMonthIncrease(true, upDown);
-				} else {
-					this._updateShownMonthDecrease(true, upDown);
-				}
-			} else {
-				this._focusDateAddFocus();
-			}
-			await this.updateComplete;
-			this._isInitialFocusDate = true;
-		}
 	}
 
 	_onNextMonthButtonClick() {
@@ -784,6 +752,28 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
+	async _updateFocusDateFromNumDaysChanged(numDaysChange) {
+		const possibleFocusDate = new Date(
+			this._focusDate.getFullYear(),
+			this._focusDate.getMonth(),
+			this._focusDate.getDate() + numDaysChange
+		);
+		if (!isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) {
+			// if date is not in range but we are in a dialog, _focusDate should become min or max date if possible
+			if (this._dialog) {
+				if (numDaysChange > 0 && getDateFromISODate(this.minValue) > possibleFocusDate) this._focusDate = getDateFromISODate(this.minValue);
+				else if (numDaysChange < 0 && getDateFromISODate(this.maxValue) < possibleFocusDate) this._focusDate = getDateFromISODate(this.maxValue);
+				else return;
+				this._keyboardTriggeredMonthChange = true;
+				this._shownMonth = this._focusDate.getMonth();
+				this._shownYear = this._focusDate.getFullYear();
+				await this.updateComplete;
+				return;
+			} else return;
+		}
+		else this._focusDate = possibleFocusDate;
+	}
+
 	async _updateFocusDateOnChange() {
 		await this.updateComplete;
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
@@ -793,6 +783,23 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		} else {
 			await this._updateFocusDateDependentOnDisabled(new Date(this._shownYear, this._shownMonth, 1));
 		}
+	}
+
+	async _updateShownMonthBasedOnFocusDate(prevFocusDate, upDownAnimation) {
+		this._isInitialFocusDate = false;
+		const date = await this._getDateElement(this._focusDate);
+		if (!date) {
+			this._keyboardTriggeredMonthChange = true;
+			if (prevFocusDate < this._focusDate) {
+				this._updateShownMonthIncrease(true, upDownAnimation);
+			} else {
+				this._updateShownMonthDecrease(true, upDownAnimation);
+			}
+		} else {
+			this._focusDateAddFocus();
+		}
+		await this.updateComplete;
+		this._isInitialFocusDate = true;
 	}
 
 	_updateShownMonthDecrease(keyboardTriggered, transitionUpDown) {
