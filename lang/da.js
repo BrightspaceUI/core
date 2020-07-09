@@ -30,6 +30,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Statusindikator",
 	"components.more-less.less": "færre",
 	"components.more-less.more": "flere",
+	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage"
 };

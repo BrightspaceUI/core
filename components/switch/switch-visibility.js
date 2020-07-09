@@ -1,12 +1,20 @@
 import '../icons/icon.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SwitchMixin } from './switch-mixin.js';
 
-class VisibilitySwitch extends SwitchMixin(LitElement) {
+class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
-	constructor() {
-		super();
-		this.text = 'Visibility';
+	get text() {
+		return (this._text ? this._text : this.localize('components.switch.visibility'));
+	}
+
+	set text(val) {
+		const oldVal = this._text;
+		if (oldVal !== val) {
+			this._text = val;
+			this.requestUpdate('text', oldVal);
+		}
 	}
 
 	get offIcon() {

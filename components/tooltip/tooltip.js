@@ -90,7 +90,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
 			 * @type {('start'|'end')}
 			 */
-			align: { type: String },
+			align: { type: String, reflect: true },
 			/**
 			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
 			 */
@@ -539,7 +539,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._target.addEventListener('focus', this._onTargetFocus);
 		this._target.addEventListener('blur', this._onTargetBlur);
 		this._target.addEventListener('click', this._onTargetClick);
-		this._target.addEventListener('touchstart', this._onTargetTouchStart);
+		this._target.addEventListener('touchstart', this._onTargetTouchStart, { passive: true });
 		this._target.addEventListener('touchcancel', this._onTargetTouchEnd);
 		this._target.addEventListener('touchend', this._onTargetTouchEnd);
 
