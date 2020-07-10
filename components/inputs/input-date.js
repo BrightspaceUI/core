@@ -26,6 +26,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * Indicates that the input value is invalid
+			 */
+			ariaInvalid: { type: String, attribute: 'aria-invalid', reflect: true },
+			/**
 			 * Disables the input
 			 */
 			disabled: { type: Boolean },
@@ -54,7 +58,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
-			_invalidInput: { type: Boolean },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
@@ -117,7 +120,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
-		this._invalidInput = false;
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
