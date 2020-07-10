@@ -33,6 +33,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Gelişim Göstergesi",
 	"components.more-less.less": "daha az",
 	"components.more-less.more": "daha fazla",
+	"components.switch.visibility": "Görünürlük",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır"
 };

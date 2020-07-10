@@ -33,6 +33,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "진도 표시기",
 	"components.more-less.less": "축소",
 	"components.more-less.more": "더 보기",
+	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤"
 };

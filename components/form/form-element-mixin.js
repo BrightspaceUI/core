@@ -188,6 +188,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
 	}
 
+	get validationMessageRangeUnderflow() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageRangeUnderflow\'');
+		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+	}
+
 	get validationMessageStepMismatch() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageStepMismatch\'');
 		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });

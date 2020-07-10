@@ -33,6 +33,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Indicador de progresso",
 	"components.more-less.less": "menos",
 	"components.more-less.more": "mais",
+	"components.switch.visibility": "Visibilidade",
 	"components.tabs.next": "Ir para frente",
 	"components.tabs.previous": "Ir para trás"
 };
