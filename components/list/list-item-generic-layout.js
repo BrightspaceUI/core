@@ -61,7 +61,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] auto
 					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
-				position: relative;
+				position:relative;
 			}
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]) {
@@ -158,10 +158,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	firstUpdated() {
 		this.addEventListener('keydown', this._onKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
-		this.addEventListener('d2l-dropdown-open', this._onDropdownOpen.bind(this));
-		this.addEventListener('d2l-dropdown-close', this._onDropdownClose.bind(this));
-		this.addEventListener('d2l-tooltip-show', this._onTooltipShow.bind(this));
-		this.addEventListener('d2l-tooltip-hide', this._onTooltipHide.bind(this));
 	}
 
 	render() {

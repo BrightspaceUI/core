@@ -111,11 +111,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}));
 	}
 
-	_onDragTargetClick(e) {
-		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
-		e.preventDefault();
-	}
-
 	_onDragEnd(e) {
 		const dropSpot = getDragState();
 		this.dragging = false;
@@ -173,6 +168,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		setTimeout(() => {
 			this.dragging = true;
 		});
+	}
+
+	_onDragTargetClick(e) {
+		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		e.preventDefault();
 	}
 
 	_onDrop() {
@@ -242,20 +242,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this._dropLocation === dropLocation.below ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
 	}
 
-	_renderDragTarget(templateMethod) {
-		templateMethod = templateMethod || (dragTarget => dragTarget);
-		return this.draggable && !this._keyboardActive ? templateMethod(html`
-			<div
-				class="d2l-list-item-drag-area"
-				draggable="true"
-				@click="${this._onDragTargetClick}"
-				@dragstart="${this._onDragStart}"
-				@dragend="${this._onDragEnd}"
-				>
-			</div>
-		`) : nothing;
-	}
-
 	_renderDragHandle(templateMethod) {
 		templateMethod = templateMethod || (dragHandle => dragHandle);
 		const classes = {
@@ -270,6 +256,20 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
 			</d2l-list-item-drag-handle>
+		`) : nothing;
+	}
+
+	_renderDragTarget(templateMethod) {
+		templateMethod = templateMethod || (dragTarget => dragTarget);
+		return this.draggable && !this._keyboardActive ? templateMethod(html`
+			<div
+				class="d2l-list-item-drag-area"
+				draggable="true"
+				@click="${this._onDragTargetClick}"
+				@dragstart="${this._onDragStart}"
+				@dragend="${this._onDragEnd}"
+				>
+			</div>
 		`) : nothing;
 	}
 

@@ -9,6 +9,11 @@
 		<script type="module">
 			import '../../button/button-icon.js';
 			import '../../demo/demo-page.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
+			import '../../tooltip/tooltip.js';
 			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
@@ -145,8 +150,8 @@
 								<div slot="secondary">bnovak</div>
 							</d2l-list-item-content>
 							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 							</div>
 						</d2l-list-item>
 						<d2l-list-item>
@@ -156,8 +161,8 @@
 								<div slot="secondary">dwatts</div>
 							</d2l-list-item-content>
 							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 							</div>
 						</d2l-list-item>
 						<d2l-list-item>
@@ -167,8 +172,8 @@
 								<div slot="secondary">pmacleod</div>
 							</d2l-list-item-content>
 							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 							</div>
 						</d2l-list-item>
 						<d2l-list-item>
@@ -178,8 +183,8 @@
 								<div slot="secondary">ylord</div>
 							</d2l-list-item-content>
 							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="d2l-tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="d2l-tier1:more"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 							</div>
 						</d2l-list-item>
 					</d2l-list>
@@ -334,6 +339,61 @@
 						</d2l-list-item>
 					</d2l-list>
 				</template>
+			</d2l-demo-snippet>
+
+			<h2>List (tooltips and dropdown menu)</h2>
+
+			<d2l-demo-snippet>
+				<d2l-list>
+					<d2l-list-item>
+						Item 1
+						<div slot="actions">
+							<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+							<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+							<d2l-dropdown-more text="Open!">
+								<d2l-dropdown-menu id="dropdown">
+									<d2l-menu label="Astronomy">
+										<d2l-menu-item text="Introduction"></d2l-menu-item>
+										<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										<d2l-menu-item text="The Solar System">
+									</d2l-menu>
+								</d2l-dropdown-menu>
+							</d2l-dropdown-more>
+						</div>
+					</d2l-list-item>
+					<d2l-list-item>
+						Item 2
+						<div slot="actions">
+							<d2l-button-icon id="tooltip-btn-2" text="My Button" icon="tier1:preview"></d2l-button-icon>
+							<d2l-tooltip for="tooltip-btn-2">Preview</d2l-tooltip>
+							<d2l-dropdown-more text="Open!">
+								<d2l-dropdown-menu id="dropdown">
+									<d2l-menu label="Astronomy">
+										<d2l-menu-item text="Introduction"></d2l-menu-item>
+										<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										<d2l-menu-item text="The Solar System">
+									</d2l-menu>
+								</d2l-dropdown-menu>
+							</d2l-dropdown-more>
+						</div>
+					</d2l-list-item>
+					<d2l-list-item>
+						Item 3
+						<div slot="actions">
+							<d2l-button-icon id="tooltip-btn-3" text="My Button" icon="tier1:preview"></d2l-button-icon>
+							<d2l-tooltip for="tooltip-btn-3">Preview</d2l-tooltip>
+							<d2l-dropdown-more text="Open!">
+								<d2l-dropdown-menu id="dropdown">
+									<d2l-menu label="Astronomy">
+										<d2l-menu-item text="Introduction"></d2l-menu-item>
+										<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										<d2l-menu-item text="The Solar System">
+									</d2l-menu>
+								</d2l-dropdown-menu>
+							</d2l-dropdown-more>
+						</div>
+					</d2l-list-item>
+				</d2l-list>
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>

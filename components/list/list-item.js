@@ -44,9 +44,11 @@ class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleM
 			 */
 			href: { type: String },
 			_breakpoint: { type: Number },
+			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringLink: { type: Boolean },
 			_focusing: { type: Boolean },
-			_focusingLink: { type: Boolean }
+			_focusingLink: { type: Boolean },
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
 
@@ -63,6 +65,10 @@ class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleM
 			}
 			:host([href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
+			}
+			:host([_tooltip-showing]),
+			:host([_dropdown-open]) {
+				z-index: 10;
 			}
 			:host(:first-child) d2l-list-item-generic-layout[data-separators="between"] {
 				border-top: 1px solid transparent;
@@ -86,7 +92,6 @@ class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleM
 				border-bottom: 1px solid transparent;
 			}
 			d2l-list-item-generic-layout {
-				position: relative;
 				border-bottom: 1px solid transparent;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
@@ -227,6 +232,13 @@ class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleM
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		ro.unobserve(this);
+	}
+
+	firstUpdated() {
+		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
+		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
+		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
+		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
 	}
 
 	render() {

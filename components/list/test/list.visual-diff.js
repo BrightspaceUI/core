@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
+const dropdownHelper = require('../../dropdown/test/dropdown-helper.js');
+const tooltipHelper = require('../../tooltip/test/tooltip-helper.js');
 
 describe('d2l-list', () => {
 
@@ -15,7 +17,7 @@ describe('d2l-list', () => {
 	});
 
 	beforeEach(async() => {
-		await visualDiff.resetFocus(page);
+		await page.reload();
 	});
 
 	after(async() => await browser.close());
@@ -64,6 +66,12 @@ describe('d2l-list', () => {
 			{ name: '636', selector: '#breakpoint-636' },
 			{ name: '580', selector: '#breakpoint-580' },
 			{ name: '0', selector: '#breakpoint-0' }
+		]},
+		{ category: 'dropdown', tests: [
+			{ name: 'open down', selector: '#dropdown-tooltips', rect: () => getDropdownRect('#dropdown-down'), action: () => openDropdown('#dropdown-down') }
+		]},
+		{ category: 'tooltip', tests: [
+			{ name: 'open down', selector: '#dropdown-tooltips', action: () => showTooltip('#dropdown-down') }
 		]}
 	].forEach((info) => {
 
@@ -74,7 +82,7 @@ describe('d2l-list', () => {
 					if (info.action) {
 						await info.action();
 					}
-					const rect = await visualDiff.getRect(page, info.selector);
+					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector));
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 			});
@@ -101,8 +109,20 @@ describe('d2l-list', () => {
 		});
 	};
 
+	const getDropdownRect = (selector) => {
+		return dropdownHelper.getRect(page, selector);
+	};
+
 	const hover = (selector) => {
 		return page.hover(selector);
+	};
+
+	const openDropdown = (selector) => {
+		return dropdownHelper.open(page, selector);
+	};
+
+	const showTooltip = (selector) => {
+		return tooltipHelper.show(page, selector);
 	};
 
 });

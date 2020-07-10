@@ -6,7 +6,10 @@
 		<script type="module">
 			import '../../colors/colors.js';
 			import '../../button/button-icon.js';
+			import '../../dropdown/dropdown.js';
+			import '../../dropdown/dropdown-content.js';
 			import '../../link/link.js';
+			import '../../tooltip/tooltip.js';
 			import '../../typography/typography.js';
 			import '../list.js';
 			import '../list-item.js';
@@ -257,6 +260,29 @@
 							<div>Introductory Pirate Ipsum</div>
 							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px; height: 200px">
+			<div class="visual-diff" id="dropdown-tooltips">
+				<d2l-list>
+					<d2l-list-item>
+						Item 1
+						<div slot="actions">
+							<d2l-dropdown id="dropdown-down">
+								<button id="dropdown-btn-down" class="d2l-dropdown-opener">Open</button>
+								<d2l-tooltip for="dropdown-btn-down" position="bottom">Cookie pie apple pie</d2l-tooltip>
+								<d2l-dropdown-content>
+									donut gummies
+								</d2l-dropdown-content>
+							</d2l-dropdown>
+						</div>
+					</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>
+						Item 3
 					</d2l-list-item>
 				</d2l-list>
 			</div>
