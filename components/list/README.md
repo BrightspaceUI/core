@@ -89,7 +89,7 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 <d2l-list-item>
   <d2l-list-item-content>
     <div>Item 1</div>
-    <div slot="secondary">secondary info for item 1</div>
+    <div slot="supporting-info">secondary info for item 1</div>
   </d2l-list-item-content>
 </d2l-list-item>
 ```

@@ -35,21 +35,21 @@ class DialogAsyncContent extends LitElement {
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Introductory Earth Sciences</div>
-								<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
 						<d2l-list-item>
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Engineering Materials for Energy Systems</div>
-								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
 						<d2l-list-item>
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Geomorphology and GIS </div>
-								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
 					</d2l-list>
