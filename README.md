@@ -17,15 +17,23 @@ npm install @brightspace-ui/core
 
 * Components
   * [Alert](components/alert/): alert components for displaying important information
+  * [Breadcrumbs](components/breadcrumbs/): component to help users understand where they are within an application
   * [Backdrop](components/backdrop/): component for displaying backdrop behind a target element
   * [Buttons](components/button/): normal, primary, icon and subtle buttons
+  * [Calendar](components/calendar/): calendar component
   * [Colors](components/colors/): color palette
   * [Dialogs](components/dialog/): generic and confirmation dialogs
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
   * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible content
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Icons](components/icons/): iconography SVGs and web components
-  * [Inputs](components/inputs/): text, search, select, checkbox and radio inputs
+  * [Inputs](components/inputs/):
+  	* [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
+	* [Date and time](components/inputs/docs/input-date-time.md): date and time picker components including ranges
+	* [Radio](components/inputs/docs/input-radio.md): radio input styles
+	* [Search](components/inputs/docs/input-search.md): search input component
+	* [Select styles](components/inputs/docs/input-select-styles.md): select input styles
+	* [Text](components/inputs/docs/input-text.md): text input component and styles
   * [Links](components/link/): link component and styles
   * [List](components/list/): list and list-item components
   * [Loading Spinner](components/loading-spinner/): loading-spinner components
