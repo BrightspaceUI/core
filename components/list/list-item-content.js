@@ -26,13 +26,21 @@ class ListItemContent extends LitElement {
 				overflow: hidden;
 			}
 
+			.d2l-list-item-content-text-supportingInformation {
+				color: var(--d2l-list-item-content-text-color);
+				margin: 0;
+				margin-top: 0.15rem;
+				overflow: hidden;
+			}
+
 		`];
 	}
 
 	render() {
 		return html`
 			<div class="d2l-list-item-content-text d2l-body-compact"><slot></slot></div>
-			<div class="d2l-list-item-content-text-secondary d2l-body-small"><slot name="secondary"></slot></div>
+			<div class="d2l-list-item-content-text-secondary d2l-body-small"><slot name="supportingInformation"></slot></div>
+			<div class="d2l-list-item-content-text-supportingInformation d2l-body-small"><slot name="secondary"></slot></div>
 		`;
 	}
 
