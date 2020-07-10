@@ -234,11 +234,12 @@ class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleM
 		ro.unobserve(this);
 	}
 
-	firstUpdated() {
+	firstUpdated(changedProperties) {
 		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
 		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
 		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
 		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
+		super.firstUpdated(changedProperties);
 	}
 
 	render() {
