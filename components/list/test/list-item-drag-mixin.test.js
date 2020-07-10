@@ -27,108 +27,86 @@ describe('ListItemDragDropMixin', () => {
 		let element;
 		let dropGrid;
 		let dataTransfer;
+
+		const setDropGrid = () => {
+			dropGrid = element.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+		};
+
+		const dispatchDragEnter = (element) => {
+			setTimeout(() => {
+				element.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+			});
+		};
+
 		before(async() => {
 			element = await fixture(`<${tag} draggable key="1"></${tag}>`);
-			dataTransfer = new DataTransfer();
+			dataTransfer = { setData: () => {} };
 			dataTransfer.setData('text/plain', 'test');
 			dataTransfer.effectAllowed = 'move';
 		});
 
-		it('Will listen to dragEnter on host and show the real drop spots.', async() => {
-			setTimeout(() => {
-				element.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
-			});
+		it('listens to dragEnter on host and shows the real drop spots', async() => {
+			dispatchDragEnter(element);
 			await oneEvent(element, 'dragenter');
 			await element.updateComplete;
-			dropGrid = element.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+			setDropGrid();
 			expect(dropGrid).not.be.null;
 		});
 
-		it('Will show the top placement marker after entering the top of the element.', async() => {
-			const topDropTarget = dropGrid.querySelectorAll('div')[0];
-			setTimeout(() => {
-				topDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+		[{
+			description: 'shows top marker when entering from top',
+			dropTargetNumber: 0,
+			marker: 'top'
+		},
+		{
+			description: 'shows bottom marker when entering top half from top',
+			dropTargetNumber: 1,
+			marker: 'bottom'
+		},
+		{
+			description: 'shows bottom marker when entering bottom half from top',
+			dropTargetNumber: 2,
+			marker: 'bottom'
+		},
+		{
+			description: 'shows bottom marker when entering bottom from top',
+			dropTargetNumber: 3,
+			marker: 'bottom'
+		},
+		{
+			description: 'shows top marker when entering bottom half from bottom',
+			dropTargetNumber: 2,
+			marker: 'top'
+		},
+		{
+			description: 'shows top marker when entering top half from bottom',
+			dropTargetNumber: 1,
+			marker: 'top'
+		}].forEach((test) => {
+			it(test.description, async() => {
+				setDropGrid();
+				const dropTarget = dropGrid.querySelectorAll('div')[test.dropTargetNumber];
+				dispatchDragEnter(dropTarget);
+				await oneEvent(dropTarget, 'dragenter');
+				await element.updateComplete;
+				const markers = {
+					'top' : element.shadowRoot.querySelector('#top-placement-marker'),
+					'bottom': element.shadowRoot.querySelector('#bottom-placement-marker')
+				};
+				expect(markers[test.marker]).to.exist;
+				expect(markers[test.marker === 'top' ? 'bottom' : 'top']).to.be.null;
 			});
-			await oneEvent(topDropTarget, 'dragenter');
-			await element.updateComplete;
-			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
-			expect(topPlacementMarker).not.be.null;
 		});
 
-		it('Will show the bottom placement marker after entering the top half of the element coming from the top.', async() => {
-			const topHalfDropTarget = dropGrid.querySelectorAll('div')[1];
-			setTimeout(() => {
-				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
-			});
-			await oneEvent(topHalfDropTarget, 'dragenter');
-			await element.updateComplete;
-			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
-			expect(topPlacementMarker).be.null;
-			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
-			expect(bottomPlacementMarker).not.be.null;
-		});
-
-		it('Will show the bottom placement marker after entering the bottom half of the element coming from the top.', async() => {
-			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
-			setTimeout(() => {
-				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
-			});
-			await oneEvent(topHalfDropTarget, 'dragenter');
-			await element.updateComplete;
-			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
-			expect(topPlacementMarker).be.null;
-			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
-			expect(bottomPlacementMarker).not.be.null;
-		});
-
-		it('Will show the bottom placement marker after entering the bottom of the element coming from the top.', async() => {
-			const topHalfDropTarget = dropGrid.querySelectorAll('div')[3];
-			setTimeout(() => {
-				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
-			});
-			await oneEvent(topHalfDropTarget, 'dragenter');
-			await element.updateComplete;
-			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
-			expect(topPlacementMarker).be.null;
-			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
-			expect(bottomPlacementMarker).not.be.null;
-		});
-
-		it('Will show the top placement marker after entering the bottom half of the element coming from the bottom.', async() => {
-			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
-			setTimeout(() => {
-				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
-			});
-			await oneEvent(topHalfDropTarget, 'dragenter');
-			await element.updateComplete;
-			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
-			expect(topPlacementMarker).not.be.null;
-			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
-			expect(bottomPlacementMarker).be.null;
-		});
-
-		it('Will show the top placement marker after entering the top half of the element coming from the bottom.', async() => {
-			const topHalfDropTarget = dropGrid.querySelectorAll('div')[2];
-			setTimeout(() => {
-				topHalfDropTarget.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
-			});
-			await oneEvent(topHalfDropTarget, 'dragenter');
-			await element.updateComplete;
-			const topPlacementMarker = element.shadowRoot.querySelector('#top-placement-marker');
-			expect(topPlacementMarker).not.be.null;
-			const bottomPlacementMarker = element.shadowRoot.querySelector('#bottom-placement-marker');
-			expect(bottomPlacementMarker).be.null;
-		});
-
-		it('Will have the list item go back to normal when dragging ends.', async() => {
+		it('should have the list item go back to normal when dragging ends', async() => {
 			const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag-area');
 			setTimeout(() => {
 				dragArea.dispatchEvent(new DragEvent('dragend', {dataTransfer}));
 			});
 			await oneEvent(dragArea, 'dragend');
 			await element.updateComplete;
-			dropGrid = element.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
-			expect(dropGrid).be.null;
+			setDropGrid();
+			expect(dropGrid).to.be.null;
 		});
 	});
 });
