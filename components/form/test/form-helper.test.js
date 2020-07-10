@@ -1,5 +1,6 @@
 import './form-element.js';
 import '../../status-indicator/status-indicator.js';
+import '../../tooltip/tooltip.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { isCustomElement, isCustomFormElement, isElement, tryGetLabelText } from '../form-helper.js';
 
@@ -121,6 +122,13 @@ describe('form-helper', () => {
 			</label>
 		`;
 
+		const implicitLabelWithTooltipFixture = html`
+			<label>Do you like peas?
+				<input id='target' type="checkbox" name="peas">
+				<d2l-tooltip for="target">Tooltip that shouldn't be included in label text</d2l-tooltip>
+			</label>
+		`;
+
 		const explicitLabelFixture = html`
 			<div>
 				<label for="target">Do you like peas?</label>
@@ -187,6 +195,7 @@ describe('form-helper', () => {
 
 		[
 			{ type: 'implicit', fixture: implicitLabelFixture },
+			{ type: 'implicit with tooltip', fixture: implicitLabelWithTooltipFixture},
 			{ type: 'explicit', fixture: explicitLabelFixture },
 			{ type: 'aria-label', fixture: ariaLabelFixture },
 			{ type: 'aria-labelledby', fixture: ariaLabelledByFixture },

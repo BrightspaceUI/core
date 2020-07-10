@@ -33,6 +33,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Förloppsindikator",
 	"components.more-less.less": "mindre",
 	"components.more-less.more": "mer",
+	"components.switch.visibility": "Synlighet",
 	"components.tabs.next": "Bläddra framåt",
 	"components.tabs.previous": "Bläddra bakåt"
 };

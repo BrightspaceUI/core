@@ -42,6 +42,10 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Hide the alert icon when input is invalid
+			 */
+			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Label for the input
 			 */
 			label: { type: String },
@@ -117,8 +121,7 @@ class InputText extends RtlMixin(LitElement) {
 			_firstSlotWidth: { type: Number },
 			_focused: { type: Boolean },
 			_hovered: { type: Boolean },
-			_lastSlotWidth: { type: Number },
-			_isInputValid: { type: Boolean }
+			_lastSlotWidth: { type: Number }
 		};
 	}
 
@@ -173,6 +176,7 @@ class InputText extends RtlMixin(LitElement) {
 		super();
 		this.autofocus = false;
 		this.disabled = false;
+		this.hideInvalidIcon = false;
 		this.labelHidden = false;
 		this.preventSubmit = false;
 		this.readonly = false;
@@ -185,7 +189,6 @@ class InputText extends RtlMixin(LitElement) {
 		this._inputId = getUniqueId();
 		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
-		this._isInputValid = true;
 	}
 
 	firstUpdated(changedProperties) {
@@ -216,7 +219,7 @@ class InputText extends RtlMixin(LitElement) {
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
-		const isValid = (this.ariaInvalid !== 'true' && this._isInputValid) || this.disabled;
+		const isValid = this.ariaInvalid !== 'true' || this.disabled;
 		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
 		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
 		const invalidIconStyles = {
@@ -256,7 +259,7 @@ class InputText extends RtlMixin(LitElement) {
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-				${ !isValid ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
+				${ (!isValid && !this.hideInvalidIcon) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {
@@ -273,8 +276,6 @@ class InputText extends RtlMixin(LitElement) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
-				const input = this.shadowRoot.querySelector('input');
-				this._isInputValid = input.checkValidity();
 			}
 		});
 	}

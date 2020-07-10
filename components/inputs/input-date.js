@@ -54,6 +54,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
+			_invalidInput: { type: Boolean },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
@@ -116,6 +117,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
+		this._invalidInput = false;
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
@@ -163,12 +165,14 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					aria-invalid="${this._invalidInput ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
+					hide-invalid-icon
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -178,8 +182,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						icon="tier1:calendar"
-						slot="left"></d2l-icon>
+						icon="${this._invalidInput ? 'tier1:alert' : 'tier1:calendar'}"
+						slot="left"
+						style="${styleMap({color: this._invalidInput ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -357,7 +362,11 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
 		});
 		const errors = await this.validate();
-		if (errors.length > 0) return;
+		if (errors.length > 0) {
+			this._invalidInput = true;
+			return;
+		}
+		this._invalidInput = false;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',

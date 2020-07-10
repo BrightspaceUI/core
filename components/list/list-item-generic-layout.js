@@ -26,8 +26,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			role: { type: String, reflect: true },
-			gridActive: { type: Boolean, attribute: 'grid-active' }
+			/**
+			 * Specifies whether the grid is active or not
+			 */
+			gridActive: { type: Boolean, attribute: 'grid-active' },
+			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true  }
 		};
 	}
 
@@ -39,9 +47,15 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[start outside-control-start] minmax(0, min-content)
 					[control-start outside-control-end] minmax(0, min-content)
 					[control-end content-start] auto
-					[content-end actions-start] auto
+					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
+				position: relative;
 			}
+			:host([_tooltip-showing]),
+			:host([_dropdown-open]) {
+				z-index: 6;
+			}
+
 			::slotted([slot="outside-control"]),
 			::slotted([slot="control"]),
 			::slotted([slot="content"]),
@@ -49,13 +63,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: 1 / 2;
 			}
 			::slotted([slot="outside-control"]) {
-				width: 40px;
 				grid-column: outside-control-start / outside-control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="control"]) {
-				width: 40px;
 				grid-column: control-start / control-end;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="content"]) {
@@ -64,6 +78,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="actions"]) {
 				grid-column: actions-start / actions-end;
+				justify-self: end;
 				z-index: 4;
 			}
 
@@ -84,6 +99,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-column: content-start / end;
 				z-index: 3;
 			}
+
 		`;
 	}
 
@@ -130,18 +146,22 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	firstUpdated() {
 		this.addEventListener('keydown', this._handleKeydown.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
+		this.addEventListener('d2l-dropdown-open', this._onDropdownOpen.bind(this));
+		this.addEventListener('d2l-dropdown-close', this._onDropdownClose.bind(this));
+		this.addEventListener('d2l-tooltip-show', this._onTooltipShow.bind(this));
+		this.addEventListener('d2l-tooltip-hide', this._onTooltipHide.bind(this));
 	}
 
 	render() {
 		return html`
-		<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
-		<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
-		<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
-		<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
-		<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
-		<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
+			<slot name="content-action" class="d2l-cell" data-cell-num="5"></slot>
+			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
+			<slot name="outside-control" class="d2l-cell" data-cell-num="2"></slot>
+			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
+			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
+			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
-		<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
+			<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
 		`;
 	}
 
@@ -206,8 +226,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusNextRow(previous = false, num = 1) {
 		let listItem = previous ?
-			getPreviousAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE') :
-			getNextAncestorSibling(this, (node) => node.tagName === 'D2L-LIST-ITEM-SAMPLE');
+			getPreviousAncestorSibling(this, (node) => node.role === 'rowgroup') :
+			getNextAncestorSibling(this, (node) => node.role === 'rowgroup');
 		if (!listItem || !listItem.shadowRoot) return;
 		while (num > 1) {
 			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
@@ -382,6 +402,22 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
+	}
+
+	_onDropdownClose() {
+		this._dropdownOpen = false;
+	}
+
+	_onDropdownOpen() {
+		this._dropdownOpen = true;
+	}
+
+	_onTooltipHide() {
+		this._tooltipShowing = false;
+	}
+
+	_onTooltipShow() {
+		this._tooltipShowing = true;
 	}
 
 	_setFocusInfo(event) {
