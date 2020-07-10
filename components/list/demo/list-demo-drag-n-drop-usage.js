@@ -72,8 +72,7 @@ class ListDemoDragNDropUsage extends LitElement {
 						key="${ifDefined(item.key)}"
 						draggable
 						?selectable="${this.selectable}"
-						href="${ifDefined(this.hrefs ? item.href : undefined)}"
-						@d2l-list-item-position-change="${this._moveItems}">
+						href="${ifDefined(this.hrefs ? item.href : undefined)}">
 						<img slot="illustration" src="${item.img}">
 						<d2l-list-item-content>
 							<div>${item.name}</div>
