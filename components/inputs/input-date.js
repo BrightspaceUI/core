@@ -54,6 +54,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
+			_invalidInput: { type: Boolean },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
@@ -116,6 +117,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
+		this._invalidInput = false;
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
