@@ -111,10 +111,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragEnd(e) {
-		const dropSpot = getDragState();
+		const dragState = getDragState();
 		this.dragging = false;
-		if (dropSpot.shouldDrop(e.timeStamp)) {
-			this._annoucePositionChange(dropSpot.dragTargetKey, dropSpot.dropTargetKey, dropSpot.dropLocation);
+		if (dragState.shouldDrop(e.timeStamp)) {
+			this._annoucePositionChange(dragState.dragTargetKey, dragState.dropTargetKey, dragState.dropLocation);
 		}
 		clearDragState();
 	}
