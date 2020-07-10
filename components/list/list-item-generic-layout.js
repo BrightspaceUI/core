@@ -45,9 +45,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			/**
 			 * Specifies whether the grid is active or not
 			 */
-			gridActive: { type: Boolean, attribute: 'grid-active' },
-			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true  }
+			gridActive: { type: Boolean, attribute: 'grid-active' }
 		};
 	}
 
@@ -62,10 +60,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
 				position:relative;
-			}
-			:host([_tooltip-showing]),
-			:host([_dropdown-open]) {
-				z-index: 6;
 			}
 
 			::slotted([slot="outside-control"]),
@@ -316,14 +310,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		return this.shadowRoot.querySelector(`.d2l-cell[data-cell-num="${this._cellNum}"]`);
 	}
 
-	_onDropdownClose() {
-		this._dropdownOpen = false;
-	}
-
-	_onDropdownOpen() {
-		this._dropdownOpen = true;
-	}
-
 	_onKeydown(event) {
 		if (!this.gridActive) return;
 		let node = null;
@@ -418,14 +404,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-	}
-
-	_onTooltipHide() {
-		this._tooltipShowing = false;
-	}
-
-	_onTooltipShow() {
-		this._tooltipShowing = true;
 	}
 
 	_setFocusInfo(event) {
