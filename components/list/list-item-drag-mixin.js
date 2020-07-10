@@ -100,6 +100,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	firstUpdated(changedProperties) {
 		this.addEventListener('mouseenter', this._onMouseEnter.bind(this));
 		this.addEventListener('mouseleave', this._onMouseLeave.bind(this));
+		this.addEventListener('dragenter', this._onHostDragEnter.bind(this));
 		super.firstUpdated(changedProperties);
 	}
 
@@ -267,7 +268,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@click="${this._onDragTargetClick}"
 				@dragstart="${this._onDragStart}"
 				@dragend="${this._onDragEnd}"
-				@dragenter="${this._onHostDragEnter}"
 				>
 			</div>
 		`) : nothing;
