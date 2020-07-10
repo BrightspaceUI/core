@@ -40,7 +40,12 @@ describe('ListItemDragDropMixin', () => {
 
 		before(async() => {
 			element = await fixture(`<${tag} draggable key="1"></${tag}>`);
-			dataTransfer = { setData: () => {} };
+			try {
+				dataTransfer = new DataTransfer();
+			} catch (e) {
+				// Safari doesn't like the constructor
+				dataTransfer = (new DragEvent('dragenter')).dataTransfer;
+			}
 			dataTransfer.setData('text/plain', 'test');
 			dataTransfer.effectAllowed = 'move';
 		});
