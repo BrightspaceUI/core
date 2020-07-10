@@ -32,26 +32,27 @@ describe('ListItemDragDropMixin', () => {
 			dropGrid = element.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
 		};
 
-		const dispatchDragEnter = (element) => {
+		const dispatchDragEvent = (element, type) => {
+			const event = new Event(type);
+			event.dataTransfer = dataTransfer;
+
 			setTimeout(() => {
-				element.dispatchEvent(new DragEvent('dragenter', {dataTransfer}));
+				element.dispatchEvent(event);
 			});
 		};
 
 		before(async() => {
 			element = await fixture(`<${tag} draggable key="1"></${tag}>`);
-			try {
-				dataTransfer = new DataTransfer();
-			} catch (e) {
-				// Safari doesn't like the constructor
-				dataTransfer = (new DragEvent('dragenter')).dataTransfer;
-			}
+			dataTransfer = {
+				setData: () => {},
+				effectAllowed: 'move'
+			};
 			dataTransfer.setData('text/plain', 'test');
 			dataTransfer.effectAllowed = 'move';
 		});
 
 		it('listens to dragEnter on host and shows the real drop spots', async() => {
-			dispatchDragEnter(element);
+			dispatchDragEvent(element, 'dragenter');
 			await oneEvent(element, 'dragenter');
 			await element.updateComplete;
 			setDropGrid();
@@ -91,7 +92,7 @@ describe('ListItemDragDropMixin', () => {
 			it(test.description, async() => {
 				setDropGrid();
 				const dropTarget = dropGrid.querySelectorAll('div')[test.dropTargetNumber];
-				dispatchDragEnter(dropTarget);
+				dispatchDragEvent(dropTarget, 'dragenter');
 				await oneEvent(dropTarget, 'dragenter');
 				await element.updateComplete;
 				const markers = {
@@ -105,9 +106,7 @@ describe('ListItemDragDropMixin', () => {
 
 		it('should have the list item go back to normal when dragging ends', async() => {
 			const dragArea = element.shadowRoot.querySelector('.d2l-list-item-drag-area');
-			setTimeout(() => {
-				dragArea.dispatchEvent(new DragEvent('dragend', {dataTransfer}));
-			});
+			dispatchDragEvent(dragArea, 'dragend');
 			await oneEvent(dragArea, 'dragend');
 			await element.updateComplete;
 			setDropGrid();
