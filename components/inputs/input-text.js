@@ -42,6 +42,10 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Hide the alert icon when input is invalid
+			 */
+			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Label for the input
 			 */
 			label: { type: String },
@@ -173,6 +177,7 @@ class InputText extends RtlMixin(LitElement) {
 		super();
 		this.autofocus = false;
 		this.disabled = false;
+		this.hideInvalidIcon = false;
 		this.labelHidden = false;
 		this.preventSubmit = false;
 		this.readonly = false;
@@ -256,7 +261,7 @@ class InputText extends RtlMixin(LitElement) {
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-				${ !isValid ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
+				${ (!isValid && !this.hideInvalidIcon) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {
