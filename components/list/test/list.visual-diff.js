@@ -128,7 +128,7 @@ describe('d2l-list', () => {
 	};
 
 	const hideTooltip = (selector) => {
-		tooltipHelper.hide(page, selector);
+		return tooltipHelper.hide(page, selector);
 	};
 
 	const hover = (selector) => {
