@@ -17,7 +17,7 @@ describe('d2l-list', () => {
 	});
 
 	beforeEach(async() => {
-		await page.reload();
+		await visualDiff.resetFocus(page);
 	});
 
 	after(async() => await browser.close());
@@ -66,12 +66,23 @@ describe('d2l-list', () => {
 			{ name: '636', selector: '#breakpoint-636' },
 			{ name: '580', selector: '#breakpoint-580' },
 			{ name: '0', selector: '#breakpoint-0' }
-		]},
+		]}
+		,
 		{ category: 'dropdown', tests: [
-			{ name: 'open down', selector: '#dropdown-tooltips', rect: () => getDropdownRect('#dropdown-down'), action: () => openDropdown('#dropdown-down') }
+			{
+				name: 'open down',
+				selector: '#dropdown-tooltips',
+				action: () => openDropdown('#open-down'),
+				after: () => closeDropdown('#open-down')
+			}
 		]},
 		{ category: 'tooltip', tests: [
-			{ name: 'open down', selector: '#dropdown-tooltips', action: () => showTooltip('#dropdown-down') }
+			{
+				name: 'open down',
+				selector: '#dropdown-tooltips',
+				action: () => showTooltip('#open-down'),
+				after: () => hideTooltip('#open-down')
+			}
 		]}
 	].forEach((info) => {
 
@@ -84,12 +95,19 @@ describe('d2l-list', () => {
 					}
 					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector));
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					if (info.after) {
+						await info.after();
+					}
 				});
 			});
 
 		});
 
 	});
+
+	const closeDropdown = (selector) => {
+		return dropdownHelper.reset(page, selector);
+	};
 
 	const focusMethod = (selector) => {
 		return page.$eval(selector, (item) => {
@@ -109,8 +127,8 @@ describe('d2l-list', () => {
 		});
 	};
 
-	const getDropdownRect = (selector) => {
-		return dropdownHelper.getRect(page, selector);
+	const hideTooltip = (selector) => {
+		tooltipHelper.hide(page, selector);
 	};
 
 	const hover = (selector) => {
