@@ -1,11 +1,15 @@
 import '../colors/colors.js';
+import './list-item-generic-layout.js';
+import './list-item-placement-marker.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { checkboxStyles } from '../inputs/input-checkbox-styles.js';
-import { classMap} from 'lit-html/directives/class-map.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
+import { ListItemDragDropMixin } from './list-item-drag-mixin.js';
+import { ListItemRoleMixin } from './list-item-role-mixin.js';
+import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -27,7 +31,7 @@ const defaultBreakpoints = [842, 636, 580, 0];
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
-class ListItem extends RtlMixin(LitElement) {
+class ListItem extends ListItemDragDropMixin(ListItemCheckboxMixin(ListItemRoleMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -36,190 +40,169 @@ class ListItem extends RtlMixin(LitElement) {
 			 */
 			breakpoints: { type: Array },
 			/**
-			 * Disables the checkbox
-			 */
-			disabled: {type: Boolean },
-			/**
 			 * Address of item link if navigable
 			 */
 			href: { type: String },
-			/**
-			 * Value to identify item if selectable
-			 */
-			key: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			role: { type: String, reflect: true },
-			/**
-			 * Indicates a checkbox should be rendered for selecting the item
-			 */
-			selectable: {type: Boolean },
-			/**
-			 * Whether the item is selected
-			 */
-			selected: { type: Boolean, reflect: true },
-			_breakpoint: { type: Number }
+			_breakpoint: { type: Number },
+			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
+			_hoveringLink: { type: Boolean },
+			_focusing: { type: Boolean },
+			_focusingLink: { type: Boolean },
+			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
 
 	static get styles() {
 
-		return [ checkboxStyles,  css`
-
+		return [ super.styles, css`
 			:host {
 				display: block;
+				position: relative;
 				margin-top: -1px;
 			}
-
 			:host[hidden] {
 				display: none;
 			}
-
-			.d2l-list-item-flex {
-				display: flex;
-				position: relative;
+			:host([href]) {
+				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-
-			.d2l-list-item-content {
+			:host([_tooltip-showing]),
+			:host([_dropdown-open]) {
+				z-index: 10;
+			}
+			:host(:first-child) d2l-list-item-generic-layout[data-separators="between"] {
+				border-top: 1px solid transparent;
+			}
+			:host(:last-child) d2l-list-item-generic-layout[data-separators="between"] {
+				border-bottom: 1px solid transparent;
+			}
+			:host([dragging]) d2l-list-item-generic-layout {
+				filter: grayscale(75%);
+				opacity: 0.4;
+			}
+			.d2l-list-item-drag-image {
+				transform: rotate(-1deg);
+			}
+			d2l-list-item-generic-layout {
+				background: white;
+				transform: rotate(1deg);
+			}
+			d2l-list-item-generic-layout[data-separators="none"] {
+				border-top: 1px solid transparent;
+				border-bottom: 1px solid transparent;
+			}
+			d2l-list-item-generic-layout {
 				border-bottom: 1px solid transparent;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
-				width: 100%;
 			}
-
-			:host(:first-child) .d2l-list-item-content[data-separators="between"] {
-				border-top: 1px solid transparent;
-			}
-
-			:host(:last-child) .d2l-list-item-content[data-separators="between"] {
-				border-bottom: 1px solid transparent;
-			}
-
-			.d2l-list-item-content[data-separators="none"] {
-				border-top: 1px solid transparent;
-				border-bottom: 1px solid transparent;
-			}
-
-			.d2l-list-item-content-flex {
-				display: flex;
-				justify-content: stretch;
-				padding: 0.55rem 0;
-			}
-
-			.d2l-list-item-content.d2l-list-item-content-extend-separators .d2l-list-item-content-flex {
+			[slot="content"].d2l-list-item-content-extend-separators {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
-
-			input[type="checkbox"].d2l-input-checkbox {
-				flex-grow: 0;
-				flex-shrink: 0;
-				margin: 0.6rem 0.9rem 0.6rem 0;
+			a[href].d2l-list-item-link {
+				width: 100%;
+				height: 100%;
 			}
-
-			:host([dir="rtl"]) input[type="checkbox"].d2l-input-checkbox {
-				margin-left: 0.9rem;
-				margin-right: 0;
+			.d2l-list-item-content ::slotted(*) {
+				margin-top: 0.05rem;
 			}
-
-			.d2l-list-item-container ::slotted([slot="illustration"]),
-			.d2l-list-item-content-flex ::slotted([slot="illustration"]) {
-				flex-grow: 0;
-				flex-shrink: 0;
+			.d2l-list-item-content.d2l-hovering,
+			.d2l-list-item-content.d2l-focusing {
+				--d2l-list-item-content-text-decoration: underline;
+			}
+			[slot="content-action"]:focus {
+				outline: none;
+			}
+			[slot="content"] {
+				justify-content: stretch;
+				padding: 0.55rem 0px;
+				display: flex;
+			}
+			[slot="content"] ::slotted([slot="illustration"]) {
 				margin: 0.15rem 0.9rem 0.15rem 0;
 				max-height: 2.6rem;
 				max-width: 4.5rem;
 				border-radius: 6px;
 				overflow: hidden;
+				flex-grow: 0;
+				flex-shrink: 0;
 			}
-
-			:host([dir="rtl"]) .d2l-list-item-container ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
-
-			.d2l-list-item-main {
-				flex-grow: 1;
-				margin-top: 0.05rem;
+			.d2l-list-item-actions-container {
+				padding: 0.55rem 0;
 			}
-
-			.d2l-list-item-content-flex ::slotted([slot="actions"]) {
-				align-self: flex-start;
+			::slotted([slot="actions"]) {
 				display: grid;
-				flex-grow: 0;
 				grid-auto-columns: 1fr;
 				grid-auto-flow: column;
-				grid-gap: 0.3rem;
+				gap: 0.3rem;
 				margin: 0.15rem 0;
-				z-index: 4;
 			}
 
-			a, label {
-				height: 100%;
-				position: absolute;
-				width: 100%;
-				z-index: 2;
-			}
-
-			:host([href]) label {
-				width: 2.1rem;
-				z-index: 3;
-			}
-
-			:host([href]) {
-				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
-			}
-
-			a[href]:focus + .d2l-list-item-content,
-			a[href]:hover + .d2l-list-item-content {
-				--d2l-list-item-content-text-decoration: underline;
-			}
-
-			:host([href]) .d2l-list-item-link:focus {
-				outline: none;
-			}
-
-			.d2l-list-item-container[data-breakpoint="1"] ::slotted([slot="illustration"]),
-			.d2l-list-item-container[data-breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			[data-breakpoint="1"] ::slotted([slot="illustration"]),
+			[data-breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 3.55rem;
 				max-width: 6rem;
 			}
-
-			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="1"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [data-breakpoint="1"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-
-			.d2l-list-item-container[data-breakpoint="2"] ::slotted([slot="illustration"]),
-			.d2l-list-item-container[data-breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			[data-breakpoint="2"] ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 5.1rem;
 				max-width: 9rem;
 			}
-
-			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="2"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="2"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-
-			.d2l-list-item-container[data-breakpoint="3"] ::slotted([slot="illustration"]),
-			.d2l-list-item-container[data-breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			[data-breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-right: 1rem;
 				max-height: 6rem;
 				max-width: 10.8rem;
 			}
-
-			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="3"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) .d2l-list-item-container[data-breakpoint="3"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]) {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-
+			input[type="checkbox"].d2l-input-checkbox {
+				margin: 1.15rem 0.9rem 1.15rem 0;
+			}
+			d2l-list-item-drag-handle {
+				margin: 0.8rem 0 0.8rem 0.4rem;
+			}
+			:host([dir="rtl"]) input[type="checkbox"].d2l-input-checkbox {
+				margin-left: 0.9rem;
+				margin-right: 0;
+			}
+			:host([selectable]:not([disabled]):not([draggable]):hover) d2l-list-item-generic-layout,
+			:host([selectable]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing,
+			:host([selectable][draggable]:not([disabled])) d2l-list-item-generic-layout.d2l-hovering {
+				background-color: var(--d2l-color-regolith);
+			}
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
+				background-color: #F3FBFF;
+			}
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout,
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing {
+				border-color: #79B5DF;
+			}
+			:host([selected]:not([disabled])) .d2l-list-item-active-border,
+			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				height: 1px;
+				z-index: 5;
+				transform: rotate(1deg);
+				background: #79B5DF;
+			}
 		`];
 	}
 
@@ -227,12 +210,7 @@ class ListItem extends RtlMixin(LitElement) {
 		super();
 		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
-		this.disabled = false;
-		this.role = 'listitem';
-		this.selected = false;
-		this.selectable = false;
 		this._contentId = getUniqueId();
-		this._checkBoxId = getUniqueId();
 	}
 
 	get breakpoints() {
@@ -248,17 +226,6 @@ class ListItem extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-
-		const parent = findComposedAncestor(this.parentNode, (node) => {
-			if (!node || node.nodeType !== 1) return false;
-			return node.tagName === 'D2L-LIST';
-		});
-		if (parent !== null) {
-			const separators = parent.getAttribute('separators');
-			if (separators) this._separators = separators;
-			this._extendSeparators = parent.hasAttribute('extend-separators');
-		}
-
 		ro.observe(this);
 	}
 
@@ -267,49 +234,72 @@ class ListItem extends RtlMixin(LitElement) {
 		ro.unobserve(this);
 	}
 
+	firstUpdated(changedProperties) {
+		this.addEventListener('d2l-dropdown-open', () => this._dropdownOpen = true);
+		this.addEventListener('d2l-dropdown-close', () => this._dropdownOpen = false);
+		this.addEventListener('d2l-tooltip-show', () => this._tooltipShowing = true);
+		this.addEventListener('d2l-tooltip-hide', () => this._tooltipShowing = false);
+		super.firstUpdated(changedProperties);
+	}
+
 	render() {
-
-		const label = this.selectable ? html`<label class="d2l-list-item-label" for="${this._checkBoxId}" aria-labelledby="${this._contentId}"></label>` : null;
-		const link = this.href ? html`<a class="d2l-list-item-link" href="${ifDefined(this.href)}" aria-labelledby="${this._contentId}"></a>` : null;
-		const beforeContent = this.selectable
-			? html`<input id="${this._checkBoxId}" class="d2l-input-checkbox" @change="${this._handleCheckboxChange}" type="checkbox" .checked="${this.selected}" ?disabled="${this.disabled}"><slot name="illustration"></slot>`
-			: html`<slot name="illustration"></slot>`;
-
 		const classes = {
-			'd2l-list-item-container': true,
-			'd2l-list-item-flex': label || link,
-			'd2l-visible-on-ancestor-target': true
+			'd2l-visible-on-ancestor-target': true,
+			'd2l-focusing': this._focusing,
+			'd2l-hovering': this._hovering,
 		};
 		const contentClasses = {
 			'd2l-list-item-content': true,
-			'd2l-list-item-content-extend-separators': this._extendSeparators
+			'd2l-list-item-content-extend-separators': this._extendSeparators,
+			'd2l-hovering': this._hoveringLink,
+			'd2l-focusing': this._focusingLink,
 		};
 
 		return html`
-			<div class="${classMap(classes)}" data-breakpoint="${this._breakpoint}">
-				${label}
-				${link}
-				<div id="${this._contentId}"
-					class="${classMap(contentClasses)}"
-					data-separators="${ifDefined(this._separators)}">
-					<div class="d2l-list-item-content-flex">
-						${beforeContent}
-						<div class="d2l-list-item-main"><slot></slot></div>
+			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderDropTarget()}
+			<div class="d2l-list-item-drag-image">
+				<d2l-list-item-generic-layout
+					@focusin="${this._onFocusIn}"
+					@focusout="${this._onFocusOut}"
+					class="${classMap(classes)}"
+					data-breakpoint="${this._breakpoint}"
+					data-separators="${ifDefined(this._separators)}"
+					?grid-active="${this.role === 'rowgroup'}">
+					${this._renderDragHandle(this._renderOutsideControl)}
+					${this._renderDragTarget(this._renderOutsideControlAction)}
+					${this.selectable ? html`
+					<div slot="control">${ this._renderCheckbox() }</div>
+					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>
+					` : nothing }
+					${ this.href ? html`
+					<a slot="content-action"
+						href="${this.href}"
+						aria-labelledby="${this._contentId}"
+						@mouseenter="${this._onMouseEnterLink}"
+						@mouseleave="${this._onMouseLeaveLink}"
+						@focus="${this._onFocusLink}"
+						@blur="${this._onBlurLink}"></a>
+					` : nothing }
+					<div slot="content"
+						class="${classMap(contentClasses)}"
+						id="${this._contentId}">
+						<slot name="illustration"></slot>
+						<slot></slot>
+					</div>
+
+					<div class="d2l-list-item-actions-container" slot="actions">
 						<slot name="actions"></slot>
 					</div>
-				</div>
+				</d2l-list-item-generic-layout>
+				<div class="d2l-list-item-active-border"></div>
 			</div>
+			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 		`;
 
 	}
 
 	updated(changedProperties) {
-		if (changedProperties.has('key')) {
-			const oldValue = changedProperties.get('key');
-			if (typeof oldValue !== 'undefined') {
-				this.setSelected(undefined, true);
-			}
-		}
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
 		}
@@ -330,20 +320,36 @@ class ListItem extends RtlMixin(LitElement) {
 		});
 	}
 
-	setSelected(selected, suppressEvent) {
-		this.selected = selected;
-		if (!suppressEvent) this._dispatchSelected(selected);
+	_onBlurLink() {
+		this._focusingLink = false;
 	}
 
-	_dispatchSelected(value) {
-		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
-			detail: { key: this.key, selected: value },
-			bubbles: true
-		}));
+	_onFocusIn() {
+		this._focusing = true;
 	}
 
-	_handleCheckboxChange(e) {
-		this.setSelected(e.target.checked);
+	_onFocusLink() {
+		this._focusingLink = true;
+	}
+
+	_onFocusOut() {
+		this._focusing = false;
+	}
+
+	_onMouseEnterLink() {
+		this._hoveringLink = true;
+	}
+
+	_onMouseLeaveLink() {
+		this._hoveringLink = false;
+	}
+
+	_renderOutsideControl(dragHandle) {
+		return html`<div slot="outside-control">${dragHandle}</div>`;
+	}
+
+	_renderOutsideControlAction(dragTarget) {
+		return html`<div slot="outside-control-action">${dragTarget}</div>`;
 	}
 
 }

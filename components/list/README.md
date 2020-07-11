@@ -21,6 +21,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 **Properties:**
 
+- `grid` (Boolean): Enables keyboard grid for supported list items
 - `separators` (String): Display separators (`all` (default), `between`, `none`)
 - `extend-separators` (Boolean): Whether to extend the separators beyond the content's edge
 
@@ -70,11 +71,13 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
   - Breakpoint 3
     - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
     - default break: `843px < x`  where `x` is the width of the component.
+- `disabled` (Boolean): Whether or not the checkbox is disabled
+- `draggable` (Boolean): Whether or not the item is draggable
 - `href` (String): Address of item link if navigable
 - `key` (String): Value to identify item if selectable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
-- `disabled` (Boolean): Whether or not the checkbox is disabled
+
 
 ## d2l-list-item-content
 
@@ -93,8 +96,6 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 
 ## Future Enhancements
 
-- Use grid to manage focus with arrow keys
-- Drag & drop support
 - Paging: integration with "load more", "scroll" and "numeric" paging mechanisms
 - Header with support for search, selected count, select-all
 
