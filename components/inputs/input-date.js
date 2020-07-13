@@ -26,10 +26,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Indicates that the input value is invalid
-			 */
-			ariaInvalid: { type: String, attribute: 'aria-invalid', reflect: true },
-			/**
 			 * Disables the input
 			 */
 			disabled: { type: Boolean },
