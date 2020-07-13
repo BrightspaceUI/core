@@ -117,7 +117,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 	function dispatchKeyEvent(el, {code, ctrl}) {
 		const eventObj = document.createEvent('Events');
-		eventObj.initEvent('keydown', true, true);
+		eventObj.initEvent('keyup', true, true);
 		eventObj.which = code;
 		eventObj.keyCode = code;
 		eventObj.ctrlKey = ctrl;
@@ -342,7 +342,7 @@ describe('d2l-list-item-generic-layout', () => {
 			layout = el.shadowRoot.querySelector('d2l-list-item-generic-layout');
 			layout.querySelector('.d2l-input-checkbox').focus();
 			setTimeout(() => dispatchKeyEvent(layout, { code: keyCodes.TAB }));
-			const event = await oneEvent(layout, 'keydown');
+			const event = await oneEvent(layout, 'keyup');
 			expect(event.preventDefault).to.not.have.been.called;
 		});
 
