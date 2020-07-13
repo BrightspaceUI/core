@@ -168,7 +168,6 @@ describe('d2l-input-date', () => {
 			await aTimeout(1);
 			expect(elem.value).to.equal('2020-10-10');
 			expect(fired).to.be.false;
-			expect(elem.getAttribute('aria-invalid')).to.equal('true');
 		});
 
 		it('should not change value if typed date after maxValue', async() => {
@@ -183,7 +182,6 @@ describe('d2l-input-date', () => {
 			await aTimeout(1);
 			expect(elem.value).to.equal('2020-10-10');
 			expect(fired).to.be.false;
-			expect(elem.getAttribute('aria-invalid')).to.equal('true');
 		});
 
 		it('should change value if typed date between min and max values', async() => {

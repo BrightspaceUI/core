@@ -26,10 +26,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Indicates that the input value is invalid
-			 */
-			ariaInvalid: { type: String, attribute: 'aria-invalid', reflect: true },
-			/**
 			 * Disables the input
 			 */
 			disabled: { type: Boolean },
@@ -167,7 +163,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
-					aria-invalid="${this.ariaInvalid}"
+					aria-invalid="${this.validationError ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
@@ -184,9 +180,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						icon="${this.ariaInvalid === 'true' ? 'tier1:alert' : 'tier1:calendar'}"
+						icon="${this.validationError ? 'tier1:alert' : 'tier1:calendar'}"
 						slot="left"
-						style="${styleMap({color: this.ariaInvalid === 'true' ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
+						style="${styleMap({color: this.validationError ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
