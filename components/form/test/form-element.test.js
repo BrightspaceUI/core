@@ -44,36 +44,19 @@ describe('form-element', () => {
 		formElement = form.shadowRoot.querySelector('#my-ele');
 	});
 
-	describe('accessibility', () => {
+	describe('message', () => {
 
-		it('should add aria-invalid if validate has errors', async() => {
+		it('should set validation message if validate has errors', async() => {
 			await formElement.validate();
-			expect(formElement.getAttribute('aria-invalid')).to.equal('true');
+			expect(formElement.validationError).to.equal('Test form element is required.');
 		});
 
-		it('should remove aria-invalid if validate has no errors', async() => {
+		it('should remove message if validate has no errors', async() => {
 			await formElement.validate();
-			expect(formElement.getAttribute('aria-invalid')).to.equal('true');
+			expect(formElement.validationError).to.equal('Test form element is required.');
 			formElement.value = 'Non-empty';
 			await formElement.validate();
-			expect(formElement.getAttribute('aria-invalid')).to.equal('false');
-		});
-
-	});
-
-	describe('tooltip', () => {
-
-		it('should set tooltip message if validate has errors', async() => {
-			await formElement.validate();
-			expect(formElement.tooltipMessage).to.equal('Test form element is required.');
-		});
-
-		it('should remove aria-invalid if validate has no errors', async() => {
-			await formElement.validate();
-			expect(formElement.tooltipMessage).to.equal('Test form element is required.');
-			formElement.value = 'Non-empty';
-			await formElement.validate();
-			expect(formElement.tooltipMessage).to.null;
+			expect(formElement.validationError).to.null;
 		});
 
 	});
