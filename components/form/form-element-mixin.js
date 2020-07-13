@@ -76,12 +76,17 @@ export class FormElementValidityState {
 
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
+	static get properties() {
+		return { validationError: { type: String } };
+	}
+
 	constructor() {
 		super();
 		this._validationCustoms = new Set();
 		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
 		this.formValue = null;
+		this.validationError = null;
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
@@ -127,11 +132,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			errors.unshift(this.validationMessage);
 		}
 		if (errors.length > 0) {
-			this.validationTooltipShow(errors[0]);
-			this.setAttribute('aria-invalid', 'true');
+			this.validationError = errors[0];
+			this.validationTooltipShowHide();
 		} else {
-			this.validationTooltipHide();
-			this.setAttribute('aria-invalid', 'false');
+			this.validationError = null;
+			this.validationTooltipShowHide();
 		}
 		return errors;
 	}
@@ -217,10 +222,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.valueMissingMessage', { label: this.labelText });
 	}
 
-	validationTooltipHide() { }
-
-	// eslint-disable-next-line no-unused-vars
-	validationTooltipShow(message) {}
+	validationTooltipShowHide() {}
 
 	get validity() {
 		return this._validity;
