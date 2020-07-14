@@ -34,6 +34,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			emptyText: { type: String, attribute: 'empty-text'},
 			/**
+			 * Style the component as invalid
+			 */
+			invalid: { type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Accessible label for the input
 			 */
 			label: { type: String },
@@ -110,6 +114,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.emptyText = '';
+		this.invalid = false;
 		this.labelHidden = false;
 		this.value = '';
 
