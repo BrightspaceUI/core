@@ -109,6 +109,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.defaultFieldLabel');
 	}
 
+	async requestValidate() { return; }
+
 	setCustomValidity(message) {
 		this._validity = new FormElementValidityState({ customError: true });
 		this._validationMessage = message;

@@ -34,6 +34,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			emptyText: { type: String, attribute: 'empty-text'},
 			/**
+			 * Style the component as invalid
+			 */
+			invalid: { type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Accessible label for the input
 			 */
 			label: { type: String },
@@ -110,6 +114,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.emptyText = '';
+		this.invalid = false;
 		this.labelHidden = false;
 		this.value = '';
 
@@ -152,6 +157,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
+		const invalid = this.validationError || this.invalid;
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
@@ -163,7 +169,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
-					aria-invalid="${this.validationError ? 'true' : 'false'}"
+					aria-invalid="${invalid ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
@@ -180,9 +186,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						icon="${this.validationError ? 'tier1:alert' : 'tier1:calendar'}"
+						icon="${invalid ? 'tier1:alert' : 'tier1:calendar'}"
 						slot="left"
-						style="${styleMap({color: this.validationError ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
+						style="${styleMap({color: invalid ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -359,8 +365,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			rangeUnderflow: dateInISO && this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime(),
 			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
 		});
-		const errors = await this.validate();
-		if (errors.length > 0) return;
+		await this.requestValidate();
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',
