@@ -1,5 +1,5 @@
 import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
-import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-mixin.js';
+import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-drop-mixin.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 
 const tag = defineCE(
