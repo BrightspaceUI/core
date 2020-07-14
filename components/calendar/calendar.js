@@ -2,7 +2,7 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday, isDateInRange } from '../../helpers/dateTime.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -91,13 +91,6 @@ export function getDatesInMonthArray(shownMonth, shownYear) {
 	}
 
 	return dates;
-}
-
-export function getDisabled(date, min, max) {
-	if (!date) return false;
-	const beforeMin = (min ? true : false) && (date.getTime() < getDateFromISODate(min).getTime());
-	const afterMax = (max ? true : false) && (date.getTime() > getDateFromISODate(max).getTime());
-	return beforeMin || afterMax;
 }
 
 export function getNextMonth(month) {
@@ -433,7 +426,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dates = getDatesInMonthArray(this._shownMonth, this._shownYear);
 		const dayRows = dates.map((week) => {
 			const weekHtml = week.map((day, index) => {
-				const disabled = getDisabled(day, this.minValue, this.maxValue);
+				const disabled = !isDateInRange(day, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
 				const focused = checkIfDatesEqual(day, this._focusDate);
 				const selected = this.selectedValue ? checkIfDatesEqual(day, getDateFromISODate(this.selectedValue)) : false;
 				const classes = {
@@ -716,7 +709,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			// if arrow keys change _focusDate only if intended target is not disabled
 			if (e.keyCode === keyCodes.END) this._updateFocusDateDependentOnDisabled(possibleFocusDate, true);
 			else if (e.keyCode === keyCodes.HOME) this._updateFocusDateDependentOnDisabled(possibleFocusDate);
-			else if (getDisabled(possibleFocusDate, this.minValue, this.maxValue)) return;
+			else if (!isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) return;
 			else this._focusDate = possibleFocusDate;
 
 			this._isInitialFocusDate = false;
@@ -750,7 +743,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	async _updateFocusDateDependentOnDisabled(possibleFocusDate, latestPossibleFocusDate) {
 		await this.updateComplete;
-		if (!getDisabled(possibleFocusDate, this.minValue, this.maxValue)) {
+		if (isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) {
 			this._focusDate = possibleFocusDate;
 		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
 			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:enabled');
@@ -765,9 +758,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async _updateFocusDateOnChange() {
+		await this.updateComplete;
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
-		if (dateElem && !getDisabled(selectedValueDate, this.minValue, this.maxValue)) {
+		if (dateElem && isDateInRange(selectedValueDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) {
 			this._focusDate = selectedValueDate;
 		} else {
 			await this._updateFocusDateDependentOnDisabled(new Date(this._shownYear, this._shownMonth, 1));

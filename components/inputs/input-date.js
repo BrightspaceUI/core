@@ -8,6 +8,7 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -20,7 +21,7 @@ export function formatISODateInUserCalDescriptor(val) {
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
  * @fires change - Dispatched when a date is selected or typed. "value" reflects the selected value and is in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDate extends LocalizeCoreElement(LitElement) {
+class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -55,7 +56,8 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
-			_formattedValue: { type: String }
+			_formattedValue: { type: String },
+			_shownValue: { type: String }
 		};
 	}
 
@@ -115,6 +117,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
 		this._namespace = 'components.input-date';
+		this._shownValue = '';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
@@ -150,7 +153,6 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
-
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
@@ -161,12 +163,14 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					aria-invalid="${this.validationError ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
+					hide-invalid-icon
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -176,8 +180,9 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						icon="tier1:calendar"
-						slot="left"></d2l-icon>
+						icon="${this.validationError ? 'tier1:alert' : 'tier1:calendar'}"
+						slot="left"
+						style="${styleMap({color: this.validationError ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -208,6 +213,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === '_dateTimeDescriptor' || prop === 'value') {
+				this._shownValue = this.value;
 				this._setFormattedValue();
 			}
 		});
@@ -217,15 +223,53 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		if (this._textInput) this._textInput.focus();
 	}
 
+	get validationMessageRangeOverflow() {
+		let failureText = '';
+		if (this.minValue && this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorOutsideRange`, {
+					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
+					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				}
+			);
+		} else if (this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorMaxDateOnly`, {
+					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				}
+			);
+		}
+		return failureText;
+	}
+
+	get validationMessageRangeUnderflow() {
+		let failureText = '';
+		if (this.minValue && this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorOutsideRange`, {
+					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
+					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+				}
+			);
+		} else if (this.minValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorMinDateOnly`, {
+					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'})
+				}
+			);
+		}
+		return failureText;
+	}
+
 	_handleBlur() {
-		this._setFormattedValue();
+		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
 	}
 
 	async _handleChange() {
 		const value = this._textInput.value;
 		if (!value) {
 			if (value !== this.value) {
-				this._updateValueDispatchEvent('');
+				await this._updateValueDispatchEvent('');
 				await this.updateComplete;
 				await this._calendar.reset();
 			}
@@ -235,7 +279,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
+			await this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
 		} catch (err) {
 			// leave value the same when invalid input
 		}
@@ -244,15 +288,15 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		await this._calendar.reset();
 	}
 
-	_handleClear() {
-		this._updateValueDispatchEvent('');
+	async _handleClear() {
+		await this._updateValueDispatchEvent('');
 		this._dropdown.close();
 		this.focus();
 	}
 
-	_handleDateSelected(e) {
+	async _handleDateSelected(e) {
 		const value = e.target.selectedValue;
-		this._updateValueDispatchEvent(value);
+		await this._updateValueDispatchEvent(value);
 		this._dropdown.close();
 	}
 
@@ -276,7 +320,7 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 	}
 
 	_handleInputTextFocus() {
-		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : '';
+		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
 	}
 
 	async _handleKeydown(e) {
@@ -297,19 +341,26 @@ class InputDate extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
-	_handleSetToToday() {
+	async _handleSetToToday() {
 		const date = getToday();
-		this._updateValueDispatchEvent(formatDateInISO(date));
+		await this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
 		this.focus();
 	}
 
 	_setFormattedValue() {
-		this._formattedValue = this.value ? formatISODateInUserCalDescriptor(this.value) : (this.emptyText ? this.emptyText : '');
+		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : (this.emptyText ? this.emptyText : '');
 	}
 
-	_updateValueDispatchEvent(dateInISO) {
-		if (dateInISO === this.value) return;
+	async _updateValueDispatchEvent(dateInISO) {
+		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
+		this._shownValue = dateInISO;
+		this.setValidity({
+			rangeUnderflow: dateInISO && this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime(),
+			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
+		});
+		const errors = await this.validate();
+		if (errors.length > 0) return;
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',

@@ -84,6 +84,13 @@ export function getUTCDateTimeFromLocalDateTime(date, time) {
 	return formatDateTimeInISO(utcDateTime);
 }
 
+export function isDateInRange(date, min, max) {
+	if (!date) return false;
+	const afterMin = !min || (min && date.getTime() >= min.getTime());
+	const beforeMax = !max || (max && date.getTime() <= max.getTime());
+	return afterMin && beforeMax;
+}
+
 export function parseISODate(val) {
 	if (!val) return null;
 	const re = /([0-9]{4})-([0-9]{2})-([0-9]{2})/;

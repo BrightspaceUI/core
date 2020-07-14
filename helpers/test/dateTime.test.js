@@ -6,6 +6,7 @@ import { formatDateInISO,
 	getLocalDateTimeFromUTCDateTime,
 	getToday,
 	getUTCDateTimeFromLocalDateTime,
+	isDateInRange,
 	parseISODate,
 	parseISODateTime,
 	parseISOTime } from '../dateTime.js';
@@ -249,6 +250,85 @@ describe('date-time', () => {
 			expect(() => {
 				getUTCDateTimeFromLocalDateTime('2019-01-03');
 			}).to.throw('Invalid input: Expected date and time');
+		});
+	});
+
+	describe('isDateInRange', () => {
+		const date = new Date(2018, 2, 3, 12, 0, 0);
+		it('should return false if no parameters', () => {
+			expect(isDateInRange()).to.be.false;
+		});
+
+		it('should return true if no min and max', () => {
+			expect(isDateInRange(date)).to.be.true;
+		});
+
+		it('should return true if min and date is after min', () => {
+			const min = new Date(2018, 1, 30, 12, 0, 0);
+			expect(isDateInRange(date, min)).to.be.true;
+		});
+
+		it('should return true if min and date is equal to min', () => {
+			const min = new Date(2018, 2, 3, 12, 0, 0);
+			expect(isDateInRange(date, min)).to.be.true;
+		});
+
+		it('should return true if min and date has same date as min but time is after min', () => {
+			const min = new Date(2018, 2, 3, 8, 0, 0);
+			expect(isDateInRange(date, min)).to.be.true;
+		});
+
+		it('should return false if min and date has same date as min but time is before min', () => {
+			const min = new Date(2018, 2, 3, 15, 0, 0);
+			expect(isDateInRange(date, min)).to.be.false;
+		});
+
+		it('should return true if max and date is before max', () => {
+			const max = new Date(2018, 5, 1, 12, 0, 0);
+			expect(isDateInRange(date, undefined, max)).to.be.true;
+		});
+
+		it('should return true if max and date is equal to max', () => {
+			const max = new Date(2018, 2, 3, 12, 0, 0);
+			expect(isDateInRange(date, undefined, max)).to.be.true;
+		});
+
+		it('should return true if max and date has same date as max but time is before max', () => {
+			const max = new Date(2018, 2, 3, 18, 0, 0);
+			expect(isDateInRange(date, undefined, max)).to.be.true;
+		});
+
+		it('should return false if max and date has same date as max but time is after max', () => {
+			const max = new Date(2018, 2, 3, 10, 0, 0);
+			expect(isDateInRange(date, undefined, max)).to.be.false;
+		});
+
+		it('should return true if date is between min and max', () => {
+			const min = new Date(2018, 2, 2, 12, 0, 0);
+			const max = new Date(2018, 2, 4, 12, 0, 0);
+			expect(isDateInRange(date, min, max)).to.be.true;
+		});
+
+		it('should return false if min and date is before min', () => {
+			const min = new Date(2018, 2, 4, 12, 0, 0);
+			expect(isDateInRange(date, min, undefined)).to.be.false;
+		});
+
+		it('should return false if max and date is after max', () => {
+			const max = new Date(2018, 2, 1, 12, 0, 0);
+			expect(isDateInRange(date, undefined, max)).to.be.false;
+		});
+
+		it('should return false if min and max and date is before min', () => {
+			const min = new Date(2018, 4, 2, 12, 0, 0);
+			const max = new Date(2018, 4, 28, 12, 0, 0);
+			expect(isDateInRange(date, min, max)).to.be.false;
+		});
+
+		it('should return false if min and max and date is after max', () => {
+			const min = new Date(2018, 0, 2, 12, 0, 0);
+			const max = new Date(2018, 0, 28, 12, 0, 0);
+			expect(isDateInRange(date, min, max)).to.be.false;
 		});
 	});
 
