@@ -92,14 +92,14 @@ describe('ListItemDragHandle', () => {
 			});
 		});
 
-		it(`Dispatch drag handle action event for ${dragActions.save} when element is blurred.`, async() => {
+		it(`Dispatch drag handle action event for ${dragActions.save} when element is focus out.`, async() => {
 			let action;
 			element.addEventListener('d2l-list-item-drag-handle-action', (e) => action = e.detail.action);
 			const actionArea = element.shadowRoot.querySelector('button');
 			setTimeout(() => {
-				actionArea.dispatchEvent(new Event('blur'));
+				actionArea.dispatchEvent(new Event('focusout'));
 			});
-			await oneEvent(actionArea, 'blur');
+			await oneEvent(actionArea, 'focusout');
 
 			expect(action).to.equal(dragActions.save);
 		});

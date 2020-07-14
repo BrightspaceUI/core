@@ -77,7 +77,7 @@ export class FormElementValidityState {
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
-		return { validationError: { type: String } };
+		return { validationError: { attribute: false, type: String } };
 	}
 
 	constructor() {

@@ -3,6 +3,7 @@ import '../button/button-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { buttonStyles } from '../button/button-styles.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 
 const keyCodes = Object.freeze({
@@ -96,6 +97,7 @@ class ListItemDragHandle extends LitElement {
 		super();
 		this._keyboardActive = false;
 		this.disabled = false;
+		this._movingElement = false;
 	}
 
 	render() {
@@ -133,22 +135,26 @@ class ListItemDragHandle extends LitElement {
 		this._dispatchAction(dragActions.up);
 	}
 
-	_onActiveKeyboard(e) {
+	async _onActiveKeyboard(e) {
 		if (!this._keyboardActive) {
 			return;
 		}
 		let action = null;
 		switch (e.keyCode) {
 			case keyCodes.UP:
+				this._movingElement = true;
 				action = dragActions.up;
 				break;
 			case keyCodes.DOWN:
+				this._movingElement = true;
 				action = dragActions.down;
 				break;
 			case keyCodes.HOME:
+				this._movingElement = true;
 				action = dragActions.first;
 				break;
 			case keyCodes.END:
+				this._movingElement = true;
 				action = dragActions.last;
 				break;
 			case keyCodes.TAB:
@@ -169,13 +175,23 @@ class ListItemDragHandle extends LitElement {
 		}
 		this._dispatchAction(action);
 		e.preventDefault();
+		e.stopPropagation();
+		const cell = findComposedAncestor(this, (parent) =>  parent.hasAttribute && parent.hasAttribute('draggable'));
+		if (cell) await cell.updateComplete;
+		await this.updateComplete;
+		this.focus();
+		this._movingElement = false;
 	}
 
-	_onBlur() {
-		this._keyboardActive = false;
-		if (!this._tabbing) {
-			this._dispatchAction(dragActions.save);
+	_onFocusOut(e) {
+		if (this._movingElement) {
+			this._movingElement = false;
+			e.stopPropagation();
+			e.preventDefault();
+			return;
 		}
+		this._keyboardActive = false;
+		this._dispatchAction(dragActions.save);
 	}
 
 	_onInactiveKeyboard(e) {
@@ -214,7 +230,7 @@ class ListItemDragHandle extends LitElement {
 		return html`
 			<button
 				class="d2l-list-item-drag-handle-keyboard-button"
-				@blur="${this._onBlur}"
+				@focusout="${this._onFocusOut}"
 				@keyup="${this._onActiveKeyboard}"
 				@keydown="${this._onPreventDefault}"
 				aria-label="${this.text}">

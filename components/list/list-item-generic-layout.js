@@ -151,6 +151,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	firstUpdated() {
 		this.addEventListener('keydown', this._onKeydown.bind(this));
+		this.addEventListener('keyup', this._onKeyup.bind(this));
 		this.addEventListener('focusin', this._setFocusInfo.bind(this));
 	}
 
@@ -311,6 +312,30 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_onKeydown(event) {
+		if (!this.gridActive) return;
+		let preventDefault = true;
+		switch (event.keyCode) {
+			case keyCodes.ENTER:
+			case keyCodes.SPACE:
+			case keyCodes.RIGHT:
+			case keyCodes.LEFT:
+			case keyCodes.UP:
+			case keyCodes.DOWN:
+			case keyCodes.HOME:
+			case keyCodes.END:
+			case keyCodes.PAGEUP:
+			case keyCodes.PAGEDOWN:
+				break;
+			default:
+				preventDefault = false;
+		}
+		if (preventDefault) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+	}
+
+	_onKeyup(event) {
 		if (!this.gridActive) return;
 		let node = null;
 		let preventDefault = true;
