@@ -77,4 +77,50 @@ describe('d2l-input-text', () => {
 		});
 	});
 
+	[
+		'wc-tooltip',
+		'wc-tooltip-error',
+		'wc-tooltip-position'
+	].forEach((name) => {
+		afterEach(async() => {
+			await page.reload();
+		});
+
+		it(name, async function() {
+			const selector = `#${name}`;
+			await showTooltip(page, selector);
+			const rect = await getRect(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	function getRect(page, selector) {
+		return page.$eval(selector, (elem) => {
+			const content = elem.shadowRoot.querySelector('d2l-tooltip');
+			const contentWidth = content.shadowRoot.querySelector('.d2l-tooltip-content');
+			const openerRect = elem.getBoundingClientRect();
+			const contentRect = contentWidth.getBoundingClientRect();
+			const x = Math.min(openerRect.x, contentRect.x);
+			const y = Math.min(openerRect.y, contentRect.y);
+			const width = Math.max(openerRect.right, contentRect.right) - x;
+			const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
+			return {
+				x: x - 10,
+				y: y - 10,
+				width: width + 20,
+				height: height + 20
+			};
+		});
+	}
+
+	async function showTooltip(page, selector) {
+		await page.$eval(selector, (elem) => {
+			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+			return new Promise((resolve) => {
+				tooltip.addEventListener('d2l-tooltip-show', () => resolve(), { once: true });
+				tooltip.show();
+			});
+		});
+	}
+
 });

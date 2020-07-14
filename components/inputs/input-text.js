@@ -1,3 +1,4 @@
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -105,6 +106,26 @@ class InputText extends RtlMixin(LitElement) {
 			 * Text for additional screenreader and mouseover context
 			 */
 			title: { type: String },
+			/**
+			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
+			 * @type {('start'|'end')}
+			 */
+			tooltipAlign: { attribute: 'tooltip-align', reflect: true, type: String },
+			/**
+			 * Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+			 * @type {('top'|'bottom'|'left'|'right')}
+			 */
+			tooltipPosition: { attribute: 'tooltip-position', reflect: true, type: String },
+			/**
+			 * The style of the tooltip based on the type of information it displays
+			 * @type {('info'|'error')}
+			 * @default "info"
+			 */
+			tooltipState: { attribute: 'tooltip-state', reflect: true, type: String },
+			/**
+			 * Inner text content of tooltip. Setting this causes tooltip to be displayed when applicable.
+			 */
+			tooltipText: { attribute: 'tooltip-text', reflect: true, type: String },
 			/**
 			 * The type of the text input
 			 * @type {('text'|'email'|'number'|'password'|'tel'|'url')}
@@ -220,7 +241,18 @@ class InputText extends RtlMixin(LitElement) {
 		const invalidIconStyles = {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
+
+		const tooltip = this.tooltipText
+			? html`<d2l-tooltip
+				for="${this._inputId}"
+				align="${ifDefined(this.tooltipAlign)}"
+				position="${ifDefined(this.tooltipPosition)}"
+				state="${ifDefined(this.tooltipState)}">
+					${this.tooltipText}
+				</d2l-tooltip>`
+			: null;
 		const input = html`
+			${tooltip}
 			<div class="d2l-input-text-container">
 				<input aria-atomic="${ifDefined(this.atomic)}"
 					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
