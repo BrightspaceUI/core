@@ -77,7 +77,11 @@ export class FormElementValidityState {
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
-		return { validationError: { attribute: false, type: String } };
+		return {
+			forceInvalid: { type: Boolean, attribute: false },
+			invalid: { type: Boolean, reflect: true },
+			validationError: { type: String, attribute: false },
+		};
 	}
 
 	constructor() {
@@ -85,11 +89,20 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationCustoms = new Set();
 		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
+		this.forceInvalid = false;
 		this.formValue = null;
 		this.validationError = null;
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
+	}
+
+	updated(changedProperties) {
+		changedProperties.forEach((_, propName) => {
+			if (propName === 'forceInvalid' || propName === 'validationError') {
+				this.invalid = this.forceInvalid || this.validationError !== null;
+			}
+		});
 	}
 
 	checkValidity() {
