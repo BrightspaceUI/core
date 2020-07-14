@@ -7,7 +7,7 @@ import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
-import { ListItemDragDropMixin } from './list-item-drag-mixin.js';
+import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { nothing } from 'lit-html';
 import ResizeObserver from 'resize-observer-polyfill';
