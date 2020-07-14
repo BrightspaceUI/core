@@ -133,10 +133,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		}
 		if (errors.length > 0) {
 			this.validationError = errors[0];
-			this.validationTooltipShowHide();
 		} else {
 			this.validationError = null;
-			this.validationTooltipShowHide();
 		}
 		return errors;
 	}
@@ -221,8 +219,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	get validationMessageValueMissing() {
 		return this.localize('components.form-element-mixin.valueMissingMessage', { label: this.labelText });
 	}
-
-	validationTooltipShowHide() {}
 
 	get validity() {
 		return this._validity;

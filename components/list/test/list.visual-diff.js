@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
+const dropdownHelper = require('../../dropdown/test/dropdown-helper.js');
+const tooltipHelper = require('../../tooltip/test/tooltip-helper.js');
 
 describe('d2l-list', () => {
 
@@ -65,6 +67,23 @@ describe('d2l-list', () => {
 			{ name: '580', selector: '#breakpoint-580' },
 			{ name: '0', selector: '#breakpoint-0' }
 		]}
+		,
+		{ category: 'dropdown', tests: [
+			{
+				name: 'open down',
+				selector: '#dropdown-tooltips',
+				action: () => openDropdown('#open-down'),
+				after: () => closeDropdown('#open-down')
+			}
+		]},
+		{ category: 'tooltip', tests: [
+			{
+				name: 'open down',
+				selector: '#dropdown-tooltips',
+				action: () => showTooltip('#open-down'),
+				after: () => hideTooltip('#open-down')
+			}
+		]}
 	].forEach((info) => {
 
 		describe(info.category, () => {
@@ -74,14 +93,21 @@ describe('d2l-list', () => {
 					if (info.action) {
 						await info.action();
 					}
-					const rect = await visualDiff.getRect(page, info.selector);
+					const rect = await (info.rect ? info.rect() : visualDiff.getRect(page, info.selector));
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					if (info.after) {
+						await info.after();
+					}
 				});
 			});
 
 		});
 
 	});
+
+	const closeDropdown = (selector) => {
+		return dropdownHelper.reset(page, selector);
+	};
 
 	const focusMethod = (selector) => {
 		return page.$eval(selector, (item) => {
@@ -101,8 +127,20 @@ describe('d2l-list', () => {
 		});
 	};
 
+	const hideTooltip = (selector) => {
+		return tooltipHelper.hide(page, selector);
+	};
+
 	const hover = (selector) => {
 		return page.hover(selector);
+	};
+
+	const openDropdown = (selector) => {
+		return dropdownHelper.open(page, selector);
+	};
+
+	const showTooltip = (selector) => {
+		return tooltipHelper.show(page, selector);
 	};
 
 });

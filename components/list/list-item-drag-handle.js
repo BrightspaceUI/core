@@ -6,28 +6,28 @@ import { buttonStyles } from '../button/button-styles.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 
 const keyCodes = Object.freeze({
-	END: 35,
-	HOME: 36,
-	UP: 38,
 	DOWN: 40,
-	SPACE: 32,
+	END: 35,
 	ENTER: 13,
 	ESC: 27,
-	TAB: 9,
+	HOME: 36,
 	LEFT: 37,
-	RIGHT: 39
+	RIGHT: 39,
+	SPACE: 32,
+	TAB: 9,
+	UP: 38
 });
 
 export const dragActions = Object.freeze({
+	active: 'keyboard-active',
+	cancel: 'keyboard-deactivate-cancel',
+	down: 'down',
 	first: 'first',
 	last: 'last',
-	up: 'up',
-	down: 'down',
-	active: 'keyboard-active',
-	save: 'keyboard-deactivate-save',
-	cancel: 'keyboard-deactivate-cancel',
 	nextElement: 'next-element',
-	previousElement: 'previous-element'
+	previousElement: 'previous-element',
+	save: 'keyboard-deactivate-save',
+	up: 'up'
 });
 
 class ListItemDragHandle extends LitElement {
@@ -107,6 +107,11 @@ class ListItemDragHandle extends LitElement {
 		if (changedProperties.has('_keyboardActive') && typeof changedProperties.get('_keyboardActive') !== 'undefined') this.focus();
 	}
 
+	activateKeyboardMode() {
+		this._dispatchAction(dragActions.active);
+		this._keyboardActive = true;
+	}
+
 	focus() {
 		const node = getFirstFocusableDescendant(this);
 		if (node) node.focus();
@@ -128,7 +133,7 @@ class ListItemDragHandle extends LitElement {
 		this._dispatchAction(dragActions.up);
 	}
 
-	_handleActiveKeyboard(e) {
+	_onActiveKeyboard(e) {
 		if (!this._keyboardActive) {
 			return;
 		}
@@ -166,24 +171,6 @@ class ListItemDragHandle extends LitElement {
 		e.preventDefault();
 	}
 
-	_handleInactiveKeyboard(e) {
-		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
-			this._dispatchAction(dragActions.active);
-			this._keyboardActive = true;
-			e.preventDefault();
-		}
-	}
-
-	_handleInactiveKeyDown(e) {
-		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
-			e.preventDefault();
-		}
-	}
-
-	_handlePreventDefault(e) {
-		e.preventDefault();
-	}
-
 	_onBlur() {
 		this._keyboardActive = false;
 		if (!this._tabbing) {
@@ -191,14 +178,31 @@ class ListItemDragHandle extends LitElement {
 		}
 	}
 
+	_onInactiveKeyboard(e) {
+		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
+			this._dispatchAction(dragActions.active);
+			this._keyboardActive = true;
+			e.preventDefault();
+		}
+	}
+
+	_onInactiveKeyDown(e) {
+		if (e.type === 'click' || e.keyCode === keyCodes.ENTER || e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.LEFT) {
+			e.preventDefault();
+		}
+	}
+
+	_onPreventDefault(e) {
+		e.preventDefault();
+	}
+
 	_renderDragger() {
 		return html`
 			<button
 				class="d2l-list-item-drag-handle-dragger-button"
-				@click="${this._handleInactiveKeyboard}"
-				@keyup="${this._handleInactiveKeyboard}"
-				@keydown="${this._handleInactiveKeyDown}"
-				@customevent="${this._handleInactiveKeyboard}"
+				@click="${this._onInactiveKeyboard}"
+				@keyup="${this._onInactiveKeyboard}"
+				@keydown="${this._onInactiveKeyDown}"
 				aria-label="${this.text}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger" class="d2l-button-icon"></d2l-icon>
@@ -211,8 +215,8 @@ class ListItemDragHandle extends LitElement {
 			<button
 				class="d2l-list-item-drag-handle-keyboard-button"
 				@blur="${this._onBlur}"
-				@keyup="${this._handleActiveKeyboard}"
-				@keydown="${this._handlePreventDefault}"
+				@keyup="${this._onActiveKeyboard}"
+				@keydown="${this._onPreventDefault}"
 				aria-label="${this.text}">
 				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
 				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>

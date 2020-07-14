@@ -164,7 +164,7 @@ describe('d2l-input-date', () => {
 				fired = true;
 			});
 			inputElem.value = '12/31/2019';
-			dispatchEvent(inputElem, 'change', false);
+			setTimeout(() => dispatchEvent(inputElem, 'change', false));
 			await aTimeout(1);
 			expect(elem.value).to.equal('2020-10-10');
 			expect(fired).to.be.false;
@@ -178,7 +178,7 @@ describe('d2l-input-date', () => {
 				fired = true;
 			});
 			inputElem.value = '12/31/2021';
-			dispatchEvent(inputElem, 'change', false);
+			setTimeout(() => dispatchEvent(inputElem, 'change', false));
 			await aTimeout(1);
 			expect(elem.value).to.equal('2020-10-10');
 			expect(fired).to.be.false;
