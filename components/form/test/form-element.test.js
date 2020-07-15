@@ -44,6 +44,26 @@ describe('form-element', () => {
 		formElement = form.shadowRoot.querySelector('#my-ele');
 	});
 
+	describe('invalid', () => {
+
+		[
+			{ forceInvalid: true, validationError: 'Oh no' },
+			{ forceInvalid: false, validationError: 'Oh no' },
+			{ forceInvalid: true, validationError: null },
+			{ forceInvalid: false, validationError: null },
+		].forEach(({ forceInvalid, validationError }) => {
+
+			it('should be invalid if force validate is true or there is a validation error ', async() => {
+				formElement.forceInvalid = forceInvalid;
+				formElement.validationError = validationError;
+				await formElement.updateComplete;
+				expect(formElement.hasAttribute('invalid')).to.equal(forceInvalid || validationError !== null);
+			});
+
+		});
+
+	});
+
 	describe('message', () => {
 
 		it('should set validation message if validate has errors', async() => {
