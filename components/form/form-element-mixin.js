@@ -91,6 +91,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validity = new FormElementValidityState({});
 		this.forceInvalid = false;
 		this.formValue = null;
+		this.invalid = false;
 		this.validationError = null;
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
