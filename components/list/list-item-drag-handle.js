@@ -225,7 +225,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 				@click="${this._onInactiveKeyboard}"
 				@keyup="${this._onInactiveKeyboard}"
 				@keydown="${this._onInactiveKeyDown}"
-				aria-label="${this.text || this._defaultLabel}"
+				aria-label="${this._defaultLabel}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger" class="d2l-button-icon"></d2l-icon>
 			</button>

@@ -27,7 +27,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			draggable: { type: Boolean, reflect: true },
 			dragging: { type: Boolean, reflect: true },
-			dragHandleAriaLabel: { type: String, attribute: 'drag-handle-aria-label' },
+			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
@@ -254,7 +254,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
-				text="${ifDefined(this.dragHandleAriaLabel)}"
+				text="${ifDefined(this.dragHandleText)}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
