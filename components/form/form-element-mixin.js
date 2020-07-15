@@ -77,7 +77,7 @@ export class FormElementValidityState {
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
-		return { validationError: { type: String } };
+		return { validationError: { attribute: false, type: String } };
 	}
 
 	constructor() {
@@ -109,7 +109,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.defaultFieldLabel');
 	}
 
-	async requestValidate() { return; }
+	async requestValidate() {
+		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
+			await this.validate();
+		}
+	}
 
 	setCustomValidity(message) {
 		this._validity = new FormElementValidityState({ customError: true });
@@ -135,10 +139,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		}
 		if (errors.length > 0) {
 			this.validationError = errors[0];
-			this.validationTooltipShowHide();
 		} else {
 			this.validationError = null;
-			this.validationTooltipShowHide();
 		}
 		return errors;
 	}
@@ -223,8 +225,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	get validationMessageValueMissing() {
 		return this.localize('components.form-element-mixin.valueMissingMessage', { label: this.labelText });
 	}
-
-	validationTooltipShowHide() {}
 
 	get validity() {
 		return this._validity;

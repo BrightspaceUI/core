@@ -1,5 +1,5 @@
 import '../list.js';
-import '../demo/list-item-sample.js';
+import '../list-item.js';
 import '../../button/button-icon.js';
 
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
@@ -7,66 +7,65 @@ import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
-// todo: d2l-list-item-sample should become d2l-list-item when it has been altered to use generic-layout
 const normalFixture = html`
 	<d2l-list grid>
-		<d2l-list-item-sample selectable key="item1">
+		<d2l-list-item selectable key="item1">
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample>
+		</d2l-list-item>
+		<d2l-list-item>
 			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample>
+		</d2l-list-item>
+		<d2l-list-item>
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
-		</d2l-list-item-sample>
+		</d2l-list-item>
 	</d2l-list>
 `;
 
 const nonGridFixture = html`
 	<d2l-list>
-		<d2l-list-item-sample>
+		<d2l-list-item>
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample>
+		</d2l-list-item>
+		<d2l-list-item>
 			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample>
+		</d2l-list-item>
+		<d2l-list-item>
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
-		</d2l-list-item-sample>
+		</d2l-list-item>
 	</d2l-list>
 `;
 
 const longFixture = html`
 	<d2l-list grid>
-		<d2l-list-item-sample selectable href="http://d2l.com" key="item1">
+		<d2l-list-item selectable href="http://d2l.com" key="item1">
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample selectable href="http://d2l.com" key="item2">
+		</d2l-list-item>
+		<d2l-list-item selectable href="http://d2l.com" key="item2">
 			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample selectable href="http://d2l.com" key="item3">
+		</d2l-list-item>
+		<d2l-list-item selectable href="http://d2l.com" key="item3">
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample selectable key="item4">
+		</d2l-list-item>
+		<d2l-list-item selectable key="item4">
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
 			<div slot="actions">
@@ -75,29 +74,29 @@ const longFixture = html`
 				<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
 				<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
 			</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample selectable href="http://d2l.com" key="item5">
+		</d2l-list-item>
+		<d2l-list-item selectable href="http://d2l.com" key="item5">
 			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample selectable key="item6">
+		</d2l-list-item>
+		<d2l-list-item selectable key="item6">
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
-		</d2l-list-item-sample>
-		<d2l-list-item-sample selectable key="item7">
+		</d2l-list-item>
+		<d2l-list-item selectable key="item7">
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
-		</d2l-list-item-sample>
+		</d2l-list-item>
 	</d2l-list>
 `;
 
@@ -118,7 +117,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 	function dispatchKeyEvent(el, {code, ctrl}) {
 		const eventObj = document.createEvent('Events');
-		eventObj.initEvent('keydown', true, true);
+		eventObj.initEvent('keyup', true, true);
 		eventObj.which = code;
 		eventObj.keyCode = code;
 		eventObj.ctrlKey = ctrl;
@@ -343,7 +342,7 @@ describe('d2l-list-item-generic-layout', () => {
 			layout = el.shadowRoot.querySelector('d2l-list-item-generic-layout');
 			layout.querySelector('.d2l-input-checkbox').focus();
 			setTimeout(() => dispatchKeyEvent(layout, { code: keyCodes.TAB }));
-			const event = await oneEvent(layout, 'keydown');
+			const event = await oneEvent(layout, 'keyup');
 			expect(event.preventDefault).to.not.have.been.called;
 		});
 
