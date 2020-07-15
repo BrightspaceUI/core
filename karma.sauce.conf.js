@@ -64,7 +64,11 @@ module.exports = config => {
 				mocha: {
 					timeout : 10000
 				}
-			}
+			},
+			flags: [
+				'--disable-gpu',
+				'--no-sandbox'
+			]
 		}),
 	);
 	return config;
