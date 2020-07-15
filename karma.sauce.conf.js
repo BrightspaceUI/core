@@ -57,7 +57,7 @@ module.exports = config => {
 			reporters: ['dots', 'saucelabs'],
 			singleRun: true,
 			browserDisconnectTimeout : 20000, // default 2000
-			browserDisconnectTolerance : 1, // default 0
+			browserDisconnectTolerance : 2, // default 0
 			browserNoActivityTimeout: 200000, // default 10000
 			captureTimeout: 200000, // default 60000
 			client: {
