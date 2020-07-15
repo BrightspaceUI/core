@@ -112,7 +112,7 @@ describe('form-element', () => {
 		});
 
 		it('should validate native element validity state', async() => {
-			const errors = await formElement.validate();
+			const errors = await formElement.validate(true);
 			expect(errors).to.include.members(['Test form element is required.']);
 		});
 
@@ -158,6 +158,11 @@ describe('form-element', () => {
 			formElement.addEventListener('d2l-form-element-should-validate', e => e.preventDefault());
 			await formElement.requestValidate(true);
 			expect(formElement.validationError).to.be.null;
+		});
+
+		it('should show validation errors by default', async() => {
+			await formElement.requestValidate();
+			expect(formElement.validationError).to.equal('Test form element is required.');
 		});
 
 	});

@@ -123,7 +123,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.defaultFieldLabel');
 	}
 
-	async requestValidate(showErrors) {
+	async requestValidate(showErrors = true) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
 			await this.validate(showErrors);
 		}
