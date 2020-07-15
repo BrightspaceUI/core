@@ -3,7 +3,6 @@ import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { nothing } from 'lit-html';
 
 export const dropLocation = Object.freeze({
@@ -18,7 +17,7 @@ export const dropLocation = Object.freeze({
 
 const dropTargetLeaveDelay = 1000; //ms
 
-export const ListItemDragDropMixin = superclass => class extends LocalizeCoreElement(superclass) {
+export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
@@ -254,7 +253,7 @@ export const ListItemDragDropMixin = superclass => class extends LocalizeCoreEle
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
-				text="${this.dragHandleAriaLabel || this.localize('components.list.list-item-drag-handle')}"
+				text="${this.dragHandleAriaLabel}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
