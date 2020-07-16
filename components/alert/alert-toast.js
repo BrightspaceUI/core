@@ -47,7 +47,7 @@ class AlertToast extends LitElement {
 
 			/**
 			 * Type of the alert being displayed
-			 * @type {('default'|'critical'|'success'|'warning')}
+			 * @type {'default'|'critical'|'success'|'warning'}
 			 * @default "default"
 			 */
 			type: { type: String, reflect: true },

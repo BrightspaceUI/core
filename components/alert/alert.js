@@ -34,7 +34,7 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			/**
 			 * Type of the alert being displayed
-			 * @type {('default'|'critical'|'success'|'warning')}
+			 * @type {'default'|'critical'|'success'|'warning'}
 			 */
 			type: { type: String, reflect: true }
 		};

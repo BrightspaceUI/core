@@ -111,7 +111,7 @@ class InputText extends RtlMixin(LitElement) {
 			title: { type: String },
 			/**
 			 * The type of the text input
-			 * @type {('text'|'email'|'number'|'password'|'tel'|'url')}
+			 * @type {'text'|'email'|'number'|'password'|'tel'|'url'}
 			 */
 			type: { type: String },
 			/**
