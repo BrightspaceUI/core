@@ -1,11 +1,9 @@
-import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * An entry within a <d2l-breadcrumbs> parent representing the current page.
  */
-class BreadcrumbCurrentPage extends RtlMixin(LitElement) {
+class BreadcrumbCurrentPage extends LitElement {
 
 	static get properties() {
 		return {
@@ -23,20 +21,10 @@ class BreadcrumbCurrentPage extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				align-items: center;
-				display: inline-flex;
+				display: inline-block;
 			}
-
-			d2l-icon {
-				height: 8px;
-				padding-left: 8px;
-				padding-right: 3px;
-				width: 8px;
-			}
-
-			:host([dir="rtl"]) d2l-icon {
-				padding-left: 3px;
-				padding-right: 8px;
+			:host([hidden]) {
+				display: none;
 			}
 		`;
 	}
@@ -47,7 +35,7 @@ class BreadcrumbCurrentPage extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		return html`<span aria-current="page">${this.text}</span><d2l-icon icon="d2l-tier1:chevron-right"></d2l-icon>`;
+		return html`<span aria-current="page">${this.text}</span>`;
 	}
 
 }
