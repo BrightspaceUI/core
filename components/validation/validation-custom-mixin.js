@@ -16,9 +16,7 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._updateForElement();
-		const connected = new CustomEvent('d2l-validation-custom-connected', { bubbles: true, composed: true });
-		this.dispatchEvent(connected);
+		this._dispatchConnectionEvent('d2l-validation-custom-connected');
 	}
 
 	disconnectedCallback() {
@@ -27,8 +25,7 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 			this._forElement.validationCustomDisconnected(this);
 		}
 		this._forElement = null;
-		const disconnected = new CustomEvent('d2l-validation-custom-disconnected', { bubbles: true, composed: true });
-		this.dispatchEvent(disconnected);
+		this._dispatchConnectionEvent('d2l-validation-custom-disconnected');
 	}
 
 	updated(changedProperties) {
@@ -47,6 +44,21 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 
 	async validate() {
 		throw new Error('ValidationCustomMixin requires validate to be overridden');
+	}
+
+	_dispatchConnectionEvent(type) {
+		const connected = new CustomEvent(type, { bubbles: true, composed: true, detail: { validationCustom: this } });
+		if (window.ShadyDOM) {
+			// https://github.com/Polymer/lit-element/issues/658
+			const { appendChild, removeChild } = window.ShadyDOM.nativeMethods;
+			const proxy = document.createComment('');
+
+			appendChild.call(this.parentNode, proxy);
+			proxy.dispatchEvent(connected);
+			removeChild.call(this.parentNode, proxy);
+		} else {
+			this.dispatchEvent(connected);
+		}
 	}
 
 	_updateForElement() {

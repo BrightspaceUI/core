@@ -247,13 +247,13 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	_validationCustomConnected(e) {
 		e.stopPropagation();
-		const custom = e.composedPath()[0];
+		const custom = e.detail.validationCustom;
 		this.validationCustomConnected(custom);
 	}
 
 	_validationCustomDisconnected(e) {
 		e.stopPropagation();
-		const custom = e.composedPath()[0];
+		const custom = e.detail.validationCustom;
 		this.validationCustomDisconnected(custom);
 	}
 
