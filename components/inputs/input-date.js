@@ -4,6 +4,7 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -33,10 +34,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 * Text to reassure users that they can choose not to provide a value in this field (usually not necessary)
 			 */
 			emptyText: { type: String, attribute: 'empty-text'},
-			/**
-			 * Style the component as invalid
-			 */
-			invalid: { type: Boolean, reflect: true },
 			/**
 			 * REQUIRED: Accessible label for the input
 			 */
@@ -114,7 +111,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.emptyText = '';
-		this.invalid = false;
 		this.labelHidden = false;
 		this.value = '';
 
@@ -157,19 +153,20 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const formattedWideDate = formatISODateInUserCalDescriptor('2323-12-23');
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 0.75rem + 3px)`; // text and icon width + paddingRight + border width + 1
-		const invalid = this.validationError || this.invalid;
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
+		const tooltip = this.validationError ? html`<d2l-tooltip align="start" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
 			</div>
+			${tooltip}
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
-					aria-invalid="${invalid ? 'true' : 'false'}"
+					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
@@ -186,9 +183,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						icon="${invalid ? 'tier1:alert' : 'tier1:calendar'}"
+						icon="${this.invalid ? 'tier1:alert' : 'tier1:calendar'}"
 						slot="left"
-						style="${styleMap({color: invalid ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
+						style="${styleMap({color: this.invalid ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
