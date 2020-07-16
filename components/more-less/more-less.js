@@ -29,7 +29,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 			/**
 			 * The h-align property of the more-less button
-			 * @type {('text'|'')}
+			 * @type {'text'|''}
 			 */
 			hAlign: { type: String, attribute: 'h-align' },
 

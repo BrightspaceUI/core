@@ -88,7 +88,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		return {
 			/**
 			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
-			 * @type {('start'|'end')}
+			 * @type {'start'|'end'}
 			 */
 			align: { type: String, reflect: true },
 			/**
@@ -117,7 +117,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			forceShow: { type: Boolean, attribute: 'force-show' },
 			/**
 			 * Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor.
-			 * @type {('label'|'descriptor')}
+			 * @type {'label'|'descriptor'}
 			 */
 			forType: { type: String, attribute: 'for-type' },
 			/**
@@ -126,7 +126,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			offset: { type: Number }, /* tooltipOffset */
 			/**
 			 * Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
-			 * @type {('top'|'bottom'|'left'|'right')}
+			 * @type {'top'|'bottom'|'left'|'right'}
 			 */
 			position: { type: String },
 			/**
@@ -135,7 +135,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			showing: { type: Boolean, reflect: true },
 			/**
 			 * The style of the tooltip based on the type of information it displays
-			 * @type {('info'|'error')}
+			 * @type {'info'|'error'}
 			 */
 			state: { type: String, reflect: true },
 			_maxWidth: { type: Number },

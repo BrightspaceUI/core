@@ -10,7 +10,7 @@ class StatusIndicator extends LitElement {
 		return {
 			/**
 			 * State of status indicator to display
-			 * @type {('default'|'success'|'alert'|'none')}
+			 * @type {'default'|'success'|'alert'|'none'}
 			 */
 			state: {
 				type: String,
