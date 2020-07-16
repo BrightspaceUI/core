@@ -4,6 +4,7 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -33,10 +34,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 * Text to reassure users that they can choose not to provide a value in this field (usually not necessary)
 			 */
 			emptyText: { type: String, attribute: 'empty-text'},
-			/**
-			 * Style the component as invalid
-			 */
-			invalid: { type: Boolean, reflect: true },
 			/**
 			 * REQUIRED: Accessible label for the input
 			 */
@@ -114,7 +111,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.emptyText = '';
-		this.invalid = false;
 		this.labelHidden = false;
 		this.value = '';
 
@@ -160,6 +156,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
+		const tooltip = this.validationError ? html`<d2l-tooltip align="start" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<d2l-validation-custom for="${this._inputId}" @d2l-validation-custom-validate=${this._validate} failure-text="Pick in range"></d2l-validation-custom>
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
@@ -167,6 +164,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
 			</div>
+			${tooltip}
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
