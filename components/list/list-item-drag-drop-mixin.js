@@ -461,6 +461,11 @@ export class NewPositionEventDetails {
 	 */
 	reorder(list, {announceFn, keyFn}) {
 		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
+
+		if (announceFn) {
+			this.announceMove(list, {announceFn, keyFn});
+		}
+
 		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
 
 		if (origin === null) {
@@ -486,10 +491,6 @@ export class NewPositionEventDetails {
 			}
 		}
 		list[destination] = item;
-
-		if (announceFn) {
-			this.announceMove(list, {announceFn, keyFn});
-		}
 	}
 
 	_fetchDropTargetPosition(list, originPosition, keyFn) {
