@@ -34,7 +34,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			_dropLocation: { type: Number },
 			_focusingDragHandle: { type: Boolean },
 			_hovering: { type: Boolean },
-			_isActivitingKeyboardMode: {type: Boolean },
 			_keyboardActive: { type: Boolean }
 		};
 	}
@@ -173,14 +172,18 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		});
 	}
 
-	_onDragTargetClickFocus(e) {
-		this.shadowRoot.querySelector(`#${this._itemDragId}`).focus();
+	_onDragTargetClick(e) {
+		if (this._focusingDragHandle) {
+			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		} else {
+			this.shadowRoot.querySelector(`#${this._itemDragId}`).focus();
+		}
+
 		e.preventDefault();
+		e.stopPropagation();
 	}
 
-	_onDragTargetClickKeyboardActivate(e) {
-		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
-		this._isActivitingKeyboardMode = false;
+	_onDragTargetMouseDown(e) {
 		e.preventDefault();
 	}
 
@@ -223,7 +226,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onFocusinDragHandle() {
 		this._focusingDragHandle = true;
-		this._isActivitingKeyboardMode = true;
 	}
 
 	_onFocusoutDragHandle() {
@@ -276,9 +278,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			<div
 				class="d2l-list-item-drag-area"
 				draggable="true"
-				@click="${this._isActivitingKeyboardMode ? this._onDragTargetClickKeyboardActivate : this._onDragTargetClickFocus}"
+				@click="${this._onDragTargetClick}"
 				@dragstart="${this._onDragStart}"
 				@dragend="${this._onDragEnd}"
+				@mousedown="${this._onDragTargetMouseDown}"
 				>
 			</div>
 		`) : nothing;
