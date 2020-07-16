@@ -77,7 +77,11 @@ export class FormElementValidityState {
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
-		return { validationError: { attribute: false, type: String } };
+		return {
+			forceInvalid: { type: Boolean, attribute: false },
+			invalid: { type: Boolean, reflect: true },
+			validationError: { type: String, attribute: false },
+		};
 	}
 
 	constructor() {
@@ -85,11 +89,21 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationCustoms = new Set();
 		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
+		this.forceInvalid = false;
 		this.formValue = null;
+		this.invalid = false;
 		this.validationError = null;
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
+	}
+
+	updated(changedProperties) {
+		changedProperties.forEach((_, propName) => {
+			if (propName === 'forceInvalid' || propName === 'validationError') {
+				this.invalid = this.forceInvalid || this.validationError !== null;
+			}
+		});
 	}
 
 	checkValidity() {
@@ -109,9 +123,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.defaultFieldLabel');
 	}
 
-	async requestValidate() {
+	async requestValidate(showErrors = true) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
-			await this.validate();
+			await this.validate(showErrors);
 		}
 	}
 
@@ -129,7 +143,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationMessage = null;
 	}
 
-	async validate() {
+	async validate(showErrors) {
 		await this.updateComplete;
 		const customs = [...this._validationCustoms];
 		const results = await Promise.all(customs.map(custom => custom.validate()));
@@ -137,11 +151,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		if (!this.checkValidity()) {
 			errors.unshift(this.validationMessage);
 		}
-		if (errors.length > 0) {
-			this.validationError = errors[0];
-		} else {
+		if (errors.length === 0) {
 			this.validationError = null;
+		} else if (showErrors || this.validationError) {
+			this.validationError = errors[0];
 		}
+
 		return errors;
 	}
 

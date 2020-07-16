@@ -12,7 +12,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return {
 			/**
 			 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt be centred.
-			 * @type {('start'|'end')}
+			 * @type {'start'|'end'}
 			 */
 			align: {
 				type: String,
