@@ -1,5 +1,5 @@
+import { isCustomFormElement, tryGetLabelText } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import { tryGetLabelText } from './form-helper.js';
 
 export class FormElementValidityState {
 
@@ -144,7 +144,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	async validate(showErrors) {
 		await this.updateComplete;
-		const customs = [...this._validationCustoms];
+		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
 		if (!this.checkValidity()) {
