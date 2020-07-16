@@ -95,7 +95,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.validationError = null;
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
 	}
 
 	updated(changedProperties) {
@@ -249,12 +248,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		e.stopPropagation();
 		const custom = e.detail.validationCustom;
 		this.validationCustomConnected(custom);
-	}
 
-	_validationCustomDisconnected(e) {
-		e.stopPropagation();
-		const custom = e.detail.validationCustom;
-		this.validationCustomDisconnected(custom);
+		const onDisconnect = () => {
+			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
+			this.validationCustomDisconnected(custom);
+		};
+		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 };
