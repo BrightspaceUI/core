@@ -173,8 +173,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragTargetClick(e) {
-		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		if (this._keyboardActiveOnNextClick) {
+			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		} else {
+			this.shadowRoot.querySelector(`#${this._itemDragId}`).focus();
+		}
+
+		this._keyboardActiveOnNextClick = false;
 		e.preventDefault();
+		e.stopPropagation();
+	}
+
+	_onDragTargetMouseDown() {
+		this._keyboardActiveOnNextClick = this._focusingDragHandle;
 	}
 
 	_onDrop() {
@@ -271,6 +282,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@click="${this._onDragTargetClick}"
 				@dragstart="${this._onDragStart}"
 				@dragend="${this._onDragEnd}"
+				@mousedown="${this._onDragTargetMouseDown}"
 				>
 			</div>
 		`) : nothing;
@@ -449,6 +461,11 @@ export class NewPositionEventDetails {
 	 */
 	reorder(list, {announceFn, keyFn}) {
 		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
+
+		if (announceFn) {
+			this.announceMove(list, {announceFn, keyFn});
+		}
+
 		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
 
 		if (origin === null) {
@@ -474,10 +491,6 @@ export class NewPositionEventDetails {
 			}
 		}
 		list[destination] = item;
-
-		if (announceFn) {
-			this.announceMove(list, {announceFn, keyFn});
-		}
 	}
 
 	_fetchDropTargetPosition(list, originPosition, keyFn) {
