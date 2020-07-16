@@ -22,9 +22,10 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 			const { appendChild, removeChild } = window.ShadyDOM.nativeMethods;
 			const proxy = document.createComment('');
 
-			appendChild.call(this.parentNode, proxy);
+			const parentNode = this.parentNode.host ? this.parentNode.host : this.parentNode;
+			appendChild.call(parentNode, proxy);
 			proxy.dispatchEvent(connected);
-			removeChild.call(this.parentNode, proxy);
+			removeChild.call(parentNode, proxy);
 		} else {
 			this.dispatchEvent(connected);
 		}
