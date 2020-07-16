@@ -173,18 +173,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragTargetClick(e) {
-		if (this._focusingDragHandle) {
+		if (this._keyboardActiveOnNextClick) {
 			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 		} else {
 			this.shadowRoot.querySelector(`#${this._itemDragId}`).focus();
 		}
 
+		this._keyboardActiveOnNextClick = false;
 		e.preventDefault();
 		e.stopPropagation();
 	}
 
-	_onDragTargetMouseDown(e) {
-		e.preventDefault();
+	_onDragTargetMouseDown() {
+		this._keyboardActiveOnNextClick = this._focusingDragHandle;
 	}
 
 	_onDrop() {
