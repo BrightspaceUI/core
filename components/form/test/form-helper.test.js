@@ -2,7 +2,7 @@ import './form-element.js';
 import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
 import { expect, fixture, html } from '@open-wc/testing';
-import { isCustomElement, isCustomFormElement, isElement, tryGetLabelText } from '../form-helper.js';
+import { findFormElements, getFormElementData, isCustomElement, isCustomFormElement, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
 
 const buttonFixture = html`<button type="button">Add to favorites</button>`;
 
@@ -23,7 +23,7 @@ const fieldsetFixture = html`
 
 const inputFixture = html`<input type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">`;
 
-const objectFixture = html`<object type="image/png" width="300" height="200"></object>`;
+const objectFixture = html`<object name="image" type="image/png" width="300" height="200"></object>`;
 
 const outputFixture = html`<output name="result">60</output>`;
 
@@ -73,19 +73,19 @@ describe('form-helper', () => {
 	describe('elements', () => {
 
 		[
-			{ tag: 'button', fixture: buttonFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'fieldset', fixture: fieldsetFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'input', fixture: inputFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'object', fixture: objectFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'output', fixture: outputFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'select', fixture: selectFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'textarea', fixture: textareaFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'div', fixture: divFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'label', fixture: labelFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'form', fixture: formFixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'h1', fixture: h1Fixture, expected: { isElement: true, isCustomElement: false, isCustomFormElement: false } },
-			{ tag: 'd2l-status-indicator', fixture: d2lStatusIndicatorFixture, expected: { isElement: true, isCustomElement: true, isCustomFormElement: false } },
-			{ tag: 'd2l-test-form-element', fixture: formElementFixture, expected: { isElement: true, isCustomElement: true, isCustomFormElement: true } }
+			{ tag: 'button', fixture: buttonFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
+			{ tag: 'fieldset', fixture: fieldsetFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
+			{ tag: 'input', fixture: inputFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
+			{ tag: 'object', fixture: objectFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
+			{ tag: 'output', fixture: outputFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
+			{ tag: 'select', fixture: selectFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
+			{ tag: 'textarea', fixture: textareaFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
+			{ tag: 'div', fixture: divFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
+			{ tag: 'label', fixture: labelFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
+			{ tag: 'form', fixture: formFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
+			{ tag: 'h1', fixture: h1Fixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
+			{ tag: 'd2l-status-indicator', fixture: d2lStatusIndicatorFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: false } },
+			{ tag: 'd2l-test-form-element', fixture: formElementFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: true } }
 		].forEach(({ tag, fixture: eleFixture, expected }) => {
 
 			describe(tag, () => {
@@ -102,6 +102,10 @@ describe('form-helper', () => {
 
 				it(`${tag} should ${expected.isCustomElement ? '' : 'not '}be a custom element`, () => {
 					expect(isCustomElement(ele)).to.equal(expected.isCustomElement);
+				});
+
+				it(`${tag} should ${expected.isNativeFormElement ? '' : 'not '}be a native form element`, () => {
+					expect(isNativeFormElement(ele)).to.equal(expected.isNativeFormElement);
 				});
 
 				it(`${tag} should ${expected.isCustomFormElement ? '' : 'not '}be a custom form element`, () => {
@@ -225,4 +229,204 @@ describe('form-helper', () => {
 
 	});
 
+	describe('findFormElements', () => {
+
+		const formElementsFixture = html`
+			<div>
+				<h1>My Form</h1>
+				<fieldset id="ele-1">
+					<legend>Choose your favorite monster</legend>
+					<input id="ele-2" type="radio" name="monster" value="kraken">
+					<br><label for="ele-2">Kraken</label><br/>
+					<input id="ele-3" type="radio" name="monster" value="sasquatch">
+					<br><label for="ele-3">Sasquatch</label><br/>
+				</fieldset>
+				<label for="ele-4">Checkers</label>
+				<input id="ele-4" type="checkbox" name="checkers" value="red-black">
+				<div>
+					<label for="ele-5">Name</label>
+					<input id="ele-5" type="text" name="name">
+					<div>
+						<select id="ele-6" name="pets" required>
+							<option value="">--Please choose an option--</option>
+							<option value="dog">Dog</option>
+							<option value="cat">Cat</option>
+							<option value="hamster">Hamster</option>
+							<option value="parrot">Parrot</option>
+							<option value="spider">Spider</option>
+							<option value="goldfish">Goldfish</option>
+						</select>
+						<d2l-test-form-element id="ele-7"></d2l-test-form-element>
+					</div>
+				</div>
+				<object id="ele-8" type="image/png" width="300" height="200"></object>
+				<label>Email
+					<input id="ele-9" type="email"/>
+				</label>
+				<div>
+					<h2>Secondary</h2>
+					<label for="ele-10">Tell us your story</label>
+					<textarea id="ele-10" title="my title" minlength="20" name="story">It was...</textarea>
+					<div>
+						<input id="ele-11" type="range" name="b" value="50" max="100" min="15" /> +
+						<input id="ele-12" type="number" name="a" value="10" /> =
+						<output id="ele-13" name="result" for="ele-11 ele-12">60</output>
+					</div>
+				</div>
+				<button id="ele-14" type="submit" name="action">Update</d2l-button>
+				<button id="ele-15" type="cancel" name="action">Delete</d2l-button>
+				<button id="ele-16" name="other" value="other">Other</button>
+			</div>
+		`;
+
+		let root;
+		beforeEach(async() => {
+			root = await fixture(formElementsFixture);
+		});
+
+		it('should find all form elements', () => {
+			const formElements = findFormElements(root);
+			let id = 1;
+			for (const formElement of formElements) {
+				const expectedFormElement = root.querySelector(`#ele-${id}`);
+				expect(formElement).to.equal(expectedFormElement);
+				id += 1;
+			}
+		});
+	});
+
+	describe('getFormElementData', () => {
+
+		describe('custom form element', () => {
+			let formElement;
+			beforeEach(async() => {
+				formElement = await fixture(formElementFixture);
+			});
+
+			it('should not have any data by default', async() => {
+				const eleData = getFormElementData(formElement);
+				expect(eleData).to.be.empty;
+			});
+
+			it('should not have any data if disabled', async() => {
+				formElement.disabled = true;
+				formElement.name = 'my-key';
+				formElement.setFormValue('my-value');
+				const eleData = getFormElementData(formElement);
+				expect(eleData).to.be.empty;
+			});
+
+			it('should use the name and formValue if it is a string', async() => {
+				formElement.name = 'my-key';
+				formElement.setFormValue('my-value');
+				const eleData = getFormElementData(formElement);
+				expect(eleData).to.deep.equal({ 'my-key': 'my-value' });
+			});
+
+			it('should use the formValue if it is an object', async() => {
+				const formValue = {
+					'my-key-1': 'my-val-1',
+					'my-key-2': 'my-val-2'
+				};
+				formElement.setFormValue(formValue);
+				const eleData = getFormElementData(formElement);
+				expect(eleData).to.deep.equal(formValue);
+			});
+		});
+
+		describe('native form element', () => {
+
+			[
+				{ name: 'should have data when the button is the submitter', isSubmitter: true },
+				{ name: 'should have not data when the button is not the submitter', isSubmitter: false }
+			].forEach(({ name, isSubmitter }) => {
+				it(name, async() => {
+					const container = await fixture(html`
+							<div>
+								<button id="pets" type="submit" name="pets" value="the value"></button>
+								<button id="dogs" type="submit" name="dogs" value="other value"></button>
+							</div>
+					`);
+					const clicked = container.querySelector('#pets');
+					const submitter = isSubmitter ? clicked : container.querySelector('#dogs');
+					const eleData = getFormElementData(clicked, submitter);
+					if (isSubmitter) {
+						expect(eleData).to.deep.equal({ pets: 'the value' });
+					} else {
+						expect(eleData).to.empty;
+					}
+				});
+			});
+
+			it('should get files for file inputs', async() => {
+				const fileInput = await fixture(html`<input type="file" name="file-input"/>`);
+				const eleData = getFormElementData(fileInput);
+				expect(eleData).to.deep.equal({ ['file-input']: fileInput.files });
+			});
+
+			it('should get names and values', async() => {
+				const form = await fixture(html`
+					<form>
+						<input type="text" name="input-without-value"/>
+						<input type="text" name="input-with-value" value="input-value" />
+						<input type="text" name="input-with-value-disabled" value="input value disabled" disabled />
+						<textarea name="textarea-without-value"></textarea>
+						<textarea name="textarea-with-value">textarea value</textarea>
+						<textarea name="textarea-with-value-disabled" disabled>textarea value disabled</textarea>
+						<object name="object-without-value" type="image/png" width="300" height="200"></object>
+						<object name="object-with-value" value="object value" type="image/png" width="300" height="200"></object>
+						<object name="object-with-value-disabled" value="object value disabled" type="image/png" width="300" height="200" disabled></object>
+						<output name="output-without-value"></output>
+						<output name="output-with-value">output value</output>
+						<output name="output-with-value-disabled">output value disabled</output>
+						<select name="select-disabled" disabled>
+							<option value="">--Please choose an option--</option>
+							<option value="spider">Spider</option>
+							<option value="goldfish" selected>Goldfish</option>
+						</select>
+						<select name="select-selected">
+							<option value="">--Please choose an option--</option>
+							<option value="spider">Spider</option>
+							<option value="goldfish" selected>Goldfish</option>
+						</select>
+						<select name="select-default">
+							<option value="">--Please choose an option--</option>
+							<option value="spider">Spider</option>
+							<option value="goldfish">Goldfish</option>
+						</select>
+						<button name="button-with-value" type="submit" value="button value"></button>
+						<button name="button-without-value" type="submit"></button>
+						<input name="input-submit-with-value" type="submit" value="input-submit-value"/>
+						<input name="input-submit-without-value" type="submit"/>
+						<input name="input-reset-with-value" type="reset" value="input-reset-value"/>
+						<input name="input-reset-without-value" type="reset"/>
+						<input type="checkbox" name="checkbox-default-value-checked" checked />
+						<input type="checkbox" name="checkbox-custom-value-checked" value="custom-value-checked" checked />
+						<input type="checkbox" name="checkbox-default-value-checked-disabled" checked disabled />
+						<input type="checkbox" name="checkbox-default-value" />
+						<input type="checkbox" name="checkbox-custom-value" value="custom-value" />
+						<input type="radio" name="radio-default-value-checked" checked />
+						<input type="radio" name="radio-custom-value-checked" value="custom-value-checked" checked />
+						<input type="radio" name="radio-default-value-checked-disabled" checked disabled />
+						<input type="radio" name="radio-default-value" />
+						<input type="radio" name="radio-custom-value" value="custom-value" />
+					</form>
+				`);
+
+				const actualFormData = [...form.elements].reduce((acc, ele) => ({ ...acc, ...getFormElementData(ele) }), {});
+				const expectedFormData = new FormData(form);
+
+				let expectedEntries = 0;
+				for (const entry of expectedFormData) {
+					const key = entry[0];
+					const value = entry[1];
+					expect(actualFormData[key]).to.equal(value);
+					expectedEntries += 1;
+				}
+				expect(Object.entries(actualFormData).length).to.equal(expectedEntries);
+			});
+
+		});
+
+	});
 });
