@@ -10,8 +10,12 @@ describe('d2l-alert', () => {
 		'success',
 		'call-to-action',
 		'error'
-	].forEach((type) => {
-		it(`passes aXe tests for type "${type}"`, async() => {
+	].forEach((testCase) => {
+		it(`passes aXe tests for type "${testCase}"`, async() => {
+			/**
+			 * @type {'default'|'critical'|'success'|'warning'}
+			 */
+			const type = testCase;
 			const el = await fixture(html`<d2l-alert type="${type}">message</d2l-alert>`);
 			await expect(el).to.be.accessible();
 		});
