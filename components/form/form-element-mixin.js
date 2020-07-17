@@ -120,7 +120,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			return label;
 		}
 		console.warn(this, ' is missing a label');
-		return this.localize('components.form-element-mixin.defaultFieldLabel');
+		return this.localize('components.form-element.defaultFieldLabel');
 	}
 
 	async requestValidate(showErrors = true) {
@@ -194,51 +194,51 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			case validity.valueMissing:
 				return this.validationMessageValueMissing;
 		}
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageBadInput() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageBadInput\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessagePatternMismatch() {
 		console.warn(this, ' is using the default validation message, override \'validationMessagePatternMismatch\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageRangeOverflow() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageRangeOverflow\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageRangeUnderflow() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageRangeUnderflow\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageStepMismatch() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageStepMismatch\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageTooLong() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageTooLong\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageTooShort() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageTooShort\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageTypeMismatch() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageTypeMismatch\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageValueMissing() {
-		return this.localize('components.form-element-mixin.valueMissingMessage', { label: this.labelText });
+		return this.localize('components.form-element.valueMissing', { label: this.labelText });
 	}
 
 	get validity() {
