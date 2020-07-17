@@ -98,26 +98,6 @@ describe('d2l-input-date-range', () => {
 				expect(elem.validationError).to.equal('Start Date must be before End Date');
 			});
 
-			it('should set end date to invalid if after maxValue', async() => {
-				const elem = await fixture(minMaxFixture);
-				const inputElem = getChildElem(elem, 'd2l-input-date.d2l-input-date-range-end');
-				inputElem.value = '2021-03-31';
-				setTimeout(() => dispatchEvent(inputElem, 'change'));
-				await oneEvent(elem, 'change');
-				expect(elem.endValue).to.equal('2021-03-31');
-				expect(elem.invalid).to.be.false;
-			});
-
-			it('should set start date to invalid if before minValue', async() => {
-				const elem = await fixture(minMaxFixture);
-				const inputElem = getChildElem(elem, 'd2l-input-date.d2l-input-date-range-start');
-				inputElem.value = '2019-03-31';
-				setTimeout(() => dispatchEvent(inputElem, 'change'));
-				await oneEvent(elem, 'change');
-				expect(elem.startValue).to.equal('2019-03-31');
-				expect(elem.invalid).to.be.false;
-			});
-
 			async function updateStartEnd(elem, startDate, endDate) {
 				let firedCount = 0;
 				elem.addEventListener('change', () => {
