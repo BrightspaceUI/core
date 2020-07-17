@@ -16,19 +16,8 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 
 	connectedCallback() {
 		super.connectedCallback();
-		const connected = new CustomEvent('d2l-validation-custom-connected', { bubbles: true, composed: true, detail: { validationCustom: this } });
-		if (window.ShadyDOM) {
-			// https://github.com/Polymer/lit-element/issues/658
-			const { appendChild, removeChild } = window.ShadyDOM.nativeMethods;
-			const proxy = document.createComment('');
-
-			const parentNode = this.parentNode.host ? this.parentNode.host : this.parentNode;
-			appendChild.call(parentNode, proxy);
-			proxy.dispatchEvent(connected);
-			removeChild.call(parentNode, proxy);
-		} else {
-			this.dispatchEvent(connected);
-		}
+		this._updateForElement();
+		this.dispatchEvent(new CustomEvent('d2l-validation-custom-connected', { bubbles: true }));
 	}
 
 	disconnectedCallback() {

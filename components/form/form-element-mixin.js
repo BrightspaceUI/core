@@ -86,6 +86,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	constructor() {
 		super();
+		this._validationCustomConnected = this._validationCustomConnected.bind(this);
+
 		this._validationCustoms = new Set();
 		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
@@ -94,7 +96,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.invalid = false;
 		this.validationError = null;
 
-		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
 	updated(changedProperties) {
@@ -246,7 +248,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	_validationCustomConnected(e) {
 		e.stopPropagation();
-		const custom = e.detail.validationCustom;
+		const custom = e.composedPath()[0];
 		this.validationCustomConnected(custom);
 
 		const onDisconnect = () => {
