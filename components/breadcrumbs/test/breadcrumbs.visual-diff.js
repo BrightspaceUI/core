@@ -18,6 +18,7 @@ describe('d2l-breadcrumbs', () => {
 
 	[
 		'default-mode',
+		'current-page',
 		'constrained-width',
 		'compact'
 	].forEach((testName) => {

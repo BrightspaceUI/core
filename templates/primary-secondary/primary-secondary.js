@@ -13,8 +13,13 @@ class TemplatePrimarySecondary extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * Controls how the primary panel's contents overflow
+			 * @type {'default'|'hidden'}
+			 */
+			primaryOverflow: { attribute: 'primary-overflow', reflect: true, type: String },
+			/**
 			 * Whether content fills the screen or not
-			 * @type {('fullscreen'|'normal')}
+			 * @type {'fullscreen'|'normal'}
 			 */
 			widthType: { type: String, attribute: 'width-type', reflect: true },
 			_hasFooter: { type: Boolean }
@@ -59,6 +64,9 @@ class TemplatePrimarySecondary extends LitElement {
 			main {
 				grid-area: primary;
 				overflow-y: auto;
+			}
+			:host([primary-overflow="hidden"]) main {
+				overflow: hidden;
 			}
 			.d2l-template-primary-secondary-divider {
 				background-color: var(--d2l-color-mica);
