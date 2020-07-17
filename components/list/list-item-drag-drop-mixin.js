@@ -17,7 +17,8 @@ export const dropLocation = Object.freeze({
 });
 
 const dropTargetLeaveDelay = 1000; //ms
-const touchHoldDuration = 400;
+const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
+const scrollSensitivity = 150; // pixels between top/bottom of viewport to scroll for mobile
 
 const createDragEvent = (name) => {
 	const event = new Event(name, { bubbles: true });
@@ -25,6 +26,7 @@ const createDragEvent = (name) => {
 	return event;
 };
 
+// used for disabling certain things on mobile
 const isDragSupported = () => {
 	const el = document.createElement('div');
 
@@ -277,28 +279,31 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_onTouchEnd(e) {
 		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
 		if (!this._touchStarted) return;
-		this._currentTouchListItem = undefined;
 		e.preventDefault();
+		this._touchStarted = false;
+		this._currentTouchListItem = undefined;
 		// simulate drop if over a drop area
 		const touch = e.changedTouches[0];
 		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
 		const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
 		if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
 		// simulate dragend
-		this._onDragEnd(createDragEvent('dragend'));
+		this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragend'));
 	}
 
 	/**
 	 * Mobile phone browsers typically don't support drag events, so we simulate them with touch
-	 * events instead.
+	 * events instead. Touchmove takes care of most of these.
 	 */
 	_onTouchMove(e) {
 		if (!this._touchStarted) return;
-		e.preventDefault();
+		if (e.cancelable) { // event must be cancelable
+			e.preventDefault();
+		}
 		const touch = e.changedTouches[0];
 		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
 		if (!listItem) return;
-		// simulate host drag enter
+		// simulate host dragenter
 		if (listItem !== this && this._currentTouchListItem !== listItem) {
 			listItem.dispatchEvent(createDragEvent('dragenter'));
 			this._currentTouchListItem = listItem;
@@ -318,17 +323,24 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				this._currentTouchDropArea = movingOverElem;
 			}
 		}
+		// scroll the viewport if we've reached the end
+		if (touch.clientY > window.innerHeight / 2 && window.innerHeight - touch.clientY < scrollSensitivity) {
+			// scroll down
+			window.scrollBy(0, 10);
+		} else if (touch.clientY < window.innerHeight / 2 && touch.clientY < scrollSensitivity) {
+			// scroll up
+			window.scrollBy(0, -10);
+		}
 	}
 
-	_onTouchStart(e) {
+	_onTouchStart() {
 		if (this._touchTimeoutId) {
 			clearTimeout(this._touchTimeoutId);
 		}
 		// simulate dragstart for touch and hold
 		this._touchTimeoutId = setTimeout(() => {
 			this._touchStarted = true;
-			this._onDragStart(createDragEvent('dragstart'));
-			e.preventDefault();
+			this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragstart'));
 		}, touchHoldDuration);
 	}
 
