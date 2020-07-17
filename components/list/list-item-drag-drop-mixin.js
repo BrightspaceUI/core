@@ -73,7 +73,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				width: 100%;
 				z-index: 100;
 			}
-			@media screen and (min-device-width: 615px) {
+			@media only screen and (hover: hover), only screen and (-moz-touch-enabled: 0) {
 				d2l-list-item-drag-handle {
 					opacity: 0;
 				}
