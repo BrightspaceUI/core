@@ -8,8 +8,13 @@ describe('d2l-status-indicator', () => {
 		'none',
 		'alert',
 		'success'
-	].forEach((state) => {
+	].forEach((testCase) => {
 		[true, false].forEach((bold) => {
+			/**
+			 * @type {'default'|'none'|'alert'|'success'}
+			 */
+			const state = testCase;
+
 			it(`passes aXe tests for state="${state}" and bold="${bold}"`, async() => {
 				const elem = await fixture(html`<d2l-status-indicator text="test subtle" state="${state}" ?bold="${bold}"></d2l-status-indicator>`);
 				await expect(elem).to.be.accessible();
