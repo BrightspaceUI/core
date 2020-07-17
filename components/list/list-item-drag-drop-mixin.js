@@ -23,7 +23,9 @@ const scrollSensitivity = 150; // pixels between top/bottom of viewport to scrol
 
 const createDragEvent = (name) => {
 	const event = new Event(name, { bubbles: true });
-	event.dataTransfer = new DataTransfer();
+	event.dataTransfer = {
+		setData: () => {}
+	};
 	return event;
 };
 
