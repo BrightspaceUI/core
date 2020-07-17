@@ -61,7 +61,7 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "karma-sauce-launcher": "^4.1.4",
+    "karma-sauce-launcher": "4.1.4",
     "lit-analyzer": "^1",
     "mocha": "^8",
     "node-sass": "^4",
