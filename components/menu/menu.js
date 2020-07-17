@@ -78,7 +78,7 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 		this.addEventListener('d2l-hierarchical-view-resize', this._onViewResize);
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
 		this.addEventListener('keydown', this._onKeyDown);
-		this.addEventListener('keypress', this._onKeyPress);
+		this.addEventListener('keyup', this._onKeyUp);
 
 		this._labelChanged();
 
@@ -259,16 +259,17 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 
 	}
 
-	_onKeyPress(e) {
+	_onKeyUp(e) {
 		if (this._items.indexOf(e.composedPath()[0]) === -1) return;
 
-		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP
-			|| e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER
+		if (e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER
 			|| e.keyCode === keyCodes.ESCAPE) {
 			return;
 		}
 
 		e.stopPropagation();
+
+		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP) return;
 
 		const startsWith = function(item, value) {
 			if (item.text && item.text.length > 0 && item.text.toLowerCase().substr(0, 1) === value) {

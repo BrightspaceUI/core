@@ -112,7 +112,7 @@ describe('d2l-menu', () => {
 
 		it('sets focus to next item that starts with character pressed', () => {
 			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keypress', true, true);
+			eventObj.initEvent('keyup', true, true);
 			eventObj.charCode = 99;
 			elem.querySelector('#a1').dispatchEvent(eventObj);
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
@@ -120,7 +120,7 @@ describe('d2l-menu', () => {
 
 		it('sets focus to next item that starts with uppercase character pressed', () => {
 			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keypress', true, true);
+			eventObj.initEvent('keyup', true, true);
 			eventObj.charCode = 67;
 			elem.querySelector('#a1').dispatchEvent(eventObj);
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
@@ -128,7 +128,7 @@ describe('d2l-menu', () => {
 
 		it('sets focus by rolling over to beginning of menu when searching if necessary', () => {
 			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keypress', true, true);
+			eventObj.initEvent('keyup', true, true);
 			eventObj.charCode = 98;
 			elem.querySelector('#c1').dispatchEvent(eventObj);
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));

@@ -1,3 +1,16 @@
+const keyCodes = Object.freeze({
+	DOWN: 40,
+	END: 35,
+	ENTER: 13,
+	HOME: 36,
+	LEFT: 37,
+	PAGEUP: 33,
+	PAGEDOWN: 34,
+	RIGHT: 39,
+	SPACE: 32,
+	UP: 38
+});
+
 export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -34,8 +47,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.noAutoOpen = false;
 		this.disabled = false;
 
-		this.__onKeyPress = this.__onKeyPress.bind(this);
-		this.__onMouseUp = this.__onMouseUp.bind(this);
+		this.__onKeyUp = this.__onKeyUp.bind(this);
+		this.__onClick = this.__onClick.bind(this);
 	}
 
 	connectedCallback() {
@@ -48,8 +61,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				return;
 			}
 			opener.setAttribute('aria-haspopup', 'true');
-			opener.addEventListener('keypress', this.__onKeyPress);
-			opener.addEventListener('mouseup', this.__onMouseUp);
+			opener.addEventListener('keyup', this.__onKeyUp);
+			opener.addEventListener('click', this.__onClick);
 			opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
 		});
 	}
@@ -60,8 +73,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!opener) {
 			return;
 		}
-		opener.removeEventListener('keypress', this.__onKeyPress);
-		opener.removeEventListener('mouseup', this.__onMouseUp);
+		opener.addEventListener('keyup', this.__onKeyUp);
+		opener.addEventListener('click', this.__onClick);
 	}
 
 	firstUpdated(changedProperties) {
@@ -103,6 +116,11 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		return this.shadowRoot.querySelector('slot').assignedNodes().filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
 	}
 
+	__onClick() {
+		if (this.noAutoOpen) return;
+		this.toggleOpen(false);
+	}
+
 	__onClosed() {
 		const opener = this.getOpenerElement();
 		if (!opener) {
@@ -112,15 +130,18 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.removeAttribute('active');
 	}
 
-	__onKeyPress(e) {
-		if (e.keyCode !== 13) return;
+	__onKeyUp(e) {
 		if (this.noAutoOpen) return;
-		this.toggleOpen(true);
-	}
-
-	__onMouseUp() {
-		if (this.noAutoOpen) return;
-		this.toggleOpen(false);
+		switch (e.keyCode) {
+			case keyCodes.ENTER:
+			case keyCodes.SPACE:
+				this.toggleOpen(true);
+				e.preventDefault();
+				e.stopPropagation();
+				break;
+			default:
+				break;
+		}
 	}
 
 	__onOpened() {
