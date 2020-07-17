@@ -131,7 +131,22 @@ describe('d2l-input-date', () => {
 					await page.$eval('#min-max', (elem) => {
 						const input = elem.shadowRoot.querySelector('d2l-input-text');
 						input.value = '10/12/2017';
+						const e = new Event(
+							'change',
+							{ bubbles: true, composed: false }
+						);
+						input.dispatchEvent(e);
 					});
+				});
+
+				it('focus', async function() {
+					await page.$eval('#min-max', (elem) => {
+						elem.blur();
+						const input = elem.shadowRoot.querySelector('d2l-input-text');
+						input.focus();
+					});
+					const rect = await getRect(page, '#min-max');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
 				it('open', async function() {
@@ -172,6 +187,25 @@ describe('d2l-input-date', () => {
 					const rect = await helper.getRect(page, '#min-max');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
+
+				function getRect(page, selector) {
+					return page.$eval(selector, (elem) => {
+						const content = elem.shadowRoot.querySelector('d2l-tooltip');
+						const contentWidth = content.shadowRoot.querySelector('.d2l-tooltip-content');
+						const openerRect = elem.getBoundingClientRect();
+						const contentRect = contentWidth.getBoundingClientRect();
+						const x = Math.min(openerRect.x, contentRect.x);
+						const y = Math.min(openerRect.y, contentRect.y);
+						const width = Math.max(openerRect.right, contentRect.right) - x;
+						const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
+						return {
+							x: x - 10,
+							y: y - 10,
+							width: width + 20,
+							height: height + 20
+						};
+					});
+				}
 
 				describe('value before min', () => {
 					it('left arrow', async function() {

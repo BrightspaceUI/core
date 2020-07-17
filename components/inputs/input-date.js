@@ -312,6 +312,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	_handleDropdownOpen() {
 		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		// use setTimeout to wait for keyboard to open on mobile devices
+		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
+		if (tooltip && tooltip.showing) tooltip.hide();
 		setTimeout(() => {
 			this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		}, 150);
