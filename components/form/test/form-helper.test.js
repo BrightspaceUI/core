@@ -273,8 +273,8 @@ describe('form-helper', () => {
 						<output id="ele-13" name="result" for="ele-11 ele-12">60</output>
 					</div>
 				</div>
-				<button id="ele-14" type="submit" name="action">Update</d2l-button>
-				<button id="ele-15" type="cancel" name="action">Delete</d2l-button>
+				<button id="ele-14" type="submit" name="action">Update</button>
+				<button id="ele-15" type="reset" name="action">Delete</button>
 				<button id="ele-16" name="other" value="other">Other</button>
 			</div>
 		`;
@@ -374,8 +374,6 @@ describe('form-helper', () => {
 						<textarea name="textarea-with-value">textarea value</textarea>
 						<textarea name="textarea-with-value-disabled" disabled>textarea value disabled</textarea>
 						<object name="object-without-value" type="image/png" width="300" height="200"></object>
-						<object name="object-with-value" value="object value" type="image/png" width="300" height="200"></object>
-						<object name="object-with-value-disabled" value="object value disabled" type="image/png" width="300" height="200" disabled></object>
 						<output name="output-without-value"></output>
 						<output name="output-with-value">output value</output>
 						<output name="output-with-value-disabled">output value disabled</output>
