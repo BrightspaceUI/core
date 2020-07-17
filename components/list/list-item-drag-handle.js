@@ -198,6 +198,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 		}
 		this._keyboardActive = false;
 		this._dispatchAction(dragActions.save);
+		e.stopPropagation();
 	}
 
 	_onInactiveKeyboard(e) {
