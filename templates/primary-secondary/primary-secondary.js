@@ -93,6 +93,11 @@ class TemplatePrimarySecondary extends LitElement {
 					grid-template-columns: auto;
 					grid-template-rows: auto 1px auto;
 				}
+				footer {
+					background-color: var(--d2l-color-white);
+					bottom: 0;
+					position: sticky;
+				}
 			}
 		`;
 	}
