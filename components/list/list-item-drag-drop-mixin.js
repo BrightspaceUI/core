@@ -388,10 +388,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		templateMethod = templateMethod || (DropTarget => DropTarget);
 		return this.draggable && this._draggingOver ? templateMethod(html`
 			<div class="d2l-list-item-drag-drop-grid" @drop="${this._onDrop}" @dragover="${this._onDragOver}">
-				<div @dragenter="${this._onDropTargetDragEnter}" data-position="top"></div>
-				<div @dragenter="${this._onDropTargetUpperDragEnter}" data-position="upper"></div>
-				<div @dragenter="${this._onDropTargetLowerDragEnter}" data-position="lower"></div>
-				<div @dragenter="${this._onDropTargetBottomDrag}" data-position="bottom"></div>
+				<div @dragenter="${this._onDropTargetDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetUpperDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetLowerDragEnter}"></div>
+				<div @dragenter="${this._onDropTargetBottomDrag}"></div>
 			</div>
 		`) : nothing;
 	}
