@@ -5,6 +5,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { buttonStyles } from '../button/button-styles.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 const keyCodes = Object.freeze({
 	DOWN: 40,
@@ -31,7 +32,7 @@ export const dragActions = Object.freeze({
 	up: 'up'
 });
 
-class ListItemDragHandle extends LitElement {
+class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -119,6 +120,11 @@ class ListItemDragHandle extends LitElement {
 		if (node) node.focus();
 	}
 
+	get _defaultLabel() {
+		const namespace = 'components.list-item-drag-handle';
+		return this.localize(`${namespace}.${this._keyboardActive ? 'keyboard' : 'default'}`);
+	}
+
 	_dispatchAction(action) {
 		if (!action) return;
 		this.dispatchEvent(new CustomEvent('d2l-list-item-drag-handle-action', {
@@ -192,6 +198,7 @@ class ListItemDragHandle extends LitElement {
 		}
 		this._keyboardActive = false;
 		this._dispatchAction(dragActions.save);
+		e.stopPropagation();
 	}
 
 	_onInactiveKeyboard(e) {
@@ -219,7 +226,7 @@ class ListItemDragHandle extends LitElement {
 				@click="${this._onInactiveKeyboard}"
 				@keyup="${this._onInactiveKeyboard}"
 				@keydown="${this._onInactiveKeyDown}"
-				aria-label="${this.text}"
+				aria-label="${this._defaultLabel}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger" class="d2l-button-icon"></d2l-icon>
 			</button>
@@ -233,7 +240,7 @@ class ListItemDragHandle extends LitElement {
 				@focusout="${this._onFocusOut}"
 				@keyup="${this._onActiveKeyboard}"
 				@keydown="${this._onPreventDefault}"
-				aria-label="${this.text}">
+				aria-label="${this.text || this._defaultLabel}">
 				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
 				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>
 			</button>

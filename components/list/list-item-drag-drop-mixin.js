@@ -3,6 +3,7 @@ import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
 
 export const dropLocation = Object.freeze({
@@ -26,6 +27,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			draggable: { type: Boolean, reflect: true },
 			dragging: { type: Boolean, reflect: true },
+			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
@@ -171,8 +173,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragTargetClick(e) {
-		this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		if (this._keyboardActiveOnNextClick) {
+			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+		} else {
+			this.shadowRoot.querySelector(`#${this._itemDragId}`).focus();
+		}
+
+		this._keyboardActiveOnNextClick = false;
 		e.preventDefault();
+		e.stopPropagation();
+	}
+
+	_onDragTargetMouseDown() {
+		this._keyboardActiveOnNextClick = this._focusingDragHandle;
 	}
 
 	_onDrop() {
@@ -252,6 +265,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
+				text="${ifDefined(this.dragHandleText)}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
@@ -268,6 +282,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@click="${this._onDragTargetClick}"
 				@dragstart="${this._onDragStart}"
 				@dragend="${this._onDragEnd}"
+				@mousedown="${this._onDragTargetMouseDown}"
 				>
 			</div>
 		`) : nothing;
@@ -446,6 +461,11 @@ export class NewPositionEventDetails {
 	 */
 	reorder(list, {announceFn, keyFn}) {
 		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
+
+		if (announceFn) {
+			this.announceMove(list, {announceFn, keyFn});
+		}
+
 		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
 
 		if (origin === null) {
@@ -471,10 +491,6 @@ export class NewPositionEventDetails {
 			}
 		}
 		list[destination] = item;
-
-		if (announceFn) {
-			this.announceMove(list, announceFn);
-		}
 	}
 
 	_fetchDropTargetPosition(list, originPosition, keyFn) {
