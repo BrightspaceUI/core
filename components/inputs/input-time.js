@@ -89,7 +89,7 @@ class InputTime extends LitElement {
 		return {
 			/**
 			 * Set default value of input. Valid values are times in ISO 8601 time format ("hh:mm:ss"), "startOfDay", "endOfDay".
-			 * @type {('startOfDay'|'endOfDay'|string)}
+			 * @type {'startOfDay'|'endOfDay'|string}
 			 */
 			defaultValue: { type: String, attribute: 'default-value' },
 			/**
@@ -114,7 +114,7 @@ class InputTime extends LitElement {
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
 			 * Number of minutes between times shown in dropdown
-			 * @type {('five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty')}
+			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
 			timeInterval: { type: String, attribute: 'time-interval' },
 			/**

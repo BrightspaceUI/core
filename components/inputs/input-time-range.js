@@ -49,7 +49,7 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			/**
 			 * Number of minutes between times shown in dropdown
-			 * @type {('five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty')}
+			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
 			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
 		};

@@ -123,9 +123,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.defaultFieldLabel');
 	}
 
-	async requestValidate() {
+	async requestValidate(showErrors = true) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
-			await this.validate();
+			await this.validate(showErrors);
 		}
 	}
 
@@ -143,7 +143,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationMessage = null;
 	}
 
-	async validate() {
+	async validate(showErrors) {
 		await this.updateComplete;
 		const customs = [...this._validationCustoms];
 		const results = await Promise.all(customs.map(custom => custom.validate()));
@@ -151,11 +151,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		if (!this.checkValidity()) {
 			errors.unshift(this.validationMessage);
 		}
-		if (errors.length > 0) {
-			this.validationError = errors[0];
-		} else {
+		if (errors.length === 0) {
 			this.validationError = null;
+		} else if (showErrors || this.validationError) {
+			this.validationError = errors[0];
 		}
+
 		return errors;
 	}
 
