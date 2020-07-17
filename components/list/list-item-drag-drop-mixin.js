@@ -73,12 +73,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				width: 100%;
 				z-index: 100;
 			}
-			d2l-list-item-drag-handle {
-				opacity: 0;
-			}
-			d2l-list-item-drag-handle.d2l-hovering,
-			d2l-list-item-drag-handle.d2l-focusing {
-				opacity: 1;
+			@media only screen and (hover: hover), only screen and (pointer: fine) {
+				d2l-list-item-drag-handle {
+					opacity: 0;
+				}
+				d2l-list-item-drag-handle.d2l-hovering,
+				d2l-list-item-drag-handle.d2l-focusing {
+					opacity: 1;
+				}
 			}
 		` ];
 
