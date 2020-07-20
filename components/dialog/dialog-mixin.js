@@ -312,8 +312,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_render(inner, info) {
 
-		const _autoSize = false;
-
 		const styles = {};
 		if (this._autoSize) {
 			if (this._ifrauContextInfo) styles.top = `${this._top}px`;
