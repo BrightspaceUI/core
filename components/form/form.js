@@ -184,11 +184,13 @@ class Form extends LocalizeCoreElement(LitElement) {
 			tooltip.for = ele.id;
 			tooltip.align = 'start';
 			tooltip.state = 'error';
-			tooltip.innerHTML = message;
 			ele.parentNode.append(tooltip);
 			this._tooltips.set(ele, tooltip);
-		} else if (tooltip.innerHTML !== message) {
-			tooltip.innerHTML = message;
+
+			tooltip.appendChild(document.createTextNode(message));
+		} else if (tooltip.innerText.trim() !== message.trim()) {
+			tooltip.textContent = '';
+			tooltip.appendChild(document.createTextNode(message));
 			tooltip.updatePosition();
 		}
 	}
