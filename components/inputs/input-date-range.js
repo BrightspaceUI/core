@@ -116,6 +116,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
+					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
 					id="${this._startInputId}"
@@ -128,6 +129,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-end"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
+					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
 					id="${this._endInputId}"
@@ -180,6 +182,12 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			'change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	_handleDropdownOpen(e) {
+		const id = e.target.id;
+		const tooltip = this.shadowRoot.querySelector(`d2l-tooltip[for="${id}"]`);
+		if (tooltip && tooltip.showing) tooltip.hide();
 	}
 
 	_handleNestedFormElementValidation(e) {
