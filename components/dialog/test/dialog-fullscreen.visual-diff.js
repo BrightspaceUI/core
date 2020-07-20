@@ -29,6 +29,7 @@ describe('d2l-dialog-fullscreen', () => {
 				await helper.reset(page, '#dialog');
 				await helper.reset(page, '#dialogLong');
 				await helper.reset(page, '#dialogRtl');
+				await helper.reset(page, '#dialogNoFooterContent');
 			});
 
 			[
@@ -60,6 +61,11 @@ describe('d2l-dialog-fullscreen', () => {
 
 				before(async() => {
 					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
+				});
+
+				it('no footer content', async function() {
+					await helper.open(page, '#dialogNoFooterContent');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('scroll bottom shadow', async function() {

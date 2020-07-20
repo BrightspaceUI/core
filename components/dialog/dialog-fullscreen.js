@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -23,7 +24,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			/**
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
-			async: { type: Boolean }
+			async: { type: Boolean },
+			_hasFooterContent: { type: Boolean, attribute: false }
 		};
 	}
 
@@ -64,6 +66,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				width: 100%;
 			}
 
+			.d2l-dialog-footer.d2l-footer-no-content {
+				display: none;
+			}
+
 			@media (max-width: 615px) {
 
 				.d2l-dialog-header > div > d2l-button-icon {
@@ -84,6 +90,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		super();
 		this.async = false;
 		this._autoSize = false;
+		this._hasFooterContent = false;
 	}
 
 	render() {
@@ -98,6 +105,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				</div>
 			`;
 		}
+
+		const footerClasses = {
+			'd2l-dialog-footer': true,
+			'd2l-footer-no-content': !this._hasFooterContent
+		};
 
 		const content = html`
 			${loading}
@@ -114,8 +126,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					</div>
 				</div>
 				<div class="d2l-dialog-content">${content}</div>
-				<div class="d2l-dialog-footer">
-					<slot name="footer"></slot>
+				<div class="${classMap(footerClasses)}">
+					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
 			</div>
 		`;
@@ -140,6 +152,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	_abort() {
 		this._close('abort');
+	}
+
+	_handleFooterSlotChange(e) {
+		const footerContent = e.target.assignedNodes({flatten: true});
+		this._hasFooterContent = (footerContent && footerContent.length > 0);
 	}
 
 }
