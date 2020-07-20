@@ -334,6 +334,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleInputTextFocus() {
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-date-text-focus',
+			{ bubbles: true, composed: false }
+		));
 	}
 
 	async _handleKeydown(e) {

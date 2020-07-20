@@ -117,6 +117,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					class="d2l-input-date-range-start"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
+					@d2l-input-date-text-focus="${this._handleInnerFocus}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
 					id="${this._startInputId}"
@@ -130,6 +131,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					class="d2l-input-date-range-end"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
+					@d2l-input-date-text-focus="${this._handleInnerFocus}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
 					id="${this._endInputId}"
@@ -188,6 +190,13 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		const id = e.target.id;
 		const tooltip = this.shadowRoot.querySelector(`d2l-tooltip[for="${id}"]`);
 		if (tooltip && tooltip.showing) tooltip.hide();
+	}
+
+	_handleInnerFocus(e) {
+		// in order for calendar close to cause tooltip to show
+		const id = e.target.id;
+		const tooltip = this.shadowRoot.querySelector(`d2l-tooltip[for="${id}"]`);
+		if (tooltip && !tooltip.showing) tooltip.show();
 	}
 
 	_handleNestedFormElementValidation(e) {
