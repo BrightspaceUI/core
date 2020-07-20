@@ -128,6 +128,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		super.updated(changedProperties);
 		if (!changedProperties.has('asyncState')) return;
 		if (this.asyncState === asyncStates.complete) {
+			// while the dialog itself will not change size, we need to update overflow
 			this.resize();
 		}
 	}
