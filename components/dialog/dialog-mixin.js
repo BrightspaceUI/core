@@ -18,8 +18,6 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
 
-window.D2L.DialogMixin.preferNative = false;
-
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
