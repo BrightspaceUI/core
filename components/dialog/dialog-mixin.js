@@ -35,7 +35,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
-			_autoSize: { type: Boolean },
+			_autoSize: { type: Boolean, attribute: false },
 			_height: { type: Number },
 			_left: { type: Number },
 			_margin: { type: Object },
