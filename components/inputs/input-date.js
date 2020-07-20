@@ -10,6 +10,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -117,6 +118,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
+		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
@@ -156,7 +158,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
-		const tooltip = this.validationError ? html`<d2l-tooltip align="start" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltip = this.validationError ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
@@ -174,6 +176,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
 					hide-invalid-icon
+					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -318,6 +321,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		}, 150);
 		this._dropdownOpened = true;
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-date-dropdown-open',
+			{ bubbles: true, composed: false }
+		));
 	}
 
 	async _handleFocusTrapEnter() {
