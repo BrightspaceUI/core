@@ -77,6 +77,7 @@ class TemplatePrimarySecondary extends LitElement {
 				overflow-y: auto;
 			}
 			footer {
+				background-color: #fff;
 				box-shadow: 0 -2px 4px rgba(73, 76, 78, 0.2); /* ferrite */
 				grid-area: footer;
 				padding: 0.75rem 1rem;
@@ -94,7 +95,6 @@ class TemplatePrimarySecondary extends LitElement {
 					grid-template-rows: auto 1px auto;
 				}
 				footer {
-					background-color: var(--d2l-color-white);
 					bottom: 0;
 					position: sticky;
 				}
