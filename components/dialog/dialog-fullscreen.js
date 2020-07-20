@@ -54,6 +54,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				text-align: center;
 			}
 
+			dialog.d2l-dialog-outer,
 			div.d2l-dialog-outer {
 				border: none;
 				border-radius: 0;
