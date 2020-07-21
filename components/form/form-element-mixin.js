@@ -1,5 +1,5 @@
+import { isCustomFormElement, tryGetLabelText } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import { tryGetLabelText } from './form-helper.js';
 
 export class FormElementValidityState {
 
@@ -86,6 +86,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	constructor() {
 		super();
+		this._validationCustomConnected = this._validationCustomConnected.bind(this);
+
 		this._validationCustoms = new Set();
 		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
@@ -94,8 +96,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.invalid = false;
 		this.validationError = null;
 
-		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
+		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
 	updated(changedProperties) {
@@ -145,7 +146,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	async validate(showErrors) {
 		await this.updateComplete;
-		const customs = [...this._validationCustoms];
+		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
 		if (!this.checkValidity()) {
@@ -249,12 +250,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		e.stopPropagation();
 		const custom = e.composedPath()[0];
 		this.validationCustomConnected(custom);
-	}
 
-	_validationCustomDisconnected(e) {
-		e.stopPropagation();
-		const custom = e.composedPath()[0];
-		this.validationCustomDisconnected(custom);
+		const onDisconnect = () => {
+			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
+			this.validationCustomDisconnected(custom);
+		};
+		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 };

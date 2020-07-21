@@ -2,9 +2,9 @@ const helper = require('./dialog-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-dialog-confirm', () => {
+describe('d2l-dialog-fullscreen', () => {
 
-	const visualDiff = new VisualDiff('dialog-confirm', __dirname);
+	const visualDiff = new VisualDiff('dialog-fullscreen', __dirname);
 
 	let browser, page;
 
@@ -21,16 +21,15 @@ describe('d2l-dialog-confirm', () => {
 
 			before(async() => {
 				const preferNative = (name === 'native' ? '' : '?preferNative=false');
-				await page.goto(`${visualDiff.getBaseUrl()}/components/dialog/test/dialog-confirm.visual-diff.html${preferNative}`, {waitUntil: ['networkidle0', 'load']});
+				await page.goto(`${visualDiff.getBaseUrl()}/components/dialog/test/dialog-fullscreen.visual-diff.html${preferNative}`, {waitUntil: ['networkidle0', 'load']});
 				await page.bringToFront();
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#confirm');
-				await helper.reset(page, '#confirmLongTitle');
-				await helper.reset(page, '#confirmNoTitle');
-				await helper.reset(page, '#confirmLongText');
-				await helper.reset(page, '#confirmRtl');
+				await helper.reset(page, '#dialog');
+				await helper.reset(page, '#dialogLong');
+				await helper.reset(page, '#dialogRtl');
+				await helper.reset(page, '#dialogNoFooterContent');
 			});
 
 			[
@@ -45,12 +44,12 @@ describe('d2l-dialog-confirm', () => {
 					});
 
 					it('opened', async function() {
-						await helper.open(page, '#confirm');
+						await helper.open(page, '#dialog');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('rtl', async function() {
-						await helper.open(page, '#confirmRtl');
+						await helper.open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
@@ -64,20 +63,22 @@ describe('d2l-dialog-confirm', () => {
 					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
 				});
 
-				[
-					{ name: 'short', selector: '#confirm' },
-					{ name: 'long title', selector: '#confirmLongTitle' },
-					{ name: 'no title', selector: '#confirmNoTitle' },
-					{ name: 'long text', selector: '#confirmLongText' },
-					{ name: 'long buttons', selector: '#confirmLongButtons' }
-				].forEach((info) => {
+				it('no footer content', async function() {
+					await helper.open(page, '#dialogNoFooterContent');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
 
-					it(info.name, async function() {
-						await helper.open(page, info.selector);
-						const rect = await helper.getRect(page, info.selector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				it('scroll bottom shadow', async function() {
+					await helper.open(page, '#dialogLong');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
+
+				it('scroll top shadow', async function() {
+					await helper.open(page, '#dialogLong');
+					await page.$eval('#dialogLong #bottom', (bottom) => {
+						bottom.scrollIntoView();
 					});
-
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 			});
