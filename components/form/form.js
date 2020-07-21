@@ -26,7 +26,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._validationCustoms = new Set();
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
 	}
 
 	connectedCallback() {
@@ -161,12 +160,12 @@ class Form extends LocalizeCoreElement(LitElement) {
 		e.stopPropagation();
 		const custom = e.composedPath()[0];
 		this._validationCustoms.add(custom);
-	}
 
-	_validationCustomDisconnected(e) {
-		e.stopPropagation();
-		const custom = e.composedPath()[0];
-		this._validationCustoms.delete(custom);
+		const onDisconnect = () => {
+			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
+			this._validationCustoms.delete(custom);
+		};
+		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 	_validationTooltipHide(ele) {
