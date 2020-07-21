@@ -163,7 +163,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
-					aria-invalid="${this.validationError ? 'true' : 'false'}"
+					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
@@ -180,9 +180,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						icon="${this.validationError ? 'tier1:alert' : 'tier1:calendar'}"
+						icon="${this.invalid ? 'tier1:alert' : 'tier1:calendar'}"
 						slot="left"
-						style="${styleMap({color: this.validationError ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
+						style="${styleMap({color: this.invalid ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -359,8 +359,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			rangeUnderflow: dateInISO && this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime(),
 			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
 		});
-		const errors = await this.validate();
-		if (errors.length > 0) return;
+		await this.requestValidate();
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',
