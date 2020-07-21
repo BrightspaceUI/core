@@ -17,8 +17,7 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 		this._updateForElement();
-		const connected = new CustomEvent('d2l-validation-custom-connected', { bubbles: true, composed: true });
-		this.dispatchEvent(connected);
+		this.dispatchEvent(new CustomEvent('d2l-validation-custom-connected', { bubbles: true }));
 	}
 
 	disconnectedCallback() {
@@ -27,8 +26,7 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 			this._forElement.validationCustomDisconnected(this);
 		}
 		this._forElement = null;
-		const disconnected = new CustomEvent('d2l-validation-custom-disconnected', { bubbles: true, composed: true });
-		this.dispatchEvent(disconnected);
+		this.dispatchEvent(new CustomEvent('d2l-validation-custom-disconnected'));
 	}
 
 	updated(changedProperties) {
