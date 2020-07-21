@@ -45,22 +45,18 @@ document.querySelector('#open').addEventListener('click', () => {
   });
 });
 ```
-Make sure that in the 'd2l-dialog-close' event handler that you sync any bound properties if you decided to use them:
+
+*Important:* The user may close the dialog in a few different ways: clicking the dialog workflow buttons (marked up with `data-dialog-action`); clicking the `[x]` button in the top-right corner; or pressing the `escape` key. Therefore, if your component tracks the `opened` state of the dialog with its own property, it's important to keep it in sync by listening for the `d2l-dialog-close` event.
+
 ```html
 <d2l-dialog ?opened="${this.dialogIsOpened}"></d2l-dialog>
 ```
+
 ```javascript
 // later on...
 document.querySelector('d2l-dialog').addEventListener('d2l-dialog-close', (e) => {
   this.dialogIsOpened = false;
 });
-```
-
-*Note:* The user may close the dialog in a few different ways: clicking the dialog workflow buttons (marked up with `data-dialog-action`), by clicking the `[x]` button in the top-right corner, or by pressing the `escape` key. It is possible to listen for click events directly on the workflow buttons, however to be notified in any of these scenarios, it is best to either wait for the `open` method's promise, or listen for the `d2l-dialog-close` event:
-
-```html
-<d2l-dialog @d2l-dialog-close="${(e)=> console.log('dialog action:', e.detail.action)}">
-</d2l-dialog>
 ```
 
 **Properties:**
@@ -115,6 +111,49 @@ document.querySelector('#open').addEventListener('click', () => {
 - `text` (required, String): The required text content for the confirmation dialog
 - `opened` (Boolean): Whether or not the dialog is open
 - `title-text` (String): The optional title for the confirmation dialog
+
+**Events:**
+
+- `d2l-dialog-open`: dispatched when the dialog is opened
+- `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
+
+## d2l-dialog-fullscreen
+
+The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-dialog`. It provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
+
+![Fullscreen Dialog](./screenshots/dialog-fullscreen.png?raw=true)
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/dialog/dialog-fullscreen.js';
+</script>
+
+<d2l-button id="open">Show Dialog</d2l-button>
+
+<d2l-dialog-fullscreen title-text="Fullscreen Dialog Title">
+  <div>Some dialog content</div>
+  <d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
+  <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+</d2l-dialog-fullscreen>
+```
+
+Open the fullscreen dialog as described for generic dialogs, either by setting the `opened` property/attribute, or by calling the `open` method to get a promise for the result.
+
+```javascript
+document.querySelector('#open').addEventListener('click', () => {
+  const dialog = document.querySelector('d2l-dialog-fullscreen');
+  dialog.opened = true;
+  dialog.addEventListener('d2l-dialog-close', (e) => {
+    console.log('action:', e.detail.action);
+  });
+});
+```
+
+**Properties:**
+
+- `title-text` (required, String): Text displayed in the header of the dialog
+- `async` (Boolean): Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container)
+- `opened` (Boolean): Whether or not the dialog is open
 
 **Events:**
 
