@@ -177,6 +177,19 @@ describe('d2l-tooltip', () => {
 				expect(tooltip.showing).to.be.false;
 			});
 		});
+
+		it('should show if added to a target that already has focus', async() => {
+
+			const target = tooltipFixture.querySelector('#explicit-target');
+			await triggerFocusFor(target);
+
+			const dynamicTooltip = document.createElement('d2l-tooltip');
+			dynamicTooltip.for = target.id;
+			tooltipFixture.appendChild(dynamicTooltip);
+
+			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
+			expect(dynamicTooltip.showing).to.be.true;
+		});
 	});
 
 	describe('delay', () => {
