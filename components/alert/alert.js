@@ -169,7 +169,7 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					${this.buttonText && this.buttonText.length > 0 ? html`
 						<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
 					${this.hasCloseButton ? html`
-						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('components.alert.close')}"></d2l-button-icon>` : null}
+						<d2l-button-icon @click=${this.close} icon="tier1:close-default" text="${this.localize('components.alert.close')}"></d2l-button-icon>` : null}
 				</div>` : null}
 		`;
 	}

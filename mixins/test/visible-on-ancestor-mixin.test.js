@@ -23,7 +23,7 @@ describe('VisibleOnAncestorMixin', () => {
 	beforeEach(async() => {
 		elem = await fixture(`
 			<${targetTag}>
-				<d2l-button-icon id="visible-on-ancestor" icon="d2l-tier1:gear" text="Gear" visible-on-ancestor></d2l-button-icon>
+				<d2l-button-icon id="visible-on-ancestor" icon="tier1:gear" text="Gear" visible-on-ancestor></d2l-button-icon>
 			</${targetTag}>
 		`);
 	});
