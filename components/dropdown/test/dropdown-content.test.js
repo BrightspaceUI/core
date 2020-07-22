@@ -231,13 +231,31 @@ describe('d2l-dropdown', () => {
 			expect(content.opened).to.be.true;
 		});
 
-		it('should not close when element inside is clicked', async() => {
-			content.setAttribute('opened', true);
-			await oneEvent(content, 'd2l-dropdown-open');
+		[
+			'inside_header',
+			'inside',
+			'inside_footer'
+		].forEach((name) => {
+			it(`should not close when element ${name} is clicked`, async() => {
 
-			dropdown.querySelector('#non_focusable_inside').click();
-			await aTimeout(100);
-			expect(content.opened).to.be.true;
+				const dropdown = await fixture(html`
+					<d2l-dropdown>
+						<d2l-dropdown-content>
+							<span slot="header" id="non_focusable_inside_header">header</span>
+							<span id="non_focusable_inside">inside</span>
+							<span slot="footer" id="non_focusable_inside_footer">footer</span>
+						</d2l-dropdown-content>
+					</d2l-dropdown>`);
+				content = dropdown.querySelector('d2l-dropdown-content');
+
+				content.setAttribute('opened', true);
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				dropdown.querySelector(`#non_focusable_${name}`).click();
+				await aTimeout(100);
+				expect(content.opened).to.be.true;
+
+			});
 		});
 
 		it('should not close when element outside is clicked and no-auto-close is set', async() => {
