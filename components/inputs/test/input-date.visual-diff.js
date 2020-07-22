@@ -140,7 +140,7 @@ describe('d2l-input-date', () => {
 					});
 				});
 
-				describe('behavior on open', () => {
+				describe('behavior', () => {
 					beforeEach(async() => {
 						await page.$eval('#min-max', (elem) => {
 							elem.blur();

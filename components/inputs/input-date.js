@@ -158,6 +158,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
+		const icon = this.invalid
+			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
+			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const tooltip = this.validationError ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<d2l-validation-custom for="${this._inputId}" @d2l-validation-custom-validate=${this._validate} failure-text="Pick in range"></d2l-validation-custom>
@@ -186,10 +189,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					style="${styleMap({maxWidth: inputTextWidth})}"
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
-					<d2l-icon
-						icon="${this.invalid ? 'tier1:alert' : 'tier1:calendar'}"
-						slot="left"
-						style="${styleMap({color: this.invalid ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
+					${icon}
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"

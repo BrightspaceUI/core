@@ -1,6 +1,5 @@
 import './input-date.js';
 import './input-fieldset.js';
-import '../validation/validation-custom.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDateFromISODate } from '../../helpers/dateTime.js';
@@ -110,7 +109,6 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
-			<d2l-validation-custom @d2l-validation-custom-validate=${this._validateRange}></d2l-validation-custom>
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
 				<d2l-input-date
 					@change="${this._handleChange}"
@@ -154,13 +152,11 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		if (errors.length !== 0) {
 			return errors;
 		}
-		setTimeout(async() => {
-			return Promise.all([
-				await this.shadowRoot.querySelector('.d2l-input-date-range-start').validate(showErrors),
-				await this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(showErrors)]
-			).then((res) => {
-				return res.reduce((acc, errors) => [...acc, ...errors], []);
-			});
+		return Promise.all([
+			await this.shadowRoot.querySelector('.d2l-input-date-range-start').validate(showErrors),
+			await this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(showErrors)]
+		).then((res) => {
+			return res.reduce((acc, errors) => [...acc, ...errors], []);
 		});
 	}
 
@@ -174,11 +170,18 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 
 	async _handleChange(e) {
 		const elem = e.target;
+		let startDate, endDate;
 		if (elem.classList.contains('d2l-input-date-range-start')) {
 			this.startValue = elem.value;
+			startDate = elem.value;
+			endDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-end').value;
 		} else {
 			this.endValue = elem.value;
+			endDate = elem.value;
+			startDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-start').value;
 		}
+		const valid = !startDate || !endDate || (getDateFromISODate(endDate) > getDateFromISODate(startDate));
+		this.setValidity({badInput: !valid});
 		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
@@ -205,14 +208,6 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 
 	get _startLabel() {
 		return this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
-	}
-
-	_validateRange(e) {
-		const endDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-end');
-		const startDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-start');
-		const valid = !startDate.value || !endDate.value || (getDateFromISODate(endDate.value) > getDateFromISODate(startDate.value));
-		this.setValidity({badInput: !valid});
-		e.detail.resolve(valid);
 	}
 
 }
