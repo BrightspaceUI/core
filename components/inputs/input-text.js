@@ -26,7 +26,8 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			/**
-			 * @ignore
+			 * Specifies whether or not the screen reader should always present changes to the live region as a whole.
+			 * This only applies if live is set to polite or assertive.
 			 */
 			atomic: { type: String },
 			/**
@@ -54,7 +55,7 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * @ignore
+			 * Set the priority with which screen readers should treat updates to the input's live text region
 			 */
 			live: { type: String },
 			/**

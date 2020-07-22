@@ -13,7 +13,7 @@
 			import '../../demo/demo-page.js';
 			import '../../button/button.js';
 			import '../dialog.js';
-			import '../dialog-confirm.js';
+			import './dialog-async-content.js';
 			import './dialog-container.js';
 		</script>
 		<style>
@@ -84,41 +84,23 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Confirm Dialog</h2>
+			<h2>Dialog (async)</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button id="openConfirm">Show Confirm</d2l-button>
-					<d2l-dialog-confirm id="confirm" title-text="Confirm Title" text="Are you sure you want more cookies?">
-						<d2l-button slot="footer" primary data-dialog-action="ok">Yes</d2l-button>
-						<d2l-button slot="footer" data-dialog-action>No</d2l-button>
-					</d2l-dialog-confirm>
+					<d2l-button id="openAsync">Show Dialog</d2l-button>
+					<d2l-dialog id="dialogAsync" title-text="Dialog Title" async>
+						<d2l-dialog-demo-async-content></d2l-dialog-demo-async-content>
+						<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+					</d2l-dialog>
 					<script>
-						document.querySelector('#openConfirm').addEventListener('click', () => {
-							document.querySelector('#confirm').opened = true;
+						document.querySelector('#openAsync').addEventListener('click', () => {
+							document.querySelector('#dialogAsync').opened = true;
+							document.querySelector('d2l-dialog-demo-async-content').href = 'some-href';
 						});
-						document.querySelector('#confirm').addEventListener('d2l-dialog-close', (e) => {
-							console.log('confirm action:', e.detail.action);
-						});
-					</script>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Confirm Dialog (No Title)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-button id="openConfirmNoTitle">Show Confirm</d2l-button>
-					<d2l-dialog-confirm id="confirmNoTitle" text="Are you sure you want more cookies?">
-						<d2l-button slot="footer" primary data-dialog-action="ok">Yes</d2l-button>
-						<d2l-button slot="footer" data-dialog-action>No</d2l-button>
-					</d2l-dialog-confirm>
-					<script>
-						document.querySelector('#openConfirmNoTitle').addEventListener('click', () => {
-							document.querySelector('#confirmNoTitle').opened = true;
-						});
-						document.querySelector('#confirmNoTitle').addEventListener('d2l-dialog-close', (e) => {
-							console.log('confirm action:', e.detail.action);
+						document.querySelector('#dialogAsync').addEventListener('d2l-dialog-close', (e) => {
+							console.log('dialog action:', e.detail.action);
 						});
 					</script>
 				</template>

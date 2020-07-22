@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script>
+			//window.D2L = { DialogMixin: { preferNative: false } };
+		</script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../button/button.js';
+			import '../dialog-confirm.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-dialog-confirm">
+
+			<h2>Confirm Dialog</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openConfirm">Show Confirm</d2l-button>
+					<d2l-dialog-confirm id="confirm" title-text="Confirm Title" text="Are you sure you want more cookies?">
+						<d2l-button slot="footer" primary data-dialog-action="ok">Yes</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>No</d2l-button>
+					</d2l-dialog-confirm>
+					<script>
+						document.querySelector('#openConfirm').addEventListener('click', () => {
+							document.querySelector('#confirm').opened = true;
+						});
+						document.querySelector('#confirm').addEventListener('d2l-dialog-close', (e) => {
+							console.log('confirm action:', e.detail.action);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Confirm Dialog (No Title)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button id="openConfirmNoTitle">Show Confirm</d2l-button>
+					<d2l-dialog-confirm id="confirmNoTitle" text="Are you sure you want more cookies?">
+						<d2l-button slot="footer" primary data-dialog-action="ok">Yes</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>No</d2l-button>
+					</d2l-dialog-confirm>
+					<script>
+						document.querySelector('#openConfirmNoTitle').addEventListener('click', () => {
+							document.querySelector('#confirmNoTitle').opened = true;
+						});
+						document.querySelector('#confirmNoTitle').addEventListener('d2l-dialog-close', (e) => {
+							console.log('confirm action:', e.detail.action);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>

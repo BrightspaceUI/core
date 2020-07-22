@@ -812,6 +812,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		if (this.showing) {
 			this.updatePosition();
+		} else if (this.getRootNode().activeElement === target) {
+			this._onTargetFocus();
 		}
 	}
 }
