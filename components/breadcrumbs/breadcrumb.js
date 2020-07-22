@@ -63,11 +63,11 @@ class Breadcrumb extends RtlMixin(LitElement) {
 				padding-right: 8px;
 			}
 
-			d2l-icon[icon="d2l-tier1:chevron-left"] {
+			d2l-icon[icon="tier1:chevron-left"] {
 				padding-left: 0;
 				padding-right: 8px;
 			}
-			:host([dir="rtl"]) d2l-icon[icon="d2l-tier1:chevron-left"] {
+			:host([dir="rtl"]) d2l-icon[icon="tier1:chevron-left"] {
 				padding-left: 8px;
 				padding-right: 0;
 			}
@@ -91,7 +91,7 @@ class Breadcrumb extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const icon = this._compact ? 'd2l-tier1:chevron-left' : 'd2l-tier1:chevron-right';
+		const icon = this._compact ? 'tier1:chevron-left' : 'tier1:chevron-right';
 		return html`<a class="d2l-link d2l-link-small" aria-label="${ifDefined(this.ariaLabel)}" href="${this.href}" target="${ifDefined(this.target)}">${this.text}</a><d2l-icon icon="${icon}"></d2l-icon>`;
 	}
 
