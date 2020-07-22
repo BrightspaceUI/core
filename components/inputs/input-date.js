@@ -163,7 +163,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			</div>
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
-					aria-invalid="${this.validationError ? 'true' : 'false'}"
+					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
@@ -180,9 +180,9 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
 					<d2l-icon
-						icon="${this.validationError ? 'tier1:alert' : 'tier1:calendar'}"
+						icon="${this.invalid ? 'tier1:alert' : 'tier1:calendar'}"
 						slot="left"
-						style="${styleMap({color: this.validationError ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
+						style="${styleMap({color: this.invalid ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -196,7 +196,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 							@d2l-calendar-selected="${this._handleDateSelected}"
 							max-value="${ifDefined(this.maxValue)}"
 							min-value="${ifDefined(this.minValue)}"
-							selected-value="${ifDefined(this.value)}">
+							selected-value="${ifDefined(this._shownValue)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
 								<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>
@@ -285,7 +285,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
 		await this.updateComplete;
-		await this._calendar.reset();
+		await this._calendar.reset(true);
 	}
 
 	async _handleClear() {
@@ -359,8 +359,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			rangeUnderflow: dateInISO && this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime(),
 			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
 		});
-		const errors = await this.validate();
-		if (errors.length > 0) return;
+		await this.requestValidate();
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',

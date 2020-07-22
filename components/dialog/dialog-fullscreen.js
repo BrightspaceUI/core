@@ -122,7 +122,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
-						<d2l-button-icon icon="d2l-tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content">${content}</div>
