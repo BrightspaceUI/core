@@ -27,7 +27,9 @@ describe('d2l-alert', () => {
 		'button',
 		'button-close',
 		'rtl',
-		'hidden'
+		'hidden',
+		'no-padding',
+		'no-padding-rtl'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
