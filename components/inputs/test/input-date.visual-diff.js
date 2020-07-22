@@ -125,6 +125,118 @@ describe('d2l-input-date', () => {
 				const rect = await helper.getRect(page, '#min-max');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
+
+			describe('out of range date typed', () => {
+				before(async() => {
+					await page.$eval('#min-max', (elem) => {
+						const input = elem.shadowRoot.querySelector('d2l-input-text');
+						input.value = '10/12/2017';
+					});
+				});
+
+				it('open', async function() {
+					await page.$eval('#min-max', (elem) => {
+						const input = elem.shadowRoot.querySelector('d2l-input-text');
+						const e = new Event(
+							'mouseup',
+							{ bubbles: true, composed: true }
+						);
+						input.dispatchEvent(e);
+					});
+					const rect = await helper.getRect(page, '#min-max');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
+				it('open with enter', async function() {
+					await page.$eval('#min-max', (elem) => {
+						const input = elem.shadowRoot.querySelector('d2l-input-text');
+						const eventObj = document.createEvent('Events');
+						eventObj.initEvent('keydown', true, true);
+						eventObj.keyCode = 13;
+						input.dispatchEvent(eventObj);
+					});
+					const rect = await helper.getRect(page, '#min-max');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
+				it('open then tab', async function() {
+					await page.$eval('#min-max', (elem) => {
+						const input = elem.shadowRoot.querySelector('d2l-input-text');
+						const e = new Event(
+							'mouseup',
+							{ bubbles: true, composed: true }
+						);
+						input.dispatchEvent(e);
+					});
+					await page.keyboard.press('Tab');
+					const rect = await helper.getRect(page, '#min-max');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
+				describe('value before min', () => {
+					it('left arrow', async function() {
+						await page.$eval('#min-max', (elem) => {
+							const input = elem.shadowRoot.querySelector('d2l-input-text');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 13;
+							input.dispatchEvent(eventObj);
+						});
+						await page.keyboard.press('ArrowLeft');
+						const rect = await helper.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('right arrow', async function() {
+						await page.$eval('#min-max', (elem) => {
+							const input = elem.shadowRoot.querySelector('d2l-input-text');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 13;
+							input.dispatchEvent(eventObj);
+						});
+						await page.keyboard.press('ArrowRight');
+						const rect = await helper.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+				});
+
+				describe('value after max', () => {
+					before(async() => {
+						await page.$eval('#min-max', (elem) => {
+							const input = elem.shadowRoot.querySelector('d2l-input-text');
+							input.value = '01/12/2019';
+						});
+					});
+
+					it('left arrow', async function() {
+						await page.$eval('#min-max', (elem) => {
+							const input = elem.shadowRoot.querySelector('d2l-input-text');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 13;
+							input.dispatchEvent(eventObj);
+						});
+						await page.keyboard.press('ArrowLeft');
+						const rect = await helper.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+
+					});
+
+					it('right arrow', async function() {
+						await page.$eval('#min-max', (elem) => {
+							const input = elem.shadowRoot.querySelector('d2l-input-text');
+							const eventObj = document.createEvent('Events');
+							eventObj.initEvent('keydown', true, true);
+							eventObj.keyCode = 13;
+							input.dispatchEvent(eventObj);
+						});
+						await page.keyboard.press('ArrowRight');
+						const rect = await helper.getRect(page, '#min-max');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+				});
+			});
 		});
 
 		describe('with placeholder', () => {
