@@ -161,7 +161,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const icon = this.invalid
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const tooltip = (this.validationError && ! this._dropdownOpened) ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>

@@ -186,8 +186,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			endDate = elem.value;
 			startDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-start').value;
 		}
-		const valid = !startDate || !endDate || (getDateFromISODate(endDate) > getDateFromISODate(startDate));
-		this.setValidity({badInput: !valid});
+		this.setValidity({badInput: (startDate && endDate && (getDateFromISODate(endDate) <= getDateFromISODate(startDate)))});
 		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
@@ -196,19 +195,11 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleDropdownToggle(e) {
-		const elem = e.target;
-		if (elem.classList.contains('d2l-input-date-range-start')) {
+		if (e.target.classList.contains('d2l-input-date-range-start')) {
 			this._startCalendarOpened = e.detail.opened;
 		} else {
 			this._endCalendarOpened = e.detail.opened;
 		}
-	}
-
-	_handleInnerFocus(e) {
-		// in order for calendar close to cause tooltip to show
-		const id = e.target.id;
-		const tooltip = this.shadowRoot.querySelector(`d2l-tooltip[for="${id}"]`);
-		if (tooltip && !tooltip.showing) tooltip.show();
 	}
 
 	_handleNestedFormElementValidation(e) {
