@@ -1,6 +1,9 @@
 import './input-date.js';
 import './input-fieldset.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getDateFromISODate } from '../../helpers/dateTime.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -9,7 +12,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
  * @fires change - Dispatched when a start or end date is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
+class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -87,6 +90,9 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.labelHidden = false;
+
+		this._startInputId = getUniqueId();
+		this._endInputId = getUniqueId();
 	}
 
 	async firstUpdated(changedProperties) {
@@ -98,15 +104,22 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
-		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
-		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
+		const tooltipStart = this.validationError ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = this.validationError ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
+			${tooltipStart}
+			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
+					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
+					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
+					@d2l-input-date-text-focus="${this._handleInnerFocus}"
 					?disabled="${this.disabled}"
-					label="${startLabel}"
+					.forceInvalid=${this.invalid}
+					id="${this._startInputId}"
+					label="${this._startLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					value="${ifDefined(this.startValue)}">
@@ -114,8 +127,13 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-end"
+					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
+					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
+					@d2l-input-date-text-focus="${this._handleInnerFocus}"
 					?disabled="${this.disabled}"
-					label="${endLabel}"
+					.forceInvalid=${this.invalid}
+					id="${this._endInputId}"
+					label="${this._endLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					value="${ifDefined(this.endValue)}">
@@ -129,15 +147,67 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		if (input) input.focus();
 	}
 
+	async validate(showErrors) {
+		const errors = await super.validate(showErrors);
+		if (errors.length !== 0) {
+			return errors;
+		}
+		return Promise.all([
+			await this.shadowRoot.querySelector('.d2l-input-date-range-start').validate(showErrors),
+			await this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(showErrors)]
+		).then((res) => {
+			return res.reduce((acc, errors) => [...acc, ...errors], []);
+		});
+	}
+
+	get validationMessageBadInput() {
+		return this.localize('components.input-date-range.errorBadInput', { startLabel: this._startLabel, endLabel: this._endLabel });
+	}
+
+	get _endLabel() {
+		return this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
+	}
+
 	async _handleChange(e) {
-		// TODO: validation that start is before end
 		const elem = e.target;
-		if (elem.classList.contains('d2l-input-date-range-start')) this.startValue = elem.value;
-		else this.endValue = elem.value;
+		let startDate, endDate;
+		if (elem.classList.contains('d2l-input-date-range-start')) {
+			this.startValue = elem.value;
+			startDate = elem.value;
+			endDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-end').value;
+		} else {
+			this.endValue = elem.value;
+			endDate = elem.value;
+			startDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-start').value;
+		}
+		const valid = !startDate || !endDate || (getDateFromISODate(endDate) > getDateFromISODate(startDate));
+		this.setValidity({badInput: !valid});
+		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	_handleDropdownOpen(e) {
+		const id = e.target.id;
+		const tooltip = this.shadowRoot.querySelector(`d2l-tooltip[for="${id}"]`);
+		if (tooltip && tooltip.showing) tooltip.hide();
+	}
+
+	_handleInnerFocus(e) {
+		// in order for calendar close to cause tooltip to show
+		const id = e.target.id;
+		const tooltip = this.shadowRoot.querySelector(`d2l-tooltip[for="${id}"]`);
+		if (tooltip && !tooltip.showing) tooltip.show();
+	}
+
+	_handleNestedFormElementValidation(e) {
+		e.preventDefault();
+	}
+
+	get _startLabel() {
+		return this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
 	}
 
 }

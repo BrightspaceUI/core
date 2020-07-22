@@ -11,6 +11,7 @@ export default {
 	"components.form-element-mixin.defaultValidationMessage": "{label} er ugyldigt.",
 	"components.form-element-mixin.valueMissingMessage": "{label} er påkrævet.",
 	"components.input-date-range.endDate": "Slutdato",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Startdato",
 	"components.input-date-time-range.endDate": "Slutdato",
 	"components.input-date-time-range.startDate": "Startdato",
