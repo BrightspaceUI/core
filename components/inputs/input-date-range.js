@@ -53,7 +53,9 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			/**
 			 * Value of the start date input
 			 */
-			startValue: { attribute: 'start-value', reflect: true, type: String }
+			startValue: { attribute: 'start-value', reflect: true, type: String },
+			_endCalendarOpened: { attribute: false, type: Boolean },
+			_startCalendarOpened: { attribute: false, type: Boolean }
 		};
 	}
 
@@ -91,7 +93,9 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		this.disabled = false;
 		this.labelHidden = false;
 
+		this._startCalendarOpened = false;
 		this._startInputId = getUniqueId();
+		this._endCalendarOpened = false;
 		this._endInputId = getUniqueId();
 	}
 
@@ -104,8 +108,8 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	render() {
-		const tooltipStart = this.validationError ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = this.validationError ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this._startCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -114,12 +118,11 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
-					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
-					@d2l-input-date-text-focus="${this._handleInnerFocus}"
+					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
 					id="${this._startInputId}"
-					label="${this._startLabel}"
+					label="${this._computedStartLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					value="${ifDefined(this.startValue)}">
@@ -128,12 +131,11 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-end"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
-					@d2l-input-date-dropdown-open="${this._handleDropdownOpen}"
-					@d2l-input-date-text-focus="${this._handleInnerFocus}"
+					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
 					id="${this._endInputId}"
-					label="${this._endLabel}"
+					label="${this._computedEndLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					value="${ifDefined(this.endValue)}">
@@ -161,11 +163,15 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	get validationMessageBadInput() {
-		return this.localize('components.input-date-range.errorBadInput', { startLabel: this._startLabel, endLabel: this._endLabel });
+		return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
 	}
 
-	get _endLabel() {
+	get _computedEndLabel() {
 		return this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
+	}
+
+	get _computedStartLabel() {
+		return this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
 	}
 
 	async _handleChange(e) {
@@ -189,10 +195,13 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		));
 	}
 
-	_handleDropdownOpen(e) {
-		const id = e.target.id;
-		const tooltip = this.shadowRoot.querySelector(`d2l-tooltip[for="${id}"]`);
-		if (tooltip && tooltip.showing) tooltip.hide();
+	_handleDropdownToggle(e) {
+		const elem = e.target;
+		if (elem.classList.contains('d2l-input-date-range-start')) {
+			this._startCalendarOpened = e.detail.opened;
+		} else {
+			this._endCalendarOpened = e.detail.opened;
+		}
 	}
 
 	_handleInnerFocus(e) {
@@ -204,10 +213,6 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 
 	_handleNestedFormElementValidation(e) {
 		e.preventDefault();
-	}
-
-	get _startLabel() {
-		return this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
 	}
 
 }

@@ -161,9 +161,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const icon = this.invalid
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const tooltip = this.validationError ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltip = (this.validationError && ! this._dropdownOpened) ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
-			<d2l-validation-custom for="${this._inputId}" @d2l-validation-custom-validate=${this._validate} failure-text="Pick in range"></d2l-validation-custom>
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
@@ -311,20 +310,22 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._calendar.reset();
 		this._dropdownOpened = false;
 		this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-date-dropdown-toggle',
+			{ bubbles: true, composed: false, detail: { opened: false } }
+		));
 	}
 
 	_handleDropdownOpen() {
 		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		// use setTimeout to wait for keyboard to open on mobile devices
-		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
-		if (tooltip && tooltip.showing) tooltip.hide();
 		setTimeout(() => {
 			this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		}, 150);
 		this._dropdownOpened = true;
 		this.dispatchEvent(new CustomEvent(
-			'd2l-input-date-dropdown-open',
-			{ bubbles: true, composed: false }
+			'd2l-input-date-dropdown-toggle',
+			{ bubbles: true, composed: false, detail: { opened: true } }
 		));
 	}
 
@@ -334,10 +335,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleInputTextFocus() {
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
-		this.dispatchEvent(new CustomEvent(
-			'd2l-input-date-text-focus',
-			{ bubbles: true, composed: false }
-		));
 	}
 
 	async _handleKeydown(e) {
