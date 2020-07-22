@@ -218,7 +218,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__computeIcon() {
-		return this.expanded ? 'd2l-tier1:chevron-up' : 'd2l-tier1:chevron-down';
+		return this.expanded ? 'tier1:chevron-up' : 'tier1:chevron-down';
 	}
 
 	__computeText() {
