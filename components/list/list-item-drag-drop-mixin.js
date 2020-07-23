@@ -2,6 +2,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
@@ -17,6 +18,24 @@ export const dropLocation = Object.freeze({
 });
 
 const dropTargetLeaveDelay = 1000; //ms
+const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
+const scrollSensitivity = 150; // pixels between top/bottom of viewport to scroll for mobile
+
+const createDragEvent = (name) => {
+	const event = new Event(name, { bubbles: true });
+	event.dataTransfer = {
+		setData: () => {}
+	};
+	return event;
+};
+
+// used for disabling certain things on mobile
+const isDragSupported = () => {
+	const el = document.createElement('div');
+
+	el.setAttribute('ondragenter', 'return;');
+	return typeof el.ondragenter === 'function';
+};
 
 export const ListItemDragDropMixin = superclass => class extends superclass {
 
@@ -113,6 +132,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			detail: new NewPositionEventDetails({dragTargetKey, dropTargetKey, dropLocation}),
 			bubbles: true
 		}));
+	}
+
+	_findListItemFromCoordinates(x, y) {
+		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
+		return listNode.shadowRoot.elementFromPoint(x, y);
+	}
+
+	_onContextMenu(e) {
+		if (isDragSupported()) return;
+		e.preventDefault();
+		e.stopPropagation();
 	}
 
 	_onDragEnd(e) {
@@ -255,6 +285,82 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this._hovering = false;
 	}
 
+	_onTouchCancel() {
+		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
+		this._touchStarted = false;
+	}
+
+	/**
+	 * Simulate dragend and drop events from touchend
+	 */
+	_onTouchEnd(e) {
+		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
+		if (!this._touchStarted) return;
+		e.preventDefault();
+		this._touchStarted = false;
+		this._currentTouchListItem = undefined;
+		// simulate drop if over a drop area
+		const touch = e.changedTouches[0];
+		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
+		const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+		if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
+		// simulate dragend
+		this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragend'));
+	}
+
+	/**
+	 * Mobile phone browsers typically don't support drag events, so we simulate them with touch
+	 * events instead. Touchmove takes care of most of these.
+	 */
+	_onTouchMove(e) {
+		if (!this._touchStarted) return;
+		if (e.cancelable) { // event must be cancelable
+			e.preventDefault();
+		}
+		const touch = e.changedTouches[0];
+		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
+		if (!listItem) return;
+		// simulate host dragenter
+		if (listItem !== this && this._currentTouchListItem !== listItem) {
+			listItem.dispatchEvent(createDragEvent('dragenter'));
+			this._currentTouchListItem = listItem;
+		}
+		// get the drop area
+		const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+		if (!dropGrid) return;
+
+		const movingOverElem = listItem.shadowRoot.elementFromPoint(touch.clientX, touch.clientY);
+		if (movingOverElem && movingOverElem.parentNode === dropGrid) {
+			// simulate dragover
+			dropGrid.dispatchEvent(createDragEvent('dragover'));
+
+			// simulate dragenter on drop areas
+			if (this._currentTouchDropArea !== movingOverElem) {
+				movingOverElem.dispatchEvent(createDragEvent('dragenter'));
+				this._currentTouchDropArea = movingOverElem;
+			}
+		}
+		// scroll the viewport if we've reached the end
+		if (touch.clientY > window.innerHeight / 2 && window.innerHeight - touch.clientY < scrollSensitivity) {
+			// scroll down
+			window.scrollBy(0, 10);
+		} else if (touch.clientY < window.innerHeight / 2 && touch.clientY < scrollSensitivity) {
+			// scroll up
+			window.scrollBy(0, -10);
+		}
+	}
+
+	_onTouchStart() {
+		if (this._touchTimeoutId) {
+			clearTimeout(this._touchTimeoutId);
+		}
+		// simulate dragstart for touch and hold
+		this._touchTimeoutId = setTimeout(() => {
+			this._touchStarted = true;
+			this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragstart'));
+		}, touchHoldDuration);
+	}
+
 	_renderBottomPlacementMarker(renderTemplate) {
 		return this._dropLocation === dropLocation.below ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
 	}
@@ -284,8 +390,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				class="d2l-list-item-drag-area"
 				draggable="true"
 				@click="${this._onDragTargetClick}"
+				@contextmenu="${this._onContextMenu}"
 				@dragstart="${this._onDragStart}"
 				@dragend="${this._onDragEnd}"
+				@touchstart="${this._onTouchStart}"
+				@touchmove="${this._onTouchMove}"
+				@touchend="${this._onTouchEnd}"
+				@touchcancel="${this._onTouchCancel}"
 				@mousedown="${this._onDragTargetMouseDown}"
 				>
 			</div>
