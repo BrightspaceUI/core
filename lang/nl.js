@@ -11,6 +11,7 @@ export default {
 	"components.form-element-mixin.defaultValidationMessage": "{label} is ongeldig.",
 	"components.form-element-mixin.valueMissingMessage": "{label} is vereist.",
 	"components.input-date-range.endDate": "Einddatum",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Startdatum",
 	"components.input-date-time-range.endDate": "Einddatum",
 	"components.input-date-time-range.startDate": "Startdatum",

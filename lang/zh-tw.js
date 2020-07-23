@@ -11,6 +11,7 @@ export default {
 	"components.form-element-mixin.defaultValidationMessage": "{label} 無效。",
 	"components.form-element-mixin.valueMissingMessage": "{label} 為必填。",
 	"components.input-date-range.endDate": "結束日期",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "開始日期",
 	"components.input-date-time-range.endDate": "結束日期",
 	"components.input-date-time-range.startDate": "開始日期",

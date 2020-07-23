@@ -11,6 +11,7 @@ export default {
 	"components.form-element-mixin.defaultValidationMessage": "{label} geçersiz.",
 	"components.form-element-mixin.valueMissingMessage": "{label} zorunludur.",
 	"components.input-date-range.endDate": "Bitiş Tarihi",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Başlangıç Tarihi",
 	"components.input-date-time-range.endDate": "Bitiş Tarihi",
 	"components.input-date-time-range.startDate": "Başlangıç Tarihi",
