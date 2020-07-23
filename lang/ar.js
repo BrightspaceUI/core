@@ -11,6 +11,7 @@ export default {
 	"components.form-element-mixin.defaultValidationMessage": "{label} غير صالح.",
 	"components.form-element-mixin.valueMissingMessage": "{label} مطلوب.",
 	"components.input-date-range.endDate": "تاريخ النهاية",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "تاريخ البدء",
 	"components.input-date-time-range.endDate": "تاريخ النهاية",
 	"components.input-date-time-range.startDate": "تاريخ البدء",

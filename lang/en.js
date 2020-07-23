@@ -11,6 +11,7 @@ export default {
 	"components.form-element-mixin.defaultValidationMessage": "{label} is invalid.",
 	"components.form-element-mixin.valueMissingMessage": "{label} is required.",
 	"components.input-date-range.endDate": "End Date",
+	"components.input-date-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-date-range.startDate": "Start Date",
 	"components.input-date-time-range.endDate": "End Date",
 	"components.input-date-time-range.startDate": "Start Date",

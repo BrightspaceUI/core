@@ -1,6 +1,9 @@
 import './input-date.js';
 import './input-fieldset.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getDateFromISODate } from '../../helpers/dateTime.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -9,7 +12,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
  * @fires change - Dispatched when a start or end date is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
+class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -50,7 +53,9 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Value of the start date input
 			 */
-			startValue: { attribute: 'start-value', reflect: true, type: String }
+			startValue: { attribute: 'start-value', reflect: true, type: String },
+			_endCalendarOpened: { attribute: false, type: Boolean },
+			_startCalendarOpened: { attribute: false, type: Boolean }
 		};
 	}
 
@@ -87,6 +92,11 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this.disabled = false;
 		this.labelHidden = false;
+
+		this._startCalendarOpened = false;
+		this._startInputId = getUniqueId();
+		this._endCalendarOpened = false;
+		this._endInputId = getUniqueId();
 	}
 
 	async firstUpdated(changedProperties) {
@@ -98,15 +108,21 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
-		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
-		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
+		const tooltipStart = (this.validationError && !this._startCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
+			${tooltipStart}
+			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
+					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
+					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
-					label="${startLabel}"
+					.forceInvalid=${this.invalid}
+					id="${this._startInputId}"
+					label="${this._computedStartLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					value="${ifDefined(this.startValue)}">
@@ -114,8 +130,12 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-end"
+					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
+					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
-					label="${endLabel}"
+					.forceInvalid=${this.invalid}
+					id="${this._endInputId}"
+					label="${this._computedEndLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					value="${ifDefined(this.endValue)}">
@@ -129,15 +149,56 @@ class InputDateRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		if (input) input.focus();
 	}
 
+	async validate(showErrors) {
+		const errors = await super.validate(showErrors);
+		if (errors.length !== 0) {
+			return errors;
+		}
+		return Promise.all([
+			await this.shadowRoot.querySelector('.d2l-input-date-range-start').validate(showErrors),
+			await this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(showErrors)]
+		).then((res) => {
+			return res.reduce((acc, errors) => [...acc, ...errors], []);
+		});
+	}
+
+	get validationMessageBadInput() {
+		return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+	}
+
+	get _computedEndLabel() {
+		return this.endLabel ? this.endLabel : this.localize('components.input-date-range.endDate');
+	}
+
+	get _computedStartLabel() {
+		return this.startLabel ? this.startLabel : this.localize('components.input-date-range.startDate');
+	}
+
 	async _handleChange(e) {
-		// TODO: validation that start is before end
 		const elem = e.target;
-		if (elem.classList.contains('d2l-input-date-range-start')) this.startValue = elem.value;
-		else this.endValue = elem.value;
+		if (elem.classList.contains('d2l-input-date-range-start')) {
+			this.startValue = elem.value;
+		} else {
+			this.endValue = elem.value;
+		}
+		this.setValidity({badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue)))});
+		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	_handleDropdownToggle(e) {
+		if (e.target.classList.contains('d2l-input-date-range-start')) {
+			this._startCalendarOpened = e.detail.opened;
+		} else {
+			this._endCalendarOpened = e.detail.opened;
+		}
+	}
+
+	_handleNestedFormElementValidation(e) {
+		e.preventDefault();
 	}
 
 }
