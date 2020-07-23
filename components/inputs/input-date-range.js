@@ -176,17 +176,12 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 
 	async _handleChange(e) {
 		const elem = e.target;
-		let startDate, endDate;
 		if (elem.classList.contains('d2l-input-date-range-start')) {
 			this.startValue = elem.value;
-			startDate = elem.value;
-			endDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-end').value;
 		} else {
 			this.endValue = elem.value;
-			endDate = elem.value;
-			startDate = this.shadowRoot.querySelector('d2l-input-date.d2l-input-date-range-start').value;
 		}
-		this.setValidity({badInput: (startDate && endDate && (getDateFromISODate(endDate) <= getDateFromISODate(startDate)))});
+		this.setValidity({badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue)))});
 		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
