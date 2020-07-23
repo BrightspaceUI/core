@@ -44,12 +44,12 @@ describe('d2l-dialog-confirm', () => {
 						await page.setViewport({ width: info.viewport.width, height: info.viewport.height, deviceScaleFactor: 2 });
 					});
 
-					it('page layout', async function() {
+					it('opened', async function() {
 						await helper.open(page, '#confirm');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
-					it('page layout rtl', async function() {
+					it('rtl', async function() {
 						await helper.open(page, '#confirmRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});

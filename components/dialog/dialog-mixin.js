@@ -35,6 +35,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
+			_autoSize: { type: Boolean, attribute: false },
 			_height: { type: Number },
 			_left: { type: Number },
 			_margin: { type: Object },
@@ -51,6 +52,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	constructor() {
 		super();
 		this.opened = false;
+		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._height = 0;
 		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
@@ -309,12 +311,14 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_render(inner, info) {
 
 		const styles = {};
-		if (this._ifrauContextInfo) styles.top = `${this._top}px`;
-		if (this._ifrauContextInfo) styles.bottom = 'auto';
-		if (this._left) styles.left = `${this._left}px`;
-		if (this._height) styles.height = `${this._height}px`;
-		if (this._width) styles.width = `${this._width}px`;
-		else styles.width = 'auto';
+		if (this._autoSize) {
+			if (this._ifrauContextInfo) styles.top = `${this._top}px`;
+			if (this._ifrauContextInfo) styles.bottom = 'auto';
+			if (this._left) styles.left = `${this._left}px`;
+			if (this._height) styles.height = `${this._height}px`;
+			if (this._width) styles.width = `${this._width}px`;
+			else styles.width = 'auto';
+		}
 
 		const dialogOuterClasses = {
 			'd2l-dialog-outer': true,
@@ -367,23 +371,25 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	async _updateSize() {
-		if (this._ifrauContextInfo) {
-			if (this._ifrauContextInfo.top > defaultMargin.top) {
-				this._top = 0;
-				this._margin.top = 0;
-			} else if (this._ifrauContextInfo.top < 0) {
-				this._top = defaultMargin.top - this._ifrauContextInfo.top;
-				this._margin.top = defaultMargin.top;
-			} else {
-				this._top = defaultMargin.top - this._ifrauContextInfo.top;
-				this._margin.top = defaultMargin.top - this._ifrauContextInfo.top;
+		if (this._autoSize) {
+			if (this._ifrauContextInfo) {
+				if (this._ifrauContextInfo.top > defaultMargin.top) {
+					this._top = 0;
+					this._margin.top = 0;
+				} else if (this._ifrauContextInfo.top < 0) {
+					this._top = defaultMargin.top - this._ifrauContextInfo.top;
+					this._margin.top = defaultMargin.top;
+				} else {
+					this._top = defaultMargin.top - this._ifrauContextInfo.top;
+					this._margin.top = defaultMargin.top - this._ifrauContextInfo.top;
+				}
 			}
+			this._width = this._getWidth();
+			this._left = this._getLeft();
+			await this.updateComplete;
+			this._height = this._getHeight();
+			await this.updateComplete;
 		}
-		this._width = this._getWidth();
-		this._left = this._getLeft();
-		await this.updateComplete;
-		this._height = this._getHeight();
-		await this.updateComplete;
 		this._updateOverflow();
 		await this.updateComplete;
 	}

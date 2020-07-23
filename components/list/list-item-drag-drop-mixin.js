@@ -188,8 +188,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragStart(e) {
-		e.dataTransfer.setData('text/plain', `${this.dropText}`);
 		e.dataTransfer.effectAllowed = 'move';
+		if (e.dataTransfer.setData && this.dropText) {
+			e.dataTransfer.setData('text/plain', `${this.dropText}`);
+		}
 
 		//legacy edge doesn't support setDragImage. Experience is not degraded for legacy edge by doing this fix.
 		if (e.dataTransfer.setDragImage) {
