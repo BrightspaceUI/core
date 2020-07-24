@@ -7,6 +7,8 @@ export default {
 	"components.calendar.selected": "Selected.",
 	"components.calendar.show": "Show {month}",
 	"components.dialog.close": "Close this dialog",
+	"components.form-error-summary.multipleErrors": "There were {count} errors found in the information you submitted",
+	"components.form-error-summary.singleError": "There was {count} error found in the information you submitted",
 	"components.form-element.defaultError": "{label} is invalid.",
 	"components.form-element.defaultFieldLabel": "Field",
 	"components.form-element.input.email.typeMismatch": "{label} is not a valid email",
