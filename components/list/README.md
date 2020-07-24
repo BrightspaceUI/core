@@ -56,7 +56,7 @@ The `grid` attribute will enable a table-like keyboard grid that allows a user t
 
 ## d2l-list-item
 
-The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a link for navigation, and selection.
+The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a link for navigation, and selection. This extends `ListItemMixin` and has all the same use cases as the mixin.
 
 ![List](./screenshots/list-item.png?raw=true)
 
@@ -78,6 +78,46 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 **Properties:**
 
+- `href` (String): Address of item link if navigable
+
+## ListItemMixin
+
+What if you want to use a list item need more modularity? This mixin is for you! This mixin allows you to make a component a list item without the worry of styling. All the properties from `d2l-list-item` will be added to your new component.
+
+### How to use
+
+Import
+```javascript
+import { ListItemMixin } from './list-item-mixin.js';
+
+class ListItem extends ListItemMixin(LitElement) {
+...
+```
+
+How add the styles:
+```javascript
+static get styles() {
+	return [ super.styles ];
+}
+```
+
+How to render the list item:
+```javascript
+render() {
+	return this._renderListItem({
+		illustration: html`[Image HTML here]`,
+		content: html`[Content here such as d2l-list-item-content]`,
+		actions: html`actions here`
+	});
+}
+```
+Where the parameters correspond to the slots of `d2l-list-item`:
+- illustration (TemplateResult):  Provide a illustration for your list item.
+- content (TemplateResult): Core content of the list item. You can use content components such as `d2l-list-item-content` here. (This corresponds to the default slot in `d2l-list-item`.
+- actions (TemplateResult): Secondary actions for the list item.
+
+**Properties:**
+
 - `breakpoints` (Array): Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
   - Breakpoint 0
     - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
@@ -93,7 +133,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
     - default break: `843px < x`  where `x` is the width of the component.
 - `disabled` (Boolean): Whether or not the checkbox is disabled
 - `draggable` (Boolean): Whether or not the item is draggable
-- `href` (String): Address of item link if navigable
+- `action-href` (String): Address of item link if navigable
 - `key` (String): Value to identify item if selectable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
