@@ -14,6 +14,8 @@ export default {
 	"components.form-element.input.number.rangeUnderflow": "",
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} zorunludur.",
+	"components.form-error-summary.multipleErrors": "",
+	"components.form-error-summary.singleError": "",
 	"components.input-date-range.endDate": "Bitiş Tarihi",
 	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Başlangıç Tarihi",
