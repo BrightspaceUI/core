@@ -1,6 +1,12 @@
 import { isCustomFormElement, tryGetLabelText } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
+export const ValidationType = {
+	SUPPRESS_ERRORS: 0,
+	UPDATE_EXISTING_ERRORS: 1,
+	SHOW_NEW_ERRORS: 2,
+};
+
 export class FormElementValidityState {
 
 	static get supportedFlags() {
@@ -124,9 +130,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element-mixin.defaultFieldLabel');
 	}
 
-	async requestValidate(showErrors = true) {
+	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
-			await this.validate(showErrors);
+			await this.validate(validationType);
 		}
 	}
 
@@ -144,7 +150,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationMessage = null;
 	}
 
-	async validate(showErrors) {
+	async validate(validationType) {
 		await this.updateComplete;
 		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
@@ -152,12 +158,25 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		if (!this.checkValidity()) {
 			errors.unshift(this.validationMessage);
 		}
-		if (errors.length === 0) {
-			this.validationError = null;
-		} else if (showErrors || this.validationError) {
-			this.validationError = errors[0];
+		switch (validationType) {
+			case ValidationType.SUPPRESS_ERRORS:
+				this.validationError = null;
+				break;
+			case ValidationType.UPDATE_EXISTING_ERRORS:
+				if (this.validationError && errors.length > 0) {
+					this.validationError = errors[0];
+				} else {
+					this.validationError = null;
+				}
+				break;
+			case ValidationType.SHOW_NEW_ERRORS:
+				if (errors.length > 0) {
+					this.validationError = errors[0];
+				} else {
+					this.validationError = null;
+				}
+				break;
 		}
-
 		return errors;
 	}
 
