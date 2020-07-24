@@ -8,6 +8,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
+ * @slot - Default content placed inside of the button
  */
 class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))) {
 
@@ -89,8 +90,12 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				}
 
 				.d2l-button-icon {
+					display: none;
 					height: 0.9rem;
 					width: 0.9rem;
+				}
+				:host([icon]) .d2l-button-icon {
+					display: inline-block;
 				}
 
 				:host([translucent]) button {
@@ -154,6 +159,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
 				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>
+				<slot></slot>
 		</button>
 		`;
 	}
