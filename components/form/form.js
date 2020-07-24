@@ -136,6 +136,8 @@ class Form extends LocalizeCoreElement(LitElement) {
 		if (errors.length > 0) {
 			return;
 		}
+		this._dirty = false;
+
 		let nativeFormData = {};
 		let customFormData = {};
 		const formElements = findFormElements(this);
