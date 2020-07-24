@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} zorunludur.",
 	"components.input-date-range.endDate": "Bitiş Tarihi",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Başlangıç Tarihi",
 	"components.input-date-time-range.endDate": "Bitiş Tarihi",
 	"components.input-date-time-range.startDate": "Başlangıç Tarihi",

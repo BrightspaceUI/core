@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} مطلوب.",
 	"components.input-date-range.endDate": "تاريخ النهاية",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "تاريخ البدء",
 	"components.input-date-time-range.endDate": "تاريخ النهاية",
 	"components.input-date-time-range.startDate": "تاريخ البدء",

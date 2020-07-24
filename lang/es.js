@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "El campo es obligatorio: {label}",
 	"components.input-date-range.endDate": "Fecha final",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Fecha de inicio",
 	"components.input-date-time-range.endDate": "Fecha final",
 	"components.input-date-time-range.startDate": "Fecha de inicio",

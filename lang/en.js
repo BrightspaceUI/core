@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "{label} is not a valid URL",
 	"components.form-element.valueMissing": "{label} is required.",
 	"components.input-date-range.endDate": "End Date",
+	"components.input-date-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-date-range.startDate": "Start Date",
 	"components.input-date-time-range.endDate": "End Date",
 	"components.input-date-time-range.startDate": "Start Date",

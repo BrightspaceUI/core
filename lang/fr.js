@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} est requis(e).",
 	"components.input-date-range.endDate": "Date de fin",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Date de début",
 	"components.input-date-time-range.endDate": "Date de fin",
 	"components.input-date-time-range.startDate": "Date de début",

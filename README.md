@@ -129,3 +129,15 @@ Upon release, the version in `package.json` is updated, a tag and GitHub release
 Commits prefixed with `feat` will trigger a minor release, while `fix` or `perf` will trigger a patch release. A commit containing `BREAKING CHANGE` will cause a major release to occur.
 
 Other useful prefixes that will not trigger a release: `build`, `ci`, `docs`, `refactor`, `style` and `test`. More details in the [Angular Contribution Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type).
+
+### Backporting Fixes to Previous Releases
+
+If you need to backport a fix to an older release, [semantic-release](https://semantic-release.gitbook.io/) can handle this automatically for you. Create a branch named `A.B.x` based on the most recent tag of that release. So for example, if the release you want to patch is `1.59.4`, create a branch named `1.59.x` pointing at the `v1.59.4` tag:
+
+```shell
+git checkout -b 1.59.x v1.59.4
+```
+
+Then create a pull request into that branch with your fix, and merge as you normally would to create a release with a `fix: blah blah blah` commit message. Semantic-release will automatically tag and publish the release to NPM.
+
+It's also possible to use this approach to add changes to old minor releases -- simply name the branch `A.x` instead.

@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} 必填。",
 	"components.input-date-range.endDate": "结束日期",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "开始日期",
 	"components.input-date-time-range.endDate": "结束日期",
 	"components.input-date-time-range.startDate": "开始日期",

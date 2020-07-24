@@ -4,11 +4,13 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -116,6 +118,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
+		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
@@ -155,12 +158,17 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
+		const icon = this.invalid
+			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
+			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
+		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
 			</div>
+			${tooltip}
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
@@ -171,6 +179,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
 					hide-invalid-icon
+					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -179,10 +188,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					style="${styleMap({maxWidth: inputTextWidth})}"
 					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
 					.value="${this._formattedValue}">
-					<d2l-icon
-						icon="${this.invalid ? 'tier1:alert' : 'tier1:calendar'}"
-						slot="left"
-						style="${styleMap({color: this.invalid ? 'var(--d2l-color-cinnabar)' : ''})}"></d2l-icon>
+					${icon}
 				</d2l-input-text>
 				<d2l-dropdown-content
 					@d2l-dropdown-close="${this._handleDropdownClose}"
@@ -304,6 +310,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._calendar.reset();
 		this._dropdownOpened = false;
 		this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-date-dropdown-toggle',
+			{ bubbles: true, composed: false, detail: { opened: false } }
+		));
 	}
 
 	_handleDropdownOpen() {
@@ -313,6 +323,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
 		}, 150);
 		this._dropdownOpened = true;
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-date-dropdown-toggle',
+			{ bubbles: true, composed: false, detail: { opened: true } }
+		));
 	}
 
 	async _handleFocusTrapEnter() {

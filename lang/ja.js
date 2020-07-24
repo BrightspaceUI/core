@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} が必要です。",
 	"components.input-date-range.endDate": "終了日",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "開始日",
 	"components.input-date-time-range.endDate": "終了日",
 	"components.input-date-time-range.startDate": "開始日",

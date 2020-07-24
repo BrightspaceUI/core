@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label}이(가) 필요합니다.",
 	"components.input-date-range.endDate": "종료일",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "시작일",
 	"components.input-date-time-range.endDate": "종료일",
 	"components.input-date-time-range.startDate": "시작일",

@@ -47,5 +47,24 @@ module.exports = {
 				height: height + 20
 			};
 		});
+	},
+
+	getRectTooltip(page, selector, tooltipIndex) {
+		return page.$eval(selector, (elem, tooltipIndex) => {
+			const content = elem.shadowRoot.querySelectorAll('d2l-tooltip')[tooltipIndex ? tooltipIndex : 0];
+			const contentWidth = content.shadowRoot.querySelector('.d2l-tooltip-content');
+			const openerRect = elem.getBoundingClientRect();
+			const contentRect = contentWidth.getBoundingClientRect();
+			const x = Math.min(openerRect.x, contentRect.x);
+			const y = Math.min(openerRect.y, contentRect.y);
+			const width = Math.max(openerRect.right, contentRect.right) - x;
+			const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
+			return {
+				x: x - 10,
+				y: y - 10,
+				width: width + 20,
+				height: height + 20
+			};
+		}, tooltipIndex);
 	}
 };

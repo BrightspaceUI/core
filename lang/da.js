@@ -15,6 +15,7 @@ export default {
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} er påkrævet.",
 	"components.input-date-range.endDate": "Slutdato",
+	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Startdato",
 	"components.input-date-time-range.endDate": "Slutdato",
 	"components.input-date-time-range.startDate": "Startdato",
