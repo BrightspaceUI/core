@@ -35,8 +35,8 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			:host([dir="rtl"]) .d2l-form-error-summary-header {
-				padding-right: 1.2rem;
 				padding-left: 0.3rem;
+				padding-right: 1.2rem;
 			}
 
 			.d2l-form-error-summary-text {
@@ -51,8 +51,8 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			:host([dir="rtl"]) .d2l-form-error-summary-error-list {
-				margin-right: 1.2rem;
 				margin-left: 0;
+				margin-right: 1.2rem;
 			}
 		`];
 	}
