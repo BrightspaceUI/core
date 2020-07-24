@@ -2,6 +2,7 @@ import '../../validation/validation-custom.js';
 import './form-element.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import { ValidationType } from '../../form/form-element-mixin.js';
 
 const formTag = defineCE(
 	class extends LitElement {
@@ -66,33 +67,48 @@ describe('form-element', () => {
 
 	describe('message', () => {
 
-		it('should set validation message if validate has errors', async() => {
-			await formElement.validate(true);
-			expect(formElement.validationError).to.equal('Test form element is required.');
+		[ValidationType.SHOW_NEW_ERRORS].forEach(validationType => {
+			it(`should set validation message if validate has errors with validation type ${validationType}`, async() => {
+				await formElement.validate(validationType);
+				expect(formElement.validationError).to.equal('Test form element is required.');
+			});
 		});
 
-		it('should not set validation message if validate has errors and show errors is false', async() => {
-			await formElement.validate(false);
-			expect(formElement.validationError).to.be.null;
+		[ValidationType.UPDATE_EXISTING_ERRORS, ValidationType.SUPPRESS_ERRORS].forEach(validationType => {
+			it(`should not set validation message if validate has errors with validation type ${validationType}`, async() => {
+				await formElement.validate(validationType);
+				expect(formElement.validationError).to.be.null;
+			});
 		});
 
-		[true, false].forEach(showErrors => {
-			it('should remove message if validate has no errors', async() => {
-				await formElement.validate(true);
+		[ValidationType.SHOW_NEW_ERRORS, ValidationType.UPDATE_EXISTING_ERRORS, ValidationType.SUPPRESS_ERRORS].forEach(validationType => {
+			it(`should remove message if validate has no errors with validation type ${validationType}`, async() => {
+				await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 				expect(formElement.validationError).to.equal('Test form element is required.');
 				formElement.value = 'Non-empty';
-				await formElement.validate(showErrors);
+				await formElement.validate(validationType);
 				expect(formElement.validationError).to.null;
 			});
 		});
 
-		it('should update the validation message if validate has errors and show errors is false', async() => {
-			await formElement.validate(true);
-			expect(formElement.validationError).to.equal('Test form element is required.');
-			formElement.value = 'Non-empty';
-			formElement.isValidationCustomValid = false;
-			await formElement.validate(false);
-			expect(formElement.validationError).to.equal('Internal custom validation failed');
+		[ValidationType.SHOW_NEW_ERRORS, ValidationType.UPDATE_EXISTING_ERRORS].forEach(validationType => {
+			it(`should update the validation message if validate has errors with validation type ${validationType}`, async() => {
+				await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
+				expect(formElement.validationError).to.equal('Test form element is required.');
+				formElement.value = 'Non-empty';
+				formElement.isValidationCustomValid = false;
+				await formElement.validate(validationType);
+				expect(formElement.validationError).to.equal('Internal custom validation failed');
+			});
+		});
+
+		[ValidationType.SUPPRESS_ERRORS].forEach(validationType => {
+			it(`should supress the validation message if validate has errors with validation type ${validationType}`, async() => {
+				await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
+				expect(formElement.validationError).to.equal('Test form element is required.');
+				await formElement.validate(validationType);
+				expect(formElement.validationError).to.be.null;
+			});
 		});
 
 	});
@@ -101,50 +117,50 @@ describe('form-element', () => {
 
 		it('should validate internal validation-customs', async() => {
 			formElement.isValidationCustomValid = false;
-			const errors = await formElement.validate(true);
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 			expect(errors).to.include.members(['Internal custom validation failed']);
 		});
 
 		it('should validate external validation-customs', async() => {
 			form.isValidationCustomValid = false;
-			const errors = await formElement.validate(true);
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 			expect(errors).to.include.members(['External custom validation failed']);
 		});
 
 		it('should validate native element validity state', async() => {
-			const errors = await formElement.validate(true);
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 			expect(errors).to.include.members(['Test form element is required.']);
 		});
 
 		it('should validate with default validity state message', async() => {
 			formElement.value = 'Non-empty';
 			formElement.setValidity({ badInput: true });
-			const errors = await formElement.validate(true);
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 			expect(errors).to.include.members(['Test form element is invalid.']);
 		});
 
 		it('should validate with overridden validity state message', async() => {
 			formElement.value = 'Non-empty';
 			formElement.setValidity({ rangeOverflow: true });
-			const errors = await formElement.validate(true);
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 			expect(errors).to.include.members(['Test form element failed with an overridden validation message']);
 		});
 
 		it('should validate with custom validity state message', async() => {
 			formElement.value = 'Non-empty';
 			formElement.setCustomValidity('Validation failed for custom validity');
-			const errors = await formElement.validate(true);
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 			expect(errors).to.include.members(['Validation failed for custom validity']);
 		});
 
 		it('should pass validation when no errors', async() => {
 			formElement.value = 'Non-empty';
-			const errors = await formElement.validate(true);
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
 			expect(errors).to.be.empty;
 		});
 
 		it('should not be marked as invalid when show errors is false', async() => {
-			const errors = await formElement.validate(false);
+			const errors = await formElement.validate(ValidationType.UPDATE_EXISTING_ERRORS);
 			expect(errors).to.not.be.empty;
 			expect(formElement.invalid).to.be.false;
 			expect(formElement.validationError).to.be.null;
@@ -156,7 +172,7 @@ describe('form-element', () => {
 
 		it('should not validate if canceled', async() => {
 			formElement.addEventListener('d2l-form-element-should-validate', e => e.preventDefault());
-			await formElement.requestValidate(true);
+			await formElement.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 			expect(formElement.validationError).to.be.null;
 		});
 

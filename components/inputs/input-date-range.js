@@ -1,7 +1,7 @@
 import './input-date.js';
 import './input-fieldset.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FormElementMixin } from '../form/form-element-mixin.js';
+import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getDateFromISODate } from '../../helpers/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -149,17 +149,13 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		if (input) input.focus();
 	}
 
-	async validate(showErrors) {
-		const errors = await super.validate(showErrors);
-		if (errors.length !== 0) {
-			return errors;
-		}
-		return Promise.all([
-			await this.shadowRoot.querySelector('.d2l-input-date-range-start').validate(showErrors),
-			await this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(showErrors)]
-		).then((res) => {
-			return res.reduce((acc, errors) => [...acc, ...errors], []);
-		});
+	async validate(validationType) {
+		const childErrors = await Promise.all([
+			this.shadowRoot.querySelector('.d2l-input-date-range-start').validate(validationType),
+			this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(validationType)]
+		).then(res => res.reduce((acc, errors) => [...acc, ...errors], []));
+		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
+		return [...errors, ...childErrors];
 	}
 
 	get validationMessageBadInput() {
