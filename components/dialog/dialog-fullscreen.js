@@ -66,6 +66,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				width: 100%;
 			}
 
+			.d2l-dialog-content > div {
+				box-sizing: border-box;
+				height: 100%;
+			}
+
 			.d2l-dialog-footer.d2l-footer-no-content {
 				display: none;
 			}
