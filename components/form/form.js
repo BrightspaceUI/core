@@ -1,4 +1,6 @@
+import './form-errory-summary.js';
 import '../tooltip/tooltip.js';
+import '../link/link.js';
 import { findFormElements, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
@@ -13,7 +15,8 @@ class Form extends LocalizeCoreElement(LitElement) {
 		return {
 			action: { type: String },
 			method: { type: String },
-			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true }
+			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
+			_errors: { type: Object }
 		};
 	}
 
@@ -25,6 +28,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this.trackChanges = false;
 		this._tooltips = new Map();
 		this._validationCustoms = new Set();
+		this._errors = new Map();
 
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
@@ -60,7 +64,13 @@ class Form extends LocalizeCoreElement(LitElement) {
 	}
 
 	render() {
-		return html`<slot></slot>`;
+		const errors = [...this._errors.entries()]
+			.filter(([, eleErrors]) => eleErrors.length > 0)
+			.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus()}));
+		return html`
+			<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>
+			<slot></slot>
+		`;
 	}
 
 	async submit() {
@@ -69,12 +79,20 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	async validate() {
 		let errors = [];
+		const errorMap = new Map();
 		const formElements = findFormElements(this);
 		for (const ele of formElements) {
 			const eleErrors = await this._validateFormElement(ele, ValidationType.SHOW_NEW_ERRORS);
 			if (eleErrors.length > 0) {
 				errors = [...errors, ...eleErrors];
+				errorMap.set(ele, eleErrors);
 			}
+		}
+		this._errors = errorMap;
+		if (this._errors.size > 0) {
+			await this.updateComplete;
+			const errorSummary = this.shadowRoot.querySelector('d2l-form-error-summary');
+			errorSummary.focus();
 		}
 		return errors;
 	}
@@ -115,7 +133,15 @@ class Form extends LocalizeCoreElement(LitElement) {
 		e.stopPropagation();
 		this._dirty = true;
 		const validationType = e.type === 'focusout' ? ValidationType.SHOW_NEW_ERRORS : ValidationType.UPDATE_EXISTING_ERRORS;
-		this._validateFormElement(ele, validationType);
+		const eleErrors = await this._validateFormElement(ele, validationType);
+		if (this._errors.has(ele)) {
+			if (eleErrors.length > 0) {
+				this._errors.set(ele, eleErrors);
+			} else {
+				this._errors.delete(ele);
+			}
+			this.requestUpdate('_errors');
+		}
 	}
 
 	_onNativeSubmit(e) {

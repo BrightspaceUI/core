@@ -14,6 +14,7 @@ export default {
 	"components.form-element.input.number.rangeUnderflow": "",
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} ist erforderlich.",
+	"components.form-error-summary.errorSummary": "",
 	"components.input-date-range.endDate": "Enddatum",
 	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Startdatum",

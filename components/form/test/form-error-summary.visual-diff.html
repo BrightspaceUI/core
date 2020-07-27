@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../form-errory-summary.js';
+		import '../../typography/typography.js';
+	</script>
+	<title>d2l-form-error-summary</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		#no-errors {
+			width: 10px;
+			height: 10px;
+		}
+	</style>
+</head>
+
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-form-error-summary id="no-errors"></d2l-form-error-summary>
+	</div>
+	<div class="visual-diff">
+		<d2l-form-error-summary id="expanded-single-error"></d2l-form-error-summary>
+	</div>
+	<div class="visual-diff">
+		<d2l-form-error-summary id="expanded-multiple-errors"></d2l-form-error-summary>
+	</div>
+	<div class="visual-diff">
+		<d2l-form-error-summary id="collapsed"></d2l-form-error-summary>
+	</div>
+	<script>
+		const errors = [
+			{ href: '#first-error', message: 'An error occured' },
+			{ href: '#second-error', message: 'A different error occured' }
+		];
+		document.querySelector('#expanded-single-error').errors = [{ href: '#id', message: 'An error occured'}];
+		document.querySelector('#expanded-multiple-errors').errors = errors;
+		const collapsed = document.querySelector('#collapsed');
+		collapsed.errors = errors;
+		collapsed._expanded = false;
+	</script>
+</body>
+
+</html>
