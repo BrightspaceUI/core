@@ -7,6 +7,7 @@ import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
+import { ValidationType } from './form-element-mixin.js';
 
 class Form extends LocalizeCoreElement(LitElement) {
 
@@ -81,7 +82,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		const errorMap = new Map();
 		const formElements = findFormElements(this);
 		for (const ele of formElements) {
-			const eleErrors = await this._validateFormElement(ele, true);
+			const eleErrors = await this._validateFormElement(ele, ValidationType.SHOW_NEW_ERRORS);
 			if (eleErrors.length > 0) {
 				errors = [...errors, ...eleErrors];
 				errorMap.set(ele, eleErrors);
@@ -96,6 +97,34 @@ class Form extends LocalizeCoreElement(LitElement) {
 		return errors;
 	}
 
+	_displayInvalid(ele, message) {
+		let tooltip = this._tooltips.get(ele);
+		if (!tooltip) {
+			tooltip = document.createElement('d2l-tooltip');
+			tooltip.for = ele.id;
+			tooltip.align = 'start';
+			tooltip.state = 'error';
+			ele.parentNode.append(tooltip);
+			this._tooltips.set(ele, tooltip);
+
+			tooltip.appendChild(document.createTextNode(message));
+		} else if (tooltip.innerText.trim() !== message.trim()) {
+			tooltip.textContent = '';
+			tooltip.appendChild(document.createTextNode(message));
+			tooltip.updatePosition();
+		}
+		ele.setAttribute('aria-invalid', 'true');
+	}
+
+	_displayValid(ele) {
+		const tooltip = this._tooltips.get(ele);
+		if (tooltip) {
+			this._tooltips.delete(ele);
+			tooltip.remove();
+		}
+		ele.setAttribute('aria-invalid', 'false');
+	}
+
 	async _onFormElementChange(e) {
 		const ele = e.target;
 		if (!isNativeFormElement(ele)) {
@@ -103,8 +132,8 @@ class Form extends LocalizeCoreElement(LitElement) {
 		}
 		e.stopPropagation();
 		this._dirty = true;
-		const showErrors = e.type === 'focusout';
-		const eleErrors = await this._validateFormElement(ele, showErrors);
+		const validationType = e.type === 'focusout' ? ValidationType.SHOW_NEW_ERRORS : ValidationType.UPDATE_EXISTING_ERRORS;
+		const eleErrors = await this._validateFormElement(ele, validationType);
 		if (this._errors.has(ele)) {
 			if (eleErrors.length > 0) {
 				this._errors.set(ele, eleErrors);
@@ -133,6 +162,8 @@ class Form extends LocalizeCoreElement(LitElement) {
 		if (errors.length > 0) {
 			return;
 		}
+		this._dirty = false;
+
 		let nativeFormData = {};
 		let customFormData = {};
 		const formElements = findFormElements(this);
@@ -158,10 +189,10 @@ class Form extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
-	async _validateFormElement(ele, showErrors) {
+	async _validateFormElement(ele, validationType) {
 		ele.id = ele.id || getUniqueId();
 		if (isCustomFormElement(ele)) {
-			return ele.validate(showErrors);
+			return ele.validate(validationType);
 		} else if (isNativeFormElement(ele)) {
 			const customs = [...this._validationCustoms].filter(custom => custom.forElement === ele);
 			const results = await Promise.all(customs.map(custom => custom.validate()));
@@ -170,12 +201,21 @@ class Form extends LocalizeCoreElement(LitElement) {
 				const validationMessage = localizeFormElement(this.localize.bind(this), ele);
 				errors.unshift(validationMessage);
 			}
-			if (errors.length === 0) {
-				this._validationTooltipHide(ele);
-				ele.setAttribute('aria-invalid', 'false');
-			} else if (showErrors || ele.getAttribute('aria-invalid') === 'true') {
-				this._validationTooltipShow(ele, errors[0]);
-				ele.setAttribute('aria-invalid', 'true');
+			switch (validationType) {
+				case ValidationType.UPDATE_EXISTING_ERRORS:
+					if (ele.getAttribute('aria-invalid') === 'true' && errors.length > 0) {
+						this._displayInvalid(ele, errors[0]);
+					} else {
+						this._displayValid(ele);
+					}
+					break;
+				case ValidationType.SHOW_NEW_ERRORS:
+					if (errors.length > 0) {
+						this._displayInvalid(ele, errors[0]);
+					} else {
+						this._displayValid(ele);
+					}
+					break;
 			}
 			return errors;
 		}
@@ -192,32 +232,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 			this._validationCustoms.delete(custom);
 		};
 		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
-	}
-
-	_validationTooltipHide(ele) {
-		const tooltip = this._tooltips.get(ele);
-		if (tooltip) {
-			this._tooltips.delete(ele);
-			tooltip.remove();
-		}
-	}
-
-	_validationTooltipShow(ele, message) {
-		let tooltip = this._tooltips.get(ele);
-		if (!tooltip) {
-			tooltip = document.createElement('d2l-tooltip');
-			tooltip.for = ele.id;
-			tooltip.align = 'start';
-			tooltip.state = 'error';
-			ele.parentNode.append(tooltip);
-			this._tooltips.set(ele, tooltip);
-
-			tooltip.appendChild(document.createTextNode(message));
-		} else if (tooltip.innerText.trim() !== message.trim()) {
-			tooltip.textContent = '';
-			tooltip.appendChild(document.createTextNode(message));
-			tooltip.updatePosition();
-		}
 	}
 
 }

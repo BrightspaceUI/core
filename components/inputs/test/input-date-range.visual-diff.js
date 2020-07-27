@@ -209,28 +209,28 @@ describe('d2l-input-date-range', () => {
 
 			[
 				{
-					name: 'start before min, end before start',
+					name: 'start before min and end before start',
 					startDate: dateBeforeMin,
 					endDate: dateFurtherBeforeMin,
 					changeStartDateFirst: true,
 					startDateTooltip: true,
 					endDateTooltip: true
 				}, {
-					name: 'start valid, end before start and before min',
+					name: 'start valid and end before start and before min',
 					startDate: dateInRange,
 					endDate: dateBeforeMin,
 					changeStartDateFirst: true,
 					startDateTooltip: false,
 					endDateTooltip: true
 				}, {
-					name: 'end after max, start after end',
+					name: 'end after max and start after end',
 					startDate: dateFurtherAfterMax,
 					endDate: dateAfterMax,
 					changeStartDateFirst: false,
 					startDateTooltip: true,
 					endDateTooltip: true
 				}, {
-					name: 'end valid, start after end and after max',
+					name: 'end valid and start after end and after max',
 					startDate: dateAfterMax,
 					endDate: dateInRange,
 					changeStartDateFirst: false,
