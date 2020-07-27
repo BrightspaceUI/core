@@ -1,8 +1,7 @@
 import '../alert/alert.js';
-import '../link/link.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyStandardStyles } from '../typography/styles.js';
+import { linkStyles } from '../link/link.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -16,7 +15,7 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodyStandardStyles, css`
+		return [linkStyles, css`
 
 			:host {
 				display: block;
@@ -46,7 +45,7 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			.d2l-form-error-summary-error-list {
 				margin: 0 0 0 1.2rem;
-				padding-bottom: 0.65rem;
+				padding-bottom: 0.6rem;
 				padding-top: 0.3rem;
 			}
 
@@ -64,11 +63,10 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		const errorSummaryTerm = this.errors.length === 1 ? 'components.form-error-summary.singleError' : 'components.form-error-summary.multipleErrors';
 		const errorSummary = html`
 			<d2l-alert type="critical" no-padding aria-live="polite">
 				<div class="d2l-form-error-summary-header" @click=${this._toggleExpandCollapse}>
-					<div class="d2l-form-error-summary-text">${this.localize(errorSummaryTerm, {count: this.errors.length})}</div>
+					<div class="d2l-form-error-summary-text">${this.localize('components.form-error-summary.errorSummary', {count: this.errors.length})}</div>
 					<d2l-button-icon
 						aria-expanded=${this._expanded ? 'true' : 'false'}
 						icon=${this._expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }
@@ -79,7 +77,7 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					<ul class="d2l-form-error-summary-error-list">
 						${this.errors.map(error => html`
 							<li>
-								<d2l-link href=${error.href} @click=${error.onClick}>${error.message}</d2l-link>
+								<a class="d2l-link" href=${error.href} @click=${error.onClick}>${error.message}</a>
 							</li>
 						`)}
 					</ul>
@@ -94,10 +92,16 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			super.focus();
 			return;
 		}
-		await this.updateComplete;
-		await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-		const firstItem = this.shadowRoot.querySelector('ul:first-child d2l-link');
-		firstItem.focus();
+		let focusEleSelector;
+		if (this._expanded) {
+			await this.updateComplete;
+			await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+			focusEleSelector = 'ul:first-child a';
+		} else {
+			focusEleSelector = 'd2l-button-icon';
+		}
+		const focusEle = this.shadowRoot.querySelector(focusEleSelector);
+		focusEle.focus();
 	}
 
 	_toggleExpandCollapse(e) {
