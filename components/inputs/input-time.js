@@ -5,7 +5,7 @@ import '../menu/menu-item-radio.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
-import { getToday, parseISOTime } from '../../helpers/dateTime.js';
+import { getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -17,7 +17,7 @@ const TODAY = getToday();
 const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
 const INTERVALS = new Map();
 
-function getIntervalNumber(size) {
+export function getIntervalNumber(size) {
 	switch (size) {
 		case 'five':
 			return 5;
@@ -35,7 +35,7 @@ function getIntervalNumber(size) {
 	}
 }
 
-function getDefaultTime(time) {
+export function getDefaultTime(time) {
 	switch (time) {
 		case 'endOfDay':
 			return END_OF_DAY;
@@ -43,7 +43,7 @@ function getDefaultTime(time) {
 		case undefined:
 			return new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
 		default:
-			return parseValue(time);
+			return getDateFromISOTime(time);
 	}
 }
 
@@ -72,11 +72,6 @@ function formatValue(time) {
 	const zeroPadSec = (time.getSeconds() < 10) ? '0' : '';
 	const value = `${time.getHours()}:${zeroPadMin}${time.getMinutes()}:${zeroPadSec}${time.getSeconds()}`;
 	return value;
-}
-
-function parseValue(val) {
-	const parsed = parseISOTime(val);
-	return new Date(TODAY.year, TODAY.month, TODAY.date, parsed.hours, parsed.minutes, parsed.seconds);
 }
 
 /**
@@ -165,12 +160,13 @@ class InputTime extends LitElement {
 
 	get value() { return this._value; }
 	set value(val) {
+		// we want value to be midnight in case they dont change it!
 		if (this.value === undefined && (val === undefined || val === '')) {
 			return;
 		}
 
 		const oldValue = this.value;
-		const time = val === '' || val === null ? getDefaultTime(this.defaultValue) : parseValue(val);
+		const time = val === '' || val === null ? getDefaultTime(this.defaultValue) : getDateFromISOTime(val);
 
 		if (this.enforceTimeIntervals) {
 			const interval = getIntervalNumber(this.timeInterval);
@@ -256,7 +252,7 @@ class InputTime extends LitElement {
 	}
 
 	getTime() {
-		const time = parseValue(this.value);
+		const time = getDateFromISOTime(this.value);
 		return {
 			hours: time.getHours(),
 			minutes: time.getMinutes(),
@@ -277,7 +273,7 @@ class InputTime extends LitElement {
 		this._formattedValue = value;
 		await this.updateComplete;
 		if (time === null) {
-			this._formattedValue = formatTime(parseValue(this.value));
+			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 		} else {
 			this.value = formatValue(time);
 			this.dispatchEvent(new CustomEvent(

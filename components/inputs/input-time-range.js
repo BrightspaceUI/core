@@ -1,6 +1,8 @@
 import './input-fieldset.js';
-import './input-time.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatTimeInISO, getDateFromISOTime } from '../../helpers/dateTime.js';
+import { getDefaultTime, getIntervalNumber } from './input-time.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -9,7 +11,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
  * @fires change - Dispatched when a start or end time is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar time format ("hh:mm:ss").
  */
-class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
+class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -98,6 +100,16 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		if (!this.label) {
 			console.warn('d2l-input-time-range component requires label text');
 		}
+
+		const startValue = this.startValue ? getDateFromISOTime(this.startValue) : getDefaultTime();
+		let endValue = this.endValue;
+		if (!this.endValue) {
+			const interval = getIntervalNumber(this.timeInterval);
+			endValue = new Date(startValue);
+			endValue.setMinutes(endValue.getMinutes() + interval);
+		}
+		this.startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
+		this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
 	}
 
 	render() {
@@ -137,11 +149,19 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		if (input) input.focus();
 	}
 
+	get validationMessageBadInput() {
+		return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+	}
+
 	async _handleChange(e) {
-		// TODO: validation that start is before end
 		const elem = e.target;
-		if (elem.classList.contains('d2l-input-time-range-start')) this.startValue = elem.value;
-		else this.endValue = elem.value;
+		if (elem.classList.contains('d2l-input-time-range-start')) {
+			this.startValue = elem.value;
+		} else {
+			this.endValue = elem.value;
+		}
+		this.setValidity({badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue)))});
+		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
