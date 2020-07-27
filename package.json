@@ -49,7 +49,7 @@
     "@brightspace-ui/stylelint-config": "^0.0.1",
     "@brightspace-ui/visual-diff": "^1",
     "@open-wc/testing": "^2",
-    "@open-wc/testing-karma": "^3",
+    "@open-wc/testing-karma": "^4",
     "@semantic-release/git": "^9",
     "axe-core": "^3",
     "babel-eslint": "^10",
