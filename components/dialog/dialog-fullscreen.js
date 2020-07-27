@@ -50,6 +50,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				/* required to properly calculate preferred height when there are bottom
 				margins at the end of the slotted content */
 				border-bottom: 1px solid transparent;
+				box-sizing: border-box;
+				height: 100%;
 			}
 
 			.d2l-dialog-content-loading {
