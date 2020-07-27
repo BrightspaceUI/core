@@ -82,7 +82,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 ## ListItemMixin
 
-What if you want to use a list item need more modularity? This mixin is for you! This mixin allows you to make a component a list item without the worry of styling. All the properties from `d2l-list-item` will be added to your new component.
+Want to maintain consistency with `d2l-list-item` but need more modularity? This mixin is for you! This mixin allows you to make a component into a list item without requiring custom styling. All of the properties and functionality from `d2l-list-item` will be added to your new component.
 
 ### How to use
 
