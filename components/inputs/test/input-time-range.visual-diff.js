@@ -21,11 +21,13 @@ describe('d2l-input-time-range', () => {
 		'basic',
 		'basic-wrapped',
 		'disabled',
+		'end-value',
 		'invalid-start-value',
 		'labelled',
 		'label-hidden',
 		'start-end-label',
-		'start-end-value'
+		'start-end-value',
+		'start-value'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);

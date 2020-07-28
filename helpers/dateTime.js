@@ -60,7 +60,7 @@ export function getDateFromISOTime(val) {
 	if (!val) return null;
 	const time = parseISOTime(val);
 	const today = getToday();
-	return new Date(today.year, today.month, today.date, time.hours, time.minutes, time.seconds);
+	return new Date(today.year, today.month - 1, today.date, time.hours, time.minutes, time.seconds);
 }
 
 let dateTimeDescriptor = null;

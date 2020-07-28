@@ -115,7 +115,13 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
 		} else if (this.startValue && !this.endValue) {
 			const interval = getIntervalNumber(this.timeInterval);
-			const endValue = getDateFromISOTime(this.startValue);
+			let endValue;
+			try {
+				endValue = getDateFromISOTime(this.startValue);
+			} catch (e) {
+				// case where startValue is invalid
+				endValue = new Date(getDefaultTime());
+			}
 			endValue.setMinutes(endValue.getMinutes() + interval);
 			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
 		} else if (!this.startValue && this.endValue) {
