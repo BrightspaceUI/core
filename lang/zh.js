@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "清除搜索",
 	"components.input-search.search": "搜索",
 	"components.input-time-range.endTime": "结束时间",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "开始时间]",
 	"components.menu-item-return.return": "返回至上级菜单。",
 	"components.menu-item-return.returnCurrentlyShowing": "返回至上级菜单。您正在浏览 {menuTitle}。",

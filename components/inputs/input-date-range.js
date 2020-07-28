@@ -1,5 +1,6 @@
 import './input-date.js';
 import './input-fieldset.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getDateFromISODate } from '../../helpers/dateTime.js';

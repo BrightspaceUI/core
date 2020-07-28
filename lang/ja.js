@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "検索のクリア",
 	"components.input-search.search": "検索",
 	"components.input-time-range.endTime": "終了時刻",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "開始時刻",
 	"components.menu-item-return.return": "前のメニューに戻ります。",
 	"components.menu-item-return.returnCurrentlyShowing": "前のメニューに戻ります。{menuTitle} を表示しています。",

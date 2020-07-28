@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "Rensa sökning",
 	"components.input-search.search": "Sökning",
 	"components.input-time-range.endTime": "Sluttid",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Starttid",
 	"components.menu-item-return.return": "Återgå till föregående meny.",
 	"components.menu-item-return.returnCurrentlyShowing": "Återgå till föregående meny. Du visar {menuTitle}.",

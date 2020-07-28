@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "Suche löschen",
 	"components.input-search.search": "Suchen",
 	"components.input-time-range.endTime": "Endzeit",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Startzeit",
 	"components.menu-item-return.return": "Zum vorherigen Menü zurückkehren.",
 	"components.menu-item-return.returnCurrentlyShowing": "Zum vorherigen Menü zurückkehren. Sie betrachten gerade {menuTitle}.",

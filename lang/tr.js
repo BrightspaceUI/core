@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "Aramayı Temizle",
 	"components.input-search.search": "Ara",
 	"components.input-time-range.endTime": "Bitiş Saati",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Başlangıç Saati",
 	"components.menu-item-return.return": "Önceki menüye döner.",
 	"components.menu-item-return.returnCurrentlyShowing": "Önceki menüye döner. {menuTitle} başlığını görüntülüyorsunuz.",

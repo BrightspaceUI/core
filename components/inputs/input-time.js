@@ -7,6 +7,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
@@ -78,7 +79,7 @@ function formatValue(time) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when a time is selected or typed. "value" reflects the selected value and is in ISO 8601 time format ("hh:mm:ss").
  */
-class InputTime extends LitElement {
+class InputTime extends FormElementMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -202,6 +203,7 @@ class InputTime extends LitElement {
 				id="${this._dropdownId}-label">${this.label}</label>
 			<d2l-dropdown ?disabled="${this.disabled}">
 				<input
+					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
 					aria-describedby="${this._dropdownId}-timezone"
 					aria-expanded="false"

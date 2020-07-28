@@ -1,8 +1,10 @@
 import './input-fieldset.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatTimeInISO, getDateFromISOTime } from '../../helpers/dateTime.js';
 import { getDefaultTime, getIntervalNumber } from './input-time.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -92,6 +94,9 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
 		this.timeInterval = 'thirty';
+
+		this._endInputId = getUniqueId();
+		this._startInputId = getUniqueId();
 	}
 
 	async firstUpdated(changedProperties) {
@@ -101,15 +106,23 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			console.warn('d2l-input-time-range component requires label text');
 		}
 
-		const startValue = this.startValue ? getDateFromISOTime(this.startValue) : getDefaultTime();
-		let endValue = this.endValue;
-		if (!this.endValue) {
+		if (!this.startValue && !this.endValue) {
+			const startValue = getDefaultTime();
 			const interval = getIntervalNumber(this.timeInterval);
-			endValue = new Date(startValue);
+			const endValue = new Date(startValue);
 			endValue.setMinutes(endValue.getMinutes() + interval);
+			this.startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
+			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
+		} else if (this.startValue && !this.endValue) {
+			const interval = getIntervalNumber(this.timeInterval);
+			const endValue = getDateFromISOTime(this.startValue);
+			endValue.setMinutes(endValue.getMinutes() + interval);
+			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
+		} else if (!this.startValue && this.endValue) {
+			const startValue = getDefaultTime();
+			this.startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
 		}
-		this.startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
-		this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
+
 	}
 
 	render() {
@@ -120,13 +133,19 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 		 */
 		const timeInterval = this.timeInterval;
+		const tooltipStart = (this.validationError && !this._startCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
+			${tooltipStart}
+			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
 				<d2l-input-time
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-start"
 					?disabled="${this.disabled}"
 					?enforce-time-intervals="${this.enforceTimeIntervals}"
+					.forceInvalid="${this.invalid}"
+					id="${this._startInputId}"
 					label="${startLabel}"
 					time-interval="${ifDefined(timeInterval)}"
 					value="${ifDefined(this.startValue)}">
@@ -136,6 +155,8 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					class="d2l-input-time-range-end"
 					?disabled="${this.disabled}"
 					?enforce-time-intervals="${this.enforceTimeIntervals}"
+					.forceInvalid="${this.invalid}"
+					id="${this._endInputId}"
 					label="${endLabel}"
 					time-interval="${ifDefined(timeInterval)}"
 					value="${ifDefined(this.endValue)}">
@@ -150,7 +171,15 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	get validationMessageBadInput() {
-		return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+		return this.localize('components.input-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+	}
+
+	get _computedEndLabel() {
+		return this.endLabel ? this.endLabel : this.localize('components.input-time-range.endTime');
+	}
+
+	get _computedStartLabel() {
+		return this.startLabel ? this.startLabel : this.localize('components.input-time-range.startTime');
 	}
 
 	async _handleChange(e) {

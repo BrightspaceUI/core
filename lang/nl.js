@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "Zoekopdracht wissen",
 	"components.input-search.search": "Zoeken",
 	"components.input-time-range.endTime": "Eindtijd",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Starttijd",
 	"components.menu-item-return.return": "Hiermee keert u terug naar het vorige menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Hiermee keert u terug naar het vorige menu. U bekijkt {menuTitle}.",

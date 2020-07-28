@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "Clear Search",
 	"components.input-search.search": "Search",
 	"components.input-time-range.endTime": "End Time",
+	"components.input-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-time-range.startTime": "Start Time",
 	"components.list-item-drag-handle.default": "Reorder action",
 	"components.list-item-drag-handle.keyboard": "Reorder items",

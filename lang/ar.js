@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "مسح البحث",
 	"components.input-search.search": "بحث",
 	"components.input-time-range.endTime": "وقت الانتهاءe",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "وقت البدء",
 	"components.menu-item-return.return": "للعودة إلى القائمة السابقة.",
 	"components.menu-item-return.returnCurrentlyShowing": "للعودة إلى القائمة السابقة. يتم عرض {menuTitle}.",

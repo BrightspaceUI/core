@@ -30,6 +30,7 @@ export default {
 	"components.input-search.clear": "Ryd søgning",
 	"components.input-search.search": "Søg",
 	"components.input-time-range.endTime": "Sluttidspunkt",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Starttidspunkt",
 	"components.menu-item-return.return": "Går tilbage til forrige menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Går tilbage til forrige menu. Du ser på {menuTitle}.",
