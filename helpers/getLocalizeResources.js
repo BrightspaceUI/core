@@ -184,9 +184,9 @@ async function fetchWithCaching(resource) {
 		}
 	}
 
-	const blob = await cacheValue.blob();
-	const objectUrl = URL.createObjectURL(blob);
-	return objectUrl;
+	const cacheValText = await cacheValue.text();
+
+	return JSON.parse(cacheValText);
 }
 
 function fetchWithPooling(resource) {
@@ -268,7 +268,7 @@ function shouldFetchOverrides() {
 	return isOsloAvailable;
 }
 
-function fetchOverride(formatFunc, fetchFunc) {
+function fetchOverride(formatFunc) {
 
 	let url, res;
 
@@ -293,9 +293,6 @@ function fetchOverride(formatFunc, fetchFunc) {
 
 	}
 
-	res = res.then(fetchFunc);
-	res = res.catch(coalesceToNull);
-
 	return res;
 }
 
@@ -318,6 +315,28 @@ export function __enableDebugging() {
 	// Used to enable debug logging during development.
 
 	debug = true;
+}
+
+export async function getLocalizeOverrideResources(
+	langCode,
+	translations,
+	formatFunc
+) {
+	const promises = [];
+
+	promises.push(translations);
+
+	if (shouldFetchOverrides()) {
+		const overrides = fetchOverride(formatFunc);
+		promises.push(overrides);
+	}
+
+	const results = await Promise.all(promises);
+
+	return {
+		language: langCode,
+		resources: Object.assign({}, ...results)
+	};
 }
 
 export async function getLocalizeResources(
