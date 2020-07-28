@@ -1,6 +1,5 @@
 export function getFileIconTypeFromExtension(extensionString) {
-	var iconType;
-	switch(extensionString.toLowerCase()) {
+	switch (extensionString.toLowerCase()) {
 		case 'zip':
 		case 'tar':
 		case 'z':
@@ -9,8 +8,7 @@ export function getFileIconTypeFromExtension(extensionString) {
 		case 'gzip':
 		case 'bzip2':
 		case 'sit':
-			iconType = 'file-archive';
-			break;
+			return 'file-archive';
 		case 'aac':
 		case 'acc':
 		case 'm4a':
@@ -25,8 +23,7 @@ export function getFileIconTypeFromExtension(extensionString) {
 		case 'rax':
 		case 'wav':
 		case 'wma':
-			iconType = 'file-audio';
-			break;
+			return 'file-audio';
 		case 'doc':
 		case 'docm':
 		case 'docx':
@@ -34,8 +31,7 @@ export function getFileIconTypeFromExtension(extensionString) {
 		case 'dotm':
 		case 'dotx':
 		case 'rtf':
-			iconType = 'file-document';
-			break;
+			return 'file-document';
 		case 'ico':
 		case 'jpg':
 		case 'jpeg':
@@ -50,8 +46,7 @@ export function getFileIconTypeFromExtension(extensionString) {
 		case 'svg':
 		case 'tif':
 		case 'tiff':
-			iconType = 'file-image';
-			break;
+			return 'file-image';
 		case 'pot':
 		case 'potx':
 		case 'potm':
@@ -61,8 +56,7 @@ export function getFileIconTypeFromExtension(extensionString) {
 		case 'ppt':
 		case 'pptx':
 		case 'pptm':
-			iconType = 'file-presentation';
-			break;
+			return 'file-presentation';
 		case '3gp':
 		case 'asf':
 		case 'asx':
@@ -71,7 +65,6 @@ export function getFileIconTypeFromExtension(extensionString) {
 		case 'flv':
 		case 'm4v':
 		case 'mkv':
-		case 'mov':
 		case 'mov':
 		case 'mp4':
 		case 'mpeg':
@@ -85,12 +78,10 @@ export function getFileIconTypeFromExtension(extensionString) {
 		case 'webm':
 		case 'wm':
 		case 'wmv':
-			iconType = 'file-video';
-			break;
+			return 'file-video';
 		default: // default to file-document
-			iconType = 'file-document';
+			return 'file-document';
 	}
-	return iconType;
 }
 
 export function getFileIconTypeFromFilename(filename) {
