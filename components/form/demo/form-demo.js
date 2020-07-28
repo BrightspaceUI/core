@@ -11,6 +11,9 @@ class FormDemo extends LitElement {
 
 	static get styles() {
 		return [inputStyles, selectStyles, css`
+			:first-child.d2l-form-demo-container {
+				margin-top: 18px;
+			}
 			.d2l-form-demo-container {
 				margin-bottom: 10px;
 			}
