@@ -309,6 +309,11 @@ class InputText extends RtlMixin(LitElement) {
 	}
 
 	_handleBlur(e) {
+		// for a long text input, chrome would scroll to the 1st character when off focus.
+		// The piece of code here is to make it consistent with other browsers.
+		const el = this.shadowRoot.getElementById(this._inputId);
+		el && el.setSelectionRange(0, 0);
+
 		this._focused = false;
 
 		/**
