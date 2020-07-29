@@ -216,7 +216,8 @@ class InputTime extends FormElementMixin(LitElement) {
 					role="combobox"
 					.value="${this._formattedValue}">
 				<d2l-dropdown-menu
-					@d2l-dropdown-close="${this.focus}"
+					@d2l-dropdown-close="${this._handleDropdownClose}"
+					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195">
@@ -290,6 +291,21 @@ class InputTime extends FormElementMixin(LitElement) {
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{bubbles: true, composed: false}
+		));
+	}
+
+	_handleDropdownClose() {
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-time-dropdown-toggle',
+			{ bubbles: true, composed: false, detail: { opened: false } }
+		));
+		this.focus();
+	}
+
+	_handleDropdownOpen() {
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-time-dropdown-toggle',
+			{ bubbles: true, composed: false, detail: { opened: true } }
 		));
 	}
 

@@ -56,6 +56,8 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
 			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
+			_endDropdownOpened: { type: Boolean },
+			_startDropdownOpened: { type: Boolean }
 		};
 	}
 
@@ -95,7 +97,9 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		this.labelHidden = false;
 		this.timeInterval = 'thirty';
 
+		this._endDropdownOpened = false;
 		this._endInputId = getUniqueId();
+		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
 	}
 
@@ -139,8 +143,8 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 		 */
 		const timeInterval = this.timeInterval;
-		const tooltipStart = (this.validationError && !this._startCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this._startDropdownOpened) ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endDropdownOpened) ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -148,6 +152,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 				<d2l-input-time
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-start"
+					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					?enforce-time-intervals="${this.enforceTimeIntervals}"
 					.forceInvalid="${this.invalid}"
@@ -159,6 +164,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 				<d2l-input-time
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-end"
+					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					?enforce-time-intervals="${this.enforceTimeIntervals}"
 					.forceInvalid="${this.invalid}"
@@ -201,6 +207,14 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			'change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	_handleDropdownToggle(e) {
+		if (e.target.classList.contains('d2l-input-time-range-start')) {
+			this._startDropdownOpened = e.detail.opened;
+		} else {
+			this._startDropdownOpened = e.detail.opened;
+		}
 	}
 
 }
