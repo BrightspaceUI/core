@@ -432,6 +432,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_setFocusInfo(event) {
+		if (!this.gridActive) return;
 		const slot = (event.path || event.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
