@@ -83,8 +83,8 @@ dropdown.addEventListener('click', function() {
 ```
 
 **Properties:**
-- `description` (String): A description to be added to the inner `button` opener for accessibility
 - `text` (required, String): text for the button
+- `description` (String): A description to be added to the inner `button` opener for accessibility
 - `disabled` (Boolean, default: `false`): disables the dropdown opener
 - `no-auto-open` (Boolean, default: `false`): prevents the dropdown from opening automatically on or on key press
 
