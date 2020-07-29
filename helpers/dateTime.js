@@ -1,4 +1,5 @@
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime.js';
+export const VALID_TIME_FORMAT = /([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?/;
 
 // val is an object containing year, month, date
 export function formatDateInISO(val) {
@@ -134,8 +135,7 @@ export function parseISOTime(val) {
 	let hours = 0;
 	let minutes = 0;
 	let seconds = 0;
-	const re = /([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?/;
-	const match = val.match(re);
+	const match = val.match(VALID_TIME_FORMAT);
 
 	if (match === null) {
 		throw new Error('Invalid input: Expected format is hh:mm:ss');

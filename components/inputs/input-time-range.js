@@ -1,7 +1,7 @@
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatTimeInISO, getDateFromISOTime } from '../../helpers/dateTime.js';
+import { formatTimeInISO, getDateFromISOTime, VALID_TIME_FORMAT } from '../../helpers/dateTime.js';
 import { getDefaultTime, getIntervalNumber } from './input-time.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -103,22 +103,18 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		this._startInputId = getUniqueId();
 	}
 
-	async firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
+	get endValue() { return this._endValue; }
+	set endValue(val) {
+		// handle case where initially set endValue is invalid
+		const oldValue = this.endValue;
+		let endValue = val;
 
-		if (!this.label) {
-			console.warn('d2l-input-time-range component requires label text');
+		if (val) {
+			const match = val.match(VALID_TIME_FORMAT);
+			if (match === null) endValue = null;
+			else this._endValue = val;
 		}
-
-		if (!this.startValue && !this.endValue) {
-			const startValue = getDefaultTime();
-			const interval = getIntervalNumber(this.timeInterval);
-			const endValue = new Date(startValue);
-			endValue.setMinutes(endValue.getMinutes() + interval);
-			this.startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
-			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
-		} else if (this.startValue && !this.endValue) {
-			const interval = getIntervalNumber(this.timeInterval);
+		if (!endValue) {
 			let endValue;
 			try {
 				endValue = getDateFromISOTime(this.startValue);
@@ -126,11 +122,45 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 				// case where startValue is invalid
 				endValue = new Date(getDefaultTime());
 			}
-			endValue.setMinutes(endValue.getMinutes() + interval);
-			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
-		} else if (!this.startValue && this.endValue) {
+			endValue.setMinutes(endValue.getMinutes() + getIntervalNumber(this.timeInterval));
+			this._endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
+		}
+		this.requestUpdate('endValue', oldValue);
+	}
+
+	get startValue() { return this._startValue; }
+	set startValue(val) {
+		// handle case where initially set startValue is invalid
+		const oldValue = this.startValue;
+		let startValue = val;
+
+		if (val) {
+			const match = val.match(VALID_TIME_FORMAT);
+			if (match === null) startValue = null;
+			else this._startValue = val;
+		}
+		if (!startValue) {
+			startValue = getDefaultTime();
+			this._startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
+		}
+		this.requestUpdate('startValue', oldValue);
+	}
+
+	async firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		if (!this.label) {
+			console.warn('d2l-input-time-range component requires label text');
+		}
+
+		if (!this.startValue) {
 			const startValue = getDefaultTime();
 			this.startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
+		}
+		if (!this.endValue) {
+			const endValue = getDateFromISOTime(this.startValue);
+			endValue.setMinutes(endValue.getMinutes() + getIntervalNumber(this.timeInterval));
+			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
 		}
 
 	}

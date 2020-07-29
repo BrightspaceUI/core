@@ -54,7 +54,7 @@ describe('d2l-input-time-range', () => {
 		});
 
 		describe('validation', () => {
-			it('should be valid if start time and no end time and start time changed to value before default end', async() => {
+			it('should be valid if start time changed to value before default end time', async() => {
 				const elem = await fixture(basicFixture);
 				const inputElem = getChildElem(elem, 'd2l-input-time.d2l-input-time-range-start');
 				inputElem.value = '00:15:00';
@@ -66,7 +66,7 @@ describe('d2l-input-time-range', () => {
 				expect(elem.validationError).to.be.null;
 			});
 
-			it('should be valid if end time and no start time', async() => {
+			it('should be valid if end time changed to value after default start time', async() => {
 				const elem = await fixture(basicFixture);
 				const inputElem = getChildElem(elem, 'd2l-input-time.d2l-input-time-range-end');
 				inputElem.value = '18:30:00';
@@ -78,7 +78,7 @@ describe('d2l-input-time-range', () => {
 				expect(elem.validationError).to.be.null;
 			});
 
-			it('should be valid if start time before end time', async() => {
+			it('should be valid if start time and end time changed, and start time before end time', async() => {
 				const elem = await fixture(basicFixture);
 				await updateStartEnd(elem, '12:30:00', '16:25:00');
 				expect(elem.invalid).to.be.false;
