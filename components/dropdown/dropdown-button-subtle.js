@@ -12,6 +12,10 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * A description to be added to the opener button for accessibility when text on button does not provide enough context
+			 */
+			description: { type: String },
+			/**
 			 * REQUIRED: Text for the button
 			 */
 			text: {
@@ -26,7 +30,7 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-button-subtle text=${this.text} icon="tier1:chevron-down" icon-right ?disabled=${this.disabled}></d2l-button-subtle>
+			<d2l-button-subtle description="${this.description}" text=${this.text} icon="tier1:chevron-down" icon-right ?disabled=${this.disabled}></d2l-button-subtle>
 			<slot></slot>
 		`;
 	}
