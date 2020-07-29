@@ -81,8 +81,6 @@ describe('d2l-input-time-range', () => {
 			it('should be valid if start time before end time', async() => {
 				const elem = await fixture(basicFixture);
 				await updateStartEnd(elem, '12:30:00', '16:25:00');
-				expect(elem.startValue).to.equal('12:30:00');
-				expect(elem.endValue).to.equal('16:25:00');
 				expect(elem.invalid).to.be.false;
 				expect(elem.validationError).to.be.null;
 			});
@@ -90,8 +88,6 @@ describe('d2l-input-time-range', () => {
 			it('should be invalid if start time equals end time', async() => {
 				const elem = await fixture(basicFixture);
 				await updateStartEnd(elem, '14:00:00', '14:00:00');
-				expect(elem.startValue).to.equal('14:00:00');
-				expect(elem.endValue).to.equal('14:00:00');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal('Start Time must be before End Time');
 			});
