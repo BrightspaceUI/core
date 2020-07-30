@@ -107,20 +107,26 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	set endValue(val) {
 		// handle case where initially set endValue is invalid
 		const oldValue = this.endValue;
-		let endValue = val;
+		let validValue = false;
 
 		if (val) {
 			const match = val.match(VALID_TIME_FORMAT);
-			if (match === null) endValue = null;
-			else this._endValue = val;
+			if (match) {
+				validValue = true;
+				this._endValue = val;
+			}
 		}
-		if (!endValue) {
+		if (!validValue) {
 			let endValue;
-			try {
-				endValue = getDateFromISOTime(this.startValue);
-			} catch (e) {
-				// case where startValue is invalid
-				endValue = new Date(getDefaultTime());
+			if (this.startValue) {
+				try {
+					endValue = getDateFromISOTime(this.startValue);
+				} catch (e) {
+					// case where startValue is invalid
+					endValue = getDefaultTime();
+				}
+			} else {
+				endValue = getDefaultTime();
 			}
 			endValue.setMinutes(endValue.getMinutes() + getIntervalNumber(this.timeInterval));
 			this._endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
@@ -132,15 +138,17 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	set startValue(val) {
 		// handle case where initially set startValue is invalid
 		const oldValue = this.startValue;
-		let startValue = val;
+		let validValue = false;
 
 		if (val) {
 			const match = val.match(VALID_TIME_FORMAT);
-			if (match === null) startValue = null;
-			else this._startValue = val;
+			if (match) {
+				validValue = true;
+				this._startValue = val;
+			}
 		}
-		if (!startValue) {
-			startValue = getDefaultTime();
+		if (!validValue) {
+			const startValue = getDefaultTime();
 			this._startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
 		}
 		this.requestUpdate('startValue', oldValue);
