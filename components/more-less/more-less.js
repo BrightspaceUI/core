@@ -29,7 +29,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 			/**
 			 * The h-align property of the more-less button
-			 * @type {('text'|'')}
+			 * @type {'text'|''}
 			 */
 			hAlign: { type: String, attribute: 'h-align' },
 
@@ -218,7 +218,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__computeIcon() {
-		return this.expanded ? 'd2l-tier1:chevron-up' : 'd2l-tier1:chevron-down';
+		return this.expanded ? 'tier1:chevron-up' : 'tier1:chevron-down';
 	}
 
 	__computeText() {

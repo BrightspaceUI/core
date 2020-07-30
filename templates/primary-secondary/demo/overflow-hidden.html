@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../../components/demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../../components/demo/demo-page.js';
+			import '../primary-secondary.js';
+		</script>
+	</head>
+	<body>
+		<d2l-template-primary-secondary primary-overflow="hidden" width-type="fullscreen">
+			<div slot="header" style="background-color: #ddd;">Header</div>
+			<div slot="primary" style="background-color: green; height: 100%; overflow: auto;">
+				<div style="height: 200vh;"><p>Very tall scrolling thing in the primary panel.</p></div>
+			</div>
+			<p slot="secondary">Secondary</p>
+			<div slot="footer">Footer</div>
+		</d2l-template-primary-secondary>
+	</body>
+</html>

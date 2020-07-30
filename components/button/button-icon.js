@@ -15,7 +15,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 		return {
 			/**
 			 * Aligns the leading edge of text if value is set to "text"
-			 * @type {('text'|'')}
+			 * @type {'text'|''}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 

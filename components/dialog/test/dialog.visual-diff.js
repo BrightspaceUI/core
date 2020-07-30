@@ -48,19 +48,6 @@ describe('d2l-dialog', () => {
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
-					it('scroll bottom shadow', async function() {
-						await helper.open(page, '#dialogLong');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-					});
-
-					it('scroll top shadow', async function() {
-						await helper.open(page, '#dialogLong');
-						await page.$eval('#dialogLong #bottom', (bottom) => {
-							bottom.scrollIntoView();
-						});
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-					});
-
 					it('rtl', async function() {
 						await helper.open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
@@ -76,6 +63,27 @@ describe('d2l-dialog', () => {
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
+				});
+
+			});
+
+			describe('internal', () => {
+
+				before(async() => {
+					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
+				});
+
+				it('scroll bottom shadow', async function() {
+					await helper.open(page, '#dialogLong');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
+
+				it('scroll top shadow', async function() {
+					await helper.open(page, '#dialogLong');
+					await page.$eval('#dialogLong #bottom', (bottom) => {
+						bottom.scrollIntoView();
+					});
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 			});

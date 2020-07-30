@@ -84,8 +84,17 @@ dropdown.addEventListener('click', function() {
 
 **Properties:**
 - `text` (required, String): text for the button
+- `description` (String): A description to be added to the inner `button` opener for accessibility
 - `disabled` (Boolean, default: `false`): disables the dropdown opener
 - `no-auto-open` (Boolean, default: `false`): prevents the dropdown from opening automatically on or on key press
+
+**Accessibility:**
+
+To make your `d2l-dropdown-button-subtle` accessible, use the following properties when applicable:
+
+| Attribute | Description |
+|--|--|
+| `description` | Use when text on button does not provide enough context. |
 
 ### d2l-dropdown-context-menu
 `d2l-dropdown-context-menu` is a simple/minimal opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).

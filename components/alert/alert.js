@@ -28,13 +28,18 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
 
 			/**
+			 * Opt out of default padding/whitespace around the alert
+			 */
+			noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
+
+			/**
 			 * The text that is displayed below the main alert message
 			 */
 			subtext: { type: String },
 
 			/**
 			 * Type of the alert being displayed
-			 * @type {('default'|'critical'|'success'|'warning')}
+			 * @type {'default'|'critical'|'success'|'warning'}
 			 */
 			type: { type: String, reflect: true }
 		};
@@ -102,6 +107,14 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				padding-left: 0.9rem;
 				padding-right: 1.5rem;
 			}
+			:host([no-padding]) .d2l-alert-text,
+			:host([no-padding]) .d2l-alert-text-with-actions {
+				padding: 0 0 0 0.3rem;
+			}
+			:host([dir="rtl"][no-padding]) .d2l-alert-text,
+			:host([dir="rtl"][no-padding]) .d2l-alert-text-with-actions {
+				padding: 0 0.3rem 0 0;
+			}
 
 			.d2l-alert-subtext {
 				margin: 0.5rem 0 0;
@@ -113,6 +126,9 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			:host([dir="rtl"]) .d2l-alert-action {
 				margin-left: 0.6rem;
 				margin-right: 0;
+			}
+			:host([no-padding]) .d2l-alert-action {
+				margin: 0;
 			}
 
 			@media (max-width: 615px) {
@@ -147,6 +163,7 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.hasCloseButton = false;
+		this.noPadding = false;
 		this.type = 'default';
 	}
 
@@ -169,7 +186,7 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					${this.buttonText && this.buttonText.length > 0 ? html`
 						<d2l-button-subtle @click=${this._onButtonClick} text=${this.buttonText}></d2l-button-subtle>` : null}
 					${this.hasCloseButton ? html`
-						<d2l-button-icon @click=${this.close} icon="d2l-tier1:close-default" text="${this.localize('components.alert.close')}"></d2l-button-icon>` : null}
+						<d2l-button-icon @click=${this.close} icon="tier1:close-default" text="${this.localize('components.alert.close')}"></d2l-button-icon>` : null}
 				</div>` : null}
 		`;
 	}

@@ -49,7 +49,7 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			/**
 			 * Number of minutes between times shown in dropdown
-			 * @type {('five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty')}
+			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
 			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
 		};
@@ -103,6 +103,11 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-time-range.startTime');
 		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-time-range.endTime');
+
+		/**
+		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
+		 */
+		const timeInterval = this.timeInterval;
 		return html`
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
 				<d2l-input-time
@@ -111,7 +116,7 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					?disabled="${this.disabled}"
 					?enforce-time-intervals="${this.enforceTimeIntervals}"
 					label="${startLabel}"
-					time-interval="${ifDefined(this.timeInterval)}"
+					time-interval="${ifDefined(timeInterval)}"
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-time>
 				<d2l-input-time
@@ -120,7 +125,7 @@ class InputTimeRange extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					?disabled="${this.disabled}"
 					?enforce-time-intervals="${this.enforceTimeIntervals}"
 					label="${endLabel}"
-					time-interval="${ifDefined(this.timeInterval)}"
+					time-interval="${ifDefined(timeInterval)}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-time>
 			</d2l-input-fieldset>

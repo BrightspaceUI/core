@@ -1,7 +1,6 @@
 import { aTimeout, expect, fixture, html, oneEvent, waitUntil } from '@open-wc/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
-	getDisabled,
 	getNextMonth,
 	getNumberOfDaysFromPrevMonthToShow,
 	getNumberOfDaysInMonth,
@@ -465,65 +464,6 @@ describe('d2l-calendar', () => {
 					new Date(2021, 1, 6)
 				]];
 				expect(getDatesInMonthArray(0, 2021)).to.deep.equal(dates);
-			});
-		});
-
-		describe('getDisabled', () => {
-			const date = new Date(2018, 2, 3);
-			it('should return false if no parameters', () => {
-				expect(getDisabled()).to.be.false;
-			});
-
-			it('should return false if no min and max', () => {
-				expect(getDisabled(date)).to.be.false;
-			});
-
-			it('should return false if min and date is after min', () => {
-				const min = '2018-01-30';
-				expect(getDisabled(date, min)).to.be.false;
-			});
-
-			it('should return false if min and date is equal to min', () => {
-				const min = '2018-03-03';
-				expect(getDisabled(date, min)).to.be.false;
-			});
-
-			it('should return false if max and date is before max', () => {
-				const max = '2018-05-01';
-				expect(getDisabled(date, undefined, max)).to.be.false;
-			});
-
-			it('should return false if max and date is equal to max', () => {
-				const max = '2018-03-03';
-				expect(getDisabled(date, undefined, max)).to.be.false;
-			});
-
-			it('should return false if date is between min and max', () => {
-				const min = '2018-03-02';
-				const max = '2018-03-04';
-				expect(getDisabled(date, min, max)).to.be.false;
-			});
-
-			it('should return true if min and date is before min', () => {
-				const min = '2018-03-04';
-				expect(getDisabled(date, min, undefined)).to.be.true;
-			});
-
-			it('should return true if max and date is after max', () => {
-				const max = '2018-03-01';
-				expect(getDisabled(date, undefined, max)).to.be.true;
-			});
-
-			it('should return true if min and max and date is before min', () => {
-				const min = '2018-05-02';
-				const max = '2018-05-28';
-				expect(getDisabled(date, min, max)).to.be.true;
-			});
-
-			it('should return true if min and max and date is after max', () => {
-				const min = '2018-01-02';
-				const max = '2018-01-28';
-				expect(getDisabled(date, min, max)).to.be.true;
 			});
 		});
 

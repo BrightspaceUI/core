@@ -26,7 +26,8 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			/**
-			 * @ignore
+			 * Specifies whether or not the screen reader should always present changes to the live region as a whole.
+			 * This only applies if live is set to polite or assertive.
 			 */
 			atomic: { type: String },
 			/**
@@ -42,6 +43,10 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Hide the alert icon when input is invalid
+			 */
+			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Label for the input
 			 */
 			label: { type: String },
@@ -50,7 +55,7 @@ class InputText extends RtlMixin(LitElement) {
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * @ignore
+			 * Set the priority with which screen readers should treat updates to the input's live text region
 			 */
 			live: { type: String },
 			/**
@@ -107,7 +112,7 @@ class InputText extends RtlMixin(LitElement) {
 			title: { type: String },
 			/**
 			 * The type of the text input
-			 * @type {('text'|'email'|'number'|'password'|'tel'|'url')}
+			 * @type {'text'|'email'|'number'|'password'|'tel'|'url'}
 			 */
 			type: { type: String },
 			/**
@@ -172,6 +177,7 @@ class InputText extends RtlMixin(LitElement) {
 		super();
 		this.autofocus = false;
 		this.disabled = false;
+		this.hideInvalidIcon = false;
 		this.labelHidden = false;
 		this.preventSubmit = false;
 		this.readonly = false;
@@ -254,7 +260,7 @@ class InputText extends RtlMixin(LitElement) {
 					.value="${this.value}">
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-				${ !isValid ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
+				${ (!isValid && !this.hideInvalidIcon) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {

@@ -83,13 +83,12 @@ describe('d2l-input-date', () => {
 		});
 
 		it('should fire "change" event when "Set to Today" is clicked', async() => {
-			const _setTimeout = setTimeout; // useFakeTimers causes setTimeout to not behave as expected
 			const newToday = new Date('2018-02-12T20:00:00Z');
-			const clock = sinon.useFakeTimers(newToday.getTime());
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const elem = await fixture(basicFixture);
 			const button = getChildElem(elem, 'd2l-button-subtle[text="Set to Today"]');
-			_setTimeout(() => button.click());
+			setTimeout(() => button.click());
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2018-02-12');
 
@@ -154,6 +153,50 @@ describe('d2l-input-date', () => {
 		it('should default to empty', async() => {
 			const elem = await fixture(basicFixture);
 			expect(elem.value).to.equal('');
+		});
+
+		it('should change value if typed date before minValue', async() => {
+			const elem = await fixture('<d2l-input-date min-value="2020-01-02" value="2020-10-10" label="Date"></d2l-input-date>');
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			inputElem.value = '12/31/2019';
+			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('2019-12-31');
+			expect(elem.invalid).to.be.true;
+			expect(elem.validationError).to.equal('Date must be after Jan 2, 2020');
+		});
+
+		it('should change value if typed date after maxValue', async() => {
+			const elem = await fixture('<d2l-input-date max-value="2020-12-02" value="2020-10-10" label="Date"></d2l-input-date>');
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			inputElem.value = '12/31/2021';
+			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('2021-12-31');
+			expect(elem.invalid).to.be.true;
+			expect(elem.validationError).to.equal('Date must be before Dec 2, 2020');
+		});
+
+		it('should change value if typed date between min and max values', async() => {
+			const elem = await fixture('<d2l-input-date min-value="2019-01-01" max-value="2020-12-02" label="Date"></d2l-input-date>');
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			inputElem.value = dateInput;
+			dispatchEvent(inputElem, 'change', false);
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('2019-02-08');
+			expect(elem.invalid).to.be.false;
+			expect(elem.validationError).to.be.null;
+		});
+
+		it('should change value to empty string if typed date between min and max values', async() => {
+			const elem = await fixture('<d2l-input-date min-value="2019-01-01" max-value="2020-12-02" label="Date" value="2019-10-01"></d2l-input-date>');
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			inputElem.value = '';
+			dispatchEvent(inputElem, 'change', false);
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('');
+			expect(elem.invalid).to.be.false;
+			expect(elem.validationError).to.be.null;
 		});
 
 	});

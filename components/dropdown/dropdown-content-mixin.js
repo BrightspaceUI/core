@@ -12,7 +12,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return {
 			/**
 			 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt be centred.
-			 * @type {('start'|'end')}
+			 * @type {'start'|'end'}
 			 */
 			align: {
 				type: String,
@@ -327,8 +327,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			return;
 		}
 		const rootTarget = e.composedPath()[0];
-		const content = this.__getContentContainer();
-		if (isComposedAncestor(content, rootTarget)) {
+		const clickInside = isComposedAncestor(this.__getContentContainer(), rootTarget) ||
+			isComposedAncestor(this.__getContentTop(), rootTarget) ||
+			isComposedAncestor(this.__getContentBottom(), rootTarget);
+		if (clickInside) {
 			return;
 		}
 		const opener = this.__getOpener();

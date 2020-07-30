@@ -1,5 +1,11 @@
+import { isCustomFormElement, tryGetLabelText } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import { tryGetLabelText } from './form-helper.js';
+
+export const ValidationType = {
+	SUPPRESS_ERRORS: 0,
+	UPDATE_EXISTING_ERRORS: 1,
+	SHOW_NEW_ERRORS: 2,
+};
 
 export class FormElementValidityState {
 
@@ -76,15 +82,35 @@ export class FormElementValidityState {
 
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
+	static get properties() {
+		return {
+			forceInvalid: { type: Boolean, attribute: false },
+			invalid: { type: Boolean, reflect: true },
+			validationError: { type: String, attribute: false },
+		};
+	}
+
 	constructor() {
 		super();
+		this._validationCustomConnected = this._validationCustomConnected.bind(this);
+
 		this._validationCustoms = new Set();
 		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
+		this.forceInvalid = false;
 		this.formValue = null;
+		this.invalid = false;
+		this.validationError = null;
 
-		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.addEventListener('d2l-validation-custom-disconnected', this._validationCustomDisconnected);
+		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+	}
+
+	updated(changedProperties) {
+		changedProperties.forEach((_, propName) => {
+			if (propName === 'forceInvalid' || propName === 'validationError') {
+				this.invalid = this.forceInvalid || this.validationError !== null;
+			}
+		});
 	}
 
 	checkValidity() {
@@ -95,17 +121,19 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return true;
 	}
 
-	get label() {
-		return null;
-	}
-
 	get labelText() {
 		const label = this.label || tryGetLabelText(this);
 		if (label) {
 			return label;
 		}
 		console.warn(this, ' is missing a label');
-		return this.localize('components.form-element-mixin.defaultFieldLabel');
+		return this.localize('components.form-element.defaultFieldLabel');
+	}
+
+	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
+		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
+			await this.validate(validationType);
+		}
 	}
 
 	setCustomValidity(message) {
@@ -122,20 +150,32 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationMessage = null;
 	}
 
-	async validate() {
+	async validate(validationType) {
 		await this.updateComplete;
-		const customs = [...this._validationCustoms];
+		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
 		if (!this.checkValidity()) {
 			errors.unshift(this.validationMessage);
 		}
-		if (errors.length > 0) {
-			this.validationTooltipShow(errors[0]);
-			this.setAttribute('aria-invalid', 'true');
-		} else {
-			this.validationTooltipHide();
-			this.setAttribute('aria-invalid', 'false');
+		switch (validationType) {
+			case ValidationType.SUPPRESS_ERRORS:
+				this.validationError = null;
+				break;
+			case ValidationType.UPDATE_EXISTING_ERRORS:
+				if (this.validationError && errors.length > 0) {
+					this.validationError = errors[0];
+				} else {
+					this.validationError = null;
+				}
+				break;
+			case ValidationType.SHOW_NEW_ERRORS:
+				if (errors.length > 0) {
+					this.validationError = errors[0];
+				} else {
+					this.validationError = null;
+				}
+				break;
 		}
 		return errors;
 	}
@@ -174,57 +214,52 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			case validity.valueMissing:
 				return this.validationMessageValueMissing;
 		}
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageBadInput() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageBadInput\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessagePatternMismatch() {
 		console.warn(this, ' is using the default validation message, override \'validationMessagePatternMismatch\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageRangeOverflow() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageRangeOverflow\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageRangeUnderflow() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageRangeUnderflow\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageStepMismatch() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageStepMismatch\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageTooLong() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageTooLong\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageTooShort() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageTooShort\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageTypeMismatch() {
 		console.warn(this, ' is using the default validation message, override \'validationMessageTypeMismatch\'');
-		return this.localize('components.form-element-mixin.defaultValidationMessage', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
 	}
 
 	get validationMessageValueMissing() {
-		return this.localize('components.form-element-mixin.valueMissingMessage', { label: this.labelText });
+		return this.localize('components.form-element.valueMissing', { label: this.labelText });
 	}
-
-	validationTooltipHide() { }
-
-	// eslint-disable-next-line no-unused-vars
-	validationTooltipShow(message) {}
 
 	get validity() {
 		return this._validity;
@@ -234,12 +269,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		e.stopPropagation();
 		const custom = e.composedPath()[0];
 		this.validationCustomConnected(custom);
-	}
 
-	_validationCustomDisconnected(e) {
-		e.stopPropagation();
-		const custom = e.composedPath()[0];
-		this.validationCustomDisconnected(custom);
+		const onDisconnect = () => {
+			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
+			this.validationCustomDisconnected(custom);
+		};
+		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 };

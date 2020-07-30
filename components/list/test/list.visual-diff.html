@@ -6,7 +6,10 @@
 		<script type="module">
 			import '../../colors/colors.js';
 			import '../../button/button-icon.js';
+			import '../../dropdown/dropdown.js';
+			import '../../dropdown/dropdown-content.js';
 			import '../../link/link.js';
+			import '../../tooltip/tooltip.js';
 			import '../../typography/typography.js';
 			import '../list.js';
 			import '../list-item.js';
@@ -36,7 +39,7 @@
 						<div>Item 1</div>
 						<div slot="actions">
 							<d2l-link href="http://www.d2l.com">Action 1</d2l-link>
-							<d2l-button-icon text="Action 2" icon="d2l-tier1:preview"></d2l-button-icon>
+							<d2l-button-icon text="Action 2" icon="tier1:preview"></d2l-button-icon>
 						</div>
 					</d2l-list-item>
 				</d2l-list>
@@ -61,8 +64,8 @@
 						<div slot="illustration" style="height: 400px; width: 400px; background-color: blue;"></div>
 						<div>Item 1</div>
 						<div slot="actions">
-							<d2l-button-icon text="Action 1" icon="d2l-tier1:preview"></d2l-button-icon>
-							<d2l-button-icon text="Action 2" icon="d2l-tier1:more"></d2l-button-icon>
+							<d2l-button-icon text="Action 1" icon="tier1:preview"></d2l-button-icon>
+							<d2l-button-icon text="Action 2" icon="tier1:more"></d2l-button-icon>
 						</div>
 					</d2l-list-item>
 				</d2l-list>
@@ -115,7 +118,7 @@
 					<d2l-list-item>
 						<d2l-list-item-content>
 							<div>Item 1</div>
-							<div slot="secondary">Secondary info for item 1</div>
+							<div slot="supporting-info">Secondary info for item 1</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -140,7 +143,7 @@
 					<d2l-list-item href="http://www.d2l.com">
 						<d2l-list-item-content>
 							<div>Item 1</div>
-							<div slot="secondary">Secondary info for item 1</div>
+							<div slot="supporting-info">Secondary info for item 1</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -171,7 +174,7 @@
 					<d2l-list-item selectable key="1">
 						<d2l-list-item-content>
 							<div>Item 1</div>
-							<div slot="secondary">Secondary info for item 1</div>
+							<div slot="supporting-info">Secondary info for item 1</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -185,14 +188,14 @@
 						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
 						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -206,14 +209,14 @@
 						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
 						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -227,14 +230,14 @@
 						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
 						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 				</d2l-list>
@@ -248,15 +251,38 @@
 						<div style="height: 400px; width: 400px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
 					<d2l-list-item>
 						<div style="height: 42px; width: 42px; background: blue;" slot="illustration"></div>
 						<d2l-list-item-content>
 							<div>Introductory Pirate Ipsum</div>
-							<div slot="secondary">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
 						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px; height: 200px">
+			<div class="visual-diff" id="dropdown-tooltips">
+				<d2l-list>
+					<d2l-list-item>
+						Item 1
+						<div slot="actions">
+							<d2l-dropdown id="open-down">
+								<button id="dropdown-btn-down" class="d2l-dropdown-opener">Open</button>
+								<d2l-tooltip for="dropdown-btn-down" position="bottom">Cookie pie apple pie</d2l-tooltip>
+								<d2l-dropdown-content>
+									donut gummies
+								</d2l-dropdown-content>
+							</d2l-dropdown>
+						</div>
+					</d2l-list-item>
+					<d2l-list-item>Item 2</d2l-list-item>
+					<d2l-list-item>
+						Item 3
 					</d2l-list-item>
 				</d2l-list>
 			</div>

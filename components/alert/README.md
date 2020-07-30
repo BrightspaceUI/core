@@ -48,9 +48,11 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 - `button-text` (optional, String): text that is displayed within the alert's action button. If no text is provided the button is not displayed.
 - `hide-close-button` (Boolean, default: `false`) hide the close button to prevent users from manually closing the alert.
 - `no-auto-close` (Boolean, default: `false`) prevents the alert from automatically closing 4 seconds after opening.
+- `no-padding` (Boolean): used to opt out of default padding/whitespace around the alert
 - `open` (Boolean, default: `false`): open or close the toast alert.
 - `subtext` (optional, String) The text that is displayed below the main alert message.
 - `type` (String, default: `'default'`): type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
+
 
 ## Future Enhancements
 
