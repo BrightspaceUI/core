@@ -184,9 +184,7 @@ async function fetchWithCaching(resource) {
 		}
 	}
 
-	const cacheValText = await cacheValue.text();
-
-	return JSON.parse(cacheValText);
+	return await cacheValue.json();
 }
 
 function fetchWithPooling(resource) {
