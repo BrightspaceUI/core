@@ -24,49 +24,54 @@ class FormDemo extends LitElement {
 		return html`
 			<d2l-form>
 				<div class="d2l-form-demo-container">
-					<label for="name">Name</label>
-					<input  class="d2l-input" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
-				</div>
-				<div class="d2l-form-demo-container">
-					<label>Email<input class="d2l-input" name="email" type="email"></label>
-				</div>
-				<div class="d2l-form-demo-container">
-					<d2l-validation-custom for="password" @d2l-validation-custom-validate=${this._validatePassword} failure-text="Expected hunter2 or 12345" ></d2l-validation-custom>
-					<label>Password<input class="d2l-input" id="password" name="password" required type="password"></label>
-				</div>
-				<fieldset class="d2l-form-demo-container">
-					<legend>Choose your favorite monster</legend>
-					<input type="radio" id="kraken" name="monster" value="kraken">
-					<label for="kraken">Kraken</label><br />
-					<input type="radio" id="sasquatch" name="monster" value="sasquatch">
-					<label for="sasquatch">Sasquatch</label><br />
-				</fieldset>
-				<div class="d2l-form-demo-container">
-					<label for="pet-select">Favorite Pet</label><br />
-					<select class="d2l-input-select" name="pets" id="pet-select" required>
-						<option value="">--Please choose an option--</option>
-						<option value="porpoise">Porpoise</option>
-						<option value="house hippo">House Hippo</option>
-						<option value="spiker monkey">Spider Monkey</option>
-						<option value="capybara">Capybara</option>
-					</select>
-				</div>
-				<div class="d2l-form-demo-container">
-					<label for="story">Tell us your story</label>
-						<textarea class="d2l-input" minlength="20" id="story" name="story" rows="5" cols="33">It was...</textarea>
+					<label>Name
+						<input  class="d2l-input" type="text" name="name" required minlength="4" maxlength="8" size="10">
 					</label>
 				</div>
 				<div class="d2l-form-demo-container">
-					<label for="file">Super Secret File</label><br />
-					<input type="file" id="file" name="super-secret-file">
+					<label>Email
+						<input class="d2l-input" name="email" type="email">
+					</label>
 				</div>
-				<button name="action" value="save" type="submit">Save</button>
+				<div class="d2l-form-demo-container">
+					<d2l-validation-custom for="password" @d2l-validation-custom-validate=${this._validatePassword} failure-text="Expected hunter2" ></d2l-validation-custom>
+					<label>Password
+						<input class="d2l-input" id="password" name="password" required type="password">
+					</label>
+				</div>
+				<fieldset class="d2l-form-demo-container">
+					<legend>Choose your favorite monster</legend>
+					<label><input type="radio" name="monster" value="kraken">&nbsp;Kraken</label>
+					<label><input type="radio" name="monster" value="sasquatch">&nbsp;Sasquatch</label>
+				</fieldset>
+				<div class="d2l-form-demo-container">
+					<label>Favorite Pet<br/>
+						<select class="d2l-input-select" name="pets" required>
+							<option value="">--Please choose an option--</option>
+							<option value="porpoise">Porpoise</option>
+							<option value="house hippo">House Hippo</option>
+							<option value="spiker monkey">Spider Monkey</option>
+							<option value="capybara">Capybara</option>
+						</select>
+					</label>
+				</div>
+				<div class="d2l-form-demo-container">
+					<label>Tell us your story
+						<textarea class="d2l-input" minlength="20" name="story" rows="5" cols="33">It was...</textarea>
+					</label>
+				</div>
+				<div class="d2l-form-demo-container">
+					<label for="file">Super Secret File<br/>
+						<input type="file" name="super-secret-file">
+					</label>
+				</div>
+				<button name="action" value="save">Save</button>
 			</d2l-form>
 		`;
 	}
 
 	_validatePassword(e) {
-		e.detail.resolve(e.detail.forElement.value === 'hunter2' || e.detail.forElement.value === '12345');
+		e.detail.resolve(e.detail.forElement.value === 'hunter2');
 	}
 }
 customElements.define('d2l-form-demo', FormDemo);
