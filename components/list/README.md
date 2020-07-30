@@ -98,6 +98,9 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 - `d2l-list-item-position-change`: dispatched when a draggable list item's position changes in the list
 
+**Accessibility**
+
+- `drag-handle-text`: The label for screenreaders for the drag handle. If implementing drag 'n' drop, you should change this to dynamically announce what the drag-handle is moving for screenreaders for use in keyboard mode.
 
 ## d2l-list-item-content
 
@@ -116,11 +119,14 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 
 ## Drag 'n' drop lists
 
-The `d2l-list` supports drag 'n' drop. Because the list itself is a rendering component, there is some light work involved in hooking up this behaviour.
+The `d2l-list` supports drag 'n' drop.
+
+![List](./screenshots/dragndrop.gif?raw=true)
+
+Because the list itself is a rendering component, there is some light work involved in hooking up this behaviour.
 
 - `d2l-list-item` components within the list must be `draggable` and have `key` set to something unique
-- Reordering the array of items is the responsibility of the wrapping component
-- Rerendering after a reorder is also the responsibility ot the wrapping component
+- Reordering and re-rendering is the controlling component's responsibility
 
 Here is a simple component example that adds drag 'n' drop to a list:
 
@@ -180,7 +186,7 @@ This event includes a detail object with helper methods attached to it.
 
 **Methods**
 
-- `announceMove(list, {announceFn, keyFn})`: Announces a move event to screenreaders.
+- `announceMove(list, {announceFn, keyFn})`: Announces a move event to screenreaders
   - `list`: The array of items
   - `announceFn(any, Number)`: A callback function that takes a given item in the array and its index, and returns the text to announce
   - `keyFn(any)`: A callback function that takes a given item in the array and returns its key
