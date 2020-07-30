@@ -4,8 +4,6 @@ import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
 	getLastFocusableDescendant,
-	getNextFocusable,
-	getPreviousFocusable,
 	isFocusable } from '../../helpers/focus.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
