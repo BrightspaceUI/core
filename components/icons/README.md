@@ -108,6 +108,19 @@ When rendered in a right-to-left direction, any icons which show directionality 
 
 To learn more about how best to determine if an icon should be mirrored, refer to [Google's Material Design Bidirectionality](https://material.google.com/usability/bidirectionality.html) documentation.
 
+## File Icon Type Helper
+
+Helper functions that return a file icon type based on the given file extension or filename string. Returns string of form `file-` + type, corresponding to an icon name for the `<d2l-icon>` component.
+
+```js
+import { getFileIconTypeFromExtension, getFileIconTypeFromFilename } from '@brightspace-ui/core/helpers/getFileIconType.js';
+
+getFileIconTypeFromExtension('docx'); // returns 'file-document'
+getFileIconTypeFromFilename('MY_SONG.MP3'); // returns 'file-audio'
+
+```
+
+
 ## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!

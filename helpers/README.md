@@ -170,15 +170,3 @@ import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 // gets a unique indexed id (for lifetime of page)
 getUniqueId();
 ```
-
-## File Icon Type
-
-Helper functions that return a file icon type based on the given file extension or filename string. Returns string of form `file-` + type, corresponding to an icon name for the `<d2l-icon>` component.
-
-```js
-import { getFileIconTypeFromExtension, getFileIconTypeFromFilename } from '@brightspace-ui/core/helpers/getFileIconType.js';
-
-getFileIconTypeFromExtension('docx'); // returns 'file-document'
-getFileIconTypeFromFilename('MY_SONG.MP3'); // returns 'file-audio'
-
-```
