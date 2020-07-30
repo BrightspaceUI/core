@@ -114,31 +114,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		this._preventFocus = {
 			handleEvent(event) {
-				event.preventDefault();
 				// target content slot only for now - can add others later
 				const slot = (event.path || event.composedPath()).find((node) =>
 					node.nodeName === 'SLOT' && ['content'].includes(node.name)
 				);
-				const ancestorSibling = getNextAncestorSibling(slot);
-				const next = getNextFocusable(ancestorSibling, true);
-				// related target is often on the parent
-				const related = getFirstFocusableDescendant(event.relatedTarget);
-				if (!event.relatedTarget) {
-					next.focus();
-				} else {
-					if (event.relatedTarget === next || related === next) {
-						getPreviousFocusable(slot, true).focus(); // backward tab
-					} else {
-						next.focus(); // forward tab
-					}
-				}
-			},
-			capture: true
-		};
-		this._preventClick = {
-			handleEvent(event) {
-				event.preventDefault();
-				return false;
+				console.warning(`${slot.name} area should not have focusable items in it. Consider using href or creating a custom list-item.`);
 			},
 			capture: true
 		};
