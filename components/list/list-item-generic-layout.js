@@ -118,6 +118,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				const slot = (event.path || event.composedPath()).find((node) =>
 					node.nodeName === 'SLOT' && ['content'].includes(node.name)
 				);
+				// eslint-disable-next-line no-console
 				console.warning(`${slot.name} area should not have focusable items in it. Consider using href or creating a custom list-item.`);
 			},
 			capture: true
@@ -144,7 +145,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
-			<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
+			<slot name="content" @focus="${this._preventFocus}"></slot>
 		`;
 	}
 
