@@ -1,7 +1,7 @@
 import './form-errory-summary.js';
 import '../tooltip/tooltip.js';
 import '../link/link.js';
-import { findFormElements, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
+import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -14,9 +14,13 @@ class Form extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			action: { type: String },
+			asyncSubmit: { type: Boolean, attribute: 'async-submit', reflect: true },
+			enctype: { type: String },
 			method: { type: String },
+			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
-			_errors: { type: Object }
+			_errors: { type: Object, attribute: false },
+			_isSubForm: { type: Boolean, attribute: false },
 		};
 	}
 
@@ -25,21 +29,34 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._onUnload = this._onUnload.bind(this);
 		this._onNativeSubmit = this._onNativeSubmit.bind(this);
 
+		this.action = '';
+		this.asyncSubmit = false;
+		this.enctype = 'application/x-www-form-urlencoded';
+		this.method = 'POST';
+		this.noNesting = false;
 		this.trackChanges = false;
+
+		this._errors = new Map();
+		this._isSubForm = false;
+		this._nestedForms = new Map();
 		this._tooltips = new Map();
 		this._validationCustoms = new Set();
-		this._errors = new Map();
 
+		this.addEventListener('d2l-form-connected', this._formConnected);
+		this.addEventListener('d2l-form-errors-changed', this._formErrorsChanged);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		window.addEventListener('beforeunload', this._onUnload);
+		this._isSubForm = !this.dispatchEvent(new CustomEvent('d2l-form-connected', { bubbles: true, composed: true, cancelable: true }));
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		this.dispatchEvent(new CustomEvent('d2l-form-disconnected'));
+		this._isSubForm = false;
 		window.removeEventListener('beforeunload', this._onUnload);
 	}
 
@@ -55,7 +72,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._form.noValidate = true;
 		this.appendChild(this._form);
 
-		const formElements = findFormElements(this);
+		const formElements = this._findFormElements(this);
 		for (const ele of formElements) {
 			if (isNativeFormElement(ele)) {
 				ele.setAttribute('form', this._form.id);
@@ -64,13 +81,22 @@ class Form extends LocalizeCoreElement(LitElement) {
 	}
 
 	render() {
-		const errors = [...this._errors.entries()]
-			.filter(([, eleErrors]) => eleErrors.length > 0)
-			.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus()}));
+		let errorSummary = null;
+		if (this._isRootForm()) {
+			const errors = [...flattenMap(this._errors)]
+				.filter(([, eleErrors]) => eleErrors.length > 0)
+				.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus() }));
+			errorSummary = html`<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>`;
+		}
 		return html`
-			<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>
+			${errorSummary}
 			<slot></slot>
 		`;
+	}
+
+	shouldUpdate(changedProperties) {
+		const ignoredProps = new Set(['action', 'asyncSubmit', 'enctype', 'method', 'trackChanges']);
+		return [...changedProperties].filter(([prop]) => !ignoredProps.has(prop)).length > 0;
 	}
 
 	async submit() {
@@ -78,23 +104,34 @@ class Form extends LocalizeCoreElement(LitElement) {
 	}
 
 	async validate() {
-		let errors = [];
 		const errorMap = new Map();
-		const formElements = findFormElements(this);
+		const formElements = this._findFormElements(this);
 		for (const ele of formElements) {
-			const eleErrors = await this._validateFormElement(ele, ValidationType.SHOW_NEW_ERRORS);
-			if (eleErrors.length > 0) {
-				errors = [...errors, ...eleErrors];
-				errorMap.set(ele, eleErrors);
+			if (this._hasSubForm(ele)) {
+				const form = this._getSubForm(ele);
+				if (!form.noNesting) {
+					const formErrors = await form.validate();
+					errorMap.set(ele, formErrors);
+				}
+			} else {
+				const eleErrors = await this._validateFormElement(ele, ValidationType.SHOW_NEW_ERRORS);
+				if (eleErrors.length > 0) {
+					errorMap.set(ele, eleErrors);
+				}
 			}
 		}
 		this._errors = errorMap;
+
+		const flattenedErrorMap = flattenMap(this._errors);
 		if (this._errors.size > 0) {
-			await this.updateComplete;
-			const errorSummary = this.shadowRoot.querySelector('d2l-form-error-summary');
-			errorSummary.focus();
+			if (this._isRootForm()) {
+				await this.updateComplete;
+				const errorSummary = this.shadowRoot.querySelector('d2l-form-error-summary');
+				errorSummary.focus();
+			}
+			this.dispatchEvent(new CustomEvent('d2l-form-invalid', { detail: { errors: flattenedErrorMap }}));
 		}
-		return errors;
+		return flattenedErrorMap;
 	}
 
 	_displayInvalid(ele, message) {
@@ -125,6 +162,53 @@ class Form extends LocalizeCoreElement(LitElement) {
 		ele.setAttribute('aria-invalid', 'false');
 	}
 
+	_findFormElements(root) {
+		const isFormElementPredicate = ele => this._hasSubForm(ele);
+		const visitChildrenPredicate = ele => !this._hasSubForm(ele);
+		return findFormElements(root, isFormElementPredicate, visitChildrenPredicate);
+	}
+
+	_formConnected(e) {
+		const form = e.composedPath()[0];
+		if (form === this) {
+			return;
+		}
+		e.stopPropagation();
+		e.preventDefault();
+		this._nestedForms.set(e.target, form);
+
+		const onDisconnect = () => {
+			form.removeEventListener('d2l-form-disconnected', onDisconnect);
+			this._nestedForms.delete(e.target);
+		};
+		form.addEventListener('d2l-form-disconnected', onDisconnect);
+	}
+
+	_formErrorsChanged(e) {
+		const errors = e.detail.errors;
+		if (this._errors.has(e.target)) {
+			e.stopPropagation();
+			if (errors.size === 0) {
+				this._errors.delete(e.target);
+			} else {
+				this._errors.set(e.target, errors);
+			}
+			this.requestUpdate('_errors');
+		}
+	}
+
+	_getSubForm(ele) {
+		return this._nestedForms.get(ele);
+	}
+
+	_hasSubForm(ele) {
+		return this._nestedForms.has(ele);
+	}
+
+	_isRootForm() {
+		return !this._isSubForm || this.noNesting;
+	}
+
 	async _onFormElementChange(e) {
 		const ele = e.target;
 		if (!isNativeFormElement(ele)) {
@@ -140,11 +224,14 @@ class Form extends LocalizeCoreElement(LitElement) {
 			} else {
 				this._errors.delete(ele);
 			}
+			const detail = { bubbles: true, composed: true, detail: { errors: this._errors } };
+			this.dispatchEvent(new CustomEvent('d2l-form-errors-changed', detail));
 			this.requestUpdate('_errors');
 		}
 	}
 
 	_onNativeSubmit(e) {
+		e.stopPropagation();
 		e.preventDefault();
 		const submitter = e.submitter || getComposedActiveElement();
 		this._submit(submitter);
@@ -159,33 +246,57 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	async _submit(submitter) {
 		const errors = await this.validate();
-		if (errors.length > 0) {
+		if (errors.size > 0) {
 			return;
 		}
+		await this._submitWithoutValidation(submitter);
+	}
+
+	async _submitWithoutValidation(submitter) {
 		this._dirty = false;
 
 		let nativeFormData = {};
 		let customFormData = {};
-		const formElements = findFormElements(this);
+		let hasSubForms = false;
+		const formElements = this._findFormElements(this);
 		for (const ele of formElements) {
 			const eleData = getFormElementData(ele, submitter);
 			if (isCustomFormElement(ele) || ele === submitter) {
 				customFormData = { ...customFormData, ...eleData };
-			} else {
+			} else if (isNativeFormElement(ele)) {
 				nativeFormData = { ...nativeFormData, ...eleData };
+			} else if (this._hasSubForm(ele)) {
+				const form = this._getSubForm(ele);
+				if (!form.noNesting) {
+					form._submitWithoutValidation(submitter);
+					hasSubForms = true;
+				}
 			}
 		}
 		const formData = { ...nativeFormData, ...customFormData };
-		const event = new CustomEvent('d2l-form-submit', { bubbles: true, cancelable: true, detail: { formData } });
+		const event = new CustomEvent('d2l-form-submit', { cancelable: true, detail: { formData } });
 		if (this.dispatchEvent(event)) {
+			const tempInputs = [];
 			for (const entry of Object.entries(customFormData)) {
 				const input = document.createElement('input');
 				input.type = 'hidden';
 				input.name = entry[0];
 				input.value = entry[1];
 				this._form.appendChild(input);
+				tempInputs.push(input);
 			}
-			this._form.submit();
+			if (this.asyncSubmit || hasSubForms || !this._isRootForm()) {
+				const form = new FormData(this._form);
+				tempInputs.forEach(tempInput => tempInput.remove());
+				const request = new XMLHttpRequest();
+				request.open(this.method, this.action);
+				request.send(form);
+			} else {
+				this._form.action = this.action;
+				this._form.enctype = this.enctype;
+				this._form.method = this.method;
+				this._form.submit();
+			}
 		}
 	}
 
