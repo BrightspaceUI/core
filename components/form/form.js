@@ -9,15 +9,42 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
 import { ValidationType } from './form-element-mixin.js';
 
+/**
+ * A component that can be used to build forms that validate and submit native and custom form elements.
+ * @slot - The native and custom form elements that participate in validation and submission
+ * @fires d2l-form-submit - Dispatched when the form is submitted
+ * @fires d2l-form-invalid - Dispatched when the form is submitted but one or more form elements failed validation
+ */
 class Form extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * The URL that processes the form submission
+			 */
 			action: { type: String },
+			/**
+			 * Causes the form to be submitted as an asynchronous XHR request rather than a native form submission.
+			 * If the form has nested forms then
+			 */
 			asyncSubmit: { type: Boolean, attribute: 'async-submit', reflect: true },
+			/**
+			 * The MIME type used to encode the submitted data using synchronous submit
+			 * @type {'application/x-www-form-urlencoded'|'multipart/form-data'|'text/plain'}
+			 */
 			enctype: { type: String },
+			/**
+			 * The HTTP request method to use to submit the form
+			 * @type {'POST'|'PUT'}
+			 */
 			method: { type: String },
+			/**
+			 * Prevents the form from being validated and submitted when an ancestor form is validated or submitted
+			 */
 			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
+			/**
+			 * Enable to warn the user about unsaved changes when navigating away
+			 */
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
 			_errors: { type: Object, attribute: false },
 			_isSubForm: { type: Boolean, attribute: false },
