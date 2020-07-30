@@ -117,7 +117,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					node.nodeName === 'SLOT' && ['content'].includes(node.name)
 				);
 				// eslint-disable-next-line no-console
-				console.warning(`${slot.name} area should not have focusable items in it. Consider using href or creating a custom list-item.`);
+				console.warn(`${slot.name} area should not have focusable items in it. Consider using href or creating a custom list-item.`);
 			},
 			capture: true
 		};
