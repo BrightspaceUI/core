@@ -53,6 +53,10 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				margin-left: 0;
 				margin-right: 1.2rem;
 			}
+
+			d2l-alert {
+				max-width: unset;
+			}
 		`];
 	}
 
