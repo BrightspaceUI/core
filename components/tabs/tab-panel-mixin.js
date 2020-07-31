@@ -55,13 +55,18 @@ export const TabPanelMixin = superclass => class extends superclass {
 			if (prop === 'selected') {
 				if (this.selected) {
 					requestAnimationFrame(() => {
-						this.dispatchEvent(new CustomEvent(
-							'd2l-tab-panel-selected', { bubbles: true, composed: true }
-						));
+						this._dispatchSelected();
 					});
 				}
 			}
 		});
+	}
+
+	// This function has been overwritten by consumers of this mixin
+	_dispatchSelected() {
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tab-panel-selected', { bubbles: true, composed: true }
+		));
 	}
 
 };
