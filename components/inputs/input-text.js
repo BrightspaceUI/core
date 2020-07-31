@@ -196,10 +196,6 @@ class InputText extends RtlMixin(LitElement) {
 		this._lastSlotWidth = 0;
 	}
 
-	_getInputId() {
-		return this.id || this._uniqueId;
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -307,6 +303,10 @@ class InputText extends RtlMixin(LitElement) {
 			return this.getAttribute('aria-label');
 		}
 		return undefined;
+	}
+
+	_getInputId() {
+		return this.id || this._uniqueId;
 	}
 
 	_getType() {
