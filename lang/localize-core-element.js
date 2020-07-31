@@ -9,7 +9,7 @@ export const LocalizeCoreElement = superclass => class extends LocalizeMixin(sup
 				case 'ar':
 					translations = await import('./ar.js');
 					break;
-				case 'cy-gb':
+				case 'cy':
 					translations = await import('./cy-gb.js');
 					break;
 				case 'da':
