@@ -9,6 +9,9 @@ export const LocalizeCoreElement = superclass => class extends LocalizeMixin(sup
 				case 'ar':
 					translations = await import('./ar.js');
 					break;
+				case 'cy-gb':
+					translations = await import('./cy-gb.js');
+					break;
 				case 'da':
 					translations = await import('./da.js');
 					break;
@@ -18,8 +21,14 @@ export const LocalizeCoreElement = superclass => class extends LocalizeMixin(sup
 				case 'en':
 					translations = await import('./en.js');
 					break;
+				case 'es-es':
+					translations = await import('./es-es.js');
+					break;
 				case 'es':
 					translations = await import('./es.js');
+					break;
+				case 'fr-fr':
+					translations = await import('./fr-fr.js');
 					break;
 				case 'fr':
 					translations = await import('./fr.js');
