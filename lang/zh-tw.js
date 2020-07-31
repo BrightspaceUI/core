@@ -2,7 +2,7 @@
 
 export default {
 	"components.alert.close": "關閉警示",
-	"components.breadcrumbs.breadcrumb": "階層連結",
+	"components.breadcrumbs.breadcrumb": "導覽路徑",
 	"components.calendar.notSelected": "未選取。",
 	"components.calendar.selected": "已選取。",
 	"components.calendar.show": "顯示{month}",
@@ -17,8 +17,8 @@ export default {
 	"components.input-date-time.date": "日期",
 	"components.input-date-time.time": "時間",
 	"components.input-date.clear": "清除",
-	"components.input-date.errorMaxDateOnly": "",
-	"components.input-date.errorMinDateOnly": "",
+	"components.input-date.errorMaxDateOnly": "日期必須早於 {maxDate}",
+	"components.input-date.errorMinDateOnly": "日期必須晚於 {minDate}",
 	"components.input-date.errorOutsideRange": "日期必須介於 {minDate} 與 {maxDate} 之間",
 	"components.input-date.openInstructions": "使用日期格式 {format}。按向下箭頭，或按下「Enter」以存取迷你行事曆。",
 	"components.input-date.setToToday": "設為今天",
@@ -26,6 +26,8 @@ export default {
 	"components.input-search.search": "搜尋",
 	"components.input-time-range.endTime": "結束時間",
 	"components.input-time-range.startTime": "開始時間",
+	"components.list-item-drag-handle.default": "重新排序動作",
+	"components.list-item-drag-handle.keyboard": "重新排序項目",
 	"components.menu-item-return.return": "返回上一個功能表。",
 	"components.menu-item-return.returnCurrentlyShowing": "返回上一個功能表。您正在檢視 {menuTitle}。",
 	"components.meter-mixin.commaSeperatedAria": "{term1}，{term2}",
