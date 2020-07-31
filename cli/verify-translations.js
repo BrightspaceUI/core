@@ -2,7 +2,7 @@ const chalk = require('chalk'),
 	fs = require('fs'),
 	path = require('path');
 
-const langs = ['ar', 'da', 'de', 'es', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-tw', 'zh'];
+const langs = ['ar', 'cy-gb', 'da', 'de', 'es', 'es-es', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-tw', 'zh'];
 const langTermsPath = path.join(__dirname, '../lang');
 
 function _parseFile(fileName) {
