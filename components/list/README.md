@@ -36,6 +36,8 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 ### Accessibility Grid
 
+**Note:** This feature is currently turned off while we fix compatibility with dropdown menus.
+
 The `grid` attribute will enable a table-like keyboard grid that allows a user to traverse list items with their keyboard. Left and right will switch if using an RTL language.
 
 * **ArrowLeft** moves to the next left item in a row
