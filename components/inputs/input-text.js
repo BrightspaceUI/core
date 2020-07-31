@@ -18,6 +18,10 @@ class InputText extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * To specific id of the input field. Default is to use a random id
+			 */
+			id: { type: String },
+			/**
 			 * Indicates that the input has a popup menu
 			 */
 			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
@@ -187,9 +191,13 @@ class InputText extends RtlMixin(LitElement) {
 
 		this._focused = false;
 		this._hovered = false;
-		this._inputId = getUniqueId();
+		this._uniqueId = getUniqueId();
 		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
+	}
+
+	_getInputId() {
+		return this.id || this._uniqueId;
 	}
 
 	firstUpdated(changedProperties) {
@@ -239,7 +247,7 @@ class InputText extends RtlMixin(LitElement) {
 					@change="${this._handleChange}"
 					class="${classMap(inputClasses)}"
 					?disabled="${this.disabled}"
-					id="${this._inputId}"
+					id="${this._getInputId()}"
 					@input="${this._handleInput}"
 					@invalid="${this._handleInvalid}"
 					@keypress="${this._handleKeypress}"
@@ -265,7 +273,7 @@ class InputText extends RtlMixin(LitElement) {
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<label class="d2l-input-label" for="${this._inputId}">${this.label}</label>
+				<label class="d2l-input-label" for="${this._getInputId()}">${this.label}</label>
 				${input}`;
 		}
 		return input;
