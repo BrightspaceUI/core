@@ -20,12 +20,13 @@
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
     "test:axe": "karma start karma.axe.conf.js",
-    "test:browserstack": "karma start karma.browserstack.conf.js",
+    "test:bs": "karma start karma.bs.conf.js",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
     "test:headless": "karma start",
-    "test:headless:watch": "karma start --auto-watch=true --single-run=false"
+    "test:headless:watch": "karma start --auto-watch=true --single-run=false",
+    "test:sauce": "karma start karma.sauce.conf.js"
   },
   "files": [
     "custom-elements.json",
@@ -62,6 +63,7 @@
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
     "karma-browserstack-launcher": "^1.6.0",
+    "karma-sauce-launcher": "^4.1.4",
     "lit-analyzer": "^1",
     "mocha": "~8.0.1",
     "node-sass": "^4",

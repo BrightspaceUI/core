@@ -32,7 +32,7 @@ jobs:
       - |
         if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
             echo "Pull request with secure environment variables, running Sauce tests...";
-            npm run test:browserstack || travis_terminate 1;
+            npm run test:bs || travis_terminate 1;
         else
             echo "Not a pull request and/or no secure environment variables, running headless tests...";
             npm run test:headless || travis_terminate 1;
