@@ -294,11 +294,6 @@ function fetchOverride(formatFunc) {
 	return res;
 }
 
-function coalesceToNull() {
-
-	return null;
-}
-
 export function __clearWindowCache() {
 
 	// Used to reset state for tests.
