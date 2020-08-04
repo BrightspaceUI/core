@@ -110,16 +110,14 @@ To learn more about how best to determine if an icon should be mirrored, refer t
 
 ## File Icon Type Helper
 
-Helper functions that return a file icon type based on the given file extension or filename string. Returns string of form `file-` + type, corresponding to an icon name for the `<d2l-icon>` component.
+Helper functions that return a file icon type based on the given file extension or filename string. Returns string of form `file-{type}`, corresponding to an icon name for the `<d2l-icon>` component.
 
 ```js
-import { getFileIconTypeFromExtension, getFileIconTypeFromFilename } from '@brightspace-ui/core/helpers/getFileIconType.js';
+import { getFileIconTypeFromExtension, getFileIconTypeFromFilename } from '@brightspace-ui/core/components/icons/getFileIconType.js';
 
 getFileIconTypeFromExtension('docx'); // returns 'file-document'
 getFileIconTypeFromFilename('MY_SONG.MP3'); // returns 'file-audio'
-
 ```
-
 
 ## Future Enhancements
 
