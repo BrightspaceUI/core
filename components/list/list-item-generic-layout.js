@@ -4,8 +4,6 @@ import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
 	getLastFocusableDescendant,
-	getNextFocusable,
-	getPreviousFocusable,
 	isFocusable } from '../../helpers/focus.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -114,31 +112,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		this._preventFocus = {
 			handleEvent(event) {
-				event.preventDefault();
 				// target content slot only for now - can add others later
 				const slot = (event.path || event.composedPath()).find((node) =>
 					node.nodeName === 'SLOT' && ['content'].includes(node.name)
 				);
-				const ancestorSibling = getNextAncestorSibling(slot);
-				const next = getNextFocusable(ancestorSibling, true);
-				// related target is often on the parent
-				const related = getFirstFocusableDescendant(event.relatedTarget);
-				if (!event.relatedTarget) {
-					next.focus();
-				} else {
-					if (event.relatedTarget === next || related === next) {
-						getPreviousFocusable(slot, true).focus(); // backward tab
-					} else {
-						next.focus(); // forward tab
-					}
-				}
-			},
-			capture: true
-		};
-		this._preventClick = {
-			handleEvent(event) {
-				event.preventDefault();
-				return false;
+				// eslint-disable-next-line no-console
+				console.warn(`${slot.name} area should not have focusable items in it. Consider using href or creating a custom list-item.`);
 			},
 			capture: true
 		};
@@ -164,7 +143,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
 
-			<slot name="content" @focus="${this._preventFocus}" @click="${this._preventClick}"></slot>
+			<slot name="content" @focus="${this._preventFocus}"></slot>
 		`;
 	}
 
@@ -432,6 +411,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_setFocusInfo(event) {
+		if (!this.gridActive) return;
 		const slot = (event.path || event.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
