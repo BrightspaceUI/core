@@ -35,41 +35,6 @@ function pressEnter(elem) {
 
 describe('d2l-input-text', () => {
 
-	describe('accessibility', () => {
-
-		it('should pass all aXe tests (normal)', async() => {
-			const elem = await fixture(normalFixture);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (with value)', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" value="hello"></d2l-input-text>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (disabled)', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" disabled></d2l-input-text>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (invalid)', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" aria-invalid="true"></d2l-input-text>`);
-			await expect(elem).to.be.accessible;
-		});
-
-		it('should pass all aXe tests (focused)', async() => {
-			const elem = await fixture(normalFixture);
-			elem.focus();
-			await expect(elem).to.be.accessible();
-		});
-
-		it('should pass all aXe tests (hidden label)', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" label-hidden></d2l-input-text>`);
-			await expect(elem).to.be.accessible;
-		});
-
-	});
-
 	describe('constructor', () => {
 
 		it('should construct', () => {

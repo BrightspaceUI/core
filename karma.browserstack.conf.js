@@ -5,37 +5,51 @@ const merge = require('deepmerge');
 const defaultPattern = '+(components|helpers|mixins|templates)/**/*.test.js';
 const customLaunchers = {
 	chrome: {
-		base: 'SauceLabs',
-		browserName: 'chrome',
-		platform: 'OS X 10.13',
+		base: 'BrowserStack',
+		browser: 'chrome',
+		browser_version: 'latest',
+		os: 'OS X',
+		os_version: 'Catalina'
 	},
 	firefox: {
-		base: 'SauceLabs',
-		browserName: 'firefox',
-		platform: 'OS X 10.13'
+		base: 'BrowserStack',
+		browser: 'firefox',
+		browser_version: 'latest',
+		os: 'OS X',
+		os_version: 'Catalina'
 	},
 	safari: {
-		base: 'SauceLabs',
-		browserName: 'safari',
-		platform: 'OS X 10.13'
+		base: 'BrowserStack',
+		browser: 'safari',
+		browser_version: 'latest',
+		os: 'OS X',
+		os_version: 'Catalina'
 	},
 	edge: {
-		base: 'SauceLabs',
-		browserName: 'microsoftedge',
-		platform: 'Windows 10',
-		version: 'latest'
+		base: 'BrowserStack',
+		browser: 'Edge',
+		browser_version: 'latest',
+		os: 'Windows',
+		os_version: '10'
 	},
 	edge_legacy: {
-		base: 'SauceLabs',
-		browserName: 'microsoftedge',
-		platform: 'Windows 10',
-		version: '18.17763'
+		base: 'BrowserStack',
+		browser: 'Edge',
+		browser_version: '18.0',
+		os: 'Windows',
+		os_version: '10'
 	}
 };
 
 module.exports = config => {
 	config.set(
 		merge(createDefaultConfig(config), {
+			browserStack: {
+				username: process.env.BROWSERSTACK_USERNAME,
+				accessKey: process.env.BROWSERSTACK_ACCESS_KEY,
+				build: process.env.TRAVIS_BUILD_NUMBER,
+				project: 'Brightspace UI Core Unit Tests',
+			},
 			files: [
 				// runs all files ending with .test in the test folder,
 				// can be overwritten by passing a --grep flag. examples:
@@ -49,26 +63,13 @@ module.exports = config => {
 				// if you are using 'bare module imports' you will need this option
 				nodeResolve: true,
 			},
-			sauceLabs: {
-				testName: 'Brightspace UI Core Unit Tests'
-			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['dots', 'saucelabs'],
+			reporters: ['dots', 'BrowserStack'],
 			singleRun: true,
 			browserDisconnectTimeout : 20000, // default 2000
 			browserDisconnectTolerance : 3, // default 0
 			browserNoActivityTimeout: 200000, // default 10000
-			captureTimeout: 200000, // default 60000
-			client: {
-				mocha: {
-					timeout : 10000
-				}
-			},
-			flags: [
-				'--disable-gpu',
-				'--no-sandbox'
-			]
 		}),
 	);
 	return config;
