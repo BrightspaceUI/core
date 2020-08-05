@@ -21,6 +21,8 @@
 		&:focus,
 		&:disabled {
 			background-image: none;
+		}
+		&:focus {
 			padding-left: calc(0.75rem - 1px);
 			padding-right: calc(0.75rem - 1px);
 		}
