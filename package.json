@@ -54,7 +54,7 @@
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4",
     "@semantic-release/git": "^9",
-    "axe-core": "^3",
+    "axe-core": "^4",
     "babel-eslint": "^10",
     "chalk": "^4",
     "deepmerge": "^4.2.2",
