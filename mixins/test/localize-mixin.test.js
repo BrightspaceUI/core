@@ -211,7 +211,7 @@ describe('LocalizeMixin', () => {
 				setTimeout(() => {
 					expect(renderCount).to.equal(1);
 					done();
-				}, 100);
+				}, 300);
 			});
 		});
 
