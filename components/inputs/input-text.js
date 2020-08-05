@@ -1,5 +1,8 @@
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
@@ -13,7 +16,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  */
-class InputText extends RtlMixin(LitElement) {
+class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -209,6 +212,7 @@ class InputText extends RtlMixin(LitElement) {
 			'd2l-input-focus': isFocusedOrHovered
 		};
 		const ariaRequired = this.required ? 'true' : undefined;
+		const ariaInvalid = this.invalid ? 'true' : this.ariaInvalid;
 
 		const inputStyles = {};
 		if (this._firstSlotWidth > 0) {
@@ -220,7 +224,7 @@ class InputText extends RtlMixin(LitElement) {
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
-		const isValid = this.ariaInvalid !== 'true' || this.disabled;
+		const isValid = ariaInvalid !== 'true' || this.disabled;
 		const invalidIconSide = (this.dir === 'rtl') ? 'left' : 'right';
 		const invalidIconOffset = Math.max((this.dir === 'rtl') ? this._firstSlotWidth : this._lastSlotWidth, 12);
 		const invalidIconStyles = {
@@ -230,10 +234,11 @@ class InputText extends RtlMixin(LitElement) {
 			<div class="d2l-input-text-container">
 				<input aria-atomic="${ifDefined(this.atomic)}"
 					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-					aria-invalid="${ifDefined(this.ariaInvalid)}"
+					aria-invalid="${ifDefined(ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
 					aria-live="${ifDefined(this.live)}"
 					aria-required="${ifDefined(ariaRequired)}"
+					?required="${this.required}"
 					autocomplete="${ifDefined(this.autocomplete)}"
 					?autofocus="${this.autofocus}"
 					@change="${this._handleChange}"
@@ -261,6 +266,7 @@ class InputText extends RtlMixin(LitElement) {
 				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 				${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
+				${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
 			</div>
 		`;
 		if (this.label && !this.labelHidden) {
@@ -276,7 +282,14 @@ class InputText extends RtlMixin(LitElement) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
+				this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
+				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
+			} else if (prop === 'validationError') {
+				if (oldVal && this.validationError) {
+					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
+					tooltip.updatePosition();
+				}
 			}
 		});
 	}
@@ -289,6 +302,40 @@ class InputText extends RtlMixin(LitElement) {
 			await this.updateComplete;
 			this.focus();
 		}
+	}
+
+	get labelText() {
+		return this.label;
+	}
+
+	get validationMessageRangeOverflow() {
+		return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)) });
+	}
+
+	get validationMessageRangeUnderflow() {
+		return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)) });
+	}
+
+	get validationMessageTooShort() {
+		return this.localize('components.form-element.input.text.tooShort', { label: this.labelText, minlength: formatNumber(this.minlength) });
+	}
+
+	get validationMessageTypeMismatch() {
+		switch (this.type) {
+			case 'email':
+				return this.localize('components.form-element.input.email.typeMismatch');
+			case 'url':
+				return this.localize('components.form-element.input.url.typeMismatch');
+		}
+		return super.validationMessageTypeMismatch;
+	}
+
+	get validity() {
+		const elem = this.shadowRoot.querySelector('.d2l-input');
+		if (!elem.validity.valid) {
+			return elem.validity;
+		}
+		return super.validity;
 	}
 
 	_getAriaLabel() {
@@ -310,6 +357,7 @@ class InputText extends RtlMixin(LitElement) {
 
 	_handleBlur(e) {
 		this._focused = false;
+		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 
 		/**
 		 * This is needed only for IE11 and Edge
@@ -333,9 +381,10 @@ class InputText extends RtlMixin(LitElement) {
 		this._focused = true;
 	}
 
-	_handleInput(e) {
+	async _handleInput(e) {
 		this.value = e.target.value;
-		return true;
+		await this.updateComplete;
+		this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
 	}
 
 	_handleInvalid(e) {
