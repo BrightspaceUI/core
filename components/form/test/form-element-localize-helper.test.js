@@ -90,7 +90,7 @@ describe('form-element-localize-helper', () => {
 				input.value = 'notaurl';
 
 				const errorMessage = localizeFormElement(localize, input);
-				expect(errorMessage).to.equal('Field is not a valid URL');
+				expect(errorMessage).to.equal('URL is not valid');
 			});
 
 		});
@@ -109,7 +109,7 @@ describe('form-element-localize-helper', () => {
 				input.value = 'notanemail';
 
 				const errorMessage = localizeFormElement(localize, input);
-				expect(errorMessage).to.equal('Contact is not a valid email');
+				expect(errorMessage).to.equal('Email is not valid');
 			});
 
 		});
