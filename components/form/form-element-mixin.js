@@ -177,6 +177,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				}
 				break;
 		}
+		const detail = { bubbles: true, composed: true, detail: { errors } };
+		this.dispatchEvent(new CustomEvent('d2l-form-errors-changed', detail));
 		return errors;
 	}
 
