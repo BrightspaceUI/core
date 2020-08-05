@@ -1,8 +1,9 @@
 import './form-element.js';
 import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
-import { expect, fixture, html } from '@open-wc/testing';
+import { defineCE, expect, fixture } from '@open-wc/testing';
 import { findFormElements, getFormElementData, isCustomElement, isCustomFormElement, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 
 const buttonFixture = html`<button type="button">Add to favorites</button>`;
 
@@ -120,6 +121,19 @@ describe('form-helper', () => {
 
 	describe('tryGetLabelText', () => {
 
+		const composedLabelTag = defineCE(
+			class extends LitElement {
+				render() {
+					return html`
+						<div>
+							<label for="target">Do you like peas?</label>
+							<input id='target' type="checkbox" name="peas">
+						</div>
+					`;
+				}
+			}
+		);
+
 		const implicitLabelFixture = html`
 			<label>Do you like peas?
 				<input id='target' type="checkbox" name="peas">
@@ -197,6 +211,8 @@ describe('form-helper', () => {
 			</div>
 		`;
 
+		const composedLabelFixture = `<${composedLabelTag}><${composedLabelTag}/>`;
+
 		[
 			{ type: 'implicit', fixture: implicitLabelFixture },
 			{ type: 'implicit with tooltip', fixture: implicitLabelWithTooltipFixture},
@@ -215,6 +231,12 @@ describe('form-helper', () => {
 				const target = ele.querySelector('#target');
 				expect(tryGetLabelText(target)).to.equal('Do you like peas?');
 			});
+		});
+
+		it('should find a composed label', async() => {
+			const ele = await fixture(composedLabelFixture);
+			const target = ele.shadowRoot.querySelector('#target');
+			expect(tryGetLabelText(target)).to.equal('Do you like peas?');
 		});
 
 		[
