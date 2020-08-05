@@ -83,13 +83,12 @@ describe('d2l-input-date', () => {
 		});
 
 		it('should fire "change" event when "Set to Today" is clicked', async() => {
-			const _setTimeout = setTimeout; // useFakeTimers causes setTimeout to not behave as expected
 			const newToday = new Date('2018-02-12T20:00:00Z');
-			const clock = sinon.useFakeTimers(newToday.getTime());
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const elem = await fixture(basicFixture);
 			const button = getChildElem(elem, 'd2l-button-subtle[text="Set to Today"]');
-			_setTimeout(() => button.click());
+			setTimeout(() => button.click());
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2018-02-12');
 

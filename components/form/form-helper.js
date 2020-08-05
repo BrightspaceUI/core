@@ -39,8 +39,9 @@ const _findFormElementsHelper = (ele, eles) => {
 };
 
 export const tryGetLabelText = (ele) => {
-	if (ele.labels && ele.labels.length > 0) {
-		const labelText = [...ele.labels[0].childNodes]
+	const labelElement = _tryGetLabelElement(ele);
+	if (labelElement) {
+		const labelText = [...labelElement.childNodes]
 			.filter(node => node.nodeType === Node.TEXT_NODE)
 			.reduce((acc, node) => acc + node.textContent, '')
 			.trim();
@@ -94,6 +95,25 @@ export const tryGetLabelText = (ele) => {
 				return labelText;
 			}
 		}
+	}
+	return null;
+};
+
+const _tryGetLabelElement = ele => {
+	if (ele.labels && ele.labels.length > 0) {
+		return ele.labels[0];
+	}
+	const rootNode = ele.getRootNode();
+	if (!rootNode || rootNode === document) {
+		return null;
+	}
+	const parent = ele.parentElement;
+	if (parent && ele.parentElement.tagName === 'LABEL') {
+		return parent;
+	}
+	if (ele.id) {
+		const rootNode = ele.getRootNode();
+		return rootNode.querySelector(`label[for="${ele.id}"]`);
 	}
 	return null;
 };
