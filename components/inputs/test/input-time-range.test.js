@@ -71,6 +71,15 @@ describe('d2l-input-time-range', () => {
 			expect(inputElem.value).to.equal('19:00:00');
 		});
 
+		it('should update endValue as expected when set through property after an initial value was set', async() => {
+			const elem = await fixture('<d2l-input-time-range label="label" time-interval="sixty" enforce-time-intervals start-value="12:35:00" end-value="18:22:00"></d2l-input-time-range>');
+			elem.endValue = 'invalid!';
+			await elem.updateComplete;
+			expect(elem.endValue).to.equal('14:00:00');
+			const inputElem = getChildElem(elem, 'd2l-input-time.d2l-input-time-range-end');
+			expect(inputElem.value).to.equal('14:00:00');
+		});
+
 		describe('initial values are corrected', () => {
 			[
 				{enforceTimeIntervals: true, validStart: true, validEnd: true},
