@@ -85,12 +85,12 @@ describe('d2l-input-time', () => {
 
 		it('should default to 12 AM', async() => {
 			const elem = await fixture(basicFixture);
-			expect(elem.value).to.equal('0:00:00');
+			expect(elem.value).to.equal('00:00:00');
 		});
 
 		it('should apply custom default value', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" default-value="02:00:00"></d2l-input-time>');
-			expect(elem.value).to.equal('2:00:00');
+			expect(elem.value).to.equal('02:00:00');
 		});
 
 		it('should throw an error with invalid default value', async() => {
@@ -102,7 +102,7 @@ describe('d2l-input-time', () => {
 
 		it('should apply default value from keyword: startOfDay', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" default-value="startOfDay"></d2l-input-time>');
-			expect(elem.value).to.equal('0:00:00');
+			expect(elem.value).to.equal('00:00:00');
 		});
 
 		it('should apply custom default value from keyword: endOfDay', async() => {
@@ -144,7 +144,7 @@ describe('d2l-input-time', () => {
 			const elem = await fixture(fixtureWithValue);
 			setTimeout(() => getFirstOption(elem).click());
 			await oneEvent(elem, 'change');
-			expect(elem.value).to.equal('0:00:00');
+			expect(elem.value).to.equal('00:00:00');
 		});
 
 		it('should update textbox value when dropdown changes', async() => {
@@ -178,14 +178,14 @@ describe('d2l-input-time', () => {
 			getInput(elem).value = '2:01AM';
 			dispatchEvent(elem, 'change', false);
 			await oneEvent(elem, 'change');
-			expect(elem.value).to.equal('3:00:00');
+			expect(elem.value).to.equal('03:00:00');
 		});
 
 		it('should round-up to next interval when intervals are enforced and value is set', async() => {
 			const elem = await fixture(hourLongIntervalsEnforced);
 			elem.value = '2:01:00';
 			await elem.updateComplete;
-			expect(elem.value).to.equal('3:00:00');
+			expect(elem.value).to.equal('03:00:00');
 		});
 	});
 

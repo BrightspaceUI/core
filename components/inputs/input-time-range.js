@@ -1,8 +1,8 @@
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatTimeInISO, getDateFromISOTime, VALID_TIME_FORMAT } from '../../helpers/dateTime.js';
-import { getDefaultTime, getIntervalNumber } from './input-time.js';
+import { formatDateInISOTime, getDateFromISOTime, isValidTime } from '../../helpers/dateTime.js';
+import { getDefaultTime, getIntervalNumber, getTimeAtInterval } from './input-time.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -13,6 +13,12 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
  * @fires change - Dispatched when a start or end time is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar time format ("hh:mm:ss").
  */
+
+function getValidISOTimeAtInterval(val, timeInterval) {
+	const valAtInterval = getTimeAtInterval(timeInterval, getDateFromISOTime(val));
+	return formatDateInISOTime(valAtInterval);
+}
+
 class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
@@ -95,8 +101,10 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.startValue = formatDateInISOTime(getDefaultTime());
 		this.timeInterval = 'thirty';
 
+		this._defaultEndValue = false;
 		this._endDropdownOpened = false;
 		this._endInputId = getUniqueId();
 		this._startDropdownOpened = false;
@@ -105,52 +113,22 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 
 	get endValue() { return this._endValue; }
 	set endValue(val) {
-		// handle case where initially set endValue is invalid
 		const oldValue = this.endValue;
-		let validValue = false;
-
-		if (val) {
-			const match = val.match(VALID_TIME_FORMAT);
-			if (match) {
-				validValue = true;
-				this._endValue = val;
-			}
-		}
-		if (!validValue) {
-			let endValue;
-			if (this.startValue) {
-				try {
-					endValue = getDateFromISOTime(this.startValue);
-				} catch (e) {
-					// case where startValue is invalid
-					endValue = getDefaultTime();
-				}
-			} else {
-				endValue = getDefaultTime();
-			}
+		if (isValidTime(val)) this._endValue = this.enforceTimeIntervals ? getValidISOTimeAtInterval(val, this.timeInterval) : val;
+		else {
+			this._defaultEndValue = true; // flag that we are using a default end value so it is corrected to use correct timeInterval in firstUpdated
+			const endValue = getDateFromISOTime(this.startValue);
 			endValue.setMinutes(endValue.getMinutes() + getIntervalNumber(this.timeInterval));
-			this._endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
+			this._endValue = formatDateInISOTime(endValue);
 		}
 		this.requestUpdate('endValue', oldValue);
 	}
 
 	get startValue() { return this._startValue; }
 	set startValue(val) {
-		// handle case where initially set startValue is invalid
 		const oldValue = this.startValue;
-		let validValue = false;
-
-		if (val) {
-			const match = val.match(VALID_TIME_FORMAT);
-			if (match) {
-				validValue = true;
-				this._startValue = val;
-			}
-		}
-		if (!validValue) {
-			const startValue = getDefaultTime();
-			this._startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
-		}
+		if (isValidTime(val)) this._startValue = this.enforceTimeIntervals ? getValidISOTimeAtInterval(val, this.timeInterval) : val;
+		else this._startValue = formatDateInISOTime(getDefaultTime());
 		this.requestUpdate('startValue', oldValue);
 	}
 
@@ -161,16 +139,16 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			console.warn('d2l-input-time-range component requires label text');
 		}
 
-		if (!this.startValue) {
-			const startValue = getDefaultTime();
-			this.startValue = formatTimeInISO({hours: startValue.getHours(), minutes: startValue.getMinutes(), seconds: startValue.getSeconds()});
-		}
-		if (!this.endValue) {
+		if (this.enforceTimeIntervals) this.startValue = getValidISOTimeAtInterval(this.startValue, this.timeInterval);
+
+		if (!this.endValue || this._defaultEndValue) {
 			const endValue = getDateFromISOTime(this.startValue);
 			endValue.setMinutes(endValue.getMinutes() + getIntervalNumber(this.timeInterval));
-			this.endValue = formatTimeInISO({hours: endValue.getHours(), minutes: endValue.getMinutes(), seconds: endValue.getSeconds()});
+			this.endValue = formatDateInISOTime(endValue);
+			this._defaultEndValue = false;
+		} else if (this.endValue && this.enforceTimeIntervals) {
+			this.endValue = getValidISOTimeAtInterval(this.endValue, this.timeInterval);
 		}
-
 	}
 
 	render() {

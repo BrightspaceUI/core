@@ -36,7 +36,7 @@ describe('d2l-input-time-range', () => {
 			inputElem.value = '01:30:00';
 			setTimeout(() => dispatchEvent(inputElem, 'change'));
 			await oneEvent(elem, 'change');
-			expect(elem.startValue).to.equal('1:30:00');
+			expect(elem.startValue).to.equal('01:30:00');
 		});
 		it('should fire "change" event when end value changes', async() => {
 			const elem = await fixture(basicFixture);
@@ -53,6 +53,66 @@ describe('d2l-input-time-range', () => {
 			expect(elem.endValue).to.equal('00:30:00');
 		});
 
+		it('should update startValue as expected when set through property', async() => {
+			const elem = await fixture('<d2l-input-time-range label="label" time-interval="ten" enforce-time-intervals></d2l-input-time-range>');
+			elem.startValue = '12:05:00';
+			await elem.updateComplete;
+			expect(elem.startValue).to.equal('12:10:00');
+			const inputElem = getChildElem(elem, 'd2l-input-time.d2l-input-time-range-start');
+			expect(inputElem.value).to.equal('12:10:00');
+		});
+
+		it('should update endValue as expected when set through property', async() => {
+			const elem = await fixture('<d2l-input-time-range label="label" time-interval="sixty" enforce-time-intervals></d2l-input-time-range>');
+			elem.endValue = '18:25:00';
+			await elem.updateComplete;
+			expect(elem.endValue).to.equal('19:00:00');
+			const inputElem = getChildElem(elem, 'd2l-input-time.d2l-input-time-range-end');
+			expect(inputElem.value).to.equal('19:00:00');
+		});
+
+		describe('initial values are corrected', () => {
+			[
+				{enforceTimeIntervals: true, validStart: true, validEnd: true},
+				{enforceTimeIntervals: true, validStart: true, validEnd: false},
+				{enforceTimeIntervals: true, validStart: false, validEnd: true},
+				{enforceTimeIntervals: true, validStart: false, validEnd: false},
+				{enforceTimeIntervals: false, validStart: true, validEnd: true},
+				{enforceTimeIntervals: false, validStart: true, validEnd: false},
+				{enforceTimeIntervals: false, validStart: false, validEnd: true},
+				{enforceTimeIntervals: false, validStart: false, validEnd: false}
+			].forEach((testCase) => {
+				it(`when enforceTimeIntervals = ${testCase.enforceTimeIntervals}, valid start = ${testCase.validStart} and validEnd = ${testCase.validEnd}`, async() => {
+					const startDate = testCase.validStart ? '12:15:00' : 'invalidStart';
+					const endDate = testCase.validEnd ? '18:42:00' : 'invalidEnd';
+					let expectedStartTime = '',
+						expectedEndTime = '';
+					if (testCase.validStart && testCase.enforceTimeIntervals) expectedStartTime = '12:20:00';
+					else if (testCase.validStart) expectedStartTime = '12:15:00';
+					else expectedStartTime = '00:00:00';
+
+					if (testCase.validEnd && testCase.enforceTimeIntervals) expectedEndTime = '18:50:00';
+					else if (testCase.validEnd) expectedEndTime = '18:42:00';
+					else if (!testCase.validEnd) {
+						if (testCase.validStart && !testCase.enforceTimeIntervals) expectedEndTime = '12:25:00';
+						else if (testCase.validStart && testCase.enforceTimeIntervals) expectedEndTime = '12:30:00';
+						else expectedEndTime = '00:10:00';
+					}
+
+					const caseFixture = `<d2l-input-time-range
+						label="label text"
+						start-value="${startDate}"
+						end-value="${endDate}"
+						time-interval="ten"
+						${testCase.enforceTimeIntervals ? 'enforce-time-intervals' : null}
+					></d2l-input-time-range>`;
+					const elem = await fixture(caseFixture);
+					expect(elem.startValue).to.equal(expectedStartTime);
+					expect(elem.endValue).to.equal(expectedEndTime);
+				});
+			});
+		});
+
 		describe('validation', () => {
 			it('should be valid if start time changed to value before default end time', async() => {
 				const elem = await fixture(basicFixture);
@@ -60,7 +120,7 @@ describe('d2l-input-time-range', () => {
 				inputElem.value = '00:15:00';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
-				expect(elem.startValue).to.equal('0:15:00');
+				expect(elem.startValue).to.equal('00:15:00');
 				expect(elem.endValue).to.equal('00:30:00');
 				expect(elem.invalid).to.be.false;
 				expect(elem.validationError).to.be.null;

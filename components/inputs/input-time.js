@@ -4,8 +4,8 @@ import '../menu/menu.js';
 import '../menu/menu-item-radio.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
-import { getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -48,6 +48,15 @@ export function getDefaultTime(time) {
 	}
 }
 
+export function getTimeAtInterval(timeInterval, time) {
+	const interval = getIntervalNumber(timeInterval);
+	const difference = time.getMinutes() % interval;
+	if (difference > 0) {
+		time.setMinutes(time.getMinutes() + interval - difference);
+	}
+	return time;
+}
+
 function initIntervals(size) {
 	if (!INTERVALS.has(size)) {
 		const intervalList = [];
@@ -57,7 +66,7 @@ function initIntervals(size) {
 		while (intervalTime < END_OF_DAY) {
 			intervalList.push({
 				text: formatTime(intervalTime),
-				value: formatValue(intervalTime)
+				value: formatDateInISOTime(intervalTime)
 			});
 			intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
 		}
@@ -66,13 +75,6 @@ function initIntervals(size) {
 	}
 
 	return INTERVALS.get(size);
-}
-
-function formatValue(time) {
-	const zeroPadMin = (time.getMinutes() < 10) ? '0' : '';
-	const zeroPadSec = (time.getSeconds() < 10) ? '0' : '';
-	const value = `${time.getHours()}:${zeroPadMin}${time.getMinutes()}:${zeroPadSec}${time.getSeconds()}`;
-	return value;
 }
 
 /**
@@ -167,16 +169,12 @@ class InputTime extends FormElementMixin(LitElement) {
 		}
 
 		const oldValue = this.value;
-		const time = val === '' || val === null ? getDefaultTime(this.defaultValue) : getDateFromISOTime(val);
+		let time = val === '' || val === null ? getDefaultTime(this.defaultValue) : getDateFromISOTime(val);
 
 		if (this.enforceTimeIntervals) {
-			const interval = getIntervalNumber(this.timeInterval);
-			const difference = time.getMinutes() % interval;
-			if (difference > 0) {
-				time.setMinutes(time.getMinutes() + interval - difference);
-			}
+			time = getTimeAtInterval(this.timeInterval, time);
 		}
-		this._value = formatValue(time);
+		this._value = formatDateInISOTime(time);
 		this._formattedValue = formatTime(time);
 		this.requestUpdate('value', oldValue);
 	}
@@ -189,7 +187,7 @@ class InputTime extends FormElementMixin(LitElement) {
 
 		if (this.value === undefined) {
 			const time = getDefaultTime(this.defaultValue);
-			this._value = formatValue(time);
+			this._value = formatDateInISOTime(time);
 			this._formattedValue = formatTime(time);
 		}
 	}
@@ -237,8 +235,8 @@ class InputTime extends FormElementMixin(LitElement) {
 						${this.enforceTimeIntervals ? '' : html`
 								<d2l-menu-item-radio
 									text="${formatTime(END_OF_DAY)}"
-									value="${formatValue(END_OF_DAY)}"
-									?selected=${this._value === formatValue(END_OF_DAY)}>
+									value="${formatDateInISOTime(END_OF_DAY)}"
+									?selected=${this._value === formatDateInISOTime(END_OF_DAY)}>
 								</d2l-menu-item-radio>
 							`}
 					</d2l-menu>
@@ -278,7 +276,7 @@ class InputTime extends FormElementMixin(LitElement) {
 		if (time === null) {
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 		} else {
-			this.value = formatValue(time);
+			this.value = formatDateInISOTime(time);
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{bubbles: true, composed: false}
