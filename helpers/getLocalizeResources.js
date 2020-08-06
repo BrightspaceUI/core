@@ -25,9 +25,8 @@ let debug = false;
 async function publish(request, response) {
 
 	if (response.ok) {
-		const blob = await response.blob();
-		const objectUrl = URL.createObjectURL(blob);
-		request.resolve(objectUrl);
+		const overridesJson = await response.json();
+		request.resolve(overridesJson);
 	} else {
 		request.reject(SingleFailedReason);
 	}
@@ -124,6 +123,19 @@ function debounceQueue() {
 	}
 
 	timer = setTimeout(flushQueue, DebounceTime);
+}
+
+async function fetchCollection(url){
+
+	const res = await fetch(url,{ method: 'GET' });
+
+	if(res.ok) {
+		const resJson = await res.json();
+		blobs.set(url, resJson);
+		return Promise.resolve(resJson);
+	} else {
+		return Promise.reject(SingleFailedReason);
+	}
 }
 
 function fetchWithQueuing(resource) {
@@ -287,11 +299,16 @@ function fetchOverride(formatFunc) {
 		url = new URL(url).pathname;
 		url = documentLocaleSettings.oslo.collection + url;
 
-		res = Promise.resolve(url);
+		res = fetchCollection(url);
 
 	}
-
+	res = res.catch(coalesceToNull);
 	return res;
+}
+
+function coalesceToNull() {
+
+	return null;
 }
 
 export function __clearWindowCache() {
