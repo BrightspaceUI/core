@@ -125,11 +125,10 @@ function debounceQueue() {
 	timer = setTimeout(flushQueue, DebounceTime);
 }
 
-async function fetchCollection(url){
+async function fetchCollection(url) {
+	const res = await fetch(url, { method: 'GET' });
 
-	const res = await fetch(url,{ method: 'GET' });
-
-	if(res.ok) {
+	if (res.ok) {
 		const resJson = await res.json();
 		blobs.set(url, resJson);
 		return Promise.resolve(resJson);

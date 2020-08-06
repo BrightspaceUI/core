@@ -1,14 +1,11 @@
-import { __clearWindowCache, getLocalizeResources, getLocalizeOverrideResources } from '../getLocalizeResources.js';
+import { __clearWindowCache, getLocalizeOverrideResources } from '../getLocalizeResources.js';
 import { expect } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
 const DefaultsGreek = { txtOne: 'One (el)', txtTwo: 'Two (el)' };
 const DefaultsEnglish = { txtOne: 'One (en)', txtTwo: 'Two (en)' };
-const LanguagesGreekEnglish = ['el-GR', 'el', 'en-GB', 'en', 'en-US'];
 const Overrides = { txtTwo: 'Two (override)' };
-const ResourceGreek = '/resolved/to/el.json';
-const ResourceEnglish = '/resolved/to/en.json';
 const ResourceOverrides = '/resolved/to/overrides.json';
 const UrlBatch = 'http://lms/path/to/batch';
 const UrlCollection = 'http://lms/path/to/collection';
@@ -18,21 +15,11 @@ const VersionPrev = 'W\\"abc123"';
 const OsloBatch = { batch: UrlBatch, collection: UrlCollection, version: VersionPrev };
 const OsloDisabled = { batch: null, collection: null, version: null };
 const OsloSingle = { batch: null, collection: UrlCollection, version: null };
-const SupportedLanguages = new Set(['el', 'en']);
 const UrlOverrides = `${UrlCollection}${ResourceOverrides}`;
-const UrlResourceEnglish = `http://cdn${ResourceEnglish}`;
-const UrlResourceGreek = `http://cdn${ResourceGreek}`;
-
-function filterFunc(language) {
-
-	return SupportedLanguages.has(language);
-}
 
 function formatFunc(language) {
-
 	return `http://cdn/resolved/to/${language}.json`;
 }
-
 
 describe('getLocalizeResources', () => {
 
@@ -83,7 +70,7 @@ describe('getLocalizeResources', () => {
 			json() {
 				return Promise.resolve(
 					Overrides
-				)
+				);
 			}
 		});
 
@@ -121,7 +108,7 @@ describe('getLocalizeResources', () => {
 			json() {
 				return Promise.resolve(
 					Overrides
-				)
+				);
 			}
 		});
 
@@ -178,10 +165,6 @@ describe('getLocalizeResources', () => {
 
 		sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 
-		let counter = 0;
-
-
-
 		const fetchStub = sinon.stub(window, 'fetch');
 		const formatFuncSpy = sinon.spy(formatFunc);
 		const matchSpy = sinon.spy(cacheFake, 'match');
@@ -200,9 +183,9 @@ describe('getLocalizeResources', () => {
 								['ETag', VersionNext],
 							],
 							json() {
-								() =>{
-									Overrides
-								}
+								() => {
+									Overrides;
+								};
 							},
 							body: JSON.stringify(Overrides)
 						}
