@@ -64,7 +64,7 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "karma-browserstack-launcher": "~1.4.0",
+    "karma-browserstack-launcher": "~1.6.0",
     "karma-sauce-launcher": "^4.1.4",
     "lit-analyzer": "^1",
     "mocha": "~8.0.1",
