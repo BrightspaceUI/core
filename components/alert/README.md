@@ -25,8 +25,8 @@ The `d2l-alert` component can be used to communicate important information relat
 - `type` (String, default: `'default'`): type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
 
 **Events:**
-* `d2l-alert-closed`: dispatched when the alert's close button is clicked
-* `d2l-alert-button-pressed`: dispatched when the alert's action button is clicked
+* `d2l-alert-close`: dispatched when the alert's close button is clicked
+* `d2l-alert-button-press`: dispatched when the alert's action button is clicked
 
 ## d2l-alert-toast
 
@@ -53,6 +53,8 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 - `subtext` (optional, String) The text that is displayed below the main alert message.
 - `type` (String, default: `'default'`): type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
 
+**Events:**
+* `d2l-alert-toast-close`: dispatched when the toast is closed
 
 ## Future Enhancements
 
