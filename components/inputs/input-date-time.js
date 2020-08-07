@@ -109,6 +109,8 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					@focus="${this._handleInputTimeFocus}"
 					.forceInvalid=${this.invalid}
 					?hidden="${timeHidden}"
+					@mouseout="${this._handleInputTimeBlur}"
+					@mouseover="${this._handleInputTimeFocus}"
 					label="${this.localize('components.input-date-time.time')}"
 					label-hidden
 					max-height="430"
