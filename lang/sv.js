@@ -31,6 +31,7 @@ export default {
 	"components.input-search.clear": "Rensa sökning",
 	"components.input-search.search": "Sökning",
 	"components.input-time-range.endTime": "Sluttid",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Starttid",
 	"components.list-item-drag-handle.default": "Byt ordning på åtgärder",
 	"components.list-item-drag-handle.keyboard": "Byt ordning på objekt",

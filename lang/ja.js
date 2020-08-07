@@ -31,6 +31,7 @@ export default {
 	"components.input-search.clear": "検索のクリア",
 	"components.input-search.search": "検索",
 	"components.input-time-range.endTime": "終了時刻",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "開始時刻",
 	"components.list-item-drag-handle.default": "アクションの並べ替え",
 	"components.list-item-drag-handle.keyboard": "項目の並べ替え",

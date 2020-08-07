@@ -31,6 +31,7 @@ export default {
 	"components.input-search.clear": "Effacer la recherche",
 	"components.input-search.search": "Rechercher",
 	"components.input-time-range.endTime": "Heure de fin",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Heure de début",
 	"components.list-item-drag-handle.default": "Réorganiser l'action",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments",

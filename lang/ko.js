@@ -31,6 +31,7 @@ export default {
 	"components.input-search.clear": "검색 지우기",
 	"components.input-search.search": "검색",
 	"components.input-time-range.endTime": "종료 시각",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "시작 시각",
 	"components.list-item-drag-handle.default": "작업 재정렬",
 	"components.list-item-drag-handle.keyboard": "항목 재정렬",

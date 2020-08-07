@@ -31,6 +31,7 @@ export default {
 	"components.input-search.clear": "Ryd søgning",
 	"components.input-search.search": "Søg",
 	"components.input-time-range.endTime": "Sluttidspunkt",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Starttidspunkt",
 	"components.list-item-drag-handle.default": "Omarranger handling",
 	"components.list-item-drag-handle.keyboard": "Omarranger elementer",

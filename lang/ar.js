@@ -31,6 +31,7 @@ export default {
 	"components.input-search.clear": "مسح البحث",
 	"components.input-search.search": "بحث",
 	"components.input-time-range.endTime": "وقت النهاية",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "وقت البدء",
 	"components.list-item-drag-handle.default": "إعادة ترتيب الإجراءات",
 	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد",
