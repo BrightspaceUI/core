@@ -10,8 +10,8 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 /**
  * A component for communicating important information relating to the state of the system and the user's work flow.
  * @slot - Default content placed inside of the component
- * @fires d2l-alert-closed - Dispatched when the alert's close button is clicked
- * @fires d2l-alert-button-pressed - Dispatched when the alert's action button is clicked
+ * @fires d2l-alert-close - Dispatched when the alert's close button is clicked
+ * @fires d2l-alert-button-press - Dispatched when the alert's action button is clicked
  */
 class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -192,15 +192,22 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	close() {
-		const event = new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true });
-		if (this.dispatchEvent(event)) {
+		// deprecated - event names should be present tense
+		if (this.dispatchEvent(new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true }))) {
+			this.hidden = true;
+		}
+		if (this.dispatchEvent(new CustomEvent('d2l-alert-close', { bubbles: true, composed: true, cancelable: true }))) {
 			this.hidden = true;
 		}
 	}
 
 	_onButtonClick() {
+		// deprecated - event names should be present tense
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-button-pressed', { bubbles: true, composed: true }
+		));
+		this.dispatchEvent(new CustomEvent(
+			'd2l-alert-button-press', { bubbles: true, composed: true }
 		));
 	}
 

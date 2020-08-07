@@ -20,26 +20,26 @@ describe('d2l-alert', () => {
 
 	describe('events', () => {
 
-		it('should fire "d2l-alert-closed" event when close button is clicked', async() => {
+		it('should fire "d2l-alert-close" event when close button is clicked', async() => {
 			const alert = await fixture(alertFixture);
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => closeButton.click());
-			await oneEvent(alert, 'd2l-alert-closed');
+			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 
-		it('should fire "d2l-alert-closed" event when close is called', async() => {
+		it('should fire "d2l-alert-close" event when close is called', async() => {
 			const alert = await fixture(alertFixture);
 			setTimeout(() => alert.close());
-			await oneEvent(alert, 'd2l-alert-closed');
+			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 
-		it('should fire "d2l-alert-button-pressed" event when action button is clicked', async() => {
+		it('should fire "d2l-alert-button-press" event when action button is clicked', async() => {
 			const alert = await fixture(alertFixture);
 			const actionButton = alert.shadowRoot.querySelector('d2l-button-subtle');
 			setTimeout(() => actionButton.click());
-			await oneEvent(alert, 'd2l-alert-button-pressed');
+			await oneEvent(alert, 'd2l-alert-button-press');
 		});
 
 	});
