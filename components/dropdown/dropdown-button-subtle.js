@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 /**
  * A "d2l-button-subtle" opener for dropdown content.
@@ -30,7 +31,7 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-button-subtle description="${this.description}" text=${this.text} icon="tier1:chevron-down" icon-right ?disabled=${this.disabled}></d2l-button-subtle>
+			<d2l-button-subtle description="${ifDefined(this.description)}" text=${this.text} icon="tier1:chevron-down" icon-right ?disabled=${this.disabled}></d2l-button-subtle>
 			<slot></slot>
 		`;
 	}
