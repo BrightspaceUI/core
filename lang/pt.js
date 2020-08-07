@@ -32,6 +32,7 @@ export default {
 	"components.input-search.clear": "Limpar pesquisa",
 	"components.input-search.search": "Pesquisar",
 	"components.input-time-range.endTime": "Hora final",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Hora de início",
 	"components.list-item-drag-handle.default": "Reorganizar ação",
 	"components.list-item-drag-handle.keyboard": "Reorganizar itens",

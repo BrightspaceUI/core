@@ -3,6 +3,7 @@ import { formatDateInISO,
 	formatTimeInISO,
 	getDateFromDateObj,
 	getDateFromISODate,
+	getDateFromISOTime,
 	getLocalDateTimeFromUTCDateTime,
 	getToday,
 	getUTCDateTimeFromLocalDateTime,
@@ -189,6 +190,15 @@ describe('date-time', () => {
 		});
 	});
 
+	describe('getDateFromISOTime', () => {
+		it('should return the correct date/time', () => {
+			const newToday = new Date('2018-02-12T20:00:00Z');
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
+			expect(getDateFromISOTime('12:10:30')).to.deep.equal(new Date(2018, 1, 12, 12, 10, 30));
+			clock.restore();
+		});
+	});
+
 	describe('getLocalDateTimeFromUTCDateTime', () => {
 		it('should return the correct date and time', () => {
 			expect(getLocalDateTimeFromUTCDateTime('2019-01-30T12:05:10.000Z')).to.equal('2019-01-30T07:05:10.000');
@@ -203,7 +213,7 @@ describe('date-time', () => {
 		let clock;
 		beforeEach(() => {
 			const newToday = new Date('2018-02-12T20:00:00Z');
-			clock = sinon.useFakeTimers(newToday.getTime());
+			clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 		});
 
 		afterEach(() => {

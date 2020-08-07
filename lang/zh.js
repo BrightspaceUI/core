@@ -32,6 +32,7 @@ export default {
 	"components.input-search.clear": "清除搜索",
 	"components.input-search.search": "搜索",
 	"components.input-time-range.endTime": "结束时间",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "开始时间",
 	"components.list-item-drag-handle.default": "重新排序操作",
 	"components.list-item-drag-handle.keyboard": "项目重新排序",

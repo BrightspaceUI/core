@@ -32,6 +32,7 @@ export default {
 	"components.input-search.clear": "Aramayı Temizle",
 	"components.input-search.search": "Ara",
 	"components.input-time-range.endTime": "Bitiş Saati",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Başlangıç Saati",
 	"components.list-item-drag-handle.default": "Eylemi yeniden sırala",
 	"components.list-item-drag-handle.keyboard": "Öğeleri yeniden sırala",

@@ -32,6 +32,7 @@ export default {
 	"components.input-search.clear": "Borrar búsqueda",
 	"components.input-search.search": "Buscar",
 	"components.input-time-range.endTime": "Hora de finalización",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.list-item-drag-handle.default": "Reordenar acciones",
 	"components.list-item-drag-handle.keyboard": "Reordenar elementos",

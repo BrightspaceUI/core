@@ -32,6 +32,7 @@ export default {
 	"components.input-search.clear": "Zoekopdracht wissen",
 	"components.input-search.search": "Zoeken",
 	"components.input-time-range.endTime": "Eindtijd",
+	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Starttijd",
 	"components.list-item-drag-handle.default": "Actie opnieuw ordenen",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw ordenen",
