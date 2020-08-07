@@ -52,6 +52,7 @@ class TemplatePrimarySecondary extends LitElement {
 			}
 			header {
 				grid-area: header;
+				z-index: 2;
 			}
 			.d2l-template-primary-secondary-content {
 				display: grid;
@@ -60,6 +61,7 @@ class TemplatePrimarySecondary extends LitElement {
 				grid-template-columns: minmax(320px, 2fr) 1px minmax(320px, 1fr);
 				grid-template-rows: auto;
 				overflow: hidden;
+				z-index: 1;
 			}
 			main {
 				grid-area: primary;
@@ -81,6 +83,7 @@ class TemplatePrimarySecondary extends LitElement {
 				box-shadow: 0 -2px 4px rgba(73, 76, 78, 0.2); /* ferrite */
 				grid-area: footer;
 				padding: 0.75rem 1rem;
+				z-index: 2; /* ensures the footer box-shadow is over main areas with background colours set */
 			}
 			@media only screen and (max-width: 768px) {
 				.d2l-template-primary-secondary-container {
