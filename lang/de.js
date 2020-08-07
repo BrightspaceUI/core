@@ -12,6 +12,7 @@ export default {
 	"components.form-element.input.email.typeMismatch": "",
 	"components.form-element.input.number.rangeOverflow": "",
 	"components.form-element.input.number.rangeUnderflow": "",
+	"components.form-element.input.text.tooShort": "",
 	"components.form-element.input.url.typeMismatch": "",
 	"components.form-element.valueMissing": "{label} ist erforderlich.",
 	"components.form-error-summary.errorSummary": "",
