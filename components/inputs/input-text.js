@@ -283,6 +283,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
+				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
 				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			} else if (prop === 'validationError') {
@@ -357,7 +358,6 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 
 	_handleBlur(e) {
 		this._focused = false;
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 
 		/**
 		 * This is needed only for IE11 and Edge
@@ -369,7 +369,9 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	_handleChange() {
+	async _handleChange() {
+		await this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+
 		// Change events aren't composed, so we need to re-dispatch
 		this.dispatchEvent(new CustomEvent(
 			'change',
@@ -381,10 +383,9 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		this._focused = true;
 	}
 
-	async _handleInput(e) {
+	_handleInput(e) {
 		this.value = e.target.value;
-		await this.updateComplete;
-		this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+		return true;
 	}
 
 	_handleInvalid(e) {
