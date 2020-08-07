@@ -186,7 +186,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		} else if (this.minValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorMinDateOnly`, {
-					minDate: formatDateTime(getDateFromISODateTime(this.minValue), {format: 'medium'})
+					minDate: formatDateTime(new Date(this.minValue), {format: 'medium'})
 				}
 			);
 		}
