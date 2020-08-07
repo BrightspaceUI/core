@@ -19,6 +19,7 @@ export default {
 	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Startdato",
 	"components.input-date-time-range.endDate": "Slutdato",
+	"components.input-date-time-range.errorBadInput": "",
 	"components.input-date-time-range.startDate": "Startdato",
 	"components.input-date-time.date": "Dato",
 	"components.input-date-time.errorMaxDateOnly": "",

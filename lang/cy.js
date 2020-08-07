@@ -19,6 +19,7 @@ export default {
 	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Dyddiad Dechrau",
 	"components.input-date-time-range.endDate": "Dyddiad Dod i Ben",
+	"components.input-date-time-range.errorBadInput": "",
 	"components.input-date-time-range.startDate": "Dyddiad Dechrau",
 	"components.input-date-time.date": "",
 	"components.input-date-time.time": "",
