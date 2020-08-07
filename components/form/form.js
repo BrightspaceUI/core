@@ -30,7 +30,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._validationCustoms = new Set();
 		this._errors = new Map();
 
-		this.addEventListener('d2l-form-errors-changed', this._formErrorsChanged);
+		this.addEventListener('d2l-form-errors-change', this._formErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
@@ -126,7 +126,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		ele.setAttribute('aria-invalid', 'false');
 	}
 
-	_formErrorsChanged(e) {
+	_formErrorsChange(e) {
 		const errors = e.detail.errors;
 		if (this._errors.has(e.target)) {
 			e.stopPropagation();

@@ -281,7 +281,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	_notifyFormErrorsChanged(errors) {
 		const detail = { bubbles: true, composed: true, detail: { errors } };
-		this.dispatchEvent(new CustomEvent('d2l-form-errors-changed', detail));
+		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
 	}
 
 	_validationCustomConnected(e) {
