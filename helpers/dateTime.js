@@ -66,6 +66,13 @@ export function getDateFromISODate(val) {
 	return getDateFromDateObj(date);
 }
 
+export function getDateFromISODateTime(val) {
+	if (!val) return null;
+	const date = parseISODateTime(val);
+
+	return new Date(date.year, date.month - 1, date.date, date.hours, date.minutes, date.seconds);
+}
+
 export function getDateFromISOTime(val) {
 	if (!val) return null;
 	const time = parseISOTime(val);
