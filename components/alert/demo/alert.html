@@ -73,6 +73,14 @@
 
 	</d2l-demo-page>
 
+	<script type="module">
+		document.body.addEventListener('d2l-alert-close', (e) => {
+			console.log('d2l-alert-close', e);
+		});
+		document.body.addEventListener('d2l-alert-button-press', (e) => {
+			console.log('d2l-alert-button-press', e);
+		});
+	</script>
 </body>
 
 </html>
