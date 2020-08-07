@@ -356,8 +356,9 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		return 'text';
 	}
 
-	_handleBlur(e) {
+	async _handleBlur(e) {
 		this._focused = false;
+		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 
 		/**
 		 * This is needed only for IE11 and Edge
@@ -369,9 +370,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	async _handleChange() {
-		await this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
-
+	_handleChange() {
 		// Change events aren't composed, so we need to re-dispatch
 		this.dispatchEvent(new CustomEvent(
 			'change',
