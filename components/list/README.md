@@ -112,8 +112,8 @@ render() {
 }
 ```
 Where the parameters correspond to the slots of `d2l-list-item`:
-- illustration (TemplateResult):  Provide a illustration for your list item.
-- content (TemplateResult): Core content of the list item. You can use content components such as `d2l-list-item-content` here. (This corresponds to the default slot in `d2l-list-item`.
+- illustration (TemplateResult):  Provide an illustration for your list item.
+- content (TemplateResult): Core content of the list item, such as a d2l-list-item-content element.
 - actions (TemplateResult): Secondary actions for the list item.
 
 **Properties:**
