@@ -65,8 +65,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			::slotted([slot="content"]),
 			::slotted([slot="actions"]) {
 				grid-row: 1 / 2;
-				overflow: hidden;
-				position: relative;
 			}
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
@@ -80,6 +78,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="content"]) {
 				grid-column: content-start / content-end;
+				overflow-x: hidden;
+				position: relative;
 			}
 
 			::slotted([slot="actions"]) {
