@@ -50,8 +50,8 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		const styles = [ css`
 			:host {
 				display: block;
-				position: relative;
 				margin-top: -1px;
+				position: relative;
 			}
 			:host[hidden] {
 				display: none;
@@ -78,24 +78,21 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			}
 			d2l-list-item-generic-layout {
 				background: white;
+				border-bottom: 1px solid var(--d2l-color-mica);
+				border-top: 1px solid var(--d2l-color-mica);
 				transform: rotate(1deg);
 			}
 			d2l-list-item-generic-layout[data-separators="none"] {
+				border-bottom: 1px solid transparent;
 				border-top: 1px solid transparent;
-				border-bottom: 1px solid transparent;
-			}
-			d2l-list-item-generic-layout {
-				border-bottom: 1px solid transparent;
-				border-bottom: 1px solid var(--d2l-color-mica);
-				border-top: 1px solid var(--d2l-color-mica);
 			}
 			[slot="content"].d2l-list-item-content-extend-separators {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
 			a[href].d2l-list-item-link {
-				width: 100%;
 				height: 100%;
+				width: 100%;
 			}
 			.d2l-list-item-content ::slotted(*) {
 				margin-top: 0.05rem;
@@ -108,18 +105,18 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				outline: none;
 			}
 			[slot="content"] {
-				justify-content: stretch;
-				padding: 0.55rem 0px;
 				display: flex;
+				justify-content: stretch;
+				padding: 0.55rem 0;
 			}
 			[slot="content"] ::slotted([slot="illustration"]) {
+				border-radius: 6px;
+				flex-grow: 0;
+				flex-shrink: 0;
 				margin: 0.15rem 0.9rem 0.15rem 0;
 				max-height: 2.6rem;
 				max-width: 4.5rem;
-				border-radius: 6px;
 				overflow: hidden;
-				flex-grow: 0;
-				flex-shrink: 0;
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
 				margin-left: 0.9rem;
@@ -130,9 +127,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			}
 			::slotted([slot="actions"]) {
 				display: grid;
+				gap: 0.3rem;
 				grid-auto-columns: 1fr;
 				grid-auto-flow: column;
-				gap: 0.3rem;
 				margin: 0.15rem 0;
 			}
 
@@ -180,21 +177,21 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				background-color: var(--d2l-color-regolith);
 			}
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
-				background-color: #F3FBFF;
+				background-color: #f3fbff;
 			}
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout,
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing {
-				border-color: #79B5DF;
+				border-color: #79b5df;
 			}
 			:host([selected]:not([disabled])) .d2l-list-item-active-border,
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
-				position: absolute;
-				width: 100%;
+				background: #79b5df;
 				bottom: 0;
 				height: 1px;
-				z-index: 5;
+				position: absolute;
 				transform: rotate(1deg);
-				background: #79B5DF;
+				width: 100%;
+				z-index: 5;
 			}
 		`];
 
