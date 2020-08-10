@@ -28,6 +28,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 - `min` (String): for number inputs, minimum value
 - `minlength` (Number): imposes a lower character limit
 - `name` (String): name of the input
+- `novalidate` (Boolean): disables built-in validation
 - `pattern` (String): regular expression pattern to validate the value
 - `placeholder` (String): placeholder text
 - `prevent-submit` (Boolean): prevents pressing ENTER from submitting forms
