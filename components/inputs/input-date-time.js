@@ -162,14 +162,14 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		if (this.minValue && this.maxValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorOutsideRange`, {
-					minDate: formatDateTime(new Date(this.minValue), {format: 'medium'}),
-					maxDate: formatDateTime(new Date(this.maxValue), {format: 'medium'})
+					minDate: formatDateTime(getDateFromISODateTime(this.minValue), {format: 'medium'}),
+					maxDate: formatDateTime(getDateFromISODateTime(this.maxValue), {format: 'medium'})
 				}
 			);
 		} else if (this.maxValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorMaxDateOnly`, {
-					maxDate: formatDateTime(new Date(this.maxValue), {format: 'medium'})
+					maxDate: formatDateTime(getDateFromISODateTime(this.maxValue), {format: 'medium'})
 				}
 			);
 		}
@@ -181,14 +181,14 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		if (this.minValue && this.maxValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorOutsideRange`, {
-					minDate: formatDateTime(new Date(this.minValue), {format: 'medium'}),
-					maxDate: formatDateTime(new Date(this.maxValue), {format: 'medium'})
+					minDate: formatDateTime(getDateFromISODateTime(this.minValue), {format: 'medium'}),
+					maxDate: formatDateTime(getDateFromISODateTime(this.maxValue), {format: 'medium'})
 				}
 			);
 		} else if (this.minValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorMinDateOnly`, {
-					minDate: formatDateTime(new Date(this.minValue), {format: 'medium'})
+					minDate: formatDateTime(getDateFromISODateTime(this.minValue), {format: 'medium'})
 				}
 			);
 		}

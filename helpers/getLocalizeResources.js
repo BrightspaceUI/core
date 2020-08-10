@@ -25,9 +25,8 @@ let debug = false;
 async function publish(request, response) {
 
 	if (response.ok) {
-		const blob = await response.blob();
-		const objectUrl = URL.createObjectURL(blob);
-		request.resolve(objectUrl);
+		const overridesJson = await response.json();
+		request.resolve(overridesJson);
 	} else {
 		request.reject(SingleFailedReason);
 	}
@@ -126,6 +125,18 @@ function debounceQueue() {
 	timer = setTimeout(flushQueue, DebounceTime);
 }
 
+async function fetchCollection(url) {
+	const res = await fetch(url, { method: 'GET' });
+
+	if (res.ok) {
+		const resJson = await res.json();
+		blobs.set(url, resJson);
+		return Promise.resolve(resJson);
+	} else {
+		return Promise.reject(SingleFailedReason);
+	}
+}
+
 function fetchWithQueuing(resource) {
 
 	const promise = new Promise((resolve, reject) => {
@@ -184,9 +195,7 @@ async function fetchWithCaching(resource) {
 		}
 	}
 
-	const blob = await cacheValue.blob();
-	const objectUrl = URL.createObjectURL(blob);
-	return objectUrl;
+	return await cacheValue.json();
 }
 
 function fetchWithPooling(resource) {
@@ -268,7 +277,7 @@ function shouldFetchOverrides() {
 	return isOsloAvailable;
 }
 
-function fetchOverride(formatFunc, fetchFunc) {
+function fetchOverride(formatFunc) {
 
 	let url, res;
 
@@ -289,13 +298,10 @@ function fetchOverride(formatFunc, fetchFunc) {
 		url = new URL(url).pathname;
 		url = documentLocaleSettings.oslo.collection + url;
 
-		res = Promise.resolve(url);
+		res = fetchCollection(url);
 
 	}
-
-	res = res.then(fetchFunc);
 	res = res.catch(coalesceToNull);
-
 	return res;
 }
 
@@ -318,6 +324,28 @@ export function __enableDebugging() {
 	// Used to enable debug logging during development.
 
 	debug = true;
+}
+
+export async function getLocalizeOverrideResources(
+	langCode,
+	translations,
+	formatFunc
+) {
+	const promises = [];
+
+	promises.push(translations);
+
+	if (shouldFetchOverrides()) {
+		const overrides = fetchOverride(formatFunc);
+		promises.push(overrides);
+	}
+
+	const results = await Promise.all(promises);
+
+	return {
+		language: langCode,
+		resources: Object.assign({}, ...results)
+	};
 }
 
 export async function getLocalizeResources(
