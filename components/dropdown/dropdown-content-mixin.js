@@ -264,6 +264,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.opened = true;
 	}
 
+	async requestResize() {
+		if (!this.opened) {
+			return;
+		}
+		await this.__position();
+	}
+
 	/**
 	 * Private.
 	 */
