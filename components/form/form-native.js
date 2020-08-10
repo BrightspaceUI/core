@@ -14,7 +14,10 @@ class FormNative extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			action: { type: String },
+			encoding: { type: String },
+			enctype: { type: String },
 			method: { type: String },
+			target: { type: String },
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
 			_errors: { type: Object }
 		};
@@ -25,6 +28,8 @@ class FormNative extends LocalizeCoreElement(LitElement) {
 		this._onUnload = this._onUnload.bind(this);
 		this._onNativeSubmit = this._onNativeSubmit.bind(this);
 
+		this._form = document.createElement('form');
+
 		this.trackChanges = false;
 		this._tooltips = new Map();
 		this._validationCustoms = new Set();
@@ -32,6 +37,46 @@ class FormNative extends LocalizeCoreElement(LitElement) {
 
 		this.addEventListener('d2l-form-errors-change', this._formErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+	}
+
+	get action() {
+		return this._form.action;
+	}
+
+	set action(val) {
+		this._form.action = val;
+	}
+
+	get encoding() {
+		return this._form.encoding;
+	}
+
+	set encoding(val) {
+		this._form.encoding = val;
+	}
+
+	get enctype() {
+		return this._form.enctype;
+	}
+
+	set enctype(val) {
+		this._form.enctype = val;
+	}
+
+	get method() {
+		return this._form.method;
+	}
+
+	set method(val) {
+		this._form.method = val;
+	}
+
+	get target() {
+		return this._form.target;
+	}
+
+	set target(val) {
+		this._form.target = val;
 	}
 
 	connectedCallback() {
@@ -50,7 +95,6 @@ class FormNative extends LocalizeCoreElement(LitElement) {
 		this.addEventListener('input', this._onFormElementChange);
 		this.addEventListener('focusout', this._onFormElementChange);
 
-		this._form = document.createElement('form');
 		this._form.addEventListener('submit', this._onNativeSubmit);
 		this._form.id = getUniqueId();
 		this._form.noValidate = true;
@@ -160,6 +204,7 @@ class FormNative extends LocalizeCoreElement(LitElement) {
 
 	_onNativeSubmit(e) {
 		e.preventDefault();
+		e.stopPropagation();
 		const submitter = e.submitter || getComposedActiveElement();
 		this._submit(submitter);
 	}
@@ -189,9 +234,7 @@ class FormNative extends LocalizeCoreElement(LitElement) {
 				nativeFormData = { ...nativeFormData, ...eleData };
 			}
 		}
-		const formData = { ...nativeFormData, ...customFormData };
-		const event = new CustomEvent('d2l-form-submit', { bubbles: true, cancelable: true, detail: { formData } });
-		if (this.dispatchEvent(event)) {
+		if (this.dispatchEvent(new CustomEvent('submit', { bubbles: true, cancelable: true }))) {
 			for (const entry of Object.entries(customFormData)) {
 				const input = document.createElement('input');
 				input.type = 'hidden';
