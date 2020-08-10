@@ -264,7 +264,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.opened = true;
 	}
 
-	async requestResize() {
+	async resize() {
 		if (!this.opened) {
 			return;
 		}
@@ -389,10 +389,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	__onResize() {
-		if (!this.opened) {
-			return;
-		}
-		this.__position();
+		this.resize();
 	}
 
 	async __openedChanged(newValue) {

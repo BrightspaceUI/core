@@ -210,7 +210,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 * `default`: Anything inside of `d2l-dropdown-content` that isn't in the `header` or `footer` slots appears as regular content
 
 **Methods:**
-* `async requestResize()`: Call if the size of the content changes due to a change in
+* `async resize()`: Call if the size of the content changes due to a change in
 a nested component. The nested component may choose to fire a custom event, which
 the component containing the `d2l-dropdown-content` can catch and call this method.
 
