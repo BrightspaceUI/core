@@ -68,9 +68,9 @@ export function getDateFromISODate(val) {
 
 export function getDateFromISODateTime(val) {
 	if (!val) return null;
-	const date = parseISODateTime(val);
-
-	return new Date(Date.UTC(date.year, date.month - 1, date.date, date.hours, date.minutes, date.seconds));
+	const parsed = parseISODateTime(val);
+	const localDateTime = convertUTCToLocalDateTime(parsed);
+	return new Date(localDateTime.year, localDateTime.month - 1, localDateTime.date, localDateTime.hours, localDateTime.minutes, localDateTime.seconds);
 }
 
 export function getDateFromISOTime(val) {

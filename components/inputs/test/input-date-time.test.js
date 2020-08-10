@@ -1,6 +1,5 @@
 import '../input-date-time.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -49,10 +48,8 @@ describe('d2l-input-date-time', () => {
 		});
 
 		describe('validation', () => {
-			const startDate = new Date(Date.UTC(2018, 7, 27, 3, 30, 0));
-			const endDate = new Date(Date.UTC(2018, 8, 30, 17, 30, 0));
-			const expectedStart = formatDateTime(startDate, {format: 'medium'});
-			const expectedEnd = formatDateTime(endDate, {format: 'medium'});
+			const expectedStart = 'Aug 26, 2018 11:30 PM';
+			const expectedEnd = 'Sep 30, 2018 1:30 PM';
 
 			it('should change value if min and max value and typed date before minValue', async() => {
 				const elem = await fixture(minMaxFixture);
