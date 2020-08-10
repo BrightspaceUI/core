@@ -34,6 +34,24 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 - `d2l-list-selection-change`: dispatched when the selection state changes
 
+### Accessibility Grid
+
+The `grid` attribute will enable a table-like keyboard grid that allows a user to traverse list items with their keyboard. Left and right will switch if using an RTL language.
+
+* **ArrowLeft** moves to the next left item in a row
+* **ArrowRight** moves to the next right item in a row
+* **ArrowUp** moves to the same item in the row above, if available
+* **ArrowDown** moves to the same item in the row below, if available
+* **PageUp** moves to the same item in the row **five** rows above, if available
+* **PageDown** moves to the same item in the row **five** rows below, if available
+* **Home** moves to the first item in the row
+* **Ctrl+Home** moves to the first item of the first row
+* **End** moves to the last item in the row
+* **Ctrl+End** moves to the last item of the last row
+* **Space** and **Enter** simulate a click on the focused item
+
+**Note about actions:** Actions must be placed in the `actions` slot. The grid does not support actions/focusable items that are placed in the content area. The list item currently only supports navigation with `href` as the content action.
+
 ## d2l-list-item
 
 The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a link for navigation, and selection.
@@ -78,6 +96,13 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
 
+**Events**
+
+- `d2l-list-item-position-change`: dispatched when a draggable list item's position changes in the list
+
+**Accessibility**
+
+- `drag-handle-text`: The label for screenreaders for the drag handle. If implementing drag 'n' drop, you should change this to dynamically announce what the drag-handle is moving for screenreaders for use in keyboard mode.
 
 ## d2l-list-item-content
 
@@ -93,6 +118,89 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
   </d2l-list-item-content>
 </d2l-list-item>
 ```
+
+## Drag 'n' drop lists
+
+The `d2l-list` supports drag 'n' drop.
+
+![List](./screenshots/dragndrop.gif?raw=true)
+
+Because the list itself is a rendering component, there is some light work involved in hooking up this behaviour.
+
+- `d2l-list-item` components within the list must be `draggable` and have `key` set to something unique
+- Reordering and re-rendering is the controlling component's responsibility
+
+Here is a simple component example that adds drag 'n' drop to a list:
+
+```js
+import '../list-item.js';
+import '../list.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
+import { repeat } from 'lit-html/directives/repeat';
+
+class ListDemoDragNDropUsage extends LitElement {
+  static get properties() {
+    return {
+      list: { type: Array }
+    };
+  }
+
+  constructor() {
+    super();
+    this.list = [
+      {
+        key: '1',
+        content: 'I am another cool list item'
+      },
+      {
+        key: '2',
+        content: 'I am an extra cool list item'
+      },
+      {
+        key: '3',
+        content: 'I am a very cool list item'
+      }
+    ];
+  }
+
+  render() {
+    return html`
+      <d2l-list @d2l-list-item-position-change="${this._moveItems}">
+        ${repeat(this.list, (item) => item.key, (item) => html`
+          <d2l-list-item draggable key="${item.key}">
+            ${item.content}
+          </d2l-list-item>
+        `)}
+      </d2l-list>
+    `;
+  }
+
+  _moveItems(e) {
+    e.detail.reorder(this.list, { keyFn: (item) => item.key });
+    this.requestUpdate('list', []);
+  }
+}
+```
+
+### d2l-list-item-position-change Event Details
+
+This event includes a detail object with helper methods attached to it.
+
+**Methods**
+
+- `announceMove(list, {announceFn, keyFn})`: Announces a move event to screenreaders
+  - `list`: The array of items
+  - `announceFn(any, Number)`: A callback function that takes a given item in the array and its index, and returns the text to announce
+  - `keyFn(any)`: A callback function that takes a given item in the array and returns its key
+- `fetchPosition(list, key, keyFn)`:
+  - `list`: The array of items
+  - `key`: The key of the item to fetch the position of
+  - `keyFn(any)`: A callback function that takes a given item in the array and returns its key
+- `reorder(list, {announceFn, keyFn})`: Reorders an array of items in-place using the information from the event
+  - `list`: The array of items
+  - `announceFn(any, Number) (optional)`: A callback function that takes a given item in the array and its index, and returns the text to announce
+  - `keyFn(any)`: A callback function that takes a given item in the array and returns its key
+
 
 ## Future Enhancements
 
