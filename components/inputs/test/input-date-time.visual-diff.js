@@ -150,6 +150,10 @@ describe('d2l-input-date-time', () => {
 		}
 
 		describe('function', () => {
+			before(async() => {
+				await page.reload();
+			});
+
 			after(async() => {
 				await page.reload();
 			});
