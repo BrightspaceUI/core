@@ -50,6 +50,8 @@ The `grid` attribute will enable a table-like keyboard grid that allows a user t
 * **Ctrl+End** moves to the last item of the last row
 * **Space** and **Enter** simulate a click on the focused item
 
+**Note about actions:** Actions must be placed in the `actions` slot. The grid does not support actions/focusable items that are placed in the content area. The list item currently only supports navigation with `href` as the content action.
+
 ## d2l-list-item
 
 The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a link for navigation, and selection.
