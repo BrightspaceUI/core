@@ -1,17 +1,17 @@
 import '../../validation/validation-custom.js';
-import '../form.js';
+import '../form-native.js';
 import './form-element.js';
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit-element/lit-element.js';
 
-describe('form-element', () => {
+describe('d2l-form-native', () => {
 
 	const _validateCheckbox = e => {
 		e.detail.resolve(e.detail.forElement.checked);
 	};
 
 	const formFixture = html`
-		<d2l-form>
+		<d2l-form-native>
 			<d2l-validation-custom for="mycheck" @d2l-validation-custom-validate=${_validateCheckbox} failure-text="The checkbox failed validation" >
 			</d2l-validation-custom>
 			<input type="checkbox" id="mycheck" name="checkers" value="red-black">
@@ -28,7 +28,7 @@ describe('form-element', () => {
 			<input type="radio" id="myradio" name="optional-radio">
 			<label for="name">Name</label>
 			<d2l-test-form-element id="custom-ele"></d2l-test-form-element>
-		</d2l-form>
+		</d2l-form-native>
 	`;
 
 	let form;

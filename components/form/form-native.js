@@ -9,7 +9,7 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
 import { ValidationType } from './form-element-mixin.js';
 
-class Form extends LocalizeCoreElement(LitElement) {
+class FormNative extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -249,4 +249,4 @@ class Form extends LocalizeCoreElement(LitElement) {
 	}
 
 }
-customElements.define('d2l-form', Form);
+customElements.define('d2l-form-native', FormNative);
