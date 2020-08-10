@@ -1,5 +1,6 @@
 import '../input-date-time.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -48,6 +49,11 @@ describe('d2l-input-date-time', () => {
 		});
 
 		describe('validation', () => {
+			const startDate = new Date(Date.UTC(2018, 7, 27, 3, 30, 0));
+			const endDate = new Date(Date.UTC(2018, 8, 30, 17, 30, 0));
+			const expectedStart = formatDateTime(startDate, {format: 'medium'});
+			const expectedEnd = formatDateTime(endDate, {format: 'medium'});
+
 			it('should change value if min and max value and typed date before minValue', async() => {
 				const elem = await fixture(minMaxFixture);
 				const inputElem = getChildElem(elem, 'd2l-input-date');
@@ -57,7 +63,7 @@ describe('d2l-input-date-time', () => {
 				await aTimeout(1);
 				expect(elem.value).to.equal('2018-02-02T05:00:00.000Z');
 				expect(elem.invalid).to.be.true;
-				expect(elem.validationError).to.equal('Date must be between Aug 26, 2018 11:30 PM and Sep 30, 2018 1:30 PM');
+				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
 
 			it('should change value if min and max value and typed date after maxValue', async() => {
@@ -69,22 +75,22 @@ describe('d2l-input-date-time', () => {
 				await aTimeout(1);
 				expect(elem.value).to.equal('2020-02-02T05:00:00.000Z');
 				expect(elem.invalid).to.be.true;
-				expect(elem.validationError).to.equal('Date must be between Aug 26, 2018 11:30 PM and Sep 30, 2018 1:30 PM');
+				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
 
 			it('should change value if min value and typed date before minValue', async() => {
-				const elem = await fixture('<d2l-input-date-time label="label text" min-value="2018-08-27T13:30:00Z"></d2l-input-date-time>');
+				const elem = await fixture('<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" ></d2l-input-date-time>');
 				const inputDateElem = getChildElem(elem, 'd2l-input-date');
-				inputDateElem.value = '2018-08-27';
+				inputDateElem.value = '2018-08-26';
 				setTimeout(() => dispatchEvent(inputDateElem, 'change'));
 				const inputTimeElem = getChildElem(elem, 'd2l-input-time');
-				inputTimeElem.value = '09:29:00';
+				inputTimeElem.value = '23:29:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
 				await oneEvent(elem, 'change');
 				await aTimeout(1);
-				expect(elem.value).to.equal('2018-08-27T13:29:00.000Z');
+				expect(elem.value).to.equal('2018-08-27T03:29:00.000Z');
 				expect(elem.invalid).to.be.true;
-				expect(elem.validationError).to.equal('Date must be after Aug 27, 2018 9:30 AM');
+				expect(elem.validationError).to.equal(`Date must be after ${expectedStart}`);
 			});
 
 			it('should change value if max value and typed date after maxValue', async() => {
@@ -99,7 +105,7 @@ describe('d2l-input-date-time', () => {
 				await aTimeout(1);
 				expect(elem.value).to.equal('2018-09-30T17:31:00.000Z');
 				expect(elem.invalid).to.be.true;
-				expect(elem.validationError).to.equal('Date must be before Sep 30, 2018 1:30 PM');
+				expect(elem.validationError).to.equal(`Date must be before ${expectedEnd}`);
 			});
 		});
 	});
