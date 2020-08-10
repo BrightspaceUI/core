@@ -25,6 +25,8 @@ const _localizeInputElement = (localize, ele, labelText) => {
 			return _localizeInputUrlElement(localize, ele, labelText);
 		case 'email':
 			return _localizeInputEmailElement(localize, ele, labelText);
+		case 'text':
+			return _localizeInputTextElement(localize, ele, labelText);
 		default:
 			return _localizeGenericElement(localize, ele, labelText);
 	}
@@ -44,7 +46,7 @@ const _localizeInputNumberElement = (localize, ele, labelText) => {
 const _localizeInputUrlElement = (localize, ele, labelText) => {
 	switch (true) {
 		case ele.validity.typeMismatch:
-			return localize('components.form-element.input.url.typeMismatch', { label: labelText });
+			return localize('components.form-element.input.url.typeMismatch');
 		default:
 			return _localizeGenericElement(localize, ele, labelText);
 	}
@@ -53,7 +55,16 @@ const _localizeInputUrlElement = (localize, ele, labelText) => {
 const _localizeInputEmailElement = (localize, ele, labelText) => {
 	switch (true) {
 		case ele.validity.typeMismatch:
-			return localize('components.form-element.input.email.typeMismatch', { label: labelText });
+			return localize('components.form-element.input.email.typeMismatch');
+		default:
+			return _localizeGenericElement(localize, ele, labelText);
+	}
+};
+
+const _localizeInputTextElement = (localize, ele, labelText) => {
+	switch (true) {
+		case ele.validity.tooShort:
+			return localize('components.form-element.input.text.tooShort', { label: labelText, minlength: formatNumber(ele.minLength) });
 		default:
 			return _localizeGenericElement(localize, ele, labelText);
 	}
