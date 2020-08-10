@@ -542,7 +542,18 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async reset(allowDisabled) {
-		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
+		let date;
+		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
+		else if (isDateInRange(this._today, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) date = this._today;
+		else {
+			if (this.minValue && this.maxValue) {
+				const diffToMin = Math.abs(this._today.getTime() - getDateFromISODate(this.minValue).getTime());
+				const diffToMax = Math.abs(this._today.getTime() - getDateFromISODate(this.maxValue).getTime());
+				if (diffToMin < diffToMax) date = getDateFromISODate(this.minValue);
+				else date = getDateFromISODate(this.maxValue);
+			} else if (this.minValue) date = getDateFromISODate(this.minValue);
+			else if (this.maxValue) date = getDateFromISODate(this.maxValue);
+		}
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 		await this.updateComplete;
