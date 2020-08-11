@@ -1,4 +1,5 @@
 import { isCustomFormElement, tryGetLabelText } from './form-helper.js';
+import { announce } from '../../helpers/announce.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 export const ValidationType = {
@@ -105,6 +106,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.validationError = null;
 
 		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+
+		this.addEventListener('blur', (e) => {
+			if (!this.checkValidity()) {
+				announce(`${this.localize('components.form-element.defaultError', { label: this.labelText })} ${this.validationError}`);
+			}
+		});
 	}
 
 	updated(changedProperties) {
@@ -176,6 +183,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				break;
 			case ValidationType.UPDATE_EXISTING_ERRORS:
 				if (this.validationError && errors.length > 0) {
+					if (errors[0] !== this.validationError) announce(`${this.localize('components.form-element.defaultError', { label: this.labelText })} ${errors[0]}`);
 					this.validationError = errors[0];
 				} else {
 					this.validationError = null;
