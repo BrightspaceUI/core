@@ -30,6 +30,18 @@ describe('dismissible', () => {
 		document.removeEventListener.restore();
 	});
 
+	it('should remove event listener when stack is empty via ESC', () => {
+		setDismissible();
+		pressEscape();
+		expect(document.removeEventListener.called).to.be.true;
+	});
+
+	it('should remove event listener when stack is empty via clear', () => {
+		const id = setDismissible();
+		clearDismissible(id);
+		expect(document.removeEventListener.calledOnce).to.be.true;
+	});
+
 	it('should call callback on ESC', async(done) => {
 		setDismissible(() => done());
 		pressEscape();
@@ -72,18 +84,6 @@ describe('dismissible', () => {
 				pressEscape();
 			});
 		});
-	});
-
-	it('should remove event listener when stack is empty via ESC', () => {
-		setDismissible();
-		pressEscape();
-		expect(document.removeEventListener.calledOnce).to.be.true;
-	});
-
-	it('should remove event listener when stack is empty via clear', () => {
-		const id = setDismissible();
-		clearDismissible(id);
-		expect(document.removeEventListener.calledOnce).to.be.true;
 	});
 
 });
