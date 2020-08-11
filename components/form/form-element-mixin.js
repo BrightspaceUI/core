@@ -106,8 +106,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.validationError = null;
 
 		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+	}
 
-		this.addEventListener('blur', (e) => {
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.addEventListener('blur', () => {
 			if (!this.checkValidity()) {
 				announce(`${this.localize('components.form-element.defaultError', { label: this.labelText })} ${this.validationError}`);
 			}
