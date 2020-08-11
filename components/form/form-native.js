@@ -8,6 +8,7 @@ import { ValidationType } from './form-element-mixin.js';
  * These interactive controls are submitted using a native HTML form submission.
  * @slot - The native and custom form elements that participate in validation and submission
  * @fires submit - Dispatched when the form is submitted
+ * @fires formdata - Dispatched after the entry list representing the form's data is constructed. This happens when the form is submitted.
  */
 class FormNative extends FormMixin(LitElement) {
 
@@ -67,6 +68,11 @@ class FormNative extends FormMixin(LitElement) {
 		this._form.target = val;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this._form.addEventListener('formdata', this._onFormData);
+	}
+
 	render() {
 		const errors = [...this._errors]
 			.filter(([, eleErrors]) => eleErrors.length > 0)
@@ -83,9 +89,7 @@ class FormNative extends FormMixin(LitElement) {
 			return;
 		}
 		this._dirty = false;
-		if (!this.dispatchEvent(new CustomEvent('submit', { bubbles: true, cancelable: true }))) {
-			return;
-		}
+
 		let customFormData = {};
 		const formElements = findFormElements(this);
 		for (const ele of formElements) {
@@ -94,14 +98,23 @@ class FormNative extends FormMixin(LitElement) {
 				customFormData = { ...customFormData, ...eleData };
 			}
 		}
+		const tempInputs = [];
 		for (const entry of Object.entries(customFormData)) {
 			const input = document.createElement('input');
 			input.type = 'hidden';
 			input.name = entry[0];
 			input.value = entry[1];
 			this._form.appendChild(input);
+			tempInputs.push(input);
 		}
-		this._form.submit();
+		const submit = this.dispatchEvent(new CustomEvent('submit', { bubbles: true, cancelable: true }));
+		this.dispatchEvent(new CustomEvent('formdata', { detail: { formData: new FormData(this._form) } }));
+		if (submit) {
+			this._form.submit();
+		}
+		for (const input of tempInputs) {
+			input.remove();
+		}
 	}
 
 	async submit() {
@@ -125,6 +138,10 @@ class FormNative extends FormMixin(LitElement) {
 			this.updateComplete.then(() => errorSummary.focus());
 		}
 		return errorMap;
+	}
+
+	_onFormData(e) {
+		e.stopPropagation();
 	}
 
 }

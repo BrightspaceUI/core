@@ -3,6 +3,7 @@ import '../form-native.js';
 import './form-element.js';
 import { expect, fixture } from '@open-wc/testing';
 import { html } from 'lit-element/lit-element.js';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-form-native', () => {
 
@@ -26,7 +27,6 @@ describe('d2l-form-native', () => {
 				<option value="goldfish">Goldfish</option>
 			</select>
 			<input type="radio" id="myradio" name="optional-radio">
-			<label for="name">Name</label>
 			<d2l-test-form-element id="custom-ele"></d2l-test-form-element>
 		</d2l-form-native>
 	`;
@@ -37,16 +37,26 @@ describe('d2l-form-native', () => {
 		form = await fixture(formFixture);
 	});
 
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-form-native');
+		});
+
+	});
+
 	describe('validate', () => {
 
 		it('should validate validation-customs', async() => {
 			const errors = await form.validate();
-			expect(errors).to.include.members(['The checkbox failed validation']);
+			const ele = form.querySelector('#mycheck');
+			expect(errors.get(ele)).to.include.members(['The checkbox failed validation']);
 		});
 
 		it('should validate native form elements', async() => {
 			const errors = await form.validate();
-			expect(errors).to.include.members(['Pets is required.']);
+			const ele = form.querySelector('#pets');
+			expect(errors.get(ele)).to.include.members(['Pets is required.']);
 		});
 
 		it('should validate custom form elements', async() => {
@@ -54,7 +64,7 @@ describe('d2l-form-native', () => {
 			formElement.value = 'Non-empty';
 			formElement.setValidity({ rangeOverflow: true });
 			const errors = await form.validate();
-			expect(errors).to.include.members(['Test form element failed with an overridden validation message']);
+			expect(errors.get(formElement)).to.include.members(['Test form element failed with an overridden validation message']);
 		});
 
 	});
@@ -64,12 +74,12 @@ describe('d2l-form-native', () => {
 		it('should not submit if there are errors', async() => {
 
 			let submitted = false;
-			form.addEventListener('d2l-form-submit', () => submitted = true);
+			form.addEventListener('submit', () => submitted = true);
 			await form.submit();
 			expect(submitted).to.be.false;
 		});
 
-		it('should submit with form values', done => {
+		it('should submit with form values', async() => {
 
 			const mycheck = form.querySelector('#mycheck');
 			mycheck.checked = true;
@@ -87,18 +97,25 @@ describe('d2l-form-native', () => {
 			const myradio = form.querySelector('#myradio');
 			myradio.checked = true;
 
-			form.addEventListener('d2l-form-submit', (e) => {
-				e.preventDefault();
-				const { formData } = e.detail;
-				expect(formData.checkers).to.equal('red-black');
-				expect(formData.pets).to.equal('hamster');
-				expect(formData['key-1']).to.equal('val-1');
-				expect(formData['key-2']).to.equal('val-2');
-				expect(formData['optional-file']).to.be.empty;
-				expect(formData['optional-radio']).to.equal('on');
-				done();
+			const submitPromise = new Promise(resolve => {
+				form.addEventListener('submit', (e) => {
+					e.preventDefault();
+					resolve();
+				});
+			});
+			const formDataPromise = new Promise(resolve => {
+				form.addEventListener('formdata', (e) => {
+					const { formData } = e.detail;
+					expect(formData.get('checkers')).to.equal('red-black');
+					expect(formData.get('pets')).to.equal('hamster');
+					expect(formData.get('key-1')).to.equal('val-1');
+					expect(formData.get('key-2')).to.equal('val-2');
+					expect(formData.get('optional-radio')).to.equal('on');
+					resolve();
+				});
 			});
 			form.submit();
+			await Promise.all([submitPromise, formDataPromise]);
 		});
 
 	});
