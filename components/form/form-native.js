@@ -3,14 +3,34 @@ import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormMixin } from './form-mixin.js';
 import { ValidationType } from './form-element-mixin.js';
 
+/**
+ * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
+ * These interactive controls are submitted using a native HTML form submission.
+ * @slot - The native and custom form elements that participate in validation and submission
+ * @fires submit - Dispatched when the form is submitted
+ */
 class FormNative extends FormMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * The URL that processes the form submission.
+			 */
 			action: { type: String },
-			encoding: { type: String },
+			/**
+			 * If the value of the method attribute is post, enctype is the MIME type of the form submission.
+			 * @type {'application/x-www-form-urlencoded'|'multipart/form-data'|'text/plain'}
+			 */
 			enctype: { type: String },
+			/**
+			 * The HTTP method to submit the form with.
+			 * @type {'POST'|'GET'}
+			 */
 			method: { type: String },
+			/**
+			 * Indicates where to display the response after submitting the form.
+			 * @type {'_self '|'_blank'|'_parent'|'_top'}
+			 */
 			target: { type: String },
 		};
 	}
@@ -21,14 +41,6 @@ class FormNative extends FormMixin(LitElement) {
 
 	set action(val) {
 		this._form.action = val;
-	}
-
-	get encoding() {
-		return this._form.encoding;
-	}
-
-	set encoding(val) {
-		this._form.encoding = val;
 	}
 
 	get enctype() {
