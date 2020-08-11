@@ -66,6 +66,13 @@ export function getDateFromISODate(val) {
 	return getDateFromDateObj(date);
 }
 
+export function getDateFromISODateTime(val) {
+	if (!val) return null;
+	const parsed = parseISODateTime(val);
+	const localDateTime = convertUTCToLocalDateTime(parsed);
+	return new Date(localDateTime.year, localDateTime.month - 1, localDateTime.date, localDateTime.hours, localDateTime.minutes, localDateTime.seconds);
+}
+
 export function getDateFromISOTime(val) {
 	if (!val) return null;
 	const time = parseISOTime(val);

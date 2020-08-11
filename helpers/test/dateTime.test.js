@@ -3,6 +3,7 @@ import { formatDateInISO,
 	formatTimeInISO,
 	getDateFromDateObj,
 	getDateFromISODate,
+	getDateFromISODateTime,
 	getDateFromISOTime,
 	getLocalDateTimeFromUTCDateTime,
 	getToday,
@@ -187,6 +188,27 @@ describe('date-time', () => {
 			expect(() => {
 				getDateFromISODate('2019/01/30');
 			}).to.throw('Invalid input: Expected format is YYYY-MM-DD');
+		});
+	});
+
+	describe('getDateFromISODateTime', () => {
+		after(() => {
+			documentLocaleSettings.timezone.identifier = 'America/Toronto';
+		});
+
+		it('should return the correct date', () => {
+			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 7, 30, 0));
+		});
+
+		it('should return expected date in Australia/Eucla timezone', () => {
+			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
+			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 21, 15, 0));
+		});
+
+		it('should throw when invalid date format', () => {
+			expect(() => {
+				getDateFromISODateTime('2019/01/30T12:34:46Z');
+			}).to.throw('Invalid input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ');
 		});
 	});
 
