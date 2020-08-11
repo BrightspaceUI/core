@@ -33,7 +33,7 @@ describe('dismissible', () => {
 	it('should remove event listener when stack is empty via ESC', () => {
 		setDismissible();
 		pressEscape();
-		expect(document.removeEventListener.called).to.be.true;
+		expect(document.removeEventListener.calledOnce).to.be.true;
 	});
 
 	it('should remove event listener when stack is empty via clear', () => {
