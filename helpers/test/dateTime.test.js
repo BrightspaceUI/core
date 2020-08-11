@@ -202,7 +202,7 @@ describe('date-time', () => {
 
 		it('should return expected date in Australia/Eucla timezone', () => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
-			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 7, 30, 0));
+			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 21, 15, 0));
 		});
 
 		it('should throw when invalid date format', () => {

@@ -30,6 +30,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._validationCustoms = new Set();
 		this._errors = new Map();
 
+		this.addEventListener('d2l-form-errors-change', this._formErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
@@ -123,6 +124,19 @@ class Form extends LocalizeCoreElement(LitElement) {
 			tooltip.remove();
 		}
 		ele.setAttribute('aria-invalid', 'false');
+	}
+
+	_formErrorsChange(e) {
+		const errors = e.detail.errors;
+		if (this._errors.has(e.target)) {
+			e.stopPropagation();
+			if (errors.length === 0) {
+				this._errors.delete(e.target);
+			} else {
+				this._errors.set(e.target, errors);
+			}
+			this.requestUpdate('_errors');
+		}
 	}
 
 	async _onFormElementChange(e) {

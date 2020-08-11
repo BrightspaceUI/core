@@ -248,8 +248,8 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 
 	async _validate() {
 		this.setValidity({
-			rangeUnderflow: this.value && this.minValue && getDateFromISODateTime(this.value).getTime() < getDateFromISODateTime(this.minValue).getTime(),
-			rangeOverflow: this.value && this.maxValue && getDateFromISODateTime(this.value).getTime() > getDateFromISODateTime(this.maxValue).getTime()
+			rangeUnderflow: this.value && this.minValue && (new Date(this.value)).getTime() < (new Date(this.minValue)).getTime(),
+			rangeOverflow: this.value && this.maxValue && (new Date(this.value)).getTime() > (new Date(this.maxValue)).getTime()
 		});
 		await this.requestValidate();
 	}

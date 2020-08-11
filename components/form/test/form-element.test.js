@@ -1,6 +1,6 @@
 import '../../validation/validation-custom.js';
 import './form-element.js';
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, expect, fixture, oneEvent } from '@open-wc/testing';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { ValidationType } from '../../form/form-element-mixin.js';
 
@@ -45,6 +45,25 @@ describe('form-element', () => {
 		formElement = form.shadowRoot.querySelector('#my-ele');
 	});
 
+	describe('events', () => {
+
+		it('should fire invalid-change when validation fails', async() => {
+			formElement.requestValidate();
+			await oneEvent(formElement, 'invalid-change');
+			expect(formElement.invalid).to.be.true;
+		});
+
+		it('should fire invalid-change when validation passes', async() => {
+			await formElement.requestValidate();
+			formElement.value = 'Non-empty';
+
+			formElement.requestValidate();
+			await oneEvent(formElement, 'invalid-change');
+			expect(formElement.invalid).to.be.false;
+		});
+
+	});
+
 	describe('invalid', () => {
 
 		[
@@ -59,6 +78,25 @@ describe('form-element', () => {
 				formElement.validationError = validationError;
 				await formElement.updateComplete;
 				expect(formElement.hasAttribute('invalid')).to.equal(forceInvalid || validationError !== null);
+			});
+
+		});
+
+		[
+			{ forceInvalid: true, validationError: 'Oh no' },
+			{ forceInvalid: false, validationError: 'Oh no' },
+			{ forceInvalid: true, validationError: null },
+		].forEach(({ forceInvalid, validationError }) => {
+
+			it('should not be invalid when novalidate is set to true', async() => {
+				formElement.forceInvalid = forceInvalid;
+				formElement.validationError = validationError;
+				await formElement.updateComplete;
+				expect(formElement.invalid).to.be.true;
+
+				formElement.noValidate = true;
+				await formElement.updateComplete;
+				expect(formElement.invalid).to.be.false;
 			});
 
 		});
@@ -164,6 +202,14 @@ describe('form-element', () => {
 			expect(errors).to.not.be.empty;
 			expect(formElement.invalid).to.be.false;
 			expect(formElement.validationError).to.be.null;
+		});
+
+		it('should do nothing if novalidate is true', async() => {
+			formElement.noValidate = true;
+			formElement.isValidationCustomValid = false;
+
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
+			expect(errors).to.be.empty;
 		});
 
 	});

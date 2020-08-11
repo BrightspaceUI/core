@@ -24,15 +24,14 @@ class FormDemo extends LitElement {
 		return html`
 			<d2l-form>
 				<div class="d2l-form-demo-container">
-					<label for="name">Name</label>
-					<input  class="d2l-input" type="text" id="name" name="name" required minlength="4" maxlength="8" size="10">
+					<d2l-input-text label="Name" type="text" name="name" required minlength="4" maxlength="8"></d2l-input-text>
 				</div>
 				<div class="d2l-form-demo-container">
-					<label>Email<input class="d2l-input" name="email" type="email"></label>
+					<d2l-input-text label="Email" name="email" type="email"></d2l-input-text>
 				</div>
 				<div class="d2l-form-demo-container">
 					<d2l-validation-custom for="password" @d2l-validation-custom-validate=${this._validatePassword} failure-text="Expected hunter2 or 12345" ></d2l-validation-custom>
-					<label>Password<input class="d2l-input" id="password" name="password" required type="password"></label>
+					<d2l-input-text label="Password" id="password" name="password" required type="password"></d2l-input-text>
 				</div>
 				<fieldset class="d2l-form-demo-container">
 					<legend>Choose your favorite monster</legend>

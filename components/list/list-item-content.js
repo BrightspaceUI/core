@@ -12,7 +12,9 @@ class ListItemContent extends LitElement {
 
 	static get styles() {
 		return [ bodySmallStyles, bodyCompactStyles, css`
-
+			:host {
+				overflow-x: hidden;
+			}
 			.d2l-list-item-content-text {
 				color: var(--d2l-list-item-content-text-color);
 				margin: 0;
