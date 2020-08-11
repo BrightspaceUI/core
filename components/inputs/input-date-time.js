@@ -222,7 +222,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		}
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-time-dropdown-toggle',
-			{ bubbles: true, composed: false, detail: { opened: e.detail.opened } }
+			{ bubbles: false, composed: false, detail: { opened: e.detail.opened } }
 		));
 	}
 
