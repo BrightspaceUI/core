@@ -91,6 +91,9 @@ export const MenuItemMixin = superclass => class extends superclass {
 	}
 
 	__initializeItem() {
+		if (this.disabled) {
+			this.setAttribute('aria-disabled', 'true');
+		}
 		const slot = this.shadowRoot.querySelector('slot');
 		if (!slot) {
 			return;
