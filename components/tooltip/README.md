@@ -77,6 +77,7 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 ```
 
 **Advanced Properties:**
+* `announced` (Boolean) - announce the tooltip inner text to screen reader users when the tooltip is shown. Use with custom elements.
 * `boundary` (Object) - optionally provide boundaries to constrain where the tooltip will appear. Valid properties are `"top"`, `"bottom"`, `"left"` and `"right"`. The boundary is relative to the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent).
 * `close-on-click` (Boolean, default: `false`) - causes the tooltip to close when its target is clicked
 * `disable-focus-lock` (Boolean, default: `false`) - disables focus lock so that the tooltip will automatically close when no longer hovered even if it still has focus

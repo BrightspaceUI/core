@@ -1,5 +1,6 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -91,6 +92,10 @@ class Tooltip extends RtlMixin(LitElement) {
 			 * @type {'start'|'end'}
 			 */
 			align: { type: String, reflect: true },
+			/**
+			 * Announce the tooltip innerText when applicable (for use with custom elements)
+			 */
+			announced: { type: Boolean },
 			/**
 			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
 			 */
@@ -352,6 +357,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._onTargetTouchStart = this._onTargetTouchStart.bind(this);
 		this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
 
+		this.announced = false;
 		this.closeOnClick = false;
 		this.delay = 0;
 		this.disableFocusLock = false;
@@ -772,6 +778,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
+			if (this.announced && !this._isInteractive(this._findTarget())) announce(this.innerText);
 		} else {
 			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
@@ -799,7 +806,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			} else {
 				target.setAttribute('aria-describedby', this.id);
 			}
-			if (logAccessibilityWarning && !this._isInteractive(target)) {
+			if (logAccessibilityWarning && !this._isInteractive(target) && !this.announced) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
 					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.'
