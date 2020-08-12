@@ -3,10 +3,19 @@ import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormMixin } from './form-mixin.js';
 import { ValidationType } from './form-element-mixin.js';
 
+/**
+ * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
+ * Values of these interactive controls are aggregated but the user is responsible for handling submission via the @d2l-form-submit event.
+ * @slot - The native and custom form elements that participate in validation and submission
+ * @fires d2l-form-submit - Dispatched when the form is submitted
+ */
 class Form extends FormMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Prevents the form from being validated and submitted when an ancestor form is validated or submitted
+			 */
 			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
 		};
 	}
