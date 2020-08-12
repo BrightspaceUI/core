@@ -19,7 +19,7 @@ class InputNumber extends LitElement {
 			name: { type: String },
 			placeholder: { type: String },
 			required: { type: Boolean },
-			step: { type: Number },
+			step: { type: String },
 			value: { type: Number }
 		};
 	}
