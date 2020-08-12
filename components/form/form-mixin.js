@@ -1,7 +1,7 @@
 import './form-errory-summary.js';
 import '../tooltip/tooltip.js';
 import '../link/link.js';
-import { findFormElements, isCustomFormElement, isNativeFormElement } from './form-helper.js';
+import { isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -27,8 +27,6 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		this._validationCustoms = new Set();
 		this._errors = new Map();
 
-		this._form = document.createElement('form');
-
 		this.addEventListener('d2l-form-errors-change', this._onFormErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
@@ -48,18 +46,6 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		this.addEventListener('change', this._onFormElementChange);
 		this.addEventListener('input', this._onFormElementChange);
 		this.addEventListener('focusout', this._onFormElementChange);
-
-		this._form.addEventListener('submit', this._onNativeSubmit);
-		this._form.id = getUniqueId();
-		this._form.noValidate = true;
-		this.appendChild(this._form);
-
-		const formElements = findFormElements(this);
-		for (const ele of formElements) {
-			if (isNativeFormElement(ele)) {
-				ele.setAttribute('form', this._form.id);
-			}
-		}
 	}
 
 	// eslint-disable-next-line no-unused-vars

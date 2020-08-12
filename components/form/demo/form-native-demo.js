@@ -59,13 +59,18 @@ class FormNativeDemo extends LitElement {
 					<label for="file">Super Secret File</label><br />
 					<input type="file" id="file" name="super-secret-file">
 				</div>
-				<button name="action" value="save" type="submit">Save</button>
+				<button name="action" value="save" type="submit" @click=${this._onClick}>Save</button>
 			</d2l-form-native>
 		`;
+	}
+
+	_onClick(e) {
+		this.shadowRoot.querySelector('d2l-form-native').requestSubmit(e.target);
 	}
 
 	_validatePassword(e) {
 		e.detail.resolve(e.detail.forElement.value === 'hunter2' || e.detail.forElement.value === '12345');
 	}
+
 }
 customElements.define('d2l-form-native-demo', FormNativeDemo);

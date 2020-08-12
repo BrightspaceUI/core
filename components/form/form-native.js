@@ -1,6 +1,7 @@
-import { findFormElements, getFormElementData, isCustomFormElement } from './form-helper.js';
+import { findFormElements, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormMixin } from './form-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ValidationType } from './form-element-mixin.js';
 
 /**
@@ -25,7 +26,7 @@ class FormNative extends FormMixin(LitElement) {
 			enctype: { type: String },
 			/**
 			 * The HTTP method to submit the form with.
-			 * @type {'POST'|'GET'}
+			 * @type {'get'|'post'}
 			 */
 			method: { type: String },
 			/**
@@ -36,41 +37,12 @@ class FormNative extends FormMixin(LitElement) {
 		};
 	}
 
-	get action() {
-		return this._form.action;
-	}
-
-	set action(val) {
-		this._form.action = val;
-	}
-
-	get enctype() {
-		return this._form.enctype;
-	}
-
-	set enctype(val) {
-		this._form.enctype = val;
-	}
-
-	get method() {
-		return this._form.method;
-	}
-
-	set method(val) {
-		this._form.method = val;
-	}
-
-	get target() {
-		return this._form.target;
-	}
-
-	set target(val) {
-		this._form.target = val;
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._form.addEventListener('formdata', this._onFormData);
+	constructor() {
+		super();
+		this.action = '';
+		this.enctype = 'application/x-www-form-urlencoded';
+		this.method = 'get';
+		this.target = '_self';
 	}
 
 	render() {
@@ -83,6 +55,14 @@ class FormNative extends FormMixin(LitElement) {
 		`;
 	}
 
+	shouldUpdate(changedProperties) {
+		if (!super.shouldUpdate(changedProperties)) {
+			return false;
+		}
+		const ignoredProps = new Set(['action', 'enctype', 'method', 'target']);
+		return [...changedProperties].filter(([prop]) => !ignoredProps.has(prop)).length > 0;
+	}
+
 	async requestSubmit(submitter) {
 		const errors = await this.validate();
 		if (errors.size > 0) {
@@ -90,31 +70,40 @@ class FormNative extends FormMixin(LitElement) {
 		}
 		this._dirty = false;
 
+		const form = document.createElement('form');
+		form.addEventListener('formdata', this._onFormData);
+		form.id = getUniqueId();
+		form.action = this.action;
+		form.enctype = this.enctype;
+		form.method = this.method;
+		form.target = this.target;
+		this.appendChild(form);
+
 		let customFormData = {};
 		const formElements = findFormElements(this);
 		for (const ele of formElements) {
 			const eleData = getFormElementData(ele, submitter);
-			if (isCustomFormElement(ele) || ele === submitter) {
+			const isCustom = isCustomFormElement(ele);
+			if (isCustom || ele === submitter) {
 				customFormData = { ...customFormData, ...eleData };
 			}
+			if (!isCustom && isNativeFormElement(ele)) {
+				ele.setAttribute('form', form.id);
+			}
 		}
-		const tempInputs = [];
 		for (const entry of Object.entries(customFormData)) {
 			const input = document.createElement('input');
 			input.type = 'hidden';
 			input.name = entry[0];
 			input.value = entry[1];
-			this._form.appendChild(input);
-			tempInputs.push(input);
+			form.appendChild(input);
 		}
 		const submit = this.dispatchEvent(new CustomEvent('submit', { bubbles: true, cancelable: true }));
-		this.dispatchEvent(new CustomEvent('formdata', { detail: { formData: new FormData(this._form) } }));
+		this.dispatchEvent(new CustomEvent('formdata', { detail: { formData: new FormData(form) } }));
 		if (submit) {
-			this._form.submit();
+			form.submit();
 		}
-		for (const input of tempInputs) {
-			input.remove();
-		}
+		form.remove();
 	}
 
 	async submit() {
