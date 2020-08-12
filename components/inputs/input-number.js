@@ -20,8 +20,7 @@ class InputNumber extends LitElement {
 			placeholder: { type: String },
 			required: { type: Boolean },
 			step: { type: Number },
-			value: { type: Number },
-			width: { type: String }
+			value: { type: Number }
 		};
 	}
 
@@ -51,10 +50,6 @@ class InputNumber extends LitElement {
 
 	render() {
 		const ariaRequired = this.required ? 'true' : undefined;
-
-		if (ifDefined(this.width)) {
-			this.style.width = this.width;
-		}
 
 		return html`
 			<label
