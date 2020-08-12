@@ -54,10 +54,8 @@ class InputNumber extends LitElement {
 		return html`
 			<label
 				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
-				for="${this._inputId}"
-				id="${this._inputId}-label">${this.label}</label>
+				for="${this._inputId}">${this.label}</label>
 			<input
-				aria-labelledby="${this._inputId}-label"
 				aria-required="${ifDefined(ariaRequired)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
