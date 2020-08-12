@@ -778,7 +778,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tooltip-show', { bubbles: true, composed: true }
 			));
-			if (this.announced && !this._isInteractive(this._findTarget())) announce(this.innerText);
+			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
 		} else {
 			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
@@ -799,14 +799,15 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._removeListeners();
 		const target = this._findTarget();
 		if (target) {
+			const isInteractive = this._isInteractive(target);
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
 			if (this.forType === 'label') {
 				target.setAttribute('aria-labelledby', this.id);
-			} else {
+			} else if (!this.announced || isInteractive) {
 				target.setAttribute('aria-describedby', this.id);
 			}
-			if (logAccessibilityWarning && !this._isInteractive(target) && !this.announced) {
+			if (logAccessibilityWarning && !isInteractive && !this.announced) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
 					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.'
