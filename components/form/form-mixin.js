@@ -1,20 +1,17 @@
 import './form-errory-summary.js';
 import '../tooltip/tooltip.js';
 import '../link/link.js';
-import { findFormElements, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
 import { ValidationType } from './form-element-mixin.js';
 
-class Form extends LocalizeCoreElement(LitElement) {
+export const FormMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
 		return {
-			action: { type: String },
-			method: { type: String },
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
 			_errors: { type: Object }
 		};
@@ -30,7 +27,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._validationCustoms = new Set();
 		this._errors = new Map();
 
-		this.addEventListener('d2l-form-errors-change', this._formErrorsChange);
+		this.addEventListener('d2l-form-errors-change', this._onFormErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
@@ -49,53 +46,19 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this.addEventListener('change', this._onFormElementChange);
 		this.addEventListener('input', this._onFormElementChange);
 		this.addEventListener('focusout', this._onFormElementChange);
-
-		this._form = document.createElement('form');
-		this._form.addEventListener('submit', this._onNativeSubmit);
-		this._form.id = getUniqueId();
-		this._form.noValidate = true;
-		this.appendChild(this._form);
-
-		const formElements = findFormElements(this);
-		for (const ele of formElements) {
-			if (isNativeFormElement(ele)) {
-				ele.setAttribute('form', this._form.id);
-			}
-		}
 	}
 
-	render() {
-		const errors = [...this._errors.entries()]
-			.filter(([, eleErrors]) => eleErrors.length > 0)
-			.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus()}));
-		return html`
-			<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>
-			<slot></slot>
-		`;
+	// eslint-disable-next-line no-unused-vars
+	async requestSubmit(submitter) {
+		throw new Error('FormMixin.requestSubmit must be overridden');
 	}
 
 	async submit() {
-		return this._submit(null);
+		throw new Error('FormMixin.submit must be overridden');
 	}
 
 	async validate() {
-		let errors = [];
-		const errorMap = new Map();
-		const formElements = findFormElements(this);
-		for (const ele of formElements) {
-			const eleErrors = await this._validateFormElement(ele, ValidationType.SHOW_NEW_ERRORS);
-			if (eleErrors.length > 0) {
-				errors = [...errors, ...eleErrors];
-				errorMap.set(ele, eleErrors);
-			}
-		}
-		this._errors = errorMap;
-		if (this._errors.size > 0) {
-			await this.updateComplete;
-			const errorSummary = this.shadowRoot.querySelector('d2l-form-error-summary');
-			errorSummary.focus();
-		}
-		return errors;
+		throw new Error('FormMixin.validate must be overridden');
 	}
 
 	_displayInvalid(ele, message) {
@@ -126,19 +89,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 		ele.setAttribute('aria-invalid', 'false');
 	}
 
-	_formErrorsChange(e) {
-		const errors = e.detail.errors;
-		if (this._errors.has(e.target)) {
-			e.stopPropagation();
-			if (errors.length === 0) {
-				this._errors.delete(e.target);
-			} else {
-				this._errors.set(e.target, errors);
-			}
-			this.requestUpdate('_errors');
-		}
-	}
-
 	async _onFormElementChange(e) {
 		const ele = e.target;
 		if (!isNativeFormElement(ele)) {
@@ -147,21 +97,23 @@ class Form extends LocalizeCoreElement(LitElement) {
 		e.stopPropagation();
 		this._dirty = true;
 		const validationType = e.type === 'focusout' ? ValidationType.SHOW_NEW_ERRORS : ValidationType.UPDATE_EXISTING_ERRORS;
-		const eleErrors = await this._validateFormElement(ele, validationType);
-		if (this._errors.has(ele)) {
-			if (eleErrors.length > 0) {
-				this._errors.set(ele, eleErrors);
-			} else {
-				this._errors.delete(ele);
-			}
-			this.requestUpdate('_errors');
+		const errors = await this._validateFormElement(ele, validationType);
+		this._updateErrors(ele, errors);
+	}
+
+	_onFormErrorsChange(e) {
+		if (e.target === this) {
+			return;
 		}
+		e.stopPropagation();
+		this._updateErrors(e.target, e.detail.errors);
 	}
 
 	_onNativeSubmit(e) {
 		e.preventDefault();
+		e.stopPropagation();
 		const submitter = e.submitter || getComposedActiveElement();
-		this._submit(submitter);
+		this.requestSubmit(submitter);
 	}
 
 	_onUnload(e) {
@@ -171,36 +123,20 @@ class Form extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
-	async _submit(submitter) {
-		const errors = await this.validate();
-		if (errors.length > 0) {
-			return;
-		}
-		this._dirty = false;
+	_updateErrors(ele, errors) {
 
-		let nativeFormData = {};
-		let customFormData = {};
-		const formElements = findFormElements(this);
-		for (const ele of formElements) {
-			const eleData = getFormElementData(ele, submitter);
-			if (isCustomFormElement(ele) || ele === submitter) {
-				customFormData = { ...customFormData, ...eleData };
-			} else {
-				nativeFormData = { ...nativeFormData, ...eleData };
-			}
+		if (!this._errors.has(ele)) {
+			return false;
 		}
-		const formData = { ...nativeFormData, ...customFormData };
-		const event = new CustomEvent('d2l-form-submit', { bubbles: true, cancelable: true, detail: { formData } });
-		if (this.dispatchEvent(event)) {
-			for (const entry of Object.entries(customFormData)) {
-				const input = document.createElement('input');
-				input.type = 'hidden';
-				input.name = entry[0];
-				input.value = entry[1];
-				this._form.appendChild(input);
-			}
-			this._form.submit();
+		if (Array.from(errors).length === 0) {
+			this._errors.delete(ele);
+		} else {
+			this._errors.set(ele, errors);
 		}
+		const detail = { bubbles: true, composed: true, detail: { errors: this._errors } };
+		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
+		this.requestUpdate('_errors');
+		return true;
 	}
 
 	async _validateFormElement(ele, validationType) {
@@ -248,5 +184,4 @@ class Form extends LocalizeCoreElement(LitElement) {
 		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
-}
-customElements.define('d2l-form', Form);
+};

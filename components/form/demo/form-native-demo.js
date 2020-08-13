@@ -2,12 +2,12 @@
 import '../../button/button.js';
 import '../../inputs/input-text.js';
 import '../../validation/validation-custom.js';
-import '../form.js';
+import '../form-native.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { inputStyles } from '../../inputs/input-styles.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
 
-class FormDemo extends LitElement {
+class FormNativeDemo extends LitElement {
 
 	static get styles() {
 		return [inputStyles, selectStyles, css`
@@ -22,7 +22,7 @@ class FormDemo extends LitElement {
 
 	render() {
 		return html`
-			<d2l-form>
+			<d2l-form-native>
 				<div class="d2l-form-demo-container">
 					<d2l-input-text label="Name" type="text" name="name" required minlength="4" maxlength="8"></d2l-input-text>
 				</div>
@@ -59,13 +59,18 @@ class FormDemo extends LitElement {
 					<label for="file">Super Secret File</label><br />
 					<input type="file" id="file" name="super-secret-file">
 				</div>
-				<button name="action" value="save" type="submit">Save</button>
-			</d2l-form>
+				<button name="action" value="save" type="submit" @click=${this._onClick}>Save</button>
+			</d2l-form-native>
 		`;
+	}
+
+	_onClick(e) {
+		this.shadowRoot.querySelector('d2l-form-native').requestSubmit(e.target);
 	}
 
 	_validatePassword(e) {
 		e.detail.resolve(e.detail.forElement.value === 'hunter2' || e.detail.forElement.value === '12345');
 	}
+
 }
-customElements.define('d2l-form-demo', FormDemo);
+customElements.define('d2l-form-native-demo', FormNativeDemo);

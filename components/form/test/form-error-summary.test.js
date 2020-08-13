@@ -5,7 +5,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const errorSummaryFixture = html`<d2l-form-error-summary></d2l-form-error-summary>`;
 
-describe('form-error-summary', () => {
+describe('d2l-form-error-summary', () => {
 
 	let errorSummary;
 

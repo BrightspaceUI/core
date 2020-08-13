@@ -10,6 +10,8 @@ export const localizeFormElement = (localize, ele) => {
 	switch (tagName) {
 		case 'input':
 			return _localizeInputElement(localize, ele, labelText);
+		case 'textarea':
+			return _localizeInputTextElement(localize, ele, labelText);
 		default:
 			return _localizeGenericElement(localize, ele, labelText);
 	}
