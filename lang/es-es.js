@@ -20,6 +20,7 @@ export default {
 	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "Fecha de inicio",
 	"components.input-date-time-range.endDate": "Fecha final",
+	"components.input-date-time-range.errorBadInput": "",
 	"components.input-date-time-range.startDate": "Fecha de inicio",
 	"components.input-date-time.date": "",
 	"components.input-date-time.time": "",
