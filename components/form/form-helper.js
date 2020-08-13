@@ -23,18 +23,20 @@ export const isNativeFormElement = (node) => {
 	return !!formElements[nodeName];
 };
 
-export const findFormElements = (root) => {
+export const findFormElements = (root, isFormElementPredicate = () => false, visitChildrenPredicate = () => true) => {
 	const eles = [];
-	_findFormElementsHelper(root, eles);
+	_findFormElementsHelper(root, eles, isFormElementPredicate, visitChildrenPredicate);
 	return eles;
 };
 
-const _findFormElementsHelper = (ele, eles) => {
-	if (isNativeFormElement(ele) || isCustomFormElement(ele)) {
+const _findFormElementsHelper = (ele, eles, isFormElementPredicate, visitChildrenPredicate) => {
+	if (isNativeFormElement(ele) || isCustomFormElement(ele) || isFormElementPredicate(ele)) {
 		eles.push(ele);
 	}
-	for (const child of ele.children) {
-		_findFormElementsHelper(child, eles);
+	if (visitChildrenPredicate(ele)) {
+		for (const child of ele.children) {
+			_findFormElementsHelper(child, eles, isFormElementPredicate, visitChildrenPredicate);
+		}
 	}
 };
 
@@ -176,5 +178,21 @@ const _hasFormData = (node, submitter) => {
 		return false;
 	}
 	return true;
+};
+
+export const flattenMap = (map) => {
+
+	const flattened = new Map();
+	for (const [key, val] of map) {
+		if (val instanceof Map) {
+			const subMap = flattenMap(val);
+			for (const [nestedKey, nestedVal] of subMap) {
+				flattened.set(nestedKey, nestedVal);
+			}
+		} else {
+			flattened.set(key, val);
+		}
+	}
+	return flattened;
 };
 
