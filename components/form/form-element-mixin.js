@@ -142,7 +142,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
-			await this.validate(validationType);
+			const errors = await this.validate(validationType);
+			this._notifyFormErrorsChanged(errors);
 		}
 	}
 
@@ -189,7 +190,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				}
 				break;
 		}
-		this._notifyFormErrorsChanged(errors);
 		return errors;
 	}
 
@@ -279,7 +279,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	_notifyFormErrorsChanged(errors) {
-		const detail = { bubbles: true, composed: true, detail: { errors } };
+		const detail = { bubbles: true, detail: { errors } };
 		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
 	}
 
