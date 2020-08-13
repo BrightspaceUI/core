@@ -20,6 +20,7 @@ export default {
 	"components.input-date-range.errorBadInput": "",
 	"components.input-date-range.startDate": "تاريخ البدء",
 	"components.input-date-time-range.endDate": "تاريخ النهاية",
+	"components.input-date-time-range.errorBadInput": "",
 	"components.input-date-time-range.startDate": "تاريخ البدء",
 	"components.input-date-time.date": "التاريخ",
 	"components.input-date-time.errorMaxDateOnly": "",
