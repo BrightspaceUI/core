@@ -33,7 +33,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 			/**
 			 * REQUIRED: Text displayed by the menu item
 			 */
-			text: { type: String }
+			text: { type: String },
+			_ariaDisabled: { type: String, attribute: 'aria-disabled', reflect: true }
 		};
 	}
 
@@ -73,6 +74,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'hidden') {
 				this._onHidden();
+			} else if (propName === 'disabled') {
+				this._ariaDisabled = this.disabled ? 'true' : 'false';
 			}
 		});
 	}
