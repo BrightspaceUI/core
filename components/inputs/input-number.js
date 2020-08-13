@@ -6,6 +6,12 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 
+function checkMinMaxValue(value, min, max) {
+	if (min !== undefined) value = Math.max(value, min);
+	if (max !== undefined) value = Math.min(value, max);
+	return value;
+}
+
 function formatValue(value, minFractionDigits, maxFractionDigits) {
 	const options = {
 		maximumFractionDigits: maxFractionDigits,
@@ -62,7 +68,8 @@ class InputNumber extends LitElement {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (this.value !== undefined && this.value !== null) {
+		if (this.value !== undefined) {
+			this.value = checkMinMaxValue(this.value, this.min, this.max);
 			this._formattedValue = formatValue(this.value, this.minFractionDigits, this.maxFractionDigits);
 		}
 	}
@@ -82,8 +89,6 @@ class InputNumber extends LitElement {
 				class="d2l-input"
 				?disabled="${this.disabled}"
 				id="${this._inputId}"
-				max="${ifDefined(this.max)}"
-				min="${ifDefined(this.min)}"
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				type="text"
@@ -96,6 +101,7 @@ class InputNumber extends LitElement {
 		this.value = inputValue !== '' ? parseNumber(inputValue) : undefined;
 
 		if (!isNaN(this.value) && this.value !== undefined) {
+			this.value = checkMinMaxValue(this.value, this.min, this.max);
 			this._formattedValue = formatValue(this.value, this.minFractionDigits, this.maxFractionDigits);
 			e.target.value = this._formattedValue;
 		} else {
