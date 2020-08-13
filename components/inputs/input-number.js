@@ -30,7 +30,6 @@ class InputNumber extends LitElement {
 			name: { type: String },
 			placeholder: { type: String },
 			required: { type: Boolean },
-			step: { type: String },
 			value: { type: Number },
 			_formattedValue: { type: String }
 		};
@@ -87,7 +86,6 @@ class InputNumber extends LitElement {
 				min="${ifDefined(this.min)}"
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
-				step="${ifDefined(this.step)}"
 				type="text"
 				.value="${this._formattedValue}">
 		`;
