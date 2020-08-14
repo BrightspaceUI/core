@@ -78,10 +78,6 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			 */
 			minlength: { type: Number },
 			/**
-			 * Name of the input
-			 */
-			name: { type: String },
-			/**
 			 * Regular expression pattern to validate the value
 			 */
 			pattern: { type: String },

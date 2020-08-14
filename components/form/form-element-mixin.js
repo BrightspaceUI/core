@@ -86,6 +86,10 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return {
 			forceInvalid: { type: Boolean, attribute: false },
 			invalid: { type: Boolean, reflect: true },
+			/**
+			 * Name of the form control. Submitted with the form as part of a name/value pair.
+			 */
+			name: { type: String },
 			noValidate: { type: Boolean, attribute: 'novalidate' },
 			validationError: { type: String, attribute: false },
 		};
