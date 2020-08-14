@@ -10,7 +10,7 @@ class ListDemoDragNDropUsage extends LitElement {
 		return {
 			list: { type: Array },
 			// below are for demonstration only
-			grid: {type: Boolean },
+			grid: { type: Boolean },
 			hrefs: { type: Boolean },
 			selectable: { type: Boolean }
 		};

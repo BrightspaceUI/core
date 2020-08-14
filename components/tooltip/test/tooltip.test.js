@@ -151,7 +151,7 @@ describe('d2l-tooltip', () => {
 		});
 
 		[
-			{ case: 'hovered and focused', hover: true, focus: true},
+			{ case: 'hovered and focused', hover: true, focus: true },
 			{ case: 'hovered', hover: true, focus: false },
 			{ case: 'focused', hover: false, focus: true }
 		].forEach((testCase) => {

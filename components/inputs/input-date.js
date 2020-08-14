@@ -34,7 +34,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Text to reassure users that they can choose not to provide a value in this field (usually not necessary)
 			 */
-			emptyText: { type: String, attribute: 'empty-text'},
+			emptyText: { type: String, attribute: 'empty-text' },
 			/**
 			 * REQUIRED: Accessible label for the input
 			 */
@@ -185,8 +185,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
-					style="${styleMap({maxWidth: inputTextWidth})}"
-					title="${this.localize(`${this._namespace}.openInstructions`, {format: shortDateFormat})}"
+					style="${styleMap({ maxWidth: inputTextWidth })}"
+					title="${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}"
 					.value="${this._formattedValue}">
 					${icon}
 				</d2l-input-text>
@@ -234,14 +234,14 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		if (this.minValue && this.maxValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorOutsideRange`, {
-					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
-					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+					minDate: formatDate(getDateFromISODate(this.minValue), { format: 'medium' }),
+					maxDate: formatDate(getDateFromISODate(this.maxValue), { format: 'medium' })
 				}
 			);
 		} else if (this.maxValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorMaxDateOnly`, {
-					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+					maxDate: formatDate(getDateFromISODate(this.maxValue), { format: 'medium' })
 				}
 			);
 		}
@@ -253,14 +253,14 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		if (this.minValue && this.maxValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorOutsideRange`, {
-					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'}),
-					maxDate: formatDate(getDateFromISODate(this.maxValue), {format: 'medium'})
+					minDate: formatDate(getDateFromISODate(this.minValue), { format: 'medium' }),
+					maxDate: formatDate(getDateFromISODate(this.maxValue), { format: 'medium' })
 				}
 			);
 		} else if (this.minValue) {
 			failureText = this.localize(
 				`${this._namespace}.errorMinDateOnly`, {
-					minDate: formatDate(getDateFromISODate(this.minValue), {format: 'medium'})
+					minDate: formatDate(getDateFromISODate(this.minValue), { format: 'medium' })
 				}
 			);
 		}
@@ -285,7 +285,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			await this._updateValueDispatchEvent(formatDateInISO({year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate()}));
+			await this._updateValueDispatchEvent(formatDateInISO({ year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate() }));
 		} catch (err) {
 			// leave value the same when invalid input
 		}
@@ -309,7 +309,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	_handleDropdownClose() {
 		this._calendar.reset();
 		this._dropdownOpened = false;
-		this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: false } }
@@ -317,10 +317,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleDropdownOpen() {
-		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		// use setTimeout to wait for keyboard to open on mobile devices
 		setTimeout(() => {
-			this._textInput.scrollIntoView({block: 'nearest', behavior: 'smooth', inline: 'nearest'});
+			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		}, 150);
 		this._dropdownOpened = true;
 		this.dispatchEvent(new CustomEvent(

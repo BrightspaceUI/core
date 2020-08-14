@@ -115,7 +115,7 @@ describe('d2l-list-item-generic-layout', () => {
 		UP: 38
 	};
 
-	function dispatchKeyEvent(el, {code, ctrl}) {
+	function dispatchKeyEvent(el, { code, ctrl }) {
 		const eventObj = document.createEvent('Events');
 		eventObj.initEvent('keyup', true, true);
 		eventObj.which = code;
@@ -463,7 +463,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 		for (const test of tests) {
 			it(test.desc, async() => {
-				setTimeout(() => dispatchKeyEvent(layout, {code: test.key}));
+				setTimeout(() => dispatchKeyEvent(layout, { code: test.key }));
 				await oneEvent(actionable, 'click');
 			});
 		}
