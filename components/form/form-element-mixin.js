@@ -126,10 +126,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		});
 	}
 
-	checkValidity() {
-		return this.validity.valid;
-	}
-
 	get formAssociated() {
 		return true;
 	}
@@ -156,7 +152,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
-		if (!this.checkValidity()) {
+		if (!this.validity.valid) {
 			errors.unshift(this.validationMessage);
 		}
 		switch (validationType) {
