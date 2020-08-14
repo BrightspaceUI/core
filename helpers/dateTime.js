@@ -23,7 +23,7 @@ export function formatDateTimeInISO(val, local) {
 	if (!val) {
 		throw new Error('Invalid input: Expected input to be an object');
 	}
-	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000${local ? '' : 'Z'}`;
+	return `${formatDateInISO({ year: val.year, month: val.month, date: val.date })}T${formatTimeInISO({ hours: val.hours, minutes: val.minutes, seconds: val.seconds })}.000${local ? '' : 'Z'}`;
 }
 
 // val is an object containing hours, minutes, seconds
@@ -45,6 +45,16 @@ export function formatTimeInISO(val) {
 	return `${hours}:${minutes}:${seconds}`;
 }
 
+export function formatDateInISOTime(val) {
+	let hours = val.getHours(),
+		minutes = val.getMinutes(),
+		seconds = val.getSeconds();
+	if (hours.toString().length < 2) hours = `0${hours}`;
+	if (minutes.toString().length < 2) minutes = `0${minutes}`;
+	if (seconds.toString().length < 2) seconds = `0${seconds}`;
+	return `${hours}:${minutes}:${seconds}`;
+}
+
 export function getDateFromDateObj(val) {
 	return new Date(val.year, parseInt(val.month) - 1, val.date);
 }
@@ -54,6 +64,20 @@ export function getDateFromISODate(val) {
 	const date = parseISODate(val);
 
 	return getDateFromDateObj(date);
+}
+
+export function getDateFromISODateTime(val) {
+	if (!val) return null;
+	const parsed = parseISODateTime(val);
+	const localDateTime = convertUTCToLocalDateTime(parsed);
+	return new Date(localDateTime.year, localDateTime.month - 1, localDateTime.date, localDateTime.hours, localDateTime.minutes, localDateTime.seconds);
+}
+
+export function getDateFromISOTime(val) {
+	if (!val) return null;
+	const time = parseISOTime(val);
+	const today = getToday();
+	return new Date(today.year, today.month - 1, today.date, time.hours, time.minutes, time.seconds);
 }
 
 let dateTimeDescriptor = null;
@@ -89,6 +113,12 @@ export function isDateInRange(date, min, max) {
 	const afterMin = !min || (min && date.getTime() >= min.getTime());
 	const beforeMax = !max || (max && date.getTime() <= max.getTime());
 	return afterMin && beforeMax;
+}
+
+export function isValidTime(val) {
+	const re = /([0-9]{1,2}):([0-9]{1,2})(:([0-9]{1,2}))?/;
+	const match = val.match(re);
+	return match !== null;
 }
 
 export function parseISODate(val) {

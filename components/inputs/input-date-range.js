@@ -1,5 +1,6 @@
 import './input-date.js';
 import './input-fieldset.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getDateFromISODate } from '../../helpers/dateTime.js';
@@ -108,8 +109,8 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	render() {
-		const tooltipStart = (this.validationError && !this._startCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endCalendarOpened) ? html`<d2l-tooltip align="start" for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this._startCalendarOpened) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endCalendarOpened) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -155,7 +156,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(validationType)]
 		).then(res => res.reduce((acc, errors) => [...acc, ...errors], []));
 		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...errors, ...childErrors];
+		return [...childErrors, ...errors];
 	}
 
 	get validationMessageBadInput() {
@@ -177,7 +178,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		} else {
 			this.endValue = elem.value;
 		}
-		this.setValidity({badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue)))});
+		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
 		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',

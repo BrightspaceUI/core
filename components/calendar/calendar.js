@@ -450,7 +450,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const month = day.getMonth();
 				const date = day.getDate();
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
-				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, {format: 'monthYear'})}`;
+				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, { format: 'monthYear' })}`;
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
@@ -487,7 +487,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		};
 		const labelId = `${this._tableInfoId}-heading`;
 		const labelledBy = this._dialog ? labelId : undefined;
-		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), {format: 'monthYear'});
+		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), { format: 'monthYear' });
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
 			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
@@ -542,7 +542,18 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async reset(allowDisabled) {
-		const date = this.selectedValue ? getDateFromISODate(this.selectedValue) : this._today;
+		let date;
+		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
+		else if (isDateInRange(this._today, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) date = this._today;
+		else {
+			if (this.minValue && this.maxValue) {
+				const diffToMin = Math.abs(this._today.getTime() - getDateFromISODate(this.minValue).getTime());
+				const diffToMax = Math.abs(this._today.getTime() - getDateFromISODate(this.maxValue).getTime());
+				if (diffToMin < diffToMax) date = getDateFromISODate(this.minValue);
+				else date = getDateFromISODate(this.maxValue);
+			} else if (this.minValue) date = getDateFromISODate(this.minValue);
+			else if (this.maxValue) date = getDateFromISODate(this.maxValue);
+		}
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 		await this.updateComplete;
@@ -550,7 +561,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_computeText(month) {
-		return this.localize(`${this._namespace}.show`, {month: calendarData.descriptor.calendar.months.long[month]});
+		return this.localize(`${this._namespace}.show`, { month: calendarData.descriptor.calendar.months.long[month] });
 	}
 
 	async _focusDateAddFocus() {
@@ -584,7 +595,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
 
-		this.selectedValue = formatDateInISO({year: year, month: (parseInt(month) + 1), date: date});
+		this.selectedValue = formatDateInISO({ year: year, month: (parseInt(month) + 1), date: date });
 
 		const eventDetails = {
 			bubbles: true,

@@ -11,21 +11,26 @@ describe('d2l-calendar', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, {viewport: {width: 400, height: 1800}});
-		await page.goto(`${visualDiff.getBaseUrl()}/components/calendar/test/calendar.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+		page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 2800 } });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/calendar/test/calendar.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
-	it('no selected value', async function() {
-		const rect = await visualDiff.getRect(page, '#no-selected');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('first row only current month days last row contains next month days', async function() {
-		const rect = await visualDiff.getRect(page, '#dec-2019');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	[
+		'dec-2019', // first row only current month days last row contains next month days
+		'max',
+		'min',
+		'min-max',
+		'min-max-no-selected',
+		'no-selected',
+		'today-selected'
+	].forEach((name) => {
+		it(name, async function() {
+			const rect = await visualDiff.getRect(page, `#${name}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	describe('localization', () => {
@@ -61,16 +66,6 @@ describe('d2l-calendar', () => {
 	describe('style', () => {
 		afterEach(async() => {
 			await page.reload();
-		});
-
-		it('today selected', async function() {
-			const rect = await visualDiff.getRect(page, '#today-selected');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('min and max value', async function() {
-			const rect = await visualDiff.getRect(page, '#min-max');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('focus', async function() {

@@ -35,7 +35,7 @@ export class FormElementValidityState {
 				}, {});
 			console.warn(`validity state was constructed with invalid flags: ${invalidFlags}`);
 		}
-		this.flags = { ...this.constructor.supportedFlags, ...flags};
+		this.flags = { ...this.constructor.supportedFlags, ...flags };
 	}
 
 	get badInput() {
@@ -86,6 +86,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return {
 			forceInvalid: { type: Boolean, attribute: false },
 			invalid: { type: Boolean, reflect: true },
+			noValidate: { type: Boolean, attribute: 'novalidate' },
 			validationError: { type: String, attribute: false },
 		};
 	}
@@ -100,6 +101,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.forceInvalid = false;
 		this.formValue = null;
 		this.invalid = false;
+		this.noValidate = false;
 		this.validationError = null;
 
 		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
@@ -107,8 +109,16 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
-			if (propName === 'forceInvalid' || propName === 'validationError') {
-				this.invalid = this.forceInvalid || this.validationError !== null;
+			if (propName === 'noValidate' || propName === 'forceInvalid' || propName === 'validationError') {
+				const oldValue = this.invalid;
+				this.invalid = (this.forceInvalid || this.validationError !== null) && !this.noValidate;
+				if (this.invalid !== oldValue) {
+					this.dispatchEvent(new CustomEvent('invalid-change'));
+				}
+			}
+			if (propName === 'noValidate' && this.noValidate) {
+				this.validationError = null;
+				this._notifyFormErrorsChanged([]);
 			}
 		});
 	}
@@ -132,7 +142,8 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
-			await this.validate(validationType);
+			const errors = await this.validate(validationType);
+			this._notifyFormErrorsChanged(errors);
 		}
 	}
 
@@ -151,7 +162,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	async validate(validationType) {
-		await this.updateComplete;
+		if (this.noValidate) {
+			return [];
+		}
 		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
@@ -263,6 +276,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	get validity() {
 		return this._validity;
+	}
+
+	_notifyFormErrorsChanged(errors) {
+		const detail = { bubbles: true, detail: { errors } };
+		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
 	}
 
 	_validationCustomConnected(e) {

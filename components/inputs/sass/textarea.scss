@@ -15,22 +15,29 @@
 		background-size: 0.8rem 0.8rem;
 		background-repeat: no-repeat;
 		padding-right: calc(18px + 0.8rem);
-		&:hover,
-		&:focus {
+		&:hover {
 			background-position: top calc(12px - 1px) right calc(18px - 1px);
 		}
-	}
-	&[aria-invalid="true"]:disabled {
-		background-image: none;
+		&:focus,
+		&:disabled {
+			background-image: none;
+		}
+		&:focus {
+			padding-left: calc(0.75rem - 1px);
+			padding-right: calc(0.75rem - 1px);
+		}
 	}
 	[dir='rtl'] &[aria-invalid="true"] {
 		background-position: top 12px left 18px;
 		padding-left: calc(18px + 0.8rem);
 		padding-right: 0.75rem;
-		&:hover,
-		&:focus {
+		&:hover {
 			background-position: top calc(12px - 1px) left calc(18px - 1px);
 			padding-left: calc(18px + 0.8rem - 1px);
+			padding-right: calc(0.75rem - 1px);
+		}
+		&:focus {
+			padding-left: calc(0.75rem - 1px);
 			padding-right: calc(0.75rem - 1px);
 		}
 	}
