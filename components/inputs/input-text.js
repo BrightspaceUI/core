@@ -23,7 +23,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			/**
 			 * Indicates that the input has a popup menu
 			 */
-			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
+			ariaHaspopup: { type: String, attribute: 'aria-haspopup' },
 			/**
 			 * Indicates that the input value is invalid
 			 */
@@ -374,7 +374,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		// Change events aren't composed, so we need to re-dispatch
 		this.dispatchEvent(new CustomEvent(
 			'change',
-			{bubbles: true, composed: false}
+			{ bubbles: true, composed: false }
 		));
 	}
 

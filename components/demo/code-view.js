@@ -90,7 +90,7 @@ class CodeView extends LitElement {
 	}
 
 	_getLanguage(language) {
-		const aliases = {shell: 'bash'};
+		const aliases = { shell: 'bash' };
 		return aliases[language] ? aliases[language] : language;
 	}
 

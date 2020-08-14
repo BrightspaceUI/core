@@ -20,7 +20,7 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 			/**
 			 * Indicates a checkbox should be rendered for selecting the item
 			 */
-			selectable: {type: Boolean },
+			selectable: { type: Boolean },
 			/**
 			 * Whether the item is selected
 			 */

@@ -21,7 +21,7 @@ describe('d2l-dialog-mixin', () => {
 
 			before(async() => {
 				const preferNative = (name === 'native' ? '' : '?preferNative=false');
-				await page.goto(`${visualDiff.getBaseUrl()}/components/dialog/test/dialog-mixin.visual-diff.html${preferNative}`, {waitUntil: ['networkidle0', 'load']});
+				await page.goto(`${visualDiff.getBaseUrl()}/components/dialog/test/dialog-mixin.visual-diff.html${preferNative}`, { waitUntil: ['networkidle0', 'load'] });
 				await page.bringToFront();
 			});
 

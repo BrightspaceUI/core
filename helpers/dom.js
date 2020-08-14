@@ -23,7 +23,7 @@ export function getComposedChildren(node) {
 	if (node.tagName === 'CONTENT') {
 		nodes = node.getDistributedNodes();
 	} else if (node.tagName === 'SLOT') {
-		nodes = node.assignedNodes({flatten: true});
+		nodes = node.assignedNodes({ flatten: true });
 	} else {
 		if (node.shadowRoot) {
 			node = node.shadowRoot;

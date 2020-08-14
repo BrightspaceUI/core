@@ -129,7 +129,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
-			detail: new NewPositionEventDetails({dragTargetKey, dropTargetKey, dropLocation}),
+			detail: new NewPositionEventDetails({ dragTargetKey, dropTargetKey, dropLocation }),
 			bubbles: true
 		}));
 	}
@@ -525,7 +525,7 @@ export class NewPositionEventDetails {
 	 * @param { String } object.dropTargetKey The item key of the list-item in the position we are moving to
 	 * @param { Boolean } object.dropLocation Whether the target is moved before the destination
 	 */
-	constructor({dragTargetKey, dropTargetKey, dropLocation}) {
+	constructor({ dragTargetKey, dropTargetKey, dropLocation }) {
 		if (!dragTargetKey) {
 			throw new Error(`NewPositionEventDetails must have a targetKey and destinationKey\nGiven: ${dragTargetKey}`);
 		}
@@ -542,7 +542,7 @@ export class NewPositionEventDetails {
 	 *        Takes the item in the array and the index as arguments. Should return the text to announce.
 	 * @param { function(Node): String } obj.keyFn Callback function that returns a key given a listitem
 	 */
-	announceMove(list, {announceFn, keyFn}) {
+	announceMove(list, { announceFn, keyFn }) {
 		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
 		if (origin === null) throw new Error(`Target "${this.dragTargetKey}" not found in array`);
 		const destination = this._fetchDropTargetPosition(list, origin, keyFn);
@@ -574,11 +574,11 @@ export class NewPositionEventDetails {
 	 *        This optional callback will be passed to announceMove if given.
 	 * @param { function(Node): String } obj.keyFn Callback function that returns the key for the item.
 	 */
-	reorder(list, {announceFn, keyFn}) {
+	reorder(list, { announceFn, keyFn }) {
 		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
 
 		if (announceFn) {
-			this.announceMove(list, {announceFn, keyFn});
+			this.announceMove(list, { announceFn, keyFn });
 		}
 
 		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
