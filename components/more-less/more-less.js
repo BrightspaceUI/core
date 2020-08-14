@@ -159,7 +159,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ height: `${this.__contentHeight}` })}>
 				<slot></slot>
 			</div>
-			<div class="d2l-more-less-blur" style=${styleMap({ background: `${this.__blurBackground}`})}></div>
+			<div class="d2l-more-less-blur" style=${styleMap({ background: `${this.__blurBackground}` })}></div>
 			<d2l-button-subtle
 				class="d2l-more-less-toggle"
 				icon="${this.__computeIcon()}"
@@ -381,7 +381,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__transitionEvents(e) {
-		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, composed: true, detail: e.detail}));
+		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, composed: true, detail: e.detail }));
 	}
 
 }

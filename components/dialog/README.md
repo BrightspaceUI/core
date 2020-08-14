@@ -61,10 +61,12 @@ document.querySelector('d2l-dialog').addEventListener('d2l-dialog-close', (e) =>
 
 **Properties:**
 
-- `title-text` (required, String): Text displayed in the header of the dialog
-- `async` (Boolean): Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container)
-- `opened` (Boolean): Whether or not the dialog is open
-- `width` (Number, default: `600`): The preferred width (unit-less) for the dialog
+| Property | Type | Description |
+|--|--|--|
+| `title-text` | String, required | Text displayed in the header of the dialog |
+| `async` | Boolean | Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container) |
+| `opened` | Boolean | Whether or not the dialog is open |
+| `width` | Number, default: `600` | The preferred width (unit-less) for the dialog |
 
 **Methods:**
 
@@ -108,9 +110,11 @@ document.querySelector('#open').addEventListener('click', () => {
 
 **Properties:**
 
-- `text` (required, String): The required text content for the confirmation dialog
-- `opened` (Boolean): Whether or not the dialog is open
-- `title-text` (String): The optional title for the confirmation dialog
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | The required text content for the confirmation dialog |
+| `opened` | Boolean | Whether or not the dialog is open |
+| `title-text` | String | The optional title for the confirmation dialog |
 
 **Events:**
 
@@ -151,9 +155,11 @@ document.querySelector('#open').addEventListener('click', () => {
 
 **Properties:**
 
-- `title-text` (required, String): Text displayed in the header of the dialog
-- `async` (Boolean): Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container)
-- `opened` (Boolean): Whether or not the dialog is open
+| Property | Type | Description |
+|--|--|--|
+| `title-text` | String, required | Text displayed in the header of the dialog |
+| `async` | Boolean | Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container) |
+| `opened` | Boolean | Whether or not the dialog is open |
 
 **Events:**
 

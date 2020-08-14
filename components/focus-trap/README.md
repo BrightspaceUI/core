@@ -16,7 +16,9 @@ The `d2l-focus-trap` is a generic container that will trap the focus.  It will c
 
 **Properties:**
 
-- `trap` (Boolean): Whether to trap the focus
+| Property | Type | Description |
+|--|--|--|
+| `trap` | Boolean | Whether to trap the focus |
 
 **Events:**
 

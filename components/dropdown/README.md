@@ -37,8 +37,11 @@ dropdown.addEventListener('click', function() {
 ```
 
 **Properties:**
-- `disabled` (Boolean, default: `false`): disables the dropdown opener
-- `no-auto-open` (Boolean, default: `false`): prevents the dropdown from opening automatically on or on key press
+
+| Property | Type | Description |
+|--|--|--|
+| `disabled` | Boolean, default: `false` | Disables the dropdown opener |
+| `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
 
 ### d2l-dropdown-button
 `d2l-dropdown-button` is a `d2l-button` opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
@@ -59,10 +62,13 @@ dropdown.addEventListener('click', function() {
 ```
 
 **Properties:**
-- `text` (required, String): text for the button
-- `disabled` (Boolean, default: `false`): disables the dropdown opener
-- `no-auto-open` (Boolean, default: `false`): prevents the dropdown from opening automatically on or on key press
-- `primary` (Boolean, default: `false`): optionally render button as primary button
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Text for the button |
+| `disabled` | Boolean, default: `false` | Disables the dropdown opener |
+| `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
+| `primary` | Boolean, default: `false` | Optionally render button as primary button |
 
 ### d2l-dropdown-button-subtle
 `d2l-dropdown-button-subtle` is a `d2l-button-subtle` opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
@@ -83,10 +89,13 @@ dropdown.addEventListener('click', function() {
 ```
 
 **Properties:**
-- `text` (required, String): text for the button
-- `description` (String): A description to be added to the inner `button` opener for accessibility
-- `disabled` (Boolean, default: `false`): disables the dropdown opener
-- `no-auto-open` (Boolean, default: `false`): prevents the dropdown from opening automatically on or on key press
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Text for the button |
+| `description` | String | A description to be added to the inner `button` opener for accessibility |
+| `disabled` | Boolean, default: `false` | Disables the dropdown opener |
+| `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from automatically on click or on key press |
 
 **Accessibility:**
 
@@ -115,11 +124,14 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 ```
 
 **Properties:**
-- `disabled` (Boolean, default: `false`): disables the dropdown opener
-- `no-auto-open` (Boolean, default: `false`): prevents the dropdown from opening automatically on or on key press
-- `text` (String): ARIA label for the button
-- `translucent` (Boolean, default: `false`): attribute for busy/rich backgrounds
-- `visible-on-ancestor` (Boolean, default: `false`): See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior.
+
+| Property | Type | Description |
+|--|--|--|
+| `disabled` | Boolean, default: `false` | Disables the dropdown opener |
+| `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
+| `text` | String | Used as `aria-label` for the button |
+| `translucent` | Boolean, default: `false` | Attribute for busy/rich backgrounds |
+| `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
 
 **Accessibility:**
 
@@ -148,11 +160,14 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 ```
 
 **Properties:**
-- `disabled` (Boolean, default: `false`): disables the dropdown opener
-- `no-auto-open` (Boolean, default: `false`): prevents the dropdown from opening automatically on or on key press
-- `text` (String): ARIA label for the button
-- `translucent` (Boolean, default: `false`): attribute for busy/rich backgrounds
-- `visible-on-ancestor` (Boolean, default: `false`): See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior.
+
+| Property | Type | Description |
+|--|--|--|
+| `disabled` | Boolean, default: `false` | Disables the dropdown opener |
+| `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or key press |
+| `text` | String | Used as `aria-label` for the button |
+| `translucent` | Boolean, default: `false` | Attribute for busy/rich backgrounds |
+| `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
 
 **Accessibility:**
 
@@ -186,19 +201,22 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ```
 
 **Properties:**
-* `min-width` (Number): override default min-width
-* `max-width` (Number): override default max-width
-* `max-height` (Number): override max-height. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed_
-* `no-auto-close` (Boolean, default: `false`): opt out of automatically closing on focus or click outside of the dropdown content
-* `no-auto-fit` (Boolean, default: `false`): opt out of auto-sizing
-* `no-auto-focus` (Boolean, default: `false`): opt out of focus being automatically moved to the first focusable element in the dropdown when opened
-* `no-padding` (Boolean, default: `false`): render with no padding
-* `no-padding-header` (Boolean, default: `false`): render the header with no padding (if it has content)
-* `no-padding-footer` (Boolean, default: `false`): render the footer with no padding (if it has content)
-* `no-pointer` (Boolean, default: `false`): render without a pointer
-* `vertical-offset` (Number|String) - provide custom offset, positive or negative
-* `align` (String): optionally align dropdown to either `start` or `end`. If not set, the dropdown will attempt be centred
-* `boundary` (Object) - optionally provide boundaries to where the dropdown will appear. Valid properties are `"above"`, `"below"`, `"left"` and `"right"`.
+
+| Property | Type | Description |
+|--|--|--|
+| `align` | String | Optionally align dropdown to either `start` or `end`. If not set, the dropdown will attempt be centred |
+| `boundary` | Object | Optionally provide boundaries to where the dropdown will appear. Valid properties are `"above"`, `"below"`, `"left"` and `"right"`. |
+| `max-height` | Number | Override default `max-height`. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed_ |
+| `max-width` | Number | Override default `max-width` |
+| `min-width` | Number | Override default `min-width` |
+| `no-auto-close` | Boolean, default: `false` | Opt out of automatically closing on focus or click outside of the dropdown content |
+| `no-auto-fit` | Boolean, default: `false` | Opt out of auto-sizing |
+| `no-auto-focus` | Boolean, default: `false` | Opt out of focus being automatically moved to the first focusable element in the dropdown when opened |
+| `no-padding` | Boolean, default: `false` | Render with no padding |
+| `no-padding-header` | Boolean: default: `false` | Render the header with no padding (if it has content) |
+| `no-padding-footer` | Boolean, default: `false` | Render the footer with no padding (if it has content) |
+| `no-pointer` | Boolean, default: `false` | Render without a pointer |
+| `vertical-offset` | Number or String | Provide custom offset, positive or negative |
 
 **Events:**
 * `d2l-dropdown-open`: dispatched when the dropdown is opened

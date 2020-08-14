@@ -454,7 +454,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				const month = day.getMonth();
 				const date = day.getDate();
 				const weekday = calendarData.descriptor.calendar.days.long[calendarData.daysOfWeekIndex[index]];
-				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, {format: 'monthYear'})}`;
+				const description = `${weekday} ${date}. ${selected ? this.localize(`${this._namespace}.selected`) : this.localize(`${this._namespace}.notSelected`)} ${formatDate(day, { format: 'monthYear' })}`;
 				// role="gridcell" used for screen reader (e.g., JAWS and VoiceOver) behavior to work properly
 				return html`
 					<td
@@ -490,8 +490,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			'd2l-calendar-prev-updown': this._monthNav === 'prev-updown'
 		};
 		const labelId = `${this._tableInfoId}-heading`;
-		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), {format: 'monthYear'});
 		const regionLabel = this.label ? `${this.label}. ${heading}` : heading;
+		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), { format: 'monthYear' });
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
 			<div role="region" aria-label="${regionLabel}">
@@ -567,7 +567,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_computeText(month) {
-		return this.localize(`${this._namespace}.show`, {month: calendarData.descriptor.calendar.months.long[month]});
+		return this.localize(`${this._namespace}.show`, { month: calendarData.descriptor.calendar.months.long[month] });
 	}
 
 	async _focusDateAddFocus() {
@@ -601,7 +601,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const month = selectedDate.getAttribute('data-month');
 		const date = selectedDate.getAttribute('data-date');
 
-		this.selectedValue = formatDateInISO({year: year, month: (parseInt(month) + 1), date: date});
+		this.selectedValue = formatDateInISO({ year: year, month: (parseInt(month) + 1), date: date });
 
 		const eventDetails = {
 			bubbles: true,
