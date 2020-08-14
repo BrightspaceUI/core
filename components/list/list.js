@@ -91,7 +91,7 @@ class List extends LitElement {
 	}
 
 	_getItems() {
-		return this.shadowRoot.querySelector('slot').assignedNodes({flatten: true}).filter((node) => {
+		return this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
 	}

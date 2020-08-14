@@ -26,6 +26,11 @@ describe('MenuItemMixin', () => {
 			expect(elem.getAttribute('role')).to.equal('menuitem');
 		});
 
+		it('adds aria-disabled to disabled menu item', async() => {
+			const disabledElem = await fixture(`<${tag} id="my-menu-item-disabled" disabled></${tag}>`);
+			expect(disabledElem.getAttribute('aria-disabled')).to.equal('true');
+		});
+
 	});
 
 	describe('events', () => {

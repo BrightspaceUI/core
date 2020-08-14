@@ -23,7 +23,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			/**
 			 * Indicates that the input has a popup menu
 			 */
-			ariaHaspopup: { type: String, attribute: 'aria-haspopup'},
+			ariaHaspopup: { type: String, attribute: 'aria-haspopup' },
 			/**
 			 * Indicates that the input value is invalid
 			 */
@@ -77,10 +77,6 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			 * Imposes a lower character limit
 			 */
 			minlength: { type: Number },
-			/**
-			 * Name of the input
-			 */
-			name: { type: String },
 			/**
 			 * Regular expression pattern to validate the value
 			 */
@@ -305,30 +301,21 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		}
 	}
 
-	get labelText() {
-		return this.label;
-	}
-
-	get validationMessageRangeOverflow() {
-		return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)) });
-	}
-
-	get validationMessageRangeUnderflow() {
-		return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)) });
-	}
-
-	get validationMessageTooShort() {
-		return this.localize('components.form-element.input.text.tooShort', { label: this.labelText, minlength: formatNumber(this.minlength) });
-	}
-
-	get validationMessageTypeMismatch() {
-		switch (this.type) {
-			case 'email':
+	get validationMessage() {
+		if (this.validity.rangeOverflow) {
+			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)) });
+		} else if (this.validity.rangeUnderflow) {
+			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)) });
+		} else if (this.validity.tooShort) {
+			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
+		} else if (this.validity.typeMismatch) {
+			if (this.type === 'email') {
 				return this.localize('components.form-element.input.email.typeMismatch');
-			case 'url':
+			} else if (this.type === 'url') {
 				return this.localize('components.form-element.input.url.typeMismatch');
+			}
 		}
-		return super.validationMessageTypeMismatch;
+		return super.validationMessage;
 	}
 
 	get validity() {
@@ -374,7 +361,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		// Change events aren't composed, so we need to re-dispatch
 		this.dispatchEvent(new CustomEvent(
 			'change',
-			{bubbles: true, composed: false}
+			{ bubbles: true, composed: false }
 		));
 	}
 

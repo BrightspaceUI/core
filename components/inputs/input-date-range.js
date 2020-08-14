@@ -156,11 +156,14 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(validationType)]
 		).then(res => res.reduce((acc, errors) => [...acc, ...errors], []));
 		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...errors, ...childErrors];
+		return [...childErrors, ...errors];
 	}
 
-	get validationMessageBadInput() {
-		return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+	get validationMessage() {
+		if (this.validity.badInput) {
+			return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+		}
+		return super.validationMessage;
 	}
 
 	get _computedEndLabel() {
@@ -178,7 +181,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		} else {
 			this.endValue = elem.value;
 		}
-		this.setValidity({badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue)))});
+		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
 		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',

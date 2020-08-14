@@ -146,7 +146,7 @@ export const getFormElementData = (node, submitter) => {
 
 const _getCustomFormElementData = (node) => {
 	if (node.formValue instanceof Object) {
-		return {...node.formValue};
+		return { ...node.formValue };
 	}
 	if (node.name) {
 		return { [node.name]: node.formValue };

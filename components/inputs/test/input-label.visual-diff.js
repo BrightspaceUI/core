@@ -9,8 +9,8 @@ describe('d2l-input-label', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 1500}});
-		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-label.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1500 } });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-label.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
 
