@@ -490,8 +490,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			'd2l-calendar-prev-updown': this._monthNav === 'prev-updown'
 		};
 		const labelId = `${this._tableInfoId}-heading`;
-		const regionLabel = this.label ? `${this.label}. ${heading}` : heading;
 		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), { format: 'monthYear' });
+		const regionLabel = this.label ? `${this.label}. ${heading}` : heading;
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
 			<div role="region" aria-label="${regionLabel}">
