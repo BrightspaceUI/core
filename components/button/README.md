@@ -15,9 +15,11 @@ The `d2l-button` element can be used just like the native button element, but al
 
 **Properties:**
 
-- `description` (String): A description to be added to the `button` for accessibility
-- `disabled` (Boolean): disables the button
-- `primary` (Boolean): styles the button as a primary button
+| Property | Type | Description |
+|--|--|--|
+| `description` | String | A description to be added to the `button` for accessibility |
+| `disabled` | Boolean | Disables the button |
+| `primary` | Boolean | Styles the button as a primary button |
 
 **Accessibility:**
 
@@ -46,12 +48,14 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 
 **Properties:**
 
-- `text` (required, String): Text for the button
-- `description` (String): A description to be added to the `button` for accessibility
-- `disabled` (Boolean): disables the button
-- `h-align` (String): `text` aligns the leading edge of text
-- `icon` (String): [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`)
-- `icon-right` (Boolean): Indicates that the icon should be rendered on right
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Text for the button |
+| `description` | String | A description to be added to the `button` for accessibility for additional context |
+| `disabled` | Boolean | Disables the button |
+| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
+| `icon` | String | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
+| `icon-right` | Boolean | Render the icon on the right of the button |
 
 **Accessibility:**
 
@@ -78,11 +82,13 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 
 **Properties:**
 
-- `icon` (required, String): [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`)
-- `text` (required, String): Accessible text for the button
-- `disabled` (Boolean): disables the button
-- `h-align` (String): `text` aligns the leading edge of text
-- `translucent` (Boolean): Indicates to display translucent (ex. on rich backgrounds)
+| Property | Type | Description |
+|--|--|--|
+| `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
+| `text` | String, required | Accessible text for the buton |
+| `disabled` | Boolean | Disables the button |
+| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
+| `translucent` | Boolean | Indicates to display translucent (ex. on rich backgrounds) |
 
 **Accessibility:**
 
@@ -115,8 +121,10 @@ Floating workflow buttons behavior can be added by using the `<d2l-floating-butt
 
 **Properties:**
 
-- `always-float` (Boolean): Indicates to display buttons as always floating
-- `min-height` (String, default: `'500px'`): The minimum height of the viewport to display floating buttons at (where applicable). If viewport is less than `min-height`, buttons will never appear floating (unless `always-float` is used). If viewport is greater than `min-height` then buttons will float when applicable.
+| Property | Type | Description |
+|--|--|--|
+| `always-float` | Boolean | Indicates to display buttons as always floating |
+| `min-height` | String, default: `'500px'` | The minimum height of the viewport to display floating buttons at (where applicable). If viewport is less than `min-height`, buttons will never appear floating (unless `always-float` is used). If viewport is greater than `min-height` then buttons will float when applicable. |
 
 ## Future Enhancements
 

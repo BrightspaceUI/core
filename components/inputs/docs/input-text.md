@@ -16,29 +16,31 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 
 **Properties:**
 
-- `aria-haspopup` (String):  indicates that the input has a popup menu
-- `aria-invalid` (String): indicates that the input value is invalid
-- `autocomplete` (String): specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser
-- `autofocus` (Boolean): when set, will automatically place focus on the input
-- `disabled` (Boolean): disables the input
-- `label` (String, required): label for the input
-- `label-hidden` (Boolean): hides the label visually (moves it to the input's `aria-label` attribute)
-- `max` (String): for number inputs, maximum value
-- `maxlength` (Number): imposes an upper character limit
-- `min` (String): for number inputs, minimum value
-- `minlength` (Number): imposes a lower character limit
-- `name` (String): name of the input
-- `novalidate` (Boolean): disables built-in validation
-- `pattern` (String): regular expression pattern to validate the value
-- `placeholder` (String): placeholder text
-- `prevent-submit` (Boolean): prevents pressing ENTER from submitting forms
-- `readonly` (Boolean): makes the input read-only
-- `required` (Boolean): indicates that a value is required
-- `size` (Number): size of the input
-- `step` (String): for number inputs, sets the step size
-- `title` (String): text for additional screenreader and mouseover context
-- `type` (String, default: `'text'`): can be one of `text`, `email`, `number`, `password`, `tel`, `url`
-- `value` (String, default: `''`): value of the input
+| Property | Type | Description |
+|--|--|--|
+| `label` | String, required | Label for the input |
+| `aria-haspopup` | String | Indicates that the input has a popup menu |
+| `aria-invalid` | String | Indicates that the input value is invalid |
+| `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser |
+| `autofocus` | Boolean | When set, will automatically place focus on the input |
+| `disabled` | Boolean | Disables the input |
+| `label-hidden` | Boolean | Hides the labe visually (moves it to the input's `aria-label` attribute) |
+| `max` | String | For number inputs, maximum value |
+| `maxlength` | Number | Imposes an upper character limit |
+| `min` | String | For number inputs, minimum value |
+| `minlength` | Number | Imposes a lower character limit |
+| `name` | String | Name of the input |
+| `novalidate` | Boolean | Disables the built-in validation |
+| `pattern` | String | Regular expression pattern to validate the value |
+| `placeholder` | String | Placeholder text |
+| `prevent-submit` | Boolean | Prevents pressing ENTER from submitting forms |
+| `readonly` | Boolean | Makes the input read-only |
+| `required` | Boolean | Indicates that a value is required |
+| `size` | Number | Size of the input |
+| `step` | String | For number inputs, sets the step size |
+| `title` | String | Text for additional screenreader and mouseover context |
+| `type` | String, default: `text` | Can be one of `text`, `email`, `number`, `password`, `tel`, `url` |
+| `value` | String, default: `''` | Value of the input |
 
 **Accessibility:**
 
