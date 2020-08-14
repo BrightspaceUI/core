@@ -24,12 +24,14 @@ button.addEventListener('click', () => {
 });
 ```
 
-**Backdrop Properties:**
+**Properties:**
 
-- `for-target` (required, String): id of the target element to display backdrop behind
-- `shown` (Boolean): used to control whether the backdrop is shown
-- `slow-transition` (Boolean): Increases the fade transition time to 1200ms (default is 200ms)
-- `no-animate-hide` (Boolean): disables the fade-out transition while the backdrop is being hidden
+| Property | Type | Description |
+|--|--|--|
+| `for-target` | String, required | id of the target element to display backdrop behind |
+| `no-animate-hide` | Boolean | Disables the fade-out transition while the backdrop is being hidden |
+| `shown` | Boolean | Used to control whether the backdrop is shown |
+| `slow-transition` | Boolean | Increases the fade transition time to 1200ms (default is 200ms) |
 
 ## Future Enhancements
 

@@ -17,12 +17,14 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 
 **Properties:**
 
-- `label` (String, required): accessible label for the input
-- `disabled` (Boolean): disables the input
-- `maxlength` (Number): imposes an upper character limit
-- `no-clear` (Boolean): prevents the "clear" button from appearing
-- `placeholder` (String): placeholder text
-- `value` (String, default: `''`): value of the input
+| Property | Type | Description |
+|--|--|--|
+| `label` | String, required | Accessible label for the input |
+| `disabled` | Boolean | Disables the input |
+| `maxlength` | Number | Imposes an upper character limit |
+| `no-clear` | Boolean | Prevents the "clear" button from appearing |
+| `placeholder` | String | Placeholder text |
+| `value` | String, default: `''` | Value of the input |
 
 **Accessibility:**
 
