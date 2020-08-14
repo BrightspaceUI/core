@@ -86,6 +86,10 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return {
 			forceInvalid: { type: Boolean, attribute: false },
 			invalid: { type: Boolean, reflect: true },
+			/**
+			 * Name of the form control. Submitted with the form as part of a name/value pair.
+			 */
+			name: { type: String },
 			noValidate: { type: Boolean, attribute: 'novalidate' },
 			validationError: { type: String, attribute: false },
 		};
@@ -96,7 +100,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationCustomConnected = this._validationCustomConnected.bind(this);
 
 		this._validationCustoms = new Set();
-		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
 		this.forceInvalid = false;
 		this.formValue = null;
@@ -123,10 +126,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		});
 	}
 
-	checkValidity() {
-		return this.validity.valid;
-	}
-
 	get formAssociated() {
 		return true;
 	}
@@ -138,18 +137,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		}
 	}
 
-	setCustomValidity(message) {
-		this._validity = new FormElementValidityState({ customError: true });
-		this._validationMessage = message;
-	}
-
 	setFormValue(formValue) {
 		this.formValue = formValue;
 	}
 
 	setValidity(flags) {
 		this._validity = new FormElementValidityState(flags);
-		this._validationMessage = null;
 	}
 
 	async validate(validationType) {
@@ -159,7 +152,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
-		if (!this.checkValidity()) {
+		if (!this.validity.valid) {
 			errors.unshift(this.validationMessage);
 		}
 		switch (validationType) {
@@ -193,9 +186,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	get validationMessage() {
-		if (this.validity.customError) {
-			return this._validationMessage;
-		}
 		const label = this.label || this.localize('components.form-element.defaultFieldLabel');
 		if (this.validity.valueMissing) {
 			return this.localize('components.form-element.valueMissing', { label });
