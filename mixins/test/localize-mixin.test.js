@@ -119,7 +119,7 @@ const asyncTag = defineCE(
 				}))
 			);
 			return html`
-				<p>${this.localize('hello', {name: this.name})}</p>
+				<p>${this.localize('hello', { name: this.name })}</p>
 			`;
 		}
 		updated(changedProperties) {
@@ -160,7 +160,7 @@ describe('LocalizeMixin', () => {
 			});
 
 			it('should localize text using object format', () => {
-				const val = elem.localize('hello', {name: 'Bill'});
+				const val = elem.localize('hello', { name: 'Bill' });
 				expect(val).to.equal('Hello Bill');
 			});
 
@@ -170,10 +170,10 @@ describe('LocalizeMixin', () => {
 			});
 
 			it('should re-localize text when locale changes', (done) => {
-				const valInitial = elem.localize('hello', {name: 'Sam'});
+				const valInitial = elem.localize('hello', { name: 'Sam' });
 				expect(valInitial).to.equal('Hello Sam');
 				const myEventListener = () => {
-					const val = elem.localize('hello', {name: 'Mary'});
+					const val = elem.localize('hello', { name: 'Mary' });
 					expect(val).to.equal('Bonjour Mary');
 					elem.removeEventListener('d2l-localize-behavior-language-changed', myEventListener);
 					done();
@@ -183,14 +183,14 @@ describe('LocalizeMixin', () => {
 			});
 
 			it('should localize term using plurals', () => {
-				const val = elem.localize('plural', {itemCount: 1});
+				const val = elem.localize('plural', { itemCount: 1 });
 				expect(val).to.equal('You have 1 item.');
 			});
 
 			it('should not throw when a parameter is missing', () => {
 				let val;
 				expect(() => {
-					val = elem.localize('hello', {invalidParam: 'Bill'});
+					val = elem.localize('hello', { invalidParam: 'Bill' });
 				}).to.not.throw();
 				expect(val).to.equal('Hello {name}');
 				const errArg = errorSpy.firstCall.args[0];

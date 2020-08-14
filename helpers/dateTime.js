@@ -23,7 +23,7 @@ export function formatDateTimeInISO(val, local) {
 	if (!val) {
 		throw new Error('Invalid input: Expected input to be an object');
 	}
-	return `${formatDateInISO({year: val.year, month: val.month, date: val.date})}T${formatTimeInISO({hours: val.hours, minutes: val.minutes, seconds: val.seconds})}.000${local ? '' : 'Z'}`;
+	return `${formatDateInISO({ year: val.year, month: val.month, date: val.date })}T${formatTimeInISO({ hours: val.hours, minutes: val.minutes, seconds: val.seconds })}.000${local ? '' : 'Z'}`;
 }
 
 // val is an object containing hours, minutes, seconds

@@ -10,7 +10,7 @@ describe('d2l-input-time', () => {
 
 	it('label is hidden', async() => {
 		const elem = await fixture(html`<d2l-input-time label="label text" label-hidden time-interval="sixty"></d2l-input-time>`);
-		await expect(elem).to.be.accessible({ignoredRules: ['color-contrast']}); //Color-contrast is slow and hidden label uses the same colors as default
+		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); //Color-contrast is slow and hidden label uses the same colors as default
 	});
 
 	it('disabled', async() => {

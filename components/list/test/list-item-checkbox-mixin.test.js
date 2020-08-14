@@ -32,16 +32,16 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Does not render checkbox or action area when not selectable', () => {
 		const cases = [{
 			input: '',
-			expected: {selectable: undefined, disabled: undefined, selected: undefined}
+			expected: { selectable: undefined, disabled: undefined, selected: undefined }
 		}, {
 			input: 'disabled',
-			expected: {selectable: undefined, disabled: true, selected: undefined}
+			expected: { selectable: undefined, disabled: true, selected: undefined }
 		}, {
 			input: 'disabled selected',
-			expected: {selectable: undefined, disabled: true, selected: true}
+			expected: { selectable: undefined, disabled: true, selected: true }
 		}, {
 			input: 'selected',
-			expected: {selectable: undefined, disabled: undefined, selected: true}
+			expected: { selectable: undefined, disabled: undefined, selected: true }
 		}];
 		for (const test of cases) {
 			it(test.input || 'empty', async() => {
@@ -60,12 +60,12 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Dispatches custom event when checkbox is checked', () => {
 		const cases = [{
 			input: 'selectable',
-			initial: {selectable: true, disabled: undefined, selected: undefined},
-			expected: {selectable: true, disabled: undefined, selected: true}
+			initial: { selectable: true, disabled: undefined, selected: undefined },
+			expected: { selectable: true, disabled: undefined, selected: true }
 		}, {
 			input: 'selectable selected',
-			initial: {selectable: true, disabled: undefined, selected: true},
-			expected: {selectable: true, disabled: undefined, selected: false}
+			initial: { selectable: true, disabled: undefined, selected: true },
+			expected: { selectable: true, disabled: undefined, selected: false }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
@@ -89,12 +89,12 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Dispatches custom event when action area is clicked', () => {
 		const cases = [{
 			input: 'selectable',
-			initial: {selectable: true, disabled: undefined, selected: undefined},
-			expected: {selectable: true, disabled: undefined, selected: true}
+			initial: { selectable: true, disabled: undefined, selected: undefined },
+			expected: { selectable: true, disabled: undefined, selected: true }
 		}, {
 			input: 'selectable selected',
-			initial: {selectable: true, disabled: undefined, selected: true},
-			expected: {selectable: true, disabled: undefined, selected: false}
+			initial: { selectable: true, disabled: undefined, selected: true },
+			expected: { selectable: true, disabled: undefined, selected: false }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
@@ -119,12 +119,12 @@ describe('ListItemCheckboxMixin', () => {
 	describe('Does not dispatch event when item is disabled', () => {
 		const cases = [{
 			input: 'disabled selected selectable',
-			initial: {selectable: true, disabled: true, selected: true},
-			expected: {selectable: true, disabled: true, selected: true}
+			initial: { selectable: true, disabled: true, selected: true },
+			expected: { selectable: true, disabled: true, selected: true }
 		}, {
 			input: 'disabled selectable',
-			initial: {selectable: true, disabled: true, selected: undefined},
-			expected: {selectable: true, disabled: true, selected: undefined}
+			initial: { selectable: true, disabled: true, selected: undefined },
+			expected: { selectable: true, disabled: true, selected: undefined }
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
