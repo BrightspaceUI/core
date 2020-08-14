@@ -198,8 +198,11 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		if (input) input.focus();
 	}
 
-	get validationMessageBadInput() {
-		return this.localize('components.input-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+	get validationMessage() {
+		if (this.validity.badInput) {
+			return this.localize('components.input-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+		}
+		return super.validationMessage;
 	}
 
 	get _computedEndLabel() {

@@ -229,42 +229,19 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		if (this._textInput) this._textInput.focus();
 	}
 
-	get validationMessageRangeOverflow() {
-		let failureText = '';
-		if (this.minValue && this.maxValue) {
-			failureText = this.localize(
-				`${this._namespace}.errorOutsideRange`, {
-					minDate: formatDate(getDateFromISODate(this.minValue), { format: 'medium' }),
-					maxDate: formatDate(getDateFromISODate(this.maxValue), { format: 'medium' })
-				}
-			);
-		} else if (this.maxValue) {
-			failureText = this.localize(
-				`${this._namespace}.errorMaxDateOnly`, {
-					maxDate: formatDate(getDateFromISODate(this.maxValue), { format: 'medium' })
-				}
-			);
+	get validationMessage() {
+		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
+			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;
+			const maxDate = this.maxValue ? formatDate(getDateFromISODate(this.maxValue), { format: 'medium' }) : null;
+			if (minDate && maxDate) {
+				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
+			} else if (maxDate) {
+				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
+			} else if (this.minValue) {
+				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
+			}
 		}
-		return failureText;
-	}
-
-	get validationMessageRangeUnderflow() {
-		let failureText = '';
-		if (this.minValue && this.maxValue) {
-			failureText = this.localize(
-				`${this._namespace}.errorOutsideRange`, {
-					minDate: formatDate(getDateFromISODate(this.minValue), { format: 'medium' }),
-					maxDate: formatDate(getDateFromISODate(this.maxValue), { format: 'medium' })
-				}
-			);
-		} else if (this.minValue) {
-			failureText = this.localize(
-				`${this._namespace}.errorMinDateOnly`, {
-					minDate: formatDate(getDateFromISODate(this.minValue), { format: 'medium' })
-				}
-			);
-		}
-		return failureText;
+		return super.validationMessage;
 	}
 
 	_handleBlur() {

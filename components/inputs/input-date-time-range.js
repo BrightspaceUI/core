@@ -158,8 +158,11 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		return [...childErrors, ...errors];
 	}
 
-	get validationMessageBadInput() {
-		return this.localize('components.input-date-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+	get validationMessage() {
+		if (this.validity.badInput) {
+			return this.localize('components.input-date-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+		}
+		return super.validationMessage;
 	}
 
 	get _computedEndLabel() {
