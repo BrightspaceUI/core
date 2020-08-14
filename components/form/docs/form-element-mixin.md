@@ -13,7 +13,9 @@ invalid state.
 ## Form Value
 
 **Properties:**
-- `name` (String): The name of the form control. Submitted with the form as part of a name/value pair.
+| Property | Type | Description |
+|--|--|--|
+| `name` | String | The name of the form control. Submitted with the form as part of a name/value pair. |
 
 **Methods:**
 - `setFormValue(value)`: Sets the current value of the form control. Submitted with the form as part of a name/value pair. `value` may be a:
@@ -26,12 +28,12 @@ invalid state.
 ## Validation
 
 **Properties:**
-- `force-invalid` (Boolean, default: `false`): Forces the component into an invalid state. This should be used if you want the component to look invalid even if it passed validation.
-- `invalid` (read-only, Boolean, default: `false`): Indicates whether the component is currently in an invalid state. This attribute should be used to display all invalid styles.
-- `no-validate` (Boolean, default: `false`): Indicates that the component should not be validated preventing it from entering an invalid state.
-- `validationError` (read-only, String, default: `null`): The current validation error message.
-	- **Note:** If the component has a `validationError` then `invalid` will always be `true`; however, an `invalid` component is not guaranteed to have a `validationError`. Therefore, `validationError` should be checked to be non-null before rendering the error.
-
+| Property | Type | Description |
+|--|--|--|
+| `force-invalid` | Boolean, default: `false` | Forces the component into an invalid state. This should be used if you want the component to look invalid even if it passed validation. |
+| `invalid` | read-only, Boolean, default: `false` | Indicates whether the component is currently in an invalid state. This attribute should be used to display all invalid styles. |
+| `novalidate` | Boolean, default: `false` | Indicates that the component should not be validated preventing it from entering an invalid state. |
+| `validationError` | read-only, String, default: `null` | The current validation error message.<br><br>**Note:** If the component has a `validationError` then `invalid` will always be `true`; however, an `invalid` component is not guaranteed to have a `validationError`. Therefore, `validationError` should be checked to be non-null before rendering the error. |
 
 **Methods:**
 - `setValidity({ <flag>: true|false, ...})`: Sets the component's current validity state flags. The following `Boolean` flags can be provided:
