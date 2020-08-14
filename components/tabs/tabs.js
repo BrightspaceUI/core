@@ -527,7 +527,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 
 	_getPanels(slot) {
 		if (!slot) return;
-		return slot.assignedNodes({flatten: true})
+		return slot.assignedNodes({ flatten: true })
 			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel');
 	}
 

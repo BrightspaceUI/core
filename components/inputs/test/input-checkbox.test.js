@@ -182,9 +182,9 @@ describe('d2l-input-checkbox', () => {
 		});
 
 		[
-			{name: 'aria-label', propName: 'ariaLabel', value: 'hello'},
-			{name: 'disabled', value: true},
-			{name: 'name', value: 'jim'}
+			{ name: 'aria-label', propName: 'ariaLabel', value: 'hello' },
+			{ name: 'disabled', value: true },
+			{ name: 'name', value: 'jim' }
 		].forEach((attr) => {
 			attr.propName = attr.propName || attr.name;
 			it(`should bind "${attr.name}" to input`, async() => {
