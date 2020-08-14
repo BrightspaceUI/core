@@ -91,8 +91,10 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
     - default break: `843px < x`  where `x` is the width of the component.
 - `disabled` (Boolean): Whether or not the checkbox is disabled
 - `draggable` (Boolean): Whether or not the item is draggable
+- `dragging` (Boolean): Whether the item is being dragged
+- `drag-handle-text` (String): Label for screenreaders on the drag handle
 - `href` (String): Address of item link if navigable
-- `key` (String): Value to identify item if selectable
+- `key` (String): Unique value to identify item if selectable or draggable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
 
