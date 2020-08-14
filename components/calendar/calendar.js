@@ -139,6 +139,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
+			 * Unique label text for calendar (necessary if multiple calendars on page)
+			 */
+			label: { attribute: 'label', reflect: true, type: String },
+			/**
 			 * Maximum valid date that could be selected by a user
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
@@ -486,36 +490,38 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			'd2l-calendar-prev-updown': this._monthNav === 'prev-updown'
 		};
 		const labelId = `${this._tableInfoId}-heading`;
-		const labelledBy = this._dialog ? labelId : undefined;
 		const heading = formatDate(new Date(this._shownYear, this._shownMonth, 1), { format: 'monthYear' });
+		const regionLabel = this.label ? `${this.label}. ${heading}` : heading;
 		const role = this._dialog ? 'dialog' : undefined;
 		return html`
-			<div aria-labelledby="${ifDefined(labelledBy)}" class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
-				<div role="application">
-					<div class="d2l-calendar-title">
-						<d2l-button-icon
-							@click="${this._onPrevMonthButtonClick}"
-							text="${this._computeText(getPrevMonth(this._shownMonth))}"
-							icon="tier1:chevron-left">
-						</d2l-button-icon>
-						<h2 aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</h2>
-						<d2l-button-icon
-							@click="${this._onNextMonthButtonClick}"
-							text="${this._computeText(getNextMonth(this._shownMonth))}"
-							icon="tier1:chevron-right">
-						</d2l-button-icon>
+			<div role="region" aria-label="${regionLabel}">
+				<div class="${classMap(calendarClasses)}" role="${ifDefined(role)}">
+					<div role="application">
+						<div class="d2l-calendar-title">
+							<d2l-button-icon
+								@click="${this._onPrevMonthButtonClick}"
+								text="${this._computeText(getPrevMonth(this._shownMonth))}"
+								icon="tier1:chevron-left">
+							</d2l-button-icon>
+							<div aria-atomic="true" aria-live="polite" class="d2l-heading-4" id="${labelId}">${heading}</div>
+							<d2l-button-icon
+								@click="${this._onNextMonthButtonClick}"
+								text="${this._computeText(getNextMonth(this._shownMonth))}"
+								icon="tier1:chevron-right">
+							</d2l-button-icon>
+						</div>
+						<table aria-labelledby="${labelId}" role="presentation">
+							${summary}
+							<thead aria-hidden="true">
+								<tr>${weekdayHeaders}</tr>
+							</thead>
+							<tbody>
+								${dayRows}
+							</tbody>
+						</table>
 					</div>
-					<table aria-labelledby="${labelId}" role="presentation">
-						${summary}
-						<thead aria-hidden="true">
-							<tr>${weekdayHeaders}</tr>
-						</thead>
-						<tbody>
-							${dayRows}
-						</tbody>
-					</table>
+					<slot></slot>
 				</div>
-				<slot></slot>
 			</div>
 		`;
 	}
