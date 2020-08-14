@@ -200,6 +200,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
 						<d2l-calendar
 							@d2l-calendar-selected="${this._handleDateSelected}"
+							label="${ifDefined(this.label)}"
 							max-value="${ifDefined(this.maxValue)}"
 							min-value="${ifDefined(this.minValue)}"
 							selected-value="${ifDefined(this._shownValue)}">
