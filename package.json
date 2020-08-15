@@ -17,7 +17,7 @@
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
     "lint:style": "stylelint \"**/*.js\"",
     "prepublishOnly": "node ./cli/verify-translations.js && npm run analyze",
-    "start": "es-dev-server --node-resolve --dedupe --watch --open",
+    "start": "es-dev-server --node-resolve --dedupe --watch --open --hostname 192.168.1.91",
     "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
     "test:axe": "karma start karma.axe.conf.js",
     "test:bs": "karma start karma.bs.conf.js",
