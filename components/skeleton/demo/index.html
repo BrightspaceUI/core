@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../../button/button.js';
+		import '../../inputs/input-text.js';
+		import '../../inputs/input-date.js';
+		import './skeleton-host.js';
+	</script>
+	<style>
+		@keyframes loadingPulse {
+			0% { background-color: var(--d2l-color-sylvite); }
+			50% { background: var(--d2l-color-regolith); }
+			75% { background: var(--d2l-color-sylvite); }
+			100% { background: var(--d2l-color-sylvite); }
+		}
+
+		.skeletize::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: 0;
+			border-radius: 0.2rem;
+			animation: loadingPulse 1.8s linear infinite;
+			background-color: var(--d2l-color-sylvite);
+			z-index: 2000;
+		}
+
+		.skeletize {
+			position: relative;
+			color: transparent;
+			border: none;
+			box-shadow: none;
+		}
+
+		.flex-container {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.item-container {
+			margin-right: 40px;
+		}
+
+		.item-container[dir="rtl"] {
+			margin-right: 0;
+			margin-left: 40px;
+		}
+
+	</style>
+</head>
+
+<body unresolved>
+	<d2l-demo-page page-title="d2l-skeleton">
+
+		<h2>Custom Element handling skeleton behaviour internally</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-skeleton-host skeleton>
+				</d2l-skeleton-host>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Label & Date</h2>
+		<d2l-demo-snippet>
+			<template>
+				<label class="skeletize d2l-label-text">Birth date</label>
+				<d2l-input-date class="skeletize" style="display:block" label="Date" label-hidden></d2l-input-date>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Label & Text Input</h2>
+		<d2l-demo-snippet>
+			<template>
+				<label class="skeletize d2l-label-text">Hello you old skeleton you</label>
+				<d2l-input-text class="skeletize"></d2l-input-text>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Flex Items</h2>
+		<d2l-demo-snippet>
+			<template>
+			<div class="flex-container">
+				<div class="item-container">
+					<label class="skeletize d2l-label-text">Hello</label>
+					<d2l-input-text size="6" class="skeletize"></d2l-input-text>
+				</div>
+				<div class="item-container">
+					<label class="skeletize d2l-label-text">You lovely skeletal world</label>
+					<d2l-input-text size="6" class="skeletize"></d2l-input-text>
+				</div>
+			</div>
+			</template>
+		</d2l-demo-snippet>
+
+	</d2l-demo-page>
+</body>
+
+</html>
