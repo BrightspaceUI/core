@@ -66,12 +66,18 @@ class InputNumber extends LitElement {
 		this._inputId = getUniqueId();
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		if (this.value !== undefined) {
-			this.value = checkMinMaxValue(this.value, this.min, this.max);
-			this._formattedValue = formatValue(this.value, this.minFractionDigits, this.maxFractionDigits);
+	get value() { return this._value; }
+	set value(val) {
+		const oldValue = this.value;
+		try {
+			const newValue = checkMinMaxValue(val, this.min, this.max);
+			this._formattedValue = formatValue(newValue, this.minFractionDigits, this.maxFractionDigits);
+			this._value = parseNumber(this._formattedValue);
+		} catch (err) {
+			this._formattedValue = '';
+			this._value = undefined;
 		}
+		this.requestUpdate('value', oldValue);
 	}
 
 	render() {
@@ -96,17 +102,11 @@ class InputNumber extends LitElement {
 		`;
 	}
 
-	_handleChange(e) {
-		const inputValue = e.target.value.trim();
-		this.value = inputValue !== '' ? parseNumber(inputValue) : undefined;
-
-		if (!isNaN(this.value) && this.value !== undefined) {
-			this.value = checkMinMaxValue(this.value, this.min, this.max);
-			this._formattedValue = formatValue(this.value, this.minFractionDigits, this.maxFractionDigits);
-			e.target.value = this._formattedValue;
-		} else {
-			e.target.value = '';
-		}
+	async _handleChange(e) {
+		const value = e.target.value;
+		this._formattedValue = value;
+		await this.updateComplete;
+		this.value = value;
 	}
 }
 customElements.define('d2l-input-number', InputNumber);
