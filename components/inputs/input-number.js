@@ -106,7 +106,7 @@ class InputNumber extends LitElement {
 		const value = e.target.value;
 		this._formattedValue = value;
 		await this.updateComplete;
-		this.value = value;
+		this.value = parseNumber(value);
 	}
 }
 customElements.define('d2l-input-number', InputNumber);
