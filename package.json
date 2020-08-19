@@ -71,8 +71,7 @@
     "semantic-release": "^17",
     "sinon": "^9",
     "stylelint": "^13",
-    "web-component-analyzer": "^1",
-    "whatwg-fetch": "^3"
+    "web-component-analyzer": "^1"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
