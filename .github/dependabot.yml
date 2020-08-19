@@ -9,4 +9,5 @@ updates:
       - dependency-name: "intl-messageformat"
       - dependency-name: "karma-browserstack-launcher"
       - dependency-name: "karma-sauce-launcher"
+      # mocha needs to be < 8.1, may be fixed but waiting for release
       - dependency-name: "mocha"
