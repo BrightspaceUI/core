@@ -1,5 +1,5 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
 import { ListItemMixin } from './list-item-mixin.js';
+import { LitElement } from 'lit-element/lit-element.js';
 
 /**
  * A component for a "listitem" child within a list. It provides semantics, basic layout, breakpoints for responsiveness, a link for navigation, and selection.
@@ -10,16 +10,8 @@ import { ListItemMixin } from './list-item-mixin.js';
  */
 class ListItem extends ListItemMixin(LitElement) {
 
-	static get styles() {
-		return [ super.styles ];
-	}
-
 	render() {
-		return this._renderListItem({
-			illustration: html`<slot name="illustration"></slot>`,
-			content: html`<slot></slot>`,
-			actions: html`<slot name="actions"></slot>`
-		});
+		return this._renderListItem();
 	}
 }
 

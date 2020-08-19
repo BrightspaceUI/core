@@ -109,7 +109,8 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				justify-content: stretch;
 				padding: 0.55rem 0;
 			}
-			[slot="content"] ::slotted([slot="illustration"]) {
+			[slot="content"] ::slotted([slot="illustration"]),
+			[slot="content"] .d2l-list-item-illustration * {
 				border-radius: 6px;
 				flex-grow: 0;
 				flex-shrink: 0;
@@ -118,14 +119,16 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				max-width: 4.5rem;
 				overflow: hidden;
 			}
-			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) [slot="content"]  .d2l-list-item-illustration * {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
 			.d2l-list-item-actions-container {
 				padding: 0.55rem 0;
 			}
-			::slotted([slot="actions"]) {
+			::slotted([slot="actions"]),
+			.d2l-list-item-actions * {
 				display: grid;
 				gap: 0.3rem;
 				grid-auto-columns: 1fr;
@@ -134,30 +137,35 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			}
 
 			[data-breakpoint="1"] ::slotted([slot="illustration"]),
-			[data-breakpoint="1"] .d2l-list-item-content-flex ::slotted([slot="illustration"]) {
+			[data-breakpoint="1"] .d2l-list-item-illustration * {
 				margin-right: 1rem;
 				max-height: 3.55rem;
 				max-width: 6rem;
 			}
-			:host([dir="rtl"]) [data-breakpoint="1"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [data-breakpoint="1"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) [data-breakpoint="1"] .d2l-list-item-illustration * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			[data-breakpoint="2"] ::slotted([slot="illustration"]) {
+			[data-breakpoint="2"] ::slotted([slot="illustration"]),
+			[data-breakpoint="2"] .d2l-list-item-illustration * {
 				margin-right: 1rem;
 				max-height: 5.1rem;
 				max-width: 9rem;
 			}
-			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration *  {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			[data-breakpoint="3"] ::slotted([slot="illustration"]) {
+			[data-breakpoint="3"] ::slotted([slot="illustration"]),
+			[data-breakpoint="3"] .d2l-list-item-illustration * {
 				margin-right: 1rem;
 				max-height: 6rem;
 				max-width: 10.8rem;
 			}
-			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]) {
+			:host([dir="rtl"]) [data-breakpoint="3"] ::slotted([slot="illustration"]),
+			:host([dir="rtl"]) [data-breakpoint="3"] .d2l-list-item-illustration * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
@@ -280,7 +288,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		this._hoveringLink = false;
 	}
 
-	_renderListItem({illustration, content, actions}) {
+	_renderListItem({illustration, content, actions} = {}) {
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-focusing': this._focusing,
@@ -322,12 +330,12 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					<div slot="content"
 						class="${classMap(contentClasses)}"
 						id="${this._contentId}">
-						${illustration}
-						${content}
+						<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
+						<slot>${content}</slot>
 					</div>
 
 					<div class="d2l-list-item-actions-container" slot="actions">
-						${actions}
+						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 					</div>
 				</d2l-list-item-generic-layout>
 				<div class="d2l-list-item-active-border"></div>
