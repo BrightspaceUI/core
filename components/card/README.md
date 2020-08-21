@@ -78,7 +78,7 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 | `href` | String | Location for the primary action/navigation |
 | `rel` | String | Relationship of the target object to the link object |
 | `secondary-text` | String | Text to display as a superscript on the icon |
-| `secondary-text-type` | String | Controls the style of the secondary text bubble; options are 'notification' and 'count' |
+| `secondary-text-type` | String | Controls the style of the secondary text bubble; options are `notification` and `count` |
 | `target` | String | Where to display the linked URL |
 
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.

@@ -58,7 +58,8 @@ class CardLoadingShimmer extends LitElement {
 	render() {
 		return html`
 			<div ?hidden="${!this.loading}" class="d2l-card-loading-indicator"></div>
-			<div ?hidden="${this.loading}"><slot></slot></div>`;
+			<div ?hidden="${this.loading}"><slot></slot></div>
+		`;
 	}
 
 }

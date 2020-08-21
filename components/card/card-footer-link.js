@@ -21,7 +21,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			href: { type: String, reflect: true },
 			/**
-			 * This attribute indicates the human language of the linked resource. It is purely advisory, with no built-in functionality.
+			 * Indicates the human language of the linked resource; purely advisory, with no built-in functionality
 			 */
 			hreflang: { type: String, reflect: true },
 			/**
@@ -49,7 +49,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			text: { type: String, reflect: true },
 			/**
-			 * Specifies the media type in the form of a MIME type for the linked URL. It is purely advisory, with no built-in functionality.
+			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
 			 */
 			type: { type: String, reflect: true },
 			_secondaryTextHidden: { type: Boolean }
