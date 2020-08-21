@@ -2,7 +2,7 @@
 
 ## d2l-card
 
-The `d2l-card` element is container element that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
+The `d2l-card` element is a container element that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
 
 ![Card](./screenshots/card.png?raw=true)
 
@@ -11,11 +11,17 @@ The `d2l-card` element is container element that provides specific layout using 
   import '@brightspace-ui/core/components/card/card.js';
 </script>
 
-<d2l-card text="Accessible Link Text" href="...">
-  <img slot="header" style="display: block; width: 100%;" src="..." alt="" />
-  <d2l-button-icon slot="actions" text="Unpin" icon="tier1:pin-filled"></d2l-button-icon>
-  <div slot="content">Primary Card Content</div>
-  <div slot="footer">Secondary Actions</div>
+<d2l-card align-center text="Hydrology" href="..." style="width: 245px; height: 300px;">
+  <img slot="header" alt="" style="display: block; width: 100%;" src="...">
+  <d2l-button-icon slot="actions" translucent text="Unpin" icon="tier1:pin-filled"></d2l-button-icon>
+  <div slot="content">
+    <div>Hydrology</div>
+    <d2l-card-content-meta>Some extra content meta data.</d2l-card-content-meta>
+  </div>
+  <div slot="footer">
+    <d2l-card-footer-link id="link1" icon="tier1:google-drive" text="Google Drive" secondary-text="99+" href="..."></d2l-card-footer-link>
+    <d2l-tooltip for="link1">Go to Google Drive</d2l-tooltip>
+  </div>
 </d2l-card>
 ```
 
