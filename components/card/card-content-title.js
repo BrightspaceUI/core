@@ -2,7 +2,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 /**
  * A helper for providing layout/style for a title within the `content` slot.
- * @slot - Slot the title text
+ * @slot - Slot for title text
  */
 class CardContentTitle extends LitElement {
 

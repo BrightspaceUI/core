@@ -3,7 +3,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 /**
  * A helper for providing layout/style for meta data within the `content` slot.
- * @slot - Slot the meta data text
+ * @slot - Slot for meta data text
  */
 class CardContentMeta extends LitElement {
 
