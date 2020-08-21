@@ -8,8 +8,16 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../demo/demo-page.js';
+			import '../../button/button.js';
+			import '../../button/button-icon.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../dropdown/dropdown-content.js';
 			import '../../status-indicator/status-indicator.js';
+			import '../../tooltip/tooltip.js';
 			import '../card.js';
+			import '../card-content-meta.js';
+			import '../card-content-title.js';
+			import '../card-footer-link.js';
 		</script>
 		<style>
 			d2l-card {
@@ -45,7 +53,7 @@
 
 		<d2l-demo-page page-title="d2l-card">
 
-			<h2>Card</h2>
+			<h2>Subtle Card (badges, no-link)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -73,6 +81,170 @@
 						</d2l-card>
 
 					</div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Subtle Card (header actions, meta-content, footer links)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<div class="subtle-demo">
+
+						<d2l-card subtle align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 300px;">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+									<d2l-dropdown-content>
+										<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+										<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+										<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+									</d2l-dropdown-content>
+							</d2l-dropdown-more>
+							<d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
+							<div slot="content"><div>Hydrology</div><d2l-card-content-meta>This is some extra meta data that will fill the content slot of the card.</d2l-card-content-meta></div>
+							<div slot="footer">
+								<d2l-card-footer-link id="googleDriveLink1" icon="tier1:google-drive" text="Google Drive" secondary-text="99+" href="https://www.google.ca/drive/"></d2l-card-footer-link>
+								<d2l-tooltip for="googleDriveLink1">Go to Google Drive</d2l-tooltip>
+								<d2l-card-footer-link id="rssFeedLink1" icon="tier1:rss" text="RSS Feed" secondary-text="1"></d2l-card-footer-link>
+								<d2l-tooltip for="rssFeedLink1">RSS Feed</d2l-tooltip>
+								<d2l-card-footer-link id="outcomesLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="5"></d2l-card-footer-link>
+								<d2l-tooltip for="outcomesLink1">Outcomes</d2l-tooltip>
+								<d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="3"></d2l-card-footer-link>
+								<d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 3 assignments due tomorrow.</d2l-tooltip>
+							</div>
+						</d2l-card>
+
+						<d2l-card subtle align-center text="Grade 2" href="https://en.wikipedia.org/wiki/Second_grade" style="width: 245px; height: 300px;">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg">
+							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+									<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
+							</d2l-dropdown-more>
+							<d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
+							<div slot="content">Grade 2</div>
+							<div slot="footer">
+								<d2l-card-footer-link id="googleDriveLink2" icon="tier1:google-drive" text="Google Drive" secondary-text="99+" href="https://www.google.ca/drive/"></d2l-card-footer-link>
+								<d2l-tooltip for="googleDriveLink2">Go to Google Drive</d2l-tooltip>
+								<d2l-card-footer-link id="rssFeedLink2" icon="tier1:rss" text="RSS Feed" secondary-text="1"></d2l-card-footer-link>
+								<d2l-tooltip for="rssFeedLink2">RSS Feed</d2l-tooltip>
+								<d2l-card-footer-link id="outcomesLink2" icon="tier1:outcomes" text="Outcomes" secondary-text="5"></d2l-card-footer-link>
+								<d2l-tooltip for="outcomesLink2">Outcomes</d2l-tooltip>
+							</div>
+						</d2l-card>
+
+						<d2l-card subtle align-center text="Painting" href="https://en.wikipedia.org/wiki/Painting" style="width: 245px; height: 300px;">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg">
+							<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+									<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
+							</d2l-dropdown-more>
+							<d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
+							<div slot="content">Painting</div>
+							<d2l-button slot="footer" style="width: 100%;">Shiny Button</d2l-button>
+						</d2l-card>
+
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Card (badges, no-link)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+
+					<d2l-card align-center text="Image Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+						<div slot="badge" class="badge">
+							<img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Stick_Figure.svg/340px-Stick_Figure.svg.png">
+						</div>
+						<div slot="content">Image Badge</div>
+					</d2l-card>
+
+					<d2l-card align-center text="Status Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+						<div class="badge-status" slot="badge">
+							<d2l-status-indicator text="Success" state="success"></d2l-status-indicator>
+						</div>
+						<div slot="content">Status Badge</div>
+					</d2l-card>
+
+					<d2l-card align-center text="No Link" style="width: 245px; height: 280px;">
+						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+						<div slot="content">No Link</div>
+					</d2l-card>
+
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Card (header actions, meta-content, footer links)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+
+					<d2l-card align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 300px;">
+						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+						<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+								<d2l-dropdown-content>
+									<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+									<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+									<div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div>
+								</d2l-dropdown-content>
+						</d2l-dropdown-more>
+						<d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
+						<div slot="content"><div>Hydrology</div><d2l-card-content-meta>This is some extra meta data that will fill the content slot of the card.</d2l-card-content-meta></div>
+						<div slot="footer">
+							<d2l-card-footer-link id="googleDriveLink3" icon="tier1:google-drive" text="Google Drive" secondary-text="99+" href="https://www.google.ca/drive/"></d2l-card-footer-link>
+							<d2l-tooltip for="googleDriveLink3">Go to Google Drive</d2l-tooltip>
+							<d2l-card-footer-link id="rssFeedLink3" icon="tier1:rss" text="RSS Feed" secondary-text="1"></d2l-card-footer-link>
+							<d2l-tooltip for="rssFeedLink3">RSS Feed</d2l-tooltip>
+							<d2l-card-footer-link id="outcomesLink3" icon="tier1:outcomes" text="Outcomes" secondary-text="5"></d2l-card-footer-link>
+							<d2l-tooltip for="outcomesLink3">Outcomes</d2l-tooltip>
+							<d2l-card-footer-link id="assignmentsLink3" icon="tier1:assignments" text="Assignments" secondary-text="3"></d2l-card-footer-link>
+							<d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink3">You have 3 assignments due tomorrow.</d2l-tooltip>
+						</div>
+					</d2l-card>
+
+					<d2l-card align-center text="Grade 2" href="https://en.wikipedia.org/wiki/Second_grade" style="width: 245px; height: 300px;">
+						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg">
+						<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+								<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
+						</d2l-dropdown-more>
+						<d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
+						<div slot="content">Grade 2</div>
+						<div slot="footer">
+							<d2l-card-footer-link id="googleDriveLink4" icon="tier1:google-drive" text="Google Drive" secondary-text="99+" href="https://www.google.ca/drive/"></d2l-card-footer-link>
+							<d2l-tooltip for="googleDriveLink4">Go to Google Drive</d2l-tooltip>
+							<d2l-card-footer-link id="rssFeedLink4" icon="tier1:rss" text="RSS Feed" secondary-text="1"></d2l-card-footer-link>
+							<d2l-tooltip for="rssFeedLink4">RSS Feed</d2l-tooltip>
+							<d2l-card-footer-link id="outcomesLink4" icon="tier1:outcomes" text="Outcomes" secondary-text="5"></d2l-card-footer-link>
+							<d2l-tooltip for="outcomesLink4">Outcomes</d2l-tooltip>
+						</div>
+					</d2l-card>
+
+					<d2l-card align-center text="Grade 2" href="https://en.wikipedia.org/wiki/Second_grade" style="width: 245px; height: 300px;">
+						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg">
+						<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+								<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
+						</d2l-dropdown-more>
+						<d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
+						<div slot="content">Grade 2</div>
+						<div slot="footer">
+							<d2l-card-footer-link id="googleDriveLink4" icon="tier1:google-drive" text="Google Drive" secondary-text-type="count" secondary-text="99+" href="https://www.google.ca/drive/"></d2l-card-footer-link>
+							<d2l-tooltip for="googleDriveLink4">Go to Google Drive</d2l-tooltip>
+							<d2l-card-footer-link id="rssFeedLink4" icon="tier1:rss" text="RSS Feed" secondary-text-type="count" secondary-text="1"></d2l-card-footer-link>
+							<d2l-tooltip for="rssFeedLink4">RSS Feed</d2l-tooltip>
+							<d2l-card-footer-link id="outcomesLink4" icon="tier1:outcomes" text="Outcomes" secondary-text-type="count" secondary-text="5"></d2l-card-footer-link>
+							<d2l-tooltip for="outcomesLink4">Outcomes</d2l-tooltip>
+						</div>
+					</d2l-card>
+
+					<d2l-card align-center text="Painting" href="https://en.wikipedia.org/wiki/Painting" style="width: 245px; height: 300px;">
+						<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg">
+						<d2l-dropdown-more slot="actions" translucent visible-on-ancestor text="Open!">
+								<d2l-dropdown-content><div>This is where you could put the super cool features for your card!</div><br><div>As with all dropdowns, you can choose between a generic dropdown container, or a menu specific one.</div></d2l-dropdown-content>
+						</d2l-dropdown-more>
+						<d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
+						<div slot="content">Painting</div>
+						<div slot="footer">Secondary Actions</div>
+					</d2l-card>
+
 				</template>
 			</d2l-demo-snippet>
 
