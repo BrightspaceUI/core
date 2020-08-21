@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../status-indicator/status-indicator.js';
+			import '../card.js';
+		</script>
+		<style>
+			d2l-card {
+				vertical-align: top;
+			}
+			.subtle-demo {
+				background-color: #f6f7f8;
+				padding: 20px;
+			}
+			.badge {
+				text-align: center;
+			}
+			.badge > img {
+				object-fit: cover;
+				object-position: center;
+				height: 70px;
+				background-color: white;
+				border-radius: 6px;
+				border: 1px solid #494c4e;
+			}
+			.badge-status {
+				background-color: white;
+				border: 1px solid white;
+				border-radius: 0.6rem;
+				display: inline-block;
+			}
+			div[slot="footer"] {
+				display: inline-block;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-card">
+
+			<h2>Card</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<div class="subtle-demo">
+
+						<d2l-card subtle align-center text="Image Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+							<div slot="badge" class="badge">
+								<img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Stick_Figure.svg/340px-Stick_Figure.svg.png">
+							</div>
+							<div slot="content">Image Badge</div>
+						</d2l-card>
+
+						<d2l-card subtle align-center text="Status Badge" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 280px;">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+							<div class="badge-status" slot="badge">
+								<d2l-status-indicator text="Success" state="success"></d2l-status-indicator>
+							</div>
+							<div slot="content">Status Badge</div>
+						</d2l-card>
+
+						<d2l-card subtle align-center text="No Link" style="width: 245px; height: 280px;">
+							<img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+							<div slot="content">No Link</div>
+						</d2l-card>
+
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
