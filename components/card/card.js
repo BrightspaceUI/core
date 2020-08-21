@@ -7,12 +7,20 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * A container element that provides specific layout using several slots.
+ * @slot content - Slot for primary content such as title and supplementary info (no actionable elements)
+ * @slot actions - Slot for buttons and dropdown openers to be placed in top right corner of header
+ * @slot badge - Slot for badge content, such as a profile image or status indicator
+ * @slot footer - Slot for footer content, such secondary actions
+ * @slot header - Slot for header content, such as course image (no actionable elements)
+ */
 class Card extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
 			/**
-			 * Indicates whether to apply text-align:center to the content slot
+			 * Style the card's content and footer as centered horizontally
 			 */
 			alignCenter: { type: Boolean, attribute: 'align-center', reflect: true },
 			/**
@@ -20,7 +28,7 @@ class Card extends RtlMixin(LitElement) {
 			 */
 			download: { type: Boolean, reflect: true },
 			/**
-			 * URL or URL fragment of the link
+			 * Location for the primary action/navigation
 			 */
 			href: { type: String, reflect: true },
 			/**
@@ -32,7 +40,7 @@ class Card extends RtlMixin(LitElement) {
 			 */
 			rel: { type: String, reflect: true },
 			/**
-			 * Indicates whether subtle container style should be applied (for non-white backgrounds)
+			 * Subtle aesthetic on non-white backgrounds
 			 */
 			subtle: { type: Boolean, reflect: true },
 			/**
@@ -40,7 +48,7 @@ class Card extends RtlMixin(LitElement) {
 			 */
 			target: { type: String, reflect: true },
 			/**
-			 * Accessible text for the link (not visible, gets announced when user focuses on card)
+			 * Accessible text for the card (will be announced when AT user focuses)
 			 */
 			text: { type: String, reflect: true },
 			/**
