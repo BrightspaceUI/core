@@ -15,6 +15,7 @@
 			import '../../status-indicator/status-indicator.js';
 			import '../../tooltip/tooltip.js';
 			import '../card.js';
+			import '../card-loading-shimmer.js';
 			import '../card-content-meta.js';
 			import '../card-content-title.js';
 			import '../card-footer-link.js';
@@ -46,6 +47,9 @@
 			}
 			div[slot="footer"] {
 				display: inline-block;
+			}
+			#toggleLoading {
+				margin-top: 20px;
 			}
 		</style>
 	</head>
@@ -228,6 +232,31 @@
 						</div>
 					</d2l-card>
 
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Card (with header loading)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+
+					<d2l-card align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 300px;">
+						<d2l-card-loading-shimmer slot="header" loading style="display: block; width: 100%; height: 103.5px;">
+							<img  alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+						</d2l-card-loading-shimmer>
+						<div slot="content"><div>Hydrology</div><d2l-card-content-meta>This is some extra meta data that will fill the content slot of the card.</d2l-card-content-meta></div>
+					</d2l-card>
+
+					<div>
+						<d2l-button id="toggleLoading">Toggle Loading State</d2l-button>
+					</div>
+
+					<script>
+						document.querySelector('#toggleLoading').addEventListener('click', () => {
+							const loadingContainer = document.querySelector('d2l-card-loading-shimmer');
+							loadingContainer.loading = !loadingContainer.loading;
+						});
+					</script>
 				</template>
 			</d2l-demo-snippet>
 
