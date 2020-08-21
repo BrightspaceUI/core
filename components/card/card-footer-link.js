@@ -5,6 +5,9 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+/**
+ * An icon link that can be placed in the `footer` slot.
+ */
 class CardFooterLink extends RtlMixin(LitElement) {
 
 	static get properties() {
@@ -30,11 +33,11 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			rel: { type: String, reflect: true },
 			/**
-			 * Secondary text to be display as a superscript on the icon
+			 * Secondary text to display as a superscript on the icon
 			 */
 			secondaryText: { type: String, attribute: 'secondary-text', reflect: true },
 			/**
-			 * Sets the color palette for the secondary text, options are 'notification' and 'count'
+			 * Controls the style of the secondary text bubble; options are 'notification' and 'count'
 			 */
 			secondaryTextType: { type: String, attribute: 'secondary-text-type', reflect: true },
 			/**
@@ -42,7 +45,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			target: { type: String, reflect: true },
 			/**
-			 * Accessible text for the link (not visible, gets announced when user focuses)
+			 * REQUIRED: Accessible text for the link (not visible, gets announced when user focuses)
 			 */
 			text: { type: String, reflect: true },
 			/**
