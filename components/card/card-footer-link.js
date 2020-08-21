@@ -32,11 +32,11 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			/**
 			 * Secondary text to be display as a superscript on the icon
 			 */
-			secondaryText: { type: String, reflect: true },
+			secondaryText: { type: String, attribute: 'secondary-text', reflect: true },
 			/**
 			 * Sets the color palette for the secondary text, options are 'notification' and 'count'
 			 */
-			secondaryTextType: { type: String, reflect: true },
+			secondaryTextType: { type: String, attribute: 'secondary-text-type', reflect: true },
 			/**
 			 * Where to display the linked URL
 			 */
