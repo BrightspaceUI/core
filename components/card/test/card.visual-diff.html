@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../button/button.js';
+		import '../../button/button-icon.js';
+		import '../../typography/typography.js';
+		import '../card.js';
+	</script>
+	<title>d2l-card</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		.visual-diff {
+			width: 300px;
+		}
+		.subtle {
+			background-color: #f6f7f8;
+			padding: 20px;
+		}
+		d2l-card {
+			height: 260px;
+			width: 210px;
+		}
+		[slot="header"] {
+			background-color: orange;
+			height: 95px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-card id="header-content">
+			<div slot="header">Header</div>
+			<div slot="content">Content</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card id="footer">
+			<div slot="header">Header</div>
+			<div slot="content">Content</div>
+			<div slot="footer">Footer</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card id="align-center" align-center>
+			<div slot="header">Header</div>
+			<div slot="content">Content</div>
+			<div slot="footer">Footer</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card id="badge">
+			<div slot="header">Header</div>
+			<div slot="content">Content</div>
+			<div slot="badge">
+				<div style="display: inline-block; line-height: 1rem; padding: 0.3rem; border-radius: 6px; border: 1px solid black; background-color: white; width: 60px;">Badge</div>
+			</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card id="actions">
+			<div slot="header"></div>
+			<d2l-button-icon slot="actions" translucent text="gear" icon="tier1:gear"></d2l-button-icon>
+			<d2l-button-icon slot="actions" translucent text="pin" icon="tier1:pin-filled"></d2l-button-icon>
+			<div slot="content">Content</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card id="actions-voa">
+			<div slot="header"></div>
+			<d2l-button-icon slot="actions" translucent text="gear" visible-on-ancestor icon="tier1:gear"></d2l-button-icon>
+			<d2l-button-icon slot="actions" translucent text="pin" icon="tier1:pin-filled"></d2l-button-icon>
+			<div slot="content">Content</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card id="actions-rtl" dir="rtl">
+			<div slot="header"></div>
+			<d2l-button-icon slot="actions" translucent text="gear" icon="tier1:gear"></d2l-button-icon>
+			<d2l-button-icon slot="actions" translucent text="pin" icon="tier1:pin-filled"></d2l-button-icon>
+			<div slot="content">Content</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff subtle">
+		<d2l-card id="subtle" subtle>
+			<div slot="header">Header</div>
+			<div slot="content">Content</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card id="link" text="Link Text" href="https://www.d2l.com">
+			<div slot="header"></div>
+			<d2l-button-icon slot="actions" translucent text="gear" icon="tier1:gear"></d2l-button-icon>
+			<div slot="content">Content</div>
+			<d2l-button slot="footer" style="width: 100%;">Shiny</d2l-button>
+		</d2l-card>
+	</div>
+
+</body>
+</html>
