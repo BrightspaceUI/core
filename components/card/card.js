@@ -200,6 +200,11 @@ class Card extends RtlMixin(LitElement) {
 				box-shadow: none;
 				transform: none;
 			}
+			@media (prefers-reduced-motion: reduce) {
+				:host {
+					transition: none;
+				}
+			}
 		`];
 	}
 
