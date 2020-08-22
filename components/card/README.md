@@ -2,7 +2,7 @@
 
 ## d2l-card
 
-The `d2l-card` element is a container element that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
+The `d2l-card` element is a container that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
 
 ![Card](./screenshots/card.png?raw=true)
 
