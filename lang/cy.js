@@ -14,7 +14,7 @@ export default {
 	"components.form-element.input.number.rangeUnderflow": "Rhaid i'r nifer fod yn uwch na {min}",
 	"components.form-element.input.text.tooShort": "Rhaid i {label} fod o leiaf {minlength} nod",
 	"components.form-element.input.url.typeMismatch": "Nid yw'r URL yn ddilys.",
-	"components.form-element.valueMissing": "Mae angen {label}.",
+	"components.form-element.valueMissing": "Mae {label} yn ofynnol.",
 	"components.form-error-summary.errorSummary": "Bu {count, plural, one { 1 gwall } other { { count } o wallau }} yn y wybodaeth a gyflwynwyd gennych",
 	"components.input-date-range.endDate": "Dyddiad Dod i Ben",
 	"components.input-date-range.errorBadInput": "Rhaid i {startLabel} fod cyn {endLabel}",
