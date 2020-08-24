@@ -6,7 +6,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 
-function checkMinMaxValue(value, min, max) {
+function clampValue(value, min, max) {
 	if (min !== undefined) value = Math.max(value, min);
 	if (max !== undefined) value = Math.min(value, max);
 	return value;
@@ -70,7 +70,7 @@ class InputNumber extends LitElement {
 	set value(val) {
 		const oldValue = this.value;
 		try {
-			const newValue = checkMinMaxValue(val, this.min, this.max);
+			const newValue = clampValue(val, this.min, this.max);
 			this._formattedValue = formatValue(newValue, this.minFractionDigits, this.maxFractionDigits);
 			this._value = parseNumber(this._formattedValue);
 		} catch (err) {
