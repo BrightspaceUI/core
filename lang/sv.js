@@ -15,7 +15,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} måste innehålla minst {minlength} tecken",
 	"components.form-element.input.url.typeMismatch": "URL är inte giltigt",
 	"components.form-element.valueMissing": "{label} krävs.",
-	"components.form-error-summary.errorSummary": "Det {count, plural, one { fanns 1 fel} other { fanns { count } fel }} i den information som du skickade",
+	"components.form-error-summary.errorSummary": "Det {count, plural, one { fanns 1 fel } other { fanns { count } fel }} i den information som du skickade",
 	"components.input-date-range.endDate": "Slutdatum",
 	"components.input-date-range.errorBadInput": "{startLabel} måste vara före {endLabel}",
 	"components.input-date-range.startDate": "Startdatum",

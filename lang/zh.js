@@ -15,7 +15,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} 必须至少为 {minlength} 个字符",
 	"components.form-element.input.url.typeMismatch": "URL 无效",
 	"components.form-element.valueMissing": "{label} 为必填项。",
-	"components.form-error-summary.errorSummary": "您提交的信息中出现 {count, plural, one {1 处错误} other { { count } 处错误}} 处错误",
+	"components.form-error-summary.errorSummary": "您提交的信息中出现 {count, plural, one { 1 处错误 } other { { count } 处错误 }} 处错误",
 	"components.input-date-range.endDate": "结束日期",
 	"components.input-date-range.errorBadInput": "{startLabel} 必须早于 {endLabel}",
 	"components.input-date-range.startDate": "开始日期",

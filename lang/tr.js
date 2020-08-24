@@ -15,7 +15,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} en az {minlength} karakter olmalıdır",
 	"components.form-element.input.url.typeMismatch": "URL geçerli değil",
 	"components.form-element.valueMissing": "{label} zorunludur.",
-	"components.form-error-summary.errorSummary": "Gönderdiğiniz bilgilerde {count, plural, one { 1 hata} other { { count } hata}} bulundu",
+	"components.form-error-summary.errorSummary": "Gönderdiğiniz bilgilerde {count, plural, one { 1 hata } other { { count } hata }} bulundu",
 	"components.input-date-range.endDate": "Bitiş Tarihi",
 	"components.input-date-range.errorBadInput": "{startLabel}, {endLabel} tarihinden önce olmalıdır",
 	"components.input-date-range.startDate": "Başlangıç Tarihi",
