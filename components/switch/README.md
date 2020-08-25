@@ -52,11 +52,13 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 
 **Properties:**
 
-- `disabled` (Boolean): disables the switch
-- `on` (Boolean): whether the switch is "on" or "off"
-- `text` (String, required): accessible text for the switch; defaults to "Visibility"
-- `text-position` (String): valid values are: `start`, `end` (default), and `hidden`
-- `tooltip` (String): text to display in a tooltip for the switch
+| Property | Type | Description |
+|--|--|--|
+| `text`| String, required | Accessible text for the switch; defaults to "Visibility" |
+| `disabled` | Boolean | Disabled the switch |
+| `on` | Boolean | Whether the switch is "on" or "off" |
+| `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
+| `tooltip` | String | Text to display in a tooltip for the switch |
 
 **Events:**
 

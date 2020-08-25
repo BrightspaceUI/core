@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.72.2",
+  "version": "1.73.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -71,8 +71,7 @@
     "semantic-release": "^17",
     "sinon": "^9",
     "stylelint": "^13",
-    "web-component-analyzer": "^1",
-    "whatwg-fetch": "^3"
+    "web-component-analyzer": "^1"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
