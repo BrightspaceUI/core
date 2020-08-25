@@ -184,6 +184,13 @@ describe('form-element', () => {
 			expect(errors).to.include.members(['Test form element failed with an overridden validation message']);
 		});
 
+		it('should validate with custom validity state message', async() => {
+			formElement.value = 'Non-empty';
+			formElement.setCustomValidity('Validation failed for custom validity');
+			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);
+			expect(errors).to.include.members(['Validation failed for custom validity']);
+		});
+
 		it('should pass validation when no errors', async() => {
 			formElement.value = 'Non-empty';
 			const errors = await formElement.validate(ValidationType.SHOW_NEW_ERRORS);

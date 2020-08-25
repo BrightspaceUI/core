@@ -96,6 +96,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationCustomConnected = this._validationCustomConnected.bind(this);
 
 		this._validationCustoms = new Set();
+		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
 		this.forceInvalid = false;
 		this.formValue = null;
@@ -137,12 +138,18 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		}
 	}
 
+	setCustomValidity(message) {
+		this._validity = new FormElementValidityState({ customError: true });
+		this._validationMessage = message;
+	}
+
 	setFormValue(formValue) {
 		this.formValue = formValue;
 	}
 
 	setValidity(flags) {
 		this._validity = new FormElementValidityState(flags);
+		this._validationMessage = null;
 	}
 
 	async validate(validationType) {
@@ -186,6 +193,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	get validationMessage() {
+		if (this.validity.customError) {
+			return this._validationMessage;
+		}
 		const label = this.label || this.localize('components.form-element.defaultFieldLabel');
 		if (this.validity.valueMissing) {
 			return this.localize('components.form-element.valueMissing', { label });
