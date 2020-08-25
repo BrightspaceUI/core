@@ -1,15 +1,15 @@
 /* eslint quotes: 0 */
 
 export default {
-	"components.alert.close": "Fermer l'alerte",
+	"components.alert.close": "Fermer l\'alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
 	"components.calendar.notSelected": "Non sélectionné.",
 	"components.calendar.selected": "Sélectionné.",
 	"components.calendar.show": "Afficher {month}",
 	"components.dialog.close": "Fermer cette boîte de dialogue",
-	"components.form-element.defaultError": "{label} n'est pas valide.",
+	"components.form-element.defaultError": "{label} n\'est pas valide.",
 	"components.form-element.defaultFieldLabel": "Champ",
-	"components.form-element.input.email.typeMismatch": "L'adresse e-mail n'est pas valide.",
+	"components.form-element.input.email.typeMismatch": "L\'adresse e-mail n\'est pas valide.",
 	"components.form-element.input.number.rangeOverflow": "Le nombre doit être inférieur à {max}",
 	"components.form-element.input.number.rangeUnderflow": "Le nombre doit être supérieur à {min}",
 	"components.form-element.input.text.tooShort": "{label} doit contenir au moins {minlength} caractères.",
@@ -32,13 +32,13 @@ export default {
 	"components.input-date.errorMinDateOnly": "La date doit être postérieure à {minDate}",
 	"components.input-date.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
 	"components.input-date.openInstructions": "Utiliser le format de date {format}. Utilisez la flèche vers le bas ou appuyez sur Entrée pour accéder au mini-calendrier.",
-	"components.input-date.setToToday": "Défini sur Aujourd'hui",
+	"components.input-date.setToToday": "Défini sur Aujourd\'hui",
 	"components.input-search.clear": "Effacer la recherche",
 	"components.input-search.search": "Rechercher",
 	"components.input-time-range.endTime": "Heure de fin",
 	"components.input-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-time-range.startTime": "Heure de début",
-	"components.list-item-drag-handle.default": "Réordonner l'action",
+	"components.list-item-drag-handle.default": "Réordonner l\'action",
 	"components.list-item-drag-handle.keyboard": "Réordonner les éléments",
 	"components.menu-item-return.return": "Permet de revenir au menu précédent.",
 	"components.menu-item-return.returnCurrentlyShowing": "Permet de revenir au menu précédent. Vous consultez {menuTitle}.",
@@ -48,6 +48,6 @@ export default {
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
 	"components.switch.visibility": "Visibilité",
-	"components.tabs.next": "Faire défiler vers l'avant",
-	"components.tabs.previous": "Faire défiler vers l'arrière"
+	"components.tabs.next": "Faire défiler vers l\'avant",
+	"components.tabs.previous": "Faire défiler vers l\'arrière"
 };
