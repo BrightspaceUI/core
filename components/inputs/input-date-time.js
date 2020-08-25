@@ -157,19 +157,42 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		if (elem) elem.focus();
 	}
 
-	get validationMessage() {
-		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const minDate = this.minValue ? formatDateTime(getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;
-			const maxDate = this.maxValue ? formatDateTime(getDateFromISODateTime(this.maxValue), { format: 'medium' }) : null;
-			if (minDate && maxDate) {
-				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
-			} else if (maxDate) {
-				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
-			} else if (this.minValue) {
-				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
-			}
+	get validationMessageRangeOverflow() {
+		let failureText = '';
+		if (this.minValue && this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorOutsideRange`, {
+					minDate: formatDateTime(getDateFromISODateTime(this.minValue), {format: 'medium'}),
+					maxDate: formatDateTime(getDateFromISODateTime(this.maxValue), {format: 'medium'})
+				}
+			);
+		} else if (this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorMaxDateOnly`, {
+					maxDate: formatDateTime(getDateFromISODateTime(this.maxValue), {format: 'medium'})
+				}
+			);
 		}
-		return super.validationMessage;
+		return failureText;
+	}
+
+	get validationMessageRangeUnderflow() {
+		let failureText = '';
+		if (this.minValue && this.maxValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorOutsideRange`, {
+					minDate: formatDateTime(getDateFromISODateTime(this.minValue), {format: 'medium'}),
+					maxDate: formatDateTime(getDateFromISODateTime(this.maxValue), {format: 'medium'})
+				}
+			);
+		} else if (this.minValue) {
+			failureText = this.localize(
+				`${this._namespace}.errorMinDateOnly`, {
+					minDate: formatDateTime(getDateFromISODateTime(this.minValue), {format: 'medium'})
+				}
+			);
+		}
+		return failureText;
 	}
 
 	_dispatchChangeEvent() {

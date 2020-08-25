@@ -1,4 +1,4 @@
-import { isCustomFormElement } from './form-helper.js';
+import { isCustomFormElement, tryGetLabelText } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 export const ValidationType = {
@@ -131,6 +131,15 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return true;
 	}
 
+	get labelText() {
+		const label = this.label || tryGetLabelText(this);
+		if (label) {
+			return label;
+		}
+		console.warn(this, ' is missing a label');
+		return this.localize('components.form-element.defaultFieldLabel');
+	}
+
 	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
 			await this.validate(validationType);
@@ -193,14 +202,76 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	get validationMessage() {
-		if (this.validity.customError) {
-			return this._validationMessage;
+		const validity = this.validity;
+		switch (true) {
+			case validity.valid:
+				return null;
+			case validity.customError:
+				return this._validationMessage;
+			case validity.badInput:
+				return this.validationMessageBadInput;
+			case validity.patternMismatch:
+				return this.validationMessagePatternMismatch;
+			case validity.rangeOverflow:
+				return this.validationMessageRangeOverflow;
+			case validity.rangeUnderflow:
+				return this.validationMessageRangeUnderflow;
+			case validity.stepMismatch:
+				return this.validationMessageStepMismatch;
+			case validity.tooLong:
+				return this.validationMessageTooLong;
+			case validity.tooShort:
+				return this.validationMessageTooShort;
+			case validity.typeMismatch:
+				return this.validationMessageTypeMismatch;
+			case validity.valueMissing:
+				return this.validationMessageValueMissing;
 		}
-		const label = this.label || this.localize('components.form-element.defaultFieldLabel');
-		if (this.validity.valueMissing) {
-			return this.localize('components.form-element.valueMissing', { label });
-		}
-		return this.localize('components.form-element.defaultError', { label });
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageBadInput() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageBadInput\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessagePatternMismatch() {
+		console.warn(this, ' is using the default validation message, override \'validationMessagePatternMismatch\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageRangeOverflow() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageRangeOverflow\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageRangeUnderflow() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageRangeUnderflow\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageStepMismatch() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageStepMismatch\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageTooLong() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageTooLong\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageTooShort() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageTooShort\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageTypeMismatch() {
+		console.warn(this, ' is using the default validation message, override \'validationMessageTypeMismatch\'');
+		return this.localize('components.form-element.defaultError', { label: this.labelText });
+	}
+
+	get validationMessageValueMissing() {
+		return this.localize('components.form-element.valueMissing', { label: this.labelText });
 	}
 
 	get validity() {
