@@ -18,26 +18,14 @@ The `d2l-breadcrumbs` element can be used to help users understand where they ar
 
 **d2l-breadcrumbs Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `compact` | Boolean | Indicates whether the component should render in compact mode |
+- `compact` (Boolean, default: `'false'`): indicates whether the component should render in compact mode.
 
 **d2l-breadcrumb (child) Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text of the breadcrumb item |
-| `aria-label` | String | AriaLabel of breadcrumb item |
-| `href` | String | Href of the breadcrumb item |
-| `target` | String | Target of the breadcrumb item |
-
-**Accessibility:**
-
-To make your usage of `d2l-breadcrumb` (child) accessible, use the following attribute when applicable:
-
-| Attribute | Description |
-|--|--|
-| `aria-label` | Acts as a primary label. Use if `text` does not provide enough context. |
+- `href` (String): Href of the breadcrumb item
+- `target` (String): Target of the breadcrumb item
+- `text` (String, required): Text of the breadcrumb item
+- `aria-label` (String): AriaLabel of breadcrumb item
 
 ## Current Page
 

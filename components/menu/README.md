@@ -24,9 +24,7 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `label` | String, required for root menu | Text to be applied to menu `aria-label` for use with screen readers; for nested menus, the label is automatically applied based on its parent menu-item |
+* `label` (required for root menu, String): Text to be applied to menu `aria-label` for use with screen readers; for nested menus, the label is automatically applied based on its parent menu-item
 
 **Accessibility:**
 
@@ -78,10 +76,8 @@ This is used with JS handlers and can be wired-up to the `d2l-menu-item-select` 
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text displayed by the menu item |
-| `disabled` | Boolean | Disables the menu item |
+* `text` (required, String): text displayed by the menu item
+* `disabled` (Boolean): disables the menu item
 
 **Events:**
 
@@ -99,11 +95,9 @@ The link menu item, `d2l-menu-item-link`, is used for navigating.
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `href` | String, required | The URL the menu item link navigates to |
-| `text` | String, required | Text displayed by the menu item |
-| `disabled` | Boolean | Disables the menu item |
+* `text` (required, String): text displayed by the menu item
+* `href` (required, String): the url the menu item link navigates to
+* `disabled` (Boolean): disables the menu item
 
 ### d2l-menu-item-checkbox
 
@@ -127,12 +121,10 @@ The checkbox menu item, `d2l-menu-item-checkbox`, is used for selection. This ca
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text displayed by the menu item |
-| `value` | String, required | |
-| `disabled` | Boolean | Disables the menu item |
-| `selected` | Boolean | Thie will set the item to be selected by default |
+* `text` (required, String): text displayed by the menu item
+* `value` (required, String)
+* `disabled` (Boolean): disables the menu item
+* `selected` (Boolean): this will set the item to be selected by default.
 
 **Events:**
 
@@ -160,12 +152,10 @@ The radio menu item, `d2l-menu-item-radio`, is used for selection. This can be w
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text displayed by the menu item |
-| `value` | String, required | |
-| `disabled` | Boolean | Disables the menu item |
-| `selected` | Boolean | This will set the item to be seelcted by default |
+* `text` (required, String): text displayed by the menu item
+* `value` (required, String)
+* `disabled` (Boolean): disables the menu item
+* `selected` (Boolean): this will set the item to be selected by default.
 
 **Events:**
 

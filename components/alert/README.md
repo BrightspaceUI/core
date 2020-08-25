@@ -18,13 +18,11 @@ The `d2l-alert` component can be used to communicate important information relat
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `button-text` | String | Text that is displayed within the alert's action button. If no text is provided the button is not displayed. |
-| `has-close-button` | Boolean |  Gives the alert a close button that will close the alert when clicked |
-| `hidden` | Boolean | Whether or not the alert is currently visible |
-| `subtext` | String | The text that is displayed below the main alert message |
-| `type` | String, default: `'default'` | Type of the alert being displayed. Can be one of  `default`, `critical`, `success`, `warning`. |
+- `button-text` (optional, String): text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+- `has-close-button` (Boolean, default: `false`) gives the alert a close button that will close the alert when clicked.
+- `hidden` (Boolean, default: `false`): Whether or not the alert is currently visible.
+- `subtext` (optional, String) The text that is displayed below the main alert message.
+- `type` (String, default: `'default'`): type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning`
 
 **Events:**
 * `d2l-alert-close`: dispatched when the alert's close button is clicked

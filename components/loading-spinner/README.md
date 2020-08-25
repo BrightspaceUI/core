@@ -14,10 +14,8 @@
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| `color` | String | Color of the animated bar (default is `--d2l-color-celestine`) |
-| `size` | Number, default: `50` | Height and width (`px`) of the spinner |
+- `color` (String): Color of the animated bar (default is `--d2l-color-celestine`)
+- `size` (Number): Height and width (`px`) of the spinner (default is `50`)
 
 ## Future Enhancements
 
