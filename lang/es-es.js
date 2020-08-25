@@ -47,7 +47,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Indicador de progreso",
 	"components.more-less.less": "menos",
 	"components.more-less.more": "más",
-	"components.switch.visibility": "Ocultando",
+	"components.switch.visibility": "Visibilidad",
 	"components.tabs.next": "Desplazarse hacia delante",
 	"components.tabs.previous": "Desplazarse hacia atrás"
 };
