@@ -10,7 +10,7 @@ describe('d2l-floating-buttons', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/floating-buttons.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/floating-buttons.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
@@ -54,7 +54,7 @@ describe('d2l-floating-buttons', () => {
 	describe('window less than min-height (500px)', () => {
 
 		before(async() => {
-			await page.setViewport({ width: 800, height: 499, deviceScaleFactor: 2 });
+			await page.setViewport({width: 800, height: 499, deviceScaleFactor: 2});
 		});
 
 		it('does not float', async function() {

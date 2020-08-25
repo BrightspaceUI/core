@@ -44,7 +44,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		const percentage = max > 0 ? value / max : 0;
 
 		return this.percent
-			? formatPercent(percentage, { maximumFractionDigits: 0 })
+			? formatPercent(percentage, {maximumFractionDigits: 0})
 			: (dir !== 'rtl' ? this.localize(`${this._namespace}.fraction`, 'x', value, 'y', max) : this.localize(`${this._namespace}.fraction`, 'x', max, 'y', value));
 	}
 
@@ -54,7 +54,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		}
 
 		const percentage = this.max > 0 ? value / max : 0;
-		context = context.replace('{%}', formatPercent(percentage, { maximumFractionDigits: 0 }));
+		context = context.replace('{%}', formatPercent(percentage, {maximumFractionDigits: 0}));
 		context = context.replace('{x/y}', this.localize(`${this._namespace}.fraction`, 'x', value, 'y', max));
 		context = context.replace('{x}', value);
 		context = context.replace('{y}', max);

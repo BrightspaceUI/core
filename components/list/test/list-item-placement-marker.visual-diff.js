@@ -10,7 +10,7 @@ describe('d2l-list-item-placement-marker', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list-item-placement-marker.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list-item-placement-marker.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 

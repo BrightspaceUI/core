@@ -160,10 +160,10 @@ function generate() {
 
 	console.log(chalk.blue('Clearing output directory...'));
 	if (!fs.existsSync(outputRoot)) {
-		fs.mkdirSync(outputRoot, { recursive: true });
+		fs.mkdirSync(outputRoot, {recursive: true});
 	}
 	cleanDir(outputPath);
-	fs.mkdirSync(outputPath, { recursive: true });
+	fs.mkdirSync(outputPath, {recursive: true});
 
 	const categories = getSvgs();
 	console.log(chalk.blue('Found SVGs, generating output...'));

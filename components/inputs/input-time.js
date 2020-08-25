@@ -158,7 +158,7 @@ class InputTime extends FormElementMixin(LitElement) {
 		this.labelHidden = false;
 		this.timeInterval = 'thirty';
 		this._dropdownId = getUniqueId();
-		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
+		this._timezone = formatTime(new Date(), {format: 'ZZZ'});
 	}
 
 	get value() { return this._value; }
@@ -279,7 +279,7 @@ class InputTime extends FormElementMixin(LitElement) {
 			this.value = formatDateInISOTime(time);
 			this.dispatchEvent(new CustomEvent(
 				'change',
-				{ bubbles: true, composed: false }
+				{bubbles: true, composed: false}
 			));
 		}
 	}
@@ -288,7 +288,7 @@ class InputTime extends FormElementMixin(LitElement) {
 		this.value = e.target.value;
 		this.dispatchEvent(new CustomEvent(
 			'change',
-			{ bubbles: true, composed: false }
+			{bubbles: true, composed: false}
 		));
 	}
 

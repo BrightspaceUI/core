@@ -136,7 +136,7 @@ describe('NewPositionEventDetails', () => {
 	];
 
 	describe('announceMove', () => {
-		const list = ['one', 'two', 'three'].map(x => ({ key : x }));
+		const list = ['one', 'two', 'three'].map(x => ({key : x }));
 		it('announces when given required arguments', () => {
 			const event = new NewPositionEventDetails({
 				dragTargetKey: 'one',
@@ -266,8 +266,8 @@ describe('NewPositionEventDetails', () => {
 					dropTargetKey: test.input.dropTargetKey,
 					dropLocation: test.input.dropLocation
 				});
-				const objects = test.input.array.map(x => ({ key : x }));
-				event.reorder(objects, { keyFn: keyFn });
+				const objects = test.input.array.map(x => ({key : x }));
+				event.reorder(objects, {keyFn: keyFn});
 				expect(objects.map(x => x.key)).to.deep.equal(test.expected);
 			});
 		}
@@ -275,7 +275,7 @@ describe('NewPositionEventDetails', () => {
 		for (const test of errorTests) {
 			it(test.description, () => {
 				const event = new NewPositionEventDetails(test.input);
-				expect(() => event.reorder([{ key: 'one' }], { keyFn: keyFn })).to.throw(Error);
+				expect(() => event.reorder([{ key: 'one' }], {keyFn: keyFn})).to.throw(Error);
 			});
 		}
 

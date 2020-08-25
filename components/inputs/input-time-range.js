@@ -217,7 +217,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		} else {
 			this.endValue = elem.value;
 		}
-		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue))) });
+		this.setValidity({badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue)))});
 		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',

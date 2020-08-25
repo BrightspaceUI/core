@@ -10,8 +10,8 @@ describe('d2l-input-date-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1500 } });
-		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 1500}});
+		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-range.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
@@ -120,8 +120,8 @@ describe('d2l-input-date-range', () => {
 			});
 
 			[
-				{ name: 'start equals end', startDate: dateInRange, endDate: dateInRange },
-				{ name: 'start after end', startDate: dateLaterInRange, endDate: dateInRange }
+				{name: 'start equals end', startDate: dateInRange, endDate: dateInRange},
+				{name: 'start after end', startDate: dateLaterInRange, endDate: dateInRange}
 			].forEach((testCase) => {
 				describe(testCase.name, () => {
 					before(async() => {
@@ -152,8 +152,8 @@ describe('d2l-input-date-range', () => {
 
 		describe('outside range', () => {
 			[
-				{ name: 'start before min', startDate: dateBeforeMin, endDate: dateInRange, startDateTooltip: true, endDateTooltip: false },
-				{ name: 'end after max', startDate: dateInRange, endDate: dateAfterMax, startDateTooltip: false, endDateTooltip: true }
+				{name: 'start before min', startDate: dateBeforeMin, endDate: dateInRange, startDateTooltip: true, endDateTooltip: false},
+				{name: 'end after max', startDate: dateInRange, endDate: dateAfterMax, startDateTooltip: false, endDateTooltip: true}
 			].forEach((testCase) => {
 				describe(testCase.name, () => {
 					before(async() => {

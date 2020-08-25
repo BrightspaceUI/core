@@ -11,8 +11,8 @@ describe('d2l-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 3700 } });
-		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		page = await visualDiff.createPage(browser, {viewport: {width: 1000, height: 3700}});
+		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
@@ -27,26 +27,26 @@ describe('d2l-list', () => {
 			{ name: 'simple', selector: '#simple' },
 			{ name: 'actions', selector: '#actions' },
 			{ name: 'rtl', selector: '#rtl' },
-		] },
+		]},
 		{ category: 'illustration', tests: [
 			{ name: 'default', selector: '#illustration' },
-		] },
+		]},
 		{ category: 'separators', tests: [
 			{ name: 'default', selector: '#simple' },
 			{ name: 'none', selector: '#separatorsNone' },
 			{ name: 'all', selector: '#separatorsAll' },
 			{ name: 'between', selector: '#separatorsBetween' },
 			{ name: 'extended', selector: '#separatorsExtended' }
-		] },
+		]},
 		{ category: 'item-content', tests: [
 			{ name: 'primary and secondary', selector: '#itemContent' },
 			{ name: 'no secondary', selector: '#itemContentNoSecondary' }
-		] },
+		]},
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },
 			{ name: 'focus', selector: '#href', action: () => focusLink('#href [href]') },
 			{ name: 'hover', selector: '#href', action: () => hover('#href [href]') }
-		] },
+		]},
 		{ category: 'selectable', tests: [
 			{ name: 'not selected', selector: '#selectable' },
 			{ name: 'not selected focus', selector: '#selectable', action: () => focusInput('#selectable [selectable]') },
@@ -55,18 +55,18 @@ describe('d2l-list', () => {
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
 			{ name: 'item-content', selector: '#selectableItemContent' }
-		] },
+		]},
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href [href]') },
 			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
 			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') }
-		] },
+		]},
 		{ category: 'breakpoints', tests: [
 			{ name: '842', selector: '#breakpoint-842' },
 			{ name: '636', selector: '#breakpoint-636' },
 			{ name: '580', selector: '#breakpoint-580' },
 			{ name: '0', selector: '#breakpoint-0' }
-		] }
+		]}
 		,
 		{ category: 'dropdown', tests: [
 			{
@@ -75,7 +75,7 @@ describe('d2l-list', () => {
 				action: () => openDropdown('#open-down'),
 				after: () => closeDropdown('#open-down')
 			}
-		] },
+		]},
 		{ category: 'tooltip', tests: [
 			{
 				name: 'open down',
@@ -83,7 +83,7 @@ describe('d2l-list', () => {
 				action: () => showTooltip('#open-down'),
 				after: () => hideTooltip('#open-down')
 			}
-		] }
+		]}
 	].forEach((info) => {
 
 		describe(info.category, () => {

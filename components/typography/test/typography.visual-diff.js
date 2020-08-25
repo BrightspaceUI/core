@@ -66,8 +66,8 @@ describe('d2l-typography', function() {
 	describe('wide', function() {
 
 		before(async() => {
-			await page.setViewport({ width: 800, height: 1200, deviceScaleFactor: 2 });
-			await page.goto(`${visualDiff.getBaseUrl()}/components/typography/test/typography.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+			await page.setViewport({width: 800, height: 1200, deviceScaleFactor: 2});
+			await page.goto(`${visualDiff.getBaseUrl()}/components/typography/test/typography.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 			await page.bringToFront();
 		});
 
@@ -78,8 +78,8 @@ describe('d2l-typography', function() {
 	describe('narrow', function() {
 
 		before(async() => {
-			await page.setViewport({ width: 600, height: 1200, deviceScaleFactor: 2 });
-			await page.goto(`${visualDiff.getBaseUrl()}/components/typography/test/typography.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+			await page.setViewport({width: 600, height: 1200, deviceScaleFactor: 2});
+			await page.goto(`${visualDiff.getBaseUrl()}/components/typography/test/typography.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 			await page.bringToFront();
 		});
 

@@ -82,14 +82,14 @@ describe('d2l-input-time-range', () => {
 
 		describe('initial values are corrected', () => {
 			[
-				{ enforceTimeIntervals: true, validStart: true, validEnd: true },
-				{ enforceTimeIntervals: true, validStart: true, validEnd: false },
-				{ enforceTimeIntervals: true, validStart: false, validEnd: true },
-				{ enforceTimeIntervals: true, validStart: false, validEnd: false },
-				{ enforceTimeIntervals: false, validStart: true, validEnd: true },
-				{ enforceTimeIntervals: false, validStart: true, validEnd: false },
-				{ enforceTimeIntervals: false, validStart: false, validEnd: true },
-				{ enforceTimeIntervals: false, validStart: false, validEnd: false }
+				{enforceTimeIntervals: true, validStart: true, validEnd: true},
+				{enforceTimeIntervals: true, validStart: true, validEnd: false},
+				{enforceTimeIntervals: true, validStart: false, validEnd: true},
+				{enforceTimeIntervals: true, validStart: false, validEnd: false},
+				{enforceTimeIntervals: false, validStart: true, validEnd: true},
+				{enforceTimeIntervals: false, validStart: true, validEnd: false},
+				{enforceTimeIntervals: false, validStart: false, validEnd: true},
+				{enforceTimeIntervals: false, validStart: false, validEnd: false}
 			].forEach((testCase) => {
 				it(`when enforceTimeIntervals = ${testCase.enforceTimeIntervals}, valid start = ${testCase.validStart} and validEnd = ${testCase.validEnd}`, async() => {
 					const startDate = testCase.validStart ? '12:15:00' : 'invalidStart';

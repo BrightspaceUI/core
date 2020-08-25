@@ -1,7 +1,7 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -185,7 +185,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_dispatchEvent() {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-search-searched',
-			{ bubbles: true, composed: false, detail: { value: this.value } }
+			{bubbles: true, composed: false, detail: {value: this.value}}
 		));
 	}
 

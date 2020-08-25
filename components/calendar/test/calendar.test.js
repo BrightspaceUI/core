@@ -112,7 +112,7 @@ describe('d2l-calendar', () => {
 
 		it('has initial correct _focusDate when on month with no selected-value', async() => {
 			const newToday = new Date('2018-02-12T12:00Z');
-			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
 			await waitUntil(() => calendar._focusDate, 'Focus date was never set');
@@ -124,7 +124,7 @@ describe('d2l-calendar', () => {
 
 		it('has initial correct _focusDate when on month with min-value', async() => {
 			const newToday = new Date('2018-02-12T12:00Z');
-			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const calendar = await fixture(html`<d2l-calendar min-value="2018-02-13"></d2l-calendar>`);
 			await waitUntil(() => calendar._focusDate, 'Focus date was never set');
@@ -180,7 +180,7 @@ describe('d2l-calendar', () => {
 
 		it('has correct _focusDate when user changes month to previous month then back to month with today', async() => {
 			const newToday = new Date('2018-05-10T12:00Z');
-			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+			const clock = sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
 
 			const calendar = await fixture(html`<d2l-calendar></d2l-calendar>`);
 			await waitUntil(() => calendar._focusDate, 'Focus date was never set');

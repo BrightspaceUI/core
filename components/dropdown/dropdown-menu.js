@@ -79,7 +79,7 @@ class DropdownMenu extends DropdownContentMixin(LitElement) {
 		if (menu.getMenuType() === 'menu-radio') {
 			const selected = menu.querySelector('[selected]');
 			if (selected !== null) {
-				setTimeout(() => selected.scrollIntoView({ block: 'nearest' }), 0);
+				setTimeout(() => selected.scrollIntoView({ block: 'nearest'}), 0);
 			}
 		}
 	}

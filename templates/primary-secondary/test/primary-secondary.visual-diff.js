@@ -15,7 +15,7 @@ describe('d2l-template-primary-secondary', () => {
 
 	describe('desktop', () => {
 		before(async() => {
-			await page.setViewport({ width: 1400, height: 930, deviceScaleFactor: 2 });
+			await page.setViewport({width: 1400, height: 930, deviceScaleFactor: 2});
 		});
 
 		[
@@ -25,7 +25,7 @@ describe('d2l-template-primary-secondary', () => {
 			{ name: 'footer-hidden', fileName: 'primary-secondary-desktop-footer-hidden.visual-diff.html' }
 		].forEach((entry) => {
 			it(entry.name, async function() {
-				await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/${entry.fileName}`, { waitUntil: ['networkidle0', 'load'] });
+				await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/${entry.fileName}`, {waitUntil: ['networkidle0', 'load']});
 				await page.bringToFront();
 				const rect = await visualDiff.getRect(page, 'd2l-template-primary-secondary', 0);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

@@ -35,7 +35,7 @@ export class FormElementValidityState {
 				}, {});
 			console.warn(`validity state was constructed with invalid flags: ${invalidFlags}`);
 		}
-		this.flags = { ...this.constructor.supportedFlags, ...flags };
+		this.flags = { ...this.constructor.supportedFlags, ...flags};
 	}
 
 	get badInput() {

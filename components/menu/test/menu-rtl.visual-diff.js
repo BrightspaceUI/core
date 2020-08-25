@@ -9,8 +9,8 @@ describe('d2l-menu rtl', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 900 } });
-		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu-rtl.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 900}});
+		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu-rtl.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 

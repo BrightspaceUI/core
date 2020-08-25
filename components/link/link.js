@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 
 export const linkStyles = css`

@@ -105,7 +105,7 @@ class Backdrop extends LitElement {
 			};
 
 			if (!reduceMotion && !this.noAnimateHide && isVisible(this)) {
-				this.addEventListener('transitionend', hide, { once: true });
+				this.addEventListener('transitionend', hide, {once: true});
 				this._state = 'hiding';
 			} else {
 				hide();

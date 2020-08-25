@@ -33,9 +33,9 @@ describe('colour-contrast', () => {
 
 		it('Throws error with correct error message when passed invalid HEX colours', () => {
 			[
-				{ color1: 'nope', color2: '#FFFFFF', invalid: 'color1' },
-				{ color1: '#FFFFFF', color2: 'nuh uh', invalid: 'color2' },
-				{ color1: 'nope', color2: 'nuh uh', invalid: 'color1' },
+				{color1: 'nope', color2: '#FFFFFF', invalid: 'color1'},
+				{color1: '#FFFFFF', color2: 'nuh uh', invalid: 'color2'},
+				{color1: 'nope', color2: 'nuh uh', invalid: 'color1'},
 			].forEach(config => {
 				const { color1, color2, invalid } = config;
 				assert.throws(

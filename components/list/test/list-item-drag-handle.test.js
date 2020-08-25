@@ -70,16 +70,16 @@ describe('ListItemDragHandle', () => {
 		});
 
 		[
-			{ keyPress: keyCodes.UP, result: dragActions.up },
-			{ keyPress: keyCodes.DOWN, result: dragActions.down },
-			{ keyPress: keyCodes.HOME, result: dragActions.first },
-			{ keyPress: keyCodes.END, result: dragActions.last },
-			{ keyPress: keyCodes.TAB, result: dragActions.previousElement, shift: true },
-			{ keyPress: keyCodes.TAB, result: dragActions.nextElement },
-			{ keyPress: keyCodes.ESC, result: dragActions.cancel },
-			{ keyPress: keyCodes.ENTER, result: dragActions.save },
-			{ keyPress: keyCodes.SPACE, result: dragActions.save },
-			{ keyPress: keyCodes.RIGHT, result: dragActions.save }
+			{keyPress: keyCodes.UP, result: dragActions.up},
+			{keyPress: keyCodes.DOWN, result: dragActions.down},
+			{keyPress: keyCodes.HOME, result: dragActions.first},
+			{keyPress: keyCodes.END, result: dragActions.last},
+			{keyPress: keyCodes.TAB, result: dragActions.previousElement, shift: true},
+			{keyPress: keyCodes.TAB, result: dragActions.nextElement},
+			{keyPress: keyCodes.ESC, result: dragActions.cancel},
+			{keyPress: keyCodes.ENTER, result: dragActions.save},
+			{keyPress: keyCodes.SPACE, result: dragActions.save},
+			{keyPress: keyCodes.RIGHT, result: dragActions.save}
 		].forEach(testCase => {
 			it(`Dispatch drag handle action event for ${testCase.result} when ${testCase.keyPress.key} is pressed.`, async() => {
 				let action;

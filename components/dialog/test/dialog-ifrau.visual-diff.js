@@ -21,7 +21,7 @@ describe('d2l-dialog-ifrau', () => {
 
 			before(async() => {
 				const preferNative = (name === 'native' ? '' : '?preferNative=false');
-				await page.goto(`${visualDiff.getBaseUrl()}/components/dialog/test/dialog-ifrau.visual-diff.html${preferNative}`, { waitUntil: ['networkidle0', 'load'] });
+				await page.goto(`${visualDiff.getBaseUrl()}/components/dialog/test/dialog-ifrau.visual-diff.html${preferNative}`, {waitUntil: ['networkidle0', 'load']});
 				await page.setViewport({ width: 650, height: 450, deviceScaleFactor: 2 });
 				await page.bringToFront();
 			});

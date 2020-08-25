@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { checkboxStyles } from './input-checkbox-styles.js';
-import { classMap } from 'lit-html/directives/class-map.js';
+import { classMap} from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -141,7 +141,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 		this.indeterminate = false;
 		this.dispatchEvent(new CustomEvent(
 			'change',
-			{ bubbles: true, composed: false }
+			{bubbles: true, composed: false}
 		));
 	}
 
@@ -150,7 +150,7 @@ class InputCheckbox extends RtlMixin(LitElement) {
 		this.indeterminate = false;
 		this.dispatchEvent(new CustomEvent(
 			'change',
-			{ bubbles: true, composed: false }
+			{bubbles: true, composed: false}
 		));
 	}
 

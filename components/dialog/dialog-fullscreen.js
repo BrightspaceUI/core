@@ -157,7 +157,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	_handleFooterSlotChange(e) {
-		const footerContent = e.target.assignedNodes({ flatten: true });
+		const footerContent = e.target.assignedNodes({flatten: true});
 		this._hasFooterContent = (footerContent && footerContent.length > 0);
 	}
 

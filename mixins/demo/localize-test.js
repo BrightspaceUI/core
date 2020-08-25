@@ -50,7 +50,7 @@ class LocalizeTest extends LocalizeMixin(LitElement) {
 			}))
 		);
 		return html`
-			<p>${this.localize('hello', { name: this.name })}</p>
+			<p>${this.localize('hello', {name: this.name})}</p>
 		`;
 	}
 

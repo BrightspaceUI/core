@@ -10,15 +10,15 @@ describe('d2l-button', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/button.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/button.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
 	[
-		{ category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled'] },
-		{ category: 'primary', tests: ['normal', 'hover', 'focus', 'primary-disabled'] },
+		{category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled']},
+		{category: 'primary', tests: ['normal', 'hover', 'focus', 'primary-disabled']},
 	].forEach((entry) => {
 		describe(entry.category, () => {
 			entry.tests.forEach((name) => {

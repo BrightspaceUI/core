@@ -20,11 +20,11 @@ describe('ButtonMixin', () => {
 		documentClickHandler = () => {
 			throw new Error('click event propagated to document');
 		};
-		document.addEventListener('click', documentClickHandler, { once: true });
+		document.addEventListener('click', documentClickHandler, {once: true});
 	});
 
 	after(() => {
-		document.removeEventListener('click', documentClickHandler, { once: true });
+		document.removeEventListener('click', documentClickHandler, {once: true});
 	});
 
 	describe('default property values', () => {

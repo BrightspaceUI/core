@@ -9,29 +9,29 @@ describe('d2l-meter-linear', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1000 } });
-		await page.goto(`${visualDiff.getBaseUrl()}/components/meter/test/meter-linear.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 1000}});
+		await page.goto(`${visualDiff.getBaseUrl()}/components/meter/test/meter-linear.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
 		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
 	[
-		{ title: 'no-progress', fixture: '#no-progress' },
-		{ title: 'has-progress', fixture: '#has-progress' },
-		{ title: 'completed', fixture: '#completed' },
-		{ title: 'max-zero-value-zero', fixture: '#max-zero-value-zero' },
-		{ title: 'round-to-zero', fixture: '#round-to-zero' },
-		{ title: 'over-100', fixture: '#over-100' },
-		{ title: 'max-zero-with-value', fixture: '#max-zero-with-value' },
-		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl' },
-		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl' },
-		{ title: 'completed-rtl', fixture: '#completed-rtl' },
-		{ title: 'over-100-rtl', fixture: '#over-100-rtl' },
-		{ title: 'no-progress-light', fixture: '#no-progress-light' },
-		{ title: 'has-progress-light', fixture: '#has-progress-light' },
-		{ title: 'completed-light', fixture: '#completed-light' },
-		{ title: 'over-100-light', fixture: '#over-100-light' }
+		{ title: 'no-progress', fixture: '#no-progress'},
+		{ title: 'has-progress', fixture: '#has-progress'},
+		{ title: 'completed', fixture: '#completed'},
+		{ title: 'max-zero-value-zero', fixture: '#max-zero-value-zero'},
+		{ title: 'round-to-zero', fixture: '#round-to-zero'},
+		{ title: 'over-100', fixture: '#over-100'},
+		{ title: 'max-zero-with-value', fixture: '#max-zero-with-value'},
+		{ title: 'no-progress-rtl', fixture: '#no-progress-rtl'},
+		{ title: 'has-progress-rtl', fixture: '#has-progress-rtl'},
+		{ title: 'completed-rtl', fixture: '#completed-rtl'},
+		{ title: 'over-100-rtl', fixture: '#over-100-rtl'},
+		{ title: 'no-progress-light', fixture: '#no-progress-light'},
+		{ title: 'has-progress-light', fixture: '#has-progress-light'},
+		{ title: 'completed-light', fixture: '#completed-light'},
+		{ title: 'over-100-light', fixture: '#over-100-light'}
 	].forEach((testData) => {
 		it(testData.title, async function() {
 			const rect = await visualDiff.getRect(page, testData.fixture);

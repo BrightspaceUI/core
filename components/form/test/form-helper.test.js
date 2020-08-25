@@ -215,7 +215,7 @@ describe('form-helper', () => {
 
 		[
 			{ type: 'implicit', fixture: implicitLabelFixture },
-			{ type: 'implicit with tooltip', fixture: implicitLabelWithTooltipFixture },
+			{ type: 'implicit with tooltip', fixture: implicitLabelWithTooltipFixture},
 			{ type: 'explicit', fixture: explicitLabelFixture },
 			{ type: 'aria-label', fixture: ariaLabelFixture },
 			{ type: 'aria-labelledby', fixture: ariaLabelledByFixture },
