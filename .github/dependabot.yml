@@ -4,9 +4,3 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    ignore:
-      - dependency-name: "@formatjs/intl-pluralrules"
-      - dependency-name: "intl-messageformat"
-      - dependency-name: "karma-browserstack-launcher"
-      - dependency-name: "karma-sauce-launcher"
-      - dependency-name: "mocha"
