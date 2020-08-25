@@ -6,6 +6,9 @@
 	<script type="module">
 		import '../../button/button.js';
 		import '../../button/button-icon.js';
+		import '../../dropdown/dropdown-more.js';
+		import '../../dropdown/dropdown-content.js';
+		import '../../tooltip/tooltip.js';
 		import '../../typography/typography.js';
 		import '../card.js';
 	</script>
@@ -79,15 +82,6 @@
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card id="actions-voa">
-			<div slot="header"></div>
-			<d2l-button-icon slot="actions" translucent text="gear" visible-on-ancestor icon="tier1:gear"></d2l-button-icon>
-			<d2l-button-icon slot="actions" translucent text="pin" icon="tier1:pin-filled"></d2l-button-icon>
-			<div slot="content">Content</div>
-		</d2l-card>
-	</div>
-
-	<div class="visual-diff">
 		<d2l-card id="actions-rtl" dir="rtl">
 			<div slot="header"></div>
 			<d2l-button-icon slot="actions" translucent text="gear" icon="tier1:gear"></d2l-button-icon>
@@ -108,6 +102,58 @@
 			<div slot="header"></div>
 			<d2l-button-icon slot="actions" translucent text="gear" icon="tier1:gear"></d2l-button-icon>
 			<div slot="content">Content</div>
+			<d2l-button slot="footer" style="width: 100%;">Shiny</d2l-button>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff" id="with-dropdown" style="width: 500px;">
+		<d2l-card text="Link Text" href="https://www.d2l.com">
+			<div slot="header">Header 1</div>
+			<d2l-dropdown-more slot="actions" translucent text="Open!">
+					<d2l-dropdown-content>
+						<div>Super fancy dropdown features that should overlap the adjacent card. It should also overlap this card's content and footer.</div>
+					</d2l-dropdown-content>
+			</d2l-dropdown-more>
+			<div slot="content">Content 1</div>
+			<div slot="footer">Footer 1</div>
+		</d2l-card>
+		<d2l-card text="Link Text" href="https://www.d2l.com">
+			<div slot="header">Header 2</div>
+			<div slot="content">Content 2</div>
+			<div slot="footer">Footer 2</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff" id="with-dropdown-adjacent-hover" style="width: 500px;">
+		<d2l-card text="Link Text" href="https://www.d2l.com">
+			<div slot="header">Header 1</div>
+			<d2l-dropdown-more slot="actions" translucent text="Open!">
+					<d2l-dropdown-content>
+						<div>Super fancy dropdown features that should overlap the adjacent card. It should also overlap this card's content and footer.</div>
+					</d2l-dropdown-content>
+			</d2l-dropdown-more>
+			<div slot="content">Content 1</div>
+			<div slot="footer">Footer 1</div>
+		</d2l-card>
+		<d2l-card text="Link Text" href="https://www.d2l.com">
+			<div id="hover-target" slot="header">Header 2</div>
+			<div slot="content">Content 2</div>
+			<div slot="footer">Footer 2</div>
+		</d2l-card>
+	</div>
+
+	<div class="visual-diff" id="with-tooltip" style="width: 500px;">
+		<d2l-card text="Link Text" href="https://www.d2l.com">
+			<div slot="header">Header 1</div>
+			<div slot="content">Content 1</div>
+			<div slot="footer">
+				<d2l-button id="shiny-button" style="width: 100%;">Shiny</d2l-button>
+				<d2l-tooltip position="top" for="shiny-button">Shiny tooltip text that should overlap the adjacent card.</d2l-tooltip>
+			</div>
+		</d2l-card>
+		<d2l-card text="Link Text" href="https://www.d2l.com">
+			<div slot="header">Header 2</div>
+			<div slot="content">Content 2</div>
 			<d2l-button slot="footer" style="width: 100%;">Shiny</d2l-button>
 		</d2l-card>
 	</div>
