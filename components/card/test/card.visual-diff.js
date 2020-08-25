@@ -38,7 +38,7 @@ describe('d2l-card', () => {
 		{ name: 'link-footer-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button`, (elem) => elem.focus()) },
 		{ name: 'with-dropdown', selector: '#with-dropdown', margin: 20 },
 		{ name: 'with-dropdown-open', selector: '#with-dropdown', margin: 20, action: (selector) => dropdownHelper.open(page, `${selector} d2l-dropdown-more`) },
-		{ name: 'with-dropdown-adjacent-hover', selector: '#with-dropdown-adjacent-hover', margin: 20, action: async (selector) =>  {
+		{ name: 'with-dropdown-adjacent-hover', selector: '#with-dropdown-adjacent-hover', margin: 20, action: async(selector) => {
 			await dropdownHelper.open(page, `${selector} d2l-dropdown-more`);
 			return page.hover(`${selector} #hover-target`);
 		} },
