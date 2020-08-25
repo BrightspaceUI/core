@@ -156,7 +156,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(validationType)]
 		).then(res => res.reduce((acc, errors) => [...acc, ...errors], []));
 		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...childErrors, ...errors];
+		return [...errors, ...childErrors];
 	}
 
 	get validationMessage() {
