@@ -150,7 +150,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				rel="${ifDefined(this.rel)}"
 				target="${ifDefined(this.target)}"
 				type="${ifDefined(this.type)}">
-				<span class="d2l-card-footer-link-text d2l-offscreen">${this.text}</span>
+				<span class="d2l-offscreen">${this.text}</span>
 			</a>
 			<div class="d2l-card-footer-link-content">
 				<d2l-icon icon="${this.icon}"></d2l-icon>
