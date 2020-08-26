@@ -21,6 +21,7 @@ npm install @brightspace-ui/core
   * [Backdrop](components/backdrop/): component for displaying backdrop behind a target element
   * [Buttons](components/button/): normal, primary, icon and subtle buttons
   * [Calendar](components/calendar/): calendar component
+  * [Card](components/card/): card components
   * [Colors](components/colors/): color palette
   * [Dialogs](components/dialog/): generic and confirmation dialogs
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
