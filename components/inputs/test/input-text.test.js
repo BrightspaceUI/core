@@ -133,26 +133,26 @@ describe('d2l-input-text', () => {
 		it('should bind "required" attribute to input "aria-required"', async() => {
 			const elem = await fixture(html`<d2l-input-text label="label" required></d2l-input-text>`);
 			const input = getInput(elem);
-			expect(input.required).to.be.false;
+			expect(input.required).to.be.true;
 			expect(input.getAttribute('aria-required')).to.equal('true');
 		});
 
 		[
-			{name: 'aria-invalid', propName: 'ariaInvalid', value: 'true'},
+			{ name: 'aria-invalid', propName: 'ariaInvalid', value: 'true' },
 			/*{name: 'autocomplete', value: 'email'}, bug in Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=1583957 */
-			{name: 'autofocus', value: true},
-			{name: 'disabled', value: true},
-			{name: 'max', value: '5'},
-			{name: 'maxlength', propName: 'maxLength', value: 10},
-			{name: 'min', value: '1'},
-			{name: 'minlength', propName: 'minLength', value: 3},
-			{name: 'name', value: 'jim'},
-			{name: 'pattern', value: '[A-Za-z]+'},
-			{name: 'placeholder', value: 'enter something'},
-			{name: 'readonly', propName: 'readOnly', value: true},
-			{name: 'size', value: 20},
-			{name: 'step', value: '2'},
-			{name: 'type', value: 'email'}
+			{ name: 'autofocus', value: true },
+			{ name: 'disabled', value: true },
+			{ name: 'max', value: '5' },
+			{ name: 'maxlength', propName: 'maxLength', value: 10 },
+			{ name: 'min', value: '1' },
+			{ name: 'minlength', propName: 'minLength', value: 3 },
+			{ name: 'name', value: 'jim' },
+			{ name: 'pattern', value: '[A-Za-z]+' },
+			{ name: 'placeholder', value: 'enter something' },
+			{ name: 'readonly', propName: 'readOnly', value: true },
+			{ name: 'size', value: 20 },
+			{ name: 'step', value: '2' },
+			{ name: 'type', value: 'email' }
 		].forEach((attr) => {
 			attr.propName = attr.propName || attr.name;
 			it(`should bind "${attr.name}" to input`, async() => {
@@ -192,6 +192,120 @@ describe('d2l-input-text', () => {
 			setTimeout(() => pressEnter(elem));
 			const { defaultPrevented } = await oneEvent(elem, 'keypress');
 			expect(defaultPrevented).to.be.true;
+		});
+
+	});
+
+	describe('validation', () => {
+
+		it('should be invalid when empty and required', async() => {
+			const elem = await fixture(normalFixture);
+			elem.required = true;
+
+			const errors = await elem.validate();
+			expect(errors).to.contain('label is required.');
+		});
+
+		it('should be valid when required has value', async() => {
+			const elem = await fixture(normalFixture);
+			elem.required = true;
+			elem.value = 'hi';
+
+			const errors = await elem.validate();
+			expect(errors).to.be.empty;
+		});
+
+		it('should be invalid when length is less than min length', async() => {
+			const elem = await fixture(normalFixture);
+			elem.minlength = 10;
+			elem.value = 'only nine';
+
+			const errors = await elem.validate();
+			expect(errors).to.contain('label must be at least 10 characters');
+		});
+
+		it('should be valid when length is greater than or equal to min length', async() => {
+			const elem = await fixture(normalFixture);
+			elem.minlength = 10;
+			elem.value = 'more than nine';
+
+			const errors = await elem.validate();
+			expect(errors).to.be.empty;
+		});
+
+		it('should be valid with min length when empty', async() => {
+			const elem = await fixture(normalFixture);
+			elem.minlength = 10;
+
+			const errors = await elem.validate();
+			expect(errors).to.be.empty;
+		});
+
+		it('should be invalid when the url is invalid', async() => {
+			const elem = await fixture(normalFixture);
+			elem.type = 'url';
+			elem.value = 'not a url';
+
+			const errors = await elem.validate();
+			expect(errors).to.contain('URL is not valid');
+		});
+
+		it('should be valid when the url is valid', async() => {
+			const elem = await fixture(normalFixture);
+			elem.type = 'url';
+			elem.value = 'https://aurl.ataninvalidtldthatdoesntactuallyexist';
+
+			const errors = await elem.validate();
+			expect(errors).to.empty;
+		});
+
+		it('should be invalid when the email is invalid', async() => {
+			const elem = await fixture(normalFixture);
+			elem.type = 'email';
+			elem.value = 'not an email';
+
+			const errors = await elem.validate();
+			expect(errors).to.contain('Email is not valid');
+		});
+
+		it('should be valid when the email is valid', async() => {
+			const elem = await fixture(normalFixture);
+			elem.type = 'email';
+			elem.value = 'anemail@somedomain.ataninvalidtldthatdoesntactuallyexist';
+
+			const errors = await elem.validate();
+			expect(errors).to.empty;
+		});
+
+		it('should be invalid when value is below the min', async() => {
+			const elem = await fixture(normalFixture);
+			elem.type = 'number';
+			elem.min = '10';
+			elem.value = '9';
+
+			const errors = await elem.validate();
+			expect(errors).to.contain('Number must be higher than 10');
+		});
+
+		it('should be invalid when value is above the max', async() => {
+			const elem = await fixture(normalFixture);
+			elem.type = 'number';
+			elem.max = '100';
+			elem.value = '110';
+
+			const errors = await elem.validate();
+			expect(errors).to.contain('Number must be lower than 100');
+		});
+
+		it('should be valid when value is between min and max', async() => {
+			const elem = await fixture(normalFixture);
+			elem.type = 'number';
+			elem.min = '10';
+			elem.max = '100';
+			elem.value = '55';
+
+			const errors = await elem.validate();
+			expect(errors).to.be.empty;
 		});
 
 	});

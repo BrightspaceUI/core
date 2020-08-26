@@ -56,7 +56,7 @@ module.exports = config => {
 			browsers: Object.keys(customLaunchers),
 			reporters: ['dots', 'saucelabs'],
 			singleRun: true,
-			browserDisconnectTimeout : 20000, // default 2000
+			browserDisconnectTimeout : 50000, // default 2000
 			browserDisconnectTolerance : 3, // default 0
 			browserNoActivityTimeout: 200000, // default 10000
 			captureTimeout: 200000, // default 60000

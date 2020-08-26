@@ -13,13 +13,15 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 
 **Properties:**
 
-- `aria-label` (String): set instead of placing label inside to hide the visible label
-- `checked` (optional, Boolean): checked state
-- `disabled` (optional, Boolean): disables the input
-- `indeterminate` (optional, Boolean): sets checkbox to an indeterminate state
-- `name` (optional, String): name of the input
-- `not-tabbable` (optional, Boolean): sets `tabindex="-1"` on the checkbox
-- `value` (optional, String): value of the input
+| Property | Type | Description |
+|--|--|--|
+| `aria-label` | String | Set instead of placing label inside to hide the visible label |
+| `checked` | Boolean | Checked state |
+| `disabled` | Boolean | Disables the input |
+| `indeterminate` | Boolean | Sets checkbox to an indeterminate state |
+| `name` | String | Name of the input |
+| `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox |
+| `value` | String | Value of the input |
 
 **Accessibility:**
 

@@ -264,6 +264,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.opened = true;
 	}
 
+	async resize() {
+		if (!this.opened) {
+			return;
+		}
+		await this.__position();
+	}
+
 	/**
 	 * Private.
 	 */
@@ -382,10 +389,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	__onResize() {
-		if (!this.opened) {
-			return;
-		}
-		this.__position();
+		this.resize();
 	}
 
 	async __openedChanged(newValue) {
@@ -417,7 +421,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			}
 
 			setTimeout(() =>
-				this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true})), 0
+				this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true })), 0
 			);
 
 			this.__dismissibleId = setDismissible(() => {
@@ -533,7 +537,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	_constrainSpaceAround(spaceAround) {
-		const constrained = {...spaceAround};
+		const constrained = { ...spaceAround };
 		if (this.boundary) {
 			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
 			constrained.below = this.boundary.below >= 0 ? Math.min(spaceAround.below, this.boundary.below) : spaceAround.below;

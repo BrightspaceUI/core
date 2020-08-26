@@ -146,6 +146,7 @@ class AlertToast extends LitElement {
 					@d2l-alert-close=${this._onCloseClicked}
 					@focus=${this._onFocus}
 					?has-close-button="${!this.hideCloseButton}"
+					?hidden="${this._state === states.CLOSED}"
 					@mouseenter=${this._onMouseEnter}
 					@mouseleave=${this._onMouseLeave}
 					subtext="${ifDefined(this.subtext)}"

@@ -18,7 +18,9 @@ The `d2l-expand-collapse-content` element can be used to used to create expandab
 
 **Properties:**
 
-- `expanded` (Boolean, default: `false`): Specifies the expanded/collapsed state of the content
+| Property | Type | Description |
+|--|--|--|
+| `expanded` | Boolean, default: `false` | Specifies the expanded/collapsed state of the content |
 
 **Events:**
 

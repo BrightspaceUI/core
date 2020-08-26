@@ -10,7 +10,7 @@
 			import sinon from 'sinon';
 
 			const newToday = new Date('2018-02-12T12:00Z');
-			sinon.useFakeTimers({now: newToday.getTime(), toFake: ['Date']});
+			sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 		</script>
 		<title>d2l-input-date-time-range visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +33,9 @@
 			</div>
 			<div class="visual-diff">
 				<d2l-input-date-time-range id="label-hidden" label="Dates" label-hidden></d2l-input-date-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date-time-range id="min-max" label="Dates" min-value="2016-03-27T12:30:00Z" max-value="2018-09-30T12:30:00Z"></d2l-input-date-time-range>
 			</div>
 			<div class="visual-diff">
 				<d2l-input-date-time-range id="slotted-content">

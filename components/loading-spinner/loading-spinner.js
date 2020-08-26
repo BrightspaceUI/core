@@ -168,11 +168,11 @@ class LoadingSpinner extends LitElement {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'color') {
 				// for IE11
-				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, {'--d2l-loading-spinner-color': this.color});
+				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-loading-spinner-color': this.color });
 				else this.style.setProperty('--d2l-loading-spinner-color', this.color);
 			} else if (propName === 'size') {
 				// for IE11
-				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, {'--d2l-loading-spinner-size': `${this.size}px`});
+				if (window.ShadyCSS) window.ShadyCSS.styleSubtree(this, { '--d2l-loading-spinner-size': `${this.size}px` });
 				else this.style.setProperty('--d2l-loading-spinner-size', `${this.size}px`);
 			}
 		});

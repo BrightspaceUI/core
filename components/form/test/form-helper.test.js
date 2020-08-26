@@ -2,7 +2,7 @@ import './form-element.js';
 import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
-import { findFormElements, getFormElementData, isCustomElement, isCustomFormElement, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
+import { findFormElements, flattenMap, getFormElementData, isCustomElement, isCustomFormElement, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 
 const buttonFixture = html`<button type="button">Add to favorites</button>`;
@@ -215,7 +215,7 @@ describe('form-helper', () => {
 
 		[
 			{ type: 'implicit', fixture: implicitLabelFixture },
-			{ type: 'implicit with tooltip', fixture: implicitLabelWithTooltipFixture},
+			{ type: 'implicit with tooltip', fixture: implicitLabelWithTooltipFixture },
 			{ type: 'explicit', fixture: explicitLabelFixture },
 			{ type: 'aria-label', fixture: ariaLabelFixture },
 			{ type: 'aria-labelledby', fixture: ariaLabelledByFixture },
@@ -282,10 +282,11 @@ describe('form-helper', () => {
 					</div>
 				</div>
 				<object id="ele-8" type="image/png" width="300" height="200"></object>
+				<div id="fake-form-element"></div>
 				<label>Email
 					<input id="ele-9" type="email"/>
 				</label>
-				<div>
+				<div id="secondary">
 					<h2>Secondary</h2>
 					<label for="ele-10">Tell us your story</label>
 					<textarea id="ele-10" title="my title" minlength="20" name="story">It was...</textarea>
@@ -315,6 +316,68 @@ describe('form-helper', () => {
 				id += 1;
 			}
 		});
+
+		it('should not find form elements inside elements that fail the visitChildrenPredicate', () => {
+			const secondaryEle = root.querySelector('#secondary');
+			const formElements = findFormElements(root, undefined, ele => ele !== secondaryEle);
+
+			const ele10 = root.querySelector('#ele-10');
+			const ele11 = root.querySelector('#ele-11');
+			const ele12 = root.querySelector('#ele-12');
+			const ele13 = root.querySelector('#ele-13');
+
+			expect(formElements).to.not.include.members([ele10, ele11, ele12, ele13]);
+		});
+
+		it('should find elements that pass the isFormElementPredicate', () => {
+			const fakeFormElement = root.querySelector('#fake-form-element');
+			const formElements = findFormElements(root, ele => ele === fakeFormElement);
+
+			expect(formElements).to.include.members([fakeFormElement]);
+		});
+
+	});
+
+	describe('flattenMap', () => {
+
+		it('should flatten errors', async() => {
+			const errors = new Map();
+			const pairs = [];
+
+			const set = (map, key, value) => {
+				if (!(value instanceof Map)) {
+					pairs.push([key, value]);
+				}
+				map.set(key, value);
+			};
+
+			set(errors, 'a', 1);
+
+			const subErrors1 = new Map();
+			set(subErrors1, 'ba', 'a value');
+			set(subErrors1, 'bb', { prop: 'my prop' });
+
+			const subSubErrors1 = new Map();
+			set(subSubErrors1, 'bca', 99);
+			set(subSubErrors1, 'bcb', new Map());
+			set(subErrors1, 'bc', subSubErrors1);
+
+			set(errors, 'b', subErrors1);
+
+			set(errors, 'c', [1, 2, 3, 4]);
+			set(errors, 'd', 'another val');
+
+			const subErrors2 = new Map();
+			set(subErrors2, 'ea', ['x', 'y']);
+			set(subErrors2, 'eb', 1024);
+			set(errors, 'e', subErrors2);
+
+			const flatErrors = flattenMap(errors);
+			for (const [key, value] of pairs) {
+				expect(flatErrors.get(key)).to.equal(value);
+			}
+		});
+
 	});
 
 	describe('getFormElementData', () => {
