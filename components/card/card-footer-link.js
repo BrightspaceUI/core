@@ -60,7 +60,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		return [offscreenStyles, css`
 			:host {
 				display: inline-block;
-				left: -0.6rem;
+				left: 0.15rem;
 				margin-right: 0.3rem;
 				position: relative;
 			}
@@ -71,7 +71,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				left: auto;
 				margin-left: 0.3rem;
 				margin-right: 0;
-				right: -0.6rem;
+				right: 0.15rem;
 			}
 			.d2l-card-footer-link-content {
 				display: inline-block;
