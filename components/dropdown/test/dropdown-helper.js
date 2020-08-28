@@ -1,15 +1,9 @@
-const getEvent = (page, selector, name) => {
-	return page.$eval(selector, (elem, name) => {
-		return new Promise((resolve) => {
-			elem.addEventListener(name, resolve, { once: true });
-		});
-	}, name);
-};
+const { oneEvent } = require('@brightspace-ui/visual-diff/helpers');
 
 module.exports = {
 
 	getOpenEvent(page, selector) {
-		return getEvent(page, selector, 'd2l-dropdown-open');
+		return oneEvent(page, selector, 'd2l-dropdown-open');
 	},
 
 	async open(page, selector) {
