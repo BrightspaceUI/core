@@ -23,6 +23,8 @@ describe('d2l-input-date', () => {
 		'label',
 		'label-hidden',
 		'placeholder',
+		'required',
+		'required-min-max',
 		'value'
 	].forEach((name) => {
 		it(name, async function() {
@@ -449,6 +451,35 @@ describe('d2l-input-date', () => {
 					input.dispatchEvent(eventObj);
 				});
 				const rect = await helper.getRect(page, '#value');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+
+		describe('required', () => {
+			before(async() => {
+				await page.reload();
+			});
+
+			afterEach(async() => {
+				await helper.reset(page, '#required');
+			});
+
+			it('required open', async function() {
+				await helper.open(page, '#required');
+				const rect = await helper.getRect(page, '#required');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('open required with enter after empty text input', async function() {
+				await page.$eval('#required', (elem) => {
+					const input = elem.shadowRoot.querySelector('d2l-input-text');
+					input.value = '';
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 13;
+					input.dispatchEvent(eventObj);
+				});
+				const rect = await helper.getRect(page, '#required');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
