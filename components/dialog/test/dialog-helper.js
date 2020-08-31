@@ -1,10 +1,4 @@
-const getEvent = (page, selector, name) => {
-	return page.$eval(selector, (elem, name) => {
-		return new Promise((resolve) => {
-			elem.addEventListener(name, resolve, { once: true });
-		});
-	}, name);
-};
+const { oneEvent } = require('@brightspace-ui/visual-diff/helpers');
 
 module.exports = {
 
@@ -15,11 +9,11 @@ module.exports = {
 	},
 
 	getCloseEvent(page, selector) {
-		return getEvent(page, selector, 'd2l-dialog-close');
+		return oneEvent(page, selector, 'd2l-dialog-close');
 	},
 
 	getOpenEvent(page, selector) {
-		return getEvent(page, selector, 'd2l-dialog-open');
+		return oneEvent(page, selector, 'd2l-dialog-open');
 	},
 
 	getRect(page, selector) {
