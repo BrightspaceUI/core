@@ -75,26 +75,19 @@ describe('d2l-input-time-range', () => {
 		}
 
 		describe('function', () => {
+			before(async() => {
+				await page.$eval('#basic', (elem) => elem.blur());
+				await changeInnerInputTextDate(page, '#basic', startTimeSelector, laterTime);
+				await changeInnerInputTextDate(page, '#basic', endTimeSelector, time);
+			});
+
 			after(async() => {
 				await page.reload();
 			});
 
-			it('open', async function() {
-				await page.$eval('#basic', (elem) => elem.blur());
-				await changeInnerInputTextDate(page, '#basic', startTimeSelector, laterTime);
-				await changeInnerInputTextDate(page, '#basic', endTimeSelector, time);
-
-				await page.$eval('#basic', (elem) => {
-					const input = elem.shadowRoot.querySelector('d2l-input-time');
-					const input2 = input.shadowRoot.querySelector('input');
-					const eventObj = document.createEvent('Events');
-					eventObj.initEvent('keydown', true, true);
-					eventObj.keyCode = 13;
-					input2.dispatchEvent(eventObj);
-				});
-
-				const rect = await page.$eval('#basic', (elem) => {
-					const input = elem.shadowRoot.querySelector('d2l-input-time');
+			async function getRect(page, timePickerIndex) {
+				return await page.$eval('#basic', (elem, timePickerIndex) => {
+					const input = elem.shadowRoot.querySelectorAll('d2l-input-time')[timePickerIndex];
 					const content = input.shadowRoot.querySelector('[dropdown-content]');
 					const opener = content.__getOpener();
 					const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
@@ -110,7 +103,32 @@ describe('d2l-input-time-range', () => {
 						width: width + 20,
 						height: height + 20
 					};
+				}, timePickerIndex);
+			}
+
+			it('open start', async function() {
+				await page.$eval('#basic', (elem) => {
+					const input = elem.shadowRoot.querySelector('d2l-input-time');
+					const input2 = input.shadowRoot.querySelector('input');
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 13;
+					input2.dispatchEvent(eventObj);
 				});
+				const rect = await getRect(page, 0);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('open end', async function() {
+				await page.$eval('#basic', (elem) => {
+					const input = elem.shadowRoot.querySelectorAll('d2l-input-time')[1];
+					const input2 = input.shadowRoot.querySelector('input');
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 13;
+					input2.dispatchEvent(eventObj);
+				});
+				const rect = await getRect(page, 1);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
