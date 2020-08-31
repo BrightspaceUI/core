@@ -8,6 +8,8 @@ It differs from the native HTML `form` element in 2 ways:
 1. It supports custom form elements made using the [`FormElementMixin`](./form-element-mixin.md) in addition to native form elements like `input`, `select` and `textarea`.
 1. Upon validation, it will display an error summary that contains error messages for any elements that failed validation.
 
+If you're looking to submit form data via your own API calls or nest multiple forms within each other, [`d2l-form`](./form.md) may be more appropriate.
+
 ![screenshot of a form-native with a text input and select input](../screenshots/form-native.gif)
 
 ```html
