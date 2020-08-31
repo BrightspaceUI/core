@@ -4,7 +4,15 @@ import './input-time.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODateTime } from '../../helpers/dateTime.js';
+import { formatDateInISO,
+	formatTimeInISO,
+	getDateFromDateObj,
+	getDateFromISODateTime,
+	getLocalDateTimeFromUTCDateTime,
+	getToday,
+	getUTCDateTimeFromLocalDateTime,
+	isDateInRange,
+	parseISODateTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -35,6 +43,10 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			 * Minimum valid date/time that could be selected by a user.
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
 			/**
 			 * Value of the input. This should be in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ") and in UTC time (i.e., do NOT localize to the user's timezone).
 			 */
@@ -80,6 +92,20 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		if (!this.label) {
 			console.warn('d2l-input-date-time component requires label text');
 		}
+
+		if (this.required && !this.value) {
+			const today = getToday();
+			if (isDateInRange(getDateFromDateObj(today), getDateFromISODateTime(this.minValue), getDateFromISODateTime(this.maxValue))) this.value = getUTCDateTimeFromLocalDateTime(formatDateInISO(today), formatTimeInISO(today));
+			else {
+				if (this.minValue && this.maxValue) {
+					const diffToMin = Math.abs(getDateFromDateObj(today).getTime() - getDateFromISODateTime(this.minValue).getTime());
+					const diffToMax = Math.abs(getDateFromDateObj(today).getTime() - getDateFromISODateTime(this.maxValue).getTime());
+					if (diffToMin < diffToMax) this.value = this.minValue;
+					else this.value = this.maxValue;
+				} else if (this.minValue) this.value = this.minValue;
+				else if (this.maxValue) this.value = this.maxValue;
+			}
+		}
 	}
 
 	render() {
@@ -87,7 +113,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltip}
-			<d2l-input-fieldset label="${ifDefined(this.label)}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?required="${this.required}">
 				<d2l-input-date
 					@change="${this._handleDateChange}"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
@@ -99,6 +125,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					label-hidden
 					max-value="${ifDefined(this._maxValueLocalized)}"
 					min-value="${ifDefined(this._minValueLocalized)}"
+					?required="${this.required}"
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
 				<d2l-input-time
@@ -114,6 +141,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					label="${this.localize('components.input-date-time.time')}"
 					label-hidden
 					max-height="430"
+					?required="${this.required}"
 					.value="${this._parsedDateTime}">
 				</d2l-input-time>
 			</d2l-input-fieldset>
