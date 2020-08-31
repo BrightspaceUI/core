@@ -1,25 +1,15 @@
-const getEvent = (page, selector, name) => {
-	return page.$eval(selector, (elem, name) => {
-		return new Promise((resolve) => {
-			elem.addEventListener(name, resolve, { once: true });
-		});
-	}, name);
-};
+const { oneEvent } = require('@brightspace-ui/visual-diff/helpers');
 
 module.exports = {
 
-	getShowEvent(page, selector) {
-		return getEvent(page, selector, 'd2l-tooltip-show');
-	},
-
 	async hide(page, selector) {
-		const hideEvent = getEvent(page, selector, 'd2l-tooltip-hide');
+		const hideEvent = oneEvent(page, selector, 'd2l-tooltip-hide');
 		page.$eval(`${selector} d2l-tooltip`, tooltip => tooltip.hide());
 		return hideEvent;
 	},
 
 	async show(page, selector) {
-		const openEvent = this.getShowEvent(page, selector);
+		const openEvent = oneEvent(page, selector, 'd2l-tooltip-show');
 		page.$eval(`${selector} d2l-tooltip`, tooltip => tooltip.show());
 		return openEvent;
 	}

@@ -54,7 +54,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-template-columns:
 					[start outside-control-start] minmax(0, min-content)
 					[control-start outside-control-end] minmax(0, min-content)
-					[control-end content-start] auto
+					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
 				position:relative;
@@ -78,8 +78,6 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="content"]) {
 				grid-column: content-start / content-end;
-				overflow-x: hidden;
-				position: relative;
 			}
 
 			::slotted([slot="actions"]) {
