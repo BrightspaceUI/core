@@ -63,7 +63,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
-			_inputHoverFocus: { type: Boolean },
 			_shownValue: { type: String }
 		};
 	}
@@ -124,7 +123,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
-		this._inputHoverFocus = false;
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
@@ -179,10 +177,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
-		const showInvalidIcon = !this._inputHoverFocus && (this.invalid || (this.required && !this.value));
-
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
-		const icon = showInvalidIcon
+		const icon = this.invalid
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
@@ -272,7 +268,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleBlur() {
-		this._inputHoverFocus = false;
 		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
 	}
 
@@ -339,7 +334,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleInputTextFocus() {
-		this._inputHoverFocus = true;
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
 	}
 
