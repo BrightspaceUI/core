@@ -95,11 +95,13 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 	}
 
 	get validationMessage() {
-		return this.shadowRoot.querySelector('d2l-input-text').validationMessage;
+		const inputTextElement = this.shadowRoot.querySelector('d2l-input-text');
+		return inputTextElement ? inputTextElement.validationMessage : super.validationMessage;
 	}
 
 	get validity() {
-		return this.shadowRoot.querySelector('d2l-input-text').validity;
+		const inputTextElement = this.shadowRoot.querySelector('d2l-input-text');
+		return inputTextElement ? inputTextElement.validity : super.validity;
 	}
 
 	async _handleChange(e) {
