@@ -126,8 +126,8 @@ function debounceQueue() {
 }
 
 async function fetchCollection(url) {
-	
-	if (blobs.has(url)){
+
+	if (blobs.has(url)) {
 		return Promise.resolve(blobs.get(url));
 	}
 
