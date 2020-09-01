@@ -18,6 +18,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 
 	static get properties() {
 		return {
+			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean },
@@ -70,8 +71,11 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 	}
 
 	render() {
+		const ariaInvalid = this.invalid ? 'true' : this.ariaInvalid;
+
 		return html`
 			<d2l-input-text
+				aria-invalid="${ifDefined(ariaInvalid)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
