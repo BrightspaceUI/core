@@ -122,7 +122,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 
 	get _defaultLabel() {
 		const namespace = 'components.list-item-drag-handle';
-		return this.localize(`${namespace}.${this._keyboardActive ? 'keyboard' : 'default'}`);
+		return this.localize(`${namespace}.${this._keyboardActive ? 'keyboard' : 'default'}`, 'name', this.text);
 	}
 
 	_dispatchAction(action) {
@@ -240,7 +240,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 				@focusout="${this._onFocusOut}"
 				@keyup="${this._onActiveKeyboard}"
 				@keydown="${this._onPreventDefault}"
-				aria-label="${this.text || this._defaultLabel}">
+				aria-label="${this._defaultLabel}">
 				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
 				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>
 			</button>

@@ -9,7 +9,7 @@ describe('d2l-tabs', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, {viewport: {width: 800, height: 2000}});
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2000 } });
 	});
 
 	beforeEach(async() => {
@@ -21,7 +21,7 @@ describe('d2l-tabs', () => {
 	describe('basic', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
@@ -72,7 +72,7 @@ describe('d2l-tabs', () => {
 			describe(dir, () => {
 
 				before(async() => {
-					await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html?dir=${dir}`, {waitUntil: ['networkidle0', 'load']});
+					await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html?dir=${dir}`, { waitUntil: ['networkidle0', 'load'] });
 					await page.bringToFront();
 				});
 
@@ -116,7 +116,7 @@ describe('d2l-tabs', () => {
 	describe('max-to-show', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
@@ -146,7 +146,7 @@ describe('d2l-tabs', () => {
 	describe('keyboard', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, {waitUntil: ['networkidle0', 'load']});
+			await page.goto(`${visualDiff.getBaseUrl()}/components/tabs/test/tabs.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 

@@ -3,6 +3,8 @@ import { formatDateInISO,
 	formatTimeInISO,
 	getDateFromDateObj,
 	getDateFromISODate,
+	getDateFromISODateTime,
+	getDateFromISOTime,
 	getLocalDateTimeFromUTCDateTime,
 	getToday,
 	getUTCDateTimeFromLocalDateTime,
@@ -45,19 +47,19 @@ describe('date-time', () => {
 
 		it('should throw when no year', () => {
 			expect(() => {
-				formatDateInISO({month: 10, date: 20});
+				formatDateInISO({ month: 10, date: 20 });
 			}).to.throw('Invalid input: Expected input to be object containing year, month, and date');
 		});
 
 		it('should throw when no month', () => {
 			expect(() => {
-				formatDateInISO({year: 2013, date: 20});
+				formatDateInISO({ year: 2013, date: 20 });
 			}).to.throw('Invalid input: Expected input to be object containing year, month, and date');
 		});
 
 		it('should throw when no date', () => {
 			expect(() => {
-				formatDateInISO({year: 2013, month: 3});
+				formatDateInISO({ year: 2013, month: 3 });
 			}).to.throw('Invalid input: Expected input to be object containing year, month, and date');
 		});
 	});
@@ -143,19 +145,19 @@ describe('date-time', () => {
 
 		it('should throw when no hours', () => {
 			expect(() => {
-				formatTimeInISO({minutes: 10, seconds: 20});
+				formatTimeInISO({ minutes: 10, seconds: 20 });
 			}).to.throw('Invalid input: Expected input to be object containing hours, minutes, and seconds');
 		});
 
 		it('should throw when no minutes', () => {
 			expect(() => {
-				formatTimeInISO({hours: 2013, seconds: 20});
+				formatTimeInISO({ hours: 2013, seconds: 20 });
 			}).to.throw('Invalid input: Expected input to be object containing hours, minutes, and seconds');
 		});
 
 		it('should throw when no seconds', () => {
 			expect(() => {
-				formatTimeInISO({hours: 2013, minutes: 3});
+				formatTimeInISO({ hours: 2013, minutes: 3 });
 			}).to.throw('Invalid input: Expected input to be object containing hours, minutes, and seconds');
 		});
 	});
@@ -189,6 +191,36 @@ describe('date-time', () => {
 		});
 	});
 
+	describe('getDateFromISODateTime', () => {
+		after(() => {
+			documentLocaleSettings.timezone.identifier = 'America/Toronto';
+		});
+
+		it('should return the correct date', () => {
+			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 7, 30, 0));
+		});
+
+		it('should return expected date in Australia/Eucla timezone', () => {
+			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
+			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 21, 15, 0));
+		});
+
+		it('should throw when invalid date format', () => {
+			expect(() => {
+				getDateFromISODateTime('2019/01/30T12:34:46Z');
+			}).to.throw('Invalid input: Expected format is YYYY-MM-DDTHH:mm:ss.sssZ');
+		});
+	});
+
+	describe('getDateFromISOTime', () => {
+		it('should return the correct date/time', () => {
+			const newToday = new Date('2018-02-12T20:00:00Z');
+			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+			expect(getDateFromISOTime('12:10:30')).to.deep.equal(new Date(2018, 1, 12, 12, 10, 30));
+			clock.restore();
+		});
+	});
+
 	describe('getLocalDateTimeFromUTCDateTime', () => {
 		it('should return the correct date and time', () => {
 			expect(getLocalDateTimeFromUTCDateTime('2019-01-30T12:05:10.000Z')).to.equal('2019-01-30T07:05:10.000');
@@ -203,7 +235,7 @@ describe('date-time', () => {
 		let clock;
 		beforeEach(() => {
 			const newToday = new Date('2018-02-12T20:00:00Z');
-			clock = sinon.useFakeTimers(newToday.getTime());
+			clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 		});
 
 		afterEach(() => {
@@ -212,12 +244,12 @@ describe('date-time', () => {
 		});
 
 		it('should return expected day in America/Toronto timezone', () => {
-			expect(getToday()).to.deep.equal({year: 2018, month: 2, date: 12, hours: 15, minutes: 0, seconds: 0});
+			expect(getToday()).to.deep.equal({ year: 2018, month: 2, date: 12, hours: 15, minutes: 0, seconds: 0 });
 		});
 
 		it('should return expected day in Australia/Eucla timezone', () => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
-			expect(getToday()).to.deep.equal({year: 2018, month: 2, date: 13, hours: 4, minutes: 45, seconds: 0});
+			expect(getToday()).to.deep.equal({ year: 2018, month: 2, date: 13, hours: 4, minutes: 45, seconds: 0 });
 		});
 	});
 
@@ -334,11 +366,11 @@ describe('date-time', () => {
 
 	describe('parseISODate', () => {
 		it('should return correct date', () => {
-			expect(parseISODate('2019-01-30')).to.deep.equal({year: 2019, month: 1, date: 30});
+			expect(parseISODate('2019-01-30')).to.deep.equal({ year: 2019, month: 1, date: 30 });
 		});
 
 		it('should return correct date when full ISO date', () => {
-			expect(parseISODate('2019-01-30T15:00:00.000Z')).to.deep.equal({year: 2019, month: 1, date: 30});
+			expect(parseISODate('2019-01-30T15:00:00.000Z')).to.deep.equal({ year: 2019, month: 1, date: 30 });
 		});
 
 		it('should throw when invalid date format', () => {
@@ -350,7 +382,7 @@ describe('date-time', () => {
 
 	describe('parseISODateTime', () => {
 		it('should return correct date if date and time provided', () => {
-			expect(parseISODateTime('2019-10-30T12:10:30.000Z')).to.deep.equal({year: 2019, month: 10, date: 30, hours: 12, minutes: 10, seconds: 30});
+			expect(parseISODateTime('2019-10-30T12:10:30.000Z')).to.deep.equal({ year: 2019, month: 10, date: 30, hours: 12, minutes: 10, seconds: 30 });
 		});
 
 		it('should throw when invalid date format', () => {
@@ -362,15 +394,15 @@ describe('date-time', () => {
 
 	describe('parseISOTime', () => {
 		it('should return correct time when full ISO date', () => {
-			expect(parseISOTime('2019-02-12T18:00:00.000Z')).to.deep.equal({hours: 18, minutes: 0, seconds: 0});
+			expect(parseISOTime('2019-02-12T18:00:00.000Z')).to.deep.equal({ hours: 18, minutes: 0, seconds: 0 });
 		});
 
 		it('should return correct time when hours, minutes, seconds', () => {
-			expect(parseISOTime('12:10:30')).to.deep.equal({hours: 12, minutes: 10, seconds: 30});
+			expect(parseISOTime('12:10:30')).to.deep.equal({ hours: 12, minutes: 10, seconds: 30 });
 		});
 
 		it('should return correct time when hours, minutes', () => {
-			expect(parseISOTime('12:10')).to.deep.equal({hours: 12, minutes: 10, seconds: 0});
+			expect(parseISOTime('12:10')).to.deep.equal({ hours: 12, minutes: 10, seconds: 0 });
 		});
 
 		it('should throw when invalid time format', () => {

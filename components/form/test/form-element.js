@@ -33,16 +33,11 @@ class FormElement extends FormElementMixin(LitElement) {
 		return 'Test form element';
 	}
 
-	get validationMessageRangeOverflow() {
-		return `${this.labelText} failed with an overridden validation message`;
-	}
-
-	validationTooltipHide() {
-		this.tooltipMessage = null;
-	}
-
-	validationTooltipShow(message) {
-		this.tooltipMessage = message;
+	get validationMessage() {
+		if (this.validity.rangeOverflow) {
+			return `${this.label} failed with an overridden validation message`;
+		}
+		return super.validationMessage;
 	}
 
 	get validity() {

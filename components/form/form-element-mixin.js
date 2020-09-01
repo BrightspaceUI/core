@@ -1,4 +1,4 @@
-import { isCustomFormElement, tryGetLabelText } from './form-helper.js';
+import { isCustomFormElement } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 export const ValidationType = {
@@ -35,7 +35,7 @@ export class FormElementValidityState {
 				}, {});
 			console.warn(`validity state was constructed with invalid flags: ${invalidFlags}`);
 		}
-		this.flags = { ...this.constructor.supportedFlags, ...flags};
+		this.flags = { ...this.constructor.supportedFlags, ...flags };
 	}
 
 	get badInput() {
@@ -86,6 +86,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return {
 			forceInvalid: { type: Boolean, attribute: false },
 			invalid: { type: Boolean, reflect: true },
+			/**
+			 * Name of the form control. Submitted with the form as part of a name/value pair.
+			 */
+			name: { type: String },
+			noValidate: { type: Boolean, attribute: 'novalidate' },
 			validationError: { type: String, attribute: false },
 		};
 	}
@@ -95,11 +100,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationCustomConnected = this._validationCustomConnected.bind(this);
 
 		this._validationCustoms = new Set();
-		this._validationMessage = '';
 		this._validity = new FormElementValidityState({});
 		this.forceInvalid = false;
 		this.formValue = null;
 		this.invalid = false;
+		this.noValidate = false;
 		this.validationError = null;
 
 		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
@@ -107,38 +112,29 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
-			if (propName === 'forceInvalid' || propName === 'validationError') {
-				this.invalid = this.forceInvalid || this.validationError !== null;
+			if (propName === 'noValidate' || propName === 'forceInvalid' || propName === 'validationError') {
+				const oldValue = this.invalid;
+				this.invalid = (this.forceInvalid || this.validationError !== null) && !this.noValidate;
+				if (this.invalid !== oldValue) {
+					this.dispatchEvent(new CustomEvent('invalid-change'));
+				}
+			}
+			if (propName === 'noValidate' && this.noValidate) {
+				this.validationError = null;
+				this._notifyFormErrorsChanged([]);
 			}
 		});
-	}
-
-	checkValidity() {
-		return this.validity.valid;
 	}
 
 	get formAssociated() {
 		return true;
 	}
 
-	get labelText() {
-		const label = this.label || tryGetLabelText(this);
-		if (label) {
-			return label;
-		}
-		console.warn(this, ' is missing a label');
-		return this.localize('components.form-element.defaultFieldLabel');
-	}
-
 	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
 		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
-			await this.validate(validationType);
+			const errors = await this.validate(validationType);
+			this._notifyFormErrorsChanged(errors);
 		}
-	}
-
-	setCustomValidity(message) {
-		this._validity = new FormElementValidityState({ customError: true });
-		this._validationMessage = message;
 	}
 
 	setFormValue(formValue) {
@@ -147,15 +143,16 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	setValidity(flags) {
 		this._validity = new FormElementValidityState(flags);
-		this._validationMessage = null;
 	}
 
 	async validate(validationType) {
-		await this.updateComplete;
+		if (this.noValidate) {
+			return [];
+		}
 		const customs = [...this._validationCustoms].filter(custom => custom.forElement === this || !isCustomFormElement(custom.forElement));
 		const results = await Promise.all(customs.map(custom => custom.validate()));
 		const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
-		if (!this.checkValidity()) {
+		if (!this.validity.valid) {
 			errors.unshift(this.validationMessage);
 		}
 		switch (validationType) {
@@ -189,80 +186,20 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	get validationMessage() {
-		const validity = this.validity;
-		switch (true) {
-			case validity.valid:
-				return null;
-			case validity.customError:
-				return this._validationMessage;
-			case validity.badInput:
-				return this.validationMessageBadInput;
-			case validity.patternMismatch:
-				return this.validationMessagePatternMismatch;
-			case validity.rangeOverflow:
-				return this.validationMessageRangeOverflow;
-			case validity.rangeUnderflow:
-				return this.validationMessageRangeUnderflow;
-			case validity.stepMismatch:
-				return this.validationMessageStepMismatch;
-			case validity.tooLong:
-				return this.validationMessageTooLong;
-			case validity.tooShort:
-				return this.validationMessageTooShort;
-			case validity.typeMismatch:
-				return this.validationMessageTypeMismatch;
-			case validity.valueMissing:
-				return this.validationMessageValueMissing;
+		const label = this.label || this.localize('components.form-element.defaultFieldLabel');
+		if (this.validity.valueMissing) {
+			return this.localize('components.form-element.valueMissing', { label });
 		}
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageBadInput() {
-		console.warn(this, ' is using the default validation message, override \'validationMessageBadInput\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessagePatternMismatch() {
-		console.warn(this, ' is using the default validation message, override \'validationMessagePatternMismatch\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageRangeOverflow() {
-		console.warn(this, ' is using the default validation message, override \'validationMessageRangeOverflow\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageRangeUnderflow() {
-		console.warn(this, ' is using the default validation message, override \'validationMessageRangeUnderflow\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageStepMismatch() {
-		console.warn(this, ' is using the default validation message, override \'validationMessageStepMismatch\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageTooLong() {
-		console.warn(this, ' is using the default validation message, override \'validationMessageTooLong\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageTooShort() {
-		console.warn(this, ' is using the default validation message, override \'validationMessageTooShort\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageTypeMismatch() {
-		console.warn(this, ' is using the default validation message, override \'validationMessageTypeMismatch\'');
-		return this.localize('components.form-element.defaultError', { label: this.labelText });
-	}
-
-	get validationMessageValueMissing() {
-		return this.localize('components.form-element.valueMissing', { label: this.labelText });
+		return this.localize('components.form-element.defaultError', { label });
 	}
 
 	get validity() {
 		return this._validity;
+	}
+
+	_notifyFormErrorsChanged(errors) {
+		const detail = { bubbles: true, detail: { errors } };
+		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
 	}
 
 	_validationCustomConnected(e) {
