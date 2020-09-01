@@ -10,7 +10,7 @@ describe('d2l-input-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 300, height: 600 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 300, height: 700 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -22,6 +22,7 @@ describe('d2l-input-time', () => {
 		'disabled',
 		'labelled',
 		'label-hidden',
+		'required'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
