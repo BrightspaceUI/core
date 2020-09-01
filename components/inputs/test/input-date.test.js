@@ -161,7 +161,7 @@ describe('d2l-input-date', () => {
 			inputElem.value = '12/31/2019';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
 			await oneEvent(elem, 'change');
-			await elem.updateComplete;
+			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2019-12-31');
 			expect(elem.invalid).to.be.true;
 			expect(elem.validationError).to.equal('Date must be after Jan 2, 2020');
@@ -173,7 +173,7 @@ describe('d2l-input-date', () => {
 			inputElem.value = '12/31/2021';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
 			await oneEvent(elem, 'change');
-			await elem.updateComplete;
+			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2021-12-31');
 			expect(elem.invalid).to.be.true;
 			expect(elem.validationError).to.equal('Date must be before Dec 2, 2020');
