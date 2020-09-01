@@ -43,7 +43,7 @@ It differs from the native HTML `form` element in 2 ways:
 **Methods:**
 - `submit()`: Submits the form to the server. This will first perform validation on all elements within the form. Submission will only happen if validation succeeds.
 - `requestSubmit(submitter)`: Requests that the form be submitted using the specified submit button and its corresponding configuration. A `button`'s value is only submitted if that button is both part of the form and the `submitter`.
-- `async validate()`: Validates the form without submitting even if validation succeeds. This returns a `Map` mapping from an element to the list of error message's associated with it.
+- `async validate()`: Validates the form without submitting even if validation succeeds. This returns a `Map` mapping from an element to the list of error messages associated with it.
 
 **Events:**
 - `submit`: Dispatched when the form is submitted. Cancelling this event will prevent form submission.
