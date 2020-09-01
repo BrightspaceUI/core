@@ -4,15 +4,7 @@ import './input-time.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO,
-	formatTimeInISO,
-	getDateFromDateObj,
-	getDateFromISODateTime,
-	getLocalDateTimeFromUTCDateTime,
-	getToday,
-	getUTCDateTimeFromLocalDateTime,
-	isDateInRange,
-	parseISODateTime } from '../../helpers/dateTime.js';
+import { formatDateInISO, getClosestValidDate, getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODateTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -94,17 +86,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		}
 
 		if (this.required && !this.value) {
-			const today = getToday();
-			if (isDateInRange(getDateFromDateObj(today), getDateFromISODateTime(this.minValue), getDateFromISODateTime(this.maxValue))) this.value = getUTCDateTimeFromLocalDateTime(formatDateInISO(today), formatTimeInISO(today));
-			else {
-				if (this.minValue && this.maxValue) {
-					const diffToMin = Math.abs(getDateFromDateObj(today).getTime() - getDateFromISODateTime(this.minValue).getTime());
-					const diffToMax = Math.abs(getDateFromDateObj(today).getTime() - getDateFromISODateTime(this.maxValue).getTime());
-					if (diffToMin < diffToMax) this.value = this.minValue;
-					else this.value = this.maxValue;
-				} else if (this.minValue) this.value = this.minValue;
-				else if (this.maxValue) this.value = this.maxValue;
-			}
+			this.value = getClosestValidDate(this.minValue, this.maxValue, true);
 		}
 	}
 

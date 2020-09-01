@@ -8,7 +8,7 @@ import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday, isDateInRange } from '../../helpers/dateTime.js';
+import { formatDateInISO, getClosestValidDate, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -151,17 +151,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		});
 
 		if (!this.value && this.required) {
-			const today = getDateFromDateObj(getToday());
-			if (isDateInRange(today, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) this.value = formatDateInISO(getToday());
-			else {
-				if (this.minValue && this.maxValue) {
-					const diffToMin = Math.abs(today.getTime() - getDateFromISODate(this.minValue).getTime());
-					const diffToMax = Math.abs(today.getTime() - getDateFromISODate(this.maxValue).getTime());
-					if (diffToMin < diffToMax) this.value = this.minValue;
-					else this.value = this.maxValue;
-				} else if (this.minValue) this.value = this.minValue;
-				else if (this.maxValue) this.value = this.maxValue;
-			}
+			this.value = getClosestValidDate(this.minValue, this.maxValue, false);
 		} else {
 			this._formattedValue = this.emptyText ? this.emptyText : '';
 		}
@@ -193,7 +183,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				<d2l-input-text
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
-					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					?disabled="${this.disabled}"
