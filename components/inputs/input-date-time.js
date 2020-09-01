@@ -72,6 +72,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	constructor() {
 		super();
 		this.disabled = false;
+		this.required = false;
 		this._dropdownOpened = false;
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
