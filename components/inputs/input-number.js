@@ -1,26 +1,20 @@
+import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
+import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { inputLabelStyles } from './input-label-styles.js';
-import { inputStyles } from './input-styles.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-function clampValue(value, min, max) {
-	if (min !== undefined) value = Math.max(value, min);
-	if (max !== undefined) value = Math.min(value, max);
-	return value;
-}
-
-function formatValue(value, minFractionDigits, maxFractionDigits) {
+export function formatValue(value, minFractionDigits, maxFractionDigits) {
 	const options = {
-		maximumFractionDigits: maxFractionDigits,
-		minimumFractionDigits: minFractionDigits
+		maximumFractionDigits: maxFractionDigits ? maxFractionDigits : undefined,
+		minimumFractionDigits: minFractionDigits ? minFractionDigits : undefined
 	};
 	return formatNumber(value, options);
 }
 
-class InputNumber extends LitElement {
+class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -33,7 +27,6 @@ class InputNumber extends LitElement {
 			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
 			min: { type: Number },
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
-			name: { type: String },
 			placeholder: { type: String },
 			required: { type: Boolean },
 			value: { type: Number },
@@ -43,9 +36,6 @@ class InputNumber extends LitElement {
 
 	static get styles() {
 		return [
-			inputLabelStyles,
-			inputStyles,
-			offscreenStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -63,43 +53,53 @@ class InputNumber extends LitElement {
 		this.required = false;
 
 		this._formattedValue = '';
-		this._inputId = getUniqueId();
 	}
 
 	get value() { return this._value; }
 	set value(val) {
 		const oldValue = this.value;
 		try {
-			const newValue = clampValue(val, this.min, this.max);
-			this._formattedValue = formatValue(newValue, this.minFractionDigits, this.maxFractionDigits);
+			this._formattedValue = formatValue(val, this.minFractionDigits, this.maxFractionDigits);
 			this._value = parseNumber(this._formattedValue);
 		} catch (err) {
 			this._formattedValue = '';
 			this._value = undefined;
 		}
+		this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
 		this.requestUpdate('value', oldValue);
 	}
 
 	render() {
-		const ariaRequired = this.required ? 'true' : undefined;
-
 		return html`
-			<label
-				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
-				for="${this._inputId}">${this.label}</label>
-			<input
-				aria-required="${ifDefined(ariaRequired)}"
+			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
-				class="d2l-input"
 				?disabled="${this.disabled}"
-				id="${this._inputId}"
+				label="${this.label}"
+				?label-hidden="${this.labelHidden}"
+				max="${this.max}"
+				max-fraction-digits="${this.maxFractionDigits}"
+				min="${this.min}"
+				min-fraction-digits="${this.minFractionDigits}"
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
-				type="text"
-				.value="${this._formattedValue}">
+				?required="${this.required}"
+				.value="${this._formattedValue}"
+			></d2l-input-text>
 		`;
+	}
+
+	focus() {
+		this.shadowRoot.querySelector('d2l-input-text').focus();
+	}
+
+	get validationMessage() {
+		return this.shadowRoot.querySelector('d2l-input-text').validationMessage;
+	}
+
+	get validity() {
+		return this.shadowRoot.querySelector('d2l-input-text').validity;
 	}
 
 	async _handleChange(e) {
