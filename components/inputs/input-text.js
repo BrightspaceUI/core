@@ -317,8 +317,8 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const label = this.label && !this.labelHidden ? this.label : 'Number';
-			const minNumber = this.min ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
-			const maxNumber = this.max ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
+			const minNumber = (this.min || this.min === 0) ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
+			const maxNumber = (this.max || this.max === 0) ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
 			if (minNumber && maxNumber) {
 				return this.localize('components.input-number.errorOutsideRange', { label, minNumber, maxNumber });
 			} else if (maxNumber) {
