@@ -247,6 +247,14 @@ class InputTime extends FormElementMixin(LitElement) {
 		return input;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') this.setFormValue(this.value);
+		});
+	}
+
 	focus() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		if (elem) elem.focus();
