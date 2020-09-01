@@ -231,6 +231,41 @@ describe('d2l-input-date', () => {
 						});
 					});
 
+					describe('value before min same year', () => {
+						before(async() => {
+							await page.$eval('#min-max', (elem) => {
+								const input = elem.shadowRoot.querySelector('d2l-input-text');
+								input.value = '01/02/2018';
+							});
+						});
+
+						it('left arrow', async function() {
+							await page.$eval('#min-max', (elem) => {
+								const input = elem.shadowRoot.querySelector('d2l-input-text');
+								const eventObj = document.createEvent('Events');
+								eventObj.initEvent('keydown', true, true);
+								eventObj.keyCode = 13;
+								input.dispatchEvent(eventObj);
+							});
+							await page.keyboard.press('ArrowLeft');
+							const rect = await helper.getRect(page, '#min-max');
+							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+						});
+
+						it('right arrow', async function() {
+							await page.$eval('#min-max', (elem) => {
+								const input = elem.shadowRoot.querySelector('d2l-input-text');
+								const eventObj = document.createEvent('Events');
+								eventObj.initEvent('keydown', true, true);
+								eventObj.keyCode = 13;
+								input.dispatchEvent(eventObj);
+							});
+							await page.keyboard.press('ArrowRight');
+							const rect = await helper.getRect(page, '#min-max');
+							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+						});
+					});
+
 					describe('value after max', () => {
 						before(async() => {
 							await page.$eval('#min-max', (elem) => {

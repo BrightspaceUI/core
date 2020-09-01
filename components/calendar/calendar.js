@@ -751,10 +751,12 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				else if (numDaysChange < 0 && getDateFromISODate(this.maxValue) < possibleFocusDate) this._focusDate = getDateFromISODate(this.maxValue);
 				else return;
 				this._keyboardTriggeredMonthChange = true;
-				if (this._focusDate.getMonth() !== this._shownMonth && this._focusDate.getFullYear() !== this._shownYear) {
+				if (this._focusDate.getMonth() !== this._shownMonth || this._focusDate.getFullYear() !== this._shownYear) {
 					this._shownMonth = this._focusDate.getMonth();
 					this._shownYear = this._focusDate.getFullYear();
 					this._triggerMonthChangeAnimations(oldFocusDate < possibleFocusDate, true, Math.abs(numDaysChange) !== 1);
+				} else {
+					await this._focusDateAddFocus();
 				}
 				return;
 			} else return;
