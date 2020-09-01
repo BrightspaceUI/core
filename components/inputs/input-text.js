@@ -289,8 +289,8 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			if (prop === 'value') {
 				this.setValidity({
 					tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength,
-					rangeUnderflow: this.min && parseNumber(this.value) < this.min,
-					rangeOverflow: this.max && parseNumber(this.value) > this.max
+					rangeUnderflow: (this.min || this.min === 0) && parseNumber(this.value) < this.min,
+					rangeOverflow: (this.max || this.max === 0) && parseNumber(this.value) > this.max
 				});
 				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
 				this.setFormValue(this.value);
