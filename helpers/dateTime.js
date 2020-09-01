@@ -55,6 +55,30 @@ export function formatDateInISOTime(val) {
 	return `${hours}:${minutes}:${seconds}`;
 }
 
+export function getClosestValidDate(minValue, maxValue, dateTime) {
+	const today = getToday();
+	const todayDate = getDateFromDateObj(today);
+	const todayOutput = dateTime ? formatDateTimeInISO(convertLocalToUTCDateTime(today)) : formatDateInISO(today);
+	const minDate = dateTime ? getDateFromISODateTime(minValue) : getDateFromISODate(minValue);
+	const maxDate = dateTime ? getDateFromISODateTime(maxValue) : getDateFromISODate(maxValue);
+
+	if (minValue && maxValue) {
+		if (isDateInRange(todayDate, minDate, maxDate)) return todayOutput;
+		else {
+			const diffToMin = Math.abs(todayDate.getTime() - minDate.getTime());
+			const diffToMax = Math.abs(todayDate.getTime() - maxDate.getTime());
+			if (diffToMin < diffToMax) return minValue;
+			else return maxValue;
+		}
+	} else if (minValue) {
+		if (isDateInRange(todayDate, minDate, undefined)) return todayOutput;
+		else return minValue;
+	} else if (maxValue) {
+		if (isDateInRange(todayDate, undefined, maxDate)) return todayOutput;
+		else return maxValue;
+	} else return todayOutput;
+}
+
 export function getDateFromDateObj(val) {
 	return new Date(val.year, parseInt(val.month) - 1, val.date);
 }

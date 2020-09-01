@@ -2,7 +2,7 @@ import '../button/button-icon.js';
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday, isDateInRange } from '../../helpers/dateTime.js';
+import { formatDateInISO, getClosestValidDate, getDateFromDateObj, getDateFromISODate, getDateTimeDescriptorShared, getToday, isDateInRange } from '../../helpers/dateTime.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -550,16 +550,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	async reset(allowDisabled) {
 		let date;
 		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
-		else if (isDateInRange(this._today, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue))) date = this._today;
-		else {
-			if (this.minValue && this.maxValue) {
-				const diffToMin = Math.abs(this._today.getTime() - getDateFromISODate(this.minValue).getTime());
-				const diffToMax = Math.abs(this._today.getTime() - getDateFromISODate(this.maxValue).getTime());
-				if (diffToMin < diffToMax) date = getDateFromISODate(this.minValue);
-				else date = getDateFromISODate(this.maxValue);
-			} else if (this.minValue) date = getDateFromISODate(this.minValue);
-			else if (this.maxValue) date = getDateFromISODate(this.maxValue);
-		}
+		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
 		await this.updateComplete;
@@ -760,10 +751,12 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				else if (numDaysChange < 0 && getDateFromISODate(this.maxValue) < possibleFocusDate) this._focusDate = getDateFromISODate(this.maxValue);
 				else return;
 				this._keyboardTriggeredMonthChange = true;
-				if (this._focusDate.getMonth() !== this._shownMonth && this._focusDate.getFullYear() !== this._shownYear) {
+				if (this._focusDate.getMonth() !== this._shownMonth || this._focusDate.getFullYear() !== this._shownYear) {
 					this._shownMonth = this._focusDate.getMonth();
 					this._shownYear = this._focusDate.getFullYear();
 					this._triggerMonthChangeAnimations(oldFocusDate < possibleFocusDate, true, Math.abs(numDaysChange) !== 1);
+				} else {
+					await this._focusDateAddFocus();
 				}
 				return;
 			} else return;

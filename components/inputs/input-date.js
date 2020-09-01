@@ -8,7 +8,7 @@ import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { formatDateInISO, getClosestValidDate, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -51,6 +51,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 * Minimum valid date that could be selected by a user.
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
 			/**
 			 * Value of the input
 			 */
@@ -113,6 +117,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
+		this.required = false;
 		this.value = '';
 
 		this._dropdownOpened = false;
@@ -145,7 +150,11 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			});
 		});
 
-		this._formattedValue = this.emptyText ? this.emptyText : '';
+		if (!this.value && this.required) {
+			this.value = getClosestValidDate(this.minValue, this.maxValue, false);
+		} else {
+			this._formattedValue = this.emptyText ? this.emptyText : '';
+		}
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 		const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
@@ -158,6 +167,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
+		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
 		const icon = this.invalid
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
@@ -185,6 +195,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
+					?required="${this.required}"
 					style="${styleMap({ maxWidth: inputTextWidth })}"
 					title="${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}"
 					.value="${this._formattedValue}">
@@ -206,7 +217,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 							selected-value="${ifDefined(this._shownValue)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
-								<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>
+								${clearButton}
 							</div>
 						</d2l-calendar>
 					</d2l-focus-trap>
@@ -251,7 +262,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	async _handleChange() {
 		const value = this._textInput.value;
-		if (!value) {
+		if (!value && !this.required) {
 			if (value !== this.value) {
 				await this._updateValueDispatchEvent('');
 				await this.updateComplete;
