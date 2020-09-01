@@ -232,7 +232,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		if (e.target.classList.contains('d2l-input-time-range-start')) {
 			this._startDropdownOpened = e.detail.opened;
 		} else {
-			this._startDropdownOpened = e.detail.opened;
+			this._endDropdownOpened = e.detail.opened;
 		}
 	}
 
