@@ -132,8 +132,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 lms
-		expect(fetchStub).to.have.been.callCount(1);
-
+		expect(fetchStub).to.have.been.callCount(0);
 		expect(actual).to.deep.equal(expected);
 	});
 
