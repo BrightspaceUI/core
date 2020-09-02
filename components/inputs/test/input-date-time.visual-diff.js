@@ -22,8 +22,7 @@ describe('d2l-input-date-time', () => {
 		'labelled',
 		'invalid-value',
 		'no-value',
-		'required',
-		'required-max'
+		'required'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);

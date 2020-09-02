@@ -8,7 +8,7 @@ import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getClosestValidDate, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -150,11 +150,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			});
 		});
 
-		if (!this.value && this.required) {
-			this.value = getClosestValidDate(this.minValue, this.maxValue, false);
-		} else {
-			this._formattedValue = this.emptyText ? this.emptyText : '';
-		}
+		this._formattedValue = this.emptyText ? this.emptyText : '';
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 		const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
@@ -190,6 +186,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					@keydown="${this._handleKeydown}"
 					hide-invalid-icon
 					id="${this._inputId}"
+					@invalid-change="${this._handleInvalid}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
@@ -332,6 +329,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleInputTextFocus() {
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
+	}
+
+	_handleInvalid(e) {
+		this.invalid = this.validationError || e.target.invalid;
 	}
 
 	async _handleKeydown(e) {

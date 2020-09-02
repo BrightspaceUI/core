@@ -24,7 +24,6 @@ describe('d2l-input-date', () => {
 		'label-hidden',
 		'placeholder',
 		'required',
-		'required-min-max',
 		'value'
 	].forEach((name) => {
 		it(name, async function() {
