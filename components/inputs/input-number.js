@@ -120,7 +120,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
 			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
 			if (minNumber && maxNumber) {
-				return this.localize('components.input-number.errorOutsideRange', { minNumber, maxNumber });
+				return this.localize('components.form-element.input.number.rangeError', { minNumber, maxNumber });
 			} else if (maxNumber) {
 				return this.localize('components.form-element.input.number.rangeOverflow', { maxNumber });
 			} else if (minNumber) {
