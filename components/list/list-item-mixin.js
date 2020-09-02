@@ -35,7 +35,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			/**
 			 * Address of item link if navigable
 			 */
-			href: { type: String },
+			action: { type: String },
 			_breakpoint: { type: Number },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringLink: { type: Boolean },
@@ -56,7 +56,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host[hidden] {
 				display: none;
 			}
-			:host([href]) {
+			:host([action]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
 			:host([_tooltip-showing]),
@@ -90,7 +90,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
-			a[href].d2l-list-item-link {
+			a[action].d2l-list-item-link {
 				height: 100%;
 				width: 100%;
 			}
@@ -120,7 +120,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				overflow: hidden;
 			}
 			:host([dir="rtl"]) [slot="content"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [slot="content"]  .d2l-list-item-illustration * {
+			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration * {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
@@ -154,7 +154,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				max-width: 9rem;
 			}
 			:host([dir="rtl"]) [data-breakpoint="2"] ::slotted([slot="illustration"]),
-			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration *  {
+			:host([dir="rtl"]) [data-breakpoint="2"] .d2l-list-item-illustration * {
 				margin-left: 1rem;
 				margin-right: 0;
 			}
@@ -318,9 +318,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					<div slot="control">${ this._renderCheckbox() }</div>
 					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>
 					` : nothing }
-					${ this.href ? html`
+					${ this.action ? html`
 					<a slot="content-action"
-						href="${this.href}"
+						href="${this.action}"
 						aria-labelledby="${this._contentId}"
 						@mouseenter="${this._onMouseEnterLink}"
 						@mouseleave="${this._onMouseLeaveLink}"

@@ -9,6 +9,22 @@ import { LitElement } from 'lit-element/lit-element.js';
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
 class ListItem extends ListItemMixin(LitElement) {
+	static get properties() {
+		return {
+			/**
+			 * Address of item link if navigable
+			 */
+			href: { type: String }
+		};
+	}
+
+	get href() {
+		return this.action;
+	}
+
+	set href(value) {
+		this.action = value;
+	}
 
 	render() {
 		return this._renderListItem();
