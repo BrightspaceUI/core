@@ -161,6 +161,7 @@ describe('d2l-input-date', () => {
 			inputElem.value = '12/31/2019';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
 			await oneEvent(elem, 'change');
+			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2019-12-31');
 			expect(elem.invalid).to.be.true;
 			expect(elem.validationError).to.equal('Date must be after Jan 2, 2020');
@@ -172,6 +173,7 @@ describe('d2l-input-date', () => {
 			inputElem.value = '12/31/2021';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
 			await oneEvent(elem, 'change');
+			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2021-12-31');
 			expect(elem.invalid).to.be.true;
 			expect(elem.validationError).to.equal('Date must be before Dec 2, 2020');
@@ -183,17 +185,18 @@ describe('d2l-input-date', () => {
 			inputElem.value = dateInput;
 			dispatchEvent(inputElem, 'change', false);
 			await oneEvent(elem, 'change');
+			await elem.updateComplete;
 			expect(elem.value).to.equal('2019-02-08');
 			expect(elem.invalid).to.be.false;
 			expect(elem.validationError).to.be.null;
 		});
 
-		it('should change value to empty string if typed date between min and max values', async() => {
+		it('should change value to empty string if empty typed date', async() => {
 			const elem = await fixture('<d2l-input-date min-value="2019-01-01" max-value="2020-12-02" label="Date" value="2019-10-01"></d2l-input-date>');
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '';
 			dispatchEvent(inputElem, 'change', false);
-			await oneEvent(elem, 'change');
+			await elem.updateComplete;
 			expect(elem.value).to.equal('');
 			expect(elem.invalid).to.be.false;
 			expect(elem.validationError).to.be.null;
