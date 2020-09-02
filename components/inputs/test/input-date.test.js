@@ -202,6 +202,67 @@ describe('d2l-input-date', () => {
 			expect(elem.validationError).to.be.null;
 		});
 
+		describe('required', () => {
+
+			it('should default to today', async() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date label="Date" required></d2l-input-date>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2018-02-12');
+				clock.restore();
+			});
+
+			it('should default to min when today out of range', async() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date label="Date" min-value="2020-02-01" required></d2l-input-date>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2020-02-01');
+				clock.restore();
+			});
+
+			it('should default to max when today out of range', async() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date label="Date" max-value="2015-02-01" required></d2l-input-date>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2015-02-01');
+				clock.restore();
+			});
+
+			it('should default to today when today in range', async() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date label="Date" min-value="2018-02-01" max-value="2020-01-01" required></d2l-input-date>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2018-02-12');
+				clock.restore();
+			});
+
+			it('should fire "change" event when input value changes', async() => {
+				const elem = await fixture('<d2l-input-date label="Date" required></d2l-input-date>');
+				const inputElem = getChildElem(elem, 'd2l-input-text');
+				inputElem.value = '11/8/2011';
+				dispatchEvent(inputElem, 'change', false);
+				await oneEvent(elem, 'change');
+				expect(elem.value).to.equal('2011-11-08');
+			});
+
+			it('should not fire "change" event when input value removed', async() => {
+				const elem = await fixture(basicFixture);
+				const inputElem = getChildElem(elem, 'd2l-input-text');
+				let fired = false;
+				elem.addEventListener('change', () => {
+					fired = true;
+				});
+				inputElem.value = '';
+				dispatchEvent(inputElem, 'change', false);
+				await aTimeout(1);
+				expect(fired).to.be.false;
+			});
+		});
+
 	});
 
 });

@@ -25,4 +25,9 @@ describe('d2l-input-time', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('required', async() => {
+		const elem = await fixture(html`<d2l-input-time label="label text" required></d2l-input-time>`);
+		await expect(elem).to.be.accessible();
+	});
+
 });
