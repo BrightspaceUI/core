@@ -47,8 +47,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			draggable: { type: Boolean, reflect: true },
 			dragging: { type: Boolean, reflect: true },
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
+			dropDestination: { type: Number, reflect: true },
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
+			size: { type: Number, reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number },
 			_focusingDragHandle: { type: Boolean },
@@ -376,6 +378,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
 				text="${ifDefined(this.dragHandleText)}"
+				currentPosition="${ifDefined(this.dropDestination)}"
+				size="${ifDefined(this.size)}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
@@ -606,6 +610,11 @@ export class NewPositionEventDetails {
 			}
 		}
 		list[destination] = item;
+
+		return {
+			origin: origin,
+			destination: destination
+		}
 	}
 
 	_fetchDropTargetPosition(list, originPosition, keyFn) {
