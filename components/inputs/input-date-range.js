@@ -2,8 +2,8 @@ import './input-date.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatDateInISO, isDateInRange,  getDateFromISODate, parseISODate } from '../../helpers/dateTime.js';
 import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
-import { getDateFromISODate } from '../../helpers/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -46,6 +46,10 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			 * Minimum valid date that could be selected by a user
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
+			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
 			/**
 			 * Label for the start date input
 			 * @default "Start Date"
@@ -93,6 +97,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 
 		this.disabled = false;
 		this.labelHidden = false;
+		this.required = false;
 
 		this._startCalendarOpened = false;
 		this._startInputId = getUniqueId();
@@ -106,6 +111,42 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		if (!this.label) {
 			console.warn('d2l-input-date-range component requires label text');
 		}
+
+		if (this.required && (!this.startValue || !this.endValue)) {
+			if (this.startValue) {
+				const endInputDate = new Date(this.startValue);
+				endInputDate.setDate(endInputDate.getDate() + 1);
+				const parsedObject = parseISODate(endInputDate.toISOString());
+				this.endValue = formatDateInISO(parsedObject);
+			} else if (this.endValue) {
+				const startInputDate = new Date(this.endValue);
+				startInputDate.setDate(startInputDate.getDate() - 1);
+				const parsedObject = parseISODate(startInputDate.toISOString());
+				this.startValue = formatDateInISO(parsedObject);
+			} else {
+				// start input contains default value in range. if next day is in range, set that to end date, otherwise set end to start and start to end - 1
+				const startInput = this.shadowRoot.querySelector('.d2l-input-date-range-start');
+				await startInput.updateComplete;
+				this.startValue = startInput.value;
+
+				const startNextDay = new Date(startInput.value);
+				startNextDay.setDate(startNextDay.getDate() + 1);
+
+				const min = getDateFromISODate(this.minValue);
+				const max = getDateFromISODate(this.maxValue);
+				if (isDateInRange(startNextDay, min, max)) {
+					const parsedObject = parseISODate(startNextDay.toISOString());
+					this.endValue = formatDateInISO(parsedObject);
+				} else {
+					const startPrevDay = new Date(startInput.value);
+					startPrevDay.setDate(startPrevDay.getDate() - 1);
+					this.endValue = startInput.value;
+
+					const parsedObject = parseISODate(startPrevDay.toISOString());
+					this.startValue = formatDateInISO(parsedObject);
+				}
+			}
+		}
 	}
 
 	render() {
@@ -114,7 +155,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
@@ -126,6 +167,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					label="${this._computedStartLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
+					?required="${this.required}"
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-date>
 				<d2l-input-date
@@ -139,6 +181,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					label="${this._computedEndLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
+					?required="${this.required}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-date>
 			</d2l-input-fieldset>
