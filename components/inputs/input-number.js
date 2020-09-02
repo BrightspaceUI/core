@@ -4,6 +4,7 @@ import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 export function formatValue(value, minFractionDigits, maxFractionDigits) {
 	const options = {
@@ -13,7 +14,7 @@ export function formatValue(value, minFractionDigits, maxFractionDigits) {
 	return formatNumber(value, options);
 }
 
-class InputNumber extends FormElementMixin(LitElement) {
+class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
