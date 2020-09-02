@@ -105,8 +105,8 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const label = this.label && !this.labelHidden ? this.label : 'Number';
-			const minNumber = (this.min || this.min === 0) ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
-			const maxNumber = (this.max || this.max === 0) ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
+			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
+			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
 			if (minNumber && maxNumber) {
 				return this.localize('components.input-number.errorOutsideRange', { label, minNumber, maxNumber });
 			} else if (maxNumber) {
@@ -125,8 +125,8 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.value = parseNumber(value);
 		this.setFormValue(this.value);
 		this.setValidity({
-			rangeUnderflow: (this.min || this.min === 0) && this.value < this.min,
-			rangeOverflow: (this.max || this.max === 0) && this.value > this.max
+			rangeUnderflow: typeof(this.min) === 'number' && this.value < this.min,
+			rangeOverflow: typeof(this.max) === 'number' && this.value > this.max
 		});
 		await this.requestValidate();
 	}
