@@ -14,8 +14,14 @@ class ListItem extends ListItemMixin(LitElement) {
 			/**
 			 * Address of item link if navigable
 			 */
+			action: { type: String, reflect: true },
 			href: { type: String }
 		};
+	}
+
+	constructor() {
+		super();
+		this.action = null;
 	}
 
 	get href() {
