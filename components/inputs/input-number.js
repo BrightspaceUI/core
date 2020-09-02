@@ -1,7 +1,7 @@
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
-import { FormElementMixin } from '../form/form-element-mixin.js';
+import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -109,12 +109,10 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.shadowRoot.querySelector('d2l-input-text').focus();
 	}
 
-	async validate(showErrors) {
-		const errors = await super.validate(showErrors);
-		if (errors.length !== 0) {
-			return errors;
-		}
-		return await this.shadowRoot.querySelector('d2l-input-text').validate(showErrors);
+	async validate(validationType) {
+		const childErrors = await this.shadowRoot.querySelector('d2l-input-text').validate(validationType);
+		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
+		return [...childErrors, ...errors];
 	}
 
 	get validationMessage() {
