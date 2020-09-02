@@ -1,7 +1,8 @@
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -18,7 +19,6 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 
 	static get properties() {
 		return {
-			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean },
@@ -54,6 +54,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 		this.required = false;
 
 		this._formattedValue = '';
+		this._inputId = getUniqueId();
 	}
 
 	get value() { return this._value; }
@@ -66,20 +67,20 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 			this._formattedValue = '';
 			this._value = undefined;
 		}
-		this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+		this.requestValidate();
 		this.requestUpdate('value', oldValue);
 	}
 
 	render() {
-		const ariaInvalid = this.invalid ? 'true' : this.ariaInvalid;
-
 		return html`
 			<d2l-input-text
-				aria-invalid="${ifDefined(ariaInvalid)}"
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
+				@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 				?disabled="${this.disabled}"
+				.forceInvalid="${this.invalid}"
+				id="${this._inputId}"
 				label="${this.label}"
 				?label-hidden="${this.labelHidden}"
 				max="${this.max}"
@@ -91,6 +92,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 				?required="${this.required}"
 				.value="${this._formattedValue}"
 			></d2l-input-text>
+			${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
 		`;
 	}
 
@@ -113,6 +115,10 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEleme
 		this._formattedValue = value;
 		await this.updateComplete;
 		this.value = parseNumber(value);
+	}
+
+	_handleNestedFormElementValidation(e) {
+		e.preventDefault();
 	}
 }
 customElements.define('d2l-input-number', InputNumber);
