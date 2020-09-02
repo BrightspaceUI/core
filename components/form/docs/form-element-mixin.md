@@ -32,7 +32,7 @@ invalid state.
 |--|--|--|
 | `force-invalid` | Boolean, default: `false` | Forces the component into an invalid state. This should be used if you want the component to look invalid even if it passed validation. |
 | `invalid` | read-only, Boolean, default: `false` | Indicates whether the component is currently in an invalid state. This attribute should be used to display all invalid styles. |
-| `novalidate` | Boolean, default: `false` | Indicates that the component should not be validated preventing it from entering an invalid state. |
+| `novalidate` | Boolean, default: `false` | Indicates that the component should not be validated, preventing it from entering an invalid state. |
 | `validationError` | read-only, String, default: `null` | The current validation error message.<br><br>**Note:** If the component has a `validationError` then `invalid` will always be `true`; however, an `invalid` component is not guaranteed to have a `validationError`. Therefore, `validationError` should be checked to be non-null before rendering the error. |
 
 **Methods:**
@@ -49,7 +49,7 @@ invalid state.
 	- **Note:** The validity state should be synchronously updated at the same time as the form value. If no flags are provided the validity state is considered valid.
 - `get validity()`: Gets the current validity state that was set using `setValidity`
 - `get validationMessage()`: Override to provide custom validation messages for any of the built-in validity state flags.
-- `async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS)`: Used to get the component to validate and render the result of it's validation. This involves both checking the validity state set using `setValidity` and any `d2l-validation-custom` elements associated with the component. `validationType` can have the following values:
+- `async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS)`: Used to get the component to validate and render the result of its validation. This involves both checking the validity state set using `setValidity` and any `d2l-validation-custom` elements associated with the component. `validationType` can have the following values:
 	- `ValidationType.SHOW_NEW_ERRORS`: If any errors are found during validation they will immediately be rendered and the component will be put in an `invalid` state. This should be used when the user has finished editing like in `change` or `blur` event handlers.
 	- `ValidationType.UPDATE_EXISTING_ERRORS`: If any errors are found during validation they will only be rendered if the component already has an error. This should be used if the user is in the middle of editing like in `input` event handlers.
 	- `ValidationType.SUPPRESS_ERRORS`: Performs validation but prevents any errors from being rendered. This should only be used if rendering the error would interfere with something else that might be rendered.

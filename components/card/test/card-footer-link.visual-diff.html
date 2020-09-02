@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../card-footer-link.js';
+	</script>
+	<title>d2l-card-footer-link</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		.visual-diff {
+			width: 300px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-card-footer-link id="no-secondary" icon="tier1:gear" text="Settings" href="https://www.d2l.com"></d2l-card-footer-link>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card-footer-link id="secondary-notification" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="notification"></d2l-card-footer-link>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card-footer-link id="secondary-count" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="count"></d2l-card-footer-link>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card-footer-link id="secondary-notification-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="notification" dir="rtl"></d2l-card-footer-link>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-card-footer-link id="secondary-count-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="count" dir="rtl"></d2l-card-footer-link>
+	</div>
+
+</body>
+</html>

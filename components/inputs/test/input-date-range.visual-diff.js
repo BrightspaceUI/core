@@ -24,6 +24,8 @@ describe('d2l-input-date-range', () => {
 		'invalid-start-value',
 		'labelled',
 		'label-hidden',
+		'required',
+		'required-min-max',
 		'start-end-label',
 		'start-end-value'
 	].forEach((name) => {

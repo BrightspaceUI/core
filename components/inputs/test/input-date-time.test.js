@@ -1,7 +1,8 @@
 import '../input-date-time.js';
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-date-time label="label text"></d2l-input-date-time>';
 const minMaxFixture = '<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>';
@@ -57,7 +58,7 @@ describe('d2l-input-date-time', () => {
 				inputElem.value = '2018-02-02';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-02-02T05:00:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
@@ -69,7 +70,7 @@ describe('d2l-input-date-time', () => {
 				inputElem.value = '2020-02-02';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2020-02-02T05:00:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
@@ -84,7 +85,7 @@ describe('d2l-input-date-time', () => {
 				inputTimeElem.value = '23:29:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-08-27T03:29:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be after ${expectedStart}`);
@@ -99,7 +100,7 @@ describe('d2l-input-date-time', () => {
 				inputTimeElem.value = '13:31:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-09-30T17:31:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be before ${expectedEnd}`);
@@ -146,6 +147,45 @@ describe('d2l-input-date-time', () => {
 				await oneEvent(elem, 'change');
 				expect(elem.value).to.equal('2018-03-02T18:15:00.000Z');
 				documentLocaleSettings.timezone.identifier = 'America/Toronto';
+			});
+		});
+
+		describe('required', () => {
+
+			it('should default to now', async() => {
+				const newToday = new Date('2018-02-12T07:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date-time label="Date" required></d2l-input-date-time>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2018-02-12T07:00:00.000Z');
+				clock.restore();
+			});
+
+			it('should default to min when today out of range', async() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date-time label="Date" min-value="2020-02-01T14:00:00.000Z" required></d2l-input-date-time>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2020-02-01T14:00:00.000Z');
+				clock.restore();
+			});
+
+			it('should default to max when today out of range', async() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date-time label="Date" max-value="2015-02-01T03:00:01.000Z" required></d2l-input-date-time>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2015-02-01T03:00:01.000Z');
+				clock.restore();
+			});
+
+			it('should default to today when today in range', async() => {
+				const newToday = new Date('2018-02-12T20:00:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+				const elem = await fixture('<d2l-input-date-time label="Date" min-value="2018-02-01T08:05:00.000Z" max-value="2020-01-01T15:00:00.000Z" required></d2l-input-date-time>');
+				await elem.updateComplete;
+				expect(elem.value).to.equal('2018-02-12T20:00:00.000Z');
+				clock.restore();
 			});
 		});
 

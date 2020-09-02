@@ -111,6 +111,10 @@ class InputTime extends FormElementMixin(LitElement) {
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
+			/**
 			 * Number of minutes between times shown in dropdown
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
@@ -156,6 +160,7 @@ class InputTime extends FormElementMixin(LitElement) {
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.required = false;
 		this.timeInterval = 'thirty';
 		this._dropdownId = getUniqueId();
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
@@ -194,6 +199,7 @@ class InputTime extends FormElementMixin(LitElement) {
 
 	render() {
 		initIntervals(this.timeInterval);
+		const ariaRequired = this.required ? 'true' : undefined;
 		const input = html`
 			<label
 				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
@@ -206,11 +212,13 @@ class InputTime extends FormElementMixin(LitElement) {
 					aria-describedby="${this._dropdownId}-timezone"
 					aria-expanded="false"
 					aria-haspopup="true"
+					aria-required="${ifDefined(ariaRequired)}"
 					@change="${this._handleChange}"
 					class="d2l-input d2l-dropdown-opener"
 					?disabled="${this.disabled}"
 					id="${this._dropdownId}-input"
 					@keydown="${this._handleKeydown}"
+					?required="${this.required}"
 					role="combobox"
 					.value="${this._formattedValue}">
 				<d2l-dropdown-menu
@@ -245,6 +253,14 @@ class InputTime extends FormElementMixin(LitElement) {
 			</d2l-dropdown>
 		`;
 		return input;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') this.setFormValue(this.value);
+		});
 	}
 
 	focus() {
