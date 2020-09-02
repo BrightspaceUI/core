@@ -143,6 +143,12 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					this.value = '';
 					this._parsedDateTime = '';
 				}
+				this.setFormValue(this.value);
+				this.setValidity({
+					rangeUnderflow: this.value && this.minValue && (new Date(this.value)).getTime() < (new Date(this.minValue)).getTime(),
+					rangeOverflow: this.value && this.maxValue && (new Date(this.value)).getTime() > (new Date(this.maxValue)).getTime()
+				});
+				this.requestValidate();
 			} else if (prop === 'maxValue' && this.maxValue) {
 				try {
 					const dateObj = parseISODateTime(this.maxValue);
@@ -198,7 +204,6 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			const time = this.shadowRoot.querySelector('d2l-input-time').value;
 			this.value = getUTCDateTimeFromLocalDateTime(newDate, time);
 		}
-		await this._validate();
 		this._dispatchChangeEvent();
 	}
 
@@ -230,16 +235,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 
 	async _handleTimeChange(e) {
 		this.value = getUTCDateTimeFromLocalDateTime(this._parsedDateTime, e.target.value);
-		await this._validate();
 		this._dispatchChangeEvent();
-	}
-
-	async _validate() {
-		this.setValidity({
-			rangeUnderflow: this.value && this.minValue && (new Date(this.value)).getTime() < (new Date(this.minValue)).getTime(),
-			rangeOverflow: this.value && this.maxValue && (new Date(this.value)).getTime() > (new Date(this.maxValue)).getTime()
-		});
-		await this.requestValidate();
 	}
 
 }

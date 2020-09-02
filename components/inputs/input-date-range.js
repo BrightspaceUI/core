@@ -188,6 +188,21 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'startValue' || prop === 'endValue') {
+				this.setFormValue({
+					[`${this.name}-startValue`]: this.startValue,
+					[`${this.name}-endValue`]: this.endValue,
+				});
+				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
+				this.requestValidate();
+			}
+		});
+	}
+
 	focus() {
 		const input = this.shadowRoot.querySelector('d2l-input-date');
 		if (input) input.focus();
@@ -224,8 +239,6 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		} else {
 			this.endValue = elem.value;
 		}
-		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
-		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

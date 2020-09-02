@@ -234,6 +234,14 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				this._shownValue = this.value;
 				this._setFormattedValue();
 			}
+			if (prop === 'value') {
+				this.setFormValue(this.value);
+				this.setValidity({
+					rangeUnderflow: this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
+					rangeOverflow: this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
+				});
+				this.requestValidate();
+			}
 		});
 	}
 
@@ -358,11 +366,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	async _updateValueDispatchEvent(dateInISO) {
 		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
 		this._shownValue = dateInISO;
-		this.setValidity({
-			rangeUnderflow: dateInISO && this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime(),
-			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
-		});
-		await this.requestValidate();
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',
