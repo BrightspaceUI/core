@@ -104,15 +104,14 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const label = this.label && !this.labelHidden ? this.label : 'Number';
 			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
 			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
 			if (minNumber && maxNumber) {
-				return this.localize('components.input-number.errorOutsideRange', { label, minNumber, maxNumber });
+				return this.localize('components.input-number.errorOutsideRange', { minNumber, maxNumber });
 			} else if (maxNumber) {
-				return this.localize('components.input-number.errorMaxNumberOnly', { label, maxNumber });
+				return this.localize('components.input-number.errorMaxNumberOnly', { maxNumber });
 			} else if (minNumber) {
-				return this.localize('components.input-number.errorMinNumberOnly', { label, minNumber });
+				return this.localize('components.input-number.errorMinNumberOnly', { minNumber });
 			}
 		}
 		return super.validationMessage;
