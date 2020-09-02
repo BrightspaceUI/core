@@ -1,9 +1,8 @@
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { formatValue } from './input-number.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
@@ -67,10 +66,6 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			 */
 			max: { type: Number },
 			/**
-			 * For number inputs, maximum number of digits allowed after decimal
-			 */
-			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
-			/**
 			 * Imposes an upper character limit
 			 */
 			maxlength: { type: Number },
@@ -78,10 +73,6 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			 * For number inputs, minimum value
 			 */
 			min: { type: Number },
-			/**
-			 * For number inputs, minimum number of digits allowed after decimal
-			 */
-			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			/**
 			 * Imposes a lower character limit
 			 */
@@ -287,11 +278,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
-				this.setValidity({
-					tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength,
-					rangeUnderflow: (this.min || this.min === 0) && parseNumber(this.value) < this.min,
-					rangeOverflow: (this.max || this.max === 0) && parseNumber(this.value) > this.max
-				});
+				this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
 				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
 				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
@@ -315,17 +302,10 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 	}
 
 	get validationMessage() {
-		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const label = this.label && !this.labelHidden ? this.label : 'Number';
-			const minNumber = (this.min || this.min === 0) ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
-			const maxNumber = (this.max || this.max === 0) ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
-			if (minNumber && maxNumber) {
-				return this.localize('components.input-number.errorOutsideRange', { label, minNumber, maxNumber });
-			} else if (maxNumber) {
-				return this.localize('components.input-number.errorMaxNumberOnly', { label, maxNumber });
-			} else if (minNumber) {
-				return this.localize('components.input-number.errorMinNumberOnly', { label, minNumber });
-			}
+		if (this.validity.rangeOverflow) {
+			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)) });
+		} else if (this.validity.rangeUnderflow) {
+			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)) });
 		} else if (this.validity.tooShort) {
 			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
 		} else if (this.validity.typeMismatch) {

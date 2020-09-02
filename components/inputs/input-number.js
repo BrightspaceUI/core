@@ -65,7 +65,6 @@ class InputNumber extends FormElementMixin(LitElement) {
 			this._formattedValue = '';
 			this._value = undefined;
 		}
-		this.requestValidate();
 		this.requestUpdate('value', oldValue);
 	}
 
@@ -81,10 +80,6 @@ class InputNumber extends FormElementMixin(LitElement) {
 				id="${this._inputId}"
 				label="${this.label}"
 				?label-hidden="${this.labelHidden}"
-				max="${this.max}"
-				max-fraction-digits="${this.maxFractionDigits}"
-				min="${this.min}"
-				min-fraction-digits="${this.minFractionDigits}"
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
@@ -98,14 +93,28 @@ class InputNumber extends FormElementMixin(LitElement) {
 		this.shadowRoot.querySelector('d2l-input-text').focus();
 	}
 
-	get validationMessage() {
-		const inputTextElement = this.shadowRoot.querySelector('d2l-input-text');
-		return inputTextElement ? inputTextElement.validationMessage : super.validationMessage;
+	async validate(showErrors) {
+		const errors = await super.validate(showErrors);
+		if (errors.length !== 0) {
+			return errors;
+		}
+		return await this.shadowRoot.querySelector('d2l-input-text').validate(showErrors);
 	}
 
-	get validity() {
-		const inputTextElement = this.shadowRoot.querySelector('d2l-input-text');
-		return inputTextElement ? inputTextElement.validity : super.validity;
+	get validationMessage() {
+		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
+			const label = this.label && !this.labelHidden ? this.label : 'Number';
+			const minNumber = (this.min || this.min === 0) ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
+			const maxNumber = (this.max || this.max === 0) ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
+			if (minNumber && maxNumber) {
+				return this.localize('components.input-number.errorOutsideRange', { label, minNumber, maxNumber });
+			} else if (maxNumber) {
+				return this.localize('components.input-number.errorMaxNumberOnly', { label, maxNumber });
+			} else if (minNumber) {
+				return this.localize('components.input-number.errorMinNumberOnly', { label, minNumber });
+			}
+		}
+		return super.validationMessage;
 	}
 
 	async _handleChange(e) {
@@ -113,6 +122,12 @@ class InputNumber extends FormElementMixin(LitElement) {
 		this._formattedValue = value;
 		await this.updateComplete;
 		this.value = parseNumber(value);
+		this.setFormValue(this.value);
+		this.setValidity({
+			rangeUnderflow: (this.min || this.min === 0) && this.value < this.min,
+			rangeOverflow: (this.max || this.max === 0) && this.value > this.max
+		});
+		await this.requestValidate();
 	}
 
 	_handleNestedFormElementValidation(e) {
