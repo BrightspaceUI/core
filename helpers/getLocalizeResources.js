@@ -8,6 +8,7 @@ const ETagHeader = 'ETag';
 const OverrideLanguage = 'overrides';
 const StateFetching = 2;
 const StateIdle = 1;
+const OsloCacheKey = 'd2l-oslo';
 
 const BatchFailedReason = new Error('Failed to fetch batch overrides.');
 const SingleFailedReason = new Error('Failed to fetch overrides.');
@@ -184,10 +185,10 @@ async function fetchWithCaching(resource) {
 	// any requests we've made to the LMS since init. We'll still serve stale
 	// from cache for this page, but we'll update it in the background for the
 	// next page.
-	//
-	// TODO: Respect other cache headers, such as max-age and Expires. We're not
-	// "re-implementing" the browser cache, just the directives that we support
-	// for this interaction.
+
+	// We rely on the ETag header to identify if the cache needs to be updated.
+	// The LMS will provide it in the format: [release].[build].[langModifiedVersion]
+	// So for example, an ETag in the 20.20.10 release could be: 20.20.10.24605.55520
 
 	const currentVersion = getVersion();
 	if (currentVersion) {
