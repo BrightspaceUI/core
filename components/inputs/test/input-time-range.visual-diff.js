@@ -26,6 +26,7 @@ describe('d2l-input-time-range', () => {
 		'invalid-start-value',
 		'labelled',
 		'label-hidden',
+		'required',
 		'start-end-label',
 		'start-end-value',
 		'start-value'

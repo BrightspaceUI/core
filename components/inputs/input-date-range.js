@@ -2,7 +2,7 @@ import './input-date.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, isDateInRange,  getDateFromISODate, parseISODate } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromISODate, isDateInRange, parseISODate } from '../../helpers/dateTime.js';
 import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
