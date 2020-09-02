@@ -64,7 +64,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			/**
 			 * For number inputs, maximum value
 			 */
-			max: { type: Number },
+			max: { type: String },
 			/**
 			 * Imposes an upper character limit
 			 */
@@ -72,7 +72,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			/**
 			 * For number inputs, minimum value
 			 */
-			min: { type: Number },
+			min: { type: String },
 			/**
 			 * Imposes a lower character limit
 			 */
