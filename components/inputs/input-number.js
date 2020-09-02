@@ -124,9 +124,9 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			if (minNumber && maxNumber) {
 				return this.localize('components.input-number.errorOutsideRange', { minNumber, maxNumber });
 			} else if (maxNumber) {
-				return this.localize('components.input-number.errorMaxNumberOnly', { maxNumber });
+				return this.localize('components.form-element.input.number.rangeOverflow', { maxNumber });
 			} else if (minNumber) {
-				return this.localize('components.input-number.errorMinNumberOnly', { minNumber });
+				return this.localize('components.form-element.input.number.rangeUnderflow', { minNumber });
 			}
 		}
 		return super.validationMessage;

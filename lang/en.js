@@ -33,8 +33,6 @@ export default {
 	"components.input-date.errorOutsideRange": "Date must be between {minDate} and {maxDate}",
 	"components.input-date.openInstructions": "Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.setToToday": "Set to Today",
-	"components.input-number.errorMaxNumberOnly": "Number must be lower than {maxNumber}.",
-	"components.input-number.errorMinNumberOnly": "Number must be higher than {minNumber}.",
 	"components.input-number.errorOutsideRange": "Number must be between {minNumber} and {maxNumber}.",
 	"components.input-search.clear": "Clear Search",
 	"components.input-search.search": "Search",
