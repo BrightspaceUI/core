@@ -214,7 +214,7 @@ describe('d2l-input-date', () => {
 			});
 
 			it('should not fire "change" event when input value removed', async() => {
-				const elem = await fixture('<d2l-input-date label="Date" required value="2020-12-02></d2l-input-date>');
+				const elem = await fixture('<d2l-input-date label="Date" required value="2020-12-02"></d2l-input-date>');
 				const inputElem = getChildElem(elem, 'd2l-input-text');
 				let fired = false;
 				elem.addEventListener('change', () => {
