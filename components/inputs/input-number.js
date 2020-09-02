@@ -90,6 +90,21 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				this.setFormValue(this.value);
+				this.setValidity({
+					rangeUnderflow: typeof(this.min) === 'number' && this.value < this.min,
+					rangeOverflow: typeof(this.max) === 'number' && this.value > this.max
+				});
+				this.requestValidate();
+			}
+		});
+	}
+
 	focus() {
 		this.shadowRoot.querySelector('d2l-input-text').focus();
 	}
@@ -122,12 +137,6 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._formattedValue = value;
 		await this.updateComplete;
 		this.value = parseNumber(value);
-		this.setFormValue(this.value);
-		this.setValidity({
-			rangeUnderflow: typeof(this.min) === 'number' && this.value < this.min,
-			rangeOverflow: typeof(this.max) === 'number' && this.value > this.max
-		});
-		await this.requestValidate();
 	}
 
 	_handleNestedFormElementValidation(e) {
