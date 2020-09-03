@@ -498,14 +498,15 @@ describe('d2l-input-date', () => {
 				await helper.reset(page, '#required');
 			});
 
-			it('required open', async function() {
-				await helper.open(page, '#required');
-				const rect = await helper.getRect(page, '#required');
+			it('required focus then blur', async function() {
+				await page.$eval('#required', (elem) => elem.focus());
+				await page.$eval('#required', (elem) => elem.blur());
+				const rect = await visualDiff.getRect(page, '#required');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('open required with enter after empty text input', async function() {
-				await page.$eval('#required', (elem) => {
+				await page.$eval('#required-value', (elem) => {
 					const input = elem.shadowRoot.querySelector('d2l-input-text');
 					input.value = '';
 					const eventObj = document.createEvent('Events');
@@ -513,7 +514,7 @@ describe('d2l-input-date', () => {
 					eventObj.keyCode = 13;
 					input.dispatchEvent(eventObj);
 				});
-				const rect = await helper.getRect(page, '#required');
+				const rect = await helper.getRect(page, '#required-value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
