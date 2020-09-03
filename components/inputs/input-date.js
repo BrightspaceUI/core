@@ -342,8 +342,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._calendar.focus();
 	}
 
-	_handleInputTextBlur() {
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+	async _handleInputTextBlur() {
+		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
+		await inputTextElem.validate(ValidationType.SHOW_NEW_ERRORS);
+		this._inputTextInvalid = inputTextElem.invalid;
 	}
 
 	_handleInputTextFocus() {

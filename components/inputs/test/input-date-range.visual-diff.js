@@ -40,6 +40,17 @@ describe('d2l-input-date-range', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('required focus then blur', async function() {
+		await page.$eval('#required', (elem) => elem.focus());
+		await page.$eval('#required', (elem) => {
+			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
+			const textElem = inputElem.shadowRoot.querySelector('d2l-input-text');
+			textElem.blur();
+		});
+		const rect = await visualDiff.getRect(page, '#required');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	describe('validation', () => {
 
 		const startDateSelector = 'd2l-input-date.d2l-input-date-range-start';

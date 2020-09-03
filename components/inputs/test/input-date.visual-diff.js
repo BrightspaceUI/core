@@ -500,7 +500,10 @@ describe('d2l-input-date', () => {
 
 			it('required focus then blur', async function() {
 				await page.$eval('#required', (elem) => elem.focus());
-				await page.$eval('#required', (elem) => elem.blur());
+				await page.$eval('#required', async(elem) => {
+					const input = elem.shadowRoot.querySelector('d2l-input-text');
+					await input.blur();
+				});
 				const rect = await visualDiff.getRect(page, '#required');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
