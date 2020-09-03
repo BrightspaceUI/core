@@ -8,7 +8,6 @@ const ETagHeader = 'ETag';
 const OverrideLanguage = 'overrides';
 const StateFetching = 2;
 const StateIdle = 1;
-const OsloCacheKey = 'd2l-oslo';
 
 const BatchFailedReason = new Error('Failed to fetch batch overrides.');
 const SingleFailedReason = new Error('Failed to fetch overrides.');
@@ -292,8 +291,6 @@ function fetchOverride(formatFunc) {
 		// If batching is available, pool requests together.
 
 		url = formatFunc(OverrideLanguage);
-		url = new URL(url).pathname;
-
 		res = fetchWithPooling(url);
 
 	} else /* shouldUseCollectionFetch() == true */ {
@@ -301,7 +298,6 @@ function fetchOverride(formatFunc) {
 		// Otherwise, fetch it directly and let the LMS manage the cache.
 
 		url = formatFunc(OverrideLanguage);
-		url = new URL(url).pathname;
 		url = documentLocaleSettings.oslo.collection + url;
 
 		res = fetchCollection(url);
