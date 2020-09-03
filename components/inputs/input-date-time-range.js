@@ -2,8 +2,8 @@ import './input-date-time.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatDateTimeInISO, getDateFromISODateTime, isDateInRange, parseISODateTime } from '../../helpers/dateTime.js';
 import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
-import { getDateFromISODateTime } from '../../helpers/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -49,6 +49,10 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
+			/**
 			 * Label for the start input
 			 * @default "Start Date"
 			 */
@@ -88,6 +92,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 
 		this.disabled = false;
 		this.labelHidden = false;
+		this.required = false;
 
 		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
@@ -101,6 +106,42 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		if (!this.label) {
 			console.warn('d2l-input-date-time-range component requires label text');
 		}
+
+		if (this.required && (!this.startValue || !this.endValue)) {
+			if (this.startValue) {
+				const endInputDate = new Date(this.startValue);
+				endInputDate.setDate(endInputDate.getDate() + 1);
+				const parsedObject = parseISODateTime(endInputDate.toISOString());
+				this.endValue = formatDateTimeInISO(parsedObject);
+			} else if (this.endValue) {
+				const startInputDate = new Date(this.endValue);
+				startInputDate.setDate(startInputDate.getDate() - 1);
+				const parsedObject = parseISODateTime(startInputDate.toISOString());
+				this.startValue = formatDateTimeInISO(parsedObject);
+			} else {
+				// start input contains default value in range. if next day is in range, set that to end date, otherwise set end to start and start to end - 1
+				const startInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-start');
+				await startInput.updateComplete;
+				this.startValue = startInput.value;
+
+				const startNextDay = new Date(startInput.value);
+				startNextDay.setDate(startNextDay.getDate() + 1);
+
+				const min = getDateFromISODateTime(this.minValue);
+				const max = getDateFromISODateTime(this.maxValue);
+				if (isDateInRange(startNextDay, min, max)) {
+					const parsedObject = parseISODateTime(startNextDay.toISOString());
+					this.endValue = formatDateTimeInISO(parsedObject);
+				} else {
+					const startPrevDay = new Date(startInput.value);
+					startPrevDay.setDate(startPrevDay.getDate() - 1);
+					this.endValue = startInput.value;
+
+					const parsedObject = parseISODateTime(startPrevDay.toISOString());
+					this.startValue = formatDateTimeInISO(parsedObject);
+				}
+			}
+		}
 	}
 
 	render() {
@@ -109,7 +150,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<div class="d2l-input-date-time-range-start-container">
 					<d2l-input-date-time
 						@change="${this._handleChange}"
@@ -122,6 +163,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 						label="${this._computedStartLabel}"
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
+						?required="${this.required}"
 						value="${ifDefined(this.startValue)}">
 					</d2l-input-date-time>
 					<slot name="start"></slot>
@@ -137,6 +179,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 					label="${this._computedEndLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
+					?required="${this.required}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-date-time>
 				<slot name="end"></slot>
