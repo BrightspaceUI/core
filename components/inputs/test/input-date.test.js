@@ -213,6 +213,18 @@ describe('d2l-input-date', () => {
 				expect(elem.value).to.equal('2011-11-08');
 			});
 
+			it('should change value if typed date before minValue when required', async() => {
+				const elem = await fixture('<d2l-input-date min-value="2020-01-02" label="Date" required></d2l-input-date>');
+				const inputElem = getChildElem(elem, 'd2l-input-text');
+				inputElem.value = '12/31/2019';
+				setTimeout(() => dispatchEvent(inputElem, 'change', false));
+				await oneEvent(elem, 'change');
+				await oneEvent(elem, 'invalid-change');
+				expect(elem.value).to.equal('2019-12-31');
+				expect(elem.invalid).to.be.true;
+				expect(elem.validationError).to.equal('Date must be after Jan 2, 2020');
+			});
+
 			it('should not fire "change" event when input value removed', async() => {
 				const elem = await fixture('<d2l-input-date label="Date" required value="2020-12-02"></d2l-input-date>');
 				const inputElem = getChildElem(elem, 'd2l-input-text');
