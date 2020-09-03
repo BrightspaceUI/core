@@ -7,7 +7,7 @@ The `d2l-form` component can be used to build sections containing interactive co
 It differs from the native HTML `form` element in 4 ways:
 1. It supports custom form elements made using the [`FormElementMixin`](./form-element-mixin.md) in addition to native form elements like `input`, `select` and `textarea`.
 1. Upon validation, it will display an error summary that contains error messages for any elements that failed validation.
-1. `d2l-form` elements can be nested. If a parent form is validated or submitted it will also trigger the corresponding action for descendent `d2l-form`'s unless they explicitly opt-out using. This means that a `d2l-form` will only pass validation if it and all of its nested descendants pass validation.
+1. `d2l-form` elements can be nested. If a parent form is validated or submitted it will also trigger the corresponding action for descendent `d2l-form`s unless they explicitly opt-out using `no-nesting`. This means that a `d2l-form` will only pass validation if it and all of its nested descendants pass validation.
 1. Submission is not handled directly by `d2l-form`. Instead, all form data will be aggregated and passed back to the caller via an event. The caller is then responsible for submitting the data.
 
 If you're looking to emulate native form element submission, [`d2l-form-native`](./form-native.md) may be more appropriate.
@@ -42,7 +42,7 @@ If you're looking to emulate native form element submission, [`d2l-form-native`]
 **Methods:**
 - `submit()`: Submits the form. This will first perform validation on all elements within the form including nested `d2l-form` elements.
 	- **Note:** If validation succeeds, the form data will be aggregated and passed back to the caller via the `d2l-form-submit` event. It will not be submitted by the form itself.
-- `async validate()`: Validates the form and any nested `d2l-form` elements without submitting even if validation succeeds for all elements. Returns a `Map` mapping from an element to the list of error message's associated with it.
+- `async validate()`: Validates the form and any nested `d2l-form` elements without submitting even if validation succeeds for all elements. Returns a `Map` mapping from an element to the list of error messages associated with it.
 	- **Note:** The return value will include elements and errors from both the root form and any nested descendant forms.
 
 **Events:**
