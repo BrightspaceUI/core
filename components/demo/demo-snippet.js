@@ -1,6 +1,7 @@
 import './code-view.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
-import { styles } from './demo-snippet-styles.js';
+import '../button/button-icon.js';
+import '../switch/switch.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 class DemoSnippet extends LitElement {
 
@@ -9,18 +10,53 @@ class DemoSnippet extends LitElement {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			_code: { type: String },
-			_dirButton: { type: String }
+			_dir: { type: String, attribute: false }
 		};
 	}
 
 	static get styles() {
-		return [ styles ];
+		return css`
+			:host {
+				background-color: white;
+				border: 1px solid var(--d2l-color-tungsten);
+				border-radius: 6px;
+				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+				display: block;
+				max-width: 900px;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			.d2l-demo-snippet-demo-wrapper {
+				display: flex;
+			}
+			.d2l-demo-snippet-demo {
+				flex: 1 1 auto;
+				padding: 18px;
+			}
+			:host([no-padding]) .d2l-demo-snippet-demo {
+				padding: 0;
+			}
+			.d2l-demo-snippet-settings {
+				border-left: 1px solid var(--d2l-color-mica);
+				flex: 0 0 auto;
+				padding: 6px;
+			}
+			d2l-code-view {
+				border: none;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+				margin: 0;
+			}
+			:host([code-view-hidden]) d2l-code-view {
+				display: none;
+			}
+		`;
 	}
 
 	constructor() {
 		super();
 		this._dir = document.documentElement.dir;
-		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
 	}
 
 	firstUpdated() {
@@ -30,12 +66,14 @@ class DemoSnippet extends LitElement {
 	render() {
 		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
 		return html`
-			<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
-				<div class="d2l-demo-snippet-actions">
-					<button id="d2l-demo-snippet-toggle-dir" @click="${this._handleDirChange}" title="toggle dir">${this._dirButton}</button>
+			<div class="d2l-demo-snippet-demo-wrapper">
+				<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
+					<slot name="_demo"></slot>
+					<slot></slot>
 				</div>
-				<slot name="_demo"></slot>
-				<slot></slot>
+				<div class="d2l-demo-snippet-settings">
+					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch>
+				</div>
 			</div>
 			<d2l-code-view language="html" hide-language>${this._code}</d2l-code-view>
 		`;
@@ -51,6 +89,37 @@ class DemoSnippet extends LitElement {
 
 	forceCodeUpdate() {
 		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
+	}
+
+	_applyAttr(name, value) {
+		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
+		if (nodes.length === 0) return;
+		const doApply = (nodes, isRoot) => {
+			for (let i = 0; i < nodes.length; i++) {
+				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
+					/* only sprout dir on root or custom element so devs don't think that
+					[dir="rtl"].some-class will work. they must use :host([dir="rtl"]) in their
+					custom element's CSS since RTLMixin only sprouts [dir="rtl"] on host */
+					if (isRoot || nodes[i].tagName.indexOf('-') !== -1) {
+						if (typeof(value) === 'boolean') {
+							if (value) {
+								nodes[i].setAttribute(name, name);
+							} else {
+								nodes[i].removeAttribute(name);
+							}
+						} else {
+							nodes[i].setAttribute(name, value);
+						}
+					}
+					if (nodes[i].shadowRoot) {
+						doApply(nodes[i].shadowRoot.children, false);
+					}
+					doApply(nodes[i].children, false);
+				}
+			}
+		};
+		doApply(nodes, true);
 	}
 
 	_formatCode(text) {
@@ -87,29 +156,9 @@ class DemoSnippet extends LitElement {
 			.replace(/=""/g, '');           // replace empty strings for boolean attributes (="")
 	}
 
-	_handleDirChange() {
-		this._dir = this._dir === 'rtl' ? 'ltr' : 'rtl';
-		this._dirButton = this._dir === 'rtl' ? 'ltr' : 'rtl';
-		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
-		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
-		if (nodes.length === 0) return;
-		const applyDir = (nodes, isRoot) => {
-			for (let i = 0; i < nodes.length; i++) {
-				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
-					/* only sprout dir on root or custom element so devs don't think that
-					[dir="rtl"].some-class will work. they must use :host([dir="rtl"]) in their
-					custom element's CSS since RTLMixin only sprouts [dir="rtl"] on host */
-					if (isRoot || nodes[i].tagName.indexOf('-') !== -1) {
-						nodes[i].setAttribute('dir', this._dir);
-					}
-					if (nodes[i].shadowRoot) {
-						applyDir(nodes[i].shadowRoot.children, false);
-					}
-					applyDir(nodes[i].children, false);
-				}
-			}
-		};
-		applyDir(nodes, true);
+	_handleDirChange(e) {
+		this._dir = e.target.on ? 'rtl' : 'ltr';
+		this._applyAttr('dir', this._dir);
 		this.dispatchEvent(new CustomEvent(
 			'd2l-dir-update', { bubbles: true, composed: true, detail: { dir: this._dir } }
 		));
