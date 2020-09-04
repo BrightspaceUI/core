@@ -5,7 +5,6 @@ const ContentTypeHeader = 'Content-Type';
 const ContentTypeJson = 'application/json';
 const DebounceTime = 150;
 const ETagHeader = 'ETag';
-const OverrideLanguage = 'overrides';
 const StateFetching = 2;
 const StateIdle = 1;
 
@@ -284,23 +283,23 @@ function shouldFetchOverrides() {
 
 function fetchOverride(formatFunc) {
 
-	let resource, res;
+	let resource, res, requestURL;
 
 	if (shouldUseBatchFetch()) {
 
 		// If batching is available, pool requests together.
 
-		resource = formatFunc(OverrideLanguage);
+		resource = formatFunc();
 		res = fetchWithPooling(resource);
 
 	} else /* shouldUseCollectionFetch() == true */ {
 
 		// Otherwise, fetch it directly and let the LMS manage the cache.
 
-		resource = formatFunc(OverrideLanguage);
-		resource = formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
+		resource = formatFunc();
+		requestURL = formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
 
-		res = fetchCollection(resource);
+		res = fetchCollection(requestURL);
 
 	}
 	res = res.catch(coalesceToNull);

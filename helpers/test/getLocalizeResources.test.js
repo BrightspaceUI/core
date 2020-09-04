@@ -86,7 +86,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(fetchStub).to.have.been.called;
 		expect(actual).to.deep.equal(expected);
 	});
@@ -207,7 +207,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
 		expect(matchSpy).to.have.been.callCount(1);
 		expect(matchSpy).to.have.been.calledWithMatch(new Request(UrlOverrides));
@@ -238,7 +238,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 cache key
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(openSpy).to.have.not.been.called; // in the window cache
 		expect(matchSpy).to.have.not.been.called;
 		expect(fetchStub).to.have.not.been.called;
@@ -261,7 +261,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 cache key
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
 		expect(matchSpy).to.have.been.callCount(1);
 		expect(matchSpy).to.have.been.calledWithMatch(new Request(UrlOverrides));
@@ -326,7 +326,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(fetchStub).to.have.been.calledOnce;
 		expect(fetchStub).to.have.been.calledWithExactly(UrlBatch, {
 			method: 'POST',
@@ -351,7 +351,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 cache key
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(fetchStub).to.have.not.been.called;
 		expect(putSpy).to.have.not.been.called;
 		expect(actual).to.deep.equal(expected);
@@ -396,7 +396,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 lms
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(fetchStub).to.have.been.calledOnce;
 		expect(fetchStub).to.have.been.calledWithExactly(UrlBatch, {
 			method: 'POST',
@@ -421,7 +421,7 @@ describe('getLocalizeResources', () => {
 		);
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 cache key
-		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
+		expect(formatFuncSpy).to.have.been.calledWithExactly();
 		expect(fetchStub).to.have.not.been.called;
 		expect(putSpy).to.have.not.been.called;
 		expect(actual).to.deep.equal(expected);
