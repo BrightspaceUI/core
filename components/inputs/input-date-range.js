@@ -218,7 +218,9 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
+		if (this.endValue && this.startValue) {
+			e.preventDefault();
+		}
 	}
 
 }

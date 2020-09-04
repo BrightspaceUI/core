@@ -77,6 +77,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
 		this._parsedDateTime = '';
+		this._preventDefaultValidation = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -85,6 +86,8 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		if (!this.label) {
 			console.warn('d2l-input-date-time component requires label text');
 		}
+
+		if (this.value) this._preventDefaultValidation = true;
 	}
 
 	render() {
@@ -145,6 +148,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					rangeOverflow: this.value && this.maxValue && (new Date(this.value)).getTime() > (new Date(this.maxValue)).getTime()
 				});
 				this.requestValidate();
+				this._preventDefaultValidation = true;
 			} else if (prop === 'maxValue' && this.maxValue) {
 				try {
 					const dateObj = parseISODateTime(this.maxValue);
@@ -226,7 +230,9 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	}
 
 	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
+		if (this._preventDefaultValidation) {
+			e.preventDefault();
+		}
 	}
 
 	async _handleTimeChange(e) {

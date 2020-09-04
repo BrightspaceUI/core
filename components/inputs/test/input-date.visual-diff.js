@@ -500,9 +500,21 @@ describe('d2l-input-date', () => {
 
 			it('required focus then blur', async function() {
 				await page.$eval('#required', (elem) => elem.focus());
-				await page.$eval('#required', async(elem) => {
-					const input = elem.shadowRoot.querySelector('d2l-input-text');
-					await input.blur();
+				await page.$eval('#required', (elem) => elem.blur());
+				const rect = await visualDiff.getRect(page, '#required');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it('required focus then blur then fix', async function() {
+				await page.$eval('#required', (elem) => elem.focus());
+				await page.$eval('#required', (elem) => elem.blur());
+				await page.$eval('#required', (elem) => {
+					elem.value = '2020-01-01';
+					const e = new Event(
+						'change',
+						{ bubbles: true, composed: false }
+					);
+					elem.dispatchEvent(e);
 				});
 				const rect = await visualDiff.getRect(page, '#required');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

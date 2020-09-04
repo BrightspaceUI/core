@@ -181,7 +181,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				<d2l-input-text
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
-					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
@@ -240,7 +239,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					rangeUnderflow: this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
 					rangeOverflow: this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
 				});
-				this.requestValidate(this.required && oldVal === undefined ? ValidationType.UPDATE_EXISTING_ERRORS : ValidationType.SHOW_NEW_ERRORS);
+				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
 			}
 		});
 	}
@@ -278,6 +277,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleBlur() {
 		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
+		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 	}
 
 	async _handleChange() {
@@ -340,12 +340,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	async _handleFocusTrapEnter() {
 		this._calendar.focus();
-	}
-
-	async _handleInputTextBlur() {
-		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
-		await inputTextElem.validate(ValidationType.SHOW_NEW_ERRORS);
-		this._inputTextInvalid = inputTextElem.invalid;
 	}
 
 	_handleInputTextFocus() {

@@ -160,7 +160,9 @@ describe('d2l-input-date', () => {
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '12/31/2019';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			setTimeout(() => dispatchEvent(inputElem, 'blur', true));
 			await oneEvent(elem, 'change');
+			await oneEvent(elem, 'blur');
 			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2019-12-31');
 			expect(elem.invalid).to.be.true;
@@ -172,7 +174,9 @@ describe('d2l-input-date', () => {
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '12/31/2021';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			setTimeout(() => dispatchEvent(inputElem, 'blur', true));
 			await oneEvent(elem, 'change');
+			await oneEvent(elem, 'blur');
 			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2021-12-31');
 			expect(elem.invalid).to.be.true;
@@ -218,7 +222,9 @@ describe('d2l-input-date', () => {
 				const inputElem = getChildElem(elem, 'd2l-input-text');
 				inputElem.value = '12/31/2019';
 				setTimeout(() => dispatchEvent(inputElem, 'change', false));
+				setTimeout(() => dispatchEvent(inputElem, 'blur', true));
 				await oneEvent(elem, 'change');
+				await oneEvent(elem, 'blur');
 				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2019-12-31');
 				expect(elem.invalid).to.be.true;
