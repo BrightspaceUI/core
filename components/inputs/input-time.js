@@ -4,7 +4,7 @@ import '../menu/menu.js';
 import '../menu/menu-item-radio.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
+import { formatDateInISOTime, getDateFromISOTime } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
@@ -14,8 +14,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 
-const TODAY = getToday();
-const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
+const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
 
 export function getIntervalNumber(size) {
@@ -42,7 +41,7 @@ export function getDefaultTime(time) {
 			return END_OF_DAY;
 		case 'startOfDay':
 		case undefined:
-			return new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
+			return new Date(2020, 0, 1, 0, 0, 0);
 		default:
 			return getDateFromISOTime(time);
 	}
@@ -60,15 +59,18 @@ export function getTimeAtInterval(timeInterval, time) {
 function initIntervals(size) {
 	if (!INTERVALS.has(size)) {
 		const intervalList = [];
-		const minutes = getIntervalNumber(size);
-		const intervalTime = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
+		const intervalNumber = getIntervalNumber(size);
 
-		while (intervalTime < END_OF_DAY) {
+		let val = 0;
+		while (val < 1440) {
+			const hours = Math.floor(val / 60);
+			const minutes = val - (hours * 60);
+			const intervalTime = new Date(2020, 0, 1, hours, minutes, 0);
 			intervalList.push({
 				text: formatTime(intervalTime),
 				value: formatDateInISOTime(intervalTime)
 			});
-			intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
+			val += intervalNumber;
 		}
 
 		INTERVALS.set(size, intervalList);
