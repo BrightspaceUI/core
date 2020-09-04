@@ -9,6 +9,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 /**
@@ -17,7 +18,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  */
-class InputText extends FormElementMixin(RtlMixin(LitElement)) {
+class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -131,7 +132,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ inputStyles, inputLabelStyles, offscreenStyles,
+		return [ super.styles, inputStyles, inputLabelStyles, offscreenStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -139,9 +140,6 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 				}
 				:host([hidden]) {
 					display: none;
-				}
-				label {
-					display: block;
 				}
 				.d2l-input-text-container {
 					position: relative;
@@ -234,7 +232,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
 		const input = html`
-			<div class="d2l-input-text-container">
+			<div class="d2l-input-text-container d2l-skeletize">
 				<input aria-atomic="${ifDefined(this.atomic)}"
 					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
@@ -276,7 +274,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<label class="d2l-input-label" for="${this._inputId}">${this.label}</label>
+				<div><label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}</label></div>
 				${input}`;
 		}
 		return input;
