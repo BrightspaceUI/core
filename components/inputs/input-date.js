@@ -8,8 +8,8 @@ import '../tooltip/tooltip.js';
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
-import { formatDateInISO, getClosestValidDate, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
-import { FormElementMixin } from '../form/form-element-mixin.js';
+import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
+import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -63,6 +63,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
+			_inputTextInvalid: { type: Boolean },
 			_shownValue: { type: String }
 		};
 	}
@@ -124,6 +125,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
+		this._inputTextInvalid = false;
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
@@ -150,11 +152,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			});
 		});
 
-		if (!this.value && this.required) {
-			this.value = getClosestValidDate(this.minValue, this.maxValue, false);
-		} else {
-			this._formattedValue = this.emptyText ? this.emptyText : '';
-		}
+		this._formattedValue = this.emptyText ? this.emptyText : '';
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 		const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
@@ -168,7 +166,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
-		const icon = this.invalid
+		const icon = (this.invalid || this._inputTextInvalid)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
@@ -185,6 +183,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
+					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -240,13 +239,25 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					rangeUnderflow: this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
 					rangeOverflow: this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
 				});
-				this.requestValidate();
+				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
 			}
 		});
 	}
 
 	focus() {
 		if (this._textInput) this._textInput.focus();
+	}
+
+	async validate(validationType) {
+		let childErrors = [];
+		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
+		if (inputTextElem) {
+			await inputTextElem.updateComplete;
+			childErrors = await Promise.resolve(inputTextElem.validate(validationType));
+			this._inputTextInvalid = inputTextElem.invalid;
+		}
+		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
+		return [...childErrors, ...errors];
 	}
 
 	get validationMessage() {
@@ -266,6 +277,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleBlur() {
 		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
+		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 	}
 
 	async _handleChange() {
@@ -350,6 +362,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			if (!this._dropdownOpened) this._handleChange();
 			this._dropdown.toggleOpen(false);
 		}
+	}
+
+	_handleNestedFormElementValidation(e) {
+		e.preventDefault();
 	}
 
 	async _handleSetToToday() {
