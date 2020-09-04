@@ -160,16 +160,19 @@ describe('d2l-input-time', () => {
 
 		it('should default to half-hour intervals', async() => {
 			const elem = await fixture(basicFixture);
+			await aTimeout(1);
 			expect(getNumberOfIntervals(elem)).to.equal(49); //24 hours x 2 30-minute intervals + EOD
 		});
 
 		it('should respect time-intervals property', async() => {
 			const elem = await fixture(hourLongIntervals);
+			await aTimeout(1);
 			expect(getNumberOfIntervals(elem)).to.equal(25); //24 60-minute intervals + EOD
 		});
 
 		it('should not offer end-of-day option when intervals are enforced', async() => {
 			const elem = await fixture(hourLongIntervalsEnforced);
+			await aTimeout(1);
 			expect(getNumberOfIntervals(elem)).to.equal(24);
 		});
 
