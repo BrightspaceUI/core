@@ -8,9 +8,11 @@ class DemoSnippet extends LitElement {
 	static get properties() {
 		return {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
+			hasSkeleton: { type: Boolean, reflect: true, attribute: 'has-skeleton' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			_code: { type: String },
-			_dir: { type: String, attribute: false }
+			_dir: { type: String, attribute: false },
+			_skeleton: { type: Boolean, reflect: false }
 		};
 	}
 
@@ -57,7 +59,9 @@ class DemoSnippet extends LitElement {
 
 	constructor() {
 		super();
+		this.hasSkeleton = false;
 		this._dir = document.documentElement.dir;
+		this._skeleton = false;
 	}
 
 	firstUpdated() {
@@ -66,6 +70,7 @@ class DemoSnippet extends LitElement {
 
 	render() {
 		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
+		const skeleton = this.hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeleton}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
 		return html`
 			<div class="d2l-demo-snippet-demo-wrapper">
 				<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
@@ -73,7 +78,8 @@ class DemoSnippet extends LitElement {
 					<slot></slot>
 				</div>
 				<div class="d2l-demo-snippet-settings">
-					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch>
+					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch><br>
+					${skeleton}
 				</div>
 			</div>
 			<d2l-code-view language="html" hide-language>${this._code}</d2l-code-view>
@@ -163,6 +169,11 @@ class DemoSnippet extends LitElement {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-dir-update', { bubbles: true, composed: true, detail: { dir: this._dir } }
 		));
+	}
+
+	_handleSkeletonChange(e) {
+		this._skeleton = e.target.on;
+		this._applyAttr('skeleton', this._skeleton);
 	}
 
 	_removeImportedDemo() {

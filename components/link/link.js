@@ -9,6 +9,10 @@ export const linkStyles = css`
 		cursor: pointer;
 		text-decoration: none;
 	}
+	:host([skeleton]) .d2l-link.d2l-skeletize::before {
+		bottom: 0.2rem;
+		top: 0.2rem;
+	}
 	.d2l-link:hover, .d2l-link:focus {
 		color: var(--d2l-color-celestine-minus-1);
 		outline-width: 0;
@@ -21,6 +25,10 @@ export const linkStyles = css`
 		font-size: 0.7rem;
 		letter-spacing: 0.01rem;
 		line-height: 1.05rem;
+	}
+	:host([skeleton]) .d2l-link.d2l-link-small.d2l-skeletize::before {
+		bottom: 0.15rem;
+		top: 0.15rem;
 	}
 `;
 
