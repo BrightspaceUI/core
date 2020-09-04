@@ -7,14 +7,14 @@ const customLaunchers = {
 	chrome: {
 		base: 'BrowserStack',
 		browser: 'chrome',
-		browser_version: '84',
+		browser_version: 'latest',
 		os: 'OS X',
 		os_version: 'Catalina'
 	},
 	firefox: {
 		base: 'BrowserStack',
 		browser: 'firefox',
-		browser_version: '79',
+		browser_version: 'latest',
 		os: 'OS X',
 		os_version: 'Catalina'
 	},
