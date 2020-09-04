@@ -6,7 +6,7 @@ import sinon from 'sinon';
 const DefaultsGreek = { txtOne: 'One (el)', txtTwo: 'Two (el)' };
 const DefaultsEnglish = { txtOne: 'One (en)', txtTwo: 'Two (en)' };
 const Overrides = { txtTwo: 'Two (override)' };
-const ResourceOverrides = '/resolved/to/overrides.json';
+const ResourceOverrides = 'd2l-package\\some-component';
 const UrlBatch = 'http://lms/path/to/batch';
 const UrlCollection = 'http://lms/path/to/collection';
 const VersionNext = 'W\\"abc124"';
@@ -17,8 +17,8 @@ const OsloDisabled = { batch: null, collection: null, version: null };
 const OsloSingle = { batch: null, collection: UrlCollection, version: null };
 const UrlOverrides = `${UrlCollection}${ResourceOverrides}`;
 
-function formatFunc(language) {
-	return `http://cdn/resolved/to/${language}.json`;
+function formatFunc() {
+	return 'd2l-package\\some-component';
 }
 
 describe('getLocalizeResources', () => {
@@ -210,7 +210,7 @@ describe('getLocalizeResources', () => {
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
 		expect(matchSpy).to.have.been.callCount(1);
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverrides });
+		expect(matchSpy).to.have.been.calledWithMatch(new Request(UrlOverrides));
 		expect(fetchStub).to.have.been.calledOnceWithExactly(UrlBatch, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -264,7 +264,7 @@ describe('getLocalizeResources', () => {
 		expect(formatFuncSpy).to.have.been.calledWithExactly('overrides');
 		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
 		expect(matchSpy).to.have.been.callCount(1);
-		expect(matchSpy).to.have.been.calledWithMatch({ url: UrlOverrides });
+		expect(matchSpy).to.have.been.calledWithMatch(new Request(UrlOverrides));
 		expect(fetchStub).to.have.not.been.called; // worker updated version with NextVersion
 		expect(putSpy).to.have.not.been.called;
 		expect(actual).to.deep.equal(expected);

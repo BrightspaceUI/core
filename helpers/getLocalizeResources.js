@@ -156,7 +156,7 @@ function fetchWithQueuing(resource) {
 
 function formatCacheKey(resource) {
 
-	return documentLocaleSettings.oslo.collection + resource;
+	return  formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
 }
 
 async function fetchWithCaching(resource) {
@@ -284,23 +284,23 @@ function shouldFetchOverrides() {
 
 function fetchOverride(formatFunc) {
 
-	let url, res;
+	let resource, res;
 
 	if (shouldUseBatchFetch()) {
 
 		// If batching is available, pool requests together.
 
-		url = formatFunc(OverrideLanguage);
-		res = fetchWithPooling(url);
+		resource = formatFunc(OverrideLanguage);
+		res = fetchWithPooling(resource);
 
 	} else /* shouldUseCollectionFetch() == true */ {
 
 		// Otherwise, fetch it directly and let the LMS manage the cache.
 
-		url = formatFunc(OverrideLanguage);
-		url = documentLocaleSettings.oslo.collection + url;
+		resource = formatFunc(OverrideLanguage);
+		resource = formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
 
-		res = fetchCollection(url);
+		res = fetchCollection(resource);
 
 	}
 	res = res.catch(coalesceToNull);
@@ -310,6 +310,10 @@ function fetchOverride(formatFunc) {
 function coalesceToNull() {
 
 	return null;
+}
+
+function formatOsloRequest(baseUrl, resource) {
+	return `${baseUrl}/${resource}`;
 }
 
 export function __clearWindowCache() {
