@@ -152,6 +152,7 @@ describe('LocalizeMixin', () => {
 			let elem, errorSpy;
 			beforeEach(async() => {
 				elem = await fixture(f);
+				await elem.updateComplete; // legacy edge
 				errorSpy = stub(console, 'error');
 			});
 
@@ -224,6 +225,7 @@ describe('LocalizeMixin', () => {
 		let elem;
 		beforeEach(async() => {
 			elem = await fixture(multiMixinFixture);
+			await elem.updateComplete; // legacy edge
 		});
 
 		it('should localize text from all mixins', () => {
