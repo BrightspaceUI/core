@@ -1,12 +1,6 @@
 import { isCustomFormElement } from './form-helper.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
-export const ValidationType = {
-	SUPPRESS_ERRORS: 0,
-	UPDATE_EXISTING_ERRORS: 1,
-	SHOW_NEW_ERRORS: 2,
-};
-
 export class FormElementValidityState {
 
 	static get supportedFlags() {
@@ -93,12 +87,15 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			name: { type: String },
 			noValidate: { type: Boolean, attribute: 'novalidate' },
 			validationError: { type: String, attribute: false },
+			childErrors: { type: Object, attribute: false },
+			_errors: { type: Array, attribute: false }
 		};
 	}
 
 	constructor() {
 		super();
 		this._validationCustomConnected = this._validationCustomConnected.bind(this);
+		this._onFormElementValidate = this._onFormElementValidate.bind(this);
 
 		this._validationCustoms = new Set();
 		this._validity = new FormElementValidityState({});
@@ -107,11 +104,20 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.invalid = false;
 		this.noValidate = false;
 		this.validationError = null;
+		this.childErrors = new Map();
+		this._errors = [];
 
 		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+		this.shadowRoot.addEventListener('d2l-form-element-validate', this._onFormElementValidate);
 	}
 
 	updated(changedProperties) {
+		if (changedProperties.has('_errors') || changedProperties.has('childErrors')) {
+			const childErrors = [...this.childErrors.values()].flat();
+			const errors = [...this._errors, ...childErrors];
+			const options = { bubbles: true, composed: true, detail: { errors } };
+			this.dispatchEvent(new CustomEvent('d2l-form-element-validate', options));
+		}
 		changedProperties.forEach((_, propName) => {
 			if (propName === 'noValidate' || propName === 'forceInvalid' || propName === 'validationError') {
 				const oldValue = this.invalid;
@@ -119,10 +125,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				if (this.invalid !== oldValue) {
 					this.dispatchEvent(new CustomEvent('invalid-change'));
 				}
-			}
-			if (propName === 'noValidate' && this.noValidate) {
-				this.validationError = null;
-				this._notifyFormErrorsChanged([]);
 			}
 		});
 	}
@@ -146,6 +148,16 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		} else {
 			this.validationError = null;
 		}
+		if (this._errors.length === errors.length) {
+			let areEqual = true;
+			for (let i = 0; areEqual && i < this._errors.length; i += 1) {
+				areEqual = this._errors[i] === errors[i];
+			}
+			if (areEqual) {
+				return;
+			}
+		}
+		this._errors = errors;
 	}
 
 	setFormValue(formValue) {
@@ -174,6 +186,17 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	get validity() {
 		return this._validity;
+	}
+
+	_onFormElementValidate(e) {
+		e.stopPropagation();
+		const errors = e.detail.errors;
+		if (errors.length === 0) {
+			this.childErrors.delete(e.target);
+		} else {
+			this.childErrors.set(e.target, errors);
+		}
+		this.requestUpdate('childErrors');
 	}
 
 	_validationCustomConnected(e) {

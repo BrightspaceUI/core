@@ -160,12 +160,15 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-time-range.startTime');
 		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-time-range.endTime');
 
+		const startTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-start');
+		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
+
 		/**
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 		 */
 		const timeInterval = this.timeInterval;
-		const tooltipStart = (this.validationError && !this._startDropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endDropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this._startDropdownOpened && !this.childErrors.has(startTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
