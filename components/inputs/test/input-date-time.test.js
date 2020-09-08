@@ -1,5 +1,5 @@
 import '../input-date-time.js';
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -57,7 +57,7 @@ describe('d2l-input-date-time', () => {
 				inputElem.value = '2018-02-02';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-02-02T05:00:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
@@ -69,7 +69,7 @@ describe('d2l-input-date-time', () => {
 				inputElem.value = '2020-02-02';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2020-02-02T05:00:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
@@ -84,7 +84,7 @@ describe('d2l-input-date-time', () => {
 				inputTimeElem.value = '23:29:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-08-27T03:29:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be after ${expectedStart}`);
@@ -99,7 +99,7 @@ describe('d2l-input-date-time', () => {
 				inputTimeElem.value = '13:31:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
 				await oneEvent(elem, 'change');
-				await aTimeout(1);
+				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-09-30T17:31:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be before ${expectedEnd}`);

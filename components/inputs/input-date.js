@@ -9,7 +9,7 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
-import { FormElementMixin } from '../form/form-element-mixin.js';
+import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -52,6 +52,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
+			/**
 			 * Value of the input
 			 */
 			value: { type: String },
@@ -59,6 +63,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
+			_inputTextInvalid: { type: Boolean },
 			_shownValue: { type: String }
 		};
 	}
@@ -113,12 +118,14 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
+		this.required = false;
 		this.value = '';
 
 		this._dropdownOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
+		this._inputTextInvalid = false;
 		this._namespace = 'components.input-date';
 		this._shownValue = '';
 
@@ -158,7 +165,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const shortDateFormat = (this._dateTimeDescriptor.formats.dateFormats.short).toUpperCase();
 		this.style.maxWidth = inputTextWidth;
 
-		const icon = this.invalid
+		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
+		const icon = (this.invalid || this._inputTextInvalid)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
@@ -175,6 +183,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
+					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -185,6 +194,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
+					?required="${this.required}"
 					style="${styleMap({ maxWidth: inputTextWidth })}"
 					title="${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}"
 					.value="${this._formattedValue}">
@@ -206,7 +216,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 							selected-value="${ifDefined(this._shownValue)}">
 							<div class="d2l-calendar-slot-buttons">
 								<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
-								<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>
+								${clearButton}
 							</div>
 						</d2l-calendar>
 					</d2l-focus-trap>
@@ -223,11 +233,31 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				this._shownValue = this.value;
 				this._setFormattedValue();
 			}
+			if (prop === 'value') {
+				this.setFormValue(this.value);
+				this.setValidity({
+					rangeUnderflow: this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
+					rangeOverflow: this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
+				});
+				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+			}
 		});
 	}
 
 	focus() {
 		if (this._textInput) this._textInput.focus();
+	}
+
+	async validate(validationType) {
+		let childErrors = [];
+		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
+		if (inputTextElem) {
+			await inputTextElem.updateComplete;
+			childErrors = await Promise.resolve(inputTextElem.validate(validationType));
+			this._inputTextInvalid = inputTextElem.invalid;
+		}
+		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
+		return [...childErrors, ...errors];
 	}
 
 	get validationMessage() {
@@ -247,11 +277,12 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleBlur() {
 		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
+		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 	}
 
 	async _handleChange() {
 		const value = this._textInput.value;
-		if (!value) {
+		if (!value && !this.required) {
 			if (value !== this.value) {
 				await this._updateValueDispatchEvent('');
 				await this.updateComplete;
@@ -333,6 +364,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
+	_handleNestedFormElementValidation(e) {
+		e.preventDefault();
+	}
+
 	async _handleSetToToday() {
 		const date = getToday();
 		await this._updateValueDispatchEvent(formatDateInISO(date));
@@ -347,11 +382,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	async _updateValueDispatchEvent(dateInISO) {
 		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
 		this._shownValue = dateInISO;
-		this.setValidity({
-			rangeUnderflow: dateInISO && this.minValue && getDateFromISODate(dateInISO).getTime() < getDateFromISODate(this.minValue).getTime(),
-			rangeOverflow: dateInISO && this.maxValue && getDateFromISODate(dateInISO).getTime() > getDateFromISODate(this.maxValue).getTime()
-		});
-		await this.requestValidate();
 		this.value = dateInISO;
 		this.dispatchEvent(new CustomEvent(
 			'change',

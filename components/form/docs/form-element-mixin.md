@@ -157,3 +157,6 @@ class MyFormElement extends FormElementMixin(LitElement) {
 customElements.define('my-form-element', MyFormElement);
 
 ```
+## Future Enhancements
+
+Looking for an enhancement not listed here? Create a GitHub issue!

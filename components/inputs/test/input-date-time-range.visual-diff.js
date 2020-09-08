@@ -10,7 +10,7 @@ describe('d2l-input-date-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2000 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2400 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -23,6 +23,7 @@ describe('d2l-input-date-time-range', () => {
 		'invalid-start-value',
 		'labelled',
 		'label-hidden',
+		'required',
 		'slotted-content',
 		'start-end-label',
 		'start-end-value'

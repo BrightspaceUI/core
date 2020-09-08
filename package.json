@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.74.6",
+  "version": "1.76.1",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -65,7 +65,7 @@
     "karma-browserstack-launcher": "~1.4.0",
     "karma-sauce-launcher": "^4.1.4",
     "lit-analyzer": "^1",
-    "mocha": "~8.0.1",
+    "mocha": "^8",
     "node-sass": "^4",
     "puppeteer": "^5",
     "semantic-release": "^17",

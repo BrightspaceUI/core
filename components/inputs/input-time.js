@@ -4,7 +4,7 @@ import '../menu/menu.js';
 import '../menu/menu-item-radio.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
+import { formatDateInISOTime, getDateFromISOTime } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
@@ -14,8 +14,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 
-const TODAY = getToday();
-const END_OF_DAY = new Date(TODAY.year, TODAY.month, TODAY.date, 23, 59, 59);
+const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
 
 export function getIntervalNumber(size) {
@@ -42,7 +41,7 @@ export function getDefaultTime(time) {
 			return END_OF_DAY;
 		case 'startOfDay':
 		case undefined:
-			return new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
+			return new Date(2020, 0, 1, 0, 0, 0);
 		default:
 			return getDateFromISOTime(time);
 	}
@@ -60,15 +59,18 @@ export function getTimeAtInterval(timeInterval, time) {
 function initIntervals(size) {
 	if (!INTERVALS.has(size)) {
 		const intervalList = [];
-		const minutes = getIntervalNumber(size);
-		const intervalTime = new Date(TODAY.year, TODAY.month, TODAY.date, 0, 0, 0);
+		const intervalNumber = getIntervalNumber(size);
 
-		while (intervalTime < END_OF_DAY) {
+		let val = 0;
+		while (val < 1440) {
+			const hours = Math.floor(val / 60);
+			const minutes = val - (hours * 60);
+			const intervalTime = new Date(2020, 0, 1, hours, minutes, 0);
 			intervalList.push({
 				text: formatTime(intervalTime),
 				value: formatDateInISOTime(intervalTime)
 			});
-			intervalTime.setMinutes(intervalTime.getMinutes() + minutes);
+			val += intervalNumber;
 		}
 
 		INTERVALS.set(size, intervalList);
@@ -110,6 +112,10 @@ class InputTime extends FormElementMixin(LitElement) {
 			 * Override max-height on the time dropdown menu
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
+			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
 			/**
 			 * Number of minutes between times shown in dropdown
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
@@ -156,6 +162,7 @@ class InputTime extends FormElementMixin(LitElement) {
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.required = false;
 		this.timeInterval = 'thirty';
 		this._dropdownId = getUniqueId();
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
@@ -194,6 +201,7 @@ class InputTime extends FormElementMixin(LitElement) {
 
 	render() {
 		initIntervals(this.timeInterval);
+		const ariaRequired = this.required ? 'true' : undefined;
 		const input = html`
 			<label
 				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
@@ -206,11 +214,13 @@ class InputTime extends FormElementMixin(LitElement) {
 					aria-describedby="${this._dropdownId}-timezone"
 					aria-expanded="false"
 					aria-haspopup="true"
+					aria-required="${ifDefined(ariaRequired)}"
 					@change="${this._handleChange}"
 					class="d2l-input d2l-dropdown-opener"
 					?disabled="${this.disabled}"
 					id="${this._dropdownId}-input"
 					@keydown="${this._handleKeydown}"
+					?required="${this.required}"
 					role="combobox"
 					.value="${this._formattedValue}">
 				<d2l-dropdown-menu
@@ -245,6 +255,14 @@ class InputTime extends FormElementMixin(LitElement) {
 			</d2l-dropdown>
 		`;
 		return input;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') this.setFormValue(this.value);
+		});
 	}
 
 	focus() {

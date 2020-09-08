@@ -17,6 +17,19 @@ describe('d2l-input-date-range', () => {
 
 	after(async() => await browser.close());
 
+	async function changeInnerInputTextDate(page, selector, inputSelector, date) {
+		return page.$eval(selector, (elem, inputSelector, date) => {
+			const dateElem = elem.shadowRoot.querySelector(inputSelector);
+			const innerInput = dateElem.shadowRoot.querySelector('d2l-input-text');
+			innerInput.value = date;
+			const e = new Event(
+				'change',
+				{ bubbles: true, composed: false }
+			);
+			innerInput.dispatchEvent(e);
+		}, inputSelector, date);
+	}
+
 	[
 		'basic',
 		'basic-wrapped',
@@ -24,6 +37,7 @@ describe('d2l-input-date-range', () => {
 		'invalid-start-value',
 		'labelled',
 		'label-hidden',
+		'required',
 		'start-end-label',
 		'start-end-value'
 	].forEach((name) => {
@@ -39,6 +53,27 @@ describe('d2l-input-date-range', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('required focus then blur', async function() {
+		await page.$eval('#required', (elem) => elem.focus());
+		await page.$eval('#required', (elem) => {
+			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
+			inputElem.blur();
+		});
+		const rect = await visualDiff.getRect(page, '#required');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('required focus then blur then fix', async function() {
+		await page.$eval('#required', (elem) => elem.focus());
+		await page.$eval('#required', (elem) => {
+			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
+			inputElem.blur();
+		});
+		await changeInnerInputTextDate(page, '#required', 'd2l-input-date.d2l-input-date-range-start', '07/06/2023');
+		const rect = await visualDiff.getRect(page, '#required');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	describe('validation', () => {
 
 		const startDateSelector = 'd2l-input-date.d2l-input-date-range-start';
@@ -51,19 +86,6 @@ describe('d2l-input-date-range', () => {
 		const dateLaterInRange = '07/07/2021';
 		const dateAfterMax = '10/31/2025';
 		const dateFurtherAfterMax = '12/31/2027';
-
-		async function changeInnerInputTextDate(page, selector, inputSelector, date) {
-			return page.$eval(selector, (elem, inputSelector, date) => {
-				const dateElem = elem.shadowRoot.querySelector(inputSelector);
-				const innerInput = dateElem.shadowRoot.querySelector('d2l-input-text');
-				innerInput.value = date;
-				const e = new Event(
-					'change',
-					{ bubbles: true, composed: false }
-				);
-				innerInput.dispatchEvent(e);
-			}, inputSelector, date);
-		}
 
 		async function focusOnInput(page, selector, inputSelector) {
 			return page.$eval(selector, (elem, inputSelector) => {

@@ -49,6 +49,10 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
+			/**
 			 * Label for the start time input
 			 * @default "Start Time"
 			 */
@@ -101,6 +105,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.required = false;
 		this.startValue = formatDateInISOTime(getDefaultTime());
 		this.timeInterval = 'thirty';
 
@@ -164,7 +169,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-time
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-start"
@@ -174,6 +179,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					.forceInvalid="${this.invalid}"
 					id="${this._startInputId}"
 					label="${startLabel}"
+					?required="${this.required}"
 					time-interval="${ifDefined(timeInterval)}"
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-time>
@@ -186,11 +192,27 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					.forceInvalid="${this.invalid}"
 					id="${this._endInputId}"
 					label="${endLabel}"
+					?required="${this.required}"
 					time-interval="${ifDefined(timeInterval)}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-time>
 			</d2l-input-fieldset>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'startValue' || prop === 'endValue') {
+				this.setFormValue({
+					[`${this.name}-startValue`]: this.startValue,
+					[`${this.name}-endValue`]: this.endValue,
+				});
+				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue))) });
+				this.requestValidate();
+			}
+		});
 	}
 
 	focus() {
@@ -220,8 +242,6 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		} else {
 			this.endValue = elem.value;
 		}
-		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue))) });
-		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

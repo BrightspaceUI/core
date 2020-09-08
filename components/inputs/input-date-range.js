@@ -47,6 +47,10 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
+			 * Indicates that a value is required
+			 */
+			required: { type: Boolean, reflect: true },
+			/**
 			 * Label for the start date input
 			 * @default "Start Date"
 			 */
@@ -93,6 +97,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 
 		this.disabled = false;
 		this.labelHidden = false;
+		this.required = false;
 
 		this._startCalendarOpened = false;
 		this._startInputId = getUniqueId();
@@ -114,7 +119,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
@@ -126,6 +131,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					label="${this._computedStartLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
+					?required="${this.required}"
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-date>
 				<d2l-input-date
@@ -139,10 +145,26 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					label="${this._computedEndLabel}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
+					?required="${this.required}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-date>
 			</d2l-input-fieldset>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'startValue' || prop === 'endValue') {
+				this.setFormValue({
+					[`${this.name}-startValue`]: this.startValue,
+					[`${this.name}-endValue`]: this.endValue,
+				});
+				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
+				this.requestValidate();
+			}
+		});
 	}
 
 	focus() {
@@ -181,8 +203,6 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		} else {
 			this.endValue = elem.value;
 		}
-		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
-		await this.requestValidate();
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
@@ -198,7 +218,9 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
+		if (this.endValue && this.startValue) {
+			e.preventDefault();
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 import { formatDateInISO,
 	formatDateTimeInISO,
 	formatTimeInISO,
+	getClosestValidDate,
 	getDateFromDateObj,
 	getDateFromISODate,
 	getDateFromISODateTime,
@@ -176,6 +177,81 @@ describe('date-time', () => {
 			expect(() => {
 				getDateFromDateObj();
 			}).to.throw();
+		});
+	});
+
+	['America/Toronto', 'Australia/Eucla'].forEach((timezone) => {
+		describe(`getClosestValidDate in ${timezone}`, () => {
+			let clock;
+			const today = '2018-02-12T20:00:00.000Z';
+			const todayDate = timezone === 'America/Toronto' ? '2018-02-12' : '2018-02-13';
+
+			before(() => {
+				documentLocaleSettings.timezone.identifier = timezone;
+				const newToday = new Date(today);
+				clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+			});
+
+			after(() => {
+				clock.restore();
+				documentLocaleSettings.timezone.identifier = 'America/Toronto';
+			});
+
+			describe('dateTime', () => {
+				it('returns today when no min and max', () => {
+					expect(getClosestValidDate(null, null, true)).to.equal(today);
+				});
+
+				it('returns today when today after min', () => {
+					expect(getClosestValidDate('2017-12-12T08:00:00.000Z', null, true)).to.equal(today);
+				});
+
+				it('returns today when today before max', () => {
+					expect(getClosestValidDate(null, '2020-11-12T08:00:00.000Z', true)).to.equal(today);
+				});
+
+				it('returns min when today before min', () => {
+					const min = '2020-12-12T12:00:00.000Z';
+					expect(getClosestValidDate(min, null, true)).to.equal(min);
+				});
+
+				it('returns max when today after max', () => {
+					const max = '2017-12-12T08:00:00.000Z';
+					expect(getClosestValidDate(null, max, true)).to.equal(max);
+				});
+
+				it('returns today when between min and max', () => {
+					expect(getClosestValidDate('2015-12-12T08:00:00.000Z', '2020-12-12T08:00:00.000Z', true)).to.equal(today);
+				});
+			});
+
+			describe('date', () => {
+				it('returns today when no min and max', () => {
+					expect(getClosestValidDate(null, null, false)).to.equal(todayDate);
+				});
+
+				it('returns today when today after min', () => {
+					expect(getClosestValidDate('2015-01-10', null, false)).to.equal(todayDate);
+				});
+
+				it('returns today when today before max', () => {
+					expect(getClosestValidDate(null, '2020-11-10', false)).to.equal(todayDate);
+				});
+
+				it('returns min when today before min', () => {
+					const min = '2020-01-13';
+					expect(getClosestValidDate(min, null, false)).to.equal(min);
+				});
+
+				it('returns max when today after max', () => {
+					const max = '2015-07-10';
+					expect(getClosestValidDate(null, max, false)).to.equal(max);
+				});
+
+				it('returns today when between min and max', () => {
+					expect(getClosestValidDate('2015-07-10', '2021-01-01', false)).to.equal(todayDate);
+				});
+			});
 		});
 	});
 
