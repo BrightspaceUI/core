@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} は無効です。",
 	"components.form-element.defaultFieldLabel": "フィールド",
 	"components.form-element.input.email.typeMismatch": "電子メールが無効です",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "数値は {max} より小さくなければなりません",
 	"components.form-element.input.number.rangeUnderflow": "数値は {min} より大きくなければなりません",
 	"components.form-element.input.text.tooShort": "{label} は {minlength} 文字以上である必要があります",
