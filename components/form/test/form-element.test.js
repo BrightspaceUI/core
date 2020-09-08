@@ -209,12 +209,6 @@ describe('form-element', () => {
 
 	describe('requestValidate', () => {
 
-		it('should not validate if canceled', async() => {
-			formElement.addEventListener('d2l-form-element-should-validate', e => e.preventDefault());
-			await formElement.requestValidate(ValidationType.SHOW_NEW_ERRORS);
-			expect(formElement.validationError).to.be.null;
-		});
-
 		it('should show validation errors by default', async() => {
 			await formElement.requestValidate();
 			expect(formElement.validationError).to.equal('Test form element is required.');

@@ -183,7 +183,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -246,18 +245,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	focus() {
 		if (this._textInput) this._textInput.focus();
-	}
-
-	async validate(validationType) {
-		let childErrors = [];
-		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
-		if (inputTextElem) {
-			await inputTextElem.updateComplete;
-			childErrors = await Promise.resolve(inputTextElem.validate(validationType));
-			this._inputTextInvalid = inputTextElem.invalid;
-		}
-		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...childErrors, ...errors];
 	}
 
 	get validationMessage() {

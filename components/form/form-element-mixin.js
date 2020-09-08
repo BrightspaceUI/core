@@ -23,6 +23,7 @@ export class FormElementValidityState {
 			customError: false
 		};
 	}
+
 	constructor(flags) {
 		const flagNames = Object.keys(flags);
 		const invalidFlags = flagNames.filter(name => !(name in FormElementValidityState.supportedFlags));
@@ -131,21 +132,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	}
 
 	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
-		if (this.dispatchEvent(new CustomEvent('d2l-form-element-should-validate', { cancelable: true }))) {
-			const errors = await this.validate(validationType);
-			this._notifyFormErrorsChanged(errors);
-		}
-	}
-
-	setFormValue(formValue) {
-		this.formValue = formValue;
-	}
-
-	setValidity(flags) {
-		this._validity = new FormElementValidityState(flags);
-	}
-
-	async validate(validationType) {
 		if (this.noValidate) {
 			return [];
 		}
@@ -156,9 +142,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			errors.unshift(this.validationMessage);
 		}
 		switch (validationType) {
-			case ValidationType.SUPPRESS_ERRORS:
-				this.validationError = null;
-				break;
 			case ValidationType.UPDATE_EXISTING_ERRORS:
 				if (this.validationError && errors.length > 0) {
 					this.validationError = errors[0];
@@ -174,7 +157,14 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				}
 				break;
 		}
-		return errors;
+	}
+
+	setFormValue(formValue) {
+		this.formValue = formValue;
+	}
+
+	setValidity(flags) {
+		this._validity = new FormElementValidityState(flags);
 	}
 
 	validationCustomConnected(custom) {
@@ -195,11 +185,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	get validity() {
 		return this._validity;
-	}
-
-	_notifyFormErrorsChanged(errors) {
-		const detail = { bubbles: true, detail: { errors } };
-		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
 	}
 
 	_validationCustomConnected(e) {

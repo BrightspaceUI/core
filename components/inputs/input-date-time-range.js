@@ -2,7 +2,7 @@ import './input-date-time.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDateFromISODateTime } from '../../helpers/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -119,7 +119,6 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 					<d2l-input-date-time
 						@change="${this._handleChange}"
 						class="d2l-input-date-time-range-start"
-						@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 						@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
 						.forceInvalid=${this.invalid}
@@ -135,7 +134,6 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 				<d2l-input-date-time
 					@change="${this._handleChange}"
 					class="d2l-input-date-time-range-end"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
@@ -154,15 +152,6 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 	focus() {
 		const input = this.shadowRoot.querySelector('d2l-input-date-time');
 		if (input) input.focus();
-	}
-
-	async validate(validationType) {
-		const childErrors = await Promise.all([
-			this.shadowRoot.querySelector('.d2l-input-date-time-range-start').validate(validationType),
-			this.shadowRoot.querySelector('.d2l-input-date-time-range-end').validate(validationType)]
-		).then(res => res.reduce((acc, errors) => [...acc, ...errors], []));
-		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...childErrors, ...errors];
 	}
 
 	get validationMessage() {
