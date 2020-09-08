@@ -160,7 +160,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					[`${this.name}-endValue`]: this.endValue,
 				});
 				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
-				this.requestValidate();
+				this.requestValidate(true);
 			}
 		});
 	}

@@ -131,7 +131,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return true;
 	}
 
-	async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS) {
+	async requestValidate(showNewErrors = true) {
 		if (this.noValidate) {
 			return [];
 		}
@@ -141,21 +141,10 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		if (!this.validity.valid) {
 			errors.unshift(this.validationMessage);
 		}
-		switch (validationType) {
-			case ValidationType.UPDATE_EXISTING_ERRORS:
-				if (this.validationError && errors.length > 0) {
-					this.validationError = errors[0];
-				} else {
-					this.validationError = null;
-				}
-				break;
-			case ValidationType.SHOW_NEW_ERRORS:
-				if (errors.length > 0) {
-					this.validationError = errors[0];
-				} else {
-					this.validationError = null;
-				}
-				break;
+		if (errors.length > 0 && (showNewErrors || this.validationError)) {
+			this.validationError = errors[0];
+		} else {
+			this.validationError = null;
 		}
 	}
 

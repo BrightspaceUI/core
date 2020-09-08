@@ -174,7 +174,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		if (elem.classList.contains('d2l-input-date-time-range-start')) this.startValue = elem.value;
 		else this.endValue = elem.value;
 		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODateTime(this.endValue) <= getDateFromISODateTime(this.startValue))) });
-		await this.requestValidate();
+		await this.requestValidate(true);
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

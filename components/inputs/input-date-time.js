@@ -108,7 +108,6 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
 					@change="${this._handleDateChange}"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
@@ -158,7 +157,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					rangeUnderflow: this.value && this.minValue && (new Date(this.value)).getTime() < (new Date(this.minValue)).getTime(),
 					rangeOverflow: this.value && this.maxValue && (new Date(this.value)).getTime() > (new Date(this.maxValue)).getTime()
 				});
-				this.requestValidate();
+				this.requestValidate(true);
 				this._preventDefaultValidation = true;
 			} else if (prop === 'maxValue' && this.maxValue) {
 				try {

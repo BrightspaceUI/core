@@ -6,7 +6,12 @@ import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
-import { ValidationType } from './form-element-mixin.js';
+
+export const ValidationType = {
+	SUPPRESS_ERRORS: 0,
+	UPDATE_EXISTING_ERRORS: 1,
+	SHOW_NEW_ERRORS: 2,
+};
 
 export const FormMixin = superclass => class extends LocalizeCoreElement(superclass) {
 

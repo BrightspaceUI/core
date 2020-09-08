@@ -9,7 +9,7 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -238,7 +238,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					rangeUnderflow: this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
 					rangeOverflow: this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
 				});
-				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+				this.requestValidate(false);
 			}
 		});
 	}
@@ -264,7 +264,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleBlur() {
 		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+		this.requestValidate(true);
 	}
 
 	async _handleChange() {

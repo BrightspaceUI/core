@@ -210,7 +210,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					[`${this.name}-endValue`]: this.endValue,
 				});
 				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue))) });
-				this.requestValidate();
+				this.requestValidate(true);
 			}
 		});
 	}
