@@ -160,7 +160,9 @@ describe('d2l-input-date', () => {
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '12/31/2019';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			setTimeout(() => dispatchEvent(inputElem, 'blur', true));
 			await oneEvent(elem, 'change');
+			await oneEvent(elem, 'blur');
 			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2019-12-31');
 			expect(elem.invalid).to.be.true;
@@ -172,7 +174,9 @@ describe('d2l-input-date', () => {
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '12/31/2021';
 			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			setTimeout(() => dispatchEvent(inputElem, 'blur', true));
 			await oneEvent(elem, 'change');
+			await oneEvent(elem, 'blur');
 			await oneEvent(elem, 'invalid-change');
 			expect(elem.value).to.equal('2021-12-31');
 			expect(elem.invalid).to.be.true;
@@ -204,42 +208,6 @@ describe('d2l-input-date', () => {
 
 		describe('required', () => {
 
-			it('should default to today', async() => {
-				const newToday = new Date('2018-02-12T20:00:00Z');
-				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
-				const elem = await fixture('<d2l-input-date label="Date" required></d2l-input-date>');
-				await elem.updateComplete;
-				expect(elem.value).to.equal('2018-02-12');
-				clock.restore();
-			});
-
-			it('should default to min when today out of range', async() => {
-				const newToday = new Date('2018-02-12T20:00:00Z');
-				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
-				const elem = await fixture('<d2l-input-date label="Date" min-value="2020-02-01" required></d2l-input-date>');
-				await elem.updateComplete;
-				expect(elem.value).to.equal('2020-02-01');
-				clock.restore();
-			});
-
-			it('should default to max when today out of range', async() => {
-				const newToday = new Date('2018-02-12T20:00:00Z');
-				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
-				const elem = await fixture('<d2l-input-date label="Date" max-value="2015-02-01" required></d2l-input-date>');
-				await elem.updateComplete;
-				expect(elem.value).to.equal('2015-02-01');
-				clock.restore();
-			});
-
-			it('should default to today when today in range', async() => {
-				const newToday = new Date('2018-02-12T20:00:00Z');
-				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
-				const elem = await fixture('<d2l-input-date label="Date" min-value="2018-02-01" max-value="2020-01-01" required></d2l-input-date>');
-				await elem.updateComplete;
-				expect(elem.value).to.equal('2018-02-12');
-				clock.restore();
-			});
-
 			it('should fire "change" event when input value changes', async() => {
 				const elem = await fixture('<d2l-input-date label="Date" required></d2l-input-date>');
 				const inputElem = getChildElem(elem, 'd2l-input-text');
@@ -249,8 +217,22 @@ describe('d2l-input-date', () => {
 				expect(elem.value).to.equal('2011-11-08');
 			});
 
+			it('should change value if typed date before minValue when required', async() => {
+				const elem = await fixture('<d2l-input-date min-value="2020-01-02" label="Date" required></d2l-input-date>');
+				const inputElem = getChildElem(elem, 'd2l-input-text');
+				inputElem.value = '12/31/2019';
+				setTimeout(() => dispatchEvent(inputElem, 'change', false));
+				setTimeout(() => dispatchEvent(inputElem, 'blur', true));
+				await oneEvent(elem, 'change');
+				await oneEvent(elem, 'blur');
+				await oneEvent(elem, 'invalid-change');
+				expect(elem.value).to.equal('2019-12-31');
+				expect(elem.invalid).to.be.true;
+				expect(elem.validationError).to.equal('Date must be after Jan 2, 2020');
+			});
+
 			it('should not fire "change" event when input value removed', async() => {
-				const elem = await fixture(basicFixture);
+				const elem = await fixture('<d2l-input-date label="Date" required value="2020-12-02"></d2l-input-date>');
 				const inputElem = getChildElem(elem, 'd2l-input-text');
 				let fired = false;
 				elem.addEventListener('change', () => {
@@ -260,6 +242,7 @@ describe('d2l-input-date', () => {
 				dispatchEvent(inputElem, 'change', false);
 				await aTimeout(1);
 				expect(fired).to.be.false;
+				expect(elem.value).to.equal('2020-12-02');
 			});
 		});
 
