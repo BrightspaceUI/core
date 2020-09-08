@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label}이(가) 잘못되었습니다.",
 	"components.form-element.defaultFieldLabel": "필드",
 	"components.form-element.input.email.typeMismatch": "",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "",
 	"components.form-element.input.number.rangeUnderflow": "",
 	"components.form-element.input.text.tooShort": "",

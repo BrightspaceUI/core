@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} no es válido.",
 	"components.form-element.defaultFieldLabel": "Campo",
 	"components.form-element.input.email.typeMismatch": "El correo electrónico no es válido",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "El número debe ser inferior a {max}",
 	"components.form-element.input.number.rangeUnderflow": "El número debe ser superior a {min}",
 	"components.form-element.input.text.tooShort": "{label} debe tener al menos {minlength} caracteres",

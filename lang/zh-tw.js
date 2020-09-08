@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} 無效。",
 	"components.form-element.defaultFieldLabel": "欄位",
 	"components.form-element.input.email.typeMismatch": "電子郵件無效",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "數目必須低於 {max}",
 	"components.form-element.input.number.rangeUnderflow": "數目必須高於 {min}",
 	"components.form-element.input.text.tooShort": "{label} 必須至少為 {minlength} 個字元",

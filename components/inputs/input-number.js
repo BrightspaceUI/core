@@ -1,26 +1,20 @@
+import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
+import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { inputLabelStyles } from './input-label-styles.js';
-import { inputStyles } from './input-styles.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
-function clampValue(value, min, max) {
-	if (min !== undefined) value = Math.max(value, min);
-	if (max !== undefined) value = Math.min(value, max);
-	return value;
-}
-
-function formatValue(value, minFractionDigits, maxFractionDigits) {
+export function formatValue(value, minFractionDigits, maxFractionDigits) {
 	const options = {
-		maximumFractionDigits: maxFractionDigits,
-		minimumFractionDigits: minFractionDigits
+		maximumFractionDigits: maxFractionDigits ? maxFractionDigits : undefined,
+		minimumFractionDigits: minFractionDigits ? minFractionDigits : undefined
 	};
 	return formatNumber(value, options);
 }
 
-class InputNumber extends LitElement {
+class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -33,7 +27,6 @@ class InputNumber extends LitElement {
 			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
 			min: { type: Number },
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
-			name: { type: String },
 			placeholder: { type: String },
 			required: { type: Boolean },
 			value: { type: Number },
@@ -43,9 +36,6 @@ class InputNumber extends LitElement {
 
 	static get styles() {
 		return [
-			inputLabelStyles,
-			inputStyles,
-			offscreenStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -70,8 +60,7 @@ class InputNumber extends LitElement {
 	set value(val) {
 		const oldValue = this.value;
 		try {
-			const newValue = clampValue(val, this.min, this.max);
-			this._formattedValue = formatValue(newValue, this.minFractionDigits, this.maxFractionDigits);
+			this._formattedValue = formatValue(val, this.minFractionDigits, this.maxFractionDigits);
 			this._value = parseNumber(this._formattedValue);
 		} catch (err) {
 			this._formattedValue = '';
@@ -81,25 +70,64 @@ class InputNumber extends LitElement {
 	}
 
 	render() {
-		const ariaRequired = this.required ? 'true' : undefined;
-
 		return html`
-			<label
-				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
-				for="${this._inputId}">${this.label}</label>
-			<input
-				aria-required="${ifDefined(ariaRequired)}"
+			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
-				class="d2l-input"
+				@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 				?disabled="${this.disabled}"
+				.forceInvalid="${this.invalid}"
 				id="${this._inputId}"
+				label="${this.label}"
+				?label-hidden="${this.labelHidden}"
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
-				type="text"
-				.value="${this._formattedValue}">
+				?required="${this.required}"
+				.value="${this._formattedValue}"
+			></d2l-input-text>
+			${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (prop === 'value') {
+				this.setFormValue(this.value);
+				this.setValidity({
+					rangeUnderflow: typeof(this.min) === 'number' && this.value < this.min,
+					rangeOverflow: typeof(this.max) === 'number' && this.value > this.max
+				});
+				this.requestValidate();
+			}
+		});
+	}
+
+	focus() {
+		this.shadowRoot.querySelector('d2l-input-text').focus();
+	}
+
+	async validate(validationType) {
+		const childErrors = await this.shadowRoot.querySelector('d2l-input-text').validate(validationType);
+		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
+		return [...childErrors, ...errors];
+	}
+
+	get validationMessage() {
+		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
+			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
+			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
+			if (minNumber && maxNumber) {
+				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max :maxNumber });
+			} else if (maxNumber) {
+				return this.localize('components.form-element.input.number.rangeOverflow', { max: maxNumber });
+			} else if (minNumber) {
+				return this.localize('components.form-element.input.number.rangeUnderflow', { min: minNumber });
+			}
+		}
+		return super.validationMessage;
 	}
 
 	async _handleChange(e) {
@@ -107,6 +135,10 @@ class InputNumber extends LitElement {
 		this._formattedValue = value;
 		await this.updateComplete;
 		this.value = parseNumber(value);
+	}
+
+	_handleNestedFormElementValidation(e) {
+		e.preventDefault();
 	}
 }
 customElements.define('d2l-input-number', InputNumber);

@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} 无效。",
 	"components.form-element.defaultFieldLabel": "字段",
 	"components.form-element.input.email.typeMismatch": "电子邮件无效",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "数字必须小于 {max}",
 	"components.form-element.input.number.rangeUnderflow": "数字必须大于 {min}",
 	"components.form-element.input.text.tooShort": "{label} 必须至少为 {minlength} 个字符",

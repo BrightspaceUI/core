@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} غير صالحة.",
 	"components.form-element.defaultFieldLabel": "الحقل",
 	"components.form-element.input.email.typeMismatch": "البريد الإلكتروني غير صالح",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "يجب أن يكون الرقم أقل من {max}",
 	"components.form-element.input.number.rangeUnderflow": "يجب أن يكون الرقم أكبر من {min}",
 	"components.form-element.input.text.tooShort": "يجب أن تتألف التسمية {label} من {minlength} من الأحرف على الأقل",

@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} ist ungültig.",
 	"components.form-element.defaultFieldLabel": "Feld",
 	"components.form-element.input.email.typeMismatch": "Die E-Mail-Adresse ist ungültig",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "Die Zahl muss kleiner als {max} sein",
 	"components.form-element.input.number.rangeUnderflow": "Die Zahl muss größer als {min} sein",
 	"components.form-element.input.text.tooShort": "{label} muss mindestens {minlength} Zeichen enthalten",
