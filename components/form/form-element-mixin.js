@@ -95,7 +95,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 	constructor() {
 		super();
 		this._validationCustomConnected = this._validationCustomConnected.bind(this);
-		this._onFormElementValidate = this._onFormElementValidate.bind(this);
+		this._onFormElementErrorsChange = this._onFormElementErrorsChange.bind(this);
 
 		this._validationCustoms = new Set();
 		this._validity = new FormElementValidityState({});
@@ -108,15 +108,17 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._errors = [];
 
 		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.shadowRoot.addEventListener('d2l-form-element-validate', this._onFormElementValidate);
+		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
 	}
 
 	updated(changedProperties) {
 		if (changedProperties.has('_errors') || changedProperties.has('childErrors')) {
-			const childErrors = [...this.childErrors.values()].flat();
-			const errors = [...this._errors, ...childErrors];
+			let errors = this._errors;
+			for (const childErrors of this.childErrors.values()) {
+				errors = [...childErrors, ...errors];
+			}
 			const options = { bubbles: true, composed: true, detail: { errors } };
-			this.dispatchEvent(new CustomEvent('d2l-form-element-validate', options));
+			this.dispatchEvent(new CustomEvent('d2l-form-element-errors-change', options));
 		}
 		changedProperties.forEach((_, propName) => {
 			if (propName === 'noValidate' || propName === 'forceInvalid' || propName === 'validationError') {
@@ -168,6 +170,11 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validity = new FormElementValidityState(flags);
 	}
 
+	async validate() {
+		await this.requestValidate(true);
+		return this._errors;
+	}
+
 	validationCustomConnected(custom) {
 		this._validationCustoms.add(custom);
 	}
@@ -188,7 +195,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this._validity;
 	}
 
-	_onFormElementValidate(e) {
+	_onFormElementErrorsChange(e) {
 		e.stopPropagation();
 		const errors = e.detail.errors;
 		if (errors.length === 0) {

@@ -1,5 +1,7 @@
 
 import '../../button/button.js';
+import '../../inputs/input-date.js';
+import '../../inputs/input-date-time-range.js';
 import '../../inputs/input-text.js';
 import '../../validation/validation-custom.js';
 import '../form-native.js';
@@ -50,11 +52,13 @@ class FormNativeDemo extends LitElement {
 						<option value="capybara">Capybara</option>
 					</select>
 				</div>
+				<d2l-input-date label="Date" name="my-date" required></d2l-input-date>
 				<div class="d2l-form-demo-container">
 					<label for="story">Tell us your story</label>
 						<textarea class="d2l-input" minlength="20" id="story" name="story" rows="5" cols="33">It was...</textarea>
 					</label>
 				</div>
+				<d2l-input-date-time-range label="Assignment Dates" required min-value="2018-08-27T12:30:00Z" max-value="2018-09-30T12:30:00Z"></d2l-input-date-time-range>
 				<div class="d2l-form-demo-container">
 					<label for="file">Super Secret File</label><br />
 					<input type="file" id="file" name="super-secret-file">

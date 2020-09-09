@@ -223,6 +223,13 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		if (input) input.focus();
 	}
 
+	async validate() {
+		const startTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-start');
+		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
+		const errors = await Promise.all([startTimeInput.validate(), endTimeInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1], ...errors[2]];
+	}
+
 	get validationMessage() {
 		if (this.validity.badInput) {
 			return this.localize('components.input-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });

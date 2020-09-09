@@ -253,6 +253,12 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		if (this._textInput) this._textInput.focus();
 	}
 
+	async validate() {
+		const textInput = this.shadowRoot.querySelector('d2l-input-text');
+		const errors = await Promise.all([textInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1]];
+	}
+
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;

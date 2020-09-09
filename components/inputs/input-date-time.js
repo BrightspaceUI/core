@@ -186,6 +186,13 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		if (elem) elem.focus();
 	}
 
+	async validate() {
+		const dateInput = this.shadowRoot.querySelector('d2l-input-date');
+		const timeInput = this.shadowRoot.querySelector('d2l-input-time');
+		const errors = await Promise.all([dateInput.validate(), timeInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1], ...errors[2]];
+	}
+
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minDate = this.minValue ? formatDateTime(getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;

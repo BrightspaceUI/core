@@ -114,10 +114,10 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	render() {
-		const inputStart = this.shadowRoot.querySelector('.d2l-input-date-range-start');
-		const inputEnd = this.shadowRoot.querySelector('.d2l-input-date-range-end');
-		const tooltipStart = (this.validationError && !this._startCalendarOpened && !this.childErrors.has(inputStart)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endCalendarOpened && !this.childErrors.has(inputEnd)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const startDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-start');
+		const endDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-end');
+		const tooltipStart = (this.validationError && !this._startCalendarOpened && !this.childErrors.has(startDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endCalendarOpened && !this.childErrors.has(endDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -170,6 +170,13 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	focus() {
 		const input = this.shadowRoot.querySelector('d2l-input-date');
 		if (input) input.focus();
+	}
+
+	async validate() {
+		const startDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-start');
+		const endDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-end');
+		const errors = await Promise.all([startDateInput.validate(), endDateInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1], ...errors[2]];
 	}
 
 	get validationMessage() {
