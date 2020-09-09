@@ -178,6 +178,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-pointer {
+				border: 1px solid transparent; /* fixes a webket clipping defect */
 				display: inline-block;
 				position: absolute;
 				z-index: 1;
