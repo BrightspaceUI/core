@@ -174,6 +174,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-time
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-start"
 					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
@@ -187,6 +188,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-time>
 				<d2l-input-time
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-end"
 					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"

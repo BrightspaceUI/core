@@ -123,6 +123,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
 					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
@@ -136,6 +137,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-date>
 				<d2l-input-date
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-end"
 					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"

@@ -55,7 +55,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 * Disables validation of max and min value. The min and max value will still be enforced
 			 * but the component will not be put into an error state or show an error tooltip.
 			 */
-			novalidateminmax: { attribute: 'novalidateminmax', type: Boolean },
+			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
 			/**
 			 * Indicates that a value is required
 			 */
@@ -123,7 +123,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
-		this.novalidateminmax = false;
+		this.noValidateMinMax = false;
 		this.required = false;
 		this.value = '';
 
@@ -185,6 +185,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			${tooltip}
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					?novalidate="${this.noValidate}"
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
@@ -241,8 +242,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			if (prop === 'value') {
 				this.setFormValue(this.value);
 				this.setValidity({
-					rangeUnderflow: !this.novalidateminmax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
-					rangeOverflow: !this.novalidateminmax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
+					rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
+					rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
 				});
 				this.requestValidate(false);
 			}

@@ -108,6 +108,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			${tooltip}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
+					?novalidate="${this.noValidate}"
 					novalidateminmax
 					@change="${this._handleDateChange}"
 					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
@@ -122,6 +123,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
 				<d2l-input-time
+					?novalidate="${this.noValidate}"
 					@blur="${this._handleInputTimeBlur}"
 					@change="${this._handleTimeChange}"
 					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
