@@ -194,15 +194,14 @@ The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d
 
 **Properties:**
 
-Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
-
 | Property | Type | Description |
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
-| `value` | String, default `''` | Value of the input. |
+| `time-default-value`| String, default midnight | Override for default time in format `hh:mm:ss`. |
+| `value` | String, default `''` | Value of the input in ISO 8601 calendar date format (`YYYY-MM-DD`) and [localized to the user's timezone](#timezone) (if applicable). |
 
 **Accessibility:**
 
