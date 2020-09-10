@@ -27,6 +27,8 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 **Methods:**
 
+- `getListItemCount`: gets the length of the items within the list
+- `getListItemPosition` (Object): gets the position of the given element within the list
 - `getSelectionInfo` (Object): gets the `state` (`listSelectionStates`) and `keys` (Array) for the selected items
 - `toggleSelectAll`: toggles the selection state of all items
 

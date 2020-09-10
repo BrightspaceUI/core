@@ -28,7 +28,7 @@ class List extends LitElement {
 			 * @type {'all'|'between'|'none'}
 			 * @default "all"
 			 */
-			separators: { type: String, reflect: true },
+			separators: { type: String, reflect: true }
 		};
 	}
 
@@ -65,11 +65,11 @@ class List extends LitElement {
 	}
 
 	getListItemCount() {
-		return this._getListItems().length;
+		return this._getItems().length;
 	}
 
 	getListItemPosition(item) {
-		return this._getListItems().indexOf(item);
+		return this._getItems().indexOf(item);
 	}
 
 	getSelectionInfo() {
@@ -102,10 +102,6 @@ class List extends LitElement {
 		return this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
-	}
-
-	_getListItems() {
-		return this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 	}
 
 }
