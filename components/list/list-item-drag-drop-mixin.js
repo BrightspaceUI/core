@@ -6,6 +6,7 @@ import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 export const dropLocation = Object.freeze({
 	above: 1,
@@ -37,7 +38,7 @@ const isDragSupported = () => {
 	return typeof el.ondragenter === 'function';
 };
 
-export const ListItemDragDropMixin = superclass => class extends superclass {
+export const ListItemDragDropMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
 		return {
@@ -54,7 +55,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			_dropLocation: { type: Number },
 			_focusingDragHandle: { type: Boolean },
 			_hovering: { type: Boolean },
-			_keyboardActive: { type: Boolean }
+			_keyboardActive: { type: Boolean },
+			_keyboardText: { type: String }
 		};
 	}
 
@@ -133,6 +135,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			detail: new NewPositionEventDetails({ dragTargetKey, dropTargetKey, dropLocation }),
 			bubbles: true
 		}));
+	}
+
+	_getKeyboardText() {
+		const parent = this.parentNode;
+		const namespace = 'components.list-item-drag-handle';
+		this._keyboardText = this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', parent.getItemPosition(this) + 1, 'size', parent.getListCount());
 	}
 
 	_findListItemFromCoordinates(x, y) {
@@ -262,6 +270,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onFocusinDragHandle() {
 		this._focusingDragHandle = true;
+		this._getKeyboardText();
 	}
 
 	_onFocusoutDragHandle() {
@@ -366,11 +375,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this._dropLocation === dropLocation.below ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
 	}
 
-	_getListSize() {
-		const parent = this.parentNode;
-		return parent.getListSize();
-	}
-
 	_renderDragHandle(templateMethod) {
 		templateMethod = templateMethod || (dragHandle => dragHandle);
 		const classes = {
@@ -383,8 +387,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
 				text="${ifDefined(this.dragHandleText)}"
-				current-position="${ifDefined(this.dropDestination)}"
-				list-size="${ifDefined(this._getListSize())}"
+				keyboard-text="${ifDefined(this._keyboardText)}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">

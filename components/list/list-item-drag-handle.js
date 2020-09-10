@@ -37,10 +37,9 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean, reflect: true },
-			currentPosition: { type: Number, attribute: 'current-position' },
-			listSize: { type: Number, attribute: 'list-size' },
+			keyboardText: { type: Number, attribute: 'keyboard-text' },
 			text: { type: String },
-			_keyboardActive: { type: Boolean },
+			_keyboardActive: { type: Boolean }
 		};
 	}
 
@@ -124,7 +123,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 
 	get _defaultLabel() {
 		const namespace = 'components.list-item-drag-handle';
-		return this.localize(`${namespace}.${this._keyboardActive ? 'keyboard' : 'default'}`, 'name', this.text, 'currentPosition', this.currentPosition, 'size', this.listSize);
+		return this.keyboardText || this.localize(`${namespace}.${'default'}`, 'name', this.text);
 	}
 
 	_dispatchAction(action) {

@@ -64,10 +64,12 @@ class List extends LitElement {
 		`;
 	}
 
-	getListSize() {
-		const slot = this.shadowRoot.querySelector('slot');
-		const listItems = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
-		return listItems.length;
+	getListItemCount() {
+		return this._getListItems().length;
+	}
+
+	getListItemPosition(item) {
+		return this._getListItems().indexOf(item);
 	}
 
 	getSelectionInfo() {
@@ -100,6 +102,10 @@ class List extends LitElement {
 		return this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
+	}
+
+	_getListItems() {
+		return this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 	}
 
 }
