@@ -151,7 +151,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 			case keyCodes.UP:
 				this._movingElement = true;
 				action = dragActions.up;
-				this.updateComplete.then(() => this.blur());
+				this.updateComplete.then(() => this.blur()); // tell screenreaders to refocus
 				break;
 			case keyCodes.DOWN:
 				this._movingElement = true;
