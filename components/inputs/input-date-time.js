@@ -44,7 +44,8 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Override for the time input default value. If not provided, this will default to midnight. Should be in format "hh:mm:ss".
+			 * Set default value of time portion of the input. Valid values are times in ISO 8601 time format ("hh:mm:ss"), "startOfDay", "endOfDay".
+			 * @type {'startOfDay'|'endOfDay'|string}
 			 */
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
