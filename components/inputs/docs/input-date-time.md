@@ -202,7 +202,7 @@ Note: `max-value`, `min-value` and `value` should be in ISO 8601 combined date a
 | `disabled` | Boolean | Disables the input |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
-| `time-default-value`| String, default midnight | Override for default time in format `hh:mm:ss`. |
+| `time-default-value`| String, default:`'00:00:00'` | Set default value of time input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`. |
 | `value` | String, default `''` | Value of the input. |
 
 **Accessibility:**
