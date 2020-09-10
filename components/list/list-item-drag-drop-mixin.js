@@ -5,8 +5,8 @@ import { dragActions } from './list-item-drag-handle.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { nothing } from 'lit-html';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { nothing } from 'lit-html';
 
 export const dropLocation = Object.freeze({
 	above: 1,
@@ -48,15 +48,14 @@ export const ListItemDragDropMixin = superclass => class extends LocalizeCoreEle
 			draggable: { type: Boolean, reflect: true },
 			dragging: { type: Boolean, reflect: true },
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
-			dropDestination: { type: Number, reflect: true, attribute: 'drop-destination' },
+			dragHandleActiveText: { type: String, attribute: 'drag-handle-active-text' },
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number },
 			_focusingDragHandle: { type: Boolean },
 			_hovering: { type: Boolean },
-			_keyboardActive: { type: Boolean },
-			_keyboardText: { type: String }
+			_keyboardActive: { type: Boolean }
 		};
 	}
 
@@ -137,15 +136,15 @@ export const ListItemDragDropMixin = superclass => class extends LocalizeCoreEle
 		}));
 	}
 
-	_getKeyboardText() {
-		const parent = this.parentNode;
-		const namespace = 'components.list-item-drag-handle';
-		this._keyboardText = this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', parent.getItemPosition(this) + 1, 'size', parent.getListCount());
-	}
-
 	_findListItemFromCoordinates(x, y) {
 		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
 		return listNode.shadowRoot.elementFromPoint(x, y);
+	}
+
+	_getKeyboardText() {
+		const parent = this.parentNode;
+		const namespace = 'components.list-item-drag-handle';
+		this.dragHandleActiveText = this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', parent.getListItemPosition(this) + 1, 'size', parent.getListItemCount());
 	}
 
 	_onContextMenu(e) {
@@ -387,7 +386,7 @@ export const ListItemDragDropMixin = superclass => class extends LocalizeCoreEle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
 				text="${ifDefined(this.dragHandleText)}"
-				keyboard-text="${ifDefined(this._keyboardText)}"
+				keyboard-text="${ifDefined(this.dragHandleActiveText)}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
@@ -618,11 +617,6 @@ export class NewPositionEventDetails {
 			}
 		}
 		list[destination] = item;
-
-		return {
-			origin: origin,
-			destination: destination
-		}
 	}
 
 	_fetchDropTargetPosition(list, originPosition, keyFn) {
