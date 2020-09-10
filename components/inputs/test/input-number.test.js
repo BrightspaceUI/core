@@ -3,6 +3,10 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
+const requiredFixture = html`<d2l-input-number label="label" required></d2l-input-number>`;
+const minMaxFixture = html`<d2l-input-number label="label" min="5" max="10"></d2l-input-number>`;
+const minFixture = html`<d2l-input-number label="label" min="5"></d2l-input-number>`;
+const maxFixture = html`<d2l-input-number label="label" max="10"></d2l-input-number>`;
 
 function dispatchEvent(elem, eventType) {
 	const e = new Event(
@@ -44,8 +48,7 @@ describe('d2l-input-number', () => {
 
 	describe('validation', () => {
 		it('should be valid when required has value', async() => {
-			const elem = await fixture(normalFixture);
-			elem.required = true;
+			const elem = await fixture(requiredFixture);
 			elem.value = 10;
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
@@ -56,8 +59,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should be invalid when empty and required', async() => {
-			const elem = await fixture(normalFixture);
-			elem.required = true;
+			const elem = await fixture(requiredFixture);
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
 			await oneEvent(elem, 'change');
@@ -67,9 +69,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should be valid if number is in range', async() => {
-			const elem = await fixture(normalFixture);
-			elem.min = 5;
-			elem.max = 10;
+			const elem = await fixture(minMaxFixture);
 			elem.value = 7;
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
@@ -80,9 +80,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should be invalid if number is out of range', async() => {
-			const elem = await fixture(normalFixture);
-			elem.min = 5;
-			elem.max = 10;
+			const elem = await fixture(minMaxFixture);
 			elem.value = 1;
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
@@ -93,8 +91,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should be valid if number is higher than min', async() => {
-			const elem = await fixture(normalFixture);
-			elem.min = 5;
+			const elem = await fixture(minFixture);
 			elem.value = 10;
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
@@ -105,8 +102,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should be invalid if number is lower than min', async() => {
-			const elem = await fixture(normalFixture);
-			elem.min = 5;
+			const elem = await fixture(minFixture);
 			elem.value = 1;
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
@@ -117,8 +113,7 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should be valid if number is lower than max', async() => {
-			const elem = await fixture(normalFixture);
-			elem.max = 5;
+			const elem = await fixture(maxFixture);
 			elem.value = 1;
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
@@ -129,15 +124,14 @@ describe('d2l-input-number', () => {
 		});
 
 		it('should be invalid if number is higher than max', async() => {
-			const elem = await fixture(normalFixture);
-			elem.max = 5;
-			elem.value = 10;
+			const elem = await fixture(maxFixture);
+			elem.value = 15;
 
 			setTimeout(() => dispatchEvent(elem, 'change'));
 			await oneEvent(elem, 'change');
 
 			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be lower than 5.');
+			expect(errors).to.contain('Number must be lower than 10.');
 		});
 	});
 });
