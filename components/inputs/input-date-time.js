@@ -28,6 +28,10 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			 */
 			label: { type: String },
 			/**
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 */
+			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
 			 * Maximum valid date/time that could be selected by a user.
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
@@ -72,6 +76,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	constructor() {
 		super();
 		this.disabled = false;
+		this.labelHidden = false;
 		this.required = false;
 		this._dropdownOpened = false;
 		this._inputId = getUniqueId();
@@ -95,7 +100,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltip}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?required="${this.required}">
+			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
 					@change="${this._handleDateChange}"
 					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
