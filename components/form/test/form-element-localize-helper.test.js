@@ -63,7 +63,7 @@ describe('form-element-localize-helper', () => {
 				input.value = '10';
 
 				const errorMessage = localizeFormElement(localize, input);
-				expect(errorMessage).to.equal('Number must be higher than 100');
+				expect(errorMessage).to.equal('Number must be higher than 100.');
 			});
 
 			it('should localize range overflowflow error', async() => {
@@ -71,7 +71,7 @@ describe('form-element-localize-helper', () => {
 				input.value = '100';
 
 				const errorMessage = localizeFormElement(localize, input);
-				expect(errorMessage).to.equal('Number must be lower than 9');
+				expect(errorMessage).to.equal('Number must be lower than 9.');
 			});
 
 		});
