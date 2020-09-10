@@ -5,7 +5,6 @@ const ContentTypeHeader = 'Content-Type';
 const ContentTypeJson = 'application/json';
 const DebounceTime = 150;
 const ETagHeader = 'ETag';
-const OverrideLanguage = 'overrides';
 const StateFetching = 2;
 const StateIdle = 1;
 
@@ -156,7 +155,7 @@ function fetchWithQueuing(resource) {
 
 function formatCacheKey(resource) {
 
-	return documentLocaleSettings.oslo.collection + resource;
+	return  formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
 }
 
 async function fetchWithCaching(resource) {
@@ -184,10 +183,10 @@ async function fetchWithCaching(resource) {
 	// any requests we've made to the LMS since init. We'll still serve stale
 	// from cache for this page, but we'll update it in the background for the
 	// next page.
-	//
-	// TODO: Respect other cache headers, such as max-age and Expires. We're not
-	// "re-implementing" the browser cache, just the directives that we support
-	// for this interaction.
+
+	// We rely on the ETag header to identify if the cache needs to be updated.
+	// The LMS will provide it in the format: [release].[build].[langModifiedVersion]
+	// So for example, an ETag in the 20.20.10 release could be: 20.20.10.24605.55520
 
 	const currentVersion = getVersion();
 	if (currentVersion) {
@@ -284,26 +283,23 @@ function shouldFetchOverrides() {
 
 function fetchOverride(formatFunc) {
 
-	let url, res;
+	let resource, res, requestURL;
 
 	if (shouldUseBatchFetch()) {
 
 		// If batching is available, pool requests together.
 
-		url = formatFunc(OverrideLanguage);
-		url = new URL(url).pathname;
-
-		res = fetchWithPooling(url);
+		resource = formatFunc();
+		res = fetchWithPooling(resource);
 
 	} else /* shouldUseCollectionFetch() == true */ {
 
 		// Otherwise, fetch it directly and let the LMS manage the cache.
 
-		url = formatFunc(OverrideLanguage);
-		url = new URL(url).pathname;
-		url = documentLocaleSettings.oslo.collection + url;
+		resource = formatFunc();
+		requestURL = formatOsloRequest(documentLocaleSettings.oslo.collection, resource);
 
-		res = fetchCollection(url);
+		res = fetchCollection(requestURL);
 
 	}
 	res = res.catch(coalesceToNull);
@@ -313,6 +309,10 @@ function fetchOverride(formatFunc) {
 function coalesceToNull() {
 
 	return null;
+}
+
+function formatOsloRequest(baseUrl, resource) {
+	return `${baseUrl}/${resource}`;
 }
 
 export function __clearWindowCache() {
