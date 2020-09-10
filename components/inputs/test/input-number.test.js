@@ -3,7 +3,6 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
-// const minMaxFixture = html`<d2l-input-number label="label" min="5" max="10"></d2l-input-number>`;
 
 function dispatchEvent(elem, eventType) {
 	const e = new Event(
