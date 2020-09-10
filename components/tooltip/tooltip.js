@@ -178,8 +178,12 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			.d2l-tooltip-pointer {
+				border: 1px solid transparent; /* fixes a webket clipping defect */
+				box-sizing: border-box;
 				display: inline-block;
+				height: ${pointerLength}px;
 				position: absolute;
+				width: ${pointerLength}px;
 				z-index: 1;
 			}
 
@@ -237,6 +241,9 @@ class Tooltip extends RtlMixin(LitElement) {
 				border-radius: 0.1rem;
 				box-sizing: border-box;
 				height: ${pointerLength}px;
+				left: -1px;
+				position: absolute;
+				top: -1px;
 				-webkit-transform: rotate(45deg);
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
