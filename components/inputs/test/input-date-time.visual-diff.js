@@ -32,6 +32,7 @@ describe('d2l-input-date-time', () => {
 		'basic',
 		'disabled',
 		'labelled',
+		'label-hidden',
 		'invalid-value',
 		'no-value',
 		'required'
