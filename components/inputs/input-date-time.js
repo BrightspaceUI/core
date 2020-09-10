@@ -44,6 +44,11 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
+			 * Set default value of time portion of the input. Valid values are times in ISO 8601 time format ("hh:mm:ss"), "startOfDay", "endOfDay".
+			 * @type {'startOfDay'|'endOfDay'|string}
+			 */
+			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
+			/**
 			 * Value of the input. This should be in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ") and in UTC time (i.e., do NOT localize to the user's timezone).
 			 */
 			value: { type: String },
@@ -119,6 +124,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					@blur="${this._handleInputTimeBlur}"
 					@change="${this._handleTimeChange}"
 					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
+					default-value="${ifDefined(this.timeDefaultValue)}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTimeFocus}"
 					.forceInvalid=${this.invalid}
