@@ -77,8 +77,7 @@ export const inputStyles = css`
 		padding-top: 0.5rem;
 	}
 	textarea.d2l-input:hover,
-	textarea.d2l-input:focus,
-	textarea.d2l-input[aria-invalid="true"]:focus {
+	textarea.d2l-input:focus {
 		padding: var(--d2l-input-padding-focus, calc(0.75rem - 1px));
 		padding-bottom: calc(0.5rem - 1px);
 		padding-top: calc(0.5rem - 1px);
@@ -90,6 +89,11 @@ export const inputStyles = css`
 		background-size: 0.8rem 0.8rem;
 		padding-right: calc(18px + 0.8rem);
 	}
+	textarea.d2l-input[aria-invalid="true"]:hover,
+	textarea.d2l-input[aria-invalid="true"]:focus {
+		background-position: top calc(12px - 1px) right calc(18px - 1px);
+		padding-right: calc(18px + 0.8rem - 1px);
+	}
 	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"] {
 		background-position: top 12px left 18px;
 		padding: var(--d2l-input-padding, 0.75rem);
@@ -97,10 +101,7 @@ export const inputStyles = css`
 		padding-left: calc(18px + 0.8rem);
 		padding-top: 0.5rem;
 	}
-	textarea.d2l-input[aria-invalid="true"]:hover,
-	textarea.d2l-input[aria-invalid="true"]:focus {
-		background-position: top calc(12px - 1px) right calc(18px - 1px);
-	}
+	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"]:focus,
 	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"]:hover {
 		background-position: top calc(12px - 1px) left calc(18px - 1px);
 		padding: var(--d2l-input-padding-focus, calc(0.75rem - 1px));
@@ -108,12 +109,6 @@ export const inputStyles = css`
 		padding-left: calc(18px + 0.8rem - 1px);
 		padding-top: calc(0.5rem - 1px);
 	}
-	:host([dir='rtl']) textarea.d2l-input[aria-invalid="true"]:focus {
-		padding: var(--d2l-input-padding-focus, calc(0.75rem - 1px));
-		padding-bottom: calc(0.5rem - 1px);
-		padding-top: calc(0.5rem - 1px);
-	}
-	textarea[aria-invalid="true"].d2l-input:focus,
 	textarea[aria-invalid="true"].d2l-input:disabled {
 		background-image: none;
 	}
