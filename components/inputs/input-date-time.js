@@ -30,7 +30,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Maximum valid date/time that could be selected by a user.
 			 */
