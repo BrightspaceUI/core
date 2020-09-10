@@ -16,14 +16,25 @@ describe('d2l-input-date-time', () => {
 
 	after(async() => await browser.close());
 
+	async function changeInnerElem(page, selector, inputSelector, date) {
+		return page.$eval(selector, (elem, inputSelector, date) => {
+			const dateElem = elem.shadowRoot.querySelector(inputSelector);
+			dateElem.value = date;
+			const e = new Event(
+				'change',
+				{ bubbles: true, composed: false }
+			);
+			dateElem.dispatchEvent(e);
+		}, inputSelector, date);
+	}
+
 	[
 		'basic',
 		'disabled',
 		'labelled',
 		'invalid-value',
 		'no-value',
-		'required',
-		'required-max'
+		'required'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -34,6 +45,24 @@ describe('d2l-input-date-time', () => {
 	it('basic-focus', async function() {
 		await page.$eval('#basic', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('required focus then blur', async function() {
+		await page.$eval('#required', (elem) => elem.focus());
+		await page.$eval('#required', (elem) => {
+			const inputElem = elem.shadowRoot.querySelector('d2l-input-date');
+			inputElem.blur();
+		});
+		const rect = await visualDiff.getRect(page, '#required');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('required focus then blur then fix', async function() {
+		await page.$eval('#required', (elem) => elem.focus());
+		await page.$eval('#required', (elem) => elem.blur());
+		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20');
+		const rect = await visualDiff.getRect(page, '#required');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
@@ -108,18 +137,6 @@ describe('d2l-input-date-time', () => {
 
 		const dateSelector = 'd2l-input-date';
 		const timeSelector = 'd2l-input-time';
-
-		async function changeInnerElem(page, selector, inputSelector, date) {
-			return page.$eval(selector, (elem, inputSelector, date) => {
-				const dateElem = elem.shadowRoot.querySelector(inputSelector);
-				dateElem.value = date;
-				const e = new Event(
-					'change',
-					{ bubbles: true, composed: false }
-				);
-				dateElem.dispatchEvent(e);
-			}, inputSelector, date);
-		}
 
 		async function focusOnInput(page, selector, inputSelector) {
 			return page.$eval(selector, (elem, inputSelector) => {

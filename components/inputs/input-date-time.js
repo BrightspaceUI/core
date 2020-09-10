@@ -4,7 +4,7 @@ import './input-time.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, getClosestValidDate, getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODateTime } from '../../helpers/dateTime.js';
+import { formatDateInISO, getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODateTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -77,6 +77,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
 		this._parsedDateTime = '';
+		this._preventDefaultValidation = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -86,9 +87,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			console.warn('d2l-input-date-time component requires label text');
 		}
 
-		if (this.required && !this.value) {
-			this.value = getClosestValidDate(this.minValue, this.maxValue, true);
-		}
+		if (this.value) this._preventDefaultValidation = true;
 	}
 
 	render() {
@@ -149,6 +148,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					rangeOverflow: this.value && this.maxValue && (new Date(this.value)).getTime() > (new Date(this.maxValue)).getTime()
 				});
 				this.requestValidate();
+				this._preventDefaultValidation = true;
 			} else if (prop === 'maxValue' && this.maxValue) {
 				try {
 					const dateObj = parseISODateTime(this.maxValue);
@@ -230,7 +230,9 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	}
 
 	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
+		if (this._preventDefaultValidation) {
+			e.preventDefault();
+		}
 	}
 
 	async _handleTimeChange(e) {

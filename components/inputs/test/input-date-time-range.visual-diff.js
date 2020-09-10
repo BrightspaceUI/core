@@ -24,7 +24,6 @@ describe('d2l-input-date-time-range', () => {
 		'labelled',
 		'label-hidden',
 		'required',
-		'required-min',
 		'slotted-content',
 		'start-end-label',
 		'start-end-value'

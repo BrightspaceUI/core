@@ -39,14 +39,8 @@ export const selectStyles = css`
 	.d2l-input-select,
 	.d2l-input-select:disabled,
 	.d2l-input-select:hover:disabled,
-	.d2l-input-select:focus:disabled,
-	.d2l-input-select[aria-invalid='true']:focus {
-		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
-	}
-	.d2l-input-select,
-	.d2l-input-select:disabled,
-	.d2l-input-select:hover:disabled,
 	.d2l-input-select:focus:disabled {
+		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
 		padding-right: calc(2px + 0.8rem + 1px + 11px + 16px);
 	}
 	:host([dir='rtl']) .d2l-input-select,
