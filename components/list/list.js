@@ -28,7 +28,7 @@ class List extends LitElement {
 			 * @type {'all'|'between'|'none'}
 			 * @default "all"
 			 */
-			separators: { type: String, reflect: true }
+			separators: { type: String, reflect: true },
 		};
 	}
 
@@ -62,6 +62,12 @@ class List extends LitElement {
 				<slot></slot>
 			</div>
 		`;
+	}
+
+	getListSize() {
+		const slot = this.shadowRoot.querySelector('slot');
+		const listItems = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
+		return listItems.length;
 	}
 
 	getSelectionInfo() {

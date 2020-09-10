@@ -13,7 +13,7 @@ class ListDemoDragNDropUsage extends LitElement {
 			grid: { type: Boolean },
 			hrefs: { type: Boolean },
 			selectable: { type: Boolean },
-			_dropLocation: { type: Number, reflect: true }
+			_dropLocation: { type: Number }
 		};
 	}
 
@@ -71,8 +71,7 @@ class ListDemoDragNDropUsage extends LitElement {
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
 						key="${ifDefined(item.key)}"
-						size="${ifDefined(this.list.length)}"
-						dropDestination="${ifDefined(this._dropLocation || item.key)}"
+						drop-destination="${ifDefined(this._dropLocation || item.key)}"
 						draggable
 						?selectable="${this.selectable}"
 						drag-handle-text="${item.name}"

@@ -47,10 +47,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			draggable: { type: Boolean, reflect: true },
 			dragging: { type: Boolean, reflect: true },
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
-			dropDestination: { type: Number, reflect: true },
+			dropDestination: { type: Number, reflect: true, attribute: 'drop-destination' },
 			dropText: { type: String, attribute: 'drop-text' },
 			key: { type: String, reflect: true },
-			size: { type: Number, reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number },
 			_focusingDragHandle: { type: Boolean },
@@ -367,19 +366,25 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this._dropLocation === dropLocation.below ? html`<div class="d2l-list-item-drag-bottom-marker">${renderTemplate}</div>` : null;
 	}
 
+	_getListSize() {
+		const parent = this.parentNode;
+		return parent.getListSize();
+	}
+
 	_renderDragHandle(templateMethod) {
 		templateMethod = templateMethod || (dragHandle => dragHandle);
 		const classes = {
 			'd2l-focusing': this._focusingDragHandle,
 			'd2l-hovering': this._hovering
 		};
+
 		return this.draggable ? templateMethod(html`
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
 				text="${ifDefined(this.dragHandleText)}"
-				currentPosition="${ifDefined(this.dropDestination)}"
-				size="${ifDefined(this.size)}"
+				current-position="${ifDefined(this.dropDestination)}"
+				list-size="${ifDefined(this._getListSize())}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
