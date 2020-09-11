@@ -68,7 +68,7 @@ class List extends LitElement {
 		return this._getItems().length;
 	}
 
-	getListItemPosition(item) {
+	getListItemIndex(item) {
 		return this._getItems().indexOf(item);
 	}
 
