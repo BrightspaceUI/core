@@ -135,17 +135,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}));
 	}
 
+	_findListItemFromCoordinates(x, y) {
+		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
+		return listNode.shadowRoot.elementFromPoint(x, y);
+	}
+
 	_getKeyboardText() {
 		const parent = this.parentNode;
 		this._keyboardTextInfo = JSON.stringify({
 			currentPosition: parent.getListItemPosition(this) + 1,
 			count: parent.getListItemCount()
 		});
-	}
-
-	_findListItemFromCoordinates(x, y) {
-		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
-		return listNode.shadowRoot.elementFromPoint(x, y);
 	}
 
 	_onContextMenu(e) {

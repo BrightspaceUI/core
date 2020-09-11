@@ -125,7 +125,6 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 		const namespace = 'components.list-item-drag-handle';
 		const defaultLabel = this.localize(`${namespace}.${'default'}`, 'name', this.text);
 		const keyboardTextLabel = this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', this.keyboardTextInfo && this.keyboardTextInfo.currentPosition, 'size', this.keyboardTextInfo && this.keyboardTextInfo.count);
-		
 		return this._keyboardActive ? keyboardTextLabel : defaultLabel;
 	}
 
