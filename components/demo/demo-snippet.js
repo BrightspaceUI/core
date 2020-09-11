@@ -33,6 +33,7 @@ class DemoSnippet extends LitElement {
 			.d2l-demo-snippet-demo {
 				flex: 1 1 auto;
 				padding: 18px;
+				position: relative;
 			}
 			:host([no-padding]) .d2l-demo-snippet-demo {
 				padding: 0;
