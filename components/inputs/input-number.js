@@ -69,6 +69,12 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.requestUpdate('value', oldValue);
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this.addEventListener('blur', this._handleBlur);
+	}
+
 	render() {
 		return html`
 			<d2l-input-text
@@ -133,6 +139,10 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			}
 		}
 		return super.validationMessage;
+	}
+
+	_handleBlur() {
+		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
 	}
 
 	async _handleChange(e) {
