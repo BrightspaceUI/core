@@ -37,7 +37,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean, reflect: true },
-			keyboardText: { type: String, attribute: 'keyboard-text' },
+			keyboardTextInfo: { type: Object, attribute: 'keyboard-text-info' },
 			text: { type: String },
 			_keyboardActive: { type: Boolean }
 		};
@@ -123,7 +123,10 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 
 	get _defaultLabel() {
 		const namespace = 'components.list-item-drag-handle';
-		return this._keyboardActive ? this.keyboardText : this.localize(`${namespace}.${'default'}`, 'name', this.text);
+		const defaultLabel = this.localize(`${namespace}.${'default'}`, 'name', this.text);
+		const keyboardTextLabel = this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', this.keyboardTextInfo && this.keyboardTextInfo.currentPosition, 'size', this.keyboardTextInfo && this.keyboardTextInfo.count);
+		
+		return this._keyboardActive ? keyboardTextLabel : defaultLabel;
 	}
 
 	_dispatchAction(action) {
