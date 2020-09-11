@@ -110,7 +110,12 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	async validate(validationType) {
-		const childErrors = await this.shadowRoot.querySelector('d2l-input-text').validate(validationType);
+		let childErrors = [];
+		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
+		if (inputTextElem) {
+			await inputTextElem.updateComplete;
+			childErrors = await inputTextElem.validate(validationType);
+		}
 		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
 		return [...childErrors, ...errors];
 	}
