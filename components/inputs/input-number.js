@@ -39,6 +39,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			css`
 				:host {
 					display: inline-block;
+					position: relative;
 					width: 4rem;
 				}
 			`
@@ -76,6 +77,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
+		const tooltip = this.validationError ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
@@ -92,7 +94,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				?required="${this.required}"
 				.value="${this._formattedValue}"
 			></d2l-input-text>
-			${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
+			${tooltip}
 		`;
 	}
 
