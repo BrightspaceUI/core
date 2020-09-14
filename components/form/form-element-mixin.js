@@ -120,15 +120,13 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			const options = { bubbles: true, composed: true, detail: { errors } };
 			this.dispatchEvent(new CustomEvent('d2l-form-element-errors-change', options));
 		}
-		changedProperties.forEach((_, propName) => {
-			if (propName === 'noValidate' || propName === 'forceInvalid' || propName === 'validationError') {
-				const oldValue = this.invalid;
-				this.invalid = (this.forceInvalid || this.validationError !== null) && !this.noValidate;
-				if (this.invalid !== oldValue) {
-					this.dispatchEvent(new CustomEvent('invalid-change'));
-				}
+		if (changedProperties.has('noValidate') || changedProperties.has('forceInvalid') || changedProperties.has('validationError')) {
+			const oldValue = this.invalid;
+			this.invalid = (this.forceInvalid || this.validationError !== null) && !this.noValidate;
+			if (this.invalid !== oldValue) {
+				this.dispatchEvent(new CustomEvent('invalid-change'));
 			}
-		});
+		}
 	}
 
 	get formAssociated() {
@@ -145,21 +143,15 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		if (!this.validity.valid) {
 			errors.unshift(this.validationMessage);
 		}
+		const oldValidationError = this.validationError;
 		if (errors.length > 0 && (showNewErrors || this.validationError)) {
 			this.validationError = errors[0];
 		} else {
 			this.validationError = null;
 		}
-		if (this._errors.length === errors.length) {
-			let areEqual = true;
-			for (let i = 0; areEqual && i < this._errors.length; i += 1) {
-				areEqual = this._errors[i] === errors[i];
-			}
-			if (areEqual) {
-				return;
-			}
+		if (oldValidationError !== this.validationError) {
+			this._errors = errors;
 		}
-		this._errors = errors;
 	}
 
 	setFormValue(formValue) {
