@@ -35,7 +35,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			/**
 			 * Address of item link if navigable
 			 */
-			action: { type: String },
+			actionHref: { type: String, attribute: 'aciton-href', reflect: true },
 			_breakpoint: { type: Number },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringLink: { type: Boolean },
@@ -56,7 +56,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host[hidden] {
 				display: none;
 			}
-			:host([action]) {
+			:host([aciton-href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
 			:host([_tooltip-showing]),
@@ -90,7 +90,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
-			a[action].d2l-list-item-link {
+			a[href].d2l-list-item-link {
 				height: 100%;
 				width: 100%;
 			}
@@ -209,6 +209,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	constructor() {
 		super();
+		this.actionHref = null;
 		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
 		this._contentId = getUniqueId();
@@ -320,7 +321,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					` : nothing }
 					${ this.action ? html`
 					<a slot="content-action"
-						href="${this.action}"
+						href="${this.acitonHref}"
 						aria-labelledby="${this._contentId}"
 						@mouseenter="${this._onMouseEnterLink}"
 						@mouseleave="${this._onMouseLeaveLink}"
