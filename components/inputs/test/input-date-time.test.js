@@ -131,6 +131,15 @@ describe('d2l-input-date-time', () => {
 			expect(elem.value).to.equal(undefined);
 		});
 
+		it('should default to custom time', async() => {
+			const elem = await fixture('<d2l-input-date-time label="label text" time-default-value="12:34:56"></d2l-input-date-time>');
+			const inputElem = getChildElem(elem, 'd2l-input-date');
+			inputElem.value = '2018-02-02';
+			setTimeout(() => dispatchEvent(inputElem, 'change'));
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal('2018-02-02T17:34:56.000Z');
+		});
+
 		it('should set value to empty when invalid initial value', async() => {
 			const elem = await fixture('<d2l-input-date-time label="label text" value="2018-03-03"></d2l-input-date-time>');
 			expect(elem.value).to.equal('');

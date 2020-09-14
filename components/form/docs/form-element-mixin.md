@@ -61,7 +61,7 @@ invalid state.
 
 
 ```javascript
-import { FormElementMixin } from '@brightspace-ui/core/form/form-element-mixin.js';
+import { FormElementMixin, ValidationType } from '@brightspace-ui/core/form/form-element-mixin.js';
 
 // Use the FormElementMixin
 class MyFormElement extends FormElementMixin(LitElement) {
@@ -157,6 +157,12 @@ class MyFormElement extends FormElementMixin(LitElement) {
 customElements.define('my-form-element', MyFormElement);
 
 ```
+
+## Advanced
+
+- **[Wrapping Native Form Elements](./form-element-wrapping.md)**
+	- If you need to create a custom form element that wraps native form elements like `input`, `select` and `textarea` more information can be found here.
+
 ## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!

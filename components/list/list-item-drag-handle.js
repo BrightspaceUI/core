@@ -37,8 +37,9 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			disabled: { type: Boolean, reflect: true },
+			keyboardTextInfo: { type: Object, attribute: 'keyboard-text-info' },
 			text: { type: String },
-			_keyboardActive: { type: Boolean },
+			_keyboardActive: { type: Boolean }
 		};
 	}
 
@@ -122,7 +123,9 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 
 	get _defaultLabel() {
 		const namespace = 'components.list-item-drag-handle';
-		return this.localize(`${namespace}.${this._keyboardActive ? 'keyboard' : 'default'}`, 'name', this.text);
+		const defaultLabel = this.localize(`${namespace}.${'default'}`, 'name', this.text);
+		const keyboardTextLabel = this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', this.keyboardTextInfo && this.keyboardTextInfo.currentPosition, 'size', this.keyboardTextInfo && this.keyboardTextInfo.count);
+		return this._keyboardActive ? keyboardTextLabel : defaultLabel;
 	}
 
 	_dispatchAction(action) {
@@ -150,6 +153,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 			case keyCodes.UP:
 				this._movingElement = true;
 				action = dragActions.up;
+				this.updateComplete.then(() => this.blur()); // tell screenreaders to refocus
 				break;
 			case keyCodes.DOWN:
 				this._movingElement = true;
@@ -240,6 +244,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 				@focusout="${this._onFocusOut}"
 				@keyup="${this._onActiveKeyboard}"
 				@keydown="${this._onPreventDefault}"
+				aria-live="assertive"
 				aria-label="${this._defaultLabel}">
 				<d2l-icon icon="tier1:arrow-toggle-up" @click="${this._dispatchActionUp}" class="d2l-button-icon"></d2l-icon>
 				<d2l-icon icon="tier1:arrow-toggle-down" @click="${this._dispatchActionDown}" class="d2l-button-icon"></d2l-icon>
