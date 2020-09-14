@@ -60,7 +60,7 @@ customElements.define('my-wrapping-form-element', MyWrappingFormElement);
 
 **2. Use the input's build-in client-side form validation:**
 
-We must add attributes to the native input so that it will validate its own input. In this case we will use modify `render` to add `required` and `pattern`.
+We must add attributes to the native input so that it will validate its own input. In this case we will modify `render` to add `required` and `pattern`.
 
 ```javascript
 render() {
