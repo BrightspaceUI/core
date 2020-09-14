@@ -53,7 +53,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			_dropLocation: { type: Number },
 			_focusingDragHandle: { type: Boolean },
 			_hovering: { type: Boolean },
-			_keyboardActive: { type: Boolean }
+			_keyboardActive: { type: Boolean },
+			_keyboardTextInfo: { type: Object }
 		};
 	}
 
@@ -137,6 +138,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_findListItemFromCoordinates(x, y) {
 		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
 		return listNode.shadowRoot.elementFromPoint(x, y);
+	}
+
+	_getKeyboardText() {
+		const parent = this.parentNode;
+		this._keyboardTextInfo = JSON.stringify({
+			currentPosition: parent.getListItemIndex(this) + 1,
+			count: parent.getListItemCount()
+		});
 	}
 
 	_onContextMenu(e) {
@@ -261,6 +270,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onFocusinDragHandle() {
 		this._focusingDragHandle = true;
+		this._getKeyboardText();
 	}
 
 	_onFocusoutDragHandle() {
@@ -371,11 +381,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			'd2l-focusing': this._focusingDragHandle,
 			'd2l-hovering': this._hovering
 		};
+
 		return this.draggable ? templateMethod(html`
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
 				text="${ifDefined(this.dragHandleText)}"
+				keyboard-text-info="${ifDefined(this._keyboardTextInfo)}"
 				@focusin="${this._onFocusinDragHandle}"
 				@focusout="${this._onFocusoutDragHandle}"
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
