@@ -96,7 +96,7 @@ describe('d2l-input-number', () => {
 	});
 
 	describe('re-formatting values', () => {
-		it('should add a comma for numbers in thousands', async() => {
+		it('should add a comma for numbers in thousands using Intl library', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = 1000;
 
@@ -107,7 +107,7 @@ describe('d2l-input-number', () => {
 			expect(elem._formattedValue).to.equal('1,000');
 		});
 
-		it('should accept values that start with numbers', async() => {
+		it('should format/parse values that start with numbers using Intl library', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = '123abc';
 
