@@ -250,12 +250,6 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		if (tooltip) tooltip.show();
 	}
 
-	_handleNestedFormElementValidation(e) {
-		if (this._preventDefaultValidation) {
-			e.preventDefault();
-		}
-	}
-
 	async _handleTimeChange(e) {
 		this.value = getUTCDateTimeFromLocalDateTime(this._parsedDateTime, e.target.value);
 		this._dispatchChangeEvent();

@@ -362,10 +362,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
-	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
-	}
-
 	async _handleSetToToday() {
 		const date = getToday();
 		await this._updateValueDispatchEvent(formatDateInISO(date));

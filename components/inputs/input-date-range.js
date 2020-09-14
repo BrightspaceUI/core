@@ -217,11 +217,5 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		}
 	}
 
-	_handleNestedFormElementValidation(e) {
-		if (this.endValue && this.startValue) {
-			e.preventDefault();
-		}
-	}
-
 }
 customElements.define('d2l-input-date-range', InputDateRange);
