@@ -64,6 +64,14 @@ class List extends LitElement {
 		`;
 	}
 
+	getListItemCount() {
+		return this._getItems().length;
+	}
+
+	getListItemIndex(item) {
+		return this._getItems().indexOf(item);
+	}
+
 	getSelectionInfo() {
 		const items = this._getItems();
 		const selectedItems = items.filter(item => item.selected);
