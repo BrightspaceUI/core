@@ -152,6 +152,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		if (oldValidationError !== this.validationError) {
 			this._errors = errors;
 		}
+		await this.updatedComplete;
 	}
 
 	setFormValue(formValue) {
