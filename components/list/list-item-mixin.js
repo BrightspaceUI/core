@@ -319,7 +319,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					<div slot="control">${ this._renderCheckbox() }</div>
 					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>
 					` : nothing }
-					${ this.action ? html`
+					${ this.actionHref ? html`
 					<a slot="content-action"
 						href="${this.acitonHref}"
 						aria-labelledby="${this._contentId}"
