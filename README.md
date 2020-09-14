@@ -29,7 +29,7 @@ npm install @brightspace-ui/core
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/):
-  	* [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
+    * [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
     * [Date and time](components/inputs/docs/input-date-time.md): date and time picker components including ranges
     * [Number](components/inputs/docs/input-number.md): number input component
     * [Radio](components/inputs/docs/input-radio.md): radio input styles
