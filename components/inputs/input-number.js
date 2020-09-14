@@ -70,18 +70,13 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.requestUpdate('value', oldValue);
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('blur', this._handleBlur);
-	}
-
 	render() {
 		const tooltip = this.validationError ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
+				@blur="${this._handleBlur}"
 				@change="${this._handleChange}"
 				@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 				?disabled="${this.disabled}"
