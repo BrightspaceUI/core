@@ -82,6 +82,43 @@ describe('d2l-input-number', () => {
 		});
 	});
 
+	describe('invalid values', () => {
+		it('should reset value', async() => {
+			const elem = await fixture(normalFixture);
+			elem.value = 'helloworld123';
+
+			setTimeout(() => dispatchEvent(elem, 'change'));
+			await oneEvent(elem, 'change');
+
+			expect(elem.value).to.equal(undefined);
+			expect(elem._formattedValue).to.equal('');
+		});
+	});
+
+	describe('re-formatting values', () => {
+		it('should add a comma for numbers in thousands using Intl library', async() => {
+			const elem = await fixture(normalFixture);
+			elem.value = 1000;
+
+			setTimeout(() => dispatchEvent(elem, 'change'));
+			await oneEvent(elem, 'change');
+
+			expect(elem.value).to.equal(1000);
+			expect(elem._formattedValue).to.equal('1,000');
+		});
+
+		it('should format/parse values that start with numbers using Intl library', async() => {
+			const elem = await fixture(normalFixture);
+			elem.value = '123abc';
+
+			setTimeout(() => dispatchEvent(elem, 'change'));
+			await oneEvent(elem, 'change');
+
+			expect(elem.value).to.equal(123);
+			expect(elem._formattedValue).to.equal('123');
+		});
+	});
+
 	describe('validation', () => {
 		it('should be valid when required has value', async() => {
 			const elem = await fixture(requiredFixture);
