@@ -215,30 +215,22 @@ describe('d2l-input-date-time-range', () => {
 					name: 'start before min and end before start',
 					startDate: dateBeforeMin,
 					endDate: dateFurtherBeforeMin,
-					changeStartDateFirst: true,
-					startDateTooltip: true,
-					endDateTooltip: true
+					changeStartDateFirst: true
 				}, {
 					name: 'start valid and end before start and before min',
 					startDate: dateInRange,
 					endDate: dateBeforeMin,
-					changeStartDateFirst: true,
-					startDateTooltip: false,
-					endDateTooltip: true
+					changeStartDateFirst: true
 				}, {
 					name: 'end after max and start after end',
 					startDate: dateFurtherAfterMax,
 					endDate: dateAfterMax,
-					changeStartDateFirst: false,
-					startDateTooltip: true,
-					endDateTooltip: true
+					changeStartDateFirst: false
 				}, {
 					name: 'end valid and start after end and after max',
 					startDate: dateAfterMax,
 					endDate: dateInRange,
-					changeStartDateFirst: false,
-					startDateTooltip: true,
-					endDateTooltip: false
+					changeStartDateFirst: false
 				}
 			].forEach((testCase) => {
 				describe(testCase.name, () => {
@@ -250,32 +242,14 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('focus start', async function() {
-						let rect;
-						if (testCase.startDateTooltip) {
-							await focusOnInput(page, '#min-max', startDateSelector);
-							rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
-						} else {
-							await page.$eval('#min-max', (elem, inputSelector) => {
-								const input = elem.shadowRoot.querySelector(inputSelector);
-								input.focus();
-							}, startDateSelector);
-							rect = await visualDiff.getRect(page, '#min-max');
-						}
+						await focusOnInput(page, '#min-max', startDateSelector);
+						const rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
-						let rect;
-						if (testCase.endDateTooltip) {
-							await focusOnInput(page, '#min-max', endDateSelector);
-							rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
-						} else {
-							await page.$eval('#min-max', (elem, inputSelector) => {
-								const input = elem.shadowRoot.querySelector(inputSelector);
-								input.focus();
-							}, endDateSelector);
-							rect = await visualDiff.getRect(page, '#min-max');
-						}
+						await focusOnInput(page, '#min-max', endDateSelector);
+						const rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
@@ -284,8 +258,11 @@ describe('d2l-input-date-time-range', () => {
 
 		async function getRectInnerTooltip(page, selector, inputDateSelector) {
 			return page.$eval(selector, (elem, inputDateSelector) => {
-				const inputDate = elem.shadowRoot.querySelector(inputDateSelector);
-				const content = inputDate.shadowRoot.querySelector('d2l-tooltip');
+				let content = elem.shadowRoot.querySelector('d2l-tooltip');
+				if (!content || !content.showing) {
+					const inputDate = elem.shadowRoot.querySelector(inputDateSelector);
+					content = inputDate.shadowRoot.querySelector('d2l-tooltip');
+				}
 				const contentWidth = content.shadowRoot.querySelector('.d2l-tooltip-content');
 				const openerRect = elem.getBoundingClientRect();
 				const contentRect = contentWidth.getBoundingClientRect();

@@ -160,17 +160,21 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		const startLabel = this.startLabel ? this.startLabel : this.localize('components.input-time-range.startTime');
 		const endLabel = this.endLabel ? this.endLabel : this.localize('components.input-time-range.endTime');
 
+		const startTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-start');
+		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
+
 		/**
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 		 */
 		const timeInterval = this.timeInterval;
-		const tooltipStart = (this.validationError && !this._startDropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endDropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this._startDropdownOpened && !this.childErrors.has(startTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-time
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-start"
 					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
@@ -184,6 +188,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-time>
 				<d2l-input-time
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-time-range-end"
 					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
@@ -210,7 +215,7 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					[`${this.name}-endValue`]: this.endValue,
 				});
 				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue))) });
-				this.requestValidate();
+				this.requestValidate(true);
 			}
 		});
 	}
@@ -218,6 +223,13 @@ class InputTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	focus() {
 		const input = this.shadowRoot.querySelector('d2l-input-time');
 		if (input) input.focus();
+	}
+
+	async validate() {
+		const startTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-start');
+		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
+		const errors = await Promise.all([startTimeInput.validate(), endTimeInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1], ...errors[2]];
 	}
 
 	get validationMessage() {

@@ -142,6 +142,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_getKeyboardText() {
 		const parent = this.parentNode;
+
 		this._keyboardTextInfo = JSON.stringify({
 			currentPosition: parent.getListItemIndex(this) + 1,
 			count: parent.getListItemCount()
