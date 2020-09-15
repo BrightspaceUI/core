@@ -43,6 +43,10 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			 */
 			autofocus: { type: Boolean },
 			/**
+			 * Additional information communicated in the aria-describedby on the input
+			 */
+			description: { type: String, reflect: true },
+			/**
 			 * Disables the input
 			 */
 			disabled: { type: Boolean, reflect: true },
@@ -78,10 +82,6 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			 * Imposes a lower character limit
 			 */
 			minlength: { type: Number },
-			/**
-			 * Additional information communicated in the aria-describedby on the input
-			 */
-			offscreenDescription: { type: String, reflect: true, attribute: 'offscreen-description' },
 			/**
 			 * Regular expression pattern to validate the value
 			 */
@@ -194,7 +194,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		this._inputId = getUniqueId();
 		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
-		this._offscreenDescriptionId = getUniqueId();
+		this._descriptionId = getUniqueId();
 	}
 
 	firstUpdated(changedProperties) {
@@ -215,7 +215,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		};
 		const ariaRequired = this.required ? 'true' : undefined;
 		const ariaInvalid = this.invalid ? 'true' : this.ariaInvalid;
-		const offscreenContainer = this.offscreenDescription ? html`<div class="d2l-offscreen" id="${this._offscreenDescriptionId}">${this.offscreenDescription}</div>` : null;
+		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
 
 		const inputStyles = {};
 		if (this._firstSlotWidth > 0) {
@@ -236,7 +236,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		const input = html`
 			<div class="d2l-input-text-container">
 				<input aria-atomic="${ifDefined(this.atomic)}"
-					aria-describedby="${ifDefined(this.offscreenDescription ? this._offscreenDescriptionId : undefined)}"
+					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 					aria-invalid="${ifDefined(ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"

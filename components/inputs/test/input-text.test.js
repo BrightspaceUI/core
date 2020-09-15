@@ -37,14 +37,14 @@ describe('d2l-input-text', () => {
 
 	describe('accessibility', () => {
 
-		it('should set aria-describedby when offscreen-description', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" offscreen-description="text description"></d2l-input-text>`);
+		it('should set aria-describedby when description', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" description="text description"></d2l-input-text>`);
 			const description = elem.shadowRoot.querySelector('div.d2l-offscreen');
 			expect(getInput(elem).hasAttribute('aria-describedby')).to.be.true;
 			expect(description.textContent).to.equal('text description');
 		});
 
-		it('should not set aria-describedby when no offscreen-description', async() => {
+		it('should not set aria-describedby when no description', async() => {
 			const elem = await fixture(normalFixture);
 			expect(getInput(elem).hasAttribute('aria-describedby')).to.be.false;
 		});
