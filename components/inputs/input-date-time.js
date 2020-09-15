@@ -102,13 +102,15 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 
 	render() {
 		const timeHidden = !this._parsedDateTime;
-		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+
+		const tooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltip}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
+					?novalidate="${this.noValidate}"
+					novalidateminmax
 					@change="${this._handleDateChange}"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
@@ -121,6 +123,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
 				<d2l-input-time
+					?novalidate="${this.noValidate}"
 					@blur="${this._handleInputTimeBlur}"
 					@change="${this._handleTimeChange}"
 					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
@@ -158,7 +161,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					rangeUnderflow: this.value && this.minValue && (new Date(this.value)).getTime() < (new Date(this.minValue)).getTime(),
 					rangeOverflow: this.value && this.maxValue && (new Date(this.value)).getTime() > (new Date(this.maxValue)).getTime()
 				});
-				this.requestValidate();
+				this.requestValidate(true);
 				this._preventDefaultValidation = true;
 			} else if (prop === 'maxValue' && this.maxValue) {
 				try {
@@ -183,6 +186,13 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	focus() {
 		const elem = this.shadowRoot.querySelector('d2l-input-date');
 		if (elem) elem.focus();
+	}
+
+	async validate() {
+		const dateInput = this.shadowRoot.querySelector('d2l-input-date');
+		const timeInput = this.shadowRoot.querySelector('d2l-input-time');
+		const errors = await Promise.all([dateInput.validate(), timeInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1], ...errors[2]];
 	}
 
 	get validationMessage() {
@@ -238,12 +248,6 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	_handleInputTimeFocus() {
 		const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
 		if (tooltip) tooltip.show();
-	}
-
-	_handleNestedFormElementValidation(e) {
-		if (this._preventDefaultValidation) {
-			e.preventDefault();
-		}
 	}
 
 	async _handleTimeChange(e) {

@@ -9,7 +9,7 @@ import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDate, parseDate } from '@brightspace-ui/intl/lib/dateTime.js';
 import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getToday } from '../../helpers/dateTime.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -52,6 +52,11 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
+			 * Disables validation of max and min value. The min and max value will still be enforced
+			 * but the component will not be put into an error state or show an error tooltip.
+			 */
+			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
+			/**
 			 * Indicates that a value is required
 			 */
 			required: { type: Boolean, reflect: true },
@@ -63,7 +68,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
-			_inputTextInvalid: { type: Boolean },
 			_showInfoTooltip: { type: Boolean },
 			_shownValue: { type: String }
 		};
@@ -119,6 +123,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
+		this.noValidateMinMax = false;
 		this.required = false;
 		this.value = '';
 
@@ -126,7 +131,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
-		this._inputTextInvalid = false;
 		this._namespace = 'components.input-date';
 		this._showInfoTooltip = true;
 		this._shownValue = '';
@@ -168,10 +172,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.style.maxWidth = inputTextWidth;
 
 		const clearButton = !this.required ? html`<d2l-button-subtle text="${this.localize(`${this._namespace}.clear`)}" @click="${this._handleClear}"></d2l-button-subtle>` : null;
-		const icon = (this.invalid || this._inputTextInvalid)
+		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const errrorTooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const errrorTooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const infoTooltip = (this._showInfoTooltip && !this.validationError && !this._inputTextInvalid && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
@@ -183,11 +187,11 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			${infoTooltip}
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
+					?novalidate="${this.noValidate}"
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -240,10 +244,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			if (prop === 'value') {
 				this.setFormValue(this.value);
 				this.setValidity({
-					rangeUnderflow: this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
-					rangeOverflow: this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
+					rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
+					rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
 				});
-				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+				this.requestValidate(false);
 			}
 		});
 	}
@@ -252,16 +256,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		if (this._textInput) this._textInput.focus();
 	}
 
-	async validate(validationType) {
-		let childErrors = [];
-		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
-		if (inputTextElem) {
-			await inputTextElem.updateComplete;
-			childErrors = await Promise.resolve(inputTextElem.validate(validationType));
-			this._inputTextInvalid = inputTextElem.invalid;
-		}
-		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...childErrors, ...errors];
+	async validate() {
+		const textInput = this.shadowRoot.querySelector('d2l-input-text');
+		const errors = await Promise.all([textInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1]];
 	}
 
 	get validationMessage() {
@@ -282,7 +280,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	_handleBlur() {
 		this._showInfoTooltip = true;
 		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+		this.requestValidate(true);
 	}
 
 	async _handleChange() {
@@ -368,10 +366,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			if (!this._dropdownOpened) this._handleChange();
 			this._dropdown.toggleOpen(false);
 		}
-	}
-
-	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
 	}
 
 	async _handleSetToToday() {
