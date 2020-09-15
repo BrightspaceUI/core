@@ -143,7 +143,15 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const value = e.target.value;
 		this._formattedValue = value;
 		await this.updateComplete;
+		const oldValue = this.value;
 		this.value = parseNumber(value);
+
+		if (oldValue !== this.value) {
+			this.dispatchEvent(new CustomEvent(
+				'change',
+				{ bubbles: true, composed: false }
+			));
+		}
 	}
 
 }

@@ -4,6 +4,7 @@ There are various input components available:
 
 - [Checkboxes (input-checkbox*)](docs/input-checkbox.md)
 - [Date & Time Inputs (input-date, input-time, input-date-time)](docs/input-date-time.md)
+- [Number Input (input-number)](docs/input-number.md)
 - [Radio Buttons (input-radio-*)](docs/input-radio.md)
 - [Search (input-search)](docs/input-search.md)
 - [Select Lists (input-select-styles)](docs/input-select-styles.md)
@@ -11,7 +12,7 @@ There are various input components available:
 
 ## Labelling Inputs
 
-All inputs *must* have a label. Web component-based inputs like `<d2l-input-checkbox>`, `<d2l-input-search>` and `<d2l-input-text>` come with built-in labels. For the rest, labelling is accomplished visually using a `<label>` element or with a hidden label via the `aria-label` attribute.
+All inputs *must* have a label. Web component-based inputs like `<d2l-input-checkbox>`, `<d2l-input-number>`, `<d2l-input-search>` and `<d2l-input-text>` come with built-in labels. For the rest, labelling is accomplished visually using a `<label>` element or with a hidden label via the `aria-label` attribute.
 
 Groups of inputs (like checkboxes or radios) should be wrapped in a `<fieldset>` which can have label styles applied to it.
 
@@ -93,7 +94,6 @@ Alternately, the `<d2l-input-fieldset>` component can accomplish this for you. T
 
 ## Future Enhancements
 
-- Numeric input
 - Color input with contrast analysis
 - Auto-growing textareas
 

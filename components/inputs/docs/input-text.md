@@ -24,7 +24,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser |
 | `autofocus` | Boolean | When set, will automatically place focus on the input |
 | `disabled` | Boolean | Disables the input |
-| `label-hidden` | Boolean | Hides the labe visually (moves it to the input's `aria-label` attribute) |
+| `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `max` | String | For number inputs, maximum value |
 | `maxlength` | Number | Imposes an upper character limit |
 | `min` | String | For number inputs, minimum value |
