@@ -2,7 +2,7 @@ import './input-date.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDateFromISODate } from '../../helpers/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -114,16 +114,18 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	render() {
-		const tooltipStart = (this.validationError && !this._startCalendarOpened) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endCalendarOpened) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const startDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-start');
+		const endDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-end');
+		const tooltipStart = (this.validationError && !this._startCalendarOpened && !this.childErrors.has(startDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endCalendarOpened && !this.childErrors.has(endDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<d2l-input-date
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-start"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
@@ -135,9 +137,9 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-date>
 				<d2l-input-date
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-date-range-end"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
@@ -162,7 +164,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					[`${this.name}-endValue`]: this.endValue,
 				});
 				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODate(this.endValue) <= getDateFromISODate(this.startValue))) });
-				this.requestValidate();
+				this.requestValidate(true);
 			}
 		});
 	}
@@ -172,13 +174,11 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		if (input) input.focus();
 	}
 
-	async validate(validationType) {
-		const childErrors = await Promise.all([
-			this.shadowRoot.querySelector('.d2l-input-date-range-start').validate(validationType),
-			this.shadowRoot.querySelector('.d2l-input-date-range-end').validate(validationType)]
-		).then(res => res.reduce((acc, errors) => [...acc, ...errors], []));
-		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...childErrors, ...errors];
+	async validate() {
+		const startDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-start');
+		const endDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-end');
+		const errors = await Promise.all([startDateInput.validate(), endDateInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1], ...errors[2]];
 	}
 
 	get validationMessage() {
@@ -214,12 +214,6 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 			this._startCalendarOpened = e.detail.opened;
 		} else {
 			this._endCalendarOpened = e.detail.opened;
-		}
-	}
-
-	_handleNestedFormElementValidation(e) {
-		if (this.endValue && this.startValue) {
-			e.preventDefault();
 		}
 	}
 

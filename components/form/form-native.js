@@ -2,7 +2,6 @@ import { findFormElements, getFormElementData, isCustomFormElement, isNativeForm
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormMixin } from './form-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ValidationType } from './form-element-mixin.js';
 
 /**
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
@@ -115,7 +114,7 @@ class FormNative extends FormMixin(LitElement) {
 		const errorMap = new Map();
 		const formElements = findFormElements(this);
 		for (const ele of formElements) {
-			const eleErrors = await this._validateFormElement(ele, ValidationType.SHOW_NEW_ERRORS);
+			const eleErrors = await this._validateFormElement(ele, true);
 			if (eleErrors.length > 0) {
 				errors = [...errors, ...eleErrors];
 				errorMap.set(ele, eleErrors);

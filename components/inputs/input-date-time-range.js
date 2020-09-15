@@ -2,7 +2,7 @@ import './input-date-time.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDateFromISODateTime } from '../../helpers/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -109,17 +109,20 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 	}
 
 	render() {
-		const tooltipStart = (this.validationError && !this._startDropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endDropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const startDateTimeInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-start');
+		const endDateTimeInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-end');
+
+		const tooltipStart = (this.validationError && !this._startDropdownOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
 			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
 				<div class="d2l-input-date-time-range-start-container">
 					<d2l-input-date-time
+						?novalidate="${this.noValidate}"
 						@change="${this._handleChange}"
 						class="d2l-input-date-time-range-start"
-						@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 						@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
 						?disabled="${this.disabled}"
 						.forceInvalid=${this.invalid}
@@ -133,9 +136,9 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 					<slot name="start"></slot>
 				</div>
 				<d2l-input-date-time
+					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
 					class="d2l-input-date-time-range-end"
-					@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 					@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
 					?disabled="${this.disabled}"
 					.forceInvalid=${this.invalid}
@@ -156,13 +159,11 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		if (input) input.focus();
 	}
 
-	async validate(validationType) {
-		const childErrors = await Promise.all([
-			this.shadowRoot.querySelector('.d2l-input-date-time-range-start').validate(validationType),
-			this.shadowRoot.querySelector('.d2l-input-date-time-range-end').validate(validationType)]
-		).then(res => res.reduce((acc, errors) => [...acc, ...errors], []));
-		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
-		return [...childErrors, ...errors];
+	async validate() {
+		const startDateTimeInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-start');
+		const endDateTimeInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-end');
+		const errors = await Promise.all([startDateTimeInput.validate(), endDateTimeInput.validate(), super.validate()]);
+		return [...errors[0], ...errors[1], ...errors[2]];
 	}
 
 	get validationMessage() {
@@ -185,7 +186,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		if (elem.classList.contains('d2l-input-date-time-range-start')) this.startValue = elem.value;
 		else this.endValue = elem.value;
 		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODateTime(this.endValue) <= getDateFromISODateTime(this.startValue))) });
-		await this.requestValidate();
+		await this.requestValidate(true);
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
@@ -198,10 +199,6 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		} else {
 			this._endDropdownOpened = e.detail.opened;
 		}
-	}
-
-	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
 	}
 
 }

@@ -1,7 +1,6 @@
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormMixin } from './form-mixin.js';
-import { ValidationType } from './form-element-mixin.js';
 
 /**
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
@@ -76,7 +75,7 @@ class Form extends FormMixin(LitElement) {
 					errorMap.set(ele, formErrors);
 				}
 			} else {
-				const eleErrors = await this._validateFormElement(ele, ValidationType.SHOW_NEW_ERRORS);
+				const eleErrors = await this._validateFormElement(ele, true);
 				if (eleErrors.length > 0) {
 					errorMap.set(ele, eleErrors);
 				}

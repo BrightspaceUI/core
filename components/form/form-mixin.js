@@ -6,7 +6,6 @@ import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
-import { ValidationType } from './form-element-mixin.js';
 
 export const FormMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
@@ -27,7 +26,8 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		this._validationCustoms = new Set();
 		this._errors = new Map();
 
-		this.addEventListener('d2l-form-errors-change', this._onFormErrorsChange);
+		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
+		this.addEventListener('d2l-form-element-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
@@ -89,6 +89,13 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		ele.setAttribute('aria-invalid', 'false');
 	}
 
+	_onErrorsChange(e) {
+		if (e.target === this) {
+			return;
+		}
+		e.stopPropagation();
+		this._updateErrors(e.target, e.detail.errors);
+	}
 	async _onFormElementChange(e) {
 		const ele = e.target;
 		if (!isNativeFormElement(ele)) {
@@ -96,17 +103,8 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		}
 		e.stopPropagation();
 		this._dirty = true;
-		const validationType = e.type === 'focusout' ? ValidationType.SHOW_NEW_ERRORS : ValidationType.UPDATE_EXISTING_ERRORS;
-		const errors = await this._validateFormElement(ele, validationType);
+		const errors = await this._validateFormElement(ele, e.type === 'focusout');
 		this._updateErrors(ele, errors);
-	}
-
-	_onFormErrorsChange(e) {
-		if (e.target === this) {
-			return;
-		}
-		e.stopPropagation();
-		this._updateErrors(e.target, e.detail.errors);
 	}
 
 	_onNativeSubmit(e) {
@@ -139,10 +137,10 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		return true;
 	}
 
-	async _validateFormElement(ele, validationType) {
+	async _validateFormElement(ele, showNewErrors) {
 		ele.id = ele.id || getUniqueId();
 		if (isCustomFormElement(ele)) {
-			return ele.validate(validationType);
+			return ele.validate(showNewErrors);
 		} else if (isNativeFormElement(ele)) {
 			const customs = [...this._validationCustoms].filter(custom => custom.forElement === ele);
 			const results = await Promise.all(customs.map(custom => custom.validate()));
@@ -151,21 +149,10 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 				const validationMessage = localizeFormElement(this.localize.bind(this), ele);
 				errors.unshift(validationMessage);
 			}
-			switch (validationType) {
-				case ValidationType.UPDATE_EXISTING_ERRORS:
-					if (ele.getAttribute('aria-invalid') === 'true' && errors.length > 0) {
-						this._displayInvalid(ele, errors[0]);
-					} else {
-						this._displayValid(ele);
-					}
-					break;
-				case ValidationType.SHOW_NEW_ERRORS:
-					if (errors.length > 0) {
-						this._displayInvalid(ele, errors[0]);
-					} else {
-						this._displayValid(ele);
-					}
-					break;
+			if (errors.length > 0 && (showNewErrors || ele.getAttribute('aria-invalid') === 'true')) {
+				this._displayInvalid(ele, errors[0]);
+			} else {
+				this._displayValid(ele);
 			}
 			return errors;
 		}
