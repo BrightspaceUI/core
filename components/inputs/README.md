@@ -94,7 +94,6 @@ Alternately, the `<d2l-input-fieldset>` component can accomplish this for you. T
 
 ## Future Enhancements
 
-- Date & time range with validation
 - Color input with contrast analysis
 - Auto-growing textareas
 
