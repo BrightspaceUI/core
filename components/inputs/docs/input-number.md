@@ -1,6 +1,6 @@
 # Number Inputs
 
-The `<d2l-input-number>` element is a wrapper around the `<d2l-input-text>` component. It's intended for inputting numbers only.
+The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's intended for inputting numbers only.
 
 ![example screenshot of number input](../screenshots/number.gif?raw=true)
 
