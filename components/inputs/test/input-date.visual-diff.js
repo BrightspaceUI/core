@@ -34,13 +34,13 @@ describe('d2l-input-date', () => {
 
 	it('value-focus', async function() {
 		await page.$eval('#value', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#value');
+		const rect = await helper.getRectTooltip(page, '#value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('empty-text-focus', async function() {
 		await page.$eval('#empty-text', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#empty-text');
+		const rect = await helper.getRectTooltip(page, '#empty-text');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 

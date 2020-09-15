@@ -169,14 +169,16 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const icon = (this.invalid || this._inputTextInvalid)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const tooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const errrorTooltip = (this.validationError && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const infoTooltip = (!this.validationError && !this._inputTextInvalid && !this._dropdownOpened) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
 			</div>
-			${tooltip}
+			${errrorTooltip}
+			${infoTooltip}
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
@@ -193,10 +195,10 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					?label-hidden="${this.labelHidden}"
 					live="assertive"
 					@mouseup="${this._handleMouseup}"
+					offscreen-description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
 					placeholder="${shortDateFormat}"
 					?required="${this.required}"
 					style="${styleMap({ maxWidth: inputTextWidth })}"
-					title="${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}"
 					.value="${this._formattedValue}">
 					${icon}
 				</d2l-input-text>
