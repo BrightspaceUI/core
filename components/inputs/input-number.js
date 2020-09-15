@@ -1,7 +1,7 @@
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -71,14 +71,14 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
-		const tooltip = this.validationError ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>` : null;
+		const tooltip = this.validationError && this.childErrors.size === 0 ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
+				?noValidate="${this.noValidate}"
 				?autofocus="${this.autofocus}"
 				@blur="${this._handleBlur}"
 				@change="${this._handleChange}"
-				@d2l-form-element-should-validate="${this._handleNestedFormElementValidation}"
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
 				id="${this._inputId}"
@@ -103,7 +103,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					rangeUnderflow: typeof(this.min) === 'number' && this.value < this.min,
 					rangeOverflow: typeof(this.max) === 'number' && this.value > this.max
 				});
-				this.requestValidate();
+				this.requestValidate(false);
 			}
 		});
 	}
@@ -112,14 +112,11 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.shadowRoot.querySelector('d2l-input-text').focus();
 	}
 
-	async validate(validationType) {
-		let childErrors = [];
+	async validate() {
 		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
-		if (inputTextElem) {
-			await inputTextElem.updateComplete;
-			childErrors = await inputTextElem.validate(validationType);
-		}
-		const errors = await super.validate(childErrors.length > 0 ? ValidationType.SUPPRESS_ERRORS : validationType);
+		await inputTextElem.updateComplete;
+		const childErrors = await inputTextElem.validate();
+		const errors = await super.validate();
 		return [...childErrors, ...errors];
 	}
 
@@ -139,7 +136,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleBlur() {
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+		this.requestValidate(true);
 	}
 
 	async _handleChange(e) {
@@ -157,8 +154,5 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
-	_handleNestedFormElementValidation(e) {
-		e.preventDefault();
-	}
 }
 customElements.define('d2l-input-number', InputNumber);
