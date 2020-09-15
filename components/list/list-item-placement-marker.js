@@ -18,8 +18,8 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				height: 12px;
 				margin-left: -1px;
 				margin-right: -1px;
-				stroke-width: 3px;
 				stroke: var(--d2l-color-celestine);
+				stroke-width: 3px;
 				width: 100%;
 			}
 
@@ -42,8 +42,8 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 				height: 12px;
 				margin-left: 0;
 				margin-right: -1px;
-				stroke-width: 3px;
 				stroke: var(--d2l-color-celestine);
+				stroke-width: 3px;
 				width: 12px;
 			}
 
