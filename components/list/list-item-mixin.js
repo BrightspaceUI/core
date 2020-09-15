@@ -289,7 +289,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		this._hoveringLink = false;
 	}
 
-	_renderListItem({illustration, content, actions} = {}) {
+	_renderListItem({ illustration, content, actions } = {}) {
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-focusing': this._focusing,
