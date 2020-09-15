@@ -1,8 +1,9 @@
 import '../input-number.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
+const defaultValueFixture = html`<d2l-input-number label="label" value="1.1"></d2l-input-number>`;
 const requiredFixture = html`<d2l-input-number label="label" required></d2l-input-number>`;
 const minMaxFixture = html`<d2l-input-number label="label" min="5" max="10"></d2l-input-number>`;
 const minFixture = html`<d2l-input-number label="label" min="5"></d2l-input-number>`;
@@ -205,6 +206,48 @@ describe('d2l-input-number', () => {
 
 			const errors = await elem.validate();
 			expect(errors).to.contain('Number must be lower than 10.');
+		});
+	});
+
+	describe('events', () => {
+		it('should not fire "change" event when property changes', async() => {
+			const elem = await fixture(normalFixture);
+
+			let fired = false;
+			elem.addEventListener('change', () => { fired = true; });
+
+			elem.value = 10;
+			await aTimeout(1);
+			expect(fired).to.be.false;
+
+			elem.setAttribute('value', 15);
+			await aTimeout(1);
+			expect(fired).to.be.false;
+		});
+
+		it('should fire "change" event when underlying value changes', async() => {
+			const elem = await fixture(defaultValueFixture); // value = 1.1
+			await aTimeout(1);
+
+			const inputTextElement = elem.shadowRoot.querySelector('d2l-input-text');
+			inputTextElement.value = '123';
+			dispatchEvent(inputTextElement, 'change');
+			await oneEvent(elem, 'change');
+
+			expect(elem.value).to.equal(123);
+		});
+
+		it('should not fire "change" event when underlying value doesn\'t change', async() => {
+			const elem = await fixture(defaultValueFixture); // value = 1.1
+			let fired = false;
+			elem.addEventListener('change', () => { fired = true; });
+
+			const inputTextElement = elem.shadowRoot.querySelector('d2l-input-text');
+			inputTextElement.value = '1.1000';
+			dispatchEvent(inputTextElement, 'change');
+			await aTimeout(1);
+
+			expect(fired).to.be.false;
 		});
 	});
 });
