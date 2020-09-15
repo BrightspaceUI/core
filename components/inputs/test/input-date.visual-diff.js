@@ -487,6 +487,25 @@ describe('d2l-input-date', () => {
 				const rect = await helper.getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
+
+			it('open then close', async function() {
+				// test to confirm that when focus returns to the input on close the tooltip does not appear
+				await page.$eval('#value', (elem) => {
+					const input = elem.shadowRoot.querySelector('d2l-input-text');
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keydown', true, true);
+					eventObj.keyCode = 13;
+					input.dispatchEvent(eventObj);
+				});
+				await page.$eval('#value', (elem) => {
+					const eventObj = document.createEvent('Events');
+					eventObj.initEvent('keyup', true, true);
+					eventObj.keyCode = 27;
+					elem.dispatchEvent(eventObj);
+				});
+				const rect = await visualDiff.getRect(page, '#value');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
 		});
 
 		describe('required', () => {
