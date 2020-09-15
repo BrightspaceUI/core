@@ -54,6 +54,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 				display: none;
 			}
 			.d2l-list-item-drag-handle-dragger-button {
+				background-color: unset;
 				display: block;
 			}
 			.d2l-list-item-drag-handle-keyboard-button {
@@ -70,9 +71,6 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 			/* Firefox includes a hidden border which messes up button dimensions */
 			button::-moz-focus-inner {
 				border: 0;
-			}
-			.d2l-list-item-drag-handle-dragger-button {
-				background-color: unset;
 			}
 			.d2l-button-icon {
 				height: 0.9rem;

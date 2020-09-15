@@ -49,10 +49,9 @@ invalid state.
 	- **Note:** The validity state should be synchronously updated at the same time as the form value. If no flags are provided the validity state is considered valid.
 - `get validity()`: Gets the current validity state that was set using `setValidity`
 - `get validationMessage()`: Override to provide custom validation messages for any of the built-in validity state flags.
-- `async requestValidate(validationType = ValidationType.SHOW_NEW_ERRORS)`: Used to get the component to validate and render the result of its validation. This involves both checking the validity state set using `setValidity` and any `d2l-validation-custom` elements associated with the component. `validationType` can have the following values:
-	- `ValidationType.SHOW_NEW_ERRORS`: If any errors are found during validation they will immediately be rendered and the component will be put in an `invalid` state. This should be used when the user has finished editing like in `change` or `blur` event handlers.
-	- `ValidationType.UPDATE_EXISTING_ERRORS`: If any errors are found during validation they will only be rendered if the component already has an error. This should be used if the user is in the middle of editing like in `input` event handlers.
-	- `ValidationType.SUPPRESS_ERRORS`: Performs validation but prevents any errors from being rendered. This should only be used if rendering the error would interfere with something else that might be rendered.
+- `async requestValidate(showNewErrors)`: Used to get the component to validate and render the result of its validation. This involves both checking the validity state set using `setValidity` and any `d2l-validation-custom` elements associated with the component.
+	- If `showNewErrors` is `true` then any errors found during validation will be immediately rendered and the component will be put in an `invalid` state. This should be used when the user has finished editing like in `change` or `blur` event handlers.
+	- If `showNewErrors` is `false` then any errors found during validation will only be rendered if the component already has an error. This should be used if the user is in the middle of editing like in `input` event handlers.
 
 **Events:**
 - `invalid-change`: Dispatched when the `invalid` property's value changes.
@@ -61,7 +60,7 @@ invalid state.
 
 
 ```javascript
-import { FormElementMixin, ValidationType } from '@brightspace-ui/core/form/form-element-mixin.js';
+import { FormElementMixin } from '@brightspace-ui/core/form/form-element-mixin.js';
 
 // Use the FormElementMixin
 class MyFormElement extends FormElementMixin(LitElement) {
@@ -118,8 +117,8 @@ class MyFormElement extends FormElementMixin(LitElement) {
 					// Set the tooShort flag to true if the text input has a length less than 4
 					tooShort: this._val2 && this._val2.length > 0 && this._val2.length < 4
 				});
-				// Since the user is in the middle of editing we only want to update the existing error message
-				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+				// Since the user is in the middle of editing, false is passed because we only want to update the existing error message
+				this.requestValidate(false);
 			}
 		});
 	}
@@ -141,8 +140,8 @@ class MyFormElement extends FormElementMixin(LitElement) {
 	}
 
 	_onBlur() {
-		// Only show new errors when the user has finished editing
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+		// true is passed because we only want to show new errors when the user has finished editing
+		this.requestValidate(true);
 	}
 
 	_onChange(e) {

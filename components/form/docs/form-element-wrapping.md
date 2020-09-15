@@ -15,7 +15,7 @@ Native form elements have built-in [client-side form validation](https://develop
 First we can start by defining a custom form element based on the basic [`FormElementMixin`](./form-element-mixin.md) documentation. This custom form element contains an internal text input and a tooltip to display validation errors.
 
 ```javascript
-import { FormElementMixin, ValidationType } from '../form-element-mixin.js';
+import { FormElementMixin } from '../form-element-mixin.js';
 
 // Use the FormElementMixin
 class MyWrappingFormElement extends FormElementMixin(LitElement) {
@@ -40,14 +40,14 @@ class MyWrappingFormElement extends FormElementMixin(LitElement) {
 		if (changedProperties.has('value')) {
 			// Setting the form value each time the value changes
 			this.setFormValue(this.value);
-			// Since the user is in the middle of editing we only want to update the existing error message
-			this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+			// Since the user is in the middle of editing, false is passed because we only want to update the existing error message
+			this.requestValidate(false);
 		}
 	}
 
 	_onBlur() {
-		// Only show new errors when the user has finished editing
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+		// true is passed because we only want to show new errors when the user has finished editing
+		this.requestValidate(true);
 	}
 
 	_onInput(e) {

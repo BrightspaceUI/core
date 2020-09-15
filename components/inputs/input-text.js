@@ -1,8 +1,8 @@
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FormElementMixin, ValidationType } from '../form/form-element-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
@@ -279,7 +279,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
-				this.requestValidate(ValidationType.UPDATE_EXISTING_ERRORS);
+				this.requestValidate(false);
 				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			} else if (prop === 'validationError') {
@@ -345,7 +345,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 
 	async _handleBlur(e) {
 		this._focused = false;
-		this.requestValidate(ValidationType.SHOW_NEW_ERRORS);
+		this.requestValidate(true);
 
 		/**
 		 * This is needed only for IE11 and Edge
