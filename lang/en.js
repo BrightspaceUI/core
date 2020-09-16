@@ -39,7 +39,7 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-time-range.startTime": "Start Time",
 	"components.list-item-drag-handle.default": "Reorder item action for {name}",
-	"components.list-item-drag-handle.keyboard": "Reorder items, current position {currentPosition} out of {size}",
+	"components.list-item-drag-handle.keyboard": "Reorder items, current position {currentPosition} out of {size}. To move this activity, press up or down arrows.",
 	"components.menu-item-return.return": "Returns to previous menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Returns to previous menu. You are viewing {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
