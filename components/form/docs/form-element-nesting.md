@@ -17,13 +17,13 @@ Because custom form elements support validation and form submission, we need to 
 **Properties:**
 | Property | Type | Description |
 |--|--|--|
-| `childErrors` | read-only, Map<FormElementMixin(HTMLElement), String[]> | A map containing all nested form elements with visible validation errors and the list of errors associated with them.<br><br>This can be used to hide validation errors in the parent component if they would cause conflicts with nested custom form elements. |
+| `childErrors` | read-only, `Map<FormElementMixin(HTMLElement), String[]>` | A map containing all nested form elements with visible validation errors and the list of errors associated with them.<br><br>This can be used to hide validation errors in the parent component if they would cause conflicts with nested custom form elements. |
 | `force-invalid` | Boolean, default: `false` | Force invalid can be used on nested custom form elements to force them to be styled as invalid if their parent is invalid.|
 | `novalidate` | Boolean, default: `false` | This must be passed up to nested custom form elements to ensure they won't get validated if the parent has validation disabled.  |
 
 **Methods:**
 - `async validate()`: Validate must be overridden and modified to call `validate` for all nested custom form elements and return the aggregated list of errors. This ensures that validating the parent will validate all nested components.
-	- **Note:** It is important that the aggregated errors are returned with nested validation errors ordered first with parent validation errors last.
+	- **Note:** It is important that the aggregated errors are returned with nested validation errors ordered first and parent validation errors last.
 
 **1. Create a basic custom form element:**
 
@@ -147,7 +147,7 @@ get validationMessage() {
 
 ![screenshot of a two validation tooltips overlapping](../screenshots/nesting-tooltip-conflict.png)
 
-Now that we have our validation logic for our parent and nested custom form elements, we need to make sure their validation tooltips don't overlap. To do this we will hide the tooltip using the `childErrors` `Map` which will tell us if any of the nested form elements are currently displaying validation errors.
+Now that we have the validation logic for the parent and nested custom form elements, we need to make sure their validation tooltips don't overlap. To do this we will hide the tooltip using the `childErrors` `Map` which will tell us if any of the nested form elements are currently displaying validation errors.
 
 ```javascript
 render() {
@@ -185,7 +185,7 @@ render() {
 
 **7. Support novalidate:**
 
-Custom form elements allow validation to be disabled. To support this, we need to pass `noValidate` up the nested custom form elements.
+Custom form elements allow validation to be disabled. To support this, we need to pass `noValidate` down to the nested custom form elements.
 
 ```javascript
 render() {
