@@ -8,10 +8,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-number.js';
 </script>
-<d2l-input-number
-  label="Label"
-  value="0">
-</d2l-input-number>
+<d2l-input-number label="Label" value="0"></d2l-input-number>
 ```
 
 **Properties:**
