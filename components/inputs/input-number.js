@@ -73,6 +73,13 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this.requestUpdate('value', oldValue);
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		if (!this.label) {
+			console.warn('d2l-input-number component requires label text');
+		}
+	}
+
 	render() {
 		const tooltip = this.validationError && this.childErrors.size === 0 ? html`<d2l-tooltip for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>` : null;
 		return html`
@@ -85,7 +92,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
 				id="${this._inputId}"
-				label="${this.label}"
+				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden}"
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
