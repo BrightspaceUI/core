@@ -109,7 +109,8 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	focus() {
-		this.shadowRoot.querySelector('d2l-input-text').focus();
+		const elem = this.shadowRoot.querySelector('d2l-input-text');
+		if (elem) elem.focus();
 	}
 
 	async validate() {
