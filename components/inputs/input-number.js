@@ -42,6 +42,9 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					position: relative;
 					width: 4rem;
 				}
+				:host([hidden]) {
+					display: none;
+				}
 			`
 		];
 	}
