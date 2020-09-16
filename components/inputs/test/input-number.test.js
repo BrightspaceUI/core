@@ -18,6 +18,10 @@ function dispatchEvent(elem, eventType) {
 	elem.dispatchEvent(e);
 }
 
+function getInnerInputValue(elem) {
+	return elem.shadowRoot.querySelector('d2l-input-text').value;
+}
+
 describe('d2l-input-number', () => {
 	describe('constructor', () => {
 		it('should construct', () => {
@@ -52,34 +56,25 @@ describe('d2l-input-number', () => {
 		it('should automatically add zeroes to match min fraction digits', async() => {
 			const elem = await fixture(minMaxFractionDigitsFixture);
 			elem.value = 1;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			expect(elem.value).to.equal(1);
-			expect(elem._formattedValue).to.equal('1.00');
+			expect(getInnerInputValue(elem)).to.equal('1.00');
 		});
 
 		it('should automatically round up to match max fraction digits', async() => {
 			const elem = await fixture(minMaxFractionDigitsFixture);
 			elem.value = 1.2345;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			expect(elem.value).to.equal(1.235);
-			expect(elem._formattedValue).to.equal('1.235');
+			expect(getInnerInputValue(elem)).to.equal('1.235');
 		});
 
 		it('should automatically round down to match max fraction digits', async() => {
 			const elem = await fixture(minMaxFractionDigitsFixture);
 			elem.value = 1.2344;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			expect(elem.value).to.equal(1.234);
-			expect(elem._formattedValue).to.equal('1.234');
+			expect(getInnerInputValue(elem)).to.equal('1.234');
 		});
 	});
 
@@ -87,12 +82,9 @@ describe('d2l-input-number', () => {
 		it('should reset value', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = 'helloworld123';
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			expect(elem.value).to.equal(undefined);
-			expect(elem._formattedValue).to.equal('');
+			expect(getInnerInputValue(elem)).to.equal('');
 		});
 	});
 
@@ -100,23 +92,17 @@ describe('d2l-input-number', () => {
 		it('should add a comma for numbers in thousands using Intl library', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = 1000;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			expect(elem.value).to.equal(1000);
-			expect(elem._formattedValue).to.equal('1,000');
+			expect(getInnerInputValue(elem)).to.equal('1,000');
 		});
 
 		it('should format/parse values that start with numbers using Intl library', async() => {
 			const elem = await fixture(normalFixture);
 			elem.value = '123abc';
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			expect(elem.value).to.equal(123);
-			expect(elem._formattedValue).to.equal('123');
+			expect(getInnerInputValue(elem)).to.equal('123');
 		});
 	});
 
@@ -124,20 +110,14 @@ describe('d2l-input-number', () => {
 		it('should be valid when required has value', async() => {
 			const elem = await fixture(requiredFixture);
 			elem.value = 10;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.be.empty;
 		});
 
 		it('should be invalid when empty and required', async() => {
 			const elem = await fixture(requiredFixture);
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.contain('label is required.');
 		});
@@ -145,10 +125,7 @@ describe('d2l-input-number', () => {
 		it('should be valid if number is in range', async() => {
 			const elem = await fixture(minMaxFixture);
 			elem.value = 7;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.be.empty;
 		});
@@ -156,10 +133,7 @@ describe('d2l-input-number', () => {
 		it('should be invalid if number is out of range', async() => {
 			const elem = await fixture(minMaxFixture);
 			elem.value = 1;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.contain('Number must be between 5 and 10.');
 		});
@@ -167,10 +141,7 @@ describe('d2l-input-number', () => {
 		it('should be valid if number is higher than min', async() => {
 			const elem = await fixture(minFixture);
 			elem.value = 10;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.be.empty;
 		});
@@ -178,10 +149,7 @@ describe('d2l-input-number', () => {
 		it('should be invalid if number is lower than min', async() => {
 			const elem = await fixture(minFixture);
 			elem.value = 1;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.contain('Number must be higher than 5.');
 		});
@@ -189,10 +157,7 @@ describe('d2l-input-number', () => {
 		it('should be valid if number is lower than max', async() => {
 			const elem = await fixture(maxFixture);
 			elem.value = 1;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.be.empty;
 		});
@@ -200,10 +165,7 @@ describe('d2l-input-number', () => {
 		it('should be invalid if number is higher than max', async() => {
 			const elem = await fixture(maxFixture);
 			elem.value = 15;
-
-			setTimeout(() => dispatchEvent(elem, 'change'));
-			await oneEvent(elem, 'change');
-
+			await elem.updateComplete;
 			const errors = await elem.validate();
 			expect(errors).to.contain('Number must be lower than 10.');
 		});
@@ -217,11 +179,11 @@ describe('d2l-input-number', () => {
 			elem.addEventListener('change', () => { fired = true; });
 
 			elem.value = 10;
-			await aTimeout(1);
+			await elem.updateComplete;
 			expect(fired).to.be.false;
 
 			elem.setAttribute('value', 15);
-			await aTimeout(1);
+			await elem.updateComplete;
 			expect(fired).to.be.false;
 		});
 
