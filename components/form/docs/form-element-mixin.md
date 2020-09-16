@@ -56,6 +56,9 @@ invalid state.
 **Events:**
 - `invalid-change`: Dispatched when the `invalid` property's value changes.
 
+**Additional Validation:**
+- Additional validation logic can be added to custom form elements by using the `d2l-validation-custom` component. [See the documentation for more information](../../validation/README.md).
+
 ## Usage
 
 
