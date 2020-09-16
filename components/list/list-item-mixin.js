@@ -321,7 +321,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					` : nothing }
 					${ this.actionHref ? html`
 					<a slot="content-action"
-						href="${this.acitonHref}"
+						href="${this.actionHref}"
 						aria-labelledby="${this._contentId}"
 						@mouseenter="${this._onMouseEnterLink}"
 						@mouseleave="${this._onMouseLeaveLink}"
