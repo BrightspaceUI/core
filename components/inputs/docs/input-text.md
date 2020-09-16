@@ -39,7 +39,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `size` | Number | Size of the input |
 | `step` | String | For number inputs, sets the step size |
 | `title` | String | Text for additional screenreader and mouseover context |
-| `type` | String, default: `text` | Can be one of `text`, `email`, `number`, `password`, `tel`, `url` |
+| `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url`. Type `number` is deprecated, use [d2l-input-number](./input-number.md) instead. |
 | `value` | String, default: `''` | Value of the input |
 
 **Accessibility:**
