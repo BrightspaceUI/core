@@ -19,7 +19,7 @@ Because custom form elements support validation and form submission, we need to 
 |--|--|--|
 | `childErrors` | read-only, `Map<FormElementMixin(HTMLElement), String[]>` | A map containing all nested form elements with visible validation errors and the list of errors associated with them.<br><br>This can be used to hide validation errors in the parent component if they would cause conflicts with nested custom form elements. |
 | `force-invalid` | Boolean, default: `false` | Force invalid can be used on nested custom form elements to force them to be styled as invalid if their parent is invalid.|
-| `novalidate` | Boolean, default: `false` | This must be passed up to nested custom form elements to ensure they won't get validated if the parent has validation disabled.  |
+| `novalidate` | Boolean, default: `false` | This must be passed down to nested custom form elements to ensure they won't get validated if the parent has validation disabled.  |
 
 **Methods:**
 - `async validate()`: Validate must be overridden and modified to call `validate` for all nested custom form elements and return the aggregated list of errors. This ensures that validating the parent will validate all nested components.
@@ -136,7 +136,7 @@ To ensure that users have the ability to fix our custom validation error, we wil
 ```javascript
 get validationMessage() {
 	if (this.validity.badInput) {
-		return 'First name and last name must be start with the same letter.';
+		return 'First name and last name must start with the same letter.';
 	}
 	// Don't forget to call super.validationMessage to provide a default error message.
 	return super.validationMessage;
