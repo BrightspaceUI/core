@@ -188,7 +188,7 @@ class InputTime extends FormElementMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (this.label === null) {
+		if (!this.label) {
 			console.warn('d2l-input-time component requires label text');
 		}
 
