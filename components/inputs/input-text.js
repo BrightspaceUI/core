@@ -7,6 +7,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
@@ -41,6 +42,10 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 			 * When set, will automatically place focus on the input
 			 */
 			autofocus: { type: Boolean },
+			/**
+			 * Additional information communicated in the aria-describedby on the input
+			 */
+			description: { type: String, reflect: true },
 			/**
 			 * Disables the input
 			 */
@@ -126,7 +131,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ inputStyles, inputLabelStyles,
+		return [ inputStyles, inputLabelStyles, offscreenStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -189,6 +194,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		this._inputId = getUniqueId();
 		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
+		this._descriptionId = getUniqueId();
 	}
 
 	firstUpdated(changedProperties) {
@@ -209,6 +215,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		};
 		const ariaRequired = this.required ? 'true' : undefined;
 		const ariaInvalid = this.invalid ? 'true' : this.ariaInvalid;
+		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
 
 		const inputStyles = {};
 		if (this._firstSlotWidth > 0) {
@@ -229,6 +236,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 		const input = html`
 			<div class="d2l-input-text-container">
 				<input aria-atomic="${ifDefined(this.atomic)}"
+					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 					aria-invalid="${ifDefined(ariaInvalid)}"
 					aria-label="${ifDefined(this._getAriaLabel())}"
@@ -264,6 +272,7 @@ class InputText extends FormElementMixin(RtlMixin(LitElement)) {
 				${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
 				${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
 			</div>
+			${offscreenContainer}
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`

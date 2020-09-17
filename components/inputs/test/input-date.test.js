@@ -22,6 +22,21 @@ describe('d2l-input-date', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 
+	describe('accessibility', () => {
+
+		it('should set description when empty-text', async() => {
+			const elem = await fixture('<d2l-input-date empty-text="text description"></d2l-input-date>');
+			const input = getChildElem(elem, 'd2l-input-text');
+			expect(input.getAttribute('description')).to.equal('text description');
+		});
+
+		it('should not set description when no empty-text', async() => {
+			const elem = await fixture(basicFixture);
+			const input = getChildElem(elem, 'd2l-input-text');
+			expect(input.hasAttribute('description')).to.be.false;
+		});
+	});
+
 	describe('constructor', () => {
 
 		it('should construct', () => {
