@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "Mae {label} yn annilys.",
 	"components.form-element.defaultFieldLabel": "Maes",
 	"components.form-element.input.email.typeMismatch": "Nid yw'r e-bost yn ddilys",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "Rhaid i'r nifer fod yn is na {max}",
 	"components.form-element.input.number.rangeUnderflow": "Rhaid i'r nifer fod yn uwch na {min}",
 	"components.form-element.input.text.tooShort": "Rhaid i {label} fod o leiaf {minlength} nod",

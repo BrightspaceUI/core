@@ -2,6 +2,7 @@
 import '../../button/button-icon';
 import '../../colors/colors.js';
 import '../../expand-collapse/expand-collapse-content.js';
+import '../../inputs/input-number.js';
 import '../../inputs/input-text.js';
 import '../form.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -82,6 +83,9 @@ class FormPanelDemo extends LitElement {
 						</div>
 						<div class="d2l-form-panel-demo-container">
 							<d2l-input-text label="Last Name" name="last-name" required minlength="4" maxlength="15"></d2l-input-text>
+						</div>
+						<div class="d2l-form-panel-demo-container">
+							<d2l-input-number label="Age" name="age" required min="18" max="23"></d2l-input-number>
 						</div>
 					</d2l-form>
 				</d2l-expand-collapse-content>

@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} geçersiz.",
 	"components.form-element.defaultFieldLabel": "Alan",
 	"components.form-element.input.email.typeMismatch": "E-posta geçerli değil",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "Sayı {max} değerinden küçük olmalıdır",
 	"components.form-element.input.number.rangeUnderflow": "Sayı {min} değerinden büyük olmalıdır",
 	"components.form-element.input.text.tooShort": "{label} en az {minlength} karakter olmalıdır",

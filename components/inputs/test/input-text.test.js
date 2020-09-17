@@ -300,7 +300,7 @@ describe('d2l-input-text', () => {
 			elem.value = '9';
 
 			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be higher than 10');
+			expect(errors).to.contain('Number must be higher than 10.');
 		});
 
 		it('should be invalid when value is above the max', async() => {
@@ -310,7 +310,7 @@ describe('d2l-input-text', () => {
 			elem.value = '110';
 
 			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be lower than 100');
+			expect(errors).to.contain('Number must be lower than 100.');
 		});
 
 		it('should be valid when value is between min and max', async() => {

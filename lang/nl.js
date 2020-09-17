@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} is ongeldig.",
 	"components.form-element.defaultFieldLabel": "Veld",
 	"components.form-element.input.email.typeMismatch": "",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "",
 	"components.form-element.input.number.rangeUnderflow": "",
 	"components.form-element.input.text.tooShort": "",

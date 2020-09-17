@@ -10,6 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} är ogiltig.",
 	"components.form-element.defaultFieldLabel": "Fält",
 	"components.form-element.input.email.typeMismatch": "E-postadressen är ogiltig",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "Numret måste vara lägre än {max}",
 	"components.form-element.input.number.rangeUnderflow": "Numret måste vara högre än {min}",
 	"components.form-element.input.text.tooShort": "{label} måste innehålla minst {minlength} tecken",

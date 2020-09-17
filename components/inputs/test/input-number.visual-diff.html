@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../input-number.js';
+		</script>
+		<title>d2l-input-number visual-diff tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body class="d2l-typography">
+		<div style="width: 300px;">
+			<div class="visual-diff">
+				<d2l-input-number id="simple" label="Number"></d2l-input-number>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-number id="label-hidden" label="Number" label-hidden></d2l-input-number>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-number id="required" label="Number" required></d2l-input-number>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-number id="disabled" label="Number" value="10" disabled></d2l-input-number>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-number id="placeholder" label="Number" placeholder="Number..."></d2l-input-number>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-number id="default-value" label="Number" value="10"></d2l-input-number>
+			</div>
+		</div>
+	</body>
+</html>

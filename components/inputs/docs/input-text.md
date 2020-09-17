@@ -25,7 +25,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `autofocus` | Boolean | When set, will automatically place focus on the input |
 | `description` | String | A description to be added to the `input` for accessibility |
 | `disabled` | Boolean | Disables the input |
-| `label-hidden` | Boolean | Hides the labe visually (moves it to the input's `aria-label` attribute) |
+| `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `max` | String | For number inputs, maximum value |
 | `maxlength` | Number | Imposes an upper character limit |
 | `min` | String | For number inputs, minimum value |
@@ -40,7 +40,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `size` | Number | Size of the input |
 | `step` | String | For number inputs, sets the step size |
 | `title` | String | Text for additional screenreader and mouseover context |
-| `type` | String, default: `text` | Can be one of `text`, `email`, `number`, `password`, `tel`, `url` |
+| `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url`. Type `number` is deprecated, use [d2l-input-number](./input-number.md) instead. |
 | `value` | String, default: `''` | Value of the input |
 
 **Accessibility:**
