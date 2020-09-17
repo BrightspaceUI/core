@@ -19,7 +19,6 @@ describe('d2l-template-primary-secondary', () => {
 		});
 
 		[
-			{ name: 'fullscreen-width', fileName: 'primary-secondary-desktop-fullscreen-width.visual-diff.html' },
 			{ name: 'normal-width', fileName: 'primary-secondary-desktop-normal-width.visual-diff.html' },
 			{ name: 'larger-than-viewport-height', fileName: 'primary-secondary-desktop-large.visual-diff.html' },
 			{ name: 'footer-hidden', fileName: 'primary-secondary-desktop-footer-hidden.visual-diff.html' },
