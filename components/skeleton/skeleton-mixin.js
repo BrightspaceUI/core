@@ -1,6 +1,5 @@
 import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
-import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 export const skeletonStyles = css`
 	@keyframes loadingPulse {
@@ -86,7 +85,7 @@ export const skeletonStyles = css`
 	}
 `;
 
-export const SkeletonMixin = dedupeMixin(superclass => class extends superclass {
+export const SkeletonMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
@@ -98,4 +97,4 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends superclass 
 		return skeletonStyles;
 	}
 
-});
+};
