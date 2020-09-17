@@ -68,6 +68,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
+			_showInfoTooltip: { type: Boolean },
 			_shownValue: { type: String }
 		};
 	}
@@ -131,6 +132,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date';
+		this._showInfoTooltip = true;
 		this._shownValue = '';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
@@ -173,14 +175,16 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const tooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const errorTooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
 			</div>
-			${tooltip}
+			${errorTooltip}
+			${infoTooltip}
 			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
@@ -188,6 +192,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					atomic="true"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
+					description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
 					?disabled="${this.disabled}"
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
@@ -200,7 +205,6 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					placeholder="${shortDateFormat}"
 					?required="${this.required}"
 					style="${styleMap({ maxWidth: inputTextWidth })}"
-					title="${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}"
 					.value="${this._formattedValue}">
 					${icon}
 				</d2l-input-text>
@@ -274,6 +278,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleBlur() {
+		this._showInfoTooltip = true;
 		this._setFormattedValue(); // needed for case with empty text click on input-text then blur
 		this.requestValidate(true);
 	}
@@ -334,6 +339,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			'd2l-input-date-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: true } }
 		));
+		this._showInfoTooltip = false; // tooltip should not reappear after user has opened dropdown and closed unless focus leaves input-date and returns
 	}
 
 	async _handleFocusTrapEnter() {

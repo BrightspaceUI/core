@@ -23,6 +23,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `aria-invalid` | String | Indicates that the input value is invalid |
 | `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser |
 | `autofocus` | Boolean | When set, will automatically place focus on the input |
+| `description` | String | A description to be added to the `input` for accessibility |
 | `disabled` | Boolean | Disables the input |
 | `label-hidden` | Boolean | Hides the labe visually (moves it to the input's `aria-label` attribute) |
 | `max` | String | For number inputs, maximum value |
@@ -51,6 +52,7 @@ To make your usage of `d2l-input-text` accessible, use the following properties 
 | `aria-haspopup` | [Indicate clicking the input opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). |
 | `aria-invalid` | [Indicate that the input value is invalid](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-invalid) |
 | `aria-label` | Use when `label` does not provide enough context. Only applies if no `label-hidden`. |
+| `description` | Use when label on input does not provide enough context. |
 | `label` | **REQUIRED**  [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
 | `title` | Text for additional screen reader and mouseover context |
