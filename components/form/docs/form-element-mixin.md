@@ -56,6 +56,9 @@ invalid state.
 **Events:**
 - `invalid-change`: Dispatched when the `invalid` property's value changes.
 
+**Additional Validation:**
+- Additional validation logic can be added to custom form elements by using the `d2l-validation-custom` component. [See the documentation for more information](../../validation/README.md).
+
 ## Usage
 
 
@@ -160,7 +163,9 @@ customElements.define('my-form-element', MyFormElement);
 ## Advanced
 
 - **[Wrapping Native Form Elements](./form-element-wrapping.md)**
-	- If you need to create a custom form element that wraps native form elements like `input`, `select` and `textarea` more information can be found here.
+	- If you need to create a custom form element that wraps native form elements like `input`, `select` and `textarea`, more information can be found here.
+- **[Nesting Custom Form Elements](./form-element-nesting.md)**
+	- If you need to create a custom form element that nests other custom form elements like `d2l-input-text` inside its shadow DOM, more information can be found here.
 
 ## Future Enhancements
 

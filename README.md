@@ -27,6 +27,10 @@ npm install @brightspace-ui/core
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
   * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible content
   * [Focus Trap](components/focus-trap/): generic container that traps focus
+  * Forms
+	* [Forms](components/form/docs/form.md): Forms that aggregate data so the user can control how it is submitted
+	* [Native Forms](components/form/docs/form-native.md): Forms that emulate native HTML forms with support for custom form elements
+	* [FormElementMixin](components/form/docs/form-element-mixin.md): allow custom elements to participate in form submission and validation
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/):
   	* [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
@@ -47,6 +51,7 @@ npm install @brightspace-ui/core
   * [Tabs](components/tabs/): tab and tab-panel components
   * [Tooltip](components/tooltip/): tooltip components
   * [Typography](components/typography/): typography styles and components
+  * [Validation](components/validation/): plugin custom validation logic to native and custom form elements
 * Helpers
   * [Helpers](helpers/): helpers for composed DOM, unique ids, etc.
 * Mixins

@@ -10,12 +10,15 @@ Native form elements have built-in [client-side form validation](https://develop
 
 ### Implementing our custom form element
 
+**Methods:**
+- `get validity()`: This getter must be overridden to find the native form elements and return the value of their native `validity` property if they have an error. If there are no errors, this should still call off to `super.validity`
+
 **1. Create a basic custom form element:**
 
 First we can start by defining a custom form element based on the basic [`FormElementMixin`](./form-element-mixin.md) documentation. This custom form element contains an internal text input and a tooltip to display validation errors.
 
 ```javascript
-import { FormElementMixin } from '../form-element-mixin.js';
+import { FormElementMixin } from '@brightspace-ui/core/form/form-element-mixin.js';
 
 // Use the FormElementMixin
 class MyWrappingFormElement extends FormElementMixin(LitElement) {
