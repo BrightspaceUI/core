@@ -3,7 +3,7 @@ import { css } from 'lit-element/lit-element.js';
 export const inputLabelStyles = css`
 	.d2l-input-label {
 		cursor: default;
-		display: inline-block;
+		display: block;
 		font-size: 0.7rem;
 		font-weight: 700;
 		letter-spacing: 0.2px;

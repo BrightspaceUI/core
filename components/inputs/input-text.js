@@ -274,7 +274,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<div><label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}</label></div>
+				<label class="d2l-input-label" for="${this._inputId}"><span class="d2l-skeletize">${this.label}</span></label>
 				${input}`;
 		}
 		return input;
