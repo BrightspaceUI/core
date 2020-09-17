@@ -13,6 +13,11 @@ class TemplatePrimarySecondary extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * Controls whether the primary and secondary panels have shaded backgrounds
+			 * @type {'primary'|'secondary'|'none'}
+			 */
+			backgroundShading: { type: String, attribute: 'background-shading', reflect: true },
+			/**
 			 * Controls how the primary panel's contents overflow
 			 * @type {'default'|'hidden'}
 			 */
@@ -70,6 +75,10 @@ class TemplatePrimarySecondary extends LitElement {
 			:host([primary-overflow="hidden"]) main {
 				overflow: hidden;
 			}
+			:host([background-shading="primary"]) main,
+			:host([background-shading="secondary"]) aside {
+				background-color: var(--d2l-color-gypsum);
+			}
 			.d2l-template-primary-secondary-divider {
 				background-color: var(--d2l-color-mica);
 				grid-area: divider;
@@ -108,6 +117,7 @@ class TemplatePrimarySecondary extends LitElement {
 	constructor() {
 		super();
 		this.widthType = 'fullscreen';
+		this.backgroundShading = 'none';
 	}
 
 	render() {

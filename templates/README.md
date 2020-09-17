@@ -4,12 +4,12 @@ Page templates to provide common ways to arrange content on a page
 ## Primary-Secondary
 Two Panel (primary and secondary) page template with header and optional footer
 
-Use this template when: 
+Use this template when:
 - There are primary and secondary elements on the page
-- The user may need to see the primary and secondary elements at the same time 
- 
-Mental Models and Page Structure: 
-- The page includes basic settings (primary) and advanced settings (secondary) 
+- The user may need to see the primary and secondary elements at the same time
+
+Mental Models and Page Structure:
+- The page includes basic settings (primary) and advanced settings (secondary)
 - There is a primary object which users are modifying or supplementing with secondary tools/settings/options
 
 >
@@ -43,10 +43,13 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 
 **Note:** this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
-### Width ###
-The template accepts a `width-type` attribute. When set to `normal`, the width of the template is constrained to `1230px`.
+**Properties:**
 
-```<d2l-template-primary-secondary width-type="normal"></d2l-template-primary-secondary>```
+| Property | Type | Description |
+|--|--|--|
+| `background-shading` | String, default: `'none'` | Controls whether the primary and secondary panels have shaded backgrounds. Can be one of `'primary'`, `'secondary'`, `'none'`. |
+| `primary-overflow` | String, default: `'default'` | Controls how the primary panel's contents overflow. Can be one of `'default'`, `'hidden'`. |
+| `width-type` | String, default: `'fullscreen'` | Whether content fills the screen or not. When set to `normal`, the width of the template is constrained to `1230px`. Can be one of `'fullscreen'`, `'normal'`. |
 
 ## Future Enhancements
 
