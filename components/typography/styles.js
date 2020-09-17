@@ -10,9 +10,6 @@ export const bodyStandardStyles = css`
 		bottom: 0.35rem;
 		top: 0.3rem;
 	}
-	:host([skeleton]) .d2l-body-standard.d2l-skeletize-lines-3::before {
-		height: 4.2rem;
-	}
 	@media (max-width: 615px) {
 		.d2l-body-standard {
 			font-size: 0.8rem;
@@ -34,9 +31,6 @@ export const bodyCompactStyles = css`
 	:host([skeleton]) .d2l-body-compact.d2l-skeletize::before {
 		bottom: 0.3rem;
 		top: 0.3rem;
-	}
-	:host([skeleton]) .d2l-body-compact.d2l-skeletize-lines-3::before {
-		height: 3.6rem;
 	}
 `;
 
