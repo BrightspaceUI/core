@@ -8,6 +8,21 @@ export function findComposedAncestor(node, predicate) {
 	return null;
 }
 
+export function getBoundingAncestor(node) {
+	return findComposedAncestor(node, (node) => {
+		if (node === document.body) return false;
+		// explicitly ignore slot element, required for Edge
+		if (node.tagName === 'SLOT') return false;
+		if (node === document.documentElement) return true;
+		if (node.nodeType === Node.ELEMENT_NODE) {
+			const overflow = window.getComputedStyle(node, null).getPropertyValue('overflow');
+			// treat auto, scroll, hidden, clip as bounding
+			return (overflow !== 'visible');
+		}
+		return false;
+	});
+}
+
 export function getComposedChildren(node) {
 
 	if (!node) {

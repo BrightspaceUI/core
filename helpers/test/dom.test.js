@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { defineCE, expect, fixture } from '@open-wc/testing';
 import {
 	findComposedAncestor,
+	getBoundingAncestor,
 	getComposedChildren,
 	getComposedParent,
 	getNextAncestorSibling,
@@ -64,6 +65,27 @@ const mixedFixture = `
 		<${testElemTag} id="wc1">
 			<div id="light2"></div>
 			<div id="light3"></div>
+		</${testElemTag}>
+	</div>
+`;
+
+const overflowFixture = `
+	<div>
+		<div id="default"></div>
+		<div id="visible" style="overflow: visible;">
+			<div></div>
+		</div>
+		<div id="hidden" style="overflow: hidden;">
+			<div></div>
+		</div>
+		<div id="auto" style="overflow: auto;">
+			<div></div>
+		</div>
+		<div id="scroll" style="overflow: scroll;">
+			<div></div>
+		</div>
+		<${testElemTag}>
+			<div id="light1"></div>
 		</${testElemTag}>
 	</div>
 `;
@@ -152,6 +174,52 @@ describe('dom', () => {
 			const predicate = (node) => { return node.id === 'light1'; };
 			expect(findComposedAncestor(elem.querySelector('#wc1').getContainer(), predicate))
 				.to.equal(elem);
+		});
+
+	});
+
+	describe('getBoundingAncestor', () => {
+
+		it('returns documentElement for default overflow', async() => {
+			const elem = await fixture(overflowFixture);
+			const expected = document.documentElement;
+			expect(getBoundingAncestor(elem.querySelector('#default')))
+				.to.equal(expected);
+		});
+
+		it('returns documentElement for visible overflow', async() => {
+			const elem = await fixture(overflowFixture);
+			const expected = document.documentElement;
+			expect(getBoundingAncestor(elem.querySelector('#visible > div')))
+				.to.equal(expected);
+		});
+
+		it('returns documentElement for web component', async() => {
+			const elem = await fixture(overflowFixture);
+			const expected = document.documentElement;
+			expect(getBoundingAncestor(elem.querySelector('#light1')))
+				.to.equal(expected);
+		});
+
+		it('returns overflow:hidden ancestor', async() => {
+			const elem = await fixture(overflowFixture);
+			const expected = elem.querySelector('#hidden');
+			expect(getBoundingAncestor(elem.querySelector('#hidden > div')))
+				.to.equal(expected);
+		});
+
+		it('returns overflow:auto ancestor', async() => {
+			const elem = await fixture(overflowFixture);
+			const expected = elem.querySelector('#auto');
+			expect(getBoundingAncestor(elem.querySelector('#auto > div')))
+				.to.equal(expected);
+		});
+
+		it('returns overflow:scroll ancestor', async() => {
+			const elem = await fixture(overflowFixture);
+			const expected = elem.querySelector('#scroll');
+			expect(getBoundingAncestor(elem.querySelector('#scroll > div')))
+				.to.equal(expected);
 		});
 
 	});

@@ -1,5 +1,5 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getBoundingAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map';
 import { html } from 'lit-element/lit-element.js';
@@ -469,18 +469,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._width = null;
 		await this.updateComplete;
 
-		const boundingContainer = findComposedAncestor(target, (node) => {
-			if (node === document.body) return false;
-			// explicitly ignore slot element, required for Edge
-			if (node.tagName === 'SLOT') return false;
-			if (node === document.documentElement) return true;
-			if (node.nodeType === Node.ELEMENT_NODE) {
-				const overflow = window.getComputedStyle(node, null).getPropertyValue('overflow');
-				// treat auto, scroll, hidden, clip as bounding
-				return (overflow !== 'visible');
-			}
-			return false;
-		});
+		const boundingContainer = getBoundingAncestor(target);
 		const boundingContainerRect = boundingContainer.getBoundingClientRect();
 
 		const adjustPosition = async() => {
