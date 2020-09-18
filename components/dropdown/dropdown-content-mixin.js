@@ -537,7 +537,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		};
 
 		const scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
-		const availableWidth = boundingContainerRect.width - 60;
+		const availableWidth = (boundingContainer === document.documentElement ? window.innerWidth - 40 : boundingContainerRect.width - 60);
 		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth) ;
 
 		await this.updateComplete;
