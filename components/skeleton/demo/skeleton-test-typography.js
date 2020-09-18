@@ -27,21 +27,15 @@ export class SkeletonTestTypography extends SkeletonMixin(LitElement) {
 			labelStyles,
 			linkStyles,
 			css`
-			:host {
-				display: block;
-			}
-			.d2l-demo-box {
-				border: 1px solid black;
-				height: 100px;
-				width: 300px;
-			}
-		`];
+				:host {
+					display: block;
+				}
+			`
+		];
 	}
 
 	render() {
 		return html`
-			<div class="d2l-demo-box d2l-skeletize"></div>
-			<hr>
 			<p class="d2l-body-standard d2l-skeletize d2l-skeletize-20">Body Standard</p>
 			<p class="d2l-body-compact d2l-skeletize d2l-skeletize-15">Body Compact</p>
 			<p class="d2l-body-small d2l-skeletize d2l-skeletize-10">Body Small</p>
