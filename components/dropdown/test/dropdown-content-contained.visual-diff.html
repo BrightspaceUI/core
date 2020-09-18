@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../../test/typography-preload.js';
+		import '../../button/button.js';
+		import '../dropdown.js';
+		import '../dropdown-content.js';
+	</script>
+	<title>d2l-dropdown-content</title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		.visual-diff {
+			width: 300px;
+		}
+		.container {
+			border: 1px solid black;
+			height: 300px;
+			overflow: hidden;
+			position: relative;;
+			width: 300px;
+		}
+		d2l-dropdown {
+			position: absolute;
+		}
+		.top-left {
+			top: 0;
+		}
+		.bottom-left {
+			bottom: 0;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+
+		<div id="contained-top" class="container">
+			<d2l-dropdown class="top-left">
+				<d2l-button class="d2l-dropdown-opener">Opener</d2l-button>
+				<d2l-dropdown-content>
+					<div>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</div>
+					<div>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</div>
+				</d2l-dropdown-content>
+			</d2l-dropdown>
+		</div>
+
+	</div>
+
+	<div class="visual-diff">
+
+		<div id="contained-bottom" class="container">
+			<d2l-dropdown class="bottom-left">
+				<d2l-button class="d2l-dropdown-opener">Opener</d2l-button>
+				<d2l-dropdown-content>
+					<div>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</div>
+					<div>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</div>
+				</d2l-dropdown-content>
+			</d2l-dropdown>
+		</div>
+
+	</div>
+
+</body>
+</html>
