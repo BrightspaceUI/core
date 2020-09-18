@@ -1,5 +1,5 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getBoundingAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map';
 import { html } from 'lit-element/lit-element.js';
@@ -464,9 +464,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		if (!this.noAutoFit) {
 			this._contentHeight = null;
 		}
+
 		/* don't let dropdown content horizontally overflow viewport */
 		this._width = null;
 		await this.updateComplete;
+
+		const boundingContainer = getBoundingAncestor(target);
+		const boundingContainerRect = boundingContainer.getBoundingClientRect();
 
 		const adjustPosition = async() => {
 
@@ -474,12 +478,30 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
 			const headerFooterHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
-			const spaceAround = this._constrainSpaceAround({
-				above: targetRect.top - 50,
-				below: window.innerHeight - targetRect.bottom - 80,
-				left: targetRect.left - 20,
-				right: document.documentElement.clientWidth - targetRect.right - 15
-			});
+			let spaceAround;
+			if (boundingContainer === document.documentElement) {
+				spaceAround = this._constrainSpaceAround({
+					// allow for target offset + outer margin
+					above: targetRect.top - 50,
+					// allow for target offset + outer margin
+					below: window.innerHeight - targetRect.bottom - 80,
+					// allow for outer margin
+					left: targetRect.left - 20,
+					// allow for outer margin
+					right: document.documentElement.clientWidth - targetRect.right - 15
+				});
+			} else {
+				spaceAround = this._constrainSpaceAround({
+					// allow for target offset + outer margin
+					above: targetRect.top - boundingContainerRect.top - 40,
+					// allow for target offset + outer margin
+					below: boundingContainerRect.bottom - targetRect.bottom - 40,
+					// allow for outer margin
+					left: targetRect.left - boundingContainerRect.left - 20,
+					// allow for outer margin
+					right: boundingContainerRect.right - targetRect.right - 20
+				});
+			}
 
 			const spaceRequired = {
 				height: Math.min(this.maxHeight ? this.maxHeight : Number.MAX_VALUE, contentRect.height + headerFooterHeight) + 10,
@@ -514,7 +536,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 		};
 
-		this._width = this._getWidth(Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth));
+		const scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
+		const availableWidth = (boundingContainer === document.documentElement ? window.innerWidth - 40 : boundingContainerRect.width - 60);
+		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth) ;
+
 		await this.updateComplete;
 
 		await adjustPosition();
@@ -589,14 +614,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			}
 		}
 		return null;
-	}
-
-	_getWidth(scrollWidth) {
-		let width = window.innerWidth - 40;
-		if (width > scrollWidth) {
-			width = scrollWidth;
-		}
-		return width;
 	}
 
 	_renderContent() {
