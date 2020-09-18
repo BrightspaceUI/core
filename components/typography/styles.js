@@ -10,6 +10,15 @@ export const bodyStandardStyles = css`
 		bottom: 0.35rem;
 		top: 0.3rem;
 	}
+	:host([skeleton]) .d2l-body-standard.d2l-skeletize-paragraph-2 {
+		max-height: 2.8rem;
+	}
+	:host([skeleton]) .d2l-body-standard.d2l-skeletize-paragraph-3 {
+		max-height: 4.2rem;
+	}
+	:host([skeleton]) .d2l-body-standard.d2l-skeletize-paragraph-5 {
+		max-height: 7rem;
+	}
 	@media (max-width: 615px) {
 		.d2l-body-standard {
 			font-size: 0.8rem;
@@ -18,6 +27,15 @@ export const bodyStandardStyles = css`
 		:host([skeleton]) .d2l-body-standard.d2l-skeletize::before {
 			bottom: 0.3rem;
 			top: 0.3rem;
+		}
+		:host([skeleton]) .d2l-body-standard.d2l-skeletize-paragraph-2 {
+			max-height: 2.4rem;
+		}
+		:host([skeleton]) .d2l-body-standard.d2l-skeletize-paragraph-3 {
+			max-height: 3.6rem;
+		}
+		:host([skeleton]) .d2l-body-standard.d2l-skeletize-paragraph-5 {
+			max-height: 6rem;
 		}
 	}
 `;
@@ -31,6 +49,15 @@ export const bodyCompactStyles = css`
 	:host([skeleton]) .d2l-body-compact.d2l-skeletize::before {
 		bottom: 0.3rem;
 		top: 0.3rem;
+	}
+	:host([skeleton]) .d2l-body-compact.d2l-skeletize-paragraph-2 {
+		max-height: 2.4rem;
+	}
+	:host([skeleton]) .d2l-body-compact.d2l-skeletize-paragraph-3 {
+		max-height: 3.6rem;
+	}
+	:host([skeleton]) .d2l-body-compact.d2l-skeletize-paragraph-5 {
+		max-height: 6rem;
 	}
 `;
 
@@ -46,6 +73,15 @@ export const bodySmallStyles = css`
 		bottom: 0.25rem;
 		top: 0.2rem;
 	}
+	:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-2 {
+		max-height: 2rem;
+	}
+	:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-3 {
+		max-height: 3rem;
+	}
+	:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-5 {
+		max-height: 5rem;
+	}
 	@media (max-width: 615px) {
 		.d2l-body-small {
 			font-size: 0.6rem;
@@ -54,6 +90,15 @@ export const bodySmallStyles = css`
 		:host([skeleton]) .d2l-body-small.d2l-skeletize::before {
 			bottom: 0.25rem;
 			top: 0.2rem;
+		}
+		:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-2 {
+			max-height: 1.8rem;
+		}
+		:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-3 {
+			max-height: 2.7rem;
+		}
+		:host([skeleton]) .d2l-body-small.d2l-skeletize-paragraph-5 {
+			max-height: 4.5rem;
 		}
 	}
 `;
