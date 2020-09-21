@@ -20,7 +20,13 @@ export const skeletonStyles = css`
 		top: 0;
 		z-index: 1;
 	}
+	@media (prefers-reduced-motion: reduce) {
+		:host([skeleton]) .d2l-skeletize::before {
+			animation: none;
+		}
+	}
 	:host([skeleton]) .d2l-skeletize {
+		background-color: transparent;
 		border-color: transparent;
 		box-shadow: none;
 		color: transparent;
