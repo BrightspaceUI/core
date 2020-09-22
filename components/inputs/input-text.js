@@ -141,6 +141,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 				:host([hidden]) {
 					display: none;
 				}
+				.d2l-input-label {
+					display: inline-block;
+					vertical-align: bottom;
+				}
 				.d2l-input-text-container {
 					position: relative;
 				}
@@ -274,7 +278,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<label class="d2l-input-label" for="${this._inputId}"><span class="d2l-skeletize">${this.label}</span></label>
+				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}</label>
 				${input}`;
 		}
 		return input;
