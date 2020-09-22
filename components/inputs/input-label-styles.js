@@ -30,6 +30,9 @@ export const inputLabelStyles = css`
 		bottom: 0.25rem;
 		top: 0.15rem;
 	}
+	:host([skeleton][required]) .d2l-input-label.d2l-skeletize::after {
+		display: none;
+	}
 	.d2l-input-label-fieldset {
 		border: none;
 		display: block;
