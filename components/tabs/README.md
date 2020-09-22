@@ -25,13 +25,17 @@ The `d2l-tabs` element is a web component for tabbed content. It provides the `d
 
 **Tabs Properties:**
 
-- `max-to-show` (Number): used to limit the max-width/number of tabs to initially display
+| Property | Type | Description |
+|--|--|--|
+| `max-to-show` | Number | Used to limit the max-width/number of tabs to initially display |
 
 **Tab Panel Properties:**
 
-- `no-padding` (Boolean): used to opt out of default padding/whitespace around the panel
-- `text` (required, String): the text used for the tab, as well as labelling the panel
-- `selected` (Boolean): used to select the tab
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | The text used for the tab, as well as labelling the panel |
+| `no-padding` | Boolean | Used to opt out of default padding/whitespace around the panel |
+| `selected` | Boolean | Used to select the tab |
 
 **Events:**
 

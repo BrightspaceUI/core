@@ -44,9 +44,11 @@ The `d2l-status-indicator` element can be used to communicate the status of an i
 
 **Properties:**
 
-- `state` (String, default: `'default'`): State of status indicator to display. Can be one of  `default`, `success`, `alert` , `none`
-- `text` (required, String): The text that is displayed within the status indicator
-- `bold` (Boolean): Use when the status is very important and needs to have a lot of prominence
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | The text that is displayed within the status indicator |
+| `bold` | Boolean | Use when the status is very important and needs to have a lot of prominence |
+| `state` | String, default: `default` | State of status indicator to display. Can be one of  `default`, `success`, `alert` , `none` |
 
 ## Future Enhancements
 

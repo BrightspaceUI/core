@@ -17,11 +17,14 @@ The `d2l-tooltip` component is used to display additional information when users
 ```
 
 **Basic Properties:**
-* `for` (required, String): provide the `id` of the tooltip's target element. If this attribute is not provided, the tooltip's parent element will be used as its target. Both the tooltip and its target element must be within the same shadow root.
-* `align` (String): optionally align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered. Valid values are: `start` and `end`.
-* `delay` (Number, default: `0`) - provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus.
-* `offset`: (Number, default: `16.5`): adjust the size of the gap between the tooltip and its target.
-* `state` (String, default: `info`): the style of the tooltip based on the type of information it displays. Valid values are: `info` and `error`. If you find yourself needing a style that isn't supported by the `state` attribute please create a Github issue.
+
+| Property | Type | Description |
+|--|--|--|
+| `for` | String, required | Provide the `id` of the tooltip's target element. If this attribute is not provided, the tooltip's parent element will be used as its target. Both the tooltip and its target element must be within the same shadow root. |
+| `align` | String | Optionally align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered. Valid values are: `start` and `end`. |
+| `delay` | Number, default: `0` | Provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus. |
+| `offset` | Number, default: `16.5` | Adjust the size of the gap between the tooltip and its target |
+| `state` | String, default: `info` | The style of the tooltip based on the type of information it displays. Valid values are: `info` and `error`. If you find yourself needing a style that isn't supported by the `state` attribute please create a Github issue. |
 
 **Events:**
 * `d2l-tooltip-show`: dispatched when the tooltip is opened
@@ -77,13 +80,16 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 ```
 
 **Advanced Properties:**
-* `announced` (Boolean) - announce the tooltip inner text to screen reader users when the tooltip is shown. Use with custom elements.
-* `boundary` (Object) - optionally provide boundaries to constrain where the tooltip will appear. Valid properties are `"top"`, `"bottom"`, `"left"` and `"right"`. The boundary is relative to the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent).
-* `close-on-click` (Boolean, default: `false`) - causes the tooltip to close when its target is clicked
-* `disable-focus-lock` (Boolean, default: `false`) - disables focus lock so that the tooltip will automatically close when no longer hovered even if it still has focus
-* `force-show` (Boolean, default: `false`): force the tooltip to stay open as long as it remains `true`
-* `for-type` (String, default: `descriptor`) accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor. Valid values are: `label` and `descriptor`.
-* `position` (String): optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+
+| Property | Type | Description |
+|--|--|--|
+| `announced` | Boolean, default: `false` | Announce the tooltip inner text to screen reader users when the tooltip is shown. Use with custom elements. |
+| `boundary` | Object | Optionally provide boundaries to constrain where the tooltip will appear. Valid properties are `"top"`, `"bottom"`, `"left"` and `"right"`. The boundary is relative to the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent). |
+| `close-on-click` | Boolean, default: `false` | Causes the tooltip to close when its target is clicked |
+| `disable-focus-lock` | Boolean, default: `false` | Disables focus lock so that the tooltip will automatically close when no longer hovered even if it still has focus |
+| `force-show` | Boolean, default: `false` | Force the tooltip to stay open as long as it remains `true` |
+| `for-type` | String, default: `descriptor` | Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor. Valid values are: `label` and `descriptor`. |
+| `position` | String | Optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left. |
 
 ## Future Enhancements
 

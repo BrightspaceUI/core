@@ -15,10 +15,12 @@ The `d2l-more-less` element can be used to minimize the display of long content,
 
 **Properties:**
 
-- `blur-color` (String): Gradient HEX formatted color of the blurring effect (defaults to white).
-- `expanded` (Boolean): Specifies the expanded/collapsed state of the content
-- `h-align` (String): `text` aligns the leading edge of text
-- `height` (String, default: `'4em'`): Maximum height of the content when in "less" mode. The `d2l-more-less` element itself will take up additional vertical space for the fading effect as well as the more/less button itself.
+| Property | Type | Description |
+|--|--|--|
+| `blur-color` | String | Gradient HEX formatted color of the blurring effect (defaults to white). |
+| `expanded` | Boolean | Specifies the expanded/collapsed state of the content |
+| `h-align` | String | A value of `text` aligns the leading edge of text |
+| `height` | String, default: `'4em'` | Maximum height of the content when in "less" mode. The `d2l-more-less` element itself will take up additional vertical space for the fading effect as well as the more/less button itself. |
 
 ## Future Enhancements
 
