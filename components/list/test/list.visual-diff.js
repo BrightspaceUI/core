@@ -9,6 +9,44 @@ describe('d2l-list', () => {
 
 	let browser, page;
 
+	const closeDropdown = (selector) => {
+		return dropdownHelper.reset(page, selector);
+	};
+
+	const focusMethod = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.focus();
+		});
+	};
+
+	const focusInput = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.shadowRoot.querySelector('input').focus();
+		});
+	};
+
+	const focusLink = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.shadowRoot.querySelector('a').focus();
+		});
+	};
+
+	const hideTooltip = (selector) => {
+		return tooltipHelper.hide(page, selector);
+	};
+
+	const hover = (selector) => {
+		return page.hover(selector);
+	};
+
+	const openDropdown = (selector) => {
+		return dropdownHelper.open(page, selector);
+	};
+
+	const showTooltip = (selector) => {
+		return tooltipHelper.show(page, selector);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 3700 } });
@@ -104,43 +142,5 @@ describe('d2l-list', () => {
 		});
 
 	});
-
-	const closeDropdown = (selector) => {
-		return dropdownHelper.reset(page, selector);
-	};
-
-	const focusMethod = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.focus();
-		});
-	};
-
-	const focusInput = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('input').focus();
-		});
-	};
-
-	const focusLink = (selector) => {
-		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('a').focus();
-		});
-	};
-
-	const hideTooltip = (selector) => {
-		return tooltipHelper.hide(page, selector);
-	};
-
-	const hover = (selector) => {
-		return page.hover(selector);
-	};
-
-	const openDropdown = (selector) => {
-		return dropdownHelper.open(page, selector);
-	};
-
-	const showTooltip = (selector) => {
-		return tooltipHelper.show(page, selector);
-	};
 
 });

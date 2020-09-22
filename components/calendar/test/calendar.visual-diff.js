@@ -9,6 +9,11 @@ describe('d2l-calendar', () => {
 
 	const firstCalendarOfPage = '#contains-today-diff-selected';
 
+	const tabToDates = async function() {
+		await page.keyboard.press('Tab');
+		await page.keyboard.press('Tab');
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 2800 } });
@@ -406,10 +411,4 @@ describe('d2l-calendar', () => {
 			});
 		});
 	});
-
-	const tabToDates = async function() {
-		await page.keyboard.press('Tab');
-		await page.keyboard.press('Tab');
-	};
-
 });

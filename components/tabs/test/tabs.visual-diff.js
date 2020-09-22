@@ -7,6 +7,15 @@ describe('d2l-tabs', () => {
 
 	let browser, page;
 
+	const focusTabs = (selector) => {
+		return page.$eval(selector, (elem) => {
+			return new Promise((resolve) => {
+				elem.focus();
+				requestAnimationFrame(resolve);
+			});
+		});
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2000 } });
@@ -197,14 +206,5 @@ describe('d2l-tabs', () => {
 		});
 
 	});
-
-	const focusTabs = (selector) => {
-		return page.$eval(selector, (elem) => {
-			return new Promise((resolve) => {
-				elem.focus();
-				requestAnimationFrame(resolve);
-			});
-		});
-	};
 
 });

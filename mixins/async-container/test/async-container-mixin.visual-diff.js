@@ -7,6 +7,16 @@ describe('d2l-async-container-mixin', function() {
 
 	let browser, page;
 
+	const getAsyncStateEvent = (page, selector, state) => {
+		return page.$eval(selector, (elem, state) => {
+			return new Promise((resolve) => {
+				elem.addEventListener('d2l-async-demo-container-changed', (e) => {
+					if (e.detail.state === state) resolve();
+				});
+			});
+		}, state);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
@@ -75,15 +85,5 @@ describe('d2l-async-container-mixin', function() {
 		const rect = await visualDiff.getRect(page, '#complete');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
-
-	const getAsyncStateEvent = (page, selector, state) => {
-		return page.$eval(selector, (elem, state) => {
-			return new Promise((resolve) => {
-				elem.addEventListener('d2l-async-demo-container-changed', (e) => {
-					if (e.detail.state === state) resolve();
-				});
-			});
-		}, state);
-	};
 
 });
