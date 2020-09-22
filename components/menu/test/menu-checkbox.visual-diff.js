@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
+const { oneEvent } = require('@brightspace-ui/visual-diff/helpers');
 
 describe('d2l-menu checkbox', () => {
 
@@ -7,19 +8,9 @@ describe('d2l-menu checkbox', () => {
 
 	let browser, page;
 
-	const contentResize = (page, selector) => {
-		return page.$eval(selector, (item) => {
-			return new Promise((resolve) => {
-				item.addEventListener('d2l-menu-item-change', () => {
-					resolve();
-				});
-			});
-		});
-	};
-
-	const click = async(page, selector) => {
-		const resize = contentResize(page, selector);
-		await page.$eval(selector, (item) => item.click());
+	const click = (page, selector) => {
+		const resize = oneEvent(page, selector, 'd2l-menu-item-change');
+		page.$eval(selector, (item) => item.click());
 		return resize;
 	};
 
@@ -67,21 +58,21 @@ describe('d2l-menu checkbox', () => {
 		});
 
 		it('selects when clicked', async function() {
-			await click(page, '#normal-a');
+			click(page, '#normal-a');
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('selects multiple when clicked', async function() {
-			await click(page, '#normal-a');
-			await click(page, '#normal-b');
+			click(page, '#normal-a');
+			click(page, '#normal-b');
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('de-selects when clicked twice', async function() {
-			await click(page, '#normal-a');
-			await click(page, '#normal-a');
+			click(page, '#normal-a');
+			click(page, '#normal-a');
 			const rect = await visualDiff.getRect(page, '#normal');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
