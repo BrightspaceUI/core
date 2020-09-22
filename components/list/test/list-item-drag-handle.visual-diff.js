@@ -7,6 +7,10 @@ describe('d2l-list-item-drag-handle', () => {
 
 	let browser, page;
 
+	const focusMethod = (selector) => {
+		return page.$eval(selector, (item) => { item.focus(); });
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
@@ -38,9 +42,5 @@ describe('d2l-list-item-drag-handle', () => {
 		});
 
 	});
-
-	const focusMethod = (selector) => {
-		return page.$eval(selector, (item) => { item.focus(); });
-	};
 
 });

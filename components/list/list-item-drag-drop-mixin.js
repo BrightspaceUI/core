@@ -37,6 +37,116 @@ const isDragSupported = () => {
 	return typeof el.ondragenter === 'function';
 };
 
+export class NewPositionEventDetails {
+	/**
+	 * @param { Object } object An simple object with the position event properties
+	 * @param { String } object.dragTargetKey The item key of the list-item that is moving
+	 * @param { String } object.dropTargetKey The item key of the list-item in the position we are moving to
+	 * @param { Boolean } object.dropLocation Whether the target is moved before the destination
+	 */
+	constructor({ dragTargetKey, dropTargetKey, dropLocation }) {
+		if (!dragTargetKey) {
+			throw new Error(`NewPositionEventDetails must have a targetKey and destinationKey\nGiven: ${dragTargetKey}`);
+		}
+		this.dragTargetKey = dragTargetKey;
+		this.dropTargetKey = dropTargetKey;
+		this.dropLocation = dropLocation;
+	}
+
+	/**
+	 * Announces a move to screen readers on an array
+	 * @param { Array<Node> } list The array to announce the move on.
+	 * @param { Object } obj Object containing callback functions
+	 * @param { function(any, Number): String } obj.announceFn Callback function that returns the announcement text
+	 *        Takes the item in the array and the index as arguments. Should return the text to announce.
+	 * @param { function(Node): String } obj.keyFn Callback function that returns a key given a listitem
+	 */
+	announceMove(list, { announceFn, keyFn }) {
+		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
+		if (origin === null) throw new Error(`Target "${this.dragTargetKey}" not found in array`);
+		const destination = this._fetchDropTargetPosition(list, origin, keyFn);
+		if (destination === null) throw new Error(`Destination "${this.dropTargetKey}" not found in array`);
+
+		const message = announceFn(list[origin], destination);
+		if (message) announce(message);
+	}
+
+	/**
+	 * Fetches an index position within a list given an item key
+	 * @param { Array<Node> } list Array of nodes
+	 * @param { String } key Item key to fetch position of
+	 * @param { function(Node): String } keyFn Function that returns the key from a list item
+	 */
+	fetchPosition(list, key, keyFn) {
+		const index = list.findIndex(x => keyFn(x) === key);
+		return index === -1 ? null : index;
+	}
+
+	/**
+	 * Reorders an array in place with the current event information
+	 * The item will be moved to the position of the dropTargetKey. Array elements shift
+	 * forward one to make room.
+	 * @param { Array<Node> } list The array to reorder
+	 * @param { Object } obj An object containing callback functions
+	 * @param { function(any, Number): String } obj.announceFn (Optional) Callback function that returns the announcement text
+	 *        Takes the item in the array and the index as arguments. Should return the text to announce.
+	 *        This optional callback will be passed to announceMove if given.
+	 * @param { function(Node): String } obj.keyFn Callback function that returns the key for the item.
+	 */
+	reorder(list, { announceFn, keyFn }) {
+		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
+
+		if (announceFn) {
+			this.announceMove(list, { announceFn, keyFn });
+		}
+
+		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
+
+		if (origin === null) {
+			throw new Error(`Position not found in list:\n\torigin: ${this.dragTargetKey} at ${origin}`);
+		}
+
+		let destination = this._fetchDropTargetPosition(list, origin, keyFn);
+
+		if (destination === null) {
+			throw new Error(`Position not found in list:\n\tdestination: ${this.dropTargetKey} at ${destination}`);
+		}
+
+		const item = list[origin];
+		if (origin > destination) {
+			destination = this.dropLocation === dropLocation.below ? Math.min(destination + 1, list.length - 1) : destination;
+			for (let i = origin; i > destination; i--) {
+				list[i] = list[i - 1];
+			}
+		} else {
+			destination = this.dropLocation === dropLocation.above  ? Math.max(destination - 1, 0) : destination;
+			for (let i = origin; i < destination; i++) {
+				list[i] = list[i + 1];
+			}
+		}
+		list[destination] = item;
+	}
+
+	_fetchDropTargetPosition(list, originPosition, keyFn) {
+		if (this.dropTargetKey) {
+			return this.fetchPosition(list, this.dropTargetKey, keyFn);
+		}
+
+		switch (this.dropLocation) {
+			case dropLocation.shiftUp:
+				return Math.max(0, originPosition - 1);
+			case dropLocation.shiftDown:
+				return Math.min(list.length - 1, originPosition + 1);
+			case dropLocation.first:
+				return 0;
+			case dropLocation.last:
+				return list.length - 1;
+		}
+
+		return null;
+	}
+}
+
 export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -433,26 +543,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 };
 
-let dragState = null;
-
-function createDragState(target) {
-	clearDragState();
-	dragState = new DragState(target);
-	return dragState;
-}
-
-function getDragState() {
-	if (!dragState) createDragState();
-	return dragState;
-}
-
-function clearDragState() {
-	if (dragState) {
-		dragState.clear();
-	}
-	dragState = null;
-}
-
 class DragState {
 	constructor(dragTarget) {
 		this._dragTarget = dragTarget;
@@ -531,112 +621,22 @@ class DragState {
 	}
 }
 
-export class NewPositionEventDetails {
-	/**
-	 * @param { Object } object An simple object with the position event properties
-	 * @param { String } object.dragTargetKey The item key of the list-item that is moving
-	 * @param { String } object.dropTargetKey The item key of the list-item in the position we are moving to
-	 * @param { Boolean } object.dropLocation Whether the target is moved before the destination
-	 */
-	constructor({ dragTargetKey, dropTargetKey, dropLocation }) {
-		if (!dragTargetKey) {
-			throw new Error(`NewPositionEventDetails must have a targetKey and destinationKey\nGiven: ${dragTargetKey}`);
-		}
-		this.dragTargetKey = dragTargetKey;
-		this.dropTargetKey = dropTargetKey;
-		this.dropLocation = dropLocation;
+let dragState = null;
+
+function createDragState(target) {
+	clearDragState();
+	dragState = new DragState(target);
+	return dragState;
+}
+
+function getDragState() {
+	if (!dragState) createDragState();
+	return dragState;
+}
+
+function clearDragState() {
+	if (dragState) {
+		dragState.clear();
 	}
-
-	/**
-	 * Announces a move to screen readers on an array
-	 * @param { Array<Node> } list The array to announce the move on.
-	 * @param { Object } obj Object containing callback functions
-	 * @param { function(any, Number): String } obj.announceFn Callback function that returns the announcement text
-	 *        Takes the item in the array and the index as arguments. Should return the text to announce.
-	 * @param { function(Node): String } obj.keyFn Callback function that returns a key given a listitem
-	 */
-	announceMove(list, { announceFn, keyFn }) {
-		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
-		if (origin === null) throw new Error(`Target "${this.dragTargetKey}" not found in array`);
-		const destination = this._fetchDropTargetPosition(list, origin, keyFn);
-		if (destination === null) throw new Error(`Destination "${this.dropTargetKey}" not found in array`);
-
-		const message = announceFn(list[origin], destination);
-		if (message) announce(message);
-	}
-
-	/**
-	 * Fetches an index position within a list given an item key
-	 * @param { Array<Node> } list Array of nodes
-	 * @param { String } key Item key to fetch position of
-	 * @param { function(Node): String } keyFn Function that returns the key from a list item
-	 */
-	fetchPosition(list, key, keyFn) {
-		const index = list.findIndex(x => keyFn(x) === key);
-		return index === -1 ? null : index;
-	}
-
-	/**
-	 * Reorders an array in place with the current event information
-	 * The item will be moved to the position of the dropTargetKey. Array elements shift
-	 * forward one to make room.
-	 * @param { Array<Node> } list The array to reorder
-	 * @param { Object } obj An object containing callback functions
-	 * @param { function(any, Number): String } obj.announceFn (Optional) Callback function that returns the announcement text
-	 *        Takes the item in the array and the index as arguments. Should return the text to announce.
-	 *        This optional callback will be passed to announceMove if given.
-	 * @param { function(Node): String } obj.keyFn Callback function that returns the key for the item.
-	 */
-	reorder(list, { announceFn, keyFn }) {
-		if (this.dropTargetKey === undefined || this.dropTargetKey === this.dragTargetKey) return;
-
-		if (announceFn) {
-			this.announceMove(list, { announceFn, keyFn });
-		}
-
-		const origin = this.fetchPosition(list, this.dragTargetKey, keyFn);
-
-		if (origin === null) {
-			throw new Error(`Position not found in list:\n\torigin: ${this.dragTargetKey} at ${origin}`);
-		}
-
-		let destination = this._fetchDropTargetPosition(list, origin, keyFn);
-
-		if (destination === null) {
-			throw new Error(`Position not found in list:\n\tdestination: ${this.dropTargetKey} at ${destination}`);
-		}
-
-		const item = list[origin];
-		if (origin > destination) {
-			destination = this.dropLocation === dropLocation.below ? Math.min(destination + 1, list.length - 1) : destination;
-			for (let i = origin; i > destination; i--) {
-				list[i] = list[i - 1];
-			}
-		} else {
-			destination = this.dropLocation === dropLocation.above  ? Math.max(destination - 1, 0) : destination;
-			for (let i = origin; i < destination; i++) {
-				list[i] = list[i + 1];
-			}
-		}
-		list[destination] = item;
-	}
-
-	_fetchDropTargetPosition(list, originPosition, keyFn) {
-		if (this.dropTargetKey) {
-			return this.fetchPosition(list, this.dropTargetKey, keyFn);
-		}
-
-		switch (this.dropLocation) {
-			case dropLocation.shiftUp:
-				return Math.max(0, originPosition - 1);
-			case dropLocation.shiftDown:
-				return Math.min(list.length - 1, originPosition + 1);
-			case dropLocation.first:
-				return 0;
-			case dropLocation.last:
-				return list.length - 1;
-		}
-
-		return null;
-	}
+	dragState = null;
 }

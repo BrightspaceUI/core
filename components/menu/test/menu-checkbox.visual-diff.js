@@ -7,6 +7,22 @@ describe('d2l-menu checkbox', () => {
 
 	let browser, page;
 
+	const contentResize = (page, selector) => {
+		return page.$eval(selector, (item) => {
+			return new Promise((resolve) => {
+				item.addEventListener('d2l-menu-item-change', () => {
+					resolve();
+				});
+			});
+		});
+	};
+
+	const click = async(page, selector) => {
+		const resize = contentResize(page, selector);
+		await page.$eval(selector, (item) => item.click());
+		return resize;
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
@@ -70,21 +86,4 @@ describe('d2l-menu checkbox', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
-
-	const contentResize = (page, selector) => {
-		return page.$eval(selector, (item) => {
-			return new Promise((resolve) => {
-				item.addEventListener('d2l-menu-item-change', () => {
-					resolve();
-				});
-			});
-		});
-	};
-
-	const click = async(page, selector) => {
-		const resize = contentResize(page, selector);
-		await page.$eval(selector, (item) => item.click());
-		return resize;
-	};
-
 });

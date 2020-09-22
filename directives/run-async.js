@@ -17,6 +17,11 @@ import { directive } from 'lit-html/lit-html.js';
 const hasAbortController = typeof AbortController === 'function';
 const runs = new WeakMap();
 /**
+ * Error thrown by async tasks when the task couldn't be started based on the
+ * key passed to it.
+ */
+export class InitialStateError extends Error {}
+/**
  * Runs an async function whenever the key changes, and calls one of several
  * lit-html template functions depending on the state of the async call:
  *
@@ -122,8 +127,3 @@ export const runAsync = directive((key, task, templates, options) => (part) => {
 		part.setValue(pending());
 	}
 });
-/**
- * Error thrown by async tasks when the task couldn't be started based on the
- * key passed to it.
- */
-export class InitialStateError extends Error {}

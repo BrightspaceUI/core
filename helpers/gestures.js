@@ -19,9 +19,9 @@ function handleTouchStart(e) {
 
 	const reset = () => {
 		tracking = null;
-		node.removeEventListener('touchend', handleTouchEnd);
-		node.removeEventListener('touchermove', handleTouchMove);
-		node.removeEventListener('touchcancel', handleTouchCancel);
+		node.removeEventListener('touchend', handleTouchEnd); /* eslint-disable-line no-use-before-define */
+		node.removeEventListener('touchermove', handleTouchMove); /* eslint-disable-line no-use-before-define */
+		node.removeEventListener('touchcancel', handleTouchCancel); /* eslint-disable-line no-use-before-define */
 	};
 
 	const handleTouchCancel = () => {

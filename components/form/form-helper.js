@@ -23,12 +23,6 @@ export const isNativeFormElement = (node) => {
 	return !!formElements[nodeName];
 };
 
-export const findFormElements = (root, isFormElementPredicate = () => false, visitChildrenPredicate = () => true) => {
-	const eles = [];
-	_findFormElementsHelper(root, eles, isFormElementPredicate, visitChildrenPredicate);
-	return eles;
-};
-
 const _findFormElementsHelper = (ele, eles, isFormElementPredicate, visitChildrenPredicate) => {
 	if (isNativeFormElement(ele) || isCustomFormElement(ele) || isFormElementPredicate(ele)) {
 		eles.push(ele);
@@ -38,6 +32,31 @@ const _findFormElementsHelper = (ele, eles, isFormElementPredicate, visitChildre
 			_findFormElementsHelper(child, eles, isFormElementPredicate, visitChildrenPredicate);
 		}
 	}
+};
+
+export const findFormElements = (root, isFormElementPredicate = () => false, visitChildrenPredicate = () => true) => {
+	const eles = [];
+	_findFormElementsHelper(root, eles, isFormElementPredicate, visitChildrenPredicate);
+	return eles;
+};
+
+const _tryGetLabelElement = ele => {
+	if (ele.labels && ele.labels.length > 0) {
+		return ele.labels[0];
+	}
+	const rootNode = ele.getRootNode();
+	if (!rootNode || rootNode === document) {
+		return null;
+	}
+	const parent = ele.parentElement;
+	if (parent && ele.parentElement.tagName === 'LABEL') {
+		return parent;
+	}
+	if (ele.id) {
+		const rootNode = ele.getRootNode();
+		return rootNode.querySelector(`label[for="${ele.id}"]`);
+	}
+	return null;
 };
 
 export const tryGetLabelText = (ele) => {
@@ -101,49 +120,6 @@ export const tryGetLabelText = (ele) => {
 	return null;
 };
 
-const _tryGetLabelElement = ele => {
-	if (ele.labels && ele.labels.length > 0) {
-		return ele.labels[0];
-	}
-	const rootNode = ele.getRootNode();
-	if (!rootNode || rootNode === document) {
-		return null;
-	}
-	const parent = ele.parentElement;
-	if (parent && ele.parentElement.tagName === 'LABEL') {
-		return parent;
-	}
-	if (ele.id) {
-		const rootNode = ele.getRootNode();
-		return rootNode.querySelector(`label[for="${ele.id}"]`);
-	}
-	return null;
-};
-
-// https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#constructing-form-data-set
-export const getFormElementData = (node, submitter) => {
-
-	const eleData = {};
-	if (!_hasFormData(node, submitter)) {
-		return eleData;
-	}
-	const tagName = node.nodeName.toLowerCase();
-	if (isCustomFormElement(node)) {
-		return _getCustomFormElementData(node);
-	}
-	const name = node.getAttribute('name');
-	if (!name) {
-		return eleData;
-	}
-	const type = node.getAttribute('type');
-	if (tagName === 'input' && type === 'file') {
-		eleData[name] = node.files;
-		return eleData;
-	}
-	eleData[name] = node.value;
-	return eleData;
-};
-
 const _getCustomFormElementData = (node) => {
 	if (node.formValue instanceof Object) {
 		return { ...node.formValue };
@@ -178,6 +154,30 @@ const _hasFormData = (node, submitter) => {
 		return false;
 	}
 	return true;
+};
+
+// https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#constructing-form-data-set
+export const getFormElementData = (node, submitter) => {
+
+	const eleData = {};
+	if (!_hasFormData(node, submitter)) {
+		return eleData;
+	}
+	const tagName = node.nodeName.toLowerCase();
+	if (isCustomFormElement(node)) {
+		return _getCustomFormElementData(node);
+	}
+	const name = node.getAttribute('name');
+	if (!name) {
+		return eleData;
+	}
+	const type = node.getAttribute('type');
+	if (tagName === 'input' && type === 'file') {
+		eleData[name] = node.files;
+		return eleData;
+	}
+	eleData[name] = node.value;
+	return eleData;
 };
 
 export const flattenMap = (map) => {

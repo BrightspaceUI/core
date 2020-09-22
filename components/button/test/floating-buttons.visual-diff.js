@@ -7,6 +7,12 @@ describe('d2l-floating-buttons', () => {
 
 	let browser, page;
 
+	const scroll = async(page, selector, alignToTop) => {
+		await page.evaluate((selector, alignToTop) => {
+			document.querySelector(selector).scrollIntoView(alignToTop);
+		}, selector, alignToTop);
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
@@ -68,11 +74,5 @@ describe('d2l-floating-buttons', () => {
 		});
 
 	});
-
-	const scroll = async(page, selector, alignToTop) => {
-		await page.evaluate((selector, alignToTop) => {
-			document.querySelector(selector).scrollIntoView(alignToTop);
-		}, selector, alignToTop);
-	};
 
 });

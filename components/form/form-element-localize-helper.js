@@ -1,36 +1,12 @@
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { tryGetLabelText } from './form-helper.js';
 
-export const localizeFormElement = (localize, ele) => {
-	if (ele.validity.valid) {
-		return null;
-	}
-	const tagName = ele.tagName.toLowerCase();
-	const labelText = tryGetLabelText(ele) || localize('components.form-element.defaultFieldLabel');
-	switch (tagName) {
-		case 'input':
-			return _localizeInputElement(localize, ele, labelText);
-		case 'textarea':
-			return _localizeInputTextElement(localize, ele, labelText);
+const _localizeGenericElement = (localize, ele, labelText) => {
+	switch (true) {
+		case ele.validity.valueMissing:
+			return localize('components.form-element.valueMissing', { label: labelText });
 		default:
-			return _localizeGenericElement(localize, ele, labelText);
-	}
-};
-
-const _localizeInputElement = (localize, ele, labelText) => {
-
-	const type = ele.type;
-	switch (type) {
-		case 'number':
-			return _localizeInputNumberElement(localize, ele, labelText);
-		case 'url':
-			return _localizeInputUrlElement(localize, ele, labelText);
-		case 'email':
-			return _localizeInputEmailElement(localize, ele, labelText);
-		case 'text':
-			return _localizeInputTextElement(localize, ele, labelText);
-		default:
-			return _localizeGenericElement(localize, ele, labelText);
+			return localize('components.form-element.defaultError', { label: labelText });
 	}
 };
 
@@ -72,11 +48,35 @@ const _localizeInputTextElement = (localize, ele, labelText) => {
 	}
 };
 
-const _localizeGenericElement = (localize, ele, labelText) => {
-	switch (true) {
-		case ele.validity.valueMissing:
-			return localize('components.form-element.valueMissing', { label: labelText });
+const _localizeInputElement = (localize, ele, labelText) => {
+
+	const type = ele.type;
+	switch (type) {
+		case 'number':
+			return _localizeInputNumberElement(localize, ele, labelText);
+		case 'url':
+			return _localizeInputUrlElement(localize, ele, labelText);
+		case 'email':
+			return _localizeInputEmailElement(localize, ele, labelText);
+		case 'text':
+			return _localizeInputTextElement(localize, ele, labelText);
 		default:
-			return localize('components.form-element.defaultError', { label: labelText });
+			return _localizeGenericElement(localize, ele, labelText);
+	}
+};
+
+export const localizeFormElement = (localize, ele) => {
+	if (ele.validity.valid) {
+		return null;
+	}
+	const tagName = ele.tagName.toLowerCase();
+	const labelText = tryGetLabelText(ele) || localize('components.form-element.defaultFieldLabel');
+	switch (tagName) {
+		case 'input':
+			return _localizeInputElement(localize, ele, labelText);
+		case 'textarea':
+			return _localizeInputTextElement(localize, ele, labelText);
+		default:
+			return _localizeGenericElement(localize, ele, labelText);
 	}
 };

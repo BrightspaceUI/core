@@ -7,6 +7,25 @@ describe('d2l-more-less', () => {
 
 	let browser, page;
 
+	const contentResize = (page, selector) => {
+		return page.evaluate((selector) => {
+			return new Promise((resolve) => {
+				const elem = document.querySelector(selector);
+				elem.shadowRoot.querySelector('.d2l-more-less-content').addEventListener('transitionend', (e) => {
+					if (e.propertyName === 'height') resolve();
+				});
+			});
+		}, selector);
+	};
+
+	const click = async(page, selector) => {
+		const resize = contentResize(page, selector);
+		await page.evaluate((selector) => {
+			document.querySelector(selector).shadowRoot.querySelector('d2l-button-subtle').click();
+		}, selector);
+		return resize;
+	};
+
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
@@ -71,24 +90,5 @@ describe('d2l-more-less', () => {
 		const rect = await visualDiff.getRect(page, '#with-custom-blur');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
-
-	const contentResize = (page, selector) => {
-		return page.evaluate((selector) => {
-			return new Promise((resolve) => {
-				const elem = document.querySelector(selector);
-				elem.shadowRoot.querySelector('.d2l-more-less-content').addEventListener('transitionend', (e) => {
-					if (e.propertyName === 'height') resolve();
-				});
-			});
-		}, selector);
-	};
-
-	const click = async(page, selector) => {
-		const resize = contentResize(page, selector);
-		await page.evaluate((selector) => {
-			document.querySelector(selector).shadowRoot.querySelector('d2l-button-subtle').click();
-		}, selector);
-		return resize;
-	};
 
 });
