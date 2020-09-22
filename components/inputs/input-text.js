@@ -154,6 +154,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					text-overflow: ellipsis;
 					white-space: nowrap;
 				}
+				.d2l-input-label {
+					display: inline-block;
+					vertical-align: bottom;
+				}
 				#first-slot, #last-slot {
 					display: flex;
 					position: absolute;
