@@ -28,6 +28,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
 | `min-value` | String | Minimum valid date that could be selected by a user. |
+| `required` | Boolean | Indicates that a value is required |
 | `value` | String, default `''` | Value of the input. |
 
 **Accessibility:**
@@ -73,6 +74,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `max-value` | String | Maximum valid date that could be selected by a user |
 | `min-value` | String |  Minimum valid date that could be selected by a user |
+| `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date input |
 | `start-value` | String, default `''` | Value of the first date input |
 
@@ -116,6 +118,7 @@ The `<d2l-input-time>` component consists of a text input field for typing a tim
 | `disabled` | Boolean | Disables the input |
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
+| `required` | Boolean | Indicates that a value is required |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
 | `value` | String, default `''` | Value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable). |
 
@@ -161,6 +164,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 | `end-value` | String, default `''` | Value of the second time input |
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
+| `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Time'` | Accessible label for the first time input |
 | `start-value` | String, default `''` | Value of the first time input |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
@@ -202,6 +206,7 @@ Note: `max-value`, `min-value` and `value` should be in ISO 8601 combined date a
 | `disabled` | Boolean | Disables the input |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
+| `required` | Boolean | Indicates that a value is required |
 | `time-default-value`| String, default:`'00:00:00'` | Set default value of time input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`. |
 | `value` | String, default `''` | Value of the input. |
 
@@ -245,6 +250,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 | `end-label` | String, default `'End Date'` | Accessible label for the second date-time input |
 | `end-value` | String, default `''` | Value of the second date-time input |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
+| `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date-time input |
 | `start-value` | String, default `''` | Value of the first date-time input |
 
