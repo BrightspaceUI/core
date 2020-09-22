@@ -37,6 +37,104 @@ const isDragSupported = () => {
 	return typeof el.ondragenter === 'function';
 };
 
+class DragState {
+	constructor(dragTarget) {
+		this._dragTarget = dragTarget;
+		this._activeDropTarget = null;
+		this._dropTargets = new Map();
+		this._dropLocation = dropLocation.void;
+		this._time = 0;
+	}
+
+	addDropTarget(dropTarget) {
+		if (dropTarget && !this._dropTargets.has(dropTarget)) {
+			this._dropTargets.set(dropTarget, null);
+		}
+	}
+
+	clear() {
+		this._cleanUpOnLeave();
+		this._dropTargets.forEach((_, dropTarget) => dropTarget._draggingOver = false);
+		this._dropTargets.clear();
+	}
+
+	get dragTarget() {
+		return this._dragTarget;
+	}
+
+	get dragTargetKey() {
+		return this._dragTarget && this._dragTarget.key;
+	}
+
+	get dropLocation() {
+		return this._dropLocation;
+	}
+
+	get dropTarget() {
+		return this._activeDropTarget;
+	}
+
+	get dropTargetKey() {
+		return this._activeDropTarget && this._activeDropTarget.key;
+	}
+
+	setActiveDropTarget(dropTarget, dropLocation) {
+		this._dropLocation = dropLocation;
+		if (this._activeDropTarget === dropTarget) {
+			this._setPlacementMarkers();
+			return;
+		}
+		this._cleanUpOnLeave();
+		this._activeDropTarget = dropTarget;
+		this._setPlacementMarkers();
+		this.addDropTarget(dropTarget);
+	}
+
+	shouldDrop(time) {
+		return time - this._time < dropTargetLeaveDelay;
+	}
+
+	updateTime(time) {
+		this._time = time;
+		if (this._timeoutId) clearTimeout(this._timeoutId);
+		this._timeoutId = setTimeout(() => {
+			this._cleanUpOnLeave();
+			this._activeDropTarget = null;
+		}, dropTargetLeaveDelay);
+	}
+
+	_cleanUpOnLeave() {
+		if (!this._activeDropTarget) return;
+		this._activeDropTarget._dropLocation = dropLocation.void;
+		this._activeDropTarget._inTopArea = false;
+		this._activeDropTarget._inBottomArea = false;
+	}
+
+	_setPlacementMarkers() {
+		this._activeDropTarget._dropLocation = this.dropLocation;
+	}
+}
+
+let dragState = null;
+
+function createDragState(target) {
+	clearDragState();
+	dragState = new DragState(target);
+	return dragState;
+}
+
+function getDragState() {
+	if (!dragState) createDragState();
+	return dragState;
+}
+
+function clearDragState() {
+	if (dragState) {
+		dragState.clear();
+	}
+	dragState = null;
+}
+
 export class NewPositionEventDetails {
 	/**
 	 * @param { Object } object An simple object with the position event properties
@@ -542,101 +640,3 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
 	}
 };
-
-class DragState {
-	constructor(dragTarget) {
-		this._dragTarget = dragTarget;
-		this._activeDropTarget = null;
-		this._dropTargets = new Map();
-		this._dropLocation = dropLocation.void;
-		this._time = 0;
-	}
-
-	addDropTarget(dropTarget) {
-		if (dropTarget && !this._dropTargets.has(dropTarget)) {
-			this._dropTargets.set(dropTarget, null);
-		}
-	}
-
-	clear() {
-		this._cleanUpOnLeave();
-		this._dropTargets.forEach((_, dropTarget) => dropTarget._draggingOver = false);
-		this._dropTargets.clear();
-	}
-
-	get dragTarget() {
-		return this._dragTarget;
-	}
-
-	get dragTargetKey() {
-		return this._dragTarget && this._dragTarget.key;
-	}
-
-	get dropLocation() {
-		return this._dropLocation;
-	}
-
-	get dropTarget() {
-		return this._activeDropTarget;
-	}
-
-	get dropTargetKey() {
-		return this._activeDropTarget && this._activeDropTarget.key;
-	}
-
-	setActiveDropTarget(dropTarget, dropLocation) {
-		this._dropLocation = dropLocation;
-		if (this._activeDropTarget === dropTarget) {
-			this._setPlacementMarkers();
-			return;
-		}
-		this._cleanUpOnLeave();
-		this._activeDropTarget = dropTarget;
-		this._setPlacementMarkers();
-		this.addDropTarget(dropTarget);
-	}
-
-	shouldDrop(time) {
-		return time - this._time < dropTargetLeaveDelay;
-	}
-
-	updateTime(time) {
-		this._time = time;
-		if (this._timeoutId) clearTimeout(this._timeoutId);
-		this._timeoutId = setTimeout(() => {
-			this._cleanUpOnLeave();
-			this._activeDropTarget = null;
-		}, dropTargetLeaveDelay);
-	}
-
-	_cleanUpOnLeave() {
-		if (!this._activeDropTarget) return;
-		this._activeDropTarget._dropLocation = dropLocation.void;
-		this._activeDropTarget._inTopArea = false;
-		this._activeDropTarget._inBottomArea = false;
-	}
-
-	_setPlacementMarkers() {
-		this._activeDropTarget._dropLocation = this.dropLocation;
-	}
-}
-
-let dragState = null;
-
-function createDragState(target) {
-	clearDragState();
-	dragState = new DragState(target);
-	return dragState;
-}
-
-function getDragState() {
-	if (!dragState) createDragState();
-	return dragState;
-}
-
-function clearDragState() {
-	if (dragState) {
-		dragState.clear();
-	}
-	dragState = null;
-}
