@@ -142,4 +142,9 @@ export const SkeletonMixin = superclass => class extends superclass {
 		return skeletonStyles;
 	}
 
+	constructor() {
+		super();
+		this.skeleton = false;
+	}
+
 };

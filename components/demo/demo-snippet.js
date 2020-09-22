@@ -8,10 +8,10 @@ class DemoSnippet extends LitElement {
 	static get properties() {
 		return {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
-			hasSkeleton: { type: Boolean, reflect: true, attribute: 'has-skeleton' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			_code: { type: String },
 			_dir: { type: String, attribute: false },
+			_hasSkeleton: { type: Boolean, attribute: false },
 			_skeletonOn: { type: Boolean, reflect: false }
 		};
 	}
@@ -59,8 +59,8 @@ class DemoSnippet extends LitElement {
 
 	constructor() {
 		super();
-		this.hasSkeleton = false;
 		this._dir = document.documentElement.dir;
+		this._hasSkeleton = false;
 		this._skeletonOn = false;
 	}
 
@@ -70,7 +70,7 @@ class DemoSnippet extends LitElement {
 
 	render() {
 		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
-		const skeleton = this.hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
+		const skeleton = this._hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
 		return html`
 			<div class="d2l-demo-snippet-demo-wrapper">
 				<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
@@ -90,7 +90,10 @@ class DemoSnippet extends LitElement {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((_, prop) => {
-			if (prop === '_code') this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
+			if (prop === '_code') {
+				this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
+				this._updateHasSkeleton();
+			}
 		});
 	}
 
@@ -212,6 +215,25 @@ class DemoSnippet extends LitElement {
 		}
 		const textNode = document.createTextNode(this._formatCode(tempContainer.innerHTML));
 		this._code = textNode.textContent;
+	}
+
+	_updateHasSkeleton() {
+
+		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
+
+		const doApply = (nodes) => {
+			for (let i = 0; i < nodes.length; i++) {
+				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
+					if (nodes[i].skeleton !== undefined) {
+						this._hasSkeleton = true;
+					}
+					doApply(nodes[i].children);
+				}
+			}
+		};
+		doApply(nodes);
+
 	}
 
 }
