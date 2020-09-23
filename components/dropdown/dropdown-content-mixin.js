@@ -469,8 +469,12 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._width = null;
 		await this.updateComplete;
 
+		const openerPosition = window.getComputedStyle(opener, null).getPropertyValue('position');
 		const boundingContainer = getBoundingAncestor(target);
 		const boundingContainerRect = boundingContainer.getBoundingClientRect();
+
+		// position check in case consuming app (LMS) has overriden position to make content absolute wrt document
+		const bounded = (openerPosition === 'relative' && boundingContainer !== document.documentElement);
 
 		const adjustPosition = async() => {
 
@@ -479,18 +483,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			const headerFooterHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
 			let spaceAround;
-			if (boundingContainer === document.documentElement) {
-				spaceAround = this._constrainSpaceAround({
-					// allow for target offset + outer margin
-					above: targetRect.top - 50,
-					// allow for target offset + outer margin
-					below: window.innerHeight - targetRect.bottom - 80,
-					// allow for outer margin
-					left: targetRect.left - 20,
-					// allow for outer margin
-					right: document.documentElement.clientWidth - targetRect.right - 15
-				});
-			} else {
+
+			if (bounded) {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
 					above: targetRect.top - boundingContainerRect.top - 40,
@@ -500,6 +494,17 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					left: targetRect.left - boundingContainerRect.left - 20,
 					// allow for outer margin
 					right: boundingContainerRect.right - targetRect.right - 20
+				});
+			} else {
+				spaceAround = this._constrainSpaceAround({
+					// allow for target offset + outer margin
+					above: targetRect.top - 50,
+					// allow for target offset + outer margin
+					below: window.innerHeight - targetRect.bottom - 80,
+					// allow for outer margin
+					left: targetRect.left - 20,
+					// allow for outer margin
+					right: document.documentElement.clientWidth - targetRect.right - 15
 				});
 			}
 
@@ -537,7 +542,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		};
 
 		const scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
-		const availableWidth = (boundingContainer === document.documentElement ? window.innerWidth - 40 : boundingContainerRect.width - 60);
+		const availableWidth = (bounded ? boundingContainerRect.width - 60 : window.innerWidth - 40);
 		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth) ;
 
 		await this.updateComplete;
