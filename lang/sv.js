@@ -38,7 +38,7 @@ export default {
 	"components.input-time-range.endTime": "Sluttid",
 	"components.input-time-range.errorBadInput": "{startLabel} måste vara före {endLabel}",
 	"components.input-time-range.startTime": "Starttid",
-	"components.list-item-drag-handle.default": "Byt ordning på åtgärder",
+	"components.list-item-drag-handle.default": "Åtgärd för att ändra ordning på objekt för {name}",
 	"components.list-item-drag-handle.keyboard": "Byt ordning på objekt",
 	"components.menu-item-return.return": "Återgå till föregående meny.",
 	"components.menu-item-return.returnCurrentlyShowing": "Återgå till föregående meny. Du visar {menuTitle}.",

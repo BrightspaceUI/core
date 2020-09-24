@@ -38,7 +38,7 @@ export default {
 	"components.input-time-range.endTime": "結束時間",
 	"components.input-time-range.errorBadInput": "{startLabel} 必須早於 {endLabel}",
 	"components.input-time-range.startTime": "開始時間",
-	"components.list-item-drag-handle.default": "重新排序動作",
+	"components.list-item-drag-handle.default": "重新排序 {name} 的項目動作",
 	"components.list-item-drag-handle.keyboard": "重新排序項目",
 	"components.menu-item-return.return": "返回上一個功能表。",
 	"components.menu-item-return.returnCurrentlyShowing": "返回上一個功能表。您正在檢視 {menuTitle}。",

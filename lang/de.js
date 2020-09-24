@@ -38,7 +38,7 @@ export default {
 	"components.input-time-range.endTime": "Endzeit",
 	"components.input-time-range.errorBadInput": "{startLabel} muss vor {endLabel} liegen",
 	"components.input-time-range.startTime": "Startzeit",
-	"components.list-item-drag-handle.default": "Aktion neu anordnen",
+	"components.list-item-drag-handle.default": "Elementaktion für {name} neu anordnen",
 	"components.list-item-drag-handle.keyboard": "Elemente neu anordnen",
 	"components.menu-item-return.return": "Zum vorherigen Menü zurückkehren.",
 	"components.menu-item-return.returnCurrentlyShowing": "Zum vorherigen Menü zurückkehren. Sie betrachten gerade {menuTitle}.",
