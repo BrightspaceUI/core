@@ -29,6 +29,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			placeholder: { type: String },
 			required: { type: Boolean },
+			title: { type: String },
 			value: { type: Number },
 			_formattedValue: { type: String }
 		};
@@ -97,6 +98,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
+				title="${ifDefined(this.title)}"
 				.value="${this._formattedValue}"
 			></d2l-input-text>
 			${tooltip}
