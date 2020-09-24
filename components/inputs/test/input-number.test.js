@@ -9,6 +9,7 @@ const minMaxFixture = html`<d2l-input-number label="label" min="5" max="10"></d2
 const minFixture = html`<d2l-input-number label="label" min="5"></d2l-input-number>`;
 const maxFixture = html`<d2l-input-number label="label" max="10"></d2l-input-number>`;
 const minMaxFractionDigitsFixture = html`<d2l-input-number label="label" min-fraction-digits="2" max-fraction-digits="3"></d2l-input-number>`;
+const integerFixture = html`<d2l-input-number label="label" max-fraction-digits="0"></d2l-input-number>`;
 
 function dispatchEvent(elem, eventType) {
 	const e = new Event(
@@ -41,7 +42,7 @@ describe('d2l-input-number', () => {
 			});
 		});
 
-		['autocomplete', 'max', 'maxFractionDigits', 'min', 'minFractionDigits', 'placeholder', 'value'].forEach((name) => {
+		['autocomplete', 'max', 'maxFractionDigits', 'min', 'minFractionDigits', 'placeholder', 'title', 'value'].forEach((name) => {
 			it(`should default "${name}" property to 'undefined' when unset`, async() => {
 				expect(elem.value).to.equal(undefined);
 			});
@@ -53,6 +54,22 @@ describe('d2l-input-number', () => {
 	});
 
 	describe('min and max fraction digits', () => {
+		it('should round down to the nearest integer', async() => {
+			const elem = await fixture(integerFixture);
+			elem.value = 15.2345;
+			await elem.updateComplete;
+			expect(elem.value).to.equal(15);
+			expect(getInnerInputValue(elem)).to.equal('15');
+		});
+
+		it('should round up to the nearest integer', async() => {
+			const elem = await fixture(integerFixture);
+			elem.value = 15.6345;
+			await elem.updateComplete;
+			expect(elem.value).to.equal(16);
+			expect(getInnerInputValue(elem)).to.equal('16');
+		});
+
 		it('should automatically add zeroes to match min fraction digits', async() => {
 			const elem = await fixture(minMaxFractionDigitsFixture);
 			elem.value = 1;
