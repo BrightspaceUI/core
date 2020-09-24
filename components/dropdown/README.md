@@ -19,7 +19,7 @@
 </d2l-dropdown>
 ```
 
-If the dropdown is initially empty when it's opened, the dropdown pointer will not be positioned correctly.  In such cases, the `no-auto-open` attribute may be added to the opener, enabling you to take control of when the dropdown is actually opened:
+If the dropdown is initially empty when it is opened, the dropdown pointer will not be positioned correctly.  In such cases, the `no-auto-open` attribute may be added to the opener, enabling you to take control of when the dropdown is actually opened:
 
 ```html
 <d2l-dropdown no-auto-open>
