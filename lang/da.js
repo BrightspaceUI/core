@@ -10,7 +10,7 @@ export default {
 	"components.form-element.defaultError": "{label} er ugyldigt.",
 	"components.form-element.defaultFieldLabel": "Felt",
 	"components.form-element.input.email.typeMismatch": "E-mail er ikke gyldig",
-	"components.form-element.input.number.rangeError": "Number must be between {min} and {max}.",
+	"components.form-element.input.number.rangeError": "",
 	"components.form-element.input.number.rangeOverflow": "Tal skal være lavere end {max}",
 	"components.form-element.input.number.rangeUnderflow": "Tal skal være højere end {min}",
 	"components.form-element.input.text.tooShort": "{label} skal være på mindst {minlength} tegn",
