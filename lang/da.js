@@ -38,7 +38,7 @@ export default {
 	"components.input-time-range.endTime": "Sluttidspunkt",
 	"components.input-time-range.errorBadInput": "{startLabel} skal være før {endLabel}",
 	"components.input-time-range.startTime": "Starttidspunkt",
-	"components.list-item-drag-handle.default": "Omarranger handling",
+	"components.list-item-drag-handle.default": "Omarranger elementhandling for {name}",
 	"components.list-item-drag-handle.keyboard": "Omarranger elementer",
 	"components.menu-item-return.return": "Går tilbage til forrige menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Går tilbage til forrige menu. Du ser på {menuTitle}.",

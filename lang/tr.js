@@ -38,7 +38,7 @@ export default {
 	"components.input-time-range.endTime": "Bitiş Saati",
 	"components.input-time-range.errorBadInput": "{startLabel}, {endLabel} tarihinden önce olmalıdır",
 	"components.input-time-range.startTime": "Başlangıç Saati",
-	"components.list-item-drag-handle.default": "Eylemi yeniden sırala",
+	"components.list-item-drag-handle.default": "{name} için öğe eylemini yeniden sırala",
 	"components.list-item-drag-handle.keyboard": "Öğeleri yeniden sırala",
 	"components.menu-item-return.return": "Önceki menüye döner.",
 	"components.menu-item-return.returnCurrentlyShowing": "Önceki menüye döner. {menuTitle} başlığını görüntülüyorsunuz.",
