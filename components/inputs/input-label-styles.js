@@ -8,9 +8,8 @@ export const inputLabelStyles = css`
 		font-weight: 700;
 		letter-spacing: 0.2px;
 		line-height: 1rem;
-		margin: 0;
-		padding: 0 0 7px 0;
-		width: 100%;
+		margin: 0 0 7px 0;
+		padding: 0;
 	}
 	:host([required]) .d2l-input-label::after,
 	.d2l-input-label-required::after {
@@ -26,6 +25,13 @@ export const inputLabelStyles = css`
 	:host([dir="rtl"]) .d2l-input-label-required::after {
 		left: auto;
 		right: 0.15rem;
+	}
+	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
+		bottom: 0.25rem;
+		top: 0.15rem;
+	}
+	:host([skeleton][required]) .d2l-input-label.d2l-skeletize::after {
+		display: none;
 	}
 	.d2l-input-label-fieldset {
 		border: none;

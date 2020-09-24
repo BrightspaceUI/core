@@ -77,4 +77,15 @@ describe('d2l-input-text', () => {
 		});
 	});
 
+	[
+		'wc-skeleton-labelled',
+		'wc-skeleton-required',
+		'wc-skeleton-label-hidden'
+	].forEach((name) => {
+		it(name, async function() {
+			const rect = await visualDiff.getRect(page, `#${name}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 });

@@ -10,7 +10,9 @@ class DemoSnippet extends LitElement {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			_code: { type: String },
-			_dir: { type: String, attribute: false }
+			_dir: { type: String, attribute: false },
+			_hasSkeleton: { type: Boolean, attribute: false },
+			_skeletonOn: { type: Boolean, reflect: false }
 		};
 	}
 
@@ -58,6 +60,8 @@ class DemoSnippet extends LitElement {
 	constructor() {
 		super();
 		this._dir = document.documentElement.dir;
+		this._hasSkeleton = false;
+		this._skeletonOn = false;
 	}
 
 	firstUpdated() {
@@ -66,6 +70,7 @@ class DemoSnippet extends LitElement {
 
 	render() {
 		const dirAttr = this._dir === 'rtl' ? 'rtl' : 'ltr';
+		const skeleton = this._hasSkeleton ? html`<d2l-switch text="Skeleton" ?on="${this._skeletonOn}" @change="${this._handleSkeletonChange}"></d2l-switch>` : null;
 		return html`
 			<div class="d2l-demo-snippet-demo-wrapper">
 				<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
@@ -73,7 +78,8 @@ class DemoSnippet extends LitElement {
 					<slot></slot>
 				</div>
 				<div class="d2l-demo-snippet-settings">
-					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch>
+					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch><br>
+					${skeleton}
 				</div>
 			</div>
 			<d2l-code-view language="html" hide-language>${this._code}</d2l-code-view>
@@ -84,7 +90,10 @@ class DemoSnippet extends LitElement {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((_, prop) => {
-			if (prop === '_code') this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
+			if (prop === '_code') {
+				this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
+				this._updateHasSkeleton();
+			}
 		});
 	}
 
@@ -165,6 +174,11 @@ class DemoSnippet extends LitElement {
 		));
 	}
 
+	_handleSkeletonChange(e) {
+		this._skeletonOn = e.target.on;
+		this._applyAttr('skeleton', this._skeletonOn);
+	}
+
 	_removeImportedDemo() {
 		const nodes = this.shadowRoot.querySelector('slot[name="_demo"]').assignedNodes();
 		for (let i = nodes.length - 1; i === 0; i--) {
@@ -201,6 +215,25 @@ class DemoSnippet extends LitElement {
 		}
 		const textNode = document.createTextNode(this._formatCode(tempContainer.innerHTML));
 		this._code = textNode.textContent;
+	}
+
+	_updateHasSkeleton() {
+
+		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
+
+		const doApply = (nodes) => {
+			for (let i = 0; i < nodes.length; i++) {
+				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
+					if (nodes[i].skeleton !== undefined) {
+						this._hasSkeleton = true;
+					}
+					doApply(nodes[i].children);
+				}
+			}
+		};
+		doApply(nodes);
+
 	}
 
 }
