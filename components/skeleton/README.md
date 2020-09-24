@@ -64,9 +64,9 @@ render() {
 
 **Important:** Only use this CSS class on native elements. Custom elements should extend the `SkeletonMixin` and have their `skeleton` attribute set. If a custom element isn't skeleton-aware and doesn't yet have a `skeleton` property, take the time to add that support.
 
-### Native `<select>` Elements
+### Native Form Elements
 
-Unfortunately, native `<select>` elements do not support the `::before` CSS pseudo-class that our skeleton technique relies upon. To work around this, wrap your `<select>` in a `<div>` and apply the `d2l-skeletize` CSS class to it instead.
+Unfortunately, native form elements like `<input>`, `<select>` and `<textarea>` do not support the `::before` CSS pseudo-class that our skeleton technique relies upon. To work around this, wrap these native elements in a `<div>` (or other `block` or `inline-block` container) and apply the `d2l-skeletize` CSS class to it instead.
 
 ```javascript
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
@@ -81,7 +81,7 @@ class MyElement extends SkeletonMixin(LitElement) {
   render() {
     return html`
       <div class="d2l-skeletize">
-        <select class="d2l-input-select">
+        <select class="d2l-input-select" aria-label="select">
           <option>Option 1</option>
           <option>Option 2</option>
         </select>
