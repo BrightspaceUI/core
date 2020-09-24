@@ -1,8 +1,9 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 import { selectStyles } from '../input-select-styles.js';
+import { SkeletonMixin } from '../../skeleton/skeleton-mixin.js';
 
-class TestInputSelect extends RtlMixin(LitElement) {
+class TestInputSelect extends SkeletonMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -13,7 +14,7 @@ class TestInputSelect extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [selectStyles,
+		return [super.styles, selectStyles,
 			css`
 				:host {
 					display: inline-block;
@@ -28,15 +29,17 @@ class TestInputSelect extends RtlMixin(LitElement) {
 	render() {
 		const invalid = this.invalid ? 'true' : 'false';
 		return html`
-			<select
-				aria-label="Choose a dinosaur:"
-				aria-invalid="${invalid}"
-				class="d2l-input-select"
-				?disabled="${this.disabled}">
-				<option>Tyrannosaurus</option>
-				<option>Velociraptor</option>
-				<option>Deinonychus</option>
-			</select>
+			<div class="d2l-skeletize">
+				<select
+					aria-label="Choose a dinosaur:"
+					aria-invalid="${invalid}"
+					class="d2l-input-select"
+					?disabled="${this.disabled}">
+					<option>Tyrannosaurus</option>
+					<option>Velociraptor</option>
+					<option>Deinonychus</option>
+				</select>
+			</div>
 		`;
 	}
 

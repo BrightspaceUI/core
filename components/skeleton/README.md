@@ -38,7 +38,6 @@ class MyElement extends SkeletonMixin(LitElement) {
   }
 
 }
-customElements.define('my-element', MyElement);
 ```
 
 The mixin includes a single `skeleton` boolean property, which can then be set either by consumers or by your component itself to place it into "skeleton" mode:
@@ -64,6 +63,33 @@ render() {
 ```
 
 **Important:** Only use this CSS class on native elements. Custom elements should extend the `SkeletonMixin` and have their `skeleton` attribute set. If a custom element isn't skeleton-aware and doesn't yet have a `skeleton` property, take the time to add that support.
+
+### Native `<select>` Elements
+
+Unfortunately, native `<select>` elements do not support the `::before` CSS pseudo-class that our skeleton technique relies upon. To work around this, wrap your `<select>` in a `<div>` and apply the `d2l-skeletize` CSS class to it instead.
+
+```javascript
+import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+import { SkeletonMixin } from '@brightspace-ui/core/skeleton/skeleton-mixin.js';
+
+class MyElement extends SkeletonMixin(LitElement) {
+
+  static get styles() {
+    return [super.styles, selectStyles];
+  }
+
+  render() {
+    return html`
+      <div class="d2l-skeletize">
+        <select class="d2l-input-select">
+          <option>Option 1</option>
+          <option>Option 2</option>
+        </select>
+      </div>
+    `;
+  }
+}
+```
 
 ## Multi-Line Paragraphs
 
