@@ -8,8 +8,8 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 export function formatValue(value, minFractionDigits, maxFractionDigits) {
 	const options = {
-		maximumFractionDigits: maxFractionDigits ? maxFractionDigits : undefined,
-		minimumFractionDigits: minFractionDigits ? minFractionDigits : undefined
+		maximumFractionDigits: typeof(maxFractionDigits) === 'number' ? maxFractionDigits : undefined,
+		minimumFractionDigits: typeof(minFractionDigits) === 'number' ? minFractionDigits : undefined
 	};
 	return formatNumber(value, options);
 }
