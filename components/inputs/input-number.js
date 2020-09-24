@@ -5,6 +5,7 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 function formatValue(value, minFractionDigits, maxFractionDigits) {
 	const options = {
@@ -14,7 +15,7 @@ function formatValue(value, minFractionDigits, maxFractionDigits) {
 	return formatNumber(value, options);
 }
 
-class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
+class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -36,7 +37,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	static get styles() {
-		return [
+		return [ super.styles,
 			css`
 				:host {
 					display: inline-block;
@@ -98,6 +99,7 @@ class InputNumber extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
+				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				.value="${this._formattedValue}"
 			></d2l-input-text>
