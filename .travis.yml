@@ -66,6 +66,8 @@ jobs:
         provider: script
         skip_cleanup: true
         script: npx semantic-release
+        on:
+          all_branches: true
 env:
   global:
   # GITHUB_TOKEN
