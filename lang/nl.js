@@ -39,7 +39,7 @@ export default {
 	"components.input-time-range.endTime": "Eindtijd",
 	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "Starttijd",
-	"components.list-item-drag-handle.default": "Actie opnieuw ordenen",
+	"components.list-item-drag-handle.default": "Itemactie voor {name} opnieuw rangschikken",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw ordenen",
 	"components.menu-item-return.return": "Hiermee keert u terug naar het vorige menu.",
 	"components.menu-item-return.returnCurrentlyShowing": "Hiermee keert u terug naar het vorige menu. U bekijkt {menuTitle}.",

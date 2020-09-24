@@ -39,7 +39,7 @@ export default {
 	"components.input-time-range.endTime": "Amser Gorffen",
 	"components.input-time-range.errorBadInput": "Rhaid i {startLabel} fod cyn {endLabel}",
 	"components.input-time-range.startTime": "Amser Dechrau",
-	"components.list-item-drag-handle.default": "Aildrefnu gweithred",
+	"components.list-item-drag-handle.default": "Aildrefnu gweithred eitem ar gyfer {name}",
 	"components.list-item-drag-handle.keyboard": "Aildrefnu eitemau",
 	"components.menu-item-return.return": "Yn dychwelyd at y ddewislen flaenorol.",
 	"components.menu-item-return.returnCurrentlyShowing": "Yn dychwelyd at y ddewislen flaenorol. Rydych chi'n edrych ar {menuTitle}.",

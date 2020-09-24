@@ -39,7 +39,7 @@ export default {
 	"components.input-time-range.endTime": "종료 시각",
 	"components.input-time-range.errorBadInput": "",
 	"components.input-time-range.startTime": "시작 시각",
-	"components.list-item-drag-handle.default": "작업 재정렬",
+	"components.list-item-drag-handle.default": "{name}에 대한 항목 작업 재정렬",
 	"components.list-item-drag-handle.keyboard": "항목 재정렬",
 	"components.menu-item-return.return": "이전 메뉴로 돌아갑니다.",
 	"components.menu-item-return.returnCurrentlyShowing": "이전 메뉴로 돌아갑니다. {menuTitle}을(를) 보고 있습니다.",

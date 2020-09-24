@@ -39,7 +39,7 @@ export default {
 	"components.input-time-range.endTime": "終了時刻",
 	"components.input-time-range.errorBadInput": "{startLabel} は {endLabel} より前にする必要があります",
 	"components.input-time-range.startTime": "開始時刻",
-	"components.list-item-drag-handle.default": "アクションの並べ替え",
+	"components.list-item-drag-handle.default": "{name} の項目並べ替えアクション",
 	"components.list-item-drag-handle.keyboard": "項目の並べ替え",
 	"components.menu-item-return.return": "前のメニューに戻ります。",
 	"components.menu-item-return.returnCurrentlyShowing": "前のメニューに戻ります。{menuTitle} を表示しています。",

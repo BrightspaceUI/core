@@ -39,7 +39,7 @@ export default {
 	"components.input-time-range.endTime": "Heure de fin",
 	"components.input-time-range.errorBadInput": "{startLabel} doit être antérieur à {endLabel}",
 	"components.input-time-range.startTime": "Heure de début",
-	"components.list-item-drag-handle.default": "Réordonner l'action",
+	"components.list-item-drag-handle.default": "Action de réorganisation de l'élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réordonner les éléments",
 	"components.menu-item-return.return": "Permet de revenir au menu précédent.",
 	"components.menu-item-return.returnCurrentlyShowing": "Permet de revenir au menu précédent. Vous consultez {menuTitle}.",
