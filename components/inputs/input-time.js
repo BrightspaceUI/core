@@ -13,6 +13,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
@@ -83,7 +84,7 @@ function initIntervals(size) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when a time is selected or typed. "value" reflects the selected value and is in ISO 8601 time format ("hh:mm:ss").
  */
-class InputTime extends FormElementMixin(LitElement) {
+class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -131,6 +132,7 @@ class InputTime extends FormElementMixin(LitElement) {
 
 	static get styles() {
 		return [
+			super.styles,
 			bodySmallStyles,
 			inputLabelStyles,
 			inputStyles,
@@ -144,8 +146,9 @@ class InputTime extends FormElementMixin(LitElement) {
 				:host([hidden]) {
 					display: none;
 				}
-				label {
-					display: block;
+				.d2l-input-label {
+					display: inline-block;
+					vertical-align: top;
 				}
 				.d2l-input-time-timezone {
 					line-height: 1.8rem;
@@ -202,12 +205,13 @@ class InputTime extends FormElementMixin(LitElement) {
 	render() {
 		initIntervals(this.timeInterval);
 		const ariaRequired = this.required ? 'true' : undefined;
+		const disabled = this.disabled || this.skeleton;
 		const input = html`
 			<label
-				class="${this.label && !this.labelHidden ? 'd2l-input-label' : 'd2l-offscreen'}"
+				class="${this.label && !this.labelHidden ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
 				id="${this._dropdownId}-label">${this.label}</label>
-			<d2l-dropdown ?disabled="${this.disabled}">
+			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}">
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
@@ -217,11 +221,12 @@ class InputTime extends FormElementMixin(LitElement) {
 					aria-required="${ifDefined(ariaRequired)}"
 					@change="${this._handleChange}"
 					class="d2l-input d2l-dropdown-opener"
-					?disabled="${this.disabled}"
+					?disabled="${disabled}"
 					id="${this._dropdownId}-input"
 					@keydown="${this._handleKeydown}"
 					?required="${this.required}"
 					role="combobox"
+					type="text"
 					.value="${this._formattedValue}">
 				<d2l-dropdown-menu
 					@d2l-dropdown-close="${this._handleDropdownClose}"
