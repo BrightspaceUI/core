@@ -45,7 +45,7 @@ async function flushQueue() {
 
 	queue = [];
 
-	const resources = requests.map(item => item.resource);
+	const resources = requests.map(item => `${item.resource}1`);
 	const bodyObject = { resources };
 	const bodyText = JSON.stringify(bodyObject);
 
@@ -194,6 +194,10 @@ async function fetchWithCaching(resource) {
 			debug && console.log(`[Oslo] cache stale: ${resource}`);
 			fetchWithQueuing(resource).then(url => URL.revokeObjectURL(url));
 		}
+	}
+
+	if (!cacheValue.ok) {
+		throw SingleFailedReason;
 	}
 
 	return await cacheValue.json();
