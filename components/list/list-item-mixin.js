@@ -35,7 +35,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			/**
 			 * Address of item link if navigable
 			 */
-			actionHref: { type: String, attribute: 'aciton-href', reflect: true },
+			actionHref: { type: String, attribute: 'action-href', reflect: true },
 			_breakpoint: { type: Number },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringLink: { type: Boolean },
@@ -56,7 +56,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host[hidden] {
 				display: none;
 			}
-			:host([aciton-href]) {
+			:host([action-href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
 			:host([_tooltip-showing]),
