@@ -27,7 +27,7 @@ export const skeletonStyles = css`
 	}
 	:host([skeleton]) .d2l-skeletize {
 		background-color: transparent;
-		border-color: transparent;
+		border-color: var(--d2l-color-sylvite);
 		box-shadow: none;
 		color: transparent;
 		position: relative;
