@@ -1,10 +1,11 @@
-import '../input-date-time.js';
 import { expect, fixture, oneEvent } from '@open-wc/testing';
+import { _formatLocalDateTimeInISO } from '../input-date-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-date-time label="label text"></d2l-input-date-time>';
 const minMaxFixture = '<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>';
+const minMaxLocalizedFixture = '<d2l-input-date-time label="label text" localized min-value="2018-08-27T03:30:00" max-value="2018-09-30T17:30:00"></d2l-input-date-time>';
 
 function dispatchEvent(elem, eventType) {
 	const e = new Event(
@@ -45,6 +46,43 @@ describe('d2l-input-date-time', () => {
 			expect(inputElem.minValue).to.equal('2018-08-27');
 			expect(inputElem.maxValue).to.equal('2018-10-01');
 			documentLocaleSettings.timezone.identifier = 'America/Toronto';
+		});
+
+		describe('localized', () => {
+			const expectedStart = 'Aug 27, 2018 3:30 AM';
+			const expectedEnd = 'Sep 30, 2018 5:30 PM';
+
+			it('should set correct min and max on d2l-input-date', async() => {
+				const elem = await fixture(minMaxLocalizedFixture);
+				const inputElem = getChildElem(elem, 'd2l-input-date');
+				expect(inputElem.minValue).to.equal('2018-08-27T03:30:00');
+				expect(inputElem.maxValue).to.equal('2018-09-30T17:30:00');
+			});
+
+			it('should change value if min and max value and typed date before minValue', async() => {
+				const elem = await fixture(minMaxLocalizedFixture);
+				const inputElem = getChildElem(elem, 'd2l-input-date');
+				inputElem.value = '2018-02-02';
+				setTimeout(() => dispatchEvent(inputElem, 'change'));
+				await oneEvent(elem, 'change');
+				await oneEvent(elem, 'invalid-change');
+				expect(elem.value).to.equal('2018-02-02T00:00:00.000');
+				expect(elem.invalid).to.be.true;
+				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
+			});
+
+			it('should change value if min and max value and typed date within range', async() => {
+				const elem = await fixture(minMaxLocalizedFixture);
+				const inputElem = getChildElem(elem, 'd2l-input-date');
+				inputElem.value = '2018-09-30';
+				setTimeout(() => dispatchEvent(inputElem, 'change'));
+				const inputTimeElem = getChildElem(elem, 'd2l-input-time');
+				inputTimeElem.value = '17:29:00';
+				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
+				await oneEvent(elem, 'change');
+				expect(elem.value).to.equal('2018-09-30T17:29:00.000');
+				expect(elem.invalid).to.be.false;
+			});
 		});
 
 		describe('validation', () => {
@@ -158,6 +196,17 @@ describe('d2l-input-date-time', () => {
 			});
 		});
 
+	});
+
+	describe('utility', () => {
+		describe('_formatLocalDateTimeInISO', () => {
+			it('should merge date and time into ISO string', () => {
+				const date = '2018-01-01';
+				const time = '12:22:00';
+
+				expect(_formatLocalDateTimeInISO(date, time)).to.equal('2018-01-01T12:22:00.000');
+			});
+		});
 	});
 
 });
