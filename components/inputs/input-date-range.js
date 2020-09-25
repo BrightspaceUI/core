@@ -8,12 +8,13 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
  * @fires change - Dispatched when a start or end date is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
+class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -65,7 +66,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 	}
 
 	static get styles() {
-		return css`
+		return [super.styles, css`
 			:host {
 				display: inline-block;
 				margin-bottom: -1.2rem;
@@ -89,7 +90,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 				margin-left: 1.5rem;
 				margin-right: 0;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -121,7 +122,11 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
+			<d2l-input-fieldset
+				label="${ifDefined(this.label)}"
+				?label-hidden="${this.labelHidden}"
+				?required="${this.required}"
+				?skeleton="${this.skeleton}">
 				<d2l-input-date
 					?novalidate="${this.noValidate}"
 					@change="${this._handleChange}"
@@ -134,6 +139,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					?required="${this.required}"
+					?skeleton="${this.skeleton}"
 					value="${ifDefined(this.startValue)}">
 				</d2l-input-date>
 				<d2l-input-date
@@ -148,6 +154,7 @@ class InputDateRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitEl
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					?required="${this.required}"
+					?skeleton="${this.skeleton}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-date>
 			</d2l-input-fieldset>
