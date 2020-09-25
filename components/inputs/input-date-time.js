@@ -4,13 +4,24 @@ import './input-time.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODateTime } from '../../helpers/dateTime.js';
+import { formatDateInISO, formatDateTimeInISO, getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+export function _formatLocalDateTimeInISO(date, time) {
+	const dateObj = parseISODate(date);
+	const timeObj = parseISOTime(time);
+
+	return formatDateTimeInISO(Object.assign(dateObj, timeObj), true);
+}
+
+function _getDateNoConversion(value) {
+	const parsed = parseISODateTime(value);
+	return new Date(parsed.year, parsed.month - 1, parsed.date, parsed.hours, parsed.minutes, parsed.seconds);
+}
 /**
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
  * @fires change - Dispatched when there is a change in selected date or selected time. "value" reflects the selected value and is in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
@@ -31,6 +42,10 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
+			/**
+			 * Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC
+			 */
+			localized: { reflect: true, type: Boolean },
 			/**
 			 * Maximum valid date/time that could be selected by a user.
 			 */
@@ -82,6 +97,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		super();
 		this.disabled = false;
 		this.labelHidden = false;
+		this.localized = false;
 		this.required = false;
 		this._dropdownOpened = false;
 		this._inputId = getUniqueId();
@@ -150,7 +166,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				try {
-					this._parsedDateTime = getLocalDateTimeFromUTCDateTime(this.value);
+					this._parsedDateTime = this.localized ? this.value : getLocalDateTimeFromUTCDateTime(this.value);
 				} catch (e) {
 					// set value to empty if invalid value
 					this.value = '';
@@ -165,17 +181,23 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 				this._preventDefaultValidation = true;
 			} else if (prop === 'maxValue' && this.maxValue) {
 				try {
-					const dateObj = parseISODateTime(this.maxValue);
-					const localDateTime = convertUTCToLocalDateTime(dateObj);
-					this._maxValueLocalized = formatDateInISO(localDateTime);
+					if (this.localized) this._maxValueLocalized = this.maxValue;
+					else {
+						const dateObj = parseISODateTime(this.maxValue);
+						const localDateTime = convertUTCToLocalDateTime(dateObj);
+						this._maxValueLocalized = formatDateInISO(localDateTime);
+					}
 				} catch (e) {
 					this._maxValueLocalized = undefined;
 				}
 			} else if (prop === 'minValue' && this.minValue) {
 				try {
-					const dateObj = parseISODateTime(this.minValue);
-					const localDateTime = convertUTCToLocalDateTime(dateObj);
-					this._minValueLocalized = formatDateInISO(localDateTime);
+					if (this.localized) this._minValueLocalized = this.minValue;
+					else {
+						const dateObj = parseISODateTime(this.minValue);
+						const localDateTime = convertUTCToLocalDateTime(dateObj);
+						this._minValueLocalized = formatDateInISO(localDateTime);
+					}
 				} catch (e) {
 					this._minValueLocalized = undefined;
 				}
@@ -197,8 +219,8 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const minDate = this.minValue ? formatDateTime(getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;
-			const maxDate = this.maxValue ? formatDateTime(getDateFromISODateTime(this.maxValue), { format: 'medium' }) : null;
+			const minDate = this.minValue ? formatDateTime(this.localized ? _getDateNoConversion(this.minValue) : getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;
+			const maxDate = this.maxValue ? formatDateTime(this.localized ? _getDateNoConversion(this.maxValue) : getDateFromISODateTime(this.maxValue), { format: 'medium' }) : null;
 			if (minDate && maxDate) {
 				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
 			} else if (maxDate) {
@@ -223,7 +245,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 			this.value = '';
 		} else {
 			const time = this.shadowRoot.querySelector('d2l-input-time').value;
-			this.value = getUTCDateTimeFromLocalDateTime(newDate, time);
+			this.value = this.localized ? _formatLocalDateTimeInISO(newDate, time) : getUTCDateTimeFromLocalDateTime(newDate, time);
 		}
 		this._dispatchChangeEvent();
 	}
@@ -251,7 +273,9 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	}
 
 	async _handleTimeChange(e) {
-		this.value = getUTCDateTimeFromLocalDateTime(this._parsedDateTime, e.target.value);
+		const date = this._parsedDateTime;
+		const time = e.target.value;
+		this.value = this.localized ? _formatLocalDateTimeInISO(date, time) : getUTCDateTimeFromLocalDateTime(date, time);
 		this._dispatchChangeEvent();
 	}
 

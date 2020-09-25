@@ -204,6 +204,7 @@ Note: `max-value`, `min-value` and `value` should be in ISO 8601 combined date a
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
+| `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
 | `required` | Boolean | Indicates that a value is required |

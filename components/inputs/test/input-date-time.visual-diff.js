@@ -34,6 +34,7 @@ describe('d2l-input-date-time', () => {
 		'labelled',
 		'label-hidden',
 		'invalid-value',
+		'localized',
 		'no-value',
 		'required'
 	].forEach((name) => {
@@ -94,6 +95,35 @@ describe('d2l-input-date-time', () => {
 				dateSelector.dispatchEvent(e);
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('change time localized', async function() {
+			await page.$eval('#localized', (elem) => {
+				elem.blur();
+				const timeSelector = elem.shadowRoot.querySelector('d2l-input-time');
+				timeSelector.value = '15:22:00';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				timeSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#localized');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('change date localized', async function() {
+			await page.$eval('#localized', (elem) => {
+				const dateSelector = elem.shadowRoot.querySelector('d2l-input-date');
+				dateSelector.value = '2020-12-15';
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: true }
+				);
+				dateSelector.dispatchEvent(e);
+			});
+			const rect = await visualDiff.getRect(page, '#localized');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
