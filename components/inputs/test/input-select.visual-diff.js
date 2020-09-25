@@ -9,7 +9,7 @@ describe('d2l-input-select', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1100 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1200 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-select.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -37,6 +37,11 @@ describe('d2l-input-select', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
+	});
+
+	it('wc-skeleton', async function() {
+		const rect = await visualDiff.getRect(page, '#wc-skeleton');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 });
