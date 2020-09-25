@@ -175,9 +175,6 @@ async function fetchWithCaching(resource) {
 	}
 
 	debug && console.log(`[Oslo] cache hit: ${resource}`);
-	if (!cacheValue.ok) {
-		throw SingleFailedReason;
-	}
 
 	// Check if the cache response is stale based on either the document init or
 	// any requests we've made to the LMS since init. We'll still serve stale
