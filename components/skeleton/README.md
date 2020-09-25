@@ -11,7 +11,7 @@ Components which are skeleton-aware extend the `SkeletonMixin` (more on that bel
 For example, this causes a text input to be skeletized:
 
 ```html
-<d2l-input-text label="Name" skeleton></d2l-text-input>
+<d2l-input-text label="Name" skeleton></d2l-input-text>
 ```
 
 ![skeleton text input](./screenshots/text-input.png?raw=true)
@@ -26,7 +26,7 @@ In a typical scenario, many skeleton-aware components would have their `skeleton
 
 ## Skeletizing Custom Elements with SkeletonMixin
 
-For a component to become skeleton-aware, it extends the `SkeletonMixin`. The mixin comes with some styles, so include `super.styles` with your element's static `styles()` property.
+For a component to become skeleton-aware, it extends `SkeletonMixin`. The mixin comes with some styles, so include `super.styles` with your element's static `styles()` property.
 
 ```javascript
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
@@ -66,13 +66,15 @@ render() {
 
 ## Multi-Line Paragraphs
 
-Paragraphs of text that may span multiple lines is a special case for skeletons. The `d2l-skeletize` CSS class that makes the entire paragraph block into a skeleton box isn't quite what we want, and oftentimes we're showing a skeleton because we don't yet know how much data we'll have. Ideally, we'd like to show several linse of skeletized text, like this:
+Paragraphs of text that may span multiple lines are a special case for skeletons. The `d2l-skeletize` CSS class would turn the entire paragraph block into a skeleton box, which isn't quite what we want. Also, often we're showing a skeleton because we don't yet know how much data we'll have.
+
+Ideally, we'd like to show several lines of skeletized text, like this:
 
 ![skeleton text input](./screenshots/paragraph.png?raw=true)
 
 To accomplish this, three special CSS classes exist to provide skeletons that span 2, 3 or 5 lines: `d2l-skeletize-paragraph-2`, `d2l-skeletize-paragraph-3` and `d2l-skeletize-paragraph-5` respectively.
 
-Apply one of these classes plus any additional (optional) typograph styles for your paragraph:
+Apply one of these classes plus any additional (optional) typography styles for your paragraph:
 
 ```html
 <p class="d2l-body-compact d2l-skeletize-paragraph-2">2-line</p>
