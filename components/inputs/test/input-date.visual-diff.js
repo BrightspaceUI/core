@@ -24,7 +24,8 @@ describe('d2l-input-date', () => {
 		'label-hidden',
 		'placeholder',
 		'required',
-		'value'
+		'value',
+		'skeleton'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
