@@ -10,7 +10,7 @@ describe('d2l-input-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1600 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1900 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -29,7 +29,10 @@ describe('d2l-input-time-range', () => {
 		'required',
 		'start-end-label',
 		'start-end-value',
-		'start-value'
+		'start-value',
+		'skeleton-labelled',
+		'skeleton-label-hidden',
+		'skeleton-required'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
