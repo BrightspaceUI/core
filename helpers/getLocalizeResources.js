@@ -45,7 +45,7 @@ async function flushQueue() {
 
 	queue = [];
 
-	const resources = requests.map(item => `${item.resource}1`);
+	const resources = requests.map(item => item.resource);
 	const bodyObject = { resources };
 	const bodyText = JSON.stringify(bodyObject);
 
