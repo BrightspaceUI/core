@@ -9,7 +9,7 @@ describe('d2l-input-date-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1100 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 900 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -35,9 +35,7 @@ describe('d2l-input-date-time', () => {
 		'label-hidden',
 		'invalid-value',
 		'no-value',
-		'required',
-		'skeleton-labelled',
-		'skeleton-label-hidden'
+		'required'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -253,4 +251,18 @@ describe('d2l-input-date-time', () => {
 			});
 		});
 	});
+
+	describe('skeleton', () => {
+		[
+			'labelled',
+			'label-hidden'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
 });

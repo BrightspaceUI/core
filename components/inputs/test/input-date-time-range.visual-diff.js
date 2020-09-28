@@ -10,7 +10,7 @@ describe('d2l-input-date-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2700 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2400 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -26,9 +26,7 @@ describe('d2l-input-date-time-range', () => {
 		'required',
 		'slotted-content',
 		'start-end-label',
-		'start-end-value',
-		'skeleton-labelled',
-		'skeleton-label-hidden'
+		'start-end-value'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -281,6 +279,19 @@ describe('d2l-input-date-time-range', () => {
 			}, inputDateSelector);
 		}
 
+	});
+
+	describe('skeleton', () => {
+		[
+			'labelled',
+			'label-hidden'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
 	});
 
 });

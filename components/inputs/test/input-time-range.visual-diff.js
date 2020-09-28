@@ -10,7 +10,7 @@ describe('d2l-input-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2000 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -29,10 +29,7 @@ describe('d2l-input-time-range', () => {
 		'required',
 		'start-end-label',
 		'start-end-value',
-		'start-value',
-		'skeleton-labelled',
-		'skeleton-label-hidden',
-		'skeleton-required'
+		'start-value'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -173,6 +170,20 @@ describe('d2l-input-time-range', () => {
 					const rect = await helper.getRectTooltip(page, '#basic', 1);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
+			});
+		});
+	});
+
+	describe('skeleton', () => {
+		[
+			'labelled',
+			'label-hidden',
+			'required'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
 	});
