@@ -80,6 +80,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		if (!this.label) {
 			console.warn('d2l-input-number component requires label text');
 		}
+		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+			if (this._formattedValue.length > 0) {
+				this._formattedValue = formatValue(this.value, this.minFractionDigits, this.maxFractionDigits);
+			}
+		});
 	}
 
 	render() {
