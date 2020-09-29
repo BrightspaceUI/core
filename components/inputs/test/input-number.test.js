@@ -1,5 +1,6 @@
 import '../input-number.js';
 import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
@@ -24,6 +25,12 @@ function getInnerInputValue(elem) {
 }
 
 describe('d2l-input-number', () => {
+
+	const documentLocaleSettings = getDocumentLocaleSettings();
+	afterEach(() => {
+		documentLocaleSettings.reset();
+	});
+
 	describe('constructor', () => {
 		it('should construct', () => {
 			runConstructor('d2l-input-number');
@@ -120,6 +127,22 @@ describe('d2l-input-number', () => {
 			await elem.updateComplete;
 			expect(elem.value).to.equal(123);
 			expect(getInnerInputValue(elem)).to.equal('123');
+		});
+
+		it('should update value when language changes', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value="2000.3"></d2l-input-number>`);
+			setTimeout(() => documentLocaleSettings.language = 'fr');
+			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			await elem.updateComplete;
+			expect(getInnerInputValue(elem)).to.equal('2 000,3');
+		});
+
+		it('should not update empty value when language changes', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label"></d2l-input-number>`);
+			setTimeout(() => documentLocaleSettings.language = 'fr');
+			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			await elem.updateComplete;
+			expect(getInnerInputValue(elem)).to.equal('');
 		});
 	});
 
