@@ -218,6 +218,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		const ariaRequired = this.required ? 'true' : undefined;
 		const ariaInvalid = this.invalid ? 'true' : this.ariaInvalid;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
+		const disabled = this.disabled || this.skeleton;
 
 		const inputStyles = {};
 		if (this._firstSlotWidth > 0) {
@@ -249,7 +250,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					?autofocus="${this.autofocus}"
 					@change="${this._handleChange}"
 					class="${classMap(inputClasses)}"
-					?disabled="${this.disabled}"
+					?disabled="${disabled}"
 					id="${this._inputId}"
 					@input="${this._handleInput}"
 					@invalid="${this._handleInvalid}"

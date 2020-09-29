@@ -10,7 +10,7 @@ describe('d2l-input-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 300, height: 700 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 300, height: 600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -18,7 +18,6 @@ describe('d2l-input-time', () => {
 	after(async() => await browser.close());
 
 	[
-		'basic',
 		'disabled',
 		'labelled',
 		'label-hidden',
@@ -28,24 +27,25 @@ describe('d2l-input-time', () => {
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+		it(`${name}-skeleton`, async function() {
+			await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+			const rect = await visualDiff.getRect(page, `#${name}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
-	it('basic-focus', async function() {
+	it('focus', async function() {
 		await page.$eval('#basic', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await helper.reset(page, '#basic');
 	});
 
-	[
-		'dropdown',
-		'dropdown-scrolled',
-	].forEach((name) => {
-		it(name, async function() {
-			await helper.open(page, `#${name}`);
-			const rect = await helper.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, `#${name}`); //Make sure the dropdown is closed before the next test
-		});
+	it('dropdown', async function() {
+		await helper.open(page, '#dropdown');
+		const rect = await helper.getRect(page, '#dropdown');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await helper.reset(page, '#dropdown'); //Make sure the dropdown is closed before the next test
 	});
 
 });

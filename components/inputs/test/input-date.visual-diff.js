@@ -550,6 +550,20 @@ describe('d2l-input-date', () => {
 				});
 				const rect = await helper.getRect(page, '#required-value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				await helper.reset(page, '#required-value');
+			});
+		});
+	});
+
+	describe('skeleton', () => {
+		[
+			'label',
+			'label-hidden'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
 	});

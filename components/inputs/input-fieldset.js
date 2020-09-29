@@ -3,12 +3,13 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A component wrapper to be used when a page contains multiple inputs which are related (for example to form an address) to wrap those related inputs.
  * @slot - Related input components
  */
-class InputFieldset extends RtlMixin(LitElement) {
+class InputFieldset extends SkeletonMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -28,7 +29,7 @@ class InputFieldset extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ inputLabelStyles, offscreenStyles,
+		return [ super.styles, inputLabelStyles, offscreenStyles,
 			css`
 				:host {
 					display: block;
@@ -49,7 +50,8 @@ class InputFieldset extends RtlMixin(LitElement) {
 	render() {
 		const legendClasses = {
 			'd2l-input-label': true,
-			'd2l-offscreen': this.labelHidden
+			'd2l-offscreen': this.labelHidden,
+			'd2l-skeletize': true
 		};
 		return html`
 			<fieldset class="d2l-input-label-fieldset">

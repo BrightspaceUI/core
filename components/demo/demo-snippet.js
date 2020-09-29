@@ -101,7 +101,7 @@ class DemoSnippet extends LitElement {
 		this._updateCode(this.shadowRoot.querySelector('slot:not([name="_demo"])'));
 	}
 
-	_applyAttr(name, value) {
+	_applyAttr(name, value, applyToShadowRoot) {
 		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
 		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
 		if (nodes.length === 0) return;
@@ -122,7 +122,7 @@ class DemoSnippet extends LitElement {
 							nodes[i].setAttribute(name, value);
 						}
 					}
-					if (nodes[i].shadowRoot) {
+					if (applyToShadowRoot && nodes[i].shadowRoot) {
 						doApply(nodes[i].shadowRoot.children, false);
 					}
 					doApply(nodes[i].children, false);
@@ -168,7 +168,7 @@ class DemoSnippet extends LitElement {
 
 	_handleDirChange(e) {
 		this._dir = e.target.on ? 'rtl' : 'ltr';
-		this._applyAttr('dir', this._dir);
+		this._applyAttr('dir', this._dir, true);
 		this.dispatchEvent(new CustomEvent(
 			'd2l-dir-update', { bubbles: true, composed: true, detail: { dir: this._dir } }
 		));
@@ -176,7 +176,7 @@ class DemoSnippet extends LitElement {
 
 	_handleSkeletonChange(e) {
 		this._skeletonOn = e.target.on;
-		this._applyAttr('skeleton', this._skeletonOn);
+		this._applyAttr('skeleton', this._skeletonOn, false);
 	}
 
 	_removeImportedDemo() {

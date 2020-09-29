@@ -13,6 +13,7 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 export function formatISODateInUserCalDescriptor(val) {
@@ -23,7 +24,7 @@ export function formatISODateInUserCalDescriptor(val) {
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
  * @fires change - Dispatched when a date is selected or typed. "value" reflects the selected value and is in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
+class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -74,7 +75,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	static get styles() {
-		return css`
+		return [super.styles, css`
 			:host {
 				display: inline-block;
 				width: 100%;
@@ -114,7 +115,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 				margin-top: 0.3rem;
 				padding-top: 0.3rem;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -176,7 +177,8 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const errorTooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
+		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && !this.skeleton) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
+
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
@@ -185,7 +187,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 			</div>
 			${errorTooltip}
 			${infoTooltip}
-			<d2l-dropdown ?disabled="${this.disabled}" no-auto-open>
+			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open>
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
@@ -204,6 +206,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
 					?required="${this.required}"
+					?skeleton="${this.skeleton}"
 					style="${styleMap({ maxWidth: inputTextWidth })}"
 					.value="${this._formattedValue}">
 					${icon}
@@ -362,7 +365,7 @@ class InputDate extends FormElementMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleMouseup() {
-		if (!this.disabled) {
+		if (!this.disabled && !this.skeleton) {
 			if (!this._dropdownOpened) this._handleChange();
 			this._dropdown.toggleOpen(false);
 		}

@@ -10,6 +10,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export function _formatLocalDateTimeInISO(date, time) {
 	const dateObj = parseISODate(date);
@@ -26,7 +27,7 @@ function _getDateNoConversion(value) {
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
  * @fires change - Dispatched when there is a change in selected date or selected time. "value" reflects the selected value and is in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
  */
-class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
+class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -75,7 +76,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 	}
 
 	static get styles() {
-		return css`
+		return [super.styles, css`
 			:host {
 				display: inline-block;
 				white-space: nowrap;
@@ -90,7 +91,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 				padding-left: 0.3rem;
 				padding-right: 0;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -122,7 +123,11 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 		const tooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltip}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
+			<d2l-input-fieldset
+				label="${ifDefined(this.label)}"
+				?label-hidden="${this.labelHidden}"
+				?required="${this.required}"
+				?skeleton="${this.skeleton}">
 				<d2l-input-date
 					?novalidate="${this.noValidate}"
 					novalidateminmax
@@ -136,6 +141,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					max-value="${ifDefined(this._maxValueLocalized)}"
 					min-value="${ifDefined(this._minValueLocalized)}"
 					?required="${this.required}"
+					?skeleton="${this.skeleton}"
 					.value="${this._parsedDateTime}">
 				</d2l-input-date>
 				<d2l-input-time
@@ -154,6 +160,7 @@ class InputDateTime extends FormElementMixin(LocalizeCoreElement(RtlMixin(LitEle
 					label-hidden
 					max-height="430"
 					?required="${this.required}"
+					?skeleton="${this.skeleton}"
 					.value="${this._parsedDateTime}">
 				</d2l-input-time>
 			</d2l-input-fieldset>

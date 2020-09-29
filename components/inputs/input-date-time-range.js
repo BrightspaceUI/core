@@ -8,6 +8,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.
@@ -15,7 +16,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * @slot start - Optional content that would appear below the first input-date-time
  * @slot end - Optional content that would appear below the second input-date-time
  */
-class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
+class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -67,7 +68,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 	}
 
 	static get styles() {
-		return css`
+		return [super.styles, css`
 			:host {
 				display: inline-block;
 			}
@@ -84,7 +85,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 				margin-top: 0.6rem;
 			}
 
-		`;
+		`];
 	}
 
 	constructor() {
@@ -117,7 +118,11 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
-			<d2l-input-fieldset label="${ifDefined(this.label)}" ?label-hidden="${this.labelHidden}" ?required="${this.required}">
+			<d2l-input-fieldset
+				label="${ifDefined(this.label)}"
+				?label-hidden="${this.labelHidden}"
+				?required="${this.required}"
+				?skeleton="${this.skeleton}">
 				<div class="d2l-input-date-time-range-start-container">
 					<d2l-input-date-time
 						?novalidate="${this.noValidate}"
@@ -131,6 +136,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
 						?required="${this.required}"
+						?skeleton="${this.skeleton}"
 						value="${ifDefined(this.startValue)}">
 					</d2l-input-date-time>
 					<slot name="start"></slot>
@@ -147,6 +153,7 @@ class InputDateTimeRange extends FormElementMixin(RtlMixin(LocalizeCoreElement(L
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					?required="${this.required}"
+					?skeleton="${this.skeleton}"
 					value="${ifDefined(this.endValue)}">
 				</d2l-input-date-time>
 				<slot name="end"></slot>

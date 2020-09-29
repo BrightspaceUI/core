@@ -290,4 +290,17 @@ describe('d2l-input-date-range', () => {
 
 	});
 
+	describe('skeleton', () => {
+		[
+			'labelled',
+			'label-hidden'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
 });
