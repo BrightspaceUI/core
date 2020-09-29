@@ -165,6 +165,7 @@ describe('d2l-input-time', () => {
 			const elem = await fixture(fixtureWithValue);
 			setTimeout(() => documentLocaleSettings.language = 'fr');
 			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			await elem.updateComplete;
 			expect(getInput(elem).value).to.equal('11 h 22');
 		});
 
@@ -172,6 +173,7 @@ describe('d2l-input-time', () => {
 			const elem = await fixture(fixtureWithValue);
 			setTimeout(() => documentLocaleSettings.language = 'fr');
 			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			await elem.updateComplete;
 			expect(getFirstOption(elem).text).to.equal('00 h 00');
 		});
 

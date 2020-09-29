@@ -133,6 +133,7 @@ describe('d2l-input-number', () => {
 			const elem = await fixture(html`<d2l-input-number label="label" value="2000.3"></d2l-input-number>`);
 			setTimeout(() => documentLocaleSettings.language = 'fr');
 			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			await elem.updateComplete;
 			expect(getInnerInputValue(elem)).to.equal('2 000,3');
 		});
 
@@ -140,6 +141,7 @@ describe('d2l-input-number', () => {
 			const elem = await fixture(html`<d2l-input-number label="label"></d2l-input-number>`);
 			setTimeout(() => documentLocaleSettings.language = 'fr');
 			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			await elem.updateComplete;
 			expect(getInnerInputValue(elem)).to.equal('');
 		});
 	});
