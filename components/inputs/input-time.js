@@ -200,6 +200,12 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			this._value = formatDateInISOTime(time);
 			this._formattedValue = formatTime(time);
 		}
+
+		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+			this._formattedValue = formatTime(getDateFromISOTime(this.value));
+			INTERVALS.clear();
+		});
+
 	}
 
 	render() {

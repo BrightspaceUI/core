@@ -1,5 +1,6 @@
 import '../input-time.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
@@ -27,6 +28,11 @@ function getNumberOfIntervals(elem) {
 }
 
 describe('d2l-input-time', () => {
+
+	const documentLocaleSettings = getDocumentLocaleSettings();
+	afterEach(() => {
+		documentLocaleSettings.reset();
+	});
 
 	describe('constructor', () => {
 
@@ -154,6 +160,21 @@ describe('d2l-input-time', () => {
 			await elem.updateComplete;
 			expect(getInput(elem).value).to.equal('12:00 AM');
 		});
+
+		it('should update value when document language changes', async() => {
+			const elem = await fixture(fixtureWithValue);
+			setTimeout(() => documentLocaleSettings.language = 'fr');
+			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			expect(getInput(elem).value).to.equal('11 h 22');
+		});
+
+		it('should update intervals when document language changes', async() => {
+			const elem = await fixture(fixtureWithValue);
+			setTimeout(() => documentLocaleSettings.language = 'fr');
+			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
+			expect(getFirstOption(elem).text).to.equal('00 h 00');
+		});
+
 	});
 
 	describe('intervals', () => {
