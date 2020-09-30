@@ -27,10 +27,7 @@ npm install @brightspace-ui/core
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
   * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible content
   * [Focus Trap](components/focus-trap/): generic container that traps focus
-  * Forms
-	* [Forms](components/form/docs/form.md): Forms that aggregate data so the user can control how it is submitted
-	* [Native Forms](components/form/docs/form-native.md): Forms that emulate native HTML forms with support for custom form elements
-	* [FormElementMixin](components/form/docs/form-element-mixin.md): allow custom elements to participate in form submission and validation
+  * [Forms](components/form/): aggregate data for submission and validation
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/):
     * [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
@@ -59,9 +56,11 @@ npm install @brightspace-ui/core
 * Mixins
   * [ArrowKeysMixin](mixins/arrow-keys-mixin.md): manage focus with arrow keys
   * [AsyncContainerMixin](mixins/async-container/): manage collective async state
+  * [FormElementMixin](components/form/docs/form-element-mixin.md): allow components to participate in forms and validation
   * [LocalizeMixin](mixins/localize-mixin.md): localize text in your components
   * [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion
   * [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
+  * [SkeletonMixin](components/skeleton/): make components skeleton-aware
   * [VisibleOnAncestorMixin](mixins/visible-on-ancestor-mixin.md): display element on-hover of an ancestor
 * Templates
   * [PrimarySecondaryTemplate](templates/primary-secondary): Two Panel (primary and secondary) page template with header and optional footer
