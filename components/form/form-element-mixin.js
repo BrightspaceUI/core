@@ -192,11 +192,14 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		e.stopPropagation();
 		const errors = e.detail.errors;
 		if (errors.length === 0) {
-			this.childErrors.delete(e.target);
+			if (this.childErrors.has(e.target)) {
+				this.childErrors.delete(e.target);
+				this.requestUpdate('childErrors');
+			}
 		} else {
 			this.childErrors.set(e.target, errors);
+			this.requestUpdate('childErrors');
 		}
-		this.requestUpdate('childErrors');
 	}
 
 	_validationCustomConnected(e) {
