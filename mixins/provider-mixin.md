@@ -12,9 +12,9 @@ import { ProviderMixin } from '@brightspace-ui/core/mixins/provider-mixin.js';
 class InterestingFactProvider extends ProviderMixin(LitElement) {
 	constructor() {
 		super();
-		this.provide('d2l-interesting-fact-string', 'Olives are not the same as fish');
-		this.provide('d2l-interesting-fact-object', { fact: 'Olives are not the same as fish' });
-		this.provide('d2l-interesting-fact-function', x => `${x} are not the same as fish`);
+		this.provideInstance('d2l-interesting-fact-string', 'Olives are not the same as fish');
+		this.provideInstance('d2l-interesting-fact-object', { fact: 'Olives are not the same as fish' });
+		this.provideInstance('d2l-interesting-fact-function', x => `${x} are not the same as fish`);
 	}
 }
 ```
@@ -42,7 +42,7 @@ class InterestingFactUI extends RequesterMixin(LitElement) {
 			<p>Interesting fact from Interesting Fact Provider: ${this._factFunctionString}</p>
 		`;
 	}
-	
+
 	connectedCallback() {
 		super.connectedCallback();
 		this._factString = this.requestInstance('d2l-interesting-fact-string');
