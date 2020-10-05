@@ -9,7 +9,7 @@ describe('d2l-input-text', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 4500 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-text.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -77,14 +77,18 @@ describe('d2l-input-text', () => {
 		});
 	});
 
-	[
-		'wc-skeleton-labelled',
-		'wc-skeleton-required',
-		'wc-skeleton-label-hidden'
-	].forEach((name) => {
-		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	describe('skeleton', () => {
+		[
+			'wc-labelled',
+			'wc-required',
+			'wc-label-hidden',
+			'wc-custom-width'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
 		});
 	});
 

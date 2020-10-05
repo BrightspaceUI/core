@@ -19,6 +19,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser. |
 | `autofocus` | Boolean | When set, will automatically place focus on the input. |
 | `disabled` | Boolean | Disables the input. |
+| `input-width` | String, default: `4rem` | Restricts the maximum width of the input box without impacting the width of the label. |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute). |
 | `max` | Number | Maximum value allowed. |
 | `max-fraction-digits` | Number | Maximum number of digits allowed after the decimal place. |
