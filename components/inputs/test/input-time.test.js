@@ -161,22 +161,6 @@ describe('d2l-input-time', () => {
 			expect(getInput(elem).value).to.equal('12:00 AM');
 		});
 
-		it('should update value when document language changes', async() => {
-			const elem = await fixture(fixtureWithValue);
-			setTimeout(() => documentLocaleSettings.language = 'fr');
-			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
-			await elem.updateComplete;
-			expect(getInput(elem).value).to.equal('11 h 22');
-		});
-
-		it('should update intervals when document language changes', async() => {
-			const elem = await fixture(fixtureWithValue);
-			setTimeout(() => documentLocaleSettings.language = 'fr');
-			await oneEvent(elem, 'd2l-localize-behavior-language-changed');
-			await elem.updateComplete;
-			expect(getFirstOption(elem).text).to.equal('00 h 00');
-		});
-
 	});
 
 	describe('intervals', () => {

@@ -8,7 +8,7 @@ describe('d2l-input-number', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1000 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-number.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -32,10 +32,7 @@ describe('d2l-input-number', () => {
 		'required',
 		'disabled',
 		'placeholder',
-		'default-value',
-		'skeleton-labelled',
-		'skeleton-label-hidden',
-		'skeleton-required'
+		'default-value'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -68,4 +65,21 @@ describe('d2l-input-number', () => {
 		const rect = await visualDiff.getRect(page, '#required');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
+
+	describe('skeleton', () => {
+		[
+			'simple',
+			'label-hidden',
+			'required',
+			'disabled',
+			'custom-width'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
 });

@@ -56,6 +56,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
 			/**
+			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 */
+			inputWidth: { attribute: 'input-width', type: String },
+			/**
 			 * REQUIRED: Label for the input
 			 */
 			label: { type: String },
@@ -227,6 +231,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		if (this._lastSlotWidth > 0) {
 			inputStyles.paddingRight = isFocusedOrHovered ? `${this._lastSlotWidth - 1}px` : `${this._lastSlotWidth}px`;
 		}
+
+		const inputContainerStyles = {
+			maxWidth: this.inputWidth
+		};
+
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';
 		const lastSlotName = (this.dir === 'rtl') ? 'left' : 'right';
 
@@ -237,7 +246,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
 		const input = html`
-			<div class="d2l-input-text-container d2l-skeletize">
+			<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
 				<input aria-atomic="${ifDefined(this.atomic)}"
 					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
