@@ -1,17 +1,19 @@
-export const ProviderMixin = superclass => class extends superclass {
-	constructor() {
-		super();
-		this._instances = new Map();
-		this.addEventListener('d2l-request-instance', e => {
-			if (this._instances.has(e.detail.key)) {
-				e.detail.instance = this._instances.get(e.detail.key);
+export function provideInstance(node, key, obj) {
+	if (!node._providerInstances) {
+		node._providerInstances = new Map();
+		node.addEventListener('d2l-request-instance', e => {
+			if (node._providerInstances.has(e.detail.key)) {
+				e.detail.instance = node._providerInstances.get(e.detail.key);
 				e.stopPropagation();
 			}
 		});
 	}
+	node._providerInstances.set(key, obj);
+}
 
+export const ProviderMixin = superclass => class extends superclass {
 	provideInstance(key, obj) {
-		this._instances.set(key, obj);
+		provideInstance(this, key, obj);
 	}
 };
 
