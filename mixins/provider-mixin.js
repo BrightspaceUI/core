@@ -15,16 +15,19 @@ export const ProviderMixin = superclass => class extends superclass {
 	}
 };
 
+export function requestInstance(node, key) {
+	const event = new CustomEvent('d2l-request-instance', {
+		detail: { key },
+		bubbles: true,
+		composed: true,
+		cancelable: true
+	});
+	node.dispatchEvent(event);
+	return event.detail.instance;
+};
+
 export const RequesterMixin = superclass => class extends superclass {
 	requestInstance(key) {
-		const event = new CustomEvent('d2l-request-instance', {
-			detail: { key },
-			bubbles: true,
-			composed: true,
-			cancelable: true
-		});
-
-		this.dispatchEvent(event);
-		return event.detail.instance;
+		return requestInstance(this, key);
 	}
 };
