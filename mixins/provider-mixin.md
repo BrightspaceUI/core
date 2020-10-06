@@ -51,3 +51,13 @@ class InterestingFactUI extends RequesterMixin(LitElement) {
 	}
 }
 ```
+
+In the absence of a component context, the `requestInstance` helper may be used by providing the `node` context and the `key` for the instance.
+
+```js
+import { requestInstance } from '@brightspace-ui/core/mixins/provider-mixin.js'
+
+const factString = requestInstance(node, 'd2l-interesting-fact-string');
+const factObjectString = requestInstance(node, 'd2l-interesting-fact-object').fact;
+const factFunctionString = requestInstance(node, 'd2l-interesting-fact-function')('Olives');
+```
