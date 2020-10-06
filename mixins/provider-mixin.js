@@ -24,7 +24,7 @@ export function requestInstance(node, key) {
 	});
 	node.dispatchEvent(event);
 	return event.detail.instance;
-};
+}
 
 export const RequesterMixin = superclass => class extends superclass {
 	requestInstance(key) {
