@@ -54,7 +54,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const space = lengthOfLine - progressFill;
 		const dashOffset = 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
 
-		const primary = this._primary(this.value, this.max, this.dir) || '';
+		const primary = this._primary(this.value, this.max) || '';
 		const secondary = this._secondary(this.value, this.max, this.text);
 
 		return html`

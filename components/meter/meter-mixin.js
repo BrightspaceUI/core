@@ -40,7 +40,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		return secondary ? this.localize(`${this._namespace}.commaSeperatedAria`, 'term1', secondary, 'term2', mainLabel) : mainLabel;
 	}
 
-	_primary(value, max, dir) {
+	_primary(value, max) {
 		const percentage = max > 0 ? value / max : 0;
 
 		return this.percent
