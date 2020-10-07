@@ -40,6 +40,9 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		:host([foreground-light]) .d2l-meter-circle-text {
 			fill: white;
 		}
+		:host([dir="rtl"]) .d2l-meter-circle-text[is-percent="false"] {
+			direction: ltr;
+		}
 	` ];
 	}
 
@@ -49,7 +52,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const visibility = (percent < 0.005) ? 'hidden' : 'visible';
 		const progressFill = percent * lengthOfLine;
 		const space = lengthOfLine - progressFill;
-		const dashOffset = this.dir === 'rtl' ? 7 * Math.PI + 10 - space : 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
+		const dashOffset = 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
 
 		const primary = this._primary(this.value, this.max, this.dir) || '';
 		const secondary = this._secondary(this.value, this.max, this.text);
@@ -64,7 +67,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 					stroke-dashoffset="${dashOffset}"
 					visibility="${visibility}"></circle>
 
-				<text class="d2l-body-standard d2l-meter-circle-text" x="24" y="28" text-anchor="middle">
+				<text class="d2l-body-standard d2l-meter-circle-text" x="24" y="28" text-anchor="middle" is-percent="${this.percent}">
 					${primary}
 				</text>
 			</svg>
