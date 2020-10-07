@@ -45,7 +45,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 
 		return this.percent
 			? formatPercent(percentage, { maximumFractionDigits: 0 })
-			: (dir !== 'rtl' ? this.localize(`${this._namespace}.fraction`, 'x', value, 'y', max) : this.localize(`${this._namespace}.fraction`, 'x', max, 'y', value));
+			: this.localize(`${this._namespace}.fraction`, 'x', value, 'y', max);
 	}
 
 	_secondary(value, max, context) {
