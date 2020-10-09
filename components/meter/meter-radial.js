@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { bodySmallStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -47,6 +48,9 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 			color: white;
 			fill: white;
 		}
+		:host([dir="rtl"]) .d2l-meter-radial-text-ltr {
+			direction: ltr;
+		}
 	` ];
 	}
 
@@ -55,9 +59,15 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 		const percent = this.max > 0 ? (this.value / this.max) : 0;
 		const visibility = (percent < 0.005) ? 'hidden' : 'visible';
 		const progressFill = percent * lengthOfLine;
-		const primary = this._primary(this.value, this.max, this.dir);
+		const primary = this._primary(this.value, this.max);
 		const secondary = this._secondary(this.value, this.max, this.text);
 		const secondaryTextElement = this.text ? html`<div class="d2l-body-small d2l-meter-radial-text">${secondary}</div>` : html``;
+		const textClasses =  {
+			'd2l-meter-radial-text-ltr': !this.percent,
+			'd2l-heading-4': true,
+			'd2l-meter-radial-text': true
+		};
+
 		return html `
 			<div
 				class="d2l-meter-radial"
@@ -69,9 +79,9 @@ class MeterRadial extends MeterMixin(RtlMixin(LitElement)) {
 						class="d2l-meter-radial-progress-bar"
 						d="M5 40a37 35 0 0 1 74 0"
 						stroke-dasharray="${progressFill} ${lengthOfLine}"
-						stroke-dashoffset="${this.dir === 'rtl' ? progressFill - lengthOfLine : 0}"
+						stroke-dashoffset="0"
 						visibility="${visibility}" />
-					<text class="d2l-heading-4 d2l-meter-radial-text" x="38" y="2" text-anchor="middle"  transform="translate(5 39)">
+					<text class=${classMap(textClasses)} x="38" y="2" text-anchor="middle"  transform="translate(5 39)">
 						${primary}
 					</text>
 				</svg>

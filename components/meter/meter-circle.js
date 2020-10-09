@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyStandardStyles } from '../typography/styles.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -40,6 +41,9 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		:host([foreground-light]) .d2l-meter-circle-text {
 			fill: white;
 		}
+		:host([dir="rtl"]) .d2l-meter-circle-text-ltr {
+			direction: ltr;
+		}
 	` ];
 	}
 
@@ -49,10 +53,15 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 		const visibility = (percent < 0.005) ? 'hidden' : 'visible';
 		const progressFill = percent * lengthOfLine;
 		const space = lengthOfLine - progressFill;
-		const dashOffset = this.dir === 'rtl' ? 7 * Math.PI + 10 - space : 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
+		const dashOffset = 7 * Math.PI * 2 - 10; // approximation perimeter of circle divide by 3 subtract the rounded edges (5 pixels each)
 
-		const primary = this._primary(this.value, this.max, this.dir) || '';
+		const primary = this._primary(this.value, this.max) || '';
 		const secondary = this._secondary(this.value, this.max, this.text);
+		const textClasses =  {
+			'd2l-meter-circle-text-ltr': !this.percent,
+			'd2l-body-standard': true,
+			'd2l-meter-circle-text': true
+		};
 
 		return html`
 			<svg viewBox="0 0 48 48" shape-rendering="geometricPrecision" role="img" aria-label="${this._ariaLabel(primary, secondary)}">
@@ -64,7 +73,7 @@ class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
 					stroke-dashoffset="${dashOffset}"
 					visibility="${visibility}"></circle>
 
-				<text class="d2l-body-standard d2l-meter-circle-text" x="24" y="28" text-anchor="middle">
+				<text class=${classMap(textClasses)} x="24" y="28" text-anchor="middle">
 					${primary}
 				</text>
 			</svg>
