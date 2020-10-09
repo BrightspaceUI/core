@@ -1,9 +1,9 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyStandardStyles } from '../typography/styles.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 
 /**
  * A circular progress indicator.
