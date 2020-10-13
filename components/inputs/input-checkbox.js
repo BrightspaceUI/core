@@ -165,6 +165,7 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 			'd2l-input-checkbox-text-disabled': this.disabled
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
+		const disabled = this.disabled || this.skeleton;
 		return html`
 			<label>
 				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
@@ -174,7 +175,7 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 					class="d2l-input-checkbox"
 					@click="${this._handleClick}"
 					.checked="${this.checked}"
-					?disabled="${this.disabled}"
+					?disabled="${disabled}"
 					.indeterminate="${this.indeterminate}"
 					name="${ifDefined(this.name)}"
 					tabindex="${ifDefined(tabindex)}"
