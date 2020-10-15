@@ -55,7 +55,8 @@ module.exports = config => {
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['saucelabs']
+			reporters: ['saucelabs'],
+			browserNoActivityTimeout: 300000 // default 30000
 		}),
 	);
 	return config;
