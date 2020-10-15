@@ -25,13 +25,12 @@ addons:
 jobs:
   include:
     - stage: test
-      name: "Build"
-      script: npm run build
-    - script: npm run lint
+    - script: npm run build && npm run lint
       name: "Lint"
-    - script: npm run test:axe
+    - script: npm run build && npm run test:axe
       name: "Accessibility"
     - script:
+      - npm run build
       - |
         if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
             echo "Pull request with secure environment variables, running BrowserStack tests...";
@@ -49,7 +48,7 @@ jobs:
       - |
         if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
             echo "Pull request with secure environment variables, running Sauce tests...";
-            npm run test:sauce;
+            npm run build && npm run test:sauce;
         fi
       name: "SauceLabs"
       env:
