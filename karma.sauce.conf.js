@@ -2,34 +2,12 @@
 const { createDefaultConfig } = require('@open-wc/testing-karma');
 const merge = require('deepmerge');
 
-const defaultPattern = '+(components|helpers|mixins|templates)/**/*.test.js';
+const defaultPattern = 'components/**/*.test.js';
 const customLaunchers = {
 	chrome: {
 		base: 'SauceLabs',
 		browserName: 'chrome',
 		platform: 'OS X 10.15',
-	},
-	firefox: {
-		base: 'SauceLabs',
-		browserName: 'firefox',
-		platform: 'OS X 10.15'
-	},
-	safari: {
-		base: 'SauceLabs',
-		browserName: 'safari',
-		platform: 'OS X 10.15'
-	},
-	edge: {
-		base: 'SauceLabs',
-		browserName: 'microsoftedge',
-		platform: 'Windows 10',
-		version: 'latest'
-	},
-	edge_legacy: {
-		base: 'SauceLabs',
-		browserName: 'microsoftedge',
-		platform: 'Windows 10',
-		version: '18.17763'
 	}
 };
 
