@@ -25,8 +25,8 @@ addons:
 jobs:
   include:
     - stage: test
-    - script: npm run build && npm run lint
       name: "Lint"
+      script: npm run build && npm run lint
     - script: npm run build && npm run test:axe
       name: "Accessibility"
     - script:
