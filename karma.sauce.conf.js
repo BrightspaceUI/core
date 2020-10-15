@@ -51,24 +51,11 @@ module.exports = config => {
 			},
 			sauceLabs: {
 				testName: 'Brightspace UI Core Unit Tests',
-				idleTimeout: 200, // default 90
+				idleTimeout: 300 // default 90
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['dots', 'saucelabs'],
-			browserDisconnectTimeout : 200000, // default 2000
-			browserDisconnectTolerance : 3, // default 0
-			browserNoActivityTimeout: 200000, // default 30000
-			captureTimeout: 200000, // default 60000
-			client: {
-				mocha: {
-					timeout : 10000
-				}
-			},
-			flags: [
-				'--disable-gpu',
-				'--no-sandbox'
-			]
+			reporters: ['saucelabs']
 		}),
 	);
 	return config;
