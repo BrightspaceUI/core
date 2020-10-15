@@ -3,6 +3,13 @@ const { createDefaultConfig } = require('@open-wc/testing-karma');
 const merge = require('deepmerge');
 
 const defaultPattern = 'components/**/*.test.js';
+const customLaunchers = {
+	chrome: {
+		base: 'SauceLabs',
+		browserName: 'chrome',
+		platform: 'OS X 10.15',
+	}
+};
 
 module.exports = config => {
 	config.set(
@@ -19,7 +26,14 @@ module.exports = config => {
 			esm: {
 				// if you are using 'bare module imports' you will need this option
 				nodeResolve: true,
-			}
+			},
+			sauceLabs: {
+				testName: 'Brightspace UI Core Unit Tests'
+			},
+			customLaunchers: customLaunchers,
+			browsers: Object.keys(customLaunchers),
+			reporters: ['dots', 'saucelabs'],
+			hostname: '127.0.0.1'
 		}),
 	);
 	return config;
