@@ -32,8 +32,7 @@ module.exports = config => {
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['dots', 'saucelabs'],
-			hostname: '127.0.0.1'
+			reporters: ['dots', 'saucelabs']
 		}),
 	);
 	return config;
