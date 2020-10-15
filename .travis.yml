@@ -4,31 +4,11 @@ branches:
   only:
   - master
   - /^[0-9]+(\.[0-9]+|x)?\.x$/
-addons:
-  apt:
-    packages:
-      # Japanese
-      - language-pack-ja
-      - japan*
-      # Chinese
-      - language-pack-zh*
-      - chinese*
-      # Korean
-      - language-pack-ko
-      - korean*
-      # Fonts
-      - fonts-arphic-ukai
-      - fonts-arphic-uming
-      - fonts-ipafont-mincho
-      - fonts-ipafont-gothic
-      - fonts-unfonts-core
 jobs:
   include:
     - stage: tests
       script:
       - npm run build
-      - npm run lint
-      - npm run test:axe
       - |
         if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
             echo "Pull request with secure environment variables, running BrowserStack tests...";
@@ -49,28 +29,6 @@ jobs:
         - SAUCE_USERNAME: Gaudi1
         # SAUCE_ACCESS_KEY
         - secure: bwPUP8HCJ4x/VQHYT83fw28MF6fZqcCFYYLQIuYl5d8QXPuHNiON+36YSEkIix/2AjuQR8OtNqy7MPem013QUzEl9ayJ+P/Kto3hN84D6fNj4DXKUtDywDeAs6B0hv3OZZIUJ2ixqClyGDRoK9M51NzS3d9Nts8rEDTJY5CqnD7s+0mOUXfmr7ehStQfs4JdsGApdp5ByA7btC6t3vNAUSoGOlnfKGb4VP/cCXAS64Suy/8Q09fCCKr2BMswQwR6hwb52EJ50W9JbpXu/S0DwrwwM5ZGCG4+SSXqrMoaWXeoOjjQ+tdTx+Rj/cvYO0IE9vJvEMubFCzjs57d2r9IwoKmJg27Fh7YPlZk4YEhcge2vDO9AmlGKGDKeEYco4fXelAmmCcFjmrWXjH8Uc31n2wZj4yYg6AKU2M+GvMYNmh+aI1qGJ+urpQigYdf8IWpqryW19wiOzRm+N6JhdFGlfgnJMEv/OmdTwGOXKA1Qlmc0Bv8ZjWHa6bVMrwnueygoUwc7rWYQg0SjIaW8zhTWwy2JkBoCD1/TpKYTNOdL4VSaxpRSCQn4uAlJ2rNBIyv7FM0S7ycKMTVQGXIyaRo28vKUEGUDYGYWbu++5fBxRfaHWeE79ZFE823LyFQetTUmr7ms/i4pqkaM/m+q840s34lLwmupSoUoVBAGezVsk8=
-    - stage: visual-difference-tests
-      script:
-      - npm run build
-      - |
-        if [ $TRAVIS_SECURE_ENV_VARS == true ]; then
-          echo "Running visual difference tests...";
-          npm run test:diff || travis_terminate 1;
-        fi
-      env:
-        # VISUAL_DIFF_S3_ID
-        - secure: GGPx9fJpdWd2BcvfXnFQQBBswAazOEWgZXnqmrRma045OpvlJeeUYn3N3gamz3nS2Mv0u3Y0j3ViAbEgDjo4hbW4Iz4/8tmv0T/59qYnco8ONXBnUEytJxMy8B6dOHT+rX/Fgn/4+dxWItWc4igG1FryK4TpGn1JrcsmlPHoJJZRQyUYqrKk4OfUzjs2LOaGHGyy2Sm+bXfSOWt12VnMBrHzwMRsrnhdZNzx/XqKTbGPWuV/YTLqJ0azqz3DoxhmmrllgnGgbKncTtZN2vSzGqlxTjS0Dn+CDnXP5LAvN6u7OLqI2jo/10XBG8ZHe6W/szun/nIKnIHBX87HDr0+39B5R9kMR6PHgGG/fRnDSva/ssKHgjRAoMxznG74j7Efk+MegYf8DSctMGwA+NxCMZFoNM5gEDIKo7w7N5RdDK9PC3kZaZajJqskQIr1uE2hVlBZONXtOvkQ0fJX4eiHym7ClWJW8QWXVU7FyiZfj0WE4MWwYzGSa/ve5EpvKCP1Wat276qnJRIdrSCsxxYk2u8w9qgyXr8jbhkWHzkaX9Ff/82X4/POCxoXibDMOF60DHxWniKCdhaviUEf1leiTjidJqr3dXRCLjCTD3GlLTxQVt6JlGDdY+0Dy/IcUblrCG5t4Ym4S6hbkIWx5cVPPQSl6t5ELq37Gof9FSvUQSg=
-        # VISUAL_DIFF_S3_SECRET
-        - secure: hETcU1ZRPPz7ipofSeUj8fLkdM9JJda/Qg/oXU83FqZ/y/LZya6jMJjBfcHgEGsCLmVOPLw4lj2+pcyA6ZprJuujdS56elnbWPYUa4iwCbPN7ayfFQQjQx3jo3LYd7jFlCilgMT+Q+s+SnVfmV1Wa91N5WOpINpi7NzIarBRhWVeoiCQJmaabAX2pIn4G5VnBIE562SJULq+05Ucavl9zWrSFHDsMqMtcVcHG7TI6BExENJf76iutEk/YqWdaSvk5LY4xLrO29tThZBVJ7lX5wQGa3MkmlJkHZqxoONBWbGsKfrwh5I7QHExkj8PYYfvpYHQd+VugFrSkDTW3wHsoe/cmrzVe8aEbpHfUSPpO5HOkTdOqy92NVjyh4MOE7hJexmQsYRD+zjFzL4AS876hOdjrf/FS5ume843MvZseSZiCpK7uHTQWwVmitib/dNJdy8YyWoAyceWHpz46QOArrECVYOFhMKYuPrNy3gYY05kCLHCEW24pVN1ToRW2Gp6Z3Z3YblfWShjFHl3eU8riOPeCU9RaBV1k1UuP0C5POyFDPS12K8glPNIJ6dbp6GyI6KKW3iYuX/O3G4w/evO/AMy9nQPL4tUOPU5gQsPvr4Z77+bluP9VqEd3o1VBC6IBwLEcc8tzO+5EAeRbj9THU7zDmoIQH0oRHpIo+elg/8=
-    - stage: deploy
-      script: npm run build
-      env:
-        # NPM_TOKEN 31d4......fc2d
-        - secure: AIi7hXDWNoghxz7OWFTb7zkRBi+CcGmPLZm+3nb3FjIXqFSWJqogTeZwYeQuhuPJxEtHPK8cG4QAoN4atED/mhyJMnAuMpDvE7v7dBwqtck94sruOySH0arV9CU1mHVbTy5aS0nr+XQU2sQxdxNcmvc/9QUCvY2rhsXTGG9XlL4PA/mIMe4lxaOuZYFKi25KH3eqWz4XIeHe6LQim4jrw79Ve07RUyrcqVyk727u02BdXVpO/OpBNHxcoL9YH8CV2UlOh/VcA4eb7rnxXnNFJQDmLteOQFa44E4UdIUUd2qrzxgmSulqVVezkswkYQN5kQJJ+lfXmw5JaHvwQxb1EXl19Fq3mulczEcFSb0jKI1yHmGhHQ2EIfqUDN7u2wOexEym+oKHmq8b9pOFthq22I6phRLv4HDC5hz7a2SqxFEU3HCU8V1saDFLPFckO1/mwEP+ZrFUbLTlM4mCUQEvLGXNqeMRQG63EBGaMw54DCAuYW8xxjCNp9d7G3rOEhXLPfUMkV8tPbcM2HjU3AeYh/92ERpOyKwvYRYKxRiwFgDbCxFVw1+8/3yVY+lgkl/1MLv0wKxcbzIplLU+jFONICnj4RKVhb6FOUAtoKCzq3dREUJfjyUFGGjcHly+h/j9FtzeZfdI/Co09hMft1KqbIc7mDk7Wt9C9+7OsASOgbo=
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script: npx semantic-release
 env:
   global:
   # GITHUB_TOKEN
