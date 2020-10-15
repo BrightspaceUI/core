@@ -8,6 +8,28 @@ const customLaunchers = {
 		base: 'SauceLabs',
 		browserName: 'chrome',
 		platform: 'OS X 10.15',
+	},
+	firefox: {
+		base: 'SauceLabs',
+		browserName: 'firefox',
+		platform: 'OS X 10.15'
+	},
+	safari: {
+		base: 'SauceLabs',
+		browserName: 'safari',
+		platform: 'OS X 10.15'
+	},
+	edge: {
+		base: 'SauceLabs',
+		browserName: 'microsoftedge',
+		platform: 'Windows 10',
+		version: 'latest'
+	},
+	edge_legacy: {
+		base: 'SauceLabs',
+		browserName: 'microsoftedge',
+		platform: 'Windows 10',
+		version: '18.17763'
 	}
 };
 
