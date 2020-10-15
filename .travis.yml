@@ -35,9 +35,9 @@ jobs:
         fi
       name: "SauceLabs"
       env:
-        - SAUCE_USERNAME: Gaudi1
+        - SAUCE_USERNAME: Desire2Learn
         # SAUCE_ACCESS_KEY
-        - secure: ZNhafUFQpKsxTqqOlPMDXhbQIzY9ripi2pVJthjDGNH66dfNa+zle1H8CUfueAyv7SkigRoA8DSbXhph9lUznAwFDTyffl6t6y7kcVaOCrDJ9DvbWdEDDjeSDWoPvBZVLXEkWihV3kDsfWZlvJfzZQ9vj8lhdOX2iPrBT5pEQ5Ormzi9StzdlQRIs78c9/uWm90SgyRBme1ATQ1gFNM62JJ/Wg//WWf5itCOBtkGzoDgGTuheHXEWR381t0vizfuFqY7HncWXkR0iR25jjdWwa8ZYYBe2mLJ0FUh2e0g2UuFFvO7uqgUYKinMzs6iYFq56uYmeNAAW4C9J7vjfHzHzboQYyM9FCc8v9djv3vHVZN8pl9heUY+hb6C9xITUDG4UotffDXhO6MI5fS8kJvJWrphtNI80w3IYEHjCQaf8aTmNk1upXgzLhRY1XuIjYH6o9U8hHySFBLY9plaM5zUpnRxapz7M+hkEcu3GWdfqSiJxAvsi2pTdqWh2Wb0pXrigk19rmdv5PXNgoxP799dP08gD+Kjl8BkxkywK+sQo6s1NqFLoLV980gX+HsrnLo1BZQr6p0YkBpQwbzcKLxIrWvKFegR+W5qxP1JRwpQsZpZuVbIprZMcxfJhIeC+XyHVZe6I2mWBIdOCA4nHFSoKEHzCymS4QpMHbxNewpDl8=
+        - secure: "UxV3EjdT+JjJpHEJpU/YenMXJEWfhYQ64Gk18OEzrBpN4BibOQi80uBzOCl9C+lFvKVmqkc2Nl88I7LduKmkq0/9uTdhe5nB7Hz22IFT739xAeS9Ol3lj49fn8hbhy5is+YHzKGIVldOXkzxR9FC/dVwQvgKwCOiFrqRPv6QBwL2IGPsUipkACXjw5CsJr/f4SvhOkLci52cEIAUR+2ABA0nawTf+fnVKB/9eYnKpDaDhQGcl+TvvsMlYR2HprOw/NrlcGCfrXsqFk0X5ZT6IPFzDFSMDMEu3X65gnwp5WdwBNbM6vWXTyqcfSr0Fvaro9sy+uM4EBrm4ItBYoYLC46QwiTnpuDPjr2svKvV0a5FGQrYeHs6SBrQnn0pm13FFOK5M2aK4iggPJF/lBNPDmj1aOxtwFt/J8p/4+mSn9ipUMrHPxdTBvRHrUgJVBcQIg8zFFt6nIsVDZbnY9/KGGDvN3tQEBOWm8Ar5WKE+CSCQKhC4KfhpINuc2uNj/WWYT+Ll0tQhZuB2qmM4FkahG24oTe3ITdGHYiotz8wbT4AhR2x3FdVlvbS5SY8v01SzuF/h1G6nfOH0vmD0ZGoW7rQNbB42ngAdijthCtYHXGJoG5nlYE9QoLDzwcyjBhKRWT3vk/dy6v+4CqBw7KEioNKh/EZUUSeoBt2RpOrNSo="
     - stage: visual-difference-tests
       addons:
         apt:
