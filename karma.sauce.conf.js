@@ -50,7 +50,8 @@ module.exports = config => {
 				nodeResolve: true,
 			},
 			sauceLabs: {
-				testName: 'Brightspace UI Core Unit Tests'
+				testName: 'Brightspace UI Core Unit Tests',
+				idleTimeout: 200, // default 90
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
