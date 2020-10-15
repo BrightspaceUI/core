@@ -54,7 +54,20 @@ module.exports = config => {
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['dots', 'saucelabs']
+			reporters: ['dots', 'saucelabs'],
+			browserDisconnectTimeout : 50000, // default 2000
+			browserDisconnectTolerance : 3, // default 0
+			browserNoActivityTimeout: 200000, // default 30000
+			captureTimeout: 200000, // default 60000
+			client: {
+				mocha: {
+					timeout : 10000
+				}
+			},
+			flags: [
+				'--disable-gpu',
+				'--no-sandbox'
+			]
 		}),
 	);
 	return config;
