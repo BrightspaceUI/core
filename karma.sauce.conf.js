@@ -7,17 +7,17 @@ const customLaunchers = {
 	chrome: {
 		base: 'SauceLabs',
 		browserName: 'chrome',
-		platform: 'OS X 10.13',
+		platform: 'OS X 10.15',
 	},
 	firefox: {
 		base: 'SauceLabs',
 		browserName: 'firefox',
-		platform: 'OS X 10.13'
+		platform: 'OS X 10.15'
 	},
 	safari: {
 		base: 'SauceLabs',
 		browserName: 'safari',
-		platform: 'OS X 10.13'
+		platform: 'OS X 10.15'
 	},
 	edge: {
 		base: 'SauceLabs',
