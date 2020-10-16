@@ -103,6 +103,99 @@ class DesktopKeyboardResizer extends Resizer {
 	}
 }
 
+class DesktopMouseResizer extends Resizer {
+
+	constructor() {
+		super();
+		this._onTouchStart = this._onTouchStart.bind(this);
+		this._onMouseDown = this._onMouseDown.bind(this);
+		this._onTouchMove = this._onTouchMove.bind(this);
+		this._onMouseMove = this._onMouseMove.bind(this);
+		this._onResizeEnd = this._onResizeEnd.bind(this);
+		this._target = null;
+	}
+
+	connect(target) {
+		target.addEventListener('touchstart', this._onTouchStart);
+		target.addEventListener('touchmove', this._onTouchMove);
+		target.addEventListener('touchend', this._onResizeEnd);
+		target.addEventListener('mousedown', this._onMouseDown);
+		window.addEventListener('mousemove', this._onMouseMove);
+		window.addEventListener('mouseup', this._onResizeEnd);
+		this._target = target;
+	}
+
+	disconnect() {
+		this._target.removeEventListener('touchstart', this._onTouchStart);
+		this._target.removeEventListener('touchmove', this._onTouchMove);
+		this._target.removeEventListener('touchend', this._onResizeEnd);
+		this._target.removeEventListener('mousedown', this._onMouseDown);
+		window.removeEventListener('mousemove', this._onMouseMove);
+		window.removeEventListener('mouseup', this._onResizeEnd);
+		this._target = null;
+	}
+
+	_computeContentX(clientX) {
+		const x = clientX - this.contentRect.left;
+		return this.isRtl ? x : this.contentRect.width - x;
+	}
+
+	_onMouseDown(e) {
+		this._resizeStart(e.clientX);
+	}
+
+	_onMouseMove(e) {
+		if (!this._isResizing) {
+			return;
+		}
+		e.preventDefault();
+		this._resize(e.clientX);
+	}
+
+	_onResizeEnd() {
+		if (this._isResizing) {
+			this._isResizing = false;
+		}
+	}
+
+	_onTouchMove(e) {
+		if (!this._isResizing) {
+			return;
+		}
+		e.preventDefault();
+		const touch = e.touches[0];
+		this._resize(touch.clientX);
+	}
+
+	_onTouchStart(e) {
+		const touch = e.touches[0];
+		this._resizeStart(touch.clientX);
+	}
+
+	_resize(clientX) {
+		let actualSecondaryWidth;
+		const x = this._computeContentX(clientX);
+		const collapseThreshold = this.contentBounds.minWidth / 2;
+		const desiredSecondaryWidth = x + this._offset;
+		if (desiredSecondaryWidth < collapseThreshold) {
+			actualSecondaryWidth = 0;
+		} else {
+			actualSecondaryWidth = this.clampWidth(desiredSecondaryWidth);
+		}
+		const animateResize = desiredSecondaryWidth < actualSecondaryWidth || actualSecondaryWidth === 0;
+		this.dispatchResize(actualSecondaryWidth, animateResize);
+	}
+
+	_resizeStart(clientX) {
+		if (!this.isMobile) {
+			const x = this._computeContentX(clientX);
+			this._offset = this.panelSize - x;
+			this._isResizing = true;
+		}
+	}
+
+}
+
 /**
  * A two panel (primary and secondary) page template with header and optional footer
  * @slot header - Page header content
@@ -414,9 +507,11 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._onPanelResize = this._onPanelResize.bind(this);
 
 		this._desktopKeyboardResizer = new DesktopKeyboardResizer();
+		this._desktopMouseResizer = new DesktopMouseResizer();
 
 		this._resizers = [
-			this._desktopKeyboardResizer
+			this._desktopKeyboardResizer,
+			this._desktopMouseResizer
 		];
 		for (const resizer of this._resizers) {
 			resizer.onResize(this._onPanelResize);
@@ -437,8 +532,11 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		super.connectedCallback();
 		await new Promise(resolve => requestAnimationFrame(resolve));
 
+		const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 		const handle = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-handle');
+
 		this._desktopKeyboardResizer.connect(handle);
+		this._desktopMouseResizer.connect(divider);
 	}
 
 	disconnectedCallback() {
