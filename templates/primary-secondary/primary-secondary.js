@@ -465,8 +465,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				width: 100%;
 			}
 			.d2l-template-primary-secondary-content {
-				height: 100%;
 				display: flex;
+				height: 100%;
 				overflow: hidden;
 			}
 
@@ -495,9 +495,9 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			aside {
-				-webkit-overflow-scrolling: touch;
 				max-height: 100%;
 				min-width: ${desktopMinSize}px;
+				-webkit-overflow-scrolling: touch;
 				overflow-y: auto;
 			}
 
@@ -527,8 +527,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			}
 			.d2l-template-primary-secondary-divider-handle {
 				background-color: transparent;
-				border-radius: 0.05rem;
 				border: none;
+				border-radius: 0.05rem;
 				display: none;
 				height: 1.6rem;
 				left: -0.1rem;
@@ -551,19 +551,19 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			}
 			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider,
 			:host([resizable][dir="rtl"]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider {
-				box-shadow: 1px 0 0 0 rgba(0,0,0,0.15);
+				box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.15);
 			}
 			:host([resizable]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider,
 			:host([resizable][dir="rtl"]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider {
-				box-shadow: -1px 0 0 0 rgba(0,0,0,0.15);
+				box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.15);
 			}
 			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider:hover,
 			:host([resizable][dir="rtl"]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider:hover {
-				box-shadow: 1px 0 0 0 rgba(0,0,0,0.25);
+				box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.25);
 			}
 			:host([resizable]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider:hover,
 			:host([resizable][dir="rtl"]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider:hover {
-				box-shadow: -1px 0 0 0 rgba(0,0,0,0.25);
+				box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.25);
 			}
 			.d2l-template-primary-secondary-divider-handle-desktop {
 				display: flex;
@@ -643,7 +643,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				:host([resizable]) .d2l-template-primary-secondary-divider,
 				:host(:not([resizable])) .d2l-template-primary-secondary-divider {
 					background-color: var(--d2l-color-celestine);
-					cursor: ns-resize; /*resizer cursor*/
+					cursor: ns-resize;
 					height: 0.1rem;
 					width: 100%;
 				}
@@ -678,7 +678,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				}
 				.d2l-template-primary-secondary-divider-handle,
 				.d2l-template-primary-secondary-divider-handle-mobile {
-					height: 1.0rem;
+					height: 1rem;
 					width: 2.2rem;
 				}
 				.d2l-template-primary-secondary-divider-handle:focus {
@@ -692,12 +692,12 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 					right: auto;
 				}
 				d2l-icon {
-					display: block;
 					color: white;
+					display: block;
 				}
 				.d2l-template-primary-secondary-divider-handle:focus .d2l-template-primary-secondary-divider-handle-mobile {
-					right: 0.2rem;
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
+					right: 0.2rem;
 				}
 			}
 		`;
