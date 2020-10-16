@@ -196,6 +196,54 @@ class DesktopMouseResizer extends Resizer {
 
 }
 
+class MobileKeyboardResizer extends Resizer {
+
+	constructor() {
+		super();
+		this._steps = 3;
+		this._onKeyDown = this._onKeyDown.bind(this);
+	}
+
+	connect(target) {
+		target.addEventListener('keydown', this._onKeyDown);
+		this._target = target;
+	}
+
+	disconnect() {
+		this._target.removeEventListener('keydown', this._onKeyDown);
+	}
+
+	_onKeyDown(e) {
+		if (!this.isMobile) {
+			return;
+		}
+		if (e.keyCode !== keyCodes.UP && e.keyCode !== keyCodes.DOWN) {
+			return;
+		}
+		let secondaryHeight;
+		if (this.panelSize === 0) {
+			if (e.keyCode === keyCodes.UP) {
+				secondaryHeight = this.contentBounds.minHeight;
+			} else {
+				secondaryHeight = 0;
+			}
+		} else {
+			const delta = (this.contentBounds.maxHeight - this.contentBounds.minHeight) / (this._steps - 1);
+			const direction = e.keyCode === keyCodes.UP ? 1 : -1;
+			const desiredHeight = this.panelSize + delta * direction;
+			const desiredSteppedHeight = this.contentBounds.minHeight + delta * Math.round((desiredHeight - this.contentBounds.minHeight) / delta);
+
+			const actualSecondaryHeight = this.clampHeight(desiredSteppedHeight);
+			if (desiredSteppedHeight < actualSecondaryHeight) {
+				secondaryHeight = 0;
+			} else {
+				secondaryHeight = actualSecondaryHeight;
+			}
+		}
+		this.dispatchResize(secondaryHeight, true);
+	}
+}
+
 /**
  * A two panel (primary and secondary) page template with header and optional footer
  * @slot header - Page header content
@@ -508,10 +556,12 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
 		this._desktopKeyboardResizer = new DesktopKeyboardResizer();
 		this._desktopMouseResizer = new DesktopMouseResizer();
+		this._mobileKeyboardResizer = new MobileKeyboardResizer();
 
 		this._resizers = [
 			this._desktopKeyboardResizer,
-			this._desktopMouseResizer
+			this._desktopMouseResizer,
+			this._mobileKeyboardResizer
 		];
 		for (const resizer of this._resizers) {
 			resizer.onResize(this._onPanelResize);
@@ -537,6 +587,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
 		this._desktopKeyboardResizer.connect(handle);
 		this._desktopMouseResizer.connect(divider);
+		this._mobileKeyboardResizer.connect(handle);
 	}
 
 	disconnectedCallback() {
