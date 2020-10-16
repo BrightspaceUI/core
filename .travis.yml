@@ -24,7 +24,7 @@ addons:
       - fonts-unfonts-core
 jobs:
   include:
-    - stage: test
+    - stage: tests
       name: "Lint & Accessibility"
       script:
       - npm run build

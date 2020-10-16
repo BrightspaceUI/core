@@ -2,7 +2,7 @@
 const { createDefaultConfig } = require('@open-wc/testing-karma');
 const merge = require('deepmerge');
 
-const defaultPattern = 'components/**/*.test.js';
+const defaultPattern = '+(components|helpers|mixins|templates)/**/*.test.js';
 const customLaunchers = {
 	chrome: {
 		base: 'SauceLabs',
