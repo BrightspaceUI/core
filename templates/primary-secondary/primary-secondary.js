@@ -10,12 +10,97 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const desktopMinSize = 320;
 
+const keyCodes = Object.freeze({
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40
+});
+
 function isMobile() {
 	return matchMedia('only screen and (max-width: 768px)').matches;
 }
 
 function clamp(val, min, max) {
 	return Math.max(min, Math.min(val, max));
+}
+
+class Resizer {
+
+	constructor() {
+		this.contentRect = null;
+		this.contentBounds = null;
+		this.isMobile = false;
+		this.panelSize = 0;
+		this.isRtl = false;
+	}
+
+	clampHeight(height) {
+		return clamp(height, this.contentBounds.minHeight, this.contentBounds.maxHeight);
+	}
+
+	clampWidth(width) {
+		return clamp(width, this.contentBounds.minWidth, this.contentBounds.maxWidth);
+	}
+
+	dispatchResize(size, animateResize) {
+		if (this._onResizeCallback) {
+			this._onResizeCallback({ size, animateResize: !!animateResize });
+		}
+	}
+
+	onResize(callback) {
+		this._onResizeCallback = callback;
+	}
+}
+
+class DesktopKeyboardResizer extends Resizer {
+
+	constructor() {
+		super();
+		this._onKeyDown = this._onKeyDown.bind(this);
+	}
+
+	connect(target) {
+		target.addEventListener('keydown', this._onKeyDown);
+		this._target = target;
+	}
+
+	disconnect() {
+		this._target.removeEventListener('keydown', this._onKeyDown);
+	}
+
+	_onKeyDown(e) {
+		if (this.isMobile) {
+			return;
+		}
+		const leftKeyCode = this.isRtl ? keyCodes.RIGHT : keyCodes.LEFT;
+		const rightKeyCode = this.isRtl ? keyCodes.LEFT : keyCodes.RIGHT;
+		if (e.keyCode !== leftKeyCode && e.keyCode !== rightKeyCode) {
+			return;
+		}
+		let secondaryWidth;
+		if (this.panelSize === 0) {
+			if (e.keyCode === leftKeyCode) {
+				secondaryWidth = this.contentBounds.minWidth;
+			} else {
+				secondaryWidth = 0;
+			}
+		} else {
+			const delta = (this.contentBounds.maxWidth - this.contentBounds.minWidth) / 6;
+			const direction = e.keyCode === leftKeyCode ? 1 : -1;
+			const desiredWidth = this.panelSize + delta * direction;
+			const desiredSteppedWidth = this.contentBounds.minWidth + delta * Math.round((desiredWidth - this.contentBounds.minWidth) / delta);
+
+			const actualSecondaryWidth = this.clampWidth(desiredSteppedWidth);
+			if (desiredSteppedWidth < actualSecondaryWidth) {
+				secondaryWidth = 0;
+			} else {
+				secondaryWidth = actualSecondaryWidth;
+			}
+		}
+		this.dispatchResize(secondaryWidth, true);
+	}
 }
 
 /**
@@ -328,7 +413,11 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._onContentResize = this._onContentResize.bind(this);
 		this._onPanelResize = this._onPanelResize.bind(this);
 
-		this._resizers = [];
+		this._desktopKeyboardResizer = new DesktopKeyboardResizer();
+
+		this._resizers = [
+			this._desktopKeyboardResizer
+		];
 		for (const resizer of this._resizers) {
 			resizer.onResize(this._onPanelResize);
 		}
@@ -342,6 +431,14 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._isExpanded = false;
 		this._isMobile = isMobile();
 		this._size = 0;
+	}
+
+	async connectedCallback() {
+		super.connectedCallback();
+		await new Promise(resolve => requestAnimationFrame(resolve));
+
+		const handle = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-handle');
+		this._desktopKeyboardResizer.connect(handle);
 	}
 
 	disconnectedCallback() {
