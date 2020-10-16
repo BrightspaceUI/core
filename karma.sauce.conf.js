@@ -34,8 +34,10 @@ const customLaunchers = {
 };
 
 module.exports = config => {
+	const defaultConfig = createDefaultConfig(config);
+	defaultConfig.browsers = []; // remove ChromeHeadless
 	config.set(
-		merge(createDefaultConfig(config), {
+		merge(defaultConfig, {
 			files: [
 				// runs all files ending with .test in the test folder,
 				// can be overwritten by passing a --grep flag. examples:
