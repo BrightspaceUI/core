@@ -23,12 +23,9 @@ addons:
       - fonts-ipafont-gothic
       - fonts-unfonts-core
 jobs:
-  allow_failures:
-    - env: TEST=SAUCE
   include:
     - stage: test
       name: "Lint & Accessibility"
-      env: TEST=BS
       script:
       - npm run build
       - npm run lint
@@ -45,7 +42,6 @@ jobs:
         fi
       name: "BrowserStack"
       env:
-        - TEST=BS
         - BROWSERSTACK_USERNAME: margareepeacocke1
         # BROWSERSTACK_ACCESS_KEY
         - secure: LLdLul0G53je1zR+Mkn3KGJg3PXco6cgHcjElAJS1ZlA8bT2TGLmvdv3rAbqKG6Ff1LOtEViFJxXT/A31mu2wxEZl0xcZE4Vu17Ykz9n9SOl0UIFyBWruKj0g7H34eQyKL1yBZ5XUuiE5qLgJSepyrYF4v25X3cwojx4HEDw88bGzTJLuazPS9SZc5FspP/EFgvkXTGC/FWqEURDIJtZedvtLlGWsb/dZ6O2d8EGhZFYtnDNPSUhUSC2t/xkwxd/+zkj7ooci1cWBNrETBGKFhSKHdA46FyPz437siDa4nG5KL8an9wVND9sZ1LaF/CC1zDA902iY9SxP5rrRehrBqaQg+M3GOxs2yTJJqNM7fm7ws5MHKeaF2pukXkj+CR6vCOIV/2sGCOa0lwFGrV7EQ77oeVKS1q6iSz/5QJNGIppAoNKRSE604Pl7l7WEyUY4KJ/TVtWiPSTtpn4SMmpofIF3N0qtUIy2cXb+6MVhp7Tgo4MeErWKjplMdXC9ZkGtGw407wKX6oCtof74kCzkWQ3W+gAc38/Uvz7P1ky/vbxz4OPmBNL8cCBFnWRciWO8P5rcKgWHLGjkn7CMwYwjSu8QwQW+aWA/9c0sA98SoVz9TUEnG3l/ZJozkSpzH7n+T8iwY+T8F3tXPn6Ycdjrip/N6A/LKy7rSZi+zbQvKY=
@@ -58,7 +54,6 @@ jobs:
         fi
       name: "SauceLabs"
       env:
-        - TEST=SAUCE
         - SAUCE_USERNAME: Gaudi1
         # SAUCE_ACCESS_KEY
         - secure: bwPUP8HCJ4x/VQHYT83fw28MF6fZqcCFYYLQIuYl5d8QXPuHNiON+36YSEkIix/2AjuQR8OtNqy7MPem013QUzEl9ayJ+P/Kto3hN84D6fNj4DXKUtDywDeAs6B0hv3OZZIUJ2ixqClyGDRoK9M51NzS3d9Nts8rEDTJY5CqnD7s+0mOUXfmr7ehStQfs4JdsGApdp5ByA7btC6t3vNAUSoGOlnfKGb4VP/cCXAS64Suy/8Q09fCCKr2BMswQwR6hwb52EJ50W9JbpXu/S0DwrwwM5ZGCG4+SSXqrMoaWXeoOjjQ+tdTx+Rj/cvYO0IE9vJvEMubFCzjs57d2r9IwoKmJg27Fh7YPlZk4YEhcge2vDO9AmlGKGDKeEYco4fXelAmmCcFjmrWXjH8Uc31n2wZj4yYg6AKU2M+GvMYNmh+aI1qGJ+urpQigYdf8IWpqryW19wiOzRm+N6JhdFGlfgnJMEv/OmdTwGOXKA1Qlmc0Bv8ZjWHa6bVMrwnueygoUwc7rWYQg0SjIaW8zhTWwy2JkBoCD1/TpKYTNOdL4VSaxpRSCQn4uAlJ2rNBIyv7FM0S7ycKMTVQGXIyaRo28vKUEGUDYGYWbu++5fBxRfaHWeE79ZFE823LyFQetTUmr7ms/i4pqkaM/m+q840s34lLwmupSoUoVBAGezVsk8=
@@ -71,7 +66,6 @@ jobs:
           npm run test:diff || travis_terminate 1;
         fi
       env:
-        - TEST=BS
         # VISUAL_DIFF_S3_ID
         - secure: GGPx9fJpdWd2BcvfXnFQQBBswAazOEWgZXnqmrRma045OpvlJeeUYn3N3gamz3nS2Mv0u3Y0j3ViAbEgDjo4hbW4Iz4/8tmv0T/59qYnco8ONXBnUEytJxMy8B6dOHT+rX/Fgn/4+dxWItWc4igG1FryK4TpGn1JrcsmlPHoJJZRQyUYqrKk4OfUzjs2LOaGHGyy2Sm+bXfSOWt12VnMBrHzwMRsrnhdZNzx/XqKTbGPWuV/YTLqJ0azqz3DoxhmmrllgnGgbKncTtZN2vSzGqlxTjS0Dn+CDnXP5LAvN6u7OLqI2jo/10XBG8ZHe6W/szun/nIKnIHBX87HDr0+39B5R9kMR6PHgGG/fRnDSva/ssKHgjRAoMxznG74j7Efk+MegYf8DSctMGwA+NxCMZFoNM5gEDIKo7w7N5RdDK9PC3kZaZajJqskQIr1uE2hVlBZONXtOvkQ0fJX4eiHym7ClWJW8QWXVU7FyiZfj0WE4MWwYzGSa/ve5EpvKCP1Wat276qnJRIdrSCsxxYk2u8w9qgyXr8jbhkWHzkaX9Ff/82X4/POCxoXibDMOF60DHxWniKCdhaviUEf1leiTjidJqr3dXRCLjCTD3GlLTxQVt6JlGDdY+0Dy/IcUblrCG5t4Ym4S6hbkIWx5cVPPQSl6t5ELq37Gof9FSvUQSg=
         # VISUAL_DIFF_S3_SECRET
@@ -79,7 +73,6 @@ jobs:
     - stage: deploy
       script: npm run build
       env:
-        - TEST=BS
         # NPM_TOKEN 31d4......fc2d
         - secure: AIi7hXDWNoghxz7OWFTb7zkRBi+CcGmPLZm+3nb3FjIXqFSWJqogTeZwYeQuhuPJxEtHPK8cG4QAoN4atED/mhyJMnAuMpDvE7v7dBwqtck94sruOySH0arV9CU1mHVbTy5aS0nr+XQU2sQxdxNcmvc/9QUCvY2rhsXTGG9XlL4PA/mIMe4lxaOuZYFKi25KH3eqWz4XIeHe6LQim4jrw79Ve07RUyrcqVyk727u02BdXVpO/OpBNHxcoL9YH8CV2UlOh/VcA4eb7rnxXnNFJQDmLteOQFa44E4UdIUUd2qrzxgmSulqVVezkswkYQN5kQJJ+lfXmw5JaHvwQxb1EXl19Fq3mulczEcFSb0jKI1yHmGhHQ2EIfqUDN7u2wOexEym+oKHmq8b9pOFthq22I6phRLv4HDC5hz7a2SqxFEU3HCU8V1saDFLPFckO1/mwEP+ZrFUbLTlM4mCUQEvLGXNqeMRQG63EBGaMw54DCAuYW8xxjCNp9d7G3rOEhXLPfUMkV8tPbcM2HjU3AeYh/92ERpOyKwvYRYKxRiwFgDbCxFVw1+8/3yVY+lgkl/1MLv0wKxcbzIplLU+jFONICnj4RKVhb6FOUAtoKCzq3dREUJfjyUFGGjcHly+h/j9FtzeZfdI/Co09hMft1KqbIc7mDk7Wt9C9+7OsASOgbo=
       deploy:
@@ -87,8 +80,6 @@ jobs:
         skip_cleanup: true
         script: npx semantic-release
 env:
-- TEST=BS
-- TEST=SAUCE
   global:
   # GITHUB_TOKEN
   - secure: Mi5jJg+b1wMElx0La3VRE53oSnKYO7ot9cK0+qIUQYspWvCkdfab8vg0hThNlgRQQuFpORmorOyFLCNbnyv9q1g2GW1xEAd0AvumRPH/FDHHLTL5llhSH9ZzXIkTKo6yE5o0yCBD/PuQOyvuT5tIVw8VQ7nZWBoRSUUzVJrLEwHJA2X6b5hb+ZFhmwDYrNQcfKb2S0V/fw9woWolDfd14kJP91mf/HnqVeNw122C5xKCmmQjJZoOJ1P+eDKa5DwVaiUVFq7N3wYRirk/nx5HKfRPZx++8w2dFzSQ00K3K0WcIg/3beIoKz8bUb+XdNCrJGBla9RD4NyuXdhdI78ViIjsZfqkhQioVF+3ejRcaxZAl1Q55nD6OdgN3TPAiTXZqkyBXIc+8Wx9Qh5JtO3Ne0qx1xCwM1+chBrZM+3WzFETGGQAiNK51Q8C1obWCwn+kLXo7G3hAgmiehGLhgtCUnaciL3C4NI7szaOKiXIR+u8HnEfVA4HT0jeiEI8F18e/nGWdacpmlLJ9xscA9hZGGidXrpdtrlGl5OVKenp0nXuFbAWM/PnYFF5ekiUr1cNwMMD0pPzwCPzQxCT1dACAYsoAAHb6tOCpH47I0fk0F+eltsCj3MPvUeOOzVenwfOHcrxWBHFx4dtas0HNEmTRlnLDRuDP4L0Ld/aX+gABB4=
