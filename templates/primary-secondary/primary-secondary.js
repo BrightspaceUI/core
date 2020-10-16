@@ -244,6 +244,65 @@ class MobileKeyboardResizer extends Resizer {
 	}
 }
 
+class MobileMouseResizer extends Resizer {
+
+	constructor() {
+		super();
+		this._onMouseDown = this._onMouseDown.bind(this);
+		this._onMouseMove = this._onMouseMove.bind(this);
+		this._onMouseUp = this._onMouseUp.bind(this);
+		this._target = null;
+	}
+
+	connect(target) {
+		target.addEventListener('mousedown', this._onMouseDown);
+		window.addEventListener('mousemove', this._onMouseMove);
+		window.addEventListener('mouseup', this._onMouseUp);
+		this._target = target;
+	}
+
+	disconnect() {
+		this._target.removeEventListener('mousedown', this._onMouseDown);
+		window.removeEventListener('mousemove', this._onMouseMove);
+		window.removeEventListener('mouseup', this._onMouseUp);
+		this._target = null;
+	}
+
+	_onMouseDown(e) {
+		if (this.isMobile) {
+			const y = e.clientY - this.contentRect.top;
+			this._offset = y - (this.contentRect.height - this.panelSize);
+			this._isResizing = true;
+		}
+	}
+
+	_onMouseMove(e) {
+		if (!this._isResizing) {
+			return;
+		}
+		e.preventDefault();
+		const y = e.clientY - this.contentRect.top;
+
+		let actualSecondaryHeight;
+		const collapseThreshold = this.contentBounds.minHeight / 2;
+		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
+		if (desiredSecondaryHeight < collapseThreshold) {
+			actualSecondaryHeight = 0;
+		} else {
+			actualSecondaryHeight = this.clampHeight(desiredSecondaryHeight);
+		}
+		const animateResize = desiredSecondaryHeight < actualSecondaryHeight || actualSecondaryHeight === 0;
+		this.dispatchResize(actualSecondaryHeight, animateResize);
+	}
+
+	_onMouseUp() {
+		if (this._isResizing) {
+			this._isResizing = false;
+		}
+	}
+
+}
+
 /**
  * A two panel (primary and secondary) page template with header and optional footer
  * @slot header - Page header content
@@ -557,11 +616,13 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._desktopKeyboardResizer = new DesktopKeyboardResizer();
 		this._desktopMouseResizer = new DesktopMouseResizer();
 		this._mobileKeyboardResizer = new MobileKeyboardResizer();
+		this._mobileMouseResizer = new MobileMouseResizer();
 
 		this._resizers = [
 			this._desktopKeyboardResizer,
 			this._desktopMouseResizer,
-			this._mobileKeyboardResizer
+			this._mobileKeyboardResizer,
+			this._mobileMouseResizer
 		];
 		for (const resizer of this._resizers) {
 			resizer.onResize(this._onPanelResize);
@@ -588,6 +649,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._desktopKeyboardResizer.connect(handle);
 		this._desktopMouseResizer.connect(divider);
 		this._mobileKeyboardResizer.connect(handle);
+		this._mobileMouseResizer.connect(divider);
 	}
 
 	disconnectedCallback() {
