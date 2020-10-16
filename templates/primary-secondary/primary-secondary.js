@@ -303,6 +303,102 @@ class MobileMouseResizer extends Resizer {
 
 }
 
+class MobileTouchResizer extends Resizer {
+	constructor() {
+		super();
+		this._onResizeStart = this._onResizeStart.bind(this);
+		this._onTouchMove = this._onTouchMove.bind(this);
+		this._onResizeEnd = this._onResizeEnd.bind(this);
+		this._target = null;
+	}
+
+	connect(target) {
+		target.addEventListener('touchstart', this._onResizeStart);
+		target.addEventListener('touchmove', this._onTouchMove);
+		target.addEventListener('touchend', this._onResizeEnd);
+		this._target = target;
+	}
+
+	disconnect() {
+		this._target.removeEventListener('touchstart', this._onResizeStart);
+		this._target.removeEventListener('touchmove', this._onTouchMove);
+		this._target.removeEventListener('touchend', this._onResizeEnd);
+		this._target = null;
+	}
+
+	_computeTouchDirection() {
+		const oldest = this._touches[0];
+		const newest = this._touches[this._touches.length - 1];
+		if (oldest === newest) {
+			return 0;
+		}
+		return newest - oldest;
+	}
+
+	_onResizeEnd() {
+		if (this._isResizing) {
+			if (this.panelSize > this.contentBounds.minHeight && this.panelSize < this.contentBounds.maxHeight) {
+				let secondaryHeight;
+				const touchDirection = this._computeTouchDirection();
+				if (touchDirection >= 0) {
+					secondaryHeight = this.contentBounds.minHeight;
+				} else {
+					secondaryHeight = this.contentBounds.maxHeight;
+				}
+				this.dispatchResize(secondaryHeight, true);
+			}
+			this._isResizing = false;
+		}
+	}
+
+	_onResizeStart(e) {
+		if (this.isMobile) {
+			const touch = e.touches[0];
+			this._prevTouch = touch.screenY;
+			this._isResizing = true;
+			this._touches = [];
+			this._trackTouch(touch);
+		}
+	}
+
+	_onTouchMove(e) {
+		if (!this._isResizing) {
+			return;
+		}
+		const touch = e.touches[0];
+		const curTouch = touch.screenY;
+		const delta = curTouch - this._prevTouch;
+		const curScroll = this._target.scrollTop;
+		this._trackTouch(touch);
+
+		let isScrollable;
+		let secondaryHeight = this.panelSize;
+		if (delta > 0) {
+			if (curScroll === 0) {
+				secondaryHeight = this.clampHeight(this.panelSize - delta);
+			}
+			isScrollable = curScroll > 0;
+		} else if (delta < 0) {
+			secondaryHeight = this.clampHeight(this.panelSize - delta);
+			isScrollable = secondaryHeight === this.contentBounds.maxHeight;
+		}
+		if (!isScrollable && e.cancelable) {
+			e.preventDefault();
+		}
+		this._prevTouch = curTouch;
+
+		this.dispatchResize(secondaryHeight, false);
+	}
+
+	_trackTouch(touch) {
+		if (this._touches.length === 5) {
+			this._touches.shift();
+		}
+		this._touches.push(touch.screenY);
+	}
+
+}
+
 /**
  * A two panel (primary and secondary) page template with header and optional footer
  * @slot header - Page header content
@@ -617,12 +713,14 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._desktopMouseResizer = new DesktopMouseResizer();
 		this._mobileKeyboardResizer = new MobileKeyboardResizer();
 		this._mobileMouseResizer = new MobileMouseResizer();
+		this._mobileTouchResizer = new MobileTouchResizer();
 
 		this._resizers = [
 			this._desktopKeyboardResizer,
 			this._desktopMouseResizer,
 			this._mobileKeyboardResizer,
-			this._mobileMouseResizer
+			this._mobileMouseResizer,
+			this._mobileTouchResizer
 		];
 		for (const resizer of this._resizers) {
 			resizer.onResize(this._onPanelResize);
@@ -643,6 +741,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		super.connectedCallback();
 		await new Promise(resolve => requestAnimationFrame(resolve));
 
+		const secondaryPanel = this.shadowRoot.querySelector('aside');
 		const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 		const handle = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-handle');
 
@@ -650,6 +749,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._desktopMouseResizer.connect(divider);
 		this._mobileKeyboardResizer.connect(handle);
 		this._mobileMouseResizer.connect(divider);
+		this._mobileTouchResizer.connect(secondaryPanel);
 	}
 
 	disconnectedCallback() {
