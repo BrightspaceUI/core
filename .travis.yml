@@ -23,6 +23,8 @@ addons:
       - fonts-ipafont-gothic
       - fonts-unfonts-core
 jobs:
+  allow_failures:
+    - env: TEST=SAUCE
   include:
     - stage: test
       name: "Lint & Accessibility"
@@ -52,7 +54,7 @@ jobs:
         if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
             echo "Pull request with secure environment variables, running Sauce tests...";
             npm run build;
-            npm run test:sauce || true;
+            npm run test:sauce || travis_terminate 1;
         fi
       name: "SauceLabs"
       env:
