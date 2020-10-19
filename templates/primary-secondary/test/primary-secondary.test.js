@@ -1,5 +1,6 @@
 import '../primary-secondary.js';
 import { expect, fixture, html } from '@open-wc/testing';
+import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-template-primary-secondary', () => {
 
@@ -12,7 +13,7 @@ describe('d2l-template-primary-secondary', () => {
 		await expect(elem).to.be.accessible();
 	});
 
-	it('loads element', () => {
-		expect(elem).to.exist;
+	it('should construct', () => {
+		runConstructor('d2l-template-primary-secondary');
 	});
 });

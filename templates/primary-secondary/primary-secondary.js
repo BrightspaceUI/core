@@ -67,7 +67,9 @@ class DesktopKeyboardResizer extends Resizer {
 	}
 
 	disconnect() {
-		this._target.removeEventListener('keydown', this._onKeyDown);
+		if (this._target) {
+			this._target.removeEventListener('keydown', this._onKeyDown);
+		}
 	}
 
 	_onKeyDown(e) {
@@ -79,6 +81,7 @@ class DesktopKeyboardResizer extends Resizer {
 		if (e.keyCode !== leftKeyCode && e.keyCode !== rightKeyCode) {
 			return;
 		}
+		e.preventDefault();
 		let secondaryWidth;
 		if (this.panelSize === 0) {
 			if (e.keyCode === leftKeyCode) {
@@ -126,10 +129,12 @@ class DesktopMouseResizer extends Resizer {
 	}
 
 	disconnect() {
-		this._target.removeEventListener('touchstart', this._onTouchStart);
-		this._target.removeEventListener('touchmove', this._onTouchMove);
-		this._target.removeEventListener('touchend', this._onResizeEnd);
-		this._target.removeEventListener('mousedown', this._onMouseDown);
+		if (this._target) {
+			this._target.removeEventListener('touchstart', this._onTouchStart);
+			this._target.removeEventListener('touchmove', this._onTouchMove);
+			this._target.removeEventListener('touchend', this._onResizeEnd);
+			this._target.removeEventListener('mousedown', this._onMouseDown);
+		}
 		window.removeEventListener('mousemove', this._onMouseMove);
 		window.removeEventListener('mouseup', this._onResizeEnd);
 		this._target = null;
@@ -210,7 +215,9 @@ class MobileKeyboardResizer extends Resizer {
 	}
 
 	disconnect() {
-		this._target.removeEventListener('keydown', this._onKeyDown);
+		if (this._target) {
+			this._target.removeEventListener('keydown', this._onKeyDown);
+		}
 	}
 
 	_onKeyDown(e) {
@@ -262,7 +269,9 @@ class MobileMouseResizer extends Resizer {
 	}
 
 	disconnect() {
-		this._target.removeEventListener('mousedown', this._onMouseDown);
+		if (this._target) {
+			this._target.removeEventListener('mousedown', this._onMouseDown);
+		}
 		window.removeEventListener('mousemove', this._onMouseMove);
 		window.removeEventListener('mouseup', this._onMouseUp);
 		this._target = null;
@@ -320,9 +329,11 @@ class MobileTouchResizer extends Resizer {
 	}
 
 	disconnect() {
-		this._target.removeEventListener('touchstart', this._onResizeStart);
-		this._target.removeEventListener('touchmove', this._onTouchMove);
-		this._target.removeEventListener('touchend', this._onResizeEnd);
+		if (this._target) {
+			this._target.removeEventListener('touchstart', this._onResizeStart);
+			this._target.removeEventListener('touchmove', this._onTouchMove);
+			this._target.removeEventListener('touchend', this._onResizeEnd);
+		}
 		this._target = null;
 	}
 
@@ -527,8 +538,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			}
 			.d2l-template-primary-secondary-divider-handle {
 				background-color: transparent;
-				border: none;
 				border-radius: 0.05rem;
+				box-sizing: border-box;
 				display: none;
 				height: 1.6rem;
 				left: -0.1rem;
@@ -546,8 +557,10 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				background-color: var(--d2l-color-mica);
 			}
 			:host([resizable]) .d2l-template-primary-secondary-divider-handle {
+				align-items: center;
 				cursor: inherit;
-				display: block;
+				display: flex;
+				justify-content: space-between;
 			}
 			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider,
 			:host([resizable][dir="rtl"]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider {
@@ -568,6 +581,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			.d2l-template-primary-secondary-divider-handle-desktop {
 				display: flex;
 				justify-content: space-between;
+				width: 100%;
 			}
 			.d2l-template-primary-secondary-divider-handle-left,
 			.d2l-template-primary-secondary-divider-handle-right {
@@ -794,7 +808,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
 					<main><slot name="primary"></slot></main>
 					<div class="d2l-template-primary-secondary-divider">
-						<button @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart} class="d2l-template-primary-secondary-divider-handle">
+						<div tabindex="0" role=separator  aria-orientation=${this._isMobile ? 'vertical' : 'horizontal'} aria-valuenow="${Math.round(this._size)}" aria-valuemax="${this._contentBounds && this._contentBounds.maxWidth}" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart} class="d2l-template-primary-secondary-divider-handle">
 							<div class="d2l-template-primary-secondary-divider-handle-desktop">
 								<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">
 									<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
@@ -812,7 +826,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 							<div class="d2l-template-primary-secondary-divider-handle-mobile">
 								${this._size === 0 ? html`<d2l-icon icon="tier1:chevron-up"></d2l-icon>` : html`<d2l-icon icon="tier1:chevron-down"></d2l-icon>`}
 							</div>
-						</button>
+						</div>
 					</div>
 					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
 						<aside>
