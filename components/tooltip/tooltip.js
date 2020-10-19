@@ -804,15 +804,15 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_updateTarget() {
 		this._removeListeners();
-		const target = this._findTarget();
-		if (target) {
-			const isInteractive = this._isInteractive(target);
+		this._target = this._findTarget();
+		if (this._target) {
+			const isInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
 			if (this.forType === 'label') {
-				target.setAttribute('aria-labelledby', this.id);
+				this._target.setAttribute('aria-labelledby', this.id);
 			} else if (!this.announced || isInteractive) {
-				target.setAttribute('aria-describedby', this.id);
+				this._target.setAttribute('aria-describedby', this.id);
 			}
 			if (logAccessibilityWarning && !isInteractive && !this.announced) {
 				console.warn(
@@ -821,15 +821,13 @@ class Tooltip extends RtlMixin(LitElement) {
 				);
 				logAccessibilityWarning = false;
 			}
+			if (this.showing) {
+				this.updatePosition();
+			} else if (this.getRootNode().activeElement === this._target) {
+				this._onTargetFocus();
+			}
 		}
-		this._target = target;
 		this._addListeners();
-
-		if (this.showing) {
-			this.updatePosition();
-		} else if (this.getRootNode().activeElement === target) {
-			this._onTargetFocus();
-		}
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
