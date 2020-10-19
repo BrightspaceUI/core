@@ -15,7 +15,7 @@ describe('d2l-template-primary-secondary', () => {
 
 	async function moveDivider(page, selector, dir, steps) {
 		return page.$eval(selector, (ele, dir, steps) => {
-			const handle = ele.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-handle');
+			const handle = ele.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 			const e = new KeyboardEvent('keydown', { keyCode: dir });
 			for (let i = 0; i < steps; i += 1) {
 				handle.dispatchEvent(e);
@@ -37,7 +37,7 @@ describe('d2l-template-primary-secondary', () => {
 
 	async function focusHandle(page, selector) {
 		return page.$eval(selector, (elem) => {
-			const handle = elem.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-handle');
+			const handle = elem.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 			handle.focus();
 		});
 	}

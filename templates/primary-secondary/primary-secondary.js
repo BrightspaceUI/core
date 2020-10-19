@@ -2,6 +2,7 @@ import '../../components/colors/colors.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -146,20 +147,23 @@ class DesktopMouseResizer extends Resizer {
 	}
 
 	_onMouseDown(e) {
-		this._resizeStart(e.clientX);
+		if (!this.isMobile) {
+			e.preventDefault();
+			this._resizeStart(e.clientX);
+		}
 	}
 
 	_onMouseMove(e) {
 		if (!this._isResizing) {
 			return;
 		}
-		e.preventDefault();
 		this._resize(e.clientX);
 	}
 
 	_onResizeEnd() {
 		if (this._isResizing) {
 			this._isResizing = false;
+			this._target.blur();
 		}
 	}
 
@@ -167,14 +171,16 @@ class DesktopMouseResizer extends Resizer {
 		if (!this._isResizing) {
 			return;
 		}
-		e.preventDefault();
 		const touch = e.touches[0];
 		this._resize(touch.clientX);
 	}
 
 	_onTouchStart(e) {
-		const touch = e.touches[0];
-		this._resizeStart(touch.clientX);
+		if (!this.isMobile) {
+			e.preventDefault();
+			const touch = e.touches[0];
+			this._resizeStart(touch.clientX);
+		}
 	}
 
 	_resize(clientX) {
@@ -192,11 +198,10 @@ class DesktopMouseResizer extends Resizer {
 	}
 
 	_resizeStart(clientX) {
-		if (!this.isMobile) {
-			const x = this._computeContentX(clientX);
-			this._offset = this.panelSize - x;
-			this._isResizing = true;
-		}
+		const x = this._computeContentX(clientX);
+		this._offset = this.panelSize - x;
+		this._isResizing = true;
+		this._target.focus();
 	}
 
 }
@@ -279,9 +284,11 @@ class MobileMouseResizer extends Resizer {
 
 	_onMouseDown(e) {
 		if (this.isMobile) {
+			e.preventDefault();
 			const y = e.clientY - this.contentRect.top;
 			this._offset = y - (this.contentRect.height - this.panelSize);
 			this._isResizing = true;
+			this._target.focus();
 		}
 	}
 
@@ -289,7 +296,6 @@ class MobileMouseResizer extends Resizer {
 		if (!this._isResizing) {
 			return;
 		}
-		e.preventDefault();
 		const y = e.clientY - this.contentRect.top;
 
 		let actualSecondaryHeight;
@@ -307,6 +313,7 @@ class MobileMouseResizer extends Resizer {
 	_onMouseUp() {
 		if (this._isResizing) {
 			this._isResizing = false;
+			this._target.blur();
 		}
 	}
 
@@ -525,11 +532,15 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			[data-is-collapsed] aside {
 				display: none;
 			}
+			.d2l-template-primary-secondary-divider {
+				transition: box-shadow 200ms
+			}
 			.d2l-template-primary-secondary-divider,
 			.d2l-template-primary-secondary-divider-handle-mobile {
-				transition: background-color 200ms, box-shadow 200ms;
+				transition: background-color 200ms;
 			}
 			.d2l-template-primary-secondary-divider {
+				outline: none;
 				background-color: var(--d2l-color-mica);
 				flex: none;
 				position: relative;
@@ -601,12 +612,12 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				height: 0.9rem;
 				width: 0.1rem;
 			}
-			.d2l-template-primary-secondary-divider-handle:focus {
+			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle {
 				box-shadow: 0 0 0 0.1rem var(--d2l-color-celestine);
 				outline: none;
 			}
-			.d2l-template-primary-secondary-divider-handle:focus .d2l-template-primary-secondary-divider-handle-right,
-			.d2l-template-primary-secondary-divider-handle:focus .d2l-template-primary-secondary-divider-handle-left {
+			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-right,
+			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
 			}
 			:host(:not([dir="rtl"])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
@@ -661,7 +672,11 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 					height: 0.1rem;
 					width: 100%;
 				}
-				:host([resizable]) .d2l-template-primary-secondary-divider:hover {
+				/* Attribute selector is only used to increase specificity */
+				:host([resizable]) .d2l-template-primary-secondary-divider:hover,
+				:host(:not([resizable])) .d2l-template-primary-secondary-divider:hover,
+				:host([resizable]) .d2l-template-primary-secondary-divider:focus,
+				:host(:not([resizable])) .d2l-template-primary-secondary-divider:focus {
 					background-color: var(--d2l-color-celestine-minus-1);
 				}
 				.d2l-template-primary-secondary-divider-handle {
@@ -687,7 +702,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 					position: absolute;
 					right: 0;
 				}
-				.d2l-template-primary-secondary-divider-handle-mobile:hover {
+				.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-mobile,
+				.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-mobile {
 					background-color: var(--d2l-color-celestine-minus-1);
 				}
 				.d2l-template-primary-secondary-divider-handle,
@@ -695,13 +711,13 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 					height: 1rem;
 					width: 2.2rem;
 				}
-				.d2l-template-primary-secondary-divider-handle:focus {
+				.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle {
 					box-shadow: none;
 					height: 1.2rem;
 					right: 17px;
 					width: 2.6rem;
 				}
-				:host([dir="rtl"]) .d2l-template-primary-secondary-divider-handle:focus {
+				:host([dir="rtl"]) .d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle {
 					left: 17px;
 					right: auto;
 				}
@@ -709,7 +725,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 					color: white;
 					display: block;
 				}
-				.d2l-template-primary-secondary-divider-handle:focus .d2l-template-primary-secondary-divider-handle-mobile {
+				.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-mobile {
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
 					right: 0.2rem;
 				}
@@ -757,11 +773,10 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
 		const secondaryPanel = this.shadowRoot.querySelector('aside');
 		const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
-		const handle = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-handle');
 
-		this._desktopKeyboardResizer.connect(handle);
+		this._desktopKeyboardResizer.connect(divider);
 		this._desktopMouseResizer.connect(divider);
-		this._mobileKeyboardResizer.connect(handle);
+		this._mobileKeyboardResizer.connect(divider);
 		this._mobileMouseResizer.connect(divider);
 		this._mobileTouchResizer.connect(secondaryPanel);
 	}
@@ -798,17 +813,20 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		let tabindex;
 		const secondaryPanelStyles = {};
 		if (this._isResizable()) {
 			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${this._size}px`;
+			tabindex = 0;
 		}
+		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
 		return html`
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
 					<main><slot name="primary"></slot></main>
-					<div class="d2l-template-primary-secondary-divider">
-						<div tabindex="0" role=separator  aria-orientation=${this._isMobile ? 'vertical' : 'horizontal'} aria-valuenow="${Math.round(this._size)}" aria-valuemax="${this._contentBounds && this._contentBounds.maxWidth}" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart} class="d2l-template-primary-secondary-divider-handle">
+					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator  aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${Math.round(this._size)}" aria-valuemax="${ifDefined(separatorMax)}">
+						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
 							<div class="d2l-template-primary-secondary-divider-handle-desktop">
 								<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">
 									<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
