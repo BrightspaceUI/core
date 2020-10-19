@@ -42,8 +42,10 @@ const customLaunchers = {
 };
 
 module.exports = config => {
+	const defaultConfig = createDefaultConfig(config);
+	defaultConfig.browsers = []; // remove ChromeHeadless
 	config.set(
-		merge(createDefaultConfig(config), {
+		merge(defaultConfig, {
 			browserStack: {
 				username: process.env.BROWSERSTACK_USERNAME,
 				accessKey: process.env.BROWSERSTACK_ACCESS_KEY,
@@ -65,8 +67,7 @@ module.exports = config => {
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['dots', 'BrowserStack'],
-			singleRun: true,
+			reporters: ['BrowserStack'],
 			browserDisconnectTimeout: 3e5, // default 2000
 			browserDisconnectTolerance: 3, // default 0
 			browserSocketTimeout: 1.2e5, // default 20000
