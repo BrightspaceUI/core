@@ -564,7 +564,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				cursor: ew-resize;
 				width: 0.45rem;
 			}
-			:host([resizable]) .d2l-template-primary-secondary-divider:hover {
+			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
+			:host([resizable]) .d2l-template-primary-secondary-divider:focus {
 				background-color: var(--d2l-color-mica);
 			}
 			:host([resizable]) .d2l-template-primary-secondary-divider-handle {
@@ -590,9 +591,13 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.25);
 			}
 			.d2l-template-primary-secondary-divider-handle-desktop {
+				align-items: center;
 				display: flex;
-				justify-content: space-between;
-				width: 100%;
+				justify-content: center;
+				left: calc((0.65rem - 2.1rem)/2);
+				min-height: 2.1rem;
+				min-width: 2.1rem;
+				position: absolute;
 			}
 			.d2l-template-primary-secondary-divider-handle-left,
 			.d2l-template-primary-secondary-divider-handle-right {
@@ -601,15 +606,23 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				position: absolute;
 			}
 			.d2l-template-primary-secondary-divider-handle-left {
-				right: 1.225rem;
+				left: -0.8rem;
 			}
 			.d2l-template-primary-secondary-divider-handle-right {
-				left: 1.225rem;
+				right: -0.8rem;
 			}
 			.d2l-template-primary-secondary-divider-handle-line {
+				display: flex;
+				height: 0.9rem;
+				justify-content: space-between;
+				width: 0.25rem;
+			}
+			.d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: var(--d2l-color-galena);
 				border-radius: 0.05rem;
-				height: 0.9rem;
+				content: '';
+				display: inline-block;
 				width: 0.1rem;
 			}
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle {
@@ -833,7 +846,6 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 										<path transform="rotate(90 9.004714965820312,9.000227928161623)" d="m13.708,6.29a1.006,1.006 0 0 0 -0.708,-0.29l-7.995,0a1,1 0 0 0 -0.705,1.71l4,4a1.013,1.013 0 0 0 1.42,0l4,-4a1.01,1.01 0 0 0 -0.013,-1.42l0.001,0z" fill="#494c4e"/>
 									</svg>
 								</d2l-icon-custom>
-								<div class="d2l-template-primary-secondary-divider-handle-line"></div>
 								<div class="d2l-template-primary-secondary-divider-handle-line"></div>
 								<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-right">
 									<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
