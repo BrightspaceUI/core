@@ -532,18 +532,16 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			[data-is-collapsed] aside {
 				display: none;
 			}
-			.d2l-template-primary-secondary-divider {
-				transition: box-shadow 200ms
-			}
 			.d2l-template-primary-secondary-divider,
 			.d2l-template-primary-secondary-divider-handle-mobile {
 				transition: background-color 200ms;
 			}
 			.d2l-template-primary-secondary-divider {
-				outline: none;
 				background-color: var(--d2l-color-mica);
 				flex: none;
+				outline: none;
 				position: relative;
+				transition: box-shadow 200ms;
 				width: 1px;
 				z-index: 1;
 			}
@@ -594,7 +592,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				align-items: center;
 				display: flex;
 				justify-content: center;
-				left: calc((0.65rem - 2.1rem)/2);
+				left: calc((0.65rem - 2.1rem) / 2);
 				min-height: 2.1rem;
 				min-width: 2.1rem;
 				position: absolute;
