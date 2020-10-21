@@ -118,8 +118,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			this.__contentSlot.removeEventListener('slotchange', this.__reactToChanges.bind(this));
 			this.__contentSlot.removeEventListener('slotchange', this.__startObserving.bind(this));
 		}
-		this.__content.removeEventListener('focusin', this.__focusIn.bind(this));
-		this.__content.removeEventListener('focusout', this.__focusOut.bind(this));
+		this.__content && this.__content.removeEventListener('focusin', this.__focusIn.bind(this));
+		this.__content && this.__content.removeEventListener('focusout', this.__focusOut.bind(this));
 		this.shadowRoot.removeEventListener('transitionstart', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitionend', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitioncancel', this.__bound_transitionEvents);
