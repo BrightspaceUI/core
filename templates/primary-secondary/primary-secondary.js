@@ -775,7 +775,6 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._isCollapsed = false;
 		this._isExpanded = false;
 		this._isMobile = isMobile();
-		this._size = 0;
 	}
 
 	async connectedCallback() {
@@ -798,7 +797,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		}
 	}
 
-	async firstUpdated(changedProperties) {
+	firstUpdated(changedProperties) {
 
 		super.firstUpdated(changedProperties);
 
@@ -809,18 +808,6 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		const contentArea = this.shadowRoot.querySelector('.d2l-template-primary-secondary-content');
 		this._resizeObserver = new ResizeObserver(this._onContentResize);
 		this._resizeObserver.observe(contentArea);
-
-		await this.updateComplete;
-		const contentRect = contentArea.getBoundingClientRect();
-		this._contentBounds = this._computeContentBounds(contentRect);
-
-		if (this._isMobile) {
-			this._size = this._contentBounds.minHeight;
-		} else {
-			const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
-			const desktopDividerSize = contentRect.width - divider.offsetWidth;
-			this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
-		}
 	}
 
 	render() {
@@ -830,13 +817,14 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			secondaryPanelStyles[this._isMobile ? 'height' : 'width'] = `${this._size}px`;
 			tabindex = 0;
 		}
+		const separatorVal = this._size && Math.round(this._size);
 		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
 		return html`
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
 					<main><slot name="primary"></slot></main>
-					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator  aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${Math.round(this._size)}" aria-valuemax="${ifDefined(separatorMax)}">
+					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator  aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
 						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
 							<div class="d2l-template-primary-secondary-divider-handle-desktop">
 								<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">
@@ -894,15 +882,6 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		};
 	}
 
-	async _getUpdateComplete() {
-		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
-		await super._getUpdateComplete();
-		/* wait for the fonts to load because browsers have a font block period
-		 where they will render an invisible fallback font face that may result in
-		 improper width calculations before the real font is loaded */
-		await fontsPromise;
-	}
-
 	_handleFooterSlotChange(e) {
 		const nodes = e.target.assignedNodes();
 		this._hasFooter = (nodes.length !== 0);
@@ -918,7 +897,17 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		this._contentBounds = this._computeContentBounds(contentRect);
 		this._isMobile = isMobile();
 
-		if (this._size !== 0) {
+		if (this._size === undefined) {
+			// initialize size on first resize
+			if (this._isMobile) {
+				this._size = this._contentBounds.minHeight;
+			} else {
+				const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+				const desktopDividerSize = contentRect.width - divider.offsetWidth;
+				this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
+			}
+		} else if (this._size !== 0) {
+			// clamp size on subsequent resizes
 			if (this._isMobile) {
 				this._size = clamp(this._size, this._contentBounds.minHeight, this._contentBounds.maxHeight);
 			} else {
