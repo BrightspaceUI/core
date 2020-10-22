@@ -145,6 +145,10 @@ If you need to backport a fix to an older release, [semantic-release](https://se
 git checkout -b 1.59.x v1.59.4
 ```
 
-Then create a pull request into that branch with your fix, and merge as you normally would to create a release with a `fix: blah blah blah` commit message. Semantic-release will automatically tag and publish the release to NPM.
+Then create a pull request into that branch with your fix, and merge as you normally would to create a release with a `fix: blah blah blah` commit message. To allow Semantic-release to automatically tag and publish the release to NPM, the following lines must be added to the `.travis.yml` `deploy` stage:
+```yml
+on:
+  all_branches: true
+```
 
 It's also possible to use this approach to add changes to old minor releases -- simply name the branch `A.x` instead.
