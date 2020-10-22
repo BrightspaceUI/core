@@ -124,9 +124,11 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 		this.autoShiftDates = false;
 		this.disabled = false;
+		this.endLabelHidden = false;
 		this.inclusiveDateRange = false;
 		this.labelHidden = false;
 		this.required = false;
+		this.startLabelHidden = false;
 
 		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
@@ -166,7 +168,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 						.forceInvalid=${this.invalid}
 						id="${this._startInputId}"
 						label="${this._computedStartLabel}"
-						?labelHidden="${this.startLabelHidden}"
+						?label-hidden="${this.startLabelHidden}"
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
 						?required="${this.required}"
@@ -184,7 +186,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 					.forceInvalid=${this.invalid}
 					id="${this._endInputId}"
 					label="${this._computedEndLabel}"
-					?labelHidden="${this.endLabelHidden}"
+					?label-hidden="${this.endLabelHidden}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					?required="${this.required}"
