@@ -70,7 +70,7 @@ describe('d2l-template-primary-secondary', () => {
 				const sel = `#${test.testName}`;
 				if (test.options.position) {
 					const pos = test.options.position;
-					await moveDivider(page, sel, pos.dir, pos.n);
+					await moveDivider(page, sel, pos.dir, pos.steps);
 				}
 				if (test.options.focus) {
 					await focusHandle(page, sel);
