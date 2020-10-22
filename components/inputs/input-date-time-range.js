@@ -2,13 +2,28 @@ import './input-date-time.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { formatDateTimeInISO, getDateFromISODateTime, parseISODateTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { getDateFromISODateTime } from '../../helpers/dateTime.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+
+export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusive) {
+	const jsStartDate = new Date(startValue);
+	const jsEndDate = new Date(endValue);
+	const jsPrevStartDate = new Date(prevStartValue);
+	if ((inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() < 0)
+		|| (!inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() <= 0))
+		return endValue;
+
+	const diff = jsStartDate.getTime() - jsPrevStartDate.getTime();
+
+	const jsNewEndDate = new Date(jsEndDate.getTime() + diff);
+	const parsedObject = parseISODateTime(jsNewEndDate.toISOString());
+	return formatDateTimeInISO(parsedObject);
+}
 
 /**
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.
@@ -21,6 +36,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 	static get properties() {
 		return {
 			/**
+			 * Automatically shift end date when start date changes to keep same range
+			 */
+			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
+			/**
 			 * Disables the inputs
 			 */
 			disabled: { type: Boolean, reflect: true },
@@ -30,9 +49,17 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
+			 * Hides the end label visually
+			 */
+			endLabelHidden: { attribute: 'end-label-hidden', reflect: true, type: Boolean },
+			/**
 			 * Value of the end input
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
+			/**
+			 * Validate on inclusive range
+			 */
+			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
 			 * REQUIRED: Accessible label for the range
 			 */
@@ -58,6 +85,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 * @default "Start Date"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
+			/**
+			 * Hides the start label visually
+			 */
+			startLabelHidden: { attribute: 'start-label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Value of the start input
 			 */
@@ -91,7 +122,9 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 	constructor() {
 		super();
 
+		this.autoShiftDates = false;
 		this.disabled = false;
+		this.inclusiveDateRange = false;
 		this.labelHidden = false;
 		this.required = false;
 
@@ -133,6 +166,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 						.forceInvalid=${this.invalid}
 						id="${this._startInputId}"
 						label="${this._computedStartLabel}"
+						?labelHidden="${this.startLabelHidden}"
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
 						?required="${this.required}"
@@ -150,6 +184,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 					.forceInvalid=${this.invalid}
 					id="${this._endInputId}"
 					label="${this._computedEndLabel}"
+					?labelHidden="${this.endLabelHidden}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					?required="${this.required}"
@@ -159,6 +194,16 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				<slot name="end"></slot>
 			</d2l-input-fieldset>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((oldVal, prop) => {
+			if (this.autoShiftDates && prop === 'startValue' && this.startValue) {
+				this._prevStartValue = oldVal;
+			}
+		});
 	}
 
 	focus() {
@@ -190,14 +235,27 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 	async _handleChange(e) {
 		const elem = e.target;
-		if (elem.classList.contains('d2l-input-date-time-range-start')) this.startValue = elem.value;
+		const startChanged = elem.classList.contains('d2l-input-date-time-range-start');
+		if (startChanged) this.startValue = elem.value;
 		else this.endValue = elem.value;
-		this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISODateTime(this.endValue) <= getDateFromISODateTime(this.startValue))) });
+		let badInput = false;
+		if (this.startValue && this.endValue) {
+			if (this.inclusiveDateRange && (getDateFromISODateTime(this.endValue) < getDateFromISODateTime(this.startValue))) {
+				badInput = true;
+			} else if (!this.inclusiveDateRange && (getDateFromISODateTime(this.endValue) <= getDateFromISODateTime(this.startValue))) {
+				badInput = true;
+			}
+		}
+		this.setValidity({ badInput: badInput });
 		await this.requestValidate(true);
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
 		));
+
+		if (!badInput && this.autoShiftDates && startChanged && this.endValue && this._prevStartValue) {
+			this.endValue = getShiftedEndDate(this.startValue, this.endValue, this._prevStartValue, this.inclusiveDateRange);
+		}
 	}
 
 	_handleDropdownToggle(e) {
