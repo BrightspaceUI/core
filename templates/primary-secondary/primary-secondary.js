@@ -529,7 +529,7 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			[data-background-shading="secondary"] > .d2l-template-primary-secondary-secondary-container {
 				background-color: var(--d2l-color-gypsum);
 			}
-			[data-is-collapsed] aside {
+			:host([resizable]) [data-is-collapsed] aside {
 				display: none;
 			}
 			.d2l-template-primary-secondary-divider,
@@ -670,6 +670,9 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				aside,
 				.d2l-template-primary-secondary-secondary-container {
 					min-width: auto;
+				}
+				[data-is-collapsed] aside {
+					display: none;
 				}
 
 				.d2l-template-primary-secondary-divider-handle-desktop {
