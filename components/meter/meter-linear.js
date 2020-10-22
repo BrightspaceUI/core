@@ -93,6 +93,9 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 				align-self: flex-end;
 			}
 
+			:host([dir="rtl"]) .d2l-meter-linear-primary-ltr {
+				direction: ltr;
+			}
 		`];
 	}
 
@@ -106,12 +109,16 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 		if (percentage < 0.5) {
 			percentage = 0;
 		}
-		const primary = this._primary(this.value, this.max, this.dir);
+		const primary = this._primary(this.value, this.max);
 		const secondary = this._secondary(this.value, this.max, this.text);
 		const textClasses =  {
 			'd2l-meter-linear-text-space-between': !this.textInline && secondary !== this.text,
 			'd2l-body-small': true,
 			'd2l-meter-linear-text': true
+		};
+		const primaryTextClasses =  {
+			'd2l-meter-linear-primary-ltr': !this.percent,
+			'd2l-meter-linear-primary': true
 		};
 		const secondaryTextElement = secondary ? html`<div class="d2l-meter-linear-secondary">${secondary}</div>` : html``;
 
@@ -123,7 +130,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 					<div class="d2l-meter-linear-inner-bar" style="width:${percentage}%;"></div>
 				</div>
 				<div class=${classMap(textClasses)}>
-					<div class="d2l-meter-linear-primary">${primary}&nbsp;</div>
+					<div class=${classMap(primaryTextClasses)}>${primary}&nbsp;</div>
 					${secondaryTextElement}
 				</div>
 			</div>

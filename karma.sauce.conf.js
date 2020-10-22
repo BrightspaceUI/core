@@ -7,17 +7,17 @@ const customLaunchers = {
 	chrome: {
 		base: 'SauceLabs',
 		browserName: 'chrome',
-		platform: 'OS X 10.13',
+		platform: 'OS X 10.15',
 	},
 	firefox: {
 		base: 'SauceLabs',
 		browserName: 'firefox',
-		platform: 'OS X 10.13'
+		platform: 'OS X 10.15'
 	},
 	safari: {
 		base: 'SauceLabs',
 		browserName: 'safari',
-		platform: 'OS X 10.13'
+		platform: 'OS X 10.15'
 	},
 	edge: {
 		base: 'SauceLabs',
@@ -34,8 +34,10 @@ const customLaunchers = {
 };
 
 module.exports = config => {
+	const defaultConfig = createDefaultConfig(config);
+	defaultConfig.browsers = []; // remove ChromeHeadless
 	config.set(
-		merge(createDefaultConfig(config), {
+		merge(defaultConfig, {
 			files: [
 				// runs all files ending with .test in the test folder,
 				// can be overwritten by passing a --grep flag. examples:
@@ -50,25 +52,19 @@ module.exports = config => {
 				nodeResolve: true,
 			},
 			sauceLabs: {
-				testName: 'Brightspace UI Core Unit Tests'
+				testName: 'Brightspace UI Core Unit Tests',
+				idleTimeout: 500 // default 90
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
-			reporters: ['dots', 'saucelabs'],
-			singleRun: true,
+			reporters: ['saucelabs'],
 			browserDisconnectTimeout : 50000, // default 2000
-			browserDisconnectTolerance : 3, // default 0
-			browserNoActivityTimeout: 200000, // default 10000
-			captureTimeout: 200000, // default 60000
+			browserNoActivityTimeout: 300000, // default 30000
 			client: {
 				mocha: {
-					timeout : 10000
+					timeout : 10000 // default 2000, for legacy-Edge
 				}
 			},
-			flags: [
-				'--disable-gpu',
-				'--no-sandbox'
-			]
 		}),
 	);
 	return config;
