@@ -10,7 +10,7 @@ describe('d2l-input-date-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2400 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2900 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -26,7 +26,8 @@ describe('d2l-input-date-time-range', () => {
 		'required',
 		'slotted-content',
 		'start-end-label',
-		'start-end-value'
+		'start-end-value',
+		'hidden-labels'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -76,6 +77,21 @@ describe('d2l-input-date-time-range', () => {
 				});
 			}, inputSelector);
 		}
+
+		it('start equals end, inclusive', async function() {
+			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
+			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange);
+
+			const rect = await visualDiff.getRect(page, '#inclusive');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('start changes, autoShiftDates', async function() {
+			await changeInnerInputTextDate(page, '#auto-shift-dates', startDateSelector, '2020-12-05T15:00:00.000Z');
+
+			const rect = await visualDiff.getRect(page, '#auto-shift-dates');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 
 		describe('bad input', () => {
 
