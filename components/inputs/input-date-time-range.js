@@ -40,6 +40,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
+			 * Hides the start and end labels visually
+			 */
+			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
+			/**
 			 * Disables the inputs
 			 */
 			disabled: { type: Boolean, reflect: true },
@@ -48,10 +52,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 * @default "End Date"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
-			/**
-			 * Hides the end label visually
-			 */
-			endLabelHidden: { attribute: 'end-label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Value of the end input
 			 */
@@ -86,10 +86,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
-			 * Hides the start label visually
-			 */
-			startLabelHidden: { attribute: 'start-label-hidden', reflect: true, type: Boolean },
-			/**
 			 * Value of the start input
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
@@ -123,12 +119,11 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		super();
 
 		this.autoShiftDates = false;
+		this.childLabelsHidden = false;
 		this.disabled = false;
-		this.endLabelHidden = false;
 		this.inclusiveDateRange = false;
 		this.labelHidden = false;
 		this.required = false;
-		this.startLabelHidden = false;
 
 		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
@@ -168,7 +163,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 						.forceInvalid=${this.invalid}
 						id="${this._startInputId}"
 						label="${this._computedStartLabel}"
-						?label-hidden="${this.startLabelHidden}"
+						?label-hidden="${this.childLabelsHidden}"
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
 						?required="${this.required}"
@@ -186,7 +181,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 					.forceInvalid=${this.invalid}
 					id="${this._endInputId}"
 					label="${this._computedEndLabel}"
-					?label-hidden="${this.endLabelHidden}"
+					?label-hidden="${this.childLabelsHidden}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					?required="${this.required}"
