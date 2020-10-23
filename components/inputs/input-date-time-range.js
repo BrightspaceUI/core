@@ -2,28 +2,13 @@ import './input-date-time.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateTimeInISO, getDateFromISODateTime, parseISODateTime } from '../../helpers/dateTime.js';
+import { getDateFromISODateTime, getShiftedEndDate } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-
-export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusive) {
-	const jsStartDate = new Date(startValue);
-	const jsEndDate = new Date(endValue);
-	const jsPrevStartDate = new Date(prevStartValue);
-	if ((inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() < 0)
-		|| (!inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() <= 0))
-		return endValue;
-
-	const diff = jsStartDate.getTime() - jsPrevStartDate.getTime();
-
-	const jsNewEndDate = new Date(jsEndDate.getTime() + diff);
-	const parsedObject = parseISODateTime(jsNewEndDate.toISOString());
-	return formatDateTimeInISO(parsedObject);
-}
 
 /**
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.

@@ -68,9 +68,12 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 | Property | Type | Description |
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input fieldset that wraps the date inputs |
+| `auto-shift-dates` | Boolean | Automatically shifts end date when start date changes to keep the same range |
+| `child-labels-hidden` | Boolean | Visually hides the labels for start and end date inputs |
 | `disabled` | Boolean | Disables the inputs |
 | `end-label` | String, default `'End Date'` | Accessible label for the second date input |
 | `end-value` | String, default `''` | Value of the second date input |
+| `inclusive-date-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end dates to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `max-value` | String | Maximum valid date that could be selected by a user |
 | `min-value` | String |  Minimum valid date that could be selected by a user |
