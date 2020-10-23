@@ -110,7 +110,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			this.__mutationObserver = null;
 		}
 
-		this.__content.removeEventListener('load', this.__bound_reactToChanges, true);
+		this.__content && this.__content.removeEventListener('load', this.__bound_reactToChanges, true);
 		this.__bound_reactToChanges = null;
 		this.__bound_reactToMutationChanges = null;
 
