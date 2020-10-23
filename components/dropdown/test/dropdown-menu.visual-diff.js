@@ -47,4 +47,10 @@ describe('d2l-dropdown-menu', () => {
 		const rect = await helper.getRect(page, '#dropdown-menu-header-footer-nopadding');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
+
+	it('dark theme', async function() {
+		await helper.open(page, '#dark');
+		const rect = await helper.getRect(page, '#dark');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
 });

@@ -14,13 +14,6 @@ export const menuItemSelectableStyles = [ menuItemStyles,
 			text-decoration: none;
 		}
 
-		:host(:hover),
-		:host(:focus),
-		:host(:hover) > d2l-icon,
-		:host(:focus) > d2l-icon {
-			color: var(--d2l-color-celestine-minus-1);
-		}
-
 		d2l-icon {
 			flex: none;
 			margin-right: 0.8rem;
