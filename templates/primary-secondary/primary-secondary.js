@@ -860,6 +860,14 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('_size')) {
+			const key = this._computeSizeKey();
+			localStorage.setItem(key, this._size);
+		}
+	}
+
 	get _size() {
 		return this.__size;
 	}
@@ -885,6 +893,10 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		};
 	}
 
+	_computeSizeKey() {
+		return `d2l-primary-secondary-${window.location.href}`;
+	}
+
 	_handleFooterSlotChange(e) {
 		const nodes = e.target.assignedNodes();
 		this._hasFooter = (nodes.length !== 0);
@@ -902,15 +914,22 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
 		if (this._size === undefined) {
 			// initialize size on first resize
-			if (this._isMobile) {
-				this._size = this._contentBounds.minHeight;
+			const key = this._computeSizeKey();
+			const size = parseFloat(localStorage.getItem(key));
+			if (isFinite(size)) {
+				this._size = size;
+				this._isCollapsed = size === 0;
 			} else {
-				const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
-				const desktopDividerSize = contentRect.width - divider.offsetWidth;
-				this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
+				if (this._isMobile) {
+					this._size = this._contentBounds.minHeight;
+				} else {
+					const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+					const desktopDividerSize = contentRect.width - divider.offsetWidth;
+					this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
+				}
 			}
-		} else if (this._size !== 0) {
-			// clamp size on subsequent resizes
+		}
+		if (this._size !== 0) {
 			if (this._isMobile) {
 				this._size = clamp(this._size, this._contentBounds.minHeight, this._contentBounds.maxHeight);
 			} else {
