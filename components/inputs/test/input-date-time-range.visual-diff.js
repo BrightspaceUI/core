@@ -78,7 +78,7 @@ describe('d2l-input-date-time-range', () => {
 			}, inputSelector);
 		}
 
-		it('start equals end, inclusive', async function() {
+		it('start equals end when inclusive', async function() {
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
 			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange);
 
@@ -86,7 +86,7 @@ describe('d2l-input-date-time-range', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('start changes, autoShiftDates', async function() {
+		it('start changes when autoShiftDates', async function() {
 			await changeInnerInputTextDate(page, '#auto-shift-dates', startDateSelector, '2020-12-05T15:00:00.000Z');
 
 			const rect = await visualDiff.getRect(page, '#auto-shift-dates');
