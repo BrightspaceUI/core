@@ -247,9 +247,12 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 | Property | Type | Description |
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input fieldset that wraps the date-time inputs |
+| `auto-shift-dates` | Boolean | Automatically shifts end date when start date changes to keep the same range |
+| `child-labels-hidden` | Boolean | Visually hides the labels for start and end date-time inputs |
 | `disabled` | Boolean | Disables the inputs |
 | `end-label` | String, default `'End Date'` | Accessible label for the second date-time input |
 | `end-value` | String, default `''` | Value of the second date-time input |
+| `inclusive-date-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end date-times to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date-time input |
