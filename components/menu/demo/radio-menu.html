@@ -17,7 +17,6 @@
 		<d2l-demo-page page-title="d2l-menu (radio)">
 
 			<h2>Radio Menu</h2>
-
 			<d2l-demo-snippet>
 				<template>
 					<d2l-menu id="menu" label="Radio Menu" style="max-width:400px;">
@@ -31,6 +30,23 @@
 							console.log('item selection changed:', e.target);
 						});
 					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Supporting Slot</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-menu id="menu" label="Radio Menu" style="max-width:400px;">
+						<d2l-menu-item-radio text="Radio Option 1" value="1">
+							<div slot="supporting">1 point</div>
+						</d2l-menu-item-radio>
+						<d2l-menu-item-radio text="Radio Option 2" value="2">
+							<div slot="supporting">2 points</div>
+						</d2l-menu-item-radio>
+						<d2l-menu-item-radio text="Radio Option 3" value="3">
+							<div slot="supporting">3 points</div>
+						</d2l-menu-item-radio>
+					</d2l-menu>
 				</template>
 			</d2l-demo-snippet>
 		</d2l-demo-page>

@@ -33,6 +33,17 @@
 			<d2l-menu-item-radio value="1" text="a"></d2l-menu-item-radio>
 			<d2l-menu-item-radio disabled id="disabled-b" value="3" text="b"></d2l-menu-item-radio>
 		</d2l-menu>
-	</div>	
+	</div>
+
+	<div class="visual-diff">
+		<d2l-menu id="supporting">
+			<d2l-menu-item-radio value="1" text="a">
+				<div slot="supporting">supporting</div>
+			</d2l-menu-item-radio>
+			<d2l-menu-item-radio value="3" text="b" selected>
+				<div slot="supporting">supporting</div>
+			</d2l-menu-item-radio>
+		</d2l-menu>
+	</div>
 </body>
 </html>

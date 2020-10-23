@@ -16,15 +16,8 @@ class CustomMenuItem extends MenuItemMixin(LitElement) {
 				:host {
 					padding: 0.75rem 1.5rem;
 				}
-				:host span {
-					line-height: 1rem;
-					overflow-x: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				}
-				:host(:hover) span,
-				:host(:focus) span {
-					display: inline-block;
+				:host(:hover) .d2l-menu-item-text,
+				:host(:focus) .d2l-menu-item-text {
 					-webkit-transform: rotateY(360deg);
 					transform: rotateY(360deg);
 					transition: transform 2s;
@@ -35,7 +28,7 @@ class CustomMenuItem extends MenuItemMixin(LitElement) {
 
 	render() {
 		return html`
-			<span>${this.text}</span>
+			<div class="d2l-menu-item-text">${this.text}</div>
 			<slot></slot>
 		`;
 	}

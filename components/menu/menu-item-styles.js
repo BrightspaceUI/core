@@ -44,4 +44,23 @@ export const menuItemStyles = css`
 	:host([last]:hover) {
 		border-bottom-color: var(--d2l-color-celestine);
 	}
+
+	.d2l-menu-item-text {
+		flex: auto;
+		line-height: 1rem;
+		overflow-x: hidden;
+		overflow-y: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.d2l-menu-item-supporting {
+		flex: 0 0 auto;
+		line-height: 1rem;
+		margin-left: 6px;
+	}
+	:host([dir="rtl"]) .d2l-menu-item-supporting {
+		margin-left: 0;
+		margin-right: 6px;
+	}
 `;
