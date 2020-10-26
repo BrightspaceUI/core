@@ -16,7 +16,7 @@ describe('d2l-menu checkbox', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser);
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 900 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu-checkbox.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -27,7 +27,8 @@ describe('d2l-menu checkbox', () => {
 		'normal',
 		'selected',
 		'disabled',
-		'supporting'
+		'supporting',
+		'dark'
 	].forEach((id) => {
 		it(id, async function() {
 			const rect = await visualDiff.getRect(page, `#${id}`);

@@ -1,4 +1,3 @@
-import '../colors/colors.js';
 import { css, LitElement } from 'lit-element/lit-element.js';
 
 /**
@@ -9,7 +8,7 @@ class MenuItemSeparator extends LitElement {
 	static get styles() {
 		return css`
 			:host {
-				border-top: 1px solid var(--d2l-color-corundum);
+				border-top: 1px solid var(--d2l-menu-separator-color);
 				display: block;
 				margin-top: -1px;
 				position: relative;

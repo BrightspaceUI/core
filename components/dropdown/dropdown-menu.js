@@ -1,6 +1,7 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
+import { ThemeMixin } from '../../mixins/theme-mixin.js';
 
 /**
  * A container for a "d2l-menu". It provides additional support on top of "d2l-dropdown-content" for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.
@@ -11,7 +12,7 @@ import { dropdownContentStyles } from './dropdown-content-styles.js';
  * @fires d2l-dropdown-close - Dispatched when the dropdown is closed
  * @fires d2l-dropdown-position - Dispatched when the dropdown position finishes adjusting
  */
-class DropdownMenu extends DropdownContentMixin(LitElement) {
+class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get styles() {
 		return dropdownContentStyles;

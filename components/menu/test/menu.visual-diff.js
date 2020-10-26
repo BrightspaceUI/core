@@ -9,7 +9,7 @@ describe('d2l-menu', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1300 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -187,6 +187,27 @@ describe('d2l-menu', () => {
 				});
 			});
 			const rect = await visualDiff.getRect(page, '#custom-view');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
+	describe('dark', () => {
+
+		it('simple', async function() {
+			const rect = await visualDiff.getRect(page, '#dark');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('hover', async function() {
+			await page.hover('#dark-item');
+			const rect = await visualDiff.getRect(page, '#dark');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focus', async function() {
+			await page.focus('#dark-item');
+			const rect = await visualDiff.getRect(page, '#dark');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

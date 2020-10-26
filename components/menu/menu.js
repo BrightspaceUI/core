@@ -1,7 +1,9 @@
+import '../colors/colors.js';
 import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
+import { ThemeMixin } from '../../mixins/theme-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -19,7 +21,7 @@ const keyCodes = {
  * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
  * @fires d2l-hierarchical-view-hide-start - @ignore
  */
-class Menu extends HierarchicalViewMixin(LitElement) {
+class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -41,6 +43,13 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 	static get styles() {
 		return [ super.styles, css`
 			:host {
+				--d2l-menu-background-color: #ffffff;
+				--d2l-menu-background-color-hover: var(--d2l-color-celestine-plus-2);
+				--d2l-menu-border-color: var(--d2l-color-gypsum);
+				--d2l-menu-border-color-hover: var(--d2l-color-celestine);
+				--d2l-menu-foreground-color: var(--d2l-color-ferrite);
+				--d2l-menu-foreground-color-hover: var(--d2l-color-celestine-minus-1);
+				--d2l-menu-separator-color: var(--d2l-color-corundum);
 				box-sizing: border-box;
 				display: block;
 				min-width: 180px;
@@ -53,6 +62,17 @@ class Menu extends HierarchicalViewMixin(LitElement) {
 			:host([active]) .d2l-menu-items ::slotted([role="menuitemcheckbox"]),
 			:host([active]) .d2l-menu-items ::slotted([role="menuitemradio"]) {
 				position: relative;
+			}
+
+			:host([theme="dark"]) {
+				--d2l-menu-background-color: #292a2b; /* ferrite @ 50% */
+				--d2l-menu-background-color-hover: #123559; /* celestine-1 @ 50% */
+				--d2l-menu-border-color: var(--d2l-color-ferrite);
+				--d2l-menu-foreground-color: var(--d2l-color-mica);
+				--d2l-menu-foreground-color-hover: #ffffff;
+				--d2l-menu-separator-color: var(--d2l-color-tungsten);
+				--d2l-icon-fill-color: var(--d2l-color-mica);
+				background-color: var(--d2l-menu-background-color); /* so that opacity on disabled items works */
 			}
 		`];
 	}
