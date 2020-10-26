@@ -182,8 +182,25 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (this.autoShiftDates && prop === 'startValue' && this.startValue) {
-				this._prevStartValue = oldVal;
+			if (prop === 'startValue' || prop === 'endValue') {
+				if (!this.invalid && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
+					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange);
+				}
+
+				this.setFormValue({
+					[`${this.name}-startValue`]: this.startValue,
+					[`${this.name}-endValue`]: this.endValue,
+				});
+				let badInput = false;
+				if (this.startValue && this.endValue) {
+					if (this.inclusiveDateRange && (getDateFromISODateTime(this.endValue) < getDateFromISODateTime(this.startValue))) {
+						badInput = true;
+					} else if (!this.inclusiveDateRange && (getDateFromISODateTime(this.endValue) <= getDateFromISODateTime(this.startValue))) {
+						badInput = true;
+					}
+				}
+				this.setValidity({ badInput: badInput });
+				this.requestValidate(true);
 			}
 		});
 	}
@@ -217,27 +234,15 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 	async _handleChange(e) {
 		const elem = e.target;
-		const startChanged = elem.classList.contains('d2l-input-date-time-range-start');
-		if (startChanged) this.startValue = elem.value;
-		else this.endValue = elem.value;
-		let badInput = false;
-		if (this.startValue && this.endValue) {
-			if (this.inclusiveDateRange && (getDateFromISODateTime(this.endValue) < getDateFromISODateTime(this.startValue))) {
-				badInput = true;
-			} else if (!this.inclusiveDateRange && (getDateFromISODateTime(this.endValue) <= getDateFromISODateTime(this.startValue))) {
-				badInput = true;
-			}
+		if (elem.classList.contains('d2l-input-date-time-range-start')) {
+			this.startValue = elem.value;
+		} else {
+			this.endValue = elem.value;
 		}
-		this.setValidity({ badInput: badInput });
-		await this.requestValidate(true);
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
 		));
-
-		if (!badInput && this.autoShiftDates && startChanged && this.endValue && this._prevStartValue) {
-			this.endValue = getShiftedEndDate(this.startValue, this.endValue, this._prevStartValue, this.inclusiveDateRange);
-		}
 	}
 
 	_handleDropdownToggle(e) {
