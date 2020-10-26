@@ -183,6 +183,10 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'startValue' || prop === 'endValue') {
+				if (!this.invalid && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
+					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange);
+				}
+
 				this.setFormValue({
 					[`${this.name}-startValue`]: this.startValue,
 					[`${this.name}-endValue`]: this.endValue,
@@ -197,10 +201,6 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				}
 				this.setValidity({ badInput: badInput });
 				this.requestValidate(true);
-
-				if (!badInput && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
-					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange);
-				}
 			}
 		});
 	}
