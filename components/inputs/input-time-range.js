@@ -1,7 +1,7 @@
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISOTime, getDateFromISOTime, isValidTime } from '../../helpers/dateTime.js';
+import { formatDateInISOTime, formatTimeInISO, getDateFromISOTime, isValidTime } from '../../helpers/dateTime.js';
 import { getDefaultTime, getIntervalNumber, getTimeAtInterval } from './input-time.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -10,20 +10,62 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-/**
- * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
- * @fires change - Dispatched when a start or end time is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar time format ("hh:mm:ss").
- */
+export function getShiftedEndTime(startValue, endValue, prevStartValue, inclusive) {
+	const jsStartTime = getDateFromISOTime(startValue);
+	const jsEndTime = getDateFromISOTime(endValue);
+	const jsPrevStartTime = getDateFromISOTime(prevStartValue);
+
+	if ((inclusive && jsEndTime.getTime() - jsPrevStartTime.getTime() < 0)
+		|| (!inclusive && jsEndTime.getTime() - jsPrevStartTime.getTime() <= 0))
+		return endValue;
+
+	const hourDiff = jsStartTime.getHours() - jsPrevStartTime.getHours();
+	const minuteDiff = jsStartTime.getMinutes() - jsPrevStartTime.getMinutes();
+
+	let newEndHour = jsEndTime.getHours() + hourDiff;
+	let newEndMinute = jsEndTime.getMinutes() + minuteDiff;
+
+	if (newEndMinute > 59) {
+		newEndHour++;
+		newEndMinute -= 60;
+	} else if (newEndMinute < 0) {
+		newEndHour--;
+		newEndMinute += 60;
+	}
+
+	if (newEndHour > 23) {
+		newEndHour = 23;
+		newEndMinute = 59;
+	} else if (newEndHour < 0) {
+		newEndHour = 0;
+		newEndMinute = 0;
+	}
+
+	return formatTimeInISO({ hours: newEndHour, minutes: newEndMinute, seconds: 0 });
+}
 
 function getValidISOTimeAtInterval(val, timeInterval) {
 	const valAtInterval = getTimeAtInterval(timeInterval, getDateFromISOTime(val));
 	return formatDateInISOTime(valAtInterval);
 }
 
+/**
+ * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
+ * @fires change - Dispatched when a start or end time is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar time format ("hh:mm:ss").
+ */
+
 class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Automatically shift end time when start time changes to keep same range
+			 */
+			autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
+			/**
+			 * Hides the start and end labels visually
+			 */
+			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
 			/**
 			 * Disables the inputs
 			 */
@@ -41,6 +83,10 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 * Rounds up to nearest valid interval time (specified with "time-interval") when user types a time
 			 */
 			enforceTimeIntervals: { attribute: 'enforce-time-intervals', reflect: true, type: Boolean },
+			/**
+			 * Validate on inclusive range
+			 */
+			inclusiveTimeRange: { attribute: 'inclusive-time-range', reflect: true, type: Boolean },
 			/**
 			 * REQUIRED: Accessible label for the range
 			 */
@@ -103,8 +149,11 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	constructor() {
 		super();
 
+		this.autoShiftTimes = false;
+		this.childLabelsHidden = false;
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
+		this.inclusiveTimeRange = false;
 		this.labelHidden = false;
 		this.required = false;
 		this.startValue = formatDateInISOTime(getDefaultTime());
@@ -188,6 +237,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 					.forceInvalid="${this.invalid}"
 					id="${this._startInputId}"
 					label="${startLabel}"
+					?label-hidden="${this.childLabelsHidden}"
 					?required="${this.required}"
 					?skeleton="${this.skeleton}"
 					time-interval="${ifDefined(timeInterval)}"
@@ -203,6 +253,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 					.forceInvalid="${this.invalid}"
 					id="${this._endInputId}"
 					label="${endLabel}"
+					?label-hidden="${this.childLabelsHidden}"
 					?required="${this.required}"
 					?skeleton="${this.skeleton}"
 					time-interval="${ifDefined(timeInterval)}"
@@ -217,11 +268,23 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'startValue' || prop === 'endValue') {
+				if (!this.invalid && this.autoShiftTimes && prop === 'startValue' && this.endValue && oldVal) {
+					this.endValue = getShiftedEndTime(this.startValue, this.endValue, oldVal, this.inclusiveTimeRange);
+				}
+
 				this.setFormValue({
 					[`${this.name}-startValue`]: this.startValue,
 					[`${this.name}-endValue`]: this.endValue,
 				});
-				this.setValidity({ badInput: (this.startValue && this.endValue && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue))) });
+				let badInput = false;
+				if (this.startValue && this.endValue) {
+					if (this.inclusiveTimeRange && (getDateFromISOTime(this.endValue) < getDateFromISOTime(this.startValue))) {
+						badInput = true;
+					} else if (!this.inclusiveTimeRange && (getDateFromISOTime(this.endValue) <= getDateFromISOTime(this.startValue))) {
+						badInput = true;
+					}
+				}
+				this.setValidity({ badInput: badInput });
 				this.requestValidate(true);
 			}
 		});
