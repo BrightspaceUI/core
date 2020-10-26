@@ -1,6 +1,6 @@
-import '../input-time-range.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
+import { getShiftedEndTime } from '../input-time-range.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-time-range label="label text"></d2l-input-time-range>';
@@ -27,6 +27,55 @@ describe('d2l-input-time-range', () => {
 			runConstructor('d2l-input-time-range');
 		});
 
+	});
+
+	describe('utility', () => {
+		describe('getShiftedEndTime', () => {
+			it('should return correctly forward shifted end time if valid inputs', () => {
+				const start = '12:00:00';
+				const end = '13:00:00';
+				const prevStartValue = '11:35:00';
+				const newEndValue = '13:25:00';
+				expect(getShiftedEndTime(start, end, prevStartValue)).to.equal(newEndValue);
+			});
+
+			it('should return correctly backward shifted end time if valid inputs', () => {
+				const start = '08:00:00';
+				const end = '12:00:00';
+				const prevStartValue = '11:18:00';
+				const newEndValue = '08:42:00';
+				expect(getShiftedEndTime(start, end, prevStartValue)).to.equal(newEndValue);
+			});
+
+			it('should forward shift end time to 11:59 PM if shift would cause end time to go to next day', () => {
+				const start = '23:00:00';
+				const end = '13:00:00';
+				const prevStartValue = '08:35:00';
+				const newEndValue = '23:59:00';
+				expect(getShiftedEndTime(start, end, prevStartValue)).to.equal(newEndValue);
+			});
+
+			it('should return initial end time if prev start value was after end time', () => {
+				const start = '12:00:00';
+				const end = '08:00:00';
+				const prevStartValue = '11:35:00';
+				expect(getShiftedEndTime(start, end, prevStartValue)).to.equal(end);
+			});
+
+			it('should return initial end time if not inclusive and prev start value was equal to end time', () => {
+				const start = '08:30:00';
+				const end = '11:35:00';
+				const prevStartValue = '11:35:00';
+				expect(getShiftedEndTime(start, end, prevStartValue)).to.equal(end);
+			});
+
+			it('should return correctly shifted end time if inclusive and prev start value was equal to end time', () => {
+				const start = '08:30:00';
+				const end = '11:35:00';
+				const prevStartValue = '11:35:00';
+				expect(getShiftedEndTime(start, end, prevStartValue, true)).to.equal(start);
+			});
+		});
 	});
 
 	describe('values', () => {

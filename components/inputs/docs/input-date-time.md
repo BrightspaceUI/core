@@ -159,10 +159,13 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 | Property | Type | Description |
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input fieldset that wraps the time inputs |
+| `auto-shift-times` | Boolean | Automatically shifts end time when start time changes to keep the same range |
+| `child-labels-hidden` | Boolean | Visually hides the labels for start and end time inputs |
 | `disabled` | Boolean | Disables the inputs |
 | `end-label` | String, default `'End Time'` | Accessible label for the second time input |
 | `end-value` | String, default `''` | Value of the second time input |
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
+| `inclusive-time-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end times to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Time'` | Accessible label for the first time input |
