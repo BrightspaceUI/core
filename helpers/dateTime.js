@@ -116,6 +116,21 @@ export function getLocalDateTimeFromUTCDateTime(dateTime) {
 	return formatDateTimeInISO(localDateTime, true);
 }
 
+export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusive) {
+	const jsStartDate = new Date(startValue);
+	const jsEndDate = new Date(endValue);
+	const jsPrevStartDate = new Date(prevStartValue);
+	if ((inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() < 0)
+		|| (!inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() <= 0))
+		return endValue;
+
+	const diff = jsStartDate.getTime() - jsPrevStartDate.getTime();
+
+	const jsNewEndDate = new Date(jsEndDate.getTime() + diff);
+	const parsedObject = parseISODateTime(jsNewEndDate.toISOString());
+	return formatDateTimeInISO(parsedObject);
+}
+
 export function getToday() {
 	const val = new Date().toISOString();
 	const dateTime = parseISODateTime(val);
