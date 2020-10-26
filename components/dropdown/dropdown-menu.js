@@ -1,5 +1,4 @@
-import '../colors/colors.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme-mixin.js';
@@ -16,18 +15,7 @@ import { ThemeMixin } from '../../mixins/theme-mixin.js';
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get styles() {
-		return [dropdownContentStyles, css`
-			:host {
-				--d2l-dropdown-background-color: #ffffff;
-				--d2l-dropdown-border-color: var(--d2l-color-mica);
-				--d2l-dropdown-shadow-color: rgba(0, 0, 0, 0.15);
-			}
-			:host([theme="dark"]) {
-				--d2l-dropdown-background-color: #292a2b; /* ferrite @ 50% */
-				--d2l-dropdown-border-color: var(--d2l-color-ferrite);
-				--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
-			}
-		`];
+		return dropdownContentStyles;
 	}
 
 	constructor() {

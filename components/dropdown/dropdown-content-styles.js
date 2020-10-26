@@ -1,9 +1,14 @@
+import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
 
 export const dropdownContentStyles = css`
 	:host {
+		--d2l-dropdown-background-color: #ffffff;
+		--d2l-dropdown-border-color: var(--d2l-color-mica);
+		--d2l-dropdown-foreground-color: var(--d2l-color-ferrite);
+		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 0.15);
 		box-sizing: border-box;
-		color: var(--d2l-color-ferrite);
+		color: var(--d2l-dropdown-foreground-color);
 		display: none;
 		left: 0;
 		position: absolute;
@@ -11,6 +16,13 @@ export const dropdownContentStyles = css`
 		top: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
 		width: 100%;
 		z-index: 1000; /* position on top of floating buttons */
+	}
+
+	:host([theme="dark"]) {
+		--d2l-dropdown-background-color: #292a2b; /* ferrite @ 50% */
+		--d2l-dropdown-border-color: var(--d2l-color-ferrite);
+		--d2l-dropdown-foreground-color: var(--d2l-color-mica);
+		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
 	}
 
 	:host([opened]) {
