@@ -33,8 +33,9 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 				}
 
 				:host > a {
+					align-items: center;
 					color: inherit;
-					display: block;
+					display: flex;
 					line-height: 1rem;
 					outline: none;
 					overflow-x: hidden;
@@ -56,7 +57,10 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	render() {
 		const rel = this.target ? 'noreferrer noopener' : undefined;
 		return html`
-			<a href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">${this.text}</a>
+			<a href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">
+				<div class="d2l-menu-item-text">${this.text}</div>
+				<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
+			</a>
 		`;
 	}
 

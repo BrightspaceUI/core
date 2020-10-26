@@ -125,6 +125,42 @@
 					</d2l-menu>
 				</template>
 			</d2l-demo-snippet>
+
+			<h2>Supporting Slot</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-menu label="The Solar System" style="max-width:400px;">
+						<d2l-menu-item text="Mercury">
+							<span slot="supporting">0.39 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item text="Venus">
+							<span slot="supporting">0.72 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item text="Earth">
+							<span slot="supporting">1 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item text="Mars">
+							<span slot="supporting">1.5 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item text="Jupiter">
+							<span slot="supporting">5.2 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item text="Saturn">
+							<span slot="supporting">9.5 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item text="Uranus">
+							<span slot="supporting">19.2 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item text="Neptune">
+							<span slot="supporting">30 AU</span>
+						</d2l-menu-item>
+						<d2l-menu-item-link text="Dwarf Planets (link)" href="https://en.wikipedia.org/wiki/Dwarf_planet">
+							<span slot="supporting">39+ AU</span>
+						</d2l-menu-item-link>
+					</d2l-menu>
+				</template>
+			</d2l-demo-snippet>
 		</d2l-demo-page>
 	</body>
 </html>

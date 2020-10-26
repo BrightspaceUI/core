@@ -9,6 +9,7 @@
 		import '../menu.js';
 		import '../menu-item.js';
 		import '../menu-item-checkbox.js';
+		import '../menu-item-link.js';
 		import '../menu-item-radio.js';
 	</script>
 	<title>d2l-menu</title>
@@ -60,6 +61,22 @@
 			<d2l-menu-item id="custom-view-item" text="a">
 				<d2l-custom-view></d2l-custom-view>
 			</d2l-menu-item>
+		</d2l-menu>
+	</div>
+	<div class="visual-diff">
+		<d2l-menu id="supporting">
+			<d2l-menu-item text="nested">
+				<div slot="supporting">supporting</div>
+				<d2l-menu>
+					<d2l-menu-item text="a3"></d2l-menu-item>
+				</d2l-menu>
+			</d2l-menu-item>
+			<d2l-menu-item text="normal">
+				<div slot="supporting">supporting</div>
+			</d2l-menu-item>
+			<d2l-menu-item-link text="link" href="https://en.wikipedia.org/wiki/Universe">
+				<div slot="supporting">supporting</div>
+			</d2l-menu-item-link>
 		</d2l-menu>
 	</div>
 </body>

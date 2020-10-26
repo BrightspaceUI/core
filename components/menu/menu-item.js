@@ -15,22 +15,18 @@ class MenuItem extends MenuItemMixin(LitElement) {
 		return [ menuItemStyles,
 			css`
 				:host {
+					align-items: center;
 					display: flex;
 					padding: 0.75rem 1rem;
 				}
 
-				:host > span {
-					flex: auto;
-					line-height: 1rem;
-					overflow-x: hidden;
-					overflow-y: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				}
-
-				:host > d2l-icon {
+				d2l-icon {
 					flex: none;
-					margin-top: 0.1rem;
+					margin-left: 6px;
+				}
+				:host([dir="rtl"]) d2l-icon {
+					margin-left: 0;
+					margin-right: 6px;
 				}
 			`
 		];
@@ -41,7 +37,8 @@ class MenuItem extends MenuItemMixin(LitElement) {
 			html`<d2l-icon icon="tier1:chevron-right"></d2l-icon>` : null;
 
 		return html`
-			<span>${this.text}</span>
+			<div class="d2l-menu-item-text">${this.text}</div>
+			<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
 			${icon}
 			<slot></slot>
 		`;
