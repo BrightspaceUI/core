@@ -87,6 +87,10 @@ This is used with JS handlers and can be wired-up to the `d2l-menu-item-select` 
 
 * `d2l-menu-item-select`: dispatched when a menu item is selected
 
+**Slots:**
+
+* `supporting`: Allows supporting information to be displayed on the right-most side of the menu item
+
 ### d2l-menu-item-link
 
 The link menu item, `d2l-menu-item-link`, is used for navigating.

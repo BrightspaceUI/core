@@ -9,31 +9,24 @@ describe('d2l-menu', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1100 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
-	it('separator', async function() {
-		const rect = await visualDiff.getRect(page, '#separator');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('long menu item', async function() {
-		const rect = await visualDiff.getRect(page, '#long');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('hidden menu item', async function() {
-		const rect = await visualDiff.getRect(page, '#hidden');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('link menu item', async function() {
-		const rect = await visualDiff.getRect(page, '#link');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	[
+		'separator',
+		'long',
+		'hidden',
+		'link',
+		'supporting'
+	].forEach((id) => {
+		it(id, async function() {
+			const rect = await visualDiff.getRect(page, `#${id}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	describe('normal', () => {
@@ -194,6 +187,27 @@ describe('d2l-menu', () => {
 				});
 			});
 			const rect = await visualDiff.getRect(page, '#custom-view');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+	});
+
+	describe('dark', () => {
+
+		it('simple', async function() {
+			const rect = await visualDiff.getRect(page, '#dark');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('hover', async function() {
+			await page.hover('#dark-item');
+			const rect = await visualDiff.getRect(page, '#dark');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('focus', async function() {
+			await page.focus('#dark-item');
+			const rect = await visualDiff.getRect(page, '#dark');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

@@ -8,24 +8,10 @@ export const menuItemSelectableStyles = [ menuItemStyles,
 			align-items: center;
 			display: flex;
 			padding: 0.75rem 1rem;
-
 		}
 
-		span {
-			flex: auto;
-			line-height: 1rem;
-			overflow-x: hidden;
-			overflow-y: hidden;
+		.d2l-menu-item-text {
 			text-decoration: none;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-
-		:host(:hover),
-		:host(:focus),
-		:host(:hover) > d2l-icon,
-		:host(:focus) > d2l-icon {
-			color: var(--d2l-color-celestine-minus-1);
 		}
 
 		d2l-icon {

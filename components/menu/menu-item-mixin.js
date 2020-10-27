@@ -94,7 +94,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 	}
 
 	__initializeItem() {
-		const slot = this.shadowRoot.querySelector('slot');
+		const slot = this.shadowRoot.querySelector('slot:not([name])');
 		if (!slot) {
 			return;
 		}

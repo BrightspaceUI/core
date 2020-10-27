@@ -1,9 +1,14 @@
+import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
 
 export const dropdownContentStyles = css`
 	:host {
+		--d2l-dropdown-background-color: #ffffff;
+		--d2l-dropdown-border-color: var(--d2l-color-mica);
+		--d2l-dropdown-foreground-color: var(--d2l-color-ferrite);
+		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 0.15);
 		box-sizing: border-box;
-		color: var(--d2l-color-ferrite);
+		color: var(--d2l-dropdown-foreground-color);
 		display: none;
 		left: 0;
 		position: absolute;
@@ -11,6 +16,13 @@ export const dropdownContentStyles = css`
 		top: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
 		width: 100%;
 		z-index: 1000; /* position on top of floating buttons */
+	}
+
+	:host([theme="dark"]) {
+		--d2l-dropdown-background-color: #292a2b; /* ferrite @ 50% */
+		--d2l-dropdown-border-color: var(--d2l-color-ferrite);
+		--d2l-dropdown-foreground-color: var(--d2l-color-mica);
+		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
 	}
 
 	:host([opened]) {
@@ -36,8 +48,8 @@ export const dropdownContentStyles = css`
 	}
 
 	.d2l-dropdown-content-pointer > div {
-		background-color: #ffffff;
-		border: 1px solid var(--d2l-color-mica);
+		background-color: var(--d2l-dropdown-background-color);
+		border: 1px solid var(--d2l-dropdown-border-color);
 		border-radius: 0.1rem;
 		box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, 0.2); /* ferrite */
 		height: 16px;
@@ -68,10 +80,10 @@ export const dropdownContentStyles = css`
 
 	.d2l-dropdown-content-width {
 		align-items: flex-start;
-		background-color: #ffffff;
-		border: 1px solid var(--d2l-color-mica);
+		background-color: var(--d2l-dropdown-background-color);
+		border: 1px solid var(--d2l-dropdown-border-color);
 		border-radius: 0.3rem;
-		box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+		box-shadow: 0 2px 12px 0 var(--d2l-dropdown-shadow-color);
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
@@ -102,12 +114,12 @@ export const dropdownContentStyles = css`
 	}
 
 	.d2l-dropdown-content-header {
-		border-bottom: 1px solid var(--d2l-color-mica);
+		border-bottom: 1px solid var(--d2l-dropdown-border-color);
 		padding: 1rem;
 	}
 
 	.d2l-dropdown-content-footer {
-		border-top: 1px solid var(--d2l-color-mica);
+		border-top: 1px solid var(--d2l-dropdown-border-color);
 		padding: 1rem;
 	}
 
@@ -128,11 +140,11 @@ export const dropdownContentStyles = css`
 	}
 
 	.d2l-dropdown-content-top-scroll {
-		box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.05);
+		box-shadow: 0 2px 6px 0 var(--d2l-dropdown-shadow-color);
 	}
 
 	.d2l-dropdown-content-bottom-scroll {
-		box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.05);
+		box-shadow: 0 -2px 6px 0 var(--d2l-dropdown-shadow-color);
 	}
 
 	:host([dir="rtl"]) {

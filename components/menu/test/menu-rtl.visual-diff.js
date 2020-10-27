@@ -9,26 +9,23 @@ describe('d2l-menu rtl', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 900 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu-rtl.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
-	it('normal', async function() {
-		const rect = await visualDiff.getRect(page, '#normal');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('checkbox', async function() {
-		const rect = await visualDiff.getRect(page, '#checkbox');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('radio', async function() {
-		const rect = await visualDiff.getRect(page, '#radio');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	[
+		'normal',
+		'checkbox',
+		'radio',
+		'supporting'
+	].forEach((id) => {
+		it(id, async function() {
+			const rect = await visualDiff.getRect(page, `#${id}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	describe('nested', () => {

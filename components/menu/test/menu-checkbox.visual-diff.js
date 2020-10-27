@@ -16,26 +16,24 @@ describe('d2l-menu checkbox', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser);
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 900 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/menu/test/menu-checkbox.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
-	it('normal', async function() {
-		const rect = await visualDiff.getRect(page, '#normal');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('selected', async function() {
-		const rect = await visualDiff.getRect(page, '#selected');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('disabled', async function() {
-		const rect = await visualDiff.getRect(page, '#disabled');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	[
+		'normal',
+		'selected',
+		'disabled',
+		'supporting',
+		'dark'
+	].forEach((id) => {
+		it(id, async function() {
+			const rect = await visualDiff.getRect(page, `#${id}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	it('does not select disabled item', async function() {

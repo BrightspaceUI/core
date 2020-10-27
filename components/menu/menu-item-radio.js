@@ -19,7 +19,8 @@ class MenuItemRadio extends RtlMixin(MenuItemRadioMixin(LitElement)) {
 	render() {
 		return html`
 			<d2l-icon icon="tier1:check"></d2l-icon>
-			<span>${this.text}</span>
+			<div class="d2l-menu-item-text">${this.text}</div>
+			<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
 		`;
 	}
 }
