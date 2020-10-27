@@ -3,6 +3,8 @@ import { css } from 'lit-element/lit-element.js';
 
 export const dropdownContentStyles = css`
 	:host {
+		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation;
+		--d2l-dropdown-animation-name: d2l-dropdown-animation;
 		--d2l-dropdown-background-color: #ffffff;
 		--d2l-dropdown-border-color: var(--d2l-color-mica);
 		--d2l-dropdown-foreground-color: var(--d2l-color-ferrite);
@@ -19,21 +21,24 @@ export const dropdownContentStyles = css`
 	}
 
 	:host([theme="dark"]) {
+		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
+		--d2l-dropdown-animation-name: d2l-dropdown-animation-dark;
 		--d2l-dropdown-background-color: #292a2b; /* ferrite @ 50% */
 		--d2l-dropdown-border-color: var(--d2l-color-ferrite);
 		--d2l-dropdown-foreground-color: var(--d2l-color-mica);
 		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
+		opacity: 0.9;
 	}
 
 	:host([opened]) {
-		-webkit-animation: d2l-dropdown-animation 300ms ease;
-		animation: d2l-dropdown-animation 300ms ease;
+		-webkit-animation: var(--d2l-dropdown-animation-name) 300ms ease;
+		animation: var(--d2l-dropdown-animation-name) 300ms ease;
 		display: inline-block;
 	}
 
 	:host([opened-above]) {
-		-webkit-animation: d2l-dropdown-above-animation 300ms ease;
-		animation: d2l-dropdown-above-animation 300ms ease;
+		-webkit-animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
 		top: auto;
 	}
@@ -164,16 +169,32 @@ export const dropdownContentStyles = css`
 		0% { opacity: 0; transform: translate(0, -10px); }
 		100% { opacity: 1; transform: translate(0, 0); }
 	}
+	@keyframes d2l-dropdown-animation-dark {
+		0% { opacity: 0; transform: translate(0, -10px); }
+		100% { opacity: 0.9; transform: translate(0, 0); }
+	}
 	@keyframes d2l-dropdown-above-animation {
 		0% { opacity: 0; transform: translate(0, 10px); }
 		100% { opacity: 1; transform: translate(0, 0); }
+	}
+	@keyframes d2l-dropdown-above-animation-dark {
+		0% { opacity: 0; transform: translate(0, 10px); }
+		100% { opacity: 0.9; transform: translate(0, 0); }
 	}
 	@-webkit-keyframes d2l-dropdown-animation {
 		0% { opacity: 0; -webkit-transform: translate(0, -10px); }
 		100% { opacity: 1; -webkit-transform: translate(0, 0); }
 	}
+	@-webkit-keyframes d2l-dropdown-animation-dark {
+		0% { opacity: 0; -webkit-transform: translate(0, -10px); }
+		100% { opacity: 0.9; -webkit-transform: translate(0, 0); }
+	}
 	@-webkit-keyframes d2l-dropdown-above-animation {
 		0% { opacity: 0; -webkit-transform: translate(0, 10px); }
 		100% { opacity: 1; -webkit-transform: translate(0, 0); }
+	}
+	@-webkit-keyframes d2l-dropdown-above-animation-dark {
+		0% { opacity: 0; -webkit-transform: translate(0, 10px); }
+		100% { opacity: 0.9; -webkit-transform: translate(0, 0); }
 	}
 `;

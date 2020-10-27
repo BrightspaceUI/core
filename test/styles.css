@@ -7,3 +7,12 @@ body {
 .visual-diff {
 	margin-bottom: 30px;
 }
+.visual-diff-dark {
+	background: repeating-linear-gradient(
+		45deg,
+		#606dbc,
+		#606dbc 10px,
+		#465298 10px,
+		#465298 20px
+	);
+}
