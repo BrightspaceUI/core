@@ -864,7 +864,11 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		super.updated(changedProperties);
 		if (changedProperties.has('_size')) {
 			const key = this._computeSizeKey();
-			localStorage.setItem(key, this._size);
+			try {
+				localStorage.setItem(key, this._size);
+			} catch (ex) {
+				// throws if storage is full or in private mode in mobile Safari
+			}
 		}
 	}
 
@@ -914,8 +918,14 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
 		if (this._size === undefined) {
 			// initialize size on first resize
+			let size;
 			const key = this._computeSizeKey();
-			const size = parseFloat(localStorage.getItem(key));
+			try {
+				size = parseFloat(localStorage.getItem(key));
+			} catch (ex) {
+				// may throw SecurityError if localStorage isn't allowed to be accessed
+				size = undefined;
+			}
 			if (isFinite(size)) {
 				this._size = size;
 				this._isCollapsed = size === 0;
