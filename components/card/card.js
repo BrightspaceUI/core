@@ -260,7 +260,7 @@ class Card extends RtlMixin(LitElement) {
 				<a @blur="${this._onLinkBlur}"
 					?download="${this.download}"
 					@focus="${this._onLinkFocus}"
-					href="${ifDefined(this.href)}"
+					href="${ifDefined(this.href ? this.href : undefined)}"
 					hreflang="${ifDefined(this.hreflang)}"
 					@mouseenter="${this._onLinkMouseEnter}"
 					@mouseleave="${this._onLinkMouseLeave}"
