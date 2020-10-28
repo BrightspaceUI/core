@@ -55,6 +55,36 @@ export function formatDateInISOTime(val) {
 	return `${hours}:${minutes}:${seconds}`;
 }
 
+export function getAdjustedTime(startObj, prevStartObj, endObj) {
+	const hourDiff = startObj.hours - prevStartObj.hours;
+	const minuteDiff = startObj.minutes - prevStartObj.minutes;
+
+	let newEndHour = endObj.hours + hourDiff;
+	let newEndMinute = endObj.minutes + minuteDiff;
+
+	if (newEndMinute > 59) {
+		newEndHour++;
+		newEndMinute -= 60;
+	} else if (newEndMinute < 0) {
+		newEndHour--;
+		newEndMinute += 60;
+	}
+
+	if (newEndHour > 23) {
+		newEndHour = 23;
+		newEndMinute = 59;
+	} else if (newEndHour < 0) {
+		newEndHour = 0;
+		newEndMinute = 0;
+	}
+
+	return {
+		hours: newEndHour,
+		minutes: newEndMinute
+	};
+
+}
+
 export function getClosestValidDate(minValue, maxValue, dateTime) {
 	const today = getToday();
 	const todayDate = getDateFromDateObj(today);
@@ -121,78 +151,6 @@ export function getLocalDateTimeFromUTCDateTime(dateTime) {
 	return formatDateTimeInISO(localDateTime, true);
 }
 
-export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusive, localized) {
-	const startObj = localized ? parseISODateTime(startValue) : convertUTCToLocalDateTime(parseISODateTime(startValue));
-	const endObj = localized ? parseISODateTime(endValue) : convertUTCToLocalDateTime(parseISODateTime(endValue));
-	const prevStartObj = localized ? parseISODateTime(prevStartValue) : convertUTCToLocalDateTime(parseISODateTime(prevStartValue));
-
-	const jsStartDate = localized ? getDateNoConversion(startValue) : new Date(startValue);
-	const jsEndDate = localized ? getDateNoConversion(endValue) : new Date(endValue);
-	const jsPrevStartDate = localized ? getDateNoConversion(prevStartValue) : new Date(prevStartValue);
-
-	if ((inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() < 0)
-		|| (!inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() <= 0))
-		return endValue;
-
-	if (!isSameDate(startObj, prevStartObj)) {
-		// shift dates only
-		const diff = jsStartDate.getTime() - jsPrevStartDate.getTime();
-		const jsNewEndDate = new Date(jsEndDate.getTime() + diff);
-
-		if (!localized) return jsNewEndDate.toISOString();
-
-		const parsedObject = {
-			year: jsNewEndDate.getFullYear(),
-			month: jsNewEndDate.getMonth() + 1,
-			date: jsNewEndDate.getDate(),
-			hours: jsNewEndDate.getHours(),
-			minutes: jsNewEndDate.getMinutes(),
-			seconds: jsNewEndDate.getSeconds()
-		};
-		return formatDateTimeInISO(parsedObject, localized);
-	} else if (isSameDate(startObj, endObj) && isSameDate(startObj, prevStartObj)) {
-		// shift times only
-		const hourDiff = startObj.hours - prevStartObj.hours;
-		const minuteDiff = startObj.minutes - prevStartObj.minutes;
-
-		const newEndHour = endObj.hours + hourDiff;
-		const newEndMinute = endObj.minutes + minuteDiff;
-		const adjustedTime = getAdjustedTime(newEndHour, newEndMinute);
-
-		endObj.hours = adjustedTime.hours;
-		endObj.minutes = adjustedTime.minutes;
-
-		return formatDateTimeInISO(localized ? endObj : convertLocalToUTCDateTime(endObj), localized);
-	} else {
-		return endValue;
-	}
-}
-
-export function getAdjustedTime(hours, minutes) {
-
-	if (minutes > 59) {
-		hours++;
-		minutes -= 60;
-	} else if (minutes < 0) {
-		hours--;
-		minutes += 60;
-	}
-
-	if (hours > 23) {
-		hours = 23;
-		minutes = 59;
-	} else if (hours < 0) {
-		hours = 0;
-		minutes = 0;
-	}
-
-	return {
-		hours: hours,
-		minutes: minutes
-	};
-
-}
-
 export function getToday() {
 	const val = new Date().toISOString();
 	const dateTime = parseISODateTime(val);
@@ -214,10 +172,6 @@ export function isDateInRange(date, min, max) {
 	const afterMin = !min || (min && date.getTime() >= min.getTime());
 	const beforeMax = !max || (max && date.getTime() <= max.getTime());
 	return afterMin && beforeMax;
-}
-
-export function isSameDate(date1, date2) {
-	return date1.date === date2.date && date1.month === date2.month && date1.year === date2.year;
 }
 
 export function isValidTime(val) {

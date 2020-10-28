@@ -1,14 +1,60 @@
 import './input-date-time.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
+import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getDateFromISODateTime, getShiftedEndDate } from '../../helpers/dateTime.js';
+import { formatDateTimeInISO, getAdjustedTime, getDateFromISODateTime, getDateNoConversion, parseISODateTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+
+function _isSameDate(date1, date2) {
+	return date1.date === date2.date && date1.month === date2.month && date1.year === date2.year;
+}
+
+export function getShiftedEndDateTime(startValue, endValue, prevStartValue, inclusive, localized) {
+	const startObj = localized ? parseISODateTime(startValue) : convertUTCToLocalDateTime(parseISODateTime(startValue));
+	const endObj = localized ? parseISODateTime(endValue) : convertUTCToLocalDateTime(parseISODateTime(endValue));
+	const prevStartObj = localized ? parseISODateTime(prevStartValue) : convertUTCToLocalDateTime(parseISODateTime(prevStartValue));
+
+	const jsStartDate = localized ? getDateNoConversion(startValue) : new Date(startValue);
+	const jsEndDate = localized ? getDateNoConversion(endValue) : new Date(endValue);
+	const jsPrevStartDate = localized ? getDateNoConversion(prevStartValue) : new Date(prevStartValue);
+
+	if ((inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() < 0)
+		|| (!inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() <= 0))
+		return endValue;
+
+	if (!_isSameDate(startObj, prevStartObj)) {
+		// shift dates only
+		const diff = jsStartDate.getTime() - jsPrevStartDate.getTime();
+		const jsNewEndDate = new Date(jsEndDate.getTime() + diff);
+
+		if (!localized) return jsNewEndDate.toISOString();
+
+		const parsedObject = {
+			year: jsNewEndDate.getFullYear(),
+			month: jsNewEndDate.getMonth() + 1,
+			date: jsNewEndDate.getDate(),
+			hours: jsNewEndDate.getHours(),
+			minutes: jsNewEndDate.getMinutes(),
+			seconds: jsNewEndDate.getSeconds()
+		};
+		return formatDateTimeInISO(parsedObject, localized);
+	} else if (_isSameDate(startObj, endObj) && _isSameDate(startObj, prevStartObj)) {
+		const adjustedTime = getAdjustedTime(startObj, prevStartObj, endObj);
+
+		endObj.hours = adjustedTime.hours;
+		endObj.minutes = adjustedTime.minutes;
+
+		return formatDateTimeInISO(localized ? endObj : convertLocalToUTCDateTime(endObj), localized);
+	} else {
+		return endValue;
+	}
+}
 
 /**
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.
@@ -191,7 +237,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'startValue' || prop === 'endValue') {
 				if (!this.invalid && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
-					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange, this.localized);
+					this.endValue = getShiftedEndDateTime(this.startValue, this.endValue, oldVal, this.inclusiveDateRange, this.localized);
 				}
 
 				this.setFormValue({
