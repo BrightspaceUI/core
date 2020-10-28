@@ -21,7 +21,10 @@ export const buttonStyles = css`
 		white-space: nowrap;
 		width: auto;
 	}
-	button:focus {
+	/* Outline on focus for elements not using FocusVisiblePolyfillMixin
+	 * or when focus-visible for those who are */
+	:host(:not([data-js-focus-visible])) button:focus,
+	button.focus-visible {
 		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 	}
 `;

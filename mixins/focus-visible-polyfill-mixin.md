@@ -4,7 +4,7 @@ From [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible):
 
 > The `:focus-visible` pseudo-class applies while an element matches the `:focus` pseudo-class and the user agent determines via heuristics that the focus should be made evident on the element.
 
-In order words, it allows you provide focus styles for an element that only get applied when the user used the keyboard to access it. But today only Chrome supports `:focus-visible`, so a polyfill is required.
+In order words, it allows you to provide focus styles for an element that only get applied when the user accessed it via keyboard. But today only Chrome supports `:focus-visible`, so a polyfill is required.
 
 The `FocusVisiblePolyfillMixin` adds support to a component to use the [focus-visible polyfill](https://github.com/WICG/focus-visible), ensuring that the polyfill is lazy loaded only once and that it's properly applied to the component's shadow root.
 
