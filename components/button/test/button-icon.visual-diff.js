@@ -22,13 +22,14 @@ describe('d2l-button-icon', () => {
 
 	[
 		{ category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled'] },
-		{ category: 'translucent-enabled', tests: ['normal', 'focus', 'hover', 'disabled'] },
+		{ category: 'translucent-enabled', tests: ['normal', 'focus', 'hover'] },
+		{ category: 'translucent-disabled', tests: ['normal', 'hover'] },
 		{ category: 'custom', tests: ['normal', 'hover', 'focus'] }
 	].forEach((entry) => {
 		describe(entry.category, () => {
 			entry.tests.forEach((name) => {
 				it(name, async function() {
-					const selector = (entry.category === 'translucent-enabled') ? '#translucent-enabled > d2l-button-icon' : `#${entry.category}`;
+					const selector = `#${entry.category}`;
 
 					if (name === 'hover') await page.hover(selector);
 					else if (name === 'focus') await page.$eval(selector, (elem) => elem.focus());

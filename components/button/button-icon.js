@@ -94,10 +94,15 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				}
 
 				:host([translucent]) button {
-					background-color: rgba(0, 0, 0, 0.5);
 					box-shadow: inset 0 0 0 2px transparent, inset 0 0 0 3px transparent;
 					transition-duration: 0.2s, 0.2s;
 					transition-property: background-color, box-shadow;
+				}
+				:host([translucent]) button,
+				:host([translucent]) button[disabled]:hover,
+				:host([translucent]) button[disabled]:focus,
+				:host([active][translucent]) button[disabled] {
+					background-color: rgba(0, 0, 0, 0.5);
 				}
 				:host([translucent][visible-on-ancestor]) button {
 					transition-duration: 0.4s, 0.4s;
