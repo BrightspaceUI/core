@@ -54,8 +54,28 @@ class Resizer {
 		}
 	}
 
+	dispatchResizeEnd() {
+		if (this._onResizeEndCallback) {
+			this._onResizeEndCallback();
+		}
+	}
+
+	dispatchResizeStart() {
+		if (this._onResizeStartCallback) {
+			this._onResizeStartCallback();
+		}
+	}
+
 	onResize(callback) {
 		this._onResizeCallback = callback;
+	}
+
+	onResizeEnd(callback) {
+		this._onResizeEndCallback = callback;
+	}
+
+	onResizeStart(callback) {
+		this._onResizeStartCallback = callback;
 	}
 }
 
@@ -168,6 +188,7 @@ class DesktopMouseResizer extends Resizer {
 		if (this._isResizing) {
 			this._isResizing = false;
 			this._target.blur();
+			this.dispatchResizeEnd();
 		}
 	}
 
@@ -202,6 +223,7 @@ class DesktopMouseResizer extends Resizer {
 	}
 
 	_resizeStart(clientX) {
+		this.dispatchResizeStart();
 		const x = this._computeContentX(clientX);
 		this._offset = this.panelSize - x;
 		this._isResizing = true;
@@ -288,6 +310,7 @@ class MobileMouseResizer extends Resizer {
 
 	_onMouseDown(e) {
 		if (this.isMobile) {
+			this.dispatchResizeStart();
 			e.preventDefault();
 			const y = e.clientY - this.contentRect.top;
 			this._offset = y - (this.contentRect.height - this.panelSize);
@@ -318,6 +341,7 @@ class MobileMouseResizer extends Resizer {
 		if (this._isResizing) {
 			this._isResizing = false;
 			this._target.blur();
+			this.dispatchResizeEnd();
 		}
 	}
 
@@ -370,11 +394,13 @@ class MobileTouchResizer extends Resizer {
 				this.dispatchResize(secondaryHeight, true);
 			}
 			this._isResizing = false;
+			this.dispatchResizeEnd();
 		}
 	}
 
 	_onResizeStart(e) {
 		if (this.isMobile) {
+			this.dispatchResizeStart();
 			const touch = e.touches[0];
 			this._prevTouch = touch.screenY;
 			this._isResizing = true;
@@ -427,6 +453,8 @@ class MobileTouchResizer extends Resizer {
  * @slot footer - Page footer content
  * @slot primary - Main page content
  * @slot secondary - Supplementary page content
+ * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
+ * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
  */
 class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
@@ -763,6 +791,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
 		this._onContentResize = this._onContentResize.bind(this);
 		this._onPanelResize = this._onPanelResize.bind(this);
+		this._onPanelResizeStart = this._onPanelResizeStart.bind(this);
+		this._onPanelResizeEnd = this._onPanelResizeEnd.bind(this);
 
 		this._desktopKeyboardResizer = new DesktopKeyboardResizer();
 		this._desktopMouseResizer = new DesktopMouseResizer();
@@ -779,6 +809,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		];
 		for (const resizer of this._resizers) {
 			resizer.onResize(this._onPanelResize);
+			resizer.onResizeStart(this._onPanelResizeStart);
+			resizer.onResizeEnd(this._onPanelResizeEnd);
 		}
 
 		this.backgroundShading = 'none';
@@ -996,6 +1028,14 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			this._isHandleTap = false;
 			this._size = e.size;
 		}
+	}
+
+	_onPanelResizeEnd() {
+		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-resize-end', { bubbles: true, composed: true }));
+	}
+
+	_onPanelResizeStart() {
+		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-resize-start', { bubbles: true, composed: true }));
 	}
 
 	_onTransitionEnd() {
