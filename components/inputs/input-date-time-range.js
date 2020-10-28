@@ -54,6 +54,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
+			 * Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC
+			 */
+			localized: { reflect: true, type: Boolean },
+			/**
 			 * Maximum valid date/time that could be selected by a user.
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
@@ -108,6 +112,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this.disabled = false;
 		this.inclusiveDateRange = false;
 		this.labelHidden = false;
+		this.localized = false;
 		this.required = false;
 
 		this._startDropdownOpened = false;
@@ -149,6 +154,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 						id="${this._startInputId}"
 						label="${this._computedStartLabel}"
 						?label-hidden="${this.childLabelsHidden}"
+						?localized="${this.localized}"
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
 						?required="${this.required}"
@@ -167,6 +173,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 					id="${this._endInputId}"
 					label="${this._computedEndLabel}"
 					?label-hidden="${this.childLabelsHidden}"
+					?localized="${this.localized}"
 					max-value="${ifDefined(this.maxValue)}"
 					min-value="${ifDefined(this.minValue)}"
 					?required="${this.required}"
@@ -184,7 +191,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'startValue' || prop === 'endValue') {
 				if (!this.invalid && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
-					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange);
+					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange, this.localized);
 				}
 
 				this.setFormValue({
