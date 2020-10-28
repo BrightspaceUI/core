@@ -140,11 +140,11 @@ export const dropdownContentStyles = css`
 	}
 
 	.d2l-dropdown-content-top-scroll {
-		box-shadow: 0 2px 6px 0 var(--d2l-dropdown-shadow-color);
+		box-shadow: 0 3px 3px 0 var(--d2l-dropdown-shadow-color);
 	}
 
 	.d2l-dropdown-content-bottom-scroll {
-		box-shadow: 0 -2px 6px 0 var(--d2l-dropdown-shadow-color);
+		box-shadow: 0 -3px 3px 0 var(--d2l-dropdown-shadow-color);
 	}
 
 	:host([dir="rtl"]) {
