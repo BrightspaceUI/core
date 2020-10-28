@@ -232,9 +232,6 @@ class HtmlBlock extends LitElement {
 				padding-left: 0;
 				padding-right: 3em;
 			}
-			.d2l-htmlblock.d2l-htmlblock-untrusted {
-				position: relative;
-			}
 		`;
 	}
 
