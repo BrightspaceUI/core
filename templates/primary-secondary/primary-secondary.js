@@ -26,6 +26,10 @@ function clamp(val, min, max) {
 	return Math.max(min, Math.min(val, max));
 }
 
+function computeSizeKey(key) {
+	return `d2l-primary-secondary-${key}`;
+}
+
 class Resizer {
 
 	constructor() {
@@ -444,6 +448,13 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			 */
 			resizable: { type: Boolean, reflect: true },
 			/**
+			 * The key used to persist the divider's position to local storage. This key
+			 * should not be shared between pages so that users can save different divider
+			 * positions on different pages. If no key is provided, the template will fall
+			 * back its default size.
+			 */
+			storageKey: { type: String, attribute: 'storage-key' },
+			/**
 			 * Whether content fills the screen or not
 			 * @type {'fullscreen'|'normal'}
 			 */
@@ -860,6 +871,20 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('_size')) {
+			if (this.storageKey) {
+				const key = computeSizeKey(this.storageKey);
+				try {
+					localStorage.setItem(key, this._size);
+				} catch (ex) {
+					// throws if storage is full or in private mode in mobile Safari
+				}
+			}
+		}
+	}
+
 	get _size() {
 		return this.__size;
 	}
@@ -902,15 +927,29 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 
 		if (this._size === undefined) {
 			// initialize size on first resize
-			if (this._isMobile) {
-				this._size = this._contentBounds.minHeight;
-			} else {
-				const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
-				const desktopDividerSize = contentRect.width - divider.offsetWidth;
-				this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
+			let size = NaN;
+			if (this.storageKey) {
+				const key = computeSizeKey(this.storageKey);
+				try {
+					size = parseFloat(localStorage.getItem(key));
+				} catch (ex) {
+					// may throw SecurityError if localStorage isn't allowed to be accessed
+				}
 			}
-		} else if (this._size !== 0) {
-			// clamp size on subsequent resizes
+			if (isFinite(size)) {
+				this._size = size;
+				this._isCollapsed = size === 0;
+			} else {
+				if (this._isMobile) {
+					this._size = this._contentBounds.minHeight;
+				} else {
+					const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+					const desktopDividerSize = contentRect.width - divider.offsetWidth;
+					this._size = Math.max(desktopMinSize, desktopDividerSize * (1 / 3));
+				}
+			}
+		}
+		if (this._size !== 0) {
 			if (this._isMobile) {
 				this._size = clamp(this._size, this._contentBounds.minHeight, this._contentBounds.maxHeight);
 			} else {

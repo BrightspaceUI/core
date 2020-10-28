@@ -126,4 +126,28 @@ describe('d2l-template-primary-secondary', () => {
 			});
 		});
 	});
+
+	describe('persist', () => {
+
+		before(async() => {
+			browser = await puppeteer.launch();
+			page = await visualDiff.createPage(browser, { viewport: { width: 1500, height: 300 } });
+			await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/primary-secondary-persist.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+			await page.bringToFront();
+		});
+
+		after(async() => await browser.close());
+
+		it('persist divider size on reload', async function() {
+			await page.bringToFront();
+			const sel = '#persist';
+
+			await moveDivider(page, sel, directions.RIGHT, 10);
+
+			await page.reload();
+
+			const rect = await getRect(page, sel);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
 });
