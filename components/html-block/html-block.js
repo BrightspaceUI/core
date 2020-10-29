@@ -110,11 +110,11 @@ const loadMathJax = () => {
 	};
 
 	mathJaxLoaded = new Promise(resolve => {
-			const script = document.createElement('script');
-			script.async = 'async';
-			script.onload = resolve;
-			script.src = 'https://s.brightspace.com/lib/mathjax/3.1.2/mml-chtml.js';
-			document.head.appendChild(script);
+		const script = document.createElement('script');
+		script.async = 'async';
+		script.onload = resolve;
+		script.src = 'https://s.brightspace.com/lib/mathjax/3.1.2/mml-chtml.js';
+		document.head.appendChild(script);
 	});
 
 	return mathJaxLoaded;
@@ -125,15 +125,6 @@ const loadMathJax = () => {
  * A component for displaying user-authored HTML.
  */
 class HtmlBlock extends LitElement {
-
-	static get properties() {
-		return {
-			/**
-			 * The HTML to be rendered
-			 */
-			html: { type: String }
-		};
-	}
 
 	static get styles() {
 		return css`
@@ -235,30 +226,43 @@ class HtmlBlock extends LitElement {
 		`;
 	}
 
-	async updated(changedProperties) {
-		super.updated(changedProperties);
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
 
-		if (!changedProperties.has('html')) return;
+		if (!this._renderContainer) {
 
-		if (this._hasMath()) {
+			this.shadowRoot.innerHTML = '<div class="d2l-html-block-rendered"></div><slot></slot>';
 
-			await loadMathJax();
-			this.shadowRoot.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${this.html}</mjx-body></mjx-doc>`;
+			this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
 
-			if (window.MathJax.typesetShadow) {
-				window.MathJax.typesetShadow(this.shadowRoot);
-			}
+				const template = e.target.assignedNodes({ flatten: true })
+					.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
 
-		} else {
-			this.shadowRoot.innerHTML = this.html;
+				const fragment = template ? document.importNode(template.content, true) : null;
+				if (fragment) {
+
+					const hasMath = !!fragment.querySelector('math');
+
+					const temp = document.createElement('div');
+					temp.appendChild(fragment);
+					const fragmentHTML = temp.innerHTML;
+
+					if (hasMath) {
+						await loadMathJax();
+						this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
+						window.MathJax.typesetShadow(this.shadowRoot);
+					} else {
+						this._renderContainer.innerHTML = fragmentHTML;
+					}
+
+				} else {
+					this._renderContainer.innerHTML = '';
+				}
+
+			});
+			this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
 		}
 
-	}
-
-	_hasMath() {
-		const temp = document.createElement('div');
-		temp.innerHTML = this.html;
-		return temp.querySelector('math');
 	}
 
 }

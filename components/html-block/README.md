@@ -9,14 +9,12 @@ The `d2l-html-block` element is a web component for displaying user-authored HTM
   import '@brightspace-ui/core/components/html-block/html-block.js';
 </script>
 
-<d2l-html-block html="..."></d2l-html-block>
+<d2l-html-block>
+  <template>
+    <!-- some html -->
+  </template>
+</d2l-html-block>
 ```
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `html` | String | HTML to be rendered |
 
 ## Future Enhancements
 
