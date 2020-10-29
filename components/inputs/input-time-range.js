@@ -1,7 +1,7 @@
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISOTime, formatTimeInISO, getDateFromISOTime, isValidTime } from '../../helpers/dateTime.js';
+import { formatDateInISOTime, formatTimeInISO, getAdjustedTime, getDateFromISOTime, isValidTime, parseISOTime } from '../../helpers/dateTime.js';
 import { getDefaultTime, getIntervalNumber, getTimeAtInterval } from './input-time.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -11,37 +11,20 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export function getShiftedEndTime(startValue, endValue, prevStartValue, inclusive) {
-	const jsStartTime = getDateFromISOTime(startValue);
-	const jsEndTime = getDateFromISOTime(endValue);
-	const jsPrevStartTime = getDateFromISOTime(prevStartValue);
+	const startObj = parseISOTime(startValue);
+	const endObj = parseISOTime(endValue);
+	const prevStartObj = parseISOTime(prevStartValue);
 
-	if ((inclusive && jsEndTime.getTime() - jsPrevStartTime.getTime() < 0)
-		|| (!inclusive && jsEndTime.getTime() - jsPrevStartTime.getTime() <= 0))
+	const totalMinsEnd = endObj.hours * 60 + endObj.minutes;
+	const totalMinsPrevStart = prevStartObj.hours * 60 + prevStartObj.minutes;
+
+	if ((inclusive && totalMinsEnd - totalMinsPrevStart < 0)
+		|| (!inclusive && totalMinsEnd - totalMinsPrevStart <= 0))
 		return endValue;
 
-	const hourDiff = jsStartTime.getHours() - jsPrevStartTime.getHours();
-	const minuteDiff = jsStartTime.getMinutes() - jsPrevStartTime.getMinutes();
+	const adjustedTime = getAdjustedTime(startObj, prevStartObj, endObj);
 
-	let newEndHour = jsEndTime.getHours() + hourDiff;
-	let newEndMinute = jsEndTime.getMinutes() + minuteDiff;
-
-	if (newEndMinute > 59) {
-		newEndHour++;
-		newEndMinute -= 60;
-	} else if (newEndMinute < 0) {
-		newEndHour--;
-		newEndMinute += 60;
-	}
-
-	if (newEndHour > 23) {
-		newEndHour = 23;
-		newEndMinute = 59;
-	} else if (newEndHour < 0) {
-		newEndHour = 0;
-		newEndMinute = 0;
-	}
-
-	return formatTimeInISO({ hours: newEndHour, minutes: newEndMinute, seconds: 0 });
+	return formatTimeInISO({ hours: adjustedTime.hours, minutes: adjustedTime.minutes, seconds: 0 });
 }
 
 function getValidISOTimeAtInterval(val, timeInterval) {

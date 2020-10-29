@@ -55,6 +55,36 @@ export function formatDateInISOTime(val) {
 	return `${hours}:${minutes}:${seconds}`;
 }
 
+export function getAdjustedTime(startObj, prevStartObj, endObj) {
+	const hourDiff = startObj.hours - prevStartObj.hours;
+	const minuteDiff = startObj.minutes - prevStartObj.minutes;
+
+	let newEndHour = endObj.hours + hourDiff;
+	let newEndMinute = endObj.minutes + minuteDiff;
+
+	if (newEndMinute > 59) {
+		newEndHour++;
+		newEndMinute -= 60;
+	} else if (newEndMinute < 0) {
+		newEndHour--;
+		newEndMinute += 60;
+	}
+
+	if (newEndHour > 23) {
+		newEndHour = 23;
+		newEndMinute = 59;
+	} else if (newEndHour < 0) {
+		newEndHour = 0;
+		newEndMinute = 0;
+	}
+
+	return {
+		hours: newEndHour,
+		minutes: newEndMinute
+	};
+
+}
+
 export function getClosestValidDate(minValue, maxValue, dateTime) {
 	const today = getToday();
 	const todayDate = getDateFromDateObj(today);
@@ -104,6 +134,11 @@ export function getDateFromISOTime(val) {
 	return new Date(today.year, today.month - 1, today.date, time.hours, time.minutes, time.seconds);
 }
 
+export function getDateNoConversion(value) {
+	const parsed = parseISODateTime(value);
+	return new Date(parsed.year, parsed.month - 1, parsed.date, parsed.hours, parsed.minutes, parsed.seconds);
+}
+
 let dateTimeDescriptor = null;
 export function getDateTimeDescriptorShared(refresh) {
 	if (!dateTimeDescriptor || refresh) dateTimeDescriptor = getDateTimeDescriptor();
@@ -114,21 +149,6 @@ export function getLocalDateTimeFromUTCDateTime(dateTime) {
 	const dateObj = parseISODateTime(dateTime);
 	const localDateTime = convertUTCToLocalDateTime(dateObj);
 	return formatDateTimeInISO(localDateTime, true);
-}
-
-export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusive) {
-	const jsStartDate = new Date(startValue);
-	const jsEndDate = new Date(endValue);
-	const jsPrevStartDate = new Date(prevStartValue);
-	if ((inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() < 0)
-		|| (!inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() <= 0))
-		return endValue;
-
-	const diff = jsStartDate.getTime() - jsPrevStartDate.getTime();
-
-	const jsNewEndDate = new Date(jsEndDate.getTime() + diff);
-	const parsedObject = parseISODateTime(jsNewEndDate.toISOString());
-	return formatDateTimeInISO(parsedObject);
 }
 
 export function getToday() {
