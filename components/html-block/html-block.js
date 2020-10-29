@@ -5,13 +5,14 @@ let mathJaxLoaded;
 
 const loadMathJax = () => {
 
+	if (mathJaxLoaded) return mathJaxLoaded;
+
 	window.MathJax = {
 		options: {
 			menuOptions: {
 				settings: { zoom: 'None' }
 			}
 		},
-		chtml: { scale: 1 },
 		loader: { load: ['ui/menu'] },
 		startup: {
 			ready: () => {
@@ -108,16 +109,15 @@ const loadMathJax = () => {
 		}
 	};
 
-	return new Promise(resolve => {
-		if (!document.head.querySelector('#d2l-mathjax')) {
+	mathJaxLoaded = new Promise(resolve => {
 			const script = document.createElement('script');
-			script.id = 'd2l-mathjax';
 			script.async = 'async';
 			script.onload = resolve;
 			script.src = 'https://s.brightspace.com/lib/mathjax/3.1.2/mml-chtml.js';
 			document.head.appendChild(script);
-		}
 	});
+
+	return mathJaxLoaded;
 
 };
 
@@ -235,25 +235,20 @@ class HtmlBlock extends LitElement {
 		`;
 	}
 
-	render() {
-	}
-
 	async updated(changedProperties) {
 		super.updated(changedProperties);
 
 		if (!changedProperties.has('html')) return;
 
 		if (this._hasMath()) {
-			if (!mathJaxLoaded) {
-				mathJaxLoaded = loadMathJax();
-			}
-			await mathJaxLoaded;
 
+			await loadMathJax();
 			this.shadowRoot.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${this.html}</mjx-body></mjx-doc>`;
 
 			if (window.MathJax.typesetShadow) {
 				window.MathJax.typesetShadow(this.shadowRoot);
 			}
+
 		} else {
 			this.shadowRoot.innerHTML = this.html;
 		}
