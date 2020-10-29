@@ -1,4 +1,4 @@
-
+/*global forceFocusVisible */
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 const dropdownHelper = require('../../dropdown/test/dropdown-helper.js');
@@ -28,14 +28,14 @@ describe('d2l-card', () => {
 		{ name: 'align-center', selector: '#align-center' },
 		{ name: 'badge', selector: '#badge' },
 		{ name: 'actions', selector: '#actions' },
-		{ name: 'actions-focus', selector: '#actions', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => elem.focus()) },
+		{ name: 'actions-focus', selector: '#actions', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => forceFocusVisible(elem)) },
 		{ name: 'actions-rtl', selector: '#actions-rtl' },
 		{ name: 'no-link-focus', selector: '#header-content', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
 		{ name: 'subtle', selector: '#subtle' },
 		{ name: 'link', selector: '#link' },
 		{ name: 'link-focus', selector: '#link', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
-		{ name: 'link-actions-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => elem.focus()) },
-		{ name: 'link-footer-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button`, (elem) => elem.focus()) },
+		{ name: 'link-actions-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => forceFocusVisible(elem)) },
+		{ name: 'link-footer-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button`, (elem) => forceFocusVisible(elem)) },
 		{ name: 'with-dropdown', selector: '#with-dropdown', margin: 20 },
 		{ name: 'with-dropdown-open', selector: '#with-dropdown', margin: 20, action: (selector) => dropdownHelper.open(page, `${selector} d2l-dropdown-more`) },
 		{ name: 'with-dropdown-adjacent-hover', selector: '#with-dropdown-adjacent-hover', margin: 20, action: async(selector) => {
@@ -43,7 +43,7 @@ describe('d2l-card', () => {
 			return page.hover(`${selector} #hover-target`);
 		} },
 		{ name: 'with-tooltip', selector: '#with-tooltip', margin: 20 },
-		{ name: 'with-tooltip-focus', selector: '#with-tooltip', margin: 20, action: (selector) => page.$eval(`${selector} #shiny-button`, (elem) => elem.focus()) }
+		{ name: 'with-tooltip-focus', selector: '#with-tooltip', margin: 20, action: (selector) => page.$eval(`${selector} #shiny-button`, (elem) => forceFocusVisible(elem)) }
 	].forEach((info) => {
 
 		it(info.name, async function() {

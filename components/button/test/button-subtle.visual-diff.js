@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
@@ -12,6 +13,10 @@ describe('d2l-button-subtle', () => {
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/button/test/button-subtle.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
+	});
+
+	beforeEach(async() => {
+		await visualDiff.resetFocus(page);
 	});
 
 	after(async() => await browser.close());
@@ -29,7 +34,7 @@ describe('d2l-button-subtle', () => {
 					if (name === 'hover') {
 						await page.hover(selector);
 					} else if (name === 'focus') {
-						await page.$eval(selector, (elem) => { elem.focus(); elem.shadowRoot.querySelector('button').classList.add('focus-visible'); });
+						await page.$eval(selector, (elem) => forceFocusVisible(elem));
 					} else if (name === 'click') {
 						await page.$eval(selector, (elem) => elem.focus());
 					}
@@ -37,10 +42,6 @@ describe('d2l-button-subtle', () => {
 					const rectId = (name.indexOf('disabled') !== -1 || name.indexOf('icon') !== -1) ? name : entry.category;
 					const rect = await visualDiff.getRect(page, `#${rectId}`);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-
-					if (name === 'focus') {
-						await page.$eval(selector, (elem) => elem.shadowRoot.querySelector('button').classList.remove('focus-visible'));
-					}
 
 				});
 			});
