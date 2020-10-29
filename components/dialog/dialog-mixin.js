@@ -2,7 +2,7 @@ import '../focus-trap/focus-trap.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
+import { forceFocusVisible, getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit-element/lit-element.js';
@@ -147,7 +147,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (content) {
 			const firstFocusable = getNextFocusable(content);
 			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), firstFocusable)) {
-				firstFocusable.focus();
+				forceFocusVisible(firstFocusable);
 				return;
 			}
 		}
@@ -162,7 +162,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._opener && this._opener.focus) {
 			// wait for inactive focus trap
 			requestAnimationFrame(() => {
-				this._opener.focus();
+				forceFocusVisible(this._opener);
 				this._opener = null;
 			});
 		}

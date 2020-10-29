@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { forceFocusVisible, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
@@ -53,7 +53,7 @@ class FocusTrap extends LitElement {
 
 	_focusFirst() {
 		const focusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
-		if (focusable) focusable.focus();
+		if (focusable) forceFocusVisible(focusable);
 		this.dispatchEvent(new CustomEvent('d2l-focus-trap-enter', { bubbles: true, composed: true }));
 	}
 
@@ -75,7 +75,7 @@ class FocusTrap extends LitElement {
 			// user is exiting trap via forward tabbing...
 			const firstFocusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 			if (firstFocusable) {
-				firstFocusable.focus();
+				forceFocusVisible(firstFocusable);
 				return;
 			}
 		}
@@ -88,7 +88,7 @@ class FocusTrap extends LitElement {
 			// user is exiting trap via back tabbing...
 			const lastFocusable = getPreviousFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-end'));
 			if (lastFocusable) {
-				lastFocusable.focus();
+				forceFocusVisible(lastFocusable);
 				return;
 			}
 		}

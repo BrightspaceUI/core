@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
@@ -41,7 +42,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 			css`
 				:host {
 					--d2l-button-icon-border-radius: 0.3rem;
-					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #006fbf;
+					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
@@ -84,7 +85,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				:host([active]) button {
 					background-color: var(--d2l-color-gypsum);
 				}
-				button:focus {
+				button.focus-visible {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 
@@ -116,7 +117,7 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 					background-color: var(--d2l-color-celestine);
 					border: none;
 				}
-				:host([translucent]) button:focus {
+				:host([translucent]) button.focus-visible {
 					box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
 				}
 

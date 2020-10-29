@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
@@ -21,10 +22,10 @@ describe('d2l-button-icon', () => {
 	after(async() => await browser.close());
 
 	[
-		{ category: 'normal', tests: ['normal', 'hover', 'focus', 'disabled'] },
-		{ category: 'translucent-enabled', tests: ['normal', 'focus', 'hover'] },
+		{ category: 'normal', tests: ['normal', 'hover', 'focus', 'click', 'disabled'] },
+		{ category: 'translucent-enabled', tests: ['normal', 'hover', 'focus', 'click'] },
 		{ category: 'translucent-disabled', tests: ['normal', 'hover'] },
-		{ category: 'custom', tests: ['normal', 'hover', 'focus'] }
+		{ category: 'custom', tests: ['normal', 'hover', 'focus', 'click'] }
 	].forEach((entry) => {
 		describe(entry.category, () => {
 			entry.tests.forEach((name) => {
@@ -32,7 +33,8 @@ describe('d2l-button-icon', () => {
 					const selector = `#${entry.category}`;
 
 					if (name === 'hover') await page.hover(selector);
-					else if (name === 'focus') await page.$eval(selector, (elem) => elem.focus());
+					else if (name === 'focus') await page.$eval(selector, (elem) => forceFocusVisible(elem));
+					else if (name === 'click') await page.$eval(selector, (elem) => elem.focus());
 
 					const rectId = (name.indexOf('disabled') !== -1) ? name : entry.category;
 					const rect = await visualDiff.getRect(page, `#${rectId}`);
