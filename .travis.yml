@@ -25,10 +25,11 @@ addons:
 jobs:
   include:
     - stage: tests
-      name: "Lint & Accessibility"
+      name: "Lint, License & Accessibility"
       script:
       - npm run build
       - npm run lint
+      - npm run test:license
       - npm run test:axe
     - script:
       - npm run build

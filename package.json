@@ -26,7 +26,8 @@
     "test:diff:golden:commit": "commit-goldens",
     "test:headless": "karma start",
     "test:headless:watch": "karma start --auto-watch=true --single-run=false",
-    "test:sauce": "karma start karma.sauce.conf.js"
+    "test:sauce": "karma start karma.sauce.conf.js",
+    "test:license": "license-checker-ci"
   },
   "files": [
     "custom-elements.json",
@@ -55,6 +56,7 @@
     "axe-core": "^4",
     "babel-eslint": "^10",
     "chalk": "^4",
+    "d2l-license-checker": "^3.1.1",
     "deepmerge": "^4.2.2",
     "es-dev-server": "^1",
     "eslint": "^7",
