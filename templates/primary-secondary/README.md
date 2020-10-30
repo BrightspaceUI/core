@@ -12,18 +12,7 @@ Mental Models and Page Structure:
 - The page includes basic settings (primary) and advanced settings (secondary)
 - There is a primary object which users are modifying or supplementing with secondary tools/settings/options
 
->
-> - [x] [Design organization buy-in](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#working-with-design)
-> - [ ] [design.d2l entry](http://design.d2l/)
-> - [x] [Architectural sign-off](https://github.com/BrightspaceUI/guide/wiki/Before-you-build#web-component-architecture)
-> - [x] [Continuous integration](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-continuously-with-travis-ci)
-> - [ ] [Cross-browser testing](https://github.com/BrightspaceUI/guide/wiki/Testing#cross-browser-testing-with-sauce-labs)
-> - [x] [Unit tests](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-with-polymer-test) (if applicable)
-> - [ ] [Accessibility tests](https://github.com/BrightspaceUI/guide/wiki/Testing#automated-accessibility-testing-with-axe)
-> - [x] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
-> - [x] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
-> - [x] Demo page
-> - [x] README documentation
+![Primary-Secondary](./screenshots/primary-secondary.gif?raw=true)
 
 ### Usage
 ```html
@@ -49,11 +38,24 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 |--|--|--|
 | `background-shading` | String, default: `'none'` | Controls whether the primary and secondary panels have shaded backgrounds. Can be one of `'primary'`, `'secondary'`, `'none'`. |
 | `primary-overflow` | String, default: `'default'` | Controls how the primary panel's contents overflow. Can be one of `'default'`, `'hidden'`. |
+| `resizable` | Boolean, default: `false` | Whether the panels are user resizable. This only applies to desktop users, mobile users will always be able to resize. |
+| `storage-key` | String | The key used to persist the divider's position to local storage. This key should not be shared between appliactions so that users can save different divider positions for different applications. If no key is provided, the template will fall back its default size. |
 | `width-type` | String, default: `'fullscreen'` | Whether content fills the screen or not. When set to `normal`, the width of the template is constrained to `1230px`. Can be one of `'fullscreen'`, `'normal'`. |
 
-## Future Enhancements
+**Events:**
+* `d2l-template-primary-secondary-resize-start`: dispatched when a user begins moving the divider
+* `d2l-template-primary-secondary-resize-end`: dispatched when a user finishes moving the divider
 
-- Optional draggable divider between the primary and secondary panels
-- For smaller devices, the primary and secondary panels will move into collapsible drawers
+**Slots:**
+* `header`: page header content
+* `footer`: page footer content
+* `primary`: main page content
+* `secondary`: supplementary page content
+
+### iframes
+
+If either of the panels contain an `iframe`, resizing may not work properly. This occurs because `iframe`s prevent the page template from receiving mouse events. To handle situations like these, setting `pointer-events: none` for the `iframe` is recommended during resizing. This can be done by listening for `d2l-template-primary-secondary-resize-start` and `d2l-template-primary-secondary-resize-end` events.
+
+## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!
