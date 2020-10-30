@@ -25,6 +25,8 @@ describe('d2l-button-icon', () => {
 		{ category: 'normal', tests: ['normal', 'hover', 'focus', 'click', 'disabled'] },
 		{ category: 'translucent-enabled', tests: ['normal', 'hover', 'focus', 'click'] },
 		{ category: 'translucent-disabled', tests: ['normal', 'hover'] },
+		{ category: 'dark', tests: ['normal', 'hover', 'focus', 'click'] },
+		{ category: 'dark-disabled', tests: ['normal', 'hover'] },
 		{ category: 'custom', tests: ['normal', 'hover', 'focus', 'click'] }
 	].forEach((entry) => {
 		describe(entry.category, () => {
