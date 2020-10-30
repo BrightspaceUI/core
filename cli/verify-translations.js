@@ -7,7 +7,8 @@ const langTermsPath = path.join(__dirname, '../lang');
 
 function _parseFile(fileName) {
 	const file = fs.readFileSync(`${langTermsPath}/${fileName}.js`).toString();
-	const stringContent = file.split('default ')[1].split(';')[0];
+	const firstBit = file.split('default ')[1];
+	const stringContent = firstBit.substring(0, firstBit.lastIndexOf(';'));
 	return JSON.parse(stringContent);
 }
 

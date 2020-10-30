@@ -10,7 +10,7 @@ describe('d2l-input-date-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2900 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3100 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -24,6 +24,7 @@ describe('d2l-input-date-time-range', () => {
 		'hidden-labels',
 		'labelled',
 		'label-hidden',
+		'localized',
 		'required',
 		'slotted-content',
 		'start-end-label',
@@ -67,6 +68,18 @@ describe('d2l-input-date-time-range', () => {
 			}, inputSelector, date);
 		}
 
+		async function changeInnerInputDateTime(page, selector, inputSelector, date) {
+			return page.$eval(selector, (elem, inputSelector, date) => {
+				const dateElem = elem.shadowRoot.querySelector(inputSelector);
+				dateElem.value = date;
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: false }
+				);
+				dateElem.dispatchEvent(e);
+			}, inputSelector, date);
+		}
+
 		async function focusOnInput(page, selector, inputSelector) {
 			return page.$eval(selector, (elem, inputSelector) => {
 				elem.blur();
@@ -86,11 +99,53 @@ describe('d2l-input-date-time-range', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('start changes when autoShiftDates', async function() {
-			await changeInnerInputTextDate(page, '#auto-shift-dates', startDateSelector, '2020-12-05T15:00:00.000Z');
+		describe('autoShiftDates', () => {
+			[
+				{ name: 'localized', id: '#localized', maxValueTime: '22:00:00' },
+				{ name: 'not localized', id: '#auto-shift-dates', maxValueTime: '2020-12-06T03:00:00.000Z' }
+			].forEach((testCase) => {
+				// start-value: 2020-12-02T06:00:00.000Z
+				// end-value: 2021-12-04T10:30:00.000Z
+				describe(testCase.name, () => {
+					it('change start date', async function() {
+						await changeInnerInputDateTime(page, testCase.id, startDateSelector, '2020-12-05T06:00:00.000Z');
 
-			const rect = await visualDiff.getRect(page, '#auto-shift-dates');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+						const rect = await visualDiff.getRect(page, testCase.id);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('change start time', async function() {
+						await changeInnerInputDateTime(page, testCase.id, endDateSelector, '2020-12-05T10:30:00.000Z');
+						await changeInnerInputDateTime(page, testCase.id, startDateSelector, '2020-12-05T15:00:00.000Z');
+
+						const rect = await visualDiff.getRect(page, testCase.id);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('change start date when dates same', async function() {
+						await changeInnerInputDateTime(page, testCase.id, startDateSelector, '2020-12-13T15:00:00.000Z');
+
+						const rect = await visualDiff.getRect(page, testCase.id);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+
+					it('change start time to cause max value to be reached', async function() {
+						await page.$eval(testCase.id, (elem, inputSelector) => {
+							const dateElem = elem.shadowRoot.querySelector(inputSelector);
+							const innerInput = dateElem.shadowRoot.querySelector('d2l-input-time');
+							innerInput.value = '22:00:00';
+							const e = new Event(
+								'change',
+								{ bubbles: true, composed: false }
+							);
+							innerInput.dispatchEvent(e);
+						}, startDateSelector);
+
+						const rect = await visualDiff.getRect(page, testCase.id);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+					});
+				});
+			});
 		});
 
 		describe('bad input', () => {

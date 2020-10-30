@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
@@ -57,15 +58,21 @@ describe('d2l-input-search', () => {
 	});
 
 	it('focus-search-button', async function() {
-		const searchButton = await getSearchButton('no-value');
-		searchButton.focus();
+		await page.evaluateHandle(() => {
+			forceFocusVisible(
+				document.querySelector('#no-value').shadowRoot.querySelector('d2l-button-icon[icon="tier1:search"]')
+			);
+		});
 		const rect = await visualDiff.getRect(page, '#no-value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('focus-clear-button', async function() {
-		const clearButton = await getClearButton('has-value');
-		clearButton.focus();
+		await page.evaluateHandle(() => {
+			forceFocusVisible(
+				document.querySelector('#has-value').shadowRoot.querySelector('d2l-button-icon[icon="tier1:close-default"]')
+			);
+		});
 		const rect = await visualDiff.getRect(page, '#has-value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});

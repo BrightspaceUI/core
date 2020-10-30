@@ -4,7 +4,15 @@ import './input-time.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISO, formatDateTimeInISO, getDateFromISODateTime, getLocalDateTimeFromUTCDateTime, getUTCDateTimeFromLocalDateTime, parseISODate, parseISODateTime, parseISOTime } from '../../helpers/dateTime.js';
+import { formatDateInISO,
+	formatDateTimeInISO,
+	getDateFromISODateTime,
+	getDateNoConversion,
+	getLocalDateTimeFromUTCDateTime,
+	getUTCDateTimeFromLocalDateTime,
+	parseISODate,
+	parseISODateTime,
+	parseISOTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -19,10 +27,6 @@ export function _formatLocalDateTimeInISO(date, time) {
 	return formatDateTimeInISO(Object.assign(dateObj, timeObj), true);
 }
 
-function _getDateNoConversion(value) {
-	const parsed = parseISODateTime(value);
-	return new Date(parsed.year, parsed.month - 1, parsed.date, parsed.hours, parsed.minutes, parsed.seconds);
-}
 /**
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
  * @fires change - Dispatched when there is a change in selected date or selected time. "value" reflects the selected value and is in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
@@ -226,8 +230,8 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const minDate = this.minValue ? formatDateTime(this.localized ? _getDateNoConversion(this.minValue) : getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;
-			const maxDate = this.maxValue ? formatDateTime(this.localized ? _getDateNoConversion(this.maxValue) : getDateFromISODateTime(this.maxValue), { format: 'medium' }) : null;
+			const minDate = this.minValue ? formatDateTime(this.localized ? getDateNoConversion(this.minValue) : getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;
+			const maxDate = this.maxValue ? formatDateTime(this.localized ? getDateNoConversion(this.maxValue) : getDateFromISODateTime(this.maxValue), { format: 'medium' }) : null;
 			if (minDate && maxDate) {
 				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
 			} else if (maxDate) {

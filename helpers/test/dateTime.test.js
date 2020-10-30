@@ -7,7 +7,6 @@ import { formatDateInISO,
 	getDateFromISODateTime,
 	getDateFromISOTime,
 	getLocalDateTimeFromUTCDateTime,
-	getShiftedEndDate,
 	getToday,
 	getUTCDateTimeFromLocalDateTime,
 	isDateInRange,
@@ -305,53 +304,6 @@ describe('date-time', () => {
 
 		it('should return the correct date and time', () => {
 			expect(getLocalDateTimeFromUTCDateTime('2019-11-02T03:00:00.000Z')).to.equal('2019-11-01T23:00:00.000');
-		});
-	});
-
-	describe('getShiftedEndDate', () => {
-		it('should return correctly forward shifted end date if valid inputs', () => {
-			const start = '2020-10-26T04:00:00.000Z';
-			const end = '2020-10-27T04:00:00.000Z';
-			const prevStartValue = '2020-10-25T04:00:00.000Z';
-			const newEndValue = '2020-10-28T04:00:00.000Z';
-			expect(getShiftedEndDate(start, end, prevStartValue)).to.equal(newEndValue);
-		});
-
-		it('should return correctly backward shifted end date if valid inputs', () => {
-			const start = '2020-10-24T04:00:00.000Z';
-			const end = '2020-10-27T04:00:00.000Z';
-			const prevStartValue = '2020-10-25T04:00:00.000Z';
-			const newEndValue = '2020-10-26T04:00:00.000Z';
-			expect(getShiftedEndDate(start, end, prevStartValue)).to.equal(newEndValue);
-		});
-
-		it('should return correctly shifted end date if shift causes end date to go to next day', () => {
-			const start = '2020-10-25T11:00:00.000Z';
-			const end = '2020-10-27T23:30:00.000Z';
-			const prevStartValue = '2020-10-25T04:00:00.000Z';
-			const newEndValue = '2020-10-28T06:30:00.000Z';
-			expect(getShiftedEndDate(start, end, prevStartValue)).to.equal(newEndValue);
-		});
-
-		it('should return initial end date if prev start value was after end date', () => {
-			const start = '2020-10-23T04:00:00.000Z';
-			const end = '2020-10-22T04:00:00.000Z';
-			const prevStartValue = '2020-10-25T04:00:00.000Z';
-			expect(getShiftedEndDate(start, end, prevStartValue)).to.equal(end);
-		});
-
-		it('should return initial end date if not inclusive and prev start value was equal to end date', () => {
-			const start = '2020-10-20T04:00:00.000Z';
-			const end = '2020-10-25T04:00:00.000Z';
-			const prevStartValue = '2020-10-25T04:00:00.000Z';
-			expect(getShiftedEndDate(start, end, prevStartValue)).to.equal(end);
-		});
-
-		it('should return correctly shifted end date if inclusive and prev start value was equal to end date', () => {
-			const start = '2020-10-20T04:00:00.000Z';
-			const end = '2020-10-25T04:00:00.000Z';
-			const prevStartValue = '2020-10-25T04:00:00.000Z';
-			expect(getShiftedEndDate(start, end, prevStartValue, true)).to.equal(start);
 		});
 	});
 

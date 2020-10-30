@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
+import { forceFocusVisible } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 
@@ -86,7 +87,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 			const node = nodes[i];
 			if (node.nodeType !== Node.ELEMENT_NODE) continue;
 			if (!node.hasAttribute('primary')) {
-				node.focus();
+				forceFocusVisible(node);
 				return;
 			}
 		}

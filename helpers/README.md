@@ -91,6 +91,9 @@ Focus helper functions to easily select focusable DOM nodes
 ```js
 import { ... } from '@brightspace-ui/core/helpers/focus.js';
 
+// focuses on an element and forces a visible focus ring
+forceFocusVisible(node);
+
 // gets the active element, including shadow DOM active elements
 getComposedActiveElement()
 

@@ -1,4 +1,6 @@
-export const ButtonMixin = superclass => class extends superclass {
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+
+export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin(superclass) {
 
 	static get properties() {
 		return {

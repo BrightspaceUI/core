@@ -13,6 +13,18 @@ const focusableElements = {
 	textarea: true
 };
 
+export function forceFocusVisible(elem) {
+	if (!isFocusable(elem)) {
+		elem = getFirstFocusableDescendant(elem);
+	}
+	if (!elem) return;
+	elem.addEventListener('blur', () => {
+		elem.classList.remove('focus-visible');
+	}, { once: true });
+	elem.classList.add('focus-visible');
+	elem.focus();
+}
+
 export function getComposedActiveElement() {
 	let node = document.activeElement;
 
