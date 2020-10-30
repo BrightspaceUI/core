@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../html-block.js';
+	</script>
+	<title>d2l-html-block</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		.visual-diff {
+			width: 300px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-html-block id="empty"></d2l-html-block>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-html-block id="empty-template">
+			<template></template>
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-html-block id="typography">
+			<template>
+				<h1>heading 1</h1>
+				<h2>heading 2</h2>
+				<h3>heading 3</h3>
+				<h4>heading 4</h4>
+				<h5>heading 5</h5>
+				<h6>heading 6</h6>
+				<div><strong>strong</strong></div>
+				<div><b>bold</b></div>
+				<div>text</div>
+				<pre>preformatted</pre>
+				<p>paragraph</p>
+				<ul>
+					<li>unordered item 1</li>
+					<li>unordered item 2</li>
+				</ul>
+				<ol>
+					<li>ordered item 1</li>
+					<li>ordered item 2</li>
+				</ol>
+				<div><a href="https://d2l.com">anchor</a></div>
+			</template>
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-html-block id="update">
+			<template>before update</template>
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff" style="width: 650px;">
+		<d2l-html-block id="math-block">
+			<template>
+				<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+					<msup>
+						<mrow>
+							<mo>(</mo>
+							<mrow>
+								<munderover>
+									<mo>∑<!-- ∑ --></mo>
+									<mrow class="MJX-TeXAtom-ORD">
+										<mi>k</mi>
+										<mo>=</mo>
+										<mn>1</mn>
+									</mrow>
+									<mi>n</mi>
+								</munderover>
+								<msub>
+									<mi>a</mi>
+									<mi>k</mi>
+								</msub>
+								<msub>
+									<mi>b</mi>
+									<mi>k</mi>
+								</msub>
+							</mrow>
+							<mo>)</mo>
+						</mrow>
+						<mrow class="MJX-TeXAtom-ORD">
+							<mspace width="negativethinmathspace"></mspace>
+							<mspace width="negativethinmathspace"></mspace>
+							<mn>2</mn>
+						</mrow>
+					</msup>
+					<mo>≤<!-- ≤ --></mo>
+					<mrow>
+						<mo>(</mo>
+						<mrow>
+							<munderover>
+								<mo>∑<!-- ∑ --></mo>
+								<mrow class="MJX-TeXAtom-ORD">
+									<mi>k</mi>
+									<mo>=</mo>
+									<mn>1</mn>
+								</mrow>
+								<mi>n</mi>
+							</munderover>
+							<msubsup>
+								<mi>a</mi>
+								<mi>k</mi>
+								<mn>2</mn>
+							</msubsup>
+						</mrow>
+						<mo>)</mo>
+					</mrow>
+					<mrow>
+						<mo>(</mo>
+						<mrow>
+							<munderover>
+								<mo>∑<!-- ∑ --></mo>
+								<mrow class="MJX-TeXAtom-ORD">
+									<mi>k</mi>
+									<mo>=</mo>
+									<mn>1</mn>
+								</mrow>
+								<mi>n</mi>
+							</munderover>
+							<msubsup>
+								<mi>b</mi>
+								<mi>k</mi>
+								<mn>2</mn>
+							</msubsup>
+						</mrow>
+						<mo>)</mo>
+					</mrow>
+				</math>
+			</template>
+		</d2l-html-block>
+	</div>
+
+	<div class="visual-diff" style="width: 650px;">
+		<d2l-html-block id="math-inline">
+			<template>An equation...
+				<math xmlns="http://www.w3.org/1998/Math/MathML">
+					<msup>
+						<mrow>
+							<mo>(</mo>
+							<mrow>
+								<munderover>
+									<mo>∑<!-- ∑ --></mo>
+									<mrow class="MJX-TeXAtom-ORD">
+										<mi>k</mi>
+										<mo>=</mo>
+										<mn>1</mn>
+									</mrow>
+									<mi>n</mi>
+								</munderover>
+								<msub>
+									<mi>a</mi>
+									<mi>k</mi>
+								</msub>
+								<msub>
+									<mi>b</mi>
+									<mi>k</mi>
+								</msub>
+							</mrow>
+							<mo>)</mo>
+						</mrow>
+						<mrow class="MJX-TeXAtom-ORD">
+							<mspace width="negativethinmathspace"></mspace>
+							<mspace width="negativethinmathspace"></mspace>
+							<mn>2</mn>
+						</mrow>
+					</msup>
+					<mo>≤<!-- ≤ --></mo>
+					<mrow>
+						<mo>(</mo>
+						<mrow>
+							<munderover>
+								<mo>∑<!-- ∑ --></mo>
+								<mrow class="MJX-TeXAtom-ORD">
+									<mi>k</mi>
+									<mo>=</mo>
+									<mn>1</mn>
+								</mrow>
+								<mi>n</mi>
+							</munderover>
+							<msubsup>
+								<mi>a</mi>
+								<mi>k</mi>
+								<mn>2</mn>
+							</msubsup>
+						</mrow>
+						<mo>)</mo>
+					</mrow>
+					<mrow>
+						<mo>(</mo>
+						<mrow>
+							<munderover>
+								<mo>∑<!-- ∑ --></mo>
+								<mrow class="MJX-TeXAtom-ORD">
+									<mi>k</mi>
+									<mo>=</mo>
+									<mn>1</mn>
+								</mrow>
+								<mi>n</mi>
+							</munderover>
+							<msubsup>
+								<mi>b</mi>
+								<mi>k</mi>
+								<mn>2</mn>
+							</msubsup>
+						</mrow>
+						<mo>)</mo>
+					</mrow>
+				</math> embedded inline with text, and showing placement of indicies for summations.
+			</template>
+		</d2l-html-block>
+	</div>
+
+</body>
+</html>

@@ -28,6 +28,8 @@ npm install @brightspace-ui/core
   * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible content
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Forms](components/form/): aggregate data for submission and validation
+  * [Hierarchical View](components/hierarchical-view/): nested container component that shows the active container
+  * [HTML Block](components/html-block/): component for rendering user-authored HTML
   * [Icons](components/icons/): iconography SVGs and web components
   * [Inputs](components/inputs/):
     * [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
