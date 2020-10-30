@@ -22,7 +22,7 @@ describe('d2l-html-block', () => {
 		{ name: 'empty', selector: '#empty' },
 		{ name: 'empty-template', selector: '#empty-template' },
 		{ name: 'typography', selector: '#typography' },
-		{ name: 'update', selector: '#update', action: selector => page.$eval(selector, elem => elem.innerHTML = '<template>after update</template>')},
+		{ name: 'update', selector: '#update', action: selector => page.$eval(selector, elem => elem.innerHTML = '<template>after update</template>') },
 		{ name: 'math (block)', selector: '#math-block' },
 		{ name: 'math (inline)', selector: '#math-inline' }
 	].forEach((info) => {
