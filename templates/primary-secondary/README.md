@@ -39,7 +39,7 @@ If no nodes are assigned to the `footer` slot, the footer is hidden.
 | `background-shading` | String, default: `'none'` | Controls whether the primary and secondary panels have shaded backgrounds. Can be one of `'primary'`, `'secondary'`, `'none'`. |
 | `primary-overflow` | String, default: `'default'` | Controls how the primary panel's contents overflow. Can be one of `'default'`, `'hidden'`. |
 | `resizable` | Boolean, default: `false` | Whether the panels are user resizable. This only applies to desktop users, mobile users will always be able to resize. |
-| `storage-key` | String | The key used to persist the divider's position to local storage. This key should not be shared between pages so that users can save different divider positions on different pages. If no key is provided, the template will fall back its default size. |
+| `storage-key` | String | The key used to persist the divider's position to local storage. This key should not be shared between appliactions so that users can save different divider positions for different applications. If no key is provided, the template will fall back its default size. |
 | `width-type` | String, default: `'fullscreen'` | Whether content fills the screen or not. When set to `normal`, the width of the template is constrained to `1230px`. Can be one of `'fullscreen'`, `'normal'`. |
 
 **Events:**
