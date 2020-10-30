@@ -6,11 +6,12 @@ import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { ThemeMixin } from '../../mixins/theme-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
  */
-class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))) {
+class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -41,6 +42,8 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 		return [ buttonStyles, visibleOnAncestorStyles,
 			css`
 				:host {
+					--d2l-button-icon-background-color: transparent;
+					--d2l-button-icon-background-color-hover: var(--d2l-color-gypsum);
 					--d2l-button-icon-border-radius: 0.3rem;
 					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 					--d2l-button-icon-min-height: calc(2rem + 2px);
@@ -51,9 +54,21 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				:host([hidden]) {
 					display: none;
 				}
+				:host([translucent]) {
+					--d2l-button-icon-background-color: rgba(0, 0, 0, 0.5);
+					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
+					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
+					--d2l-icon-fill-color: white;
+				}
+				:host([theme="dark"]) {
+					--d2l-button-icon-background-color: transparent;
+					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* ferrite @70% @90% */
+					--d2l-button-icon-focus-box-shadow: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
+					--d2l-icon-fill-color: var(--d2l-color-sylvite);
+				}
 
 				button {
-					background-color: transparent;
+					background-color: var(--d2l-button-icon-background-color);
 					border-color: transparent;
 					border-radius: var(--d2l-button-icon-border-radius);
 					font-family: inherit;
@@ -78,12 +93,12 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				button[disabled]:hover,
 				button[disabled]:focus,
 				:host([active]) button[disabled] {
-					background-color: transparent;
+					background-color: var(--d2l-button-icon-background-color);
 				}
 				button:hover,
 				button:focus,
 				:host([active]) button {
-					background-color: var(--d2l-color-gypsum);
+					background-color: var(--d2l-button-icon-background-color-hover);
 				}
 				button.focus-visible {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
@@ -95,30 +110,11 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 				}
 
 				:host([translucent]) button {
-					box-shadow: inset 0 0 0 2px transparent, inset 0 0 0 3px transparent;
 					transition-duration: 0.2s, 0.2s;
 					transition-property: background-color, box-shadow;
 				}
-				:host([translucent]) button,
-				:host([translucent]) button[disabled]:hover,
-				:host([translucent]) button[disabled]:focus,
-				:host([active][translucent]) button[disabled] {
-					background-color: rgba(0, 0, 0, 0.5);
-				}
 				:host([translucent][visible-on-ancestor]) button {
 					transition-duration: 0.4s, 0.4s;
-				}
-				:host([translucent]) .d2l-button-icon {
-					color: white;
-				}
-				:host([active][translucent]) button,
-				:host([translucent]) button:hover,
-				:host([translucent]) button:focus {
-					background-color: var(--d2l-color-celestine);
-					border: none;
-				}
-				:host([translucent]) button.focus-visible {
-					box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
 				}
 
 				button[disabled] {
@@ -137,7 +133,6 @@ class ButtonIcon extends ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement)
 
 	constructor() {
 		super();
-
 		this.translucent = false;
 	}
 

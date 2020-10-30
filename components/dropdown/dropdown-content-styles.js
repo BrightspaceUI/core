@@ -23,9 +23,9 @@ export const dropdownContentStyles = css`
 	:host([theme="dark"]) {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation-dark;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation-dark;
-		--d2l-dropdown-background-color: #292a2b; /* ferrite @ 50% */
+		--d2l-dropdown-background-color: #333536; /* ferrite @ 70% */
 		--d2l-dropdown-border-color: var(--d2l-color-ferrite);
-		--d2l-dropdown-foreground-color: var(--d2l-color-mica);
+		--d2l-dropdown-foreground-color: var(--d2l-color-sylvite);
 		--d2l-dropdown-shadow-color: rgba(0, 0, 0, 1);
 		opacity: 0.9;
 	}
