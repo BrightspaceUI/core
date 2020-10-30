@@ -113,6 +113,9 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					transition-duration: 0.2s, 0.2s;
 					transition-property: background-color, box-shadow;
 				}
+				:host([translucent][visible-on-ancestor]) button {
+					transition-duration: 0.4s, 0.4s;
+				}
 
 				button[disabled] {
 					cursor: default;
