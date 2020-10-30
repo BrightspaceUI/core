@@ -11,6 +11,10 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const desktopMinSize = 320;
 
+const desktopStepDelta = 80; // try to make each keyboard step move 80px
+const desktopMinSteps = 2; // min number of keyboard presses to get from min size to max size
+const desktopMaxSteps = 8; // min number of keyboard presses to get from min size to max size
+
 const keyCodes = Object.freeze({
 	LEFT: 37,
 	UP: 38,
@@ -115,7 +119,9 @@ class DesktopKeyboardResizer extends Resizer {
 				secondaryWidth = 0;
 			}
 		} else {
-			const delta = (this.contentBounds.maxWidth - this.contentBounds.minWidth) / 6;
+			const steps = clamp(Math.round((this.contentBounds.maxWidth - this.contentBounds.minWidth) / desktopStepDelta), desktopMinSteps, desktopMaxSteps);
+			const delta = (this.contentBounds.maxWidth - this.contentBounds.minWidth) / steps;
+
 			const direction = e.keyCode === leftKeyCode ? 1 : -1;
 			const desiredWidth = this.panelSize + delta * direction;
 			const desiredSteppedWidth = this.contentBounds.minWidth + delta * Math.round((desiredWidth - this.contentBounds.minWidth) / delta);
