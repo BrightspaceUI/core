@@ -1,7 +1,5 @@
 # HTML Block
 
-## d2l-html-block
-
 The `d2l-html-block` element is a web component for displaying user-authored HTML. It includes styles for headings, lists, anchors and other elements.  In addition, it provides integration with MathJax for rendering MathML.
 
 ```html
