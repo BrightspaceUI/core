@@ -21,6 +21,7 @@ describe('d2l-html-block', () => {
 	[
 		{ name: 'empty', selector: '#empty' },
 		{ name: 'empty-template', selector: '#empty-template' },
+		{ name: 'no-template', selector: '#no-template' },
 		{ name: 'typography', selector: '#typography' },
 		{ name: 'update', selector: '#update', action: selector => page.$eval(selector, elem => elem.innerHTML = '<template>after update</template>') },
 		{ name: 'math (block)', selector: '#math-block' },
