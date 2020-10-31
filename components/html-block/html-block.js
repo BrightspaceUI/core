@@ -270,8 +270,10 @@ class HtmlBlock extends LitElement {
 				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
 
 			if (this._templateObserver) this._templateObserver.disconnect();
-			this._templateObserver = new MutationObserver(() => stampHTML(template));
-			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+			if (template) {
+				this._templateObserver = new MutationObserver(() => stampHTML(template));
+				this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+			}
 
 			stampHTML(template);
 
