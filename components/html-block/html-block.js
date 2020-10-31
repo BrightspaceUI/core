@@ -139,6 +139,9 @@ class HtmlBlock extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
+			::slotted(*) {
+				display: none;
+			}
 			h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 				font-weight: bold;
 			}
