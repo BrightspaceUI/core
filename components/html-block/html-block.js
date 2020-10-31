@@ -231,9 +231,7 @@ class HtmlBlock extends LitElement {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._templateObserver) {
-			this._templateObserver.disconnect();
-		}
+		if (this._templateObserver) this._templateObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
