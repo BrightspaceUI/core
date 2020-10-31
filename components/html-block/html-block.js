@@ -229,6 +229,13 @@ class HtmlBlock extends LitElement {
 		`;
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._templateObserver) {
+			this._templateObserver.disconnect();
+		}
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -236,11 +243,7 @@ class HtmlBlock extends LitElement {
 
 		this.shadowRoot.innerHTML = '<div class="d2l-html-block-rendered"></div><slot></slot>';
 
-		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
-
-			const template = e.target.assignedNodes({ flatten: true })
-				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
-
+		const stampHTML = async template => {
 			const fragment = template ? document.importNode(template.content, true) : null;
 			if (fragment) {
 
@@ -261,6 +264,18 @@ class HtmlBlock extends LitElement {
 			} else {
 				this._renderContainer.innerHTML = '';
 			}
+		};
+
+		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
+
+			const template = e.target.assignedNodes({ flatten: true })
+				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
+
+			if (this._templateObserver) this._templateObserver.disconnect();
+			this._templateObserver = new MutationObserver(() => stampHTML(template));
+			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+
+			stampHTML(template);
 
 		});
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');

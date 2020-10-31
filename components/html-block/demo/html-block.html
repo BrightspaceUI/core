@@ -290,15 +290,22 @@
 		</d2l-demo-page>
 
 		<script type="module">
-			import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 			import { html, LitElement } from 'lit-element/lit-element.js';
+			import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 			class SomeComponent extends LitElement {
 
+				static get properties() {
+					return {
+						_htmlSnippets: { type: Array },
+						_updateCount: { type: Number }
+					};
+				}
+
 				constructor() {
 					super();
-					this._html = `
-						<div>An equation...
+					this._htmlSnippets = [
+						`<div>An equation...
 							<math xmlns="http://www.w3.org/1998/Math/MathML">
 								<msqrt>
 									<mn>3</mn>
@@ -389,14 +396,29 @@
 									<mo>)</mo>
 								</mrow>
 							</math> and other symbols.
-						</div>`;
+						</div>`,
+						'The wizard quickly jinxed the gnomes before they vaporized.',
+						'A quick movement of the enemy will jeopardize six gunboats.',
+						'Grumpy wizards make a toxic brew for the jovial queen.',
+						'Painful zombies quickly watch a jinxed graveyard.',
+						'Jackie will budget for the most expensive zoology equipment.',
+						'No more updates for you.'
+					];
+					this._updateCount = 0;
 				}
 
 				render() {
-					return html`<d2l-html-block>
-						<template>${unsafeHTML(this._html)}</template>
-					</d2l-html-block>`;
+					return html`
+						<d2l-html-block>
+							<template>${unsafeHTML(this._htmlSnippets[this._updateCount])}</template>
+						</d2l-html-block>
+						<button @click="${this._updateTemplateContent}" ?disabled="${this._updateCount === 6}">update content</button>`;
 				}
+
+				_updateTemplateContent() {
+					if (this._updateCount < 6) this._updateCount += 1;
+				}
+
 			}
 			customElements.define('d2l-some-component', SomeComponent);
 		</script>
