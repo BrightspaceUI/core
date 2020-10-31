@@ -232,39 +232,38 @@ class HtmlBlock extends LitElement {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if (!this._renderContainer) {
+		if (this._renderContainer) return;
 
-			this.shadowRoot.innerHTML = '<div class="d2l-html-block-rendered"></div><slot></slot>';
+		this.shadowRoot.innerHTML = '<div class="d2l-html-block-rendered"></div><slot></slot>';
 
-			this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
+		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
 
-				const template = e.target.assignedNodes({ flatten: true })
-					.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
+			const template = e.target.assignedNodes({ flatten: true })
+				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
 
-				const fragment = template ? document.importNode(template.content, true) : null;
-				if (fragment) {
+			const fragment = template ? document.importNode(template.content, true) : null;
+			if (fragment) {
 
-					const hasMath = !!fragment.querySelector('math');
+				const hasMath = !!fragment.querySelector('math');
 
-					const temp = document.createElement('div');
-					temp.appendChild(fragment);
-					const fragmentHTML = temp.innerHTML;
+				const temp = document.createElement('div');
+				temp.appendChild(fragment);
+				const fragmentHTML = temp.innerHTML;
 
-					if (hasMath) {
-						await loadMathJax();
-						this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
-						window.MathJax.typesetShadow(this.shadowRoot);
-					} else {
-						this._renderContainer.innerHTML = fragmentHTML;
-					}
-
+				if (hasMath) {
+					await loadMathJax();
+					this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
+					window.MathJax.typesetShadow(this.shadowRoot);
 				} else {
-					this._renderContainer.innerHTML = '';
+					this._renderContainer.innerHTML = fragmentHTML;
 				}
 
-			});
-			this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		}
+			} else {
+				this._renderContainer.innerHTML = '';
+			}
+
+		});
+		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
 
 	}
 
