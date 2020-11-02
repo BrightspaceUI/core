@@ -139,6 +139,9 @@ class HtmlBlock extends LitElement {
 			:host([hidden]) {
 				display: none;
 			}
+			::slotted(*) {
+				display: none;
+			}
 			h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 				font-weight: bold;
 			}
@@ -226,42 +229,56 @@ class HtmlBlock extends LitElement {
 		`;
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._templateObserver) this._templateObserver.disconnect();
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if (!this._renderContainer) {
+		if (this._renderContainer) return;
 
-			this.shadowRoot.innerHTML = '<div class="d2l-html-block-rendered"></div><slot></slot>';
+		this.shadowRoot.innerHTML = '<div class="d2l-html-block-rendered"></div><slot></slot>';
 
-			this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
+		const stampHTML = async template => {
+			const fragment = template ? document.importNode(template.content, true) : null;
+			if (fragment) {
 
-				const template = e.target.assignedNodes({ flatten: true })
-					.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
+				const hasMath = !!fragment.querySelector('math');
 
-				const fragment = template ? document.importNode(template.content, true) : null;
-				if (fragment) {
+				const temp = document.createElement('div');
+				temp.appendChild(fragment);
+				const fragmentHTML = temp.innerHTML;
 
-					const hasMath = !!fragment.querySelector('math');
-
-					const temp = document.createElement('div');
-					temp.appendChild(fragment);
-					const fragmentHTML = temp.innerHTML;
-
-					if (hasMath) {
-						await loadMathJax();
-						this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
-						window.MathJax.typesetShadow(this.shadowRoot);
-					} else {
-						this._renderContainer.innerHTML = fragmentHTML;
-					}
-
+				if (hasMath) {
+					await loadMathJax();
+					this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
+					window.MathJax.typesetShadow(this.shadowRoot);
 				} else {
-					this._renderContainer.innerHTML = '';
+					this._renderContainer.innerHTML = fragmentHTML;
 				}
 
-			});
-			this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-		}
+			} else {
+				this._renderContainer.innerHTML = '';
+			}
+		};
+
+		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
+
+			const template = e.target.assignedNodes({ flatten: true })
+				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
+
+			if (this._templateObserver) this._templateObserver.disconnect();
+			if (template) {
+				this._templateObserver = new MutationObserver(() => stampHTML(template));
+				this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+			}
+
+			stampHTML(template);
+
+		});
+		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
 
 	}
 
