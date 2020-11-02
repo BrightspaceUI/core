@@ -66,7 +66,7 @@
     "karma-sauce-launcher": "^2",
     "lit-analyzer": "^1",
     "mocha": "^8",
-    "node-sass": "^4",
+    "node-sass": "^5",
     "puppeteer": "^5",
     "semantic-release": "^17",
     "sinon": "^9",
