@@ -2,6 +2,7 @@ import '../../components/colors/colors.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -193,7 +194,6 @@ class DesktopMouseResizer extends Resizer {
 	_onResizeEnd() {
 		if (this._isResizing) {
 			this._isResizing = false;
-			this._target.blur();
 			this.dispatchResizeEnd();
 		}
 	}
@@ -346,7 +346,6 @@ class MobileMouseResizer extends Resizer {
 	_onMouseUp() {
 		if (this._isResizing) {
 			this._isResizing = false;
-			this._target.blur();
 			this.dispatchResizeEnd();
 		}
 	}
@@ -462,7 +461,7 @@ class MobileTouchResizer extends Resizer {
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
  */
-class TemplatePrimarySecondary extends RtlMixin(LitElement) {
+class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -577,45 +576,37 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			:host([resizable]) [data-is-collapsed] aside {
 				display: none;
 			}
-			.d2l-template-primary-secondary-divider,
-			.d2l-template-primary-secondary-divider-handle-mobile {
-				transition: background-color 200ms;
-			}
 			.d2l-template-primary-secondary-divider {
 				background-color: var(--d2l-color-mica);
 				flex: none;
 				outline: none;
 				position: relative;
-				transition: box-shadow 200ms;
 				width: 1px;
 				z-index: 1;
 			}
 			.d2l-template-primary-secondary-divider-handle {
-				background-color: transparent;
-				border-radius: 0.05rem;
-				box-sizing: border-box;
 				display: none;
-				height: 1.6rem;
-				left: -0.1rem;
-				padding: 0 0.2rem;
 				position: absolute;
-				top: calc(50% - 0.8rem);
-				width: 0.65rem;
+				top: calc(50%);
+				width: 100%;
 			}
 			:host([resizable]) .d2l-template-primary-secondary-divider {
 				background-color: var(--d2l-color-gypsum);
 				cursor: ew-resize;
 				width: 0.45rem;
 			}
-			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
-			:host([resizable]) .d2l-template-primary-secondary-divider:focus {
-				background-color: var(--d2l-color-mica);
+			:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider,
+			:host([resizable][dir="rtl"]) [data-is-expanded] .d2l-template-primary-secondary-divider {
+				cursor: w-resize;
+			}
+			:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider,
+			:host([resizable][dir="rtl"]) [data-is-collapsed] .d2l-template-primary-secondary-divider {
+				cursor: e-resize;
 			}
 			:host([resizable]) .d2l-template-primary-secondary-divider-handle {
 				align-items: center;
-				cursor: inherit;
 				display: flex;
-				justify-content: space-between;
+				justify-content: center;
 			}
 			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider,
 			:host([resizable][dir="rtl"]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider {
@@ -625,21 +616,10 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			:host([resizable][dir="rtl"]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider {
 				box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.15);
 			}
-			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider:hover,
-			:host([resizable][dir="rtl"]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider:hover {
-				box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.25);
-			}
-			:host([resizable]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider:hover,
-			:host([resizable][dir="rtl"]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider:hover {
-				box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.25);
-			}
 			.d2l-template-primary-secondary-divider-handle-desktop {
 				align-items: center;
 				display: flex;
 				justify-content: center;
-				left: calc((0.65rem - 2.1rem) / 2);
-				min-height: 2.1rem;
-				min-width: 2.1rem;
 				position: absolute;
 			}
 			.d2l-template-primary-secondary-divider-handle-left,
@@ -649,10 +629,10 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				position: absolute;
 			}
 			.d2l-template-primary-secondary-divider-handle-left {
-				left: -0.8rem;
+				left: -1rem;
 			}
 			.d2l-template-primary-secondary-divider-handle-right {
-				right: -0.8rem;
+				right: -1rem;
 			}
 			.d2l-template-primary-secondary-divider-handle-line {
 				display: flex;
@@ -668,12 +648,8 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 				display: inline-block;
 				width: 0.1rem;
 			}
-			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle {
-				box-shadow: 0 0 0 0.1rem var(--d2l-color-celestine);
-				outline: none;
-			}
-			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-right,
-			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-left {
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-right,
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
 			}
 			:host(:not([dir="rtl"])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
@@ -694,8 +670,36 @@ class TemplatePrimarySecondary extends RtlMixin(LitElement) {
 			header, footer {
 				z-index: 2; /* ensures the footer box-shadow is over main areas with background colours set */
 			}
+
+			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
+			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
+			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:focus,
+			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:hover {
+				background-color: var(--d2l-color-celestine);
+				box-shadow: none;
+			}
+			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::after,
+			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
+				background-color: white;
+			}
+
+			.d2l-template-primary-secondary-divider,
+			.d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider-handle-line::after {
+				transition: background-color 100ms, box-shadow 100ms;
+			}
+			.d2l-template-primary-secondary-divider:hover,
+			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
+				transition-delay: 100ms;
+			}
+
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-template-primary-secondary-divider,
+				.d2l-template-primary-secondary-divider-handle-line::before,
+				.d2l-template-primary-secondary-divider-handle-line::after,
 				.d2l-template-primary-secondary-divider-handle-mobile {
 					transition: none;
 				}
