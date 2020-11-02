@@ -2,7 +2,7 @@
 
 The `d2l-html-block` element is a web component for displaying user-authored HTML. It includes styles for headings, lists, anchors and other elements.  In addition, it provides integration with MathJax for rendering MathML.
 
-Place the user-authored HTML within a `template` and the `d2l-html-block` will stamp the content into its local DOM where styles are be applied, and math typeset.
+Place the user-authored HTML within a `template` and the `d2l-html-block` will stamp the content into its local DOM where styles will be applied, and math typeset.
 
 **Important**: user-authored HTML must be trusted or properly sanitized!
 
