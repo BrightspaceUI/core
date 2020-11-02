@@ -14,7 +14,10 @@ export const FocusVisiblePolyfillMixin = superclass => class extends superclass 
 		}
 
 		window.addEventListener('focus-visible-polyfill-ready', () => {
-			window.applyFocusVisiblePolyfill(this.shadowRoot);
+			// somehow it's occasionally still not available
+			if (this.shadowRoot && window.applyFocusVisiblePolyfill) {
+				window.applyFocusVisiblePolyfill(this.shadowRoot);
+			}
 		}, { once: true });
 
 		if (!polyfillLoading) {
