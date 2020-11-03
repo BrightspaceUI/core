@@ -686,11 +686,13 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			}
 
 			.d2l-template-primary-secondary-divider,
+			.d2l-template-primary-secondary-divider-handle-mobile,
 			.d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider-handle-line::after {
 				transition: background-color 100ms, box-shadow 100ms;
 			}
 			.d2l-template-primary-secondary-divider:hover,
+			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-mobile,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
 				transition-delay: 100ms;
@@ -735,6 +737,15 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					height: 0.1rem;
 					width: 100%;
 				}
+				:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider,
+				:host(:not([resizable])) [data-is-collapsed] .d2l-template-primary-secondary-divider {
+					cursor: n-resize;
+				}
+				:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider,
+				:host(:not([resizable])) [data-is-expanded] .d2l-template-primary-secondary-divider {
+					cursor: s-resize;
+				}
+
 				/* Attribute selector is only used to increase specificity */
 				:host([resizable]) .d2l-template-primary-secondary-divider:hover,
 				:host(:not([resizable])) .d2l-template-primary-secondary-divider:hover,
@@ -774,13 +785,13 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					height: 1rem;
 					width: 2.2rem;
 				}
-				.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle {
+				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle {
 					box-shadow: none;
 					height: 1.2rem;
 					right: 17px;
 					width: 2.6rem;
 				}
-				:host([dir="rtl"]) .d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle {
+				:host([dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle {
 					left: 17px;
 					right: auto;
 				}
@@ -788,7 +799,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					color: white;
 					display: block;
 				}
-				.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-mobile {
+				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-mobile {
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
 					right: 0.2rem;
 				}
@@ -994,10 +1005,11 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 		if (this._size !== 0) {
 			if (this._isMobile) {
 				this._size = clamp(this._size, this._contentBounds.minHeight, this._contentBounds.maxHeight);
+				this._isExpanded = this._size === this._contentBounds.maxHeight;
 			} else {
 				this._size = clamp(this._size, this._contentBounds.minWidth, this._contentBounds.maxWidth);
+				this._isExpanded = this._size === this._contentBounds.maxWidth;
 			}
-			this._isExpanded = this._size === this._contentBounds.maxWidth;
 		}
 		for (const resizer of this._resizers) {
 			resizer.contentRect = contentRect;
@@ -1033,7 +1045,11 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			} else if (reduceMotion) {
 				this._isCollapsed = true;
 			}
-			this._isExpanded = e.size === this._contentBounds.maxWidth;
+			if (this._isMobile) {
+				this._isExpanded = e.size === this._contentBounds.maxHeight;
+			} else {
+				this._isExpanded = e.size === this._contentBounds.maxWidth;
+			}
 			this._animateResize = !reduceMotion && e.animateResize;
 			this._isHandleTap = false;
 			this._size = e.size;
