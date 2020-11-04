@@ -14,7 +14,9 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Name to use for download
+			 * Prompts the user to save the linked URL instead of navigating to it.
+			 * Must be to a resource on the same origin.
+			 * Can be used with or without a value, when set the value becomes the filename.
 			 */
 			download: { type: String },
 			/**

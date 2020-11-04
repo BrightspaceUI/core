@@ -28,7 +28,7 @@ const linkFixture = html`
 			<button class="d2l-dropdown-opener">Open it!</button>
 			<d2l-dropdown-menu id="dropdown">
 				<d2l-menu label="Helpful Links">
-					<d2l-menu-item-link text="menu.js (View)" href="../../menu/menu.js" id="first-item"></d2l-menu-item-link>
+					<d2l-menu-item-link text="menu.js (View)" href="#" id="first-item"></d2l-menu-item-link>
 				</d2l-menu>
 			</d2l-dropdown-menu>
 		</d2l-dropdown>
