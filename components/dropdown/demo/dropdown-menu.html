@@ -11,6 +11,7 @@
 		import '../../demo/demo-page.js';
 		import '../../menu/menu.js';
 		import '../../menu/menu-item.js';
+		import '../../menu/menu-item-link.js';
 		import '../../menu/menu-item-radio.js';
 		import '../dropdown.js';
 		import '../dropdown-menu.js';
@@ -148,6 +149,22 @@
 							<d2l-menu-item-radio text="Chapter 8" value=8></d2l-menu-item-radio>
 							<d2l-menu-item-radio text="Chapter 9" value=9></d2l-menu-item-radio>
 							<d2l-menu-item-radio text="Chapter 10" value=10></d2l-menu-item-radio>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>With Links</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<button class="d2l-dropdown-opener">Open it!</button>
+					<d2l-dropdown-menu no-padding-footer>
+						<div slot="header" style="font-weight: bold; width: 100%; text-align: center;">Helpful Links</div>
+						<d2l-menu>
+							<d2l-menu-item-link text="menu.js (View)" href="../../menu/menu.js"></d2l-menu-item-link>
+							<d2l-menu-item-link text="menu.js (Download)" href="../../menu/menu.js" target="_blank" download></d2l-menu-item-link>
 						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>

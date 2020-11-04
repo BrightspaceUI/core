@@ -14,6 +14,10 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Name to use for download
+			 */
+			download: { type: String },
+			/**
 			 * The url the menu item link navigates to
 			 */
 			href: { type: String },
@@ -57,7 +61,7 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 	render() {
 		const rel = this.target ? 'noreferrer noopener' : undefined;
 		return html`
-			<a href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">
+			<a download="${ifDefined(this.download)}" href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">
 				<div class="d2l-menu-item-text">${this.text}</div>
 				<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
 			</a>

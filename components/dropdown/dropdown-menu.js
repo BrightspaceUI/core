@@ -102,7 +102,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 	}
 
 	_onSelect(e) {
-		if (e.target.tagName !== 'D2L-MENU-ITEM') {
+		if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK'].indexOf(e.target.tagName) < 0) {
 			return;
 		}
 		this.close();
