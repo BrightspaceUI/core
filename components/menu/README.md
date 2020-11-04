@@ -105,6 +105,7 @@ The link menu item, `d2l-menu-item-link`, is used for navigating.
 
 | Property | Type | Description |
 |--|--|--|
+| `download` | String | If the attribute is provided, it will prompt the user to download the resource instead of navigating to it. Additionally, if the attribute is provided with a value, that value will be used for the filename. |
 | `href` | String, required | The URL the menu item link navigates to |
 | `text` | String, required | Text displayed by the menu item |
 | `disabled` | Boolean | Disables the menu item |
