@@ -29,7 +29,15 @@ describe('d2l-alert', () => {
 		'rtl',
 		'hidden',
 		'no-padding',
-		'no-padding-rtl'
+		'no-padding-rtl',
+		'icon',
+		'icon-rtl',
+		'icon-button',
+		'icon-button-rtl',
+		'icon-no-padding',
+		'icon-no-padding-rtl',
+		'icon-button-no-padding',
+		'icon-button-no-padding-rtl'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;

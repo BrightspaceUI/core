@@ -1,6 +1,7 @@
 import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../colors/colors.js';
+import '../icons/icon.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -26,6 +27,11 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * Gives the alert a close button that will close the alert when clicked
 			 */
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
+
+			/**
+			 * Icon to display before the main text
+			 */
+			icon: { type: String },
 
 			/**
 			 * Opt out of default padding/whitespace around the alert
@@ -102,18 +108,23 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			.d2l-alert-text-with-actions {
 				padding-right: 0.9rem;
 			}
+			.d2l-alert-text-with-icon {
+				padding-left: 0.5rem;
+			}
 
 			:host([dir="rtl"]) .d2l-alert-text-with-actions {
 				padding-left: 0.9rem;
 				padding-right: 1.5rem;
 			}
-			:host([no-padding]) .d2l-alert-text,
-			:host([no-padding]) .d2l-alert-text-with-actions {
+			:host([no-padding]) .d2l-alert-text {
 				padding: 0 0 0 0.3rem;
 			}
-			:host([dir="rtl"][no-padding]) .d2l-alert-text,
-			:host([dir="rtl"][no-padding]) .d2l-alert-text-with-actions {
+			:host([dir="rtl"][no-padding]) .d2l-alert-text {
 				padding: 0 0.3rem 0 0;
+			}
+			:host([dir="rtl"]) .d2l-alert-text-with-icon {
+				padding-left: 1.5rem;
+				padding-right: 0.5rem;
 			}
 
 			.d2l-alert-subtext {
@@ -129,6 +140,24 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 			:host([no-padding]) .d2l-alert-action {
 				margin: 0;
+			}
+
+			.d2l-alert-icon {
+				align-items: center;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding: 0.9rem 0 0.9rem 1.5rem;
+			}
+			:host([dir="rtl"]) .d2l-alert-icon {
+				padding-left: 0;
+				padding-right: 1.5rem;
+			}
+			:host([no-padding]) .d2l-alert-icon {
+				padding: 0 0 0 0.3rem;
+			}
+			:host([dir="rtl"][no-padding]) .d2l-alert-icon {
+				padding: 0 0.3rem 0 0;
 			}
 
 			@media (max-width: 615px) {
@@ -169,14 +198,20 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	render() {
 		const hasActions = this.buttonText && this.buttonText.length > 0  || this.hasCloseButton;
+		const hasIcon = !!this.icon;
 		const alertTextClasses = {
 			'd2l-alert-text': true,
 			'd2l-alert-text-with-actions': hasActions,
+			'd2l-alert-text-with-icon': hasIcon,
 			'd2l-body-standard': true
 		};
 
 		return html`
 			<div class="d2l-alert-highlight"></div>
+			${hasIcon ? html`
+				<div class="d2l-alert-icon">
+					<d2l-icon icon="${this.icon}"></d2l-icon>
+				</div>` : null}
 			<div class="${classMap(alertTextClasses)}">
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
