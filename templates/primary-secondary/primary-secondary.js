@@ -675,13 +675,21 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
 			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:focus,
 			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:hover {
-				background-color: var(--d2l-color-celestine);
+				background-color: var(--d2l-color-mica);
 				box-shadow: none;
+			}
+			:host([resizable]) .d2l-template-primary-secondary-divider.focus-visible,
+			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible {
+				background-color: var(--d2l-color-celestine);
 			}
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::after,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
+				background-color: var(--d2l-color-ferrite);
+			}
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: white;
 			}
 
