@@ -556,11 +556,16 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			[data-animate-resize] .d2l-template-primary-secondary-secondary-container {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
+			.d2l-template-primary-secondary-divider-shadow {
+				display: none;
+			}
 			aside {
 				max-height: 100%;
 				min-width: ${desktopMinSize}px;
-				-webkit-overflow-scrolling: touch;
 				overflow-y: auto;
+				position: relative;
+				-webkit-overflow-scrolling: touch;
+				z-index: 1;
 			}
 
 			/* prevent margin colapse on slotted children */
@@ -811,6 +816,14 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
 					right: 0.2rem;
 				}
+
+				.d2l-template-primary-secondary-divider-shadow {
+					box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
+					display: block;
+					height: 100%;
+					position: absolute;
+					width: 100%;
+				}
 			}
 		`;
 	}
@@ -920,6 +933,8 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 						</div>
 					</div>
 					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
+						<div class="d2l-template-primary-secondary-divider-shadow">
+						</div>
 						<aside>
 							<slot name="secondary"></slot>
 						</aside>
