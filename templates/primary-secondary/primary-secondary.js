@@ -24,7 +24,7 @@ const keyCodes = Object.freeze({
 });
 
 function isMobile() {
-	return matchMedia('only screen and (max-width: 768px)').matches;
+	return matchMedia('only screen and (max-width: 767px)').matches;
 }
 
 function clamp(val, min, max) {
@@ -714,7 +714,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					transition: none;
 				}
 			}
-			@media only screen and (max-width: 768px) {
+			@media only screen and (max-width: 767px) {
 
 				.d2l-template-primary-secondary-content {
 					flex-direction: column;
