@@ -14,7 +14,7 @@ If you're looking to submit form data via your own API calls or nest multiple fo
 
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/form/d2l-form-native.js';
+  import '@brightspace-ui/core/components/form/form-native.js';
 </script>
 <d2l-form-native>
   <d2l-input-text required label="Email" name="email" type="email"></d2l-input-text>

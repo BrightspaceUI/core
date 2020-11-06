@@ -15,7 +15,7 @@ If you're looking to emulate native form element submission, [`d2l-form-native`]
 
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/form/d2l-form.js';
+  import '@brightspace-ui/core/components/form/form.js';
 </script>
 <d2l-form>
   <d2l-input-text required label="Email" name="email" type="email"></d2l-input-text>
@@ -66,7 +66,7 @@ Form nesting will only consider descendants relative to the `d2l-form` that `sub
 
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/form/d2l-form.js';
+  import '@brightspace-ui/core/components/form/form.js';
 </script>
 <d2l-form id="root">
 	<div>
