@@ -24,7 +24,7 @@ const keyCodes = Object.freeze({
 });
 
 function isMobile() {
-	return matchMedia('only screen and (max-width: 768px)').matches;
+	return matchMedia('only screen and (max-width: 767px)').matches;
 }
 
 function clamp(val, min, max) {
@@ -556,11 +556,16 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			[data-animate-resize] .d2l-template-primary-secondary-secondary-container {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), height 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
+			.d2l-template-primary-secondary-divider-shadow {
+				display: none;
+			}
 			aside {
 				max-height: 100%;
 				min-width: ${desktopMinSize}px;
 				-webkit-overflow-scrolling: touch;
 				overflow-y: auto;
+				position: relative;
+				z-index: 1;
 			}
 
 			/* prevent margin colapse on slotted children */
@@ -675,13 +680,21 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
 			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:focus,
 			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:hover {
-				background-color: var(--d2l-color-celestine);
+				background-color: var(--d2l-color-mica);
 				box-shadow: none;
+			}
+			:host([resizable]) .d2l-template-primary-secondary-divider.focus-visible,
+			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider.focus-visible {
+				background-color: var(--d2l-color-celestine);
 			}
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::after,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
+				background-color: var(--d2l-color-ferrite);
+			}
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-line::after {
 				background-color: white;
 			}
 
@@ -706,7 +719,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					transition: none;
 				}
 			}
-			@media only screen and (max-width: 768px) {
+			@media only screen and (max-width: 767px) {
 
 				.d2l-template-primary-secondary-content {
 					flex-direction: column;
@@ -802,6 +815,14 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 				.d2l-template-primary-secondary-divider.focus-visible .d2l-template-primary-secondary-divider-handle-mobile {
 					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
 					right: 0.2rem;
+				}
+
+				.d2l-template-primary-secondary-divider-shadow {
+					box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
+					display: block;
+					height: 100%;
+					position: absolute;
+					width: 100%;
 				}
 			}
 		`;
@@ -912,6 +933,8 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 						</div>
 					</div>
 					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
+						<div class="d2l-template-primary-secondary-divider-shadow">
+						</div>
 						<aside>
 							<slot name="secondary"></slot>
 						</aside>

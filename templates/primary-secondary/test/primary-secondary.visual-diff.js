@@ -46,7 +46,7 @@ describe('d2l-template-primary-secondary', () => {
 
 		before(async() => {
 			browser = await puppeteer.launch();
-			page = await visualDiff.createPage(browser, { viewport: { width: 768, height: 2000 } });
+			page = await visualDiff.createPage(browser, { viewport: { width: 767, height: 2000 } });
 			await page.goto(`${visualDiff.getBaseUrl()}/templates/primary-secondary/test/primary-secondary-mobile.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
