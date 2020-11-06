@@ -1,5 +1,5 @@
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { findFormElements, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormMixin } from './form-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
@@ -34,6 +34,17 @@ class FormNative extends FormMixin(LitElement) {
 			 */
 			target: { type: String },
 		};
+	}
+
+	static get styles() {
+		return css`
+			:host {
+				display: block;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+		`;
 	}
 
 	constructor() {

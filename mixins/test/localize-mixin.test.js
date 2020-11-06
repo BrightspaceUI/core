@@ -212,7 +212,7 @@ describe('LocalizeMixin', () => {
 				setTimeout(() => {
 					expect(renderCount).to.equal(1);
 					done();
-				}, 300);
+				}, 500); // larger timeout for legacy-Edge
 			});
 		});
 

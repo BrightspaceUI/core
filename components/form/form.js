@@ -1,5 +1,5 @@
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
-import { html, LitElement } from 'lit-element/lit-element.js';
 import { FormMixin } from './form-mixin.js';
 
 /**
@@ -17,6 +17,17 @@ class Form extends FormMixin(LitElement) {
 			 */
 			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
 		};
+	}
+
+	static get styles() {
+		return css`
+			:host {
+				display: block;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+		`;
 	}
 
 	constructor() {
