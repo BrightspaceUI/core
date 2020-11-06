@@ -50,9 +50,6 @@ export const runAsync = directive((key, task, templates, options) => (part) => {
 			if (currentRunState.abortController !== undefined) {
 				currentRunState.abortController.abort();
 			}
-			// TODO(justinfagnani): This should be an AbortError, but it's not
-			// implemented yet
-			currentRunState.rejectPending(new Error());
 		}
 		const abortController = hasAbortController ? new AbortController() : undefined;
 		const abortSignal = hasAbortController ? abortController.signal : undefined;
