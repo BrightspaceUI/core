@@ -1,17 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - master
-      - '[0-9]+.x'
-      - '[0-9]+.[0-9]+.x'
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches:
-      - master
-      - '[0-9]+.x'
-      - '[0-9]+.[0-9]+.x'
+on: [push, pull_request]
 
 jobs:
   lint:
