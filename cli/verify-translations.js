@@ -3,7 +3,7 @@ const chalk = require('chalk'),
 	path = require('path');
 
 const langs = ['ar', 'cy', 'da', 'de', 'es', 'es-es', 'fr', 'fr-fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-tw', 'zh'];
-const langTermsPath = path.join(__dirname, '../lang');
+const langTermsPath = path.join(process.cwd(), 'lang');
 
 function _parseFile(fileName) {
 	const file = fs.readFileSync(`${langTermsPath}/${fileName}.js`).toString();
@@ -46,11 +46,13 @@ function verify() {
 	});
 }
 
-try {
-	verify();
-	process.exit(0);
-} catch (err) {
-	console.error(chalk.red(err));
-	console.groupEnd();
-	process.exit(1);
+module.exports.verifyTranslations = () => {
+	try {
+		verify();
+		process.exit(0);
+	} catch (err) {
+		console.error(chalk.red(err));
+		console.groupEnd();
+		process.exit(1);
+	}
 }
