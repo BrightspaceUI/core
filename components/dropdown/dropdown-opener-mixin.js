@@ -113,7 +113,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onKeyPress(e) {
-		if (![13, 32].includes(e.keyCode)) return;
+		if (e.keyCode !== 13 && e.keyCode !== 32) return;
 		if (this.noAutoOpen) return;
 		this.toggleOpen(true);
 	}
