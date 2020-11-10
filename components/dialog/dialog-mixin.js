@@ -45,7 +45,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_parentDialog: { type: Object },
 			_state: { type: String, reflect: true },
 			_top: { type: Number },
-			_width: { type: Number }
+			_width: { type: Number },
+			_useNative: { type: Boolean }
 		};
 	}
 
@@ -54,6 +55,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
+		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._height = 0;
 		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
 		this._parentDialog = null;
@@ -71,9 +73,18 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	async connectedCallback() {
 		super.connectedCallback();
+		if (this._useNative) {
+			window.addEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
+		}
+
 		if (!window.ifrauclient) return;
 		const ifrauClient = await window.ifrauclient().connect();
 		this._ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		window.removeEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
 	}
 
 	async updated(changedProperties) {
@@ -256,6 +267,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			e.stopPropagation();
 			e.preventDefault();
 		}
+	}
+
+	_handleMvcDialogOpen() {
+		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
+		// so we need to opt out of native dialogs if a non-native nested dialog is launched
+		this._useNative = false;
 	}
 
 	_open() {
