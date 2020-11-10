@@ -45,7 +45,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_parentDialog: { type: Object },
 			_state: { type: String, reflect: true },
 			_top: { type: Number },
-			_width: { type: Number }
+			_width: { type: Number },
+			_useNative: { type: Boolean }
 		};
 	}
 
@@ -272,7 +273,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
 		// so we need to opt out of native dialogs if a non-native nested dialog is launched
 		this._useNative = false;
-		this.requestUpdate();
 	}
 
 	_open() {
