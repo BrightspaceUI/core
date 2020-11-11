@@ -8,7 +8,10 @@ const sauceLabsLauncher = createSauceLabsLauncher({
 
 const sharedCapabilities = {
 	'sauce:options': {
-		name: 'Unit Tests',
+		name: 'Brightspace UI Core Unit Tests',
+		build: `core ${process.env.GITHUB_REF ?? 'local'} build ${
+			process.env.GITHUB_RUN_NUMBER ?? ''
+		}`,
 		idleTimeout: 500
 	}
 };
@@ -19,27 +22,6 @@ const customLaunchers = [
 		browserName: 'chrome',
 		browserVersion: 'latest',
 		platformName: 'macOS 10.15',
-	}),
-
-	sauceLabsLauncher({
-		...sharedCapabilities,
-		browserName: 'firefox',
-		browserVersion: 'latest',
-		platformName: 'macOS 10.15',
-	}),
-
-	sauceLabsLauncher({
-		...sharedCapabilities,
-		browserName: 'safari',
-		browserVersion: 'latest',
-		platformName: 'macOS 10.15',
-	}),
-
-	sauceLabsLauncher({
-		...sharedCapabilities,
-		browserName: 'microsoftedge',
-		browserVersion: 'latest',
-		platformName: 'Windows 10',
 	})
 ];
 
