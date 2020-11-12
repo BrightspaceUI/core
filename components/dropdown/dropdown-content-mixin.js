@@ -212,8 +212,11 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('resize', this.__onResize);
-		document.body.removeEventListener('focus', this.__onAutoCloseFocus, true);
-		document.body.removeEventListener('click', this.__onAutoCloseClick, true);
+		if (document.body) {
+			// DE41322: document.body can be null in some scenarios
+			document.body.removeEventListener('focus', this.__onAutoCloseFocus, true);
+			document.body.removeEventListener('click', this.__onAutoCloseClick, true);
+		}
 		clearDismissible(this.__dismissibleId);
 		this.__dismissibleId = null;
 	}
