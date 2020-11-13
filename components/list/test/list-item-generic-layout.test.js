@@ -160,7 +160,7 @@ describe('d2l-list-item-generic-layout', () => {
 				initial: () => layout.querySelector('.d2l-input-checkbox'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(layout, 'focusin'),
-				expected: () => layout.querySelector('[slot="content-action"]')
+				expected: () => layout.querySelector('[slot="content-action"] a')
 			},
 			{
 				key: { name: 'ArrowRight', code: keyCodes.RIGHT },
@@ -175,7 +175,7 @@ describe('d2l-list-item-generic-layout', () => {
 				key: { name: 'ArrowLeft', code: keyCodes.LEFT },
 				desc: 'focuses the previous item in the previous area',
 				itemKey: 'item1',
-				initial: () => layout.querySelector('[slot="content-action"]'),
+				initial: () => layout.querySelector('[slot="content-action"] a'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(layout, 'focusin'),
 				expected: () => layout.querySelector('.d2l-input-checkbox')
@@ -193,11 +193,11 @@ describe('d2l-list-item-generic-layout', () => {
 				key: { name: 'ArrowUp', code: keyCodes.UP },
 				desc: 'focuses the item in the same cell of the above row',
 				itemKey: 'item2',
-				initial: () => layout.querySelector('[slot="content-action"]'),
+				initial: () => layout.querySelector('[slot="content-action"] a'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
 				expected: () => el.querySelector('[key="item1"]')
-					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"]')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
 			},
 			{
 				key: { name: 'ArrowUp', code: keyCodes.UP },
@@ -221,11 +221,11 @@ describe('d2l-list-item-generic-layout', () => {
 				key: { name: 'ArrowDown', code: keyCodes.DOWN },
 				desc: 'focuses item in same cell of below row',
 				itemKey: 'item1',
-				initial: () => layout.querySelector('[slot="content-action"]'),
+				initial: () => layout.querySelector('[slot="content-action"] a'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
 				expected: () => el.querySelector('[key="item2"]')
-					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"]')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
 			},
 			{
 				key: { name: 'ArrowDown', code: keyCodes.DOWN },
@@ -373,7 +373,7 @@ describe('d2l-list-item-generic-layout', () => {
 					key: { name: 'ArrowUp', code: keyCodes.UP },
 					desc: 'does not move focus when above row does not contain same cell',
 					itemKey: 'item5',
-					initial: () => layout.querySelector('[slot="content-action"]'),
+					initial: () => layout.querySelector('[slot="content-action"] a'),
 					activeElement: getComposedActiveElement
 				},
 				{
@@ -387,7 +387,7 @@ describe('d2l-list-item-generic-layout', () => {
 					key: { name: 'ArrowDown', code: keyCodes.DOWN },
 					desc: 'does not move focus when above row does not contain same cell',
 					itemKey: 'item3',
-					initial: () => layout.querySelector('[slot="content-action"]'),
+					initial: () => layout.querySelector('[slot="content-action"] a'),
 					activeElement: getComposedActiveElement
 				},
 				{

@@ -13,6 +13,7 @@
 			import '../../typography/typography.js';
 			import '../list.js';
 			import '../list-item.js';
+			import '../list-item-button.js';
 			import '../list-item-content.js';
 		</script>
 		<title>d2l-list</title>
@@ -146,6 +147,19 @@
 							<div slot="supporting-info">Secondary info for item 1</div>
 						</d2l-list-item-content>
 					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="button">
+				<d2l-list>
+					<d2l-list-item-button>
+						<d2l-list-item-content>
+							<div>Item 1</div>
+							<div slot="supporting-info">Secondary info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item-button>
 				</d2l-list>
 			</div>
 		</div>
