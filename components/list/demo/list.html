@@ -18,7 +18,6 @@
 			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
-			import './list-demo-name-image.js';
 		</script>
 		<style>
 			img {
@@ -39,33 +38,6 @@
 						<d2l-list-item>
 							<d2l-list-item-content>
 								<div>Identify categories of physical activities</div>
-								<div slot="supporting-info">Specific Expectation A1.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="supporting-info">Specific Expectation B2.1</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-								<div slot="supporting-info">Specific Expectation B2.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Basic List (with secondary and supporting information slots)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Identify categories of physical activities</div>
 								<div slot="secondary">Secondary Information</div>
 								<div slot="supporting-info">Specific Expectation A1.2</div>
 							</d2l-list-item-content>
@@ -88,261 +60,7 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Basic List (separators: between)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list separators="between">
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Identify categories of physical activities</div>
-								<div slot="supporting-info">Specific Expectation A1.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="supporting-info">Specific Expectation B2.1</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-								<div slot="supporting-info">Specific Expectation B2.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Basic List (separators: none)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list separators="none">
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Identify categories of physical activities</div>
-								<div slot="supporting-info">Specific Expectation A1.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="supporting-info">Specific Expectation B2.1</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-								<div slot="supporting-info">Specific Expectation B2.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Basic List (extend separators)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list extend-separators>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Identify categories of physical activities</div>
-								<div slot="supporting-info">Specific Expectation A1.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="supporting-info">Specific Expectation B2.1</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-item-content>
-								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-								<div slot="supporting-info">Specific Expectation B2.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (with secondary actions)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item>
-							<d2l-list-demo-name-image color="purple" letters="BN" slot="illustration"></d2l-list-demo-name-image>
-							<d2l-list-item-content>
-								<div>Byron Novak</div>
-								<div slot="supporting-info">bnovak</div>
-							</d2l-list-item-content>
-							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
-							</div>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-demo-name-image color="red" letters="DW" slot="illustration"></d2l-list-demo-name-image>
-							<d2l-list-item-content>
-								<div>Dimitri Watts</div>
-								<div slot="supporting-info">dwatts</div>
-							</d2l-list-item-content>
-							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
-							</div>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-demo-name-image color="teal" letters="PM" slot="illustration"></d2l-list-demo-name-image>
-							<d2l-list-item-content>
-								<div>Petra Macleod</div>
-								<div slot="supporting-info">pmacleod</div>
-							</d2l-list-item-content>
-							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
-							</div>
-						</d2l-list-item>
-						<d2l-list-item>
-							<d2l-list-demo-name-image color="grey" letters="YL" slot="illustration"></d2l-list-demo-name-image>
-							<d2l-list-item-content>
-								<div>Yvonne Lord</div>
-								<div slot="supporting-info">ylord</div>
-							</d2l-list-item-content>
-							<div slot="actions">
-								<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
-								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
-							</div>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (with illustration)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Introductory Earth Sciences</div>
-								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Engineering Materials for Energy Systems</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Geomorphology and GIS </div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (with button action)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item-button>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Introductory Earth Sciences</div>
-								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-						<d2l-list-item-button>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Engineering Materials for Energy Systems</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-						<d2l-list-item-button>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Geomorphology and GIS </div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (with href action)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item href="http://www.d2l.com">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Introductory Earth Sciences</div>
-								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item href="http://www.d2l.com">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Engineering Materials for Energy Systems</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item href="http://www.d2l.com">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Geomorphology and GIS </div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (selectable)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item selectable key="1">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Introductory Earth Sciences</div>
-								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item selectable key="2" selected>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Engineering Materials for Energy Systems</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item selectable key="3">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Geomorphology and GIS </div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (selectable with href action)</h2>
+			<h2>List (with all the stuff)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -353,6 +71,18 @@
 								<div>Introductory Earth Sciences</div>
 								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
 							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
@@ -360,6 +90,18 @@
 								<div>Engineering Materials for Energy Systems</div>
 								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="3">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
@@ -367,42 +109,24 @@
 								<div>Geomorphology and GIS </div>
 								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
 						</d2l-list-item>
 					</d2l-list>
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>List (selectable with button action)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item-button selectable key="1">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Introductory Earth Sciences</div>
-								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-						<d2l-list-item-button selectable key="2" selected>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Engineering Materials for Energy Systems</div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-						<d2l-list-item-button selectable key="3">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Geomorphology and GIS </div>
-								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (selectable with href action and grid-enabled)</h2>
+			<h2>List with Grid Actions</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -411,110 +135,61 @@
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Introductory Earth Sciences</div>
-								<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
 							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Engineering Materials for Energy Systems</div>
-								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com" selectable key="3">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>
 								<div>Geomorphology and GIS </div>
-								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
 						</d2l-list-item>
 					</d2l-list>
 				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (selectable with button action and grid-enabled)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list grid>
-						<d2l-list-item-button selectable key="1">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Introductory Earth Sciences</div>
-								<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-						<d2l-list-item-button selectable key="2" selected>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Engineering Materials for Energy Systems</div>
-								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-						<d2l-list-item-button selectable key="3">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Geomorphology and GIS </div>
-								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
-							</d2l-list-item-content>
-						</d2l-list-item-button>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>List (tooltips and dropdown menu)</h2>
-
-			<d2l-demo-snippet>
-				<d2l-list>
-					<d2l-list-item>
-						Item 1
-						<div slot="actions">
-							<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
-							<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
-							<d2l-dropdown-more text="Open!">
-								<d2l-dropdown-menu id="dropdown">
-									<d2l-menu label="Astronomy">
-										<d2l-menu-item text="Introduction"></d2l-menu-item>
-										<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-										<d2l-menu-item text="The Solar System">
-									</d2l-menu>
-								</d2l-dropdown-menu>
-							</d2l-dropdown-more>
-						</div>
-					</d2l-list-item>
-					<d2l-list-item>
-						Item 2
-						<div slot="actions">
-							<d2l-button-icon id="tooltip-btn-2" text="My Button" icon="tier1:preview"></d2l-button-icon>
-							<d2l-tooltip for="tooltip-btn-2">Preview</d2l-tooltip>
-							<d2l-dropdown-more text="Open!">
-								<d2l-dropdown-menu id="dropdown">
-									<d2l-menu label="Astronomy">
-										<d2l-menu-item text="Introduction"></d2l-menu-item>
-										<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-										<d2l-menu-item text="The Solar System">
-									</d2l-menu>
-								</d2l-dropdown-menu>
-							</d2l-dropdown-more>
-						</div>
-					</d2l-list-item>
-					<d2l-list-item>
-						Item 3
-						<div slot="actions">
-							<d2l-button-icon id="tooltip-btn-3" text="My Button" icon="tier1:preview"></d2l-button-icon>
-							<d2l-tooltip for="tooltip-btn-3">Preview</d2l-tooltip>
-							<d2l-dropdown-more text="Open!">
-								<d2l-dropdown-menu id="dropdown">
-									<d2l-menu label="Astronomy">
-										<d2l-menu-item text="Introduction"></d2l-menu-item>
-										<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-										<d2l-menu-item text="The Solar System">
-									</d2l-menu>
-								</d2l-dropdown-menu>
-							</d2l-dropdown-more>
-						</div>
-					</d2l-list-item>
-				</d2l-list>
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../button/button-icon.js';
+			import '../../demo/demo-page.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
+			import '../../tooltip/tooltip.js';
+			import '../list-item-button.js';
+			import '../list-item-content.js';
+			import '../list-item.js';
+			import '../list.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list-item (actions)">
+
+			<h2>No Action</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item>
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item>
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Navigation (href) Primary Action</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list>
+							<d2l-list-item href="http://www.d2l.com">
+								<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item href="http://www.d2l.com">
+								<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item href="http://www.d2l.com">
+								<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Button Primary Action</h2>
+
+			<d2l-demo-snippet id="button-demo">
+				<template>
+					<d2l-list>
+						<d2l-list-item-button>
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button>
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item-button>
+					</d2l-list>
+					<script>
+						document.querySelector('#button-demo').addEventListener('d2l-list-item-button-click', (e) => {
+							console.log('d2l-list-item-button clicked!', e);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Secondary Actions</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item>
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-2" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-2">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item>
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-3" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-3">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Selection</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item selectable key="1">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="2" selected>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="3">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Selection & Navigation (href) Primary Action</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item href="http://www.d2l.com" selectable key="1">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="3">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Selection & Button Primary Action</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item-button selectable key="1">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="2" selected>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="3">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item-button>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Grid Actions with Navigation (href) Primary Action</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item href="http://www.d2l.com" selectable key="1">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="3">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+							</div>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Grid Actions with Button Primary Action</h2>
+
+			<d2l-demo-snippet id="grid-button-demo">
+				<template>
+					<d2l-list grid>
+						<d2l-list-item-button selectable key="1">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+							</div>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="2" selected>
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+							</div>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="3">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
+							</div>
+						</d2l-list-item-button>
+					</d2l-list>
+					<script>
+						document.querySelector('#grid-button-demo').addEventListener('d2l-list-item-button-click', (e) => {
+							console.log('d2l-list-item-button clicked!', e);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
