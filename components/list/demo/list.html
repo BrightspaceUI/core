@@ -14,6 +14,7 @@
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../../tooltip/tooltip.js';
+			import '../list-item-button.js';
 			import '../list-item-content.js';
 			import '../list-item.js';
 			import '../list.js';
@@ -251,7 +252,37 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>List (with href)</h2>
+			<h2>List (with button action)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item-button>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Introductory Earth Sciences</div>
+								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Engineering Materials for Energy Systems</div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Geomorphology and GIS </div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>List (with href action)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -311,7 +342,7 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>List (selectable with href)</h2>
+			<h2>List (selectable with href action)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -341,7 +372,37 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>List (selectable with href and grid-enabled)</h2>
+			<h2>List (selectable with button action)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item-button selectable key="1">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Introductory Earth Sciences</div>
+								<div slot="supporting-info">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="2" selected>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Engineering Materials for Energy Systems</div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="3">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Geomorphology and GIS </div>
+								<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>List (selectable with href action and grid-enabled)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -367,6 +428,36 @@
 								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
 							</d2l-list-item-content>
 						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>List (selectable with button action and grid-enabled)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item-button selectable key="1">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Introductory Earth Sciences</div>
+								<div slot="secondary">This course explores the geological process of the Earth's interior and surface. These include volcanism, earthquakes, mountains...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="2" selected>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Engineering Materials for Energy Systems</div>
+								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button selectable key="3">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Geomorphology and GIS </div>
+								<div slot="secondary">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
 					</d2l-list>
 				</template>
 			</d2l-demo-snippet>
@@ -427,5 +518,12 @@
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>
+
+		<script>
+			document.body.addEventListener('d2l-list-item-button-click', (e) => {
+				console.log('d2l-list-item-button clicked!', e);
+			});
+		</script>
+
 	</body>
 </html>
