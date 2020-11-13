@@ -218,6 +218,9 @@ class HtmlBlock extends LitElement {
 				outline-width: 0;
 				text-decoration: underline;
 			}
+			mjx-assistive-mml math {
+				position: absolute;
+			}
 			:host([dir="rtl"]) {
 				text-align: right;
 			}
