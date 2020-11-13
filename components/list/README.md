@@ -2,7 +2,7 @@
 
 ## d2l-list
 
-The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provide the appropriate `list` semantics as well as options for displaying separators, etc.
+The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
 
 ![List](./screenshots/list.png?raw=true)
 

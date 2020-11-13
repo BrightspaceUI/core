@@ -177,7 +177,7 @@
 
 			<h2>Selection & Button Primary Action</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet id="selection-button-demo">
 				<template>
 					<d2l-list>
 						<d2l-list-item-button selectable key="1">
@@ -190,6 +190,11 @@
 							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
 						</d2l-list-item-button>
 					</d2l-list>
+					<script>
+						document.querySelector('#selection-button-demo').addEventListener('d2l-list-item-button-click', (e) => {
+							console.log('d2l-list-item-button clicked!', e);
+						});
+					</script>
 				</template>
 			</d2l-demo-snippet>
 
