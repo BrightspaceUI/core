@@ -83,8 +83,7 @@ describe('d2l-list', () => {
 			{ name: 'extended', selector: '#separatorsExtended' }
 		] },
 		{ category: 'item-content', tests: [
-			{ name: 'primary and secondary', selector: '#itemContent' },
-			{ name: 'no secondary', selector: '#itemContentNoSecondary' }
+			{ name: 'all', selector: '#itemContent' }
 		] },
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },
