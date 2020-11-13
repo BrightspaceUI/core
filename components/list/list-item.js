@@ -1,3 +1,4 @@
+import { ListItemLinkMixin } from './list-item-link-mixin.js';
 import { ListItemMixin } from './list-item-mixin.js';
 import { LitElement } from 'lit-element/lit-element.js';
 
@@ -8,7 +9,8 @@ import { LitElement } from 'lit-element/lit-element.js';
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
-class ListItem extends ListItemMixin(LitElement) {
+class ListItem extends ListItemLinkMixin(ListItemMixin(LitElement)) {
+
 	static get properties() {
 		return {
 			/**
@@ -29,6 +31,7 @@ class ListItem extends ListItemMixin(LitElement) {
 	render() {
 		return this._renderListItem();
 	}
+
 }
 
 customElements.define('d2l-list-item', ListItem);
