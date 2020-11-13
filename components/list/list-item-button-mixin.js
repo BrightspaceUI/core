@@ -9,6 +9,10 @@ export const ListItemButtonMixin = superclass => class extends superclass {
 			:host {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
+			:host d2l-list-item-generic-layout.d2l-focusing,
+			:host d2l-list-item-generic-layout.d2l-hovering {
+				background-color: var(--d2l-color-regolith);
+			}
 			button {
 				background-color: transparent;
 				border: none;
