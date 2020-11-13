@@ -18,9 +18,14 @@ export const ListItemLinkMixin = superclass => class extends superclass {
 			:host([action-href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
+			:host([action-href]) d2l-list-item-generic-layout.d2l-focusing,
+			:host([action-href]) d2l-list-item-generic-layout.d2l-hovering {
+				background-color: var(--d2l-color-regolith);
+			}
 			a[href] {
 				display: block;
 				height: 100%;
+				outline: none;
 				width: 100%;
 			}
 		` ];

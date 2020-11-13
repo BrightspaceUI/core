@@ -95,6 +95,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			a[href].d2l-list-item-link {
 				display: block;
 				height: 100%;
+				outline: none;
 				width: 100%;
 			}
 			.d2l-list-item-content ::slotted(*) {
