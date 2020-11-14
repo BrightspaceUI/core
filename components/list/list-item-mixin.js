@@ -33,14 +33,14 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			 */
 			breakpoints: { type: Array },
 			/**
-			 * Address of item link if navigable
+			 * Address of item link if navigable (to be removed)
 			 */
 			actionHref: { type: String, attribute: 'action-href', reflect: true },
 			_breakpoint: { type: Number },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
-			_hoveringLink: { type: Boolean },
+			_hoveringPrimaryAction: { type: Boolean },
 			_focusing: { type: Boolean },
-			_focusingLink: { type: Boolean },
+			_focusingPrimaryAction: { type: Boolean },
 			_tooltipShowing: { type: Boolean, attribute: '_tooltip-showing', reflect: true }
 		};
 	}
@@ -56,6 +56,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host[hidden] {
 				display: none;
 			}
+			/* to be removed */
 			:host([action-href]) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
@@ -90,8 +91,11 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
 			}
+			/* to be removed */
 			a[href].d2l-list-item-link {
+				display: block;
 				height: 100%;
+				outline: none;
 				width: 100%;
 			}
 			.d2l-list-item-content ::slotted(*) {
@@ -100,6 +104,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			.d2l-list-item-content.d2l-hovering,
 			.d2l-list-item-content.d2l-focusing {
 				--d2l-list-item-content-text-decoration: underline;
+			}
+			[slot="content-action"] {
+				height: 100%;
 			}
 			[slot="content-action"]:focus {
 				outline: none;
@@ -209,7 +216,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	constructor() {
 		super();
-		this.actionHref = null;
+		this.actionHref = null; // to be removed
 		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
 		this._contentId = getUniqueId();
@@ -265,28 +272,28 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		});
 	}
 
-	_onBlurLink() {
-		this._focusingLink = false;
-	}
-
 	_onFocusIn() {
 		this._focusing = true;
 	}
 
-	_onFocusLink() {
-		this._focusingLink = true;
+	_onFocusInPrimaryAction() {
+		this._focusingPrimaryAction = true;
 	}
 
 	_onFocusOut() {
 		this._focusing = false;
 	}
 
-	_onMouseEnterLink() {
-		this._hoveringLink = true;
+	_onFocusOutPrimaryAction() {
+		this._focusingPrimaryAction = false;
 	}
 
-	_onMouseLeaveLink() {
-		this._hoveringLink = false;
+	_onMouseEnterPrimaryAction() {
+		this._hoveringPrimaryAction = true;
+	}
+
+	_onMouseLeavePrimaryAction() {
+		this._hoveringPrimaryAction = false;
 	}
 
 	_renderListItem({ illustration, content, actions } = {}) {
@@ -298,9 +305,19 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		const contentClasses = {
 			'd2l-list-item-content': true,
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
-			'd2l-hovering': this._hoveringLink,
-			'd2l-focusing': this._focusingLink,
+			'd2l-hovering': this._hoveringPrimaryAction,
+			'd2l-focusing': this._focusingPrimaryAction,
 		};
+
+		let primaryAction;
+		if (this._renderPrimaryAction) {
+			primaryAction = this._renderPrimaryAction(this._contentId);
+		} else if (this.actionHref) {
+			// to be removed
+			primaryAction = html`
+				<a href="${this.actionHref}" aria-labelledby="${this._contentId}"></a>
+			`;
+		}
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -317,24 +334,21 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					${this._renderDragTarget(this._renderOutsideControlAction)}
 					${this.selectable ? html`
 					<div slot="control">${ this._renderCheckbox() }</div>
-					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>
-					` : nothing }
-					${ this.actionHref ? html`
-					<a slot="content-action"
-						href="${this.actionHref}"
-						aria-labelledby="${this._contentId}"
-						@mouseenter="${this._onMouseEnterLink}"
-						@mouseleave="${this._onMouseLeaveLink}"
-						@focus="${this._onFocusLink}"
-						@blur="${this._onBlurLink}"></a>
-					` : nothing }
+					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>` : nothing }
+					${primaryAction ? html`
+					<div slot="content-action"
+						@focusin="${this._onFocusInPrimaryAction}"
+						@focusout="${this._onFocusOutPrimaryAction}"
+						@mouseenter="${this._onMouseEnterPrimaryAction}"
+						@mouseleave="${this._onMouseLeavePrimaryAction}">
+							${primaryAction}
+					</div>` : nothing}
 					<div slot="content"
 						class="${classMap(contentClasses)}"
 						id="${this._contentId}">
 						<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
 						<slot>${content}</slot>
 					</div>
-
 					<div class="d2l-list-item-actions-container" slot="actions">
 						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 					</div>
