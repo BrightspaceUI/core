@@ -253,6 +253,10 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			if (prop === 'startValue' || prop === 'endValue') {
 				if (!this.invalid && this.autoShiftTimes && prop === 'startValue' && this.endValue && oldVal) {
 					this.endValue = getShiftedEndTime(this.startValue, this.endValue, oldVal, this.inclusiveTimeRange);
+					this.dispatchEvent(new CustomEvent(
+						'change',
+						{ bubbles: true, composed: false }
+					));
 				}
 
 				this.setFormValue({
