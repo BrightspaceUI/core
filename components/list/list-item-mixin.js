@@ -32,10 +32,6 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
 			 */
 			breakpoints: { type: Array },
-			/**
-			 * Address of item link if navigable (to be removed)
-			 */
-			actionHref: { type: String, attribute: 'action-href', reflect: true },
 			_breakpoint: { type: Number },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean },
@@ -55,10 +51,6 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			}
 			:host[hidden] {
 				display: none;
-			}
-			/* to be removed */
-			:host([action-href]) {
-				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
 			:host([_tooltip-showing]),
 			:host([_dropdown-open]) {
@@ -90,13 +82,6 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			[slot="content"].d2l-list-item-content-extend-separators {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
-			}
-			/* to be removed */
-			a[href].d2l-list-item-link {
-				display: block;
-				height: 100%;
-				outline: none;
-				width: 100%;
 			}
 			.d2l-list-item-content ::slotted(*) {
 				margin-top: 0.05rem;
@@ -216,7 +201,6 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	constructor() {
 		super();
-		this.actionHref = null; // to be removed
 		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
 		this._contentId = getUniqueId();
@@ -309,15 +293,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			'd2l-focusing': this._focusingPrimaryAction,
 		};
 
-		let primaryAction;
-		if (this._renderPrimaryAction) {
-			primaryAction = this._renderPrimaryAction(this._contentId);
-		} else if (this.actionHref) {
-			// to be removed
-			primaryAction = html`
-				<a href="${this.actionHref}" aria-labelledby="${this._contentId}"></a>
-			`;
-		}
+		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
