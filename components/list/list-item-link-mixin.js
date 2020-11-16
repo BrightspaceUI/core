@@ -1,7 +1,8 @@
 import '../colors/colors.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { ListItemMixin } from './list-item-mixin.js';
 
-export const ListItemLinkMixin = superclass => class extends superclass {
+export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
 	static get properties() {
 		return {

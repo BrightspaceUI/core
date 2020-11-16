@@ -1,5 +1,4 @@
 import { ListItemButtonMixin } from './list-item-button-mixin.js';
-import { ListItemMixin } from './list-item-mixin.js';
 import { LitElement } from 'lit-element/lit-element.js';
 
 /**
@@ -10,7 +9,7 @@ import { LitElement } from 'lit-element/lit-element.js';
  * @fires d2l-list-item-button-click - Dispatched when the component item is clicked
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
-class ListItemButton extends ListItemButtonMixin(ListItemMixin(LitElement)) {
+class ListItemButton extends ListItemButtonMixin(LitElement) {
 
 	render() {
 		return this._renderListItem();
