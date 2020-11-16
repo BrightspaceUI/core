@@ -486,8 +486,8 @@ class Tooltip extends RtlMixin(LitElement) {
 			parentTop = parentRect.top + offsetParent.clientTop;
 			parentLeft = parentRect.left + offsetParent.clientLeft;
 		} else {
-			parentTop = 0;
-			parentLeft = 0;
+			parentTop = -document.documentElement.scrollTop;
+			parentLeft = -document.documentElement.scrollLeft;
 		}
 		const top = targetRect.top - parentTop;
 		const left = targetRect.left - parentLeft;
