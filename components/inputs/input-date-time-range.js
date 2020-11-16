@@ -238,6 +238,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			if (prop === 'startValue' || prop === 'endValue') {
 				if (!this.invalid && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
 					this.endValue = getShiftedEndDateTime(this.startValue, this.endValue, oldVal, this.inclusiveDateRange, this.localized);
+					this.dispatchEvent(new CustomEvent(
+						'change',
+						{ bubbles: true, composed: false }
+					));
 				}
 
 				this.setFormValue({
