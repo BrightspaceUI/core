@@ -39,5 +39,8 @@ export default {
 		config: {
 			timeout: '10000',
 		},
-	}
+	},
+	browserStartTimeout: 1000 * 60 * 2,
+	testsStartTimeout: 1000 * 60 * 2,
+    testsFinishTimeout: 1000 * 60 * 2
 };
