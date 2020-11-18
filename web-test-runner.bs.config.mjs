@@ -58,7 +58,7 @@ const customLaunchers = [
 export default {
 	files: '+(components|helpers|mixins|templates)/**/*.test.js',
 	nodeResolve: true,
-	concurrentBrowsers: 4,
+	concurrentBrowsers: 5,
 	browsers: customLaunchers,
 	testFramework: {
 		config: {
@@ -66,9 +66,7 @@ export default {
 			timeout: '10000',
 		},
 	},
-	browserDisconnectTimeout: 3e5, // default 2000
-	browserDisconnectTolerance: 3, // default 0
-	browserSocketTimeout: 1.2e5, // default 20000
-	browserNoActivityTimeout: 3e5, // default 10000
-	captureTimeout: 3e5, // default 60000
+	browserStartTimeout: 1000 * 60 * 2,
+	testsStartTimeout: 1000 * 60 * 2,
+	testsFinishTimeout: 1000 * 60 * 2
 };

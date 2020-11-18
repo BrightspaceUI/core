@@ -162,7 +162,11 @@ describe('getLocalizeResources', () => {
 			}
 		};
 
-		sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		try {
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		} catch (e) {
+			sinon.stub(window, 'caches').get(() => cacheStorageFake);
+		}
 
 		const fetchStub = sinon.stub(window, 'fetch');
 		const formatFuncSpy = sinon.spy(formatFunc);
@@ -289,7 +293,11 @@ describe('getLocalizeResources', () => {
 			}
 		};
 
-		sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		try {
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		} catch (e) {
+			sinon.stub(window, 'caches').get(() => cacheStorageFake);
+		}
 
 		let counter = 0;
 
@@ -376,7 +384,11 @@ describe('getLocalizeResources', () => {
 			}
 		};
 
-		sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		try {
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		} catch (e) {
+			sinon.stub(window, 'caches').get(() => cacheStorageFake);
+		}
 
 		const fetchStub = sinon.stub(window, 'fetch');
 		const formatFuncSpy = sinon.spy(formatFunc);
