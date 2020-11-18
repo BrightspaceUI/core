@@ -2,8 +2,8 @@
 import { browserstackLauncher } from '@web/test-runner-browserstack';
 
 const sharedCapabilities = {
-	'browserstack.user': process.env.BROWSER_STACK_USERNAME,
-	'browserstack.key': process.env.BROWSER_STACK_ACCESS_KEY,
+	'browserstack.user': process.env.BROWSERSTACK_USERNAME,
+	'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY,
 	project: 'Brightspace UI Core Unit Tests',
 	name: 'Unit tests',
 	build: process.env.TRAVIS_BUILD_NUMBER,
