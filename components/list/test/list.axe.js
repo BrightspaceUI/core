@@ -1,5 +1,6 @@
 import '../list.js';
 import '../list-item.js';
+import '../list-item-button.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
 const normalFixture = html`
@@ -8,14 +9,14 @@ const normalFixture = html`
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
 		</d2l-list-item>
-		<d2l-list-item>
+		<d2l-list-item href="http://www.d2l.com">
+			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
+			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
+		</d2l-list-item>
+		<d2l-list-item-button>
 			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
-		</d2l-list-item>
-		<d2l-list-item>
-			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
-		</d2l-list-item>
+		</d2l-list-item-button>
 	</d2l-list>
 `;
 

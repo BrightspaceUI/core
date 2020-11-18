@@ -2,7 +2,7 @@
 
 ## d2l-list
 
-The `d2l-list` is the container to create a styled list of items using `d2l-list-item`. It provide the appropriate `list` semantics as well as options for displaying separators, etc.
+The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
 
 ![List](./screenshots/list.png?raw=true)
 
@@ -58,7 +58,7 @@ The `grid` attribute will enable a table-like keyboard grid that allows a user t
 
 ## d2l-list-item
 
-The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a link for navigation, and selection. This extends `ListItemMixin` and has all the same use cases as the mixin.
+The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a navigation link for the primary action, and selection. It extends `ListItemLinkMixin` and `ListItemMixin` and has all the same use cases as the mixin.
 
 ![List](./screenshots/list-item.png?raw=true)
 
@@ -83,6 +83,32 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 | Property | Type | Description |
 |--|--|--|
 | `href` | String | Address of item link if navigable |
+
+## d2l-list-item-button
+
+The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action. It extends `ListItemButtonMixin` and `ListItemMixin` and has all the same use cases as the mixin.
+
+![List](./screenshots/list-item.png?raw=true)
+
+```html
+<d2l-list-item-button breakpoints="array"
+  @d2l-list-item-button-click="..."
+  key="item1"
+  selectable
+  selected
+  disabled>
+  <img src="..." slot="illustration">
+  <div>...</div>
+  <div slot="actions">
+    <d2l-button-icon ...></d2l-button-icon>
+    <d2l-button-icon ...></d2l-button-icon>
+  </div>
+</d2l-list-item-button>
+```
+
+**Events**
+
+- `d2l-list-item-button-click`: dispatched when the item's primary button action is clicked
 
 ## ListItemMixin
 
@@ -137,7 +163,6 @@ Where the parameters correspond to the slots of `d2l-list-item`:
     - default break: `843px < x`  where `x` is the width of the component.
 - `disabled` (Boolean): Whether or not the checkbox is disabled
 - `draggable` (Boolean): Whether or not the item is draggable
-- `action-href` (String): Address of item link if navigable
 - `key` (String): Value to identify item if selectable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
@@ -148,7 +173,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 
 **Accessibility**
 
-- `drag-handle-text`: The label for screenreaders for the drag handle. If implementing drag 'n' drop, you should change this to dynamically announce what the drag-handle is moving for screenreaders for use in keyboard mode.
+- `drag-handle-text`: The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
 
 ## d2l-list-item-content
 
@@ -160,16 +185,17 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 <d2l-list-item>
   <d2l-list-item-content>
     <div>Item 1</div>
-    <div slot="supporting-info">secondary info for item 1</div>
+    <div slot="secondary">Secondary Info for item 1</div>
+    <div slot="supporting-info">Supporting info for item 1</div>
   </d2l-list-item-content>
 </d2l-list-item>
 ```
 
-## Drag 'n' drop lists
+## Drag & Drop Lists
 
-The `d2l-list` supports drag 'n' drop.
+The `d2l-list` supports drag & drop.
 
-![List](./screenshots/dragndrop.gif?raw=true)
+![List](./screenshots/drag-and-drop.gif?raw=true)
 
 Because the list itself is a rendering component, there is some light work involved in hooking up this behaviour.
 
@@ -184,7 +210,7 @@ import '../list.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { repeat } from 'lit-html/directives/repeat';
 
-class ListDemoDragNDropUsage extends LitElement {
+class ListDemoDragAndDropUsage extends LitElement {
   static get properties() {
     return {
       list: { type: Array }

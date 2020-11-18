@@ -31,6 +31,12 @@ describe('d2l-list', () => {
 		});
 	};
 
+	const focusButton = (selector) => {
+		return page.$eval(selector, (item) => {
+			item.shadowRoot.querySelector('button').focus();
+		});
+	};
+
 	const hideTooltip = (selector) => {
 		return tooltipHelper.hide(page, selector);
 	};
@@ -77,13 +83,17 @@ describe('d2l-list', () => {
 			{ name: 'extended', selector: '#separatorsExtended' }
 		] },
 		{ category: 'item-content', tests: [
-			{ name: 'primary and secondary', selector: '#itemContent' },
-			{ name: 'no secondary', selector: '#itemContentNoSecondary' }
+			{ name: 'all', selector: '#itemContent' }
 		] },
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },
-			{ name: 'focus', selector: '#href', action: () => focusLink('#href [href]') },
-			{ name: 'hover', selector: '#href', action: () => hover('#href [href]') }
+			{ name: 'focus', selector: '#href', action: () => focusLink('#href d2l-list-item') },
+			{ name: 'hover', selector: '#href', action: () => hover('#href d2l-list-item') }
+		] },
+		{ category: 'button', tests: [
+			{ name: 'default', selector: '#button' },
+			{ name: 'focus', selector: '#button', action: () => focusButton('#button d2l-list-item-button') },
+			{ name: 'hover', selector: '#button', action: () => hover('#button d2l-list-item-button') }
 		] },
 		{ category: 'selectable', tests: [
 			{ name: 'not selected', selector: '#selectable' },
@@ -95,7 +105,8 @@ describe('d2l-list', () => {
 			{ name: 'item-content', selector: '#selectableItemContent' }
 		] },
 		{ category: 'focus method', tests: [
-			{ name: 'href', selector: '#href', action: () => focusMethod('#href [href]') },
+			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
+			{ name: 'button', selector: '#button', action: () => focusMethod('#button d2l-list-item-button') },
 			{ name: 'selectable', selector: '#selectable', action: () => focusMethod('#selectable [selectable]') },
 			{ name: 'actions', selector: '#actions', action: () => focusMethod('#actions d2l-list-item') }
 		] },
