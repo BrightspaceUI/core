@@ -47,6 +47,7 @@ describe('form-element', () => {
 	describe('events', () => {
 
 		it('should fire invalid-change when validation fails', async() => {
+			await formElement.updateComplete;
 			formElement.requestValidate();
 			await oneEvent(formElement, 'invalid-change');
 			expect(formElement.invalid).to.be.true;

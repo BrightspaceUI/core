@@ -6,13 +6,13 @@ const sauceLabsLauncher = createSauceLabsLauncher({
 	key: process.env.SAUCE_ACCESS_KEY
 });
 
-const sharedCapabilities = {
-	'sauce:options': {
-		name: 'Brightspace UI Core Unit Tests',
-		build: process.env.TRAVIS_BUILD_NUMBER,
-		idleTimeout: 500
-	}
-};
+// const sharedCapabilities = {
+// 	'sauce:options': {
+// 		name: 'Brightspace UI Core Unit Tests',
+// 		build: process.env.TRAVIS_BUILD_NUMBER,
+// 		idleTimeout: 500
+// 	}
+// };
 
 // const customLaunchers = [
 // 	sauceLabsLauncher({
@@ -29,18 +29,23 @@ export default {
 	concurrentBrowsers: 4,
 	browsers: [
 		sauceLabsLauncher({
-			...sharedCapabilities,
-			browserName: 'chrome',
-			browserVersion: 'latest',
-			platformName: 'Windows 10',
+			'sauce:options': {
+				name: 'Brightspace UI Core Unit Tests',
+				build: process.env.TRAVIS_BUILD_NUMBER,
+				idleTimeout: 500
+			},
+			browserName: 'safari',
+			browserVersion: '11.1',
+			platformName: 'macOS 10.13',
 		})
 	],
 	testFramework: {
 		config: {
+			ui: 'bdd',
 			timeout: '10000',
 		},
 	},
 	browserStartTimeout: 1000 * 60 * 2,
 	testsStartTimeout: 1000 * 60 * 2,
-    testsFinishTimeout: 1000 * 60 * 2
+	testsFinishTimeout: 1000 * 60 * 2
 };

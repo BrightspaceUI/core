@@ -1,5 +1,5 @@
 import '../switch.js';
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html } from '@open-wc/testing';
 
 describe('d2l-switch', () => {
 
@@ -26,13 +26,6 @@ describe('d2l-switch', () => {
 	it('hidden label', async() => {
 		const elem = await fixture(html`<d2l-switch text="some text" text-position="hidden"></d2l-switch>`);
 		await expect(elem).to.be.accessible;
-	});
-
-	it('focused', async() => {
-		const elem = await fixture(html`<d2l-switch text="some text"></d2l-switch>`);
-		setTimeout(() => elem.focus());
-		await oneEvent(elem, 'focus');
-		await expect(elem).to.be.accessible();
 	});
 
 });

@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture } from '@open-wc/testing';
+import { defineCE, fixture, oneEvent } from '@open-wc/testing';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from '../button-mixin.js';
 
@@ -27,20 +27,13 @@ describe('ButtonMixin', () => {
 		document.removeEventListener('click', documentClickHandler, { once: true });
 	});
 
-	describe('default property values', () => {
+	describe('focus management', () => {
 
-		it('should default "type" property to "button"', async() => {
+		it('should delegate focus to button', async() => {
 			const el = await fixture(`<${tagName}></${tagName}`);
-			expect(el.type).to.equal('button');
-		});
-
-	});
-
-	describe('events', () => {
-
-		it('should stop propagation of click events if button is disabled', async() => {
-			const el = await fixture(`<${tagName} disabled></${tagName}`);
-			expect(() => el.click()).to.not.throw();
+			const buttonEl = el.shadowRoot.querySelector('button');
+			setTimeout(() => el.focus());
+			await oneEvent(buttonEl, 'focus');
 		});
 
 	});

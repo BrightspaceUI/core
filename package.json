@@ -18,15 +18,18 @@
     "lint:style": "stylelint \"**/*.js\"",
     "prepublishOnly": "node ./cli/verify-translations.js && npm run analyze",
     "start": "web-dev-server --open index.html --node-resolve",
-    "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
-    "test:axe": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.axe.js' --node-resolve",
+    "test": "npm run lint && npm run test:wtr && npm run test:diff",
+    "test:axe": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.axe.js' --node-resolve && npm run test:axe:focus",
+    "test:axe:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.axe.focus.js' --node-resolve",
     "test:bs": "karma start karma.bs.conf.js",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
+    "test:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.focus.js' --node-resolve",
     "test:headless": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve",
     "test:headless:watch": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve --watch",
-    "test:sauce": "web-test-runner --config web-test-runner.sauce.config.mjs"
+    "test:sauce": "web-test-runner --config web-test-runner.sauce.config.mjs",
+    "test:wtr": "npm run test:headless && npm run test:axe && npm run test:focus"
   },
   "files": [
     "custom-elements.json",
