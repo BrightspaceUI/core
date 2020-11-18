@@ -21,15 +21,15 @@
     "test": "npm run lint && npm run test:wtr && npm run test:diff",
     "test:axe": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.axe.js' --node-resolve && npm run test:axe:focus",
     "test:axe:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.axe.focus.js' --node-resolve",
-    "test:bs": "karma start karma.bs.conf.js",
+    "test:bs": "web-test-runner --config web-test-runner.bs.config.mjs",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
-    "test:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.focus.js' --node-resolve",
     "test:headless": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve",
+    "test:headless:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.focus.js' --node-resolve",
     "test:headless:watch": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve --watch",
     "test:sauce": "web-test-runner --config web-test-runner.sauce.config.mjs",
-    "test:wtr": "npm run test:headless && npm run test:axe && npm run test:focus"
+    "test:wtr": "npm run test:headless && npm run test:axe && npm run test:headless:focus"
   },
   "files": [
     "custom-elements.json",
@@ -56,6 +56,7 @@
     "@semantic-release/git": "^9",
     "@web/dev-server": "0.0.19",
     "@web/test-runner": "^0.9.7",
+    "@web/test-runner-browserstack": "^0.2.1",
     "@web/test-runner-saucelabs": "^0.1.1",
     "axe-core": "^4",
     "babel-eslint": "^10",

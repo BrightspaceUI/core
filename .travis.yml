@@ -33,8 +33,13 @@ jobs:
     - script:
       - npm run build
       - |
-          echo "Not a pull request and/or no secure environment variables, running headless tests...";
-          npm run test:headless || travis_terminate 1;
+        if [ $TRAVIS_PULL_REQUEST != false ] && [ $TRAVIS_SECURE_ENV_VARS == true ]; then
+            echo "Pull request with secure environment variables, running BrowserStack tests...";
+            npm run test:bs || travis_terminate 1;
+        else
+            echo "Not a pull request and/or no secure environment variables, running headless tests...";
+            npm run test:headless && npm run test:headless:focus || travis_terminate 1;
+        fi
       name: "BrowserStack"
       env:
         - BROWSERSTACK_USERNAME: margareepeacocke1
