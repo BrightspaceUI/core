@@ -30,6 +30,6 @@ jobs:
         uses: BrightspaceUI/actions/semantic-release@master
         with:
           DRY_RUN: true
-          GITHUB_TOKEN: ${{ secrets.SPECIAL_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
           NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
