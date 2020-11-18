@@ -25,7 +25,7 @@
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
-    "test:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.focus.js' --node-resolve",
+    "test:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.focus.js' --node-resolve",
     "test:headless": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve",
     "test:headless:watch": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve --watch",
     "test:sauce": "web-test-runner --config web-test-runner.sauce.config.mjs",
