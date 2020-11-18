@@ -9,49 +9,57 @@ const sharedCapabilities = {
 	build: process.env.TRAVIS_BUILD_NUMBER,
 };
 
-// const sharedCapabilities = {
-// 	'sauce:options': {
-// 		name: 'Brightspace UI Core Unit Tests',
-// 		build: process.env.TRAVIS_BUILD_NUMBER,
-// 		idleTimeout: 500
-// 	}
-// };
-
-// const customLaunchers = [
-// 	sauceLabsLauncher({
-// 		...sharedCapabilities,
-// 		browserName: 'chrome',
-// 		browserVersion: 'latest',
-// 		platformName: 'macOS 10.15',
-// 	})
-// ];
+const customLaunchers = [
+	browserstackLauncher({
+		capabilities: {
+			...sharedCapabilities,
+			browserName: 'Chrome',
+			os: 'OS X',
+			os_version: 'Catalina',
+		},
+	}),
+	browserstackLauncher({
+		capabilities: {
+			...sharedCapabilities,
+			browserName: 'firefox',
+			os: 'OS X',
+			os_version: 'Catalina',
+		},
+	}),
+	browserstackLauncher({
+		capabilities: {
+			...sharedCapabilities,
+			browserName: 'Safari',
+			browser_version: 'latest',
+			os: 'OS X',
+			os_version: 'Catalina',
+		},
+	}),
+	browserstackLauncher({
+		capabilities: {
+			...sharedCapabilities,
+			browserName: 'Edge',
+			browser_version: 'latest',
+			os: 'Windows',
+			os_version: '10',
+		},
+	}),
+	browserstackLauncher({
+		capabilities: {
+			...sharedCapabilities,
+			browserName: 'Edge',
+			browser_version: '18.0',
+			os: 'Windows',
+			os_version: '10',
+		},
+	})
+];
 
 export default {
 	files: '+(components|helpers|mixins|templates)/**/*.test.js',
 	nodeResolve: true,
 	concurrentBrowsers: 4,
-	browsers: [
-		// create a browser launcher per browser you want to test
-		// you can get the browser capabilities from the browserstack website
-		browserstackLauncher({
-			capabilities: {
-				...sharedCapabilities,
-				browserName: 'Chrome',
-				os: 'OS X',
-				os_version: 'Catalina',
-			},
-		}),
-
-		browserstackLauncher({
-			capabilities: {
-				...sharedCapabilities,
-				browserName: 'Safari',
-				browser_version: 'latest',
-				os: 'OS X',
-				os_version: 'High Sierra',
-			},
-		}),
-	],
+	browsers: customLaunchers,
 	testFramework: {
 		config: {
 			ui: 'bdd',
