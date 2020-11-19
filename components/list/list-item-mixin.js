@@ -66,14 +66,16 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				filter: grayscale(75%);
 				opacity: 0.4;
 			}
-			.d2l-list-item-drag-image {
+			:host([draggable]) .d2l-list-item-drag-image {
 				transform: rotate(-1deg);
+			}
+			:host([draggable]) d2l-list-item-generic-layout {
+				transform: rotate(1deg);
 			}
 			d2l-list-item-generic-layout {
 				background: white;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
-				transform: rotate(1deg);
 			}
 			d2l-list-item-generic-layout[data-separators="none"] {
 				border-bottom: 1px solid transparent;
