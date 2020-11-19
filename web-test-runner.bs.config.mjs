@@ -44,15 +44,15 @@ const customLaunchers = [
 			os_version: '10',
 		},
 	}),
-	browserstackLauncher({
-		capabilities: {
-			...sharedCapabilities,
-			browserName: 'Edge',
-			browser_version: '18.0',
-			os: 'Windows',
-			os_version: '10',
-		},
-	})
+	// browserstackLauncher({
+	// 	capabilities: {
+	// 		...sharedCapabilities,
+	// 		browserName: 'Edge',
+	// 		browser_version: '18.0',
+	// 		os: 'Windows',
+	// 		os_version: '10',
+	// 	},
+	// })
 ];
 
 export default {
