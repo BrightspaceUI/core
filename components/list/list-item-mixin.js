@@ -191,9 +191,12 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				bottom: 0;
 				height: 1px;
 				position: absolute;
-				transform: rotate(1deg);
 				width: 100%;
 				z-index: 5;
+			}
+			:host([draggable][selected]:not([disabled])) .d2l-list-item-active-border,
+			:host([draggable][selected]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing + .d2l-list-item-active-border {
+				transform: rotate(1deg);
 			}
 		`];
 
