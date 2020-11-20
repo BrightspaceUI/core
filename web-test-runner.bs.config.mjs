@@ -56,7 +56,7 @@ const customLaunchers = [
 ];
 
 export default {
-	files: '+(components|helpers|mixins|templates)/**/*.test.js',
+	files: 'helpers/**/*.test.js',
 	nodeResolve: true,
 	concurrentBrowsers: 5,
 	browsers: customLaunchers,
@@ -68,5 +68,6 @@ export default {
 	},
 	browserStartTimeout: 1000 * 60 * 2,
 	testsStartTimeout: 1000 * 60 * 2,
-	testsFinishTimeout: 1000 * 60 * 2
+	testsFinishTimeout: 1000 * 60 * 2,
+	protocol: 'https:'
 };
