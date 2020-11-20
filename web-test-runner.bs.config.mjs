@@ -69,6 +69,5 @@ export default {
 	},
 	browserStartTimeout: 1000 * 60 * 2,
 	testsStartTimeout: 1000 * 60 * 2,
-	testsFinishTimeout: 1000 * 60 * 2,
-	reporters: ['BrowserStack']
+	testsFinishTimeout: 1000 * 60 * 2
 };
