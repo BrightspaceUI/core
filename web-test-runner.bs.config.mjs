@@ -64,11 +64,12 @@ export default {
 		config: {
 			ui: 'bdd',
 			timeout: '10000',
+			proxyValidateSSL: false
 		},
 	},
 	browserStartTimeout: 1000 * 60 * 2,
 	testsStartTimeout: 1000 * 60 * 2,
 	testsFinishTimeout: 1000 * 60 * 2,
 	protocol: 'https:',
-	hostname: 'localhost'
+	reporters: ['BrowserStack']
 };
