@@ -485,8 +485,12 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
 			const headerFooterHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
-			let spaceAround;
+			const spaceRequired = {
+				height: Math.min(this.maxHeight ? this.maxHeight : Number.MAX_VALUE, contentRect.height + headerFooterHeight) + 10,
+				width: contentRect.width
+			};
 
+			let spaceAround;
 			if (bounded) {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
@@ -497,7 +501,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					left: targetRect.left - boundingContainerRect.left - 20,
 					// allow for outer margin
 					right: boundingContainerRect.right - targetRect.right - 20
-				});
+				}, spaceRequired, targetRect);
 			} else {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
@@ -508,13 +512,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					left: targetRect.left - 20,
 					// allow for outer margin
 					right: document.documentElement.clientWidth - targetRect.right - 15
-				});
+				}, spaceRequired, targetRect);
 			}
-
-			const spaceRequired = {
-				height: Math.min(this.maxHeight ? this.maxHeight : Number.MAX_VALUE, contentRect.height + headerFooterHeight) + 10,
-				width: contentRect.width
-			};
 
 			if (!ignoreVertical) {
 				this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
@@ -569,7 +568,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._topOverflow = this.__content.scrollTop !== 0;
 	}
 
-	_constrainSpaceAround(spaceAround) {
+	_constrainSpaceAround(spaceAround, spaceRequired, targetRect) {
 		const constrained = { ...spaceAround };
 		if (this.boundary) {
 			constrained.above = this.boundary.above >= 0 ? Math.min(spaceAround.above, this.boundary.above) : spaceAround.above;
@@ -579,9 +578,9 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 		const isRTL = this.getAttribute('dir') === 'rtl';
 		if ((this.align === 'start' && !isRTL) || (this.align === 'end' && isRTL)) {
-			constrained.left = 0;
+			constrained.left = Math.max(0, spaceRequired.width - (targetRect.width + spaceAround.right));
 		} else if ((this.align === 'start' && isRTL) || (this.align === 'end' && !isRTL)) {
-			constrained.right = 0;
+			constrained.right = Math.max(0, spaceRequired.width - (targetRect.width + spaceAround.left));
 		}
 		return constrained;
 	}
