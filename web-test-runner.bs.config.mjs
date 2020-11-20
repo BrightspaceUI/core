@@ -69,5 +69,6 @@ export default {
 	browserStartTimeout: 1000 * 60 * 2,
 	testsStartTimeout: 1000 * 60 * 2,
 	testsFinishTimeout: 1000 * 60 * 2,
-	protocol: 'https:'
+	protocol: 'https:',
+	hostname: 'localhost'
 };
