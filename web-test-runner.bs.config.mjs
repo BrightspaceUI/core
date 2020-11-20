@@ -56,18 +56,17 @@ const customLaunchers = [
 ];
 
 export default {
-	files: 'helpers/**/*.test.js',
+	files: '+(components|helpers|mixins|templates)/**/*.axe.js',
 	nodeResolve: true,
 	concurrentBrowsers: 5,
 	browsers: customLaunchers,
 	testFramework: {
 		config: {
 			ui: 'bdd',
-			timeout: '10000',
-			proxyValidateSSL: false
+			timeout: '10000'
 		},
 	},
-	browserStartTimeout: 1000 * 60 * 2,
-	testsStartTimeout: 1000 * 60 * 2,
-	testsFinishTimeout: 1000 * 60 * 2
+	browserStartTimeout: 300000,
+	testsStartTimeout: 300000,
+	testsFinishTimeout: 300000
 };
