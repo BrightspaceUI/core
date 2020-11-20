@@ -4,11 +4,9 @@ import { browserstackLauncher } from '@web/test-runner-browserstack';
 const sharedCapabilities = {
 	'browserstack.user': process.env.BROWSERSTACK_USERNAME,
 	'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY,
-	'browserstack.acceptSslCerts': true,
 	project: 'Brightspace UI Core Unit Tests',
 	name: 'Unit tests',
 	build: process.env.TRAVIS_BUILD_NUMBER,
-	acceptSslCerts: true,
 };
 
 const customLaunchers = [
@@ -72,6 +70,5 @@ export default {
 	browserStartTimeout: 1000 * 60 * 2,
 	testsStartTimeout: 1000 * 60 * 2,
 	testsFinishTimeout: 1000 * 60 * 2,
-	protocol: 'https:',
 	reporters: ['BrowserStack']
 };
