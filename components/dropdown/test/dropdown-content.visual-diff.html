@@ -14,7 +14,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
 	<style>
-		
+
 		html, body {
 			height: 100%;
 			margin: 0;
@@ -367,6 +367,28 @@
 		<d2l-dropdown id="with-header-footer">
 			<div class="d2l-dropdown-opener"></div>
 			<d2l-dropdown-content>
+				<div slot="header">Header</div>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+				<div slot="footer">Footer</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="align-start-edge" class="top-right">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content align="start">
+				<div slot="header">Header</div>
+				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+					dolore
+					magna aliqua.</div>
+				<div slot="footer">Footer</div>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+
+		<d2l-dropdown id="align-start-edge-rtl" class="top-left">
+			<div class="d2l-dropdown-opener"></div>
+			<d2l-dropdown-content align="start" dir="rtl">
 				<div slot="header">Header</div>
 				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
 					dolore
