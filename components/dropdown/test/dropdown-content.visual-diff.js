@@ -46,6 +46,8 @@ describe('d2l-dropdown-content', () => {
 		'bottom-right-rtl',
 		'align-start-rtl',
 		'align-end-rtl',
+		'align-start-edge',
+		'align-start-edge-rtl'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
