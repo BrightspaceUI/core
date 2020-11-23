@@ -71,7 +71,6 @@
     "node-sass": "^5",
     "puppeteer": "^5",
     "semantic-release": "^17",
-    "saucelabs": "~4.5.0",
     "sinon": "^9",
     "stylelint": "^13",
     "web-component-analyzer": "^1"

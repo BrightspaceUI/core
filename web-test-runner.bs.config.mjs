@@ -56,7 +56,7 @@ const customLaunchers = [
 ];
 
 export default {
-	files: '+(components|helpers|mixins|templates)/**/*.axe.js',
+	files: '+(components|helpers|mixins|templates)/**/*.test.js',
 	nodeResolve: true,
 	concurrentBrowsers: 5,
 	browsers: customLaunchers,
