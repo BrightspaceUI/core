@@ -470,11 +470,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		/* don't let dropdown content horizontally overflow viewport */
 		this._width = null;
-		await this.updateComplete;
 
 		const openerPosition = window.getComputedStyle(opener, null).getPropertyValue('position');
 		const boundingContainer = getBoundingAncestor(target);
 		const boundingContainerRect = boundingContainer.getBoundingClientRect();
+		const scrollHeight = boundingContainer.scrollHeight;
+
+		await this.updateComplete;
 
 		// position check in case consuming app (LMS) has overriden position to make content absolute wrt document
 		const bounded = (openerPosition === 'relative' && boundingContainer !== document.documentElement);
@@ -502,10 +504,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					// allow for outer margin
 					right: boundingContainerRect.right - targetRect.right - 20
 				}, spaceRequired, targetRect);
-				spaceAroundScroll = {
+				spaceAroundScroll = this._constrainSpaceAround({
 					above: targetRect.top - boundingContainerRect.top + boundingContainer.scrollTop,
-					below: boundingContainer.scrollHeight - targetRect.bottom + boundingContainerRect.top - boundingContainer.scrollTop
-				};
+					below: scrollHeight - targetRect.bottom + boundingContainerRect.top - boundingContainer.scrollTop
+				}, spaceRequired, targetRect);
 			} else {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
@@ -517,10 +519,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					// allow for outer margin
 					right: document.documentElement.clientWidth - targetRect.right - 15
 				}, spaceRequired, targetRect);
-				spaceAroundScroll = {
+				spaceAroundScroll = this._constrainSpaceAround({
 					above: targetRect.top + document.documentElement.scrollTop,
-					below: document.documentElement.scrollHeight - targetRect.bottom - document.documentElement.scrollTop
-				};
+					below: scrollHeight - targetRect.bottom - document.documentElement.scrollTop
+				}, spaceRequired, targetRect);
 			}
 
 			if (!ignoreVertical) {
