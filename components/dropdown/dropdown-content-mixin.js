@@ -602,6 +602,17 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		if (spaceAround.above >= spaceRequired.height) {
 			return true;
 		}
+		if (spaceAroundScroll.below >= spaceRequired.height) {
+			return false;
+		}
+		if (spaceAroundScroll.above >= spaceRequired.height) {
+			return true;
+		}
+		// if auto-fit is disabled we need to open down because
+		// opening down will add additional scroll, opening up can't
+		if (this.noAutoFit) {
+			return false;
+		}
 		return spaceAroundScroll.above > spaceAroundScroll.below;
 	}
 
