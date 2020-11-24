@@ -489,8 +489,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				height: Math.min(this.maxHeight ? this.maxHeight : Number.MAX_VALUE, contentRect.height + headerFooterHeight) + 10,
 				width: contentRect.width
 			};
-
 			let spaceAround;
+			let spaceAroundScroll;
 			if (bounded) {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
@@ -502,6 +502,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					// allow for outer margin
 					right: boundingContainerRect.right - targetRect.right - 20
 				}, spaceRequired, targetRect);
+				spaceAroundScroll = {
+					above: targetRect.top - boundingContainerRect.top + boundingContainer.scrollTop,
+					below: boundingContainer.scrollHeight - targetRect.bottom + boundingContainerRect.top - boundingContainer.scrollTop
+				};
 			} else {
 				spaceAround = this._constrainSpaceAround({
 					// allow for target offset + outer margin
@@ -513,10 +517,14 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					// allow for outer margin
 					right: document.documentElement.clientWidth - targetRect.right - 15
 				}, spaceRequired, targetRect);
+				spaceAroundScroll = {
+					above: targetRect.top + document.documentElement.scrollTop,
+					below: document.documentElement.scrollHeight - targetRect.bottom - document.documentElement.scrollTop
+				};
 			}
 
 			if (!ignoreVertical) {
-				this.openedAbove = this._getOpenedAbove(spaceAround, spaceRequired);
+				this.openedAbove = this._getOpenedAbove(spaceAround, spaceAroundScroll, spaceRequired);
 			}
 
 			const centerDelta = contentRect.width - targetRect.width;
@@ -585,11 +593,14 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return constrained;
 	}
 
-	_getOpenedAbove(spaceAround, spaceRequired) {
-		return (spaceAround.below < spaceRequired.height) && (
-			(spaceAround.above > spaceRequired.height) ||
-			(spaceAround.above > spaceAround.below)
-		);
+	_getOpenedAbove(spaceAround, spaceAroundScroll, spaceRequired) {
+		if (spaceAround.below >= spaceRequired.height) {
+			return false;
+		}
+		if (spaceAround.above >= spaceRequired.height) {
+			return true;
+		}
+		return spaceAroundScroll.above > spaceAroundScroll.below;
 	}
 
 	_getPosition(spaceAround, centerDelta) {
