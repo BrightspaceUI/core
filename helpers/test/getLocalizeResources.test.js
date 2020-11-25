@@ -165,8 +165,9 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			// Object.defineProperty(window, 'caches', {});
-			sinon.stub(window, 'caches').get(() => cacheStorageFake);
+			window.caches = {};
+			// sinon.stub(window, 'caches').get(() => cacheStorageFake);
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		}
 
 		const fetchStub = sinon.stub(window, 'fetch');
@@ -297,8 +298,9 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			// Object.defineProperty(window, 'caches', {});
-			sinon.stub(window, 'caches').get(() => cacheStorageFake);
+			window.caches = {};
+			// sinon.stub(window, 'caches').get(() => cacheStorageFake);
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		}
 
 		let counter = 0;
@@ -389,8 +391,9 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			// Object.defineProperty(window, 'caches', {});
-			sinon.stub(window, 'caches').get(() => cacheStorageFake);
+			window.caches = {};
+			// sinon.stub(window, 'caches').get(() => cacheStorageFake);
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		}
 
 		const fetchStub = sinon.stub(window, 'fetch');
