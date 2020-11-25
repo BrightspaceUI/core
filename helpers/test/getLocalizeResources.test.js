@@ -165,7 +165,7 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			Object.defineProperty(window, 'caches', {});
+			// Object.defineProperty(window, 'caches', {});
 			sinon.stub(window, 'caches').get(() => cacheStorageFake);
 		}
 
@@ -297,7 +297,7 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			Object.defineProperty(window, 'caches', {});
+			// Object.defineProperty(window, 'caches', {});
 			sinon.stub(window, 'caches').get(() => cacheStorageFake);
 		}
 
@@ -389,7 +389,7 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			Object.defineProperty(window, 'caches', {});
+			// Object.defineProperty(window, 'caches', {});
 			sinon.stub(window, 'caches').get(() => cacheStorageFake);
 		}
 
