@@ -243,7 +243,7 @@ describe('d2l-calendar', () => {
 			expect(calendar._shownMonth).to.equal(9);
 		});
 
-		it('has correct _focusDate when user presses PAGEUP', async() => {
+		it.skip('has correct _focusDate when user presses PAGEUP', async() => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
 			setTimeout(() => dispatchKeyEvent(el, 33));
