@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "종료일",
 	"components.input-date-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-date-time-range.startDate": "시작일",
+	"components.input-date-time-range.to": "-",
 	"components.input-date-time.date": "날짜",
 	"components.input-date-time.errorMaxDateOnly": "날짜는 {maxDate} 이전이어야 합니다.",
 	"components.input-date-time.errorMinDateOnly": "날짜는 {minDate} 이후여야 합니다.",

@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "結束日期",
 	"components.input-date-time-range.errorBadInput": "{startLabel} 必須早於 {endLabel}",
 	"components.input-date-time-range.startDate": "開始日期",
+	"components.input-date-time-range.to": "至",
 	"components.input-date-time.date": "日期",
 	"components.input-date-time.errorMaxDateOnly": "日期必須早於 {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "日期必須晚於 {minDate}",

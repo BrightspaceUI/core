@@ -148,9 +148,9 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			d2l-input-date-time {
 				display: block;
 			}
-			.d2l-input-date-time-range-container {
-				display: flex;
-				flex-wrap: wrap;
+
+			:host(:not([child-labels-hidden])) .d2l-input-date-time-range-to {
+				display: none;
 			}
 			.d2l-input-date-time-range-to {
 				margin-bottom: 0.6rem;
@@ -161,6 +161,22 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				margin-right: 0;
 			}
 
+			.d2l-input-date-time-range-start-container {
+				margin-bottom: 1.2rem;
+				margin-right: 1.5rem;
+			}
+			:host([dir="rtl"]) .d2l-input-date-time-range-start-container {
+				margin-left: 1.5rem;
+				margin-right: 0;
+			}
+			:host([child-labels-hidden]) .d2l-input-date-time-range-start-container {
+				margin-bottom: 0.6rem;
+				margin-right: 0.9rem;
+			}
+			:host([child-labels-hidden][dir="rtl"]) .d2l-input-date-time-range-start-container {
+				margin-left: 0.9rem;
+				margin-right: 0;
+			}
 		`];
 	}
 
@@ -175,25 +191,30 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this.localized = false;
 		this.required = false;
 
-		this._resizeObserver = null;
-		this._slotOccupied = false;
 		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
 		this._endDropdownOpened = false;
 		this._endInputId = getUniqueId();
+
+		this._slotOccupied = false;
 		this._wrapped = false;
 
+		this._parentResizeObserver = null;
+		this._startDateTimeResizeObserver = null;
+
 		this._rangeContainerClass = 'd2l-input-date-time-range-container';
-		this._startContainerClass = 'd2l-input-date-time-range-start-container';
-		this._endContainerClass = 'd2l-input-date-time-range-end-container';
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		if (this._resizeObserver) {
-			this._resizeObserver.disconnect();
-			this._resizeObserver = null;
+		if (this._parentResizeObserver) {
+			this._parentResizeObserver.disconnect();
+			this._parentResizeObserver = null;
+		}
+		if (this._startDateTimeResizeObserver) {
+			this._startDateTimeResizeObserver.disconnect();
+			this._startDateTimeResizeObserver = null;
 		}
 	}
 
@@ -217,8 +238,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 
 		const containerStyle = {
-			marginBottom: this.childLabelsHidden ? '-0.6rem' : '-1.2rem'
+			marginBottom: this.childLabelsHidden ? '-0.6rem' : '-1.2rem',
+			display: this._wrapped ? 'block' : 'flex'
 		};
+		if (!this._wrapped) containerStyle.flexWrap = 'wrap';
 
 		const toStyle = {};
 		if (this.childLabelsHidden) {
@@ -226,23 +249,12 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			if (!this._wrapped) {
 				toStyle.float = this.dir === 'rtl' ? 'right' : 'left';
 			}
-		} else toStyle.display = 'none';
-
-		const startStyle = {};
-		startStyle.marginBottom = this.childLabelsHidden ? '0.6rem' : '1.2rem';
-		if (this.childLabelsHidden) {
-			startStyle.marginLeft = this.dir === 'rtl' ? '0.9rem' : '0';
-			startStyle.marginRight = this.dir === 'rtl' ? '0' : '0.9rem';
-		} else {
-			startStyle.marginLeft = this.dir === 'rtl' ? '1.5rem' : '0';
-			startStyle.marginRight = this.dir === 'rtl' ? '0' : '1.5rem';
 		}
 
 		const endContainerStyle = {
-			display: (this._wrapped) ? 'block' : 'flex',
+			display: this._wrapped ? 'block' : 'flex',
 			marginBottom: this.childLabelsHidden ? '0.6rem' : '1.2rem'
 		};
-		if (!this._wrapped) endContainerStyle.alignItems = 'center';
 
 		return html`
 			${tooltipStart}
@@ -253,7 +265,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
 				<div class="${this._rangeContainerClass}" style="${styleMap(containerStyle)}">
-					<div class="${this._startContainerClass}" style="${styleMap(startStyle)}">
+					<div class="d2l-input-date-time-range-start-container">
 						<d2l-input-date-time
 							?novalidate="${this.noValidate}"
 							@change="${this._handleChange}"
@@ -273,8 +285,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 						</d2l-input-date-time>
 						<slot name="start" @slotchange="${this._onSlotChange}"></slot>
 					</div>
-					<div class="${this._endContainerClass}" style="${styleMap(endContainerStyle)}">
-						<div class="d2l-input-date-time-range-to d2l-body-small" style=${styleMap(toStyle)}>to</div>
+					<div class="d2l-input-date-time-range-end-container" style="${styleMap(endContainerStyle)}">
+						<div class="d2l-input-date-time-range-to d2l-body-small d2l-skeletize" style=${styleMap(toStyle)}>
+							${this.localize('components.input-date-time-range.to')}
+						</div>
 						<d2l-input-date-time
 							?novalidate="${this.noValidate}"
 							@change="${this._handleChange}"
@@ -381,34 +395,33 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 	_onSlotChange(e) {
 		const slotContent = e.target.assignedNodes()[0];
 		if (slotContent) this._slotOccupied = true;
-		if (this._resizeObserver) {
-			this._resizeObserver.disconnect();
-			this._resizeObserver = null;
+		if (this._parentResizeObserver) {
+			this._parentResizeObserver.disconnect();
+			this._parentResizeObserver = null;
 		}
-	}
-
-	async _reactToChanges() {
-		this._wrapped = false;
-		await this.updateComplete;
-		const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(`.${this._rangeContainerClass}`)).getPropertyValue('height')));
-		if (height >= (this._startInputDateTimeHeight * 2)) {
-			this._wrapped = true;
-		} else {
-			this._wrapped = false;
+		if (this._startDateTimeResizeObserver) {
+			this._startDateTimeResizeObserver.disconnect();
+			this._startDateTimeResizeObserver = null;
 		}
 	}
 
 	_startObserving() {
-		this._bound_reactToChanges = this._bound_reactToChanges || this._reactToChanges.bind(this);
-		this._resizeObserver = this._resizeObserver || new ResizeObserver(this._bound_reactToChanges);
-		this._resizeObserver2 = this._resizeObserver2 || new ResizeObserver(() => {
-			this._startInputDateTimeHeight = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('d2l-input-date-time.d2l-input-date-time-range-start')).getPropertyValue('height')));
+		this._parentResizeObserver = this._parentResizeObserver || new ResizeObserver(async() => {
+			this._wrapped = false;
+			await this.updateComplete;
+			const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(`.${this._rangeContainerClass}`)).getPropertyValue('height')));
+			if (height >= (this._startInputDateTimeHeight * 2)) this._wrapped = true;
+			else this._wrapped = false;
 		});
-		this._resizeObserver.disconnect();
-		this._resizeObserver2.disconnect();
-		this._content = this.parentNode;
-		this._resizeObserver.observe(this._content);
-		this._resizeObserver2.observe(this.shadowRoot.querySelector('d2l-input-date-time.d2l-input-date-time-range-start'));
+		this._parentResizeObserver.disconnect();
+		this._parentResizeObserver.observe(this.parentNode);
+
+		const startDateTimeSelector = 'd2l-input-date-time.d2l-input-date-time-range-start';
+		this._startDateTimeResizeObserver = this._startDateTimeResizeObserver || new ResizeObserver(() => {
+			this._startInputDateTimeHeight = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(startDateTimeSelector)).getPropertyValue('height')));
+		});
+		this._startDateTimeResizeObserver.disconnect();
+		this._startDateTimeResizeObserver.observe(this.shadowRoot.querySelector(startDateTimeSelector));
 	}
 
 }

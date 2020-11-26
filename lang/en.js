@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "End Date",
 	"components.input-date-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-date-time-range.startDate": "Start Date",
+	"components.input-date-time-range.to": "to",
 	"components.input-date-time.date": "Date",
 	"components.input-date-time.errorMaxDateOnly": "Date must be before {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "Date must be after {minDate}",

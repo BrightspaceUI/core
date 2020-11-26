@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "Slutdatum",
 	"components.input-date-time-range.errorBadInput": "{startLabel} måste vara före {endLabel}",
 	"components.input-date-time-range.startDate": "Startdatum",
+	"components.input-date-time-range.to": "till",
 	"components.input-date-time.date": "Datum",
 	"components.input-date-time.errorMaxDateOnly": "Datumet måste vara före {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "Datumet måste vara efter {minDate}",

@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "Fecha final",
 	"components.input-date-time-range.errorBadInput": "{startLabel} debe ser anterior a {endLabel}",
 	"components.input-date-time-range.startDate": "Fecha de inicio",
+	"components.input-date-time-range.to": "hasta",
 	"components.input-date-time.date": "Fecha de la última actividad",
 	"components.input-date-time.errorMaxDateOnly": "La fecha debe ser anterior a {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La fecha debe ser posterior a {minDate}",

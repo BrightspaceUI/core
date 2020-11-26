@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "تاريخ النهاية",
 	"components.input-date-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-date-time-range.startDate": "تاريخ البدء",
+	"components.input-date-time-range.to": "إلى",
 	"components.input-date-time.date": "التاريخ",
 	"components.input-date-time.errorMaxDateOnly": "يجب أن يكون التاريخ قبل {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "يجب أن يكون التاريخ بعد {minDate}",

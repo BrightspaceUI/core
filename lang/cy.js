@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "Dyddiad Dod i Ben",
 	"components.input-date-time-range.errorBadInput": "Rhaid i {startLabel} fod cyn {endLabel}",
 	"components.input-date-time-range.startDate": "Dyddiad Dechrau",
+	"components.input-date-time-range.to": "i",
 	"components.input-date-time.date": "Dyddiad",
 	"components.input-date-time.errorMaxDateOnly": "Rhaid i'r dyddiad fod cyn {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "Rhaid i'r dyddiad fod ar ôl {minDate}",

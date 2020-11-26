@@ -23,6 +23,7 @@ export default {
 	"components.input-date-time-range.endDate": "Bitiş Tarihi",
 	"components.input-date-time-range.errorBadInput": "{startLabel}, {endLabel} tarihinden önce olmalıdır",
 	"components.input-date-time-range.startDate": "Başlangıç Tarihi",
+	"components.input-date-time-range.to": "-",
 	"components.input-date-time.date": "Tarih",
 	"components.input-date-time.errorMaxDateOnly": "Tarih, {maxDate} tarihinden önce olmalıdır",
 	"components.input-date-time.errorMinDateOnly": "Tarih, {minDate} tarihinden sonra olmalıdır",
