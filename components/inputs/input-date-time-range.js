@@ -237,24 +237,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		const tooltipStart = (this.validationError && !this._startDropdownOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 
-		const containerStyle = {
-			marginBottom: this.childLabelsHidden ? '-0.6rem' : '-1.2rem',
-			display: this._wrapped ? 'block' : 'flex'
-		};
-		if (!this._wrapped) containerStyle.flexWrap = 'wrap';
-
-		const toStyle = {};
-		if (this.childLabelsHidden) {
-			toStyle.display = this._wrapped ? 'block' : 'inline-block';
-			if (!this._wrapped) {
-				toStyle.float = this.dir === 'rtl' ? 'right' : 'left';
-			}
-		}
-
-		const endContainerStyle = {
-			display: this._wrapped ? 'block' : 'flex',
-			marginBottom: this.childLabelsHidden ? '0.6rem' : '1.2rem'
-		};
+		const styleMaps = this._getStyleMaps(this._wrapped, this._slotOccupied, this.childLabelsHidden, this.dir);
 
 		return html`
 			${tooltipStart}
@@ -264,7 +247,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<div class="${this._rangeContainerClass}" style="${styleMap(containerStyle)}">
+				<div class="${this._rangeContainerClass}" style="${styleMap(styleMaps.containerStyle)}">
 					<div class="d2l-input-date-time-range-start-container">
 						<d2l-input-date-time
 							?novalidate="${this.noValidate}"
@@ -285,8 +268,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 						</d2l-input-date-time>
 						<slot name="start" @slotchange="${this._onSlotChange}"></slot>
 					</div>
-					<div class="d2l-input-date-time-range-end-container" style="${styleMap(endContainerStyle)}">
-						<div class="d2l-input-date-time-range-to d2l-body-small d2l-skeletize" style=${styleMap(toStyle)}>
+					<div class="d2l-input-date-time-range-end-container" style="${styleMap(styleMaps.endContainerStyle)}">
+						<div class="d2l-input-date-time-range-to d2l-body-small d2l-skeletize" style=${styleMap(styleMaps.toStyle)}>
 							${this.localize('components.input-date-time-range.to')}
 						</div>
 						<d2l-input-date-time
@@ -369,6 +352,27 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 	get _computedStartLabel() {
 		return this.startLabel ? this.startLabel : this.localize('components.input-date-time-range.startDate');
+	}
+
+	_getStyleMaps(wrapped, slotOccupied, childLabelsHidden, dir) {
+		const blockDisplay = wrapped || slotOccupied;
+		const containerStyle = {
+			marginBottom: childLabelsHidden ? '-0.6rem' : '-1.2rem',
+			display: blockDisplay ? 'block' : 'flex'
+		};
+		if (!blockDisplay) containerStyle.flexWrap = 'wrap';
+
+		const toStyle = {};
+		if (this.childLabelsHidden && !wrapped) {
+			toStyle.float = dir === 'rtl' ? 'right' : 'left';
+		}
+
+		const endContainerStyle = {
+			display: blockDisplay ? 'block' : 'flex',
+			marginBottom: childLabelsHidden ? '0.6rem' : '1.2rem'
+		};
+
+		return { containerStyle, toStyle, endContainerStyle };
 	}
 
 	async _handleChange(e) {
