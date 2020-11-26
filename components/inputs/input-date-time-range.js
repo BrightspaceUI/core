@@ -4,12 +4,15 @@ import '../tooltip/tooltip.js';
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateTimeInISO, getAdjustedTime, getDateFromISODateTime, getDateNoConversion, parseISODateTime } from '../../helpers/dateTime.js';
+import { bodySmallStyles } from '../typography/styles.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 function _isSameDate(date1, date2) {
 	return date1.date === date2.date && date1.month === date2.month && date1.year === date2.year;
@@ -126,25 +129,36 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			_endDropdownOpened: { type: Boolean },
 			_startDropdownOpened: { type: Boolean },
+			_slotOccupied: { type: Boolean },
+			_wrapped: { type: Boolean }
 		};
 	}
 
 	static get styles() {
-		return [super.styles, css`
+		return [super.styles, bodySmallStyles, css`
 			:host {
 				display: inline-block;
 			}
 			:host([hidden]) {
 				display: none;
 			}
+			::slotted(*) {
+				margin-top: 0.6rem;
+			}
 			d2l-input-date-time {
 				display: block;
 			}
-			.d2l-input-date-time-range-start-container {
-				margin-bottom: 1.2rem;
+			.d2l-input-date-time-range-container {
+				display: flex;
+				flex-wrap: wrap;
 			}
-			::slotted(*) {
-				margin-top: 0.6rem;
+			.d2l-input-date-time-range-to {
+				margin-bottom: 0.6rem;
+				margin-right: 0.9rem;
+			}
+			:host([dir="rtl"]) .d2l-input-date-time-range-to {
+				margin-left: 0.9rem;
+				margin-right: 0;
 			}
 
 		`];
@@ -161,10 +175,26 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this.localized = false;
 		this.required = false;
 
+		this._resizeObserver = null;
+		this._slotOccupied = false;
 		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
 		this._endDropdownOpened = false;
 		this._endInputId = getUniqueId();
+		this._wrapped = false;
+
+		this._rangeContainerClass = 'd2l-input-date-time-range-container';
+		this._startContainerClass = 'd2l-input-date-time-range-start-container';
+		this._endContainerClass = 'd2l-input-date-time-range-end-container';
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+
+		if (this._resizeObserver) {
+			this._resizeObserver.disconnect();
+			this._resizeObserver = null;
+		}
 	}
 
 	async firstUpdated(changedProperties) {
@@ -172,6 +202,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 		if (!this.label) {
 			console.warn('d2l-input-date-time-range component requires label text');
+		}
+
+		if (this.childLabelsHidden && !this._slotOccupied) {
+			this._startObserving();
 		}
 	}
 
@@ -181,6 +215,35 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 		const tooltipStart = (this.validationError && !this._startDropdownOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
+
+		const containerStyle = {
+			marginBottom: this.childLabelsHidden ? '-0.6rem' : '-1.2rem'
+		};
+
+		const toStyle = {};
+		if (this.childLabelsHidden) {
+			toStyle.display = this._wrapped ? 'block' : 'inline-block';
+			if (!this._wrapped) {
+				toStyle.float = this.dir === 'rtl' ? 'right' : 'left';
+			}
+		} else toStyle.display = 'none';
+
+		const startStyle = {};
+		startStyle.marginBottom = this.childLabelsHidden ? '0.6rem' : '1.2rem';
+		if (this.childLabelsHidden) {
+			startStyle.marginLeft = this.dir === 'rtl' ? '0.9rem' : '0';
+			startStyle.marginRight = this.dir === 'rtl' ? '0' : '0.9rem';
+		} else {
+			startStyle.marginLeft = this.dir === 'rtl' ? '1.5rem' : '0';
+			startStyle.marginRight = this.dir === 'rtl' ? '0' : '1.5rem';
+		}
+
+		const endContainerStyle = {
+			display: (this._wrapped) ? 'block' : 'flex',
+			marginBottom: this.childLabelsHidden ? '0.6rem' : '1.2rem'
+		};
+		if (!this._wrapped) endContainerStyle.alignItems = 'center';
+
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -189,44 +252,49 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<div class="d2l-input-date-time-range-start-container">
-					<d2l-input-date-time
-						?novalidate="${this.noValidate}"
-						@change="${this._handleChange}"
-						class="d2l-input-date-time-range-start"
-						@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
-						?disabled="${this.disabled}"
-						.forceInvalid=${this.invalid}
-						id="${this._startInputId}"
-						label="${this._computedStartLabel}"
-						?label-hidden="${this.childLabelsHidden}"
-						?localized="${this.localized}"
-						max-value="${ifDefined(this.maxValue)}"
-						min-value="${ifDefined(this.minValue)}"
-						?required="${this.required}"
-						?skeleton="${this.skeleton}"
-						value="${ifDefined(this.startValue)}">
-					</d2l-input-date-time>
-					<slot name="start"></slot>
+				<div class="${this._rangeContainerClass}" style="${styleMap(containerStyle)}">
+					<div class="${this._startContainerClass}" style="${styleMap(startStyle)}">
+						<d2l-input-date-time
+							?novalidate="${this.noValidate}"
+							@change="${this._handleChange}"
+							class="d2l-input-date-time-range-start"
+							@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
+							?disabled="${this.disabled}"
+							.forceInvalid=${this.invalid}
+							id="${this._startInputId}"
+							label="${this._computedStartLabel}"
+							?label-hidden="${this.childLabelsHidden}"
+							?localized="${this.localized}"
+							max-value="${ifDefined(this.maxValue)}"
+							min-value="${ifDefined(this.minValue)}"
+							?required="${this.required}"
+							?skeleton="${this.skeleton}"
+							value="${ifDefined(this.startValue)}">
+						</d2l-input-date-time>
+						<slot name="start" @slotchange="${this._onSlotChange}"></slot>
+					</div>
+					<div class="${this._endContainerClass}" style="${styleMap(endContainerStyle)}">
+						<div class="d2l-input-date-time-range-to d2l-body-small" style=${styleMap(toStyle)}>to</div>
+						<d2l-input-date-time
+							?novalidate="${this.noValidate}"
+							@change="${this._handleChange}"
+							class="d2l-input-date-time-range-end"
+							@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
+							?disabled="${this.disabled}"
+							.forceInvalid=${this.invalid}
+							id="${this._endInputId}"
+							label="${this._computedEndLabel}"
+							?label-hidden="${this.childLabelsHidden}"
+							?localized="${this.localized}"
+							max-value="${ifDefined(this.maxValue)}"
+							min-value="${ifDefined(this.minValue)}"
+							?required="${this.required}"
+							?skeleton="${this.skeleton}"
+							value="${ifDefined(this.endValue)}">
+						</d2l-input-date-time>
+						<slot name="end" @slotchange="${this._onSlotChange}"></slot>
+					</div>
 				</div>
-				<d2l-input-date-time
-					?novalidate="${this.noValidate}"
-					@change="${this._handleChange}"
-					class="d2l-input-date-time-range-end"
-					@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
-					?disabled="${this.disabled}"
-					.forceInvalid=${this.invalid}
-					id="${this._endInputId}"
-					label="${this._computedEndLabel}"
-					?label-hidden="${this.childLabelsHidden}"
-					?localized="${this.localized}"
-					max-value="${ifDefined(this.maxValue)}"
-					min-value="${ifDefined(this.minValue)}"
-					?required="${this.required}"
-					?skeleton="${this.skeleton}"
-					value="${ifDefined(this.endValue)}">
-				</d2l-input-date-time>
-				<slot name="end"></slot>
 			</d2l-input-fieldset>
 		`;
 	}
@@ -308,6 +376,39 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		} else {
 			this._endDropdownOpened = e.detail.opened;
 		}
+	}
+
+	_onSlotChange(e) {
+		const slotContent = e.target.assignedNodes()[0];
+		if (slotContent) this._slotOccupied = true;
+		if (this._resizeObserver) {
+			this._resizeObserver.disconnect();
+			this._resizeObserver = null;
+		}
+	}
+
+	async _reactToChanges() {
+		this._wrapped = false;
+		await this.updateComplete;
+		const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(`.${this._rangeContainerClass}`)).getPropertyValue('height')));
+		if (height >= (this._startInputDateTimeHeight * 2)) {
+			this._wrapped = true;
+		} else {
+			this._wrapped = false;
+		}
+	}
+
+	_startObserving() {
+		this._bound_reactToChanges = this._bound_reactToChanges || this._reactToChanges.bind(this);
+		this._resizeObserver = this._resizeObserver || new ResizeObserver(this._bound_reactToChanges);
+		this._resizeObserver2 = this._resizeObserver2 || new ResizeObserver(() => {
+			this._startInputDateTimeHeight = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('d2l-input-date-time.d2l-input-date-time-range-start')).getPropertyValue('height')));
+		});
+		this._resizeObserver.disconnect();
+		this._resizeObserver2.disconnect();
+		this._content = this.parentNode;
+		this._resizeObserver.observe(this._content);
+		this._resizeObserver2.observe(this.shadowRoot.querySelector('d2l-input-date-time.d2l-input-date-time-range-start'));
 	}
 
 }
