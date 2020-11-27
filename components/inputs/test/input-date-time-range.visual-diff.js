@@ -22,13 +22,18 @@ describe('d2l-input-date-time-range', () => {
 		'disabled',
 		'invalid-start-value',
 		'hidden-labels',
+		'hidden-labels-values',
 		'labelled',
 		'label-hidden',
 		'localized',
 		'required',
 		'slotted-content',
 		'start-end-label',
-		'start-end-value'
+		'start-end-value',
+		'start-value',
+		'wide-basic',
+		'wide-hidden-labels-values',
+		'wide-start-end-value'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);

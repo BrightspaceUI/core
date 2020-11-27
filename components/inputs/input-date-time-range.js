@@ -148,6 +148,9 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			d2l-input-date-time {
 				display: block;
 			}
+			:host(:not([label-hidden]):not([child-labels-hidden])) .d2l-input-date-time-range-container {
+				margin-top: calc(0.9rem - 7px);
+			}
 
 			:host(:not([child-labels-hidden])) .d2l-input-date-time-range-to {
 				display: none;
