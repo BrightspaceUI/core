@@ -148,7 +148,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			d2l-input-date-time {
 				display: block;
 			}
-			:host(:not([label-hidden]):not([child-labels-hidden])) .d2l-input-date-time-range-container {
+			:host([label]:not([label-hidden]):not([child-labels-hidden])) .d2l-input-date-time-range-container {
 				margin-top: calc(0.9rem - 7px);
 			}
 
@@ -228,7 +228,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			console.warn('d2l-input-date-time-range component requires label text');
 		}
 
-		if (this.childLabelsHidden && !this._slotOccupied) {
+		if (!this._slotOccupied) {
 			this._startObserving();
 		}
 	}
@@ -251,7 +251,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
 				<div class="${this._rangeContainerClass}" style="${styleMap(styleMaps.containerStyle)}">
-					<div class="d2l-input-date-time-range-start-container">
+					<div class="d2l-input-date-time-range-start-container" style="${styleMap(styleMaps.startContainerStyle)}">
 						<d2l-input-date-time
 							?novalidate="${this.noValidate}"
 							@change="${this._handleChange}"
@@ -365,6 +365,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		};
 		if (!blockDisplay) containerStyle.flexWrap = 'wrap';
 
+		const startContainerStyle = {};
+		if (blockDisplay && this.dir === 'rtl') startContainerStyle.marginLeft = '0';
+		else if (blockDisplay) startContainerStyle.marginRight = '0';
+
 		const toStyle = {};
 		if (this.childLabelsHidden && !wrapped) {
 			toStyle.float = dir === 'rtl' ? 'right' : 'left';
@@ -375,7 +379,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			marginBottom: childLabelsHidden ? '0.6rem' : '1.2rem'
 		};
 
-		return { containerStyle, toStyle, endContainerStyle };
+		return { containerStyle, startContainerStyle, toStyle, endContainerStyle };
 	}
 
 	async _handleChange(e) {
