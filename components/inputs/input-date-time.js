@@ -154,8 +154,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 					?skeleton="${this.skeleton}"
 					style="${styleMap(dateStyle)}"
 					.value="${this._parsedDateTime}">
-				</d2l-input-date>
-				<d2l-input-time
+				</d2l-input-date><d2l-input-time
 					?novalidate="${this.noValidate}"
 					@blur="${this._handleInputTimeBlur}"
 					@change="${this._handleTimeChange}"
