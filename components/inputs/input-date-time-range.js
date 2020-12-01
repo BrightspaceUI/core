@@ -406,23 +406,27 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 	_onSlotChange(e) {
 		const slotContent = e.target.assignedNodes()[0];
-		if (slotContent) this._slotOccupied = true;
-		if (this._parentResizeObserver) {
-			this._parentResizeObserver.disconnect();
-			this._parentResizeObserver = null;
-		}
-		if (this._startDateTimeResizeObserver) {
-			this._startDateTimeResizeObserver.disconnect();
-			this._startDateTimeResizeObserver = null;
+		if (slotContent) {
+			this._slotOccupied = true;
+
+			if (this._parentResizeObserver) {
+				this._parentResizeObserver.disconnect();
+				this._parentResizeObserver = null;
+			}
+			if (this._startDateTimeResizeObserver) {
+				this._startDateTimeResizeObserver.disconnect();
+				this._startDateTimeResizeObserver = null;
+			}
 		}
 	}
 
 	_startObserving() {
 		this._parentResizeObserver = this._parentResizeObserver || new ResizeObserver(async() => {
+			// set _wrapped to false to trigger re-render to be able to recalculate height for the case when window size is increased
 			this._wrapped = false;
 			await this.updateComplete;
 			const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(`.${this._rangeContainerClass}`)).getPropertyValue('height')));
-			if (height >= (this._startInputDateTimeHeight * 2)) this._wrapped = true;
+			if (height >= (this._startInputDateTimeHeight * 2)) this._wrapped = true; // switch to _wrapped styles if content has wrapped (needed for "to" to occupy its own line)
 			else this._wrapped = false;
 		});
 		this._parentResizeObserver.disconnect();
