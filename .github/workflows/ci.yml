@@ -58,15 +58,15 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install extra dependencies
-        run: npm install karma-browserstack-launcher@1 --no-save
       - name: Build
         run: npm run build
       - name: BrowserStack
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        run: npx karma start karma.bs.conf.js
+        run: |
+          npm install karma-browserstack-launcher@1 --no-save
+          npx karma start karma.bs.conf.js
   sauce:
     name: Unit Tests (SauceLabs)
     timeout-minutes: 10
@@ -83,12 +83,12 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Install extra dependencies
-        run: npm install karma-sauce-launcher@2 --no-save
       - name: Build
         run: npm run build
       - name: SauceLabs
         env:
           SAUCE_USERNAME: Gaudi1
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
-        run: npx karma start karma.sauce.conf.js
+        run: |
+          npm install karma-sauce-launcher@2 --no-save
+          npx karma start karma.sauce.conf.js
