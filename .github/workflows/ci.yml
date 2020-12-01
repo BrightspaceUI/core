@@ -59,7 +59,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Install extra dependencies
-        run: npm install karma-browserstack-launcher@1
+        run: npm install karma-browserstack-launcher@1 --no-save
       - name: Build
         run: npm run build
       - name: BrowserStack
@@ -84,7 +84,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Install extra dependencies
-        run: npm install karma-sauce-launcher@2
+        run: npm install karma-sauce-launcher@2 --no-save
       - name: Build
         run: npm run build
       - name: SauceLabs
