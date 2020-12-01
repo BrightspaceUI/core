@@ -223,6 +223,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this._endInputId = getUniqueId();
 
 		this._slotOccupied = false;
+		this._startInputDateTimeHeight = 0;
 		this._wrapped = false;
 
 		this._parentResizeObserver = null;
@@ -252,6 +253,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		}
 
 		if (!this._slotOccupied) {
+			await (document.fonts ? document.fonts.ready : Promise.resolve());
 			this._startObserving();
 		}
 	}
@@ -421,6 +423,14 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 	}
 
 	_startObserving() {
+		const startDateTimeSelector = 'd2l-input-date-time.d2l-input-date-time-range-start';
+		this._startDateTimeResizeObserver = this._startDateTimeResizeObserver || new ResizeObserver(async() => {
+			// height of d2l-input-date-time not ready at firstUpdated
+			this._startInputDateTimeHeight = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(startDateTimeSelector)).getPropertyValue('height')));
+		});
+		this._startDateTimeResizeObserver.disconnect();
+		this._startDateTimeResizeObserver.observe(this.shadowRoot.querySelector(startDateTimeSelector));
+
 		this._parentResizeObserver = this._parentResizeObserver || new ResizeObserver(async() => {
 			// set _wrapped to false to trigger re-render to be able to recalculate height for the case when window size is increased
 			this._wrapped = false;
@@ -431,14 +441,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		});
 		this._parentResizeObserver.disconnect();
 		this._parentResizeObserver.observe(this.parentNode);
-
-		const startDateTimeSelector = 'd2l-input-date-time.d2l-input-date-time-range-start';
-		this._startDateTimeResizeObserver = this._startDateTimeResizeObserver || new ResizeObserver(() => {
-			// height of d2l-input-date-time not ready at firstUpdated
-			this._startInputDateTimeHeight = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(startDateTimeSelector)).getPropertyValue('height')));
-		});
-		this._startDateTimeResizeObserver.disconnect();
-		this._startDateTimeResizeObserver.observe(this.shadowRoot.querySelector(startDateTimeSelector));
 	}
 
 }
