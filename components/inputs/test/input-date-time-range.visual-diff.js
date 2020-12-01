@@ -360,7 +360,9 @@ describe('d2l-input-date-time-range', () => {
 	describe('skeleton', () => {
 		[
 			'labelled',
-			'label-hidden'
+			'label-hidden',
+			'hidden-labels-values',
+			'wide-hidden-labels-values'
 		].forEach((name) => {
 			it(name, async function() {
 				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);

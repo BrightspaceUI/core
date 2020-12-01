@@ -5,6 +5,7 @@ import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspa
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateTimeInISO, getAdjustedTime, getDateFromISODateTime, getDateNoConversion, parseISODateTime } from '../../helpers/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -12,7 +13,6 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
 
 function _isSameDate(date1, date2) {
 	return date1.date === date2.date && date1.month === date2.month && date1.year === date2.year;
@@ -148,20 +148,17 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			d2l-input-date-time {
 				display: block;
 			}
+
+			.d2l-input-date-time-range-container {
+				display: flex;
+				flex-wrap: wrap;
+				margin-bottom: -1.2rem;
+			}
+			.d2l-input-date-time-range-container.d2l-input-date-time-range-container-block {
+				display: block;
+			}
 			:host([label]:not([label-hidden]):not([child-labels-hidden])) .d2l-input-date-time-range-container {
 				margin-top: calc(0.9rem - 7px);
-			}
-
-			:host(:not([child-labels-hidden])) .d2l-input-date-time-range-to {
-				display: none;
-			}
-			.d2l-input-date-time-range-to {
-				margin-bottom: 0.6rem;
-				margin-right: 0.9rem;
-			}
-			:host([dir="rtl"]) .d2l-input-date-time-range-to {
-				margin-left: 0.9rem;
-				margin-right: 0;
 			}
 
 			.d2l-input-date-time-range-start-container {
@@ -179,6 +176,32 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			:host([child-labels-hidden][dir="rtl"]) .d2l-input-date-time-range-start-container {
 				margin-left: 0.9rem;
 				margin-right: 0;
+			}
+			.d2l-input-date-time-range-container-block .d2l-input-date-time-range-start-container {
+				margin-left: 0;
+				margin-right: 0;
+			}
+
+			:host(:not([child-labels-hidden])) .d2l-input-date-time-range-to {
+				display: none;
+			}
+			.d2l-input-date-time-range-to {
+				display: inline-block;
+				margin-bottom: 0.6rem;
+				margin-right: 0.9rem;
+				vertical-align: top;
+			}
+			:host([dir="rtl"]) .d2l-input-date-time-range-to {
+				margin-left: 0.9rem;
+				margin-right: 0;
+			}
+
+			.d2l-input-date-time-range-end-container {
+				display: flex;
+				margin-bottom: 1.2rem;
+			}
+			.d2l-input-date-time-range-container-block .d2l-input-date-time-range-end-container {
+				display: block;
 			}
 		`];
 	}
@@ -240,7 +263,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		const tooltipStart = (this.validationError && !this._startDropdownOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 
-		const styleMaps = this._getStyleMaps(this._wrapped, this._slotOccupied, this.childLabelsHidden, this.dir);
+		const containerClassMap = {
+			'd2l-input-date-time-range-container': true,
+			'd2l-input-date-time-range-container-block': this._wrapped || this._slotOccupied
+		};
 
 		return html`
 			${tooltipStart}
@@ -250,8 +276,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<div class="${this._rangeContainerClass}" style="${styleMap(styleMaps.containerStyle)}">
-					<div class="d2l-input-date-time-range-start-container" style="${styleMap(styleMaps.startContainerStyle)}">
+				<div class="${classMap(containerClassMap)}">
+					<div class="d2l-input-date-time-range-start-container">
 						<d2l-input-date-time
 							?novalidate="${this.noValidate}"
 							@change="${this._handleChange}"
@@ -271,8 +297,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 						</d2l-input-date-time>
 						<slot name="start" @slotchange="${this._onSlotChange}"></slot>
 					</div>
-					<div class="d2l-input-date-time-range-end-container" style="${styleMap(styleMaps.endContainerStyle)}">
-						<div class="d2l-input-date-time-range-to d2l-body-small d2l-skeletize" style=${styleMap(styleMaps.toStyle)}>
+					<div class="d2l-input-date-time-range-end-container">
+						<div class="d2l-input-date-time-range-to d2l-body-small d2l-skeletize">
 							${this.localize('components.input-date-time-range.to')}
 						</div>
 						<d2l-input-date-time
@@ -357,31 +383,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		return this.startLabel ? this.startLabel : this.localize('components.input-date-time-range.startDate');
 	}
 
-	_getStyleMaps(wrapped, slotOccupied, childLabelsHidden, dir) {
-		const blockDisplay = wrapped || slotOccupied;
-		const containerStyle = {
-			marginBottom: childLabelsHidden ? '-0.6rem' : '-1.2rem',
-			display: blockDisplay ? 'block' : 'flex'
-		};
-		if (!blockDisplay) containerStyle.flexWrap = 'wrap';
-
-		const startContainerStyle = {};
-		if (blockDisplay && this.dir === 'rtl') startContainerStyle.marginLeft = '0';
-		else if (blockDisplay) startContainerStyle.marginRight = '0';
-
-		const toStyle = {};
-		if (this.childLabelsHidden && !wrapped) {
-			toStyle.float = dir === 'rtl' ? 'right' : 'left';
-		}
-
-		const endContainerStyle = {
-			display: blockDisplay ? 'block' : 'flex',
-			marginBottom: childLabelsHidden ? '0.6rem' : '1.2rem'
-		};
-
-		return { containerStyle, startContainerStyle, toStyle, endContainerStyle };
-	}
-
 	async _handleChange(e) {
 		const elem = e.target;
 		if (elem.classList.contains('d2l-input-date-time-range-start')) {
@@ -429,6 +430,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 		const startDateTimeSelector = 'd2l-input-date-time.d2l-input-date-time-range-start';
 		this._startDateTimeResizeObserver = this._startDateTimeResizeObserver || new ResizeObserver(() => {
+			// height of d2l-input-date-time not ready at firstUpdated
 			this._startInputDateTimeHeight = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(startDateTimeSelector)).getPropertyValue('height')));
 		});
 		this._startDateTimeResizeObserver.disconnect();
