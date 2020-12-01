@@ -222,7 +222,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 37));
 			setTimeout(() => dispatchKeyEvent(el, 37));
 			setTimeout(() => dispatchKeyEvent(el, 37));
-			await aTimeout(1);
+			await aTimeout(2);
 
 			const expectedFocusDate = new Date(2015, 7, 29);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
@@ -236,7 +236,7 @@ describe('d2l-calendar', () => {
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			setTimeout(() => dispatchKeyEvent(el, 39));
 			setTimeout(() => dispatchKeyEvent(el, 39));
-			await aTimeout(1);
+			await aTimeout(2);
 
 			const expectedFocusDate = new Date(2015, 9, 4);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
@@ -247,7 +247,7 @@ describe('d2l-calendar', () => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
 			setTimeout(() => dispatchKeyEvent(el, 33));
-			await aTimeout(1);
+			await aTimeout(2);
 
 			const expectedFocusDate = new Date(2015, 6, 29);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
@@ -258,7 +258,7 @@ describe('d2l-calendar', () => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
 			setTimeout(() => dispatchKeyEvent(el, 34));
-			await aTimeout(1);
+			await aTimeout(2);
 
 			const expectedFocusDate = new Date(2015, 8, 30);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
@@ -269,7 +269,7 @@ describe('d2l-calendar', () => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
 			setTimeout(() => dispatchKeyEvent(el, 36));
-			await aTimeout(1);
+			await aTimeout(2);
 
 			const expectedFocusDate = new Date(2015, 7, 30);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
@@ -280,7 +280,7 @@ describe('d2l-calendar', () => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
 			setTimeout(() => dispatchKeyEvent(el, 35));
-			await aTimeout(1);
+			await aTimeout(2);
 
 			const expectedFocusDate = new Date(2015, 8, 5);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
