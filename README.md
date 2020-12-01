@@ -2,7 +2,6 @@
 
 [![NPM version](https://img.shields.io/npm/v/@brightspace-ui/core.svg)](https://www.npmjs.org/package/@brightspace-ui/core)
 [![NPM downloads](https://img.shields.io/npm/dt/@brightspace-ui/core.svg)](https://www.npmjs.com/package/@brightspace-ui/core)
-![Build status](https://github.com/BrightspaceUI/core/workflows/ci/badge.svg)
 
 A collection of accessible, free, open-source web components and tools for building Brightspace applications.
 
