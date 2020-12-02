@@ -36,7 +36,7 @@ export default {
 	"components.input-date.setToToday": "Establecer para hoy",
 	"components.input-search.clear": "Borrar búsqueda",
 	"components.input-search.search": "Buscar",
-	"components.input-time-range.endTime": "Hora de finalización",
+	"components.input-time-range.endTime": "Hora final",
 	"components.input-time-range.errorBadInput": "{startLabel} debe estar antes de {endLabel}",
 	"components.input-time-range.startTime": "Hora de inicio",
 	"components.list-item-drag-handle.default": "Acción de reordenar elemento de {name}",
