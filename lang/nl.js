@@ -16,7 +16,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} moet ten minste {minlength} tekens bevatten",
 	"components.form-element.input.url.typeMismatch": "URL is niet geldig",
 	"components.form-element.valueMissing": "{label} is vereist.",
-	"components.form-error-summary.errorSummary": "Er {count, plural, one { is 1 fout } other { zijn { count } fouten }} gevonden in de informatie die u hebt ingediend",
+	"components.form-error-summary.errorSummary": "Er {count, plural, one {is 1 fout} other {zijn {count} fouten}} gevonden in de informatie die u hebt ingediend",
 	"components.input-date-range.endDate": "Einddatum",
 	"components.input-date-range.errorBadInput": "{startLabel} moet voor {endLabel} liggen",
 	"components.input-date-range.startDate": "Startdatum",
