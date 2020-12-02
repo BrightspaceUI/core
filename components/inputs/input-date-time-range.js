@@ -223,7 +223,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this._endInputId = getUniqueId();
 
 		this._slotOccupied = false;
-		this._startInputDateTimeHeight = 0;
 		this._wrapped = false;
 
 		this._parentResizeObserver = null;
@@ -433,6 +432,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 		this._parentResizeObserver = this._parentResizeObserver || new ResizeObserver(async() => {
 			// set _wrapped to false to trigger re-render to be able to recalculate height for the case when window size is increased
+			if (!this._startInputDateTimeHeight) return;
 			this._wrapped = false;
 			await this.updateComplete;
 			const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(`.${this._rangeContainerClass}`)).getPropertyValue('height')));
