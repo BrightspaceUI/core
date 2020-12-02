@@ -7,8 +7,11 @@ const normalFixture = html`<d2l-input-number label="label"></d2l-input-number>`;
 const defaultValueFixture = html`<d2l-input-number label="label" value="1.1"></d2l-input-number>`;
 const requiredFixture = html`<d2l-input-number label="label" required></d2l-input-number>`;
 const minMaxFixture = html`<d2l-input-number label="label" min="5" max="10"></d2l-input-number>`;
+const minMaxExclusiveFixture = html`<d2l-input-number label="label" min="5" max="10" min-exclusive max-exclusive></d2l-input-number>`;
 const minFixture = html`<d2l-input-number label="label" min="5"></d2l-input-number>`;
+const minExclusiveFixture = html`<d2l-input-number label="label" min="5" min-exclusive></d2l-input-number>`;
 const maxFixture = html`<d2l-input-number label="label" max="10"></d2l-input-number>`;
+const maxExclusiveFixture = html`<d2l-input-number label="label" max="10" max-exclusive></d2l-input-number>`;
 const minMaxFractionDigitsFixture = html`<d2l-input-number label="label" min-fraction-digits="2" max-fraction-digits="3"></d2l-input-number>`;
 const integerFixture = html`<d2l-input-number label="label" max-fraction-digits="0"></d2l-input-number>`;
 
@@ -61,44 +64,50 @@ describe('d2l-input-number', () => {
 	});
 
 	describe('min and max fraction digits', () => {
-		it('should round down to the nearest integer', async() => {
-			const elem = await fixture(integerFixture);
-			elem.value = 15.2345;
-			await elem.updateComplete;
-			expect(elem.value).to.equal(15);
-			expect(getInnerInputValue(elem)).to.equal('15');
-		});
-
-		it('should round up to the nearest integer', async() => {
-			const elem = await fixture(integerFixture);
-			elem.value = 15.6345;
-			await elem.updateComplete;
-			expect(elem.value).to.equal(16);
-			expect(getInnerInputValue(elem)).to.equal('16');
-		});
-
-		it('should automatically add zeroes to match min fraction digits', async() => {
-			const elem = await fixture(minMaxFractionDigitsFixture);
-			elem.value = 1;
-			await elem.updateComplete;
-			expect(elem.value).to.equal(1);
-			expect(getInnerInputValue(elem)).to.equal('1.00');
-		});
-
-		it('should automatically round up to match max fraction digits', async() => {
-			const elem = await fixture(minMaxFractionDigitsFixture);
-			elem.value = 1.2345;
-			await elem.updateComplete;
-			expect(elem.value).to.equal(1.235);
-			expect(getInnerInputValue(elem)).to.equal('1.235');
-		});
-
-		it('should automatically round down to match max fraction digits', async() => {
-			const elem = await fixture(minMaxFractionDigitsFixture);
-			elem.value = 1.2344;
-			await elem.updateComplete;
-			expect(elem.value).to.equal(1.234);
-			expect(getInnerInputValue(elem)).to.equal('1.234');
+		[
+			{
+				name: 'should round down to the nearest integer',
+				fixture: integerFixture,
+				value: 15.2345,
+				expectedValue: 15,
+				expectInnerValue: '15'
+			},
+			{
+				name: 'should round up to the nearest integer',
+				fixture: integerFixture,
+				value: 15.6345,
+				expectedValue: 16,
+				expectInnerValue: '16'
+			},
+			{
+				name: 'should automatically add zeroes to match min fraction digits',
+				fixture: minMaxFractionDigitsFixture,
+				value: 1,
+				expectedValue: 1,
+				expectInnerValue: '1.00'
+			},
+			{
+				name: 'should automatically round up to match max fraction digits',
+				fixture: minMaxFractionDigitsFixture,
+				value: 1.2345,
+				expectedValue: 1.235,
+				expectInnerValue: '1.235'
+			},
+			{
+				name: 'should automatically round down to match max fraction digits',
+				fixture: minMaxFractionDigitsFixture,
+				value: 1.2344,
+				expectedValue: 1.234,
+				expectInnerValue: '1.234'
+			}
+		].forEach((test) => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture);
+				elem.value = test.value;
+				await elem.updateComplete;
+				expect(elem.value).to.equal(test.expectedValue);
+				expect(getInnerInputValue(elem)).to.equal(test.expectInnerValue);
+			});
 		});
 	});
 
@@ -128,71 +137,91 @@ describe('d2l-input-number', () => {
 			expect(elem.value).to.equal(123);
 			expect(getInnerInputValue(elem)).to.equal('123');
 		});
-
 	});
 
 	describe('validation', () => {
-		it('should be valid when required has value', async() => {
-			const elem = await fixture(requiredFixture);
-			elem.value = 10;
-			await elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.be.empty;
-		});
-
-		it('should be invalid when empty and required', async() => {
-			const elem = await fixture(requiredFixture);
-			await elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.contain('label is required.');
-		});
-
-		it('should be valid if number is in range', async() => {
-			const elem = await fixture(minMaxFixture);
-			elem.value = 7;
-			await elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.be.empty;
-		});
-
-		it('should be invalid if number is out of range', async() => {
-			const elem = await fixture(minMaxFixture);
-			elem.value = 1;
-			await elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be between 5 and 10.');
-		});
-
-		it('should be valid if number is higher than min', async() => {
-			const elem = await fixture(minFixture);
-			elem.value = 10;
-			elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.be.empty;
-		});
-
-		it('should be invalid if number is lower than min', async() => {
-			const elem = await fixture(minFixture);
-			elem.value = 1;
-			await elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be higher than 5.');
-		});
-
-		it('should be valid if number is lower than max', async() => {
-			const elem = await fixture(maxFixture);
-			elem.value = 1;
-			await elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.be.empty;
-		});
-
-		it('should be invalid if number is higher than max', async() => {
-			const elem = await fixture(maxFixture);
-			elem.value = 15;
-			await elem.updateComplete;
-			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be lower than 10.');
+		[
+			{
+				name: 'should be valid when required has value',
+				fixture: requiredFixture,
+				value: 10,
+				expectedError: ''
+			},
+			{
+				name: 'should be invalid when empty and required',
+				fixture: requiredFixture,
+				value: null,
+				expectedError: 'label is required.'
+			},
+			{
+				name: 'should be valid if number is in range',
+				fixture: minMaxFixture,
+				value: 7,
+				expectedError: ''
+			},
+			{
+				name: 'should be invalid if number is out of range',
+				fixture: minMaxFixture,
+				value: 1,
+				expectedError: 'Number must be higher than or equal to 5 and lower than or equal to 10.'
+			},
+			{
+				name: 'should be valid if number is higher than min',
+				fixture: minFixture,
+				value: 10,
+				expectedError: ''
+			},
+			{
+				name: 'should be invalid if number is lower than min',
+				fixture: minFixture,
+				value: 1,
+				expectedError: 'Number must be higher than or equal to 5.'
+			},
+			{
+				name: 'should be valid if number is lower than max',
+				fixture: maxFixture,
+				value: 1,
+				expectedError: ''
+			},
+			{
+				name: 'should be invalid if number is higher than max',
+				fixture: maxFixture,
+				value: 15,
+				expectedError: 'Number must be lower than or equal to 10.'
+			},
+			{
+				name: 'should be invalid if number is equal to min',
+				fixture: minMaxExclusiveFixture,
+				value: 5,
+				expectedError: 'Number must be higher than 5 and lower than 10.'
+			},
+			{
+				name: 'should be invalid if number is equal to max',
+				fixture: minMaxExclusiveFixture,
+				value: 10,
+				expectedError: 'Number must be higher than 5 and lower than 10.'
+			},
+			{
+				name: 'should be invalid if number is equal to min',
+				fixture: minExclusiveFixture,
+				value: 5,
+				expectedError: 'Number must be higher than 5.'
+			},
+			{
+				name: 'should be invalid if number is equal to max',
+				fixture: maxExclusiveFixture,
+				value: 10,
+				expectedError: 'Number must be lower than 10.'
+			}
+		].forEach((test) => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture);
+				if (test.value !== null) elem.value = test.value;
+				await elem.updateComplete;
+				const errors = await elem.validate();
+				if (test.expectedError) expect(errors).to.contain(test.expectedError);
+				else expect(errors).to.be.empty;
+			});
 		});
 	});
 
