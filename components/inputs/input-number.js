@@ -162,14 +162,12 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
 			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
-			const minInclusive = !this.minExclusive ? ' or equal to' : '';
-			const maxInclusive = !this.maxExclusive ? ' or equal to' : '';
 			if (minNumber && maxNumber) {
-				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max: maxNumber, minInclusive: minInclusive, maxInclusive: maxInclusive });
+				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max: maxNumber, minExclusive: this.minExclusive, maxExclusive: this.maxExclusive });
 			} else if (maxNumber) {
-				return this.localize('components.form-element.input.number.rangeOverflow', { max: maxNumber, maxInclusive: maxInclusive });
+				return this.localize('components.form-element.input.number.rangeOverflow', { max: maxNumber, maxExclusive: this.maxExclusive });
 			} else if (minNumber) {
-				return this.localize('components.form-element.input.number.rangeUnderflow', { min: minNumber, minInclusive: minInclusive });
+				return this.localize('components.form-element.input.number.rangeUnderflow', { min: minNumber, minExclusive: this.minExclusive });
 			}
 		}
 		return super.validationMessage;
