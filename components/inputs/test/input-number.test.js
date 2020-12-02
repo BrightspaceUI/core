@@ -163,7 +163,7 @@ describe('d2l-input-number', () => {
 				name: 'should be invalid if number is out of range',
 				fixture: minMaxFixture,
 				value: 1,
-				expectedError: 'Number must be higher than or equal to 5 and lower than or equal to 10.'
+				expectedError: 'Number must be greater than or equal to 5 and less than or equal to 10.'
 			},
 			{
 				name: 'should be valid if number is higher than min',
@@ -175,7 +175,7 @@ describe('d2l-input-number', () => {
 				name: 'should be invalid if number is lower than min',
 				fixture: minFixture,
 				value: 1,
-				expectedError: 'Number must be higher than or equal to 5.'
+				expectedError: 'Number must be greater than or equal to 5.'
 			},
 			{
 				name: 'should be valid if number is lower than max',
@@ -187,31 +187,31 @@ describe('d2l-input-number', () => {
 				name: 'should be invalid if number is higher than max',
 				fixture: maxFixture,
 				value: 15,
-				expectedError: 'Number must be lower than or equal to 10.'
+				expectedError: 'Number must be less than or equal to 10.'
 			},
 			{
 				name: 'should be invalid if number is equal to min',
 				fixture: minMaxExclusiveFixture,
 				value: 5,
-				expectedError: 'Number must be higher than 5 and lower than 10.'
+				expectedError: 'Number must be greater than 5 and less than 10.'
 			},
 			{
 				name: 'should be invalid if number is equal to max',
 				fixture: minMaxExclusiveFixture,
 				value: 10,
-				expectedError: 'Number must be higher than 5 and lower than 10.'
+				expectedError: 'Number must be greater than 5 and less than 10.'
 			},
 			{
 				name: 'should be invalid if number is equal to min',
 				fixture: minExclusiveFixture,
 				value: 5,
-				expectedError: 'Number must be higher than 5.'
+				expectedError: 'Number must be greater than 5.'
 			},
 			{
 				name: 'should be invalid if number is equal to max',
 				fixture: maxExclusiveFixture,
 				value: 10,
-				expectedError: 'Number must be lower than 10.'
+				expectedError: 'Number must be less than 10.'
 			}
 		].forEach((test) => {
 			it(test.name, async() => {
