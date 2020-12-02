@@ -13,9 +13,9 @@ const _localizeGenericElement = (localize, ele, labelText) => {
 const _localizeInputNumberElement = (localize, ele, labelText) => {
 	switch (true) {
 		case ele.validity.rangeUnderflow:
-			return localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(ele.min)) });
+			return localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(ele.min)), minInclusive: ' or equal to' });
 		case ele.validity.rangeOverflow:
-			return localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(ele.max)) });
+			return localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(ele.max)), maxInclusive: ' or equal to' });
 		default:
 			return _localizeGenericElement(localize, ele, labelText);
 	}
