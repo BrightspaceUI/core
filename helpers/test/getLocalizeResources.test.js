@@ -166,7 +166,8 @@ describe('getLocalizeResources', () => {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
 			Object.defineProperty(window, 'caches', {
-				get: () => { return undefined; }
+				get: () => { return undefined; },
+				configurable: true
 			});
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		}
