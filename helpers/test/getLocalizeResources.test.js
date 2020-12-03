@@ -165,9 +165,9 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			window.caches = {};
-			// sinon.stub(window, 'caches').get(() => cacheStorageFake);
-			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+			Object.defineProperty(window, 'caches', {
+				get: () => cacheStorageFake
+			});
 		}
 
 		const fetchStub = sinon.stub(window, 'fetch');
@@ -301,13 +301,6 @@ describe('getLocalizeResources', () => {
 			Object.defineProperty(window, 'caches', {
 				get: () => cacheStorageFake
 			});
-			// Object.defineProperty(window, 'caches', {}); // Cannot redefine property: caches
-			// sinon.stub(window, 'caches').get(() => cacheStorageFake); // TypeError: Cannot stub non-existent property caches
-
-			// window.caches = {};
-			// sinon.replaceGetter(window, 'caches', () => cacheStorageFake); // Error: `object.property` is not a getter
-
-			// AssertionError: expected open to have been called exactly once with exact arguments d2l-oslo
 		}
 
 		let counter = 0;
@@ -398,9 +391,9 @@ describe('getLocalizeResources', () => {
 		try {
 			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
 		} catch (e) {
-			window.caches = {};
-			// sinon.stub(window, 'caches').get(() => cacheStorageFake);
-			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+			Object.defineProperty(window, 'caches', {
+				get: () => cacheStorageFake
+			});
 		}
 
 		const fetchStub = sinon.stub(window, 'fetch');
