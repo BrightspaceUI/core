@@ -136,7 +136,7 @@ describe('getLocalizeResources', () => {
 		expect(actual).to.deep.equal(expected);
 	});
 
-	it('fetches batch overrides when enabled, and caches them', async() => {
+	it.skip('fetches batch overrides when enabled, and caches them', async() => {
 
 		const config = Object.assign({}, OsloBatch); // version gets mutated
 		sinon.stub(documentLocaleSettings, 'oslo').get(() => config);
@@ -278,7 +278,7 @@ describe('getLocalizeResources', () => {
 		expect(actual).to.deep.equal(expected);
 	});
 
-	it.skip('rejects individually when batch sub-request fails, caches failures', async() => {
+	it('rejects individually when batch sub-request fails, caches failures', async() => {
 
 		sinon.stub(documentLocaleSettings, 'oslo').get(() => OsloBatch);
 
