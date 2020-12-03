@@ -48,6 +48,13 @@ describe('d2l-dialog', () => {
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
+					it('opened-wide', async function() {
+						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px');
+						await helper.open(page, '#dialog');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
+					});
+
 					it('rtl', async function() {
 						await helper.open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
