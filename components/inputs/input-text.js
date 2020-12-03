@@ -324,9 +324,9 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	get validationMessage() {
 		if (this.validity.rangeOverflow) {
-			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)) });
+			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)), maxExclusive: false });
 		} else if (this.validity.rangeUnderflow) {
-			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)) });
+			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)), minExclusive: false });
 		} else if (this.validity.tooShort) {
 			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
 		} else if (this.validity.typeMismatch) {
