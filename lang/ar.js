@@ -39,6 +39,7 @@ export default {
 	"components.input-time-range.endTime": "وقت النهاية",
 	"components.input-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-time-range.startTime": "وقت البدء",
+	"components.input-time-range.to": "إلى",
 	"components.list-item-drag-handle.default": "إعادة ترتيب إجراء المادة لـ {name}",
 	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد، الموضع الحالي {currentPosition} من أصل {size}. لنقل هذه المادة، اضغط على السهم المتجه إلى أعلى أو السهم المتجه إلى أسفل.",
 	"components.menu-item-return.return": "للعودة إلى القائمة السابقة.",

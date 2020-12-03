@@ -39,6 +39,7 @@ export default {
 	"components.input-time-range.endTime": "Sluttidspunkt",
 	"components.input-time-range.errorBadInput": "{startLabel} skal være før {endLabel}",
 	"components.input-time-range.startTime": "Starttidspunkt",
+	"components.input-time-range.to": "til",
 	"components.list-item-drag-handle.default": "Omarranger elementhandling for {name}",
 	"components.list-item-drag-handle.keyboard": "Omarranger element, aktuel position {currentPosition} ud af {size}. For at flytte dette element skal du trykke på pil op eller pil ned.",
 	"components.menu-item-return.return": "Går tilbage til forrige menu.",

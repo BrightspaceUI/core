@@ -39,6 +39,7 @@ export default {
 	"components.input-time-range.endTime": "Hora final",
 	"components.input-time-range.errorBadInput": "{startLabel} precisa ser anterior a {endLabel}",
 	"components.input-time-range.startTime": "Hora de início",
+	"components.input-time-range.to": "para",
 	"components.list-item-drag-handle.default": "Reordenar ação de item para {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar item, posição atual {currentPosition} de {size}. Para mover este item, pressione as setas para cima ou para baixo.",
 	"components.menu-item-return.return": "Volta ao menu anterior.",

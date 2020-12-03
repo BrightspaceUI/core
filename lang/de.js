@@ -39,6 +39,7 @@ export default {
 	"components.input-time-range.endTime": "Endzeit",
 	"components.input-time-range.errorBadInput": "{startLabel} muss vor {endLabel} liegen",
 	"components.input-time-range.startTime": "Startzeit",
+	"components.input-time-range.to": "bis",
 	"components.list-item-drag-handle.default": "Elementaktion für {name} neu anordnen",
 	"components.list-item-drag-handle.keyboard": "Elemente neu anordnen; aktuelle Position: {currentPosition} von {size}. Drücken Sie zum Bewegen dieses Elements auf den Pfeil nach oben oder den Pfeil nach unten.",
 	"components.menu-item-return.return": "Zum vorherigen Menü zurückkehren.",

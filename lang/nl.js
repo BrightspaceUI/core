@@ -39,6 +39,7 @@ export default {
 	"components.input-time-range.endTime": "Eindtijd",
 	"components.input-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-time-range.startTime": "Starttijd",
+	"components.input-time-range.to": "tot",
 	"components.list-item-drag-handle.default": "Itemactie voor {name} opnieuw rangschikken",
 	"components.list-item-drag-handle.keyboard": "Items opnieuw rangschikken, huidige positie {currentPosition} van {size}. Als u dit item wilt verplaatsen, drukt u op de pijl omhoog of omlaag.",
 	"components.menu-item-return.return": "Hiermee keert u terug naar het vorige menu.",

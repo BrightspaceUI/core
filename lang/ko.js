@@ -39,6 +39,7 @@ export default {
 	"components.input-time-range.endTime": "종료 시각",
 	"components.input-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-time-range.startTime": "시작 시각",
+	"components.input-time-range.to": "-",
 	"components.list-item-drag-handle.default": "{name}에 대한 항목 작업 재정렬",
 	"components.list-item-drag-handle.keyboard": "전체 {size}에서 현재 위치 {currentPosition} 항목 재정렬 이 항목을 이동하라면 위쪽 또는 아래쪽 화살표를 누르십시오.",
 	"components.menu-item-return.return": "이전 메뉴로 돌아갑니다.",

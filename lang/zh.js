@@ -39,6 +39,7 @@ export default {
 	"components.input-time-range.endTime": "结束时间",
 	"components.input-time-range.errorBadInput": "{startLabel} 必须早于 {endLabel}",
 	"components.input-time-range.startTime": "开始时间",
+	"components.input-time-range.to": "至",
 	"components.list-item-drag-handle.default": "对 {name} 的项目操作重新排序",
 	"components.list-item-drag-handle.keyboard": "对项目重新排序，当前位置 {currentPosition} 超出 {size}。要移动此项目，请按向上或向下箭头。",
 	"components.menu-item-return.return": "返回至上级菜单。",
