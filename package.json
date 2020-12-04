@@ -7,7 +7,6 @@
     "access": "public"
   },
   "scripts": {
-    "analyze": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
@@ -16,7 +15,6 @@
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
     "lint:style": "stylelint \"**/*.js\"",
-    "prepublishOnly": "node ./cli/verify-translations.js && npm run analyze",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
     "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
     "test:axe": "karma start karma.axe.conf.js",
@@ -62,7 +60,6 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "lit-analyzer": "^1",
     "mocha": "^8",
     "node-sass": "^5",
     "puppeteer": "^5",
