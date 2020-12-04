@@ -11,6 +11,10 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 	static get properties() {
 		return {
 			/**
+			 * Force block (stacked) range display if true
+			 */
+			blockDisplay: { attribute: 'block-display', type: Boolean },
+			/**
 			 * Display localized "to" between the left and right slot contents
 			 */
 			displayTo: { attribute: 'display-to', type: Boolean },
@@ -25,7 +29,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 	static get styles() {
 		return [ super.styles, bodySmallStyles, css`
 			:host {
-				display: inline-block;
+				display: block;
 			}
 			:host([hidden]) {
 				display: none;
@@ -98,6 +102,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 	constructor() {
 		super();
 
+		this.blockDisplay = false;
 		this.displayTo = false;
 		this.topMargin = false;
 
@@ -109,14 +114,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 	disconnectedCallback() {
 		super.disconnectedCallback();
 
-		if (this._parentElemResizeObserver) {
-			this._parentElemResizeObserver.disconnect();
-			this._parentElemResizeObserver = null;
-		}
-		if (this._leftElemResizeObserver) {
-			this._leftElemResizeObserver.disconnect();
-			this._leftElemResizeObserver = null;
-		}
+		this._disconnectObservers();
 	}
 
 	firstUpdated(changedProperties) {
@@ -146,10 +144,37 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		changedProperties.forEach((_, prop) => {
+			if (prop === 'blockDisplay') {
+				if (this.blockDisplay) {
+					this._blockDisplay = true;
+					this._disconnectObservers();
+				} else {
+					this._blockDisplay = false;
+					this._startObserving();
+				}
+			}
+		});
+	}
+
+	_disconnectObservers() {
+		if (this._parentElemResizeObserver) {
+			this._parentElemResizeObserver.disconnect();
+			this._parentElemResizeObserver = null;
+		}
+		if (this._leftElemResizeObserver) {
+			this._leftElemResizeObserver.disconnect();
+			this._leftElemResizeObserver = null;
+		}
+	}
+
 	_startObserving() {
 		const leftElem = this.shadowRoot.querySelector('.d2l-input-date-time-range-start-container');
 		this._leftElemResizeObserver = this._leftElemResizeObserver || new ResizeObserver(() => {
-			this._leftElemeHeight = Math.ceil(parseFloat(getComputedStyle(leftElem).getPropertyValue('height')));
+			this._leftElemHeight = Math.ceil(parseFloat(getComputedStyle(leftElem).getPropertyValue('height')));
 		});
 		this._leftElemResizeObserver.disconnect();
 		this._leftElemResizeObserver.observe(leftElem);
@@ -158,7 +183,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 			this._blockDisplay = false;
 			await this.updateComplete;
 			const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-time-range-to-container')).getPropertyValue('height')));
-			if (height >= (this._leftElemeHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
+			if (height >= (this._leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
 			else this._blockDisplay = false;
 		});
 		this._parentElemResizeObserver.disconnect();
