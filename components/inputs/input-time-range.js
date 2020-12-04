@@ -1,15 +1,13 @@
+import './input-date-time-range-to.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateInISOTime, formatTimeInISO, getAdjustedTime, getDateFromISOTime, isValidTime, parseISOTime } from '../../helpers/dateTime.js';
 import { getDefaultTime, getIntervalNumber, getTimeAtInterval } from './input-time.js';
-import { bodySmallStyles } from '../typography/styles.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -100,13 +98,12 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
 			_endDropdownOpened: { type: Boolean },
-			_startDropdownOpened: { type: Boolean },
-			_wrapped: { type: Boolean }
+			_startDropdownOpened: { type: Boolean }
 		};
 	}
 
 	static get styles() {
-		return [super.styles, bodySmallStyles, css`
+		return [super.styles, css`
 			:host {
 				display: inline-block;
 			}
@@ -114,64 +111,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				display: none;
 			}
 			d2l-input-time {
-				display: block;
-			}
-			d2l-input-time.d2l-input-time-range-end {
-				align-self: flex-end;
-			}
-
-			.d2l-input-time-range-container {
-				display: flex;
-				flex-wrap: wrap;
-				margin-bottom: -1.2rem;
-			}
-			.d2l-input-time-range-container.d2l-input-time-range-container-block {
-				display: block;
-			}
-			:host([label]:not([label-hidden]):not([child-labels-hidden])) .d2l-input-time-range-container {
-				margin-top: calc(0.9rem - 7px);
-			}
-
-			.d2l-input-time-range-start-container {
-				margin-bottom: 1.2rem;
-				margin-right: 1.5rem;
-			}
-			:host([dir="rtl"]) .d2l-input-time-range-start-container {
-				margin-left: 1.5rem;
-				margin-right: 0;
-			}
-			:host([child-labels-hidden]) .d2l-input-time-range-start-container {
-				margin-bottom: 0.6rem;
-				margin-right: 0.9rem;
-			}
-			:host([child-labels-hidden][dir="rtl"]) .d2l-input-time-range-start-container {
-				margin-left: 0.9rem;
-				margin-right: 0;
-			}
-			.d2l-input-time-range-container-block .d2l-input-time-range-start-container {
-				margin-left: 0;
-				margin-right: 0;
-			}
-
-			:host(:not([child-labels-hidden])) .d2l-input-time-range-to {
-				display: none;
-			}
-			.d2l-input-time-range-to {
-				display: inline-block;
-				margin-bottom: 0.6rem;
-				margin-right: 0.9rem;
-				vertical-align: top;
-			}
-			:host([dir="rtl"]) .d2l-input-time-range-to {
-				margin-left: 0.9rem;
-				margin-right: 0;
-			}
-
-			.d2l-input-time-range-end-container {
-				display: flex;
-				margin-bottom: 1.2rem;
-			}
-			.d2l-input-time-range-container-block .d2l-input-time-range-end-container {
 				display: block;
 			}
 		`];
@@ -195,10 +134,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this._initialValues = true; // flag initial values so they do not get set to default interval before timeInterval is set
 		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
-		this._wrapped = false;
-
-		this._parentResizeObserver = null;
-		this._startTimeResizeObserver = null;
 	}
 
 	get endValue() { return this._endValue; }
@@ -221,19 +156,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this.requestUpdate('startValue', oldValue);
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-
-		if (this._parentResizeObserver) {
-			this._parentResizeObserver.disconnect();
-			this._parentResizeObserver = null;
-		}
-		if (this._startTimeResizeObserver) {
-			this._startTimeResizeObserver.disconnect();
-			this._startTimeResizeObserver = null;
-		}
-	}
-
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -252,8 +174,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			this.endValue = getValidISOTimeAtInterval(this.endValue, this.timeInterval);
 		}
 		this._initialValues = false;
-
-		this._startObserving();
 	}
 
 	render() {
@@ -262,11 +182,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 
 		const startTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-start');
 		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
-
-		const containerClassMap = {
-			'd2l-input-time-range-container': true,
-			'd2l-input-time-range-container-block': this._wrapped
-		};
 
 		/**
 		 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
@@ -282,47 +197,45 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<div class="${classMap(containerClassMap)}">
-					<div class="d2l-input-time-range-start-container">
-						<d2l-input-time
-							?novalidate="${this.noValidate}"
-							@change="${this._handleChange}"
-							class="d2l-input-time-range-start"
-							@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
-							?disabled="${this.disabled}"
-							?enforce-time-intervals="${this.enforceTimeIntervals}"
-							.forceInvalid="${this.invalid}"
-							id="${this._startInputId}"
-							label="${startLabel}"
-							?label-hidden="${this.childLabelsHidden}"
-							?required="${this.required}"
-							?skeleton="${this.skeleton}"
-							time-interval="${ifDefined(timeInterval)}"
-							value="${ifDefined(this.startValue)}">
-						</d2l-input-time>
-					</div>
-					<div class="d2l-input-time-range-end-container">
-						<div class="d2l-input-time-range-to d2l-body-small d2l-skeletize">
-							${this.localize('components.input-time-range.to')}
-						</div>
-						<d2l-input-time
-							?novalidate="${this.noValidate}"
-							@change="${this._handleChange}"
-							class="d2l-input-time-range-end"
-							@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
-							?disabled="${this.disabled}"
-							?enforce-time-intervals="${this.enforceTimeIntervals}"
-							.forceInvalid="${this.invalid}"
-							id="${this._endInputId}"
-							label="${endLabel}"
-							?label-hidden="${this.childLabelsHidden}"
-							?required="${this.required}"
-							?skeleton="${this.skeleton}"
-							time-interval="${ifDefined(timeInterval)}"
-							value="${ifDefined(this.endValue)}">
-						</d2l-input-time>
-					</div>
-				</div>
+				<d2l-input-date-time-range-to
+					?display-to="${this.childLabelsHidden}"
+					?top-margin="${this.label && !this.labelHidden && !this.childLabelsHidden}"
+					?skeleton="${this.skeleton}">
+					<d2l-input-time
+						?novalidate="${this.noValidate}"
+						@change="${this._handleChange}"
+						class="d2l-input-time-range-start"
+						@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
+						?disabled="${this.disabled}"
+						?enforce-time-intervals="${this.enforceTimeIntervals}"
+						.forceInvalid="${this.invalid}"
+						id="${this._startInputId}"
+						label="${startLabel}"
+						?label-hidden="${this.childLabelsHidden}"
+						?required="${this.required}"
+						?skeleton="${this.skeleton}"
+						slot="left"
+						time-interval="${ifDefined(timeInterval)}"
+						value="${ifDefined(this.startValue)}">
+					</d2l-input-time>
+					<d2l-input-time
+						?novalidate="${this.noValidate}"
+						@change="${this._handleChange}"
+						class="d2l-input-time-range-end"
+						@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
+						?disabled="${this.disabled}"
+						?enforce-time-intervals="${this.enforceTimeIntervals}"
+						.forceInvalid="${this.invalid}"
+						id="${this._endInputId}"
+						label="${endLabel}"
+						?label-hidden="${this.childLabelsHidden}"
+						?required="${this.required}"
+						?skeleton="${this.skeleton}"
+						slot="right"
+						time-interval="${ifDefined(timeInterval)}"
+						value="${ifDefined(this.endValue)}">
+					</d2l-input-time>
+				</d2l-input-date-time-range-to>
 			</d2l-input-fieldset>
 		`;
 	}
@@ -404,28 +317,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		} else {
 			this._endDropdownOpened = e.detail.opened;
 		}
-	}
-
-	_startObserving() {
-		const startTimeSelector = 'd2l-input-time.d2l-input-time-range-start';
-		this._startTimeResizeObserver = this._startTimeResizeObserver || new ResizeObserver(() => {
-			// height of d2l-input-time not ready at firstUpdated
-			this._startInputTimeHeight = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector(startTimeSelector)).getPropertyValue('height')));
-		});
-		this._startTimeResizeObserver.disconnect();
-		this._startTimeResizeObserver.observe(this.shadowRoot.querySelector(startTimeSelector));
-
-		this._parentResizeObserver = this._parentResizeObserver || new ResizeObserver(async() => {
-			// set _wrapped to false to trigger re-render to be able to recalculate height for the case when window size is increased
-			if (!this._startInputTimeHeight) return;
-			this._wrapped = false;
-			await this.updateComplete;
-			const height = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-time-range-container')).getPropertyValue('height')));
-			if (height >= (this._startInputTimeHeight * 2)) this._wrapped = true; // switch to _wrapped styles if content has wrapped (needed for "to" to occupy its own line)
-			else this._wrapped = false;
-		});
-		this._parentResizeObserver.disconnect();
-		this._parentResizeObserver.observe(this.parentNode);
 	}
 
 }
