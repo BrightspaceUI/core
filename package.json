@@ -22,8 +22,7 @@
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
     "test:headless": "karma start",
-    "test:headless:watch": "karma start --auto-watch=true --single-run=false",
-    "test:license": "license-checker-ci"
+    "test:headless:watch": "karma start --auto-watch=true --single-run=false"
   },
   "files": [
     "custom-elements.json",
@@ -52,7 +51,6 @@
     "axe-core": "^4",
     "babel-eslint": "^10",
     "chalk": "^4",
-    "d2l-license-checker": "^3.1.1",
     "deepmerge": "^4.2.2",
     "es-dev-server": "^1",
     "eslint": "^7",
