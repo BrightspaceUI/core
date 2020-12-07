@@ -174,6 +174,8 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			this.endValue = getValidISOTimeAtInterval(this.endValue, this.timeInterval);
 		}
 		this._initialValues = false;
+
+		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this.parentNode);
 	}
 
 	render() {
@@ -199,8 +201,8 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				?skeleton="${this.skeleton}">
 				<d2l-input-date-time-range-to
 					?display-to="${this.childLabelsHidden}"
-					?top-margin="${this.label && !this.labelHidden && !this.childLabelsHidden}"
-					?skeleton="${this.skeleton}">
+					?skeleton="${this.skeleton}"
+					?top-margin="${this.label && !this.labelHidden && !this.childLabelsHidden}">
 					<d2l-input-time
 						?novalidate="${this.noValidate}"
 						@change="${this._handleChange}"

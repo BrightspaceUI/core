@@ -160,6 +160,10 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		});
 	}
 
+	setParentNode(node) {
+		this._parentNode = node;
+	}
+
 	_disconnectObservers() {
 		if (this._parentElemResizeObserver) {
 			this._parentElemResizeObserver.disconnect();
@@ -187,7 +191,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 			else this._blockDisplay = false;
 		});
 		this._parentElemResizeObserver.disconnect();
-		this._parentElemResizeObserver.observe(this.parentNode);
+		this._parentElemResizeObserver.observe(this._parentNode);
 	}
 
 }
