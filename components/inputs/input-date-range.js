@@ -1,4 +1,5 @@
 import './input-date.js';
+import './input-date-time-range-to.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -96,26 +97,12 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		return [super.styles, css`
 			:host {
 				display: inline-block;
-				margin-bottom: -1.2rem;
-				margin-right: -1.5rem;
-			}
-			:host([dir="rtl"]) {
-				margin-left: -1.5rem;
-				margin-right: 0;
 			}
 			:host([hidden]) {
 				display: none;
 			}
 			d2l-input-date {
-				display: inline-block;
-				margin-bottom: 1.2rem;
-			}
-			d2l-input-date.d2l-input-date-range-start {
-				margin-right: 1.5rem;
-			}
-			:host([dir="rtl"]) d2l-input-date.d2l-input-date-range-start {
-				margin-left: 1.5rem;
-				margin-right: 0;
+				display: block;
 			}
 		`];
 	}
@@ -142,6 +129,8 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		if (!this.label) {
 			console.warn('d2l-input-date-range component requires label text');
 		}
+
+		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this.parentNode);
 	}
 
 	render() {
@@ -157,38 +146,45 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<d2l-input-date
-					?novalidate="${this.noValidate}"
-					@change="${this._handleChange}"
-					class="d2l-input-date-range-start"
-					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
-					?disabled="${this.disabled}"
-					.forceInvalid=${this.invalid}
-					id="${this._startInputId}"
-					label="${this._computedStartLabel}"
-					?label-hidden="${this.childLabelsHidden}"
-					max-value="${ifDefined(this.maxValue)}"
-					min-value="${ifDefined(this.minValue)}"
-					?required="${this.required}"
+				<d2l-input-date-time-range-to
+					?display-to="${this.childLabelsHidden}"
 					?skeleton="${this.skeleton}"
-					value="${ifDefined(this.startValue)}">
-				</d2l-input-date>
-				<d2l-input-date
-					?novalidate="${this.noValidate}"
-					@change="${this._handleChange}"
-					class="d2l-input-date-range-end"
-					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
-					?disabled="${this.disabled}"
-					.forceInvalid=${this.invalid}
-					id="${this._endInputId}"
-					label="${this._computedEndLabel}"
-					?label-hidden="${this.childLabelsHidden}"
-					max-value="${ifDefined(this.maxValue)}"
-					min-value="${ifDefined(this.minValue)}"
-					?required="${this.required}"
-					?skeleton="${this.skeleton}"
-					value="${ifDefined(this.endValue)}">
-				</d2l-input-date>
+					?top-margin="${this.label && !this.labelHidden && !this.childLabelsHidden}">
+					<d2l-input-date
+						?novalidate="${this.noValidate}"
+						@change="${this._handleChange}"
+						class="d2l-input-date-range-start"
+						@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
+						?disabled="${this.disabled}"
+						.forceInvalid=${this.invalid}
+						id="${this._startInputId}"
+						label="${this._computedStartLabel}"
+						?label-hidden="${this.childLabelsHidden}"
+						max-value="${ifDefined(this.maxValue)}"
+						min-value="${ifDefined(this.minValue)}"
+						?required="${this.required}"
+						?skeleton="${this.skeleton}"
+						slot="left"
+						value="${ifDefined(this.startValue)}">
+					</d2l-input-date>
+					<d2l-input-date
+						?novalidate="${this.noValidate}"
+						@change="${this._handleChange}"
+						class="d2l-input-date-range-end"
+						@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
+						?disabled="${this.disabled}"
+						.forceInvalid=${this.invalid}
+						id="${this._endInputId}"
+						label="${this._computedEndLabel}"
+						?label-hidden="${this.childLabelsHidden}"
+						max-value="${ifDefined(this.maxValue)}"
+						min-value="${ifDefined(this.minValue)}"
+						?required="${this.required}"
+						?skeleton="${this.skeleton}"
+						slot="right"
+						value="${ifDefined(this.endValue)}">
+					</d2l-input-date>
+				</d2l-input-date-time-range-to>
 			</d2l-input-fieldset>
 		`;
 	}
