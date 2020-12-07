@@ -16,7 +16,7 @@ export default {
 	"components.form-element.input.text.tooShort": "{label} muss mindestens {minlength} Zeichen enthalten",
 	"components.form-element.input.url.typeMismatch": "URL ist ungültig",
 	"components.form-element.valueMissing": "{label} ist erforderlich.",
-	"components.form-error-summary.errorSummary": "In den von Ihnen übermittelten Informationen {count, plural, one { ist 1 Fehler } other { sind { count } Fehler }} enthalten",
+	"components.form-error-summary.errorSummary": "In den von Ihnen übermittelten Informationen {count, plural, one {ist 1 Fehler} other {sind {count} Fehler}} enthalten",
 	"components.input-date-range.endDate": "Enddatum",
 	"components.input-date-range.errorBadInput": "{startLabel} muss vor {endLabel} liegen",
 	"components.input-date-range.startDate": "Startdatum",

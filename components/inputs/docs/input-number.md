@@ -17,16 +17,19 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 |--|--|--|
 | `label` | String, required | Label for the input. |
 | `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser. |
-| `autofocus` | Boolean | When set, will automatically place focus on the input. |
-| `disabled` | Boolean | Disables the input. |
+| `autofocus` | Boolean, default: `false` | When set, will automatically place focus on the input. |
+| `disabled` | Boolean, default: `false` | Disables the input. |
 | `input-width` | String, default: `4rem` | Restricts the maximum width of the input box without impacting the width of the label. |
-| `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute). |
+| `label-hidden` | Boolean, default: `false` | Hides the label visually (moves it to the input's `aria-label` attribute). |
 | `max` | Number | Maximum value allowed. |
+| `max-exclusive` | Boolean, default: `false` | Indicates whether the max value is exclusive. |
 | `max-fraction-digits` | Number | Maximum number of digits allowed after the decimal place. |
 | `min` | Number | Minimum value allowed. |
+| `min-exclusive` | Boolean, default: `false` | Indicates whether the min value is exclusive. |
 | `min-fraction-digits` | Number | Minimum number of digits allowed after the decimal place. |
 | `placeholder` | String | Placeholder text. |
-| `required` | Boolean | Indicates that a value is required. |
+| `required` | Boolean, default: `false` | Indicates that a value is required. |
+| `title` | String | Text for additional screen reader and mouseover context. |
 | `value` | Number | Value of the input. |
 
 **Accessibility:**
@@ -37,6 +40,7 @@ To make your usage of `d2l-input-number` accessible, use the following propertie
 |--|--|
 | `label` | **REQUIRED.** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
+| `title` | Use for additional screen reader and mouseover context. |
 
 **Events:**
 

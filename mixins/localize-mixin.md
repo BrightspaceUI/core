@@ -12,9 +12,9 @@ Your implementation should find the resources that best match the languages pass
 
 ## Language Resources
 
-Resources should be key-value JSON objects, where the keys are lowercase strings and the values are in [ICU Message Syntax](https://formatjs.io/guides/message-syntax/) format.
+Resources should be key-value JSON objects, where the keys are lowercase strings and the values are in [ICU Message Syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) format.
 
-The ICU Message Syntax supports some cool features, such as: [simple arguments](https://formatjs.io/guides/message-syntax/#simple-argument), the [`{select}` format](https://formatjs.io/guides/message-syntax/#select-format) and [pluralization](https://formatjs.io/guides/message-syntax/#plural-format).
+The ICU Message Syntax supports some cool features, such as: [simple arguments](https://formatjs.io/docs/core-concepts/icu-syntax/#simple-argument), the [`{select}` format](https://formatjs.io/docs/core-concepts/icu-syntax/#select-format) and [pluralization](https://formatjs.io/docs/core-concepts/icu-syntax/#plural-format).
 
 **Note:** Avoid using the ICU Message Syntax number, date and time formatting functionality. D2L allows our users to customize how these are localized, so use [@brightspace-ui/intl](https://github.com/BrightspaceUI/intl)'s `formatNumber`, `formatDate` and `formatTime` instead.
 

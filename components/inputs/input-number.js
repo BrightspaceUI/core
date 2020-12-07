@@ -26,8 +26,10 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			max: { type: Number },
+			maxExclusive: { type: Boolean, attribute: 'max-exclusive' },
 			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
 			min: { type: Number },
+			minExclusive: { type: Boolean, attribute: 'min-exclusive' },
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			placeholder: { type: String },
 			required: { type: Boolean },
@@ -58,6 +60,8 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this.disabled = false;
 		this.inputWidth = '4rem';
 		this.labelHidden = false;
+		this.maxExclusive = false;
+		this.minExclusive = false;
 		this.required = false;
 
 		this._formattedValue = '';
@@ -121,9 +125,20 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') {
 				this.setFormValue(this.value);
+
+				let rangeUnderflowCondition = false;
+				if (typeof(this.min) === 'number') {
+					rangeUnderflowCondition = this.minExclusive ? this.value <= this.min : this.value < this.min;
+				}
+
+				let rangeOverflowCondition = false;
+				if (typeof(this.max) === 'number') {
+					rangeOverflowCondition = this.maxExclusive ? this.value >= this.max : this.value > this.max;
+				}
+
 				this.setValidity({
-					rangeUnderflow: typeof(this.min) === 'number' && this.value < this.min,
-					rangeOverflow: typeof(this.max) === 'number' && this.value > this.max
+					rangeUnderflow: rangeUnderflowCondition,
+					rangeOverflow: rangeOverflowCondition
 				});
 				this.requestValidate(false);
 			}
@@ -148,11 +163,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
 			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
 			if (minNumber && maxNumber) {
-				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max :maxNumber });
+				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max: maxNumber, minExclusive: this.minExclusive, maxExclusive: this.maxExclusive });
 			} else if (maxNumber) {
-				return this.localize('components.form-element.input.number.rangeOverflow', { max: maxNumber });
+				return this.localize('components.form-element.input.number.rangeOverflow', { max: maxNumber, maxExclusive: this.maxExclusive });
 			} else if (minNumber) {
-				return this.localize('components.form-element.input.number.rangeUnderflow', { min: minNumber });
+				return this.localize('components.form-element.input.number.rangeUnderflow', { min: minNumber, minExclusive: this.minExclusive });
 			}
 		}
 		return super.validationMessage;
