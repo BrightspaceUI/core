@@ -16,6 +16,8 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+      - name: Build
+        run: npm run build
       - name: Visual Diff Tests
         uses: BrightspaceUI/actions/visual-diff@master
         with:
