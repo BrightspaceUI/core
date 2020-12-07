@@ -1,4 +1,5 @@
 import './input-date-time.js';
+import './input-date-time-range-to.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { convertLocalToUTCDateTime, convertUTCToLocalDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
@@ -125,7 +126,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			_endDropdownOpened: { type: Boolean },
-			_startDropdownOpened: { type: Boolean },
+			_slotOccupied: { type: Boolean },
+			_startDropdownOpened: { type: Boolean }
 		};
 	}
 
@@ -139,9 +141,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			}
 			d2l-input-date-time {
 				display: block;
-			}
-			.d2l-input-date-time-range-start-container {
-				margin-bottom: 1.2rem;
 			}
 			::slotted(*) {
 				margin-top: 0.6rem;
@@ -165,6 +164,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this._startInputId = getUniqueId();
 		this._endDropdownOpened = false;
 		this._endInputId = getUniqueId();
+
+		this._slotOccupied = false;
 	}
 
 	async firstUpdated(changedProperties) {
@@ -173,6 +174,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		if (!this.label) {
 			console.warn('d2l-input-date-time-range component requires label text');
 		}
+
+		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this.parentNode);
 	}
 
 	render() {
@@ -189,44 +192,52 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<div class="d2l-input-date-time-range-start-container">
-					<d2l-input-date-time
-						?novalidate="${this.noValidate}"
-						@change="${this._handleChange}"
-						class="d2l-input-date-time-range-start"
-						@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
-						?disabled="${this.disabled}"
-						.forceInvalid=${this.invalid}
-						id="${this._startInputId}"
-						label="${this._computedStartLabel}"
-						?label-hidden="${this.childLabelsHidden}"
-						?localized="${this.localized}"
-						max-value="${ifDefined(this.maxValue)}"
-						min-value="${ifDefined(this.minValue)}"
-						?required="${this.required}"
-						?skeleton="${this.skeleton}"
-						value="${ifDefined(this.startValue)}">
-					</d2l-input-date-time>
-					<slot name="start"></slot>
-				</div>
-				<d2l-input-date-time
-					?novalidate="${this.noValidate}"
-					@change="${this._handleChange}"
-					class="d2l-input-date-time-range-end"
-					@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
-					?disabled="${this.disabled}"
-					.forceInvalid=${this.invalid}
-					id="${this._endInputId}"
-					label="${this._computedEndLabel}"
-					?label-hidden="${this.childLabelsHidden}"
-					?localized="${this.localized}"
-					max-value="${ifDefined(this.maxValue)}"
-					min-value="${ifDefined(this.minValue)}"
-					?required="${this.required}"
+				<d2l-input-date-time-range-to
+					?block-display="${this._slotOccupied}"
+					?display-to="${this.childLabelsHidden}"
 					?skeleton="${this.skeleton}"
-					value="${ifDefined(this.endValue)}">
-				</d2l-input-date-time>
-				<slot name="end"></slot>
+					?top-margin="${this.label && !this.labelHidden && !this.childLabelsHidden}">
+					<div slot="left">
+						<d2l-input-date-time
+							?novalidate="${this.noValidate}"
+							@change="${this._handleChange}"
+							class="d2l-input-date-time-range-start"
+							@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
+							?disabled="${this.disabled}"
+							.forceInvalid=${this.invalid}
+							id="${this._startInputId}"
+							label="${this._computedStartLabel}"
+							?label-hidden="${this.childLabelsHidden}"
+							?localized="${this.localized}"
+							max-value="${ifDefined(this.maxValue)}"
+							min-value="${ifDefined(this.minValue)}"
+							?required="${this.required}"
+							?skeleton="${this.skeleton}"
+							value="${ifDefined(this.startValue)}">
+						</d2l-input-date-time>
+						<slot name="start" @slotchange="${this._onSlotChange}"></slot>
+					</div>
+					<div slot="right">
+						<d2l-input-date-time
+							?novalidate="${this.noValidate}"
+							@change="${this._handleChange}"
+							class="d2l-input-date-time-range-end"
+							@d2l-input-date-time-dropdown-toggle="${this._handleDropdownToggle}"
+							?disabled="${this.disabled}"
+							.forceInvalid=${this.invalid}
+							id="${this._endInputId}"
+							label="${this._computedEndLabel}"
+							?label-hidden="${this.childLabelsHidden}"
+							?localized="${this.localized}"
+							max-value="${ifDefined(this.maxValue)}"
+							min-value="${ifDefined(this.minValue)}"
+							?required="${this.required}"
+							?skeleton="${this.skeleton}"
+							value="${ifDefined(this.endValue)}">
+						</d2l-input-date-time>
+						<slot name="end" @slotchange="${this._onSlotChange}"></slot>
+					</div>
+				</d2l-input-date-time-range-to>
 			</d2l-input-fieldset>
 		`;
 	}
@@ -308,6 +319,11 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		} else {
 			this._endDropdownOpened = e.detail.opened;
 		}
+	}
+
+	_onSlotChange(e) {
+		const slotContent = e.target.assignedNodes()[0];
+		if (slotContent) this._slotOccupied = true;
 	}
 
 }

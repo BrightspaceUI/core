@@ -19,6 +19,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map.js';
 
 export function _formatLocalDateTimeInISO(date, time) {
 	const dateObj = parseISODate(date);
@@ -88,13 +89,6 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			:host([hidden]) {
 				display: none;
 			}
-			d2l-input-date {
-				padding-right: 0.3rem;
-			}
-			:host([dir="rtl"]) d2l-input-date {
-				padding-left: 0.3rem;
-				padding-right: 0;
-			}
 		`];
 	}
 
@@ -124,6 +118,18 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	render() {
 		const timeHidden = !this._parsedDateTime;
 
+		const dateStyle = {};
+		if (timeHidden) {
+			dateStyle.paddingLeft = '0';
+			dateStyle.paddingRight = '0';
+		} else if (!timeHidden && this.dir === 'rtl') {
+			dateStyle.paddingLeft = '0.3rem';
+			dateStyle.paddingRight = '0';
+		} else if (!timeHidden) {
+			dateStyle.paddingLeft = '0';
+			dateStyle.paddingRight = '0.3rem';
+		}
+
 		const tooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltip}
@@ -146,9 +152,9 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 					min-value="${ifDefined(this._minValueLocalized)}"
 					?required="${this.required}"
 					?skeleton="${this.skeleton}"
+					style="${styleMap(dateStyle)}"
 					.value="${this._parsedDateTime}">
-				</d2l-input-date>
-				<d2l-input-time
+				</d2l-input-date><d2l-input-time
 					?novalidate="${this.noValidate}"
 					@blur="${this._handleInputTimeBlur}"
 					@change="${this._handleTimeChange}"
