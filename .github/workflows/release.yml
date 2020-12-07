@@ -16,7 +16,7 @@ jobs:
         with:
           persist-credentials: false
       - uses: Brightspace/third-party-actions@actions/setup-node
-      - uses: actions/cache@v2
+      - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
           path: '**/node_modules'
