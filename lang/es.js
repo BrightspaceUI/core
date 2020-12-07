@@ -1,8 +1,8 @@
 /* eslint quotes: 0 */
 
 export default {
-	"components.alert.close": "Cerrar alerta",
-	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
+	"components.alert.close": "Test Lang Term Update",
+	"components.breadcrumbs.breadcrumb": "Test Lang Term Update",
 	"components.calendar.notSelected": "No seleccionado.",
 	"components.calendar.selected": "Seleccionado.",
 	"components.calendar.show": "Mostrar {month}",
