@@ -65,7 +65,7 @@ jobs:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: |
-          npm install karma-browserstack-launcher@1 --no-save
+          npm install karma-browserstack-launcher@1.4 --no-save
           npx karma start karma.bs.conf.js
   sauce:
     name: Unit Tests (SauceLabs)
