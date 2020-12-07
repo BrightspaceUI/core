@@ -20,6 +20,7 @@ export default {
 	"components.input-date-range.endDate": "Fecha final",
 	"components.input-date-range.errorBadInput": "{startLabel} debe ser anterior a {endLabel}",
 	"components.input-date-range.startDate": "Fecha de inicio",
+	"components.input-date-time-range-to.to": "hasta",
 	"components.input-date-time-range.endDate": "Fecha final",
 	"components.input-date-time-range.errorBadInput": "{startLabel} debe ser anterior a {endLabel}",
 	"components.input-date-time-range.startDate": "Fecha de inicio",

@@ -20,6 +20,7 @@ export default {
 	"components.input-date-range.endDate": "종료일",
 	"components.input-date-range.errorBadInput": "{startLabel}은(는) {endLabel} 앞에 있어야 합니다",
 	"components.input-date-range.startDate": "시작일",
+	"components.input-date-time-range-to.to": "-",
 	"components.input-date-time-range.endDate": "종료일",
 	"components.input-date-time-range.errorBadInput": "{startLabel}은(는) {endLabel} 앞에 있어야 합니다",
 	"components.input-date-time-range.startDate": "시작일",
