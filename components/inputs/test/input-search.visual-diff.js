@@ -2,7 +2,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-input-search', () => {
+describe.skip('d2l-input-search', () => {
 
 	const visualDiff = new VisualDiff('input-search', __dirname);
 

@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 const dropdownHelper = require('../../dropdown/test/dropdown-helper.js');
 
-describe('d2l-card', () => {
+describe.skip('d2l-card', () => {
 
 	const visualDiff = new VisualDiff('card', __dirname);
 
