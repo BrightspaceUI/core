@@ -563,7 +563,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 				height: 100%;
 				min-width: ${desktopMinSize}px;
 				-webkit-overflow-scrolling: touch;
-				overflow-y: auto;
+				overflow-y: scroll;
 				position: relative;
 			}
 
@@ -708,6 +708,29 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
 				transition-delay: 100ms;
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar-thumb {
+				background: var(--d2l-color-mica);
+				border-radius: 4px;
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar-thumb:hover {
+				background: var(--d2l-color-corundum);
+			}
+
+			/* For Firefox */
+			.d2l-template-scroll {
+				scrollbar-color: var(--d2l-color-mica) transparent;
+				scrollbar-width: thin;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -910,7 +933,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
-					<main><slot name="primary"></slot></main>
+					<main class="d2l-template-scroll"><slot name="primary"></slot></main>
 					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator  aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
 						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
 							<div class="d2l-template-primary-secondary-divider-handle-desktop">
@@ -934,7 +957,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
 						<div class="d2l-template-primary-secondary-divider-shadow">
 						</div>
-						<aside>
+						<aside class="d2l-template-scroll">
 							<slot name="secondary"></slot>
 						</aside>
 					</div>
