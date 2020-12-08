@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-expand-collapse-content', () => {
+describe('d2l-expand-collapse-content', () => {
 
 	const visualDiff = new VisualDiff('expand-collapse-content', __dirname);
 
