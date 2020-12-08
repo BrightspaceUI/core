@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 const { oneEvent } = require('@brightspace-ui/visual-diff/helpers');
 
-describe('d2l-menu radio', () => {
+describe.skip('d2l-menu radio', () => {
 
 	const visualDiff = new VisualDiff('menu-radio', __dirname);
 

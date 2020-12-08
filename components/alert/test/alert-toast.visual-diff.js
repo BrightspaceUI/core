@@ -4,7 +4,7 @@ const VisualDiff = require('@brightspace-ui/visual-diff');
 
 describe('d2l-alert-toast', () => {
 
-	const visualDiff = new VisualDiff('alert', __dirname);
+	const visualDiff = new VisualDiff('alert-toast', __dirname);
 
 	let browser, page;
 

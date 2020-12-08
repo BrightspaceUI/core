@@ -3,7 +3,7 @@ const VisualDiff = require('@brightspace-ui/visual-diff');
 const dropdownHelper = require('../../dropdown/test/dropdown-helper.js');
 const tooltipHelper = require('../../tooltip/test/tooltip-helper.js');
 
-describe('d2l-list', () => {
+describe.skip('d2l-list', () => {
 
 	const visualDiff = new VisualDiff('list', __dirname);
 
