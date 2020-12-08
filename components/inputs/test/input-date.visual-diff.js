@@ -560,6 +560,10 @@ describe('d2l-input-date', () => {
 			'label',
 			'label-hidden'
 		].forEach((name) => {
+			before(async() => {
+				await page.reload();
+			});
+
 			it(name, async function() {
 				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
 				const rect = await visualDiff.getRect(page, `#${name}`);
