@@ -16,7 +16,7 @@
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
     "lint:style": "stylelint \"**/*.js\"",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
-    "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
+    "test": "npm run lint && npm run test:headless && npm run test:axe",
     "test:axe": "karma start karma.axe.conf.js",
     "test:headless": "karma start",
     "test:headless:watch": "karma start --auto-watch=true --single-run=false"

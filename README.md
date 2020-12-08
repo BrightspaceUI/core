@@ -96,7 +96,7 @@ npm run lint:lit
 ### Testing
 
 ```shell
-# lint, unit test and visual-diff test
+# lint, unit tests and axe tests
 npm test
 
 # unit tests
