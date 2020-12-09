@@ -289,7 +289,19 @@ describe('getLocalizeResources', () => {
 			}
 		};
 
-		sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		// sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		try {
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake); // TypeError: Cannot stub non-existent property caches
+		} catch (e) {
+			// Object.defineProperty(window, 'caches', {
+			// 	get: () => cacheStorageFake
+			// });
+			Object.defineProperty(window, 'caches', {
+				get: () => { return undefined; },
+				configurable: true
+			});
+			sinon.replaceGetter(window, 'caches', () => cacheStorageFake);
+		}
 
 		let counter = 0;
 
