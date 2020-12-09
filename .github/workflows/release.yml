@@ -9,7 +9,7 @@ jobs:
   release:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     name: Release
-    timeout-minutes: 2
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
