@@ -2,7 +2,7 @@ const helper = require('./tooltip-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-tooltip', () => {
+describe.skip('d2l-tooltip', () => {
 
 	const visualDiff = new VisualDiff('tooltip', __dirname);
 

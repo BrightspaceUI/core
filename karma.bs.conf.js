@@ -68,14 +68,11 @@ module.exports = config => {
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
 			reporters: ['BrowserStack'],
-			browserDisconnectTimeout: 3e5, // default 2000
-			browserDisconnectTolerance: 3, // default 0
-			browserSocketTimeout: 1.2e5, // default 20000
-			browserNoActivityTimeout: 3e5, // default 10000
-			captureTimeout: 3e5, // default 60000
+			browserDisconnectTimeout: 50000, // default 2000
+			browserNoActivityTimeout: 300000, // default 30000
 			client: {
 				mocha: {
-					timeout : 10000
+					timeout: 10000
 				}
 			}
 		}),

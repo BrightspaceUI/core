@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 const helper = require('./input-helper.js');
 
-describe('d2l-input-time-range', () => {
+describe.skip('d2l-input-time-range', () => {
 
 	const visualDiff = new VisualDiff('input-time-range', __dirname);
 
@@ -10,7 +10,7 @@ describe('d2l-input-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1900 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2100 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -23,6 +23,7 @@ describe('d2l-input-time-range', () => {
 		'disabled',
 		'end-value',
 		'hidden-labels',
+		'hidden-labels-wrapped',
 		'invalid-end-value',
 		'invalid-start-value',
 		'labelled',
@@ -194,11 +195,55 @@ describe('d2l-input-time-range', () => {
 
 	});
 
+	describe('width change', () => {
+		it('resizes correctly when width increased', async function() {
+			const rect = await page.$eval('#hidden-labels-wrapped', async(elem) => {
+				elem.style.maxWidth = '800px';
+				elem.parentNode.style.width = '800px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 320,
+					height: 90
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('resizes correctly when width decreased', async function() {
+			const rect = await page.$eval('#hidden-labels', async(elem) => {
+				elem.parentNode.style.width = '250px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 145,
+					height: 175
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 	describe('skeleton', () => {
+
+		before(async() => {
+			await page.reload();
+		});
+
 		[
 			'labelled',
 			'label-hidden',
-			'required'
+			'required',
+			'hidden-labels',
+			'hidden-labels-wrapped'
 		].forEach((name) => {
 			it(name, async function() {
 				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);

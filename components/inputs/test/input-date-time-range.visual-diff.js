@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 const helper = require('./input-helper.js');
 
-describe('d2l-input-date-time-range', () => {
+describe.skip('d2l-input-date-time-range', () => {
 
 	const visualDiff = new VisualDiff('input-date-time-range', __dirname);
 
@@ -22,13 +22,19 @@ describe('d2l-input-date-time-range', () => {
 		'disabled',
 		'invalid-start-value',
 		'hidden-labels',
+		'hidden-labels-values',
 		'labelled',
 		'label-hidden',
 		'localized',
 		'required',
 		'slotted-content',
 		'start-end-label',
-		'start-end-value'
+		'start-end-value',
+		'start-end-value',
+		'start-value',
+		'wide-basic',
+		'wide-hidden-labels-values',
+		'wide-start-end-value'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -352,10 +358,53 @@ describe('d2l-input-date-time-range', () => {
 
 	});
 
+	describe('width change', () => {
+		it('resizes correctly when width increased', async function() {
+			const rect = await page.$eval('#hidden-labels', async(elem) => {
+				elem.parentNode.style.width = '800px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 400,
+					height: 90
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('resizes correctly when width decreased', async function() {
+			const rect = await page.$eval('#wide-hidden-labels-values', async(elem) => {
+				elem.parentNode.style.width = '250px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 350,
+					height: 175
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 	describe('skeleton', () => {
+
+		before(async() => {
+			await page.reload();
+		});
+
 		[
 			'labelled',
-			'label-hidden'
+			'label-hidden',
+			'hidden-labels-values',
+			'wide-hidden-labels-values'
 		].forEach((name) => {
 			it(name, async function() {
 				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);

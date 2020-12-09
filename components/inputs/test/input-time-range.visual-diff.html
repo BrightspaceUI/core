@@ -17,7 +17,8 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
 		<style>
-			d2l-input-time-range#basic-wrapped {
+			d2l-input-time-range#basic-wrapped,
+			d2l-input-time-range#hidden-labels-wrapped {
 				max-width: 250px;
 			}
 		</style>
@@ -65,6 +66,9 @@
 			</div>
 			<div class="visual-diff">
 				<d2l-input-time-range id="hidden-labels" child-labels-hidden label="Times" start-label="Start" end-label="Finish"></d2l-input-time-range>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-time-range id="hidden-labels-wrapped" child-labels-hidden label="Times (wrapped)" start-label="Start" end-label="Finish"></d2l-input-time-range>
 			</div>
 			<div class="visual-diff">
 				<d2l-input-time-range id="inclusive" inclusive-time-range></d2l-input-time-range>

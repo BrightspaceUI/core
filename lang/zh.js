@@ -20,6 +20,7 @@ export default {
 	"components.input-date-range.endDate": "结束日期",
 	"components.input-date-range.errorBadInput": "{startLabel} 必须早于 {endLabel}",
 	"components.input-date-range.startDate": "开始日期",
+	"components.input-date-time-range-to.to": "至",
 	"components.input-date-time-range.endDate": "结束日期",
 	"components.input-date-time-range.errorBadInput": "{startLabel} 必须早于 {endLabel}",
 	"components.input-date-time-range.startDate": "开始日期",

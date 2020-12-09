@@ -1,3 +1,4 @@
+import './input-date-time-range-to.js';
 import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -105,26 +106,12 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		return [super.styles, css`
 			:host {
 				display: inline-block;
-				margin-bottom: -1.2rem;
-				margin-right: -1.5rem;
-			}
-			:host([dir="rtl"]) {
-				margin-left: -1.5rem;
-				margin-right: 0;
 			}
 			:host([hidden]) {
 				display: none;
 			}
 			d2l-input-time {
-				display: inline-block;
-				margin-bottom: 1.2rem;
-			}
-			d2l-input-time.d2l-input-time-range-start {
-				margin-right: 1.5rem;
-			}
-			:host([dir="rtl"]) d2l-input-time.d2l-input-time-range-start {
-				margin-left: 1.5rem;
-				margin-right: 0;
+				display: block;
 			}
 		`];
 	}
@@ -187,6 +174,8 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			this.endValue = getValidISOTimeAtInterval(this.endValue, this.timeInterval);
 		}
 		this._initialValues = false;
+
+		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this.parentNode);
 	}
 
 	render() {
@@ -210,38 +199,45 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<d2l-input-time
-					?novalidate="${this.noValidate}"
-					@change="${this._handleChange}"
-					class="d2l-input-time-range-start"
-					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
-					?disabled="${this.disabled}"
-					?enforce-time-intervals="${this.enforceTimeIntervals}"
-					.forceInvalid="${this.invalid}"
-					id="${this._startInputId}"
-					label="${startLabel}"
-					?label-hidden="${this.childLabelsHidden}"
-					?required="${this.required}"
+				<d2l-input-date-time-range-to
+					?display-to="${this.childLabelsHidden}"
 					?skeleton="${this.skeleton}"
-					time-interval="${ifDefined(timeInterval)}"
-					value="${ifDefined(this.startValue)}">
-				</d2l-input-time>
-				<d2l-input-time
-					?novalidate="${this.noValidate}"
-					@change="${this._handleChange}"
-					class="d2l-input-time-range-end"
-					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
-					?disabled="${this.disabled}"
-					?enforce-time-intervals="${this.enforceTimeIntervals}"
-					.forceInvalid="${this.invalid}"
-					id="${this._endInputId}"
-					label="${endLabel}"
-					?label-hidden="${this.childLabelsHidden}"
-					?required="${this.required}"
-					?skeleton="${this.skeleton}"
-					time-interval="${ifDefined(timeInterval)}"
-					value="${ifDefined(this.endValue)}">
-				</d2l-input-time>
+					?top-margin="${this.label && !this.labelHidden && !this.childLabelsHidden}">
+					<d2l-input-time
+						?novalidate="${this.noValidate}"
+						@change="${this._handleChange}"
+						class="d2l-input-time-range-start"
+						@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
+						?disabled="${this.disabled}"
+						?enforce-time-intervals="${this.enforceTimeIntervals}"
+						.forceInvalid="${this.invalid}"
+						id="${this._startInputId}"
+						label="${startLabel}"
+						?label-hidden="${this.childLabelsHidden}"
+						?required="${this.required}"
+						?skeleton="${this.skeleton}"
+						slot="left"
+						time-interval="${ifDefined(timeInterval)}"
+						value="${ifDefined(this.startValue)}">
+					</d2l-input-time>
+					<d2l-input-time
+						?novalidate="${this.noValidate}"
+						@change="${this._handleChange}"
+						class="d2l-input-time-range-end"
+						@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
+						?disabled="${this.disabled}"
+						?enforce-time-intervals="${this.enforceTimeIntervals}"
+						.forceInvalid="${this.invalid}"
+						id="${this._endInputId}"
+						label="${endLabel}"
+						?label-hidden="${this.childLabelsHidden}"
+						?required="${this.required}"
+						?skeleton="${this.skeleton}"
+						slot="right"
+						time-interval="${ifDefined(timeInterval)}"
+						value="${ifDefined(this.endValue)}">
+					</d2l-input-time>
+				</d2l-input-date-time-range-to>
 			</d2l-input-fieldset>
 		`;
 	}

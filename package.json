@@ -1,13 +1,12 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.103.0",
+  "version": "1.106.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "analyze": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:sass": "node-sass --output-style expanded ./test/sass.scss > ./test/sass.output.css",
@@ -16,18 +15,11 @@
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer \"{components,directives,helpers,mixins,templates,test,tools}/**/*.js\" --strict",
     "lint:style": "stylelint \"**/*.js\"",
-    "prepublishOnly": "node ./cli/verify-translations.js && npm run analyze",
     "start": "es-dev-server --node-resolve --dedupe --watch --open",
-    "test": "npm run lint && npm run test:headless && npm run test:axe && npm run test:diff",
+    "test": "npm run lint && npm run test:headless && npm run test:axe",
     "test:axe": "karma start karma.axe.conf.js",
-    "test:bs": "karma start karma.bs.conf.js",
-    "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
-    "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
-    "test:diff:golden:commit": "commit-goldens",
     "test:headless": "karma start",
-    "test:headless:watch": "karma start --auto-watch=true --single-run=false",
-    "test:sauce": "karma start karma.sauce.conf.js",
-    "test:license": "license-checker-ci"
+    "test:headless:watch": "karma start --auto-watch=true --single-run=false"
   },
   "files": [
     "custom-elements.json",
@@ -49,28 +41,22 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@brightspace-ui/stylelint-config": "^0.0.3",
-    "@brightspace-ui/visual-diff": "^1",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4",
-    "@semantic-release/git": "^9",
+    "@webcomponents/webcomponentsjs": "^2",
     "axe-core": "^4",
     "babel-eslint": "^10",
     "chalk": "^4",
-    "d2l-license-checker": "^3.1.1",
     "deepmerge": "^4.2.2",
     "es-dev-server": "^1",
-    "eslint": "^7",
+    "eslint": "^7.15.0",
     "eslint-config-brightspace": "^0.11.0",
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "karma-browserstack-launcher": "~1.4.0",
-    "karma-sauce-launcher": "^2",
     "lit-analyzer": "^1",
     "mocha": "^8",
     "node-sass": "^5",
-    "puppeteer": "^5",
-    "semantic-release": "^17",
     "sinon": "^9",
     "stylelint": "^13",
     "web-component-analyzer": "^1"
@@ -80,28 +66,10 @@
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1.2.17",
     "@webcomponents/shadycss": "^1",
-    "@webcomponents/webcomponentsjs": "^2",
     "focus-visible": "^5",
     "intl-messageformat": "^7",
     "lit-element": "^2",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/github",
-      "@semantic-release/npm",
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json"
-          ],
-          "message": "chore(release): ${nextRelease.version} [skip ci]"
-        }
-      ]
-    ]
   }
 }

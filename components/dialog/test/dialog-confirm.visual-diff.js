@@ -2,7 +2,7 @@ const helper = require('./dialog-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-dialog-confirm', () => {
+describe.skip('d2l-dialog-confirm', () => {
 
 	const visualDiff = new VisualDiff('dialog-confirm', __dirname);
 
