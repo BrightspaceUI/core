@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-form-error-summary', () => {
+describe('d2l-form-error-summary', () => {
 
 	const visualDiff = new VisualDiff('form-error-summary', __dirname);
 

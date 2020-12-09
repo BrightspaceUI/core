@@ -2,7 +2,7 @@ const helper = require('./dialog-helper.js');
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-dialog', () => {
+describe('d2l-dialog', () => {
 
 	const visualDiff = new VisualDiff('dialog', __dirname);
 
