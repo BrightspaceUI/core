@@ -36,11 +36,11 @@ export default {
 			browserVersion: 'latest',
 			platformName: 'Windows 10'
 		}),
-		sauceLabsLauncher({
-			browserName: 'microsoftedge',
-			browserVersion: '18.17763',
-			platformName: 'Windows 10'
-		})
+		// sauceLabsLauncher({
+		// 	browserName: 'microsoftedge',
+		// 	browserVersion: '18.17763',
+		// 	platformName: 'Windows 10'
+		// })
 	],
 	testFramework: {
 		config: {

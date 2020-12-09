@@ -50,8 +50,8 @@ export default {
 			capabilities: {
 				...sharedCapabilities,
 				browserName: 'Edge',
-				browser_version: '18.17763',
-				os: 'OS X',
+				browser_version: '18.0',
+				os: 'Windows',
 				os_version: '10'
 			},
 		})
