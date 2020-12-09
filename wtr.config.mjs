@@ -1,5 +1,4 @@
-/* eslint-env node */
-module.exports = {
+export default {
 	testFramework: {
 		config: {
 			ui: 'bdd',

@@ -50,6 +50,8 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14.x'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
@@ -66,7 +68,7 @@ jobs:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: |
           npm install @web/test-runner-browserstack --no-save
-          npx web-test-runner --config wtr.bs.config.js
+          npx web-test-runner --config wtr.bs.config.mjs
   sauce:
     name: Unit Tests (SauceLabs)
     timeout-minutes: 10
@@ -75,6 +77,8 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14.x'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
@@ -91,4 +95,4 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
         run: |
           npm install @web/test-runner-saucelabs --no-save
-          npx web-test-runner --config wtr.sauce.config.js
+          npx web-test-runner --config wtr.sauce.config.mjs

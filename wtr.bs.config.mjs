@@ -54,7 +54,7 @@ const customLaunchers = [
 	// })
 ];
 
-module.exports = {
+export default {
 	files: '+(components|helpers|mixins|templates)/**/*.test.js',
 	nodeResolve: true,
 	concurrentBrowsers: 5,
