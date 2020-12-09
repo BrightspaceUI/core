@@ -66,7 +66,7 @@ jobs:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: |
           npm install @web/test-runner-browserstack --no-save
-          npx web-test-runner --config wtr.bs.config.mjs
+          npx web-test-runner --config wtr.bs.config.js
   sauce:
     name: Unit Tests (SauceLabs)
     timeout-minutes: 10
@@ -91,4 +91,4 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
         run: |
           npm install @web/test-runner-saucelabs --no-save
-          npx web-test-runner --config wtr.sauce.config.mjs
+          npx web-test-runner --config wtr.sauce.config.js
