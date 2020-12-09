@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-link', () => {
+describe('d2l-link', () => {
 
 	const visualDiff = new VisualDiff('link', __dirname);
 
