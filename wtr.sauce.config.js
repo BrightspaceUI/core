@@ -23,7 +23,7 @@ const sauceLabsLauncher = createSauceLabsLauncher({
 // 	})
 // ];
 
-export default {
+module.exports = {
 	files: '+(components|helpers|mixins|templates)/**/*.test.js',
 	nodeResolve: true,
 	concurrentBrowsers: 4,

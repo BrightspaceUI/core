@@ -21,9 +21,9 @@
     "test:axe:basic": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.axe.js' --node-resolve",
     "test:axe:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.axe.focus.js' --node-resolve",
     "test:headless": "npm run test:headless:basic && npm run test:headless:focus",
-    "test:headless:basic": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve --config wtr.config.mjs",
-    "test:headless:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.focus.js' --node-resolve --config wtr.config.mjs",
-    "test:headless:watch": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve --config wtr.config.mjs --watch"
+    "test:headless:basic": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve --config wtr.config.js",
+    "test:headless:focus": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.focus.js' --node-resolve --config wtr.config.js",
+    "test:headless:watch": "web-test-runner --files '+(components|helpers|mixins|templates)/**/*.test.js' --node-resolve --config wtr.config.js --watch"
   },
   "files": [
     "custom-elements.json",
