@@ -65,8 +65,8 @@ jobs:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         run: |
-          npm install karma-browserstack-launcher@1 --no-save
-          npx karma start karma.bs.conf.js
+          npm install @web/test-runner-browserstack --no-save
+          npx web-test-runner --config wtr.bs.config.mjs
   sauce:
     name: Unit Tests (SauceLabs)
     timeout-minutes: 10
@@ -90,5 +90,5 @@ jobs:
           SAUCE_USERNAME: Gaudi1
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
         run: |
-          npm install karma-sauce-launcher@2 --no-save
-          npx karma start karma.sauce.conf.js
+          npm install @web/test-runner-saucelabs --no-save
+          npx web-test-runner --config wtr.sauce.config.mjs
