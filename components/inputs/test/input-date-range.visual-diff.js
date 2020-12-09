@@ -65,6 +65,7 @@ describe('d2l-input-date-range', () => {
 		'disabled',
 		'invalid-start-value',
 		'hidden-labels',
+		'hidden-labels-wrapped',
 		'labelled',
 		'label-hidden',
 		'required',
@@ -306,10 +307,54 @@ describe('d2l-input-date-range', () => {
 
 	});
 
+	describe('width change', () => {
+		it('resizes correctly when width increased', async function() {
+			const rect = await page.$eval('#hidden-labels-wrapped', async(elem) => {
+				elem.style.maxWidth = '800px';
+				elem.parentNode.style.width = '800px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 375,
+					height: 90
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('resizes correctly when width decreased', async function() {
+			const rect = await page.$eval('#hidden-labels', async(elem) => {
+				elem.parentNode.style.width = '250px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 200,
+					height: 175
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 	describe('skeleton', () => {
+
+		before(async() => {
+			await page.reload();
+		});
+
 		[
 			'labelled',
-			'label-hidden'
+			'label-hidden',
+			'hidden-labels',
+			'hidden-labels-wrapped'
 		].forEach((name) => {
 			it(name, async function() {
 				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);

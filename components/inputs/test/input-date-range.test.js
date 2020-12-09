@@ -18,6 +18,18 @@ function getChildElem(elem, selector) {
 	return elem.shadowRoot.querySelector(selector);
 }
 
+before(() => {
+	const e = window.onerror;
+	window.onerror = function(err) {
+		if (err === 'ResizeObserver loop limit exceeded') {
+			console.warn('Ignored: ResizeObserver loop limit exceeded');
+			return false;
+		} else {
+			return e(...arguments);
+		}
+	};
+});
+
 describe('d2l-input-date-range', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
