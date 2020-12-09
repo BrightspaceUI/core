@@ -62,7 +62,9 @@ jobs:
       - name: Build
         run: npm run build
       - name: Playwright
-        run: npx web-test-runner --node-resolve --playwright --browsers chromium firefox webkit --files
+        run: |
+          npm install @web/test-runner-playwright --no-save
+          npx web-test-runner --node-resolve --playwright --browsers chromium firefox webkit --files '+(components|helpers|mixins|templates)/**/*.test.js'
   bs:
     name: Unit Tests (BrowserStack)
     timeout-minutes: 10
@@ -78,7 +80,7 @@ jobs:
           path: '**/node_modules'
           key: npm-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build
         run: npm run build
@@ -105,7 +107,7 @@ jobs:
           path: '**/node_modules'
           key: npm-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build
         run: npm run build
