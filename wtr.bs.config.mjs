@@ -18,8 +18,41 @@ export default {
 			capabilities: {
 				...sharedCapabilities,
 				browserName: 'Chrome',
+				os: 'OS X',
+				os_version: 'Catalina',
+			},
+		}),
+		browserstackLauncher({
+			capabilities: {
+				...sharedCapabilities,
+				browserName: 'Firefox',
+				os: 'OS X',
+				os_version: 'Catalina',
+			},
+		}),
+		browserstackLauncher({
+			capabilities: {
+				...sharedCapabilities,
+				browserName: 'Safari',
+				os: 'OS X',
+				os_version: 'Catalina',
+			},
+		}),
+		browserstackLauncher({
+			capabilities: {
+				...sharedCapabilities,
+				browserName: 'Edge',
 				os: 'Windows',
 				os_version: '10',
+			},
+		}),
+		browserstackLauncher({
+			capabilities: {
+				...sharedCapabilities,
+				browserName: 'Edge',
+				browser_version: '18.0',
+				os: 'OS X',
+				os_version: '10'
 			},
 		})
 	],

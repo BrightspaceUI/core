@@ -19,6 +19,26 @@ export default {
 		sauceLabsLauncher({
 			browserName: 'chrome',
 			browserVersion: 'latest',
+			platformName: 'OS X 10.15'
+		}),
+		sauceLabsLauncher({
+			browserName: 'firefox',
+			browserVersion: 'latest',
+			platformName: 'OS X 10.15'
+		}),
+		sauceLabsLauncher({
+			browserName: 'safari',
+			browserVersion: 'latest',
+			platformName: 'OS X 10.15'
+		}),
+		sauceLabsLauncher({
+			browserName: 'microsoftedge',
+			browserVersion: 'latest',
+			platformName: 'Windows 10'
+		}),
+		sauceLabsLauncher({
+			browserName: 'microsoftedge',
+			browserVersion: '18.17763',
 			platformName: 'Windows 10'
 		})
 	],
