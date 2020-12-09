@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-list-item-drag-handle', () => {
+describe.skip('d2l-list-item-drag-handle', () => {
 
 	const visualDiff = new VisualDiff('list-item-drag-handle', __dirname);
 
