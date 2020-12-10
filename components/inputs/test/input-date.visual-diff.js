@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 const helper = require('./input-helper.js');
 
-describe.skip('d2l-input-date', () => {
+describe('d2l-input-date', () => {
 
 	const visualDiff = new VisualDiff('input-date', __dirname);
 
@@ -560,6 +560,10 @@ describe.skip('d2l-input-date', () => {
 			'label',
 			'label-hidden'
 		].forEach((name) => {
+			before(async() => {
+				await page.reload();
+			});
+
 			it(name, async function() {
 				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
 				const rect = await visualDiff.getRect(page, `#${name}`);

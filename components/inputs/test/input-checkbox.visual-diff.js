@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-input-checkbox', () => {
+describe('d2l-input-checkbox', () => {
 
 	const visualDiff = new VisualDiff('input-checkbox', __dirname);
 

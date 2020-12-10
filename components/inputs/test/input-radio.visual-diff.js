@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-input-radio', () => {
+describe('d2l-input-radio', () => {
 
 	const visualDiff = new VisualDiff('input-radio', __dirname);
 
