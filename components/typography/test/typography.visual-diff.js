@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-typography', function() {
+describe('d2l-typography', function() {
 
 	const visualDiff = new VisualDiff('typography', __dirname);
 
