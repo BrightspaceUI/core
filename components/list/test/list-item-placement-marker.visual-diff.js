@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe.skip('d2l-list-item-placement-marker', () => {
+describe('d2l-list-item-placement-marker', () => {
 
 	const visualDiff = new VisualDiff('list-item-placement-marker', __dirname);
 
