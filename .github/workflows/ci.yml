@@ -65,7 +65,7 @@ jobs:
         run: npm run build
       - name: Playwright
         run: |
-          npm install @web/test-runner-playwright --no-save
+          npm install @web/test-runner-playwright@0.5.7 --no-save
           npx web-test-runner --node-resolve --playwright --browsers chromium firefox webkit --files '+(components|helpers|mixins|templates)/**/*.test.js'
   bs:
     name: Unit Tests (BrowserStack)
