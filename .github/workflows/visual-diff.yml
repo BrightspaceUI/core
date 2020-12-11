@@ -18,6 +18,10 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Install ko
+        run: |
+          sudo apt-get install language-pack-ko
+          sudo apt-get install korean*
       - name: Visual Diff Tests
         uses: BrightspaceUI/actions/visual-diff@master
         with:
