@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 const { oneEvent } = require('@brightspace-ui/visual-diff/helpers');
 
-describe.skip('d2l-menu checkbox', () => {
+describe('d2l-menu checkbox', () => {
 
 	const visualDiff = new VisualDiff('menu-checkbox', __dirname);
 
