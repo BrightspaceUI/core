@@ -48,7 +48,7 @@
     "babel-eslint": "^10",
     "chalk": "^4",
     "deepmerge": "^4.2.2",
-    "es-dev-server": "^1",
+    "es-dev-server": "^2",
     "eslint": "^7.15.0",
     "eslint-config-brightspace": "^0.11.0",
     "eslint-plugin-html": "^6",
