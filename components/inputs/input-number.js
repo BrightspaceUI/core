@@ -114,7 +114,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				.value="${this._formattedValue}"
-			></d2l-input-text>
+			><slot slot="after" name="after"></slot></d2l-input-text>
 			${tooltip}
 		`;
 	}

@@ -32,7 +32,8 @@ describe('d2l-input-number', () => {
 		'required',
 		'disabled',
 		'placeholder',
-		'default-value'
+		'default-value',
+		'after-slot'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);
@@ -72,6 +73,7 @@ describe('d2l-input-number', () => {
 			'label-hidden',
 			'required',
 			'disabled',
+			'after-slot',
 			'custom-width'
 		].forEach((name) => {
 			it(name, async function() {

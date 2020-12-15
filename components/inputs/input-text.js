@@ -16,6 +16,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * This component wraps the native "<input type="text">" tag and is intended primarily for inputting generic text, email addresses and URLs.
  * @slot left - Slot within the input on the left side. Useful for an "icon" or "button-icon".
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
+ * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  */
 class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
@@ -129,6 +130,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 */
 			value: { type: String },
 			_firstSlotWidth: { type: Number },
+			_hasAfterContent: { type: Boolean, attribute: false },
 			_focused: { type: Boolean },
 			_hovered: { type: Boolean },
 			_lastSlotWidth: { type: Number }
@@ -149,7 +151,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					display: inline-block;
 					vertical-align: bottom;
 				}
+				.d2l-input-container {
+					display: flex;
+				}
 				.d2l-input-text-container {
+					flex: 1 1 auto;
 					position: relative;
 				}
 				.d2l-input {
@@ -157,6 +163,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
+				}
+				#after-slot {
+					display: inline-block;
+					flex: 0 0 auto;
 				}
 				#first-slot, #last-slot {
 					display: flex;
@@ -196,21 +206,38 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this.value = '';
 
 		this._focused = false;
+		this._hasAfterContent = false;
 		this._hovered = false;
 		this._inputId = getUniqueId();
 		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
 		this._descriptionId = getUniqueId();
+
+		this._handleBlur = this._handleBlur.bind(this);
+		this._handleFocus = this._handleFocus.bind(this);
+		this._handleMouseEnter = this._handleMouseEnter.bind(this);
+		this._handleMouseLeave = this._handleMouseLeave.bind(this);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		const container = this.shadowRoot.querySelector('.d2l-input-text-container');
+		if (!container) return;
+		container.removeEventListener('blur', this._handleBlur, true);
+		container.removeEventListener('focus', this._handleFocus, true);
+		container.removeEventListener('mouseover', this._handleMouseEnter);
+		container.removeEventListener('mouseout', this._handleMouseLeave);
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.addEventListener('blur', this._handleBlur, true);
-		this.addEventListener('focus', this._handleFocus, true);
-
-		this.addEventListener('mouseover', this._handleMouseEnter);
-		this.addEventListener('mouseout', this._handleMouseLeave);
+		const container = this.shadowRoot.querySelector('.d2l-input-text-container');
+		if (!container) return;
+		container.addEventListener('blur', this._handleBlur, true);
+		container.addEventListener('focus', this._handleFocus, true);
+		container.addEventListener('mouseover', this._handleMouseEnter);
+		container.addEventListener('mouseout', this._handleMouseLeave);
 	}
 
 	render() {
@@ -246,43 +273,45 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
 		const input = html`
-			<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
-				<input aria-atomic="${ifDefined(this.atomic)}"
-					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
-					aria-haspopup="${ifDefined(this.ariaHaspopup)}"
-					aria-invalid="${ifDefined(ariaInvalid)}"
-					aria-label="${ifDefined(this._getAriaLabel())}"
-					aria-live="${ifDefined(this.live)}"
-					aria-required="${ifDefined(ariaRequired)}"
-					?required="${this.required}"
-					autocomplete="${ifDefined(this.autocomplete)}"
-					?autofocus="${this.autofocus}"
-					@change="${this._handleChange}"
-					class="${classMap(inputClasses)}"
-					?disabled="${disabled}"
-					id="${this._inputId}"
-					@input="${this._handleInput}"
-					@invalid="${this._handleInvalid}"
-					@keypress="${this._handleKeypress}"
-					max="${ifDefined(this.max)}"
-					maxlength="${ifDefined(this.maxlength)}"
-					min="${ifDefined(this.min)}"
-					minlength="${ifDefined(this.minlength)}"
-					name="${ifDefined(this.name)}"
-					pattern="${ifDefined(this.pattern)}"
-					placeholder="${ifDefined(this.placeholder)}"
-					?readonly="${this.readonly}"
-					size="${ifDefined(this.size)}"
-					step="${ifDefined(this.step)}"
-					style="${styleMap(inputStyles)}"
-					tabindex="${ifDefined(this.tabindex)}"
-					title="${ifDefined(this.title)}"
-					type="${this._getType()}"
-					.value="${this.value}">
-				<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-				<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-				${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
-				${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
+			<div class="d2l-input-container">
+				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
+					<input aria-atomic="${ifDefined(this.atomic)}"
+						aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
+						aria-haspopup="${ifDefined(this.ariaHaspopup)}"
+						aria-invalid="${ifDefined(ariaInvalid)}"
+						aria-label="${ifDefined(this._getAriaLabel())}"
+						aria-live="${ifDefined(this.live)}"
+						aria-required="${ifDefined(ariaRequired)}"
+						?required="${this.required}"
+						autocomplete="${ifDefined(this.autocomplete)}"
+						?autofocus="${this.autofocus}"
+						@change="${this._handleChange}"
+						class="${classMap(inputClasses)}"
+						?disabled="${disabled}"
+						id="${this._inputId}"
+						@input="${this._handleInput}"
+						@invalid="${this._handleInvalid}"
+						@keypress="${this._handleKeypress}"
+						max="${ifDefined(this.max)}"
+						maxlength="${ifDefined(this.maxlength)}"
+						min="${ifDefined(this.min)}"
+						minlength="${ifDefined(this.minlength)}"
+						name="${ifDefined(this.name)}"
+						pattern="${ifDefined(this.pattern)}"
+						placeholder="${ifDefined(this.placeholder)}"
+						?readonly="${this.readonly}"
+						size="${ifDefined(this.size)}"
+						step="${ifDefined(this.step)}"
+						style="${styleMap(inputStyles)}"
+						tabindex="${ifDefined(this.tabindex)}"
+						title="${ifDefined(this.title)}"
+						type="${this._getType()}"
+						.value="${this.value}">
+					<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
+					<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
+					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
+					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
+				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._onAfterSlotChange}"></slot></div>
 			</div>
 			${offscreenContainer}
 		`;
@@ -415,6 +444,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._hovered = false;
 	}
 
+	_onAfterSlotChange(e) {
+		const afterContent = e.target.assignedNodes({ flatten: true });
+		this._hasAfterContent = (afterContent && afterContent.length > 0);
+	}
+
 	_onSlotChange(e) {
 		const slotContent = e.target.assignedNodes()[0];
 		const id = e.target.parentNode.id;
@@ -427,7 +461,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 				slotWidth = parseFloat(style.width) + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
 			}
 			if (id === 'first-slot') this._firstSlotWidth = slotWidth;
-			else this._lastSlotWidth = slotWidth;
+			else if (id === 'last-slot') this._lastSlotWidth = slotWidth;
 		});
 	}
 
