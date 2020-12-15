@@ -129,6 +129,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 */
 			value: { type: String },
 			_firstSlotWidth: { type: Number },
+			_hasAfterContent: { type: Boolean, attribute: false },
 			_focused: { type: Boolean },
 			_hovered: { type: Boolean },
 			_lastSlotWidth: { type: Number }
@@ -200,6 +201,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this.value = '';
 
 		this._focused = false;
+		this._hasAfterContent = false;
 		this._hovered = false;
 		this._inputId = getUniqueId();
 		this._firstSlotWidth = 0;
@@ -304,7 +306,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
 					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
-				</div><div id="after-slot" class="d2l-skeletize"><slot name="after"></slot></div>
+				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._onAfterSlotChange}"></slot></div>
 			</div>
 			${offscreenContainer}
 		`;
@@ -435,6 +437,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	_handleMouseLeave() {
 		this._hovered = false;
+	}
+
+	_onAfterSlotChange(e) {
+		const afterContent = e.target.assignedNodes({ flatten: true });
+		this._hasAfterContent = (afterContent && afterContent.length > 0);
 	}
 
 	_onSlotChange(e) {
