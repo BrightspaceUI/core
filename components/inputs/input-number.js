@@ -51,11 +51,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				:host([hidden]) {
 					display: none;
 				}
-				#after-slot {
-					display: flex;
-					position: absolute;
-					top: 0;
-				}
 			`
 		];
 	}
@@ -100,7 +95,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 
 	render() {
-		const slotStyles = { left: this.inputWidth };
 		const tooltip = this.validationError && this.childErrors.size === 0 ? html`<d2l-tooltip announced for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<d2l-input-text
@@ -121,8 +115,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				.value="${this._formattedValue}"
-			></d2l-input-text>
-			<div id="after-slot" style="${styleMap(slotStyles)}"><slot></slot></div>
+			><slot slot="after" name="after"></slot></d2l-input-text>
 			${tooltip}
 		`;
 	}
