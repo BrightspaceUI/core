@@ -6,7 +6,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
 
 function formatValue(value, minFractionDigits, maxFractionDigits) {
 	const options = {
