@@ -150,8 +150,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					display: inline-block;
 					vertical-align: bottom;
 				}
+				.d2l-input-container {
+					display: flex;
+				}
 				.d2l-input-text-container {
-					display: inline-block;
+					flex: 1 1 auto;
 					position: relative;
 				}
 				.d2l-input {
@@ -162,6 +165,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 				}
 				#after-slot {
 					display: inline-block;
+					flex: 0 0 auto;
 				}
 				#first-slot, #last-slot {
 					display: flex;
@@ -268,7 +272,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
 		const input = html`
-			<div>
+			<div class="d2l-input-container">
 				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
 					<input aria-atomic="${ifDefined(this.atomic)}"
 						aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
