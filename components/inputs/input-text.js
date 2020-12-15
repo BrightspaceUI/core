@@ -304,8 +304,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
 					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
-				</div>
-				<div id="after-slot" class="d2l-skeletize"><slot name="after"></slot></div>
+				</div><div id="after-slot" class="d2l-skeletize"><slot name="after"></slot></div>
 			</div>
 			${offscreenContainer}
 		`;
