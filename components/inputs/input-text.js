@@ -16,6 +16,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * This component wraps the native "<input type="text">" tag and is intended primarily for inputting generic text, email addresses and URLs.
  * @slot left - Slot within the input on the left side. Useful for an "icon" or "button-icon".
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
+ * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  */
 class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
