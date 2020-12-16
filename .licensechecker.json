@@ -4,7 +4,6 @@
   ],
   "manualOverrides": {
     "axe-core@>=3": "D2L-Open-Source-Special-Exemption (MPL-2.0)",
-    "focus-visible@^5": "D2L-Open-Source-Special-Exemption (W3C)",
     "glob-to-regexp@^0.3.0": "BSD-2-Clause",
     "trim@^0.0.1": "MIT",
     "valid-url@^1.0.9": "MIT"
