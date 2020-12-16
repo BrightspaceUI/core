@@ -121,13 +121,13 @@ npm i mocha -g
 npm i @brightspace-ui/visual-diff puppeteer --no-save
 
 # run visual-diff tests
-mocha './test/**/*.visual-diff.js' -t 10000
+mocha './**/*.visual-diff.js' -t 10000
 
 # subset of visual-diff tests:
-mocha './test/**/*.visual-diff.js' -t 10000 -g some-pattern
+mocha './**/*.visual-diff.js' -t 10000 -g some-pattern
 
 # update visual-diff goldens
-mocha './test/**/*.visual-diff.js' -t 10000 --golden
+mocha './**/*.visual-diff.js' -t 10000 --golden
 ```
 
 ## Versioning & Releasing
