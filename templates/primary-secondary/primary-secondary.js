@@ -718,21 +718,21 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			}
 
 			.d2l-template-scroll::-webkit-scrollbar-track {
-				background: transparent;
+				background: rgba(255, 255, 255, 0.4);
 			}
 
 			.d2l-template-scroll::-webkit-scrollbar-thumb {
-				background: var(--d2l-color-mica);
+				background: var(--d2l-color-galena);
 				border-radius: 4px;
 			}
 
 			.d2l-template-scroll::-webkit-scrollbar-thumb:hover {
-				background: var(--d2l-color-corundum);
+				background: var(--d2l-color-tungsten);
 			}
 
 			/* For Firefox */
 			.d2l-template-scroll {
-				scrollbar-color: var(--d2l-color-mica) transparent;
+				scrollbar-color: var(--d2l-color-galena) rgba(255, 255, 255, 0.4);
 				scrollbar-width: thin;
 			}
 
