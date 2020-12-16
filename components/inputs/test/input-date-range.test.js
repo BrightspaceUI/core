@@ -21,7 +21,7 @@ function getChildElem(elem, selector) {
 before(() => {
 	const e = window.onerror;
 	window.onerror = function(err) {
-		if (err === 'ResizeObserver loop limit exceeded') {
+		if (err === 'ResizeObserver loop limit exceeded' || err === 'ResizeObserver loop completed with undelivered notifications.') {
 			console.warn('Ignored: ResizeObserver loop limit exceeded');
 			return false;
 		} else {
