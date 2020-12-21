@@ -2,6 +2,7 @@ import '../../components/colors/colors.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -26,6 +27,8 @@ const keyCodes = Object.freeze({
 function isMobile() {
 	return matchMedia('only screen and (max-width: 767px)').matches;
 }
+
+const isWindows = window.navigator.userAgent.indexOf('Windows') > -1;
 
 function clamp(val, min, max) {
 	return Math.max(min, Math.min(val, max));
@@ -563,7 +566,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 				height: 100%;
 				min-width: ${desktopMinSize}px;
 				-webkit-overflow-scrolling: touch;
-				overflow-y: auto;
+				overflow-y: scroll;
 				position: relative;
 			}
 
@@ -708,6 +711,29 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
 				transition-delay: 100ms;
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar-track {
+				background: rgba(255, 255, 255, 0.4);
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar-thumb {
+				background: var(--d2l-color-galena);
+				border-radius: 4px;
+			}
+
+			.d2l-template-scroll::-webkit-scrollbar-thumb:hover {
+				background: var(--d2l-color-tungsten);
+			}
+
+			/* For Firefox */
+			.d2l-template-scroll {
+				scrollbar-color: var(--d2l-color-galena) rgba(255, 255, 255, 0.4);
+				scrollbar-width: thin;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -906,11 +932,14 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 		}
 		const separatorVal = this._size && Math.round(this._size);
 		const separatorMax = this._contentBounds && Math.round(this._isMobile ? this._contentBounds.maxHeight : this._contentBounds.maxWidth);
+		const scrollClasses = {
+			'd2l-template-scroll': isWindows
+		};
 		return html`
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
-					<main><slot name="primary"></slot></main>
+					<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>
 					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator  aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
 						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
 							<div class="d2l-template-primary-secondary-divider-handle-desktop">
@@ -934,7 +963,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
 						<div class="d2l-template-primary-secondary-divider-shadow">
 						</div>
-						<aside>
+						<aside class="${classMap(scrollClasses)}">
 							<slot name="secondary"></slot>
 						</aside>
 					</div>
