@@ -566,6 +566,7 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 				height: 100%;
 				min-width: ${desktopMinSize}px;
 				-webkit-overflow-scrolling: touch;
+				overflow-x: hidden;
 				overflow-y: scroll;
 				position: relative;
 			}
