@@ -58,6 +58,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				border-radius: 0.8rem;
 				box-sizing: border-box;
 				padding: 0.3rem;
+				position: relative;
 			}
 			:host([on]) .d2l-switch-inner {
 				background-color: var(--d2l-color-celestine-plus-2);
@@ -67,6 +68,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 			.d2l-switch-toggle {
 				position: relative;
 				transition: transform 150ms linear;
+				z-index: 1;
 			}
 			.d2l-switch-toggle > div {
 				background-color: #ffffff;

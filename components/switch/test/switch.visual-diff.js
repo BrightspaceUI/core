@@ -10,8 +10,6 @@ describe('d2l-switch', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
-		await page.bringToFront();
 	});
 
 	beforeEach(async() => await visualDiff.resetFocus(page));
@@ -19,6 +17,11 @@ describe('d2l-switch', () => {
 	after(async() => await browser.close());
 
 	describe('ltr', () => {
+
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html?dir=ltr`, { waitUntil: ['networkidle0', 'load'] });
+			await page.bringToFront();
+		});
 
 		[
 			{ name: 'off', selector: '#off' },
@@ -48,10 +51,15 @@ describe('d2l-switch', () => {
 
 	describe('rtl', () => {
 
+		before(async() => {
+			await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
+			await page.bringToFront();
+		});
+
 		[
-			{ name: 'off', selector: '#off-rtl' },
-			{ name: 'on', selector: '#on-rtl' }
-		].forEach((info) => {
+			{ name: 'off', selector: '#off' },
+			{ name: 'on', selector: '#on' }
+		].forEach(info => {
 
 			it(info.name, async function() {
 				const rect = await visualDiff.getRect(page, info.selector);
