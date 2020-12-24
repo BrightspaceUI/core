@@ -10,20 +10,31 @@ describe('d2l-switch-visibility', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch-visibility.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
-		await page.bringToFront();
 	});
 
 	after(async() => await browser.close());
 
-	[
-		{ name: 'off', selector: '#off' },
-		{ name: 'on', selector: '#on' }
-	].forEach((info) => {
+	['ltr', 'rtl'].forEach(dir => {
 
-		it(info.name, async function() {
-			const rect = await visualDiff.getRect(page, info.selector);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		describe(dir, () => {
+
+			before(async() => {
+				await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch-visibility.visual-diff.html?dir=${dir}`, {waitUntil: ['networkidle0', 'load']});
+				await page.bringToFront();
+			});
+
+			[
+				{ name: 'off', selector: '#off' },
+				{ name: 'on', selector: '#on' }
+			].forEach(info => {
+
+				it(info.name, async function() {
+					const rect = await visualDiff.getRect(page, info.selector);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
+			});
+
 		});
 
 	});
