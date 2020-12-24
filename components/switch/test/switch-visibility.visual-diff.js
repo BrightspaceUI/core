@@ -19,7 +19,7 @@ describe('d2l-switch-visibility', () => {
 		describe(dir, () => {
 
 			before(async() => {
-				await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch-visibility.visual-diff.html?dir=${dir}`, {waitUntil: ['networkidle0', 'load']});
+				await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch-visibility.visual-diff.html?dir=${dir}`, { waitUntil: ['networkidle0', 'load'] });
 				await page.bringToFront();
 			});
 

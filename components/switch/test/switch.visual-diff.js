@@ -19,7 +19,7 @@ describe('d2l-switch', () => {
 	describe('ltr', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html?dir=ltr`, {waitUntil: ['networkidle0', 'load']});
+			await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html?dir=ltr`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
@@ -52,14 +52,14 @@ describe('d2l-switch', () => {
 	describe('rtl', () => {
 
 		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html?dir=rtl`, {waitUntil: ['networkidle0', 'load']});
+			await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
 		});
 
 		[
 			{ name: 'off', selector: '#off' },
 			{ name: 'on', selector: '#on' }
-		].forEach((info) => {
+		].forEach(info => {
 
 			it(info.name, async function() {
 				const rect = await visualDiff.getRect(page, info.selector);
