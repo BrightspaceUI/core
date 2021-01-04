@@ -10,7 +10,7 @@ export default {
 	"components.form-element.defaultError": "Mae {label} yn annilys.",
 	"components.form-element.defaultFieldLabel": "Maes",
 	"components.form-element.input.email.typeMismatch": "Nid yw'r e-bost yn ddilys",
-	"components.form-element.input.number.rangeError": "Rhaid i’r nifer fod {minExclusive, select, true {yn fwy na} false {yn fwy na neu'n hafal i}} {min} a {maxExclusive, select, true {yn llai na} false {yn llai na neu’n hafal i}} {max}.",
+	"components.form-element.input.number.rangeError": "Rhaid i'r nifer fod {minExclusive, select, true {yn fwy na} false {yn fwy na neu'n hafal i}} {min} a {maxExclusive, select, true {yn llai na} false {yn llai na neu’n hafal i}} {max}.",
 	"components.form-element.input.number.rangeOverflow": "Rhaid i'r nifer fod {maxExclusive, select, true {yn llai na} false {yn llai na neu’n hafal i}} {max}.",
 	"components.form-element.input.number.rangeUnderflow": "Rhaid i'r nifer fod {minExclusive, select, true {yn fwy na} false {yn fwy na neu'n hafal i}} {min}.",
 	"components.form-element.input.text.tooShort": "Rhaid i {label} fod o leiaf {minlength} nod",
