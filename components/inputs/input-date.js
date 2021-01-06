@@ -69,6 +69,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			_dateTimeDescriptor: { type: Object },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
+			_inputTextFocusShowTooltip: { type: Boolean },
 			_showInfoTooltip: { type: Boolean },
 			_shownValue: { type: String }
 		};
@@ -132,6 +133,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
+		this._inputTextFocusMouseup = false;
+		this._inputTextFocusShowTooltip = true; // true by default so hover triggers tooltip
 		this._namespace = 'components.input-date';
 		this._showInfoTooltip = true;
 		this._shownValue = '';
@@ -177,7 +180,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const errorTooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && !this.skeleton) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
+		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
@@ -192,6 +195,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 					?novalidate="${this.noValidate}"
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					atomic="true"
+					@blur="${this._handleInputTextBlur}"
 					@change="${this._handleChange}"
 					class="d2l-dropdown-opener"
 					description="${ifDefined(this.emptyText ? this.emptyText : undefined)}"
@@ -349,8 +353,19 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._calendar.focus();
 	}
 
+	_handleInputTextBlur() {
+		this._inputTextFocusMouseup = false;
+		this._inputTextFocusShowTooltip = true;
+	}
+
 	_handleInputTextFocus() {
 		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
+
+		// hide tooltip when focus, wait to see if click happened, then show
+		this._inputTextFocusShowTooltip = false;
+		setTimeout(() => {
+			if (!this._inputTextFocusMouseup) this._inputTextFocusShowTooltip = true;
+		}, 150);
 	}
 
 	async _handleKeydown(e) {
@@ -365,6 +380,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleMouseup() {
+		this._inputTextFocusMouseup = true;
 		if (!this.disabled && !this.skeleton) {
 			if (!this._dropdownOpened) this._handleChange();
 			this._dropdown.toggleOpen(false);
