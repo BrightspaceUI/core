@@ -80,8 +80,10 @@ describe('d2l-input-date-range', () => {
 
 	it('basic-focus', async function() {
 		await page.$eval('#basic', (elem) => elem.focus());
-		const rect = await getRectInnerTooltip(page, '#basic', 'd2l-input-date.d2l-input-date-range-start');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		setTimeout(async() => {
+			const rect = await getRectInnerTooltip(page, '#basic', 'd2l-input-date.d2l-input-date-range-start');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		}, 160);
 	});
 
 	it('required focus then blur', async function() {
