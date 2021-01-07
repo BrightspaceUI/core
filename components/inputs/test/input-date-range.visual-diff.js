@@ -155,7 +155,10 @@ describe('d2l-input-date-range', () => {
 				});
 
 				it('open', async function() {
-					await page.$eval('#min-max', (elem) => elem.blur());
+					await page.$eval('#min-max', (elem) => {
+						elem.blur();
+						elem.shadowRoot.querySelector('d2l-input-date')._handleFirstDropdownOpen();
+					});
 					await changeInnerInputTextDate(page, '#min-max', startDateSelector, dateLaterInRange);
 					await changeInnerInputTextDate(page, '#min-max', endDateSelector, dateInRange);
 
