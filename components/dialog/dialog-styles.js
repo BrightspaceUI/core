@@ -126,7 +126,7 @@ export const dialogStyles = css`
 			padding: 0 20px;
 		}
 		.d2l-dialog-footer {
-			padding: 20px;
+			padding: 20px 20px 2px 20px;
 		}
 	}
 
