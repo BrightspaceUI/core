@@ -59,7 +59,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 				text-align: center;
 			}
 
-			@media (max-width: 615px) {
+			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 
 				.d2l-dialog-outer {
 					height: calc(100vh - 42px) !important;

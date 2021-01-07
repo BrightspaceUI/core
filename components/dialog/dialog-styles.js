@@ -118,7 +118,7 @@ export const dialogStyles = css`
 		margin-right: 0;
 	}
 
-	@media (max-width: 615px) {
+	@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 		.d2l-dialog-header {
 			padding: 14px 20px 16px 20px;
 		}

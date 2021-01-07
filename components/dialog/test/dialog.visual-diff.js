@@ -33,8 +33,10 @@ describe('d2l-dialog', () => {
 			});
 
 			[
-				{ category: 'wide', viewport: { width: 800, height: 500 } },
-				{ category: 'narrow', viewport: { width: 600, height: 500 } }
+				{ category: 'tall-wide', viewport: { width: 800, height: 500 } },
+				{ category: 'tall-narrow', viewport: { width: 600, height: 500 } },
+				{ category: 'short-wide', viewport: { width: 910, height: 400 } },
+				{ category: 'short-narrow', viewport: { width: 890, height: 400 } }
 			].forEach((info) => {
 
 				describe(info.category, () => {
