@@ -83,7 +83,7 @@ describe('d2l-input-date-range', () => {
 		setTimeout(async() => {
 			const rect = await getRectInnerTooltip(page, '#basic', 'd2l-input-date.d2l-input-date-range-start');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		}, 160);
+		}, 200);
 	});
 
 	it('required focus then blur', async function() {

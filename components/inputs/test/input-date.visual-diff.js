@@ -37,7 +37,7 @@ describe('d2l-input-date', () => {
 		setTimeout(async() => {
 			const rect = await helper.getRectTooltip(page, '#value');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		}, 160);
+		}, 200);
 	});
 
 	it('empty-text-focus', async function() {
@@ -45,7 +45,7 @@ describe('d2l-input-date', () => {
 		setTimeout(async() => {
 			const rect = await helper.getRectTooltip(page, '#empty-text');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		}, 160);
+		}, 200);
 	});
 
 	describe('localization', () => {

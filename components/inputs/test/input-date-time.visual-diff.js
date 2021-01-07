@@ -49,7 +49,7 @@ describe('d2l-input-date-time', () => {
 		setTimeout(async() => {
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		}, 160);
+		}, 200);
 	});
 
 	it('required focus then blur', async function() {
