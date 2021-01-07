@@ -33,19 +33,18 @@ describe('d2l-input-date', () => {
 	});
 
 	it('value-focus', async function() {
-		await page.$eval('#value', (elem) => elem.focus());
-		setTimeout(async() => {
-			const rect = await helper.getRectTooltip(page, '#value');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		}, 200);
+		await page.$eval('#value', (elem) => {
+			elem.focus();
+			elem._inputTextFocusShowTooltip = true;
+		});
+		const rect = await helper.getRectTooltip(page, '#value');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('empty-text-focus', async function() {
 		await page.$eval('#empty-text', (elem) => elem.focus());
-		setTimeout(async() => {
-			const rect = await helper.getRectTooltip(page, '#empty-text');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		}, 200);
+		const rect = await visualDiff.getRect(page, '#empty-text');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	describe('localization', () => {

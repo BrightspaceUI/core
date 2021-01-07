@@ -46,10 +46,8 @@ describe('d2l-input-date-time', () => {
 
 	it('basic-focus', async function() {
 		await page.$eval('#basic', (elem) => elem.focus());
-		setTimeout(async() => {
-			const rect = await visualDiff.getRect(page, '#basic');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		}, 200);
+		const rect = await visualDiff.getRect(page, '#basic');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('required focus then blur', async function() {
