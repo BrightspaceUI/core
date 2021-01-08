@@ -1,6 +1,5 @@
 import './input-date.js';
 import './input-fieldset.js';
-import './input-time.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -14,6 +13,7 @@ import { formatDateInISO,
 	parseISODateTime,
 	parseISOTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getFormattedDefaultTime } from './input-time.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -179,6 +179,25 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 
 		const parsedValue = this.value ? (this.localized ? this.value : getLocalDateTimeFromUTCDateTime(this.value)) : '';
 		const tooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const inputTime = !timeHidden ? html`<d2l-input-time
+				?novalidate="${this.noValidate}"
+				@blur="${this._handleInputTimeBlur}"
+				@change="${this._handleTimeChange}"
+				@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
+				default-value="${ifDefined(this.timeDefaultValue)}"
+				?disabled="${this.disabled}"
+				@focus="${this._handleInputTimeFocus}"
+				.forceInvalid=${this.invalid}
+				@mouseout="${this._handleInputTimeBlur}"
+				@mouseover="${this._handleInputTimeFocus}"
+				label="${this.localize('components.input-date-time.time')}"
+				label-hidden
+				max-height="430"
+				?required="${this.required}"
+				?skeleton="${this.skeleton}"
+				.value="${parsedValue}">
+			</d2l-input-time>` : null;
+
 		return html`
 			${tooltip}
 			<d2l-input-fieldset
@@ -202,25 +221,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 					?skeleton="${this.skeleton}"
 					style="${styleMap(dateStyle)}"
 					.value="${parsedValue}">
-				</d2l-input-date><d2l-input-time
-					?novalidate="${this.noValidate}"
-					@blur="${this._handleInputTimeBlur}"
-					@change="${this._handleTimeChange}"
-					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
-					default-value="${ifDefined(this.timeDefaultValue)}"
-					?disabled="${this.disabled}"
-					@focus="${this._handleInputTimeFocus}"
-					.forceInvalid=${this.invalid}
-					?hidden="${timeHidden}"
-					@mouseout="${this._handleInputTimeBlur}"
-					@mouseover="${this._handleInputTimeFocus}"
-					label="${this.localize('components.input-date-time.time')}"
-					label-hidden
-					max-height="430"
-					?required="${this.required}"
-					?skeleton="${this.skeleton}"
-					.value="${parsedValue}">
-				</d2l-input-time>
+				</d2l-input-date>${inputTime}
 			</d2l-input-fieldset>
 		`;
 	}
@@ -280,7 +281,8 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		if (!newDate) {
 			this.value = '';
 		} else {
-			const time = this.shadowRoot.querySelector('d2l-input-time').value;
+			const inputTime = this.shadowRoot.querySelector('d2l-input-time');
+			const time = inputTime ? inputTime.value : getFormattedDefaultTime(this.timeDefaultValue);
 			this.value = this.localized ? _formatLocalDateTimeInISO(newDate, time) : getUTCDateTimeFromLocalDateTime(newDate, time);
 		}
 		this._dispatchChangeEvent();

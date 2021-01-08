@@ -48,6 +48,11 @@ export function getDefaultTime(time) {
 	}
 }
 
+export function getFormattedDefaultTime(defaultValue) {
+	const time = getDefaultTime(defaultValue);
+	return formatDateInISOTime(time);
+}
+
 export function getTimeAtInterval(timeInterval, time) {
 	const interval = getIntervalNumber(timeInterval);
 	const difference = time.getMinutes() % interval;

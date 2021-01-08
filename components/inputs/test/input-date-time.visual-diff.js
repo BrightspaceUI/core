@@ -253,7 +253,6 @@ describe('d2l-input-date-time', () => {
 			describe(testCase.name, () => {
 				before(async() => {
 					await changeInnerElem(page, '#min-max', dateSelector, '');
-					await changeInnerElem(page, '#min-max', timeSelector, '');
 					await changeInnerElem(page, '#min-max', dateSelector, testCase.date);
 					await changeInnerElem(page, '#min-max', timeSelector, testCase.time);
 				});
