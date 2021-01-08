@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -28,7 +29,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			/**
 			 * The preferred width (unit-less) for the dialog
 			 */
-			width: { type: Number }
+			width: { type: Number },
+			_hasFooterContent: { type: Boolean, attribute: false }
 		};
 	}
 
@@ -59,7 +61,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 				text-align: center;
 			}
 
-			@media (max-width: 615px) {
+			.d2l-dialog-footer.d2l-footer-no-content {
+				padding: 0 0 5px 0;
+			}
+
+			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 
 				.d2l-dialog-outer {
 					height: calc(100vh - 42px) !important;
@@ -105,6 +111,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			`;
 		}
 
+		const footerClasses = {
+			'd2l-dialog-footer': true,
+			'd2l-footer-no-content': !this._hasFooterContent
+		};
+
 		const content = html`
 			${loading}
 			<div style=${styleMap(slotStyles)}><slot></slot></div>
@@ -120,8 +131,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 					</div>
 				</div>
 				<div class="d2l-dialog-content">${content}</div>
-				<div class="d2l-dialog-footer">
-					<slot name="footer"></slot>
+				<div class="${classMap(footerClasses)}">
+					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
 			</div>
 		`;
@@ -145,6 +156,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 
 	_abort() {
 		this._close('abort');
+	}
+
+	_handleFooterSlotChange(e) {
+		const footerContent = e.target.assignedNodes({ flatten: true });
+		this._hasFooterContent = (footerContent && footerContent.length > 0);
 	}
 
 }

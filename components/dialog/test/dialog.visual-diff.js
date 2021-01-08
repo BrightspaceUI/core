@@ -30,11 +30,14 @@ describe('d2l-dialog', () => {
 				await helper.reset(page, '#dialogLong');
 				await helper.reset(page, '#dialogRtl');
 				await helper.reset(page, '#dialogResize');
+				await helper.reset(page, '#dialogNoFooterContent');
 			});
 
 			[
-				{ category: 'wide', viewport: { width: 800, height: 500 } },
-				{ category: 'narrow', viewport: { width: 600, height: 500 } }
+				{ category: 'tall-wide', viewport: { width: 800, height: 500 } },
+				{ category: 'tall-narrow', viewport: { width: 600, height: 500 } },
+				{ category: 'short-wide', viewport: { width: 910, height: 400 } },
+				{ category: 'short-narrow', viewport: { width: 890, height: 400 } }
 			].forEach((info) => {
 
 				describe(info.category, () => {
@@ -78,6 +81,11 @@ describe('d2l-dialog', () => {
 
 				before(async() => {
 					await page.setViewport({ width: 800, height: 500, deviceScaleFactor: 2 });
+				});
+
+				it('no footer content', async function() {
+					await helper.open(page, '#dialogNoFooterContent');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('scroll bottom shadow', async function() {
