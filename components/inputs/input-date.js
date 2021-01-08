@@ -66,8 +66,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 */
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
-			_dropdownFirstOpened: { type: Boolean },
 			_dateTimeDescriptor: { type: Object },
+			_dropdownFirstOpened: { type: Boolean },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
 			_inputTextFocusShowTooltip: { type: Boolean },
@@ -297,8 +297,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		if (!value && !this.required) {
 			if (value !== this.value) {
 				await this._updateValueDispatchEvent('');
-				await this.updateComplete;
-				await this._calendar.reset();
+				if (this._calendar) {
+					await this.updateComplete;
+					await this._calendar.reset();
+				}
 			}
 			return;
 		}
@@ -311,8 +313,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			// leave value the same when invalid input
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
-		await this.updateComplete;
-		await this._calendar.reset(true);
+		if (this._calendar) {
+			await this.updateComplete;
+			await this._calendar.reset(true);
+		}
 	}
 
 	async _handleClear() {
@@ -328,7 +332,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleDropdownClose() {
-		this._calendar.reset();
+		if (this._calendar) this._calendar.reset();
 		this._dropdownOpened = false;
 		this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		this.dispatchEvent(new CustomEvent(
@@ -338,7 +342,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleDropdownOpen() {
-		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+		if (this._dropdown && !this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		// use setTimeout to wait for keyboard to open on mobile devices
 		setTimeout(() => {
 			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
@@ -359,7 +363,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	async _handleFocusTrapEnter() {
-		this._calendar.focus();
+		if (this._calendar) this._calendar.focus();
 	}
 
 	_handleInputTextBlur() {

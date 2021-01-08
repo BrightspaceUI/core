@@ -97,6 +97,10 @@ describe('d2l-input-date-time-range', () => {
 			}, inputSelector);
 		}
 
+		before(async() => {
+			await page.reload();
+		});
+
 		it('start equals end when inclusive', async function() {
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
 			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange);
