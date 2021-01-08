@@ -131,6 +131,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 * Value of the input. This should be in ISO 8601 time format ("hh:mm:ss") and should be localized to the user's timezone if applicable.
 			 */
 			value: { type: String },
+			_dropdownFirstOpened: { type: Boolean },
 			_formattedValue: { type: String }
 		};
 	}
@@ -172,6 +173,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.labelHidden = false;
 		this.required = false;
 		this.timeInterval = 'thirty';
+		this._dropdownFirstOpened = false;
 		this._dropdownId = getUniqueId();
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
 	}
@@ -214,10 +216,26 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	render() {
-		initIntervals(this.timeInterval);
+		if (this._dropdownFirstOpened) initIntervals(this.timeInterval);
 		const ariaRequired = this.required ? 'true' : undefined;
 		const disabled = this.disabled || this.skeleton;
-		const input = html`
+		const menuItems = this._dropdownFirstOpened ? html`
+			${INTERVALS.get(this.timeInterval).map(i => html`
+				<d2l-menu-item-radio
+					text="${i.text}"
+					value="${i.value}"
+					?selected=${this._value === i.value}>
+				</d2l-menu-item-radio>
+			`)}
+			${this.enforceTimeIntervals ? '' : html`
+					<d2l-menu-item-radio
+						text="${formatTime(END_OF_DAY)}"
+						value="${formatDateInISOTime(END_OF_DAY)}"
+						?selected=${this._value === formatDateInISOTime(END_OF_DAY)}>
+					</d2l-menu-item-radio>
+				`}` : null;
+
+		return html`
 			<label
 				class="${this.label && !this.labelHidden ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
@@ -251,26 +269,12 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 						@d2l-menu-item-change="${this._handleDropdownChange}"
 						id="${this._dropdownId}"
 						role="listbox">
-						${INTERVALS.get(this.timeInterval).map(i => html`
-							<d2l-menu-item-radio
-								text="${i.text}"
-								value="${i.value}"
-								?selected=${this._value === i.value}>
-							</d2l-menu-item-radio>
-						`)}
-						${this.enforceTimeIntervals ? '' : html`
-								<d2l-menu-item-radio
-									text="${formatTime(END_OF_DAY)}"
-									value="${formatDateInISOTime(END_OF_DAY)}"
-									?selected=${this._value === formatDateInISOTime(END_OF_DAY)}>
-								</d2l-menu-item-radio>
-							`}
+						${menuItems}
 					</d2l-menu>
 					<div class="d2l-input-time-timezone d2l-body-small" id="${this._dropdownId}-timezone" slot="footer">${this._timezone}</div>
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 		`;
-		return input;
 	}
 
 	updated(changedProperties) {
@@ -335,6 +339,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	_handleDropdownOpen() {
+		this._dropdownFirstOpened = true;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: true } }
