@@ -338,8 +338,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.focus();
 	}
 
-	_handleDropdownOpen() {
-		this._dropdownFirstOpened = true;
+	async _handleDropdownOpen() {
+		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: true } }
@@ -350,6 +350,10 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
+			if (!this._dropdownFirstOpened) {
+				this._dropdownFirstOpened = true;
+				await this.updateComplete;
+			}
 			dropdown.open(true);
 			this.shadowRoot.querySelector('d2l-menu').focus();
 			e.preventDefault();

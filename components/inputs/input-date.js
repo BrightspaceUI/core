@@ -360,6 +360,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		await this.updateComplete;
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+		await this._calendar.updateComplete;
 	}
 
 	async _handleFocusTrapEnter() {
