@@ -77,6 +77,7 @@ describe('d2l-input-date-time', () => {
 				inputElem.value = '2018-09-30';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
+				await elem.updateComplete;
 				const inputTimeElem = getChildElem(elem, 'd2l-input-time');
 				inputTimeElem.value = '17:29:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
@@ -136,6 +137,7 @@ describe('d2l-input-date-time', () => {
 				inputDateElem.value = '2018-09-30';
 				setTimeout(() => dispatchEvent(inputDateElem, 'change'));
 				await oneEvent(elem, 'change');
+				await elem.updateComplete;
 				const inputTimeElem = getChildElem(elem, 'd2l-input-time');
 				inputTimeElem.value = '13:31:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
