@@ -20,10 +20,14 @@ function dispatchEvent(elem, eventType, composed) {
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('.d2l-input');
 }
-function getFirstOption(elem) {
+async function getFirstOption(elem) {
+	elem._dropdownFirstOpened = true;
+	await elem.updateComplete;
 	return [...elem.shadowRoot.querySelector('.d2l-input-time-menu').childNodes].find(item => item.role === 'menuitemradio');
 }
-function getNumberOfIntervals(elem) {
+async function getNumberOfIntervals(elem) {
+	elem._dropdownFirstOpened = true;
+	await elem.updateComplete;
 	return elem.shadowRoot.querySelectorAll('.d2l-input-time-menu d2l-menu-item-radio').length;
 }
 
@@ -148,14 +152,20 @@ describe('d2l-input-time', () => {
 
 		it('should update value when dropdown changes', async() => {
 			const elem = await fixture(fixtureWithValue);
-			setTimeout(() => getFirstOption(elem).click());
+			setTimeout(async() => {
+				const first = await getFirstOption(elem);
+				first.click();
+			});
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('00:00:00');
 		});
 
 		it('should update textbox value when dropdown changes', async() => {
 			const elem = await fixture(fixtureWithValue);
-			setTimeout(() => getFirstOption(elem).click());
+			setTimeout(async() => {
+				const first = await getFirstOption(elem);
+				first.click();
+			});
 			await oneEvent(elem, 'change');
 			await elem.updateComplete;
 			expect(getInput(elem).value).to.equal('12:00 AM');
@@ -167,17 +177,17 @@ describe('d2l-input-time', () => {
 
 		it('should default to half-hour intervals', async() => {
 			const elem = await fixture(basicFixture);
-			expect(getNumberOfIntervals(elem)).to.equal(49); //24 hours x 2 30-minute intervals + EOD
+			expect(await getNumberOfIntervals(elem)).to.equal(49); //24 hours x 2 30-minute intervals + EOD
 		});
 
 		it('should respect time-intervals property', async() => {
 			const elem = await fixture(hourLongIntervals);
-			expect(getNumberOfIntervals(elem)).to.equal(25); //24 60-minute intervals + EOD
+			expect(await getNumberOfIntervals(elem)).to.equal(25); //24 60-minute intervals + EOD
 		});
 
 		it('should not offer end-of-day option when intervals are enforced', async() => {
 			const elem = await fixture(hourLongIntervalsEnforced);
-			expect(getNumberOfIntervals(elem)).to.equal(24);
+			expect(await getNumberOfIntervals(elem)).to.equal(24);
 		});
 
 		it('should round-up to next interval when intervals are enforced', async() => {

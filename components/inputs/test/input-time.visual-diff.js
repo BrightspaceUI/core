@@ -41,8 +41,21 @@ describe('d2l-input-time', () => {
 		await helper.reset(page, '#basic');
 	});
 
-	it('dropdown', async function() {
+	it('dropdown open', async function() {
 		await helper.open(page, '#dropdown');
+		const rect = await helper.getRect(page, '#dropdown');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await helper.reset(page, '#dropdown'); //Make sure the dropdown is closed before the next test
+	});
+
+	it('dropdown open keydown', async function() {
+		await page.$eval('#dropdown', (elem) => {
+			const input = elem.shadowRoot.querySelector('input');
+			const eventObj = document.createEvent('Events');
+			eventObj.initEvent('keydown', true, true);
+			eventObj.keyCode = 13;
+			input.dispatchEvent(eventObj);
+		});
 		const rect = await helper.getRect(page, '#dropdown');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		await helper.reset(page, '#dropdown'); //Make sure the dropdown is closed before the next test

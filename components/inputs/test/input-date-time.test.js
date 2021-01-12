@@ -76,6 +76,8 @@ describe('d2l-input-date-time', () => {
 				const inputElem = getChildElem(elem, 'd2l-input-date');
 				inputElem.value = '2018-09-30';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
+				await oneEvent(elem, 'change');
+				await elem.updateComplete;
 				const inputTimeElem = getChildElem(elem, 'd2l-input-time');
 				inputTimeElem.value = '17:29:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
@@ -114,15 +116,16 @@ describe('d2l-input-date-time', () => {
 			});
 
 			it('should change value if min value and typed date before minValue', async() => {
-				const elem = await fixture('<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" ></d2l-input-date-time>');
+				const elem = await fixture('<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z"></d2l-input-date-time>');
 				const inputDateElem = getChildElem(elem, 'd2l-input-date');
 				inputDateElem.value = '2018-08-26';
 				setTimeout(() => dispatchEvent(inputDateElem, 'change'));
+				await oneEvent(elem, 'change');
+				await oneEvent(elem, 'invalid-change');
 				const inputTimeElem = getChildElem(elem, 'd2l-input-time');
 				inputTimeElem.value = '23:29:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));
 				await oneEvent(elem, 'change');
-				await oneEvent(elem, 'invalid-change');
 				expect(elem.value).to.equal('2018-08-27T03:29:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be after ${expectedStart}`);
@@ -133,6 +136,8 @@ describe('d2l-input-date-time', () => {
 				const inputDateElem = getChildElem(elem, 'd2l-input-date');
 				inputDateElem.value = '2018-09-30';
 				setTimeout(() => dispatchEvent(inputDateElem, 'change'));
+				await oneEvent(elem, 'change');
+				await elem.updateComplete;
 				const inputTimeElem = getChildElem(elem, 'd2l-input-time');
 				inputTimeElem.value = '13:31:00';
 				setTimeout(() => dispatchEvent(inputTimeElem, 'change'));

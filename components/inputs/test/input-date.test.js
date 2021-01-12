@@ -48,6 +48,8 @@ describe('d2l-input-date', () => {
 	describe('focus trap', () => {
 		it('should set trap to true when dropdown open', async() => {
 			const elem = await fixture(basicFixture);
+			elem._dropdownFirstOpened = true;
+			await elem.updateComplete;
 			const dropdown = getChildElem(elem, 'd2l-dropdown');
 			dropdown.toggleOpen();
 			await oneEvent(dropdown, 'd2l-dropdown-open');
@@ -58,6 +60,8 @@ describe('d2l-input-date', () => {
 
 		it('should set trap to false when dropdown closed', async() => {
 			const elem = await fixture(basicFixture);
+			elem._dropdownFirstOpened = true;
+			await elem.updateComplete;
 			const dropdown = getChildElem(elem, 'd2l-dropdown');
 			dropdown.toggleOpen();
 			await oneEvent(dropdown, 'd2l-dropdown-open');
@@ -90,6 +94,8 @@ describe('d2l-input-date', () => {
 
 		it('should fire "change" event when calendar value selected', async() => {
 			const elem = await fixture(basicFixture);
+			elem._dropdownFirstOpened = true;
+			await elem.updateComplete;
 			const calendarElem = getChildElem(elem, 'd2l-calendar');
 			calendarElem.selectedValue = '2018-03-24';
 			setTimeout(() => dispatchEvent(calendarElem, 'd2l-calendar-selected', false));
@@ -102,6 +108,8 @@ describe('d2l-input-date', () => {
 			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 
 			const elem = await fixture(basicFixture);
+			elem._dropdownFirstOpened = true;
+			await elem.updateComplete;
 			const button = getChildElem(elem, 'd2l-button-subtle[text="Set to Today"]');
 			setTimeout(() => button.click());
 			await oneEvent(elem, 'change');
@@ -112,6 +120,8 @@ describe('d2l-input-date', () => {
 
 		it('should fire "change" event when "Clear" is clicked', async() => {
 			const elem = await fixture('<d2l-input-date label="label text" value="2019-02-01"></d2l-input-date>');
+			elem._dropdownFirstOpened = true;
+			await elem.updateComplete;
 			const button = getChildElem(elem, 'd2l-button-subtle[text="Clear"]');
 			setTimeout(() => button.click());
 			await oneEvent(elem, 'change');
@@ -129,6 +139,8 @@ describe('d2l-input-date', () => {
 
 		it('should not fire "change" event when input value is invalid', async() => {
 			const elem = await fixture(basicFixture);
+			elem._dropdownFirstOpened = true;
+			await elem.updateComplete;
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			const calendarElem = getChildElem(elem, 'd2l-calendar');
 			await waitUntil(() => calendarElem._today, 'Today was never set');

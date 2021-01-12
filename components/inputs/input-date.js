@@ -67,6 +67,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			value: { type: String },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
+			_dropdownFirstOpened: { type: Boolean },
 			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
 			_inputTextFocusShowTooltip: { type: Boolean },
@@ -130,6 +131,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this.value = '';
 
 		this._dropdownOpened = false;
+		this._dropdownFirstOpened = false;
 		this._formattedValue = '';
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
@@ -149,8 +151,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			console.warn('d2l-input-date component requires label text');
 		}
 
-		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
-		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
 		this.addEventListener('blur', this._handleBlur);
@@ -182,6 +182,28 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		const errorTooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 
+		const dropdownContent = this._dropdownFirstOpened ? html`
+			<d2l-dropdown-content
+				@d2l-dropdown-close="${this._handleDropdownClose}"
+				@d2l-dropdown-open="${this._handleDropdownOpen}"
+				max-width="335"
+				no-auto-fit
+				no-auto-focus
+				no-padding>
+				<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
+					<d2l-calendar
+						@d2l-calendar-selected="${this._handleDateSelected}"
+						label="${ifDefined(this.label)}"
+						max-value="${ifDefined(this.maxValue)}"
+						min-value="${ifDefined(this.minValue)}"
+						selected-value="${ifDefined(this._shownValue)}">
+						<div class="d2l-calendar-slot-buttons">
+							<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
+							${clearButton}
+						</div>
+					</d2l-calendar>
+				</d2l-focus-trap>
+			</d2l-dropdown-content>` : null;
 		return html`
 			<div aria-hidden="true" class="d2l-input-date-hidden-content">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
@@ -215,27 +237,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 					.value="${this._formattedValue}">
 					${icon}
 				</d2l-input-text>
-				<d2l-dropdown-content
-					@d2l-dropdown-close="${this._handleDropdownClose}"
-					@d2l-dropdown-open="${this._handleDropdownOpen}"
-					max-width="335"
-					no-auto-fit
-					no-auto-focus
-					no-padding>
-					<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
-						<d2l-calendar
-							@d2l-calendar-selected="${this._handleDateSelected}"
-							label="${ifDefined(this.label)}"
-							max-value="${ifDefined(this.maxValue)}"
-							min-value="${ifDefined(this.minValue)}"
-							selected-value="${ifDefined(this._shownValue)}">
-							<div class="d2l-calendar-slot-buttons">
-								<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}" @click="${this._handleSetToToday}"></d2l-button-subtle>
-								${clearButton}
-							</div>
-						</d2l-calendar>
-					</d2l-focus-trap>
-				</d2l-dropdown-content>
+				${dropdownContent}
 			</d2l-dropdown>
 		`;
 	}
@@ -295,8 +297,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		if (!value && !this.required) {
 			if (value !== this.value) {
 				await this._updateValueDispatchEvent('');
-				await this.updateComplete;
-				await this._calendar.reset();
+				if (this._calendar) {
+					await this.updateComplete;
+					await this._calendar.reset();
+				}
 			}
 			return;
 		}
@@ -309,8 +313,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			// leave value the same when invalid input
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
-		await this.updateComplete;
-		await this._calendar.reset(true);
+		if (this._calendar) {
+			await this.updateComplete;
+			await this._calendar.reset(true);
+		}
 	}
 
 	async _handleClear() {
@@ -326,7 +332,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleDropdownClose() {
-		this._calendar.reset();
+		if (this._calendar) this._calendar.reset();
 		this._dropdownOpened = false;
 		this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		this.dispatchEvent(new CustomEvent(
@@ -336,7 +342,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleDropdownOpen() {
-		if (!this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+		if (this._dropdown && !this._dropdown.openedAbove) this.shadowRoot.querySelector('d2l-focus-trap').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		// use setTimeout to wait for keyboard to open on mobile devices
 		setTimeout(() => {
 			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
@@ -349,8 +355,16 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._showInfoTooltip = false; // tooltip should not reappear after user has opened dropdown and closed unless focus leaves input-date and returns
 	}
 
+	async _handleFirstDropdownOpen() {
+		this._dropdownFirstOpened = true;
+		await this.updateComplete;
+		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
+		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
+		await this._calendar.updateComplete;
+	}
+
 	async _handleFocusTrapEnter() {
-		this._calendar.focus();
+		if (this._calendar) this._calendar.focus();
 	}
 
 	_handleInputTextBlur() {
@@ -371,6 +385,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	async _handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
+			if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
 			this._dropdown.open();
 			await this._handleChange();
 			this._calendar.focus();
@@ -379,8 +394,9 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		}
 	}
 
-	_handleMouseup() {
+	async _handleMouseup() {
 		this._inputTextFocusMouseup = true;
+		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
 		if (!this.disabled && !this.skeleton) {
 			if (!this._dropdownOpened) this._handleChange();
 			this._dropdown.toggleOpen(false);

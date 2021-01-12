@@ -538,8 +538,9 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 	}
 
-	focus() {
+	async focus() {
 		if (this._dialog) {
+			await this.updateComplete;
 			this._focusDateAddFocus();
 		} else {
 			const button = this.shadowRoot.querySelector('d2l-button-icon');

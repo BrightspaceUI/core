@@ -1,6 +1,5 @@
 import './input-date.js';
 import './input-fieldset.js';
-import './input-time.js';
 import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -14,6 +13,7 @@ import { formatDateInISO,
 	parseISODateTime,
 	parseISOTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getFormattedDefaultTime } from './input-time.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -75,8 +75,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			value: { type: String },
 			_dropdownOpened: { type: Boolean },
 			_maxValueLocalized: { type: String },
-			_minValueLocalized: { type: String },
-			_parsedDateTime: { type: String }
+			_minValueLocalized: { type: String }
 		};
 	}
 
@@ -101,8 +100,56 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		this._dropdownOpened = false;
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
-		this._parsedDateTime = '';
 		this._preventDefaultValidation = false;
+	}
+
+	get maxValue() { return this._maxValue; }
+	set maxValue(val) {
+		const oldValue = this.value;
+		if (this.localized) this._maxValueLocalized = val;
+		else {
+			try {
+				const dateObj = parseISODateTime(val);
+				const localDateTime = convertUTCToLocalDateTime(dateObj);
+				this._maxValueLocalized = formatDateInISO(localDateTime);
+			} catch (e) {
+				this._maxValueLocalized = undefined;
+			}
+		}
+		this._maxValue = val;
+		this.requestUpdate('maxValue', oldValue);
+	}
+
+	get minValue() { return this._minValue; }
+	set minValue(val) {
+		const oldValue = this.value;
+		if (this.localized) this._minValueLocalized = val;
+		else {
+			try {
+				const dateObj = parseISODateTime(val);
+				const localDateTime = convertUTCToLocalDateTime(dateObj);
+				this._minValueLocalized = formatDateInISO(localDateTime);
+			} catch (e) {
+				this._minValueLocalized = undefined;
+			}
+		}
+		this._minValue = val;
+		this.requestUpdate('minValue', oldValue);
+	}
+
+	get value() { return this._value; }
+	set value(val) {
+		const oldValue = this.value;
+		if (this.localized) this._value = val;
+		else {
+			try {
+				getLocalDateTimeFromUTCDateTime(val);
+				this._value = val;
+			} catch (e) {
+				this._value = '';
+			}
+		}
+		this.requestUpdate('value', oldValue);
 	}
 
 	firstUpdated(changedProperties) {
@@ -116,7 +163,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	}
 
 	render() {
-		const timeHidden = !this._parsedDateTime;
+		const timeHidden = !this.value;
 
 		const dateStyle = {};
 		if (timeHidden) {
@@ -130,7 +177,27 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			dateStyle.paddingRight = '0.3rem';
 		}
 
+		const parsedValue = this.value ? (this.localized ? this.value : getLocalDateTimeFromUTCDateTime(this.value)) : '';
 		const tooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const inputTime = !timeHidden ? html`<d2l-input-time
+				?novalidate="${this.noValidate}"
+				@blur="${this._handleInputTimeBlur}"
+				@change="${this._handleTimeChange}"
+				@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
+				default-value="${ifDefined(this.timeDefaultValue)}"
+				?disabled="${this.disabled}"
+				@focus="${this._handleInputTimeFocus}"
+				.forceInvalid=${this.invalid}
+				@mouseout="${this._handleInputTimeBlur}"
+				@mouseover="${this._handleInputTimeFocus}"
+				label="${this.localize('components.input-date-time.time')}"
+				label-hidden
+				max-height="430"
+				?required="${this.required}"
+				?skeleton="${this.skeleton}"
+				.value="${parsedValue}">
+			</d2l-input-time>` : null;
+
 		return html`
 			${tooltip}
 			<d2l-input-fieldset
@@ -153,26 +220,8 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 					?required="${this.required}"
 					?skeleton="${this.skeleton}"
 					style="${styleMap(dateStyle)}"
-					.value="${this._parsedDateTime}">
-				</d2l-input-date><d2l-input-time
-					?novalidate="${this.noValidate}"
-					@blur="${this._handleInputTimeBlur}"
-					@change="${this._handleTimeChange}"
-					@d2l-input-time-dropdown-toggle="${this._handleDropdownToggle}"
-					default-value="${ifDefined(this.timeDefaultValue)}"
-					?disabled="${this.disabled}"
-					@focus="${this._handleInputTimeFocus}"
-					.forceInvalid=${this.invalid}
-					?hidden="${timeHidden}"
-					@mouseout="${this._handleInputTimeBlur}"
-					@mouseover="${this._handleInputTimeFocus}"
-					label="${this.localize('components.input-date-time.time')}"
-					label-hidden
-					max-height="430"
-					?required="${this.required}"
-					?skeleton="${this.skeleton}"
-					.value="${this._parsedDateTime}">
-				</d2l-input-time>
+					.value="${parsedValue}">
+				</d2l-input-date>${inputTime}
 			</d2l-input-fieldset>
 		`;
 	}
@@ -180,15 +229,8 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		changedProperties.forEach((oldVal, prop) => {
+		changedProperties.forEach((_, prop) => {
 			if (prop === 'value') {
-				try {
-					this._parsedDateTime = this.localized ? this.value : getLocalDateTimeFromUTCDateTime(this.value);
-				} catch (e) {
-					// set value to empty if invalid value
-					this.value = '';
-					this._parsedDateTime = '';
-				}
 				this.setFormValue(this.value);
 				this.setValidity({
 					rangeUnderflow: this.value && this.minValue && (new Date(this.value)).getTime() < (new Date(this.minValue)).getTime(),
@@ -196,28 +238,6 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 				});
 				this.requestValidate(true);
 				this._preventDefaultValidation = true;
-			} else if (prop === 'maxValue' && this.maxValue) {
-				try {
-					if (this.localized) this._maxValueLocalized = this.maxValue;
-					else {
-						const dateObj = parseISODateTime(this.maxValue);
-						const localDateTime = convertUTCToLocalDateTime(dateObj);
-						this._maxValueLocalized = formatDateInISO(localDateTime);
-					}
-				} catch (e) {
-					this._maxValueLocalized = undefined;
-				}
-			} else if (prop === 'minValue' && this.minValue) {
-				try {
-					if (this.localized) this._minValueLocalized = this.minValue;
-					else {
-						const dateObj = parseISODateTime(this.minValue);
-						const localDateTime = convertUTCToLocalDateTime(dateObj);
-						this._minValueLocalized = formatDateInISO(localDateTime);
-					}
-				} catch (e) {
-					this._minValueLocalized = undefined;
-				}
 			}
 		});
 	}
@@ -261,7 +281,8 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		if (!newDate) {
 			this.value = '';
 		} else {
-			const time = this.shadowRoot.querySelector('d2l-input-time').value;
+			const inputTime = this.shadowRoot.querySelector('d2l-input-time');
+			const time = inputTime ? inputTime.value : getFormattedDefaultTime(this.timeDefaultValue);
 			this.value = this.localized ? _formatLocalDateTimeInISO(newDate, time) : getUTCDateTimeFromLocalDateTime(newDate, time);
 		}
 		this._dispatchChangeEvent();
@@ -290,7 +311,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	}
 
 	async _handleTimeChange(e) {
-		const date = this._parsedDateTime;
+		const date = this.shadowRoot.querySelector('d2l-input-date').value;
 		const time = e.target.value;
 		this.value = this.localized ? _formatLocalDateTimeInISO(date, time) : getUTCDateTimeFromLocalDateTime(date, time);
 		this._dispatchChangeEvent();
