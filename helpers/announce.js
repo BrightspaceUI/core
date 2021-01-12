@@ -1,5 +1,6 @@
 let timeoutId = null;
 let container = null;
+let messages = {};
 
 export function announce(message) {
 	if (!message) return;
@@ -25,8 +26,16 @@ export function announce(message) {
 	treat the change as an update. Firefox sometimes ignores changes if the region
 	and update are made too quickly in succession. RequestAnimationFrame is not
 	sufficient here. */
+	let child;
+	if (Object.keys(message).length === 0 || !Object.keys(messages).includes(message)) {
+		child = document.createTextNode(message);
+		messages[message] = child;
+	} else {
+		child = messages[message];
+		child.parentNode.removeChild(child);
+	}
 	setTimeout(() => {
-		container.appendChild(document.createTextNode(message));
+		container.appendChild(child);
 	}, 100);
 
 	/* Need to purge old messages so that they are not discovered by screen readers
@@ -36,6 +45,7 @@ export function announce(message) {
 		container.parentNode.removeChild(container);
 		container = null;
 		timeoutId = null;
+		messages = {};
 	}, 10000);
 
 }
