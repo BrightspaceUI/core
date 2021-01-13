@@ -281,10 +281,10 @@ function getVersion() {
 	return documentLocaleSettings.oslo.version;
 }
 
-function shouldFetchOverrides() {
+async function shouldFetchOverrides() {
 
 	const isOsloAvailable =
-		shouldUseBatchFetch() ||
+		await shouldUseBatchFetch() ||
 		shouldUseCollectionFetch();
 
 	return isOsloAvailable;
@@ -349,7 +349,7 @@ export async function getLocalizeOverrideResources(
 
 	promises.push(translations);
 
-	if (shouldFetchOverrides()) {
+	if (await shouldFetchOverrides()) {
 		const overrides = await fetchOverride(formatFunc);
 		promises.push(overrides);
 	}
@@ -372,7 +372,7 @@ export async function getLocalizeResources(
 	const promises = [];
 	let supportedLanguage;
 
-	if (shouldFetchOverrides()) {
+	if (await shouldFetchOverrides()) {
 
 		const overrides = await fetchOverride(formatFunc, fetchFunc);
 		promises.push(overrides);
