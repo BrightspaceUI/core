@@ -25,9 +25,11 @@ export function announce(message) {
 	treat the change as an update. Firefox sometimes ignores changes if the region
 	and update are made too quickly in succession. RequestAnimationFrame is not
 	sufficient here. */
+	const elem = [...container.childNodes].find((c) => c.textContent === message);
+	if (elem) elem.parentNode.removeChild(elem);
 	setTimeout(() => {
 		container.appendChild(document.createTextNode(message));
-	}, 100);
+	}, 200);
 
 	/* Need to purge old messages so that they are not discovered by screen readers
 	using virtual cursor, but we need to give the browser ample time to hand off
