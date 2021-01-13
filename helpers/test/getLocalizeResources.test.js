@@ -208,7 +208,8 @@ describe('getLocalizeResources', () => {
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 lms
 		expect(formatFuncSpy).to.have.been.calledWithExactly();
-		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
+		expect(openSpy).to.always.have.been.calledWithExactly('d2l-oslo');
+		expect(openSpy).to.have.callCount(3);
 		expect(matchSpy).to.have.been.callCount(1);
 		expect(matchSpy).to.have.been.calledWithMatch(new Request(UrlOverrides));
 		expect(fetchStub).to.have.been.calledOnceWithExactly(UrlBatch, {
@@ -239,7 +240,8 @@ describe('getLocalizeResources', () => {
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 cache key
 		expect(formatFuncSpy).to.have.been.calledWithExactly();
-		expect(openSpy).to.have.not.been.called; // in the window cache
+		expect(openSpy).to.always.have.been.calledWithExactly('d2l-oslo'); // in the window cache
+		expect(openSpy).to.have.callCount(2);
 		expect(matchSpy).to.have.not.been.called;
 		expect(fetchStub).to.have.not.been.called;
 		expect(putSpy).to.have.not.been.called;
@@ -262,7 +264,8 @@ describe('getLocalizeResources', () => {
 
 		expect(formatFuncSpy).to.have.been.callCount(1); // 1 cache key
 		expect(formatFuncSpy).to.have.been.calledWithExactly();
-		expect(openSpy).to.have.been.calledOnceWithExactly('d2l-oslo');
+		expect(openSpy).to.have.been.calledWithExactly('d2l-oslo');
+		expect(openSpy).to.have.callCount(3);
 		expect(matchSpy).to.have.been.callCount(1);
 		expect(matchSpy).to.have.been.calledWithMatch(new Request(UrlOverrides));
 		expect(fetchStub).to.have.not.been.called; // worker updated version with NextVersion
