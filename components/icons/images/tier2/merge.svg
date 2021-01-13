@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="a">
+      <path d="M0 0h24v24H0z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#a)" data-name="24x24-merge-icon">
+    <path fill="#fff" d="M0 0h24v24H0z"/>
+    <g data-name="Group 5080">
+      <path fill="none" stroke="#565a5c" stroke-linecap="round" stroke-width="2" d="M12.6 9h8.029a2.153 2.153 0 012.153 2.153v8.893a2.153 2.153 0 01-2.149 2.154h-10.48A2.153 2.153 0 018 20.045v-4.823" data-name="Path 3547"/>
+      <path fill="none" stroke="#565a5c" stroke-linecap="round" stroke-width="2" d="M4.351 15.197h-.122A2.22 2.22 0 012 13.044V4.151a2.153 2.153 0 012.152-2.154h11.48a2.153 2.153 0 012.153 2.155v.964" data-name="Path 3548"/>
+      <g data-name="Group 5073">
+        <path fill="none" stroke="#565a5c" stroke-linecap="round" stroke-width="2" d="M7.285 8.5l6 6" data-name="Line 7"/>
+        <path fill="#494c4e" d="M14.328 13.6l1.324-1.334a.931.931 0 01.65-.267.934.934 0 01.92.92v4.6a.923.923 0 01-.92.92h-4.6a.908.908 0 01-.846-.57.922.922 0 01.193-1l1.335-1.328.313-.322z"/>
+      </g>
+      <path fill="none" stroke="#565a5c" stroke-linecap="round" stroke-width="2" d="M4.351 15.197h-.122A2.22 2.22 0 012 13.044V4.151a2.153 2.153 0 012.152-2.154h11.48a2.153 2.153 0 012.153 2.155v.964" data-name="Path 3549"/>
+    </g>
+  </g>
+</svg>
