@@ -29,7 +29,7 @@ export function announce(message) {
 	if (elem) elem.parentNode.removeChild(elem);
 	setTimeout(() => {
 		container.appendChild(document.createTextNode(message));
-	}, 100);
+	}, 200);
 
 	/* Need to purge old messages so that they are not discovered by screen readers
 	using virtual cursor, but we need to give the browser ample time to hand off
