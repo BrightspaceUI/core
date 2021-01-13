@@ -214,7 +214,7 @@ function fetchWithPooling(resource) {
 	return promise;
 }
 
-function shouldUseBatchFetch() {
+async function shouldUseBatchFetch() {
 
 	if (documentLocaleSettings === undefined) {
 		documentLocaleSettings = getDocumentLocaleSettings();
@@ -224,10 +224,19 @@ function shouldUseBatchFetch() {
 		return false;
 	}
 
-	// Only batch if we can do client-side caching, otherwise it's worse on each
-	// subsequent page navigation.
+	try {
 
-	return Boolean(documentLocaleSettings.oslo.batch) && 'CacheStorage' in window;
+		// try opening CacheStorage, if the session is in a private browser in firefox this throws an exception
+		await caches.open(CacheName);
+
+		// Only batch if we can do client-side caching, otherwise it's worse on each
+		// subsequent page navigation.
+
+		return Boolean(documentLocaleSettings.oslo.batch) && 'CacheStorage' in window;
+	} catch (err) {
+		return false;
+	}
+
 }
 
 function shouldUseCollectionFetch() {
@@ -281,11 +290,11 @@ function shouldFetchOverrides() {
 	return isOsloAvailable;
 }
 
-function fetchOverride(formatFunc) {
+async function fetchOverride(formatFunc) {
 
 	let resource, res, requestURL;
 
-	if (shouldUseBatchFetch()) {
+	if (await shouldUseBatchFetch()) {
 
 		// If batching is available, pool requests together.
 
@@ -341,7 +350,7 @@ export async function getLocalizeOverrideResources(
 	promises.push(translations);
 
 	if (shouldFetchOverrides()) {
-		const overrides = fetchOverride(formatFunc);
+		const overrides = await fetchOverride(formatFunc);
 		promises.push(overrides);
 	}
 
@@ -365,7 +374,7 @@ export async function getLocalizeResources(
 
 	if (shouldFetchOverrides()) {
 
-		const overrides = fetchOverride(formatFunc, fetchFunc);
+		const overrides = await fetchOverride(formatFunc, fetchFunc);
 		promises.push(overrides);
 	}
 
