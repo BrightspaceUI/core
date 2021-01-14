@@ -214,7 +214,7 @@ function fetchWithPooling(resource) {
 	return promise;
 }
 
-async function shouldUseBatchFetch() {
+function shouldUseBatchFetch() {
 
 	if (documentLocaleSettings === undefined) {
 		documentLocaleSettings = getDocumentLocaleSettings();
@@ -224,19 +224,10 @@ async function shouldUseBatchFetch() {
 		return false;
 	}
 
-	try {
+	// Only batch if we can do client-side caching, otherwise it's worse on each
+	// subsequent page navigation.
 
-		// try opening CacheStorage, if the session is in a private browser in firefox this throws an exception
-		await caches.open(CacheName);
-
-		// Only batch if we can do client-side caching, otherwise it's worse on each
-		// subsequent page navigation.
-
-		return Boolean(documentLocaleSettings.oslo.batch) && 'CacheStorage' in window;
-	} catch (err) {
-		return false;
-	}
-
+	return Boolean(documentLocaleSettings.oslo.batch) && 'CacheStorage' in window;
 }
 
 function shouldUseCollectionFetch() {
@@ -281,20 +272,20 @@ function getVersion() {
 	return documentLocaleSettings.oslo.version;
 }
 
-async function shouldFetchOverrides() {
+function shouldFetchOverrides() {
 
 	const isOsloAvailable =
-		await shouldUseBatchFetch() ||
+		shouldUseBatchFetch() ||
 		shouldUseCollectionFetch();
 
 	return isOsloAvailable;
 }
 
-async function fetchOverride(formatFunc) {
+function fetchOverride(formatFunc) {
 
 	let resource, res, requestURL;
 
-	if (await shouldUseBatchFetch()) {
+	if (shouldUseBatchFetch()) {
 
 		// If batching is available, pool requests together.
 
@@ -349,8 +340,8 @@ export async function getLocalizeOverrideResources(
 
 	promises.push(translations);
 
-	if (await shouldFetchOverrides()) {
-		const overrides = await fetchOverride(formatFunc);
+	if (shouldFetchOverrides()) {
+		const overrides = fetchOverride(formatFunc);
 		promises.push(overrides);
 	}
 
@@ -372,9 +363,9 @@ export async function getLocalizeResources(
 	const promises = [];
 	let supportedLanguage;
 
-	if (await shouldFetchOverrides()) {
+	if (shouldFetchOverrides()) {
 
-		const overrides = await fetchOverride(formatFunc, fetchFunc);
+		const overrides = fetchOverride(formatFunc, fetchFunc);
 		promises.push(overrides);
 	}
 
