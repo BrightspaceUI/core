@@ -415,6 +415,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		);
 		if (dropdownContent) this._dialog = true;
 
+		this.addEventListener('blur', () => this._isInitialFocusDate = true);
+
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			calendarData = null;
 			getCalendarData(true);
@@ -795,8 +797,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		} else {
 			this._focusDateAddFocus();
 		}
-		await this.updateComplete;
-		this._isInitialFocusDate = true;
 	}
 
 	_triggerMonthChangeAnimations(increase, keyboardTriggered, transitionUpDown) {
@@ -811,7 +811,12 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async _updateFocusDate(possibleFocusDate, latestPossibleFocusDate, allowDisabled) {
-		await this.updateComplete;
+		if (!this.minValue && !this.maxValue) {
+			this._focusDate = possibleFocusDate;
+			return true;
+		}
+
+		await this.updateComplete; // for case of keyboard navigation where second month contains no enabled dates
 		if (isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue)) || allowDisabled) {
 			this._focusDate = possibleFocusDate;
 			return true;
