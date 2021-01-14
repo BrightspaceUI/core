@@ -557,7 +557,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
 		this._shownMonth = date.getMonth();
 		this._shownYear = date.getFullYear();
-		await this.updateComplete;
 		await this._updateFocusDate(date, false, allowDisabled);
 	}
 
@@ -597,6 +596,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const date = selectedDate.getAttribute('data-date');
 
 		this.selectedValue = formatDateInISO({ year: year, month: (parseInt(month) + 1), date: date });
+		this._dateSelected = true;
 
 		const eventDetails = {
 			bubbles: true,
@@ -604,8 +604,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			detail: { date: this.selectedValue }
 		};
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
-		await this._updateFocusDateOnChange();
-		this._focusDateAddFocus();
 	}
 
 	async _onKeyDown(e) {
@@ -838,6 +836,11 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
 		await this._updateFocusDate(dateElem ? selectedValueDate : new Date(this._shownYear, this._shownMonth, 1));
+
+		if (this._dateSelected) {
+			this._focusDateAddFocus();
+			this._dateSelected = false;
+		}
 	}
 
 }
