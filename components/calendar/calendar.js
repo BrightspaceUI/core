@@ -424,7 +424,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 
 		this._today = getDateFromDateObj(getToday());
-		this.reset();
+		this._getInitialFocusDate();
 	}
 
 	render() {
@@ -552,11 +552,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async reset(allowDisabled) {
-		let date;
-		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
-		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
-		this._shownMonth = date.getMonth();
-		this._shownYear = date.getFullYear();
+		const date = this._getInitialFocusDate();
 		await this._updateFocusDate(date, false, allowDisabled);
 	}
 
@@ -576,6 +572,15 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	async _getDateElement(date) {
 		await this.updateComplete;
 		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
+	}
+
+	_getInitialFocusDate() {
+		let date;
+		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
+		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
+		this._shownMonth = date.getMonth();
+		this._shownYear = date.getFullYear();
+		return date;
 	}
 
 	_monthDecrease() {
