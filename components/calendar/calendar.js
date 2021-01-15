@@ -424,7 +424,9 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 
 		this._today = getDateFromDateObj(getToday());
-		this._getInitialFocusDate();
+		if (this.selectedValue) this._getInitialFocusDate();
+		else this.reset();
+
 	}
 
 	render() {
