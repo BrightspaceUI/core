@@ -4,8 +4,9 @@ import { css, html } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 
-export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
+export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePolyfillMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -40,10 +41,16 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			.d2l-switch-container:focus,
-			.d2l-switch-container:hover {
+			.d2l-switch-container:focus-visible,
+			.d2l-switch-container.focus-visible {
 				border-color: var(--d2l-color-celestine);
 			}
+
+			.d2l-switch-inner:hover {
+				border-color: transparent;
+				box-shadow: 0 0 0 2px var(--d2l-color-celestine) inset;
+			}
+			
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
 				opacity: 0.5;
