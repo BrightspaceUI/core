@@ -537,8 +537,11 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			if (prop === '_shownMonth' && this._keyboardTriggeredMonthChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue' && this.selectedValue) {
-				await this.updateComplete;
-				await this._updateFocusDateOnChange();
+				if (!this._focusDate || !checkIfDatesEqual(this._focusDate, getDateFromISODate(this.selectedValue))) {
+					await this.updateComplete;
+					await this._updateFocusDateOnChange();
+				}
+				this._dateSelected = false;
 			}
 		});
 	}
@@ -817,16 +820,15 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async _updateFocusDate(possibleFocusDate, latestPossibleFocusDate, allowDisabled) {
-		if (!this.minValue && !this.maxValue) {
+		if ((!this.minValue && !this.maxValue)
+			|| (isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue)) || allowDisabled)
+		) {
 			this._focusDate = possibleFocusDate;
 			return true;
 		}
 
 		await this.updateComplete; // for case of keyboard navigation where second month contains no enabled dates
-		if (isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue)) || allowDisabled) {
-			this._focusDate = possibleFocusDate;
-			return true;
-		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
+		if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
 			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:enabled');
 			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
 			const year = focusDate.getAttribute('data-year');
