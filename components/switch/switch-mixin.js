@@ -45,7 +45,10 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			.d2l-switch-container.focus-visible {
 				border-color: var(--d2l-color-celestine);
 			}
-
+			.d2l-switch-container:focus-visible:hover,
+			.d2l-switch-container.focus-visible:hover {
+				border-color: var(--d2l-color-celestine);
+			}
 			.d2l-switch-inner:hover {
 				border-color: transparent;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine) inset;
@@ -61,6 +64,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			}
 
 			.d2l-switch-inner {
+				width: 3rem;
 				border: 1px solid var(--d2l-color-ferrite);
 				border-radius: 0.8rem;
 				box-sizing: border-box;
@@ -83,21 +87,30 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 				border-radius: 0.6rem;
 				box-sizing: border-box;
 				display: inline-block;
-				height: 1.2rem;
-				left: -0.2rem;
+
 				position: absolute;
-				top: -0.2rem;
-				width: 1.2rem;
+				top: -0.15rem;
+				left: -0.1rem;
+				width: 1.1rem;
+				height: 1.1rem;
+			}
+			:host([on]) .d2l-switch-toggle > div {
+				left: 0.1rem;
+			}
+
+			:host([dir="rtl"][on]) .d2l-switch-toggle > div {
+				right: 0.3rem;
 			}
 			:host([dir="rtl"]) .d2l-switch-toggle > div {
 				left: auto;
-				right: -0.2rem;
+				right: -0.1rem;
 			}
 			:host([on]) .d2l-switch-toggle {
 				transform: translateX(1.2rem);
 			}
 			:host([dir="rtl"][on]) .d2l-switch-toggle {
 				transform: translateX(-1.2rem);
+				right: -0.2rem;
 			}
 			:host([on]) .d2l-switch-toggle > div {
 				border-color: var(--d2l-color-celestine);
@@ -111,10 +124,10 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 				display: inline-block;
 			}
 			.d2l-switch-icon-on {
-				margin-right: 0.4rem;
+				margin-right: 0.7rem;
 			}
 			:host([dir="rtl"]) .d2l-switch-icon-on {
-				margin-left: 0.4rem;
+				margin-left: 0.7rem;
 				margin-right: 0;
 			}
 			:host([on]) .d2l-switch-icon-on > d2l-icon,
