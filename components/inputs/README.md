@@ -9,7 +9,7 @@ There are various input components available:
 - [Search (input-search)](docs/input-search.md)
 - [Select Lists (input-select-styles)](docs/input-select-styles.md)
 - [Text (input-text, input-styles)](docs/input-text.md)
-- [Text Areas (input-text, input-styles)](docs/input-textarea.md)
+- [Text Areas (input-textarea)](docs/input-textarea.md)
 
 ## Labelling Inputs
 

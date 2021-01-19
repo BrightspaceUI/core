@@ -1,6 +1,5 @@
 import '../input-textarea.js';
-import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-textarea label="label"></d2l-input-textarea>`;

@@ -26,7 +26,7 @@ describe('d2l-input-textarea', () => {
 		{ name: 'placeholder-focus', selector: '#placeholder', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'placeholder-disabled', selector: '#placeholder-disabled' },
 		{ name: 'min-height', selector: '#min-height' },
-		{ name: 'max-height', selector: '#max-height', action: selector => page.$eval(selector, elem => elem.value = 'line 1\nline 2\nline 3\nline 4\nline 5' ) },
+		{ name: 'max-height', selector: '#max-height', action: selector => page.$eval(selector, elem => elem.value = 'line 1\nline 2\nline 3\nline 4\nline 5') },
 		{ name: 'invalid', selector: '#invalid' },
 		{ name: 'invalid-focus', selector: '#invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'invalid-disabled', selector: '#invalid-disabled' },
