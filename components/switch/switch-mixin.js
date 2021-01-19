@@ -111,13 +111,14 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			:host([on]) .d2l-switch-toggle > div {
 				border-color: var(--d2l-color-celestine);
 			}
-
 			d2l-icon, d2l-icon-custom {
 				height: 0.8rem;
 				width: 0.8rem;
 			}
 			.d2l-switch-icon-on, .d2l-switch-icon-off {
 				display: inline-block;
+				transition: transform 150ms;
+				transform: scale(1);
 			}
 			.d2l-switch-icon-on {
 				margin-right: 0.65rem;
@@ -130,14 +131,23 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
 				color: var(--d2l-color-celestine);
 			}
-
+			:host([on]) .d2l-switch-icon-off,
+			:host([on]) .d2l-switch-icon-off {
+				transform: scale(0.35);
+			}
+			:host(:not([on])) .d2l-switch-icon-on,
+			:host(:not([on])) .d2l-switch-icon-on {
+				color: var(--d2l-color-celestine);
+				transform: scale(0.35);
+			}
 			.d2l-switch-text {
 				font-size: 0.8rem;
 				font-weight: 400;
 			}
-
 			@media (prefers-reduced-motion: reduce) {
-				.d2l-switch-toggle {
+				.d2l-switch-toggle, 
+				.d2l-switch-icon-on,
+				.d2l-switch-icon-off {
 					transition: none;
 				}
 			}
