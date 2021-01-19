@@ -415,6 +415,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		);
 		if (dropdownContent) this._dialog = true;
 
+		this.addEventListener('blur', () => this._isInitialFocusDate = true);
+
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			calendarData = null;
 			getCalendarData(true);
@@ -422,7 +424,9 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 
 		this._today = getDateFromDateObj(getToday());
-		this.reset();
+		if (this.selectedValue) this._getInitialFocusDate();
+		else this.reset();
+
 	}
 
 	render() {
@@ -533,7 +537,12 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			if (prop === '_shownMonth' && this._keyboardTriggeredMonthChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue' && this.selectedValue) {
-				await this._updateFocusDateOnChange();
+				const selectedDate = getDateFromISODate(this.selectedValue);
+				if (!this._focusDate || !checkIfDatesEqual(this._focusDate, selectedDate)) {
+					await this.updateComplete;
+					await this._updateFocusDateOnChange();
+				}
+				this._dateSelected = false;
 			}
 		});
 	}
@@ -549,12 +558,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async reset(allowDisabled) {
-		let date;
-		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
-		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
-		this._shownMonth = date.getMonth();
-		this._shownYear = date.getFullYear();
-		await this.updateComplete;
+		const date = this._getInitialFocusDate();
 		await this._updateFocusDate(date, false, allowDisabled);
 	}
 
@@ -576,6 +580,15 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return this.shadowRoot.querySelector(`td[data-date="${date.getDate()}"][data-month="${date.getMonth()}"][data-year="${date.getFullYear()}"]`);
 	}
 
+	_getInitialFocusDate() {
+		let date;
+		if (this.selectedValue) date = getDateFromISODate(this.selectedValue);
+		else date = getDateFromISODate(getClosestValidDate(this.minValue, this.maxValue, false));
+		this._shownMonth = date.getMonth();
+		this._shownYear = date.getFullYear();
+		return date;
+	}
+
 	_monthDecrease() {
 		if (this._shownMonth === 0) this._shownYear--;
 		this._shownMonth = getPrevMonth(this._shownMonth);
@@ -594,6 +607,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const date = selectedDate.getAttribute('data-date');
 
 		this.selectedValue = formatDateInISO({ year: year, month: (parseInt(month) + 1), date: date });
+		this._dateSelected = true;
 
 		const eventDetails = {
 			bubbles: true,
@@ -601,8 +615,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			detail: { date: this.selectedValue }
 		};
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
-		await this._updateFocusDateOnChange();
-		this._focusDateAddFocus();
 	}
 
 	async _onKeyDown(e) {
@@ -795,8 +807,6 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		} else {
 			this._focusDateAddFocus();
 		}
-		await this.updateComplete;
-		this._isInitialFocusDate = true;
 	}
 
 	_triggerMonthChangeAnimations(increase, keyboardTriggered, transitionUpDown) {
@@ -811,11 +821,14 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async _updateFocusDate(possibleFocusDate, latestPossibleFocusDate, allowDisabled) {
-		await this.updateComplete;
-		if (isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue)) || allowDisabled) {
+		const possibleFocusDateInRange = isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
+		if ((!this.minValue && !this.maxValue) || possibleFocusDateInRange || allowDisabled) {
 			this._focusDate = possibleFocusDate;
 			return true;
-		} else if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
+		}
+
+		await this.updateComplete; // for case of keyboard navigation where second month contains no enabled dates
+		if (this.shadowRoot.querySelector('.d2l-calendar-date:enabled')) {
 			const validDates = this.shadowRoot.querySelectorAll('.d2l-calendar-date:enabled');
 			const focusDate = validDates[latestPossibleFocusDate ? (validDates.length - 1) : 0].parentNode;
 			const year = focusDate.getAttribute('data-year');
@@ -829,10 +842,14 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async _updateFocusDateOnChange() {
-		await this.updateComplete;
 		const selectedValueDate = this.selectedValue ? getDateFromISODate(this.selectedValue) : null;
 		const dateElem = selectedValueDate ? await this._getDateElement(selectedValueDate) : null;
 		await this._updateFocusDate(dateElem ? selectedValueDate : new Date(this._shownYear, this._shownMonth, 1));
+
+		if (this._dateSelected) {
+			this._focusDateAddFocus();
+			this._dateSelected = false;
+		}
 	}
 
 }
