@@ -537,7 +537,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			if (prop === '_shownMonth' && this._keyboardTriggeredMonthChange) {
 				this._focusDateAddFocus();
 			} else if (prop === 'selectedValue' && this.selectedValue) {
-				if (!this._focusDate || !checkIfDatesEqual(this._focusDate, getDateFromISODate(this.selectedValue))) {
+				const selectedDate = getDateFromISODate(this.selectedValue);
+				if (!this._focusDate || !checkIfDatesEqual(this._focusDate, selectedDate)) {
 					await this.updateComplete;
 					await this._updateFocusDateOnChange();
 				}
@@ -820,9 +821,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	async _updateFocusDate(possibleFocusDate, latestPossibleFocusDate, allowDisabled) {
-		if ((!this.minValue && !this.maxValue)
-			|| (isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue)) || allowDisabled)
-		) {
+		const possibleFocusDateInRange = isDateInRange(possibleFocusDate, getDateFromISODate(this.minValue), getDateFromISODate(this.maxValue));
+		if ((!this.minValue && !this.maxValue) || possibleFocusDateInRange || allowDisabled) {
 			this._focusDate = possibleFocusDate;
 			return true;
 		}
