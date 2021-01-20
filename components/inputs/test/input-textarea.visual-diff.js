@@ -17,22 +17,22 @@ describe('d2l-input-textarea', () => {
 	after(async() => await browser.close());
 
 	[
-		{ name: 'basic', selector: '#basic' },
-		{ name: 'basic-focus', selector: '#basic', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'default', selector: '#default' },
+		{ name: 'default-focus', selector: '#default', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'disabled', selector: '#disabled' },
 		{ name: 'label-hidden', selector: '#label-hidden' },
 		{ name: 'wrapping', selector: '#wrapping' },
 		{ name: 'placeholder', selector: '#placeholder' },
 		{ name: 'placeholder-focus', selector: '#placeholder', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'placeholder-disabled', selector: '#placeholder-disabled' },
+		{ name: 'min-height-none', selector: '#min-height-none' },
 		{ name: 'min-height', selector: '#min-height' },
-		{ name: 'max-height', selector: '#max-height', action: selector => page.$eval(selector, elem => elem.value = 'line 1\nline 2\nline 3\nline 4\nline 5') },
+		{ name: 'max-height', selector: '#max-height', action: selector => page.$eval(selector, elem => elem.value = 'line 1\nline 2\nline 3\nline 4\nline 5\nline 6') },
 		{ name: 'required', selector: '#required' },
 		{ name: 'invalid', selector: '#invalid' },
 		{ name: 'invalid-focus', selector: '#invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'invalid-disabled', selector: '#invalid-disabled' },
 		{ name: 'invalid-rtl', selector: '#invalid-rtl' },
-		{ name: 'invalid-multiline', selector: '#invalid-multiline' },
 		{ name: 'skeleton', selector: '#skeleton' }
 	].forEach(info => {
 

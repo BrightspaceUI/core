@@ -99,6 +99,9 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				visibility: hidden;
 				word-break: break-word; /* prevent width from growing */
 			}
+			:host(:not([min-height='none'])) .d2l-input-textarea-mirror {
+				min-height: 6rem;
+			}
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);
 			}
@@ -135,7 +138,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		const disabled = this.disabled || this.skeleton;
 
 		const mirrorStyles = {};
-		if (this.minHeight) mirrorStyles.minHeight = this.minHeight;
+		if (this.minHeight && this.minHeight !== 'none') mirrorStyles.minHeight = this.minHeight;
 		if (this.maxHeight) mirrorStyles.maxHeight = this.maxHeight;
 
 		const textarea = html`
