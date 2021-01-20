@@ -23,8 +23,8 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 | `disabled` | Boolean | Disables the `textarea` |
 | `label` | String, required | Label for the `textarea` |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the `textarea`'s `aria-label` attribute) |
-| `max-height` | String, default: 12rem | Maximum height of the input before scrolling. `none` allows `textarea` to grow infinitely. |
-| `min-height` | String, default: 6rem | Minimum height of the input. `none` will initialize the `textarea` with a single line. If `min-height` and `max-height` are equal then auto-grow will be disabled. |
+| `max-lines` | Number, default: 11 | Maximum number of lines before scrolling. Less than 1 allows `textarea` to grow infinitely. |
+| `min-lines` | Number, default: 5 | Minimum number of lines. If `min-lines` and `max-lines` are equal then auto-grow will be disabled. |
 | `maxlength` | Number | Imposes an upper character limit |
 | `minlength` | Number | Imposes a lower character limit |
 | `placeholder` | String | Placeholder text |

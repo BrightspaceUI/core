@@ -36,21 +36,21 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * Maximum height of the input before scrolling.
-			 */
-			maxHeight: { type: String, attribute: 'max-height' },
-			/**
 			 * Imposes an upper character limit.
 			 */
 			maxlength: { type: Number },
 			/**
-			 * Minimum height of the input.
+			 * Maximum number of lines before scrolling.
 			 */
-			minHeight: { type: String, attribute: 'min-height' },
+			maxLines: { type: Number, attribute: 'max-lines' },
 			/**
 			 * Imposes a lower character limit.
 			 */
 			minlength: { type: Number },
+			/**
+			 * Minimum number of lines.
+			 */
+			minLines: { type: Number, attribute: 'min-lines' },
 			/**
 			 * Placeholder text.
 			 */
@@ -85,6 +85,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			textarea.d2l-input {
 				height: 100%;
 				left: 0;
+				line-height: 1rem;
 				position: absolute;
 				resize: none;
 				top: 0;
@@ -92,15 +93,11 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			}
 			/* mirror dimensions must match textarea - match border + padding */
 			.d2l-input-textarea-mirror {
-				line-height: normal;
-				max-height: 12rem;
+				line-height: 1rem;
 				padding-bottom: 0.5rem;
 				padding-top: 0.5rem;
 				visibility: hidden;
 				word-break: break-word; /* prevent width from growing */
-			}
-			:host(:not([min-height='none'])) .d2l-input-textarea-mirror {
-				min-height: 6rem;
 			}
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);
@@ -121,6 +118,8 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		this.labelHidden = false;
 		this.required = false;
 		this.value = '';
+		this.minLines = 5;
+		this.maxLines = 11;
 
 		this._descriptionId = getUniqueId();
 		this._textareaId = getUniqueId();
@@ -138,8 +137,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		const disabled = this.disabled || this.skeleton;
 
 		const mirrorStyles = {};
-		if (this.minHeight && this.minHeight !== 'none') mirrorStyles.minHeight = this.minHeight;
-		if (this.maxHeight) mirrorStyles.maxHeight = this.maxHeight;
+
+		// lines + padding + border; if < 1 it will fallback to min single and/or max infinite
+		if (this.minLines > 0) mirrorStyles.minHeight = `calc(${this.minLines + 1}rem + 2px)`;
+		if (this.maxLines > 0) mirrorStyles.maxHeight = `calc(${this.maxLines + 1}rem + 2px)`;
 
 		const textarea = html`
 			<div class="d2l-input-textarea-container d2l-skeletize">
