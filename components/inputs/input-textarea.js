@@ -42,7 +42,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			/**
 			 * Imposes an upper character limit.
 			 */
-			maxlength: { type: Number, attribute: 'max-length' },
+			maxlength: { type: Number },
 			/**
 			 * Minimum height of the input.
 			 */
@@ -50,7 +50,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			/**
 			 * Imposes a lower character limit.
 			 */
-			minlength: { type: Number, attribute: 'min-length' },
+			minlength: { type: Number },
 			/**
 			 * Placeholder text.
 			 */
