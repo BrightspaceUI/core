@@ -116,10 +116,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		super();
 		this.disabled = false;
 		this.labelHidden = false;
+		this.maxLines = 11;
+		this.minLines = 5;
 		this.required = false;
 		this.value = '';
-		this.minLines = 5;
-		this.maxLines = 11;
 
 		this._descriptionId = getUniqueId();
 		this._textareaId = getUniqueId();
