@@ -78,11 +78,11 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				display: inline-block;
 				vertical-align: bottom;
 			}
-			:host .d2l-input-textarea-container {
+			.d2l-input-textarea-container {
 				max-width: 100%;
 				position: relative;
 			}
-			:host textarea {
+			textarea.d2l-input {
 				height: 100%;
 				left: 0;
 				position: absolute;
@@ -91,7 +91,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				z-index: 2;
 			}
 			/* mirror dimensions must match textarea - match border + padding */
-			:host .d2l-input-textarea-mirror {
+			.d2l-input-textarea-mirror {
 				line-height: normal;
 				max-height: 12rem;
 				padding-bottom: 0.5rem;
@@ -99,7 +99,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				visibility: hidden;
 				word-break: break-word; /* prevent width from growing */
 			}
-			:host .d2l-input-textarea-mirror[aria-invalid="true"] {
+			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);
 			}
 			:host([dir='rtl']) .d2l-input-textarea-mirror[aria-invalid="true"] {
