@@ -2,6 +2,7 @@
 import '../../button/button.js';
 import '../../button/floating-buttons.js';
 import '../../inputs/input-text.js';
+import '../../inputs/input-textarea.js';
 import '../../validation/validation-custom.js';
 import '../form.js';
 import './form-panel-demo.js';
@@ -41,6 +42,9 @@ class FormNestedDemo extends LitElement {
 						<div class="d2l-form-demo-container">
 							<d2l-validation-custom for="password" @d2l-validation-custom-validate=${this._validatePassword} failure-text="Expected hunter2" ></d2l-validation-custom>
 							<d2l-input-text id="password" label="Password" name="password" required type="password"></d2l-input-text>
+						</div>
+						<div class="d2l-form-demo-container">
+							<d2l-input-textarea label="Description" name="description" min-lines="2" required></d2l-input-textarea>
 						</div>
 						<fieldset class="d2l-form-demo-container">
 							<legend>Choose your favorite monster</legend>

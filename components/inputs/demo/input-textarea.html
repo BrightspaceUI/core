@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../input-textarea.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-input-textarea">
+
+			<h2>Default (show min 5 lines, max 11 lines)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description"></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>No Min/Max-Lines</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description" min-lines="1" max-lines="-1"></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Hidden Label</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description" label-hidden></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Required</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description" required></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Disabled</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description (disabled)" disabled></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Placeholder</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description" placeholder="Enter a description of your favorite cartoon character. It must be between 30 and 60 characters in length.  Good luck!"></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Invalid</h3>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description" aria-invalid="true"></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+			<h3>Min/Max-Length</h3>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description" minlength="10" maxlength="30"></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
