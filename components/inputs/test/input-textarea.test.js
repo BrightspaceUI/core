@@ -43,12 +43,6 @@ describe('d2l-input-textarea', () => {
 			expect(getTextArea(elem).getAttribute('aria-label')).to.equal('label');
 		});
 
-		it('should fall back to using "aria-label" for backwards compatibility', async() => {
-			const elem = await fixture(html`<d2l-input-textarea aria-label="new label"></d2l-input-textarea>`);
-			expect(getLabel(elem)).to.be.null;
-			expect(getTextArea(elem).getAttribute('aria-label')).to.equal('new label');
-		});
-
 		it('should set aria-describedby when description', async() => {
 			const elem = await fixture(html`<d2l-input-textarea label="label" description="text description"></d2l-input-textarea>`);
 			const description = elem.shadowRoot.querySelector('div.d2l-offscreen');
