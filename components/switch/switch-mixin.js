@@ -75,7 +75,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			}
 			.d2l-switch-toggle {
 				position: relative;
-				transition: transform 150ms linear;
+				transition: transform 150ms ease-out;
 				z-index: 1;
 			}
 			.d2l-switch-toggle > div {
@@ -117,7 +117,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			}
 			.d2l-switch-icon-on, .d2l-switch-icon-off {
 				display: inline-block;
-				transition: transform 150ms;
+				transition: transform 150ms ease-out;
 				transform: scale(1);
 			}
 			.d2l-switch-icon-on {
