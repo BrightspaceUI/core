@@ -41,7 +41,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			.d2l-switch-container:focus-visible,
 			.d2l-switch-container.focus-visible {
 				border-color: var(--d2l-color-celestine);
 			}
@@ -93,7 +92,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			:host([on]) .d2l-switch-toggle > div {
 				left: 0.1rem;
 			}
-
 			:host([dir="rtl"][on]) .d2l-switch-toggle > div {
 				right: 0.3rem;
 			}
