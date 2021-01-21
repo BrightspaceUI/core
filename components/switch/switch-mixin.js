@@ -44,8 +44,9 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			.d2l-switch-container.focus-visible {
 				border-color: var(--d2l-color-celestine);
 			}
-			.d2l-switch-inner:hover {
+			.d2l-switch-container:hover > .d2l-switch-inner {
 				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
+				border-color: var(--d2l-color-celestine);
 			}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
@@ -66,11 +67,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			}
 			:host([on]) .d2l-switch-inner {
 				background-color: var(--d2l-color-celestine-plus-2);
-				border-color: var(--d2l-color-celestine);
-			}
-			:host(:not([on])) .d2l-switch-inner:hover {
-				border-color: var(--d2l-color-celestine);
-				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
 			}
 			.d2l-switch-toggle {
 				position: relative;
@@ -105,9 +101,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			:host([dir="rtl"][on]) .d2l-switch-toggle {
 				transform: translateX(-1.2rem);
 				right: -0.2rem;
-			}
-			:host([on]) .d2l-switch-toggle > div {
-				border-color: var(--d2l-color-celestine);
 			}
 			d2l-icon, d2l-icon-custom {
 				height: 0.8rem;
