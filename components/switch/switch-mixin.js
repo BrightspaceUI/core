@@ -134,7 +134,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 				font-weight: 400;
 			}
 			@media (prefers-reduced-motion: reduce) {
-				.d2l-switch-toggle, 
+				.d2l-switch-toggle,
 				.d2l-switch-icon-on,
 				.d2l-switch-icon-off {
 					transition: none;
