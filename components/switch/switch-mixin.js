@@ -52,10 +52,10 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 				cursor: default;
 				opacity: 0.5;
 			}
-			:host([disabled]) .d2l-switch-container:focus,
-			:host([disabled]) .d2l-switch-container:hover,
+			:host([disabled]) .d2l-switch-container:hover > .d2l-switch-inner,
 			:host([disabled]) .d2l-switch-inner:hover {
 				box-shadow: none;
+				border-color: var(--d2l-color-ferrite);
 			}
 			.d2l-switch-inner {
 				width: 3rem;
