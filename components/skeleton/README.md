@@ -89,6 +89,24 @@ class MyElement extends SkeletonMixin(LitElement) {
 }
 ```
 
+### Container Elements
+
+You can also apply a skeleton to a native element you are using as a container using the `d2l-skeletize-container` CSS class. Instead of blocking out the whole box, this will skeletonize the text and the border and allow you to individually skeletonize the components/elements inside as you wish.
+
+![skeleton container](./screenshots/container.png?raw=true)
+
+```javascript
+render() {
+  return html`
+    <div class="d2l-skeletize-container">
+      <div class="d2l-skeletize">This text will skeletize</div>
+      <span>This text will hide</span>
+      <d2l-input-checkbox ?skeleton="{this.skeleton}">This input will skeletize</d2l-input-checkbox>
+    </div>
+  `;
+}
+```
+
 ## Multi-Line Paragraphs
 
 Paragraphs of text that may span multiple lines are a special case for skeletons. The `d2l-skeletize` CSS class would turn the entire paragraph block into a skeleton box, which isn't quite what we want. Also, often we're showing a skeleton because we don't yet know how much data we'll have.

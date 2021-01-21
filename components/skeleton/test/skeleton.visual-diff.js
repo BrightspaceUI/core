@@ -42,6 +42,7 @@ describe('d2l-skeleton', () => {
 		'heading-3-multiline',
 		'heading-4-multiline',
 		'box',
+		'container',
 		'width'
 	].forEach((name) => {
 		it(name, async function() {

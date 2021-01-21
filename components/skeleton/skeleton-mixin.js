@@ -25,7 +25,8 @@ export const skeletonStyles = css`
 			animation: none;
 		}
 	}
-	:host([skeleton]) .d2l-skeletize {
+	:host([skeleton]) .d2l-skeletize,
+	:host([skeleton]) .d2l-skeletize-container {
 		background-color: transparent;
 		border-color: var(--d2l-color-sylvite);
 		box-shadow: none;
