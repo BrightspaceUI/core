@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
@@ -35,18 +36,18 @@ describe('d2l-switch', () => {
 
 		[
 			{ name: 'off', selector: '#off' },
-			{ name: 'off-focus', selector: '#off', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
+			{ name: 'off-focus', selector: '#off', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
 			{ name: 'off-disabled', selector: '#off-disabled' },
 			{ name: 'off-hover', selector: '#off',
-				action: async (selector) => {
+				action: async(selector) => {
 					const d2lSwitch = await getSwitch(selector);
 					await d2lSwitch.hover();
 				}
 			},
 			{ name: 'on', selector: '#on' },
-			{ name: 'on-focus', selector: '#on', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
+			{ name: 'on-focus', selector: '#on', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
 			{ name: 'on-hover', selector: '#on',
-				action: async (selector) => {
+				action: async(selector) => {
 					const d2lSwitch = await getSwitch(selector);
 					await d2lSwitch.hover();
 				}
@@ -58,7 +59,7 @@ describe('d2l-switch', () => {
 			{ name: 'toggle on', selector: '#off', action: (selector) => page.$eval(selector, (elem) => elem.on = true) },
 			{ name: 'toggle off', selector: '#on', action: (selector) => page.$eval(selector, (elem) => elem.on = false) },
 			{ name: 'tooltip', selector: '#tooltip' },
-			{ name: 'tooltip-focus', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => elem.focus()) }
+			{ name: 'tooltip-focus', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) }
 		].forEach((info) => {
 
 			it(info.name, async function() {
