@@ -61,7 +61,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					display: none;
 				}
 				.d2l-input {
-					-webkit-appearance: textfield;
+					-webkit-appearance: none;
 					overflow: hidden;
 					padding-right: 2.2rem;
 					text-overflow: ellipsis;
