@@ -25,7 +25,7 @@ export class SkeletonTestContainer extends SkeletonMixin(LitElement) {
 				}
 				span {
 					display: block;
-					margin: 10px 0px;
+					margin: 10px 0;
 				}
 			`
 		];
