@@ -250,6 +250,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		if (this.label && this.labelHidden) {
 			return this.label;
 		}
+		// check aria-label for backwards compatibility in order to replace old Polymer impl
 		if (this.hasAttribute('aria-label')) {
 			return this.getAttribute('aria-label');
 		}
