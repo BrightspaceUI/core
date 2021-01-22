@@ -40,7 +40,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 */
 			maxlength: { type: Number },
 			/**
-			 * Maximum number of lines before scrolling.
+			 * Maximum number of rows before scrolling.
 			 */
 			maxRows: { type: Number, attribute: 'max-rows' },
 			/**
@@ -64,7 +64,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Minimum number of lines.
+			 * Minimum number of rows.
 			 */
 			rows: { type: Number },
 			/**
