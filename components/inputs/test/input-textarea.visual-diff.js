@@ -32,7 +32,8 @@ describe('d2l-input-textarea', () => {
 		{ name: 'invalid-focus', selector: '#invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'invalid-disabled', selector: '#invalid-disabled' },
 		{ name: 'invalid-rtl', selector: '#invalid-rtl' },
-		{ name: 'skeleton', selector: '#skeleton' }
+		{ name: 'skeleton', selector: '#skeleton' },
+		{ name: 'no-border', selector: '#no-border' }
 	].forEach(info => {
 
 		it(info.name, async function() {

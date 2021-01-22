@@ -48,6 +48,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 */
 			minlength: { type: Number },
 			/**
+			 * Hides the border.
+			 */
+			noBorder: { type: Boolean, attribute: 'no-border' },
+			/**
 			 * Placeholder text.
 			 */
 			placeholder: { type: String },
@@ -90,6 +94,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				resize: none;
 				top: 0;
 				z-index: 2;
+			}
+			:host([no-border]) textarea.d2l-input {
+				border-color: transparent;
+				box-shadow: none;
 			}
 			/* mirror dimensions must match textarea - match border + padding */
 			.d2l-input-textarea-mirror {

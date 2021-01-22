@@ -26,6 +26,7 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 | `max-rows` | Number, default: 11 | Maximum number of lines before scrolling. Less than 1 allows `textarea` to grow infinitely. |
 | `maxlength` | Number | Imposes an upper character limit |
 | `minlength` | Number | Imposes a lower character limit |
+| `no-border` | Boolean | Hides the border |
 | `placeholder` | String | Placeholder text |
 | `required` | Boolean | Indicates that a value is required |
 | `rows` | Number, default: 5 | Minimum number of lines. If `rows` and `max-rows` are equal then auto-grow will be disabled. |
