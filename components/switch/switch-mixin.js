@@ -1,11 +1,12 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
+export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePolyfillMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -40,34 +41,36 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			.d2l-switch-container:focus,
-			.d2l-switch-container:hover {
+			.d2l-switch-container.focus-visible {
 				border-color: var(--d2l-color-celestine);
+			}
+			.d2l-switch-container:hover > .d2l-switch-inner {
+				border-color: var(--d2l-color-celestine);
+				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
 			}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
 				opacity: 0.5;
 			}
-			:host([disabled]) .d2l-switch-container:focus,
-			:host([disabled]) .d2l-switch-container:hover {
-				border-color: transparent;
+			:host([disabled]) .d2l-switch-container:hover > .d2l-switch-inner,
+			:host([disabled]) .d2l-switch-inner:hover {
+				border-color: var(--d2l-color-ferrite);
+				box-shadow: none;
 			}
-
 			.d2l-switch-inner {
 				border: 1px solid var(--d2l-color-ferrite);
 				border-radius: 0.8rem;
 				box-sizing: border-box;
 				padding: 0.3rem;
 				position: relative;
+				width: 3rem;
 			}
 			:host([on]) .d2l-switch-inner {
 				background-color: var(--d2l-color-celestine-plus-2);
-				border-color: var(--d2l-color-celestine);
 			}
-
 			.d2l-switch-toggle {
 				position: relative;
-				transition: transform 150ms linear;
+				transition: transform 150ms ease-out;
 				z-index: 1;
 			}
 			.d2l-switch-toggle > div {
@@ -76,52 +79,64 @@ export const SwitchMixin = superclass => class extends RtlMixin(superclass) {
 				border-radius: 0.6rem;
 				box-sizing: border-box;
 				display: inline-block;
-				height: 1.2rem;
-				left: -0.2rem;
+				height: 1.1rem;
+				left: -0.1rem;
 				position: absolute;
-				top: -0.2rem;
-				width: 1.2rem;
+				top: -0.15rem;
+				width: 1.1rem;
+			}
+			:host([on]) .d2l-switch-toggle > div {
+				left: 0.1rem;
+			}
+			:host([dir="rtl"][on]) .d2l-switch-toggle > div {
+				right: 0.3rem;
 			}
 			:host([dir="rtl"]) .d2l-switch-toggle > div {
 				left: auto;
-				right: -0.2rem;
+				right: -0.1rem;
 			}
 			:host([on]) .d2l-switch-toggle {
 				transform: translateX(1.2rem);
 			}
 			:host([dir="rtl"][on]) .d2l-switch-toggle {
+				right: -0.2rem;
 				transform: translateX(-1.2rem);
 			}
-			:host([on]) .d2l-switch-toggle > div {
-				border-color: var(--d2l-color-celestine);
-			}
-
 			d2l-icon, d2l-icon-custom {
 				height: 0.8rem;
 				width: 0.8rem;
 			}
 			.d2l-switch-icon-on, .d2l-switch-icon-off {
 				display: inline-block;
+				transform: scale(1);
+				transition: transform 150ms ease-out;
 			}
 			.d2l-switch-icon-on {
-				margin-right: 0.4rem;
+				margin-right: 0.65rem;
 			}
 			:host([dir="rtl"]) .d2l-switch-icon-on {
-				margin-left: 0.4rem;
+				margin-left: 0.65rem;
 				margin-right: 0;
 			}
 			:host([on]) .d2l-switch-icon-on > d2l-icon,
 			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
 				color: var(--d2l-color-celestine);
 			}
-
+			:host([on]) .d2l-switch-icon-off {
+				transform: scale(0.35);
+			}
+			:host(:not([on])) .d2l-switch-icon-on {
+				color: var(--d2l-color-celestine);
+				transform: scale(0.35);
+			}
 			.d2l-switch-text {
 				font-size: 0.8rem;
 				font-weight: 400;
 			}
-
 			@media (prefers-reduced-motion: reduce) {
-				.d2l-switch-toggle {
+				.d2l-switch-toggle,
+				.d2l-switch-icon-on,
+				.d2l-switch-icon-off {
 					transition: none;
 				}
 			}
