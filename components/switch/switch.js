@@ -10,7 +10,7 @@ class Switch extends SwitchMixin(LitElement) {
 		return html`
 			<d2l-icon-custom size="tier1">
 				<svg viewBox="0 0 18 18" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
-					<circle cx="9" cy="9" r="6" stroke="var(--d2l-color-tungsten)" stroke-width="3" fill="none" />
+					<circle cx="9" cy="9" r="6" stroke="var(--d2l-color-ferrite)" stroke-width="3" fill="none" />
 				</svg>
 			</d2l-icon-custom>
 		`;
