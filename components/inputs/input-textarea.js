@@ -213,6 +213,16 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		}
 	}
 
+	async select() {
+		const elem = this.shadowRoot.querySelector('textarea');
+		if (elem) {
+			elem.select();
+		} else {
+			await this.updateComplete;
+			this.select();
+		}
+	}
+
 	get validationMessage() {
 		if (this.validity.tooShort) {
 			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });

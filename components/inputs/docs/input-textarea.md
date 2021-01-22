@@ -43,6 +43,13 @@ To make your usage of `d2l-input-textarea` accessible, use the following propert
 | `label` | **REQUIRED**  [Acts as a primary label on the `textarea`](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
 
+**Methods:**
+
+| Method | Returns | Description |
+|--|--|--|
+| `focus()` | | Places focus in the `textarea` |
+| `select()` | | Selects the contents of the `textarea` |
+
 **Events:**
 
 The `d2l-input-textarea` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
