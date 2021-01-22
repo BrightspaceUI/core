@@ -224,6 +224,9 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		if (this.label && this.labelHidden) {
 			return this.label;
 		}
+		if (this.hasAttribute('aria-label')) {
+			return this.getAttribute('aria-label');
+		}
 		return undefined;
 	}
 
