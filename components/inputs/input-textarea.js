@@ -42,15 +42,11 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			/**
 			 * Maximum number of lines before scrolling.
 			 */
-			maxLines: { type: Number, attribute: 'max-lines' },
+			maxRows: { type: Number, attribute: 'max-rows' },
 			/**
 			 * Imposes a lower character limit.
 			 */
 			minlength: { type: Number },
-			/**
-			 * Minimum number of lines.
-			 */
-			minLines: { type: Number, attribute: 'min-lines' },
 			/**
 			 * Placeholder text.
 			 */
@@ -59,6 +55,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 * Indicates that a value is required.
 			 */
 			required: { type: Boolean, reflect: true },
+			/**
+			 * Minimum number of lines.
+			 */
+			rows: { type: Number },
 			/**
 			 * Value of the input.
 			 */
@@ -116,8 +116,8 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		super();
 		this.disabled = false;
 		this.labelHidden = false;
-		this.maxLines = 11;
-		this.minLines = 5;
+		this.maxRows = 11;
+		this.rows = 5;
 		this.required = false;
 		this.value = '';
 
@@ -139,8 +139,8 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		const mirrorStyles = {};
 
 		// lines + padding + border; if < 1 it will fallback to min single and/or max infinite
-		if (this.minLines > 0) mirrorStyles.minHeight = `calc(${this.minLines + 1}rem + 2px)`;
-		if (this.maxLines > 0) mirrorStyles.maxHeight = `calc(${this.maxLines + 1}rem + 2px)`;
+		if (this.rows > 0) mirrorStyles.minHeight = `calc(${this.rows + 1}rem + 2px)`;
+		if (this.maxRows > 0) mirrorStyles.maxHeight = `calc(${this.maxRows + 1}rem + 2px)`;
 
 		const textarea = html`
 			<div class="d2l-input-textarea-container d2l-skeletize">
