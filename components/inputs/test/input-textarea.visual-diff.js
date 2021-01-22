@@ -33,7 +33,7 @@ describe('d2l-input-textarea', () => {
 		{ name: 'invalid-disabled', selector: '#invalid-disabled' },
 		{ name: 'invalid-rtl', selector: '#invalid-rtl' },
 		{ name: 'skeleton', selector: '#skeleton' },
-		{ name: 'no-border', selector: '#no-border' }
+		{ name: 'no-border-padding', selector: '#no-border-padding' }
 	].forEach(info => {
 
 		it(info.name, async function() {

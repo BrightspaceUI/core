@@ -52,6 +52,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 */
 			noBorder: { type: Boolean, attribute: 'no-border' },
 			/**
+			 * Removes default left/right padding.
+			 */
+			noPadding: { type: Boolean, attribute: 'no-padding' },
+			/**
 			 * Placeholder text.
 			 */
 			placeholder: { type: String },
@@ -106,6 +110,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				padding-top: 0.5rem;
 				visibility: hidden;
 				word-break: break-word; /* prevent width from growing */
+			}
+			:host([no-padding]) .d2l-input {
+				padding-left: 0;
+				padding-right: 0;
 			}
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);
