@@ -9,7 +9,7 @@ describe('d2l-input-textarea', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3000 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 4000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-textarea.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -25,14 +25,15 @@ describe('d2l-input-textarea', () => {
 		{ name: 'placeholder', selector: '#placeholder' },
 		{ name: 'placeholder-focus', selector: '#placeholder', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'placeholder-disabled', selector: '#placeholder-disabled' },
-		{ name: 'min-lines', selector: '#min-lines' },
-		{ name: 'max-lines', selector: '#max-lines', action: selector => page.$eval(selector, elem => elem.value = 'line 1\nline 2\nline 3\nline 4\nline 5\nline 6') },
+		{ name: 'rows', selector: '#rows' },
+		{ name: 'max-rows', selector: '#max-rows', action: selector => page.$eval(selector, elem => elem.value = 'line 1\nline 2\nline 3\nline 4\nline 5\nline 6') },
 		{ name: 'required', selector: '#required' },
 		{ name: 'invalid', selector: '#invalid' },
 		{ name: 'invalid-focus', selector: '#invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
 		{ name: 'invalid-disabled', selector: '#invalid-disabled' },
 		{ name: 'invalid-rtl', selector: '#invalid-rtl' },
-		{ name: 'skeleton', selector: '#skeleton' }
+		{ name: 'skeleton', selector: '#skeleton' },
+		{ name: 'no-border-padding', selector: '#no-border-padding' }
 	].forEach(info => {
 
 		it(info.name, async function() {

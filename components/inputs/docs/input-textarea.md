@@ -23,12 +23,14 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 | `disabled` | Boolean | Disables the `textarea` |
 | `label` | String, required | Label for the `textarea` |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the `textarea`'s `aria-label` attribute) |
-| `max-lines` | Number, default: 11 | Maximum number of lines before scrolling. Less than 1 allows `textarea` to grow infinitely. |
-| `min-lines` | Number, default: 5 | Minimum number of lines. If `min-lines` and `max-lines` are equal then auto-grow will be disabled. |
+| `max-rows` | Number, default: 11 | Maximum number of rows before scrolling. Less than 1 allows `textarea` to grow infinitely. |
 | `maxlength` | Number | Imposes an upper character limit |
 | `minlength` | Number | Imposes a lower character limit |
+| `no-border` | Boolean | Hides the border |
+| `no-padding` | Boolean | Removes left/right padding |
 | `placeholder` | String | Placeholder text |
 | `required` | Boolean | Indicates that a value is required |
+| `rows` | Number, default: 5 | Minimum number of rows. If `rows` and `max-rows` are equal then auto-grow will be disabled. |
 | `value` | String, default: `''` | Value of the `textarea` |
 
 **Accessibility:**
@@ -41,6 +43,13 @@ To make your usage of `d2l-input-textarea` accessible, use the following propert
 | `description` | Use when label on `textarea` does not provide enough context. |
 | `label` | **REQUIRED**  [Acts as a primary label on the `textarea`](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
+
+**Methods:**
+
+| Method | Returns | Description |
+|--|--|--|
+| `focus()` | | Places focus in the `textarea` |
+| `select()` | | Selects the contents of the `textarea` |
 
 **Events:**
 

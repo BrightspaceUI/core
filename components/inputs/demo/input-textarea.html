@@ -24,7 +24,7 @@
 			<h2>No Min/Max-Lines</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-textarea label="Description" min-lines="1" max-lines="-1"></d2l-input-textarea>
+					<d2l-input-textarea label="Description" rows="1" max-rows="-1"></d2l-input-textarea>
 				</template>
 			</d2l-demo-snippet>
 
@@ -70,6 +70,21 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h3>No Border, No Padding</h3>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea label="Description" no-border no-padding></d2l-input-textarea>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
+		<script>
+			document.body.addEventListener('input', e => {
+				console.log('input', e.target);
+			});
+			document.body.addEventListener('change', e => {
+				console.log('change', e.target);
+			});
+		</script>
 	</body>
 </html>

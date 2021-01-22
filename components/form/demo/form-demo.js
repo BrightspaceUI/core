@@ -44,7 +44,7 @@ class FormNestedDemo extends LitElement {
 							<d2l-input-text id="password" label="Password" name="password" required type="password"></d2l-input-text>
 						</div>
 						<div class="d2l-form-demo-container">
-							<d2l-input-textarea label="Description" name="description" min-lines="2" required></d2l-input-textarea>
+							<d2l-input-textarea label="Description" name="description" rows="2" required></d2l-input-textarea>
 						</div>
 						<fieldset class="d2l-form-demo-container">
 							<legend>Choose your favorite monster</legend>

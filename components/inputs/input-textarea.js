@@ -40,17 +40,21 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 */
 			maxlength: { type: Number },
 			/**
-			 * Maximum number of lines before scrolling.
+			 * Maximum number of rows before scrolling.
 			 */
-			maxLines: { type: Number, attribute: 'max-lines' },
+			maxRows: { type: Number, attribute: 'max-rows' },
 			/**
 			 * Imposes a lower character limit.
 			 */
 			minlength: { type: Number },
 			/**
-			 * Minimum number of lines.
+			 * Hides the border.
 			 */
-			minLines: { type: Number, attribute: 'min-lines' },
+			noBorder: { type: Boolean, attribute: 'no-border' },
+			/**
+			 * Removes default left/right padding.
+			 */
+			noPadding: { type: Boolean, attribute: 'no-padding' },
 			/**
 			 * Placeholder text.
 			 */
@@ -59,6 +63,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 * Indicates that a value is required.
 			 */
 			required: { type: Boolean, reflect: true },
+			/**
+			 * Minimum number of rows.
+			 */
+			rows: { type: Number },
 			/**
 			 * Value of the input.
 			 */
@@ -91,6 +99,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				top: 0;
 				z-index: 2;
 			}
+			:host([no-border]) textarea.d2l-input {
+				border-color: transparent;
+				box-shadow: none;
+			}
 			/* mirror dimensions must match textarea - match border + padding */
 			.d2l-input-textarea-mirror {
 				line-height: 1rem;
@@ -98,6 +110,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				padding-top: 0.5rem;
 				visibility: hidden;
 				word-break: break-word; /* prevent width from growing */
+			}
+			:host([no-padding]) .d2l-input {
+				padding-left: 0;
+				padding-right: 0;
 			}
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);
@@ -116,8 +132,8 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		super();
 		this.disabled = false;
 		this.labelHidden = false;
-		this.maxLines = 11;
-		this.minLines = 5;
+		this.maxRows = 11;
+		this.rows = 5;
 		this.required = false;
 		this.value = '';
 
@@ -139,8 +155,8 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		const mirrorStyles = {};
 
 		// lines + padding + border; if < 1 it will fallback to min single and/or max infinite
-		if (this.minLines > 0) mirrorStyles.minHeight = `calc(${this.minLines + 1}rem + 2px)`;
-		if (this.maxLines > 0) mirrorStyles.maxHeight = `calc(${this.maxLines + 1}rem + 2px)`;
+		if (this.rows > 0) mirrorStyles.minHeight = `calc(${this.rows + 1}rem + 2px)`;
+		if (this.maxRows > 0) mirrorStyles.maxHeight = `calc(${this.maxRows + 1}rem + 2px)`;
 
 		const textarea = html`
 			<div class="d2l-input-textarea-container d2l-skeletize">
@@ -205,6 +221,16 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		}
 	}
 
+	async select() {
+		const elem = this.shadowRoot.querySelector('textarea');
+		if (elem) {
+			elem.select();
+		} else {
+			await this.updateComplete;
+			this.select();
+		}
+	}
+
 	get validationMessage() {
 		if (this.validity.tooShort) {
 			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
@@ -223,6 +249,10 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 	_getAriaLabel() {
 		if (this.label && this.labelHidden) {
 			return this.label;
+		}
+		// check aria-label for backwards compatibility in order to replace old Polymer impl
+		if (this.hasAttribute('aria-label')) {
+			return this.getAttribute('aria-label');
 		}
 		return undefined;
 	}
