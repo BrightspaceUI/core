@@ -115,6 +115,11 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				padding-left: 0;
 				padding-right: 0;
 			}
+			:host([no-border][no-padding]) textarea.d2l-input:hover,
+			:host([no-border][no-padding]) textarea.d2l-input:focus {
+				border-left-width: 1px;
+				border-right-width: 1px;
+			}
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);
 			}
