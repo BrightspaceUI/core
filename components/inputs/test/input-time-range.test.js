@@ -99,8 +99,8 @@ describe('d2l-input-time-range', () => {
 
 		it('should default start and end values to 12 am and 12:30 am', async() => {
 			const elem = await fixture(basicFixture);
-			expect(elem.startValue).to.equal('00:00:00');
-			expect(elem.endValue).to.equal('00:30:00');
+			expect(elem.startValue).to.equal('00:01:00');
+			expect(elem.endValue).to.equal('00:31:00');
 		});
 
 		// timing out in legacy-Edge via GitHub Actions
@@ -143,21 +143,23 @@ describe('d2l-input-time-range', () => {
 				{ enforceTimeIntervals: false, validStart: false, validEnd: true },
 				{ enforceTimeIntervals: false, validStart: false, validEnd: false }
 			].forEach((testCase) => {
-				it(`when enforceTimeIntervals = ${testCase.enforceTimeIntervals}, valid start = ${testCase.validStart} and validEnd = ${testCase.validEnd}`, async() => {
+				it(`when enforceTimeIntervals = ${testCase.enforceTimeIntervals}, valid start = ${testCase.validStart} and valid end = ${testCase.validEnd}`, async() => {
 					const startDate = testCase.validStart ? '12:15:00' : 'invalidStart';
 					const endDate = testCase.validEnd ? '18:42:00' : 'invalidEnd';
 					let expectedStartTime = '',
 						expectedEndTime = '';
 					if (testCase.validStart && testCase.enforceTimeIntervals) expectedStartTime = '12:20:00';
 					else if (testCase.validStart) expectedStartTime = '12:15:00';
-					else expectedStartTime = '00:00:00';
+					else if (!testCase.enforceTimeIntervals) expectedStartTime = '00:01:00';
+					else expectedStartTime = '00:10:00';
 
 					if (testCase.validEnd && testCase.enforceTimeIntervals) expectedEndTime = '18:50:00';
 					else if (testCase.validEnd) expectedEndTime = '18:42:00';
 					else if (!testCase.validEnd) {
 						if (testCase.validStart && !testCase.enforceTimeIntervals) expectedEndTime = '12:25:00';
 						else if (testCase.validStart && testCase.enforceTimeIntervals) expectedEndTime = '12:30:00';
-						else expectedEndTime = '00:10:00';
+						else if (!testCase.enforceTimeIntervals) expectedEndTime = '00:11:00';
+						else expectedEndTime = '00:20:00';
 					}
 
 					const caseFixture = `<d2l-input-time-range
@@ -183,7 +185,7 @@ describe('d2l-input-time-range', () => {
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
 				expect(elem.startValue).to.equal('00:15:00');
-				expect(elem.endValue).to.equal('00:30:00');
+				expect(elem.endValue).to.equal('00:31:00');
 				expect(elem.invalid).to.be.false;
 				expect(elem.validationError).to.be.null;
 			});
@@ -194,7 +196,7 @@ describe('d2l-input-time-range', () => {
 				inputElem.value = '18:30:00';
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
-				expect(elem.startValue).to.equal('00:00:00');
+				expect(elem.startValue).to.equal('00:01:00');
 				expect(elem.endValue).to.equal('18:30:00');
 				expect(elem.invalid).to.be.false;
 				expect(elem.validationError).to.be.null;
