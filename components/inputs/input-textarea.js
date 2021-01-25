@@ -87,6 +87,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				vertical-align: bottom;
 			}
 			.d2l-input-textarea-container {
+				height: 100%;
 				max-width: 100%;
 				position: relative;
 			}
@@ -114,6 +115,11 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			:host([no-padding]) .d2l-input {
 				padding-left: 0;
 				padding-right: 0;
+			}
+			:host([no-border][no-padding]) textarea.d2l-input:hover,
+			:host([no-border][no-padding]) textarea.d2l-input:focus {
+				border-left-width: 1px;
+				border-right-width: 1px;
 			}
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
 				padding-right: calc(18px + 0.8rem);

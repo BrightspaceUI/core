@@ -33,7 +33,8 @@ describe('d2l-input-textarea', () => {
 		{ name: 'invalid-disabled', selector: '#invalid-disabled' },
 		{ name: 'invalid-rtl', selector: '#invalid-rtl' },
 		{ name: 'skeleton', selector: '#skeleton' },
-		{ name: 'no-border-padding', selector: '#no-border-padding' }
+		{ name: 'no-border-padding', selector: '#no-border-padding' },
+		{ name: 'no-border-padding-focus', selector: '#no-border-padding', action: selector => page.$eval(selector, elem => elem.focus()) }
 	].forEach(info => {
 
 		it(info.name, async function() {
