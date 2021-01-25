@@ -42,7 +42,7 @@ export function getDefaultTime(time) {
 			return END_OF_DAY;
 		case 'startOfDay':
 		case undefined:
-			return new Date(2020, 0, 1, 0, 0, 0);
+			return new Date(2020, 0, 1, 0, 1, 0);
 		default:
 			return getDateFromISOTime(time);
 	}

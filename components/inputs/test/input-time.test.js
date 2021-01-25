@@ -93,9 +93,9 @@ describe('d2l-input-time', () => {
 			expect(elem.getTime()).to.deep.equal({ hours: 11, minutes: 22, seconds: 33 });
 		});
 
-		it('should default to 12 AM', async() => {
+		it('should default to 12:01 AM', async() => {
 			const elem = await fixture(basicFixture);
-			expect(elem.value).to.equal('00:00:00');
+			expect(elem.value).to.equal('00:01:00');
 		});
 
 		it('should apply custom default value', async() => {
@@ -112,7 +112,7 @@ describe('d2l-input-time', () => {
 
 		it('should apply default value from keyword: startOfDay', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" default-value="startOfDay"></d2l-input-time>');
-			expect(elem.value).to.equal('00:00:00');
+			expect(elem.value).to.equal('00:01:00');
 		});
 
 		it('should apply custom default value from keyword: endOfDay', async() => {
@@ -122,7 +122,7 @@ describe('d2l-input-time', () => {
 
 		it('should apply default when given value is empty', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" value=""></d2l-input-time>');
-			expect(getInput(elem).value).to.equal('12:00 AM');
+			expect(getInput(elem).value).to.equal('12:01 AM');
 		});
 
 		it('should correctly set given value', async() => {
