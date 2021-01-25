@@ -3,8 +3,8 @@ import { css } from 'lit-element/lit-element.js';
 
 export const inputStyles = css`
 	.d2l-input {
-		background-color: #ffffff;
-		border-radius: 0.3rem;
+		background-color: var(--d2l-input-background-color, #ffffff);
+		border-radius: var(--d2l-input-border-radius, 0.3rem);
 		border-style: solid;
 		box-shadow: inset 0 2px 0 0 rgba(181, 189, 194, 0.2); /* corundum */
 		box-sizing: border-box;
@@ -27,7 +27,7 @@ export const inputStyles = css`
 	.d2l-input:hover:disabled,
 	.d2l-input:focus:disabled,
 	[aria-invalid="true"].d2l-input:disabled {
-		border-color: var(--d2l-color-galena);
+		border-color: var(--d2l-input-border-color, var(--d2l-color-galena));
 		border-width: 1px;
 		padding: var(--d2l-input-padding, 0.4rem 0.75rem);
 	}
