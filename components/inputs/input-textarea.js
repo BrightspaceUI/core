@@ -87,6 +87,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				vertical-align: bottom;
 			}
 			.d2l-input-textarea-container {
+				height: 100%;
 				max-width: 100%;
 				position: relative;
 			}
