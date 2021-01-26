@@ -178,11 +178,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-content');
-		this._hiddenContentResizeObserver = this._hiddenContentResizeObserver || new ResizeObserver(() => {
+		this._hiddenContentResizeObserver = new ResizeObserver(() => {
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 			this._hiddenContentWidth = `${width}px`;
 		});
-		this._hiddenContentResizeObserver.disconnect();
 		this._hiddenContentResizeObserver.observe(hiddenContent);
 	}
 
