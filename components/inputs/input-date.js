@@ -134,7 +134,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._dropdownOpened = false;
 		this._dropdownFirstOpened = false;
 		this._formattedValue = '';
-		this._hiddenContentResizeObserver = null;
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
 		this._inputTextFocusMouseup = false;
@@ -144,15 +143,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._shownValue = '';
 
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-
-		if (this._hiddenContentResizeObserver) {
-			this._hiddenContentResizeObserver.disconnect();
-			this._hiddenContentResizeObserver = null;
-		}
 	}
 
 	async firstUpdated(changedProperties) {
