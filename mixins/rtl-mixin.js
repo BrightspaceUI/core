@@ -1,4 +1,6 @@
-export const RtlMixin = superclass => class extends superclass {
+import { dedupeMixin } from '@open-wc/dedupe-mixin';
+
+export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 
 	static get properties() {
 		return {
@@ -12,4 +14,4 @@ export const RtlMixin = superclass => class extends superclass {
 		if (dir) this._dir = dir;
 	}
 
-};
+});
