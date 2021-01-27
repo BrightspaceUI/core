@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const skeletonStyles = css`
 	@keyframes loadingPulse {
@@ -137,7 +138,7 @@ export const skeletonStyles = css`
 	}
 `;
 
-export const SkeletonMixin = superclass => class extends superclass {
+export const SkeletonMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
