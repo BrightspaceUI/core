@@ -72,6 +72,12 @@ export const skeletonStyles = css`
 		content: '\\A \\A \\A \\A';
 		white-space: pre;
 	}
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-2,
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-3,
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-5 {
+		transform: scale(-1, 1);
+		transform-origin: center;
+	}
 	:host([skeleton]) .d2l-skeletize-95::before {
 		width: 95%;
 	}

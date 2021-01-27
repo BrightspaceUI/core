@@ -13,6 +13,10 @@
 			import '../demo/skeleton-test-paragraph.js';
 			import '../demo/skeleton-test-width.js';
 		</script>
+		<script>
+			const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
+			if (rtl) document.documentElement.setAttribute('dir', 'rtl');
+		</script>
 		<title>d2l-skeleton</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
