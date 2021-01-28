@@ -90,6 +90,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			}
 			.d2l-list-item-content.d2l-hovering,
 			.d2l-list-item-content.d2l-focusing {
+				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 				--d2l-list-item-content-text-decoration: underline;
 			}
 			[slot="content-action"] {
@@ -117,6 +118,11 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host([dir="rtl"]) [slot="content"] .d2l-list-item-illustration * {
 				margin-left: 0.9rem;
 				margin-right: 0;
+			}
+			[slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			[slot="content"] .d2l-list-item-illustration d2l-icon {
+				border-radius: 0;
+				color: var(--d2l-list-item-content-text-color);
 			}
 			.d2l-list-item-actions-container {
 				padding: 0.55rem 0;
@@ -173,9 +179,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
-			:host([selectable]:not([disabled]):not([draggable]):hover) d2l-list-item-generic-layout,
-			:host([selectable]:not([disabled])) d2l-list-item-generic-layout.d2l-focusing,
-			:host([selectable][draggable]:not([disabled])) d2l-list-item-generic-layout.d2l-hovering {
+			:host([selectable]:not([disabled]):not([draggable]):not([skeleton]):hover) d2l-list-item-generic-layout,
+			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-focusing,
+			:host([selectable][draggable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-hovering {
 				background-color: var(--d2l-color-regolith);
 			}
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
