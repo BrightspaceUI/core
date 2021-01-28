@@ -1,5 +1,6 @@
 import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
+import '../../helpers/viewport-size.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -68,10 +69,10 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 
 				.d2l-dialog-outer {
-					height: calc(100vh - 42px) !important;
 					margin: 0 !important;
+					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
-					width: 100vw !important;
 				}
 
 				div[nested].d2l-dialog-outer {
