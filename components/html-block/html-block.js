@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, LitElement } from 'lit-element/lit-element.js';
-import { loadMathJax } from '../../helpers/mathJax.js';
+import { loadMathJax } from '../../helpers/mathjax.js';
 
 /**
  * A component for displaying user-authored HTML.

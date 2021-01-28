@@ -117,8 +117,3 @@ export function loadMathJax() {
 	return mathJaxLoaded;
 
 }
-
-window.D2L = window.D2L || {};
-window.D2L.MathJax = {
-	loadMathJax: loadMathJax
-};
