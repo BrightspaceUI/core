@@ -29,7 +29,10 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				outline: none;
 				width: 100%;
 			}
-		` ];
+			:host([skeleton]) a[href] {
+				display: none;
+			}
+			`];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;
