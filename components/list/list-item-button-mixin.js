@@ -23,6 +23,11 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 				outline: none;
 				width: 100%;
 			}
+			/* simply hide the button action layer rather than disabling button so
+			 that the cursor pointer ins't displayed when hovering skeleton */
+			:host([skeleton]) button {
+				display: none;
+			}
 		` ];
 
 		super.styles && styles.unshift(super.styles);
