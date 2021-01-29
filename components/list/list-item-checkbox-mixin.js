@@ -4,8 +4,9 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-export const ListItemCheckboxMixin = superclass => class extends superclass {
+export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -83,14 +84,15 @@ export const ListItemCheckboxMixin = superclass => class extends superclass {
 	}
 
 	_renderCheckbox() {
+		const disabled = this.disabled || this.skeleton;
 		return this.selectable ? html`
 			<input
 				id="${this._checkboxId}"
-				class="d2l-input-checkbox"
+				class="d2l-input-checkbox d2l-skeletize"
 				@change="${this._onCheckboxChange}"
 				type="checkbox"
 				.checked="${this.selected}"
-				?disabled="${this.disabled}">
+				?disabled="${disabled}">
 			` : nothing;
 	}
 
