@@ -132,7 +132,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			value: { type: String },
 			_dropdownFirstOpened: { type: Boolean },
-			_formattedValue: { type: String }
+			_formattedValue: { type: String },
+			_hiddenContentWidth: { type: String }
 		};
 	}
 
@@ -162,6 +163,16 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 					vertical-align: middle;
 					width: auto;
 				}
+				.d2l-input-time-hidden-content {
+					font-family: inherit;
+					font-size: 0.8rem;
+					font-weight: 400;
+					letter-spacing: 0.02rem;
+					line-height: 1.4rem;
+					position: absolute;
+					visibility: hidden;
+					width: auto;
+				}
 			`
 		];
 	}
@@ -175,6 +186,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.timeInterval = 'thirty';
 		this._dropdownFirstOpened = false;
 		this._dropdownId = getUniqueId();
+		this._hiddenContentWidth = '6rem';
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
 	}
 
@@ -196,7 +208,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.requestUpdate('value', oldValue);
 	}
 
-	firstUpdated(changedProperties) {
+	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (!this.label) {
 			console.warn('d2l-input-time component requires label text');
@@ -212,6 +224,15 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
 		});
+
+		await (document.fonts ? document.fonts.ready : Promise.resolve());
+
+		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
+		this._hiddenContentResizeObserver = new ResizeObserver(() => {
+			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
+			this._hiddenContentWidth = `${width}px`;
+		});
+		this._hiddenContentResizeObserver.observe(hiddenContent);
 
 	}
 
@@ -234,8 +255,16 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 						?selected=${this._value === formatDateInISOTime(END_OF_DAY)}>
 					</d2l-menu-item-radio>
 				`}` : null;
+		const formattedWideTimeAM = formatTime(new Date(2020, 0, 1, 10, 23, 0));
+		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
+		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
+		this.style.maxWidth = inputTextWidth;
 
 		return html`
+			<div aria-hidden="true" class="d2l-input-time-hidden-content">
+				<div>${formattedWideTimeAM}</div>
+				<div>${formattedWideTimePM}</div>
+			</div>
 			<label
 				class="${this.label && !this.labelHidden ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
