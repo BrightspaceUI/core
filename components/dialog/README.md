@@ -115,6 +115,7 @@ document.querySelector('#open').addEventListener('click', () => {
 | `text` | String, required | The required text content for the confirmation dialog |
 | `opened` | Boolean | Whether or not the dialog is open |
 | `title-text` | String | The optional title for the confirmation dialog |
+| `width` | Number, default: `420` | The preferred width (unit-less) for the dialog |
 
 **Events:**
 

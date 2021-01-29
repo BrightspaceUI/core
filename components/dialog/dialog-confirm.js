@@ -11,6 +11,9 @@ import { heading3Styles } from '../typography/styles.js';
  * @fires d2l-dialog-open - Dispatched when the dialog is opened
  * @fires d2l-dialog-close - Dispatched with the action value when the dialog is closed for any reason
  */
+
+const defaultWidth = 420;
+
 class DialogConfirm extends DialogMixin(LitElement) {
 
 	static get properties() {
@@ -18,16 +21,17 @@ class DialogConfirm extends DialogMixin(LitElement) {
 			/**
 			 * REQUIRED: The text content for the confirmation dialog
 			 */
-			text: { type: String }
+			text: { type: String },
+
+			/**
+			 * The optional width for the dialog
+			 */
+			width: { type: Number },
 		};
 	}
 
 	static get styles() {
 		return [ dialogStyles, heading3Styles, css`
-
-			.d2l-dialog-outer {
-				max-width: 420px;
-			}
 
 			.d2l-dialog-content > div {
 				padding-top: 30px;
@@ -95,7 +99,11 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	}
 
 	_getWidth() {
-		/* override default width measurement and just use max-width */
+		if (this.width) {
+			return this.width;
+		} else {
+			return defaultWidth;
+		}
 	}
 
 }
