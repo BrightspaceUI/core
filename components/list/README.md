@@ -84,6 +84,10 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 |--|--|--|
 | `href` | String | Address of item link if navigable |
 
+**Events**
+
+- `d2l-list-item-link-click`: dispatched when the item's primary link action is clicked
+
 ## d2l-list-item-button
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action. It extends `ListItemButtonMixin` and `ListItemMixin` and has all the same use cases as the mixin.

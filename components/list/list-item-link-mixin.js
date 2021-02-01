@@ -43,9 +43,13 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		this.actionHref = null;
 	}
 
+	_handleLinkClick() {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+	}
+
 	_renderPrimaryAction(labelledBy) {
 		if (!this.actionHref) return;
-		return html`<a aria-labelledby="${labelledBy}" href="${this.actionHref}"></a>`;
+		return html`<a aria-labelledby="${labelledBy}" href="${this.actionHref}" @click="${this._handleLinkClick}"></a>`;
 	}
 
 };
