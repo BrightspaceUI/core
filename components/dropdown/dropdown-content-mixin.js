@@ -472,7 +472,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._width = null;
 
 		const openerPosition = window.getComputedStyle(opener, null).getPropertyValue('position');
-		const boundingContainer = getBoundingAncestor(target);
+		const boundingContainer = getBoundingAncestor(target.parentNode);
 		const boundingContainerRect = boundingContainer.getBoundingClientRect();
 		const scrollHeight = boundingContainer.scrollHeight;
 
