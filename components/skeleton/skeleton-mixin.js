@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
+import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const skeletonStyles = css`
@@ -138,7 +139,7 @@ export const skeletonStyles = css`
 	}
 `;
 
-export const SkeletonMixin = superclass => class extends RtlMixin(superclass) {
+export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -157,4 +158,4 @@ export const SkeletonMixin = superclass => class extends RtlMixin(superclass) {
 		this.skeleton = false;
 	}
 
-};
+});

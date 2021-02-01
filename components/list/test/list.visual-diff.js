@@ -102,7 +102,8 @@ describe('d2l-list', () => {
 			{ name: 'selected', selector: '#selectableSelected' },
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
-			{ name: 'item-content', selector: '#selectableItemContent' }
+			{ name: 'item-content', selector: '#selectableItemContent' },
+			{ name: 'skeleton', selector: '#selectableSkeleton' }
 		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },
