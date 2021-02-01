@@ -106,6 +106,7 @@ describe('d2l-input-date-time-range', () => {
 			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange);
 
 			const rect = await visualDiff.getRect(page, '#inclusive');
+			rect.width = 284;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

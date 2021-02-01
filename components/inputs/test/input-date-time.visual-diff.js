@@ -65,6 +65,7 @@ describe('d2l-input-date-time', () => {
 		await page.$eval('#required', (elem) => elem.blur());
 		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20');
 		const rect = await visualDiff.getRect(page, '#required');
+		rect.width = 284;
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
@@ -152,6 +153,7 @@ describe('d2l-input-date-time', () => {
 				dateSelector.dispatchEvent(e);
 			});
 			const rect = await visualDiff.getRect(page, '#basic');
+			rect.width = 284;
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
@@ -263,6 +265,7 @@ describe('d2l-input-date-time', () => {
 
 				it('basic', async function() {
 					const rect = await visualDiff.getRect(page, '#min-max');
+					rect.width = 284;
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 

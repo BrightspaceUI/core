@@ -13,6 +13,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
