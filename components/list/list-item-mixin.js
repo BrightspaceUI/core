@@ -304,7 +304,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			'd2l-focusing': this._focusingPrimaryAction,
 		};
 
-		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : null;
+		const primaryAction = this._renderPrimaryAction ? this._renderPrimaryAction(this._contentId) : nothing;
 
 		return html`
 			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
@@ -322,14 +322,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					${this.selectable ? html`
 					<div slot="control">${ this._renderCheckbox() }</div>
 					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>` : nothing }
-					${primaryAction ? html`
-					<div slot="content-action"
-						@focusin="${this._onFocusInPrimaryAction}"
-						@focusout="${this._onFocusOutPrimaryAction}"
-						@mouseenter="${this._onMouseEnterPrimaryAction}"
-						@mouseleave="${this._onMouseLeavePrimaryAction}">
-							${primaryAction}
-					</div>` : nothing}
+					${primaryAction}
 					<div slot="content"
 						class="${classMap(contentClasses)}"
 						id="${this._contentId}">
