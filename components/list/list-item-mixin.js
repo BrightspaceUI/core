@@ -179,9 +179,8 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
-			:host([selectable]:not([disabled]):not([draggable]):not([skeleton]):hover) d2l-list-item-generic-layout,
 			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-focusing,
-			:host([selectable][draggable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-hovering {
+			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-hovering {
 				background-color: var(--d2l-color-regolith);
 			}
 			:host([selected]:not([disabled])) d2l-list-item-generic-layout {
@@ -273,6 +272,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusInPrimaryAction() {
 		this._focusingPrimaryAction = true;
+		this._focusing = true;
 	}
 
 	_onFocusOut() {
@@ -281,14 +281,25 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusOutPrimaryAction() {
 		this._focusingPrimaryAction = false;
+		this._focusing = false;
+	}
+
+	_onMouseEnter() {
+		this._hovering = true;
 	}
 
 	_onMouseEnterPrimaryAction() {
 		this._hoveringPrimaryAction = true;
+		this._hovering = true;
+	}
+
+	_onMouseLeave() {
+		this._hovering = false;
 	}
 
 	_onMouseLeavePrimaryAction() {
 		this._hoveringPrimaryAction = false;
+		this._hovering = false;
 	}
 
 	_renderListItem({ illustration, content, actions } = {}) {
@@ -321,7 +332,11 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 					${this._renderDragTarget(this._renderOutsideControlAction)}
 					${this.selectable ? html`
 					<div slot="control">${ this._renderCheckbox() }</div>
-					<div slot="control-action">${ this._renderCheckboxAction('', this._contentId) }</div>` : nothing }
+					<div slot="control-action"
+						@mouseenter="${this._onMouseEnter}"
+						@mouseleave="${this._onMouseLeave}">
+							${ this._renderCheckboxAction('', this._contentId) }
+					</div>` : nothing }
 					${primaryAction ? html`
 					<div slot="content-action"
 						@focusin="${this._onFocusInPrimaryAction}"
@@ -336,7 +351,10 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 						<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
 						<slot>${content}</slot>
 					</div>
-					<div class="d2l-list-item-actions-container" slot="actions">
+					<div slot="actions"
+						@mouseenter="${this._onMouseEnter}"
+						@mouseleave="${this._onMouseLeave}"
+						class="d2l-list-item-actions-container">
 						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 					</div>
 				</d2l-list-item-generic-layout>
