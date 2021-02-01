@@ -41,6 +41,12 @@ describe('d2l-list-item-button', () => {
 
 	describe('events', () => {
 
+		it('dispatches d2l-list-item-link-click event when clicked', async() => {
+			const el = await fixture(html`<d2l-list-item action-href="javascript:void(0)"></d2l-list-item>`);
+			setTimeout(() => el.shadowRoot.querySelector('a').click());
+			await oneEvent(el, 'd2l-list-item-link-click');
+		});
+
 		it('dispatches d2l-list-item-button-click event when clicked', async() => {
 			const el = await fixture(html`<d2l-list-item-button></d2l-list-item-button>`);
 			setTimeout(() => el.shadowRoot.querySelector('button').click());
