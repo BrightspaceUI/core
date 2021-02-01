@@ -19,16 +19,14 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			:host([action-href]:not([action-href=""]):not([skeleton])) d2l-list-item-generic-layout.d2l-focusing,
-			:host([action-href]:not([action-href=""]):not([skeleton])) d2l-list-item-generic-layout.d2l-hovering {
+			:host([action-href]:not([action-href=""]):not([skeleton])) [slot="content"].d2l-focusing,
+			:host([action-href]:not([action-href=""]):not([skeleton])) [slot="content"].d2l-hovering {
 				background-color: var(--d2l-color-regolith);
 			}
 			a[href] {
 				display: block;
 				height: 100%;
-				margin-top: -1px;
 				outline: none;
-				padding: 1px 0;
 				width: 100%;
 			}
 			:host([skeleton]) a {
