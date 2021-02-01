@@ -232,6 +232,11 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this._hiddenContentResizeObserver = new ResizeObserver(() => {
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 			this._hiddenContentWidth = `${width}px`;
+
+			this.dispatchEvent(new CustomEvent(
+				'd2l-input-time-hidden-content-width-change',
+				{ bubbles: true, composed: false }
+			));
 		});
 		this._hiddenContentResizeObserver.observe(hiddenContent);
 
