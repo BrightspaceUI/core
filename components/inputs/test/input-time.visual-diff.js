@@ -10,7 +10,7 @@ describe('d2l-input-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 300, height: 600 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 300, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -31,6 +31,51 @@ describe('d2l-input-time', () => {
 			await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	describe('localization', () => {
+
+		after(async() => {
+			await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
+		});
+
+		[
+			'ar',
+			'da',
+			'de',
+			'es',
+			'fr',
+			'ja',
+			'ko',
+			'nl',
+			'pt',
+			'sv',
+			'zh',
+			'tr',
+			'zh-tw'
+		].forEach((lang) => {
+
+			it(`${lang} AM`, async function() {
+				await page.evaluate(lang => {
+					const input = document.querySelector('#localizationAM');
+					return new Promise((resolve) => {
+						input.addEventListener('d2l-localize-behavior-language-changed', () => {
+							setTimeout(() => {
+								resolve();
+							}, 10);
+						}, { once: true });
+						document.querySelector('html').setAttribute('lang', lang);
+					});
+				}, lang);
+				const rect = await visualDiff.getRect(page, '#localizationAM');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+
+			it(`${lang} PM`, async function() {
+				const rect = await visualDiff.getRect(page, '#localizationPM');
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
 		});
 	});
 

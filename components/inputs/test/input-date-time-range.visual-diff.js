@@ -61,8 +61,8 @@ describe('d2l-input-date-time-range', () => {
 		const dateAfterMax = '2025-10-31T15:00:00Z';
 		const dateFurtherAfterMax = '2027-12-31T15:00:00Z';
 
-		async function changeInnerInputTextDate(page, selector, inputSelector, date) {
-			return page.$eval(selector, (elem, inputSelector, date) => {
+		async function changeInnerInputTextDate(page, selector, inputSelector, date, waitForTime) {
+			return page.$eval(selector, (elem, inputSelector, date, waitForTime) => {
 				const dateElem = elem.shadowRoot.querySelector(inputSelector);
 				const innerInput = dateElem.shadowRoot.querySelector('d2l-input-date');
 				innerInput.value = date;
@@ -71,7 +71,17 @@ describe('d2l-input-date-time-range', () => {
 					{ bubbles: true, composed: false }
 				);
 				innerInput.dispatchEvent(e);
-			}, inputSelector, date);
+				if (waitForTime) {
+					return new Promise((resolve) => {
+						elem.updateComplete.then(() => {
+							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
+							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
+								resolve();
+							});
+						});
+					});
+				}
+			}, inputSelector, date, waitForTime);
 		}
 
 		async function changeInnerInputDateTime(page, selector, inputSelector, date) {
@@ -103,7 +113,7 @@ describe('d2l-input-date-time-range', () => {
 
 		it('start equals end when inclusive', async function() {
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
-			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange);
+			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange, true);
 
 			const rect = await visualDiff.getRect(page, '#inclusive');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -246,7 +256,7 @@ describe('d2l-input-date-time-range', () => {
 					before(async() => {
 						await changeInnerInputTextDate(page, '#min-max', startDateSelector, '');
 						await changeInnerInputTextDate(page, '#min-max', endDateSelector, '');
-						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate);
+						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate, true);
 						await changeInnerInputTextDate(page, '#min-max', endDateSelector, testCase.endDate);
 					});
 
