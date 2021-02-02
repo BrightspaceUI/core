@@ -21,6 +21,19 @@ function getChildElem(elem, selector) {
 	return elem.shadowRoot.querySelector(selector);
 }
 
+before(() => {
+	const e = window.onerror;
+	window.onerror = function(err) {
+		console.log('err ' + err)
+		if (err === 'ResizeObserver loop completed with undelivered notifications.') {
+			console.warn('Ignored: ResizeObserver loop completed with undelivered notifications');
+			return false;
+		} else {
+			return e(...arguments);
+		}
+	};
+});
+
 describe('d2l-input-date-time-range', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
