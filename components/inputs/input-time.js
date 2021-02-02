@@ -187,7 +187,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.timeInterval = 'thirty';
 		this._dropdownFirstOpened = false;
 		this._dropdownId = getUniqueId();
-		this._hiddenContentResizeObserver = null;
 		this._hiddenContentWidth = '6rem';
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
 	}
@@ -208,15 +207,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this._value = formatDateInISOTime(time);
 		this._formattedValue = formatTime(time);
 		this.requestUpdate('value', oldValue);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-
-		if (this._hiddenContentResizeObserver) {
-			this._hiddenContentResizeObserver.disconnect();
-			this._hiddenContentResizeObserver = null;
-		}
 	}
 
 	async firstUpdated(changedProperties) {
@@ -248,7 +238,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 				{ bubbles: true, composed: false }
 			));
 		});
-		this._hiddenContentResizeObserver.disconnect();
 		this._hiddenContentResizeObserver.observe(hiddenContent);
 
 	}
