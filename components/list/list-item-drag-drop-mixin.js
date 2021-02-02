@@ -330,8 +330,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	firstUpdated(changedProperties) {
-		this.addEventListener('mouseenter', this._onMouseEnter.bind(this));
-		this.addEventListener('mouseleave', this._onMouseLeave.bind(this));
 		this.addEventListener('dragenter', this._onHostDragEnter.bind(this));
 		super.firstUpdated(changedProperties);
 	}
@@ -496,14 +494,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		e.dataTransfer.dropEffect = 'move';
 	}
 
-	_onMouseEnter() {
-		this._hovering = true;
-	}
-
-	_onMouseLeave() {
-		this._hovering = false;
-	}
-
 	_onTouchCancel() {
 		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
 		this._touchStarted = false;
@@ -606,7 +596,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_renderDragTarget(templateMethod) {
 		templateMethod = templateMethod || (dragTarget => dragTarget);
-		return this.draggable && !this._keyboardActive ? templateMethod(html`
+		return this.draggable && !this._keyboardActive ? templateMethod.call(this, html`
 			<div
 				class="d2l-list-item-drag-area"
 				draggable="true"
