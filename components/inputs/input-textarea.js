@@ -183,7 +183,9 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 					maxlength="${ifDefined(this.maxlength)}"
 					minlength="${ifDefined(this.minlength)}"
 					placeholder="${ifDefined(this.placeholder)}"
-					?required="${this.required}">${this.value}</textarea>
+					?required="${this.required}"
+					.value="${this.value}">
+				</textarea>
 				${this.validationError ? html`<d2l-tooltip for=${this._textareaId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null}
 			</div>
 			${offscreenContainer}
@@ -207,7 +209,6 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 				this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
 				this.requestValidate(false);
 				this.setFormValue(this.value);
-				this.textarea.value = this.value;
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
 			} else if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
