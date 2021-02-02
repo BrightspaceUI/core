@@ -596,7 +596,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_renderDragTarget(templateMethod) {
 		templateMethod = templateMethod || (dragTarget => dragTarget);
-		return this.draggable && !this._keyboardActive ? templateMethod(html`
+		return this.draggable && !this._keyboardActive ? templateMethod.call(this, html`
 			<div
 				class="d2l-list-item-drag-area"
 				draggable="true"

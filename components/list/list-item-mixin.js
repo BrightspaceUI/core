@@ -368,7 +368,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 	}
 
 	_renderOutsideControlAction(dragTarget) {
-		return html`<div slot="outside-control-action">${dragTarget}</div>`;
+		return html`<div slot="outside-control-action" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}">${dragTarget}</div>`;
 	}
 
 };
