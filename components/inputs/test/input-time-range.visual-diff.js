@@ -10,7 +10,7 @@ describe('d2l-input-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2100 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2200 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
