@@ -256,7 +256,7 @@ describe('d2l-input-date-time-range', () => {
 					before(async() => {
 						await changeInnerInputTextDate(page, '#min-max', startDateSelector, '');
 						await changeInnerInputTextDate(page, '#min-max', endDateSelector, '');
-						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate);
+						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate, true);
 						await changeInnerInputTextDate(page, '#min-max', endDateSelector, testCase.endDate);
 					});
 
