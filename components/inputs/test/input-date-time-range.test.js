@@ -24,7 +24,6 @@ function getChildElem(elem, selector) {
 before(() => {
 	const e = window.onerror;
 	window.onerror = function(err) {
-		console.log('err ' + err)
 		if (err === 'ResizeObserver loop completed with undelivered notifications.') {
 			console.warn('Ignored: ResizeObserver loop completed with undelivered notifications');
 			return false;
