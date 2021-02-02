@@ -272,7 +272,6 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusInPrimaryAction() {
 		this._focusingPrimaryAction = true;
-		this._focusing = true;
 	}
 
 	_onFocusOut() {
@@ -281,7 +280,6 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	_onFocusOutPrimaryAction() {
 		this._focusingPrimaryAction = false;
-		this._focusing = false;
 	}
 
 	_onMouseEnter() {
