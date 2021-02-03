@@ -10,7 +10,7 @@ describe('d2l-input-date-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3100 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3200 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -396,7 +396,7 @@ describe('d2l-input-date-time-range', () => {
 
 		it('resizes correctly when width decreased', async function() {
 			const rect = await page.$eval('#wide-hidden-labels-values', async(elem) => {
-				elem.parentNode.style.width = '250px';
+				elem.parentNode.style.width = '350px';
 				await elem.updateComplete;
 				const margin = 10;
 				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
@@ -406,6 +406,23 @@ describe('d2l-input-date-time-range', () => {
 					y: elem.offsetTop - topMargin,
 					width: 350,
 					height: 175
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('resizes correctly when width decreased further', async function() {
+			const rect = await page.$eval('#wide-hidden-labels-values', async(elem) => {
+				elem.parentNode.style.width = '250px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 300,
+					height: 300
 				};
 			});
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
