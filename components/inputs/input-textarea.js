@@ -145,12 +145,6 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 
 		this._descriptionId = getUniqueId();
 		this._textareaId = getUniqueId();
-		this._valueInitialized = false;
-	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._valueInitialized = true;
 	}
 
 	render() {
@@ -190,7 +184,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 					minlength="${ifDefined(this.minlength)}"
 					placeholder="${ifDefined(this.placeholder)}"
 					?required="${this.required}"
-					.value="${ifDefined(this._valueInitialized ? this.value : undefined)}">${this.value}</textarea>
+					.value="${this.value}">${this.value}</textarea>
 				${this.validationError ? html`<d2l-tooltip for=${this._textareaId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null}
 			</div>
 			${offscreenContainer}
