@@ -3,7 +3,7 @@ import './input-fieldset.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateInISOTime, formatTimeInISO, getAdjustedTime, getDateFromISOTime, isValidTime, parseISOTime } from '../../helpers/dateTime.js';
-import { getIntervalNumber, getTimeAtInterval, MIDNIGHT } from './input-time.js';
+import { getIntervalNumber, getTimeAtInterval } from './input-time.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -126,7 +126,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this.inclusiveTimeRange = false;
 		this.labelHidden = false;
 		this.required = false;
-		this.startValue = formatDateInISOTime(MIDNIGHT);
 		this.timeInterval = 'thirty';
 
 		this._endDropdownOpened = false;
@@ -152,7 +151,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	set startValue(val) {
 		const oldValue = this.startValue;
 		if (isValidTime(val)) this._startValue = (this.enforceTimeIntervals && !this._initialValues) ? getValidISOTimeAtInterval(val, this.timeInterval) : val;
-		else this._startValue = formatDateInISOTime(MIDNIGHT);
+		else this._startValue = getValidISOTimeAtInterval(formatDateInISOTime(new Date()), this.timeInterval);
 		this.requestUpdate('startValue', oldValue);
 	}
 
@@ -161,6 +160,12 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 
 		if (!this.label) {
 			console.warn('d2l-input-time-range component requires label text');
+		}
+
+		if (!this.startValue) {
+			const startDate = new Date();
+			startDate.setSeconds(0);
+			this.startValue = getValidISOTimeAtInterval(formatDateInISOTime(startDate), this.timeInterval);
 		}
 
 		if (this.enforceTimeIntervals) this.startValue = getValidISOTimeAtInterval(this.startValue, this.timeInterval);

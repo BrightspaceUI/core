@@ -16,7 +16,7 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-export const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
+const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
 const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
