@@ -1,5 +1,7 @@
 import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
+import { dedupeMixin } from '@open-wc/dedupe-mixin';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const skeletonStyles = css`
 	@keyframes loadingPulse {
@@ -72,6 +74,12 @@ export const skeletonStyles = css`
 		content: '\\A \\A \\A \\A';
 		white-space: pre;
 	}
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-2,
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-3,
+	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-5 {
+		transform: scale(-1, 1);
+		transform-origin: center;
+	}
 	:host([skeleton]) .d2l-skeletize-95::before {
 		width: 95%;
 	}
@@ -131,7 +139,7 @@ export const skeletonStyles = css`
 	}
 `;
 
-export const SkeletonMixin = superclass => class extends superclass {
+export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -150,4 +158,4 @@ export const SkeletonMixin = superclass => class extends superclass {
 		this.skeleton = false;
 	}
 
-};
+});

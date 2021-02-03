@@ -173,3 +173,23 @@ import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 // gets a unique indexed id (for lifetime of page)
 getUniqueId();
 ```
+
+## Viewport Size
+
+Background: the `vh` (viewport height) and `vw` (viewport width) CSS units will often reflect a mobile device's full screen size, instead of the browser window size. Device chrome (like the browser URL bar or device-specific toolbars) takes up space within that viewport, which often causes elements sized using `vh` or `vw` to be sized or positioned incorrectly.
+
+This helper provides CSS custom properties `--d2l-vh` and `--d2l-vw` for use in place of `vh` and `vw` units. They will equal `1%` of the value of `window.innerHeight` and `window.innerWidth` respectively.
+
+Including the helper will set up the variables and add an event listener to update them when the browser resizes:
+
+```javascript
+import '@brightspace-ui/core/helpers/viewport-size.js';
+```
+
+```css
+.full-screen-elem {
+    min-height: calc(var(--d2l-vh, 1vh) * 100);
+    min-width: calc(var(--d2l-vw, 1vw) * 100);
+}
+```
+

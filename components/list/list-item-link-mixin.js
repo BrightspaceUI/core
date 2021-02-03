@@ -16,11 +16,11 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 	static get styles() {
 
 		const styles = [ css`
-			:host([action-href]) {
+			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			:host([action-href]) d2l-list-item-generic-layout.d2l-focusing,
-			:host([action-href]) d2l-list-item-generic-layout.d2l-hovering {
+			:host([action-href]:not([action-href=""]):not([skeleton])) d2l-list-item-generic-layout.d2l-focusing,
+			:host([action-href]:not([action-href=""]):not([skeleton])) d2l-list-item-generic-layout.d2l-hovering {
 				background-color: var(--d2l-color-regolith);
 			}
 			a[href] {
@@ -28,6 +28,9 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				height: 100%;
 				outline: none;
 				width: 100%;
+			}
+			:host([skeleton]) a {
+				display: none;
 			}
 		` ];
 
@@ -40,9 +43,13 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		this.actionHref = null;
 	}
 
+	_handleLinkClick() {
+		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+	}
+
 	_renderPrimaryAction(labelledBy) {
 		if (!this.actionHref) return;
-		return html`<a aria-labelledby="${labelledBy}" href="${this.actionHref}"></a>`;
+		return html`<a aria-labelledby="${labelledBy}" href="${this.actionHref}" @click="${this._handleLinkClick}"></a>`;
 	}
 
 };
