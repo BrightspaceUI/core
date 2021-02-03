@@ -16,6 +16,7 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+export const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
 const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
@@ -44,7 +45,7 @@ export function getDefaultTime(time, enforceTimeIntervals) {
 			return END_OF_DAY;
 		case 'startOfDay':
 		case undefined:
-			return enforceTimeIntervals ? new Date(2020, 0, 1, 0, 0, 0) : START_OF_DAY;
+			return enforceTimeIntervals ? MIDNIGHT : START_OF_DAY;
 		default:
 			return getDateFromISOTime(time);
 	}
@@ -70,13 +71,13 @@ function initIntervals(size, enforceTimeIntervals) {
 		const intervalList = [];
 		const intervalNumber = getIntervalNumber(size);
 
-		let val = enforceTimeIntervals ? 0 : intervalNumber;
-		if (!enforceTimeIntervals) {
-			intervalList.push({
-				text: formatTime(START_OF_DAY),
-				value: formatDateInISOTime(START_OF_DAY)
-			});
-		}
+		const firstDate = enforceTimeIntervals ? MIDNIGHT : START_OF_DAY;
+		intervalList.push({
+			text: formatTime(firstDate),
+			value: formatDateInISOTime(firstDate)
+		});
+
+		let val = intervalNumber;
 		while (val < 1440) {
 			const hours = Math.floor(val / 60);
 			const minutes = val - (hours * 60);
