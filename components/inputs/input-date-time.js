@@ -88,11 +88,11 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 				display: none;
 			}
 			.d2l-input-date-time-container {
-				margin-top: -0.5rem;
+				margin-top: -0.3rem;
 			}
 			d2l-input-date,
 			d2l-input-time {
-				margin-top: 0.5rem;
+				margin-top: 0.3rem;
 			}
 		`];
 	}
