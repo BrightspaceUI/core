@@ -33,7 +33,7 @@ describe('d2l-input-date-time', () => {
 
 	describe('min and max value', () => {
 		it('should set correct min and max on d2l-input-date', async() => {
-			await aTimeout(1); // Fixes flaky test potentially caused by timezone not yet being set
+			await aTimeout(5); // Fixes flaky test potentially caused by timezone not yet being set
 			const elem = await fixture(minMaxFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-date');
 			expect(inputElem.minValue).to.equal('2018-08-26');
