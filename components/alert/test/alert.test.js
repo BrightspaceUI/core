@@ -8,21 +8,6 @@ const alertFixture = html`
 			A message.
 		</d2l-alert>`;
 
-before(() => {
-	const e = window.onerror;
-	window.onerror = function(err) {
-		if (err === 'ResizeObserver loop limit exceeded') {
-			console.warn('Ignored: ResizeObserver loop limit exceeded');
-			return false;
-		} else if (err === 'ResizeObserver loop completed with undelivered notifications.') {
-			console.warn('Ignored: ResizeObserver loop completed with undelivered notifications');
-			return false;
-		} else {
-			return e(...arguments);
-		}
-	};
-});
-
 describe('d2l-alert', () => {
 
 	describe('constructor', () => {
