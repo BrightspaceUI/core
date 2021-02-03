@@ -83,10 +83,16 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		return [super.styles, css`
 			:host {
 				display: inline-block;
-				white-space: nowrap;
 			}
 			:host([hidden]) {
 				display: none;
+			}
+			.d2l-input-date-time-container {
+				margin-top: -0.5rem;
+			}
+			d2l-input-date,
+			d2l-input-time {
+				margin-top: 0.5rem;
 			}
 		`];
 	}
@@ -205,23 +211,25 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 				?label-hidden="${this.labelHidden}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
-				<d2l-input-date
-					?novalidate="${this.noValidate}"
-					novalidateminmax
-					@change="${this._handleDateChange}"
-					@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
-					?disabled="${this.disabled}"
-					.forceInvalid=${this.invalid}
-					id="${this._inputId}"
-					label="${this.localize('components.input-date-time.date')}"
-					label-hidden
-					max-value="${ifDefined(this._maxValueLocalized)}"
-					min-value="${ifDefined(this._minValueLocalized)}"
-					?required="${this.required}"
-					?skeleton="${this.skeleton}"
-					style="${styleMap(dateStyle)}"
-					.value="${parsedValue}">
-				</d2l-input-date>${inputTime}
+				<div class="d2l-input-date-time-container">
+					<d2l-input-date
+						?novalidate="${this.noValidate}"
+						novalidateminmax
+						@change="${this._handleDateChange}"
+						@d2l-input-date-dropdown-toggle="${this._handleDropdownToggle}"
+						?disabled="${this.disabled}"
+						.forceInvalid=${this.invalid}
+						id="${this._inputId}"
+						label="${this.localize('components.input-date-time.date')}"
+						label-hidden
+						max-value="${ifDefined(this._maxValueLocalized)}"
+						min-value="${ifDefined(this._minValueLocalized)}"
+						?required="${this.required}"
+						?skeleton="${this.skeleton}"
+						style="${styleMap(dateStyle)}"
+						.value="${parsedValue}">
+					</d2l-input-date>${inputTime}
+				</div>
 			</d2l-input-fieldset>
 		`;
 	}

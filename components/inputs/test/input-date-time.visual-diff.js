@@ -283,6 +283,25 @@ describe('d2l-input-date-time', () => {
 		});
 	});
 
+	describe('width change', () => {
+		it('resizes correctly when width decreased', async function() {
+			const rect = await page.$eval('#basic', async(elem) => {
+				elem.style.maxWidth = '200px';
+				await elem.updateComplete;
+				const margin = 10;
+				const leftMargin = (elem.offsetLeft < margin ? 0 : margin);
+				const topMargin = (elem.offsetTop < margin ? 0 : margin);
+				return {
+					x: elem.offsetLeft - leftMargin,
+					y: elem.offsetTop - topMargin,
+					width: 200,
+					height: 130
+				};
+			});
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
 	describe('skeleton', () => {
 		[
 			'labelled',
