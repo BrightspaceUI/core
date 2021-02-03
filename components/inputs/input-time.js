@@ -16,6 +16,7 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
 
@@ -37,20 +38,20 @@ export function getIntervalNumber(size) {
 	}
 }
 
-export function getDefaultTime(time) {
+export function getDefaultTime(time, enforceTimeIntervals) {
 	switch (time) {
 		case 'endOfDay':
 			return END_OF_DAY;
 		case 'startOfDay':
 		case undefined:
-			return new Date(2020, 0, 1, 0, 1, 0);
+			return enforceTimeIntervals ? new Date(2020, 0, 1, 0, 0, 0) : START_OF_DAY;
 		default:
 			return getDateFromISOTime(time);
 	}
 }
 
-export function getFormattedDefaultTime(defaultValue) {
-	const time = getDefaultTime(defaultValue);
+export function getFormattedDefaultTime(defaultValue, enforceTimeIntervals) {
+	const time = getDefaultTime(defaultValue, enforceTimeIntervals);
 	return formatDateInISOTime(time);
 }
 
@@ -63,12 +64,19 @@ export function getTimeAtInterval(timeInterval, time) {
 	return time;
 }
 
-function initIntervals(size) {
-	if (!INTERVALS.has(size)) {
+function initIntervals(size, enforceTimeIntervals) {
+	const mapKey = `${size}-${enforceTimeIntervals}`;
+	if (!INTERVALS.has(mapKey)) {
 		const intervalList = [];
 		const intervalNumber = getIntervalNumber(size);
 
-		let val = 0;
+		let val = enforceTimeIntervals ? 0 : intervalNumber;
+		if (!enforceTimeIntervals) {
+			intervalList.push({
+				text: formatTime(START_OF_DAY),
+				value: formatDateInISOTime(START_OF_DAY)
+			});
+		}
 		while (val < 1440) {
 			const hours = Math.floor(val / 60);
 			const minutes = val - (hours * 60);
@@ -79,11 +87,17 @@ function initIntervals(size) {
 			});
 			val += intervalNumber;
 		}
+		if (!enforceTimeIntervals) {
+			intervalList.push({
+				text: formatTime(END_OF_DAY),
+				value: formatDateInISOTime(END_OF_DAY)
+			});
+		}
 
-		INTERVALS.set(size, intervalList);
+		INTERVALS.set(mapKey, intervalList);
 	}
 
-	return INTERVALS.get(size);
+	return INTERVALS.get(mapKey);
 }
 
 /**
@@ -199,7 +213,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		}
 
 		const oldValue = this.value;
-		let time = val === '' || val === null ? getDefaultTime(this.defaultValue) : getDateFromISOTime(val);
+		let time = val === '' || val === null ? getDefaultTime(this.defaultValue, this.enforceTimeIntervals) : getDateFromISOTime(val);
 
 		if (this.enforceTimeIntervals) {
 			time = getTimeAtInterval(this.timeInterval, time);
@@ -216,7 +230,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		}
 
 		if (this.value === undefined) {
-			const time = getDefaultTime(this.defaultValue);
+			const time = getDefaultTime(this.defaultValue, this.enforceTimeIntervals);
 			this._value = formatDateInISOTime(time);
 			this._formattedValue = formatTime(time);
 		}
@@ -243,24 +257,17 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	render() {
-		if (this._dropdownFirstOpened) initIntervals(this.timeInterval);
+		if (this._dropdownFirstOpened) initIntervals(this.timeInterval, this.enforceTimeIntervals);
 		const ariaRequired = this.required ? 'true' : undefined;
 		const disabled = this.disabled || this.skeleton;
 		const menuItems = this._dropdownFirstOpened ? html`
-			${INTERVALS.get(this.timeInterval).map(i => html`
+			${INTERVALS.get(`${this.timeInterval}-${this.enforceTimeIntervals}`).map(i => html`
 				<d2l-menu-item-radio
 					text="${i.text}"
 					value="${i.value}"
 					?selected=${this._value === i.value}>
 				</d2l-menu-item-radio>
-			`)}
-			${this.enforceTimeIntervals ? '' : html`
-					<d2l-menu-item-radio
-						text="${formatTime(END_OF_DAY)}"
-						value="${formatDateInISOTime(END_OF_DAY)}"
-						?selected=${this._value === formatDateInISOTime(END_OF_DAY)}>
-					</d2l-menu-item-radio>
-				`}` : null;
+			`)}` : null;
 		const formattedWideTimeAM = formatTime(new Date(2020, 0, 1, 10, 23, 0));
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1

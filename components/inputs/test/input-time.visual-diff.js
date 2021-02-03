@@ -19,6 +19,7 @@ describe('d2l-input-time', () => {
 
 	[
 		'disabled',
+		'enforce',
 		'labelled',
 		'label-hidden',
 		'required'
@@ -90,7 +91,7 @@ describe('d2l-input-time', () => {
 		await helper.open(page, '#dropdown');
 		const rect = await helper.getRect(page, '#dropdown');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await helper.reset(page, '#dropdown'); //Make sure the dropdown is closed before the next test
+		await helper.reset(page, '#dropdown'); // Make sure the dropdown is closed before the next test
 	});
 
 	it('dropdown open keydown', async function() {
@@ -103,7 +104,15 @@ describe('d2l-input-time', () => {
 		});
 		const rect = await helper.getRect(page, '#dropdown');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await helper.reset(page, '#dropdown'); //Make sure the dropdown is closed before the next test
+		await helper.reset(page, '#dropdown'); // Make sure the dropdown is closed before the next test
+	});
+
+	it('dropdown open enforce-time-intervals', async function() {
+		await page.$eval('#enforce', (elem) => elem.skeleton = false);
+		await helper.open(page, '#enforce');
+		const rect = await helper.getRect(page, '#enforce');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await helper.reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 	});
 
 });
