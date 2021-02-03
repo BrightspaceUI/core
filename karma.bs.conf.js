@@ -58,6 +58,7 @@ module.exports = config => {
 				//
 				// npm run test -- --grep test/foo/bar.test.js
 				// npm run test -- --grep test/bar/*
+				'tools/resize-observer-test-error-handler.js',
 				{ pattern: config.grep ? config.grep : defaultPattern, type: 'module' },
 			],
 			// see the karma-esm docs for all options
