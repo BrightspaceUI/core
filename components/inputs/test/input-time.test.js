@@ -2,6 +2,7 @@ import '../input-time.js';
 import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
 const fixtureWithValue = '<d2l-input-time value="11:22:33"></d2l-input-time>';
@@ -36,6 +37,7 @@ describe('d2l-input-time', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	afterEach(() => {
 		documentLocaleSettings.reset();
+		documentLocaleSettings.timezone.identifier = 'America/Toronto';
 	});
 
 	describe('constructor', () => {
@@ -93,9 +95,26 @@ describe('d2l-input-time', () => {
 			expect(elem.getTime()).to.deep.equal({ hours: 11, minutes: 22, seconds: 33 });
 		});
 
-		it('should default to 12:01 AM', async() => {
+		it('should default to next interval', async() => {
+			const newToday = new Date('2018-02-12T11:33Z');
+			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
 			const elem = await fixture(basicFixture);
-			expect(elem.value).to.equal('00:01:00');
+			expect(elem.value).to.equal('07:00:00');
+
+			clock.restore();
+		});
+
+		it('should default to next interval when timezone is Australia', async() => {
+			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
+			const newToday = new Date('2018-02-12T11:33Z');
+			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
+			const elem = await fixture(basicFixture);
+			expect(elem.value).to.equal('20:30:00');
+
+			clock.restore();
+			documentLocaleSettings.timezone.identifier = 'America/Toronto';
 		});
 
 		it('should apply custom default value', async() => {
@@ -121,8 +140,13 @@ describe('d2l-input-time', () => {
 		});
 
 		it('should apply default when given value is empty', async() => {
+			const newToday = new Date('2018-07-12T11:33Z');
+			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
 			const elem = await fixture('<d2l-input-time label="label text" value=""></d2l-input-time>');
-			expect(getInput(elem).value).to.equal('12:01 AM');
+			expect(getInput(elem).value).to.equal('8:00 AM');
+
+			clock.restore();
 		});
 
 		it('should correctly set given value', async() => {

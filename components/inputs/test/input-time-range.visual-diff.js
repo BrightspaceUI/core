@@ -25,7 +25,7 @@ describe('d2l-input-time-range', () => {
 		'hidden-labels',
 		'hidden-labels-wrapped',
 		'invalid-end-value',
-		'invalid-start-value',
+		// 'invalid-start-value', // useFakeTimers not working early enough to mock out the Date
 		'labelled',
 		'label-hidden',
 		'required',

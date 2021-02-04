@@ -87,14 +87,14 @@ describe('d2l-input-time', () => {
 		await helper.reset(page, '#basic');
 	});
 
-	it('dropdown open', async function() {
+	it('dropdown open top', async function() {
 		await helper.open(page, '#dropdown');
 		const rect = await helper.getRect(page, '#dropdown');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		await helper.reset(page, '#dropdown'); // Make sure the dropdown is closed before the next test
 	});
 
-	it('dropdown open keydown', async function() {
+	it('dropdown open keydown top', async function() {
 		await page.$eval('#dropdown', (elem) => {
 			const input = elem.shadowRoot.querySelector('input');
 			const eventObj = document.createEvent('Events');
@@ -113,6 +113,14 @@ describe('d2l-input-time', () => {
 		const rect = await helper.getRect(page, '#enforce');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		await helper.reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
+	});
+
+	it('dropdown open default', async function() {
+		await page.$eval('#required', (elem) => elem.skeleton = false);
+		await helper.open(page, '#required');
+		const rect = await helper.getRect(page, '#required');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		await helper.reset(page, '#required'); // Make sure the dropdown is closed before the next test
 	});
 
 });

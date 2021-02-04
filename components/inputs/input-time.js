@@ -4,7 +4,7 @@ import '../menu/menu.js';
 import '../menu/menu-item-radio.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatDateInISOTime, getDateFromISOTime } from '../../helpers/dateTime.js';
+import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
@@ -39,20 +39,25 @@ export function getIntervalNumber(size) {
 	}
 }
 
-export function getDefaultTime(time, enforceTimeIntervals) {
+export function getDefaultTime(time, enforceTimeIntervals, timeInterval) {
+	timeInterval = timeInterval ? timeInterval : 'thirty';
 	switch (time) {
 		case 'endOfDay':
 			return END_OF_DAY;
 		case 'startOfDay':
-		case undefined:
 			return enforceTimeIntervals ? MIDNIGHT : START_OF_DAY;
+		case undefined: {
+			const today = getToday();
+			const date = new Date(today.year, today.month - 1, today.date, today.hours, today.minutes, 0);
+			return getTimeAtInterval(timeInterval, date);
+		}
 		default:
 			return getDateFromISOTime(time);
 	}
 }
 
-export function getFormattedDefaultTime(defaultValue, enforceTimeIntervals) {
-	const time = getDefaultTime(defaultValue, enforceTimeIntervals);
+export function getFormattedDefaultTime(defaultValue, enforceTimeIntervals, timeInterval) {
+	const time = getDefaultTime(defaultValue, enforceTimeIntervals, timeInterval);
 	return formatDateInISOTime(time);
 }
 
@@ -214,7 +219,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		}
 
 		const oldValue = this.value;
-		let time = val === '' || val === null ? getDefaultTime(this.defaultValue, this.enforceTimeIntervals) : getDateFromISOTime(val);
+		let time = val === '' || val === null ? getDefaultTime(this.defaultValue, this.enforceTimeIntervals, this.timeInterval) : getDateFromISOTime(val);
 
 		if (this.enforceTimeIntervals) {
 			time = getTimeAtInterval(this.timeInterval, time);
@@ -231,7 +236,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		}
 
 		if (this.value === undefined) {
-			const time = getDefaultTime(this.defaultValue, this.enforceTimeIntervals);
+			const time = getDefaultTime(this.defaultValue, this.enforceTimeIntervals, this.timeInterval);
 			this._value = formatDateInISOTime(time);
 			this._formattedValue = formatTime(time);
 		}
