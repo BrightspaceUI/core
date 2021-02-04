@@ -68,6 +68,9 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			:host([on]) .d2l-switch-inner {
 				background-color: var(--d2l-color-celestine-plus-2);
 			}
+			:host(:not([on])) .d2l-switch-inner {
+				background-color: var(--d2l-color-regolith);
+			}
 			.d2l-switch-toggle {
 				position: relative;
 				transition: transform 150ms ease-out;
