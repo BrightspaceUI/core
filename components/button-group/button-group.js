@@ -1,5 +1,9 @@
 /* eslint-disable sort-class-members/sort-class-members */
 import '../colors/colors.js';
+import '../dropdown/dropdown-menu.js';
+import '../menu/menu-item.js';
+import '../menu/menu-item-link.js';
+import '../menu/menu-item-separator.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonGroupMixin } from './button-group-mixin.js';
 // import { buttonStyles } from './button-styles.js';
@@ -9,7 +13,7 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 
 /**
  *
- * A button group component that can be used to display a set of buttons 
+ * A button group component that can be used to display a set of buttons
  *
  * @slot - Buttons, dropdown buttons, links or other items to be added to the container
  */
@@ -18,10 +22,11 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 	static get properties() {
 		return {
 			// todo implement autoshow: uses classes as min and max delimeters
-			// _autoShow: {
-			// 	type: String,
-			// 	value: false
-			// },
+			autoShow: {
+				type: Boolean,
+				attribute: 'auto-show',
+				// value: false
+			},
 			/**
 			 * minimum amount of buttons to show
 			 */
@@ -37,10 +42,13 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 		};
 	}
 
-
 	static get styles() {
 		return [offscreenStyles,
 			css`
+			:host {
+				display: block;
+			}
+
 			:host .d2l-button-group-container {
 				display: flex;
 				flex: 0 1 auto;
@@ -79,12 +87,6 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 				margin-right: 0;
 			}
 
-			/* using !important to force override.  ex. consumer has explicitly
-			specified display. note: inline styles, and shadow-dom with consumer specified
-			css will override this unless !important is specified */
-			:host .d2l-button-group-container ::slotted([chomped]) {
-				display: none !important;
-			}
 
 			:host([mini]) .d2l-dropdown-opener {
 				padding-left: 0.5rem;
@@ -99,7 +101,7 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 				margin-left: 0.3rem;
 				margin-right: 0;
 			}
-			# todo: apply the d2l-offscreen class in mini mode so the text is hidden
+			/* todo: apply the d2l-offscreen class in mini mode so the text is hidden */
 			:host([mini]) .d2l-dropdown-opener-text {
 				@apply --d2l-offscreen;
 			}`
@@ -112,6 +114,10 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 		this._getItems = this._getItems.bind(this);
 		this._addEventListeners = this._addEventListeners.bind(this);
 		this._chomp = this._chomp.bind(this);
+
+		this._autoShowClass = 'd2l-button-group-show',
+		this._autoNoShowClass = 'd2l-button-group-no-show',
+		this._refId = 0;
 	}
 
 	connectedCallback() {
@@ -138,10 +144,18 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 			}
 			return itemLayout;
 		});
-
-		this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
+		// this element isnt rendered yet here for some reason, width is 0
+		this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth || 174;
 		this._layout.availableWidth = this._getContainerWidth();
+		this._autoDetectBoundaries(this._items);
 		this._chomp(this._items);
+	}
+
+	update(changedProperties) {
+		super.update(changedProperties);
+		if (changedProperties.autoShow) {
+			this._autoDetectBoundaries(this._getItems());
+		}
 	}
 
 	disconnectedCallback() {
@@ -158,9 +172,10 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 						<!-- todo: localize this text or provide it as a property -->
 						<span class="d2l-dropdown-opener-text">More Actions</span>
 						<!-- todo: determine if icon is used/provide it as prop -->
-						<!-- <d2l-icon icon="[[icon]]"></d2l-icon> -->
+						<d2l-icon icon="tier1:chevron-down"></d2l-icon>
 					</d2l-button>
-					<d2l-dropdown-menu render-content="">
+					
+					<d2l-dropdown-menu>
 						<!-- todo: localize this text or provide it as a property -->
 						<d2l-menu id="overflowMenu" label="More Actions">
 						</d2l-menu>
@@ -172,6 +187,27 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 
 	_addEventListeners() {
 		window.addEventListener('resize', this._handleResize);
+	}
+
+	_autoDetectBoundaries(items) {
+
+		let minToShow, maxToShow;
+		for (let i = 0; i < items.length; i++) {
+			if (items[i].classList.contains(this._autoShowClass)) {
+				minToShow = i + 1;
+			}
+			if (maxToShow === undefined && items[i].classList.contains(this._autoNoShowClass)) {
+				maxToShow = i;
+			}
+		}
+
+		if (minToShow !== undefined) {
+			this.minToShow = minToShow;
+		}
+		if (maxToShow !== undefined) {
+			this.maxToShow = maxToShow;
+		}
+
 	}
 
 	_createLayoutItem(item) {
@@ -215,7 +251,10 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 		}
 
 		const tagName = item.tagName.toLowerCase();
-		if (tagName === 'd2l-dropdown-button' || tagName === 'd2l-dropdown-button-subtle') {
+		// todo: is d2l-dropdown-button-subtle a thing still?
+		// todo: there is a bug here where the menu doesnt go back to its default state
+		// and instead stays as a sub menu item
+		if (tagName === 'd2l-dropdown' || tagName === 'd2l-dropdown-button-subtle') {
 			const menu = menuItem.querySelector('d2l-menu');
 			menu.removeAttribute('child-view');
 			item.querySelector('d2l-dropdown-menu').appendChild(
@@ -226,11 +265,8 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 
 	}
 
-	// _chomp(item, index) {
-	// 	this._moveToOverflow(item, index);
-	// 	this._removeFromMainMenu(item, index);
-	// }
 	_chomp(items) {
+		this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth || 174;
 
 		if (this._layout.totalWidth === 0) {
 			this._overflowMenu.style.display = 'none';
@@ -356,7 +392,7 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 			menuItem = this._createMenuItemLink(item);
 		} else if (item.getAttribute('role') === 'separator') {
 			menuItem = this._createMenuItemSeparator();
-		} else if (tagName === 'd2l-dropdown-button' || tagName === 'd2l-dropdown-button-subtle') {
+		} else if (tagName === 'd2l-dropdown' || tagName === 'd2l-dropdown-button-subtle') {
 			menuItem = this._createMenuItemMenu(item);
 		} else if (item.classList.contains('d2l-button-group-custom-item')) {
 			menuItem = this._createMenuItem(item);
@@ -381,24 +417,6 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 
 	}
 
-	_removeFromMainMenu(item) {
-
-		// const menuItem = dom(this._overflowMenu).querySelector('[bgi-ref="' + item.getAttribute('bgi-ref') + '"]');
-		// if (!menuItem) {
-		// 	return;
-		// }
-
-		// const tagName = item.tagName.toLowerCase();
-		// if (tagName === 'd2l-dropdown-button' || tagName === 'd2l-dropdown-button-subtle') {
-		// 	const menu = dom(menuItem).querySelector('d2l-menu');
-		// 	menu.removeAttribute('child-view');
-		// 	dom(item).querySelector('d2l-dropdown-menu').appendChild(
-		// 		menu
-		// 	);
-		// }
-		// dom(dom(menuItem).parentNode).removeChild(menuItem);
-
-	}
 	_getContainerWidth() {
 		const container = this.shadowRoot.querySelector('.d2l-button-group-container');
 		const width = container.clientWidth;
@@ -410,20 +428,6 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 		}
 		this._layout.availableWidth = this._container.clientWidth;
 		this._chomp();
-
-		// const containerWidth = this._getContainerWidth();
-		// // const overflowButtonWidth = this._getItemLayout(this._overflowMenu);
-		// const itemWidths = [];
-		// // let totalWidth = overflowButtonWidth;
-		// for (let i = 0; i < this._itemStack.length; i++) {
-		// 	itemWidths[i] = this._getItemLayout(this._itemStack[i]);
-		// 	totalWidth += itemWidths[i];
-		// }
-
-		// if (totalWidth > containerWidth) {
-		// 	console.log("CHOMP CHOMP CHOMP");
-		// 	this._chomp(this._itemStack[this._itemStack.length - 1], this._itemStack.length - 1);
-		// }
 	}
 	_removeEventListeners() {
 		window.removeEventListener('resize', this._handleResize);
@@ -460,9 +464,10 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 
 	_createMenuItemMenu(item) {
 		item.querySelector('d2l-dropdown-menu').forceRender();
+		const menuOpener = item.querySelector('d2l-dropdown-button');
 		const subMenu = item.querySelector('d2l-menu');
 		const menuItem = document.createElement('d2l-menu-item');
-		menuItem.setAttribute('text', item.text);
+		menuItem.setAttribute('text', menuOpener.text);
 		menuItem.appendChild(subMenu);
 		return menuItem;
 	}
