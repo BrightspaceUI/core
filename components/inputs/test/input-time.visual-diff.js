@@ -64,7 +64,7 @@ describe('d2l-input-time', () => {
 							input.updateComplete.then(() => {
 								setTimeout(() => {
 									resolve();
-								}, 10);
+								}, 100);
 							});
 						}, { once: true });
 						document.querySelector('html').setAttribute('lang', lang);
