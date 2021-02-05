@@ -105,6 +105,16 @@ describe('d2l-input-time', () => {
 			clock.restore();
 		});
 
+		it('should default to next interval when current time is on an interval', async() => {
+			const newToday = new Date('2018-02-12T12:00Z');
+			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
+			const elem = await fixture(basicFixture);
+			expect(elem.value).to.equal('07:30:00');
+
+			clock.restore();
+		});
+
 		it('should default to next interval when timezone is Australia', async() => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 			const newToday = new Date('2018-02-12T11:33Z');
