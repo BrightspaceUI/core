@@ -100,6 +100,7 @@ describe('d2l-input-time-range', () => {
 		});
 
 		it('should default start and end values to next interval and interval', async() => {
+			documentLocaleSettings.timezone.identifier = 'America/Toronto';
 			const newToday = new Date('2018-02-12T11:33Z');
 			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 

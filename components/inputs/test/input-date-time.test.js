@@ -2,6 +2,7 @@ import { expect, fixture, oneEvent } from '@open-wc/testing';
 import { _formatLocalDateTimeInISO } from '../input-date-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-date-time label="label text"></d2l-input-date-time>';
 const minMaxFixture = '<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>';
@@ -22,6 +23,15 @@ function getChildElem(elem, selector) {
 describe('d2l-input-date-time', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
+
+	let clock;
+
+	before(() => {
+		const newToday = new Date('2018-01-12T18:20:00.000Z');
+		clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+	});
+
+	after(() => clock.restore());
 
 	describe('constructor', () => {
 
@@ -66,7 +76,7 @@ describe('d2l-input-date-time', () => {
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
 				await oneEvent(elem, 'invalid-change');
-				expect(elem.value).to.equal('2018-02-02T00:01:00.000');
+				expect(elem.value).to.equal('2018-02-02T13:30:00.000');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
@@ -98,7 +108,7 @@ describe('d2l-input-date-time', () => {
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
 				await oneEvent(elem, 'invalid-change');
-				expect(elem.value).to.equal('2018-02-02T05:01:00.000Z');
+				expect(elem.value).to.equal('2018-02-02T18:30:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
@@ -110,7 +120,7 @@ describe('d2l-input-date-time', () => {
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
 				await oneEvent(elem, 'invalid-change');
-				expect(elem.value).to.equal('2020-02-02T05:01:00.000Z');
+				expect(elem.value).to.equal('2020-02-02T18:30:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
@@ -157,7 +167,7 @@ describe('d2l-input-date-time', () => {
 			inputElem.value = '2018-02-02';
 			setTimeout(() => dispatchEvent(inputElem, 'change'));
 			await oneEvent(elem, 'change');
-			expect(elem.value).to.equal('2018-02-02T05:01:00.000Z');
+			expect(elem.value).to.equal('2018-02-02T18:30:00.000Z');
 		});
 
 		it('should fire "change" event when time value changes and there is a date', async() => {

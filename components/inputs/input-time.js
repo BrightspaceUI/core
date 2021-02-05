@@ -40,7 +40,7 @@ export function getIntervalNumber(size) {
 }
 
 export function getDefaultTime(time, enforceTimeIntervals, timeInterval) {
-	timeInterval = timeInterval ? timeInterval : 'thirty';
+	timeInterval = timeInterval || 'thirty';
 	switch (time) {
 		case 'endOfDay':
 			return END_OF_DAY;
@@ -54,11 +54,6 @@ export function getDefaultTime(time, enforceTimeIntervals, timeInterval) {
 		default:
 			return getDateFromISOTime(time);
 	}
-}
-
-export function getFormattedDefaultTime(defaultValue, enforceTimeIntervals, timeInterval) {
-	const time = getDefaultTime(defaultValue, enforceTimeIntervals, timeInterval);
-	return formatDateInISOTime(time);
 }
 
 export function getTimeAtInterval(timeInterval, time) {
