@@ -183,7 +183,8 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 					maxlength="${ifDefined(this.maxlength)}"
 					minlength="${ifDefined(this.minlength)}"
 					placeholder="${ifDefined(this.placeholder)}"
-					?required="${this.required}">${this.value}</textarea>
+					?required="${this.required}"
+					.value="${this.value}">${this.value}</textarea>
 				${this.validationError ? html`<d2l-tooltip for=${this._textareaId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null}
 			</div>
 			${offscreenContainer}

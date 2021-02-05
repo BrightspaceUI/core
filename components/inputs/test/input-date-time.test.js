@@ -1,4 +1,4 @@
-import { expect, fixture, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
 import { _formatLocalDateTimeInISO } from '../input-date-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -43,6 +43,7 @@ describe('d2l-input-date-time', () => {
 
 	describe('min and max value', () => {
 		it('should set correct min and max on d2l-input-date', async() => {
+			await aTimeout(5); // Fixes flaky test potentially caused by timezone not yet being set
 			const elem = await fixture(minMaxFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-date');
 			expect(inputElem.minValue).to.equal('2018-08-26');

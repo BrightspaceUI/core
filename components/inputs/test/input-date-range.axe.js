@@ -2,17 +2,6 @@ import '../input-date-range.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
 describe('d2l-input-date-range', () => {
-	before(() => {
-		const e = window.onerror;
-		window.onerror = function(err) {
-			if (err === 'ResizeObserver loop limit exceeded') {
-				console.warn('Ignored: ResizeObserver loop limit exceeded');
-				return false;
-			} else {
-				return e(...arguments);
-			}
-		};
-	});
 
 	it('normal', async() => {
 		const elem = await fixture(html`<d2l-input-date-range label="label text"></d2l-input-date-range>`);
