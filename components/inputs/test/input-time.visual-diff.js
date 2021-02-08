@@ -114,14 +114,6 @@ describe('d2l-input-time', () => {
 			await helper.reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 
-		it('dropdown open default', async function() {
-			await page.$eval('#required', (elem) => elem.skeleton = false);
-			await helper.open(page, '#required');
-			const rect = await helper.getRect(page, '#required');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#required'); // Make sure the dropdown is closed before the next test
-		});
-
 	});
 
 	it('focus', async function() {
