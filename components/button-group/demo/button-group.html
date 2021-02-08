@@ -10,6 +10,7 @@
 			import '../../demo/demo-page.js';
 			import '../button-group.js';
 			import '../../button/button.js';
+			import '../../button/button-subtle.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../../menu/menu-item-link.js';
@@ -24,12 +25,12 @@
 
 		<d2l-demo-page page-title="d2l-button-group">
 
-			<h2>Button Group</h2>
+			<h2>Button Group (min/max)</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group auto-show autoShow>
-						<d2l-button class="d2l-button-group-show" primary="">New</d2l-button>
+					<d2l-button-group minToShow="2" maxToShow="4">
+						<d2l-button primary="">New</d2l-button>
 						<d2l-dropdown>
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
 							<d2l-dropdown-menu id="dropdown" >
@@ -45,19 +46,21 @@
 						</d2l-dropdown>
 
 						<d2l-button>Copy</d2l-button>
-						<d2l-button class="d2l-button-group-no-show">Import</d2l-button>
+						<d2l-button>Import</d2l-button>
 						<d2l-button>Delete</d2l-button>
 						<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
 					</d2l-button-group>
 				</template>
 			</d2l-demo-snippet>
-			<!-- <d2l-demo-snippet>
+
+			<h2>Button Group (min max with autoShow)</h2>
+			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group >
+					<d2l-button-group auto-show>
 						<d2l-button primary="">New</d2l-button>
 						<d2l-dropdown class="d2l-button-group-show">
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
-							<d2l-dropdown-menu id="dropdown" >
+							<d2l-dropdown-menu class="d2l-button-group-show" id="dropdown" >
 								<d2l-menu label="Astronomy">
 									<d2l-menu-item text="Introduction"></d2l-menu-item>
 									<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
@@ -68,14 +71,35 @@
 								</d2l-menu>
 							</d2l-dropdown-menu>
 						</d2l-dropdown>
-
-						<d2l-button class="d2l-button-group-no-show">Copy</d2l-button>
+						<d2l-button>Copy</d2l-button>
 						<d2l-button>Import</d2l-button>
-						<d2l-button>Delete</d2l-button>
+						<d2l-button class="d2l-button-group-no-show">Delete</d2l-button>
 						<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
 					</d2l-button-group>
 				</template>
-			</d2l-demo-snippet> -->
+			</d2l-demo-snippet>
+			<h2>Action Button Group</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-group action>
+						<d2l-button-subtle primary="">New</d2l-button-subtle>
+						<d2l-button-subtle>Copy</d2l-button-subtle>
+						<d2l-button-subtle>Import</d2l-button-subtle>
+						<d2l-button-subtle class="d2l-button-group-no-show">Delete</d2l-button-subtle>
+					</d2l-button-group>
+				</template>
+			</d2l-demo-snippet>
+			<h2>Action Button Group (more icon)</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-group action opener-type="more">
+						<d2l-button-subtle primary="">New</d2l-button-subtle>
+						<d2l-button-subtle>Copy</d2l-button-subtle>
+						<d2l-button-subtle>Import</d2l-button-subtle>
+						<d2l-button-subtle class="d2l-button-group-no-show">Delete</d2l-button-subtle>
+					</d2l-button-group>
+				</template>
+			</d2l-demo-snippet>
 		</d2l-demo-page>
 	</body>
 </html>

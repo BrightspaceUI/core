@@ -22,7 +22,7 @@ describe('d2l-button-group', () => {
 	describe('', () => {
 		[
 			{ name: 'min-items-to-show', selector: '#min' },
-			// { name: 'max-items-to-show', selector: '#max' },
+			{ name: 'max-items-to-show', selector: '#max' },
 			// {
 			// 	name: 'min-and-max-items-to-show',
 			// 	selector: '#min-max',

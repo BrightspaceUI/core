@@ -4,14 +4,10 @@ import '../dropdown/dropdown-menu.js';
 import '../menu/menu-item.js';
 import '../menu/menu-item-link.js';
 import '../menu/menu-item-separator.js';
-import { classMap } from 'lit-html/directives/class-map.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonGroupMixin } from './button-group-mixin.js';
-// import { buttonStyles } from './button-styles.js';
-// import { ifDefined } from 'lit-html/directives/if-defined.js';
-// import { labelStyles } from '../typography/styles.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-
 /**
  *
  * A button group component that can be used to display a set of buttons
@@ -43,11 +39,25 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 				value: -1
 			},
 			/**
-			 * Chrinks the More Actions button down to '...' for scenarios with tight spacing
+			 * Shrinks the More Actions button down to '...' for scenarios with tight spacing
 			 */
 			mini: {
 				type: Boolean,
 				reflect: true
+			},
+			/**
+			 * Setting this property to true will change the look of the dopdown button to a subtle button for action button groups
+			 */
+			action: {
+				type: Boolean,
+				attribute: 'action',
+			},
+			/**
+			 * Setting this property to true will change the look of the dopdown button to a subtle button for action button groups
+			 */
+			openerType: {
+				type: String,
+				attribute: 'opener-type',
 			},
 		};
 	}
@@ -97,6 +107,20 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 				margin-right: 0;
 			}
 
+			:host([action]) .d2l-dropdown-action-opener-text {
+				margin-right: 0.3rem;
+				vertical-align: middle;
+			}
+
+			:host([action]) .d2l-dropdown-action-opener-text,
+			d2l-icon {
+				color: var(--d2l-color-celestine);
+			}
+
+			:host([action]:dir(rtl)) .d2l-dropdown-action-opener-text {
+				margin-left: 0.3rem;
+				margin-right: 0;
+			}
 
 			:host([mini]) .d2l-dropdown-opener {
 				padding-left: 0.5rem;
@@ -120,7 +144,7 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 		this._getItems = this._getItems.bind(this);
 		this._addEventListeners = this._addEventListeners.bind(this);
 		this._chomp = this._chomp.bind(this);
-
+		this._getOpener = this._getOpener.bind(this);
 		this._autoShowClass = 'd2l-button-group-show',
 		this._autoNoShowClass = 'd2l-button-group-no-show',
 		this._refId = 0;
@@ -175,26 +199,36 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 		this._removeEventListeners();
 	}
 
-	render() {
+	_getOpener() {
+		const iconType = this.mini || this.openerType === 'more' ? 'tier1:more' : 'tier1:chevron-down';
 		const overFlowButtonTextClasses = classMap({
-			'd2l-dropdown-opener-text': true,
-			'd2l-offscreen': this.mini
-		});	
-		const overFlowButtonMiniClasses = classMap({
-			'd2l-offscreen': !this.mini
+			'd2l-dropdown-opener-text': !this.action,
+			'd2l-dropdown-action-opener-text': this.action,
+			'd2l-offscreen': this.mini || this.openerType
 		});
+
+		if (this.action) {
+			return html`<d2l-button-subtle class="d2l-dropdown-opener">
+				<!-- todo: localize this text or provide it as a property -->
+				<span class="${overFlowButtonTextClasses}">More Actions</span>
+				<d2l-icon icon="${iconType}"></d2l-icon>
+			</d2l-button-subtle>`;
+		}
+
+		return html`<d2l-button class="d2l-dropdown-opener">
+			<!-- todo: localize this text or provide it as a property -->
+			<span class="${overFlowButtonTextClasses}">More Actions</span>
+			<!-- todo: determine if icon is used/provide it as prop -->
+			<d2l-icon icon="${iconType}"></d2l-icon>
+		</d2l-button>`;
+	}
+	render() {
+		const opener = this._getOpener();
 		return html`
 			<div class="d2l-button-group-container">
 				<slot id="buttons"></slot>
 				<d2l-dropdown class="d2l-overflow-dropdown">
-					<d2l-button class="d2l-dropdown-opener">
-						<!-- todo: localize this text or provide it as a property -->
-						<span class="${overFlowButtonTextClasses}">More Actions</span>
-						<!-- todo: determine if icon is used/provide it as prop -->
-						<d2l-icon class="${overFlowButtonTextClasses}" icon="tier1:chevron-down"></d2l-icon>
-						<d2l-icon class="${overFlowButtonMiniClasses}" icon="tier1:more"></d2l-icon>
-					</d2l-button>
-					
+					${opener}
 					<d2l-dropdown-menu>
 						<!-- todo: localize this text or provide it as a property -->
 						<d2l-menu id="overflowMenu" label="More Actions">
@@ -277,9 +311,6 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 	}
 
 	_chomp(items) {
-		if (!this.mini) {
-			// this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth || 174;
-		}
 
 		if (this._layout.totalWidth === 0) {
 			this._overflowMenu.style.display = 'none';
@@ -381,13 +412,6 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 				undoChomp(items[k]);
 			}
 		}
-
-		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		//if (this.minToShow > 0 && (showing.width + this._layout.overflowMenuWidth > this._layout.availableWidth)) {
-		//	this.mini = true;
-		//} else {
-		//	this.mini = false;
-		//}
 
 		this._overflowMenu.style.display = ((!isSoftOverflowing && !isForcedOverflowing) ? 'none' : '');
 
