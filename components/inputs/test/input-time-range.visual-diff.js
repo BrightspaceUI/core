@@ -236,6 +236,16 @@ describe('d2l-input-time-range', () => {
 
 		before(async() => {
 			await page.reload();
+			await page.$eval('#labelled', (elem) => {
+				const timeElem = elem.shadowRoot.querySelector('d2l-input-time');
+				return new Promise((resolve) => {
+					elem.updateComplete.then(() => {
+						timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
+							resolve();
+						});
+					});
+				});
+			});
 		});
 
 		[
