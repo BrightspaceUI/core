@@ -19,6 +19,7 @@ describe('d2l-input-time', () => {
 
 	[
 		'disabled',
+		'enforce',
 		'labelled',
 		'label-hidden',
 		'required'
@@ -81,31 +82,45 @@ describe('d2l-input-time', () => {
 		});
 	});
 
+	describe('open behavior', () => {
+
+		afterEach(async() => {
+			await helper.reset(page, '#dropdown');
+		});
+
+		it('dropdown open top', async function() {
+			await helper.open(page, '#dropdown');
+			const rect = await helper.getRect(page, '#dropdown');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('dropdown open keydown top', async function() {
+			await page.$eval('#dropdown', (elem) => {
+				const input = elem.shadowRoot.querySelector('input');
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				input.dispatchEvent(eventObj);
+			});
+			const rect = await helper.getRect(page, '#dropdown');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('dropdown open enforce-time-intervals', async function() {
+			await page.$eval('#enforce', (elem) => elem.skeleton = false);
+			await helper.open(page, '#enforce');
+			const rect = await helper.getRect(page, '#enforce');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			await helper.reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
+		});
+
+	});
+
 	it('focus', async function() {
 		await page.$eval('#basic', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		await helper.reset(page, '#basic');
-	});
-
-	it('dropdown open', async function() {
-		await helper.open(page, '#dropdown');
-		const rect = await helper.getRect(page, '#dropdown');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await helper.reset(page, '#dropdown'); //Make sure the dropdown is closed before the next test
-	});
-
-	it('dropdown open keydown', async function() {
-		await page.$eval('#dropdown', (elem) => {
-			const input = elem.shadowRoot.querySelector('input');
-			const eventObj = document.createEvent('Events');
-			eventObj.initEvent('keydown', true, true);
-			eventObj.keyCode = 13;
-			input.dispatchEvent(eventObj);
-		});
-		const rect = await helper.getRect(page, '#dropdown');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await helper.reset(page, '#dropdown'); //Make sure the dropdown is closed before the next test
 	});
 
 });

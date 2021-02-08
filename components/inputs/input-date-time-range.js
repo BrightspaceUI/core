@@ -213,6 +213,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 							min-value="${ifDefined(this.minValue)}"
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
+							time-default-value="startOfDay"
 							value="${ifDefined(this.startValue)}">
 						</d2l-input-date-time>
 						<slot name="start" @slotchange="${this._onSlotChange}"></slot>
@@ -233,6 +234,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 							min-value="${ifDefined(this.minValue)}"
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
+							time-default-value="endOfDay"
 							value="${ifDefined(this.endValue)}">
 						</d2l-input-date-time>
 						<slot name="end" @slotchange="${this._onSlotChange}"></slot>
