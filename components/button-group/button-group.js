@@ -8,6 +8,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonGroupMixin } from './button-group-mixin.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import { throttle } from 'lodash-es';
 /**
  *
  * A button group component that can be used to display a set of buttons
@@ -240,7 +241,7 @@ class ButtonGroup extends ButtonGroupMixin(LitElement) {
 	}
 
 	_addEventListeners() {
-		window.addEventListener('resize', this._handleResize);
+		window.addEventListener('resize', throttle(this._handleResize, 10));
 	}
 
 	_autoDetectBoundaries(items) {
