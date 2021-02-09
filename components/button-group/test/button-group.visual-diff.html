@@ -17,6 +17,17 @@
 			import '../../link/link.js';
 			import '../button-group.js';
 		</script>
+		<style>
+			.small {
+				width: 100px;
+			}
+			.medium {
+				width: 200px;
+			}
+			.large {
+				width: 500px;
+			}
+		</style>
 		<title>d2l-button-group</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -25,7 +36,7 @@
 	<body class="d2l-typography">
 		<div class="visual-diff">
 			<!-- no properties -->
-			<d2l-button-group id="min">
+			<d2l-button-group id="noProps">
 				<d2l-button>New</d2l-button>
 				<d2l-dropdown>
 					<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
@@ -47,8 +58,31 @@
 			</d2l-button-group>
 		</div>
 		<div class="visual-diff">
-			<d2l-button-group id="max" maxToShow="4">
-				<d2l-button primary="">New</d2l-button>
+			<!-- no properties -->
+			<d2l-button-group id="min" min-to-show="3">
+				<d2l-button>New</d2l-button>
+				<d2l-dropdown>
+					<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
+					<d2l-dropdown-menu id="dropdown" >
+						<d2l-menu label="Astronomy">
+							<d2l-menu-item text="Introduction"></d2l-menu-item>
+							<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+							<d2l-menu-item text="The Solar System"></d2l-menu-item>
+							<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
+							<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+							<d2l-menu-item text="The Universe"></d2l-menu-item>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+				<d2l-button>Copy</d2l-button>
+				<d2l-button>Import</d2l-button>
+				<d2l-button>Delete</d2l-button>
+				<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
+			</d2l-button-group>
+		</div>
+		<div class="visual-diff">
+			<d2l-button-group id="max" max-to-show="2">
+				<d2l-button>New</d2l-button>
 						<d2l-dropdown>
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
 							<d2l-dropdown-menu id="dropdown" >
@@ -69,10 +103,27 @@
 			</d2l-button-group>
 		</div>
 		<div class="visual-diff">
-			<d2l-button-group id=""></d2l-button-group>
+			<d2l-button-group id="min-auto" auto-show>
+				<d2l-button>one</d2l-button>
+				<d2l-button class="d2l-button-group-show">two</d2l-button>
+				<d2l-button>three</d2l-button>
+				<d2l-button>four</d2l-button>
+				<d2l-button>five</d2l-button>
+			</d2l-button-group>
 		</div>
 		<div class="visual-diff">
-			<d2l-button-group id=""></d2l-button-group>
+			<d2l-button-group id="max-auto" auto-show>
+				<d2l-button>one</d2l-button>
+				<d2l-button>two</d2l-button>
+				<d2l-button class="d2l-button-group-no-show">three</d2l-button>
+				<d2l-button>four</d2l-button>
+				<d2l-button>five</d2l-button>
+			</d2l-button-group>
+		</div>
+		<div class="visual-diff">
+			<d2l-button-group id="one-item" auto-show>
+				<d2l-button>one</d2l-button>
+			</d2l-button-group>
 		</div>
 	</body>
 </html>

@@ -29,7 +29,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group minToShow="2" maxToShow="4">
+					<d2l-button-group min-to-show="2" max-to-show="4">
 						<d2l-button primary="">New</d2l-button>
 						<d2l-dropdown>
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
@@ -51,16 +51,16 @@
 						<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
 					</d2l-button-group>
 				</template>
-			</d2l-demo-snippet>
+			</d2l-demo-snippet> 
 
 			<h2>Button Group (min max with autoShow)</h2>
 			<d2l-demo-snippet>
 				<template>
 					<d2l-button-group auto-show>
 						<d2l-button primary="">New</d2l-button>
-						<d2l-dropdown>
+						<d2l-dropdown class="d2l-button-group-show">
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
-							<d2l-dropdown-menu class="d2l-button-group-show" id="dropdown" >
+							<d2l-dropdown-menu id="dropdown" >
 								<d2l-menu label="Astronomy">
 									<d2l-menu-item text="Introduction"></d2l-menu-item>
 									<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
@@ -78,14 +78,15 @@
 					</d2l-button-group>
 				</template>
 			</d2l-demo-snippet>
+			
 			<h2>Action Button Group</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group action>
+					<d2l-button-group action min-to-show="1">
 						<d2l-button-subtle primary="">New</d2l-button-subtle>
 						<d2l-button-subtle>Copy</d2l-button-subtle>
 						<d2l-button-subtle>Import</d2l-button-subtle>
-						<d2l-button-subtle class="d2l-button-group-no-show">Delete</d2l-button-subtle>
+						<d2l-button-subtle>Delete</d2l-button-subtle>
 					</d2l-button-group>
 				</template>
 			</d2l-demo-snippet>
@@ -96,7 +97,7 @@
 						<d2l-button-subtle primary="">New</d2l-button-subtle>
 						<d2l-button-subtle>Copy</d2l-button-subtle>
 						<d2l-button-subtle>Import</d2l-button-subtle>
-						<d2l-button-subtle class="d2l-button-group-no-show">Delete</d2l-button-subtle>
+						<d2l-button-subtle>Delete</d2l-button-subtle>
 					</d2l-button-group>
 				</template>
 			</d2l-demo-snippet>
