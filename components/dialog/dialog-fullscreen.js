@@ -64,8 +64,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				border-radius: 0;
 				box-shadow: none;
 				height: 100%;
-				max-height: initial;
-				max-width: initial;
+				max-height: initial; /* required to override Chrome native positioning */
+				max-width: initial; /* required to override Chrome native positioning */
 				top: 0;
 				width: 100%;
 			}

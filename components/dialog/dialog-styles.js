@@ -28,6 +28,11 @@ export const dialogStyles = css`
 		box-shadow: none;
 	}
 
+	dialog.d2l-dialog-outer {
+		margin-bottom: 0; /* required to override Chrome native positioning */
+		margin-top: 0; /* required to override Chrome native positioning */
+	}
+
 	div.d2l-dialog-outer {
 		left: 0;
 		margin: auto;
