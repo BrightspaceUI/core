@@ -94,10 +94,12 @@ describe('d2l-dialog', () => {
 				});
 
 				it('scroll top shadow', async function() {
+					page.waitForSelector('#dialogLong', { visible: true })
+						.then(async(elem) => {
+							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
+						});
+
 					await helper.open(page, '#dialogLong');
-					page.$eval('#dialogLong #bottom', (bottom) => {
-						bottom.scrollIntoView();
-					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 

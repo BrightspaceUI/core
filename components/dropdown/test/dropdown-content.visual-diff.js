@@ -58,10 +58,18 @@ describe('d2l-dropdown-content', () => {
 
 	it('scroll-top-shadow', async function() {
 		const selector = '#scroll-top-shadow';
+		page.waitForSelector('#bottom', { visible: true })
+			.then(async() => {
+				await page.$eval('#scroll-top-shadow d2l-dropdown-content', (content) => {
+					return new Promise((resolve) => {
+						setTimeout(() => {
+							content.scrollTo(1000);
+							resolve();
+						}, 100);
+					});
+				});
+			});
 		await helper.open(page, selector);
-		await page.$eval('#scroll-top-shadow d2l-dropdown-content', (content) => {
-			content.scrollTo(1000);
-		});
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
