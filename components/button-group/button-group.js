@@ -37,7 +37,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			minToShow: {
 				type: Number,
 				attribute: 'min-to-show',
-				value: 0
+				value: 1
 			},
 			/**
 			 * maximum amount of buttons to show
@@ -55,14 +55,14 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 				reflect: true
 			},
 			/**
-			 * Setting this property to true will change the look of the dopdown button to a subtle button for action button groups
+			 * Setting this property to true will change the look of the dopdown button to a subtle button for subtle button groups
 			 */
-			action: {
+			subtle: {
 				type: Boolean,
-				attribute: 'action',
+				attribute: 'subtle',
 			},
 			/**
-			 * Setting this property to true will change the look of the dopdown button to a subtle button for action button groups
+			 * Setting this property to icon will change the dropdown opener to a ... icon
 			 */
 			openerType: {
 				type: String,
@@ -99,7 +99,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			}
 
 			:host .d2l-button-group-container ::slotted(d2l-button),
-			:host .d2l-button-group-container ::slotted(d2l-button-subtle),
 			:host .d2l-button-group-container ::slotted(d2l-button-icon),
 			:host .d2l-button-group-container ::slotted(d2l-link),
 			:host .d2l-button-group-container ::slotted(span),
@@ -107,35 +106,45 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			:host .d2l-button-group-container ::slotted(d2l-dropdown-button),
 			:host .d2l-button-group-container ::slotted(d2l-dropdown-button-subtle),
 			:host .d2l-button-group-container ::slotted(.d2l-button-group-custom-item) {
-				margin-right: 0.75rem;
+				margin-right: 0.6rem;
 			}
 
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(d2l-button),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(d2l-button-subtle),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(d2l-button-icon),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(d2l-link),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(span),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(d2l-dropdown-button),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(d2l-dropdown-button-subtle),
-			:host(:dir(rtl)) .d2l-button-group-container ::slotted(.d2l-button-group-custom-item) {
-				margin-left: 0.75rem;
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(d2l-button),
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(d2l-button-icon),
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(d2l-link),
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(span),
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(d2l-dropdown-button),
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(d2l-dropdown-button-subtle),
+			:host([dir="rtl"]) .d2l-button-group-container ::slotted(.d2l-button-group-custom-item) {
+				margin-left: 0.6rem;
 				margin-right: 0;
 			}
 
-			:host([action]) .d2l-dropdown-action-opener-text {
+			:host([subtle]) .d2l-button-group-container ::slotted(d2l-button-subtle) {
+				margin-right: 0.2rem;
+			}
+
+			:host([subtle][dir="rtl"]) .d2l-button-group-container ::slotted(d2l-button-subtle) {
+				margin-left: 0.2rem;
+				margin-right: 0;
+			}
+
+			:host([subtle]) .d2l-dropdown-subtle-opener-text {
 				margin-right: 0.3rem;
 				vertical-align: middle;
 			}
 
-			:host([action]) .d2l-dropdown-action-opener-text,
-			d2l-icon {
+			:host([subtle]) .d2l-dropdown-opener-text,
+			:host([subtle]) .d2l-dropdown-subtle-opener-text,
+			:host([subtle]) d2l-button-subtle,
+			:host([subtle]) d2l-icon {
 				color: var(--d2l-color-celestine);
 			}
 
-			:host([action]:dir(rtl)) .d2l-dropdown-action-opener-text {
-				margin-left: 0.3rem;
-				margin-right: 0;
+			:host([subtle]) d2l-button-subtle:hover > .d2l-dropdown-subtle-opener-text,
+			:host([subtle]) d2l-button-subtle:hover > d2l-icon {
+				color: var(--d2l-color-celestine-minus-1);
 			}
 
 			.d2l-dropdown-opener-text {
@@ -143,7 +152,8 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 				vertical-align: middle;
 			}
 
-			:host(:dir(rtl)) .d2l-dropdown-opener-text {
+			:host(:dir(rtl)) .d2l-dropdown-opener-text,
+			:host([subtle]:dir(rtl)) .d2l-dropdown-subtle-opener-text {
 				margin-left: 0.3rem;
 				margin-right: 0;
 			}`
@@ -160,6 +170,11 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		this._autoShowClass = 'd2l-button-group-show',
 		this._autoNoShowClass = 'd2l-button-group-no-show',
 		this._refId = 0;
+
+		// property defaults
+		this.hideOverflowMenu = this.hideOverflowMenu ?? false;
+		this.maxToShow = this.maxToShow ?? -1;
+		this.minToShow = this.minToShow ?? 0;
 	}
 
 	connectedCallback() {
@@ -224,30 +239,29 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			return;
 		}
 
-		const iconType = this.mini || this.openerType === 'more' ? 'tier1:more' : 'tier1:chevron-down';
+		const iconType = this.mini || this.openerType === 'icon' ? 'tier1:more' : 'tier1:chevron-down';
 		const overFlowButtonTextClasses = classMap({
-			'd2l-dropdown-opener-text': !this.action,
-			'd2l-dropdown-action-opener-text': this.action,
+			'd2l-dropdown-opener-text': !this.subtle,
+			'd2l-dropdown-subtle-opener-text': this.subtle,
 			'd2l-offscreen': this.mini || this.openerType
 		});
-		const moreActionsText = this.localize('components.button-group.moreActions');
-		if (this.action) {
-			return html`<d2l-button-subtle class="d2l-dropdown-opener">
-				<!-- todo: localize this text or provide it as a property -->
-				<span class="${overFlowButtonTextClasses}">${moreActionsText}</span>
+
+		const moreActionsText = this.mini || this.openerType ? '' : this.localize('components.button-group.moreActions');
+		if (this.subtle) {
+			return html`<d2l-button-subtle class="d2l-dropdown-opener" text="${moreActionsText}">
 				<d2l-icon icon="${iconType}"></d2l-icon>
 			</d2l-button-subtle>`;
 		}
 
 		return html`<d2l-button class="d2l-dropdown-opener">
-			<!-- todo: localize this text or provide it as a property -->
 			<span class="${overFlowButtonTextClasses}">${moreActionsText}</span>
-			<!-- todo: determine if icon is used/provide it as prop -->
 			<d2l-icon icon="${iconType}"></d2l-icon>
 		</d2l-button>`;
 	}
 	render() {
 		const opener = this._getOpener();
+		const moreActionsText = this.localize('components.button-group.moreActions');
+
 		return html`
 			<div class="d2l-button-group-container">
 				<slot id="buttons"></slot>
@@ -255,7 +269,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 					${opener}
 					<d2l-dropdown-menu>
 						<!-- todo: localize this text or provide it as a property -->
-						<d2l-menu id="overflowMenu" label="More Actions">
+						<d2l-menu id="overflowMenu" label="${moreActionsText}">
 						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
@@ -264,7 +278,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 	}
 
 	_addEventListeners() {
-		window.addEventListener('resize', throttle(this._handleResize, 30));
+		window.addEventListener('resize', throttle(this._handleResize, 15));
 	}
 
 	_autoDetectBoundaries(items) {
@@ -321,8 +335,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		}
 
 		const tagName = item.tagName.toLowerCase();
-		// todo: is d2l-dropdown-button-subtle a thing still?
-		// todo: not a regression but there is a bug here where the menu doesnt go back to its default state
+		// todo: there is a bug here where the menu doesnt go back to its default state
 		// and instead stays as a sub menu item
 		if (tagName === 'd2l-dropdown' || tagName === 'd2l-dropdown-button-subtle') {
 			const menu = menuItem.querySelector('d2l-menu');
@@ -339,6 +352,10 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		if (this._layout.totalWidth === 0) {
 			this._overflowMenu.style.display = 'none';
 			return;
+		}
+
+		if (!this._layout.overflowMenuWidth) {
+			this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
 		}
 
 		if (!items) {

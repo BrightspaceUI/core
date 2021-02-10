@@ -40,7 +40,6 @@ describe('d2l-button-group', () => {
 			// autoshow test
 		].forEach((test) => {
 			it(test.name, async function() {
-				console.log('test')
 				const rect = await visualDiff.getRect(page, test.selector);
 				if (test.action) {
 					await test.action(test.selector);
