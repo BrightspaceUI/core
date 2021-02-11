@@ -57,7 +57,7 @@ describe('d2l-input-time', () => {
 			'zh-tw'
 		].forEach((lang) => {
 
-			it(`${lang} AM`, async function() {
+			it.skip(`${lang} AM`, async function() {
 				await page.evaluate(lang => {
 					const input = document.querySelector('#localizationAM');
 					return new Promise((resolve) => {
@@ -75,7 +75,7 @@ describe('d2l-input-time', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it(`${lang} PM`, async function() {
+			it.skip(`${lang} PM`, async function() {
 				const rect = await visualDiff.getRect(page, '#localizationPM');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
