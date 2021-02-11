@@ -57,20 +57,12 @@ describe('d2l-dropdown-content', () => {
 	});
 
 	it('scroll-top-shadow', async function() {
-		const selector = '#scroll-top-shadow';
 		page.waitForSelector('#bottom', { visible: true })
 			.then(async() => {
-				await page.$eval('#bottom', (bottom) => {
-					return new Promise((resolve) => {
-						setTimeout(() => {
-							bottom.scrollIntoView();
-							resolve();
-						}, 100);
-					});
-				});
+				await page.$eval('#bottom', (bottom) => bottom.scrollIntoView());
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 			});
-		await helper.open(page, selector);
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		await helper.open(page, '#scroll-top-shadow');
 	});
 
 });
