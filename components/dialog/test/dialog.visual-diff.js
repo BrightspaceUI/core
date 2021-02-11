@@ -112,14 +112,7 @@ describe('d2l-dialog', () => {
 				it('scroll top shadow', async function() {
 					page.waitForSelector('#dialogLong', { visible: true })
 						.then(async(elem) => {
-							await elem.$eval('#bottom-long', (bottom) => {
-								return new Promise((resolve) => {
-									setTimeout(() => {
-										bottom.scrollIntoView();
-										resolve();
-									}, 100);
-								});
-							});
+							await elem.$eval('#bottom-long', (bottom) => bottom.scrollIntoView());
 						});
 
 					await helper.open(page, '#dialogLong');
