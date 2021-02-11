@@ -52,7 +52,7 @@ describe('d2l-dialog', () => {
 								return new Promise((resolve) => {
 									setTimeout(() => {
 										resolve();
-									}, 100);
+									}, 300);
 								});
 							});
 						await helper.open(page, '#dialog');
@@ -72,7 +72,7 @@ describe('d2l-dialog', () => {
 								return new Promise((resolve) => {
 									setTimeout(() => {
 										resolve();
-									}, 100);
+									}, 300);
 								});
 							});
 						await helper.open(page, '#dialogRtl');
