@@ -126,7 +126,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this.inclusiveTimeRange = false;
 		this.labelHidden = false;
 		this.required = false;
-		this.startValue = formatDateInISOTime(getDefaultTime());
 		this.timeInterval = 'thirty';
 
 		this._endDropdownOpened = false;
@@ -152,7 +151,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	set startValue(val) {
 		const oldValue = this.startValue;
 		if (isValidTime(val)) this._startValue = (this.enforceTimeIntervals && !this._initialValues) ? getValidISOTimeAtInterval(val, this.timeInterval) : val;
-		else this._startValue = formatDateInISOTime(getDefaultTime());
+		else this._startValue = formatDateInISOTime(getDefaultTime(undefined, this.enforceTimeIntervals, this.timeInterval));
 		this.requestUpdate('startValue', oldValue);
 	}
 
@@ -163,6 +162,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			console.warn('d2l-input-time-range component requires label text');
 		}
 
+		if (!this.startValue) this.startValue = formatDateInISOTime(getDefaultTime(undefined, this.enforceTimeIntervals, this.timeInterval));
 		if (this.enforceTimeIntervals) this.startValue = getValidISOTimeAtInterval(this.startValue, this.timeInterval);
 
 		if (!this.endValue) {

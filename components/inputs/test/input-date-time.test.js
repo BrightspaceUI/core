@@ -67,7 +67,7 @@ describe('d2l-input-date-time', () => {
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
 				await oneEvent(elem, 'invalid-change');
-				expect(elem.value).to.equal('2018-02-02T00:00:00.000');
+				expect(elem.value).to.equal('2018-02-02T00:01:00.000');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
@@ -99,7 +99,7 @@ describe('d2l-input-date-time', () => {
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
 				await oneEvent(elem, 'invalid-change');
-				expect(elem.value).to.equal('2018-02-02T05:00:00.000Z');
+				expect(elem.value).to.equal('2018-02-02T05:01:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
@@ -111,7 +111,7 @@ describe('d2l-input-date-time', () => {
 				setTimeout(() => dispatchEvent(inputElem, 'change'));
 				await oneEvent(elem, 'change');
 				await oneEvent(elem, 'invalid-change');
-				expect(elem.value).to.equal('2020-02-02T05:00:00.000Z');
+				expect(elem.value).to.equal('2020-02-02T05:01:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be between ${expectedStart} and ${expectedEnd}`);
 			});
@@ -158,7 +158,7 @@ describe('d2l-input-date-time', () => {
 			inputElem.value = '2018-02-02';
 			setTimeout(() => dispatchEvent(inputElem, 'change'));
 			await oneEvent(elem, 'change');
-			expect(elem.value).to.equal('2018-02-02T05:00:00.000Z');
+			expect(elem.value).to.equal('2018-02-02T05:01:00.000Z');
 		});
 
 		it('should fire "change" event when time value changes and there is a date', async() => {

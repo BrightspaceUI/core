@@ -39,6 +39,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 
 			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 
+				dialog.d2l-dialog-outer,
 				.d2l-dialog-outer {
 					bottom: 0;
 					margin: auto;

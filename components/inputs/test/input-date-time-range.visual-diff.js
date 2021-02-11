@@ -84,8 +84,8 @@ describe('d2l-input-date-time-range', () => {
 			}, inputSelector, date, waitForTime);
 		}
 
-		async function changeInnerInputDateTime(page, selector, inputSelector, date) {
-			return page.$eval(selector, (elem, inputSelector, date) => {
+		async function changeInnerInputDateTime(page, selector, inputSelector, date, waitForTime) {
+			return page.$eval(selector, (elem, inputSelector, date, waitForTime) => {
 				const dateElem = elem.shadowRoot.querySelector(inputSelector);
 				dateElem.value = date;
 				const e = new Event(
@@ -93,7 +93,17 @@ describe('d2l-input-date-time-range', () => {
 					{ bubbles: true, composed: false }
 				);
 				dateElem.dispatchEvent(e);
-			}, inputSelector, date);
+				if (waitForTime) {
+					return new Promise((resolve) => {
+						elem.updateComplete.then(() => {
+							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
+							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
+								resolve();
+							});
+						});
+					});
+				}
+			}, inputSelector, date, waitForTime);
 		}
 
 		async function focusOnInput(page, selector, inputSelector) {
@@ -223,8 +233,8 @@ describe('d2l-input-date-time-range', () => {
 				describe(testCase.name, () => {
 					before(async() => {
 						await page.$eval('#min-max', (elem) => elem.blur());
-						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate);
-						await changeInnerInputTextDate(page, '#min-max', endDateSelector, testCase.endDate);
+						await changeInnerInputDateTime(page, '#min-max', startDateSelector, testCase.startDate, testCase.name === 'start equals end');
+						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate);
 					});
 
 					it('basic', async function() {
@@ -257,7 +267,7 @@ describe('d2l-input-date-time-range', () => {
 						await changeInnerInputTextDate(page, '#min-max', startDateSelector, '');
 						await changeInnerInputTextDate(page, '#min-max', endDateSelector, '');
 						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate, true);
-						await changeInnerInputTextDate(page, '#min-max', endDateSelector, testCase.endDate);
+						await changeInnerInputTextDate(page, '#min-max', endDateSelector, testCase.endDate, true);
 					});
 
 					beforeEach(async() => {
@@ -270,32 +280,18 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('focus start', async function() {
-						let rect;
-						if (testCase.startDateTooltip) {
-							await focusOnInput(page, '#min-max', startDateSelector);
-							rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
-						} else {
-							await page.$eval('#min-max', (elem, inputSelector) => {
-								const input = elem.shadowRoot.querySelector(inputSelector);
-								input.focus();
-							}, startDateSelector);
-							rect = await visualDiff.getRect(page, '#min-max');
-						}
+						await focusOnInput(page, '#min-max', startDateSelector);
+						const rect = testCase.startDateTooltip
+							? await getRectInnerTooltip(page, '#min-max', startDateSelector)
+							: await visualDiff.getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
-						let rect;
-						if (testCase.endDateTooltip) {
-							await focusOnInput(page, '#min-max', endDateSelector);
-							rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
-						} else {
-							await page.$eval('#min-max', (elem, inputSelector) => {
-								const input = elem.shadowRoot.querySelector(inputSelector);
-								input.focus();
-							}, endDateSelector);
-							rect = await visualDiff.getRect(page, '#min-max');
-						}
+						await focusOnInput(page, '#min-max', endDateSelector);
+						const rect = testCase.endDateTooltip
+							? await getRectInnerTooltip(page, '#min-max', endDateSelector)
+							: await visualDiff.getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});

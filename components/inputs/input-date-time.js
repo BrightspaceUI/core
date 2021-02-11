@@ -4,6 +4,7 @@ import '../tooltip/tooltip.js';
 import { convertUTCToLocalDateTime, formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { formatDateInISO,
+	formatDateInISOTime,
 	formatDateTimeInISO,
 	getDateFromISODateTime,
 	getDateNoConversion,
@@ -13,7 +14,7 @@ import { formatDateInISO,
 	parseISODateTime,
 	parseISOTime } from '../../helpers/dateTime.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { getFormattedDefaultTime } from './input-time.js';
+import { getDefaultTime } from './input-time.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -26,6 +27,11 @@ export function _formatLocalDateTimeInISO(date, time) {
 	const timeObj = parseISOTime(time);
 
 	return formatDateTimeInISO(Object.assign(dateObj, timeObj), true);
+}
+
+function _getFormattedDefaultTime(defaultValue) {
+	const time = getDefaultTime(defaultValue);
+	return formatDateInISOTime(time);
 }
 
 /**
@@ -103,6 +109,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		this.labelHidden = false;
 		this.localized = false;
 		this.required = false;
+		this.timeDefaultValue = 'startOfDay';
 		this._dropdownOpened = false;
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
@@ -290,7 +297,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			this.value = '';
 		} else {
 			const inputTime = this.shadowRoot.querySelector('d2l-input-time');
-			const time = inputTime ? inputTime.value : getFormattedDefaultTime(this.timeDefaultValue);
+			const time = inputTime ? inputTime.value : _getFormattedDefaultTime(this.timeDefaultValue);
 			this.value = this.localized ? _formatLocalDateTimeInISO(newDate, time) : getUTCDateTimeFromLocalDateTime(newDate, time);
 		}
 		this._dispatchChangeEvent();

@@ -140,7 +140,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 					rangeUnderflow: rangeUnderflowCondition,
 					rangeOverflow: rangeOverflowCondition
 				});
-				this.requestValidate(false);
+				this.requestValidate(true);
 			}
 		});
 	}
@@ -171,10 +171,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			}
 		}
 		return super.validationMessage;
-	}
-
-	_handleBlur() {
-		this.requestValidate(true);
 	}
 
 	async _handleChange(e) {
