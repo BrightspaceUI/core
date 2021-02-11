@@ -4,6 +4,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
+		<style>
+			#min-max-auto-small {
+				width: 300px;
+			}
+			#min-max-auto-large {
+				width: 1750px;
+			}
+		</style>
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
@@ -29,7 +37,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group min-to-show="2" max-to-show="4">
+					<d2l-button-group max-to-show="4">
 						<d2l-button primary="">New</d2l-button>
 						<d2l-dropdown>
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
@@ -82,7 +90,7 @@
 			<h2>Action Button Group</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group subtle min-to-show="1">
+					<d2l-button-group subtle>
 						<d2l-button-subtle primary="" text="New"></d2l-button-subtle>
 						<d2l-button-subtle text="Copy"></d2l-button-subtle>
 						<d2l-button-subtle text="Import"></d2l-button-subtle>

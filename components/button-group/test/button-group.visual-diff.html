@@ -18,14 +18,14 @@
 			import '../button-group.js';
 		</script>
 		<style>
-			.small {
-				width: 100px;
+			#min {
+				width: 350px;
 			}
-			.medium {
-				width: 200px;
+			#min-max-auto-small {
+				width: 300px;
 			}
-			.large {
-				width: 500px;
+			#min-max-auto-large {
+				width: 700px;
 			}
 		</style>
 		<title>d2l-button-group</title>
@@ -100,6 +100,24 @@
 						<d2l-button>Import</d2l-button>
 						<d2l-button>Delete</d2l-button>
 						<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
+			</d2l-button-group>
+		</div>
+		<div class="visual-diff">
+			<d2l-button-group id="min-max-auto-small" auto-show>
+				<d2l-button>one</d2l-button>
+				<d2l-button class="d2l-button-group-show">two</d2l-button>
+				<d2l-button>three</d2l-button>
+				<d2l-button class="d2l-button-group-no-show">four</d2l-button>
+				<d2l-button>five</d2l-button>
+			</d2l-button-group>
+		</div>
+		<div class="visual-diff">
+			<d2l-button-group id="min-max-auto-large" auto-show>
+				<d2l-button>one</d2l-button>
+				<d2l-button class="d2l-button-group-show">two</d2l-button>
+				<d2l-button>three</d2l-button>
+				<d2l-button class="d2l-button-group-no-show">four</d2l-button>
+				<d2l-button>five</d2l-button>
 			</d2l-button-group>
 		</div>
 		<div class="visual-diff">

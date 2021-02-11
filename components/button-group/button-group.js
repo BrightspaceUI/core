@@ -29,7 +29,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			autoShow: {
 				type: Boolean,
 				attribute: 'auto-show',
-				// value: false
 			},
 			/**
 			 * minimum amount of buttons to show
@@ -37,7 +36,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			minToShow: {
 				type: Number,
 				attribute: 'min-to-show',
-				value: 1
 			},
 			/**
 			 * maximum amount of buttons to show
@@ -45,7 +43,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			maxToShow: {
 				type: Number,
 				attribute: 'max-to-show',
-				value: -1
 			},
 			/**
 			 * Shrinks the More Actions button down to '...' for scenarios with tight spacing
@@ -73,7 +70,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			 */
 			hideOverflowMenu: {
 				type: Boolean,
-				value: false,
 			}
 		};
 	}
@@ -135,9 +131,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 				vertical-align: middle;
 			}
 
-			:host([subtle]) .d2l-dropdown-opener-text,
-			:host([subtle]) .d2l-dropdown-subtle-opener-text,
-			:host([subtle]) d2l-button-subtle,
 			:host([subtle]) d2l-icon {
 				color: var(--d2l-color-celestine);
 			}
@@ -147,6 +140,22 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 				color: var(--d2l-color-celestine-minus-1);
 			}
 
+			/* :host([mini][opener-type="icon"]) .d2l-dropdown-opener > d2l-button-subtle,
+			:host([mini][opener-type="icon"]) .d2l-dropdown-opener > d2l-button {
+				height: 2.1rem;
+				width: 2.1rem;
+			}
+			 */
+			/* :host([mini]) .d2l-overflow-dropdown > d2l-button,
+			:host([opener-type="icon"]) .d2l-overflow-dropdown > d2l-button {
+				height: 2.1rem;
+				width: 2.1rem;
+				overflow: hidden;
+			}
+			:host([mini]) .d2l-overflow-dropdown > button,
+			:host([opener-type="icon"]) .d2l-overflow-dropdown > button {
+				padding:0 !important;
+			} */
 			.d2l-dropdown-opener-text {
 				margin-right: 0.3rem;
 				vertical-align: middle;
@@ -173,8 +182,10 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 
 		// property defaults
 		this.hideOverflowMenu = this.hideOverflowMenu ?? false;
+		this.autoShow = this.autoShow ?? false;
 		this.maxToShow = this.maxToShow ?? -1;
-		this.minToShow = this.minToShow ?? 0;
+		this.minToShow = this.minToShow ?? 1;
+
 	}
 
 	connectedCallback() {
@@ -542,7 +553,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 	}
 
 	_createMenuItemMenu(item) {
-		item.querySelector('d2l-dropdown-menu').forceRender();
 		const menuOpener = item.querySelector('d2l-dropdown-button');
 		const subMenu = item.querySelector('d2l-menu');
 		const menuItem = document.createElement('d2l-menu-item');
