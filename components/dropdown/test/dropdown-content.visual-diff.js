@@ -60,10 +60,10 @@ describe('d2l-dropdown-content', () => {
 		const selector = '#scroll-top-shadow';
 		page.waitForSelector('#bottom', { visible: true })
 			.then(async() => {
-				await page.$eval('#scroll-top-shadow d2l-dropdown-content', (content) => {
+				await page.$eval('#bottom', (bottom) => {
 					return new Promise((resolve) => {
 						setTimeout(() => {
-							content.scrollTo(1000);
+							bottom.scrollIntoView();
 							resolve();
 						}, 100);
 					});
