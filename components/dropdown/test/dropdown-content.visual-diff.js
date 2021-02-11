@@ -56,7 +56,7 @@ describe('d2l-dropdown-content', () => {
 		});
 	});
 
-	it.skip('scroll-top-shadow', async function() {
+	it('scroll-top-shadow', async function() {
 		const selector = '#scroll-top-shadow';
 		page.waitForSelector('#bottom', { visible: true })
 			.then(async() => {
