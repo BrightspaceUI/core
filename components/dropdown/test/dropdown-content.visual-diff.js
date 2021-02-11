@@ -62,12 +62,12 @@ describe('d2l-dropdown-content', () => {
 				return new Promise((resolve) => {
 					setTimeout(async() => {
 						await page.$eval('#bottom', (bottom) => bottom.scrollIntoView());
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 						resolve();
 					}, 100);
 				});
 			});
 		await helper.open(page, '#scroll-top-shadow');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
 });
