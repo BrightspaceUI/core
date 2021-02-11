@@ -47,7 +47,14 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', async function() {
-						// if (info.category === 'short-narrow') return; // TODO: remove this; skipping for now due to flaking
+						page.waitForSelector('#bottom', { visible: true })
+							.then(async() => {
+								return new Promise((resolve) => {
+									setTimeout(() => {
+										resolve();
+									}, 100);
+								});
+							});
 						await helper.open(page, '#dialog');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
@@ -60,7 +67,14 @@ describe('d2l-dialog', () => {
 					});
 
 					it('rtl', async function() {
-						// if (info.category === 'short-narrow') return; // TODO: remove this; skipping for now due to flaking
+						page.waitForSelector('#bottom-rtl', { visible: true })
+							.then(async() => {
+								return new Promise((resolve) => {
+									setTimeout(() => {
+										resolve();
+									}, 100);
+								});
+							});
 						await helper.open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
@@ -98,7 +112,14 @@ describe('d2l-dialog', () => {
 				it('scroll top shadow', async function() {
 					page.waitForSelector('#dialogLong', { visible: true })
 						.then(async(elem) => {
-							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
+							await elem.$eval('#bottom-long', (bottom) => {
+								return new Promise((resolve) => {
+									setTimeout(() => {
+										bottom.scrollIntoView();
+										resolve();
+									}, 100);
+								});
+							});
 						});
 
 					await helper.open(page, '#dialogLong');
