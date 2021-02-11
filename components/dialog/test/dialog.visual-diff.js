@@ -47,20 +47,29 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', async function() {
+						page.waitForSelector('#dialog', { visible: true })
+							.then(async() => {
+								await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+							});
 						await helper.open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('opened-wide', async function() {
 						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px');
+						page.waitForSelector('#dialog', { visible: true })
+							.then(async() => {
+								await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+							});
 						await helper.open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
 					});
 
 					it('rtl', async function() {
+						page.waitForSelector('#dialogRtl', { visible: true })
+							.then(async() => {
+								await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+							});
 						await helper.open(page, '#dialogRtl');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('resize', async function() {
