@@ -43,7 +43,7 @@ describe('d2l-input-time', () => {
 
 		[
 			'ar',
-			'da',
+			// 'da',
 			'de',
 			'es',
 			'fr',
