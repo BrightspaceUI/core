@@ -47,20 +47,29 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', async function() {
-						await helper.open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						return Promise.all([
+							helper.open(page, '#dialog'),
+							page.waitForSelector('#bottom', { visible: true }),
+							visualDiff.screenshotAndCompare(page, this.test.fullTitle()),
+						]);
 					});
 
 					it('opened-wide', async function() {
-						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px');
-						await helper.open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
+						return Promise.all([
+							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px'),
+							helper.open(page, '#dialog'),
+							page.waitForSelector('#bottom', { visible: true }),
+							visualDiff.screenshotAndCompare(page, this.test.fullTitle()),
+							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto')
+						]);
 					});
 
 					it('rtl', async function() {
-						await helper.open(page, '#dialogRtl');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						return Promise.all([
+							helper.open(page, '#dialogRtl'),
+							page.waitForSelector('#bottom-rtl', { visible: true }),
+							visualDiff.screenshotAndCompare(page, this.test.fullTitle())
+						]);
 					});
 
 					it('resize', async function() {
@@ -94,13 +103,12 @@ describe('d2l-dialog', () => {
 				});
 
 				it('scroll top shadow', async function() {
-					page.waitForSelector('#dialogLong', { visible: true })
-						.then(async(elem) => {
-							await elem.$eval('#bottom-long', (bottom) => bottom.scrollIntoView());
-						});
-
-					await helper.open(page, '#dialogLong');
-					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					return Promise.all([
+						helper.open(page, '#dialogLong'),
+						page.waitForSelector('#bottom-long', { visible: true }),
+						page.$eval('#bottom-long', (bottom) => bottom.scrollIntoView()),
+						visualDiff.screenshotAndCompare(page, this.test.fullTitle())
+					]);
 				});
 
 			});
