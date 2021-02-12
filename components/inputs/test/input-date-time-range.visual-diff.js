@@ -76,7 +76,9 @@ describe('d2l-input-date-time-range', () => {
 						elem.updateComplete.then(() => {
 							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
 							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
-								resolve();
+								setTimeout(() => {
+									resolve();
+								}, 100);
 							});
 						});
 					});
@@ -98,7 +100,9 @@ describe('d2l-input-date-time-range', () => {
 						elem.updateComplete.then(() => {
 							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
 							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
-								resolve();
+								setTimeout(() => {
+									resolve();
+								}, 100);
 							});
 						});
 					});
