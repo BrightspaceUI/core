@@ -46,38 +46,30 @@ describe('d2l-dialog', () => {
 						await page.setViewport({ width: info.viewport.width, height: info.viewport.height, deviceScaleFactor: 2 });
 					});
 
-					it('opened', async function() {
-						if (info.category === 'short-narrow') return; // TODO: remove this; skipping for now due to flaking
-						page.waitForSelector('#bottom', { visible: true })
-							.then(async() => {
-								return new Promise((resolve) => {
-									setTimeout(() => {
-										resolve();
-									}, 300);
-								});
-							});
-						await helper.open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					it('opened', function() {
+						return Promise.all([
+							helper.open(page, '#dialog'),
+							page.waitForSelector('#bottom', { visible: true }),
+							visualDiff.screenshotAndCompare(page, this.test.fullTitle()),
+						]);
 					});
 
-					it('opened-wide', async function() {
-						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px');
-						await helper.open(page, '#dialog');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
+					it('opened-wide', function() {
+						return Promise.all([
+							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px'),
+							helper.open(page, '#dialog'),
+							page.waitForSelector('#bottom', { visible: true }),
+							visualDiff.screenshotAndCompare(page, this.test.fullTitle()),
+							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto')
+						]);
 					});
 
-					it('rtl', async function() {
-						page.waitForSelector('#bottom-rtl', { visible: true })
-							.then(async() => {
-								return new Promise((resolve) => {
-									setTimeout(() => {
-										resolve();
-									}, 300);
-								});
-							});
-						await helper.open(page, '#dialogRtl');
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+					it('rtl', function() {
+						return Promise.all([
+							helper.open(page, '#dialogRtl'),
+							page.waitForSelector('#bottom-rtl', { visible: true }),
+							visualDiff.screenshotAndCompare(page, this.test.fullTitle())
+						]);
 					});
 
 					it('resize', async function() {
