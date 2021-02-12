@@ -17,6 +17,15 @@ describe('d2l-dropdown-content', () => {
 
 	after(async() => await browser.close());
 
+	it('scroll-top-shadow', async function() {
+		page.waitForSelector('#bottom', { visible: true })
+			.then(async() => {
+				await page.$eval('#bottom', (bottom) => bottom.scrollIntoView());
+			});
+		await helper.open(page, '#scroll-top-shadow');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+	});
+
 	[
 		'default-width',
 		'min-width',
@@ -54,20 +63,6 @@ describe('d2l-dropdown-content', () => {
 			await helper.open(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
-	});
-
-	it.skip('scroll-top-shadow', async function() {
-		page.waitForSelector('#bottom', { visible: true })
-			.then(async() => {
-				return new Promise((resolve) => {
-					setTimeout(async() => {
-						await page.$eval('#bottom', (bottom) => bottom.scrollIntoView());
-						resolve();
-					}, 100);
-				});
-			});
-		await helper.open(page, '#scroll-top-shadow');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
 });
