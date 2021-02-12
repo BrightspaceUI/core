@@ -47,29 +47,37 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', function() {
-						return Promise.all([
-							helper.open(page, '#dialog'),
-							page.waitForSelector('#bottom', { visible: true }),
-							visualDiff.screenshotAndCompare(page, this.test.fullTitle()),
-						]);
+						return new Promise((resolve) => {
+							helper.open(page, '#dialog').then(() => resolve());
+						}).then(() => {
+							return new Promise((resolve) => page.waitForSelector('#bottom', { visible: true }).then(() => resolve()));
+						}).then(() => {
+							return new Promise((resolve) => visualDiff.screenshotAndCompare(page, this.test.fullTitle()).then(() => resolve()));
+						});
 					});
 
 					it('opened-wide', function() {
-						return Promise.all([
-							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px'),
-							helper.open(page, '#dialog'),
-							page.waitForSelector('#bottom', { visible: true }),
-							visualDiff.screenshotAndCompare(page, this.test.fullTitle()),
-							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto')
-						]);
+						return new Promise((resolve) => {
+							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px').then(() => resolve());
+						}).then(() => {
+							return new Promise((resolve) => helper.open(page, '#dialog').then(() => resolve()));
+						}).then(() => {
+							return new Promise((resolve) => page.waitForSelector('#bottom', { visible: true }).then(() => resolve()));
+						}).then(() => {
+							return new Promise((resolve) => visualDiff.screenshotAndCompare(page, this.test.fullTitle()).then(() => resolve()));
+						}).then(() => {
+							return new Promise((resolve) => page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto').then(() => resolve()));
+						});
 					});
 
 					it('rtl', function() {
-						return Promise.all([
-							helper.open(page, '#dialogRtl'),
-							page.waitForSelector('#bottom-rtl', { visible: true }),
-							visualDiff.screenshotAndCompare(page, this.test.fullTitle())
-						]);
+						return new Promise((resolve) => {
+							helper.open(page, '#dialogRtl').then(() => resolve());
+						}).then(() => {
+							return new Promise((resolve) => page.waitForSelector('#bottom-rtl', { visible: true }).then(() => resolve()));
+						}).then(() => {
+							return new Promise((resolve) => visualDiff.screenshotAndCompare(page, this.test.fullTitle()).then(() => resolve()));
+						});
 					});
 
 					it('resize', async function() {
@@ -102,15 +110,15 @@ describe('d2l-dialog', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
-				it('scroll top shadow', function() {
-					return Promise.all([
-						helper.open(page, '#dialogLong'),
-						page.waitForSelector('#bottom-long', { visible: true }),
-						page.$eval('#bottom-long', (bottom) => bottom.scrollIntoView()),
-						visualDiff.screenshotAndCompare(page, this.test.fullTitle())
-					]);
-				});
+				it('scroll top shadow', async function() {
+					page.waitForSelector('#dialogLong', { visible: true })
+						.then(async(elem) => {
+							await elem.$eval('#bottom-long', (bottom) => bottom.scrollIntoView());
+						});
 
+					await helper.open(page, '#dialogLong');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
 			});
 
 		});
