@@ -46,37 +46,32 @@ describe('d2l-dialog', () => {
 						await page.setViewport({ width: info.viewport.width, height: info.viewport.height, deviceScaleFactor: 2 });
 					});
 
-					it('opened', function() {
-						return new Promise((resolve) => {
-							helper.open(page, '#dialog').then(() => resolve());
-						}).then(() => {
-							return new Promise((resolve) => page.waitForSelector('#bottom', { visible: true }).then(() => resolve()));
-						}).then(() => {
-							return new Promise((resolve) => visualDiff.screenshotAndCompare(page, this.test.fullTitle()).then(() => resolve()));
+					it('opened', async function() {
+						return Promise.all([
+							helper.open(page, '#dialog'),
+							page.waitForSelector('#bottom', { visible: true })
+						]).then(() => {
+							return visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 						});
 					});
 
-					it('opened-wide', function() {
-						return new Promise((resolve) => {
-							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px').then(() => resolve());
-						}).then(() => {
-							return new Promise((resolve) => helper.open(page, '#dialog').then(() => resolve()));
-						}).then(() => {
-							return new Promise((resolve) => page.waitForSelector('#bottom', { visible: true }).then(() => resolve()));
-						}).then(() => {
-							return new Promise((resolve) => visualDiff.screenshotAndCompare(page, this.test.fullTitle()).then(() => resolve()));
-						}).then(() => {
-							return new Promise((resolve) => page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto').then(() => resolve()));
+					it('opened-wide', async function() {
+						return Promise.all([
+							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px'),
+							helper.open(page, '#dialog'),
+							page.waitForSelector('#bottom', { visible: true })
+						]).then(async() => {
+							await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+							await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
 						});
 					});
 
-					it('rtl', function() {
-						return new Promise((resolve) => {
-							helper.open(page, '#dialogRtl').then(() => resolve());
-						}).then(() => {
-							return new Promise((resolve) => page.waitForSelector('#bottom-rtl', { visible: true }).then(() => resolve()));
-						}).then(() => {
-							return new Promise((resolve) => visualDiff.screenshotAndCompare(page, this.test.fullTitle()).then(() => resolve()));
+					it('rtl', async function() {
+						return Promise.all([
+							helper.open(page, '#dialogRtl'),
+							page.waitForSelector('#bottom-rtl', { visible: true })
+						]).then(() => {
+							return visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 						});
 					});
 
