@@ -46,7 +46,7 @@ describe('d2l-dialog', () => {
 						await page.setViewport({ width: info.viewport.width, height: info.viewport.height, deviceScaleFactor: 2 });
 					});
 
-					it('opened', async function() {
+					it('opened', function() {
 						return Promise.all([
 							helper.open(page, '#dialog'),
 							page.waitForSelector('#bottom', { visible: true }),
@@ -54,7 +54,7 @@ describe('d2l-dialog', () => {
 						]);
 					});
 
-					it('opened-wide', async function() {
+					it('opened-wide', function() {
 						return Promise.all([
 							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px'),
 							helper.open(page, '#dialog'),
@@ -64,7 +64,7 @@ describe('d2l-dialog', () => {
 						]);
 					});
 
-					it('rtl', async function() {
+					it('rtl', function() {
 						return Promise.all([
 							helper.open(page, '#dialogRtl'),
 							page.waitForSelector('#bottom-rtl', { visible: true }),
@@ -102,7 +102,7 @@ describe('d2l-dialog', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
-				it('scroll top shadow', async function() {
+				it('scroll top shadow', function() {
 					return Promise.all([
 						helper.open(page, '#dialogLong'),
 						page.waitForSelector('#bottom-long', { visible: true }),
