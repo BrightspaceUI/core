@@ -289,7 +289,8 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 	}
 
 	_addEventListeners() {
-		window.addEventListener('resize', throttle(this._handleResize, 15));
+		this._throttledResize = throttle(this._handleResize, 15)
+		window.addEventListener('resize', this._throttledResize);
 	}
 
 	_autoDetectBoundaries(items) {
@@ -520,7 +521,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		this._chomp();
 	}
 	_removeEventListeners() {
-		window.removeEventListener('resize', this._handleResize);
+		window.removeEventListener('resize', this._throttledResize);
 	}
 
 	_createMenuItem(item) {
