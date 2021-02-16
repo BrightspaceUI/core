@@ -56,14 +56,10 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened-wide', async function() {
-						return Promise.all([
-							page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px'),
-							helper.open(page, '#dialog'),
-							page.waitForSelector('#bottom', { visible: true })
-						]).then(async() => {
-							await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-							await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
-						});
+						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px');
+						await helper.open(page, '#dialog');
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
 					});
 
 					it('rtl', async function() {
