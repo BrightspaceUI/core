@@ -56,19 +56,13 @@ describe('d2l-dropdown-content', () => {
 		});
 	});
 
-	it.skip('scroll-top-shadow', async function() {
+	it('scroll-top-shadow', async function() {
 		page.waitForSelector('#bottom', { visible: true })
-			.then(async() => {
-				await page.$eval('#scroll-top-shadow d2l-dropdown-content', (content) => {
-					return new Promise((resolve) => {
-						setTimeout(() => {
-							content.scrollTo(1000);
-							resolve();
-						}, 100);
-					});
+			.then(() => {
+				return new Promise((resolve) => {
+					page.$eval('#bottom', (bottom) => bottom.scrollIntoView()).then(() => requestAnimationFrame(resolve));
 				});
 			});
-
 		await helper.open(page, '#scroll-top-shadow');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
