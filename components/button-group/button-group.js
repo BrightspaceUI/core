@@ -35,6 +35,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			 */
 			minToShow: {
 				type: Number,
+				reflect: true,
 				attribute: 'min-to-show',
 			},
 			/**
@@ -42,12 +43,13 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			 */
 			maxToShow: {
 				type: Number,
+				reflect: true,
 				attribute: 'max-to-show',
 			},
 			/**
 			 * Shrinks the More Actions button down to '...' for scenarios with tight spacing
 			 */
-			mini: {
+			_mini: {
 				type: Boolean,
 				reflect: true
 			},
@@ -227,8 +229,12 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 
 	update(changedProperties) {
 		super.update(changedProperties);
-		if (changedProperties.autoShow) {
+		if (changedProperties.get('autoShow')) {
 			this._autoDetectBoundaries(this._getItems());
+		}
+
+		if (changedProperties.get('minToShow') || changedProperties.get('maxToShow')) {
+			this._chomp(this._getItems());
 		}
 
 		// slight hack, overflowMenu isnt being rendered initially so wait until update
@@ -249,16 +255,17 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		if (this.hideOverflowMenu) {
 			return;
 		}
-
-		const iconType = this.mini || this.openerType === 'icon' ? 'tier1:more' : 'tier1:chevron-down';
+		const isMoreIcon = this._mini || this.openerType === 'icon';
+		const iconType = isMoreIcon ? 'tier1:more' : 'tier1:chevron-down';
 		const overFlowButtonTextClasses = classMap({
 			'd2l-dropdown-opener-text': !this.subtle,
 			'd2l-dropdown-subtle-opener-text': this.subtle,
-			'd2l-offscreen': this.mini || this.openerType
+			'd2l-offscreen': this._mini || this.openerType
 		});
 
-		const moreActionsText = this.mini || this.openerType ? '' : this.localize('components.button-group.moreActions');
-		if (this.subtle) {
+		const moreActionsText = this._mini || this.openerType ? '' : this.localize('components.button-group.moreActions');
+
+		if (isMoreIcon || this.subtle) {
 			return html`<d2l-button-subtle class="d2l-dropdown-opener" text="${moreActionsText}">
 				<d2l-icon icon="${iconType}"></d2l-icon>
 			</d2l-button-subtle>`;
@@ -451,9 +458,9 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
 		if (this.minToShow > 0 && (showing.width + this._layout.overflowMenuWidth >= this._layout.availableWidth)) {
-			this.mini = true;
+			this._mini = true;
 		} else {
-			this.mini = false;
+			this._mini = false;
 		}
 
 		let chompIndex = 0;
