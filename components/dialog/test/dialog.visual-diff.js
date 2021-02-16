@@ -47,12 +47,11 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', async function() {
-						return Promise.all([
+						await Promise.all([
 							helper.open(page, '#dialog'),
 							page.waitForSelector('#bottom', { visible: true })
-						]).then(() => {
-							return visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-						});
+						]);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('opened-wide', async function() {
@@ -63,12 +62,11 @@ describe('d2l-dialog', () => {
 					});
 
 					it('rtl', async function() {
-						return Promise.all([
+						await Promise.all([
 							helper.open(page, '#dialogRtl'),
 							page.waitForSelector('#bottom-rtl', { visible: true })
-						]).then(() => {
-							return visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-						});
+						]);
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('resize', async function() {
