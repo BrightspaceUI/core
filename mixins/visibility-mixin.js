@@ -26,12 +26,13 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			const visibilityStyle = {
 				transition: 'all ' + transitionDuration + 'ms ease',
 				opacity: '0',
-				translate: 'transformY(-10px)'
+				transform: 'translateY(-10px)'
 			}
 
 			const dummyStyle = {
 				transition: 'height ' + transitionDuration + 'ms ease',
-				height: '0px'
+				height: '0px',
+				overflow: 'hidden'
 			}
 
 			Object.assign(this.style, visibilityStyle);
@@ -43,7 +44,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 			dummy.style.height = this.scrollHeight + 'px';
 			this.style.opacity = '1';
-			this.style.translate = 'transformY(0px)';
+			this.style.transform = 'translateY(0px)';
 
 			dummy.ontransitionend = () => {
 				dummy.replaceWith(this);
