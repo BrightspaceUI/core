@@ -24,7 +24,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			const transitionDuration = 300;
 
 			const visibilityStyle = {
-				transition: 'all ' + transitionDuration + 'ms ease',
+				transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
 				opacity: '0',
 				transform: 'translateY(-10px)'
 			}
