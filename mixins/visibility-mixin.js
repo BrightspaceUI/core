@@ -38,16 +38,15 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 			const dummy = document.createElement('div');
 			Object.assign(dummy.style, dummyStyle);
-			this.parentElement.insertBefore(dummy, this.nextSibling);
+			this.replaceWith(dummy);
+			dummy.appendChild(this);
 
 			dummy.style.height = this.scrollHeight + 'px';
-			this.style.position = 'absolute';
 			this.style.opacity = '1';
 			this.style.translate = 'transformY(0px)';
 
 			dummy.ontransitionend = () => {
-				this.style.position = 'static';
-				dummy.remove();
+				dummy.replaceWith(this);
 			};
 		}
 	}
