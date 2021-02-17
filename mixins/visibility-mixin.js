@@ -21,16 +21,34 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 	_animateChanged(animate) {
 		if (animate === 'show') {
+			const transitionDuration = 300;
+
+			const visibilityStyle = {
+				transition: 'all ' + transitionDuration + 'ms ease',
+				opacity: '0',
+				translate: 'transformY(-10px)'
+			}
+
 			const dummyStyle = {
-				transition: 'height 300ms ease',
+				transition: 'height ' + transitionDuration + 'ms ease',
 				height: '0px'
 			}
 
-			// add dummy element & change host to be absolute positioned (via CSS logics? but no lit element)
+			Object.assign(this.style, visibilityStyle);
+
 			const dummy = document.createElement('div');
 			Object.assign(dummy.style, dummyStyle);
 			this.parentElement.insertBefore(dummy, this.nextSibling);
+
 			dummy.style.height = this.scrollHeight + 'px';
+			this.style.position = 'absolute';
+			this.style.opacity = '1';
+			this.style.translate = 'transformY(0px)';
+
+			dummy.ontransitionend = () => {
+				this.style.position = 'static';
+				dummy.remove();
+			};
 		}
 	}
 });
