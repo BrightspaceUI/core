@@ -47,7 +47,6 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', async function() {
-						if (info.category === 'short-narrow') return; // TODO: remove this; skipping for now due to flaking
 						await helper.open(page, '#dialog');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
@@ -60,7 +59,6 @@ describe('d2l-dialog', () => {
 					});
 
 					it('rtl', async function() {
-						if (info.category === 'short-narrow') return; // TODO: remove this; skipping for now due to flaking
 						await helper.open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
