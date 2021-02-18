@@ -61,7 +61,13 @@ describe('d2l-calendar', () => {
 			'zh-tw'
 		].forEach((lang) => {
 			it(`${lang}`, async function() {
-				await page.evaluate(lang => document.querySelector('html').setAttribute('lang', lang), lang);
+				await page.evaluate((lang, firstCalendarOfPage) => {
+					const calendar = document.querySelector(firstCalendarOfPage);
+					return new Promise((resolve) => {
+						calendar.addEventListener('d2l-localize-behavior-language-changed', resolve, { once: true });
+						document.querySelector('html').setAttribute('lang', lang);
+					});
+				}, lang, firstCalendarOfPage);
 				const rect = await visualDiff.getRect(page, firstCalendarOfPage);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
