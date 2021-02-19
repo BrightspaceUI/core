@@ -407,8 +407,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			this._height = this._getHeight();
 			await this.updateComplete;
 		}
-		this._updateOverflow();
-		await this.updateComplete;
+		await new Promise(resolve => {
+			requestAnimationFrame(async() => {
+				this._updateOverflow();
+				await this.updateComplete;
+				resolve();
+			});
+		});
 	}
 
 };
