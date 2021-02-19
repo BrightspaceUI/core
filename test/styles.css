@@ -5,6 +5,7 @@ body {
 	padding: 30px;
 }
 .visual-diff {
+	caret-color: transparent;
 	margin-bottom: 30px;
 }
 .visual-diff-translucent {
