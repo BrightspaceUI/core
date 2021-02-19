@@ -16,8 +16,8 @@ describe('d2l-input-date-time', () => {
 
 	after(async() => await browser.close());
 
-	async function changeInnerElem(page, selector, inputSelector, date, waitForTime) {
-		return page.$eval(selector, (elem, inputSelector, date, waitForTime) => {
+	async function changeInnerElem(page, selector, inputSelector, date) {
+		return page.$eval(selector, (elem, inputSelector, date) => {
 			const dateElem = elem.shadowRoot.querySelector(inputSelector);
 			dateElem.value = date;
 			const e = new Event(
@@ -25,17 +25,7 @@ describe('d2l-input-date-time', () => {
 				{ bubbles: true, composed: false }
 			);
 			dateElem.dispatchEvent(e);
-			if (waitForTime) {
-				return new Promise((resolve) => {
-					elem.updateComplete.then(() => {
-						const timeElem = elem.shadowRoot.querySelector('d2l-input-time');
-						timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
-							resolve();
-						});
-					});
-				});
-			}
-		}, inputSelector, date, waitForTime);
+		}, inputSelector, date);
 	}
 
 	[
@@ -73,7 +63,7 @@ describe('d2l-input-date-time', () => {
 	it('required focus then blur then fix', async function() {
 		await page.$eval('#required', (elem) => elem.focus());
 		await page.$eval('#required', (elem) => elem.blur());
-		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20', true);
+		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20');
 		const rect = await visualDiff.getRect(page, '#required');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -152,7 +142,7 @@ describe('d2l-input-date-time', () => {
 		});
 
 		it('select date after clear', async function() {
-			await changeInnerElem(page, '#basic', 'd2l-input-date', '2018-01-20', true);
+			await changeInnerElem(page, '#basic', 'd2l-input-date', '2018-01-20');
 			const rect = await visualDiff.getRect(page, '#basic');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -255,7 +245,7 @@ describe('d2l-input-date-time', () => {
 			describe(testCase.name, () => {
 				before(async() => {
 					await changeInnerElem(page, '#min-max', dateSelector, '');
-					await changeInnerElem(page, '#min-max', dateSelector, testCase.date, true);
+					await changeInnerElem(page, '#min-max', dateSelector, testCase.date);
 					await changeInnerElem(page, '#min-max', timeSelector, testCase.time);
 				});
 

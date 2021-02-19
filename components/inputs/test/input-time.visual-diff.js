@@ -43,7 +43,7 @@ describe('d2l-input-time', () => {
 
 		[
 			'ar',
-			// 'da',
+			'da',
 			'de',
 			'es',
 			'fr',
@@ -57,17 +57,11 @@ describe('d2l-input-time', () => {
 			'zh-tw'
 		].forEach((lang) => {
 
-			it.skip(`${lang} AM`, async function() {
+			it(`${lang} AM`, async function() {
 				await page.evaluate(lang => {
 					const input = document.querySelector('#localizationAM');
 					return new Promise((resolve) => {
-						input.addEventListener('d2l-localize-behavior-language-changed', () => {
-							input.updateComplete.then(() => {
-								setTimeout(() => {
-									resolve();
-								}, 100);
-							});
-						}, { once: true });
+						input.addEventListener('d2l-localize-behavior-language-changed', resolve, { once: true });
 						document.querySelector('html').setAttribute('lang', lang);
 					});
 				}, lang);
@@ -75,7 +69,7 @@ describe('d2l-input-time', () => {
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it.skip(`${lang} PM`, async function() {
+			it(`${lang} PM`, async function() {
 				const rect = await visualDiff.getRect(page, '#localizationPM');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});

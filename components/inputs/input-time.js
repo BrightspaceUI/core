@@ -244,6 +244,11 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
+
+			this.requestUpdate().then(() => {
+				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-time-hidden-content')).getPropertyValue('width')));
+				this._hiddenContentWidth = `${width}px`;
+			});
 		});
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
@@ -252,11 +257,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this._hiddenContentResizeObserver = new ResizeObserver(() => {
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 			this._hiddenContentWidth = `${width}px`;
-
-			this.dispatchEvent(new CustomEvent(
-				'd2l-input-time-hidden-content-width-change',
-				{ bubbles: true, composed: false }
-			));
 		});
 		this._hiddenContentResizeObserver.observe(hiddenContent);
 

@@ -61,8 +61,8 @@ describe('d2l-input-date-time-range', () => {
 		const dateAfterMax = '2025-10-31T15:00:00Z';
 		const dateFurtherAfterMax = '2027-12-31T15:00:00Z';
 
-		async function changeInnerInputTextDate(page, selector, inputSelector, date, waitForTime) {
-			return page.$eval(selector, (elem, inputSelector, date, waitForTime) => {
+		async function changeInnerInputTextDate(page, selector, inputSelector, date) {
+			return page.$eval(selector, (elem, inputSelector, date) => {
 				const dateElem = elem.shadowRoot.querySelector(inputSelector);
 				const innerInput = dateElem.shadowRoot.querySelector('d2l-input-date');
 				innerInput.value = date;
@@ -71,19 +71,11 @@ describe('d2l-input-date-time-range', () => {
 					{ bubbles: true, composed: false }
 				);
 				innerInput.dispatchEvent(e);
-				if (waitForTime) {
-					return new Promise((resolve) => {
-						elem.updateComplete.then(() => {
-							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
-							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => setTimeout(resolve, 100));
-						});
-					});
-				}
-			}, inputSelector, date, waitForTime);
+			}, inputSelector, date);
 		}
 
-		async function changeInnerInputDateTime(page, selector, inputSelector, date, waitForTime) {
-			return page.$eval(selector, (elem, inputSelector, date, waitForTime) => {
+		async function changeInnerInputDateTime(page, selector, inputSelector, date) {
+			return page.$eval(selector, (elem, inputSelector, date) => {
 				const dateElem = elem.shadowRoot.querySelector(inputSelector);
 				dateElem.value = date;
 				const e = new Event(
@@ -91,15 +83,7 @@ describe('d2l-input-date-time-range', () => {
 					{ bubbles: true, composed: false }
 				);
 				dateElem.dispatchEvent(e);
-				if (waitForTime) {
-					return new Promise((resolve) => {
-						elem.updateComplete.then(() => {
-							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
-							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => setTimeout(resolve, 100));
-						});
-					});
-				}
-			}, inputSelector, date, waitForTime);
+			}, inputSelector, date);
 		}
 
 		async function focusOnInput(page, selector, inputSelector) {
@@ -119,7 +103,7 @@ describe('d2l-input-date-time-range', () => {
 
 		it('start equals end when inclusive', async function() {
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
-			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange, true);
+			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange);
 
 			const rect = await visualDiff.getRect(page, '#inclusive');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -229,7 +213,7 @@ describe('d2l-input-date-time-range', () => {
 				describe(testCase.name, () => {
 					before(async() => {
 						await page.$eval('#min-max', (elem) => elem.blur());
-						await changeInnerInputDateTime(page, '#min-max', startDateSelector, testCase.startDate, testCase.name === 'start equals end');
+						await changeInnerInputDateTime(page, '#min-max', startDateSelector, testCase.startDate);
 						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate);
 					});
 
@@ -262,8 +246,8 @@ describe('d2l-input-date-time-range', () => {
 					before(async() => {
 						await changeInnerInputTextDate(page, '#min-max', startDateSelector, '');
 						await changeInnerInputTextDate(page, '#min-max', endDateSelector, '');
-						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate, true);
-						await changeInnerInputTextDate(page, '#min-max', endDateSelector, testCase.endDate, true);
+						await changeInnerInputTextDate(page, '#min-max', startDateSelector, testCase.startDate);
+						await changeInnerInputTextDate(page, '#min-max', endDateSelector, testCase.endDate);
 					});
 
 					beforeEach(async() => {
