@@ -11,15 +11,26 @@ export class VisibilityTestHelper extends LitElement {
 		`;
 	}
 
+	constructor() {
+		super();
+		this.el = document.createElement('d2l-visibility-test');
+	}
+
 	render() {
-		return html`<button @click='${this.addItem}'>Click to add element
-		</button>`;
+		return html`
+			<h3>Helper</h3>
+			<button @click='${this.addItem}'>Click to add element</button>
+			<button @click='${this.hideItem}'>Click to hide element</button>
+		`;
 	}
 
 	addItem() {
-		const el = document.createElement('d2l-visibility-test');
-		el.animate = 'show';
-		this.parentElement.insertBefore(el, this.nextSibling);
+		this.el.animate = 'show';
+		this.parentElement.appendChild(this.el, this.nextSibling);
+	}
+
+	hideItem() {
+		this.el.animate = 'hide';
 	}
 }
 

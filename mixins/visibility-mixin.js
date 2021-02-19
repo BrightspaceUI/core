@@ -26,6 +26,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	_animateShow() {
+		this.style.display = 'block' // need to get original display style here
 		const visibilityStyle = {
 			transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
 			opacity: '0',
@@ -56,13 +57,13 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 	_animateHide() {
 		const visibilityStyle = {
-			transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
+			transition: 'all ' + transitionDuration + 'ms ease',
 			opacity: '1',
 			transform: 'translateY(0px)'
 		}
 
 		const dummyStyle = {
-			transition: 'height ' + transitionDuration + 'ms ease',
+			transition: 'height ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
 			height: this.scrollHeight + 'px',
 			overflow: 'hidden'
 		}
@@ -74,6 +75,8 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		this.replaceWith(dummy);
 		dummy.appendChild(this);
 
+		// console.log(this.scrollHeight);
+
 		dummy.style.height = '0px';
 		this.style.opacity = '0';
 		this.style.transform = 'translateY(-10px)';
@@ -81,5 +84,9 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		dummy.ontransitionend = () => {
 			dummy.replaceWith(this);
 		};
+
+		this.ontransitionend = () => {
+			this.style.display = 'none';
+		}
 	}
 });
