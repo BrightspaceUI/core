@@ -21,6 +21,7 @@ export class VisibilityTestHelper extends LitElement {
 			<h3>Helper</h3>
 			<button @click='${this.addItem}'>Click to add element</button>
 			<button @click='${this.hideItem}'>Click to hide element</button>
+			<button @click='${this.removeItem}'>Click to remove element</button>
 		`;
 	}
 
@@ -31,6 +32,10 @@ export class VisibilityTestHelper extends LitElement {
 
 	hideItem() {
 		this.el.animate = 'hide';
+	}
+
+	removeItem() {
+		this.el.animate = 'remove';
 	}
 }
 

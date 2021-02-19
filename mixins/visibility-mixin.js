@@ -20,6 +20,8 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 					this._animateShow();
 				} else if (this.animate === 'hide') {
 					this._animateHide();
+				} else if (this.animate === 'remove') {
+					this._animateRemove();
 				}
 			}
 		});
@@ -55,7 +57,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		};
 	}
 
-	_animateHide() {
+	async _animateVisibility() {
 		const visibilityStyle = {
 			transition: 'all ' + transitionDuration + 'ms ease',
 			opacity: '1',
@@ -76,6 +78,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		dummy.appendChild(this);
 
 		// console.log(this.scrollHeight);
+		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
 		dummy.style.height = '0px';
 		this.style.opacity = '0';
@@ -84,9 +87,19 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		dummy.ontransitionend = () => {
 			dummy.replaceWith(this);
 		};
+	}
 
+	_animateHide() {
+		this._animateVisibility();
 		this.ontransitionend = () => {
 			this.style.display = 'none';
+		}
+	}
+
+	_animateRemove() {
+		this._animateVisibility();
+		this.ontransitionend = () => {
+			this.remove();
 		}
 	}
 });
