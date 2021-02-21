@@ -4,9 +4,9 @@ The `LocalizeMixin` and `LocalizeStaticMixin` allow you to localize text in your
 
 ## Providing Resources
 
-Your component must provide resources by either implementing a static `resources` getter for local resources, or a `getLocalizeResources` method to fetch resources asynchronously. The `getLocalizeResources` method will be passed an array of lowercase languages in preferential order.
+Your component must provide resources by either implementing a static `resources` getter for local resources, or a `config` getter to fetch resources asynchronously. The `importFunc` method of `config` will be called with lowercase languages in preferential order.
 
-Your implementation should find the resources that best match the languages passed in. It should then return an object containing two values:
+Static implementations should return an object containing two values:
 - `language` (string): the language of the resources
 - `resources` (object): localization resources for that language
 
@@ -27,11 +27,13 @@ Example:
 }
 ```
 
-Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc.). That way, if the user prefers a regional language (e.g. `fr-ca`) that isn't recognized, it can fall back to the base language.
+Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc.). That way, if the user prefers a regional language (e.g. `pt-br`) that isn't recognized, it can fall back to the base language.
 
-### Static vs. Async Resources
+### Static vs. Dynamic Resources
 
-For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources. To get resources asynchronously, use the `LocalizeMixin` and implement `getLocalizeResources` as an `async` method.
+For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeDynamicMixin` and implement a `static` `config` getter that returns details about where to find your resources.
+
+It is also possible to implement your own `getLocalizeResources` method to get your resources manually. However, this method is outdated and discouraged.
 
 #### Example 1: Static Resources
 
@@ -56,7 +58,6 @@ class MyComponent extends LocalizeStaticMixin(LitElement) {
 
 }
 ```
-
 #### Example 2: Dynamically Imported Resources
 
 This approach is better for components with many language resources. By importing them dynamically, only the resources for the requested language are actually fetched and downloaded.
@@ -64,19 +65,50 @@ This approach is better for components with many language resources. By importin
 Store your resources in individual files, one for each language:
 ```javascript
 // en.js
-export const val = {
+export default {
   'hello': 'Hello {firstName}!'
 };
 ```
 
-Then dynamically import the matching file:
+**Note:** To avoid accidental imports and errors, your resource files should have a dedicated directory with nothing else in it.
+
+Then create your `config` getter:
+```javascript
+import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
+
+class MyComponent extends LocalizeDynamicMixin(LitElement) {
+
+  static get config() {
+    return {
+      importFunc: lang => import(`../lang/${lang}.js`) // Path must be relative!
+    };
+  }
+}
+```
+
+Or with additional optional properties in the `config` object:
+
+```javascript
+return {
+  ...,
+  osloCollection: 'my-project\\myComponent', // To enable OSLO
+  supportedLangs: ['en', 'fr', ...], // For incomplete language support
+  exportName: 'resources' // If your resource files use named exports
+}
+```
+
+#### Example 3: Manually Retrieved Resources
+
+This approach is outdated and discouraged.
+
+Manually retrieve your resources:
 ```javascript
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 class MyComponent extends LocalizeMixin(LitElement) {
 
   static async getLocalizeResources(langs) {
-    for await (const lang of langs) {
+    for (const lang of [...langs, 'en']) {
       let translations;
       switch (lang) {
         case 'en':
@@ -93,13 +125,7 @@ class MyComponent extends LocalizeMixin(LitElement) {
         };
       }
     }
-    translations = await import('./locales/en.js');
-    return {
-      language: 'en',
-      resources: translations.val
-    };
   }
-
 }
 ```
 
