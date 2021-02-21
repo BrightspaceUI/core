@@ -152,17 +152,17 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		return Array.from(langs);
 	}
 
-	static _getAllLocalizeResources(possibleLanguages) {
+	static _getAllLocalizeResources(possibleLanguages, config = this.config) {
 		let resourcesLoadedPromises;
 		const superCtor = Object.getPrototypeOf(this);
 		if ('_getAllLocalizeResources' in superCtor) {
-			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages);
+			resourcesLoadedPromises = superCtor._getAllLocalizeResources(possibleLanguages, config);
 		} else {
 			resourcesLoadedPromises = [];
 		}
 		// eslint-disable-next-line no-prototype-builtins
 		if (this.hasOwnProperty('getLocalizeResources') || this.hasOwnProperty('resources')) {
-			const res = this.getLocalizeResources([...possibleLanguages]);
+			const res = this.getLocalizeResources([...possibleLanguages], config);
 			resourcesLoadedPromises.push(res);
 		}
 		return resourcesLoadedPromises;

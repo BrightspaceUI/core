@@ -31,7 +31,7 @@ Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc
 
 ### Static vs. Async Resources
 
-For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources. To get resources asynchronously, use the `LocalizeMixin` and implement `getLocalizedResources` as an `async` method.
+For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources. To get resources asynchronously, use the `LocalizeMixin` and implement `getLocalizeResources` as an `async` method.
 
 #### Example 1: Static Resources
 
