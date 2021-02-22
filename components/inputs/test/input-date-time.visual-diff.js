@@ -29,9 +29,7 @@ describe('d2l-input-date-time', () => {
 				return new Promise((resolve) => {
 					elem.updateComplete.then(() => {
 						const timeElem = elem.shadowRoot.querySelector('d2l-input-time');
-						timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
-							resolve();
-						});
+						timeElem.addEventListener('d2l-input-time-hidden-content-width-change', resolve);
 					});
 				});
 			}
