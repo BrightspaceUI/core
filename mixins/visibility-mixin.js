@@ -81,6 +81,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		this.replaceWith(dummy);
 		dummy.appendChild(this);
 
+		// allow enough time for reflow to occur to ensure that the transition properly runs
 		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
 		dummy.style.height = '0px';
