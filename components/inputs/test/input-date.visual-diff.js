@@ -198,6 +198,7 @@ describe('d2l-input-date', () => {
 							);
 							input.dispatchEvent(e);
 						});
+						await page.waitForTimeout(100);
 						await page.keyboard.press('Tab');
 						const rect = await helper.getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
