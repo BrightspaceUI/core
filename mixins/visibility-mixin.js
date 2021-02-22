@@ -77,7 +77,6 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		this.replaceWith(dummy);
 		dummy.appendChild(this);
 
-		// console.log(this.scrollHeight);
 		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
 		dummy.style.height = '0px';
