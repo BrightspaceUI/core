@@ -190,15 +190,16 @@ describe('d2l-input-date', () => {
 					});
 
 					it('open then tab', async function() {
-						await page.$eval('#min-max', (elem) => {
+						await page.$eval('#min-max', async(elem) => {
 							const input = elem.shadowRoot.querySelector('d2l-input-text');
 							const e = new Event(
 								'mouseup',
 								{ bubbles: true, composed: true }
 							);
 							input.dispatchEvent(e);
+							const calendar = elem.shadowRoot.querySelector('d2l-calendar');
+							await calendar.updateComplete;
 						});
-						await page.waitForTimeout(100);
 						await page.keyboard.press('Tab');
 						const rect = await helper.getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
