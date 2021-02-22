@@ -13,6 +13,10 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		super();
 	}
 
+	firstUpdated() {
+		this.displayOriginal = window.getComputedStyle(this).display;
+	}
+
 	updated(changedProperties) {
 		changedProperties.forEach((_, propName) => {
 			if (propName === 'animate') {
@@ -28,7 +32,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	_animateShow() {
-		this.style.display = 'block' // need to get original display style here
+		this.style.display = this.displayOriginal;
 		const visibilityStyle = {
 			transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
 			opacity: '0',
