@@ -240,8 +240,11 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		// slight hack, overflowMenu isnt being rendered initially so wait until update
 		// to calculate its width
 		if (this._layout && !this._layout.overflowMenuWidth) {
-			this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
-			this._chomp(this._getItems());
+			// this action needs to be defered until first render of our overflow button
+			requestAnimationFrame(() => {
+				this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
+				this._chomp(this._getItems());
+			});
 		}
 	}
 
@@ -271,10 +274,10 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			</d2l-button-subtle>`;
 		}
 
-		return html`<d2l-button class="d2l-dropdown-opener">
-			<span class="${overFlowButtonTextClasses}">${moreActionsText}</span>
-			<d2l-icon icon="${iconType}"></d2l-icon>
-		</d2l-button>`;
+		return html`<d2l-dropdown-button class="d2l-dropdown-opener" text="${moreActionsText}">
+			<!-- <span class="${overFlowButtonTextClasses}">${moreActionsText}</span> -->
+			<!-- <d2l-icon icon="${iconType}"></d2l-icon> -->
+		</d2l-dropdown-button>`;
 	}
 	render() {
 		const opener = this._getOpener();
