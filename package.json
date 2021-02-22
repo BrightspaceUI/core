@@ -66,6 +66,7 @@
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1.2.17",
     "@webcomponents/shadycss": "^1",
+    "d2l-table": "BrightspaceUI/table#semver:^2",
     "focus-visible": "^5",
     "intl-messageformat": "^7",
     "lit-element": "^2",

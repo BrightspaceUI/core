@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+		<script>
+			const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
+			if (rtl) document.documentElement.setAttribute('dir', 'rtl');
+		</script>
+		<script type="module">
+			import '../../typography/typography.js';
+			import '../../../node_modules/d2l-table/d2l-table-wrapper.js';
+		</script>
+		<title>d2l-table</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<custom-style>
+			<style include="d2l-table-style"></style>
+		</custom-style>
+		<style>
+			.visual-diff {
+				max-width: 800px;
+			}
+		</style>
+	</head>
+	<body class="d2l-typography">
+
+		<div class="visual-diff">
+			<d2l-table-wrapper>
+				<table class="d2l-table" id="standard">
+					<thead>
+						<tr>
+							<th>Header A</th>
+							<th>Header B</th>
+							<th>Header C</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Cell 1-A</td>
+							<td>Cell 1-B</td>
+							<td>Cell 1-C</td>
+						</tr>
+						<tr selected>
+							<td>Cell 2-A</td>
+							<td>Cell 2-B</td>
+							<td>Cell 2-C</td>
+						</tr>
+						<tr>
+							<td>Cell 3-A</td>
+							<td>Cell 3-B</td>
+							<td>Cell 3-C</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td>Footer A</td>
+							<td>Footer B</td>
+							<td>Footer C</td>
+						</tr>
+					</tfoot>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+
+		<div class="visual-diff">
+			<d2l-table-wrapper>
+				<table class="d2l-table" id="vertical-align">
+					<thead>
+						<tr>
+							<th>Header A</th>
+							<th>Header B<br>line 2</th>
+							<th>Header C</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Cell 1-A</td>
+							<td>Cell 1-B<br>line 2</td>
+							<td>Cell 1-C</td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+
+		<div class="visual-diff">
+			<d2l-table-wrapper>
+				<table class="d2l-table" id="empty">
+					<thead>
+						<tr>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+
+		<div class="visual-diff">
+			<d2l-table-wrapper>
+				<table class="d2l-table" id="no-header">
+					<tbody>
+						<tr>
+							<td>Cell 1-A</td>
+							<td>Cell 1-B</td>
+							<td>Cell 1-C</td>
+						</tr>
+						<tr>
+							<td>Cell 2-A</td>
+							<td>Cell 2-B</td>
+							<td>Cell 2-C</td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+
+		<div class="visual-diff">
+			<d2l-table-wrapper>
+				<table class="d2l-table" id="no-tbody">
+					<tr>
+						<td>Cell 1-A</td>
+						<td>Cell 1-B</td>
+						<td>Cell 1-C</td>
+					</tr>
+					<tr>
+						<td>Cell 2-A</td>
+						<td>Cell 2-B</td>
+						<td>Cell 2-C</td>
+					</tr>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+
+		<div class="visual-diff">
+			<d2l-table-wrapper>
+				<table class="d2l-table" id="header-attribute">
+					<tr header>
+						<th>Header A</th>
+						<th>Header B</th>
+						<th>Header C</th>
+					</tr>
+					<tr>
+						<td>Cell 1-A</td>
+						<td>Cell 1-B</td>
+						<td>Cell 1-C</td>
+					</tr>
+					<tr>
+						<td>Cell 2-A</td>
+						<td>Cell 2-B</td>
+						<td>Cell 2-C</td>
+					</tr>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+
+		<div class="visual-diff">
+			<d2l-table-wrapper>
+				<table class="d2l-table" id="row-headers">
+					<thead>
+						<tr>
+							<th>Fruit</th>
+							<th>Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>Apple</th>
+							<td>$1.29</td>
+						</tr>
+						<tr>
+							<th>Banana</th>
+							<td>$0.59</td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+
+	</body>
+</html>
