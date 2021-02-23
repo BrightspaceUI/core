@@ -35,29 +35,23 @@ describe('d2l-input-time', () => {
 		});
 	});
 
-	describe('localization', () => {
-
-		after(async() => {
-			await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
-		});
-
-		[
-			'ar',
-			'da',
-			'de',
-			'es',
-			'fr',
-			'ja',
-			'ko',
-			'nl',
-			'pt',
-			'sv',
-			'zh',
-			'tr',
-			'zh-tw'
-		].forEach((lang) => {
-
-			it(`${lang} AM`, async function() {
+	[
+		'ar',
+		'da',
+		'de',
+		'es',
+		'fr',
+		'ja',
+		'ko',
+		'nl',
+		'pt',
+		'sv',
+		'zh',
+		'tr',
+		'zh-tw'
+	].forEach((lang) => {
+		describe(`localization ${lang}`, () => {
+			before(async() => {
 				await page.evaluate(lang => {
 					const input = document.querySelector('#localizationAM');
 					return new Promise((resolve) => {
@@ -67,11 +61,19 @@ describe('d2l-input-time', () => {
 						document.querySelector('html').setAttribute('lang', lang);
 					});
 				}, lang);
+			});
+
+			after(async() => {
+				await page.evaluate(() => document.querySelector('html').setAttribute('lang', 'en'));
+			});
+
+			it('AM', async function() {
+
 				const rect = await visualDiff.getRect(page, '#localizationAM');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
-			it(`${lang} PM`, async function() {
+			it('PM', async function() {
 				const rect = await visualDiff.getRect(page, '#localizationPM');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
