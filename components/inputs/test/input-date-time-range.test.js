@@ -92,6 +92,8 @@ describe('d2l-input-date-time-range', () => {
 
 					beforeEach(async() => {
 						documentLocaleSettings.timezone.identifier = timezone;
+						await aTimeout(1000);
+						console.log('TIMEOUT COMPLETE')
 					});
 
 					afterEach(() => {
