@@ -92,8 +92,8 @@ describe('d2l-input-date-time-range', () => {
 
 					beforeEach(async() => {
 						documentLocaleSettings.timezone.identifier = timezone;
-						await aTimeout(1000);
-						console.log('TIMEOUT COMPLETE')
+						// await aTimeout(1000);
+						// console.log('TIMEOUT COMPLETE')
 					});
 
 					afterEach(() => {
@@ -111,7 +111,7 @@ describe('d2l-input-date-time-range', () => {
 
 						it('should return correctly backward shifted end date', () => {
 							console.log('========================================');
-							console.log('RUNNING THAT FLAKY TEST!')
+							console.log('RUNNING THAT FLAKY TEST! ' + timezone)
 							const prevStartValue = '2020-10-25T04:00:00.000Z';
 							const prevEnd = '2020-10-27T04:00:00.000Z';
 							const start = '2020-10-24T04:00:00.000Z';
