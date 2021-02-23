@@ -243,10 +243,11 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
-			this._formattedValue = formatTime(getDateFromISOTime(this.value));
-			INTERVALS.clear();
-
-			this.requestUpdate().then(() => this._onResize(hiddenContent));
+			this.requestUpdate().then(() => {
+				this._formattedValue = formatTime(getDateFromISOTime(this.value));
+				INTERVALS.clear();
+				this._onResize(hiddenContent);
+			});
 		});
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
