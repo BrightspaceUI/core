@@ -241,23 +241,17 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			this._formattedValue = formatTime(time);
 		}
 
+		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
+
+			this.requestUpdate().then(() => this._onResize(hiddenContent));
 		});
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
-		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
-		this._hiddenContentResizeObserver = new ResizeObserver(() => {
-			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
-			this._hiddenContentWidth = `${width}px`;
-
-			this.dispatchEvent(new CustomEvent(
-				'd2l-input-time-hidden-content-width-change',
-				{ bubbles: true, composed: false }
-			));
-		});
+		this._hiddenContentResizeObserver = new ResizeObserver(() => this._onResize(hiddenContent));
 		this._hiddenContentResizeObserver.observe(hiddenContent);
 
 	}
@@ -406,6 +400,16 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			this.shadowRoot.querySelector('d2l-menu').focus();
 			e.preventDefault();
 		}
+	}
+
+	_onResize(hiddenContent) {
+		const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
+		this._hiddenContentWidth = `${width}px`;
+
+		this.dispatchEvent(new CustomEvent(
+			'd2l-input-time-hidden-content-width-change',
+			{ bubbles: true, composed: false }
+		));
 	}
 }
 customElements.define('d2l-input-time', InputTime);
