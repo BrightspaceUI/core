@@ -108,6 +108,8 @@ describe('d2l-input-date-time-range', () => {
 						});
 
 						it('should return correctly backward shifted end date', () => {
+							console.log('========================================');
+							console.log('RUNNING THAT FLAKY TEST!')
 							const prevStartValue = '2020-10-25T04:00:00.000Z';
 							const prevEnd = '2020-10-27T04:00:00.000Z';
 							const start = '2020-10-24T04:00:00.000Z';
@@ -115,6 +117,7 @@ describe('d2l-input-date-time-range', () => {
 							const res = getShiftedEndDateTime(start, prevEnd, prevStartValue, inclusive, localized);
 							console.log('DEBUG: RESULT: ' + res);
 							expect(res).to.equal(newEndValue);
+							console.log(('========================================');
 						});
 
 						it('should return correctly shifted end date when initial dates were equal', () => {
