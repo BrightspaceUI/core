@@ -33,77 +33,83 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 	_animateShow() {
 		this.style.display = this.displayOriginal;
-		const visibilityStyle = {
-			transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
-			opacity: '0',
-			transform: 'translateY(-10px)'
+		const animateShowStyle = {
+			initial: {
+				transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
+				opacity: '0',
+				transform: 'translateY(-10px)'
+			},
+			initialDummy: {
+				transition: 'height ' + transitionDuration + 'ms ease',
+				height: '0px',
+				overflow: 'hidden'
+			},
+			finalDummyHeight: this.scrollHeight + 'px',
+			finalOpacity: '1',
+			finalTransform: 'translateY(0px)'
 		}
-
-		const dummyStyle = {
-			transition: 'height ' + transitionDuration + 'ms ease',
-			height: '0px',
-			overflow: 'hidden'
-		}
-
-		Object.assign(this.style, visibilityStyle);
-
-		const dummy = document.createElement('div');
-		Object.assign(dummy.style, dummyStyle);
-		this.replaceWith(dummy);
-		dummy.appendChild(this);
-
-		dummy.style.height = this.scrollHeight + 'px';
-		this.style.opacity = '1';
-		this.style.transform = 'translateY(0px)';
-
-		dummy.ontransitionend = () => {
-			dummy.replaceWith(this);
-		};
+		this._animateVisibility(animateShowStyle)
 	}
 
-	async _animateVisibility() {
-		const visibilityStyle = {
-			transition: 'all ' + transitionDuration + 'ms ease',
-			opacity: '1',
-			transform: 'translateY(0px)'
+	_animateHide() {
+		const dummyOnTransitionEnd = () => {
+			this.style.display = 'none';
 		}
+		this._animateHideRemove(dummyOnTransitionEnd);
+	}
 
-		const dummyStyle = {
-			transition: 'height ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
-			height: this.scrollHeight + 'px',
-			overflow: 'hidden'
+	_animateRemove() {
+		const dummyOnTransitionEnd = () => {
+			this.remove();
 		}
+		this._animateHideRemove(dummyOnTransitionEnd);
+	}
 
-		Object.assign(this.style, visibilityStyle);
+	_animateHideRemove(dummyOnTransitionEnd) {
+		const animateHideRemoveStyle = {
+			initial: {
+				transition: 'all ' + transitionDuration + 'ms ease',
+				opacity: '1',
+				transform: 'translateY(0px)'
+			},
+			initialDummy: {
+				transition: 'height ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
+				height: this.scrollHeight + 'px',
+				overflow: 'hidden'
+			},
+			finalDummyHeight: '0px',
+			finalOpacity: '0',
+			finalTransform: 'translateY(-10px)'
+		}
+		this._animateVisibility(animateHideRemoveStyle, dummyOnTransitionEnd)
+	}
+
+	async _animateVisibility(animateStyle, dummyOnTransitionEnd) {
+		Object.assign(this.style, animateStyle.initial);
 
 		const dummy = document.createElement('div');
-		Object.assign(dummy.style, dummyStyle);
+		Object.assign(dummy.style, animateStyle.initialDummy);
 		this.replaceWith(dummy);
 		dummy.appendChild(this);
 
 		// allow enough time for reflow to occur to ensure that the transition properly runs
 		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-		dummy.style.height = '0px';
-		this.style.opacity = '0';
-		this.style.transform = 'translateY(-10px)';
+		dummy.style.height = animateStyle.finalDummyHeight;
+		this.style.opacity = animateStyle.finalOpacity;
+		this.style.transform = animateStyle.finalTransform;
 
-		dummy.ontransitionend = () => {
-			dummy.replaceWith(this);
+		dummy.ontransitionend = (event) => {
+			// ignore bubbling of opacity/transform transitionend events from this
+			// swap dummy with this at the very end of the dummy's height transition
+			if (event.target === dummy) {
+				dummy.replaceWith(this);
+
+				// for each animate function, do anything that needs to be done specifically after the end of the dummy's transition
+				if (dummyOnTransitionEnd) {
+					dummyOnTransitionEnd(event);
+				}
+			}
 		};
-	}
-
-	_animateHide() {
-		this._animateVisibility();
-		this.ontransitionend = () => {
-			this.style.display = 'none';
-		}
-	}
-
-	_animateRemove() {
-		this._animateVisibility();
-		this.ontransitionend = () => {
-			this.remove();
-		}
 	}
 });
