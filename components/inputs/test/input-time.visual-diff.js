@@ -56,7 +56,7 @@ describe('d2l-input-time', () => {
 					const input = document.querySelector('#localizationAM');
 					return new Promise((resolve) => {
 						input.addEventListener('d2l-localize-behavior-language-changed', () => {
-							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(resolve));
+							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, 100)));
 						}, { once: true });
 						document.querySelector('html').setAttribute('lang', lang);
 					});
