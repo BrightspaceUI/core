@@ -53,6 +53,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 	_animateHide() {
 		const dummyOnTransitionEnd = () => {
+			this.displayOriginal = window.getComputedStyle(this).display;
 			this.style.display = 'none';
 		}
 		this._animateHideRemove(dummyOnTransitionEnd);
