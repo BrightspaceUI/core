@@ -117,7 +117,7 @@ describe('d2l-input-date-time-range', () => {
 							const res = getShiftedEndDateTime(start, prevEnd, prevStartValue, inclusive, localized);
 							console.log('DEBUG: RESULT: ' + res);
 							expect(res).to.equal(newEndValue);
-							console.log(('========================================');
+							console.log('========================================');
 						});
 
 						it('should return correctly shifted end date when initial dates were equal', () => {
