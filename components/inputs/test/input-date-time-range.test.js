@@ -92,7 +92,6 @@ describe('d2l-input-date-time-range', () => {
 
 					beforeEach(async() => {
 						documentLocaleSettings.timezone.identifier = timezone;
-						await aTimeout(20); // Fixes flaky tests likely caused by timezone not yet being set
 					});
 
 					afterEach(() => {
@@ -108,12 +107,14 @@ describe('d2l-input-date-time-range', () => {
 							expect(getShiftedEndDateTime(start, prevEnd, prevStartValue, inclusive, localized)).to.equal(newEndValue);
 						});
 
-						it.skip('should return correctly backward shifted end date', () => {
+						it('should return correctly backward shifted end date', () => {
 							const prevStartValue = '2020-10-25T04:00:00.000Z';
 							const prevEnd = '2020-10-27T04:00:00.000Z';
 							const start = '2020-10-24T04:00:00.000Z';
 							const newEndValue = `2020-10-26T04:00:00.000${localized ? '' : 'Z'}`;
-							expect(getShiftedEndDateTime(start, prevEnd, prevStartValue, inclusive, localized)).to.equal(newEndValue);
+							const res = getShiftedEndDateTime(start, prevEnd, prevStartValue, inclusive, localized);
+							console.log('DEBUG: RESULT: ' + res);
+							expect(res).to.equal(newEndValue);
 						});
 
 						it('should return correctly shifted end date when initial dates were equal', () => {

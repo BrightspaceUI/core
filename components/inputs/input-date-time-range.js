@@ -24,6 +24,10 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
 	const jsStartDate = localized ? getDateNoConversion(startValue) : new Date(startValue);
 	const jsEndDate = localized ? getDateNoConversion(endValue) : new Date(endValue);
 	const jsPrevStartDate = localized ? getDateNoConversion(prevStartValue) : new Date(prevStartValue);
+	console.log('DEBUG: localized ' + localized);
+	console.log('DEBUG: start ' + startValue + ' jsStartDate ' + jsStartDate);
+	console.log('DEBUG: end ' + endValue + ' jsStartDate ' + jsEndDate);
+	console.log('DEBUG: prev start ' + prevStartValue + ' jsStartDate ' + jsPrevStartDate);
 
 	if ((inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() < 0)
 		|| (!inclusive && jsEndDate.getTime() - jsPrevStartDate.getTime() <= 0))
@@ -32,7 +36,9 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
 	if (!_isSameDate(startObj, prevStartObj)) {
 		// shift dates only
 		const diff = jsStartDate.getTime() - jsPrevStartDate.getTime();
+		console.log('DEBUG: diff ' + diff);
 		const jsNewEndDate = new Date(jsEndDate.getTime() + diff);
+		console.log('DEBUG: jsNewEndDate: ' + jsNewEndDate.toISOString());
 
 		if (!localized) return jsNewEndDate.toISOString();
 
