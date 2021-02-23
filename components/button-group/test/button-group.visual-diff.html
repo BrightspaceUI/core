@@ -18,14 +18,21 @@
 			import '../button-group.js';
 		</script>
 		<style>
-			#min {
-				width: 350px;
+			#less-than-min {
+				width: 500px;
 			}
-			#min-max-auto-small {
-				width: 300px;
+			#over-max-container {
+				height: 400px;
+			}
+			#min-auto-container {
+				height: 400px;
+				width: 500px;
 			}
 			#min-max-auto-large {
 				width: 700px;
+			}
+			.small {
+				width: 350px;
 			}
 		</style>
 		<title>d2l-button-group</title>
@@ -36,7 +43,7 @@
 	<body class="d2l-typography">
 		<div class="visual-diff">
 			<!-- no properties -->
-			<d2l-button-group id="noProps">
+			<!-- <d2l-button-group id="noProps">
 				<d2l-button>New</d2l-button>
 				<d2l-dropdown>
 					<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
@@ -55,11 +62,11 @@
 				<d2l-button>Import</d2l-button>
 				<d2l-button>Delete</d2l-button>
 				<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
-			</d2l-button-group>
+			</d2l-button-group> -->
 		</div>
 		<div class="visual-diff">
 			<!-- no properties -->
-			<d2l-button-group id="min" min-to-show="3">
+			<d2l-button-group id="less-than-min" min-to-show="3">
 				<d2l-button>New</d2l-button>
 				<d2l-dropdown>
 					<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
@@ -75,35 +82,17 @@
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
 				<d2l-button>Copy</d2l-button>
-				<d2l-button>Import</d2l-button>
-				<d2l-button>Delete</d2l-button>
-				<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
 			</d2l-button-group>
 		</div>
 		<div class="visual-diff">
-			<d2l-button-group id="max" max-to-show="2">
+			<d2l-button-group id="between-min-max" min-to-show="2" max-to-show="4">
 				<d2l-button>New</d2l-button>
-						<d2l-dropdown>
-							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
-							<d2l-dropdown-menu id="dropdown" >
-								<d2l-menu label="Astronomy">
-									<d2l-menu-item text="Introduction"></d2l-menu-item>
-									<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-									<d2l-menu-item text="The Solar System"></d2l-menu-item>
-									<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
-									<d2l-menu-item text="The Night Sky"></d2l-menu-item>
-									<d2l-menu-item text="The Universe"></d2l-menu-item>
-								</d2l-menu>
-							</d2l-dropdown-menu>
-						</d2l-dropdown>
-						<d2l-button>Copy</d2l-button>
-						<d2l-button>Import</d2l-button>
-						<d2l-button>Delete</d2l-button>
-						<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
+				<d2l-button>Copy</d2l-button>
+				<d2l-button>Import</d2l-button>
 			</d2l-button-group>
 		</div>
-		<div class="visual-diff">
-			<d2l-button-group id="min-max-auto-small" auto-show>
+		<div id="over-max-container" class="visual-diff">
+			<d2l-button-group id="over-max" max-to-show="3">
 				<d2l-button>one</d2l-button>
 				<d2l-button class="d2l-button-group-show">two</d2l-button>
 				<d2l-button>three</d2l-button>
@@ -120,13 +109,13 @@
 				<d2l-button>five</d2l-button>
 			</d2l-button-group>
 		</div>
-		<div class="visual-diff">
+		<div id="min-auto-container" class="visual-diff">
 			<d2l-button-group id="min-auto" auto-show>
 				<d2l-button>one</d2l-button>
-				<d2l-button class="d2l-button-group-show">two</d2l-button>
-				<d2l-button>three</d2l-button>
+				<d2l-button>two</d2l-button>
+				<d2l-button class="d2l-button-group-show">three</d2l-button>
 				<d2l-button>four</d2l-button>
-				<d2l-button>five</d2l-button>
+				<d2l-button >five</d2l-button>
 			</d2l-button-group>
 		</div>
 		<div class="visual-diff">
@@ -141,6 +130,14 @@
 		<div class="visual-diff">
 			<d2l-button-group id="one-item" auto-show>
 				<d2l-button>one</d2l-button>
+			</d2l-button-group>
+		</div>
+		<div id="min-auto-container" class="visual-diff small">
+			<d2l-button-group id="more-icon-opener" opener-type="icon" maxToShow="3">
+				<d2l-button>one</d2l-button>
+				<d2l-button>two</d2l-button>
+				<d2l-button>three</d2l-button>
+				<d2l-button>foura</d2l-button>
 			</d2l-button-group>
 		</div>
 	</body>

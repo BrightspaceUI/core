@@ -7,6 +7,9 @@ import '../menu/menu-item-separator.js';
 import '../button/button.js';
 import '../button/button-subtle.js';
 import '../dropdown/dropdown.js';
+import '../dropdown/dropdown-button.js';
+import '../dropdown/dropdown-button-subtle.js';
+import '../dropdown/dropdown-more.js';
 import '../menu/menu.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonGroupMixin } from './button-group-mixin.js';
@@ -141,23 +144,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			:host([subtle]) d2l-button-subtle:hover > d2l-icon {
 				color: var(--d2l-color-celestine-minus-1);
 			}
-
-			/* :host([mini][opener-type="icon"]) .d2l-dropdown-opener > d2l-button-subtle,
-			:host([mini][opener-type="icon"]) .d2l-dropdown-opener > d2l-button {
-				height: 2.1rem;
-				width: 2.1rem;
-			}
-			 */
-			/* :host([mini]) .d2l-overflow-dropdown > d2l-button,
-			:host([opener-type="icon"]) .d2l-overflow-dropdown > d2l-button {
-				height: 2.1rem;
-				width: 2.1rem;
-				overflow: hidden;
-			}
-			:host([mini]) .d2l-overflow-dropdown > button,
-			:host([opener-type="icon"]) .d2l-overflow-dropdown > button {
-				padding:0 !important;
-			} */
 			.d2l-dropdown-opener-text {
 				margin-right: 0.3rem;
 				vertical-align: middle;
@@ -219,7 +205,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 			return itemLayout;
 		});
 		// this element isnt rendered yet here for some reason, width is 0
-		this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
+		// this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
 		this._layout.availableWidth = this._getContainerWidth();
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._items);
@@ -267,16 +253,18 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		});
 
 		const moreActionsText = this._mini || this.openerType ? '' : this.localize('components.button-group.moreActions');
-
+		const menu = html`<d2l-dropdown-menu>
+			<d2l-menu id="overflowMenu" label="${moreActionsText}">
+			</d2l-menu>
+		</d2l-dropdown-menu>`;
 		if (isMoreIcon || this.subtle) {
-			return html`<d2l-button-subtle class="d2l-dropdown-opener" text="${moreActionsText}">
-				<d2l-icon icon="${iconType}"></d2l-icon>
-			</d2l-button-subtle>`;
+			return html`<d2l-dropdown-more class="d2l-overflow-dropdown" text="${moreActionsText}">
+				${menu}
+		</d2l-dropdown-more>`;
 		}
 
-		return html`<d2l-dropdown-button class="d2l-dropdown-opener" text="${moreActionsText}">
-			<!-- <span class="${overFlowButtonTextClasses}">${moreActionsText}</span> -->
-			<!-- <d2l-icon icon="${iconType}"></d2l-icon> -->
+		return html`<d2l-dropdown-button class="d2l-overflow-dropdown" text="${moreActionsText}">
+			${menu}
 		</d2l-dropdown-button>`;
 	}
 	render() {
@@ -286,14 +274,14 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		return html`
 			<div class="d2l-button-group-container">
 				<slot id="buttons"></slot>
-				<d2l-dropdown class="d2l-overflow-dropdown">
-					${opener}
+				${opener}
+				<!-- <d2l-dropdown class="d2l-overflow-dropdown">
+					
 					<d2l-dropdown-menu>
-						<!-- todo: localize this text or provide it as a property -->
 						<d2l-menu id="overflowMenu" label="${moreActionsText}">
 						</d2l-menu>
 					</d2l-dropdown-menu>
-				</d2l-dropdown>
+				</d2l-dropdown> -->
 			</div>
 		`;
 	}
@@ -377,7 +365,7 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		}
 
 		if (!this._layout.overflowMenuWidth) {
-			this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
+			// this._layout.overflowMenuWidth = this._overflowMenu.offsetWidth;
 		}
 
 		if (!items) {
@@ -460,7 +448,8 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		}
 
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		if (this.minToShow > 0 && (showing.width + this._layout.overflowMenuWidth >= this._layout.availableWidth)) {
+		const overflowHidden = items.length === showing.count;
+		if (this.minToShow > 0 && (showing.width + this._layout.overflowMenuWidth >= this._layout.availableWidth) && !overflowHidden) {
 			this._mini = true;
 		} else {
 			this._mini = false;
@@ -514,7 +503,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 		} else {
 			overflowDropdown.insertBefore(menuItem, overflowDropdown.childNodes[index]);
 		}
-
 	}
 
 	_getContainerWidth() {
@@ -533,7 +521,6 @@ class ButtonGroup extends LocalizeCoreElement(ButtonGroupMixin(LitElement)) {
 	_removeEventListeners() {
 		window.removeEventListener('resize', this._throttledResize);
 	}
-
 	_createMenuItem(item) {
 		const menuItem = document.createElement('d2l-menu-item');
 		const childText = item.firstChild && (item.firstChild.label || item.firstChild.text || item.firstChild.textContent.trim());
