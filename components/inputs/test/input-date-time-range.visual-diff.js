@@ -95,7 +95,7 @@ describe('d2l-input-date-time-range', () => {
 					return new Promise((resolve) => {
 						elem.updateComplete.then(() => {
 							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
-							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => timeElem.updateComplete.then(setTimeout(resolve, 200)));
+							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => timeElem.updateComplete.then(setTimeout(resolve, 100)));
 						});
 					});
 				}
@@ -230,7 +230,7 @@ describe('d2l-input-date-time-range', () => {
 					before(async() => {
 						await page.$eval('#min-max', (elem) => elem.blur());
 						await changeInnerInputDateTime(page, '#min-max', startDateSelector, testCase.startDate, testCase.name === 'start equals end');
-						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate);
+						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate, testCase.name === 'start equals end');
 					});
 
 					it('basic', async function() {
