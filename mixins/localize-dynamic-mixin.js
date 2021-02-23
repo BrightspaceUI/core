@@ -1,7 +1,9 @@
 import { getLocalizeOverrideResources } from '../helpers/getLocalizeResources.js';
 import { LocalizeMixin } from './localize-mixin.js';
 
+/*** WARNING! ¡ATENCIÓN! ACHTUNG! Adding to defaultLangs MUST be a BREAKING change with a MAJOR version bump! ***/
 const defaultLangs = ['ar', 'cy-gb', 'cy', 'da', 'de', 'en', 'es-es', 'es', 'fr-ca', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-tw', 'zh'];
+/****************************************************************************************************************/
 const fallbackLang = 'en';
 const defaultExportName = 'default';
 
@@ -17,8 +19,8 @@ export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(su
 		for (const lang of [...langs, fallbackLang]) {
 
 			if (supportedLangs.includes(lang)) {
-				const mod = await importFunc(lang);
-				const resources = mod[exportName];
+				const mod = await importFunc(lang).catch(() => {});
+				const resources = mod && mod[exportName];
 
 				if (resources) {
 
