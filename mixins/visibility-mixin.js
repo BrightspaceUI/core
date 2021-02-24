@@ -33,6 +33,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	_animateShow() {
+		this.style.display = this.displayOriginal;
 		const animateShowStyle = {
 			initial: {
 				transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
@@ -48,28 +49,25 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			finalOpacity: '1',
 			finalTransform: 'translateY(0px)'
 		}
-		const dummyOnPreAnimate = () => {
-			this.style.display = this.displayOriginal;
-		}
-		this._animateVisibility(animateShowStyle, dummyOnPreAnimate, null)
+		this._animateVisibility(animateShowStyle)
 	}
 
 	_animateHide() {
-		const dummyOnPostAnimate = () => {
+		const dummyOnTransitionEnd = () => {
 			this.displayOriginal = window.getComputedStyle(this).display;
 			this.style.display = 'none';
 		}
-		this._animateHideRemove(dummyOnPostAnimate);
+		this._animateHideRemove(dummyOnTransitionEnd);
 	}
 
 	_animateRemove() {
-		const dummyOnPostAnimate = () => {
+		const dummyOnTransitionEnd = () => {
 			this.remove();
 		}
-		this._animateHideRemove(dummyOnPostAnimate);
+		this._animateHideRemove(dummyOnTransitionEnd);
 	}
 
-	_animateHideRemove(dummyOnPostAnimate) {
+	_animateHideRemove(dummyOnTransitionEnd) {
 		const animateHideRemoveStyle = {
 			initial: {
 				transition: 'all ' + transitionDuration + 'ms ease',
@@ -85,14 +83,10 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			finalOpacity: '0',
 			finalTransform: 'translateY(-10px)'
 		}
-		this._animateVisibility(animateHideRemoveStyle, null, dummyOnPostAnimate)
+		this._animateVisibility(animateHideRemoveStyle, dummyOnTransitionEnd)
 	}
 
-	async _animateVisibility(animateStyle, dummyOnPreAnimate, dummyOnPostAnimate) {
-		if (dummyOnPreAnimate) {
-			dummyOnPreAnimate();
-		}
-
+	async _animateVisibility(animateStyle, dummyOnTransitionEnd) {
 		if (!reduceMotion) {
 			Object.assign(this.style, animateStyle.initial);
 
@@ -116,15 +110,15 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 					dummy.replaceWith(this);
 
 					// for each animate function, do anything that needs to be done specifically after the end of the dummy's transition
-					if (dummyOnPostAnimate) {
-						dummyOnPostAnimate();
+					if (dummyOnTransitionEnd) {
+						dummyOnTransitionEnd();
 					}
 				}
 			};
 		}
 
-		if (dummyOnPostAnimate && reduceMotion) {
-			dummyOnPostAnimate();
+		if (dummyOnTransitionEnd && reduceMotion) {
+			dummyOnTransitionEnd();
 		}
 	}
 });
