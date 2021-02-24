@@ -1,11 +1,17 @@
 import { getLocalizeOverrideResources } from '../helpers/getLocalizeResources.js';
 import { LocalizeMixin } from './localize-mixin.js';
 
-/*** WARNING! ¡ATENCIÓN! ACHTUNG! Adding to defaultLangs MUST be a BREAKING change with a MAJOR version bump! ***/
-const defaultLangs = ['ar', 'cy-gb', 'cy', 'da', 'de', 'en', 'es-es', 'es', 'fr-ca', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-tw', 'zh'];
-/****************************************************************************************************************/
 const fallbackLang = 'en';
 const defaultExportName = 'default';
+
+function warnMissingFiles(failures, resolvedLang) {
+	const { path } = failures[0].err.message.match(/(?:https?:\/\/.*?\/)(?<path>.*)\/.*\./).groups;
+	const langs = failures.map(f => f.lang).join('","');
+	console.warn(
+		'WARNING: Unacceptable in production. Consider Manually Retrieved Resources method.\n\n' +
+		`Failed to load translation resources for languages "${langs}" from ${path}.`,
+		`Falling back to "${resolvedLang}". `);
+}
 
 export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(superclass) {
 
@@ -14,29 +20,37 @@ export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(su
 	}
 
 	static async getLocalizeResources(langs, config) {
-		const { importFunc, osloCollection, supportedLangs = defaultLangs, exportName = defaultExportName } = config;
+		const { importFunc, osloCollection, exportName = defaultExportName } = config;
+		const missingFiles = [];
 
 		for (const lang of [...langs, fallbackLang]) {
 
-			if (supportedLangs.includes(lang)) {
-				const mod = await importFunc(lang).catch(() => {});
-				const resources = mod && mod[exportName];
+			const mod = await importFunc(lang).catch(err => {
+				// TypeErrors are unsupported languages that fail to be imported (404). Report them.
+				// Errors are unsupported languages that are never imported and fall through. Supress them.
+				// in either case fallback languages are used (e.g. gd-ie -> gd -> en)
+				if (err.constructor === TypeError) missingFiles.push({ lang, err });
+			});
+			const resources = mod && mod[exportName];
 
-				if (resources) {
+			if (resources) {
 
-					if (osloCollection) {
-						return await getLocalizeOverrideResources(
-							lang,
-							resources,
-							() => osloCollection
-						);
-					}
-
-					return {
-						language: lang,
-						resources
-					};
+				if (missingFiles.length) {
+					warnMissingFiles(missingFiles, lang);
 				}
+
+				if (osloCollection) {
+					return await getLocalizeOverrideResources(
+						lang,
+						resources,
+						() => osloCollection
+					);
+				}
+
+				return {
+					language: lang,
+					resources
+				};
 			}
 		}
 	}

@@ -33,7 +33,7 @@ Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc
 
 For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeDynamicMixin` and implement a `static` `config` getter that returns details about where to find your resources.
 
-It is also possible to implement your own `getLocalizeResources` method to get your resources manually. However, this method is outdated and discouraged.
+It is also possible to implement your own `getLocalizeResources` method to get your resources manually if absolutely necessary.
 
 #### Example 1: Static Resources
 
@@ -92,14 +92,13 @@ Or with additional optional properties in the `config` object:
 return {
   ...,
   osloCollection: 'my-project\\myComponent', // To enable OSLO
-  supportedLangs: ['en', 'fr', ...], // For incomplete language support
   exportName: 'resources' // If your resource files use named exports
 }
 ```
 
 #### Example 3: Manually Retrieved Resources
 
-This approach is outdated and discouraged.
+It is highly recommended that you try to use the dynamic approach whenever possible, but if your builds _can't_ handle variable dynamic imports, you may be best served by writing your own `getLocalizeResources` method to retrieve your resources manually.
 
 Manually retrieve your resources:
 ```javascript
