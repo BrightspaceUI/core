@@ -1,5 +1,6 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const transitionDuration = 300;
 
 export const VisibilityMixin = dedupeMixin(superclass => class extends superclass {
@@ -32,7 +33,6 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	_animateShow() {
-		this.style.display = this.displayOriginal;
 		const animateShowStyle = {
 			initial: {
 				transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
@@ -48,25 +48,28 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			finalOpacity: '1',
 			finalTransform: 'translateY(0px)'
 		}
-		this._animateVisibility(animateShowStyle)
+		const dummyOnPreAnimate = () => {
+			this.style.display = this.displayOriginal;
+		}
+		this._animateVisibility(animateShowStyle, dummyOnPreAnimate, null)
 	}
 
 	_animateHide() {
-		const dummyOnTransitionEnd = () => {
+		const dummyOnPostAnimate = () => {
 			this.displayOriginal = window.getComputedStyle(this).display;
 			this.style.display = 'none';
 		}
-		this._animateHideRemove(dummyOnTransitionEnd);
+		this._animateHideRemove(dummyOnPostAnimate);
 	}
 
 	_animateRemove() {
-		const dummyOnTransitionEnd = () => {
+		const dummyOnPostAnimate = () => {
 			this.remove();
 		}
-		this._animateHideRemove(dummyOnTransitionEnd);
+		this._animateHideRemove(dummyOnPostAnimate);
 	}
 
-	_animateHideRemove(dummyOnTransitionEnd) {
+	_animateHideRemove(dummyOnPostAnimate) {
 		const animateHideRemoveStyle = {
 			initial: {
 				transition: 'all ' + transitionDuration + 'ms ease',
@@ -82,35 +85,46 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			finalOpacity: '0',
 			finalTransform: 'translateY(-10px)'
 		}
-		this._animateVisibility(animateHideRemoveStyle, dummyOnTransitionEnd)
+		this._animateVisibility(animateHideRemoveStyle, null, dummyOnPostAnimate)
 	}
 
-	async _animateVisibility(animateStyle, dummyOnTransitionEnd) {
-		Object.assign(this.style, animateStyle.initial);
+	async _animateVisibility(animateStyle, dummyOnPreAnimate, dummyOnPostAnimate) {
+		if (dummyOnPreAnimate) {
+			dummyOnPreAnimate();
+		}
 
-		const dummy = document.createElement('div');
-		Object.assign(dummy.style, animateStyle.initialDummy);
-		this.replaceWith(dummy);
-		dummy.appendChild(this);
+		if (!reduceMotion) {
+			Object.assign(this.style, animateStyle.initial);
 
-		// allow enough time for reflow to occur to ensure that the transition properly runs
-		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+			const dummy = document.createElement('div');
+			Object.assign(dummy.style, animateStyle.initialDummy);
+			this.replaceWith(dummy);
+			dummy.appendChild(this);
 
-		dummy.style.height = animateStyle.finalDummyHeight;
-		this.style.opacity = animateStyle.finalOpacity;
-		this.style.transform = animateStyle.finalTransform;
+			// allow enough time for reflow to occur to ensure that the transition properly runs
+			await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-		dummy.ontransitionend = (event) => {
-			// ignore bubbling of opacity/transform transitionend events from this
-			// swap dummy with this at the very end of the dummy's height transition
-			if (event.target === dummy) {
-				dummy.replaceWith(this);
+			dummy.style.height = animateStyle.finalDummyHeight;
+			this.style.opacity = animateStyle.finalOpacity;
+			this.style.transform = animateStyle.finalTransform;
 
-				// for each animate function, do anything that needs to be done specifically after the end of the dummy's transition
-				if (dummyOnTransitionEnd) {
-					dummyOnTransitionEnd(event);
+			dummy.ontransitionend = (event) => {
+				// ignore bubbling of opacity/transform transitionend events from this
+				// swap dummy with this at the very end of the dummy's height transition
+				// dummy's height should match this height, so dummy is no longer needed
+				if (event.target === dummy) {
+					dummy.replaceWith(this);
+
+					// for each animate function, do anything that needs to be done specifically after the end of the dummy's transition
+					if (dummyOnPostAnimate) {
+						dummyOnPostAnimate();
+					}
 				}
-			}
-		};
+			};
+		}
+
+		if (dummyOnPostAnimate && reduceMotion) {
+			dummyOnPostAnimate();
+		}
 	}
 });
