@@ -62,15 +62,12 @@ describe('d2l-input-time', () => {
 					const input = document.querySelector('#localizationAM');
 					return new Promise((resolve) => {
 						input.addEventListener('d2l-localize-behavior-language-changed', () => {
-							input.updateComplete.then(() => {
-								setTimeout(() => {
-									resolve();
-								}, 100);
-							});
+							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, 200)));
 						}, { once: true });
 						document.querySelector('html').setAttribute('lang', lang);
 					});
 				}, lang);
+
 				const rect = await visualDiff.getRect(page, '#localizationAM');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});

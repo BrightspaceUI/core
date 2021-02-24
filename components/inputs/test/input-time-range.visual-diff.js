@@ -235,14 +235,14 @@ describe('d2l-input-time-range', () => {
 	describe('skeleton', () => {
 
 		before(async() => {
-			await page.reload();
-			await page.$eval('#labelled', (elem) => {
-				const timeElem = elem.shadowRoot.querySelector('d2l-input-time');
-				return new Promise((resolve) => {
-					elem.updateComplete.then(() => {
-						timeElem.addEventListener('d2l-input-time-hidden-content-width-change', resolve);
-					});
-				});
+			await page.$eval('#hidden-labels', async(elem) => {
+				elem.style.maxWidth = '800px';
+				elem.parentNode.style.width = '800px';
+				await elem.updateComplete;
+			});
+			await page.$eval('#hidden-labels-wrapped', async(elem) => {
+				elem.parentNode.style.width = '250px';
+				await elem.updateComplete;
 			});
 		});
 
