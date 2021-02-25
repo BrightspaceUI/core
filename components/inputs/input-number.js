@@ -22,6 +22,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean },
+			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
 			inputWidth: { attribute: 'input-width', type: String },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -72,8 +73,13 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	set value(val) {
 		const oldValue = this.value;
 		try {
-			this._formattedValue = formatValue(val, this.minFractionDigits, this.maxFractionDigits);
-			this._value = parseNumber(this._formattedValue);
+			if (val === null) {
+				this._formattedValue = '';
+				this._value = undefined;
+			} else {
+				this._formattedValue = formatValue(val, this.minFractionDigits, this.maxFractionDigits);
+				this._value = parseNumber(this._formattedValue);
+			}
 		} catch (err) {
 			this._formattedValue = '';
 			this._value = undefined;
@@ -104,6 +110,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				@change="${this._handleChange}"
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
+				?hide-invalid-icon="${this.hideInvalidIcon}"
 				id="${this._inputId}"
 				input-width="${this.inputWidth}"
 				label="${ifDefined(this.label)}"
@@ -113,8 +120,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
-				.value="${this._formattedValue}"
-			><slot slot="after" name="after"></slot></d2l-input-text>
+				.value="${this._formattedValue}">
+					<slot slot="left" name="left"></slot>
+					<slot slot="right" name="right"></slot>
+					<slot slot="after" name="after"></slot>
+			</d2l-input-text>
 			${tooltip}
 		`;
 	}

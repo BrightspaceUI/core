@@ -54,6 +54,7 @@ describe('d2l-input-text', () => {
 		'wc-label-hidden',
 		'wc-override-height',
 		'wc-override-padding',
+		'wc-override-text-align',
 		'wc-icon-left',
 		'wc-icon-left-rtl',
 		'wc-icon-right',
