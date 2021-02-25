@@ -78,10 +78,13 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				@change="${this._handleChange}"
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
+				hide-invalid-icon
 				input-width="${ifDefined(this.inputWidth)}"
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden}"
+				max="100"
 				max-fraction-digits="${ifDefined(this.maxFractionDigits)}"
+				min="0"
 				min-fraction-digits="${ifDefined(this.minFractionDigits)}"
 				name="${ifDefined(this.name)}"
 				?noValidate="${this.noValidate}"
@@ -111,7 +114,7 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 
 	async _handleChange(e) {
 		const oldValue = this.value;
-		this.value = e.target.value
+		this.value = e.target.value;
 
 		if (e.target.value === undefined) {
 			await this.requestUpdate();

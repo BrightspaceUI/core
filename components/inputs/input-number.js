@@ -22,6 +22,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			autocomplete: { type: String },
 			autofocus: { type: Boolean },
 			disabled: { type: Boolean },
+			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
 			inputWidth: { attribute: 'input-width', type: String },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -104,6 +105,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				@change="${this._handleChange}"
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
+				?hide-invalid-icon="${this.hideInvalidIcon}"
 				id="${this._inputId}"
 				input-width="${this.inputWidth}"
 				label="${ifDefined(this.label)}"
