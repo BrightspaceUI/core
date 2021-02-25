@@ -6,21 +6,62 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+/**
+ * This component wraps the "<d2l-input-number>" tag and is intended inputting percent values.
+ * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
+ */
 class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Specifies which types of values can be autofilled by the browser
+			 */
 			autocomplete: { type: String },
+			/**
+			 * When set, will automatically place focus on the input
+			 */
 			autofocus: { type: Boolean },
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 */
 			inputWidth: { attribute: 'input-width', type: String },
+			/**
+			 * REQUIRED: Label for the input
+			 */
 			label: { type: String },
+			/**
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * Maximum number of decimal values to show (rounds value up or down).
+			 */
 			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
+			/**
+			 * Minimum number of decimal values to show.
+			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
+			/**
+			 * Placeholder text
+			 */
 			placeholder: { type: String },
+			/**
+			 * Indicates that a value is required
+			 */
 			required: { type: Boolean },
+			/**
+			 * Text for additional screenreader and mouseover context
+			 */
 			title: { type: String },
+			/**
+			 * Value of the input
+			 */
 			value: { type: Number }
 		};
 	}
