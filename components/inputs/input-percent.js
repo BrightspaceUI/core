@@ -114,7 +114,14 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 
 	async _handleChange(e) {
 		const oldValue = this.value;
-		this.value = e.target.value;
+		this.value = e.target.value
+
+		if (e.target.value === undefined) {
+			await this.requestUpdate();
+			this.value = oldValue;
+		}
+
+		await this.requestUpdate();
 
 		if (oldValue !== this.value) {
 			this.dispatchEvent(new CustomEvent(
