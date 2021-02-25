@@ -29,16 +29,10 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 		return [ super.styles,
 			css`
 				:host {
-					--d2l-input-padding: 0.4rem 1.4rem 0.4rem 0.75rem;
-					--d2l-input-padding-focus: calc(0.4rem - 1px) calc(1.4rem - 1px) calc(0.4rem - 1px) calc(0.75rem - 1px);
 					--d2l-input-text-align: end;
 					display: inline-block;
 					position: relative;
 					width: 100%;
-				}
-				:host([dir="rtl"]) {
-					--d2l-input-padding: 0.4rem 0.75rem 0.4rem 1.4rem;
-					--d2l-input-padding-focus: calc(0.4rem - 1px) calc(0.75rem - 1px) calc(0.4rem - 1px) calc(1.4rem - 1px);
 				}
 				:host([hidden]) {
 					display: none;
@@ -47,11 +41,14 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 					opacity: 0.5;
 				}
 				[slot="right"] {
-					margin-right: 0.55rem;
+					box-sizing: border-box;
+					cursor: default;
+					padding-left: 0.2rem;
+					padding-right: 0.55rem;
 				}
 				:host([dir="rtl"]) [slot="right"] {
-					margin-left: 0.55rem;
-					margin-right: 0;
+					padding-left: 0.55rem;
+					padding-right: 0.2rem;
 				}
 			`
 		];
