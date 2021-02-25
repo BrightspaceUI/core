@@ -152,7 +152,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		return Array.from(langs);
 	}
 
-	static _getAllLocalizeResources(possibleLanguages, config = this.config) {
+	static _getAllLocalizeResources(possibleLanguages, config = this.localizeConfig) {
 		let resourcesLoadedPromises;
 		const superCtor = Object.getPrototypeOf(this);
 		if ('_getAllLocalizeResources' in superCtor) {

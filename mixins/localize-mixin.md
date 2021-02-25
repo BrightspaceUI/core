@@ -4,11 +4,7 @@ The `LocalizeMixin` and `LocalizeStaticMixin` allow you to localize text in your
 
 ## Providing Resources
 
-Your component must provide resources by either implementing a static `resources` getter for local resources, or a `config` getter to fetch resources asynchronously. The `importFunc` method of `config` will be called with lowercase languages in preferential order.
-
-Static implementations should return an object containing two values:
-- `language` (string): the language of the resources
-- `resources` (object): localization resources for that language
+Your component must provide resources by either implementing a `resources` getter for local resources, or a `localizeConfig` getter to fetch resources asynchronously. The `importFunc` method of `localizeConfig` will be called with lowercase languages in preferential order.
 
 ## Language Resources
 
@@ -31,9 +27,7 @@ Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc
 
 ### Static vs. Dynamic Resources
 
-For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeDynamicMixin` and implement a `static` `config` getter that returns details about where to find your resources.
-
-It is also possible to implement your own `getLocalizeResources` method to get your resources manually if absolutely necessary.
+For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeDynamicMixin` and implement a `static` `localizeConfig` getter that returns details about where to find your resources.
 
 #### Example 1: Static Resources
 
@@ -78,53 +72,32 @@ import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynam
 
 class MyComponent extends LocalizeDynamicMixin(LitElement) {
 
-  static get config() {
+  static get localizeConfig() {
     return {
-      importFunc: lang => import(`../lang/${lang}.js`) // Path must be relative!
+       // Import path must be relative
+      importFunc: async lang => (await import(`../lang/${lang}.js`)).default,
+      // Optionally enable OSLO
+      osloCollection: 'my-project\\myComponent',
     };
   }
 }
 ```
 
-Or with additional optional properties in the `config` object:
+If your build system does not support variable dynamic imports, you'll need to manually set up imports for each language:
 
 ```javascript
-return {
-  ...,
-  osloCollection: 'my-project\\myComponent', // To enable OSLO
-  exportName: 'resources' // If your resource files use named exports
-}
-```
-
-#### Example 3: Manually Retrieved Resources
-
-It is highly recommended that you try to use the dynamic approach whenever possible, but if your builds _can't_ handle variable dynamic imports, you may be best served by writing your own `getLocalizeResources` method to retrieve your resources manually.
-
-Manually retrieve your resources:
-```javascript
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
-
-class MyComponent extends LocalizeMixin(LitElement) {
-
-  static async getLocalizeResources(langs) {
-    for (const lang of [...langs, 'en']) {
-      let translations;
+static get localizeConfig() {
+  return {
+    importFunc: async lang => {
       switch (lang) {
         case 'en':
-          translations = await import('./locales/en.js');
-          break;
+          return (await import('./locales/en.js')).default;
         case 'fr':
-          translations = await import('./locales/fr.js');
-          break;
-      }
-      if (translations && translations.val) {
-        return {
-          language: lang,
-          resources: translations.val
-        };
+          return (await import('./locales/fr.js')).default;
+        ...
       }
     }
-  }
+  };
 }
 ```
 
