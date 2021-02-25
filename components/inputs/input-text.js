@@ -450,7 +450,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	}
 
 	_onSlotChange(e) {
-		// slots must be flattened because input-number and input-percent surface these slots
+		// slots must be flattened because input-number surfaces these slots on its API
 		const slotContent = e.target.assignedNodes({ flatten: true })[0];
 		const id = e.target.parentNode.id;
 
