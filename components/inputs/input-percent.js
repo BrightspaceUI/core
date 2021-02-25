@@ -7,7 +7,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
- * This component wraps the "<d2l-input-number>" tag and is intended inputting percent values.
+ * This component wraps the "<d2l-input-number>" tag and is intended for inputting percent values.
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  */
