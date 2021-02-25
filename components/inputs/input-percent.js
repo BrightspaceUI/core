@@ -29,12 +29,12 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 		return [ super.styles,
 			css`
 				:host {
-					display: inline-block;
-					position: relative;
-					width: 100%;
 					--d2l-input-padding: 0.4rem 1.4rem 0.4rem 0.75rem;
 					--d2l-input-padding-focus: calc(0.4rem - 1px) calc(1.4rem - 1px) calc(0.4rem - 1px) calc(0.75rem - 1px);
 					--d2l-input-text-align: end;
+					display: inline-block;
+					position: relative;
+					width: 100%;
 				}
 				:host([dir="rtl"]) {
 					--d2l-input-padding: 0.4rem 0.75rem 0.4rem 1.4rem;
