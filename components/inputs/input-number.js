@@ -73,8 +73,13 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	set value(val) {
 		const oldValue = this.value;
 		try {
-			this._formattedValue = formatValue(val, this.minFractionDigits, this.maxFractionDigits);
-			this._value = parseNumber(this._formattedValue);
+			if (val === null) {
+				this._formattedValue = '';
+				this._value = undefined;
+			} else {
+				this._formattedValue = formatValue(val, this.minFractionDigits, this.maxFractionDigits);
+				this._value = parseNumber(this._formattedValue);
+			}
 		} catch (err) {
 			this._formattedValue = '';
 			this._value = undefined;

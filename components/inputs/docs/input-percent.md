@@ -16,7 +16,6 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 | Property | Type | Description |
 |--|--|--|
 | `label` | String, required | Label for the input. |
-| `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser. |
 | `autofocus` | Boolean, default: `false` | When set, will automatically place focus on the input. |
 | `disabled` | Boolean, default: `false` | Disables the input. |
 | `input-width` | String, default: `4rem` | Restricts the maximum width of the input box without impacting the width of the label. |

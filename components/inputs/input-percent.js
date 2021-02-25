@@ -7,7 +7,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
- * This component wraps the "<d2l-input-number>" tag and is intended inputting percent values.
+ * This component wraps the "<d2l-input-number>" tag and is intended for inputting percent values.
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  */
@@ -15,10 +15,6 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 
 	static get properties() {
 		return {
-			/**
-			 * Specifies which types of values can be autofilled by the browser
-			 */
-			autocomplete: { type: String },
 			/**
 			 * When set, will automatically place focus on the input
 			 */
@@ -103,6 +99,15 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 		this.required = false;
 	}
 
+	get value() { return this._value; }
+	set value(val) {
+		const oldValue = this.value;
+		if (val < 0) val = 0;
+		else if (val > 100) val = 100;
+		this._value = val;
+		this.requestUpdate('value', oldValue);
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (!this.label) {
@@ -113,13 +118,11 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 	render() {
 		return html`
 			<d2l-input-number
-				autocomplete="${ifDefined(this.autocomplete)}"
 				?autofocus="${this.autofocus}"
 				@blur="${this._handleBlur}"
 				@change="${this._handleChange}"
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
-				hide-invalid-icon
 				input-width="${ifDefined(this.inputWidth)}"
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden}"
@@ -156,12 +159,6 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 	async _handleChange(e) {
 		const oldValue = this.value;
 		this.value = e.target.value;
-
-		if (e.target.value === undefined) {
-			await this.requestUpdate();
-			this.value = oldValue;
-		}
-
 		await this.requestUpdate();
 
 		if (oldValue !== this.value) {
