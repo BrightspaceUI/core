@@ -1,5 +1,5 @@
+import './visibility-test.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { VisibilityTest } from './visibility-test.js';
 
 export class VisibilityTestHelper extends LitElement {
 

@@ -2,6 +2,7 @@ import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const transitionDuration = 3000;
+const moveYValue = 10;
 
 export const VisibilityMixin = dedupeMixin(superclass => class extends superclass {
 	static get properties() {
@@ -10,80 +11,76 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		};
 	}
 
-	constructor() {
-		super();
-	}
-
 	firstUpdated() {
 		this.displayOriginal = window.getComputedStyle(this).display;
 
 		this.dummy = document.createElement('div');
-		this.dummy.style.height = '0px';
+		this.dummy.style.height = '0';
 		this.dummy.style.overflow = 'hidden';
+		this.dummy.style.display = 'grid';
 	}
 
 	updated(changedProperties) {
-		changedProperties.forEach((_, propName) => {
-			if (propName === 'animate') {
-				if (this.animate === 'show') {
-					this._animateShow();
-				} else if (this.animate === 'hide') {
-					this._animateHide();
-				} else if (this.animate === 'remove') {
-					this._animateRemove();
-				}
+		//super.updated(changedProperties);
+		if (changedProperties.has('animate')) {
+			if (this.animate === 'show') {
+				this._animateShow();
+			} else if (this.animate === 'hide') {
+				this._animateHide();
+			} else if (this.animate === 'remove') {
+				this._animateRemove();
 			}
-		});
-	}
-
-	_animateShow() {
-		this.style.display = this.displayOriginal;
-		const animateShowStyle = {
-			initial: {
-				transition: 'all ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
-				opacity: '0',
-				transform: 'translateY(-10px)'
-			},
-			initialDummy: {
-				transition: 'height ' + transitionDuration + 'ms ease',
-			},
-			finalDummyHeight: this.scrollHeight + 'px',
-			finalOpacity: '1',
-			finalTransform: 'translateY(0px)'
 		}
-		this._animateVisibility(animateShowStyle)
 	}
 
 	_animateHide() {
 		const dummyOnTransitionEnd = () => {
 			this.displayOriginal = window.getComputedStyle(this).display;
 			this.style.display = 'none';
-		}
-		this._animateHideRemove(dummyOnTransitionEnd);
-	}
-
-	_animateRemove() {
-		const dummyOnTransitionEnd = () => {
-			this.remove();
-		}
+		};
 		this._animateHideRemove(dummyOnTransitionEnd);
 	}
 
 	_animateHideRemove(dummyOnTransitionEnd) {
 		const animateHideRemoveStyle = {
 			initial: {
-				transition: 'all ' + transitionDuration + 'ms ease',
+				transition: `all ${transitionDuration}ms ease`,
 				opacity: '1',
-				transform: 'translateY(0px)'
+				transform: 'translateY(0)'
 			},
 			initialDummy: {
-				transition: 'height ' + transitionDuration + 'ms ease ' + transitionDuration / 3 + 'ms',
+				transition: `height ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
 			},
-			finalDummyHeight: '0px',
+			finalDummyHeight: '0',
 			finalOpacity: '0',
-			finalTransform: 'translateY(-10px)'
-		}
-		this._animateVisibility(animateHideRemoveStyle, dummyOnTransitionEnd)
+			finalTransform: `translateY(-${moveYValue}px)`
+		};
+		this._animateVisibility(animateHideRemoveStyle, dummyOnTransitionEnd);
+	}
+
+	_animateRemove() {
+		const dummyOnTransitionEnd = () => {
+			this.remove();
+		};
+		this._animateHideRemove(dummyOnTransitionEnd);
+	}
+
+	_animateShow() {
+		this.style.display = this.displayOriginal;
+		const animateShowStyle = {
+			initial: {
+				transition: `all ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
+				opacity: '0',
+				transform: `translateY(-${moveYValue}px)`
+			},
+			initialDummy: {
+				transition: `height ${transitionDuration}ms ease`
+			},
+			finalDummyHeight: `${this.scrollHeight}px`,
+			finalOpacity: '1',
+			finalTransform: 'translateY(0)'
+		};
+		this._animateVisibility(animateShowStyle);
 	}
 
 	async _animateVisibility(animateStyle, dummyOnTransitionEnd) {
