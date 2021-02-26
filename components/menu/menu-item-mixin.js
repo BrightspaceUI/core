@@ -98,7 +98,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 		if (!slot) {
 			return;
 		}
-		const children = slot.assignedNodes().filter((node) => node.nodeType === Node.ELEMENT_NODE);
+		const children = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
 		if (children && children.length > 0 && children[0].tagName === 'TEMPLATE') {
 			return;
 		}

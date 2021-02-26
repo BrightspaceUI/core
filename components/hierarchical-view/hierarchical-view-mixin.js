@@ -106,11 +106,13 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 
-		this.__isChildView();
+		//this.__isChildView();
 
-		requestAnimationFrame(() => {
+		setTimeout(() => {
 			this.__autoSize(this);
 			this.__startResizeObserver();
+
+			this.__isChildView();
 
 			if (!this.childView) {
 				this.addEventListener('focus', this.__focusCapture, true);
@@ -118,7 +120,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				this.__onWindowResize = this.__onWindowResize.bind(this);
 				window.addEventListener('resize', this.__onWindowResize);
 			}
-		});
+		}, 100);
 	}
 
 	disconnectedCallback() {
@@ -142,8 +144,20 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	getActiveView() {
 		const rootView = this.getRootView();
-		const childViews = rootView.querySelectorAll('[child-view][shown]');
+		let childViews = rootView.querySelectorAll('[child-view][shown]');
 		if (!childViews || childViews.length === 0) {
+			const slot = rootView.querySelector('slot');
+			if (!slot) {
+				return rootView;
+			}
+			childViews = slot.assignedNodes().filter((node) => node.nodeType === Node.ELEMENT_NODE);
+
+			for (let i = 0; i < childViews.length; i++) {
+				const childView = childViews[i].shadowRoot.querySelector('[child-view][shown]');
+				if (childView && childView.isActive()) {
+					return childView;
+				}
+			}
 			return rootView;
 		}
 		for (let i = 0; i < childViews.length; i++) {
@@ -355,9 +369,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__isChildView() {
+		//console.log(`***${this.nodeName}***`);
 		const parentView = findComposedAncestor(
 			this.parentNode,
-			(node) => { return node.hierarchicalView; }
+			(node) => { /*console.log(node);*/ return node.hierarchicalView; }
 		);
 
 		if (parentView) {
