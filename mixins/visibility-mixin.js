@@ -12,7 +12,10 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	firstUpdated() {
+		this.opacityOriginal = window.getComputedStyle(this).opacity;
+		this.transformOriginal = window.getComputedStyle(this).transform;
 		this.displayOriginal = window.getComputedStyle(this).display;
+		this.transitionOriginal = window.getComputedStyle(this).transition;
 
 		this.dummy = document.createElement('div');
 		this.dummy.style.height = '0';
@@ -35,7 +38,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 	_animateHide() {
 		const dummyOnTransitionEnd = () => {
-			this.displayOriginal = window.getComputedStyle(this).display;
+			this.dummy.replaceWith(this);
 			this.style.display = 'none';
 		};
 		this._animateHideRemove(dummyOnTransitionEnd);
@@ -45,8 +48,8 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		const animateHideRemoveStyle = {
 			initial: {
 				transition: `all ${transitionDuration}ms ease`,
-				opacity: '1',
-				transform: 'translateY(0)'
+				opacity: `${this.opacityOriginal}`,
+				transform: `${this.transformOriginal}`
 			},
 			initialDummy: {
 				transition: `height ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
@@ -59,7 +62,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				height: '0',
 			}
 		};
-		this._animateVisibility(animateHideRemoveStyle, dummyOnTransitionEnd);
+		this._animateVisibility(animateHideRemoveStyle, null, dummyOnTransitionEnd);
 	}
 
 	_animateRemove() {
@@ -81,17 +84,22 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				transition: `height ${transitionDuration}ms ease`
 			},
 			final: {
-				opacity: '1',
-				transform: 'translateY(0)'
+				opacity: `${this.opacityOriginal}`,
+				transform: `${this.transformOriginal}`
 			},
 			finalDummy: {
 				height: `${this.scrollHeight}px`
 			}
 		};
-		this._animateVisibility(animateShowStyle);
+		const thisOnTransitionEnd = () => {
+			this.dummy.replaceWith(this);
+			// done visibility transition, element is in original, fully visible state, so return the original transition to this
+			this.style.transition = this.transitionOriginal;
+		};
+		this._animateVisibility(animateShowStyle, thisOnTransitionEnd);
 	}
 
-	async _animateVisibility(animateStyle, dummyOnTransitionEnd) {
+	async _animateVisibility(animateStyle, thisOnTransitionEnd, dummyOnTransitionEnd) {
 		if (!reduceMotion) {
 			Object.assign(this.style, animateStyle.initial);
 			Object.assign(this.dummy.style, animateStyle.initialDummy);
@@ -116,17 +124,25 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			this.style.opacity = animateStyle.final.opacity;
 			this.style.transform = animateStyle.final.transform;
 
-			this.dummy.ontransitionend = (event) => {
-				// swap dummy with this at the very end of the dummy's height transition
-				// dummy's height should match this height, so dummy is no longer needed
-				if (event.target === this.dummy) {
-					this.dummy.replaceWith(this);
+			this.ontransitionend = (event) => {
+				if (event.target === this && event.propertyName === 'opacity') {
+					if (thisOnTransitionEnd) {
+						thisOnTransitionEnd();
+					}
+				}
+			}
 
+			this.dummy.ontransitionend = (event) => {
+				if (event.target === this.dummy) {
 					if (dummyOnTransitionEnd) {
 						dummyOnTransitionEnd();
 					}
 				}
 			};
+		}
+
+		if (thisOnTransitionEnd && reduceMotion) {
+			thisOnTransitionEnd();
 		}
 
 		if (dummyOnTransitionEnd && reduceMotion) {
