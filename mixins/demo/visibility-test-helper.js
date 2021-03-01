@@ -27,8 +27,9 @@ export class VisibilityTestHelper extends LitElement {
 
 	addItem() {
 		this.el.animate = 'show';
-		// if (!document.body.contains(this.el))
-		this.parentElement.appendChild(this.el);
+		if (!document.body.contains(this.el)) {
+			this.parentElement.appendChild(this.el);
+		}
 	}
 
 	hideItem() {
