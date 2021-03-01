@@ -60,9 +60,10 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			},
 			finalDummy: {
 				height: '0',
-			}
+			},
+			dummyOnTransitionEnd: dummyOnTransitionEnd
 		};
-		this._animateVisibility(animateHideRemoveStyle, null, dummyOnTransitionEnd);
+		this._animateVisibility(animateHideRemoveStyle);
 	}
 
 	_animateRemove() {
@@ -74,6 +75,11 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 	_animateShow() {
 		this.style.display = this.displayOriginal;
+		const thisOnTransitionEnd = () => {
+			this.dummy.replaceWith(this);
+			// done visibility transition, element is in original, fully visible state, so return the original transition to this
+			this.style.transition = this.transitionOriginal;
+		};
 		const animateShowStyle = {
 			initial: {
 				transition: `all ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
@@ -89,17 +95,14 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			},
 			finalDummy: {
 				height: `${this.scrollHeight}px`
-			}
+			},
+			thisOnTransitionEnd: thisOnTransitionEnd
 		};
-		const thisOnTransitionEnd = () => {
-			this.dummy.replaceWith(this);
-			// done visibility transition, element is in original, fully visible state, so return the original transition to this
-			this.style.transition = this.transitionOriginal;
-		};
-		this._animateVisibility(animateShowStyle, thisOnTransitionEnd);
+
+		this._animateVisibility(animateShowStyle);
 	}
 
-	async _animateVisibility(animateStyle, thisOnTransitionEnd, dummyOnTransitionEnd) {
+	async _animateVisibility(animateStyle) {
 		if (!reduceMotion) {
 			Object.assign(this.style, animateStyle.initial);
 			Object.assign(this.dummy.style, animateStyle.initialDummy);
@@ -126,27 +129,27 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 			this.ontransitionend = (event) => {
 				if (event.target === this && event.propertyName === 'opacity') {
-					if (thisOnTransitionEnd) {
-						thisOnTransitionEnd();
+					if (animateStyle.thisOnTransitionEnd) {
+						animateStyle.thisOnTransitionEnd();
 					}
 				}
 			}
 
 			this.dummy.ontransitionend = (event) => {
 				if (event.target === this.dummy) {
-					if (dummyOnTransitionEnd) {
-						dummyOnTransitionEnd();
+					if (animateStyle.dummyOnTransitionEnd) {
+						animateStyle.dummyOnTransitionEnd();
 					}
 				}
 			};
 		}
 
-		if (thisOnTransitionEnd && reduceMotion) {
-			thisOnTransitionEnd();
+		if (animateStyle.thisOnTransitionEnd && reduceMotion) {
+			animateStyle.thisOnTransitionEnd();
 		}
 
-		if (dummyOnTransitionEnd && reduceMotion) {
-			dummyOnTransitionEnd();
+		if (animateStyle.dummyOnTransitionEnd && reduceMotion) {
+			animateStyle.dummyOnTransitionEnd();
 		}
 	}
 });
