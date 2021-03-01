@@ -16,7 +16,6 @@ import { DynamicResizeMixin } from './dynamic-resize-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { throttle } from 'lodash-es';
 
 /**
  *
