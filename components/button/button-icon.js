@@ -34,7 +34,11 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 			/**
 			 * Indicates to display translucent (e.g., on rich backgrounds)
 			 */
-			translucent: { type: Boolean, reflect: true }
+			translucent: { type: Boolean, reflect: true },
+			/**
+			 * Attribute to match subtle button styling
+			 */
+			subtle: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -60,6 +64,11 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
 					--d2l-icon-fill-color: white;
 				}
+
+				:host([subtle]) d2l-icon {
+					color: var(--d2l-color-celestine);
+				}
+
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* ferrite @70% @90% */
@@ -100,6 +109,9 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				:host([active]) button {
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
+				:host([subtle]) button:hover > d2l-icon {
+					color: var(--d2l-color-celestine-minus-1);
+				}
 				button.focus-visible {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
@@ -134,6 +146,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	constructor() {
 		super();
 		this.translucent = false;
+		this.subtle = false;
 	}
 
 	render() {

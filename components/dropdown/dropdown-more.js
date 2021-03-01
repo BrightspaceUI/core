@@ -25,6 +25,12 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 			translucent: {
 				type: Boolean
 			},
+			/**
+			 * Attribute to match subtle button styling
+			 */
+			subtle: {
+				type: Boolean
+			}
 		};
 	}
 
@@ -42,7 +48,7 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 
 	render() {
 		return html`
-			<d2l-button-icon ?disabled=${this.disabled} icon="tier1:more" text=${this.text} ?translucent=${this.translucent}>
+			<d2l-button-icon ?disabled=${this.disabled} icon="tier1:more" text=${this.text} ?translucent=${this.translucent} ?subtle=${this.subtle}>
 			</d2l-button-icon>
 			<slot></slot>
 		`;
