@@ -51,9 +51,13 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			initialDummy: {
 				transition: `height ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
 			},
-			finalDummyHeight: '0',
-			finalOpacity: '0',
-			finalTransform: `translateY(-${moveYValue}px)`
+			final: {
+				opacity: '0',
+				transform: `translateY(-${moveYValue}px)`
+			},
+			finalDummy: {
+				height: '0',
+			}
 		};
 		this._animateVisibility(animateHideRemoveStyle, dummyOnTransitionEnd);
 	}
@@ -76,9 +80,13 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			initialDummy: {
 				transition: `height ${transitionDuration}ms ease`
 			},
-			finalDummyHeight: `${this.scrollHeight}px`,
-			finalOpacity: '1',
-			finalTransform: 'translateY(0)'
+			final: {
+				opacity: '1',
+				transform: 'translateY(0)'
+			},
+			finalDummy: {
+				height: `${this.scrollHeight}px`
+			}
 		};
 		this._animateVisibility(animateShowStyle);
 	}
@@ -104,9 +112,9 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			// allow enough time for reflow to occur to ensure that the transition properly runs
 			await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-			this.dummy.style.height = animateStyle.finalDummyHeight;
-			this.style.opacity = animateStyle.finalOpacity;
-			this.style.transform = animateStyle.finalTransform;
+			this.dummy.style.height = animateStyle.finalDummy.height;
+			this.style.opacity = animateStyle.final.opacity;
+			this.style.transform = animateStyle.final.transform;
 
 			this.dummy.ontransitionend = (event) => {
 				// swap dummy with this at the very end of the dummy's height transition
