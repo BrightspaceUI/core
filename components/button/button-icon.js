@@ -53,6 +53,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
+					color: var(--d2l-button-icon-text-color);
 					display: inline-block;
 				}
 				:host([hidden]) {
@@ -63,10 +64,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
 					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
 					--d2l-icon-fill-color: white;
-				}
-
-				:host([subtle]) d2l-icon {
-					color: var(--d2l-color-celestine);
 				}
 
 				:host([theme="dark"]) {
