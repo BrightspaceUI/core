@@ -1,6 +1,6 @@
 # Localization Mixins
 
-The `LocalizeMixin` and `LocalizeStaticMixin` allow you to localize text in your components and have it displayed to the user in their preferred language.
+The `LocalizeDynamicMixin` and `LocalizeStaticMixin` allow you to localize text in your components and have it displayed to the user in their preferred language.
 
 ## Providing Resources
 
@@ -66,7 +66,7 @@ export default {
 
 **Note:** To avoid accidental imports and errors, your resource files should have a dedicated directory with nothing else in it.
 
-Then create your `config` getter:
+Then create your `localizeConfig` getter:
 ```javascript
 import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
 
