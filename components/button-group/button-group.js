@@ -12,7 +12,7 @@ import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-more.js';
 import '../menu/menu.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { DynamicResizeMixin } from './dynamic-resize-mixin.js';
+import { DynamicResizeMixin } from '../../mixins/dynamic-resize-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -109,7 +109,6 @@ class ButtonGroup extends RtlMixin(LocalizeCoreElement(DynamicResizeMixin(LitEle
 
 	constructor() {
 		super();
-		this._getItems = this._getItems.bind(this);
 		this._getOverflowMenu = this._getOverflowMenu.bind(this);
 
 		this._refId = 0;
@@ -122,12 +121,12 @@ class ButtonGroup extends RtlMixin(LocalizeCoreElement(DynamicResizeMixin(LitEle
 		this._addEventListeners();
 	}
 
-	_getOverflowMenu(overflowItems, chompIndex) {
+	_getOverflowMenu(overflowItems) {
 
 		const moreActionsText = this.localize('components.button-group.moreActions');
 		const menu = html`<d2l-dropdown-menu>
 			<d2l-menu id="overflowMenu" label="${moreActionsText}">
-				${overflowItems.slice(chompIndex)}
+				${overflowItems}
 			</d2l-menu>
 		</d2l-dropdown-menu>`;
 
@@ -151,7 +150,7 @@ class ButtonGroup extends RtlMixin(LocalizeCoreElement(DynamicResizeMixin(LitEle
 
 		let overflowMenu;
 		if (!this._overflowMenuHidden) {
-			overflowMenu = this._getOverflowMenu(this._overflowItems, this._chompIndex);
+			overflowMenu = this._getOverflowMenu(this._overflowItems);
 		}
 
 		return html`

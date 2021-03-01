@@ -43,7 +43,9 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			_overflowMenuWidth: {
 				type: Number,
 			},
-
+			_dropdownItems: {
+				type: Array
+			}
 		};
 	}
 	constructor() {
@@ -51,6 +53,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._handleResize = this._handleResize.bind(this);
 		this._addEventListeners = this._addEventListeners.bind(this);
 		this._chomp = this._chomp.bind(this);
+		this._getLayoutItems = this._getLayoutItems.bind(this);
 
 		this._throttledResize = throttle(this._handleResize, 15);
 
@@ -74,8 +77,16 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._container = this.shadowRoot.querySelector('.d2l-button-group-container');
 
 		this._availableWidth = this._container.clientWidth;
-		this._items = this._getItems();
-		this._overflowItems = this._items.map(({ node }) => this._convertToDropdownItem(node));
+
+		this._autoShowClass = 'd2l-button-group-show';
+		this._autoNoShowClass = 'd2l-button-group-no-show';
+
+		// get the items from the button slot
+		this._slotItems = this._getSlotItems();
+		/// convert them to layout items (calculate widths)
+		this._layoutItems = this._getLayoutItems(this._slotItems);
+		// convert to dropdown items (for overflow menu)
+		this._dropdownItems = this._slotItems.map((node) => this._convertToDropdownItem(node));
 
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
@@ -87,7 +98,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 	update(changedProperties) {
 		super.update(changedProperties);
 		if (changedProperties.get('autoShow')) {
-			this._autoDetectBoundaries(this._getItems());
+			this._autoDetectBoundaries(this._getLayoutItems());
 		}
 
 		if (changedProperties.get('minToShow') || changedProperties.get('maxToShow')) {
@@ -159,14 +170,15 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 	}
 
 	_getSlotItems() {
-
-	}
-
-	_getItems() {
 		const nodes = this._buttonSlot.assignedNodes();
 		const filteredNodes = nodes.filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
 		});
+
+		return filteredNodes;
+	}
+
+	_getLayoutItems(filteredNodes) {
 
 		const items = filteredNodes.map((node) => ({
 			type: node.tagName.toLowerCase(),
@@ -176,15 +188,11 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 				+ parseInt(window.getComputedStyle(node).marginRight.replace('px', '')),
 			node: node
 		}));
-		this._slotItems = filteredNodes;
 
 		return items;
 	}
-	_chomp(items) {
+	_chomp(items = this._layoutItems) {
 
-		if (!items) {
-			items = this._getItems();
-		}
 		this._overflowMenu = this.shadowRoot.querySelector('.d2l-overflow-dropdown');
 		this._overflowMenuMini = this.shadowRoot.querySelector('.d2l-overflow-dropdown-mini');
 		if (this.openerType === 'icon' && this._overflowMenuMini) {
@@ -199,8 +207,8 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		};
 
 		let isSoftOverflowing, isForcedOverflowing;
-		for (let i = 0; i < this._items.length; i++) {
-			const itemLayout = this._items[i];
+		for (let i = 0; i < this._layoutItems.length; i++) {
+			const itemLayout = this._layoutItems[i];
 
 			// handle minimum items to show
 			if (showing.count < this.minToShow) {
@@ -242,11 +250,11 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			this._overflowMenuHidden = false;
 		}
 		if (!overflowHidden && (isSoftOverflowing || isForcedOverflowing)) {
-			for (let j = this._items.length; j--;) {
+			for (let j = this._layoutItems.length; j--;) {
 				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
 					break;
 				}
-				const itemLayoutOverflowing = this._items[j];
+				const itemLayoutOverflowing = this._layoutItems[j];
 				if (itemLayoutOverflowing.trigger !== 'soft-show') {
 					continue;
 				}
@@ -274,7 +282,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 				element.removeAttribute('chomped');
 			}
 		});
-
+		this._overflowItems = this._dropdownItems.slice(this._chompIndex);
 		this.dispatchEvent(new CustomEvent('d2l-button-group-updated', { bubbles: true, composed: true }));
 
 	}
