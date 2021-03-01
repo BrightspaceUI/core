@@ -104,7 +104,8 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				:host d2l-icon {
 					color: var(--d2l-button-icon-text-color);
 				}
-				:host button:hover > d2l-icon {
+				button:hover > d2l-icon,
+				button:focus > d2l-icon {
 					color: var(--d2l-button-icon-text-color-hover);
 				}
 				button.focus-visible {
