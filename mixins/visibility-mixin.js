@@ -68,6 +68,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 	_animateRemove() {
 		const dummyOnTransitionEnd = () => {
+			this.dummy.replaceWith(this);
 			this.remove();
 		};
 		this._animateHideRemove(dummyOnTransitionEnd);
