@@ -32,7 +32,7 @@ describe('d2l-dropdown-openers', () => {
 		'button',
 		'button-subtle',
 		'context-menu',
-		'more',
+		'more'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;

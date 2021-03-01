@@ -103,7 +103,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				}
 				:host d2l-icon {
 					color: var(--d2l-button-icon-text-color);
-
 				}
 				:host button:hover > d2l-icon {
 					color: var(--d2l-button-icon-text-color-hover);
@@ -142,7 +141,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	constructor() {
 		super();
 		this.translucent = false;
-		this.subtle = false;
 	}
 
 	render() {

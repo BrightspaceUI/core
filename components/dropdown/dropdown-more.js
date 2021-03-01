@@ -24,7 +24,7 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 			 */
 			translucent: {
 				type: Boolean
-			}
+			},
 		};
 	}
 
