@@ -34,11 +34,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 			/**
 			 * Indicates to display translucent (e.g., on rich backgrounds)
 			 */
-			translucent: { type: Boolean, reflect: true },
-			/**
-			 * Attribute to match subtle button styling
-			 */
-			subtle: { type: Boolean, reflect: true }
+			translucent: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -53,7 +49,6 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
-					color: var(--d2l-button-icon-text-color);
 					display: inline-block;
 				}
 				:host([hidden]) {
@@ -106,8 +101,12 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				:host([active]) button {
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
-				:host([subtle]) button:hover > d2l-icon {
-					color: var(--d2l-color-celestine-minus-1);
+				:host d2l-icon {
+					color: var(--d2l-button-icon-text-color);
+
+				}
+				:host button:hover > d2l-icon {
+					color: var(--d2l-button-icon-text-color-hover);
 				}
 				button.focus-visible {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);
