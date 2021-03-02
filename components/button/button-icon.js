@@ -49,6 +49,8 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
+					--d2l-button-icon-text-color: var(--d2l-color-ferrite);
+					--d2l-button-icon-text-color-hover: var(--d2l-color-ferrite);
 					display: inline-block;
 				}
 				:host([hidden]) {
