@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../input-percent.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-input-percent">
+
+			<h2>Simple</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Grade" value="92"></d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Hidden Label</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Grade" label-hidden title="title"></d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Required</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Grade" required></d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Disabled</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Grade (disabled)" disabled></d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Placeholder</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Grade" label-hidden placeholder="Grade"></d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Min and Max Fraction Digits</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Grade" value="90.24" min-fraction-digits="1" max-fraction-digits="2"></d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>After Slot</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Help Text">
+						<d2l-button-icon icon="tier1:help" text="help" slot="after"></d2l-button-icon>
+					</d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom Input Width</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-percent label="Custom Width" input-width="10rem"></d2l-input-percent>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+		<script>
+			document.body.addEventListener('change', e => console.log(e, e.target.value));
+		</script>
+	</body>
+</html>

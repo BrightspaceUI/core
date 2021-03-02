@@ -20,6 +20,7 @@ export const inputStyles = css`
 		min-height: calc(2rem + 2px);
 		min-width: calc(2rem + 1em);
 		position: relative;
+		text-align: var(--d2l-input-text-align, start);
 		vertical-align: middle;
 		width: 100%;
 	}

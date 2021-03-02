@@ -49,6 +49,8 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
+					--d2l-button-icon-text-color: var(--d2l-color-ferrite);
+					--d2l-button-icon-text-color-hover: var(--d2l-color-ferrite);
 					display: inline-block;
 				}
 				:host([hidden]) {
@@ -60,6 +62,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 3px white;
 					--d2l-icon-fill-color: white;
 				}
+
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* ferrite @70% @90% */
@@ -99,6 +102,13 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				button:focus,
 				:host([active]) button {
 					background-color: var(--d2l-button-icon-background-color-hover);
+				}
+				:host d2l-icon {
+					color: var(--d2l-button-icon-text-color);
+				}
+				button:hover > d2l-icon,
+				button:focus > d2l-icon {
+					color: var(--d2l-button-icon-text-color-hover);
 				}
 				button.focus-visible {
 					box-shadow: var(--d2l-button-icon-focus-box-shadow);

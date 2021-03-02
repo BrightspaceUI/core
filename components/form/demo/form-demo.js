@@ -1,6 +1,7 @@
 
 import '../../button/button.js';
 import '../../button/floating-buttons.js';
+import '../../inputs/input-percent.js';
 import '../../inputs/input-text.js';
 import '../../inputs/input-textarea.js';
 import '../../validation/validation-custom.js';
@@ -45,6 +46,9 @@ class FormNestedDemo extends LitElement {
 						</div>
 						<div class="d2l-form-demo-container">
 							<d2l-input-textarea label="Description" name="description" rows="2" required></d2l-input-textarea>
+						</div>
+						<div class="d2l-form-demo-container">
+							<d2l-input-percent label="Awesome" name="grade"></d2l-input-percent>
 						</div>
 						<fieldset class="d2l-form-demo-container">
 							<legend>Choose your favorite monster</legend>

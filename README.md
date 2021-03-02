@@ -33,6 +33,7 @@ npm install @brightspace-ui/core
     * [Checkbox](components/inputs/docs/input-checkbox.md): checkbox components and styles
     * [Date and time](components/inputs/docs/input-date-time.md): date and time picker components including ranges
     * [Number](components/inputs/docs/input-number.md): number input component
+    * [Percent](components/inputs/docs/input-percent.md): percent input component
     * [Radio](components/inputs/docs/input-radio.md): radio input styles
     * [Search](components/inputs/docs/input-search.md): search input component
     * [Select styles](components/inputs/docs/input-select-styles.md): select input styles

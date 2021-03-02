@@ -5,6 +5,7 @@ There are various input components available:
 - [Checkboxes (input-checkbox*)](docs/input-checkbox.md)
 - [Date & Time Inputs (input-date, input-time, input-date-time)](docs/input-date-time.md)
 - [Number Input (input-number)](docs/input-number.md)
+- [Percent Input (input-percent)](docs/input-percent.md)
 - [Radio Buttons (input-radio-*)](docs/input-radio.md)
 - [Search (input-search)](docs/input-search.md)
 - [Select Lists (input-select-styles)](docs/input-select-styles.md)

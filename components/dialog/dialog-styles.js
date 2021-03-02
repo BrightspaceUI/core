@@ -42,6 +42,8 @@ export const dialogStyles = css`
 
 	dialog.d2l-dialog-outer {
 		color: var(--d2l-color-ferrite);
+		margin-bottom: 0; /* required to override Chrome native positioning */
+		margin-top: 0; /* required to override Chrome native positioning */
 		padding: 0;
 	}
 

@@ -4,11 +4,7 @@ The `LocalizeMixin` and `LocalizeStaticMixin` allow you to localize text in your
 
 ## Providing Resources
 
-Your component must provide resources by either implementing a static `resources` getter for local resources, or a `getLocalizeResources` method to fetch resources asynchronously. The `getLocalizeResources` method will be passed an array of lowercase languages in preferential order.
-
-Your implementation should find the resources that best match the languages passed in. It should then return an object containing two values:
-- `language` (string): the language of the resources
-- `resources` (object): localization resources for that language
+Your component must provide resources by either implementing a `resources` getter for local resources, or a `localizeConfig` getter to fetch resources asynchronously. The `importFunc` method of `localizeConfig` will be called with lowercase languages in preferential order.
 
 ## Language Resources
 
@@ -27,11 +23,11 @@ Example:
 }
 ```
 
-Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc.). That way, if the user prefers a regional language (e.g. `fr-ca`) that isn't recognized, it can fall back to the base language.
+Always provide language resources for base languages (e.g. `en`, `fr`, `pt`, etc.). That way, if the user prefers a regional language (e.g. `pt-br`) that isn't recognized, it can fall back to the base language.
 
-### Static vs. Async Resources
+### Static vs. Dynamic Resources
 
-For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources. To get resources asynchronously, use the `LocalizeMixin` and implement `getLocalizedResources` as an `async` method.
+For components with local resources, use the `LocalizeStaticMixin` and implement a `static` `resources` getter that returns the local resources synchronously. To get resources asynchronously, use the `LocalizeDynamicMixin` and implement a `static` `localizeConfig` getter that returns details about where to find your resources.
 
 #### Example 1: Static Resources
 
@@ -56,7 +52,6 @@ class MyComponent extends LocalizeStaticMixin(LitElement) {
 
 }
 ```
-
 #### Example 2: Dynamically Imported Resources
 
 This approach is better for components with many language resources. By importing them dynamically, only the resources for the requested language are actually fetched and downloaded.
@@ -64,42 +59,45 @@ This approach is better for components with many language resources. By importin
 Store your resources in individual files, one for each language:
 ```javascript
 // en.js
-export const val = {
+export default {
   'hello': 'Hello {firstName}!'
 };
 ```
 
-Then dynamically import the matching file:
+**Note:** To avoid accidental imports and errors, your resource files should have a dedicated directory with nothing else in it.
+
+Then create your `config` getter:
 ```javascript
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+import { LocalizeDynamicMixin } from '@brightspace-ui/core/mixins/localize-dynamic-mixin.js';
 
-class MyComponent extends LocalizeMixin(LitElement) {
+class MyComponent extends LocalizeDynamicMixin(LitElement) {
 
-  static async getLocalizeResources(langs) {
-    for await (const lang of langs) {
-      let translations;
-      switch (lang) {
-        case 'en':
-          translations = await import('./locales/en.js');
-          break;
-        case 'fr':
-          translations = await import('./locales/fr.js');
-          break;
-      }
-      if (translations && translations.val) {
-        return {
-          language: lang,
-          resources: translations.val
-        };
-      }
-    }
-    translations = await import('./locales/en.js');
+  static get localizeConfig() {
     return {
-      language: 'en',
-      resources: translations.val
+       // Import path must be relative
+      importFunc: async lang => (await import(`../lang/${lang}.js`)).default,
+      // Optionally enable OSLO
+      osloCollection: 'my-project\\myComponent',
     };
   }
+}
+```
 
+If your build system does not support variable dynamic imports, you'll need to manually set up imports for each language:
+
+```javascript
+static get localizeConfig() {
+  return {
+    importFunc: async lang => {
+      switch (lang) {
+        case 'en':
+          return (await import('./locales/en.js')).default;
+        case 'fr':
+          return (await import('./locales/fr.js')).default;
+        ...
+      }
+    }
+  };
 }
 ```
 

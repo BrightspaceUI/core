@@ -75,9 +75,7 @@ describe('d2l-input-date-time-range', () => {
 					return new Promise((resolve) => {
 						elem.updateComplete.then(() => {
 							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
-							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
-								resolve();
-							});
+							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => timeElem.updateComplete.then(resolve));
 						});
 					});
 				}
@@ -97,9 +95,7 @@ describe('d2l-input-date-time-range', () => {
 					return new Promise((resolve) => {
 						elem.updateComplete.then(() => {
 							const timeElem = dateElem.shadowRoot.querySelector('d2l-input-time');
-							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => {
-								resolve();
-							});
+							timeElem.addEventListener('d2l-input-time-hidden-content-width-change', () => timeElem.updateComplete.then(setTimeout(resolve, 100)));
 						});
 					});
 				}
@@ -234,7 +230,7 @@ describe('d2l-input-date-time-range', () => {
 					before(async() => {
 						await page.$eval('#min-max', (elem) => elem.blur());
 						await changeInnerInputDateTime(page, '#min-max', startDateSelector, testCase.startDate, testCase.name === 'start equals end');
-						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate);
+						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate, testCase.name === 'start equals end');
 					});
 
 					it('basic', async function() {
@@ -280,32 +276,18 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('focus start', async function() {
-						let rect;
-						if (testCase.startDateTooltip) {
-							await focusOnInput(page, '#min-max', startDateSelector);
-							rect = await getRectInnerTooltip(page, '#min-max', startDateSelector);
-						} else {
-							await page.$eval('#min-max', (elem, inputSelector) => {
-								const input = elem.shadowRoot.querySelector(inputSelector);
-								input.focus();
-							}, startDateSelector);
-							rect = await visualDiff.getRect(page, '#min-max');
-						}
+						await focusOnInput(page, '#min-max', startDateSelector);
+						const rect = testCase.startDateTooltip
+							? await getRectInnerTooltip(page, '#min-max', startDateSelector)
+							: await visualDiff.getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
-						let rect;
-						if (testCase.endDateTooltip) {
-							await focusOnInput(page, '#min-max', endDateSelector);
-							rect = await getRectInnerTooltip(page, '#min-max', endDateSelector);
-						} else {
-							await page.$eval('#min-max', (elem, inputSelector) => {
-								const input = elem.shadowRoot.querySelector(inputSelector);
-								input.focus();
-							}, endDateSelector);
-							rect = await visualDiff.getRect(page, '#min-max');
-						}
+						await focusOnInput(page, '#min-max', endDateSelector);
+						const rect = testCase.endDateTooltip
+							? await getRectInnerTooltip(page, '#min-max', endDateSelector)
+							: await visualDiff.getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});

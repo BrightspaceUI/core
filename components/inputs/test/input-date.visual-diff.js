@@ -189,7 +189,7 @@ describe('d2l-input-date', () => {
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
-					it.skip('open then tab', async function() {
+					it('open then tab', async function() {
 						await page.$eval('#min-max', (elem) => {
 							const input = elem.shadowRoot.querySelector('d2l-input-text');
 							const e = new Event(
@@ -198,6 +198,7 @@ describe('d2l-input-date', () => {
 							);
 							input.dispatchEvent(e);
 						});
+						await page.waitForTimeout(100);
 						await page.keyboard.press('Tab');
 						const rect = await helper.getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
