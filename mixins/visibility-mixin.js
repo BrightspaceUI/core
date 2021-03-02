@@ -37,14 +37,24 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	_animateHide() {
+		const thisOnTransitionStart = () => {
+			this.dispatchEvent(new CustomEvent(
+				'd2l-visibility-mixin-hide-start',
+				{ bubbles: true, composed: false }
+			));
+		}
 		const dummyOnTransitionEnd = () => {
 			this.dummy.replaceWith(this);
 			this.style.display = 'none';
+			this.dispatchEvent(new CustomEvent(
+				'd2l-visibility-mixin-hide-end',
+				{ bubbles: true, composed: false }
+			));
 		};
-		this._animateHideRemove(dummyOnTransitionEnd);
+		this._animateHideRemove(thisOnTransitionStart, dummyOnTransitionEnd);
 	}
 
-	_animateHideRemove(dummyOnTransitionEnd) {
+	_animateHideRemove(thisOnTransitionStart, dummyOnTransitionEnd) {
 		const animateHideRemoveStyle = {
 			initial: {
 				transition: `all ${transitionDuration}ms ease`,
@@ -61,25 +71,46 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			finalDummy: {
 				height: '0',
 			},
+			thisOnTransitionStart: thisOnTransitionStart,
 			dummyOnTransitionEnd: dummyOnTransitionEnd
 		};
 		this._animateVisibility(animateHideRemoveStyle);
 	}
 
 	_animateRemove() {
+		const thisOnTransitionStart = () => {
+			this.dispatchEvent(new CustomEvent(
+				'd2l-visibility-mixin-remove-start',
+				{ bubbles: true, composed: false }
+			));
+		}
 		const dummyOnTransitionEnd = () => {
 			this.dummy.replaceWith(this);
 			this.remove();
+			this.dispatchEvent(new CustomEvent(
+				'd2l-visibility-mixin-remove-end',
+				{ bubbles: true, composed: false }
+			));
 		};
-		this._animateHideRemove(dummyOnTransitionEnd);
+		this._animateHideRemove(thisOnTransitionStart, dummyOnTransitionEnd);
 	}
 
 	_animateShow() {
 		this.style.display = this.displayOriginal;
+		const dummyOnTransitionStart = () => {
+			this.dispatchEvent(new CustomEvent(
+				'd2l-visibility-mixin-show-start',
+				{ bubbles: true, composed: false }
+			));
+		}
 		const thisOnTransitionEnd = () => {
 			this.dummy.replaceWith(this);
 			// done visibility transition, element is in original, fully visible state, so return the original transition to this
 			this.style.transition = this.transitionOriginal;
+			this.dispatchEvent(new CustomEvent(
+				'd2l-visibility-mixin-show-end',
+				{ bubbles: true, composed: false }
+			));
 		};
 		const animateShowStyle = {
 			initial: {
@@ -97,6 +128,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			finalDummy: {
 				height: `${this.scrollHeight}px`
 			},
+			dummyOnTransitionStart: dummyOnTransitionStart,
 			thisOnTransitionEnd: thisOnTransitionEnd
 		};
 
@@ -124,9 +156,21 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			// allow enough time for reflow to occur to ensure that the transition properly runs
 			await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-			this.dummy.style.height = animateStyle.finalDummy.height;
-			this.style.opacity = animateStyle.final.opacity;
-			this.style.transform = animateStyle.final.transform;
+			this.ontransitionstart = (event) => {
+				if (event.target === this && event.propertyName === 'opacity') {
+					if (animateStyle.thisOnTransitionStart) {
+						animateStyle.thisOnTransitionStart();
+					}
+				}
+			};
+
+			this.dummy.ontransitionstart = (event) => {
+				if (event.target === this.dummy) {
+					if (animateStyle.dummyOnTransitionStart) {
+						animateStyle.dummyOnTransitionStart();
+					}
+				}
+			};
 
 			this.ontransitionend = (event) => {
 				if (event.target === this && event.propertyName === 'opacity') {
@@ -134,7 +178,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 						animateStyle.thisOnTransitionEnd();
 					}
 				}
-			}
+			};
 
 			this.dummy.ontransitionend = (event) => {
 				if (event.target === this.dummy) {
@@ -143,6 +187,9 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 					}
 				}
 			};
+
+			Object.assign(this.dummy.style, animateStyle.finalDummy);
+			Object.assign(this.style, animateStyle.final);
 		}
 
 		if (animateStyle.thisOnTransitionEnd && reduceMotion) {
