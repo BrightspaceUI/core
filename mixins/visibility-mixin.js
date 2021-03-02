@@ -18,7 +18,6 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		this.transitionOriginal = window.getComputedStyle(this).transition;
 
 		this.dummy = document.createElement('div');
-		this.dummy.style.height = '0';
 		this.dummy.style.overflow = 'hidden';
 		this.dummy.style.display = 'grid';
 	}
@@ -63,13 +62,14 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			},
 			initialDummy: {
 				transition: `height ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
+				height: `${this.scrollHeight}px`
 			},
 			final: {
 				opacity: '0',
 				transform: `translateY(-${moveYValue}px)`
 			},
 			finalDummy: {
-				height: '0',
+				height: '0'
 			},
 			thisOnTransitionStart: thisOnTransitionStart,
 			dummyOnTransitionEnd: dummyOnTransitionEnd
@@ -119,7 +119,8 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				transform: `translateY(-${moveYValue}px)`
 			},
 			initialDummy: {
-				transition: `height ${transitionDuration}ms ease`
+				transition: `height ${transitionDuration}ms ease`,
+				height: '0'
 			},
 			final: {
 				opacity: `${this.opacityOriginal}`,
