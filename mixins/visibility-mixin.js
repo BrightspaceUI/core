@@ -1,7 +1,7 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const transitionDuration = 3000;
+const transitionDuration = 300;
 const moveYValue = 10;
 
 export const VisibilityMixin = dedupeMixin(superclass => class extends superclass {
