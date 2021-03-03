@@ -146,9 +146,7 @@ class HtmlBlock extends LitElement {
 				temp.appendChild(fragment);
 				const fragmentHTML = temp.innerHTML;
 
-				const hasLatex = /\$\$|\\\(/.test(fragmentHTML);
-
-				if (hasMathML || hasLatex) {
+				if (hasMathML || /\$\$|\\\(/.test(fragmentHTML)) {
 					await loadMathJax(this.mathJaxConfig);
 					this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
 					window.MathJax.typesetShadow(this.shadowRoot);
