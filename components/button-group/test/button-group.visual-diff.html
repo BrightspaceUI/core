@@ -7,6 +7,7 @@
 			import '../../typography/typography.js';
 			import '../../demo/demo-page.js';
 			import '../../button/button.js';
+			import '../../button/button-subtle.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../../menu/menu-item-link.js';
@@ -18,22 +19,6 @@
 			import '../button-group.js';
 		</script>
 		<style>
-			#less-than-min {
-				width: 500px;
-			}
-			#over-max-container {
-				height: 400px;
-			}
-			#min-auto-container {
-				height: 400px;
-				width: 500px;
-			}
-			#min-max-auto-large {
-				width: 700px;
-			}
-			.small {
-				width: 350px;
-			}
 		</style>
 		<title>d2l-button-group</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,56 +26,142 @@
 		<meta charset="UTF-8">
 	</head>
 	<body class="d2l-typography">
-		<div class="visual-diff">
-			<!-- no properties -->
-			<!-- <d2l-button-group id="noProps">
-				<d2l-button>New</d2l-button>
-				<d2l-dropdown>
-					<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
-					<d2l-dropdown-menu id="dropdown" >
-						<d2l-menu label="Astronomy">
-							<d2l-menu-item text="Introduction"></d2l-menu-item>
-							<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-							<d2l-menu-item text="The Solar System"></d2l-menu-item>
-							<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
-							<d2l-menu-item text="The Night Sky"></d2l-menu-item>
-							<d2l-menu-item text="The Universe"></d2l-menu-item>
-						</d2l-menu>
-					</d2l-dropdown-menu>
-				</d2l-dropdown>
-				<d2l-button>Copy</d2l-button>
-				<d2l-button>Import</d2l-button>
-				<d2l-button>Delete</d2l-button>
-				<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
-			</d2l-button-group> -->
-		</div>
-		<div class="visual-diff">
-			<!-- no properties -->
-			<d2l-button-group id="less-than-min" min-to-show="3">
-				<d2l-button>New</d2l-button>
-				<d2l-dropdown>
-					<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
-					<d2l-dropdown-menu id="dropdown" >
-						<d2l-menu label="Astronomy">
-							<d2l-menu-item text="Introduction"></d2l-menu-item>
-							<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-							<d2l-menu-item text="The Solar System"></d2l-menu-item>
-							<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
-							<d2l-menu-item text="The Night Sky"></d2l-menu-item>
-							<d2l-menu-item text="The Universe"></d2l-menu-item>
-						</d2l-menu>
-					</d2l-dropdown-menu>
-				</d2l-dropdown>
-				<d2l-button>Copy</d2l-button>
+
+		<!-- min/max to show tests -->
+		<div id="less-than-min-to-show-container" class="visual-diff">
+			<d2l-button-group id="less-than-min-to-show" min-to-show="3">
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button>Button 2</d2l-button>
 			</d2l-button-group>
 		</div>
-		<div class="visual-diff">
-			<d2l-button-group id="between-min-max" min-to-show="2" max-to-show="4">
-				<d2l-button>New</d2l-button>
-				<d2l-button>Copy</d2l-button>
-				<d2l-button>Import</d2l-button>
+
+		<div id="between-min-max-to-show-container" class="visual-diff">
+			<d2l-button-group id="between-min-max-to-show" min-to-show="2" max-to-show="4">
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button>Button 2</d2l-button>
+				<d2l-button>Button 3</d2l-button>
 			</d2l-button-group>
 		</div>
+
+		<div id="exactly-max-to-show-container" class="visual-diff">
+			<d2l-button-group id="exactly-max-to-show" min-to-show="2" max-to-show="4">
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button>Button 2</d2l-button>
+				<d2l-button>Button 3</d2l-button>
+				<d2l-button>Button 4</d2l-button>
+			</d2l-button-group>
+		</div>
+
+		<div id="more-than-max-to-show-container" style="height: 200px;" class="visual-diff">
+			<d2l-button-group id="more-than-max-to-show" min-to-show="2" max-to-show="4">
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button>Button 2</d2l-button>
+				<d2l-button>Button 3</d2l-button>
+				<d2l-button>Button 4</d2l-button>
+				<d2l-button>Button 5</d2l-button>
+			</d2l-button-group>
+		</div>
+
+		<!-- hidden button -->
+		<div class="visual-diff" id="ignores-hidden-button-container">
+			<div style="width: 500px;">
+				<d2l-button-group id="ignores-hidden-button" min-to-show="1" max-to-show="2">
+					<d2l-button style="display: none;">Button 1</d2l-button>
+					<d2l-button>Button 2</d2l-button>
+					<d2l-button>Button 3</d2l-button>
+				</d2l-button-group>
+			</div>
+		</div>
+
+		<div id="auto-show-container" class="visual-diff" style="height: 200px; width: 500px;">
+			<d2l-button-group id="auto-show" auto-show>
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button class="d2l-button-group-show">Button 2</d2l-button>
+				<d2l-button>Button 3</d2l-button>
+				<d2l-button id="last" class="d2l-button-group-no-show">Button 4</d2l-button>
+			</d2l-button-group>
+		</div>
+
+		<div id="auto-show-small-container" class="visual-diff"  style="height: 300px; width: 300px;">
+			<d2l-button-group id="auto-show-small" style="height: 200px; width: 200px;" auto-show>
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button class="d2l-button-group-show">Button 2</d2l-button>
+				<d2l-button>Button 3</d2l-button>
+				<d2l-button id="last" class="d2l-button-group-no-show">Button 4</d2l-button>
+			</d2l-button-group>
+		</div>
+
+		<!-- remove a node to see if it hides the overflow -->
+		<div id="width-overflowing" class="visual-diff">
+			<div style="width: 210px;">
+				<d2l-button-group>
+					<d2l-button>Button 1</d2l-button>
+					<d2l-button>Button 2</d2l-button>
+					<d2l-button id="last">Button 3</d2l-button>
+				</d2l-button-group>
+			</div>
+		</div>
+
+		<!-- add a node to see if it shows the overflow -->
+		<div id="width-not-overflowing" class="visual-diff">
+			<template>
+					<div style="width: 160px;">
+						<d2l-button-group>
+							<d2l-button>Button 1</d2l-button>
+							<d2l-button id="last">Button 2</d2l-button>
+						</d2l-button-group>
+					</div>
+			</template>
+		</div>
+
+		<!-- overflow menu turns to mini when not enough space -->
+		<div id="mini-overflow-menu-container" class="visual-diff">
+			<d2l-button-group id="mini-overflow-menu" max-to-show="2">
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button>Button 2</d2l-button>
+				<d2l-button>Button 3</d2l-button>
+			</d2l-button-group>
+		</div>
+
+		<!-- overflow menu is mini when openerType = 'icon' -->
+		<div id="opener-type-mini-menu-container" class="visual-diff">
+			<d2l-button-group style="width: 400px;" id="opener-type-mini-menu" opener-type='icon' min-to-show="2">
+				<d2l-button>Button 1</d2l-button>
+				<d2l-button>Button 2</d2l-button>
+				<d2l-button>Button 3</d2l-button>
+			</d2l-button-group>
+		</div>
+
+		<div id="opener-type-overflow-open-menu-container" class="visual-diff">
+			<div style="height: 200px; width: 400px;">
+				<d2l-button-group id="opener-type-overflow-open-menu" opener-type='icon' max-to-show="2">
+					<d2l-button>Button 1</d2l-button>
+					<d2l-button>Button 2</d2l-button>
+					<d2l-button>Button 3</d2l-button>
+				</d2l-button-group>
+			</div>
+		</div>
+		<div id="opener-type-subtle-overflow-menu-container" class="visual-diff">
+			<div style="height: 200px; width: 400px;">
+				<d2l-button-group id="opener-type-subtle-overflow-menu" opener-type='icon' subtle max-to-show="2">
+					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
+					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
+					<d2l-button-subtle text="Button 3"></d2l-button-subtle>
+				</d2l-button-group>
+			</div>
+		</div>
+
+		<div id="opener-type-subtle-overflow-menu-open-container" class="visual-diff">
+			<div style="height: 200px; width: 400px;">
+				<d2l-button-group id="opener-type-subtle-overflow-menu-open" opener-type='icon' subtle max-to-show="2">
+					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
+					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
+					<d2l-button-subtle text="Button 3"></d2l-button-subtle>
+				</d2l-button-group>
+			</div>
+		</div>
+
+		 <!-- maybebebebebe -->
 		<div id="over-max-container" class="visual-diff">
 			<d2l-button-group id="over-max" max-to-show="3">
 				<d2l-button>one</d2l-button>
@@ -100,6 +171,7 @@
 				<d2l-button>five</d2l-button>
 			</d2l-button-group>
 		</div>
+
 		<div class="visual-diff">
 			<d2l-button-group id="min-max-auto-large" auto-show>
 				<d2l-button>one</d2l-button>
@@ -123,7 +195,10 @@
 				<d2l-button>one</d2l-button>
 				<d2l-button>two</d2l-button>
 				<d2l-button class="d2l-button-group-no-show">three</d2l-button>
-				<d2l-button>four</d2l-button>
+				<d2l-button>five</d2l-button>
+				<d2l-button>five</d2l-button>
+				<d2l-button>five</d2l-button>
+				<d2l-button>five</d2l-button>
 				<d2l-button>five</d2l-button>
 			</d2l-button-group>
 		</div>
@@ -137,8 +212,18 @@
 				<d2l-button>one</d2l-button>
 				<d2l-button>two</d2l-button>
 				<d2l-button>three</d2l-button>
-				<d2l-button>foura</d2l-button>
+				<d2l-button>four</d2l-button>
 			</d2l-button-group>
 		</div>
+
+		<!-- 
+			autoshow
+			min
+			max
+			subtle
+			more icon
+			more subtle
+
+		-->
 	</body>
 </html>

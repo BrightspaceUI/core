@@ -108,7 +108,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		// slight hack, overflowMenu isnt being rendered initially so wait until update
 		// to calculate its width
 		if (!this._overflowMenuWidth) {
-			// this action needs to be defered until first render of our overflow button
+			// this action needs to be deferred until first render of our overflow button
 			requestAnimationFrame(() => {
 				this._chomp();
 			});
@@ -172,7 +172,10 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 	_getSlotItems() {
 		const nodes = this._buttonSlot.assignedNodes();
 		const filteredNodes = nodes.filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
+			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
+			const isHidden = isNode && window.getComputedStyle(node).display === 'none';
+
+			return isNode && !isHidden;
 		});
 
 		return filteredNodes;
@@ -180,14 +183,17 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 
 	_getLayoutItems(filteredNodes) {
 
-		const items = filteredNodes.map((node) => ({
-			type: node.tagName.toLowerCase(),
-			isChomped: false,
-			width: node.offsetWidth
-				+ parseInt(window.getComputedStyle(node).marginLeft.replace('px', ''))
-				+ parseInt(window.getComputedStyle(node).marginRight.replace('px', '')),
-			node: node
-		}));
+		const items = filteredNodes.map((node) => {
+			const computedStyles = window.getComputedStyle(node);
+			return {
+				type: node.tagName.toLowerCase(),
+				isChomped: false,
+				width: node.offsetWidth
+					+ parseInt(computedStyles.marginLeft.replace('px', ''))
+					+ parseInt(computedStyles.marginRight.replace('px', '')),
+				node: node
+			}
+		});
 
 		return items;
 	}

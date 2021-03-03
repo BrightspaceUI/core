@@ -49,6 +49,12 @@ class ButtonGroup extends RtlMixin(LocalizeCoreElement(DynamicResizeMixin(LitEle
 			css`
 			:host {
 				display: block;
+
+			}
+			
+			:host([subtle]) {
+				--d2l-button-icon-fill-color: var(--d2l-color-celestine);
+				--d2l-button-icon-fill-color-hover: var(--d2l-color-celestine-minus-1);
 			}
 
 			:host .d2l-button-group-container {
@@ -94,7 +100,6 @@ class ButtonGroup extends RtlMixin(LocalizeCoreElement(DynamicResizeMixin(LitEle
 				margin-right: 0.3rem;
 				vertical-align: middle;
 			}
-
 			:host(:dir(rtl)) .d2l-dropdown-opener-text,
 			:host([subtle]:dir(rtl)) .d2l-dropdown-subtle-opener-text {
 				margin-left: 0.3rem;

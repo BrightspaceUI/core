@@ -1,6 +1,8 @@
 
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
+const { hidden } = require('chalk');
+const { delay } = require('lodash');
 
 describe('d2l-button-group', () => {
 
@@ -12,7 +14,6 @@ describe('d2l-button-group', () => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/button-group/test/button-group.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
-		// await page.waitFor(100);
 		await page.bringToFront();
 	});
 
@@ -23,49 +24,110 @@ describe('d2l-button-group', () => {
 	}
 
 	after(async() => await browser.close());
+	// less-than-min-to-show-container
+	// less-than-min-to-show
 
-	[
-		// { name: 'less-than-min-to-show', selector: '#less-than-min' },
-		// { name: 'between-min-max-items-to-show', selector: '#between-min-max' },
-		// {
-		// 	name: 'over-max-items',
-		// 	selector: '#over-max',
-		// 	containerSelector: '#over-max-container',
-		// 	action: async(selector) => {
-		// 		const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
-		// 		await overflowMenu.click();
-		// 	}
-		// },
+	// between-min-max-to-show-container
+	// between-min-max-to-show
 
+	// exactly-max-to-show-container
+	// exactly-max-to-show
+
+	// more-than-max-to-show-container
+	// more-than-max-to-show
+
+	const minMaxTests = [
 		{
-			name: 'over-max-items-changed',
-			selector: '#over-max',
-			containerSelector: '#over-max-container',
+			name: 'less-than-min-to-show',
+			selector: '#less-than-min-to-show',
+			containerSelector: '#less-than-min-to-show-container',
+		},
+		{
+			name: 'between-min-max-to-show',
+			selector: '#between-min-max-to-show',
+			containerSelector: '#between-min-max-to-show-container',
+		},
+		{
+			name: 'exactly-max-to-show',
+			selector: '#exactly-max-to-show',
+			containerSelector: '#exactly-max-to-show-container',
+		},
+		{
+			name: 'more-than-max-to-show',
+			selector: '#more-than-max-to-show',
+			containerSelector: '#more-than-max-to-show-container',
 			action: async(selector) => {
-				const item = await getShadowElem(selector, '.d2l-overflow-dropdown');
-				await item.click();
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
+				await overflowMenu.click();
 			}
 		},
-		{ name: 'less-than-min-to-show', selector: '#less-than-min' },
+	];
 
-		// { name: 'min-items-to-auto-show', containerSelector: '#min-auto-container', selector: '#min-auto',
-		// 	action: async(selector) => {
-		// 		const overflowMenu = await getShadowElem(selector, '.d2l-dropdown-opener');
-		// 		// await overflowMenu.hover();
-		// 		await overflowMenu.click();
-		// 		// await setTimeout(() => {
-		// 		// }, 1000);
-		// 	} },
-		// { name: 'max-items-to-auto-show', selector: '#max-auto' },
-
-		// this test is for when the more opener is not set to on but happens because
-		// the container size is too small to show `More Actions`
-		// { name: 'more-icon-opener', containerSelector: '#min-auto-container', selector: '#min-auto' },
-		// { name: 'permanent-more-icon', selector: '#more-icon-opener' },
-		// { name: 'min-max-items-to-auto-show-small', selector: '#min-max-auto-small' },
-		// { name: 'min-max-items-to-auto-show-large', selector: '#min-max-auto-large' },
-		// { name: 'one-item', selector: '#one-item' },
-		// autoshow test
+	const hiddenButtonTests = [
+		{
+			name: 'ignores-hidden-button',
+			selector: '#ignores-hidden-button',
+		}
+	];
+	const autoShow = [
+		{
+			name: 'auto-show-small',
+			selector: '#auto-show-small',
+			containerSelector: '#auto-show-small-container',
+			action: async(selector) => {
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
+				await overflowMenu.click();
+			}
+		},
+		{
+			name: 'auto-show',
+			selector: '#auto-show',
+			containerSelector: '#auto-show-container',
+			action: async(selector) => {
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
+				await overflowMenu.click();
+			}
+		},
+	];
+	const iconType = [
+		{
+			name: 'opener-type-mini-menu',
+			selector: '#opener-type-mini-menu',
+			containerSelector: '#opener-type-mini-menu-container',
+		},
+		{
+			name: 'opener-type-overflow-open-menu',
+			selector: '#opener-type-overflow-open-menu',
+			containerSelector: '#opener-type-overflow-open-menu-container',
+			action: async(selector) => {
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
+				await overflowMenu.click();
+			}
+		},
+		{
+			name: 'opener-type-subtle-overflow-menu',
+			selector: '#opener-type-subtle-overflow-menu',
+			containerSelector: '#opener-type-subtle-overflow-menu-container',
+			action: async(selector) => {
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
+				await overflowMenu.click();
+			}
+		},
+		{
+			name: 'opener-type-subtle-overflow-menu-open',
+			selector: '#opener-type-subtle-overflow-menu-open',
+			containerSelector: '#opener-type-subtle-overflow-menu-open-container',
+			action: async(selector) => {
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
+				await overflowMenu.click();
+			}
+		}
+	];
+	[
+		...hiddenButtonTests,
+		...minMaxTests.reverse(),
+		...autoShow,
+		...iconType.reverse()
 	].forEach((test) => {
 		it(test.name, async function() {
 			const rect = await visualDiff.getRect(page, test.containerSelector || test.selector);
