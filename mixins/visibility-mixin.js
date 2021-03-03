@@ -62,7 +62,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			},
 			initialDummy: {
 				transition: `height ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
-				height: `${this.scrollHeight}px`
+				height: `calc(${this.scrollHeight}px + ${window.getComputedStyle(this).marginTop} + ${window.getComputedStyle(this).marginBottom})`
 			},
 			final: {
 				opacity: '0',
@@ -127,7 +127,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				transform: `${this.transformOriginal}`
 			},
 			finalDummy: {
-				height: `${this.scrollHeight}px`
+				height: `calc(${this.scrollHeight}px + ${window.getComputedStyle(this).marginTop} + ${window.getComputedStyle(this).marginBottom})`
 			},
 			dummyOnTransitionStart: dummyOnTransitionStart,
 			thisOnTransitionEnd: thisOnTransitionEnd
