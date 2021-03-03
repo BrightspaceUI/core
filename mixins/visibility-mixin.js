@@ -89,11 +89,11 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		};
 		const dummyOnTransitionEnd = () => {
 			this.dummy.replaceWith(this);
-			this.remove();
 			this.dispatchEvent(new CustomEvent(
 				'd2l-visibility-mixin-remove-end',
 				{ bubbles: true, composed: false }
 			));
+			this.remove();
 		};
 		this._animateHideRemove(thisOnTransitionStart, dummyOnTransitionEnd);
 	}
