@@ -38,19 +38,19 @@ export class VisibilityTestHelper extends LitElement {
 		`;
 	}
 
-	showItem() {
-		this.el.animate = 'show';
-		if (!document.body.contains(this.el)) {
-			this.parentElement.appendChild(this.el);
-		}
-	}
-
 	hideItem() {
 		this.el.animate = 'hide';
 	}
 
 	removeItem() {
 		this.el.animate = 'remove';
+	}
+
+	showItem() {
+		this.el.animate = 'show';
+		if (!document.body.contains(this.el)) {
+			this.parentElement.appendChild(this.el);
+		}
 	}
 }
 

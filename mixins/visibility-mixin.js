@@ -41,7 +41,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				'd2l-visibility-mixin-hide-start',
 				{ bubbles: true, composed: false }
 			));
-		}
+		};
 		const dummyOnTransitionEnd = () => {
 			this.dummy.replaceWith(this);
 			this.style.display = 'none';
@@ -83,7 +83,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				'd2l-visibility-mixin-remove-start',
 				{ bubbles: true, composed: false }
 			));
-		}
+		};
 		const dummyOnTransitionEnd = () => {
 			this.dummy.replaceWith(this);
 			this.remove();
@@ -102,7 +102,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				'd2l-visibility-mixin-show-start',
 				{ bubbles: true, composed: false }
 			));
-		}
+		};
 		const thisOnTransitionEnd = () => {
 			this.dummy.replaceWith(this);
 			// done visibility transition, element is in original, fully visible state, so return the original transition to this
