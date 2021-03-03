@@ -11,10 +11,6 @@ export class VisibilityTestHelper extends LitElement {
 		`;
 	}
 
-	constructor() {
-		super();
-	}
-
 	render() {
 		// bind these helper functions to 'd2l-visibility-test' component if one already exists
 		if (this.parentElement.querySelector('d2l-visibility-test')) {
