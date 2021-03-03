@@ -11,15 +11,18 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		};
 	}
 
+	constructor() {
+		super();
+		this.dummy = document.createElement('div');
+		this.dummy.style.overflow = 'hidden';
+		this.dummy.style.display = 'grid';
+	}
+
 	firstUpdated() {
 		this.opacityOriginal = window.getComputedStyle(this).opacity;
 		this.transformOriginal = window.getComputedStyle(this).transform;
 		this.displayOriginal = window.getComputedStyle(this).display;
 		this.transitionOriginal = window.getComputedStyle(this).transition;
-
-		this.dummy = document.createElement('div');
-		this.dummy.style.overflow = 'hidden';
-		this.dummy.style.display = 'grid';
 	}
 
 	updated(changedProperties) {
