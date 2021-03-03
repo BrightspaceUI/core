@@ -15,18 +15,27 @@
 
 		<d2l-demo-page page-title="visibility-mixin">
 
-			<h2>Visibility Mixin - Animate Show</h2>
+			<h2>Visibility Mixin</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<h5>Group 1</h5>
-					<div>
-						<d2l-visibility-test-helper></d2l-visibility-test-helper>
-					</div>
-					<h5>Group 2</h5>
-					<div>
-						<input type='checkbox'>Temp</button>
-					</div>
+					<d2l-visibility-test-helper></d2l-visibility-test-helper>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Visibility Mixin - With Margin</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-visibility-test-helper mixin-margin='20px'></d2l-visibility-test-helper>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Visibility Mixin - Animates To Original Values</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-visibility-test-helper mixin-opacity='0.5'></d2l-visibility-test-helper>
 				</template>
 			</d2l-demo-snippet>
 

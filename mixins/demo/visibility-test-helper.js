@@ -1,7 +1,14 @@
+import '../../components/button/button.js';
 import './visibility-test.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 export class VisibilityTestHelper extends LitElement {
+	static get properties() {
+		return {
+			mixinMargin: { type: String, attribute: 'mixin-margin' },
+			mixinOpacity: { type: String, attribute: 'mixin-opacity' }
+		};
+	}
 
 	static get styles() {
 		return css`
@@ -17,11 +24,17 @@ export class VisibilityTestHelper extends LitElement {
 	}
 
 	render() {
+		if (this.mixinMargin) {
+			this.el.style.display = 'grid';
+			this.el.style.margin = this.mixinMargin;
+		}
+		if (this.mixinOpacity) {
+			this.el.style.opacity = this.mixinOpacity;
+		}
 		return html`
-			<h3>Helper</h3>
-			<button @click='${this.showItem}'>Click to show element</button>
-			<button @click='${this.hideItem}'>Click to hide element</button>
-			<button @click='${this.removeItem}'>Click to remove element</button>
+			<d2l-button @click='${this.showItem}'>Show element</d2l-button>
+			<d2l-button @click='${this.hideItem}'>Hide element</d2l-button>
+			<d2l-button @click='${this.removeItem}'>Remove element</d2l-button>
 		`;
 	}
 
