@@ -12,13 +12,14 @@
 		</script>
 		<script>
 			if (window.location.search.indexOf('latex=true') !== -1) {
+				/* eslint-disable-next-line no-global-assign */
 				D2L = {};
 				D2L.LP = {};
 				D2L.LP.Web = {};
 				D2L.LP.Web.UI = {};
 				D2L.LP.Web.UI.Flags = {
-					Flag: (flagName, defaultValue) => { return true; }
-				}
+					Flag: () => { return true; }
+				};
 			}
 		</script>
 	</head>
