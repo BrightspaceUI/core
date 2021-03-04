@@ -19,7 +19,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-html-block math-jax-config='{ "renderLatex": true }'>
+					<d2l-html-block>
 						<template>
 							<h1>heading 1</h1>
 							<h2>heading 2</h2>
@@ -50,7 +50,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-html-block math-jax-config='{ "renderLatex": true }''>
+					<d2l-html-block>
 						<template>
 							<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
 								<mi>x</mi>
@@ -162,7 +162,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-html-block math-jax-config='{ "renderLatex": true }'>
+					<d2l-html-block>
 						<template>
 							<div>An equation...
 								<math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -255,33 +255,6 @@
 										<mo>)</mo>
 									</mrow>
 								</math> and other symbols.
-							</div>
-						</template>
-					</d2l-html-block>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>HTML Block (LaTeX math)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-html-block math-jax-config='{ "renderLatex": true }'>
-						<template>
-							<div>$$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</div>
-						</template>
-					</d2l-html-block>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>HTML Block (LaTeX inline math)</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-html-block math-jax-config='{ "renderLatex": true }'>
-						<template>
-							<div>An equation rendered using LaTeX...
-								\( f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x \)
-								... and some text!
 							</div>
 						</template>
 					</d2l-html-block>

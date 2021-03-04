@@ -7,12 +7,6 @@ import { loadMathJax } from '../../helpers/mathjax.js';
  */
 class HtmlBlock extends LitElement {
 
-	static get properties() {
-		return {
-			mathJaxConfig: { type: Object, attribute: 'math-jax-config' }
-		};
-	}
-
 	static get styles() {
 		return css`
 			:host {
@@ -119,11 +113,6 @@ class HtmlBlock extends LitElement {
 		`;
 	}
 
-	constructor() {
-		super();
-		this.mathJaxConfig = {};
-	}
-
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._templateObserver) this._templateObserver.disconnect();
@@ -146,8 +135,12 @@ class HtmlBlock extends LitElement {
 				temp.appendChild(fragment);
 				const fragmentHTML = temp.innerHTML;
 
-				if (hasMathML || /\$\$|\\\(/.test(fragmentHTML)) {
-					await loadMathJax(this.mathJaxConfig);
+				const hasLatex = D2L.LP && D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true) && /\$\$|\\\(/.test(fragmentHTML);
+
+				if (hasMathML || hasLatex) {
+					const mathJaxConfig = { renderLatex: hasLatex }
+					await loadMathJax(mathJaxConfig);
+
 					this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
 					window.MathJax.typesetShadow(this.shadowRoot);
 				} else {

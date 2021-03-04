@@ -39,12 +39,6 @@ class SomeComponent extends LitElement {
 customElements.define('d2l-some-component', SomeComponent);
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `math-jax-config` | Object, default: `'{}'` | Configuration options for MathJax |
-
 ## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!
