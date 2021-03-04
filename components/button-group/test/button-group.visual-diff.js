@@ -1,8 +1,6 @@
 
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
-const { hidden } = require('chalk');
-const { delay } = require('lodash');
 
 describe('d2l-button-group', () => {
 
@@ -24,17 +22,6 @@ describe('d2l-button-group', () => {
 	}
 
 	after(async() => await browser.close());
-	// less-than-min-to-show-container
-	// less-than-min-to-show
-
-	// between-min-max-to-show-container
-	// between-min-max-to-show
-
-	// exactly-max-to-show-container
-	// exactly-max-to-show
-
-	// more-than-max-to-show-container
-	// more-than-max-to-show
 
 	const minMaxTests = [
 		{

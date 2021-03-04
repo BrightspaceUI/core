@@ -71,7 +71,8 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 
 		// selected elements
 		this._buttonSlot = this.shadowRoot.getElementById('buttons');
-		// this._buttonSlot.addEventListener('slotchange', this._handleSlotChange);
+		this._buttonSlot.addEventListener('slotchange', this._handleSlotChange);
+
 		this._container = this.shadowRoot.querySelector('.d2l-button-group-container');
 
 		this._availableWidth = this._container.clientWidth;

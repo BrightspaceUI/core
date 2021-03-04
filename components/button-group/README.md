@@ -1,4 +1,4 @@
-# Buttons
+# Button Groups
 
 ## d2l-button-group
 
@@ -41,7 +41,7 @@ The `d2l-button-group` element can be used to add responsiveness to a set of but
 | `min-to-show` | Number | The minimum number of elements to always show. Please consult the design team when using this attribute. |
 | `max-to-show` | Number | The maximum number of elements to always show |
 | `subtle` | Boolean | Styles the dropdown menu in the button-group as a subtle button for action button groups |
-| `opener-type` | String | Currently the only option for this is `icon`, which will render the dropdown menu symbol as `...` |
+| `opener-type` | String | Currently the only option for this is `icon`, which will permanently render the dropdown menu symbol as `...` |
 
 
 ## d2l-action-button-group

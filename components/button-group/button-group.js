@@ -1,9 +1,6 @@
 /* eslint-disable sort-class-members/sort-class-members */
 import '../colors/colors.js';
 import '../dropdown/dropdown-menu.js';
-import '../menu/menu-item.js';
-import '../menu/menu-item-link.js';
-import '../menu/menu-item-separator.js';
 import '../button/button.js';
 import '../button/button-subtle.js';
 import '../dropdown/dropdown.js';
@@ -34,13 +31,7 @@ class ButtonGroup extends RtlMixin(LocalizeCoreElement(DynamicResizeMixin(LitEle
 				type: Boolean,
 				attribute: 'subtle',
 			},
-			/**
-			 * Setting this property to 'icon' will permanently change the dropdown opener to a ... icon
-			 */
-			openerType: {
-				type: String,
-				attribute: 'opener-type',
-			},
+
 		};
 	}
 
