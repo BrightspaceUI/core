@@ -123,11 +123,30 @@ describe('d2l-button-group', () => {
 			}
 		}
 	];
+	// const changeButtonsTests = [
+	// 	{
+	// 		name: 'add-button',
+	// 		selector: '#add-button',
+	// 		containerSelector: '#add-button-container',
+	// 		action: async(selector) => {
+	// 			const element = await page.evaluateHandle(
+	// 				'document.createElement(\'d2l-button\');'
+	// 			);
+	// 			console.log(element)
+	// 			element.textContent = 'new button';
+	// 			const buttonSlot = await getShadowElem(selector, '#buttons');
+	// 			console.log(buttonSlot)
+	// 			const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
+	// 			await overflowMenu.click();
+	// 		}
+	// 	}
+	// ];
 	[
-		...hiddenButtonTests,
-		...minMaxTests.reverse(),
-		...autoShow,
-		...iconType.reverse()
+		// ...hiddenButtonTests,
+		// ...minMaxTests.reverse(),
+		// ...autoShow,
+		// ...iconType.reverse()
+		...changeButtonsTests,
 	].forEach((test) => {
 		it(test.name, async function() {
 			const rect = await visualDiff.getRect(page, test.containerSelector || test.selector);

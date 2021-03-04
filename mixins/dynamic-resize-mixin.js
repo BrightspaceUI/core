@@ -1,4 +1,3 @@
-/* eslint-disable sort-class-members/sort-class-members */
 import { html } from 'lit-element/lit-element.js';
 import { throttle } from 'lodash-es';
 
@@ -6,7 +5,9 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
-			// todo implement autoshow: uses classes as min and max delimeters
+			/**
+			 * Use predefined classes on slot elements to set min and max buttons to show
+			 */
 			autoShow: {
 				type: Boolean,
 				attribute: 'auto-show',
@@ -40,12 +41,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			_chompIndex: {
 				type: Number,
 			},
-			_overflowMenuWidth: {
-				type: Number,
-			},
-			_dropdownItems: {
-				type: Array
-			}
 		};
 	}
 	constructor() {
@@ -54,6 +49,8 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._addEventListeners = this._addEventListeners.bind(this);
 		this._chomp = this._chomp.bind(this);
 		this._getLayoutItems = this._getLayoutItems.bind(this);
+		this._collectItems = this._collectItems.bind(this);
+		this._handleSlotChange = this._handleSlotChange.bind(this);
 
 		this._throttledResize = throttle(this._handleResize, 15);
 
@@ -74,6 +71,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 
 		// selected elements
 		this._buttonSlot = this.shadowRoot.getElementById('buttons');
+		// this._buttonSlot.addEventListener('slotchange', this._handleSlotChange);
 		this._container = this.shadowRoot.querySelector('.d2l-button-group-container');
 
 		this._availableWidth = this._container.clientWidth;
@@ -81,12 +79,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._autoShowClass = 'd2l-button-group-show';
 		this._autoNoShowClass = 'd2l-button-group-no-show';
 
-		// get the items from the button slot
-		this._slotItems = this._getSlotItems();
-		/// convert them to layout items (calculate widths)
-		this._layoutItems = this._getLayoutItems(this._slotItems);
-		// convert to dropdown items (for overflow menu)
-		this._dropdownItems = this._slotItems.map((node) => this._convertToDropdownItem(node));
+		this._collectItems();
 
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
@@ -94,7 +87,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._chomp();
 
 	}
-
 	update(changedProperties) {
 		super.update(changedProperties);
 		if (changedProperties.get('autoShow')) {
@@ -114,15 +106,12 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			});
 		}
 	}
-
 	connectedCallack() {
 		this._addEventListeners();
 	}
-
 	_addEventListeners() {
 		window.addEventListener('resize', this._throttledResize);
 	}
-
 	_autoDetectBoundaries(items) {
 
 		let minToShow, maxToShow;
@@ -141,61 +130,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		if (maxToShow !== undefined) {
 			this.maxToShow = maxToShow;
 		}
-
-	}
-	_convertToDropdownItem(node) {
-		const tagName = node.tagName.toLowerCase();
-		let menuItem;
-		if (tagName === 'd2l-button' || tagName === 'd2l-button-subtle' || tagName === 'button' || tagName === 'd2l-button-icon') {
-			menuItem = this._createMenuItem(node);
-		} else if (tagName === 'd2l-link' || tagName === 'a') {
-			menuItem = this._createMenuItemLink(node);
-		} else if (node.getAttribute('role') === 'separator') {
-			menuItem = this._createMenuItemSeparator();
-		} else if (tagName === 'd2l-menu' || tagName === 'd2l-dropdown' || tagName === 'd2l-dropdown-button' || tagName === 'd2l-dropdown-button-subtle') {
-			menuItem = this._createMenuItemMenu(node);
-		} else if (tagName === 'd2l-menu-item') {
-			// if the menu item has children treat it as a menu item menu
-			if (node.children.length > 0) {
-				menuItem = this._createMenuItemMenu(node);
-			} else {
-				menuItem = this._createMenuItem(node);
-			}
-		} else if (node.classList.contains('d2l-button-group-custom-item')) {
-			menuItem = this._createMenuItem(node);
-		} else {
-			return;
-		}
-		return menuItem;
-	}
-
-	_getSlotItems() {
-		const nodes = this._buttonSlot.assignedNodes();
-		const filteredNodes = nodes.filter((node) => {
-			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
-			const isHidden = isNode && window.getComputedStyle(node).display === 'none';
-
-			return isNode && !isHidden;
-		});
-
-		return filteredNodes;
-	}
-
-	_getLayoutItems(filteredNodes) {
-
-		const items = filteredNodes.map((node) => {
-			const computedStyles = window.getComputedStyle(node);
-			return {
-				type: node.tagName.toLowerCase(),
-				isChomped: false,
-				width: node.offsetWidth
-					+ parseInt(computedStyles.marginLeft.replace('px', ''))
-					+ parseInt(computedStyles.marginRight.replace('px', '')),
-				node: node
-			}
-		});
-
-		return items;
 	}
 	_chomp(items = this._layoutItems) {
 
@@ -249,13 +183,8 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 
 		}
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		const overflowHidden = items.length === showing.count;
-		if (overflowHidden) {
-			this._overflowMenuHidden = true;
-		} else {
-			this._overflowMenuHidden = false;
-		}
-		if (!overflowHidden && (isSoftOverflowing || isForcedOverflowing)) {
+		this._overflowMenuHidden = items.length === showing.count;
+		if (!this._overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
 			for (let j = this._layoutItems.length; j--;) {
 				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
 					break;
@@ -272,13 +201,9 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			}
 		}
 		const overflowDropdownOverflowing = (showing.width + this._overflowMenuWidth >= this._availableWidth);
-		const swapToMiniButton = this.minToShow > 0 && overflowDropdownOverflowing && !overflowHidden;
-		if (this.openerType === 'icon' || swapToMiniButton) {
-			this._mini = true;
-		} else {
-			this._mini = false;
-		}
+		const swapToMiniButton = overflowDropdownOverflowing && !this._overflowMenuHidden;
 
+		this._mini = this.openerType === 'icon' || swapToMiniButton;
 		this._chompIndex = showing.count;
 
 		this._slotItems.forEach((element, index) => {
@@ -290,7 +215,39 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		});
 		this._overflowItems = this._dropdownItems.slice(this._chompIndex);
 		this.dispatchEvent(new CustomEvent('d2l-button-group-updated', { bubbles: true, composed: true }));
-
+	}
+	_collectItems() {
+		// get the items from the button slot
+		this._slotItems = this._getSlotItems();
+		/// convert them to layout items (calculate widths)
+		this._layoutItems = this._getLayoutItems(this._slotItems);
+		// convert to dropdown items (for overflow menu)
+		this._dropdownItems = this._slotItems.map((node) => this._convertToDropdownItem(node));
+	}
+	_convertToDropdownItem(node) {
+		const tagName = node.tagName.toLowerCase();
+		let menuItem;
+		if (tagName === 'd2l-button' || tagName === 'd2l-button-subtle' || tagName === 'button' || tagName === 'd2l-button-icon') {
+			menuItem = this._createMenuItem(node);
+		} else if (tagName === 'd2l-link' || tagName === 'a') {
+			menuItem = this._createMenuItemLink(node);
+		} else if (node.getAttribute('role') === 'separator') {
+			menuItem = this._createMenuItemSeparator();
+		} else if (tagName === 'd2l-menu' || tagName === 'd2l-dropdown' || tagName === 'd2l-dropdown-button' || tagName === 'd2l-dropdown-button-subtle') {
+			menuItem = this._createMenuItemMenu(node);
+		} else if (tagName === 'd2l-menu-item') {
+			// if the menu item has children treat it as a menu item menu
+			if (node.children.length > 0) {
+				menuItem = this._createMenuItemMenu(node);
+			} else {
+				menuItem = this._createMenuItem(node);
+			}
+		} else if (node.classList.contains('d2l-button-group-custom-item')) {
+			menuItem = this._createMenuItem(node);
+		} else {
+			return;
+		}
+		return menuItem;
 	}
 	_createMenuItem(node) {
 		const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
@@ -336,6 +293,33 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			</d2l-menu>
 		</d2l-menu-item>`;
 	}
+	_getLayoutItems(filteredNodes) {
+
+		const items = filteredNodes.map((node) => {
+			const computedStyles = window.getComputedStyle(node);
+			return {
+				type: node.tagName.toLowerCase(),
+				isChomped: false,
+				width: node.offsetWidth
+					+ parseInt(computedStyles.marginLeft.replace('px', ''))
+					+ parseInt(computedStyles.marginRight.replace('px', '')),
+				node: node
+			};
+		});
+
+		return items;
+	}
+	_getSlotItems() {
+		const nodes = this._buttonSlot.assignedNodes();
+		const filteredNodes = nodes.filter((node) => {
+			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
+			const isHidden = isNode && window.getComputedStyle(node).display === 'none';
+
+			return isNode && !isHidden;
+		});
+
+		return filteredNodes;
+	}
 	_handleResize() {
 		if (!this._container) {
 			return;
@@ -343,7 +327,17 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._availableWidth = this._container.clientWidth;
 		this._chomp();
 	}
+	_handleSlotChange() {
+		this._collectItems();
+
+		if (this.autoShow) {
+			this._autoDetectBoundaries(this._slotItems);
+		}
+
+		this._chomp();
+	}
 	_removeEventListeners() {
 		window.removeEventListener('resize', this._throttledResize);
+		this._buttonSlot.removeEventListener('slotchange', this._handleSlotChange);
 	}
 };
