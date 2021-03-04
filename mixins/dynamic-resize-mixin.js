@@ -29,6 +29,13 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 				attribute: 'max-to-show',
 			},
 			/**
+			 * Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
+			 */
+			openerType: {
+				type: String,
+				attribute: 'opener-type'
+			},
+			/**
 			 * Shrinks the More Actions button down to '...' for scenarios with tight spacing
 			 */
 			_mini: {
@@ -49,7 +56,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._addEventListeners = this._addEventListeners.bind(this);
 		this._chomp = this._chomp.bind(this);
 		this._getLayoutItems = this._getLayoutItems.bind(this);
-		this._collectItems = this._collectItems.bind(this);
 		this._handleSlotChange = this._handleSlotChange.bind(this);
 
 		this._throttledResize = throttle(this._handleResize, 15);
@@ -80,7 +86,13 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._autoShowClass = 'd2l-button-group-show';
 		this._autoNoShowClass = 'd2l-button-group-no-show';
 
-		this._collectItems();
+		// get the items from the button slot
+		this._slotItems = this._getSlotItems();
+		// convert them to layout items (calculate widths)
+		this._layoutItems = this._getLayoutItems(this._slotItems);
+		// convert to dropdown items (for overflow menu)
+		this._dropdownItems = this._slotItems.map((node) => this._convertToDropdownItem(node));
+
 
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
@@ -217,14 +229,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._overflowItems = this._dropdownItems.slice(this._chompIndex);
 		this.dispatchEvent(new CustomEvent('d2l-button-group-updated', { bubbles: true, composed: true }));
 	}
-	_collectItems() {
-		// get the items from the button slot
-		this._slotItems = this._getSlotItems();
-		/// convert them to layout items (calculate widths)
-		this._layoutItems = this._getLayoutItems(this._slotItems);
-		// convert to dropdown items (for overflow menu)
-		this._dropdownItems = this._slotItems.map((node) => this._convertToDropdownItem(node));
-	}
 	_convertToDropdownItem(node) {
 		const tagName = node.tagName.toLowerCase();
 		let menuItem;
@@ -314,9 +318,9 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		const nodes = this._buttonSlot.assignedNodes();
 		const filteredNodes = nodes.filter((node) => {
 			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
-			const isHidden = isNode && window.getComputedStyle(node).display === 'none';
+			// const isHidden = isNode && window.getComputedStyle(node).display === 'none';
 
-			return isNode && !isHidden;
+			return isNode;///&& !isHidden;
 		});
 
 		return filteredNodes;
@@ -329,7 +333,9 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._chomp();
 	}
 	_handleSlotChange() {
-		this._collectItems();
+
+		// get the items from the button slot
+		this._slotItems = this._getSlotItems();
 
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
