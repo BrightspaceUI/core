@@ -138,7 +138,7 @@ class HtmlBlock extends LitElement {
 				const hasLatex = D2L.LP && D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true) && /\$\$|\\\(/.test(fragmentHTML);
 
 				if (hasMathML || hasLatex) {
-					const mathJaxConfig = { renderLatex: hasLatex }
+					const mathJaxConfig = { renderLatex: hasLatex };
 					await loadMathJax(mathJaxConfig);
 
 					this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
