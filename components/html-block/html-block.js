@@ -135,10 +135,9 @@ class HtmlBlock extends LitElement {
 				temp.appendChild(fragment);
 				const fragmentHTML = temp.innerHTML;
 
-				const hasLatex = D2L.LP && D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true) && /\$\$|\\\(/.test(fragmentHTML);
-
-				if (hasMathML || hasLatex) {
-					const mathJaxConfig = { renderLatex: hasLatex };
+				const isLatexSupported = D2L.LP && D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true);
+				if (hasMathML || (isLatexSupported && /\$\$|\\\(/.test(fragmentHTML))) {
+					const mathJaxConfig = { renderLatex: isLatexSupported };
 					await loadMathJax(mathJaxConfig);
 
 					this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;

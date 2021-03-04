@@ -12,8 +12,7 @@
 		</script>
 		<script>
 			if (window.location.search.indexOf('latex=true') !== -1) {
-				/* eslint-disable-next-line no-global-assign */
-				D2L = {};
+				window.D2L = {};
 				D2L.LP = {};
 				D2L.LP.Web = {};
 				D2L.LP.Web.UI = {};
@@ -53,7 +52,6 @@
 								<li>ordered item 2</li>
 							</ol>
 							<div><a href="https://d2l.com">anchor</a></div>
-							<div style="display: none">\( )\</div>
 						</template>
 					</d2l-html-block>
 				</template>
