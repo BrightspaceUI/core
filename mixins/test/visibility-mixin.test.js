@@ -1,10 +1,10 @@
-import '../demo/visibility-test.js';
+import '../demo/visibility-test-item.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
 const moveYValue = 10;
-const simpleFixture = html`<d2l-visibility-test></d2l-visibility-test>`;
+const simpleFixture = html`<d2l-visibility-test-item></d2l-visibility-test-item>`;
 
-describe('VisibilityMixin', () => {
+describe.only('VisibilityMixin', () => {
 
 	let elem;
 
