@@ -10,6 +10,17 @@
 			import '../../demo/demo-page.js';
 			import '../html-block.js';
 		</script>
+		<script>
+			if (window.location.search.indexOf('latex=true') !== -1) {
+				D2L = {};
+				D2L.LP = {};
+				D2L.LP.Web = {};
+				D2L.LP.Web.UI = {};
+				D2L.LP.Web.UI.Flags = {
+					Flag: (flagName, defaultValue) => { return true; }
+				}
+			}
+		</script>
 	</head>
 	<body unresolved>
 
@@ -41,6 +52,7 @@
 								<li>ordered item 2</li>
 							</ol>
 							<div><a href="https://d2l.com">anchor</a></div>
+							<div style="display: none">\( )\</div>
 						</template>
 					</d2l-html-block>
 				</template>
@@ -255,6 +267,33 @@
 										<mo>)</mo>
 									</mrow>
 								</math> and other symbols.
+							</div>
+						</template>
+					</d2l-html-block>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>HTML Block (LaTeX math)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-html-block>
+						<template>
+							<div>$$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</div>
+						</template>
+					</d2l-html-block>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>HTML Block (LaTeX inline math)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-html-block>
+						<template>
+							<div>An equation rendered using LaTeX...
+								\( f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x \)
+								... and some text!
 							</div>
 						</template>
 					</d2l-html-block>
