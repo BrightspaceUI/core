@@ -30,6 +30,7 @@ describe('d2l-dialog-fullscreen', () => {
 				await helper.reset(page, '#dialogLong');
 				await helper.reset(page, '#dialogRtl');
 				await helper.reset(page, '#dialogNoFooterContent');
+				await helper.reset(page, '#dialogNoHeader');
 			});
 
 			[
@@ -65,6 +66,11 @@ describe('d2l-dialog-fullscreen', () => {
 
 				it('no footer content', async function() {
 					await helper.open(page, '#dialogNoFooterContent');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
+
+				it('no header', async function() {
+					await helper.open(page, '#dialogNoHeader');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 

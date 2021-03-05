@@ -160,6 +160,7 @@ document.querySelector('#open').addEventListener('click', () => {
 | `title-text` | String, required | Text displayed in the header of the dialog |
 | `async` | Boolean | Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container) |
 | `opened` | Boolean | Whether or not the dialog is open |
+| `no-header` | Boolean | Whether to render the header |
 
 **Events:**
 

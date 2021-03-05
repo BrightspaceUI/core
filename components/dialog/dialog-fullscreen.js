@@ -25,6 +25,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
 			async: { type: Boolean },
+			/**
+			 * Whether to render the header.
+			 */
+			noHeader: { type: Boolean, attribute: 'no-header', reflect: true },
 			_hasFooterContent: { type: Boolean, attribute: false }
 		};
 	}
@@ -44,6 +48,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 				margin-left: -15px;
 				margin-right: 15px;
+			}
+
+			:host([no-header]) .d2l-dialog-content {
+				padding-top: 30px;
 			}
 
 			.d2l-dialog-content > div {
@@ -123,12 +131,14 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner">
-				<div class="d2l-dialog-header">
-					<div>
-						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
-						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+				${!this.noHeader ? html`
+					<div class="d2l-dialog-header">
+						<div>
+							<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
+							<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						</div>
 					</div>
-				</div>
+				` : ''}
 				<div class="d2l-dialog-content">${content}</div>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
