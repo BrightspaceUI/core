@@ -1,6 +1,6 @@
 # VisibilityMixin
 
-The `VisibilityMixin` can be used to show, hide or remove your component with an opacity and transform transition. During the transition, a dummy element wraps around your component and separately handles transitioning the height of your component. This is done to make the opacity and transform transitions more noticeable.
+The `VisibilityMixin` can be used to show, hide or remove your component with an opacity and animated transition. 
 
 ## Usage
 
