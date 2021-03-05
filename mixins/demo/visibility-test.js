@@ -32,7 +32,7 @@ export class VisibilityTest extends LitElement {
 		const toggleText = this._listVisibility ? 'Hide List' : 'Show List';
 		return html`
 			<d2l-visibility-test-list animate="${ifDefined(animateValue)}"></d2l-visibility-test-list>
-			<d2l-button @click="${this._handleAddItem}">Add Item</d2l-button>
+			<d2l-button @click="${this._handleAddItem}" ?disabled="${!this._listVisibility}">Add Item</d2l-button>
 			<d2l-button @click="${this._handleToggleList}">${toggleText}</d2l-button>
 		`;
 	}

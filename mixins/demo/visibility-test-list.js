@@ -6,12 +6,6 @@ import { VisibilityMixin } from '../visibility-mixin.js';
 
 export class VisibilityTestList extends VisibilityMixin(LitElement) {
 
-	static get properties() {
-		return {
-			_changeTracker: { type: Number, reflect: false },
-		};
-	}
-
 	static get styles() {
 		return css`
 			:host {
@@ -23,7 +17,6 @@ export class VisibilityTestList extends VisibilityMixin(LitElement) {
 
 	constructor() {
 		super();
-		this._changeTracker = 0;
 		this._counter = 3;
 		this._items = [
 			{ number: 1, state: 'existing' },
@@ -56,15 +49,15 @@ export class VisibilityTestList extends VisibilityMixin(LitElement) {
 
 	addItem() {
 		this._counter++;
-		this._changeTracker++;
 		this._items.push({ number: this._counter, state: 'new' });
+		this.requestUpdate();
 	}
 
 	_handleRemove(e) {
 		const removeItem = this._items.find(item => item.number === e.target.number);
 		if (removeItem) {
 			removeItem.state = 'remove';
-			this._changeTracker++;
+			this.requestUpdate();
 		}
 	}
 
