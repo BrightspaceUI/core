@@ -46,7 +46,8 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			));
 		};
 		const dummyOnTransitionEnd = () => {
-			this.dummy.replaceWith(this);
+			this.dummy.parentNode.insertBefore(this, this.dummy);
+			this.dummy.remove();
 			this.style.display = 'none';
 			this.dispatchEvent(new CustomEvent(
 				'd2l-visibility-mixin-hide-end',
@@ -88,7 +89,8 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			));
 		};
 		const dummyOnTransitionEnd = () => {
-			this.dummy.replaceWith(this);
+			this.dummy.parentNode.insertBefore(this, this.dummy);
+			this.dummy.remove();
 			this.dispatchEvent(new CustomEvent(
 				'd2l-visibility-mixin-remove-end',
 				{ bubbles: true, composed: false }
@@ -107,7 +109,8 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			));
 		};
 		const thisOnTransitionEnd = () => {
-			this.dummy.replaceWith(this);
+			this.dummy.parentNode.insertBefore(this, this.dummy);
+			this.dummy.remove();
 			// done visibility transition, element is in original, fully visible state, so return the original transition to this
 			this.style.transition = this.transitionOriginal;
 			this.dispatchEvent(new CustomEvent(
@@ -152,9 +155,10 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 
 				// preserve the current dummy height for when we switch directions of transition
 				this.dummy.style.height = window.getComputedStyle(this.dummy).height;
-				this.dummy.replaceWith(this);
+				this.dummy.parentNode.insertBefore(this, this.dummy);
+				this.dummy.remove();
 			}
-			this.replaceWith(this.dummy);
+			this.parentNode.insertBefore(this.dummy, this);
 			this.dummy.appendChild(this);
 
 			// allow enough time for reflow to occur to ensure that the transition properly runs
