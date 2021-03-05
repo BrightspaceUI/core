@@ -111,12 +111,12 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	_animateShow() {
-		this.style.display = this.displayOriginal;
-
 		if (reduceMotion) {
+			this.style.display = this.displayOriginal;
 			return;
 		}
 
+		this.style.display = this.displayOriginal;
 		const dummyOnTransitionStart = () => {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-visibility-mixin-show-start',
