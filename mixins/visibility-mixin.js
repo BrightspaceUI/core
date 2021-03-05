@@ -164,37 +164,45 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			// allow enough time for reflow to occur to ensure that the transition properly runs
 			await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-			this.ontransitionstart = (event) => {
-				if (event.target === this && event.propertyName === 'opacity') {
-					if (animateStyle.thisOnTransitionStart) {
+			if (animateStyle.thisOnTransitionStart) {
+				const thisOnTransitionStart = (event) => {
+					if (event.target === this && event.propertyName === 'opacity') {
 						animateStyle.thisOnTransitionStart();
+						this.removeEventListener('transitionstart', thisOnTransitionStart);
 					}
-				}
-			};
+				};
+				this.addEventListener('transitionstart', thisOnTransitionStart);
+			}
 
-			this.dummy.ontransitionstart = (event) => {
-				if (event.target === this.dummy) {
-					if (animateStyle.dummyOnTransitionStart) {
+			if (animateStyle.dummyOnTransitionStart) {
+				const dummyOnTransitionStart = (event) => {
+					if (event.target === this.dummy) {
 						animateStyle.dummyOnTransitionStart();
+						this.dummy.removeEventListener('transitionstart', dummyOnTransitionStart);
 					}
-				}
-			};
+				};
+				this.dummy.addEventListener('transitionstart', dummyOnTransitionStart);
+			}
 
-			this.ontransitionend = (event) => {
-				if (event.target === this && event.propertyName === 'opacity') {
-					if (animateStyle.thisOnTransitionEnd) {
+			if (animateStyle.thisOnTransitionEnd) {
+				const thisOnTransitionEnd = (event) => {
+					if (event.target === this && event.propertyName === 'opacity') {
 						animateStyle.thisOnTransitionEnd();
+						this.removeEventListener('transitionend', thisOnTransitionEnd);
 					}
-				}
-			};
+				};
+				this.addEventListener('transitionend', thisOnTransitionEnd);
+			}
 
-			this.dummy.ontransitionend = (event) => {
-				if (event.target === this.dummy) {
-					if (animateStyle.dummyOnTransitionEnd) {
+			if (animateStyle.dummyOnTransitionEnd) {
+				const dummyOnTransitionEnd = (event) => {
+					if (event.target === this.dummy) {
 						animateStyle.dummyOnTransitionEnd();
+						this.dummy.removeEventListener('transitionend', dummyOnTransitionEnd);
 					}
-				}
-			};
+				};
+				this.dummy.addEventListener('transitionend', dummyOnTransitionEnd);
+			}
 
 			Object.assign(this.dummy.style, animateStyle.finalDummy);
 			Object.assign(this.style, animateStyle.final);
