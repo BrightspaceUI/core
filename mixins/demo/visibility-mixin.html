@@ -9,36 +9,15 @@
 		<script type="module">
 			import '../../components/demo/demo-page.js';
 			import './visibility-test.js';
-			import './visibility-test-helper.js';
 		</script>
 	</head>
 	<body unresolved>
-
 		<d2l-demo-page page-title="visibility-mixin">
 
 			<h2>Visibility Mixin</h2>
-
 			<d2l-demo-snippet>
 				<template>
-					<d2l-visibility-test-helper></d2l-visibility-test-helper>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Visibility Mixin - With Margin</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-visibility-test-helper></d2l-visibility-test-helper>
-					<d2l-visibility-test style="display: grid; margin: 20px;"></d2l-visibility-test>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Visibility Mixin - Animates To Original Values</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-visibility-test-helper></d2l-visibility-test-helper>
-					<d2l-visibility-test style="opacity: 0.5;"></d2l-visibility-test>
+					<d2l-visibility-test></d2l-visibility-test>
 				</template>
 			</d2l-demo-snippet>
 
