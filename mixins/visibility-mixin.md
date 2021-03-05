@@ -1,6 +1,6 @@
 # VisibilityMixin
 
-The `VisibilityMixin` can be used to show, hide or remove your component with an opacity and animated transition. 
+The `VisibilityMixin` can be used to show, hide or remove your component with an opacity and animated transition.
 
 ## Usage
 
@@ -19,7 +19,7 @@ class MyComponent extends VisibilityMixin(LitElement) {
 customElements.define('my-component', MyComponent);
 ```
 
-To show the component with the transition, append it to the DOM with the attribute `animate='show'`. The opacity & transform are animated to the component's values at the time in which `animate` is first updated.
+To show the component with the transition, render it with the attribute `animate='show'`. The opacity & transform are animated to the component's values at the time in which `animate` is first updated.
 To hide the component, apply the attribute `animate='hide'`. Alternatively, to remove the component, apply the attribute `animate='remove'`.
 Once the component is hidden (but not removed), show the component again by re-applying the attribute `animate='show'`.
 
