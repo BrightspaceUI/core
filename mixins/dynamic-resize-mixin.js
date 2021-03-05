@@ -93,7 +93,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		// convert to dropdown items (for overflow menu)
 		this._dropdownItems = this._slotItems.map((node) => this._convertToDropdownItem(node));
 
-
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
 		}

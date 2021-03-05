@@ -95,10 +95,6 @@ describe('d2l-button-group', () => {
 			name: 'opener-type-subtle-overflow-menu',
 			selector: '#opener-type-subtle-overflow-menu',
 			containerSelector: '#opener-type-subtle-overflow-menu-container',
-			action: async(selector) => {
-				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
-				await overflowMenu.click();
-			}
 		},
 		{
 			name: 'opener-type-subtle-overflow-menu-open',
@@ -113,7 +109,7 @@ describe('d2l-button-group', () => {
 
 	[
 		...hiddenButtonTests,
-		...minMaxTests.reverse(),
+		...minMaxTests,
 		...autoShow,
 		...iconType.reverse()
 	].forEach((test) => {

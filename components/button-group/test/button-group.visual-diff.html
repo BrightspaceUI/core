@@ -18,8 +18,6 @@
 			import '../../link/link.js';
 			import '../button-group.js';
 		</script>
-		<style>
-		</style>
 		<title>d2l-button-group</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -53,7 +51,7 @@
 		</div>
 
 		<div id="more-than-max-to-show-container" style="height: 200px;" class="visual-diff">
-			<d2l-button-group id="more-than-max-to-show" min-to-show="2" max-to-show="4">
+			<d2l-button-group id="more-than-max-to-show" min-to-show="2" max-to-show="3">
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
@@ -125,13 +123,12 @@
 
 		<!-- overflow menu is mini when openerType = 'icon' -->
 		<div id="opener-type-mini-menu-container" class="visual-diff">
-			<d2l-button-group style="width: 400px;" id="opener-type-mini-menu" opener-type='icon' min-to-show="2">
+			<d2l-button-group style="width: 500px;" id="opener-type-mini-menu" opener-type='icon'>
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
 			</d2l-button-group>
 		</div>
-
 		<div id="opener-type-overflow-open-menu-container" class="visual-diff">
 			<div style="height: 200px; width: 400px;">
 				<d2l-button-group id="opener-type-overflow-open-menu" opener-type='icon' max-to-show="2">
@@ -142,7 +139,7 @@
 			</div>
 		</div>
 		<div id="opener-type-subtle-overflow-menu-container" class="visual-diff">
-			<div style="height: 200px; width: 400px;">
+			<div style="width: 400px;">
 				<d2l-button-group id="opener-type-subtle-overflow-menu" opener-type='icon' subtle max-to-show="2">
 					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
@@ -150,7 +147,6 @@
 				</d2l-button-group>
 			</div>
 		</div>
-
 		<div id="opener-type-subtle-overflow-menu-open-container" class="visual-diff">
 			<div style="height: 200px; width: 400px;">
 				<d2l-button-group id="opener-type-subtle-overflow-menu-open" opener-type='icon' subtle max-to-show="2">
@@ -160,78 +156,5 @@
 				</d2l-button-group>
 			</div>
 		</div>
-		<div id="add-button-container" class="visual-diff">
-			<div style="height: 200px; width: 400px;">
-				<d2l-button-group id="add-button" opener-type='icon' subtle max-to-show="2">
-					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
-					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
-					<d2l-button-subtle text="Button 3"></d2l-button-subtle>
-				</d2l-button-group>
-			</div>
-		</div>
-		 <!-- maybebebebebe -->
-		<div id="over-max-container" class="visual-diff">
-			<d2l-button-group id="over-max" max-to-show="3">
-				<d2l-button>one</d2l-button>
-				<d2l-button class="d2l-button-group-show">two</d2l-button>
-				<d2l-button>three</d2l-button>
-				<d2l-button class="d2l-button-group-no-show">four</d2l-button>
-				<d2l-button>five</d2l-button>
-			</d2l-button-group>
-		</div>
-
-		<div class="visual-diff">
-			<d2l-button-group id="min-max-auto-large" auto-show>
-				<d2l-button>one</d2l-button>
-				<d2l-button class="d2l-button-group-show">two</d2l-button>
-				<d2l-button>three</d2l-button>
-				<d2l-button class="d2l-button-group-no-show">four</d2l-button>
-				<d2l-button>five</d2l-button>
-			</d2l-button-group>
-		</div>
-		<div id="min-auto-container" class="visual-diff">
-			<d2l-button-group id="min-auto" auto-show>
-				<d2l-button>one</d2l-button>
-				<d2l-button>two</d2l-button>
-				<d2l-button class="d2l-button-group-show">three</d2l-button>
-				<d2l-button>four</d2l-button>
-				<d2l-button >five</d2l-button>
-			</d2l-button-group>
-		</div>
-		<div class="visual-diff">
-			<d2l-button-group id="max-auto" auto-show>
-				<d2l-button>one</d2l-button>
-				<d2l-button>two</d2l-button>
-				<d2l-button class="d2l-button-group-no-show">three</d2l-button>
-				<d2l-button>five</d2l-button>
-				<d2l-button>five</d2l-button>
-				<d2l-button>five</d2l-button>
-				<d2l-button>five</d2l-button>
-				<d2l-button>five</d2l-button>
-			</d2l-button-group>
-		</div>
-		<div class="visual-diff">
-			<d2l-button-group id="one-item" auto-show>
-				<d2l-button>one</d2l-button>
-			</d2l-button-group>
-		</div>
-		<div id="min-auto-container" class="visual-diff small">
-			<d2l-button-group id="more-icon-opener" opener-type="icon" maxToShow="3">
-				<d2l-button>one</d2l-button>
-				<d2l-button>two</d2l-button>
-				<d2l-button>three</d2l-button>
-				<d2l-button>four</d2l-button>
-			</d2l-button-group>
-		</div>
-
-		<!-- 
-			autoshow
-			min
-			max
-			subtle
-			more icon
-			more subtle
-
-		-->
 	</body>
 </html>
