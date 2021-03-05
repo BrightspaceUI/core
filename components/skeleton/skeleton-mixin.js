@@ -20,7 +20,7 @@ export const skeletonStyles = css`
 		position: absolute;
 		right: 0;
 		top: 0;
-		z-index: 1;
+		z-index: 4;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		:host([skeleton]) .d2l-skeletize::before {
