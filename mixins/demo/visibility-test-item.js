@@ -29,8 +29,10 @@ export class VisibilityTestItem extends VisibilityMixin(LitElement) {
 	}
 
 	render() {
-		return html`<span>Item ${this.number}</span>
-			<d2l-button-icon icon="tier1:delete" text="Remove" @click="${this._remove}"></d2l-button-icon>`;
+		return html`
+			<span>Item ${this.number}</span>
+			<d2l-button-icon icon="tier1:delete" text="Remove" @click="${this._remove}"></d2l-button-icon>
+		`;
 	}
 
 	_remove() {
