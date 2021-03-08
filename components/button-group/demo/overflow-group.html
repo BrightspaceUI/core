@@ -16,7 +16,7 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../demo/demo-page.js';
-			import '../button-group.js';
+			import '../overflow-group.js';
 			import '../../button/button.js';
 			import '../../button/button-subtle.js';
 			import '../../menu/menu.js';
@@ -31,26 +31,26 @@
 	</head>
 	<body unresolved>
 
-		<d2l-demo-page page-title="d2l-button-group">
+		<d2l-demo-page page-title="d2l-overflow-group">
 
 			<h2>Button Group (min/max)</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group min-to-show="0" >
+					<d2l-overflow-group min-to-show="0" >
 						<d2l-button primary>New</d2l-button>
 						<d2l-button>Delete</d2l-button>
 						<d2l-button>Copy</d2l-button>
 						<d2l-button>Import</d2l-button>
-					</d2l-button-group>
+					</d2l-overflow-group>
 				</template>
 			</d2l-demo-snippet> 
 
 			<h2>Button Group (min max with autoShow)</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group auto-show>
+					<d2l-overflow-group auto-show>
 						<d2l-button primary="">New</d2l-button>
-						<d2l-dropdown class="d2l-button-group-show">
+						<d2l-dropdown class="d2l-overflow-group-show">
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener"></d2l-dropdown-button>
 							<d2l-dropdown-menu id="dropdown" >
 								<d2l-menu label="Astronomy">
@@ -65,20 +65,20 @@
 						</d2l-dropdown>
 						<d2l-button>Copy</d2l-button>
 						<d2l-button>Import</d2l-button>
-						<d2l-button class="d2l-button-group-no-show">Delete</d2l-button>
+						<d2l-button class="d2l-overflow-group-no-show">Delete</d2l-button>
 						<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
-					</d2l-button-group>
+					</d2l-overflow-group>
 				</template>
 			</d2l-demo-snippet>
 			
 			<h2>Action Button Group</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group subtle>
+					<d2l-overflow-group opener-style="subtle">
 						<d2l-button-subtle primary="" text="New"></d2l-button-subtle>
 						<d2l-button-subtle text="Copy"></d2l-button-subtle>
 						<d2l-button-subtle text="Import"></d2l-button-subtle>
-						<d2l-dropdown class="d2l-button-group-show">
+						<d2l-dropdown class="d2l-overflow-group-show">
 							<d2l-dropdown-button-subtle text="Explore Topics" class="d2l-dropdown-opener"></d2l-dropdown-button-subtle>
 							<d2l-dropdown-menu id="dropdown" >
 								<d2l-menu label="Astronomy">
@@ -92,21 +92,21 @@
 							</d2l-dropdown-menu>
 						</d2l-dropdown>
 						<d2l-button-subtle text="Delete"></d2l-button-subtle>
-					</d2l-button-group>
+					</d2l-overflow-group>
 				</template>
 			</d2l-demo-snippet>
 			
 			<h2>Action Button Group (more icon)</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-group min-to-show="0" subtle opener-type="icon" max-to-show="3">
+					<d2l-overflow-group min-to-show="0" opener-style="subtle" opener-type="icon" max-to-show="3">
 						<d2l-button-subtle primary="" text="New"></d2l-button-subtle>
 						<d2l-button-subtle text="Copy"></d2l-button-subtle>
 						<d2l-button-subtle text="Import"></d2l-button-subtle>
 						<d2l-button-subtle text="Delete"></d2l-button-subtle>
-					</d2l-button-group>
+					</d2l-overflow-group>
 				</template>
 			</d2l-demo-snippet>
-		</d2l-demo-page> 
+		</d2l-demo-page>
 	</body>
 </html>

@@ -1,7 +1,30 @@
-import { html } from 'lit-element/lit-element.js';
+import '../colors/colors.js';
+import '../dropdown/dropdown-menu.js';
+import '../button/button.js';
+import '../button/button-subtle.js';
+import '../dropdown/dropdown.js';
+import '../dropdown/dropdown-button.js';
+import '../dropdown/dropdown-button-subtle.js';
+import '../dropdown/dropdown-more.js';
+import '../menu/menu.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { throttle } from 'lodash-es';
 
-export const DynamicResizeMixin = superclass => class extends superclass {
+const OPENER_STYLES = {
+	DEFAULT: 'default',
+	SUBTLE: 'subtle',
+};
+
+/**
+ *
+ * A button group component that can be used to display a set of buttons
+ *
+ * @slot - Buttons, dropdown buttons, links or other items to be added to the container
+ */
+class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -36,6 +59,13 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 				attribute: 'opener-type'
 			},
 			/**
+			 * Setting this property will change the style of the overflow menu opener 
+			 */
+			openerStyle: {
+				type: String,
+				attribute: 'opener-style',
+			},
+			/**
 			 * Shrinks the More Actions button down to '...' for scenarios with tight spacing
 			 */
 			_mini: {
@@ -48,7 +78,74 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			_chompIndex: {
 				type: Number,
 			},
+			_availableWidth: {
+				type: Number,
+			},
 		};
+	}
+
+	static get styles() {
+		return [offscreenStyles,
+			css`
+			:host {
+				display: block;
+			}
+
+			:host([opener-style="subtle"]) {
+				--d2l-button-icon-fill-color: var(--d2l-color-celestine);
+				--d2l-button-icon-fill-color-hover: var(--d2l-color-celestine-minus-1);
+			}
+
+			.d2l-overflow-group-container {
+				display: flex;
+				flex-wrap: wrap;
+			}
+			:host .d2l-overflow-group-container ::slotted(d2l-button),
+			:host .d2l-overflow-group-container ::slotted(d2l-button-icon),
+			:host .d2l-overflow-group-container ::slotted(d2l-link),
+			:host .d2l-overflow-group-container ::slotted(span),
+			:host .d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+			:host .d2l-overflow-group-container ::slotted(d2l-dropdown-button),
+			:host .d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
+			:host .d2l-overflow-group-container ::slotted(.d2l-overflow-group-custom-item) {
+				margin-right: 0.6rem;
+			}
+
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-icon),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-link),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(span),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(.d2l-overflow-group-custom-item) {
+				margin-left: 0.6rem;
+				margin-right: 0;
+			}
+
+			:host([opener-style="subtle"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
+				margin-right: 0.2rem;
+			}
+
+			:host([opener-style="subtle"][dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
+				margin-left: 0.2rem;
+				margin-right: 0;
+			}
+
+			:host([opener-style="subtle"]) .d2l-dropdown-subtle-opener-text,
+			.d2l-dropdown-opener-text {
+				margin-right: 0.3rem;
+				vertical-align: middle;
+			}
+			:host([dir="rtl"]) .d2l-dropdown-opener-text,
+			:host([opener-style="subtle"]:dir(rtl)) .d2l-dropdown-subtle-opener-text {
+				margin-left: 0.3rem;
+				margin-right: 0;
+			}
+			:host .d2l-overflow-group-container ::slotted([data-chomped]) {
+				display: none !important;
+			}`
+		];
 	}
 	constructor() {
 		super();
@@ -57,6 +154,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._chomp = this._chomp.bind(this);
 		this._getLayoutItems = this._getLayoutItems.bind(this);
 		this._handleSlotChange = this._handleSlotChange.bind(this);
+		this._getOverflowMenu = this._getOverflowMenu.bind(this);
 
 		this._throttledResize = throttle(this._handleResize, 15);
 
@@ -65,26 +163,30 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this.maxToShow = this.maxToShow ?? -1;
 		this.minToShow = this.minToShow ?? 1;
 		this._mini = this.openerType === 'icon';
-	}
 
+		this._refId = 0;
+		this._slotItems = [];
+		this._overflowItems = [];
+	}
+	connectedCallback() {
+		super.connectedCallback();
+		this._addEventListeners();
+	}
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._removeEventListeners();
 	}
-
 	async firstUpdated() {
 		super.firstUpdated();
 
 		// selected elements
-		this._buttonSlot = this.shadowRoot.getElementById('buttons');
+		this._buttonSlot = this.shadowRoot.querySelector('.item-container');
 		this._buttonSlot.addEventListener('slotchange', this._handleSlotChange);
 
-		this._container = this.shadowRoot.querySelector('.d2l-button-group-container');
+		this._container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
 
-		this._availableWidth = this._container.clientWidth;
-
-		this._autoShowClass = 'd2l-button-group-show';
-		this._autoNoShowClass = 'd2l-button-group-no-show';
+		this._autoShowClass = 'd2l-overflow-group-show';
+		this._autoNoShowClass = 'd2l-overflow-group-no-show';
 
 		// get the items from the button slot
 		this._slotItems = this._getSlotItems();
@@ -96,8 +198,29 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
 		}
-		this._chomp();
 
+		this._availableWidth = this._container.clientWidth;
+	}
+	render() {
+		let overflowMenu;
+		if (!this._overflowMenuHidden) {
+			overflowMenu = this._getOverflowMenu();
+		}
+
+		this._slotItems.forEach((element, index) => {
+			if (index >= this._chompIndex) {
+				element.setAttribute('data-chomped', true);
+			} else {
+				element.removeAttribute('data-chomped');
+			}
+		});
+
+		return html`
+			<div class="d2l-overflow-group-container">
+				<slot class="item-container"></slot>
+				${overflowMenu}
+			</div>
+		`;
 	}
 	update(changedProperties) {
 		super.update(changedProperties);
@@ -105,7 +228,9 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			this._autoDetectBoundaries(this._getLayoutItems());
 		}
 
-		if (changedProperties.get('minToShow') || changedProperties.get('maxToShow')) {
+		if (changedProperties.get('_availableWidth')
+			|| changedProperties.get('minToShow')
+			|| changedProperties.get('maxToShow')) {
 			this._chomp();
 		}
 
@@ -218,15 +343,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		this._mini = this.openerType === 'icon' || swapToMiniButton;
 		this._chompIndex = showing.count;
 
-		this._slotItems.forEach((element, index) => {
-			if (index >= this._chompIndex) {
-				element.setAttribute('chomped', true);
-			} else {
-				element.removeAttribute('chomped');
-			}
-		});
-		this._overflowItems = this._dropdownItems.slice(this._chompIndex);
-		this.dispatchEvent(new CustomEvent('d2l-button-group-updated', { bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { bubbles: true, composed: true }));
 	}
 	_convertToDropdownItem(node) {
 		const tagName = node.tagName.toLowerCase();
@@ -246,7 +363,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			} else {
 				menuItem = this._createMenuItem(node);
 			}
-		} else if (node.classList.contains('d2l-button-group-custom-item')) {
+		} else if (node.classList.contains('d2l-overflow-group-custom-item')) {
 			menuItem = this._createMenuItem(node);
 		} else {
 			return;
@@ -261,7 +378,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			text="${childText}">
 		</d2l-menu-item>`;
 	}
-
 	_createMenuItemLink(node) {
 		const preventDefault = node.dataPreventDefault;
 		const text =  node.textContent.trim();
@@ -275,7 +391,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			?preventDefault=${preventDefault}
 		></d2l-menu-item-link>`;
 	}
-
 	_createMenuItemMenu(node) {
 		const menuOpener =
 			node.querySelector('d2l-dropdown-button')
@@ -285,7 +400,7 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		const subMenu = node.querySelector('d2l-menu');
 		const subItems = [];
 
-		// iterate through any sub menues and turn them into menu items
+		// iterate through any sub menus and turn them into menu items
 		for (const node of subMenu.children) {
 			subItems.push(this._convertToDropdownItem(node));
 		}
@@ -313,13 +428,36 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 
 		return items;
 	}
+	_getOverflowMenu() {
+
+		const moreActionsText = this.localize('components.overflow-group.moreActions');
+		const overflowItems = this._dropdownItems ? this._dropdownItems.slice(this._chompIndex) : [];
+		const menu = html`<d2l-dropdown-menu>
+			<d2l-menu id="overflowMenu" label="${moreActionsText}">
+				${overflowItems}
+			</d2l-menu>
+		</d2l-dropdown-menu>`;
+
+		if (this._mini) {
+			return html`<d2l-dropdown-more class="d2l-overflow-dropdown-mini" text="${moreActionsText}">
+				${menu}
+			</d2l-dropdown-more>`;
+		}
+		if (this.openerStyle === OPENER_STYLES.SUBTLE) {
+			return html`<d2l-dropdown-button-subtle class="d2l-overflow-dropdown" text="${moreActionsText}">
+				${menu}
+			</d2l-dropdown-button-subtle>`;
+		}
+
+		return html`<d2l-dropdown-button class="d2l-overflow-dropdown" text="${moreActionsText}">
+			${menu}
+		</d2l-dropdown-button>`;
+	}
 	_getSlotItems() {
 		const nodes = this._buttonSlot.assignedNodes();
 		const filteredNodes = nodes.filter((node) => {
 			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
-			// const isHidden = isNode && window.getComputedStyle(node).display === 'none';
-
-			return isNode;///&& !isHidden;
+			return isNode;
 		});
 
 		return filteredNodes;
@@ -329,10 +467,8 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 			return;
 		}
 		this._availableWidth = this._container.clientWidth;
-		this._chomp();
 	}
 	_handleSlotChange() {
-
 		// get the items from the button slot
 		this._slotItems = this._getSlotItems();
 
@@ -346,4 +482,6 @@ export const DynamicResizeMixin = superclass => class extends superclass {
 		window.removeEventListener('resize', this._throttledResize);
 		this._buttonSlot.removeEventListener('slotchange', this._handleSlotChange);
 	}
-};
+}
+
+customElements.define('d2l-overflow-group', OverflowGroup);

@@ -16,9 +16,9 @@
 			import '../../dropdown/dropdown-menu.js';
 			import '../../dropdown/dropdown.js';
 			import '../../link/link.js';
-			import '../button-group.js';
+			import '../overflow-group.js';
 		</script>
-		<title>d2l-button-group</title>
+		<title>d2l-overflow-group</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
@@ -27,76 +27,76 @@
 
 		<!-- min/max to show tests -->
 		<div id="less-than-min-to-show-container" class="visual-diff">
-			<d2l-button-group id="less-than-min-to-show" min-to-show="3">
+			<d2l-overflow-group id="less-than-min-to-show" min-to-show="3">
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
-			</d2l-button-group>
+			</d2l-overflow-group>
 		</div>
 
 		<div id="between-min-max-to-show-container" class="visual-diff">
-			<d2l-button-group id="between-min-max-to-show" min-to-show="2" max-to-show="4">
+			<d2l-overflow-group id="between-min-max-to-show" min-to-show="2" max-to-show="4">
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
-			</d2l-button-group>
+			</d2l-overflow-group>
 		</div>
 
 		<div id="exactly-max-to-show-container" class="visual-diff">
-			<d2l-button-group id="exactly-max-to-show" min-to-show="2" max-to-show="4">
+			<d2l-overflow-group id="exactly-max-to-show" min-to-show="2" max-to-show="4">
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
 				<d2l-button>Button 4</d2l-button>
-			</d2l-button-group>
+			</d2l-overflow-group>
 		</div>
 
 		<div id="more-than-max-to-show-container" style="height: 200px;" class="visual-diff">
-			<d2l-button-group id="more-than-max-to-show" min-to-show="2" max-to-show="3">
+			<d2l-overflow-group id="more-than-max-to-show" min-to-show="2" max-to-show="3">
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
 				<d2l-button>Button 4</d2l-button>
 				<d2l-button>Button 5</d2l-button>
-			</d2l-button-group>
+			</d2l-overflow-group>
 		</div>
 
 		<!-- hidden button -->
 		<div class="visual-diff" id="ignores-hidden-button-container">
 			<div style="width: 500px;">
-				<d2l-button-group id="ignores-hidden-button" min-to-show="1" max-to-show="2">
+				<d2l-overflow-group id="ignores-hidden-button" min-to-show="1" max-to-show="2">
 					<d2l-button style="display: none;">Button 1</d2l-button>
 					<d2l-button>Button 2</d2l-button>
 					<d2l-button>Button 3</d2l-button>
-				</d2l-button-group>
+				</d2l-overflow-group>
 			</div>
 		</div>
 
 		<div id="auto-show-container" class="visual-diff" style="height: 200px; width: 500px;">
-			<d2l-button-group id="auto-show" auto-show>
+			<d2l-overflow-group id="auto-show" auto-show>
 				<d2l-button>Button 1</d2l-button>
-				<d2l-button class="d2l-button-group-show">Button 2</d2l-button>
+				<d2l-button class="d2l-overflow-group-show">Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
-				<d2l-button id="last" class="d2l-button-group-no-show">Button 4</d2l-button>
-			</d2l-button-group>
+				<d2l-button id="last" class="d2l-overflow-group-no-show">Button 4</d2l-button>
+			</d2l-overflow-group>
 		</div>
 
 		<div id="auto-show-small-container" class="visual-diff"  style="height: 300px; width: 300px;">
-			<d2l-button-group id="auto-show-small" style="height: 200px; width: 200px;" auto-show>
+			<d2l-overflow-group id="auto-show-small" style="height: 200px; width: 200px;" auto-show>
 				<d2l-button>Button 1</d2l-button>
-				<d2l-button class="d2l-button-group-show">Button 2</d2l-button>
+				<d2l-button class="d2l-overflow-group-show">Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
-				<d2l-button id="last" class="d2l-button-group-no-show">Button 4</d2l-button>
-			</d2l-button-group>
+				<d2l-button id="last" class="d2l-overflow-group-no-show">Button 4</d2l-button>
+			</d2l-overflow-group>
 		</div>
 
 		<!-- remove a node to see if it hides the overflow -->
 		<div id="width-overflowing" class="visual-diff">
 			<div style="width: 210px;">
-				<d2l-button-group>
+				<d2l-overflow-group>
 					<d2l-button>Button 1</d2l-button>
 					<d2l-button>Button 2</d2l-button>
 					<d2l-button id="last">Button 3</d2l-button>
-				</d2l-button-group>
+				</d2l-overflow-group>
 			</div>
 		</div>
 
@@ -104,56 +104,56 @@
 		<div id="width-not-overflowing" class="visual-diff">
 			<template>
 					<div style="width: 160px;">
-						<d2l-button-group>
+						<d2l-overflow-group>
 							<d2l-button>Button 1</d2l-button>
 							<d2l-button id="last">Button 2</d2l-button>
-						</d2l-button-group>
+						</d2l-overflow-group>
 					</div>
 			</template>
 		</div>
 
 		<!-- overflow menu turns to mini when not enough space -->
 		<div id="mini-overflow-menu-container" class="visual-diff">
-			<d2l-button-group id="mini-overflow-menu" max-to-show="2">
+			<d2l-overflow-group id="mini-overflow-menu" max-to-show="2">
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
-			</d2l-button-group>
+			</d2l-overflow-group>
 		</div>
 
 		<!-- overflow menu is mini when openerType = 'icon' -->
 		<div id="opener-type-mini-menu-container" class="visual-diff">
-			<d2l-button-group style="width: 500px;" id="opener-type-mini-menu" opener-type='icon'>
+			<d2l-overflow-group style="width: 500px;" id="opener-type-mini-menu" opener-type='icon'>
 				<d2l-button>Button 1</d2l-button>
 				<d2l-button>Button 2</d2l-button>
 				<d2l-button>Button 3</d2l-button>
-			</d2l-button-group>
+			</d2l-overflow-group>
 		</div>
 		<div id="opener-type-overflow-open-menu-container" class="visual-diff">
 			<div style="height: 200px; width: 400px;">
-				<d2l-button-group id="opener-type-overflow-open-menu" opener-type='icon' max-to-show="2">
+				<d2l-overflow-group id="opener-type-overflow-open-menu" opener-type='icon' max-to-show="2">
 					<d2l-button>Button 1</d2l-button>
 					<d2l-button>Button 2</d2l-button>
 					<d2l-button>Button 3</d2l-button>
-				</d2l-button-group>
+				</d2l-overflow-group>
 			</div>
 		</div>
 		<div id="opener-type-subtle-overflow-menu-container" class="visual-diff">
 			<div style="width: 400px;">
-				<d2l-button-group id="opener-type-subtle-overflow-menu" opener-type='icon' subtle max-to-show="2">
+				<d2l-overflow-group id="opener-type-subtle-overflow-menu" opener-type='icon' subtle max-to-show="2">
 					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 3"></d2l-button-subtle>
-				</d2l-button-group>
+				</d2l-overflow-group>
 			</div>
 		</div>
 		<div id="opener-type-subtle-overflow-menu-open-container" class="visual-diff">
 			<div style="height: 200px; width: 400px;">
-				<d2l-button-group id="opener-type-subtle-overflow-menu-open" opener-type='icon' subtle max-to-show="2">
+				<d2l-overflow-group id="opener-type-subtle-overflow-menu-open" opener-type='icon' subtle max-to-show="2">
 					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 3"></d2l-button-subtle>
-				</d2l-button-group>
+				</d2l-overflow-group>
 			</div>
 		</div>
 	</body>

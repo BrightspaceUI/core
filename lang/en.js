@@ -3,7 +3,6 @@
 export default {
 	"components.alert.close": "Close Alert",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
-	"components.button-group.moreActions": "More Actions",
 	"components.calendar.notSelected": "Not Selected.",
 	"components.calendar.selected": "Selected.",
 	"components.calendar.show": "Show {month}",
@@ -50,6 +49,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Progress Indicator",
 	"components.more-less.less": "less",
 	"components.more-less.more": "more",
+	"components.overflow-group.moreActions": "More Actions",
 	"components.switch.visibility": "Visibility",
 	"components.tabs.next": "Scroll Forward",
 	"components.tabs.previous": "Scroll Backward"

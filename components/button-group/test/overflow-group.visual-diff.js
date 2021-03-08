@@ -2,16 +2,16 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-button-group', () => {
+describe.skip('d2l-overflow-group', () => {
 
-	const visualDiff = new VisualDiff('button-group', __dirname);
+	const visualDiff = new VisualDiff('overflow-group', __dirname);
 
 	let browser, page;
 
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/button-group/test/button-group.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/overflow-group/test/overflow-group.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
 
