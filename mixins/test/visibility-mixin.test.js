@@ -8,22 +8,6 @@ describe.only('VisibilityMixin', () => {
 
 	let elem;
 
-	describe('default dummy values', () => {
-
-		beforeEach(async() => {
-			elem = await fixture(simpleFixture);
-		});
-
-		it('should default "overflow" to "hidden"', () => {
-			expect(elem.dummy.style.overflow).to.equal('hidden');
-		});
-
-		it('should default "display" to "grid"', () => {
-			expect(elem.dummy.style.display).to.equal('grid');
-		});
-
-	});
-
 	describe('events', () => {
 
 		beforeEach(async() => {
@@ -46,8 +30,20 @@ describe.only('VisibilityMixin', () => {
 				await oneEvent(elem, 'd2l-visibility-mixin-show-end');
 			});
 
-			it('should not display "dummy" after "show" ends', () => {
-				expect(document.body.contains(elem.dummy)).to.be.false;
+			describe('default "clone" values', () => {
+
+				it('should default "overflow" to "hidden"', () => {
+					expect(elem.clone.style.overflow).to.equal('hidden');
+				});
+
+				it('should default "display" to "grid"', () => {
+					expect(elem.clone.style.display).to.equal('grid');
+				});
+
+			});
+
+			it('should not display "clone" after "show" ends', () => {
+				expect(document.body.contains(elem.clone)).to.be.false;
 			});
 
 			it('should have the original "opacity" after "show" ends', () => {
@@ -82,8 +78,8 @@ describe.only('VisibilityMixin', () => {
 					await oneEvent(elem, 'd2l-visibility-mixin-hide-end');
 				});
 
-				it('should not display "dummy" after "hide" ends', () => {
-					expect(document.body.contains(elem.dummy)).to.be.false;
+				it('should not display "clone" after "hide" ends', () => {
+					expect(document.body.contains(elem.clone)).to.be.false;
 				});
 
 				it('should have "opacity" set to "0" after "hide" ends', () => {
@@ -116,8 +112,8 @@ describe.only('VisibilityMixin', () => {
 					await oneEvent(elem, 'd2l-visibility-mixin-remove-end');
 				});
 
-				it('should not display "dummy" after "remove" ends', () => {
-					expect(document.body.contains(elem.dummy)).to.be.false;
+				it('should not display "clone" after "remove" ends', () => {
+					expect(document.body.contains(elem.clone)).to.be.false;
 				});
 
 				it('should have "opacity" set to "0" after "remove" ends', () => {

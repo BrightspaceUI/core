@@ -11,13 +11,6 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		};
 	}
 
-	constructor() {
-		super();
-		this.dummy = document.createElement('div');
-		this.dummy.style.overflow = 'hidden';
-		this.dummy.style.display = 'grid';
-	}
-
 	firstUpdated() {
 		this.opacityOriginal = window.getComputedStyle(this).opacity;
 		this.transformOriginal = window.getComputedStyle(this).transform;
@@ -50,26 +43,26 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				{ bubbles: true, composed: false }
 			));
 		};
-		const dummyOnTransitionEnd = () => {
-			this.dummy.parentNode.insertBefore(this, this.dummy);
-			this.dummy.remove();
+		const cloneOnTransitionEnd = () => {
+			this.clone.parentNode.insertBefore(this, this.clone);
+			this.clone.remove();
 			this.style.display = 'none';
 			this.dispatchEvent(new CustomEvent(
 				'd2l-visibility-mixin-hide-end',
 				{ bubbles: true, composed: false }
 			));
 		};
-		this._animateHideRemove(thisOnTransitionStart, dummyOnTransitionEnd);
+		this._animateHideRemove(thisOnTransitionStart, cloneOnTransitionEnd);
 	}
 
-	_animateHideRemove(thisOnTransitionStart, dummyOnTransitionEnd) {
+	_animateHideRemove(thisOnTransitionStart, cloneOnTransitionEnd) {
 		const animateHideRemoveStyle = {
 			initial: {
 				transition: `all ${transitionDuration}ms ease`,
 				opacity: `${this.opacityOriginal}`,
 				transform: `${this.transformOriginal}`
 			},
-			initialDummy: {
+			initialClone: {
 				transition: `height ${transitionDuration}ms ease ${transitionDuration / 3}ms`,
 				height: `calc(${this.scrollHeight}px + ${window.getComputedStyle(this).marginTop} + ${window.getComputedStyle(this).marginBottom})`
 			},
@@ -77,11 +70,11 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				opacity: '0',
 				transform: `translateY(-${moveYValue}px)`
 			},
-			finalDummy: {
+			finalClone: {
 				height: '0'
 			},
 			thisOnTransitionStart: thisOnTransitionStart,
-			dummyOnTransitionEnd: dummyOnTransitionEnd
+			cloneOnTransitionEnd: cloneOnTransitionEnd
 		};
 		this._animateVisibility(animateHideRemoveStyle);
 	}
@@ -98,16 +91,16 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				{ bubbles: true, composed: false }
 			));
 		};
-		const dummyOnTransitionEnd = () => {
-			this.dummy.parentNode.insertBefore(this, this.dummy);
-			this.dummy.remove();
+		const cloneOnTransitionEnd = () => {
+			this.clone.parentNode.insertBefore(this, this.clone);
+			this.clone.remove();
 			this.dispatchEvent(new CustomEvent(
 				'd2l-visibility-mixin-remove-end',
 				{ bubbles: true, composed: false }
 			));
 			this.remove();
 		};
-		this._animateHideRemove(thisOnTransitionStart, dummyOnTransitionEnd);
+		this._animateHideRemove(thisOnTransitionStart, cloneOnTransitionEnd);
 	}
 
 	_animateShow() {
@@ -117,15 +110,15 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 		}
 
 		this.style.display = this.displayOriginal;
-		const dummyOnTransitionStart = () => {
+		const cloneOnTransitionStart = () => {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-visibility-mixin-show-start',
 				{ bubbles: true, composed: false }
 			));
 		};
 		const thisOnTransitionEnd = () => {
-			this.dummy.parentNode.insertBefore(this, this.dummy);
-			this.dummy.remove();
+			this.clone.parentNode.insertBefore(this, this.clone);
+			this.clone.remove();
 			// done visibility transition, element is in original, fully visible state, so return the original transition to this
 			this.style.transition = this.transitionOriginal;
 			this.dispatchEvent(new CustomEvent(
@@ -139,7 +132,7 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				opacity: '0',
 				transform: `translateY(-${moveYValue}px)`
 			},
-			initialDummy: {
+			initialClone: {
 				transition: `height ${transitionDuration}ms ease`,
 				height: '0'
 			},
@@ -147,10 +140,10 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 				opacity: `${this.opacityOriginal}`,
 				transform: `${this.transformOriginal}`
 			},
-			finalDummy: {
+			finalClone: {
 				height: `calc(${this.scrollHeight}px + ${window.getComputedStyle(this).marginTop} + ${window.getComputedStyle(this).marginBottom})`
 			},
-			dummyOnTransitionStart: dummyOnTransitionStart,
+			cloneOnTransitionStart: cloneOnTransitionStart,
 			thisOnTransitionEnd: thisOnTransitionEnd
 		};
 
@@ -158,22 +151,23 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 	}
 
 	async _animateVisibility(animateStyle) {
+		this._initClone();
 		Object.assign(this.style, animateStyle.initial);
-		Object.assign(this.dummy.style, animateStyle.initialDummy);
+		Object.assign(this.clone.style, animateStyle.initialClone);
 
 		// we are in the middle of an earlier transition
-		if (document.body.contains(this.dummy)) {
+		if (document.body.contains(this.clone)) {
 			// preserve the current opacity & transform for when we switch directions of transition
 			this.style.opacity = window.getComputedStyle(this).opacity;
 			this.style.transform = window.getComputedStyle(this).transform;
 
-			// preserve the current dummy height for when we switch directions of transition
-			this.dummy.style.height = window.getComputedStyle(this.dummy).height;
-			this.dummy.parentNode.insertBefore(this, this.dummy);
-			this.dummy.remove();
+			// preserve the current clone height for when we switch directions of transition
+			this.clone.style.height = window.getComputedStyle(this.clone).height;
+			this.clone.parentNode.insertBefore(this, this.clone);
+			this.clone.remove();
 		}
-		this.parentNode.insertBefore(this.dummy, this);
-		this.dummy.appendChild(this);
+		this.parentNode.insertBefore(this.clone, this);
+		this.clone.appendChild(this);
 
 		// allow enough time for reflow to occur to ensure that the transition properly runs
 		await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -188,14 +182,14 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			this.addEventListener('transitionstart', thisOnTransitionStart);
 		}
 
-		if (animateStyle.dummyOnTransitionStart) {
-			const dummyOnTransitionStart = (event) => {
-				if (event.target === this.dummy) {
-					animateStyle.dummyOnTransitionStart();
-					this.dummy.removeEventListener('transitionstart', dummyOnTransitionStart);
+		if (animateStyle.cloneOnTransitionStart) {
+			const cloneOnTransitionStart = (event) => {
+				if (event.target === this.clone) {
+					animateStyle.cloneOnTransitionStart();
+					this.clone.removeEventListener('transitionstart', cloneOnTransitionStart);
 				}
 			};
-			this.dummy.addEventListener('transitionstart', dummyOnTransitionStart);
+			this.clone.addEventListener('transitionstart', cloneOnTransitionStart);
 		}
 
 		if (animateStyle.thisOnTransitionEnd) {
@@ -208,17 +202,25 @@ export const VisibilityMixin = dedupeMixin(superclass => class extends superclas
 			this.addEventListener('transitionend', thisOnTransitionEnd);
 		}
 
-		if (animateStyle.dummyOnTransitionEnd) {
-			const dummyOnTransitionEnd = (event) => {
-				if (event.target === this.dummy) {
-					animateStyle.dummyOnTransitionEnd();
-					this.dummy.removeEventListener('transitionend', dummyOnTransitionEnd);
+		if (animateStyle.cloneOnTransitionEnd) {
+			const cloneOnTransitionEnd = (event) => {
+				if (event.target === this.clone) {
+					animateStyle.cloneOnTransitionEnd();
+					this.clone.removeEventListener('transitionend', cloneOnTransitionEnd);
 				}
 			};
-			this.dummy.addEventListener('transitionend', dummyOnTransitionEnd);
+			this.clone.addEventListener('transitionend', cloneOnTransitionEnd);
 		}
 
-		Object.assign(this.dummy.style, animateStyle.finalDummy);
+		Object.assign(this.clone.style, animateStyle.finalClone);
 		Object.assign(this.style, animateStyle.final);
+	}
+
+	_initClone() {
+		if (!this.clone) {
+			this.clone = document.createElement('div');
+			this.clone.style.overflow = 'hidden';
+			this.clone.style.display = 'grid';
+		}
 	}
 });
