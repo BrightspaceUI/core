@@ -83,10 +83,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			},
 			_chompIndex: {
 				type: Number,
-			},
-			_availableWidth: {
-				type: Number,
-			},
+			}
 		};
 	}
 
@@ -235,8 +232,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			this._autoDetectBoundaries(this._getLayoutItems());
 		}
 
-		if (changedProperties.get('_availableWidth')
-			|| changedProperties.get('minToShow')
+		if (changedProperties.get('minToShow')
 			|| changedProperties.get('maxToShow')) {
 			this._chomp();
 		}
