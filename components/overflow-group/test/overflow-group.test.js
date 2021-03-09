@@ -20,7 +20,6 @@ describe('d2l-overflow-group', () => {
 			const newButton = document.createElement('d2l-button');
 			const handleUpdate = () => {
 				const chompedItems = container.querySelectorAll('[data-is-chomped]');
-				console.log(container)
 				expect(chompedItems.length).to.equal(1);
 			};
 
