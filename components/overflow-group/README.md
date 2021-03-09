@@ -40,7 +40,7 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 | `auto-show` | Boolean | Automatically determine the min and maximum number of items to show based on which elements have classes `d2l-overflow-group-show` and `d2l-overflow-group-no-show`. Please consult the design team when using this attribute. |
 | `min-to-show` | Number | The minimum number of elements to always show. Please consult the design team when using this attribute. |
 | `max-to-show` | Number | The maximum number of elements to show |
-| `subtle` | Boolean | Styles the dropdown menu in the overflow-group as a subtle button for action button groups |
+| `opener-style` | String | Currently the only option for this is `icon`, which will permanently render the dropdown menu symbol as `...` |
 | `opener-type` | String | Currently the only option for this is `icon`, which will permanently render the dropdown menu symbol as `...` |
 
 Looking for an enhancement not listed here? Create a GitHub issue!

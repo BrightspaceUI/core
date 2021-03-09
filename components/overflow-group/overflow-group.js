@@ -13,7 +13,12 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { throttle } from 'lodash-es';
 
-const OPENER_STYLES = {
+const OPENER_TYPE = {
+	DEFAULT: 'default',
+	ICON: 'icon'
+};
+
+const OPENER_STYLE = {
 	DEFAULT: 'default',
 	SUBTLE: 'subtle',
 };
@@ -53,27 +58,28 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			},
 			/**
 			 * Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
+			 * @type {'default'|'icon'}
+			 * @default "default"
 			 */
 			openerType: {
 				type: String,
 				attribute: 'opener-type'
 			},
 			/**
-			 * Setting this property will change the style of the overflow menu opener 
+			 * Setting this property will change the style of the overflow menu opener
+			 * @type {'default'|'icon'}
+			 * @default "default"
 			 */
 			openerStyle: {
 				type: String,
 				attribute: 'opener-style',
 			},
 			/**
-			 * Shrinks the More Actions button down to '...' for scenarios with tight spacing
+			 * A property that is set when the menu has been shrunk to the `...` opener
 			 */
 			_mini: {
 				type: Boolean,
 				reflect: true
-			},
-			_overflowHidden: {
-				type: Boolean,
 			},
 			_chompIndex: {
 				type: Number,
@@ -142,7 +148,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				margin-left: 0.3rem;
 				margin-right: 0;
 			}
-			:host .d2l-overflow-group-container ::slotted([data-chomped]) {
+			:host .d2l-overflow-group-container ::slotted([data-is-chomped]) {
 				display: none !important;
 			}`
 		];
@@ -162,7 +168,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		this.autoShow = this.autoShow ?? false;
 		this.maxToShow = this.maxToShow ?? -1;
 		this.minToShow = this.minToShow ?? 1;
-		this._mini = this.openerType === 'icon';
+		this.openerStyle = this.minToShow ?? OPENER_STYLE.DEFAULT;
+		this._mini = this.openerType === OPENER_TYPE.ICON;
 
 		this._refId = 0;
 		this._slotItems = [];
@@ -208,10 +215,10 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		this._slotItems.forEach((element, index) => {
-			if (index >= this._chompIndex) {
-				element.setAttribute('data-chomped', true);
+			if (!this._overflowMenuHidden && index >= this._chompIndex) {
+				element.setAttribute('data-is-chomped', true);
 			} else {
-				element.removeAttribute('data-chomped');
+				element.removeAttribute('data-is-chomped');
 			}
 		});
 
@@ -272,7 +279,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._overflowMenu = this.shadowRoot.querySelector('.d2l-overflow-dropdown');
 		this._overflowMenuMini = this.shadowRoot.querySelector('.d2l-overflow-dropdown-mini');
-		if (this.openerType === 'icon' && this._overflowMenuMini) {
+		if (this.openerType === OPENER_TYPE.ICON && this._overflowMenuMini) {
 			this._overflowMenuWidth = this._overflowMenuMini.offsetWidth;
 		} else if (this._overflowMenu) {
 			this._overflowMenuWidth = this._overflowMenu.offsetWidth;
@@ -340,8 +347,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		const overflowDropdownOverflowing = (showing.width + this._overflowMenuWidth >= this._availableWidth);
 		const swapToMiniButton = overflowDropdownOverflowing && !this._overflowMenuHidden;
 
-		this._mini = this.openerType === 'icon' || swapToMiniButton;
-		this._chompIndex = showing.count;
+		this._mini = this.openerType === OPENER_TYPE.ICON || swapToMiniButton;
+		this._chompIndex = this._overflowMenuHidden ? null : showing.count;
 
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { bubbles: true, composed: true }));
 	}
@@ -443,7 +450,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				${menu}
 			</d2l-dropdown-more>`;
 		}
-		if (this.openerStyle === OPENER_STYLES.SUBTLE) {
+		if (this.openerStyle === OPENER_STYLE.SUBTLE) {
 			return html`<d2l-dropdown-button-subtle class="d2l-overflow-dropdown" text="${moreActionsText}">
 				${menu}
 			</d2l-dropdown-button-subtle>`;
@@ -467,10 +474,15 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			return;
 		}
 		this._availableWidth = this._container.clientWidth;
+		this._chomp();
 	}
 	_handleSlotChange() {
 		// get the items from the button slot
 		this._slotItems = this._getSlotItems();
+		// convert them to layout items (calculate widths)
+		this._layoutItems = this._getLayoutItems(this._slotItems);
+		// convert to dropdown items (for overflow menu)
+		this._dropdownItems = this._slotItems.map((node) => this._convertToDropdownItem(node));
 
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
