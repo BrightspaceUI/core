@@ -7,6 +7,9 @@ import '../dropdown/dropdown-button.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-more.js';
 import '../menu/menu.js';
+import '../menu/menu-item.js';
+import '../menu/menu-item-separator.js';
+import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -36,7 +39,6 @@ function createMenuItem(node) {
 }
 
 function createMenuItemLink(node) {
-	const preventDefault = node.dataPreventDefault;
 	const text =  node.textContent.trim();
 	const href =  node.href;
 	const target = node.target;
@@ -45,7 +47,6 @@ function createMenuItemLink(node) {
 		text="${text}"
 		href="${href}"
 		target="${target}"
-		?preventDefault=${preventDefault}
 	></d2l-menu-item-link>`;
 }
 

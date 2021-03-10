@@ -23,7 +23,7 @@ describe('d2l-overflow-group', () => {
 		await expect(overflow).to.be.accessible;
 	});
 	it('subtle', async() => {
-		const subtle = await fixture(html`<d2l-overflow-group subtle>
+		const subtle = await fixture(html`<d2l-overflow-group opener-style="subtle">
 			<d2l-button-subtle>1</d2l-button-subtle>
 			<d2l-button-subtle>2</d2l-button-subtle>
 			<d2l-button-subtle>3</d2l-button-subtle>
@@ -31,7 +31,7 @@ describe('d2l-overflow-group', () => {
 		await expect(subtle).to.be.accessible;
 	});
 	it('subtle-overflow', async() => {
-		const subtleOverflow = await fixture(html`<d2l-overflow-group subtle max-to-show="2">
+		const subtleOverflow = await fixture(html`<d2l-overflow-group opener-style="subtle" max-to-show="2">
 			<d2l-button-subtle>1</d2l-button-subtle>
 			<d2l-button-subtle>2</d2l-button-subtle>
 			<d2l-button-subtle>3</d2l-button-subtle>
