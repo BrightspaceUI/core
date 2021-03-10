@@ -53,6 +53,8 @@ npm install @brightspace-ui/core
   * [Tooltip](components/tooltip/): tooltip components
   * [Typography](components/typography/): typography styles and components
   * [Validation](components/validation/): plugin custom validation logic to native and custom form elements
+* Directives
+  * [Animate](directives/animate/): animate showing, hiding and removal of elements
 * Helpers
   * [Helpers](helpers/): helpers for composed DOM, unique ids, etc.
 * Mixins
