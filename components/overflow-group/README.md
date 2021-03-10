@@ -2,10 +2,10 @@
 
 ## d2l-overflow-group
 
-The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons adding them to an overflow menu instead of pushing them on to the next line.
+The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons/links/menus. Whereas normally they would wrap onto multiple lines, they will instead be added to an overflow menu.
 
 
-![Button Group](./screenshots/overflow-group.png?raw=true)
+![Overflow Group](./screenshots/overflow-group.png?raw=true)
 
 ```html
 <script type="module">
@@ -14,11 +14,11 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 <d2l-overflow-group id="min" min-to-show="3">
 	<d2l-button>New</d2l-button>
 	<d2l-dropdown>
-		<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener" ></button>
+		<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener"></button>
 		<d2l-dropdown-menu id="dropdown" >
 			<d2l-menu label="Astronomy">
 				<d2l-menu-item text="Introduction"></d2l-menu-item>
-				<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+				<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
 				<d2l-menu-item text="The Solar System"></d2l-menu-item>
 				<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
 				<d2l-menu-item text="The Night Sky"></d2l-menu-item>
