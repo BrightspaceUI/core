@@ -10,8 +10,10 @@
 			import '../../button/button-subtle.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
+			import '../../menu/menu-item-separator.js';
 			import '../../menu/menu-item-link.js';
 			import '../../dropdown/dropdown-button.js';
+			import '../../dropdown/dropdown-button-subtle.js';
 			import '../../dropdown/dropdown-menu.js';
 			import '../../dropdown/dropdown.js';
 			import '../../link/link.js';
@@ -88,29 +90,6 @@
 			</d2l-overflow-group>
 		</div>
 
-		<!-- remove a node to see if it hides the overflow -->
-		<div id="width-overflowing" class="visual-diff">
-			<div style="width: 210px;">
-				<d2l-overflow-group>
-					<d2l-button>Button 1</d2l-button>
-					<d2l-button>Button 2</d2l-button>
-					<d2l-button id="last">Button 3</d2l-button>
-				</d2l-overflow-group>
-			</div>
-		</div>
-
-		<!-- add a node to see if it shows the overflow -->
-		<div id="width-not-overflowing" class="visual-diff">
-			<template>
-					<div style="width: 160px;">
-						<d2l-overflow-group>
-							<d2l-button>Button 1</d2l-button>
-							<d2l-button id="last">Button 2</d2l-button>
-						</d2l-overflow-group>
-					</div>
-			</template>
-		</div>
-
 		<!-- overflow menu turns to mini when not enough space -->
 		<div id="mini-overflow-menu-container" class="visual-diff">
 			<d2l-overflow-group id="mini-overflow-menu" max-to-show="2">
@@ -139,7 +118,7 @@
 		</div>
 		<div id="opener-type-subtle-overflow-menu-container" class="visual-diff">
 			<div style="width: 400px;">
-				<d2l-overflow-group id="opener-type-subtle-overflow-menu" opener-type='icon' subtle max-to-show="2">
+				<d2l-overflow-group id="opener-type-subtle-overflow-menu" opener-style="subtle" max-to-show="2">
 					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 3"></d2l-button-subtle>
@@ -148,10 +127,46 @@
 		</div>
 		<div id="opener-type-subtle-overflow-menu-open-container" class="visual-diff">
 			<div style="height: 200px; width: 400px;">
-				<d2l-overflow-group id="opener-type-subtle-overflow-menu-open" opener-type='icon' subtle max-to-show="2">
+				<d2l-overflow-group id="opener-type-subtle-overflow-menu-open" opener-type='icon' opener-style='subtle' max-to-show="2">
 					<d2l-button-subtle text="Button 1"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 2"></d2l-button-subtle>
 					<d2l-button-subtle text="Button 3"></d2l-button-subtle>
+				</d2l-overflow-group>
+			</div>
+		</div>
+		<div id="all-item-types-container" class="visual-diff">
+			<div style="height: 400px; width: 400px;">
+				<d2l-overflow-group style="margin-left: 20px;" id="all-item-types" min-to-show="0" max-to-show="0">
+					<d2l-button>Button 1</d2l-button>
+					<d2l-button-subtle text="Button subtle"></d2l-button-subtle>
+					<d2l-dropdown>
+						<d2l-dropdown-button text="dropdown" class="d2l-dropdown-opener"></d2l-dropdown-button>
+						<d2l-dropdown-menu id="dropdown">
+							<d2l-menu label="Astronomy">
+								<d2l-menu-item text="Introduction"></d2l-menu-item>
+								<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+								<d2l-menu-item text="The Solar System"></d2l-menu-item>
+								<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
+								<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+								<d2l-menu-item text="The Universe"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown>
+					<d2l-dropdown>
+						<d2l-dropdown-button-subtle text="dropdown subtle" class="d2l-dropdown-opener"></d2l-dropdown-button-subtle>
+						<d2l-dropdown-menu id="dropdown">
+							<d2l-menu label="Astronomy">
+								<d2l-menu-item text="Introduction"></d2l-menu-item>
+								<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+								<d2l-menu-item text="The Solar System"></d2l-menu-item>
+								<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
+								<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+								<d2l-menu-item text="The Universe"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown>
+					<div role="separator"></div>
+					<d2l-link text="link" href="https://d2l.com">Link</d2l-link>
 				</d2l-overflow-group>
 			</div>
 		</div>

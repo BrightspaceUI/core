@@ -50,7 +50,7 @@ function createMenuItemLink(node) {
 }
 
 function createMenuItemSeparator() {
-	return document.createElement('d2l-menu-item-separator');
+	return html`<d2l-menu-item-separator></d2l-menu-item-separator>`;
 }
 
 function createMenuItemMenu(node) {
@@ -85,8 +85,8 @@ function convertToDropdownItem(node) {
 			return createMenuItemLink(node);
 		case 'd2l-menu':
 		case 'd2l-dropdown':
-		case 'd2l-dropdown-button-subtle':
 		case 'd2l-dropdown-button':
+		case 'd2l-dropdown-button-subtle':
 			return createMenuItemMenu(node);
 		case 'd2l-menu-item':
 			// if the menu item has children treat it as a menu item menu
@@ -294,9 +294,10 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 	update(changedProperties) {
 		super.update(changedProperties);
-		// if (changedProperties.get('autoShow')) {
-		// 	this._autoDetectBoundaries(this._getLayoutItems());
-		// }
+		if (changedProperties.get('autoShow')) {
+			this._getLayoutItems(this._slotItems);
+			this._autoDetectBoundaries(this._layoutItems);
+		}
 
 		if (changedProperties.get('minToShow')
 			|| changedProperties.get('maxToShow')) {
@@ -340,7 +341,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		let isSoftOverflowing, isForcedOverflowing;
 		for (let i = 0; i < this._layoutItems.length; i++) {
 			const itemLayout = this._layoutItems[i];
-
+			if (itemLayout.isHidden) {continue;}
 			// handle minimum items to show
 			if (showing.count < this.minToShow) {
 				showing.width += itemLayout.width;
@@ -399,48 +400,24 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { bubbles: true, composed: true }));
 	}
-	// _convertToDropdownItem(node) {
-	// 	const tagName = node.tagName.toLowerCase();
-	// 	switch (tagName) {
-	// 		case 'd2l-button':
-	// 		case 'd2l-button-subtle':
-	// 		case 'button':
-	// 		case 'd2l-button-icon':
-	// 			return createMenuItem(node);
-	// 		case 'a':
-	// 		case 'd2l-link':
-	// 			return createMenuItemLink(node);
-	// 		case 'd2l-menu':
-	// 		case 'd2l-dropdown':
-	// 		case 'd2l-dropdown-button-subtle':
-	// 		case 'd2l-dropdown-button':
-	// 			return createMenuItemMenu(node);
-	// 		case 'd2l-menu-item':
-	// 			// if the menu item has children treat it as a menu item menu
-	// 			if (node.children.length > 0) {
-	// 				return createMenuItemMenu(node);
-	// 			} else {
-	// 				return createMenuItem(node);
-	// 			}
-	// 	}
-	// 	if (node.getAttribute('role') === 'separator') {
-	// 		return createMenuItemSeparator();
-	// 	}
-	// }
 	_getLayoutItems(filteredNodes) {
 
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
+			// if () {
+			// 	return;
+			// }
 			return {
 				type: node.tagName.toLowerCase(),
 				isChomped: false,
+				isHidden: computedStyles.display === 'none',
 				width: node.offsetWidth
 					+ parseInt(computedStyles.marginRight) || 0
 					+ parseInt(computedStyles.marginLeft) || 0,
 				node: node
 			};
 		});
-		return items;
+		return items.filter(({ isHidden }) => !isHidden);
 	}
 
 	_getOverflowMenu() {
