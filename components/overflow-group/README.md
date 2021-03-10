@@ -11,7 +11,7 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
 </script>
-<d2l-overflow-group id="min" min-to-show="3">
+<d2l-overflow-group max-to-show="3">
 	<d2l-button>New</d2l-button>
 	<d2l-dropdown>
 		<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener"></button>
@@ -37,7 +37,7 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 
 | Property | Type | Description |
 |--|--|--|
-| `auto-show` | Boolean | Automatically determine the min and maximum number of items to show based on which elements have classes `d2l-overflow-group-show` and `d2l-overflow-group-no-show`. Please consult the design team when using this attribute. |
+| `auto-show` | Boolean | Automatically determine the min and maximum number of items to show based on which elements have classes `d2l-button-group-show` and `d2l-button-group-no-show`. Please consult the design team when using this attribute. |
 | `min-to-show` | Number | The minimum number of elements to always show. Please consult the design team when using this attribute. |
 | `max-to-show` | Number | The maximum number of elements to show |
 | `opener-style` | String | Set the style of the oferflow menu `default` renders a `d2l-button` while `subtle` will render a `d2l-button-subtle`|
