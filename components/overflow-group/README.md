@@ -1,9 +1,7 @@
 # Overflow Groups
 
 ## d2l-overflow-group
-
-The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons/links/menus. Whereas normally they would wrap onto multiple lines, they will instead be added to an overflow menu.
-
+The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. Items added to this container element will no longer wrap on to a second line when the container becomes to small but will be added to a dropdown menu with configurable styling. 
 
 ![Overflow Group](./screenshots/overflow-group.png?raw=true)
 

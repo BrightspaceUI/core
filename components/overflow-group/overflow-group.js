@@ -102,7 +102,8 @@ function convertToDropdownItem(node) {
 }
 /**
  *
- * A button group component that can be used to display a set of buttons
+ * A component that can be used to display a set of buttons, links or menus that will be put into a
+ * dropdown menu when they no longer fit on the first line of their container
  *
  * @slot - Buttons, dropdown buttons, links or other items to be added to the container
  */
