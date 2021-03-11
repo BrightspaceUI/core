@@ -274,8 +274,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	update(changedProperties) {
 		super.update(changedProperties);
 		if (changedProperties.get('autoShow')) {
-			this._getLayoutItems(this._slotItems);
-			this._autoDetectBoundaries(this._layoutItems);
+			this._getItemLayouts(this._slotItems);
+			this._autoDetectBoundaries(this._itemLayouts);
 		}
 
 		if (changedProperties.get('minToShow')
@@ -310,7 +310,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			this.maxToShow = maxToShow;
 		}
 	}
-	_chomp(items = this._layoutItems) {
+	_chomp(items = this._itemLayouts) {
 
 		this._overflowMenu = this.shadowRoot.querySelector('.d2l-overflow-dropdown');
 		this._overflowMenuMini = this.shadowRoot.querySelector('.d2l-overflow-dropdown-mini');
@@ -326,8 +326,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		};
 
 		let isSoftOverflowing, isForcedOverflowing;
-		for (let i = 0; i < this._layoutItems.length; i++) {
-			const itemLayout = this._layoutItems[i];
+		for (let i = 0; i < this._itemLayouts.length; i++) {
+			const itemLayout = this._itemLayouts[i];
 
 			// handle minimum items to show
 			if (showing.count < this.minToShow) {
@@ -364,11 +364,11 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
 		this._overflowMenuHidden = items.length === showing.count;
 		if (!this._overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
-			for (let j = this._layoutItems.length; j--;) {
+			for (let j = this._itemLayouts.length; j--;) {
 				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
 					break;
 				}
-				const itemLayoutOverflowing = this._layoutItems[j];
+				const itemLayoutOverflowing = this._itemLayouts[j];
 				if (itemLayoutOverflowing.trigger !== 'soft-show') {
 					continue;
 				}
@@ -387,16 +387,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { bubbles: true, composed: true }));
 	}
-	_getItems() {
-		// get the items from the button slot
-		this._slotItems = this._getSlotItems();
-		// convert them to layout items (calculate widths)
-		this._layoutItems = this._getLayoutItems(this._slotItems);
-		// convert to dropdown items (for overflow menu)
-		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
-	}
-	_getLayoutItems(filteredNodes) {
-
+	_getItemLayouts(filteredNodes) {
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
 			return {
@@ -411,7 +402,14 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		});
 		return items.filter(({ isHidden }) => !isHidden);
 	}
-
+	_getItems() {
+		// get the items from the button slot
+		this._slotItems = this._getSlotItems();
+		// convert them to layout items (calculate widths)
+		this._itemLayouts = this._getItemLayouts(this._slotItems);
+		// convert to dropdown items (for overflow menu)
+		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
+	}
 	_getOverflowMenu() {
 		if (this._overflowMenuHidden) {
 			return;
