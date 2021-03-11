@@ -1,4 +1,4 @@
-# animate directives
+# Animate Directives
 
 These directives can be used to animate the showing or hiding of elements in your application.
 
@@ -8,7 +8,7 @@ The animation will slide the element in (or out) of its final position, while tr
 
 ## Using the directives
 
-Import the directives you'd like to use and bind them to any element's `animation` property.
+Import the directives you'd like to use and bind them to any element's `animate` property.
 
 ```javascript
 import { hide, show } from '@brightspace-ui/core/directives/animate/animate.js';
@@ -16,9 +16,19 @@ import { hide, show } from '@brightspace-ui/core/directives/animate/animate.js';
 html`<some-elem .animate="${hide()}">Hide this element</some-elem>`;
 ```
 
-Note the use of `lit-html`'s `.` notation on the name, which will bind to a property.
-
 The directive can be bound to _any_ element, not just custom elements!
+
+## Reliance on `hidden` attribute
+
+The animation directives apply the `hidden` attribute to elements. For custom elements, if the default `display` value is overridden, CSS will need to be included to hide the element when the `hidden` attribute is present:
+
+```css
+:host([hidden]) {
+	display: none;
+}
+```
+
+**Learn More:** [Styling display for hosts](https://github.com/BrightspaceUI/guide/wiki/LitElement-Best-Practices-&-Gotchas#-do-style-the-display-value-of-the-host)
 
 ## Skipping the animation
 
