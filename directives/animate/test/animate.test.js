@@ -1,7 +1,7 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { expect, fixture, oneEvent } from '@open-wc/testing';
-import { hide, show } from '../animate.js';
 import { forceFocusVisible, getComposedActiveElement } from '../../../helpers/focus.js';
+import { hide, show } from '../animate.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 
 class FocusTestElem extends LitElement {
 
@@ -20,12 +20,10 @@ class FocusTestElem extends LitElement {
 	}
 
 	focus() {
-		console.log('focus');
 		this.shadowRoot.querySelector('#first').focus();
 	}
 
 	forceFocusVisible() {
-		console.log('forceFocusVisible');
 		forceFocusVisible(this.shadowRoot.querySelector('#first'));
 	}
 
@@ -36,7 +34,7 @@ class FocusTestElem extends LitElement {
 }
 customElements.define('d2l-animate-test-focus', FocusTestElem);
 
-describe.only('animate directive', () => {
+describe('animate directive', () => {
 
 	describe('events', () => {
 
