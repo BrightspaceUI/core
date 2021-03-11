@@ -233,10 +233,11 @@ class AnimationState {
 }
 
 async function helper(part, action, opts) {
-	if (!stateMap.has(part)) {
-		stateMap.set(part, new AnimationState(part));
+	let state = stateMap.get(part);
+	if (state === undefined) {
+		state = new AnimationState(part);
+		stateMap.set(part, state);
 	}
-	const state = stateMap.get(part);
 	opts = opts || {};
 	if (action === 'show') {
 		state.show(opts);
