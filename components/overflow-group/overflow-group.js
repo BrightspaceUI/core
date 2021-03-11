@@ -13,6 +13,7 @@ import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { throttle } from 'lodash-es';
 
@@ -46,8 +47,8 @@ function createMenuItemLink(node) {
 	return html`<d2l-menu-item-link 
 		text="${text}"
 		href="${href}"
-		target="${target}"
-	></d2l-menu-item-link>`;
+		target="${target}">
+	</d2l-menu-item-link>`;
 }
 
 function createMenuItemSeparator() {
@@ -64,9 +65,7 @@ function createMenuItemMenu(node) {
 
 	const subItems = Array.from(subMenu.children).map((node) => convertToDropdownItem(node));
 
-	return html`<d2l-menu-item
-		text="${openerText}"
-	>
+	return html`<d2l-menu-item text="${openerText}">
 		<d2l-menu>
 			${subItems}
 		</d2l-menu>
@@ -88,6 +87,8 @@ function convertToDropdownItem(node) {
 		case 'd2l-dropdown':
 		case 'd2l-dropdown-button':
 		case 'd2l-dropdown-button-subtle':
+		case 'd2l-dropdown-context-menu':
+		case 'd2l-dropdown-more':
 			return createMenuItemMenu(node);
 		case 'd2l-menu-item':
 			// if the menu item has children treat it as a menu item menu
@@ -187,38 +188,28 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			.d2l-overflow-group-container ::slotted(span),
 			.d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
 			.d2l-overflow-group-container ::slotted(d2l-dropdown-button),
-			.d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle) {
+			.d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
+			.d2l-overflow-group-container ::slotted(d2l-dropdown-more),
+			.d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu) {
 				margin-right: 0.6rem;
 			}
-
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button),
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-icon),
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-link),
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(span),
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
 			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button),
-			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle) {
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-button-subtle),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-more),
+			:host([dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-dropdown-context-menu) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-
 			:host([opener-style="subtle"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
 				margin-right: 0.2rem;
 			}
-
 			:host([opener-style="subtle"][dir="rtl"]) .d2l-overflow-group-container ::slotted(d2l-button-subtle) {
 				margin-left: 0.2rem;
-				margin-right: 0;
-			}
-
-			:host([opener-style="subtle"]) .d2l-dropdown-subtle-opener-text,
-			.d2l-dropdown-opener-text {
-				margin-right: 0.3rem;
-				vertical-align: middle;
-			}
-			:host([dir="rtl"]) .d2l-dropdown-opener-text,
-			:host([opener-style="subtle"][dir="rtl"]) .d2l-dropdown-subtle-opener-text {
-				margin-left: 0.3rem;
 				margin-right: 0;
 			}
 			.d2l-overflow-group-container ::slotted([data-is-chomped]) {
@@ -242,14 +233,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._slotItems = [];
 	}
-	connectedCallback() {
-		super.connectedCallback();
-		window.addEventListener('resize', this._throttledResize);
-	}
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		window.removeEventListener('resize', this._throttledResize);
-	}
+
 	async firstUpdated() {
 		super.firstUpdated();
 
@@ -258,23 +242,16 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
 
-		// get the items from the button slot
-		this._slotItems = this._getSlotItems();
-		// convert them to layout items (calculate widths)
-		this._layoutItems = this._getLayoutItems(this._slotItems);
-		// convert to dropdown items (for overflow menu)
-		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
+		this._getItems();
 
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
 		}
 
-		this._availableWidth = this._container.clientWidth;
+		// this._availableWidth = this._container.clientWidth;
 
-		// this action needs to be deferred until first render of our overflow button
-		requestAnimationFrame(() => {
-			this._chomp();
-		});
+		this.resizeObserver = new ResizeObserver(this._throttledResize);
+		this.resizeObserver.observe(this._container);
 	}
 	render() {
 		const overflowMenu = this._getOverflowMenu();
@@ -304,6 +281,14 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		if (changedProperties.get('minToShow')
 			|| changedProperties.get('maxToShow')) {
 			this._chomp();
+		}
+
+		// Slight hack to get the overflow menu width the first time it renders
+		if (!this._overflowMenuWidth) {
+			// this action needs to be deferred until first render of our overflow button
+			requestAnimationFrame(() => {
+				this._chomp();
+			});
 		}
 	}
 	_autoDetectBoundaries(items) {
@@ -343,7 +328,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		let isSoftOverflowing, isForcedOverflowing;
 		for (let i = 0; i < this._layoutItems.length; i++) {
 			const itemLayout = this._layoutItems[i];
-			if (itemLayout.isHidden) {continue;}
+
 			// handle minimum items to show
 			if (showing.count < this.minToShow) {
 				showing.width += itemLayout.width;
@@ -402,13 +387,18 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { bubbles: true, composed: true }));
 	}
+	_getItems() {
+		// get the items from the button slot
+		this._slotItems = this._getSlotItems();
+		// convert them to layout items (calculate widths)
+		this._layoutItems = this._getLayoutItems(this._slotItems);
+		// convert to dropdown items (for overflow menu)
+		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
+	}
 	_getLayoutItems(filteredNodes) {
 
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
-			// if () {
-			// 	return;
-			// }
 			return {
 				type: node.tagName.toLowerCase(),
 				isChomped: false,
@@ -459,20 +449,13 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		return filteredNodes;
 	}
-	_handleResize() {
-		if (!this._container) {
-			return;
-		}
-		this._availableWidth = this._container.clientWidth;
+	_handleResize(entries) {
+		this._availableWidth = entries[0].contentRect.width;
 		this._chomp();
 	}
 	_handleSlotChange() {
-		// get the items from the button slot
-		this._slotItems = this._getSlotItems();
-		// convert them to layout items (calculate widths)
-		this._layoutItems = this._getLayoutItems(this._slotItems);
-		// convert to dropdown items (for overflow menu)
-		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
+
+		this._getItems();
 
 		if (this.autoShow) {
 			this._autoDetectBoundaries(this._slotItems);
