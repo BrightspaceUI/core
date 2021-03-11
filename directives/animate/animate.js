@@ -13,7 +13,7 @@ class AnimationState {
 	constructor(propertyPart) {
 
 		if (!(propertyPart instanceof PropertyPart) || propertyPart.committer.name !== 'animate') {
-			throw new Error('animation directives must be used with "animation" property');
+			throw new Error('animation directives must be used with "animate" property');
 		}
 
 		this.id = 0;
