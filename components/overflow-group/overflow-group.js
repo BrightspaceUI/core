@@ -450,7 +450,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return filteredNodes;
 	}
 	_handleResize(entries) {
-		this._availableWidth = entries[0].contentRect.width;
+		this._availableWidth = Math.round(entries[0].contentRect.width);
 		this._chomp();
 	}
 	_handleSlotChange() {

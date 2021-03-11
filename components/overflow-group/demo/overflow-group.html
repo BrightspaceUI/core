@@ -27,11 +27,12 @@
 			<h2>Overflow Group (min/max)</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-overflow-group min-to-show="0">
+					<d2l-overflow-group min-to-show="2" max-to-show="3">
 						<d2l-button primary>New</d2l-button>
 						<d2l-button>Delete</d2l-button>
 						<d2l-button>Copy</d2l-button>
 						<d2l-button>Import</d2l-button>
+						<d2l-button>Export</d2l-button>
 					</d2l-overflow-group>
 				</template>
 			</d2l-demo-snippet> 
@@ -40,8 +41,8 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-overflow-group auto-show>
-						<d2l-button class="d2l-overflow-group-show" disabled primary="">New</d2l-button>
-						<d2l-dropdown>
+						<d2l-button  disabled primary="">New</d2l-button>
+						<d2l-dropdown class="d2l-button-group-show">
 							<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener"></d2l-dropdown-button>
 							<d2l-dropdown-menu id="dropdown">
 								<d2l-menu label="Astronomy">
@@ -69,7 +70,7 @@
 						<d2l-button-subtle primary="" text="New"></d2l-button-subtle>
 						<d2l-button-subtle text="Copy"></d2l-button-subtle>
 						<d2l-button-subtle text="Import"></d2l-button-subtle>
-						<d2l-dropdown class="d2l-overflow-group-show">
+						<d2l-dropdown class="d2l-button-group-show">
 							<d2l-dropdown-button-subtle text="Explore Topics" class="d2l-dropdown-opener"></d2l-dropdown-button-subtle>
 							<d2l-dropdown-menu id="dropdown">
 								<d2l-menu label="Astronomy">
