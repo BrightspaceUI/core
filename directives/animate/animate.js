@@ -38,7 +38,11 @@ class AnimationState {
 			if (this.id === id) {
 				this.clone.remove();
 				this.clone = null;
-				this.elem.setAttribute('style', info.elem.styleAttr);
+				if (info.elem.styleAttr !== null) {
+					this.elem.setAttribute('style', info.elem.styleAttr);
+				} else {
+					this.elem.removeAttribute('style');
+				}
 				info.onTransitionEnd();
 				this.dispatchEvent();
 				outerResolve();
