@@ -19,8 +19,6 @@ describe('d2l-overflow-group', () => {
 				<d2l-button>3</d2l-button>
 			</d2l-overflow-group>`);
 			const newButton = document.createElement('d2l-button');
-			const chompedItems = container.querySelectorAll('[data-is-chomped]');
-			expect(chompedItems.length).to.equal(0);
 			container.appendChild(newButton);
 			const handleUpdate = sinon.spy();
 			container.addEventListener('d2l-overflow-group-updated', handleUpdate);
@@ -34,8 +32,6 @@ describe('d2l-overflow-group', () => {
 				<d2l-button id="last">3</d2l-button>
 			</d2l-overflow-group>`);
 			const lastButton = container.querySelector('#last');
-			const chompedItems = container.querySelectorAll('[data-is-chomped]');
-			expect(chompedItems.length).to.equal(1);
 			const handleUpdate = sinon.spy();
 			container.addEventListener('d2l-overflow-group-updated', handleUpdate);
 			container.removeChild(lastButton);
