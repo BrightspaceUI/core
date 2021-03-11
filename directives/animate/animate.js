@@ -132,12 +132,14 @@ class AnimationState {
 		}
 		this.state = 'hiding';
 
-		// if focus is inside, move it to next focusable
+		// if focus is inside and was placed by keyboard, move it to next focusable
 		const activeElem = getComposedActiveElement();
-		const focusIsInside = isComposedAncestor(this.elem, activeElem);
-		if (focusIsInside) {
-			const nextFocusable = getNextFocusable(activeElem);
-			if (nextFocusable) nextFocusable.focus();
+		if (activeElem && activeElem.classList.contains('focus-visible')) {
+			const focusIsInside = isComposedAncestor(this.elem, activeElem);
+			if (focusIsInside) {
+				const nextFocusable = getNextFocusable(activeElem);
+				if (nextFocusable) nextFocusable.focus();
+			}
 		}
 
 		if (reduceMotion || opts.skip === true) {
