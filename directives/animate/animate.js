@@ -33,17 +33,15 @@ class AnimationState {
 		const id = ++this.id;
 
 		let outerResolve;
-		const onTransitionEnd = (event) => {
-			if (event.target === this.clone) {
-				this.clone.removeEventListener('transitionend', onTransitionEnd);
-				if (this.id === id) {
-					this.clone.remove();
-					this.clone = null;
-					info.onTransitionEnd();
-					['height', 'left', 'opacity', 'position', 'top', 'transform', 'transition', 'width']
-						.forEach((prop) => this.elem.style.removeProperty(prop));
-					outerResolve();
-				}
+		const onTransitionEnd = () => {
+			this.clone.removeEventListener('transitionend', onTransitionEnd);
+			if (this.id === id) {
+				this.clone.remove();
+				this.clone = null;
+				this.elem.setAttribute('style', info.elem.styleAttr);
+				info.onTransitionEnd();
+				this.dispatchEvent();
+				outerResolve();
 			}
 		};
 		this.clone.addEventListener('transitionend', onTransitionEnd);
@@ -64,11 +62,21 @@ class AnimationState {
 
 	}
 
+	dispatchEvent() {
+		this.elem.dispatchEvent(
+			new CustomEvent(
+				'd2l-animate-complete',
+				{ bubbles: true, composed: false }
+			)
+		);
+	}
+
 	async getElemInfo() {
 
 		await new Promise((r) => requestAnimationFrame(r));
 		const style = window.getComputedStyle(this.elem);
 
+		const styleAttr = this.elem.getAttribute('style');
 		if (style.display !== 'flex') {
 			this.elem.style.display = 'grid'; // forces margins to collapse during size calculation
 		}
@@ -109,6 +117,7 @@ class AnimationState {
 				height: rect.height,
 				left,
 				opacity: this.state === 'showing' && this.clone === null ? '0' : style.opacity,
+				styleAttr,
 				top,
 				width: rect.width
 			}
@@ -134,6 +143,7 @@ class AnimationState {
 		if (reduceMotion || opts.skip === true) {
 			this.state = 'hidden';
 			this.elem.setAttribute('hidden', '');
+			this.dispatchEvent();
 			return;
 		}
 
@@ -165,7 +175,8 @@ class AnimationState {
 				end: {
 					opacity: '0',
 					transform: `translateY(-${moveYValue}px)`
-				}
+				},
+				styleAttr: info.elem.styleAttr
 			},
 			onTransitionEnd: () => {
 				this.state = 'hidden';
@@ -185,6 +196,7 @@ class AnimationState {
 		if (reduceMotion || opts.skip === true) {
 			this.state = 'shown';
 			this.elem.removeAttribute('hidden');
+			this.dispatchEvent();
 			return;
 		}
 
@@ -221,7 +233,8 @@ class AnimationState {
 				end: {
 					opacity: '1',
 					transform: 'translateY(0)'
-				}
+				},
+				styleAttr: info.elem.styleAttr
 			},
 			onTransitionEnd: () => this.state = 'shown'
 		});
