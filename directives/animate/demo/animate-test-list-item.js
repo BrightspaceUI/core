@@ -14,6 +14,7 @@ export class AnimateTestListItem extends LitElement {
 			:host {
 				align-items: center;
 				border-bottom: 1px solid #cccccc;
+				box-sizing: border-box;
 				display: flex;
 				margin-bottom: 10px;
 				padding: 0 10px 10px 10px;

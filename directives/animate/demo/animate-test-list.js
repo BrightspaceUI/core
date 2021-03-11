@@ -8,8 +8,10 @@ export class AnimateTestList extends LitElement {
 	static get styles() {
 		return css`
 			:host {
+				border-top: 1px solid #cccccc;
 				display: block;
 				max-width: 400px;
+				padding-top: 10px;
 			}
 			:host([hidden]) {
 				display: none;

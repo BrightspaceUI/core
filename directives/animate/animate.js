@@ -90,8 +90,6 @@ class AnimationState {
 
 		this.elem.style.removeProperty('display');
 
-		const paddingH = (parseInt(style.paddingLeft) || 0) + (parseInt(style.borderLeftWidth) || 0) + (parseInt(style.paddingRight) || 0) + (parseInt(style.borderRightWidth) || 0);
-		const paddingV = (parseInt(style.paddingTop) || 0) + (parseInt(style.borderTopWidth) || 0) + (parseInt(style.paddingBottom) || 0) + (parseInt(style.borderBottomWidth) || 0);
 		const marginsH = (parseInt(style.marginLeft) || 0) + (parseInt(style.marginRight) || 0);
 		const marginsV = (parseInt(style.marginTop) || 0) + (parseInt(style.marginBottom) || 0);
 
@@ -108,11 +106,11 @@ class AnimationState {
 				width: rect.width + marginsH
 			},
 			elem: {
-				height: rect.height - paddingV,
+				height: rect.height,
 				left,
 				opacity: this.state === 'showing' && this.clone === null ? '0' : style.opacity,
 				top,
-				width: rect.width - paddingH
+				width: rect.width
 			}
 		};
 
