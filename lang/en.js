@@ -51,5 +51,8 @@ export default {
 	"components.more-less.more": "more",
 	"components.switch.visibility": "Visibility",
 	"components.tabs.next": "Scroll Forward",
-	"components.tabs.previous": "Scroll Backward"
+	"components.tabs.previous": "Scroll Backward",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };

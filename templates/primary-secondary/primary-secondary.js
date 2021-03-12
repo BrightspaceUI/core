@@ -1,10 +1,13 @@
 import '../../components/colors/colors.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
+import '../../components/offscreen/offscreen.js';
 import { css, html, LitElement } from 'lit-element/lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -464,7 +467,7 @@ class MobileTouchResizer extends Resizer {
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
  */
-class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
+class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -889,6 +892,9 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 		this._isCollapsed = false;
 		this._isExpanded = false;
 		this._isMobile = isMobile();
+
+		this._namespace = 'templates.primary-secondary';
+		this._keyboardDescId = getUniqueId();
 	}
 
 	async connectedCallback() {
@@ -936,12 +942,14 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(LitEle
 		const scrollClasses = {
 			'd2l-template-scroll': isWindows
 		};
+		const keyboardHelpText = this._isMobile ? this.localize(`${this._namespace}.keyboardVertical`) : this.localize(`${this._namespace}.keyboardHorizontal`);
 		return html`
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
 					<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>
-					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator  aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
+					<d2l-offscreen id="${this._keyboardDescId}">${keyboardHelpText}</d2l-offscreen>
+					<div tabindex="${ifDefined(tabindex)}" class="d2l-template-primary-secondary-divider" role=separator aria-label="${this.localize(`${this._namespace}.adjustableSplitView`)}" aria-describedby="${this._keyboardDescId}" aria-orientation=${this._isMobile ? 'horizontal' : 'vertical'} aria-valuenow="${ifDefined(separatorVal)}" aria-valuemax="${ifDefined(separatorMax)}">
 						<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
 							<div class="d2l-template-primary-secondary-divider-handle-desktop">
 								<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">
