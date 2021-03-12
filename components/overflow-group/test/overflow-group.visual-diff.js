@@ -25,21 +25,17 @@ describe('d2l-overflow-group', () => {
 
 	const minMaxTests = [
 		{
-			name: 'less-than-min-to-show',
+			name: 'more-than-max-to-show'
 		},
 		{
-			name: 'between-min-max-to-show',
+			name: 'less-than-min-to-show'
 		},
 		{
-			name: 'exactly-max-to-show',
+			name: 'between-min-max-to-show'
 		},
 		{
-			name: 'more-than-max-to-show',
-			action: async(selector) => {
-				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
-				await overflowMenu.click();
-			}
-		},
+			name: 'exactly-max-to-show'
+		}
 	];
 
 	const hiddenButtonTests = [
@@ -102,7 +98,7 @@ describe('d2l-overflow-group', () => {
 		...itemTypeConversion,
 		...minMaxTests,
 		...autoShow,
-		...iconType.reverse(),
+		...iconType,
 	].forEach((test) => {
 		it(test.name, async function() {
 			const selector = `#${test.name}`;
