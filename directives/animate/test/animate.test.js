@@ -99,7 +99,7 @@ describe('animate directive', () => {
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
-			expect(getComposedActiveElement()).to.equal(document.body);
+			expect(getComposedActiveElement()).to.not.equal(elem.shadowRoot.querySelector('#second'));
 		});
 
 	});
