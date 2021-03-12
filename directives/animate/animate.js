@@ -1,6 +1,6 @@
 import { directive, PropertyPart } from 'lit-html';
 import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
-import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 
 const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -23,7 +23,7 @@ class AnimationState {
 
 	}
 
-	async animate(info) {
+	async animate(animInfo) {
 
 		if (this.clone === null) {
 			this.clone = document.createElement('div');
@@ -38,29 +38,29 @@ class AnimationState {
 			if (this.id === id) {
 				this.clone.remove();
 				this.clone = null;
-				if (info.elem.styleAttr !== null) {
-					this.elem.setAttribute('style', info.elem.styleAttr);
+				if (animInfo.elem.styleAttr !== null) {
+					this.elem.setAttribute('style', animInfo.elem.styleAttr);
 				} else {
 					this.elem.removeAttribute('style');
 				}
-				info.onTransitionEnd();
+				animInfo.onTransitionEnd();
 				this.dispatchEvent();
 				outerResolve();
 			}
 		};
 		this.clone.addEventListener('transitionend', onTransitionEnd);
 
-		Object.assign(this.clone.style, info.clone.start);
-		Object.assign(this.elem.style, info.elem.start);
+		Object.assign(this.clone.style, animInfo.clone.start);
+		Object.assign(this.elem.style, animInfo.elem.start);
 
-		if (info.elem.transition) {
+		if (animInfo.elem.transition) {
 			await new Promise((r) => requestAnimationFrame(r));
-			Object.assign(this.elem.style, info.elem.transition);
+			Object.assign(this.elem.style, animInfo.elem.transition);
 		}
 
 		await new Promise((r) => requestAnimationFrame(r));
-		Object.assign(this.clone.style, info.clone.end);
-		Object.assign(this.elem.style, info.elem.end);
+		Object.assign(this.clone.style, animInfo.clone.end);
+		Object.assign(this.elem.style, animInfo.elem.end);
 
 		return new Promise((resolve) => outerResolve = resolve);
 
@@ -91,22 +91,8 @@ class AnimationState {
 		}
 
 		const rect = this.elem.getBoundingClientRect();
-
-		let top = 0;
-		let left = 0;
-		const offsetParent = this.elem.offsetParent;
-		let e = this.elem;
-		while (e && e !== document && !(e instanceof DocumentFragment)) {
-			if (e === offsetParent) {
-				break;
-			}
-			top += e.offsetTop - (e.scrollTop || 0);
-			left += e.offsetLeft - (e.scrollLeft || 0);
-			e = getComposedParent(e);
-		}
-
-		this.elem.style.removeProperty('display');
-
+		const top = this.elem.offsetTop - (this.elem.scrollTop || 0);
+		const left = this.elem.offsetLeft - (this.elem.scrollLeft || 0);
 		const marginsH = (parseInt(style.marginLeft) || 0) + (parseInt(style.marginRight) || 0);
 		const marginsV = (parseInt(style.marginTop) || 0) + (parseInt(style.marginBottom) || 0);
 
@@ -115,6 +101,8 @@ class AnimationState {
 			const cloneRect = this.clone.getBoundingClientRect();
 			cloneHeight = cloneRect.height;
 		}
+
+		this.elem.style.removeProperty('display');
 
 		return {
 			clone: {
@@ -158,14 +146,14 @@ class AnimationState {
 			return;
 		}
 
-		const info = await this.getElemInfo();
+		const elemInfo = await this.getElemInfo();
 
 		return this.animate({
 			clone: {
 				start: {
-					height: `${info.clone.height || info.clone.fullHeight}px`,
+					height: `${elemInfo.clone.height || elemInfo.clone.fullHeight}px`,
 					transition: `height ${hideTransitionDuration}ms ease-out`,
-					width: `${info.clone.width}px`
+					width: `${elemInfo.clone.width}px`
 				},
 				end: {
 					height: '0'
@@ -173,21 +161,21 @@ class AnimationState {
 			},
 			elem: {
 				start: {
-					height: `${info.elem.height}px`,
-					left: `${info.elem.left}px`,
-					opacity: info.elem.opacity,
+					height: `${elemInfo.elem.height}px`,
+					left: `${elemInfo.elem.left}px`,
+					opacity: elemInfo.elem.opacity,
 					position: 'absolute',
-					top: `${info.elem.top}px`,
+					top: `${elemInfo.elem.top}px`,
 					transitionProperty: 'height, opacity, transform',
 					transitionDuration: `${hideTransitionDuration}ms`,
 					transitionTimingFunction: 'ease-out',
-					width: `${info.elem.width}px`
+					width: `${elemInfo.elem.width}px`
 				},
 				end: {
 					opacity: '0',
 					transform: `translateY(-${moveYValue}px)`
 				},
-				styleAttr: info.elem.styleAttr
+				styleAttr: elemInfo.elem.styleAttr
 			},
 			onTransitionEnd: () => {
 				this.state = 'hidden';
@@ -211,30 +199,30 @@ class AnimationState {
 			return;
 		}
 
-		const info = await this.getElemInfo();
+		const elemInfo = await this.getElemInfo();
 
 		this.elem.removeAttribute('hidden');
 
 		return this.animate({
 			clone: {
 				start: {
-					height: `${info.clone.height}px`,
+					height: `${elemInfo.clone.height}px`,
 					transition: `height ${showTransitionDuration}ms ease-out`,
-					width: `${info.clone.width}px`
+					width: `${elemInfo.clone.width}px`
 				},
 				end: {
-					height: `${info.clone.fullHeight}px`
+					height: `${elemInfo.clone.fullHeight}px`
 				}
 			},
 			elem: {
 				start: {
-					height: `${info.elem.height}px`,
-					left: `${info.elem.left}px`,
-					opacity: info.elem.opacity,
+					height: `${elemInfo.elem.height}px`,
+					left: `${elemInfo.elem.left}px`,
+					opacity: elemInfo.elem.opacity,
 					position: 'absolute',
-					top: `${info.elem.top}px`,
+					top: `${elemInfo.elem.top}px`,
 					transform: `translateY(-${moveYValue}px)`,
-					width: `${info.elem.width}px`
+					width: `${elemInfo.elem.width}px`
 				},
 				transition: {
 					transitionProperty: 'height, opacity, transform',
@@ -245,7 +233,7 @@ class AnimationState {
 					opacity: '1',
 					transform: 'translateY(0)'
 				},
-				styleAttr: info.elem.styleAttr
+				styleAttr: elemInfo.elem.styleAttr
 			},
 			onTransitionEnd: () => this.state = 'shown'
 		});
