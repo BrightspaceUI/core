@@ -66,13 +66,18 @@ class AnimationState {
 
 	}
 
-	dispatchEvent() {
-		this.elem.dispatchEvent(
-			new CustomEvent(
-				'd2l-animate-complete',
-				{ bubbles: true, composed: false }
-			)
-		);
+	dispatchEvent(timeout = 0) {
+		// need a timeout as when motion is reduced
+		// event fires too quickly to listen for
+		// it right after render
+		setTimeout(() => {
+			this.elem.dispatchEvent(
+				new CustomEvent(
+					'd2l-animate-complete',
+					{ bubbles: true, composed: false }
+				)
+			);
+		}, timeout);
 	}
 
 	async getElemInfo() {
@@ -149,7 +154,7 @@ class AnimationState {
 		if (reduceMotion || opts.skip === true) {
 			this.state = 'hidden';
 			this.elem.setAttribute('hidden', '');
-			this.dispatchEvent();
+			this.dispatchEvent(100);
 			return;
 		}
 
@@ -202,7 +207,7 @@ class AnimationState {
 		if (reduceMotion || opts.skip === true) {
 			this.state = 'shown';
 			this.elem.removeAttribute('hidden');
-			this.dispatchEvent();
+			this.dispatchEvent(100);
 			return;
 		}
 
