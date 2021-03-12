@@ -21,6 +21,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `disabled` | Boolean, default: `false` | Disables the input. |
 | `input-width` | String, default: `4rem` | Restricts the maximum width of the input box without impacting the width of the label. |
 | `label-hidden` | Boolean, default: `false` | Hides the label visually (moves it to the input's `aria-label` attribute). |
+| `label-secondary` | String | Secondary offscreen label for accessibility |
 | `max` | Number | Maximum value allowed. |
 | `max-exclusive` | Boolean, default: `false` | Indicates whether the max value is exclusive. |
 | `max-fraction-digits` | Number | Maximum number of digits allowed after the decimal place. |
@@ -40,6 +41,7 @@ To make your usage of `d2l-input-number` accessible, use the following propertie
 |--|--|
 | `label` | **REQUIRED.** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
+| `label-secondary` | Use to describe relevant slotted content when the input is focused. The secondary label is rendered offscreen. |
 | `title` | Use for additional screen reader and mouseover context. |
 
 **Events:**

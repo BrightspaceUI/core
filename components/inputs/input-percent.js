@@ -126,6 +126,7 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				input-width="${ifDefined(this.inputWidth)}"
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden}"
+				label-secondary="${this.localize('components.input-percent.percent')}"
 				max="100"
 				max-fraction-digits="${ifDefined(this.maxFractionDigits)}"
 				min="0"
@@ -137,7 +138,7 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
 				value="${ifDefined(this.value)}">
-					<span slot="right" @click="${this._handleSymbolClick}">%</span>
+					<span aria-hidden="true" slot="right" @click="${this._handleSymbolClick}">%</span>
 					<slot slot="after" name="after"></slot>
 			</d2l-input-number>
 		`;

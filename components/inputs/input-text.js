@@ -69,6 +69,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
+			 * Secondary offscreen label for accessibility
+			 */
+			labelSecondary: { type: String, attribute: 'label-secondary' },
+			/**
 			 * Set the priority with which screen readers should treat updates to the input's live text region
 			 */
 			live: { type: String },
@@ -317,7 +321,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}</label>
+				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">
+					${this.label}
+					${this.labelSecondary ? html` <span class="d2l-offscreen">${this.labelSecondary}</span>`: ''}
+				</label>
 				${input}`;
 		}
 		return input;
@@ -378,7 +385,8 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	_getAriaLabel() {
 		if (this.label && this.labelHidden) {
-			return this.label;
+			if (this.labelSecondary) return `${this.label} ${this.labelSecondary}`;
+			else return this.label;
 		}
 		if (this.hasAttribute('aria-label')) {
 			return this.getAttribute('aria-label');

@@ -35,6 +35,7 @@ export default {
 	"components.input-date.errorOutsideRange": "Date must be between {minDate} and {maxDate}",
 	"components.input-date.openInstructions": "Use date format {format}. Arrow down or press enter to access mini-calendar.",
 	"components.input-date.setToToday": "Set to Today",
+	"components.input-percent.percent": "Percent",
 	"components.input-search.clear": "Clear Search",
 	"components.input-search.search": "Search",
 	"components.input-time-range.endTime": "End Time",
