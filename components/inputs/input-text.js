@@ -313,7 +313,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 						.value="${this.value}">
 					<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
 					<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
+					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}" @click="${this._handleIconClick}"></div>` : null}
 					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
 				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._onAfterSlotChange}"></slot></div>
 			</div>
@@ -425,6 +425,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	_handleFocus() {
 		this._focused = true;
+	}
+
+	_handleIconClick() {
+		this.focus();
 	}
 
 	_handleInput(e) {
