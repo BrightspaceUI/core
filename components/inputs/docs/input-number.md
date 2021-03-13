@@ -30,7 +30,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `placeholder` | String | Placeholder text. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
 | `title` | String | Text for additional screen reader and mouseover context. |
-| `unit` | String | Unit associated with the input value, displayed next to input and announced as part of label |
+| `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
 | `value` | Number | Value of the input. |
 
 **Accessibility:**

@@ -126,7 +126,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 */
 			type: { type: String },
 			/**
-			 * Unit associated with the input value, displayed next to input and announced as part of label
+			 * Unit associated with the input value, displayed next to input and announced as part of the label
 			 */
 			unit: { type: String },
 			/**
@@ -408,8 +408,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	_getAriaLabel() {
 		if (this.label && this.labelHidden) {
-			if (this.labelSecondary) return `${this.label} ${this.labelSecondary}`;
-			else return this.label;
+			return this.label;
 		}
 		if (this.hasAttribute('aria-label')) {
 			return this.getAttribute('aria-label');
