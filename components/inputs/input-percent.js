@@ -74,19 +74,6 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				:host([hidden]) {
 					display: none;
 				}
-				:host([disabled]) [slot="right"] {
-					opacity: 0.5;
-				}
-				[slot="right"] {
-					box-sizing: border-box;
-					cursor: default;
-					padding-left: 0.2rem;
-					padding-right: 0.55rem;
-				}
-				:host([dir="rtl"]) [slot="right"] {
-					padding-left: 0.55rem;
-					padding-right: 0.2rem;
-				}
 			`
 		];
 	}
@@ -126,7 +113,6 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				input-width="${ifDefined(this.inputWidth)}"
 				label="${ifDefined(this.label)}"
 				?label-hidden="${this.labelHidden}"
-				label-secondary="${this.localize('components.input-percent.percent')}"
 				max="100"
 				max-fraction-digits="${ifDefined(this.maxFractionDigits)}"
 				min="0"
@@ -137,8 +123,8 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
+				unit="%"
 				value="${ifDefined(this.value)}">
-					<span aria-hidden="true" slot="right" @click="${this._handleSymbolClick}">%</span>
 					<slot slot="after" name="after"></slot>
 			</d2l-input-number>
 		`;
@@ -168,10 +154,6 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				{ bubbles: true, composed: false }
 			));
 		}
-	}
-
-	_handleSymbolClick() {
-		this.focus();
 	}
 
 }

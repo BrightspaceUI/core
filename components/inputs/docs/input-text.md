@@ -27,7 +27,6 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `disabled` | Boolean | Disables the input |
 | `input-width` | String, default: `100%` | Restricts the maximum width of the input box without impacting the width of the label |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
-| `label-secondary` | String | Secondary offscreen label for accessibility |
 | `max` | String | For number inputs, maximum value |
 | `maxlength` | Number | Imposes an upper character limit |
 | `min` | String | For number inputs, minimum value |
@@ -43,6 +42,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `step` | String | For number inputs, sets the step size |
 | `title` | String | Text for additional screenreader and mouseover context |
 | `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url`. Type `number` is deprecated, use [d2l-input-number](./input-number.md) instead. |
+| `unit` | String | Unit associated with the input value, displayed next to input and announced as part of label |
 | `value` | String, default: `''` | Value of the input |
 
 **Accessibility:**
@@ -57,7 +57,7 @@ To make your usage of `d2l-input-text` accessible, use the following properties 
 | `description` | Use when label on input does not provide enough context. |
 | `label` | **REQUIRED**  [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
-| `label-secondary` | Use to describe relevant slotted content when the input is focused. The secondary label is rendered offscreen. |
+| `unit` | Use to render the unit (offscreen) as part of the label. |
 | `title` | Text for additional screen reader and mouseover context |
 
 **Events:**
