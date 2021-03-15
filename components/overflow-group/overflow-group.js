@@ -244,12 +244,6 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._getItems();
 
-		if (this.autoShow) {
-			this._autoDetectBoundaries(this._slotItems);
-		}
-
-		// this._availableWidth = this._container.clientWidth;
-
 		this.resizeObserver = new ResizeObserver(this._throttledResize);
 		this.resizeObserver.observe(this._container);
 	}
@@ -385,16 +379,17 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		this._mini = this.openerType === OPENER_TYPE.ICON || swapToMiniButton;
 		this._chompIndex = this._overflowMenuHidden ? null : showing.count;
 
-		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { composed: false, bubbles: true }));
 	}
 	_getItemLayouts(filteredNodes) {
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
+
 			return {
 				type: node.tagName.toLowerCase(),
 				isChomped: false,
 				isHidden: computedStyles.display === 'none',
-				width: node.offsetWidth
+				width: Math.ceil(parseFloat(computedStyles.width) || 0)
 					+ parseInt(computedStyles.marginRight) || 0
 					+ parseInt(computedStyles.marginLeft) || 0,
 				node: node
@@ -427,6 +422,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				${menu}
 			</d2l-dropdown-more>`;
 		}
+
 		if (this.openerStyle === OPENER_STYLE.SUBTLE) {
 			return html`<d2l-dropdown-button-subtle class="d2l-overflow-dropdown" text="${moreActionsText}">
 				${menu}
@@ -448,7 +444,9 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return filteredNodes;
 	}
 	_handleResize(entries) {
-		this._availableWidth = Math.round(entries[0].contentRect.width);
+
+		this._availableWidth = Math.ceil(entries[0].contentRect.width);;
+
 		this._chomp();
 	}
 	_handleSlotChange() {
@@ -460,8 +458,6 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		this._chomp();
-	}
-	_removeEventListeners() {
 	}
 }
 
