@@ -1,6 +1,6 @@
 let mathJaxLoaded;
 
-export function loadMathJax() {
+export function loadMathJax(mathJaxConfig) {
 
 	if (mathJaxLoaded) return mathJaxLoaded;
 
@@ -110,7 +110,12 @@ export function loadMathJax() {
 		const script = document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
-		script.src = 'https://s.brightspace.com/lib/mathjax/3.1.2/mml-chtml.js';
+
+		const component = mathJaxConfig && mathJaxConfig.renderLatex
+			? 'tex-mml-chtml'
+			: 'mml-chtml';
+
+		script.src = `https://s.brightspace.com/lib/mathjax/3.1.2/${component}.js`;
 		document.head.appendChild(script);
 	});
 

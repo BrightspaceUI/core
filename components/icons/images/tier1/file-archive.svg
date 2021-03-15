@@ -1,3 +1,10 @@
 <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-  <path fill="#494c4e" d="M17 3H1a1 1 0 0 0 0 2v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0 0-2zm-5 5H6a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2z"/>
+  <g fill="none" fill-rule="evenodd">
+    <mask id="a" fill="#fff">
+      <path d="M8.01 2a.99.99 0 01.99.9V4h8a1 1 0 011 1v10a1 1 0 01-1 1H1a1 1 0 01-1-1V3a1 1 0 011-1h7.01zM5 11H3v3h2v-3zm0-2H3v1h2V9zm0-2H3v1h2V7zm0-2H3v1h2V5zm0-2H3v1h2V3z"/>
+    </mask>
+    <g mask="url(#a)">
+      <path fill="#494c4e" d="M0 0h18v18H0z"/>
+    </g>
+  </g>
 </svg>

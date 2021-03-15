@@ -126,6 +126,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 */
 			type: { type: String },
 			/**
+			 * Unit associated with the input value, displayed next to input and announced as part of the label
+			 */
+			unit: { type: String },
+			/**
 			 * Value of the input
 			 */
 			value: { type: String },
@@ -168,17 +172,30 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 					display: inline-block;
 					flex: 0 0 auto;
 				}
-				#first-slot, #last-slot {
+				.d2l-input-inside-before, .d2l-input-inside-after {
+					align-items: center;
 					display: flex;
 					position: absolute;
 					top: 50%;
 					transform: translateY(-50%);
 				}
-				#first-slot {
+				.d2l-input-inside-before {
 					left: 0;
 				}
-				#last-slot {
+				.d2l-input-inside-after {
 					right: 0;
+				}
+				.d2l-input-inside-before .d2l-input-unit {
+					margin-left: 12px;
+					margin-right: 6px;
+				}
+				.d2l-input-inside-after .d2l-input-unit {
+					display: inline-block;
+					margin-left: 6px;
+					margin-right: 12px;
+				}
+				:host([disabled]) .d2l-input-unit {
+					opacity: 0.5;
 				}
 				.d2l-input-text-invalid-icon {
 					background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0wIDBoMjJ2MjJIMHoiLz4KICAgIDxwYXRoIGQ9Ik0xOC44NjQgMTYuNDdMMTIuNjIzIDMuOTg5YTEuNzgzIDEuNzgzIDAgMDAtMy4xOTIgMEwzLjE4OSAxNi40N2ExLjc2MSAxLjc2MSAwIDAwLjA4IDEuNzNjLjMyNS41MjUuODk4Ljc5OCAxLjUxNi43OTloMTIuNDgzYy42MTggMCAxLjE5Mi0uMjczIDEuNTE2LS44LjIzNy0uMzM1LjI2NS0xLjM3LjA4LTEuNzN6IiBmaWxsPSIjQ0QyMDI2IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz4KICAgIDxwYXRoIGQ9Ik0xMS4wMjcgMTcuMjY0YTEuMzM3IDEuMzM3IDAgMTEwLTIuNjc1IDEuMzM3IDEuMzM3IDAgMDEwIDIuNjc1ek0xMS45IDEyLjk4YS44OTIuODkyIDAgMDEtMS43NDcgMEw5LjI3IDguNTJhLjg5Mi44OTIgMCAwMS44NzQtMS4wNjRoMS43NjhhLjg5Mi44OTIgMCAwMS44NzQgMS4wNjVsLS44ODYgNC40NTh6IiBmaWxsPSIjRkZGIi8+CiAgPC9nPgo8L3N2Zz4K");
@@ -272,6 +289,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		const invalidIconStyles = {
 			[invalidIconSide]: `${invalidIconOffset}px`
 		};
+
+		const unit = this.unit
+			? html`<span aria-hidden="true" class="d2l-input-unit" @click="${this._handleUnitClick}">${this.unit}</span>`
+			: null;
+
 		const input = html`
 			<div class="d2l-input-container">
 				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
@@ -307,17 +329,17 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 						title="${ifDefined(this.title)}"
 						type="${this._getType()}"
 						.value="${this.value}">
-					<div id="first-slot"><slot name="${firstSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-					<div id="last-slot"><slot name="${lastSlotName}" @slotchange="${this._onSlotChange}"></slot></div>
-					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}"></div>` : null}
-					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null }
-				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._onAfterSlotChange}"></slot></div>
+					<div class="d2l-input-inside-before">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
+					<div class="d2l-input-inside-after">${this.dir !== 'rtl' ? unit : ''}<slot name="${lastSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
+					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}" @click="${this._handleInvalidIconClick}"></div>` : null}
+					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : null }
+				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._handleAfterSlotChange}"></slot></div>
 			</div>
 			${offscreenContainer}
 		`;
 		if (this.label && !this.labelHidden) {
 			return html`
-				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}</label>
+				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${this.unit ? html`<span class="d2l-offscreen"> ${this.unit}</span>` : ''}</label>
 				${input}`;
 		}
 		return input;
@@ -332,6 +354,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 				this.requestValidate(false);
 				this.setFormValue(this.value);
 				this._prevValue = (oldVal === undefined) ? '' : oldVal;
+			} else if (prop === 'unit') {
+				if (this.unit && this.unit !== '%') {
+					throw new Error('Invalid unit value for d2l-input-text.');
+				}
+				this._updateInputLayout();
 			} else if (prop === 'validationError') {
 				if (oldVal && this.validationError) {
 					const tooltip = this.shadowRoot.querySelector('d2l-tooltip');
@@ -393,6 +420,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		return 'text';
 	}
 
+	_handleAfterSlotChange(e) {
+		const afterContent = e.target.assignedNodes({ flatten: true });
+		this._hasAfterContent = (afterContent && afterContent.length > 0);
+	}
+
 	async _handleBlur(e) {
 		this._focused = false;
 		this.requestValidate(true);
@@ -428,6 +460,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		e.preventDefault();
 	}
 
+	_handleInvalidIconClick() {
+		this.focus();
+	}
+
 	_handleKeypress(e) {
 		if (this.preventSubmit && e.keyCode === 13) {
 			e.preventDefault();
@@ -444,26 +480,28 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._hovered = false;
 	}
 
-	_onAfterSlotChange(e) {
-		const afterContent = e.target.assignedNodes({ flatten: true });
-		this._hasAfterContent = (afterContent && afterContent.length > 0);
-	}
-
-	_onSlotChange(e) {
-		// slots must be flattened because input-number surfaces these slots on its API
-		const slotContent = e.target.assignedNodes({ flatten: true })[0];
-		const id = e.target.parentNode.id;
+	_handleSlotChange(e) {
+		const container = e.target.parentNode;
 
 		// requestUpdate needed for legacy Edge
 		this.requestUpdate().then(() => {
-			let slotWidth = 0;
-			if (slotContent) {
-				const style = getComputedStyle(slotContent);
-				slotWidth = parseFloat(style.width) + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
-			}
-			if (id === 'first-slot') this._firstSlotWidth = slotWidth;
-			else if (id === 'last-slot') this._lastSlotWidth = slotWidth;
+			this._updateInputLayout(container);
 		});
+	}
+
+	_handleUnitClick() {
+		this.focus();
+	}
+
+	_updateInputLayout(container) {
+		if (!container) {
+			this._firstSlotWidth = this.shadowRoot.querySelector('.d2l-input-inside-before').getBoundingClientRect().width;
+			this._lastSlotWidth = this.shadowRoot.querySelector('.d2l-input-inside-after').getBoundingClientRect().width;
+		} else if (container === this.shadowRoot.querySelector('.d2l-input-inside-before')) {
+			this._firstSlotWidth = container.getBoundingClientRect().width;
+		} else if (container === this.shadowRoot.querySelector('.d2l-input-inside-after')) {
+			this._lastSlotWidth = container.getBoundingClientRect().width;
+		}
 	}
 
 }

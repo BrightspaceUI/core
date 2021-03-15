@@ -302,7 +302,7 @@ the component containing the `d2l-dropdown-content` can catch and call this meth
         </d2l-menu>
       </d2l-tab-panel>
       <d2l-tab-panel text="fourth">fourth content</d2l-tab-panel>
-      <d2l-tab-panel text="fith">fith content</d2l-tab-panel>
+      <d2l-tab-panel text="fifth">fifth content</d2l-tab-panel>
       <d2l-tab-panel text="sixth">sixth content</d2l-tab-panel>
     </d2l-tabs>
   </d2l-dropdown-tabs>
