@@ -445,7 +445,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 	_handleResize(entries) {
 
-		this._availableWidth = Math.ceil(entries[0].contentRect.width);;
+		this._availableWidth = Math.ceil(entries[0].contentRect.width);
 
 		this._chomp();
 	}
