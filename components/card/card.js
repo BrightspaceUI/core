@@ -68,7 +68,7 @@ class Card extends RtlMixin(LitElement) {
 		return [offscreenStyles, css`
 			:host {
 				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-gypsum);
+				border: 1px solid var(--d2l-color-cinnabar);
 				border-radius: 6px;
 				box-sizing: border-box;
 				display: inline-block;
