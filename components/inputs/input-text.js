@@ -8,6 +8,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -255,6 +256,15 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		container.addEventListener('focus', this._handleFocus, true);
 		container.addEventListener('mouseover', this._handleMouseEnter);
 		container.addEventListener('mouseout', this._handleMouseLeave);
+
+		if (!this.offsetParent) {
+			// if initially hidden then update layout when it becomes visible
+			const resizeObserver = new ResizeObserver(() => {
+				resizeObserver.disconnect();
+				this._updateInputLayout();
+			});
+			resizeObserver.observe(container);
+		}
 	}
 
 	render() {

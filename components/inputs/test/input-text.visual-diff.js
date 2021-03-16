@@ -49,53 +49,47 @@ describe('d2l-input-text', () => {
 	});
 
 	[
-		'wc-labelled',
-		'wc-required',
-		'wc-label-hidden',
-		'wc-unit',
-		'wc-unit-rtl',
-		'wc-unit-disabled',
-		'wc-unit-invalid',
-		'wc-unit-invalid-rtl',
-		'wc-override-height',
-		'wc-override-padding',
-		'wc-override-text-align',
-		'wc-icon-left',
-		'wc-icon-left-rtl',
-		'wc-icon-right',
-		'wc-icon-right-rtl',
-		'wc-icon-left-label',
-		'wc-icon-right-label',
-		'wc-icon-left-right',
-		'wc-button-icon-left',
-		'wc-button-icon-right',
-		'wc-icon-right-invalid',
-		'wc-icon-right-invalid-rtl'
-	].forEach((name) => {
-		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-		it(`${name}-focus`, async function() {
-			await page.$eval(`#${name}`, (elem) => elem.focus());
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-	});
+		{ name: 'wc-labelled', selector: '#wc-labelled' },
+		{ name: 'wc-labelled-focus', selector: '#wc-labelled', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'wc-labelled-skeleton', selector: '#wc-labelled', action: selector => page.$eval(selector, elem => elem.skeleton = true) },
+		{ name: 'wc-label-hidden', selector: '#wc-label-hidden' },
+		{ name: 'wc-label-hidden-skeleton', selector: '#wc-label-hidden', action: selector => page.$eval(selector, elem => elem.skeleton = true) },
+		{ name: 'wc-required', selector: '#wc-required' },
+		{ name: 'wc-required-skeleton', selector: '#wc-required', action: selector => page.$eval(selector, elem => elem.skeleton = true) },
+		{ name: 'wc-custom-width-skeleton', selector: '#wc-custom-width', action: selector => page.$eval(selector, elem => elem.skeleton = true) },
+		{ name: 'wc-overflowing', selector: '#wc-overflowing' },
+		{ name: 'wc-unit', selector: '#wc-unit' },
+		{ name: 'wc-unit-rtl', selector: '#wc-unit-rtl' },
+		{ name: 'wc-unit-disabled', selector: '#wc-unit-disabled' },
+		{ name: 'wc-unit-invalid', selector: '#wc-unit-invalid' },
+		{ name: 'wc-unit-invalid-focus', selector: '#wc-unit-invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'wc-unit-invalid-rtl', selector: '#wc-unit-invalid-rtl' },
+		{ name: 'wc-unit-invalid-rtl-focus', selector: '#wc-unit-invalid-rtl', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'wc-unit-init-hidden', selector: '#wc-unit-init-hidden', action: selector => page.$eval(selector, elem => elem.style.display = 'inline-block') },
+		{ name: 'wc-override-height', selector: '#wc-override-height' },
+		{ name: 'wc-override-padding', selector: '#wc-override-padding' },
+		{ name: 'wc-override-text-align', selector: '#wc-override-text-align' },
+		{ name: 'wc-icon-left', selector: '#wc-icon-left' },
+		{ name: 'wc-icon-left-rtl', selector: '#wc-icon-left-rtl' },
+		{ name: 'wc-icon-right', selector: '#wc-icon-right' },
+		{ name: 'wc-icon-right-rtl', selector: '#wc-icon-right-rtl' },
+		{ name: 'wc-icon-left-label', selector: '#wc-icon-left-label' },
+		{ name: 'wc-icon-right-label', selector: '#wc-icon-right-label' },
+		{ name: 'wc-icon-left-right', selector: '#wc-icon-left-right' },
+		{ name: 'wc-button-icon-left', selector: '#wc-button-icon-left' },
+		{ name: 'wc-button-icon-right', selector: '#wc-button-icon-right' },
+		{ name: 'wc-icon-right-invalid', selector: '#wc-icon-right-invalid' },
+		{ name: 'wc-icon-right-invalid-focus', selector: '#wc-icon-right-invalid', action: selector => page.$eval(selector, elem => elem.focus()) },
+		{ name: 'wc-icon-right-invalid-rtl', selector: '#wc-icon-right-invalid-rtl' },
+		{ name: 'wc-icon-right-invalid-rtl-focus', selector: '#wc-icon-right-invalid-rtl', action: selector => page.$eval(selector, elem => elem.focus()) }
+	].forEach(info => {
 
-	describe('skeleton', () => {
-		[
-			'wc-labelled',
-			'wc-required',
-			'wc-label-hidden',
-			'wc-custom-width'
-		].forEach((name) => {
-			it(name, async function() {
-				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
-				const rect = await visualDiff.getRect(page, `#${name}`);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
+		it(info.name, async function() {
+			if (info.action) await info.action(info.selector);
+			const rect = await visualDiff.getRect(page, info.selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+
 	});
 
 });
