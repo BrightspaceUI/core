@@ -79,6 +79,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.focus();
 	}
 
+	/**
+	 * Gets the slot where dropdown content will be distributed. May be overridden by mixin consumers.
+	 * @return {HTMLElement}
+	 */
 	getContentSlot() {
 		return this.shadowRoot.querySelector('slot');
 	}
@@ -87,6 +91,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		return this;
 	}
 
+	/**
+	 * Gets the actual oepener element (ex. button). Typically overridden by mixin consumers.
+	 * @return {HTMLElement}
+	 */
 	getOpenerElement() {
 		return this;
 	}
