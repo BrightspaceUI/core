@@ -79,6 +79,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.focus();
 	}
 
+	getContentSlot() {
+		return this.shadowRoot.querySelector('slot');
+	}
+
 	getOpener() {
 		return this;
 	}
@@ -100,7 +104,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__getContentElement() {
-		return this.shadowRoot.querySelector('slot').assignedNodes().filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
+		return this.getContentSlot().assignedNodes()
+			.filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
 	}
 
 	__onClosed() {
