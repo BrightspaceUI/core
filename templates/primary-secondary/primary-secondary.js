@@ -897,16 +897,8 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 		this._keyboardDescId = getUniqueId();
 	}
 
-	disconnectedCallback() {
-		for (const resizer of this._resizers) {
-			resizer.disconnect();
-		}
-	}
-
-	async firstUpdated(changedProperties) {
-
-		super.firstUpdated(changedProperties);
-
+	async connectedCallback() {
+		super.connectedCallback();
 		await new Promise(resolve => requestAnimationFrame(resolve));
 
 		const secondaryPanel = this.shadowRoot.querySelector('aside');
@@ -917,6 +909,17 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 		this._mobileKeyboardResizer.connect(divider);
 		this._mobileMouseResizer.connect(divider);
 		this._mobileTouchResizer.connect(secondaryPanel);
+	}
+
+	disconnectedCallback() {
+		for (const resizer of this._resizers) {
+			resizer.disconnect();
+		}
+	}
+
+	firstUpdated(changedProperties) {
+
+		super.firstUpdated(changedProperties);
 
 		const isRtl = this.getAttribute('dir') === 'rtl';
 		for (const resizer of this._resizers) {
