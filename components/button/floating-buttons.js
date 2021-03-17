@@ -82,7 +82,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				margin-right: 0.75rem !important;
 			}
 
-			.d2l-floating-buttons-inner-container ::slotted(d2l-button-group) {
+			.d2l-floating-buttons-inner-container ::slotted(d2l-button-group),
+			.d2l-floating-buttons-inner-container ::slotted(d2l-overflow-group) {
 				padding-bottom: 0.75rem !important;
 			}
 

@@ -35,6 +35,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			placeholder: { type: String },
 			required: { type: Boolean },
 			title: { type: String },
+			unit: { type: String },
 			value: { type: Number },
 			_formattedValue: { type: String }
 		};
@@ -120,6 +121,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
 				title="${ifDefined(this.title)}"
+				unit="${ifDefined(this.unit)}"
 				.value="${this._formattedValue}">
 					<slot slot="left" name="left"></slot>
 					<slot slot="right" name="right"></slot>
