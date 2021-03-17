@@ -43,7 +43,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 		requestAnimationFrame(() => {
 			const opener = this.getOpenerElement();
-			const content = this.getContentElement();
+			const content = this.__getContentElement();
 			if (!opener) {
 				return;
 			}
@@ -79,23 +79,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.focus();
 	}
 
-	/**
-	 * Gets the slot where dropdown content will be distributed. May be overridden by mixin consumers.
-	 * @return {HTMLElement}
-	 */
-	getContentElement() {
-		return this.shadowRoot.querySelector('slot').assignedNodes()
-			.filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
-	}
-
 	getOpener() {
 		return this;
 	}
 
-	/**
-	 * Gets the actual oepener element (ex. button). Typically overridden by mixin consumers.
-	 * @return {HTMLElement}
-	 */
 	getOpenerElement() {
 		return this;
 	}
@@ -105,11 +92,16 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			return;
 		}
 
-		const content = this.getContentElement();
+		const content = this.__getContentElement();
 		if (!content) {
 			return;
 		}
 		content.toggleOpen(applyFocus);
+	}
+
+	__getContentElement() {
+		return this.shadowRoot.querySelector('slot:not([name])').assignedNodes()
+			.filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
 	}
 
 	__onClosed() {
