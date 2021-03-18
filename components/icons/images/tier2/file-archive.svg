@@ -1,5 +1,5 @@
 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <g fill="none" fill-rule="evenodd">
+  <g fill-rule="evenodd">
     <mask id="a" fill="#fff">
       <path d="M22 4h-9c0-1.1-.89-1.99-1.99-2H2C.9 2 0 2.9 0 4v16c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V5.96A2.004 2.004 0 0022 4zm0 6.5v9a.5.5 0 01-.5.5h-19a.5.5 0 01-.5-.5v-15a.5.5 0 01.5-.5h8a.5.5 0 01.5.5V8c0 1.1.9 2 2 2h8.5a.5.5 0 01.5.5zm0-4v1a.5.5 0 01-.5.5h-8a.5.5 0 01-.5-.5v-1a.5.5 0 01.5-.5h8a.5.5 0 01.5.5zM5 5h3v2H5V5zm0 3h3v2H5V8zm0 3h3v2H5v-2zm0 3h3v4H5v-4z"/>
     </mask>
