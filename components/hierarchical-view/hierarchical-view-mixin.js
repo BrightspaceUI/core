@@ -153,7 +153,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			childViews = slot.assignedNodes().filter((node) => node.nodeType === Node.ELEMENT_NODE);
 
 			for (let i = 0; i < childViews.length; i++) {
-				const childView = childViews[i].shadowRoot.querySelector('[child-view][shown]');
+				const childView = childViews[i].shadowRoot && childViews[i].shadowRoot.querySelector('[child-view][shown]');
 				if (childView && childView.isActive()) {
 					return childView;
 				}

@@ -94,13 +94,22 @@ export const MenuItemMixin = superclass => class extends superclass {
 	}
 
 	__initializeItem() {
-		const slot = this.shadowRoot.querySelector('slot:not([name])');
-		if (!slot) {
-			return;
-		}
-		const children = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
-		if (children && children.length > 0 && children[0].tagName === 'TEMPLATE') {
-			return;
+		let children;
+		const slot = null;//this.shadowRoot.querySelector('slot:not([name])');
+		if (slot) {
+			children = slot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
+			if (children && children.length > 0 && children[0].tagName === 'TEMPLATE') {
+				return;
+			}
+		} else {
+			children = Array.from(this.shadowRoot.querySelectorAll('d2l-hierarchical-view'));
+			if (children.length === 0) {
+				children = Array.from(this.shadowRoot.querySelectorAll('d2l-menu'));
+
+				if (children.length === 0) {
+					return;
+				}
+			}
 		}
 
 		for (let i = 0; i < children.length; i++) {

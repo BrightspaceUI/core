@@ -1,11 +1,10 @@
+import '../menu/menu.js';
 import '../icons/icon.js';
-import '../hierarchical-view/hierarchical-view.js';
-import '../menu/demo/custom-view.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { MenuItemMixin } from '../menu/menu-item-mixin.js';
 import { menuItemStyles } from '../menu/menu-item-styles.js';
 
-class FilterDimension extends MenuItemMixin(LitElement) {
+class FilterDimensionMenu extends MenuItemMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -38,14 +37,12 @@ class FilterDimension extends MenuItemMixin(LitElement) {
 			<div class="d2l-menu-item-text">${this.text}</div>
 			<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
 			${icon}
-			<slot>
-				<d2l-custom-view>
-					There will be another menu in here, eventually.
-				</d2l-custom-view>
-			</slot>
+			<d2l-menu no-return-items label="${this.text}">
+				<slot></slot>
+			</d2l-menu>
 		`;
 	}
 
 }
 
-customElements.define('d2l-filter-dimension', FilterDimension);
+customElements.define('d2l-filter-dimension-menu', FilterDimensionMenu);

@@ -8,22 +8,51 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../demo/demo-page.js';
-			import '../../menu/menu-item-checkbox.js';
 			import '../filter.js';
-			import '../filter-dimension.js';
+			import '../filter-dimension-menu.js';
+			import '../filter-dimension-menu-item.js';
+			import '../filter-dimension-list.js';
+			import '../filter-dimension-list-item.js';
 		</script>
 	</head>
 	<body unresolved>
 
 		<d2l-demo-page page-title="d2l-filter">
 
-			<h2>Filter</h2>
+			<h2>Filter with Menu Items</h2>
 
 			<d2l-demo-snippet>
 				<template>
 					<d2l-filter>
-						<d2l-filter-dimension text="Role"></d2l-filter-dimension>
-						<d2l-filter-dimension text="Course"></d2l-filter-dimension>
+						<d2l-filter-dimension-menu text="Role">
+							<d2l-filter-dimension-menu-item text="Admin"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Student"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Teacher"></d2l-filter-dimension-menu-item>
+						</d2l-filter-dimension-menu>
+						<d2l-filter-dimension-menu text="Course">
+							<d2l-filter-dimension-menu-item text="Astronomy"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Biology"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Chemistry"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Drama"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="English"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Math"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Woodshop"></d2l-filter-dimension-menu-item>
+						</d2l-filter-dimension-menu>
+					</d2l-filter>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Filter with List Items</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-filter>
+						<d2l-filter-dimension-list text="Role">
+							<d2l-filter-dimension-list-item key="Admin" text="Admin"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item key="Student" text="Student"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item key="Teacher" text="Teacher"></d2l-filter-dimension-list-item>
+						</d2l-filter-dimension-list>
+						<d2l-filter-dimension-list text="Course"></d2l-filter-dimension-list>
 					</d2l-filter>
 				</template>
 			</d2l-demo-snippet>
