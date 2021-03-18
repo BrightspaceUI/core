@@ -895,20 +895,9 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 
 		this._namespace = 'templates.primary-secondary';
 		this._keyboardDescId = getUniqueId();
-	}
 
-	async connectedCallback() {
-		super.connectedCallback();
-		await new Promise(resolve => requestAnimationFrame(resolve));
-
-		const secondaryPanel = this.shadowRoot.querySelector('aside');
-		const divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
-
-		this._desktopKeyboardResizer.connect(divider);
-		this._desktopMouseResizer.connect(divider);
-		this._mobileKeyboardResizer.connect(divider);
-		this._mobileMouseResizer.connect(divider);
-		this._mobileTouchResizer.connect(secondaryPanel);
+		this._secondary;
+		this._divider;
 	}
 
 	disconnectedCallback() {
@@ -995,6 +984,18 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					// throws if storage is full or in private mode in mobile Safari
 				}
 			}
+		}
+		if(!this._secondary) {
+			this._secondary = this.shadowRoot.querySelector('aside');
+			this._divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
+		}
+		if(this._divider.isConnected) {
+			this._desktopKeyboardResizer.connect(this._divider);
+			this._desktopMouseResizer.connect(this._divider);
+			this._mobileKeyboardResizer.connect(this._divider);
+			this._mobileMouseResizer.connect(this._divider);
+			this._mobileTouchResizer.connect(this._secondary);
+			console.log(getEventListeners(this._desktopkeyboardResizer));
 		}
 	}
 
