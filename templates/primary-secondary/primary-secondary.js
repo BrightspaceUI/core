@@ -985,17 +985,16 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				}
 			}
 		}
-		if(!this._secondary) {
+		if (!this._secondary) {
 			this._secondary = this.shadowRoot.querySelector('aside');
 			this._divider = this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider');
 		}
-		if(this._divider.isConnected) {
+		if (this._divider.isConnected) {
 			this._desktopKeyboardResizer.connect(this._divider);
 			this._desktopMouseResizer.connect(this._divider);
 			this._mobileKeyboardResizer.connect(this._divider);
 			this._mobileMouseResizer.connect(this._divider);
 			this._mobileTouchResizer.connect(this._secondary);
-			console.log(getEventListeners(this._desktopkeyboardResizer));
 		}
 	}
 
