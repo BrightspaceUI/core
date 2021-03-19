@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../filter.js';
+			import '../filter-dimension-menu.js';
+			import '../filter-dimension-menu-item.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-filter">
+
+			<h2>Filter with Menu Items</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-filter>
+						<d2l-filter-dimension-menu name="Role">
+							<d2l-filter-dimension-menu-item text="Admin"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Student"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Teacher"></d2l-filter-dimension-menu-item>
+						</d2l-filter-dimension-menu>
+						<d2l-filter-dimension-menu name="Course">
+							<d2l-filter-dimension-menu-item text="Astronomy"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Biology"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Chemistry"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Drama"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="English"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Math"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Woodshop"></d2l-filter-dimension-menu-item>
+						</d2l-filter-dimension-menu>
+					</d2l-filter>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+		<script>
+		</script>
+
+	</body>
+</html>

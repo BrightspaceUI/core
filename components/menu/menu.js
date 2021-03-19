@@ -36,7 +36,8 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 			/**
 			 * @ignore
 			 */
-			role: { type: String, attribute: 'role' }
+			role: { type: String, attribute: 'role' },
+			noReturnItems: { type: Boolean, attribute: 'no-return-items' }
 		};
 	}
 
@@ -81,6 +82,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		super();
 		this.role = 'menu';
 		this._items = [];
+		this.noReturnItems = false;
 	}
 
 	connectedCallback() {
@@ -125,7 +127,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		changedProperties.forEach((oldValue, propName) => {
 			if (propName === 'label') this._labelChanged();
 
-			if (propName === 'childView' && this.childView) {
+			if (propName === 'childView' && this.childView && !this.noReturnItems) {
 				const items = this.shadowRoot.querySelector('.d2l-menu-items');
 				items.insertBefore(this._createReturnItem(), items.childNodes[0]);
 
