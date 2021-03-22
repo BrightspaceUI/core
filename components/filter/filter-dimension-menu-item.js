@@ -31,22 +31,7 @@ class FilterDimensionMenuItem extends LitElement {
 	}
 
 	render() {
-		return null;
-	}
-
-	renderItem() {
 		return html`
-			<style>
-				:host {
-					align-items: center;
-					display: flex;
-					padding: 0.75rem 1rem;
-				}
-				d2l-input-checkbox {
-					margin-bottom: 0;
-					pointer-events: none;
-				}
-			</style>
 			<d2l-menu-item-checkbox text="${this.text}" value="${this.text}" ?selected="${this.selected}"></d2l-menu-item-checkbox>
 		`;
 	}

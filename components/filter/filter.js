@@ -1,10 +1,13 @@
+import '../button/button-icon.js';
 import '../button/button-subtle.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-menu.js';
+import '../inputs/input-search.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { bodyStandardStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -22,10 +25,33 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [css`
+		return [bodyStandardStyles, css`
 			div[slot="header"] {
 				padding: 18px 6px 18px;
 				position: relative;
+			}
+			slot {
+				display: none;
+			}
+			d2l-input-search {
+				padding-right: 12px;
+			}
+			.back {
+				display: flex;
+				padding-bottom: 18px;
+			}
+			.header {
+				display: flex;
+				width: 100%;
+				align-self: center;
+				justify-content: center;
+    			padding-right: 42px;
+			}
+			.header-container {
+				display: flex;
+			}
+			.header-container d2l-button-subtle {
+				padding-right: 6px;;
 			}
 		`];
 	}
@@ -44,7 +70,16 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	render() {
 		const header = this._activeDimension ?
-			this._activeDimension.renderHeader() :
+			html`
+				<div class="back">
+					<d2l-button-icon @click="${this._onHideDimension}" icon="tier1:chevron-left" text="Back"></d2l-button-icon>
+					<div class="header d2l-body-standard">${this._activeDimension.name}</div>
+				</div>
+				<div class="header-container">
+					<d2l-button-subtle text="Clear"></d2l-button-subtle>
+					<d2l-input-search label="Search" placeholder="Search ${this._activeDimension.name}"></d2l-input-search>
+				</div>
+			` :
 			html`<d2l-button-subtle text="Clear All"></d2l-button-subtle>`;
 
 		const dimensions = this._getDimensions();
@@ -56,7 +91,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				<d2l-dropdown-menu min-width="300" no-padding-header>
 					<div slot="header">${header}</div>
 					<d2l-menu label="Filter">
-						<slot @d2l-filter-dimension-hide="${this._onHideDimension}" @d2l-filter-dimension-show="${this._onShowDimension}" @slotchange="${this._handleSlotChange}"></slot>
+						<slot @d2l-filter-dimension-change="${this._handleSlotChange}" @d2l-filter-dimension-show="${this._onShowDimension}" @slotchange="${this._handleSlotChange}"></slot>
 						${dimensions}
 					</d2l-menu>
 				</d2l-dropdown-menu>
@@ -67,7 +102,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_getDimensions() {
 		return this._dimensions.map(dimension => {
 			return html`<d2l-menu-item text="${dimension.name}">
-				${dimension.renderItems()}
+				${dimension.shadowRoot}
 			</d2l-menu-item>`;
 		});
 	}
@@ -84,10 +119,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_handleSlotChange() {
 		this._dimensions = this._getSlotItems();
+		console.log(this._dimensions);
 	}
 
-	_onHideDimension(e) {
-		this.shadowRoot.querySelector(`#${e.detail.dimension.name}`).hide();
+	_onHideDimension() {
+		this.shadowRoot.querySelector(`#${this._activeDimension.name}`).hide();
 		this._activeDimension = null;
 	}
 
