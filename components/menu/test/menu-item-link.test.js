@@ -1,4 +1,5 @@
 import '../menu-item-link.js';
+import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 describe('d2l-menu-item-link', () => {
@@ -7,6 +8,12 @@ describe('d2l-menu-item-link', () => {
 
 		it('should construct', () => {
 			runConstructor('d2l-menu-item-link');
+		});
+
+		it('should sprout "aria-label"', async() => {
+			// without explicit aria-label, Voiceover on iOS cannot find nested label inside <a> element
+			const elem = await fixture(html`<d2l-menu-item-link text="link text"></d2l-menu-item-link>`);
+			expect(elem.getAttribute('aria-label')).to.equal('link text');
 		});
 
 	});
