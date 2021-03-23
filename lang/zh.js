@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "进度指示符",
 	"components.more-less.less": "更少",
 	"components.more-less.more": "更多",
+	"components.overflow-group.moreActions": "更多操作",
 	"components.switch.visibility": "可见性",
 	"components.tabs.next": "向前滚动",
-	"components.tabs.previous": "向后滚动"
+	"components.tabs.previous": "向后滚动",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };

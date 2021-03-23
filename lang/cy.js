@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "Dangosydd Cynnydd",
 	"components.more-less.less": "llai",
 	"components.more-less.more": "mwy",
+	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.switch.visibility": "Gwelededd",
 	"components.tabs.next": "Sgrolio Ymlaen",
-	"components.tabs.previous": "Sgrolio Yn Ôl"
+	"components.tabs.previous": "Sgrolio Yn Ôl",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };

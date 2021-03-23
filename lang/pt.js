@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "Indicador de progresso",
 	"components.more-less.less": "menos",
 	"components.more-less.more": "mais",
+	"components.overflow-group.moreActions": "More Actions",
 	"components.switch.visibility": "Visibilidade",
 	"components.tabs.next": "Ir para frente",
-	"components.tabs.previous": "Ir para trás"
+	"components.tabs.previous": "Ir para trás",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };

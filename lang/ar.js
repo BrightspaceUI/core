@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "مؤشر التقدم",
 	"components.more-less.less": "أقل",
 	"components.more-less.more": "المزيد",
+	"components.overflow-group.moreActions": "مزيد من الإجراءات",
 	"components.switch.visibility": "إمكانية الرؤية",
 	"components.tabs.next": "التمرير إلى الأمام",
-	"components.tabs.previous": "التمرير إلى الخلف"
+	"components.tabs.previous": "التمرير إلى الخلف",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };
