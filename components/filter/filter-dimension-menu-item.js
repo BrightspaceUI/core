@@ -1,5 +1,4 @@
-import '../menu/menu-item-checkbox.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { LitElement } from 'lit-element/lit-element.js';
 
 class FilterDimensionMenuItem extends LitElement {
 
@@ -10,34 +9,22 @@ class FilterDimensionMenuItem extends LitElement {
 		};
 	}
 
-	static get styles() {
-		return [css`
-			d2l-input-checkbox {
-				margin-bottom: 0;
-				pointer-events: none;
-			}
-		`];
-	}
-
 	constructor() {
 		super();
 		this.selected = false;
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('d2l-menu-item-select', this._onMenuItemSelect);
-	}
-
-	render() {
-		return html`
-			<d2l-menu-item-checkbox text="${this.text}" value="${this.text}" ?selected="${this.selected}"></d2l-menu-item-checkbox>
-		`;
-	}
-
-	_onMenuItemSelect() {
-		this.selected = !this.selected;
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		//console.log(changedProperties);
+		changedProperties.forEach((_, prop) => {
+			if (prop === 'selected'  && changedProperties.get('selected') !== undefined) {
+				console.log('selected', this.selected);
+				this.dispatchEvent(new CustomEvent('d2l-filter-dimension-menu-item-change', { detail: { selected: this.selected }, bubbles: true, composed: false }));
+			} else if (prop === 'text' && changedProperties.get('text') !== undefined) {
+				console.log('text');
+			}
+		});
 	}
 
 }
