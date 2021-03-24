@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "進捗状況インジケータ",
 	"components.more-less.less": "減らす",
 	"components.more-less.more": "増やす",
+	"components.overflow-group.moreActions": "その他のアクション",
 	"components.switch.visibility": "表示",
 	"components.tabs.next": "前方にスクロール",
-	"components.tabs.previous": "後方にスクロール"
+	"components.tabs.previous": "後方にスクロール",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };

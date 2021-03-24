@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "Gelişim Göstergesi",
 	"components.more-less.less": "daha az",
 	"components.more-less.more": "daha fazla",
+	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.switch.visibility": "Görünürlük",
 	"components.tabs.next": "İleri Kaydır",
-	"components.tabs.previous": "Geri Kaydır"
+	"components.tabs.previous": "Geri Kaydır",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };

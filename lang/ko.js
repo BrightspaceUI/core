@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "진도 표시기",
 	"components.more-less.less": "축소",
 	"components.more-less.more": "더 보기",
+	"components.overflow-group.moreActions": "추가 작업",
 	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
-	"components.tabs.previous": "뒤로 스크롤"
+	"components.tabs.previous": "뒤로 스크롤",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };
