@@ -11,7 +11,10 @@ describe('d2l-overflow-group', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/overflow-group/test/overflow-group.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/overflow-group/test/overflow-group.visual-diff.html`, { 
+			waitUntil: ['networkidle0', 'load'],
+			timeout: 1000
+		});
 		await page.bringToFront();
 	});
 
