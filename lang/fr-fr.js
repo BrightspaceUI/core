@@ -49,7 +49,7 @@ export default {
 	"components.meter-mixin.progressIndicator": "Indicateur de progrès",
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
-	"components.overflow-group.moreActions": "Plus d’actions",
+	"components.overflow-group.moreActions": "Plus d'actions",
 	"components.switch.visibility": "Visibilité",
 	"components.tabs.next": "Faire défiler vers l'avant",
 	"components.tabs.previous": "Faire défiler vers l'arrière",
