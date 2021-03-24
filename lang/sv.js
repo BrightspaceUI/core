@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "Förloppsindikator",
 	"components.more-less.less": "mindre",
 	"components.more-less.more": "mer",
+	"components.overflow-group.moreActions": "Fler åtgärder",
 	"components.switch.visibility": "Synlighet",
 	"components.tabs.next": "Bläddra framåt",
-	"components.tabs.previous": "Bläddra bakåt"
+	"components.tabs.previous": "Bläddra bakåt",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };
