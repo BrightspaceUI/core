@@ -232,10 +232,17 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		if (returnItem) {
 			items.unshift(returnItem);
 		}
-		return items.filter((item) => {
+		let filteredItems = items.filter((item) => {
 			const role = item.getAttribute('role');
 			return (role === 'menuitem' || role === 'menuitemcheckbox' || role === 'menuitemradio' || item.tagName === 'D2L-MENU-ITEM-RETURN');
 		});
+		if (filteredItems.length === 0) {
+			filteredItems = items.map((item) => {
+				return item.giveMeMenuItem();
+			});
+		}
+
+		return filteredItems;
 	}
 
 	_isFocusable(item) {

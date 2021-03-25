@@ -106,11 +106,13 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 
-		this.__isChildView();
+		//this.__isChildView();
 
-		requestAnimationFrame(() => {
+		setTimeout(() => {
 			this.__autoSize(this);
 			this.__startResizeObserver();
+
+			this.__isChildView();
 
 			if (!this.childView) {
 				this.addEventListener('focus', this.__focusCapture, true);
@@ -118,7 +120,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				this.__onWindowResize = this.__onWindowResize.bind(this);
 				window.addEventListener('resize', this.__onWindowResize);
 			}
-		});
+		}, 100);
 	}
 
 	disconnectedCallback() {
@@ -159,12 +161,17 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		if (!this.childView) {
 			return this;
 		}
-		const rootView = findComposedAncestor(
+		let rootView = findComposedAncestor(
 			this.parentNode,
 			(node) => {
-				return node.hierarchicalView && !node.childView;
+				return (node.hierarchicalView && !node.childView) || (node.giveMeHierarchicalView && node.giveMeHierarchicalView() && node.giveMeHierarchicalView().hierarchicalView && !node.giveMeHierarchicalView().childView);;
 			}
 		);
+
+		if (!rootView.hierarchicalView) {
+			rootView = rootView.giveMeHierarchicalView();
+		}
+
 		return rootView;
 	}
 
@@ -355,12 +362,17 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__isChildView() {
-		const parentView = findComposedAncestor(
+		let parentView = findComposedAncestor(
 			this.parentNode,
-			(node) => { return node.hierarchicalView; }
+			(node) => {
+				return node.hierarchicalView || (node.giveMeHierarchicalView && node.giveMeHierarchicalView().hierarchicalView); }
 		);
 
-		if (parentView) {
+		if (parentView && !parentView.hierarchicalView) {
+			parentView = parentView.giveMeHierarchicalView();
+		}
+
+		if (parentView && parentView !== this) {
 			this.childView = true;
 		}
 	}

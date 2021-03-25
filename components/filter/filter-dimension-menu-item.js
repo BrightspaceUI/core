@@ -1,5 +1,5 @@
 import '../menu/menu-item-checkbox.js';
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 
 class FilterDimensionMenuItem extends LitElement {
 
@@ -10,30 +10,19 @@ class FilterDimensionMenuItem extends LitElement {
 		};
 	}
 
-	static get styles() {
-		return [css`
-			d2l-input-checkbox {
-				margin-bottom: 0;
-				pointer-events: none;
-			}
-		`];
-	}
-
 	constructor() {
 		super();
 		this.selected = false;
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('d2l-menu-item-select', this._onMenuItemSelect);
-	}
-
 	render() {
 		return html`
-			<d2l-menu-item-checkbox text="${this.text}" value="${this.text}" ?selected="${this.selected}"></d2l-menu-item-checkbox>
+			<d2l-menu-item-checkbox @d2l-menu-item-select="${this._onMenuItemSelect}" text="${this.text}" value="${this.text}" ?selected="${this.selected}"></d2l-menu-item-checkbox>
 		`;
+	}
+
+	giveMeMenuItem() {
+		return this.shadowRoot.querySelector('d2l-menu-item-checkbox');
 	}
 
 	_onMenuItemSelect() {
