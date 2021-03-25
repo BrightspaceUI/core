@@ -12,6 +12,8 @@ describe('d2l-overflow-group', () => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
 		await page.goto(`${visualDiff.getBaseUrl()}/components/overflow-group/test/overflow-group.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		// some tests were being excecuted before icons had time to load asnycronously causing
+		// the tests to be flaky, the 500ms delay ensures they have loaded before any tests begin execution
 		await page.waitForTimeout(500);
 		await page.bringToFront();
 	});
