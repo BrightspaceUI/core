@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "Statusindikator",
 	"components.more-less.less": "færre",
 	"components.more-less.more": "flere",
+	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",
-	"components.tabs.previous": "Rul tilbage"
+	"components.tabs.previous": "Rul tilbage",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };

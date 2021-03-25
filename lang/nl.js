@@ -49,7 +49,11 @@ export default {
 	"components.meter-mixin.progressIndicator": "Voortgangsindicator",
 	"components.more-less.less": "minder",
 	"components.more-less.more": "meer",
+	"components.overflow-group.moreActions": "Meer acties",
 	"components.switch.visibility": "Zichtbaarheid",
 	"components.tabs.next": "Naar voren scrollen",
-	"components.tabs.previous": "Naar achteren scrollen"
+	"components.tabs.previous": "Naar achteren scrollen",
+	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
+	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
+	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
 };
