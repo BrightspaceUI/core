@@ -156,7 +156,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 				}
 				.d2l-input-text-container {
 					flex: 1 1 auto;
-					position: relative;
+					position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
 				}
 				.d2l-input {
 					-webkit-appearance: textfield;

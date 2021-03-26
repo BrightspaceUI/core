@@ -45,7 +45,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			css`
 				:host {
 					display: inline-block;
-					position: relative;
+					position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
 					width: 100%;
 				}
 				:host([hidden]) {
