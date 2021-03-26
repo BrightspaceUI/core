@@ -27,7 +27,13 @@ function getInnerInputValue(elem) {
 	return elem.shadowRoot.querySelector('d2l-input-text').value;
 }
 
-describe('d2l-input-number', () => {
+async function setInnerInputValue(elem, value) {
+	const inputTextElement = elem.shadowRoot.querySelector('d2l-input-text');
+	inputTextElement.value = value;
+	setTimeout(() => dispatchEvent(inputTextElement, 'change'));
+}
+
+describe.only('d2l-input-number', () => {
 
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	afterEach(() => {
@@ -245,9 +251,7 @@ describe('d2l-input-number', () => {
 			const elem = await fixture(defaultValueFixture); // value = 1.1
 			await aTimeout(1);
 
-			const inputTextElement = elem.shadowRoot.querySelector('d2l-input-text');
-			inputTextElement.value = '123';
-			dispatchEvent(inputTextElement, 'change');
+			setInnerInputValue(elem, '123');
 			await oneEvent(elem, 'change');
 
 			expect(elem.value).to.equal(123);
@@ -258,12 +262,67 @@ describe('d2l-input-number', () => {
 			let fired = false;
 			elem.addEventListener('change', () => { fired = true; });
 
-			const inputTextElement = elem.shadowRoot.querySelector('d2l-input-text');
-			inputTextElement.value = '1.1000';
-			dispatchEvent(inputTextElement, 'change');
+			setInnerInputValue(elem, '1.1000');
 			await aTimeout(1);
 
 			expect(fired).to.be.false;
 		});
+	});
+
+	describe('trailing zeroes', () => {
+
+		const trailingZeroesFixture = html`<d2l-input-number label="label" value-trailing-zeroes="1.00" trailing-zeroes></d2l-input-number>`;
+
+		it('should preserve initial trailing zeroes', async() => {
+			const elem = await fixture(trailingZeroesFixture);
+			expect(elem.value).to.equal(1);
+			expect(elem._formattedValue).to.equal('1.00');
+		});
+
+		it('should cap initial trailing zeroes at max-fraction-digits', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value-trailing-zeroes="1.00000" trailing-zeroes max-fraction-digits="4"></d2l-input-number>`);
+			expect(elem.value).to.equal(1);
+			expect(elem._formattedValue).to.equal('1.0000');
+		});
+
+		it('should have no cap if max-fraction-digits is not set', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value-trailing-zeroes="-5.0000000" trailing-zeroes></d2l-input-number>`);
+			expect(elem.value).to.equal(-5);
+			expect(elem._formattedValue).to.equal('-5.0000000');
+		});
+
+		it('should preserve trailing zeroes after user interaction', async() => {
+			const elem = await fixture(trailingZeroesFixture);
+			setInnerInputValue(elem, '2.00');
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal(2);
+			expect(elem._formattedValue).to.equal('2.00');
+		});
+
+		it('should preserve trailing zeroes after user interaction with no initial value', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" trailing-zeroes></d2l-input-number>`);
+			expect(elem.value).to.be.undefined;
+			expect(elem._formattedValue).to.equal('');
+			setInnerInputValue(elem, '2.00');
+			await oneEvent(elem, 'change');
+			expect(elem.value).to.equal(2);
+			expect(elem._formattedValue).to.equal('2.00');
+		});
+
+		it('should preserve trailing zeroes after setAttribute', async() => {
+			const elem = await fixture(trailingZeroesFixture);
+			elem.setAttribute('value-trailing-zeroes', '1234.29000');
+			await elem.updateComplete;
+			expect(elem.value).to.equal(1234.29);
+			expect(elem._formattedValue).to.equal('1,234.29000');
+		});
+
+		it('should forget trailing zeroes when value is set directly', async() => {
+			const elem = await fixture(trailingZeroesFixture);
+			elem.value = 2;
+			await elem.updateComplete;
+			expect(elem._formattedValue).to.equal('2');
+		});
+
 	});
 });
