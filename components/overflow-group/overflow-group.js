@@ -15,7 +15,7 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { throttle } from 'lodash-es';
+import throttle from 'lodash-es/throttle';
 
 const AUTO_SHOW_CLASS = 'd2l-button-group-show';
 const AUTO_NO_SHOW_CLASS = 'd2l-button-group-no-show';
@@ -33,8 +33,13 @@ const OPENER_STYLE = {
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
 	const disabled = node.disabled;
-	return html`<d2l-menu-item 
+	const handleItemSelect = () => {
+		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
+		node.click();
+	};
+	return html`<d2l-menu-item
 		?disabled=${disabled}
+		@d2l-menu-item-select=${handleItemSelect}
 		text="${childText}">
 	</d2l-menu-item>`;
 }
