@@ -33,9 +33,13 @@ const OPENER_STYLE = {
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
 	const disabled = node.disabled;
-	return html`<d2l-menu-item 
-		@click=${node.onclick}
+	const handleItemSelect = () => {
+		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
+		node.click();
+	};
+	return html`<d2l-menu-item
 		?disabled=${disabled}
+		@d2l-menu-item-select=${handleItemSelect}
 		text="${childText}">
 	</d2l-menu-item>`;
 }
