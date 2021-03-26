@@ -19,7 +19,7 @@ export const inputStyles = css`
 		margin: 0;
 		min-height: calc(2rem + 2px);
 		min-width: calc(2rem + 1em);
-		position: relative;
+		position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
 		text-align: var(--d2l-input-text-align, start);
 		vertical-align: middle;
 		width: 100%;
