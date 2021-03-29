@@ -165,6 +165,21 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		this.requestUpdate('value', oldValue);
 	}
 
+	get validationMessage() {
+		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
+			const minDate = this.minValue ? formatDateTime(this.localized ? getDateNoConversion(this.minValue) : getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;
+			const maxDate = this.maxValue ? formatDateTime(this.localized ? getDateNoConversion(this.maxValue) : getDateFromISODateTime(this.maxValue), { format: 'medium' }) : null;
+			if (minDate && maxDate) {
+				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
+			} else if (maxDate) {
+				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
+			} else if (this.minValue) {
+				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
+			}
+		}
+		return super.validationMessage;
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -267,21 +282,6 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		const timeInput = this.shadowRoot.querySelector('d2l-input-time');
 		const errors = await Promise.all([dateInput.validate(), timeInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1], ...errors[2]];
-	}
-
-	get validationMessage() {
-		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const minDate = this.minValue ? formatDateTime(this.localized ? getDateNoConversion(this.minValue) : getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;
-			const maxDate = this.maxValue ? formatDateTime(this.localized ? getDateNoConversion(this.maxValue) : getDateFromISODateTime(this.maxValue), { format: 'medium' }) : null;
-			if (minDate && maxDate) {
-				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
-			} else if (maxDate) {
-				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
-			} else if (this.minValue) {
-				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
-			}
-		}
-		return super.validationMessage;
 	}
 
 	_dispatchChangeEvent() {

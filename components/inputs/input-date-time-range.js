@@ -168,6 +168,13 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this._slotOccupied = false;
 	}
 
+	get validationMessage() {
+		if (this.validity.badInput) {
+			return this.localize('components.input-date-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+		}
+		return super.validationMessage;
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -285,13 +292,6 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		const endDateTimeInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-end');
 		const errors = await Promise.all([startDateTimeInput.validate(), endDateTimeInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1], ...errors[2]];
-	}
-
-	get validationMessage() {
-		if (this.validity.badInput) {
-			return this.localize('components.input-date-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
-		}
-		return super.validationMessage;
 	}
 
 	get _computedEndLabel() {

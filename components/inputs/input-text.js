@@ -237,6 +237,31 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._handleMouseLeave = this._handleMouseLeave.bind(this);
 	}
 
+	get validationMessage() {
+		if (this.validity.rangeOverflow) {
+			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)), maxExclusive: false });
+		} else if (this.validity.rangeUnderflow) {
+			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)), minExclusive: false });
+		} else if (this.validity.tooShort) {
+			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
+		} else if (this.validity.typeMismatch) {
+			if (this.type === 'email') {
+				return this.localize('components.form-element.input.email.typeMismatch');
+			} else if (this.type === 'url') {
+				return this.localize('components.form-element.input.url.typeMismatch');
+			}
+		}
+		return super.validationMessage;
+	}
+
+	get validity() {
+		const elem = this.shadowRoot.querySelector('.d2l-input');
+		if (!elem.validity.valid) {
+			return elem.validity;
+		}
+		return super.validity;
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		const container = this.shadowRoot.querySelector('.d2l-input-text-container');
@@ -386,31 +411,6 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			await this.updateComplete;
 			this.focus();
 		}
-	}
-
-	get validationMessage() {
-		if (this.validity.rangeOverflow) {
-			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)), maxExclusive: false });
-		} else if (this.validity.rangeUnderflow) {
-			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)), minExclusive: false });
-		} else if (this.validity.tooShort) {
-			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
-		} else if (this.validity.typeMismatch) {
-			if (this.type === 'email') {
-				return this.localize('components.form-element.input.email.typeMismatch');
-			} else if (this.type === 'url') {
-				return this.localize('components.form-element.input.url.typeMismatch');
-			}
-		}
-		return super.validationMessage;
-	}
-
-	get validity() {
-		const elem = this.shadowRoot.querySelector('.d2l-input');
-		if (!elem.validity.valid) {
-			return elem.validity;
-		}
-		return super.validity;
 	}
 
 	_getAriaLabel() {

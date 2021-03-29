@@ -46,18 +46,6 @@ class DragState {
 		this._time = 0;
 	}
 
-	addDropTarget(dropTarget) {
-		if (dropTarget && !this._dropTargets.has(dropTarget)) {
-			this._dropTargets.set(dropTarget, null);
-		}
-	}
-
-	clear() {
-		this._cleanUpOnLeave();
-		this._dropTargets.forEach((_, dropTarget) => dropTarget._draggingOver = false);
-		this._dropTargets.clear();
-	}
-
 	get dragTarget() {
 		return this._dragTarget;
 	}
@@ -76,6 +64,18 @@ class DragState {
 
 	get dropTargetKey() {
 		return this._activeDropTarget && this._activeDropTarget.key;
+	}
+
+	addDropTarget(dropTarget) {
+		if (dropTarget && !this._dropTargets.has(dropTarget)) {
+			this._dropTargets.set(dropTarget, null);
+		}
+	}
+
+	clear() {
+		this._cleanUpOnLeave();
+		this._dropTargets.forEach((_, dropTarget) => dropTarget._draggingOver = false);
+		this._dropTargets.clear();
 	}
 
 	setActiveDropTarget(dropTarget, dropLocation) {

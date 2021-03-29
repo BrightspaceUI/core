@@ -18,17 +18,6 @@ class FormElement extends FormElementMixin(LitElement) {
 		this.value = '';
 	}
 
-	render() {
-		return html`
-			<div>
-				<h1>Test Form Element</h1>
-				<input type="text" required .value="${this.value}"/>
-				<d2l-validation-custom @d2l-validation-custom-validate=${this._validate} failure-text="Internal custom validation failed">
-				</d2l-validation-custom>
-			</div>
-		`;
-	}
-
 	get label() {
 		return 'Test form element';
 	}
@@ -46,6 +35,17 @@ class FormElement extends FormElementMixin(LitElement) {
 			return input.validity;
 		}
 		return super.validity;
+	}
+
+	render() {
+		return html`
+			<div>
+				<h1>Test Form Element</h1>
+				<input type="text" required .value="${this.value}"/>
+				<d2l-validation-custom @d2l-validation-custom-validate=${this._validate} failure-text="Internal custom validation failed">
+				</d2l-validation-custom>
+			</div>
+		`;
 	}
 
 	async _validate(e) {

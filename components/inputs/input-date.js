@@ -145,6 +145,21 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
+	get validationMessage() {
+		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
+			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;
+			const maxDate = this.maxValue ? formatDate(getDateFromISODate(this.maxValue), { format: 'medium' }) : null;
+			if (minDate && maxDate) {
+				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
+			} else if (maxDate) {
+				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
+			} else if (this.minValue) {
+				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
+			}
+		}
+		return super.validationMessage;
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -275,21 +290,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		const textInput = this.shadowRoot.querySelector('d2l-input-text');
 		const errors = await Promise.all([textInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1]];
-	}
-
-	get validationMessage() {
-		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;
-			const maxDate = this.maxValue ? formatDate(getDateFromISODate(this.maxValue), { format: 'medium' }) : null;
-			if (minDate && maxDate) {
-				return this.localize(`${this._namespace}.errorOutsideRange`, { minDate, maxDate });
-			} else if (maxDate) {
-				return this.localize(`${this._namespace}.errorMaxDateOnly`, { maxDate });
-			} else if (this.minValue) {
-				return this.localize(`${this._namespace}.errorMinDateOnly`, { minDate });
-			}
-		}
-		return super.validationMessage;
 	}
 
 	_handleBlur() {
