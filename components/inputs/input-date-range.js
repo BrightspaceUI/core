@@ -123,6 +123,13 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this._endInputId = getUniqueId();
 	}
 
+	get validationMessage() {
+		if (this.validity.badInput) {
+			return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+		}
+		return super.validationMessage;
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -230,13 +237,6 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		const endDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-end');
 		const errors = await Promise.all([startDateInput.validate(), endDateInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1], ...errors[2]];
-	}
-
-	get validationMessage() {
-		if (this.validity.badInput) {
-			return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
-		}
-		return super.validationMessage;
 	}
 
 	get _computedEndLabel() {

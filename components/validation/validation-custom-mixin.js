@@ -14,6 +14,10 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 		this._forElement = null;
 	}
 
+	get forElement() {
+		return this._forElement;
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		this._updateForElement();
@@ -37,10 +41,6 @@ export const ValidationCustomMixin = superclass => class extends superclass {
 				this._updateForElement();
 			}
 		});
-	}
-
-	get forElement() {
-		return this._forElement;
 	}
 
 	async validate() {

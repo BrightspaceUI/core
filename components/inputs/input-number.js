@@ -88,6 +88,21 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this.requestUpdate('value', oldValue);
 	}
 
+	get validationMessage() {
+		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
+			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
+			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
+			if (minNumber && maxNumber) {
+				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max: maxNumber, minExclusive: this.minExclusive, maxExclusive: this.maxExclusive });
+			} else if (maxNumber) {
+				return this.localize('components.form-element.input.number.rangeOverflow', { max: maxNumber, maxExclusive: this.maxExclusive });
+			} else if (minNumber) {
+				return this.localize('components.form-element.input.number.rangeUnderflow', { min: minNumber, minExclusive: this.minExclusive });
+			}
+		}
+		return super.validationMessage;
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (!this.label) {
@@ -168,21 +183,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		const childErrors = await inputTextElem.validate();
 		const errors = await super.validate();
 		return [...childErrors, ...errors];
-	}
-
-	get validationMessage() {
-		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
-			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
-			if (minNumber && maxNumber) {
-				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max: maxNumber, minExclusive: this.minExclusive, maxExclusive: this.maxExclusive });
-			} else if (maxNumber) {
-				return this.localize('components.form-element.input.number.rangeOverflow', { max: maxNumber, maxExclusive: this.maxExclusive });
-			} else if (minNumber) {
-				return this.localize('components.form-element.input.number.rangeUnderflow', { min: minNumber, minExclusive: this.minExclusive });
-			}
-		}
-		return super.validationMessage;
 	}
 
 	async _handleChange(e) {

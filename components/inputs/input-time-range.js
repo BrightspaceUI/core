@@ -155,6 +155,13 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this.requestUpdate('startValue', oldValue);
 	}
 
+	get validationMessage() {
+		if (this.validity.badInput) {
+			return this.localize('components.input-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
+		}
+		return super.validationMessage;
+	}
+
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
@@ -283,13 +290,6 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		const endTimeInput = this.shadowRoot.querySelector('.d2l-input-time-range-end');
 		const errors = await Promise.all([startTimeInput.validate(), endTimeInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1], ...errors[2]];
-	}
-
-	get validationMessage() {
-		if (this.validity.badInput) {
-			return this.localize('components.input-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
-		}
-		return super.validationMessage;
 	}
 
 	get _computedEndLabel() {

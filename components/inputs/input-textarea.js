@@ -147,6 +147,26 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		this._textareaId = getUniqueId();
 	}
 
+	get textarea() {
+		// temporary until consumers are updated
+		return this.shadowRoot.querySelector('textarea');
+	}
+
+	get validationMessage() {
+		if (this.validity.tooShort) {
+			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
+		}
+		return super.validationMessage;
+	}
+
+	get validity() {
+		const elem = this.shadowRoot.querySelector('textarea');
+		if (!elem.validity.valid) {
+			return elem.validity;
+		}
+		return super.validity;
+	}
+
 	render() {
 
 		// convert \n to <br> for html mirror
@@ -236,26 +256,6 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			await this.updateComplete;
 			this.select();
 		}
-	}
-
-	get textarea() {
-		// temporary until consumers are updated
-		return this.shadowRoot.querySelector('textarea');
-	}
-
-	get validationMessage() {
-		if (this.validity.tooShort) {
-			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
-		}
-		return super.validationMessage;
-	}
-
-	get validity() {
-		const elem = this.shadowRoot.querySelector('textarea');
-		if (!elem.validity.valid) {
-			return elem.validity;
-		}
-		return super.validity;
 	}
 
 	_getAriaLabel() {

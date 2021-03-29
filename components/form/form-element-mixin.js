@@ -3,21 +3,6 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 
 export class FormElementValidityState {
 
-	static get supportedFlags() {
-		return {
-			valueMissing: false,
-			typeMismatch: false,
-			patternMismatch: false,
-			tooLong: false,
-			tooShort: false,
-			rangeUnderflow: false,
-			rangeOverflow: false,
-			stepMismatch: false,
-			badInput: false,
-			customError: false
-		};
-	}
-
 	constructor(flags) {
 		const flagNames = Object.keys(flags);
 		const invalidFlags = flagNames.filter(name => !(name in FormElementValidityState.supportedFlags));
@@ -55,6 +40,21 @@ export class FormElementValidityState {
 
 	get stepMismatch() {
 		return this.flags.stepMismatch;
+	}
+
+	static get supportedFlags() {
+		return {
+			valueMissing: false,
+			typeMismatch: false,
+			patternMismatch: false,
+			tooLong: false,
+			tooShort: false,
+			rangeUnderflow: false,
+			rangeOverflow: false,
+			stepMismatch: false,
+			badInput: false,
+			customError: false
+		};
 	}
 
 	get tooLong() {
@@ -111,6 +111,22 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
 	}
 
+	get formAssociated() {
+		return true;
+	}
+
+	get validationMessage() {
+		const label = this.label || this.localize('components.form-element.defaultFieldLabel');
+		if (this.validity.valueMissing) {
+			return this.localize('components.form-element.valueMissing', { label });
+		}
+		return this.localize('components.form-element.defaultError', { label });
+	}
+
+	get validity() {
+		return this._validity;
+	}
+
 	updated(changedProperties) {
 		if (changedProperties.has('_errors') || changedProperties.has('childErrors')) {
 			let errors = this._errors;
@@ -127,10 +143,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				this.dispatchEvent(new CustomEvent('invalid-change'));
 			}
 		}
-	}
-
-	get formAssociated() {
-		return true;
 	}
 
 	async requestValidate(showNewErrors = true) {
@@ -174,18 +186,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	validationCustomDisconnected(custom) {
 		this._validationCustoms.delete(custom);
-	}
-
-	get validationMessage() {
-		const label = this.label || this.localize('components.form-element.defaultFieldLabel');
-		if (this.validity.valueMissing) {
-			return this.localize('components.form-element.valueMissing', { label });
-		}
-		return this.localize('components.form-element.defaultError', { label });
-	}
-
-	get validity() {
-		return this._validity;
 	}
 
 	_onFormElementErrorsChange(e) {
