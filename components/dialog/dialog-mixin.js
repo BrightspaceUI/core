@@ -36,6 +36,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 */
 			titleText: { type: String, attribute: 'title-text' },
 			_autoSize: { type: Boolean, attribute: false },
+			_fullscreenWithin: { type: Number },
 			_height: { type: Number },
 			_left: { type: Number },
 			_margin: { type: Object },
@@ -55,6 +56,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.opened = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
+		this._fullscreenWithin = 0;
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._height = 0;
 		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
@@ -260,6 +262,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusFirst();
 	}
 
+	_handleFullscreenWithin(e) {
+		if (e.detail.state) this._fullscreenWithin += 1;
+		else this._fullscreenWithin -= 1;
+	}
+
 	_handleKeyDown(e) {
 		if (!this.opened) return;
 		if (e.keyCode === 27) {
@@ -342,7 +349,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			'd2l-dialog-outer-overflow-bottom': this._overflowBottom,
 			'd2l-dialog-outer-overflow-top': this._overflowTop,
 			'd2l-dialog-outer-nested': !this._useNative && this._parentDialog,
-			'd2l-dialog-outer-nested-showing': !this._useNative && this._nestedShowing
+			'd2l-dialog-outer-nested-showing': !this._useNative && this._nestedShowing,
+			'd2l-dialog-fullscreen-within': this._fullscreenWithin !== 0
 		};
 
 		inner = html`<d2l-focus-trap
@@ -358,6 +366,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				class="${classMap(dialogOuterClasses)}"
 				@click="${this._handleClick}"
 				@close="${this._handleClose}"
+				@d2l-fullscreen-within="${this._handleFullscreenWithin}"
 				id="${this._dialogId}"
 				@keydown="${this._handleKeyDown}"
 				role="${info.role}"
@@ -371,6 +380,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				@click="${this._handleClick}"
 				@d2l-dialog-close="${this._handleDialogClose}"
 				@d2l-dialog-open="${this._handleDialogOpen}"
+				@d2l-fullscreen-within="${this._handleFullscreenWithin}"
 				id="${this._dialogId}"
 				role="${info.role}"
 				style=${styleMap(styles)}>

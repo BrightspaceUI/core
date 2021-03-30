@@ -103,6 +103,43 @@ describe('d2l-dialog', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
+				it('fullscreen-within-on', async function() {
+					await helper.open(page, '#dialog');
+					page.$eval('#top', childElem => {
+						childElem.dispatchEvent(new CustomEvent(
+							'd2l-fullscreen-within', {
+								bubbles: true,
+								composed: true,
+								detail: { 'state': true }
+							}
+						));
+					});
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
+
+				it('fullscreen-within-off', async function() {
+					await helper.open(page, '#dialog');
+					page.$eval('#top', childElem => {
+						childElem.dispatchEvent(new CustomEvent(
+							'd2l-fullscreen-within', {
+								bubbles: true,
+								composed: true,
+								detail: { 'state': true }
+							}
+						));
+						requestAnimationFrame(() => {
+							childElem.dispatchEvent(new CustomEvent(
+								'd2l-fullscreen-within', {
+									bubbles: true,
+									composed: true,
+									detail: { 'state': false }
+								}
+							));
+						});
+					});
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
+
 			});
 
 		});
