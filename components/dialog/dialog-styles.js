@@ -120,6 +120,18 @@ export const dialogStyles = css`
 		margin-right: 0;
 	}
 
+	dialog.d2l-dialog-outer.d2l-dialog-fullscreen-within,
+	div.d2l-dialog-outer.d2l-dialog-fullscreen-within {
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		height: 100% !important;
+		max-height: initial; /* required to override Chrome native positioning */
+		max-width: initial; /* required to override Chrome native positioning */
+		top: 0;
+		width: 100% !important;
+	}
+
 	@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 		.d2l-dialog-header {
 			padding: 14px 20px 16px 20px;

@@ -37,6 +37,7 @@ module.exports = {
 	async reset(page, selector) {
 		await page.$eval(selector, (dialog) => {
 			return new Promise((resolve) => {
+				dialog._fullscreenWithin = 0;
 				dialog.shadowRoot.querySelector('.d2l-dialog-content').scrollTo(0, 0);
 				if (dialog._state) {
 					dialog.addEventListener('d2l-dialog-close', () => resolve(), { once: true });
