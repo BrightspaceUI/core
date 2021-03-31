@@ -8,7 +8,7 @@ describe('d2l-input-number', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-number.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -33,7 +33,8 @@ describe('d2l-input-number', () => {
 		'disabled',
 		'placeholder',
 		'default-value',
-		'after-slot'
+		'after-slot',
+		'trailing-zeroes'
 	].forEach((name) => {
 		it(name, async function() {
 			const rect = await visualDiff.getRect(page, `#${name}`);

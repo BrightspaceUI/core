@@ -1,18 +1,50 @@
 import './input-text.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
+import { formatNumber, getNumberDescriptor, parseNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-function formatValue(value, minFractionDigits, maxFractionDigits) {
+function formatValue(value, minFractionDigits, maxFractionDigits, showTrailingZeroes, numDecimalDigits) {
+	let adjustedMinFractionDigits = minFractionDigits;
+	if (showTrailingZeroes && numDecimalDigits > 0) {
+		adjustedMinFractionDigits = Math.max(minFractionDigits || 0, numDecimalDigits);
+		if (maxFractionDigits !== undefined) {
+			adjustedMinFractionDigits = Math.min(
+				adjustedMinFractionDigits,
+				maxFractionDigits
+			);
+		}
+	}
 	const options = {
 		maximumFractionDigits: maxFractionDigits,
-		minimumFractionDigits: minFractionDigits
+		minimumFractionDigits: adjustedMinFractionDigits
 	};
 	return formatNumber(value, options);
+}
+
+function countDecimalDigits(value) {
+
+	if (value === undefined || value === null) {
+		return undefined;
+	}
+
+	const descriptor = getNumberDescriptor();
+
+	let numDecimalDigits = 0;
+	for (let i = value.length - 1; i > -1; i--) {
+		const c = value.charAt(i);
+		if (c === descriptor.symbols.decimal) {
+			return numDecimalDigits;
+		} else {
+			numDecimalDigits++;
+		}
+	}
+
+	return undefined;
+
 }
 
 class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
@@ -35,8 +67,10 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			placeholder: { type: String },
 			required: { type: Boolean },
 			title: { type: String },
+			trailingZeroes: { type: Boolean, attribute: 'trailing-zeroes' },
 			unit: { type: String },
 			value: { type: Number },
+			valueTrailingZeroes: { String, attribute: 'value-trailing-zeroes' },
 			_formattedValue: { type: String }
 		};
 	}
@@ -65,9 +99,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this.maxExclusive = false;
 		this.minExclusive = false;
 		this.required = false;
+		this.trailingZeroes = false;
 
 		this._formattedValue = '';
 		this._inputId = getUniqueId();
+		this._numDecimalDigits = 0;
 	}
 
 	get value() { return this._value; }
@@ -78,13 +114,20 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				this._formattedValue = '';
 				this._value = undefined;
 			} else {
-				this._formattedValue = formatValue(val, this.minFractionDigits, this.maxFractionDigits);
+				this._formattedValue = formatValue(
+					val,
+					this.minFractionDigits,
+					this.maxFractionDigits,
+					this.trailingZeroes,
+					this._numDecimalDigits
+				);
 				this._value = parseNumber(this._formattedValue);
 			}
 		} catch (err) {
 			this._formattedValue = '';
 			this._value = undefined;
 		}
+		this._numDecimalDigits = 0;
 		this.requestUpdate('value', oldValue);
 	}
 
@@ -110,7 +153,13 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		}
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			if (this._formattedValue.length > 0) {
-				this._formattedValue = formatValue(this.value, this.minFractionDigits, this.maxFractionDigits);
+				this._formattedValue = formatValue(
+					this.value,
+					this.minFractionDigits,
+					this.maxFractionDigits,
+					this.trailingZeroes,
+					this._numDecimalDigits
+				);
 			}
 		});
 	}
@@ -168,6 +217,10 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 					rangeOverflow: rangeOverflowCondition
 				});
 				this.requestValidate(true);
+			} else if (prop === 'valueTrailingZeroes' && this.trailingZeroes) {
+				this._numDecimalDigits = countDecimalDigits(this.valueTrailingZeroes);
+				const parsedValue = parseFloat(this.valueTrailingZeroes);
+				this.value = isNaN(parsedValue) ? null : parsedValue;
 			}
 		});
 	}
@@ -190,6 +243,9 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this._formattedValue = value;
 		await this.updateComplete;
 		const oldValue = this.value;
+		if (this.trailingZeroes) {
+			this._numDecimalDigits = countDecimalDigits(value);
+		}
 		this.value = value.trim() === '' ? NaN : parseNumber(value);
 
 		if (oldValue !== this.value) {
