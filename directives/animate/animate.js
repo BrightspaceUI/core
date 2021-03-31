@@ -86,23 +86,47 @@ class AnimationState {
 		const style = window.getComputedStyle(this.elem);
 
 		const styleAttr = this.elem.getAttribute('style');
-		if (style.display !== 'flex') {
-			this.elem.style.display = 'grid'; // forces margins to collapse during size calculation
-		}
 
 		const rect = this.elem.getBoundingClientRect();
 		const top = this.elem.offsetTop - (this.elem.scrollTop || 0);
 		const left = this.elem.offsetLeft - (this.elem.scrollLeft || 0);
 		const marginsH = (parseInt(style.marginLeft) || 0) + (parseInt(style.marginRight) || 0);
-		const marginsV = (parseInt(style.marginTop) || 0) + (parseInt(style.marginBottom) || 0);
+		const originalHeight = rect.height;
+
+		const paddingTemp = 1;
+		const marginTParent = (parseInt(style.marginTop) || 0);
+		this.elem.style.paddingTop = `${paddingTemp}px`; // forces top margin to NOT collapse between parent and topmost child!
+		const marginTChild = (this.elem.getBoundingClientRect().height - paddingTemp - originalHeight || 0);
+		let marginT;
+		if (marginTParent < 0 && marginTChild < 0) {
+			marginT = Math.min(marginTParent, marginTChild);
+		} else if (marginTParent < 0 || marginTChild < 0) {
+			marginT = marginTParent + marginTChild;
+		} else {
+			marginT = Math.max(marginTParent, marginTChild);
+		}
+		this.elem.style.paddingTop = `0px`;
+
+		const marginBParent = (parseInt(style.marginBottom) || 0);
+		this.elem.style.paddingBottom = `${paddingTemp}px`; // forces bottom margin to NOT collapse between parent and bottommost child!
+		const marginBChild = (this.elem.getBoundingClientRect().height - paddingTemp - originalHeight || 0);
+		let marginB;
+		if (marginBParent < 0 && marginBChild < 0) {
+			marginB = Math.min(marginBParent, marginBChild);
+		} else if (marginBParent < 0 || marginBChild < 0) {
+			marginB = marginBParent + marginBChild;
+		} else {
+			marginB = Math.max(marginBParent, marginBChild);
+		}
+		this.elem.style.paddingBottom = `0px`;
+
+		const marginsV = marginT + marginB;
 
 		let cloneHeight = 0;
 		if (this.clone !== null) {
 			const cloneRect = this.clone.getBoundingClientRect();
 			cloneHeight = cloneRect.height;
 		}
-
-		this.elem.style.removeProperty('display');
 
 		return {
 			clone: {
