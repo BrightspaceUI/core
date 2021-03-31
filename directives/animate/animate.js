@@ -4,8 +4,8 @@ import { isComposedAncestor } from '../../helpers/dom.js';
 
 const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const showTransitionDuration = 300;
-const hideTransitionDuration = 200;
+const showTransitionDuration = 3000;
+const hideTransitionDuration = 2000;
 const moveYValue = 20;
 
 class AnimationState {
@@ -88,8 +88,6 @@ class AnimationState {
 		const styleAttr = this.elem.getAttribute('style');
 
 		const rect = this.elem.getBoundingClientRect();
-		const top = this.elem.offsetTop - (this.elem.scrollTop || 0);
-		const left = this.elem.offsetLeft - (this.elem.scrollLeft || 0);
 		const marginsH = (parseInt(style.marginLeft) || 0) + (parseInt(style.marginRight) || 0);
 		const originalHeight = rect.height;
 
@@ -121,6 +119,9 @@ class AnimationState {
 		this.elem.style.paddingBottom = `0px`;
 
 		const marginsV = marginT + marginB;
+
+		const top = this.elem.offsetTop - (this.elem.scrollTop || 0) - marginT;
+		const left = this.elem.offsetLeft - (this.elem.scrollLeft || 0);
 
 		let cloneHeight = 0;
 		if (this.clone !== null) {
