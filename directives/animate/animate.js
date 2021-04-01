@@ -118,7 +118,7 @@ class AnimationState {
 		if (paddingTopOriginal) {
 			this.elem.style.paddingTop = `${paddingTopOriginal}px`;
 		} else {
-			this.elem.style.removeProperty('padding-top')
+			this.elem.style.removeProperty('padding-top');
 		}
 
 		const paddingBottomOriginal = (parseInt(this.elem.style.paddingBottom) || 0);
@@ -129,7 +129,7 @@ class AnimationState {
 		if (paddingBottomOriginal) {
 			this.elem.style.paddingBottom = `${paddingBottomOriginal}px`;
 		} else {
-			this.elem.style.removeProperty('padding-bottom')
+			this.elem.style.removeProperty('padding-bottom');
 		}
 
 		const marginsV = marginT + marginB;
