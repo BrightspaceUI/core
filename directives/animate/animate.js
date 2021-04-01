@@ -92,9 +92,11 @@ class AnimationState {
 		const originalHeight = rect.height;
 
 		const paddingTemp = 1;
+
+		const paddingTopOriginal = parseInt(this.elem.style.paddingTop || 0);
 		const marginTParent = (parseInt(style.marginTop) || 0);
 		this.elem.style.paddingTop = `${paddingTemp}px`; // forces top margin to NOT collapse between parent and topmost child!
-		const marginTChild = (this.elem.getBoundingClientRect().height - paddingTemp - originalHeight || 0);
+		const marginTChild = (this.elem.getBoundingClientRect().height - paddingTemp + paddingTopOriginal - originalHeight || 0);
 		let marginT;
 		if (marginTParent < 0 && marginTChild < 0) {
 			marginT = Math.min(marginTParent, marginTChild);
@@ -103,11 +105,17 @@ class AnimationState {
 		} else {
 			marginT = Math.max(marginTParent, marginTChild);
 		}
-		this.elem.style.paddingTop = `0px`;
+		if (paddingTopOriginal) {
+			console.log(paddingTopOriginal)
+			this.elem.style.paddingTop = `${paddingTopOriginal}px`;
+		} else {
+			this.elem.style.removeProperty('padding-top')
+		}
 
+		const paddingBottomOriginal = parseInt(this.elem.style.paddingBottom || 0);
 		const marginBParent = (parseInt(style.marginBottom) || 0);
 		this.elem.style.paddingBottom = `${paddingTemp}px`; // forces bottom margin to NOT collapse between parent and bottommost child!
-		const marginBChild = (this.elem.getBoundingClientRect().height - paddingTemp - originalHeight || 0);
+		const marginBChild = (this.elem.getBoundingClientRect().height - paddingTemp + paddingBottomOriginal - originalHeight || 0);
 		let marginB;
 		if (marginBParent < 0 && marginBChild < 0) {
 			marginB = Math.min(marginBParent, marginBChild);
@@ -116,7 +124,11 @@ class AnimationState {
 		} else {
 			marginB = Math.max(marginBParent, marginBChild);
 		}
-		this.elem.style.paddingBottom = `0px`;
+		if (paddingBottomOriginal) {
+			this.elem.style.paddingBottom = `${paddingBottomOriginal}px`;
+		} else {
+			this.elem.style.removeProperty('padding-bottom')
+		}
 
 		const marginsV = marginT + marginB;
 
