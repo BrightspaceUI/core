@@ -87,6 +87,11 @@ class AnimationState {
 
 		const styleAttr = this.elem.getAttribute('style');
 
+		const hasHiddenAttr = this.elem.getAttribute('hidden') !== null ? true : false;
+		if (hasHiddenAttr) {
+			this.elem.removeAttribute('hidden');
+		}
+
 		const rect = this.elem.getBoundingClientRect();
 		const marginsH = (parseInt(style.marginLeft) || 0) + (parseInt(style.marginRight) || 0);
 		const originalHeight = rect.height;
@@ -139,6 +144,10 @@ class AnimationState {
 		if (this.clone !== null) {
 			const cloneRect = this.clone.getBoundingClientRect();
 			cloneHeight = cloneRect.height;
+		}
+
+		if (hasHiddenAttr) {
+			this.elem.setAttribute('hidden', '');
 		}
 
 		return {
