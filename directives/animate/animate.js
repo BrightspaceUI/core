@@ -66,6 +66,18 @@ class AnimationState {
 
 	}
 
+	calculateCollapsedMargin(marginParent, marginChild) {
+		let margin;
+		if (marginParent < 0 && marginChild < 0) {
+			margin = Math.min(marginParent, marginChild);
+		} else if (marginParent < 0 || marginChild < 0) {
+			margin = marginParent + marginChild;
+		} else {
+			margin = Math.max(marginParent, marginChild);
+		}
+		return margin;
+	}
+
 	dispatchEvent(timeout = 0) {
 		// need a timeout as when motion is reduced
 		// event fires too quickly to listen for
@@ -98,37 +110,22 @@ class AnimationState {
 
 		const paddingTemp = 1;
 
-		const paddingTopOriginal = parseInt(this.elem.style.paddingTop || 0);
+		const paddingTopOriginal = (parseInt(this.elem.style.paddingTop) || 0);
 		const marginTParent = (parseInt(style.marginTop) || 0);
-		this.elem.style.paddingTop = `${paddingTemp}px`; // forces top margin to NOT collapse between parent and topmost child!
+		this.elem.style.paddingTop = `${paddingTemp}px`; // forces top margin to NOT collapse between parent and top-most child
 		const marginTChild = (this.elem.getBoundingClientRect().height - paddingTemp + paddingTopOriginal - originalHeight || 0);
-		let marginT;
-		if (marginTParent < 0 && marginTChild < 0) {
-			marginT = Math.min(marginTParent, marginTChild);
-		} else if (marginTParent < 0 || marginTChild < 0) {
-			marginT = marginTParent + marginTChild;
-		} else {
-			marginT = Math.max(marginTParent, marginTChild);
-		}
+		const marginT = this.calculateCollapsedMargin(marginTParent, marginTChild);
 		if (paddingTopOriginal) {
-			console.log(paddingTopOriginal)
 			this.elem.style.paddingTop = `${paddingTopOriginal}px`;
 		} else {
 			this.elem.style.removeProperty('padding-top')
 		}
 
-		const paddingBottomOriginal = parseInt(this.elem.style.paddingBottom || 0);
+		const paddingBottomOriginal = (parseInt(this.elem.style.paddingBottom) || 0);
 		const marginBParent = (parseInt(style.marginBottom) || 0);
-		this.elem.style.paddingBottom = `${paddingTemp}px`; // forces bottom margin to NOT collapse between parent and bottommost child!
+		this.elem.style.paddingBottom = `${paddingTemp}px`; // forces bottom margin to NOT collapse between parent and bottom-most child!
 		const marginBChild = (this.elem.getBoundingClientRect().height - paddingTemp + paddingBottomOriginal - originalHeight || 0);
-		let marginB;
-		if (marginBParent < 0 && marginBChild < 0) {
-			marginB = Math.min(marginBParent, marginBChild);
-		} else if (marginBParent < 0 || marginBChild < 0) {
-			marginB = marginBParent + marginBChild;
-		} else {
-			marginB = Math.max(marginBParent, marginBChild);
-		}
+		const marginB = this.calculateCollapsedMargin(marginBParent, marginBChild);
 		if (paddingBottomOriginal) {
 			this.elem.style.paddingBottom = `${paddingBottomOriginal}px`;
 		} else {
