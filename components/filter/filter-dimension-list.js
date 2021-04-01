@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
 
-class FilterDimensionMenu extends LitElement {
+class FilterDimensionList extends LitElement {
 
 	static get properties() {
 		return {
@@ -20,9 +20,10 @@ class FilterDimensionMenu extends LitElement {
 	}
 
 	_handleSlotChange() {
+		console.log('firing change');
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-change', { bubbles: true, composed: false }));
 	}
 
 }
 
-customElements.define('d2l-filter-dimension-menu', FilterDimensionMenu);
+customElements.define('d2l-filter-dimension-list', FilterDimensionList);

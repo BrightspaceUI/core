@@ -48,6 +48,10 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 
 	constructor() {
 		super();
+		this._keyCodes = {
+			ENTER: 13,
+			SPACE: 32
+		};
 		this._checkboxId = getUniqueId();
 	}
 
@@ -73,6 +77,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 
 	_onCheckboxActionClick(event) {
 		event.preventDefault();
+		event.stopPropagation();
 		if (this.disabled) return;
 		this.setSelected(!this.selected);
 		const checkbox = this.shadowRoot.querySelector(`#${this._checkboxId}`);
@@ -83,6 +88,14 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		this.setSelected(event.target.checked);
 	}
 
+	_onKeyUp(e) {
+		if (e.keyCode === this._keyCodes.ENTER || e.keyCode === this._keyCodes.SPACE) {
+			e.stopPropagation();
+			this.setSelected(!this.selected);
+			return;
+		}
+	}
+
 	_renderCheckbox() {
 		const disabled = this.disabled || this.skeleton;
 		return this.selectable ? html`
@@ -90,6 +103,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				id="${this._checkboxId}"
 				class="d2l-input-checkbox d2l-skeletize"
 				@change="${this._onCheckboxChange}"
+				@keyup="${this._onKeyUp}"
 				type="checkbox"
 				.checked="${this.selected}"
 				?disabled="${disabled}">

@@ -10,32 +10,48 @@
 			import '../../demo/demo-page.js';
 			import '../filter.js';
 			import '../filter-dimension-menu.js';
+			import '../filter-dimension-list.js';
 			import '../filter-dimension-menu-item.js';
+			import '../filter-dimension-list-item.js';
 		</script>
 	</head>
 	<body unresolved>
 
 		<d2l-demo-page page-title="d2l-filter">
 
-			<h2>Filter with Menu Items</h2>
+			<h2>Filter with Menu and List Items</h2>
 
 			<d2l-demo-snippet>
 				<template>
 					<d2l-filter>
-						<d2l-filter-dimension-menu name="Role">
-							<d2l-filter-dimension-menu-item text="Admin" selected></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="Student"></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="Teacher"></d2l-filter-dimension-menu-item>
+						<d2l-filter-dimension-menu name="Menu">
+							<d2l-filter-dimension-menu-item text="Menu Item 1"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 2" selected></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 3"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 4"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 5"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 6"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 7"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 8"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 9"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 10"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 11"></d2l-filter-dimension-menu-item>
+							<d2l-filter-dimension-menu-item text="Menu Item 12"></d2l-filter-dimension-menu-item>
 						</d2l-filter-dimension-menu>
-						<d2l-filter-dimension-menu name="Course">
-							<d2l-filter-dimension-menu-item text="Astronomy"></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="Biology"></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="Chemistry"></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="Drama"></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="English"></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="Math"></d2l-filter-dimension-menu-item>
-							<d2l-filter-dimension-menu-item text="Woodshop"></d2l-filter-dimension-menu-item>
-						</d2l-filter-dimension-menu>
+						<d2l-filter-dimension-list name="List">
+							<d2l-filter-dimension-list-item text="List Item 1"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 2" selected></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 3"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 4"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 5"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 6"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 7"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 8"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 9"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 10"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 11"></d2l-filter-dimension-list-item>
+							<d2l-filter-dimension-list-item text="List Item 12"></d2l-filter-dimension-list-item>
+						</d2l-filter-dimension-list>
 					</d2l-filter>
 				</template>
 			</d2l-demo-snippet>
