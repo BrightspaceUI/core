@@ -4,8 +4,8 @@ import { isComposedAncestor } from '../../helpers/dom.js';
 
 const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const showTransitionDuration = 3000;
-const hideTransitionDuration = 2000;
+const showTransitionDuration = 300;
+const hideTransitionDuration = 200;
 const moveYValue = 20;
 
 class AnimationState {
