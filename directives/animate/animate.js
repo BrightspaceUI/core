@@ -4,8 +4,8 @@ import { isComposedAncestor } from '../../helpers/dom.js';
 
 const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const showTransitionDuration = 300;
-const hideTransitionDuration = 200;
+const showTransitionDuration = 3000;
+const hideTransitionDuration = 2000;
 const moveYValue = 20;
 
 class AnimationState {
@@ -20,35 +20,17 @@ class AnimationState {
 		this.clone = null;
 		this.elem = propertyPart.committer.element;
 		this.state = 'unknown';
-
+		this.styleAttr = null;
+		this.styleAttrUse = false;
 	}
 
 	async animate(animInfo) {
+		const id = ++this.id;
 
 		if (this.clone === null) {
 			this.clone = document.createElement('div');
 		}
 		this.elem.parentNode.insertBefore(this.clone, this.elem);
-
-		const id = ++this.id;
-
-		let outerResolve;
-		const onTransitionEnd = () => {
-			this.clone.removeEventListener('transitionend', onTransitionEnd);
-			if (this.id === id) {
-				this.clone.remove();
-				this.clone = null;
-				if (animInfo.elem.styleAttr !== null) {
-					this.elem.setAttribute('style', animInfo.elem.styleAttr);
-				} else {
-					this.elem.removeAttribute('style');
-				}
-				animInfo.onTransitionEnd();
-				this.dispatchEvent();
-				outerResolve();
-			}
-		};
-		this.clone.addEventListener('transitionend', onTransitionEnd);
 
 		Object.assign(this.clone.style, animInfo.clone.start);
 		Object.assign(this.elem.style, animInfo.elem.start);
@@ -59,11 +41,33 @@ class AnimationState {
 		}
 
 		await new Promise((r) => requestAnimationFrame(r));
+
+		let outerResolve;
+		const onTransitionEnd = () => {
+			this.clone.removeEventListener('transitionend', onTransitionEnd);
+			this.clone.removeEventListener('transitioncancel', onTransitionEnd);
+			if (this.id === id) {
+				this.clone.remove();
+				this.clone = null;
+				if (this.styleAttr) {
+					this.elem.setAttribute('style', this.styleAttr);
+				} else {
+					this.elem.removeAttribute('style');
+				}
+				this.styleAttr = null;
+				this.styleAttrUse = false;
+				animInfo.onTransitionEnd();
+				this.dispatchEvent();
+				outerResolve();
+			}
+		};
+		this.clone.addEventListener('transitionend', onTransitionEnd);
+		this.clone.addEventListener('transitioncancel', onTransitionEnd);
+
 		Object.assign(this.clone.style, animInfo.clone.end);
 		Object.assign(this.elem.style, animInfo.elem.end);
 
 		return new Promise((resolve) => outerResolve = resolve);
-
 	}
 
 	calculateCollapsedMargin(marginParent, marginChild) {
@@ -97,7 +101,10 @@ class AnimationState {
 		await new Promise((r) => requestAnimationFrame(r));
 		const style = window.getComputedStyle(this.elem);
 
-		const styleAttr = this.elem.getAttribute('style');
+		if (!this.styleAttr && !this.styleAttrUse) {
+			this.styleAttr = this.elem.getAttribute('style');
+			this.styleAttrUse = true;
+		}
 
 		const hasHiddenAttr = this.elem.getAttribute('hidden') !== null ? true : false;
 		if (hasHiddenAttr) {
@@ -123,7 +130,7 @@ class AnimationState {
 
 		const paddingBottomOriginal = (parseInt(this.elem.style.paddingBottom) || 0);
 		const marginBParent = (parseInt(style.marginBottom) || 0);
-		this.elem.style.paddingBottom = `${paddingTemp}px`; // forces bottom margin to NOT collapse between parent and bottom-most child!
+		this.elem.style.paddingBottom = `${paddingTemp}px`; // forces bottom margin to NOT collapse between parent and bottom-most child
 		const marginBChild = (this.elem.getBoundingClientRect().height - paddingTemp + paddingBottomOriginal - originalHeight || 0);
 		const marginB = this.calculateCollapsedMargin(marginBParent, marginBChild);
 		if (paddingBottomOriginal) {
@@ -157,7 +164,6 @@ class AnimationState {
 				height: rect.height,
 				left,
 				opacity: this.state === 'showing' && this.clone === null ? '0' : style.opacity,
-				styleAttr,
 				top,
 				width: rect.width
 			}
@@ -217,8 +223,7 @@ class AnimationState {
 				end: {
 					opacity: '0',
 					transform: `translateY(-${moveYValue}px)`
-				},
-				styleAttr: elemInfo.elem.styleAttr
+				}
 			},
 			onTransitionEnd: () => {
 				this.state = 'hidden';
@@ -275,8 +280,7 @@ class AnimationState {
 				end: {
 					opacity: '1',
 					transform: 'translateY(0)'
-				},
-				styleAttr: elemInfo.elem.styleAttr
+				}
 			},
 			onTransitionEnd: () => this.state = 'shown'
 		});
