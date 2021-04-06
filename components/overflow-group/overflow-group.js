@@ -15,7 +15,6 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import throttle from 'lodash-es/throttle';
 
 const AUTO_SHOW_CLASS = 'd2l-button-group-show';
 const AUTO_NO_SHOW_CLASS = 'd2l-button-group-no-show';
@@ -226,7 +225,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this._handleResize = this._handleResize.bind(this);
 
-		this._throttledResize = throttle(this._handleResize, 15);
+		this._throttledResize = (entries) => requestAnimationFrame(this._handleResize(entries));
 
 		this._overflowHidden = false;
 		this.autoShow = false;
@@ -249,8 +248,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._getItems();
 
-		this.resizeObserver = new ResizeObserver(this._throttledResize);
-		this.resizeObserver.observe(this._container);
+		const resizeObserver = new ResizeObserver(this._throttledResize);
+		resizeObserver.observe(this._container);
 	}
 	render() {
 		const overflowMenu = this._getOverflowMenu();
