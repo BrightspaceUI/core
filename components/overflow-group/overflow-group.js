@@ -225,7 +225,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this._handleResize = this._handleResize.bind(this);
 
-		this._throttledResize = (entries) => requestAnimationFrame(this._handleResize(entries));
+		this._throttledResize = (entries) => requestAnimationFrame(() => this._handleResize(entries));
 
 		this._overflowHidden = false;
 		this.autoShow = false;
