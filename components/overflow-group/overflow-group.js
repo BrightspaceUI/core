@@ -15,7 +15,6 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import throttle from 'lodash-es/throttle';
 
 const AUTO_SHOW_CLASS = 'd2l-button-group-show';
 const AUTO_NO_SHOW_CLASS = 'd2l-button-group-no-show';
