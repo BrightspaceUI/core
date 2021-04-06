@@ -248,8 +248,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._getItems();
 
-		this._resizeObserver = new ResizeObserver(this._throttledResize);
-		this._resizeObserver.observe(this._container);
+		const resizeObserver = new ResizeObserver(this._throttledResize);
+		resizeObserver.observe(this._container);
 	}
 	render() {
 		const overflowMenu = this._getOverflowMenu();
