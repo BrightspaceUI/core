@@ -7,43 +7,36 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-function formatValue(value, minFractionDigits, maxFractionDigits, showTrailingZeroes, numDecimalDigits) {
-	let adjustedMinFractionDigits = minFractionDigits;
-	if (showTrailingZeroes && numDecimalDigits > 0) {
-		adjustedMinFractionDigits = Math.max(minFractionDigits || 0, numDecimalDigits);
-		if (maxFractionDigits !== undefined) {
-			adjustedMinFractionDigits = Math.min(
-				adjustedMinFractionDigits,
-				maxFractionDigits
-			);
-		}
+function formatValue(value, options, numDecimalDigits) {
+	if (value === undefined) return '';
+	if (numDecimalDigits > 0) {
+		options.minimumFractionDigits = Math.min(
+			Math.max(options.minimumFractionDigits, numDecimalDigits),
+			options.maximumFractionDigits
+		);
 	}
-	const options = {
-		maximumFractionDigits: maxFractionDigits,
-		minimumFractionDigits: adjustedMinFractionDigits
-	};
 	return formatNumber(value, options);
 }
 
-function countDecimalDigits(value) {
+function countDecimalDigits(value, useLocaleDecimal) {
 
 	if (value === undefined || value === null) {
-		return undefined;
+		return 0;
 	}
 
-	const descriptor = getNumberDescriptor();
+	const decimalSymbol = useLocaleDecimal ? getNumberDescriptor().symbols.decimal : '.';
 
 	let numDecimalDigits = 0;
 	for (let i = value.length - 1; i > -1; i--) {
 		const c = value.charAt(i);
-		if (c === descriptor.symbols.decimal) {
+		if (c === decimalSymbol) {
 			return numDecimalDigits;
 		} else {
 			numDecimalDigits++;
 		}
 	}
 
-	return undefined;
+	return 0;
 
 }
 
@@ -99,42 +92,84 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this.maxExclusive = false;
 		this.minExclusive = false;
 		this.required = false;
-		this.trailingZeroes = false;
 
 		this._formattedValue = '';
 		this._inputId = getUniqueId();
-		this._numDecimalDigits = 0;
+		this._trailingZeroes = false;
+		this._valueTrailingZeroes = '';
 	}
 
-	get value() { return this._value; }
+	get maxFractionDigits() {
+		return this._maxFractionDigits ?? Math.max(this.minFractionDigits, 3);
+	}
+	set maxFractionDigits(val) {
+		if (isNaN(val) || val < 0 || val > 20 || val < this.minFractionDigits) {
+			throw new RangeError('maxFractionDigits must be between 0 and 20 and >= minFractionDigits');
+		}
+		this._maxFractionDigits = val;
+		this._updateFormattedValue();
+	}
+
+	get minFractionDigits() {
+		return this._minFractionDigits ?? 0;
+	}
+	set minFractionDigits(val) {
+		if (isNaN(val) || val < 0 || val > 20 || val < this.minFractionDigits) {
+			throw new RangeError('minFractionDigits must be between 0 and 20 and <= maxFractionDigits');
+		}
+		this._minFractionDigits = val;
+		this._updateFormattedValue();
+	}
+
+	get trailingZeroes() { return this._trailingZeroes; }
+	set trailingZeroes(val) {
+		this._trailingZeroes = val;
+		this._updateFormattedValue();
+	}
+
+	get value() {
+		if (this._value === undefined) return undefined;
+		const precision = Math.pow(10, this.maxFractionDigits);
+		return Math.round((this._value + Number.EPSILON) * precision) / precision;
+	}
 	set value(val) {
 		const oldValue = this.value;
-		try {
-			if (val === null) {
-				this._formattedValue = '';
-				this._value = undefined;
-			} else {
-				this._formattedValue = formatValue(
-					val,
-					this.minFractionDigits,
-					this.maxFractionDigits,
-					this.trailingZeroes,
-					this._numDecimalDigits
-				);
-				this._value = parseNumber(this._formattedValue);
-			}
-		} catch (err) {
-			this._formattedValue = '';
-			this._value = undefined;
+		if (val === null || isNaN(val)) {
+			val = undefined;
 		}
-		this._numDecimalDigits = 0;
+		this._value = val;
+		this._updateFormattedValue();
 		this.requestUpdate('value', oldValue);
+	}
+
+	get valueTrailingZeroes() {
+		if (this._valueTrailingZeroes === '') {
+			return '';
+		}
+		const numDecimals = Math.min(
+			countDecimalDigits(this._valueTrailingZeroes, false),
+			this.maxFractionDigits
+		);
+		let valueTrailingZeroes = this.value.toString();
+		const decimalDiff = (numDecimals - countDecimalDigits(valueTrailingZeroes, false));
+		if (decimalDiff > 0) {
+			if (decimalDiff === numDecimals) {
+				valueTrailingZeroes += '.';
+			}
+			valueTrailingZeroes = valueTrailingZeroes.padEnd(valueTrailingZeroes.length + decimalDiff, '0');
+		}
+		return valueTrailingZeroes;
+	}
+	set valueTrailingZeroes(val) {
+		this.value = parseFloat(val);
+		this._valueTrailingZeroes = this.value === undefined ? '' : val;
+		this._updateFormattedValue();
 	}
 
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
-			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, this.minFractionDigits, this.maxFractionDigits) : null;
-			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, this.minFractionDigits, this.maxFractionDigits) : null;
+			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, { minimumFractionDigits: this.minFractionDigits, maximumFractionDigits: this.maxFractionDigits }) : null;
+			const maxNumber = typeof(this.max) === 'number' ? formatValue(this.max, { minimumFractionDigits: this.minFractionDigits, maximumFractionDigits: this.maxFractionDigits }) : null;
 			if (minNumber && maxNumber) {
 				return this.localize('components.form-element.input.number.rangeError', { min: minNumber, max: maxNumber, minExclusive: this.minExclusive, maxExclusive: this.maxExclusive });
 			} else if (maxNumber) {
@@ -153,13 +188,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		}
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			if (this._formattedValue.length > 0) {
-				this._formattedValue = formatValue(
-					this.value,
-					this.minFractionDigits,
-					this.maxFractionDigits,
-					this.trailingZeroes,
-					this._numDecimalDigits
-				);
+				this._updateFormattedValue();
 			}
 		});
 	}
@@ -217,10 +246,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 					rangeOverflow: rangeOverflowCondition
 				});
 				this.requestValidate(true);
-			} else if (prop === 'valueTrailingZeroes' && this.trailingZeroes) {
-				this._numDecimalDigits = countDecimalDigits(this.valueTrailingZeroes);
-				const parsedValue = parseFloat(this.valueTrailingZeroes);
-				this.value = isNaN(parsedValue) ? null : parsedValue;
 			}
 		});
 	}
@@ -239,21 +264,49 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 
 	async _handleChange(e) {
+
 		const value = e.target.value;
 		this._formattedValue = value;
 		await this.updateComplete;
-		const oldValue = this.value;
-		if (this.trailingZeroes) {
-			this._numDecimalDigits = countDecimalDigits(value);
-		}
-		this.value = value.trim() === '' ? NaN : parseNumber(value);
 
-		if (oldValue !== this.value) {
+		let dispatchEvent = false;
+		if (this.trailingZeroes) {
+			const oldValueTrailingZeroes = this.valueTrailingZeroes;
+
+			const parsedValue = parseNumber(value);
+			if (value.trim() === '' || isNaN(parsedValue)) {
+				this.valueTrailingZeroes = '';
+			} else {
+				this.valueTrailingZeroes = new Intl.NumberFormat(
+					'en-US',
+					{
+						minimumFractionDigits: countDecimalDigits(value, true),
+						useGrouping: false
+					}
+				).format(parsedValue);
+			}
+			dispatchEvent = (oldValueTrailingZeroes !== this.valueTrailingZeroes);
+		} else {
+			const oldValue = this.value;
+			this.value = value.trim() === '' ? NaN : parseNumber(value);
+			dispatchEvent = (oldValue !== this.value);
+		}
+
+		if (dispatchEvent) {
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{ bubbles: true, composed: false }
 			));
 		}
+
+	}
+
+	_updateFormattedValue() {
+		this._formattedValue = formatValue(
+			this.value,
+			{ minimumFractionDigits: this.minFractionDigits, maximumFractionDigits: this.maxFractionDigits },
+			this.trailingZeroes ? countDecimalDigits(this._valueTrailingZeroes, false) : 0
+		);
 	}
 
 }

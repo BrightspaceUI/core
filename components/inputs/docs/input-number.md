@@ -23,10 +23,10 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `label-hidden` | Boolean, default: `false` | Hides the label visually (moves it to the input's `aria-label` attribute). |
 | `max` | Number | Maximum value allowed. |
 | `max-exclusive` | Boolean, default: `false` | Indicates whether the max value is exclusive. |
-| `max-fraction-digits` | Number | Maximum number of digits allowed after the decimal place. |
+| `max-fraction-digits` | Number, default: Greater of `minFractionDigits` or `3` | Maximum number of digits allowed after the decimal place. Must be between 0 and 20 and greater than or equal to `minFractionDigits` |
 | `min` | Number | Minimum value allowed. |
 | `min-exclusive` | Boolean, default: `false` | Indicates whether the min value is exclusive. |
-| `min-fraction-digits` | Number | Minimum number of digits allowed after the decimal place. |
+| `min-fraction-digits` | Number, default: `0` | Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits` |
 | `placeholder` | String | Placeholder text. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
 | `title` | String | Text for additional screen reader and mouseover context. |
