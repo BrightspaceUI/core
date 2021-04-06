@@ -226,7 +226,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this._handleResize = this._handleResize.bind(this);
 
-		this._throttledResize = throttle(this._handleResize, 15);
+		this._throttledResize = (entries) => requestAnimationFrame(this._handleResize(entries));
 
 		this._overflowHidden = false;
 		this.autoShow = false;
@@ -249,8 +249,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._getItems();
 
-		this.resizeObserver = new ResizeObserver(this._throttledResize);
-		this.resizeObserver.observe(this._container);
+		this._resizeObserver = new ResizeObserver(this._throttledResize);
+		this._resizeObserver.observe(this._container);
 	}
 	render() {
 		const overflowMenu = this._getOverflowMenu();
@@ -449,7 +449,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return filteredNodes;
 	}
 	_handleResize(entries) {
-
+		console.log(true)
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
 
 		this._chomp();
