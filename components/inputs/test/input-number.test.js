@@ -33,7 +33,7 @@ async function setInnerInputValue(elem, value) {
 	setTimeout(() => dispatchEvent(inputTextElement, 'change'));
 }
 
-describe.only('d2l-input-number', () => {
+describe('d2l-input-number', () => {
 
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	afterEach(() => {
