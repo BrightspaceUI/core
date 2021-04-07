@@ -81,11 +81,7 @@ describe('d2l-overflow-group', () => {
 			name: 'opener-type-subtle-overflow-menu',
 		},
 		{
-			name: 'opener-type-subtle-overflow-menu-open',
-			action: async(selector) => {
-				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
-				await overflowMenu.click();
-			}
+			name: 'opener-type-subtle-icon'
 		}
 	];
 	const itemTypeConversion = [
