@@ -40,6 +40,15 @@ function countDecimalDigits(value, useLocaleDecimal) {
 
 }
 
+// from: https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
+function roundPrecisely(val, maxFractionDigits) {
+	const isNegative = val < 0;
+	const positiveValue = Math.abs(val);
+	// eslint-disable-next-line prefer-template
+	const roundedValue = Number(Math.round(positiveValue + `e${maxFractionDigits}`) + `e-${maxFractionDigits}`);
+	return isNegative ? -Math.abs(roundedValue) : roundedValue;
+}
+
 class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
@@ -63,7 +72,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			trailingZeroes: { type: Boolean, attribute: 'trailing-zeroes' },
 			unit: { type: String },
 			value: { type: Number },
-			valueTrailingZeroes: { String, attribute: 'value-trailing-zeroes' },
+			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
 			_formattedValue: { type: String }
 		};
 	}
@@ -100,6 +109,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 
 	get maxFractionDigits() {
+		// emulate Intl's default maxFractionDigits behaviour
 		return this._maxFractionDigits ?? Math.max(this.minFractionDigits, 3);
 	}
 	set maxFractionDigits(val) {
@@ -129,8 +139,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 
 	get value() {
 		if (this._value === undefined) return undefined;
-		const precision = Math.pow(10, this.maxFractionDigits);
-		return Math.round((this._value + Number.EPSILON) * precision) / precision;
+		return roundPrecisely(this._value, this.maxFractionDigits);
 	}
 	set value(val) {
 		const oldValue = this.value;

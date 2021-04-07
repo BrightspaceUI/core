@@ -173,6 +173,12 @@ describe('d2l-input-number', () => {
 			expect(elem._formattedValue).to.equal('1.000000');
 		});
 
+		it('should round negative numbers properly', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value="-0.55" max-fraction-digits="1"></d2l-input-number>`);
+			expect(elem.value).to.equal(-0.6);
+			expect(elem._formattedValue).to.equal('-0.6');
+		});
+
 	});
 
 	describe('invalid values', () => {
@@ -450,6 +456,19 @@ describe('d2l-input-number', () => {
 			expect(elem.value).to.equal(2001);
 			expect(elem.valueTrailingZeroes).to.equal('2001.00');
 			expect(elem._formattedValue).to.equal('2 001,00');
+		});
+
+		[
+			'12', '12.1', '12.10', '12.0', '12.00000',
+			'1', '1.1', '1.10', '1.0', '1.00000',
+			'-1', '-1.1', '-1.10', '-1.0', '-1.00000'
+		].forEach((val) => {
+			it(`should preserve ${val} when set initially`, async() => {
+				const elem = await fixture(html`<d2l-input-number label="label" trailing-zeroes value-trailing-zeroes="${val}" max-fraction-digits="16"></d2l-input-number>`);
+				expect(elem.value).to.equal(parseFloat(val));
+				expect(elem.valueTrailingZeroes).to.equal(val);
+				expect(elem._formattedValue).to.equal(val);
+			});
 		});
 
 	});
