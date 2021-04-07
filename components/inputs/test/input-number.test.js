@@ -179,6 +179,14 @@ describe('d2l-input-number', () => {
 			expect(elem._formattedValue).to.equal('-0.6');
 		});
 
+		it('should handle large numbers with large precision', async() => {
+			// Safari won't format numbers with more than 15 significant digits
+			// Other browsers can handle no more than 17
+			const elem = await fixture(html`<d2l-input-number label="label" value="1234567890.12345" max-fraction-digits="16"></d2l-input-number>`);
+			expect(elem.value).to.equal(1234567890.12345);
+			expect(elem._formattedValue).to.equal('1,234,567,890.12345');
+		});
+
 	});
 
 	describe('invalid values', () => {

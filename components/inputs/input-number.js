@@ -40,13 +40,16 @@ function countDecimalDigits(value, useLocaleDecimal) {
 
 }
 
-// from: https://medium.com/swlh/how-to-round-to-a-certain-number-of-decimal-places-in-javascript-ed74c471c1b8
 function roundPrecisely(val, maxFractionDigits) {
-	const isNegative = val < 0;
-	const positiveValue = Math.abs(val);
-	// eslint-disable-next-line prefer-template
-	const roundedValue = Number(Math.round(positiveValue + `e${maxFractionDigits}`) + `e-${maxFractionDigits}`);
-	return isNegative ? -Math.abs(roundedValue) : roundedValue;
+	const strValue = new Intl.NumberFormat(
+		'en-US',
+		{
+			maximumFractionDigits: maxFractionDigits,
+			minimumFractionDigits: 0,
+			useGrouping: false
+		}
+	).format(val);
+	return parseFloat(strValue);
 }
 
 class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
