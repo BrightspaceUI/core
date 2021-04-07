@@ -20,35 +20,17 @@ class AnimationState {
 		this.clone = null;
 		this.elem = propertyPart.committer.element;
 		this.state = 'unknown';
-
+		this.styleAttr = null;
+		this.styleAttrUse = false;
 	}
 
 	async animate(animInfo) {
+		const id = ++this.id;
 
 		if (this.clone === null) {
 			this.clone = document.createElement('div');
 		}
 		this.elem.parentNode.insertBefore(this.clone, this.elem);
-
-		const id = ++this.id;
-
-		let outerResolve;
-		const onTransitionEnd = () => {
-			this.clone.removeEventListener('transitionend', onTransitionEnd);
-			if (this.id === id) {
-				this.clone.remove();
-				this.clone = null;
-				if (animInfo.elem.styleAttr !== null) {
-					this.elem.setAttribute('style', animInfo.elem.styleAttr);
-				} else {
-					this.elem.removeAttribute('style');
-				}
-				animInfo.onTransitionEnd();
-				this.dispatchEvent();
-				outerResolve();
-			}
-		};
-		this.clone.addEventListener('transitionend', onTransitionEnd);
 
 		Object.assign(this.clone.style, animInfo.clone.start);
 		Object.assign(this.elem.style, animInfo.elem.start);
@@ -59,11 +41,45 @@ class AnimationState {
 		}
 
 		await new Promise((r) => requestAnimationFrame(r));
+
+		let outerResolve;
+		const onTransitionEnd = () => {
+			this.clone.removeEventListener('transitionend', onTransitionEnd);
+			this.clone.removeEventListener('transitioncancel', onTransitionEnd);
+			if (this.id === id) {
+				this.clone.remove();
+				this.clone = null;
+				if (this.styleAttr) {
+					this.elem.setAttribute('style', this.styleAttr);
+				} else {
+					this.elem.removeAttribute('style');
+				}
+				this.styleAttr = null;
+				this.styleAttrUse = false;
+				animInfo.onTransitionEnd();
+				this.dispatchEvent();
+				outerResolve();
+			}
+		};
+		this.clone.addEventListener('transitionend', onTransitionEnd);
+		this.clone.addEventListener('transitioncancel', onTransitionEnd);
+
 		Object.assign(this.clone.style, animInfo.clone.end);
 		Object.assign(this.elem.style, animInfo.elem.end);
 
 		return new Promise((resolve) => outerResolve = resolve);
+	}
 
+	calculateCollapsedMargin(marginParent, marginChild) {
+		let margin;
+		if (marginParent < 0 && marginChild < 0) {
+			margin = Math.min(marginParent, marginChild);
+		} else if (marginParent < 0 || marginChild < 0) {
+			margin = marginParent + marginChild;
+		} else {
+			margin = Math.max(marginParent, marginChild);
+		}
+		return margin;
 	}
 
 	dispatchEvent(timeout = 0) {
@@ -85,16 +101,48 @@ class AnimationState {
 		await new Promise((r) => requestAnimationFrame(r));
 		const style = window.getComputedStyle(this.elem);
 
-		const styleAttr = this.elem.getAttribute('style');
-		if (style.display !== 'flex') {
-			this.elem.style.display = 'grid'; // forces margins to collapse during size calculation
+		if (!this.styleAttr && !this.styleAttrUse) {
+			this.styleAttr = this.elem.getAttribute('style');
+			this.styleAttrUse = true;
+		}
+
+		const hasHiddenAttr = this.elem.getAttribute('hidden') !== null ? true : false;
+		if (hasHiddenAttr) {
+			this.elem.removeAttribute('hidden');
 		}
 
 		const rect = this.elem.getBoundingClientRect();
-		const top = this.elem.offsetTop - (this.elem.scrollTop || 0);
-		const left = this.elem.offsetLeft - (this.elem.scrollLeft || 0);
 		const marginsH = (parseInt(style.marginLeft) || 0) + (parseInt(style.marginRight) || 0);
-		const marginsV = (parseInt(style.marginTop) || 0) + (parseInt(style.marginBottom) || 0);
+		const originalHeight = rect.height;
+
+		const paddingTemp = 1;
+
+		const paddingTopOriginal = (parseInt(this.elem.style.paddingTop) || 0);
+		const marginTParent = (parseInt(style.marginTop) || 0);
+		this.elem.style.paddingTop = `${paddingTemp}px`; // forces top margin to NOT collapse between parent and top-most child
+		const marginTChild = (this.elem.getBoundingClientRect().height - paddingTemp + paddingTopOriginal - originalHeight || 0);
+		const marginT = this.calculateCollapsedMargin(marginTParent, marginTChild);
+		if (paddingTopOriginal) {
+			this.elem.style.paddingTop = `${paddingTopOriginal}px`;
+		} else {
+			this.elem.style.removeProperty('padding-top');
+		}
+
+		const paddingBottomOriginal = (parseInt(this.elem.style.paddingBottom) || 0);
+		const marginBParent = (parseInt(style.marginBottom) || 0);
+		this.elem.style.paddingBottom = `${paddingTemp}px`; // forces bottom margin to NOT collapse between parent and bottom-most child
+		const marginBChild = (this.elem.getBoundingClientRect().height - paddingTemp + paddingBottomOriginal - originalHeight || 0);
+		const marginB = this.calculateCollapsedMargin(marginBParent, marginBChild);
+		if (paddingBottomOriginal) {
+			this.elem.style.paddingBottom = `${paddingBottomOriginal}px`;
+		} else {
+			this.elem.style.removeProperty('padding-bottom');
+		}
+
+		const marginsV = marginT + marginB;
+
+		const top = this.elem.offsetTop - (this.elem.scrollTop || 0) - marginT;
+		const left = this.elem.offsetLeft - (this.elem.scrollLeft || 0);
 
 		let cloneHeight = 0;
 		if (this.clone !== null) {
@@ -102,7 +150,9 @@ class AnimationState {
 			cloneHeight = cloneRect.height;
 		}
 
-		this.elem.style.removeProperty('display');
+		if (hasHiddenAttr) {
+			this.elem.setAttribute('hidden', '');
+		}
 
 		return {
 			clone: {
@@ -114,7 +164,6 @@ class AnimationState {
 				height: rect.height,
 				left,
 				opacity: this.state === 'showing' && this.clone === null ? '0' : style.opacity,
-				styleAttr,
 				top,
 				width: rect.width
 			}
@@ -174,8 +223,7 @@ class AnimationState {
 				end: {
 					opacity: '0',
 					transform: `translateY(-${moveYValue}px)`
-				},
-				styleAttr: elemInfo.elem.styleAttr
+				}
 			},
 			onTransitionEnd: () => {
 				this.state = 'hidden';
@@ -232,8 +280,7 @@ class AnimationState {
 				end: {
 					opacity: '1',
 					transform: 'translateY(0)'
-				},
-				styleAttr: elemInfo.elem.styleAttr
+				}
 			},
 			onTransitionEnd: () => this.state = 'shown'
 		});
