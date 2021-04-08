@@ -59,7 +59,7 @@ describe('d2l-input-percent', () => {
 
 			const inputNumberElement = elem.shadowRoot.querySelector('d2l-input-number');
 			setTimeout(() => {
-				inputNumberElement.value = '80';
+				inputNumberElement.setAttribute('value', 80);
 				dispatchEvent(inputNumberElement, 'change');
 			});
 			await aTimeout(1);
