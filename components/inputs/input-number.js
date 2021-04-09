@@ -316,7 +316,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	_updateFormattedValue() {
 		this._formattedValue = formatValue(
 			this.value,
-			{ minimumFractionDigits: this.minFractionDigits, maximumFractionDigits: this.maxFractionDigits },
+			{
+				minimumFractionDigits: this.minFractionDigits,
+				maximumFractionDigits: this.maxFractionDigits,
+				useGrouping: false
+			},
 			this.trailingZeroes ? countDecimalDigits(this._valueTrailingZeroes, false) : 0
 		);
 	}
