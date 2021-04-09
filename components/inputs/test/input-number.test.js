@@ -21,6 +21,18 @@ function dispatchEvent(elem, eventType) {
 	elem.dispatchEvent(e);
 }
 
+function dispatchKeypressEvent(elem, key) {
+	const event = new CustomEvent('keypress', {
+		detail: 0,
+		bubbles: true,
+		cancelable: true,
+		composed: true
+	});
+	event.key = key;
+	elem.shadowRoot.querySelector('d2l-input-text').dispatchEvent(event);
+	return event;
+}
+
 function getInnerInputValue(elem) {
 	return elem.shadowRoot.querySelector('d2l-input-text').value;
 }
@@ -29,6 +41,12 @@ async function setInnerInputValue(elem, value) {
 	const inputTextElement = elem.shadowRoot.querySelector('d2l-input-text');
 	inputTextElement.value = value;
 	setTimeout(() => dispatchEvent(inputTextElement, 'change'));
+}
+
+function setCursorPosition(elem, pos) {
+	elem.shadowRoot.querySelector('d2l-input-text')
+		.shadowRoot.querySelector('.d2l-input')
+		.setSelectionRange(pos, pos);
 }
 
 describe('d2l-input-number', () => {
@@ -194,9 +212,8 @@ describe('d2l-input-number', () => {
 			it(`should reset "${val}" to undefined`, async() => {
 				const elem = await fixture(normalFixture);
 				elem.value = val;
-				await elem.updateComplete;
 				expect(elem.value).to.equal(undefined);
-				expect(getInnerInputValue(elem)).to.equal('');
+				expect(elem._formattedValue).to.equal('');
 			});
 		});
 	});
@@ -331,6 +348,111 @@ describe('d2l-input-number', () => {
 
 			expect(fired).to.be.false;
 		});
+	});
+
+	describe('input correction', () => {
+
+		['a', ' ', '+', '(', ')', '?'].forEach((key) => {
+			it(`should suppress non-numeric character: "${key}"`, async() => {
+				const elem = await fixture(normalFixture);
+				await aTimeout(1); // underlying input isn't ready
+				const event = dispatchKeypressEvent(elem, key);
+				expect(event.defaultPrevented).to.be.true;
+			});
+		});
+
+		['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach((key) => {
+			it(`should not suppress numeric character: "${key}"`, async() => {
+				const elem = await fixture(normalFixture);
+				await aTimeout(1); // underlying input isn't ready
+				const event = dispatchKeypressEvent(elem, key);
+				expect(event.defaultPrevented).to.be.false;
+			});
+		});
+
+		it('should not suppress negative symbol at the beginning for "en"', async() => {
+			const elem = await fixture(normalFixture);
+			await aTimeout(1); // underlying input isn't ready
+			setCursorPosition(elem, 0);
+			const event = dispatchKeypressEvent(elem, '-');
+			expect(event.defaultPrevented).to.be.false;
+		});
+
+		it('should not suppress negative symbol at the end for "ar-SA"', async() => {
+			documentLocaleSettings.language = 'ar-SA';
+			const elem = await fixture(defaultValueFixture);
+			await aTimeout(1); // underlying input isn't ready
+			setCursorPosition(elem, 3);
+			const event = dispatchKeypressEvent(elem, '-');
+			expect(event.defaultPrevented).to.be.false;
+		});
+
+		it('should suppress negative symbol when cursor is not at beginning', async() => {
+			const elem = await fixture(defaultValueFixture);
+			await aTimeout(1); // underlying input isn't ready
+			setCursorPosition(elem, 1);
+			const event = dispatchKeypressEvent(elem, '-');
+			expect(event.defaultPrevented).to.be.true;
+		});
+
+		it('should suppress decimal symbol if one already exists', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value="1.2"></d2l-input-number>`);
+			await aTimeout(1); // underlying input isn't ready
+			const event = dispatchKeypressEvent(elem, '.');
+			expect(event.defaultPrevented).to.be.true;
+			expect(elem._hintType).to.equal(1);
+		});
+
+		it('should suppress decimal symbol only integers are allowed', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value="1" max-fraction-digits="0"></d2l-input-number>`);
+			await aTimeout(1); // underlying input isn't ready
+			const event = dispatchKeypressEvent(elem, '.');
+			expect(event.defaultPrevented).to.be.true;
+			expect(elem._hintType).to.equal(4);
+		});
+
+		it('should suppress incorrect decimal symbol ","', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
+			await aTimeout(1); // underlying input isn't ready
+			const event = dispatchKeypressEvent(elem, ',');
+			expect(event.defaultPrevented).to.be.true;
+			expect(elem._hintType).to.equal(3);
+		});
+
+		it('should not suppress correct decimal symbol "."', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
+			await aTimeout(1); // underlying input isn't ready
+			const event = dispatchKeypressEvent(elem, '.');
+			expect(event.defaultPrevented).to.be.false;
+			expect(elem._hintType).to.equal(0);
+		});
+
+		it('should suppress incorrect decimal symbol "."', async() => {
+			documentLocaleSettings.language = 'fr-CA';
+			const elem = await fixture(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
+			await aTimeout(1); // underlying input isn't ready
+			const event = dispatchKeypressEvent(elem, '.');
+			expect(event.defaultPrevented).to.be.true;
+			expect(elem._hintType).to.equal(2);
+		});
+
+		it('should not suppress correct decimal symbol ","', async() => {
+			documentLocaleSettings.language = 'fr-CA';
+			const elem = await fixture(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
+			await aTimeout(1); // underlying input isn't ready
+			const event = dispatchKeypressEvent(elem, ',');
+			expect(event.defaultPrevented).to.be.false;
+			expect(elem._hintType).to.equal(0);
+		});
+
+		it('should reset hint after next keypress', async() => {
+			const elem = await fixture(html`<d2l-input-number label="label" value="1"></d2l-input-number>`);
+			await aTimeout(1); // underlying input isn't ready
+			dispatchKeypressEvent(elem, ',');
+			dispatchKeypressEvent(elem, '5');
+			expect(elem._hintType).to.equal(0);
+		});
+
 	});
 
 	describe('trailing zeroes', () => {

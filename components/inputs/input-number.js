@@ -7,6 +7,14 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+const HINT_TYPES = {
+	NONE: 0,
+	DECIMAL_DUPLICATE: 1,
+	DECIMAL_INCORRECT_COMMA: 2,
+	DECIMAL_INCORRECT_PERIOD: 3,
+	INTEGER: 4
+};
+
 function formatValue(value, options, numDecimalDigits) {
 	if (value === undefined) return '';
 	if (numDecimalDigits > 0) {
@@ -76,6 +84,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			unit: { type: String },
 			value: { type: Number },
 			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
+			_hintType: { type: Number },
 			_formattedValue: { type: String }
 		};
 	}
@@ -106,9 +115,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this.required = false;
 
 		this._formattedValue = '';
+		this._hintType = HINT_TYPES.NONE;
 		this._inputId = getUniqueId();
 		this._trailingZeroes = false;
 		this._valueTrailingZeroes = '';
+		this._descriptor = getNumberDescriptor();
 	}
 
 	get maxFractionDigits() {
@@ -199,6 +210,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			console.warn('d2l-input-number component requires label text');
 		}
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+			this._descriptor = getNumberDescriptor();
 			if (this._formattedValue.length > 0) {
 				this._updateFormattedValue();
 			}
@@ -206,7 +218,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 
 	render() {
-		const tooltip = !this.disabled && this.validationError && this.childErrors.size === 0 ? html`<d2l-tooltip announced for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			<d2l-input-text
 				autocomplete="${ifDefined(this.autocomplete)}"
@@ -214,6 +225,8 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				?autofocus="${this.autofocus}"
 				@blur="${this._handleBlur}"
 				@change="${this._handleChange}"
+				@input="${this._handleInput}"
+				@keypress="${this._handleKeyPress}"
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
 				?hide-invalid-icon="${this.hideInvalidIcon}"
@@ -232,7 +245,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 					<slot slot="right" name="right"></slot>
 					<slot slot="after" name="after"></slot>
 			</d2l-input-text>
-			${tooltip}
+			${this._getTooltip()}
 		`;
 	}
 
@@ -275,6 +288,30 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		return [...childErrors, ...errors];
 	}
 
+	_getTooltip() {
+		if (this.disabled) return null;
+		if (this.validationError && this.childErrors.size === 0) {
+			return html`<d2l-tooltip announced for="${this._inputId}" state="error" align="start">${this.validationError}</d2l-tooltip>`;
+		}
+		let lang = '';
+		if (this._hintType === HINT_TYPES.INTEGER) {
+			lang = 'components.input-number.hintInteger';
+		} else if (this._hintType === HINT_TYPES.DECIMAL_DUPLICATE) {
+			lang = 'components.input-number.hintDecimalDuplicate';
+		} else if (this._hintType === HINT_TYPES.DECIMAL_INCORRECT_COMMA) {
+			lang = 'components.input-number.hintDecimalIncorrectComma';
+		} else if (this._hintType === HINT_TYPES.DECIMAL_INCORRECT_PERIOD) {
+			lang = 'components.input-number.hintDecimalIncorrectPeriod';
+		}
+		if (lang !== '') {
+			return html`<d2l-tooltip announced for="${this._inputId}" state="info" align="start">${this.localize(lang)}</d2l-tooltip>`;
+		}
+	}
+
+	_handleBlur() {
+		this._hintType = HINT_TYPES.NONE;
+	}
+
 	async _handleChange(e) {
 
 		const value = e.target.value;
@@ -311,6 +348,56 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			));
 		}
 
+	}
+
+	_handleInput(e) {
+		if (e.inputType === 'insertFromPaste') {
+			this._handleChange(e);
+		}
+		if (e.inputType !== 'insertText') {
+			this._hintType = HINT_TYPES.NONE;
+		}
+	}
+
+	_handleKeyPress(e) {
+		const key = e.key;
+		let prevent = false;
+		let hintType = HINT_TYPES.NONE;
+		const hasDecimal = e.target.value.indexOf(this._descriptor.symbols.decimal) > -1;
+		if (key === this._descriptor.symbols.negative) {
+			// negative symbol must be at the end
+			if (this._descriptor.patterns.decimal.negativePattern === '{number}-') {
+				if (e.target.selectionStart !== e.target.value.length) {
+					prevent = true;
+				}
+			} else {
+				// negative symbol must be at the start
+				if (e.target.selectionStart !== 0) {
+					prevent = true;
+				}
+			}
+		} else if (key === this._descriptor.symbols.decimal) {
+			// already has a decimal symbol
+			if (hasDecimal) {
+				hintType = HINT_TYPES.DECIMAL_DUPLICATE;
+				prevent = true;
+			// looking for an integer only
+			} else if (this.maxFractionDigits === 0) {
+				hintType = HINT_TYPES.INTEGER;
+				prevent = true;
+			}
+		} else if ((key === '.' || key === ',') && !hasDecimal && this.maxFractionDigits > 0) {
+			// incorrect decimal
+			hintType = key === ',' ? HINT_TYPES.DECIMAL_INCORRECT_PERIOD : HINT_TYPES.DECIMAL_INCORRECT_COMMA;
+			prevent = true;
+		} else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].indexOf(key) === -1) {
+			// not a number
+			prevent = true;
+		}
+		this._hintType = hintType;
+		if (prevent) {
+			e.preventDefault();
+		}
 	}
 
 	_updateFormattedValue() {

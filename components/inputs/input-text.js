@@ -237,6 +237,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._handleMouseLeave = this._handleMouseLeave.bind(this);
 	}
 
+	get selectionStart() {
+		const elem = this.shadowRoot.querySelector('.d2l-input');
+		return elem ? elem.selectionStart : 0;
+	}
+
 	get validationMessage() {
 		if (this.validity.rangeOverflow) {
 			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)), maxExclusive: false });
