@@ -96,13 +96,29 @@ class Card extends RtlMixin(LitElement) {
 			}
 
 			a {
+				bottom: -1px;
 				display: block;
-				height: 100%;
+				left: -1px;
 				outline: none;
 				position: absolute;
-				width: 100%;
+				right: -1px;
+				top: -1px;
 				z-index: 1;
 			}
+			:host([subtle]) a {
+				bottom: 0;
+				left: 0;
+				right: 0;
+				top: 0;
+			}
+
+			:host(:hover) a {
+				bottom: -5px;
+			}
+			:host([subtle]:hover) a {
+				bottom: -4px;
+			}
+
 			.d2l-card-content {
 				padding: 1.2rem 0.8rem 0 0.8rem;
 			}
