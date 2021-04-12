@@ -1,4 +1,4 @@
-import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { css } from 'lit-element/lit-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -205,6 +205,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	show(data, sourceView) {
+
 		const _show = (data, view) => {
 			view.shown = true;
 			const eventDetails = {
@@ -373,6 +374,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onHideStart(e) {
+		// re-enable focusable ancestor
+		this.__updateFocusablesHide(e.detail.sourceView);
+
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget === this || !rootTarget.hierarchicalView) return;
 
@@ -385,6 +389,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			const hideRoot = () => {
 				rootTarget.shown = false;
 				requestAnimationFrame(() => {
+					// disable focusable ancestors of new active view so they can't steal focus from custom views
+					this.__updateFocusablesShow(this.getActiveView());
+
 					rootTarget.__dispatchHideComplete(data);
 				});
 			};
@@ -426,6 +433,9 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onShowStart(e) {
+		// disable focusable ancestors so they can't steal focus from custom views
+		this.__updateFocusablesShow(e.detail.sourceView);
+
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget === this || !rootTarget.hierarchicalView) return;
 
@@ -479,4 +489,28 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__resizeObserver.disconnect();
 		this.__resizeObserver.observe(content);
 	}
+
+	__updateFocusables(view, sourceAttribute, targetAttribute) {
+		const rootView = this.getRootView();
+		let node = getComposedParent(view);
+		while (node && node !== rootView) {
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				const tabIndex = node.getAttribute(sourceAttribute);
+				if (tabIndex !== null) {
+					node.setAttribute(targetAttribute, tabIndex);
+					node.removeAttribute(sourceAttribute);
+				}
+			}
+			node = getComposedParent(node);
+		}
+	}
+
+	__updateFocusablesHide(view) {
+		this.__updateFocusables(view, 'd2l-hierarchical-view-tabindex', 'tabindex');
+	}
+
+	__updateFocusablesShow(view) {
+		this.__updateFocusables(view, 'tabindex', 'd2l-hierarchical-view-tabindex');
+	}
+
 };
