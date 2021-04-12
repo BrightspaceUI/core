@@ -2,7 +2,7 @@
 
 The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's intended for inputting numbers only.
 
-![example screenshot of number input](../screenshots/number.gif?raw=true)
+![example screenshot of number input](../screenshots/number.png?raw=true)
 
 ```html
 <script type="module">
@@ -53,4 +53,13 @@ To make your usage of `d2l-input-number` accessible, use the following propertie
 numberInput.addEventListener('change', (e) => {
   console.log(numberInput.value);
 });
+```
+
+## Integers Only
+
+To accept only integer numbers, set `max-fraction-digits` to zero:
+
+```html
+<d2l-input-number label="Apples" max-fraction-digits="0">
+</d2l-input-number>
 ```

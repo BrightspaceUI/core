@@ -9,21 +9,21 @@ const customLaunchers = {
 		browser: 'chrome',
 		browser_version: 'latest',
 		os: 'OS X',
-		os_version: 'Catalina'
+		os_version: 'Big Sur'
 	},
 	firefox: {
 		base: 'BrowserStack',
 		browser: 'firefox',
 		browser_version: 'latest',
 		os: 'OS X',
-		os_version: 'Catalina'
+		os_version: 'Big Sur'
 	},
 	safari: {
 		base: 'BrowserStack',
 		browser: 'safari',
 		browser_version: 'latest',
 		os: 'OS X',
-		os_version: 'Catalina'
+		os_version: 'Big Sur'
 	},
 	edge: {
 		base: 'BrowserStack',
