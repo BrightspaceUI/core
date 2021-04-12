@@ -302,10 +302,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	__focusCapture(e) {
 
 		/* The purpose of this logic is to direct focus to the correct element, so that user
-		is never focused in a view that is not visible to the user. It works based on the premise
-		that all elements are "display: none" except for the elements between the root of the
-		hierarchy and the active view, and the elements within the active view. Also worth noting,
-		only the root-view captures focus with this handler. */
+		is never focused in a view that is not visible. It works based on the premise that all
+		elements are "display: none" except for the elements between the root view and the active
+		view, and the elements within the active view. Also worth noting, only the root view
+		captures focus with this handler. */
 
 		const parentView = this.__getParentViewFromEvent(e);
 
