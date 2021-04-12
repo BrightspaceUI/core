@@ -137,12 +137,18 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
 		this.addEventListener('d2l-hierarchical-view-resize', this.__onViewResize);
 
+		const stopPropagation = e => {
+			// only stop for child views, so that Esc from root view can close dropdown
+			if (!this.childView) return;
+			e.stopPropagation();
+		};
+
 		// prevent these events from bubbling up from custom views
-		this.addEventListener('beforeinput', e => e.stopPropagation());
-		this.addEventListener('click', e => e.stopPropagation());
-		this.addEventListener('keydown', e => e.stopPropagation());
-		this.addEventListener('keyup', e => e.stopPropagation());
-		this.addEventListener('keypress', e => e.stopPropagation());
+		this.addEventListener('beforeinput', stopPropagation);
+		this.addEventListener('click', stopPropagation);
+		this.addEventListener('keydown', stopPropagation);
+		this.addEventListener('keyup', stopPropagation);
+		this.addEventListener('keypress', stopPropagation);
 
 		this.__isChildView();
 	}
