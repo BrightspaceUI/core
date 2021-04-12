@@ -137,6 +137,13 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('d2l-hierarchical-view-show-start', this.__onShowStart);
 		this.addEventListener('d2l-hierarchical-view-resize', this.__onViewResize);
 
+		// prevent these events from bubbling up from custom views
+		this.addEventListener('beforeinput', e => e.stopPropagation());
+		this.addEventListener('click', e => e.stopPropagation());
+		this.addEventListener('keydown', e => e.stopPropagation());
+		this.addEventListener('keyup', e => e.stopPropagation());
+		this.addEventListener('keypress', e => e.stopPropagation());
+
 		this.__isChildView();
 	}
 
