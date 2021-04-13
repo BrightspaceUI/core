@@ -190,8 +190,8 @@ describe('d2l-input-number', () => {
 	});
 
 	describe('invalid values', () => {
-		[undefined, null, NaN, 'helloworld123'].forEach((val) => {
-			it(`should reset "${val} to undefined`, async() => {
+		[undefined, null, '', NaN, 'helloworld123'].forEach((val) => {
+			it(`should reset "${val}" to undefined`, async() => {
 				const elem = await fixture(normalFixture);
 				elem.value = val;
 				await elem.updateComplete;
