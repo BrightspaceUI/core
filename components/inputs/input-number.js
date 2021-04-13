@@ -146,7 +146,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 	set value(val) {
 		const oldValue = this.value;
-		if (val === null || isNaN(val)) {
+		if (val === null || val === '' || isNaN(val)) {
 			val = undefined;
 		}
 		this._value = val;
