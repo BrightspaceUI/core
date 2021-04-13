@@ -391,7 +391,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	__onHideStart(e) {
 		// re-enable focusable ancestor
-		this.__updateFocusablesHide(e.detail.sourceView);
+		this.__resetAncestorTabIndicies(e.detail.sourceView);
 
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget === this || !rootTarget.hierarchicalView) return;
@@ -406,7 +406,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				rootTarget.shown = false;
 				requestAnimationFrame(() => {
 					// disable focusable ancestors of new active view so they can't steal focus from custom views
-					this.__updateFocusablesShow(this.getActiveView());
+					this.__removeAncestorTabIndicies(this.getActiveView());
 
 					rootTarget.__dispatchHideComplete(data);
 				});
@@ -450,7 +450,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	__onShowStart(e) {
 		// disable focusable ancestors so they can't steal focus from custom views
-		this.__updateFocusablesShow(e.detail.sourceView);
+		this.__removeAncestorTabIndicies(e.detail.sourceView);
 
 		const rootTarget = e.composedPath()[0];
 		if (rootTarget === this || !rootTarget.hierarchicalView) return;
@@ -498,6 +498,14 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 	}
 
+	__removeAncestorTabIndicies(view) {
+		this.__updateAncestorTabIndicies(view, 'tabindex', 'data-d2l-hierarchical-view-tabindex');
+	}
+
+	__resetAncestorTabIndicies(view) {
+		this.__updateAncestorTabIndicies(view, 'data-d2l-hierarchical-view-tabindex', 'tabindex');
+	}
+
 	__startResizeObserver() {
 		const content = this.shadowRoot.querySelector('.d2l-hierarchical-view-content');
 		this.__bound_dispatchViewResize = this.__bound_dispatchViewResize || this.__dispatchViewResize.bind(this);
@@ -506,7 +514,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.__resizeObserver.observe(content);
 	}
 
-	__updateFocusables(view, sourceAttribute, targetAttribute) {
+	__updateAncestorTabIndicies(view, sourceAttribute, targetAttribute) {
 		const rootView = this.getRootView();
 		let node = getComposedParent(view);
 		while (node && node !== rootView) {
@@ -519,14 +527,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			}
 			node = getComposedParent(node);
 		}
-	}
-
-	__updateFocusablesHide(view) {
-		this.__updateFocusables(view, 'data-d2l-hierarchical-view-tabindex', 'tabindex');
-	}
-
-	__updateFocusablesShow(view) {
-		this.__updateFocusables(view, 'tabindex', 'data-d2l-hierarchical-view-tabindex');
 	}
 
 };
