@@ -522,11 +522,11 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__updateFocusablesHide(view) {
-		this.__updateFocusables(view, 'd2l-hierarchical-view-tabindex', 'tabindex');
+		this.__updateFocusables(view, 'data-d2l-hierarchical-view-tabindex', 'tabindex');
 	}
 
 	__updateFocusablesShow(view) {
-		this.__updateFocusables(view, 'tabindex', 'd2l-hierarchical-view-tabindex');
+		this.__updateFocusables(view, 'tabindex', 'data-d2l-hierarchical-view-tabindex');
 	}
 
 };
