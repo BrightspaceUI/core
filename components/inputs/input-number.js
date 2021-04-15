@@ -360,6 +360,9 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 
 	_handleKeyPress(e) {
+		// NOTE: keypress event is deprecated, but keydown fires for ALL keys (including Shift/Tab/etc.)
+		// which makes it hard to selectively supress "not numbers". The "beforeinput" event is
+		// actually what we want, but it's not supported in legacy-Edge. When it's gone we should switch.
 		const key = e.key;
 		let prevent = false;
 		let hintType = HINT_TYPES.NONE;
