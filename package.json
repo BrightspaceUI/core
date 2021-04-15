@@ -36,7 +36,7 @@
     "!test",
     "/components/demo",
     "!/components/demo/demo"
-  ],
+  ], 
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
