@@ -55,7 +55,7 @@ describe('d2l-list', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 3700 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1000, height: 5000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/list/test/list.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -69,6 +69,7 @@ describe('d2l-list', () => {
 	[
 		{ category: 'general', tests: [
 			{ name: 'simple', selector: '#simple' },
+			{ name: 'slim', selector: '#slim' },
 			{ name: 'actions', selector: '#actions' },
 			{ name: 'rtl', selector: '#rtl' },
 		] },
@@ -83,7 +84,8 @@ describe('d2l-list', () => {
 			{ name: 'extended', selector: '#separatorsExtended' }
 		] },
 		{ category: 'item-content', tests: [
-			{ name: 'all', selector: '#itemContent' }
+			{ name: 'all', selector: '#itemContent' },
+			{ name: 'slim', selector: '#itemContentSlim' }
 		] },
 		{ category: 'href', tests: [
 			{ name: 'default', selector: '#href' },
@@ -102,7 +104,9 @@ describe('d2l-list', () => {
 			{ name: 'selected', selector: '#selectableSelected' },
 			{ name: 'selected focus', selector: '#selectableSelected', action: () => focusInput('#selectableSelected [selectable]') },
 			{ name: 'selected hover', selector: '#selectableSelected', action: () => hover('#selectableSelected [selectable]') },
+			{ name: 'slim', selector: '#selectableSlim' },
 			{ name: 'item-content', selector: '#selectableItemContent' },
+			{ name: 'item-content slim', selector: '#selectableItemContentSlim' },
 			{ name: 'skeleton', selector: '#selectableSkeleton' }
 		] },
 		{ category: 'focus method', tests: [

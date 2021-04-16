@@ -34,6 +34,14 @@
 		</div>
 
 		<div style="width: 400px">
+			<div class="visual-diff" id="slim">
+				<d2l-list>
+					<d2l-list-item slim>Item 1</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
 			<div class="visual-diff" id="actions">
 				<d2l-list>
 					<d2l-list-item>
@@ -128,6 +136,20 @@
 		</div>
 
 		<div style="width: 400px">
+			<div class="visual-diff" id="itemContentSlim">
+				<d2l-list>
+					<d2l-list-item slim>
+						<d2l-list-item-content>
+							<div>Item 1</div>
+							<div slot="secondary">Secondary Info for item 1</div>
+							<div slot="supporting-info">Supporting info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
 			<div class="visual-diff" id="href">
 				<d2l-list>
 					<d2l-list-item href="http://www.d2l.com">
@@ -172,9 +194,30 @@
 		</div>
 
 		<div style="width: 400px">
+			<div class="visual-diff" id="selectableSlim">
+				<d2l-list>
+					<d2l-list-item selectable key="1" slim>Item 1</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
 			<div class="visual-diff" id="selectableItemContent">
 				<d2l-list>
 					<d2l-list-item selectable key="1">
+						<d2l-list-item-content>
+							<div>Item 1</div>
+							<div slot="supporting-info">Secondary info for item 1</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 400px">
+			<div class="visual-diff" id="selectableItemContentSlim">
+				<d2l-list>
+					<d2l-list-item selectable key="1" slim>
 						<d2l-list-item-content>
 							<div>Item 1</div>
 							<div slot="supporting-info">Secondary info for item 1</div>

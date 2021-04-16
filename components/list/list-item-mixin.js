@@ -32,6 +32,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
 			 */
 			breakpoints: { type: Array },
+			slim: { type: Boolean },
 			_breakpoint: { type: Number },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean },
@@ -104,6 +105,10 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				justify-content: stretch;
 				padding: 0.55rem 0;
 			}
+			:host([slim]) [slot="content"] {
+				padding-top: 0.4rem;
+				padding-bottom: 0.35rem;
+			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration * {
 				border-radius: 6px;
@@ -172,6 +177,10 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			input[type="checkbox"].d2l-input-checkbox {
 				margin: 1.15rem 0.9rem 1.15rem 0;
 			}
+			:host([slim]) input[type="checkbox"].d2l-input-checkbox {
+				margin-bottom: 0.55rem;
+				margin-top: 0.55rem;
+			}
 			d2l-list-item-drag-handle {
 				margin: 0.8rem 0 0.8rem 0.4rem;
 			}
@@ -211,8 +220,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 
 	constructor() {
 		super();
-		this._breakpoint = 0;
 		this.breakpoints = defaultBreakpoints;
+		this.slim = false;
+		this._breakpoint = 0;
 		this._contentId = getUniqueId();
 	}
 
