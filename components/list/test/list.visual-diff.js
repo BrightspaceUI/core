@@ -107,7 +107,8 @@ describe('d2l-list', () => {
 			{ name: 'slim', selector: '#selectableSlim' },
 			{ name: 'item-content', selector: '#selectableItemContent' },
 			{ name: 'item-content slim', selector: '#selectableItemContentSlim' },
-			{ name: 'skeleton', selector: '#selectableSkeleton' }
+			{ name: 'skeleton', selector: '#selectableSkeleton' },
+			{ name: 'extended separators', selector: '#selectableSeparatorsExtended' }
 		] },
 		{ category: 'focus method', tests: [
 			{ name: 'href', selector: '#href', action: () => focusMethod('#href d2l-list-item') },

@@ -82,9 +82,19 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				border-bottom: 1px solid transparent;
 				border-top: 1px solid transparent;
 			}
-			[slot="content"].d2l-list-item-content-extend-separators {
+			.d2l-list-item-content-extend-separators > [slot="control"] {
+				width: 3rem;
+			}
+			.d2l-list-item-content-extend-separators > [slot="content"] {
 				padding-left: 0.9rem;
 				padding-right: 0.9rem;
+			}
+			:host([selectable]) .d2l-list-item-content-extend-separators > [slot="content"] {
+				padding-left: 0;
+			}
+			:host([dir="rtl"][selectable]) .d2l-list-item-content-extend-separators > [slot="content"] {
+				padding-left: 0.9rem;
+				padding-right: 0;
 			}
 			.d2l-list-item-content ::slotted(*) {
 				margin-top: 0.05rem;
@@ -106,8 +116,8 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				padding: 0.55rem 0;
 			}
 			:host([slim]) [slot="content"] {
-				padding-top: 0.4rem;
 				padding-bottom: 0.35rem;
+				padding-top: 0.4rem;
 			}
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration * {
@@ -177,6 +187,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			input[type="checkbox"].d2l-input-checkbox {
 				margin: 1.15rem 0.9rem 1.15rem 0;
 			}
+			.d2l-list-item-content-extend-separators input[type="checkbox"].d2l-input-checkbox {
+				margin-left: 0.9rem;
+			}
 			:host([slim]) input[type="checkbox"].d2l-input-checkbox {
 				margin-bottom: 0.55rem;
 				margin-top: 0.55rem;
@@ -187,6 +200,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host([dir="rtl"]) input[type="checkbox"].d2l-input-checkbox {
 				margin-left: 0.9rem;
 				margin-right: 0;
+			}
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators input[type="checkbox"].d2l-input-checkbox {
+				margin-right: 0.9rem;
 			}
 			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-focusing,
 			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-hovering {
@@ -313,12 +329,12 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 	_renderListItem({ illustration, content, actions } = {}) {
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
+			'd2l-list-item-content-extend-separators': this._extendSeparators,
 			'd2l-focusing': this._focusing,
 			'd2l-hovering': this._hovering,
 		};
 		const contentClasses = {
 			'd2l-list-item-content': true,
-			'd2l-list-item-content-extend-separators': this._extendSeparators,
 			'd2l-hovering': this._hoveringPrimaryAction,
 			'd2l-focusing': this._focusingPrimaryAction,
 		};
