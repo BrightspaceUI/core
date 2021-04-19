@@ -32,6 +32,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
 			 */
 			breakpoints: { type: Array },
+			/**
+			 * Whether to render the list-item with reduced whitespace.
+			 */
 			slim: { type: Boolean },
 			_breakpoint: { type: Number },
 			_dropdownOpen: { type: Boolean, attribute: '_dropdown-open', reflect: true },

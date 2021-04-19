@@ -170,6 +170,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 - `key` (String): Value to identify item if selectable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
+- `slim` (Boolean): Whether to render the item with reduced whitespace
 
 **Events**
 
