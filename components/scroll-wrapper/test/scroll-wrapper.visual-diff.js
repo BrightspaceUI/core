@@ -6,7 +6,6 @@ describe('d2l-scroll-wrapper', () => {
 	const visualDiff = new VisualDiff('scroll-wrapper', __dirname);
 
 	let browser, page;
-
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
