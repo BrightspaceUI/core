@@ -18,7 +18,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			:host {
 				display: block;
 			}
-			.gradient {
+			.d2l-scroll-wrapper-gradient {
 				background: linear-gradient(to right, #e66465, #9198e5);
 				height: 100px;
 			}
@@ -45,7 +45,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 		};
 		return html`
 			<d2l-scroll-wrapper ?show-actions="${this.showActions}">
-				<div class="gradient" style="${styleMap(style)}"></div>
+				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
 			</d2l-scroll-wrapper>
 		`;
 	}
