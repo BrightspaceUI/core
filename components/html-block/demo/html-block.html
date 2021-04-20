@@ -9,6 +9,60 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../html-block.js';
+			import { provideInstance } from '../../../mixins/provider-mixin.js';
+
+			let profileCardAccess;
+			const hasProfileCardAccess = () => {
+				if (profileCardAccess) return profileCardAccess;
+
+				profileCardAccess = new Promise(resolve => {
+
+					resolve(true); // temp
+
+					if (!D2L.LP) {
+						resolve(false);
+						return;
+					}
+
+					D2L.LP.Web.UI.Rpc.Connect(
+						D2L.LP.Web.UI.Rpc.Verbs.GET,
+						new D2L.LP.Web.Http.UrlLocation('/d2l/lp/profilecardsaccess/AccessCheck'),
+						null,
+						{ success: response => resolve(response) }
+					);
+				});
+
+				return profileCardAccess;
+			};
+
+			provideInstance(document, 'html-block-renderers', [{
+				prepare: async() => {
+					return hasProfileCardAccess();
+				},
+				render: elem => {
+
+					const mentions = elem.querySelectorAll('[data-mentions-id]');
+					if (mentions.length === 0) return elem;
+
+					mentions.forEach(mention => {
+
+						const userId = mention.getAttribute('data-mentions-id');
+						if (!userId) return;
+
+						const anchor = document.createElement('a');
+						anchor.href = `/d2l/lp/profilecardsaccess/UserProfile?userId=${parseInt(userId)}`;
+						anchor.target = '_blank';
+						anchor.innerText = mention.innerText;
+
+						mention.innerText = '';
+						mention.appendChild(anchor);
+
+					});
+
+					return elem;
+				}
+			}]);
+
 		</script>
 		<script>
 			if (window.location.search.indexOf('latex=true') !== -1) {
@@ -440,6 +494,7 @@
 							</math> and other symbols.
 						</div>`,
 						'The wizard quickly jinxed the gnomes before they vaporized.',
+						'The wizard (<span data-mentions-id="0">Elmer Fudd</span>) quickly jinxed the gnomes before they vaporized.',
 						'A quick movement of the enemy will jeopardize six gunboats.',
 						'Grumpy wizards make a toxic brew for the jovial queen.',
 						'Painful zombies quickly watch a jinxed graveyard.',
