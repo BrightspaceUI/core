@@ -1,6 +1,6 @@
-const helper = require('./dialog-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { getRect, open, reset } from './dialog-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog-confirm', () => {
 
@@ -26,11 +26,11 @@ describe('d2l-dialog-confirm', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#confirm');
-				await helper.reset(page, '#confirmLongTitle');
-				await helper.reset(page, '#confirmNoTitle');
-				await helper.reset(page, '#confirmLongText');
-				await helper.reset(page, '#confirmRtl');
+				await reset(page, '#confirm');
+				await reset(page, '#confirmLongTitle');
+				await reset(page, '#confirmNoTitle');
+				await reset(page, '#confirmLongText');
+				await reset(page, '#confirmRtl');
 			});
 
 			[
@@ -45,12 +45,12 @@ describe('d2l-dialog-confirm', () => {
 					});
 
 					it('opened', async function() {
-						await helper.open(page, '#confirm');
+						await open(page, '#confirm');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('rtl', async function() {
-						await helper.open(page, '#confirmRtl');
+						await open(page, '#confirmRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
@@ -73,8 +73,8 @@ describe('d2l-dialog-confirm', () => {
 				].forEach((info) => {
 
 					it(info.name, async function() {
-						await helper.open(page, info.selector);
-						const rect = await helper.getRect(page, info.selector);
+						await open(page, info.selector);
+						const rect = await getRect(page, info.selector);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 

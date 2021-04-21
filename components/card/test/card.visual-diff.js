@@ -1,7 +1,7 @@
 /*global forceFocusVisible */
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
-const dropdownHelper = require('../../dropdown/test/dropdown-helper.js');
+import { open } from '../../dropdown/test/dropdown-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-card', () => {
 
@@ -37,9 +37,9 @@ describe('d2l-card', () => {
 		{ name: 'link-actions-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => forceFocusVisible(elem)) },
 		{ name: 'link-footer-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button`, (elem) => forceFocusVisible(elem)) },
 		{ name: 'with-dropdown', selector: '#with-dropdown', margin: 20 },
-		{ name: 'with-dropdown-open', selector: '#with-dropdown', margin: 20, action: (selector) => dropdownHelper.open(page, `${selector} d2l-dropdown-more`) },
+		{ name: 'with-dropdown-open', selector: '#with-dropdown', margin: 20, action: (selector) => open(page, `${selector} d2l-dropdown-more`) },
 		{ name: 'with-dropdown-adjacent-hover', selector: '#with-dropdown-adjacent-hover', margin: 20, action: async(selector) => {
-			await dropdownHelper.open(page, `${selector} d2l-dropdown-more`);
+			await open(page, `${selector} d2l-dropdown-more`);
 			return page.hover(`${selector} #hover-target`);
 		} },
 		{ name: 'with-tooltip', selector: '#with-tooltip', margin: 20 },

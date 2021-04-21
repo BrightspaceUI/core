@@ -1,5 +1,5 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-link', () => {
 

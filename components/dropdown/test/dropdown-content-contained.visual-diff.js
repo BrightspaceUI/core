@@ -1,6 +1,6 @@
-const helper = require('./dropdown-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { open } from './dropdown-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dropdown-content-contained', () => {
 
@@ -24,7 +24,7 @@ describe('d2l-dropdown-content-contained', () => {
 		it(testName, async function() {
 			const rect = await visualDiff.getRect(page, `#${testName}`);
 			const selector = `#${testName} d2l-dropdown`;
-			await helper.open(page, selector);
+			await open(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
