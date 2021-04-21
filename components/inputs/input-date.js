@@ -23,7 +23,7 @@ export function formatISODateInUserCalDescriptor(val) {
 
 /**
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
- * @fires change - Dispatched when a date is selected or typed. "value" reflects the selected value and is in ISO 8601 calendar date format ("YYYY-MM-DD").
+ * @fires change - Dispatched when there is a change in selected date. "value" contains the selected value and is formatted in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
 class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
 
@@ -34,7 +34,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Text to reassure users that they can choose not to provide a value in this field (usually not necessary)
+			 * Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },
 			/**
@@ -46,16 +46,15 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * Maximum valid date that could be selected by a user.
+			 * Maximum valid date that could be selected by a user
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
-			 * Minimum valid date that could be selected by a user.
+			 * Minimum valid date that could be selected by a user
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Disables validation of max and min value. The min and max value will still be enforced
-			 * but the component will not be put into an error state or show an error tooltip.
+			 * Disables validation of max and min value. The min and max value will still be enforced but the component will not be put into an error state or show an error tooltip.
 			 */
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
 			/**

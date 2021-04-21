@@ -8,4 +8,3 @@ templates/*/test/screenshots/current/
 templates/*/test/screenshots/golden/
 test/sass.output.css
 .DS_Store
-custom-elements.json
