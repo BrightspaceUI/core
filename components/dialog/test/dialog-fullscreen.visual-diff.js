@@ -1,6 +1,6 @@
-const helper = require('./dialog-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { open, reset } from './dialog-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog-fullscreen', () => {
 
@@ -26,10 +26,10 @@ describe('d2l-dialog-fullscreen', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#dialog');
-				await helper.reset(page, '#dialogLong');
-				await helper.reset(page, '#dialogRtl');
-				await helper.reset(page, '#dialogNoFooterContent');
+				await reset(page, '#dialog');
+				await reset(page, '#dialogLong');
+				await reset(page, '#dialogRtl');
+				await reset(page, '#dialogNoFooterContent');
 			});
 
 			[
@@ -44,12 +44,12 @@ describe('d2l-dialog-fullscreen', () => {
 					});
 
 					it('opened', async function() {
-						await helper.open(page, '#dialog');
+						await open(page, '#dialog');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('rtl', async function() {
-						await helper.open(page, '#dialogRtl');
+						await open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
@@ -64,12 +64,12 @@ describe('d2l-dialog-fullscreen', () => {
 				});
 
 				it('no footer content', async function() {
-					await helper.open(page, '#dialogNoFooterContent');
+					await open(page, '#dialogNoFooterContent');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('scroll bottom shadow', async function() {
-					await helper.open(page, '#dialogLong');
+					await open(page, '#dialogLong');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
@@ -79,7 +79,7 @@ describe('d2l-dialog-fullscreen', () => {
 							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
 						});
 
-					await helper.open(page, '#dialogLong');
+					await open(page, '#dialogLong');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 

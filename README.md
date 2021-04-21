@@ -121,17 +121,16 @@ If you'd like to run the tests locally to help troubleshoot or develop new tests
 
 ```shell
 # Install dependencies locally
-npm i mocha -g
-npm i @brightspace-ui/visual-diff puppeteer --no-save
+npm install esm mocha puppeteer @brightspace-ui/visual-diff --no-save
 
 # run visual-diff tests
-mocha './**/*.visual-diff.js' -t 10000
+mocha './**/*.visual-diff.js' -t 10000 --require esm
 
 # subset of visual-diff tests:
-mocha './**/*.visual-diff.js' -t 10000 -g some-pattern
+mocha './**/*.visual-diff.js' -t 10000 --require esm -g some-pattern
 
 # update visual-diff goldens
-mocha './**/*.visual-diff.js' -t 10000 --golden
+mocha './**/*.visual-diff.js' -t 10000 --require esm --golden
 ```
 
 ## Versioning & Releasing

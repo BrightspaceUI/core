@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
-const helper = require('./dropdown-helper.js');
+import { getRect, open, reset } from './dropdown-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dropdown-menu', () => {
 
@@ -16,41 +16,41 @@ describe('d2l-dropdown-menu', () => {
 	});
 
 	beforeEach(async() => {
-		await helper.reset(page, '#dropdown-menu');
+		await reset(page, '#dropdown-menu');
 	});
 
 	after(async() => await browser.close());
 
 	it('first-page', async function() {
-		await helper.open(page, '#dropdown-menu');
-		const rect = await helper.getRect(page, '#dropdown-menu');
+		await open(page, '#dropdown-menu');
+		const rect = await getRect(page, '#dropdown-menu');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	/* Prevent regression to DE37329: reopening caused etra bottom spacing */
 	it('closed-reopened', async function() {
-		await helper.open(page, '#dropdown-menu');
-		await helper.reset(page, '#dropdown-menu');
-		await helper.open(page, '#dropdown-menu');
-		const rect = await helper.getRect(page, '#dropdown-menu');
+		await open(page, '#dropdown-menu');
+		await reset(page, '#dropdown-menu');
+		await open(page, '#dropdown-menu');
+		const rect = await getRect(page, '#dropdown-menu');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('with-header-footer', async function() {
-		await helper.open(page, '#dropdown-menu-header-footer');
-		const rect = await helper.getRect(page, '#dropdown-menu-header-footer');
+		await open(page, '#dropdown-menu-header-footer');
+		const rect = await getRect(page, '#dropdown-menu-header-footer');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('with-nopadding-header-footer', async function() {
-		await helper.open(page, '#dropdown-menu-header-footer-nopadding');
-		const rect = await helper.getRect(page, '#dropdown-menu-header-footer-nopadding');
+		await open(page, '#dropdown-menu-header-footer-nopadding');
+		const rect = await getRect(page, '#dropdown-menu-header-footer-nopadding');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('dark theme', async function() {
-		await helper.open(page, '#dark');
-		const rect = await helper.getRect(page, '#dark');
+		await open(page, '#dark');
+		const rect = await getRect(page, '#dark');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 });

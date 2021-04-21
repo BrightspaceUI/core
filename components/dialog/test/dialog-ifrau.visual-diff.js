@@ -1,6 +1,6 @@
-const helper = require('./dialog-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { open, reset } from './dialog-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog-ifrau', () => {
 
@@ -27,7 +27,7 @@ describe('d2l-dialog-ifrau', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#ifrau-dialog');
+				await reset(page, '#ifrau-dialog');
 			});
 
 			[
@@ -41,7 +41,7 @@ describe('d2l-dialog-ifrau', () => {
 						window.ifrauAvailableHeight = info.ifrau.availableHeight;
 						window.ifrauTop = info.ifrau.top;
 					}, info);
-					await helper.open(page, '#ifrau-dialog');
+					await open(page, '#ifrau-dialog');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 			});

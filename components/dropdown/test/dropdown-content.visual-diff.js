@@ -1,6 +1,6 @@
-const helper = require('./dropdown-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { open } from './dropdown-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dropdown-content', () => {
 
@@ -51,7 +51,7 @@ describe('d2l-dropdown-content', () => {
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
-			await helper.open(page, selector);
+			await open(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 	});
@@ -69,7 +69,7 @@ describe('d2l-dropdown-content', () => {
 					});
 				});
 			});
-		await helper.open(page, selector);
+		await open(page, selector);
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
