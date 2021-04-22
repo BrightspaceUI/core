@@ -1,18 +1,13 @@
 export async function getRect(page, selector) {
-	const rect = await page.$eval(selector, (toast) => {
+	const offsetTop = await page.$eval(selector, (toast) => {
 		const elem = toast.shadowRoot.querySelector('.d2l-alert-toast-container');
-		return {
-			x: elem.offe,
-			y: elem.offsetTop,
-			width: elem.offsetwidth,
-			height: elem.offsetHeight
-		};
+		return elem.offsetTop;
 	});
 	return {
 		x: 0,
-		y: rect.y - 10,
+		y: offsetTop - 10,
 		width: page.viewport().width,
-		height: page.viewport().height - rect.y + 10
+		height: page.viewport().height - offsetTop + 10
 	};
 }
 
