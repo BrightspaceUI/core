@@ -1,5 +1,4 @@
-import '../../../node_modules/d2l-table/d2l-scroll-wrapper.js';
-//import '../scroll-wrapper.js';
+import '../scroll-wrapper.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -36,8 +35,9 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (this.scroll === 0) return;
-		const amount = (this.getAttribute('dir') === 'rtl') ? this.scroll * -1 : this.scroll;
-		this.shadowRoot.querySelector('d2l-scroll-wrapper').scroll(amount, false);
+		requestAnimationFrame(() => {
+			this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false);
+		});
 	}
 
 	render() {
@@ -53,8 +53,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 
 	focusRightScrollButton() {
 		this.shadowRoot.querySelector('d2l-scroll-wrapper')
-			.shadowRoot.querySelector('d2l-sticky-element > d2l-table-circle-button.right.action')
-			.shadowRoot.querySelector('button').focus();
+			.shadowRoot.querySelector('.d2l-scroll-wrapper-button-right').focus();
 	}
 
 }
