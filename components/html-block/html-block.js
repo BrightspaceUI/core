@@ -147,14 +147,9 @@ class HtmlBlock extends LitElement {
 				let temp = document.createElement('div');
 				temp.appendChild(fragment);
 
-				// parallelize prepare (loading dependencies)
-				const prepared = await Promise.all(this._renderers.map(renderer => {
-					return renderer.prepare(temp);
-				}));
-
-				this._renderers.forEach((renderer, i) => {
-					if (prepared[i]) temp = renderer.render(temp);
-				});
+				for (const render of this._renderers) {
+					temp = await render(temp);
+				}
 				this._renderContainer.innerHTML = temp.innerHTML;
 
 			} else {

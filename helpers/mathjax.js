@@ -1,25 +1,20 @@
 let mathJaxLoaded;
 
-export const htmlBlockMathRenderer = {
-	prepare: async elem => {
-		const isLatexSupported = window.D2L && window.D2L.LP && window.D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true);
+export async function htmlBlockMathRenderer(elem) {
+	const isLatexSupported = window.D2L && window.D2L.LP && window.D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true);
 
-		if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(/.test(elem.innerHTML))) return false;
+	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(/.test(elem.innerHTML))) return elem;
 
-		const mathJaxConfig = { renderLatex: isLatexSupported };
-		await loadMathJax(mathJaxConfig);
+	const mathJaxConfig = { renderLatex: isLatexSupported };
+	await loadMathJax(mathJaxConfig);
 
-		return true;
-	},
-	render: elem => {
-		const temp = document.createElement('div');
-		temp.attachShadow({ mode: 'open' });
-		temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
+	const temp = document.createElement('div');
+	temp.attachShadow({ mode: 'open' });
+	temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
 
-		window.MathJax.typesetShadow(temp.shadowRoot);
-		return temp.shadowRoot.firstChild;
-	}
-};
+	window.MathJax.typesetShadow(temp.shadowRoot);
+	return temp.shadowRoot.firstChild;
+}
 
 export function loadMathJax(mathJaxConfig) {
 

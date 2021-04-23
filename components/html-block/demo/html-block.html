@@ -35,14 +35,14 @@
 				return profileCardAccess;
 			};
 
-			provideInstance(document, 'html-block-renderers', [{
-				prepare: async() => {
-					return hasProfileCardAccess();
-				},
-				render: elem => {
+			provideInstance(document, 'html-block-renderers', [
+				async elem => {
 
 					const mentions = elem.querySelectorAll('[data-mentions-id]');
 					if (mentions.length === 0) return elem;
+
+					const hasAccess = await hasProfileCardAccess();
+					if (!hasAccess) return elem;
 
 					mentions.forEach(mention => {
 
@@ -60,8 +60,9 @@
 					});
 
 					return elem;
+
 				}
-			}]);
+			]);
 
 		</script>
 		<script>
