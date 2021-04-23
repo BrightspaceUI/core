@@ -84,13 +84,13 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				}
 
 				.d2l-button-subtle-content {
-					color: var(--d2l-color-celestine);
+					color: var(--d2l-color-cinnabar);
 					vertical-align: middle;
 				}
 				button:hover:not([disabled]) .d2l-button-subtle-content,
 				button:focus:not([disabled]) .d2l-button-subtle-content,
 				:host([active]:not([disabled])) button .d2l-button-subtle-content {
-					color: var(--d2l-color-celestine-minus-1);
+					color: var(--d2l-color-cinnabar-minus-1);
 				}
 				:host([icon]) .d2l-button-subtle-content {
 					padding-left: 1.2rem;
@@ -111,7 +111,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				}
 
 				d2l-icon.d2l-button-subtle-icon {
-					color: var(--d2l-color-celestine);
+					color: var(--d2l-color-cinnabar);
 					display: none;
 					height: 0.9rem;
 					position: absolute;
@@ -122,7 +122,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				button:hover:not([disabled]) d2l-icon.d2l-button-subtle-icon,
 				button:focus:not([disabled]) d2l-icon.d2l-button-subtle-icon,
 				:host([active]:not([disabled])) button d2l-icon.d2l-button-subtle-icon {
-					color: var(--d2l-color-celestine-minus-1);
+					color: var(--d2l-color-cinnabar-minus-1);
 				}
 				:host([icon]) d2l-icon.d2l-button-subtle-icon {
 					display: inline-block;
