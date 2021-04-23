@@ -15,6 +15,11 @@ provideInstance(document, 'html-block-renderers', [
 			elemToReplace.innerText = someId;
 		});
 
+		// just for test so it can wait
+		setTimeout(() => {
+			document.dispatchEvent(new CustomEvent('d2l-test-replacement-complete'));
+		}, 0);
+
 		return elem;
 
 	},
@@ -78,7 +83,7 @@ describe('d2l-html-block', () => {
 
 	it('should do replacements', async() => {
 		const htmlBlock = await fixture(replacementFixture);
-		await htmlBlock.updateComplete; // legacy edge
+		await oneEvent(document, 'd2l-test-replacement-complete');
 		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
 		expect(spans[0].innerHTML).to.equal('1');
 		expect(spans[1].innerHTML).to.equal('2');
