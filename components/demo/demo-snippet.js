@@ -34,10 +34,13 @@ class DemoSnippet extends LitElement {
 			}
 			.d2l-demo-snippet-demo {
 				flex: 1 1 auto;
-				padding: 18px;
+				overflow: hidden;
 				position: relative;
 			}
-			:host([no-padding]) .d2l-demo-snippet-demo {
+			.d2l-demo-snippet-demo-padding {
+				padding: 18px;
+			}
+			:host([no-padding]) .d2l-demo-snippet-demo-padding {
 				padding: 0;
 			}
 			.d2l-demo-snippet-settings {
@@ -74,8 +77,10 @@ class DemoSnippet extends LitElement {
 		return html`
 			<div class="d2l-demo-snippet-demo-wrapper">
 				<div class="d2l-demo-snippet-demo" dir="${dirAttr}">
-					<slot name="_demo"></slot>
-					<slot></slot>
+					<div class="d2l-demo-snippet-demo-padding">
+						<slot name="_demo"></slot>
+						<slot></slot>
+					</div>
 				</div>
 				<div class="d2l-demo-snippet-settings">
 					<d2l-switch text="RTL" ?on="${dirAttr === 'rtl'}" @change="${this._handleDirChange}"></d2l-switch><br>
