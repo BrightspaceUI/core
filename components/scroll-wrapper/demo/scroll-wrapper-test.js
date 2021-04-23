@@ -1,4 +1,5 @@
 import '../../../node_modules/d2l-table/d2l-scroll-wrapper.js';
+//import '../scroll-wrapper.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
