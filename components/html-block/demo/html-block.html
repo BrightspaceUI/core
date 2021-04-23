@@ -9,6 +9,35 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../html-block.js';
+			import { provideInstance } from '../../../mixins/provider-mixin.js';
+
+			// demo replacement renderer for html-block
+			provideInstance(document, 'html-block-renderers', [
+				async elem => {
+
+					const elemsToReplace = elem.querySelectorAll('[data-replace-me-id]');
+					if (elemsToReplace.length === 0) return elem;
+
+					elemsToReplace.forEach(elemToReplace => {
+
+						const someId = elemToReplace.getAttribute('data-replace-me-id');
+						if (!someId) return;
+
+						const anchor = document.createElement('a');
+						anchor.href = `/d2l/lp/some-route?someId=${parseInt(someId)}`;
+						anchor.target = '_blank';
+						anchor.innerText = elemToReplace.innerText;
+
+						elemToReplace.innerText = '';
+						elemToReplace.appendChild(anchor);
+
+					});
+
+					return elem;
+
+				}
+			]);
+
 		</script>
 		<script>
 			if (window.location.search.indexOf('latex=true') !== -1) {
@@ -440,6 +469,7 @@
 							</math> and other symbols.
 						</div>`,
 						'The wizard quickly jinxed the gnomes before they vaporized.',
+						'The wizard (<span data-replace-me-id="0">Elmer Fudd</span>) quickly jinxed the gnomes before they vaporized.',
 						'A quick movement of the enemy will jeopardize six gunboats.',
 						'Grumpy wizards make a toxic brew for the jovial queen.',
 						'Painful zombies quickly watch a jinxed graveyard.',

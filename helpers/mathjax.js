@@ -1,5 +1,21 @@
 let mathJaxLoaded;
 
+export async function htmlBlockMathRenderer(elem) {
+	const isLatexSupported = window.D2L && window.D2L.LP && window.D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true);
+
+	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(/.test(elem.innerHTML))) return elem;
+
+	const mathJaxConfig = { renderLatex: isLatexSupported };
+	await loadMathJax(mathJaxConfig);
+
+	const temp = document.createElement('div');
+	temp.attachShadow({ mode: 'open' });
+	temp.shadowRoot.innerHTML = `<div><mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc></div>`;
+
+	window.MathJax.typesetShadow(temp.shadowRoot);
+	return temp.shadowRoot.firstChild;
+}
+
 export function loadMathJax(mathJaxConfig) {
 
 	if (mathJaxLoaded) return mathJaxLoaded;

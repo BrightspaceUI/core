@@ -1,6 +1,16 @@
 import '../colors/colors.js';
 import { css, LitElement } from 'lit-element/lit-element.js';
-import { loadMathJax } from '../../helpers/mathjax.js';
+import { htmlBlockMathRenderer } from '../../helpers/mathjax.js';
+import { requestInstance } from '../../mixins/provider-mixin.js';
+
+let renderers;
+
+const getRenderers = () => {
+	if (renderers) return renderers;
+	const tempRenderers = requestInstance(document, 'html-block-renderers');
+	renderers = (tempRenderers ? [ htmlBlockMathRenderer, ...tempRenderers ] : [ htmlBlockMathRenderer ]);
+	return renderers;
+};
 
 /**
  * A component for displaying user-authored HTML.
@@ -129,22 +139,13 @@ class HtmlBlock extends LitElement {
 			const fragment = template ? document.importNode(template.content, true) : null;
 			if (fragment) {
 
-				const hasMathML = !!fragment.querySelector('math');
-
-				const temp = document.createElement('div');
+				let temp = document.createElement('div');
 				temp.appendChild(fragment);
-				const fragmentHTML = temp.innerHTML;
 
-				const isLatexSupported = window.D2L && window.D2L.LP && window.D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true);
-				if (hasMathML || (isLatexSupported && /\$\$|\\\(/.test(fragmentHTML))) {
-					const mathJaxConfig = { renderLatex: isLatexSupported };
-					await loadMathJax(mathJaxConfig);
-
-					this._renderContainer.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${fragmentHTML}</mjx-body></mjx-doc>`;
-					window.MathJax.typesetShadow(this.shadowRoot);
-				} else {
-					this._renderContainer.innerHTML = fragmentHTML;
+				for (const render of HtmlBlock._renderers) {
+					temp = await render(temp);
 				}
+				this._renderContainer.innerHTML = temp.innerHTML;
 
 			} else {
 				this._renderContainer.innerHTML = '';
@@ -167,6 +168,10 @@ class HtmlBlock extends LitElement {
 		});
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
 
+	}
+
+	static get _renderers() {
+		return getRenderers();
 	}
 
 }
