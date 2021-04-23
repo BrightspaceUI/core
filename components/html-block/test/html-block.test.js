@@ -82,16 +82,18 @@ describe('d2l-html-block', () => {
 	});
 
 	it('should do replacements', async() => {
+		const replacementComplete = oneEvent(document, 'd2l-test-replacement-complete');
 		const htmlBlock = await fixture(replacementFixture);
-		await oneEvent(document, 'd2l-test-replacement-complete');
+		await replacementComplete;
 		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
 		expect(spans[0].innerHTML).to.equal('1');
 		expect(spans[1].innerHTML).to.equal('2');
 	});
 
 	it('should do async replacements', async() => {
+		const replacementComplete = oneEvent(document, 'd2l-test-replacement-complete');
 		const htmlBlock = await fixture(asyncReplacementFixture);
-		await oneEvent(document, 'd2l-test-replacement-complete');
+		await replacementComplete;
 		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
 		expect(spans[0].innerHTML).to.equal('1: async value');
 		expect(spans[1].innerHTML).to.equal('2: async value');
