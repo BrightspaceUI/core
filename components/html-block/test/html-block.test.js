@@ -11,7 +11,6 @@ provideInstance(document, 'html-block-renderers', [
 
 		elemsToReplace.forEach(elemToReplace => {
 			const someId = elemToReplace.getAttribute('data-replace-id');
-			elemToReplace.removeAttribute('data-replace-id');
 			if (!someId) return;
 			elemToReplace.innerText = someId;
 		});
@@ -33,7 +32,6 @@ provideInstance(document, 'html-block-renderers', [
 
 		elemsToReplace.forEach(elemToReplace => {
 			const someId = elemToReplace.getAttribute('data-async-replace-id');
-			elemToReplace.removeAttribute('data-async-replace-id');
 			if (!someId) return;
 			elemToReplace.innerText = `${someId}: ${asyncValue}`;
 		});
@@ -81,15 +79,17 @@ describe('d2l-html-block', () => {
 	it('should do replacements', async() => {
 		const htmlBlock = await fixture(replacementFixture);
 		await htmlBlock.updateComplete; // legacy edge
-		expect(htmlBlock.shadowRoot.querySelector('.d2l-html-block-rendered').innerHTML)
-			.to.equal('<span>1</span><span>2</span>');
+		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
+		expect(spans[0].innerHTML).to.equal('1');
+		expect(spans[1].innerHTML).to.equal('2');
 	});
 
 	it('should do async replacements', async() => {
 		const htmlBlock = await fixture(asyncReplacementFixture);
 		await oneEvent(document, 'd2l-test-replacement-complete');
-		expect(htmlBlock.shadowRoot.querySelector('.d2l-html-block-rendered').innerHTML)
-			.to.equal('<span>1: async value</span><span>2: async value</span>');
+		const spans = htmlBlock.shadowRoot.querySelectorAll('span');
+		expect(spans[0].innerHTML).to.equal('1: async value');
+		expect(spans[1].innerHTML).to.equal('2: async value');
 	});
 
 });
