@@ -123,11 +123,6 @@ class HtmlBlock extends LitElement {
 		`;
 	}
 
-	constructor() {
-		super();
-		this._renderers = getRenderers();
-	}
-
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._templateObserver) this._templateObserver.disconnect();
@@ -147,7 +142,7 @@ class HtmlBlock extends LitElement {
 				let temp = document.createElement('div');
 				temp.appendChild(fragment);
 
-				for (const render of this._renderers) {
+				for (const render of HtmlBlock._renderers) {
 					temp = await render(temp);
 				}
 				this._renderContainer.innerHTML = temp.innerHTML;
@@ -173,6 +168,10 @@ class HtmlBlock extends LitElement {
 		});
 		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
 
+	}
+
+	static get _renderers() {
+		return getRenderers();
 	}
 
 }
