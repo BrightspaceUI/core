@@ -1,6 +1,6 @@
-const helper = require('./alert-toast-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { getRect, open } from './alert-toast-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-alert-toast', () => {
 
@@ -29,8 +29,8 @@ describe('d2l-alert-toast', () => {
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
-			await helper.open(page, selector);
-			const rect = await helper.getRect(page, selector);
+			await open(page, selector);
+			const rect = await getRect(page, selector);
 
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
@@ -38,7 +38,7 @@ describe('d2l-alert-toast', () => {
 
 	describe('responsive-position', () => {
 		it('wide', async function() {
-			await helper.open(page, '#subtext-button-close');
+			await open(page, '#subtext-button-close');
 
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
@@ -47,7 +47,7 @@ describe('d2l-alert-toast', () => {
 			page = await visualDiff.createPage(browser, { viewport: { width: 400, height: 400 } });
 			await page.goto(`${visualDiff.getBaseUrl()}/components/alert/test/alert-toast.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 			await page.bringToFront();
-			await helper.open(page, '#subtext-button-close');
+			await open(page, '#subtext-button-close');
 
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});

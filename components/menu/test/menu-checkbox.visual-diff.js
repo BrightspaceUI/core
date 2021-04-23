@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
-const { oneEvent } = require('@brightspace-ui/visual-diff/helpers');
+import oneEvent from '@brightspace-ui/visual-diff/helpers/oneEvent.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-menu checkbox', () => {
 

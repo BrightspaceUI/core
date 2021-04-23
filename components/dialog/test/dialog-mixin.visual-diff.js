@@ -1,6 +1,6 @@
-const helper = require('./dialog-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { close, getCloseEvent, open, reset } from './dialog-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog-mixin', () => {
 
@@ -26,7 +26,7 @@ describe('d2l-dialog-mixin', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#dialog');
+				await reset(page, '#dialog');
 			});
 
 			describe('generic', () => {
@@ -40,14 +40,14 @@ describe('d2l-dialog-mixin', () => {
 				});
 
 				it('closed', async function() {
-					await helper.open(page, '#dialog');
-					await helper.close(page, '#dialog');
+					await open(page, '#dialog');
+					await close(page, '#dialog');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('abort', async function() {
-					await helper.open(page, '#dialog');
-					const closeEvent = helper.getCloseEvent(page, '#dialog');
+					await open(page, '#dialog');
+					const closeEvent = getCloseEvent(page, '#dialog');
 					await page.$eval('#dialog', (dialog) => {
 						dialog.shadowRoot.querySelector('d2l-button-icon').click();
 					});
@@ -56,8 +56,8 @@ describe('d2l-dialog-mixin', () => {
 				});
 
 				it('escape', async function() {
-					await helper.open(page, '#dialog');
-					const closeEvent = helper.getCloseEvent(page, '#dialog');
+					await open(page, '#dialog');
+					const closeEvent = getCloseEvent(page, '#dialog');
 
 					/* test handler for dialog's custom close event strangely does not get
 					invoked when using puppeteer's keyboard api for the escape key for the

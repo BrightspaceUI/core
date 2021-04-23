@@ -1,7 +1,7 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
-const dropdownHelper = require('../../dropdown/test/dropdown-helper.js');
-const tooltipHelper = require('../../tooltip/test/tooltip-helper.js');
+import { hide, show } from '../../tooltip/test/tooltip-helper.js';
+import { open, reset } from '../../dropdown/test/dropdown-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-list', () => {
 
@@ -10,7 +10,7 @@ describe('d2l-list', () => {
 	let browser, page;
 
 	const closeDropdown = (selector) => {
-		return dropdownHelper.reset(page, selector);
+		return reset(page, selector);
 	};
 
 	const focusMethod = (selector) => {
@@ -38,7 +38,7 @@ describe('d2l-list', () => {
 	};
 
 	const hideTooltip = (selector) => {
-		return tooltipHelper.hide(page, selector);
+		return hide(page, selector);
 	};
 
 	const hover = (selector) => {
@@ -46,11 +46,11 @@ describe('d2l-list', () => {
 	};
 
 	const openDropdown = (selector) => {
-		return dropdownHelper.open(page, selector);
+		return open(page, selector);
 	};
 
 	const showTooltip = (selector) => {
-		return tooltipHelper.show(page, selector);
+		return show(page, selector);
 	};
 
 	before(async() => {

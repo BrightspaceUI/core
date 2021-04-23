@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
-const helper = require('./input-helper.js');
+import { getRectTooltip } from './input-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-date-time-range', () => {
 
@@ -240,13 +240,13 @@ describe('d2l-input-date-time-range', () => {
 
 					it('focus start', async function() {
 						await focusOnInput(page, '#min-max', startDateSelector);
-						const rect = await helper.getRectTooltip(page, '#min-max');
+						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
 					it('focus end', async function() {
 						await focusOnInput(page, '#min-max', endDateSelector);
-						const rect = await helper.getRectTooltip(page, '#min-max', 1);
+						const rect = await getRectTooltip(page, '#min-max', 1);
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});

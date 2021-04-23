@@ -1,6 +1,6 @@
-const helper = require('./tooltip-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import puppeteer from 'puppeteer';
+import { show } from './tooltip-helper.js';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-tooltip', () => {
 
@@ -55,7 +55,7 @@ describe('d2l-tooltip', () => {
 
 		it(testName, async function() {
 			const selector = `#${testName}`;
-			await helper.show(page, selector);
+			await show(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 

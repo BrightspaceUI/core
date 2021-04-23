@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
-const helper = require('./input-helper.js');
+import { getRect, getRectTooltip, open, reset } from './input-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-date', () => {
 
@@ -37,7 +37,7 @@ describe('d2l-input-date', () => {
 			elem.focus();
 			elem._inputTextFocusShowTooltip = true;
 		});
-		const rect = await helper.getRectTooltip(page, '#value');
+		const rect = await getRectTooltip(page, '#value');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
@@ -102,18 +102,18 @@ describe('d2l-input-date', () => {
 				);
 				input.dispatchEvent(e);
 			});
-			const rect = await helper.getRect(page, '#disabled');
+			const rect = await getRect(page, '#disabled');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		describe('with min and max', () => {
 			afterEach(async() => {
-				await helper.reset(page, '#min-max');
+				await reset(page, '#min-max');
 			});
 
 			it('open', async function() {
-				await helper.open(page, '#min-max');
-				const rect = await helper.getRect(page, '#min-max');
+				await open(page, '#min-max');
+				const rect = await getRect(page, '#min-max');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -126,7 +126,7 @@ describe('d2l-input-date', () => {
 					input.dispatchEvent(eventObj);
 				});
 
-				const rect = await helper.getRect(page, '#min-max');
+				const rect = await getRect(page, '#min-max');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -152,7 +152,7 @@ describe('d2l-input-date', () => {
 					});
 
 					afterEach(async() => {
-						await helper.reset(page, '#min-max');
+						await reset(page, '#min-max');
 					});
 
 					it('focus', async function() {
@@ -160,7 +160,7 @@ describe('d2l-input-date', () => {
 							const input = elem.shadowRoot.querySelector('d2l-input-text');
 							input.focus();
 						});
-						const rect = await helper.getRectTooltip(page, '#min-max');
+						const rect = await getRectTooltip(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
@@ -173,7 +173,7 @@ describe('d2l-input-date', () => {
 							);
 							input.dispatchEvent(e);
 						});
-						const rect = await helper.getRect(page, '#min-max');
+						const rect = await getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
@@ -185,7 +185,7 @@ describe('d2l-input-date', () => {
 							eventObj.keyCode = 13;
 							input.dispatchEvent(eventObj);
 						});
-						const rect = await helper.getRect(page, '#min-max');
+						const rect = await getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
@@ -200,7 +200,7 @@ describe('d2l-input-date', () => {
 						});
 						await page.waitForTimeout(100);
 						await page.keyboard.press('Tab');
-						const rect = await helper.getRect(page, '#min-max');
+						const rect = await getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 				});
@@ -216,7 +216,7 @@ describe('d2l-input-date', () => {
 								input.dispatchEvent(eventObj);
 							});
 							await page.keyboard.press('ArrowLeft');
-							const rect = await helper.getRect(page, '#min-max');
+							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 
@@ -229,7 +229,7 @@ describe('d2l-input-date', () => {
 								input.dispatchEvent(eventObj);
 							});
 							await page.keyboard.press('ArrowRight');
-							const rect = await helper.getRect(page, '#min-max');
+							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 					});
@@ -251,7 +251,7 @@ describe('d2l-input-date', () => {
 								input.dispatchEvent(eventObj);
 							});
 							await page.keyboard.press('ArrowLeft');
-							const rect = await helper.getRect(page, '#min-max');
+							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 
@@ -264,7 +264,7 @@ describe('d2l-input-date', () => {
 								input.dispatchEvent(eventObj);
 							});
 							await page.keyboard.press('ArrowRight');
-							const rect = await helper.getRect(page, '#min-max');
+							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 					});
@@ -292,7 +292,7 @@ describe('d2l-input-date', () => {
 								input.dispatchEvent(eventObj);
 							});
 							await page.keyboard.press('ArrowLeft');
-							const rect = await helper.getRect(page, '#min-max');
+							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 
 						});
@@ -306,7 +306,7 @@ describe('d2l-input-date', () => {
 								input.dispatchEvent(eventObj);
 							});
 							await page.keyboard.press('ArrowRight');
-							const rect = await helper.getRect(page, '#min-max');
+							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 					});
@@ -317,12 +317,12 @@ describe('d2l-input-date', () => {
 
 		describe('with placeholder', () => {
 			afterEach(async() => {
-				await helper.reset(page, '#placeholder');
+				await reset(page, '#placeholder');
 			});
 
 			it('open', async function() {
-				await helper.open(page, '#placeholder');
-				const rect = await helper.getRect(page, '#placeholder');
+				await open(page, '#placeholder');
+				const rect = await getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -335,7 +335,7 @@ describe('d2l-input-date', () => {
 					input.dispatchEvent(eventObj);
 				});
 
-				const rect = await helper.getRect(page, '#placeholder');
+				const rect = await getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 		});
@@ -346,24 +346,24 @@ describe('d2l-input-date', () => {
 			});
 
 			afterEach(async() => {
-				await helper.reset(page, '#value');
+				await reset(page, '#value');
 			});
 
 			it('open', async function() {
-				await helper.open(page, '#value');
-				const rect = await helper.getRect(page, '#value');
+				await open(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('tab on open', async function() {
-				await helper.open(page, '#value');
+				await open(page, '#value');
 				await page.keyboard.press('Tab');
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('click date', async function() {
-				await helper.open(page, '#value');
+				await open(page, '#value');
 				await page.$eval('#value', (elem) => {
 					const calendar = elem.shadowRoot.querySelector('d2l-calendar');
 					const date = calendar.shadowRoot.querySelector('td[data-date="8"] button');
@@ -393,7 +393,7 @@ describe('d2l-input-date', () => {
 
 			it('opens then changes month then closes then reopens', async function() {
 				// open
-				await helper.open(page, '#value');
+				await open(page, '#value');
 
 				// change month
 				await page.$eval('#value', (elem) => {
@@ -403,12 +403,12 @@ describe('d2l-input-date', () => {
 				});
 
 				// close
-				await helper.reset(page, '#value');
+				await reset(page, '#value');
 
 				// re-open
-				await helper.open(page, '#value');
+				await open(page, '#value');
 
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -422,7 +422,7 @@ describe('d2l-input-date', () => {
 					);
 					input.dispatchEvent(e);
 				});
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -436,7 +436,7 @@ describe('d2l-input-date', () => {
 					);
 					input.dispatchEvent(e);
 				});
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -449,7 +449,7 @@ describe('d2l-input-date', () => {
 					eventObj.keyCode = 13;
 					input.dispatchEvent(eventObj);
 				});
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -462,7 +462,7 @@ describe('d2l-input-date', () => {
 					eventObj.keyCode = 13;
 					input.dispatchEvent(eventObj);
 				});
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -475,7 +475,7 @@ describe('d2l-input-date', () => {
 					eventObj.keyCode = 40;
 					input.dispatchEvent(eventObj);
 				});
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -488,7 +488,7 @@ describe('d2l-input-date', () => {
 					eventObj.keyCode = 40;
 					input.dispatchEvent(eventObj);
 				});
-				const rect = await helper.getRect(page, '#value');
+				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
@@ -518,7 +518,7 @@ describe('d2l-input-date', () => {
 			});
 
 			afterEach(async() => {
-				await helper.reset(page, '#required');
+				await reset(page, '#required');
 			});
 
 			it('required focus then blur', async function() {
@@ -552,9 +552,9 @@ describe('d2l-input-date', () => {
 					eventObj.keyCode = 13;
 					input.dispatchEvent(eventObj);
 				});
-				const rect = await helper.getRect(page, '#required-value');
+				const rect = await getRect(page, '#required-value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-				await helper.reset(page, '#required-value');
+				await reset(page, '#required-value');
 			});
 		});
 	});

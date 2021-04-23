@@ -1,6 +1,6 @@
-const helper = require('./dialog-helper.js');
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
+import { open, reset } from './dialog-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-dialog', () => {
 
@@ -26,11 +26,11 @@ describe('d2l-dialog', () => {
 			});
 
 			beforeEach(async() => {
-				await helper.reset(page, '#dialog');
-				await helper.reset(page, '#dialogLong');
-				await helper.reset(page, '#dialogRtl');
-				await helper.reset(page, '#dialogResize');
-				await helper.reset(page, '#dialogNoFooterContent');
+				await reset(page, '#dialog');
+				await reset(page, '#dialogLong');
+				await reset(page, '#dialogRtl');
+				await reset(page, '#dialogResize');
+				await reset(page, '#dialogNoFooterContent');
 			});
 
 			[
@@ -47,24 +47,24 @@ describe('d2l-dialog', () => {
 					});
 
 					it('opened', async function() {
-						await helper.open(page, '#dialog');
+						await open(page, '#dialog');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('opened-wide', async function() {
 						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = '1500px');
-						await helper.open(page, '#dialog');
+						await open(page, '#dialog');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 						await page.$eval('#wideContainer', wideContainer => wideContainer.style.width = 'auto');
 					});
 
 					it('rtl', async function() {
-						await helper.open(page, '#dialogRtl');
+						await open(page, '#dialogRtl');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 					});
 
 					it('resize', async function() {
-						await helper.open(page, '#dialogResize');
+						await open(page, '#dialogResize');
 						await page.$eval('#dialogResize', (dialog) => {
 							dialog.querySelector('div').style.height = '60px';
 							dialog.width = 500;
@@ -84,12 +84,12 @@ describe('d2l-dialog', () => {
 				});
 
 				it('no footer content', async function() {
-					await helper.open(page, '#dialogNoFooterContent');
+					await open(page, '#dialogNoFooterContent');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('scroll bottom shadow', async function() {
-					await helper.open(page, '#dialogLong');
+					await open(page, '#dialogLong');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
@@ -99,12 +99,12 @@ describe('d2l-dialog', () => {
 							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
 						});
 
-					await helper.open(page, '#dialogLong');
+					await open(page, '#dialogLong');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
 				it('fullscreen-within-on', async function() {
-					await helper.open(page, '#dialog');
+					await open(page, '#dialog');
 					page.$eval('#top', childElem => {
 						childElem.dispatchEvent(new CustomEvent(
 							'd2l-fullscreen-within', {
@@ -118,7 +118,7 @@ describe('d2l-dialog', () => {
 				});
 
 				it('fullscreen-within-off', async function() {
-					await helper.open(page, '#dialog');
+					await open(page, '#dialog');
 					page.$eval('#top', childElem => {
 						childElem.dispatchEvent(new CustomEvent(
 							'd2l-fullscreen-within', {

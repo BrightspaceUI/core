@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
-const VisualDiff = require('@brightspace-ui/visual-diff');
-const helper = require('./input-helper.js');
+import { getRect, open, reset } from './input-helper.js';
+import puppeteer from 'puppeteer';
+import VisualDiff from '@brightspace-ui/visual-diff';
 
 describe('d2l-input-time', () => {
 
@@ -82,12 +82,12 @@ describe('d2l-input-time', () => {
 	describe('open behavior', () => {
 
 		afterEach(async() => {
-			await helper.reset(page, '#dropdown');
+			await reset(page, '#dropdown');
 		});
 
 		it('dropdown open top', async function() {
-			await helper.open(page, '#dropdown');
-			const rect = await helper.getRect(page, '#dropdown');
+			await open(page, '#dropdown');
+			const rect = await getRect(page, '#dropdown');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
@@ -99,16 +99,16 @@ describe('d2l-input-time', () => {
 				eventObj.keyCode = 13;
 				input.dispatchEvent(eventObj);
 			});
-			const rect = await helper.getRect(page, '#dropdown');
+			const rect = await getRect(page, '#dropdown');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('dropdown open enforce-time-intervals', async function() {
 			await page.$eval('#enforce', (elem) => elem.skeleton = false);
-			await helper.open(page, '#enforce');
-			const rect = await helper.getRect(page, '#enforce');
+			await open(page, '#enforce');
+			const rect = await getRect(page, '#enforce');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			await helper.reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
+			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 
 	});
@@ -117,7 +117,7 @@ describe('d2l-input-time', () => {
 		await page.$eval('#basic', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		await helper.reset(page, '#basic');
+		await reset(page, '#basic');
 	});
 
 });
