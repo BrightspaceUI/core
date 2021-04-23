@@ -11,51 +11,25 @@
 			import '../html-block.js';
 			import { provideInstance } from '../../../mixins/provider-mixin.js';
 
-			let profileCardAccess;
-			const hasProfileCardAccess = () => {
-				if (profileCardAccess) return profileCardAccess;
-
-				profileCardAccess = new Promise(resolve => {
-
-					resolve(true); // temp
-
-					if (!D2L.LP) {
-						resolve(false);
-						return;
-					}
-
-					D2L.LP.Web.UI.Rpc.Connect(
-						D2L.LP.Web.UI.Rpc.Verbs.GET,
-						new D2L.LP.Web.Http.UrlLocation('/d2l/lp/profilecardsaccess/AccessCheck'),
-						null,
-						{ success: response => resolve(response) }
-					);
-				});
-
-				return profileCardAccess;
-			};
-
+			// demo replacement renderer for html-block
 			provideInstance(document, 'html-block-renderers', [
 				async elem => {
 
-					const mentions = elem.querySelectorAll('[data-mentions-id]');
-					if (mentions.length === 0) return elem;
+					const elemsToReplace = elem.querySelectorAll('[data-replace-me-id]');
+					if (elemsToReplace.length === 0) return elem;
 
-					const hasAccess = await hasProfileCardAccess();
-					if (!hasAccess) return elem;
+					elemsToReplace.forEach(elemToReplace => {
 
-					mentions.forEach(mention => {
-
-						const userId = mention.getAttribute('data-mentions-id');
-						if (!userId) return;
+						const someId = elemToReplace.getAttribute('data-replace-me-id');
+						if (!someId) return;
 
 						const anchor = document.createElement('a');
-						anchor.href = `/d2l/lp/profilecardsaccess/UserProfile?userId=${parseInt(userId)}`;
+						anchor.href = `/d2l/lp/some-route?someId=${parseInt(someId)}`;
 						anchor.target = '_blank';
-						anchor.innerText = mention.innerText;
+						anchor.innerText = elemToReplace.innerText;
 
-						mention.innerText = '';
-						mention.appendChild(anchor);
+						elemToReplace.innerText = '';
+						elemToReplace.appendChild(anchor);
 
 					});
 
@@ -495,7 +469,7 @@
 							</math> and other symbols.
 						</div>`,
 						'The wizard quickly jinxed the gnomes before they vaporized.',
-						'The wizard (<span data-mentions-id="0">Elmer Fudd</span>) quickly jinxed the gnomes before they vaporized.',
+						'The wizard (<span data-replace-me-id="0">Elmer Fudd</span>) quickly jinxed the gnomes before they vaporized.',
 						'A quick movement of the enemy will jeopardize six gunboats.',
 						'Grumpy wizards make a toxic brew for the jovial queen.',
 						'Painful zombies quickly watch a jinxed graveyard.',
