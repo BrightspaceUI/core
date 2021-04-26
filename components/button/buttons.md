@@ -11,8 +11,8 @@ A button is used to communicate and perform an action.
 </script>
 <d2l-button>Button</d2l-button>
 <d2l-button primary>Primary Button</d2l-button>
-<d2l-button-subtle text="Subtle Button" icon="tier1:gear"></d2l-button>
-<d2l-button-icon text="Icon Button" icon="tier1:gear"></d2l-button>
+<d2l-button-subtle text="Subtle Button" icon="tier1:gear"></d2l-button-subtle>
+<d2l-button-icon text="Icon Button" icon="tier1:gear"></d2l-button-icon>
 ```
 
 ## Best Practices
