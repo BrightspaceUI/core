@@ -7,7 +7,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			showActions: { attribute: 'show-actions', type: Boolean },
+			hideActions: { attribute: 'hide-actions', type: Boolean },
 			scroll: { attribute: 'scroll', type: Number },
 			width: { type: Number }
 		};
@@ -27,8 +27,8 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.hideActions = false;
 		this.scroll = 0;
-		this.showActions = false;
 		this.width = 300;
 	}
 
@@ -45,7 +45,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			width: `${this.width}px`
 		};
 		return html`
-			<d2l-scroll-wrapper ?show-actions="${this.showActions}">
+			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}">
 				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
 			</d2l-scroll-wrapper>
 		`;

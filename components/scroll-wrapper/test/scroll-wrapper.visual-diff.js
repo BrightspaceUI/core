@@ -21,7 +21,7 @@ describe('d2l-scroll-wrapper', () => {
 				await page.bringToFront();
 			});
 
-			['show-actions', 'no-actions'].forEach((actions) => {
+			['show-actions', 'hide-actions'].forEach((actions) => {
 				[
 					'smaller',
 					'same',

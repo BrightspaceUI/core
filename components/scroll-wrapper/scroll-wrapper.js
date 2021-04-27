@@ -10,7 +10,7 @@ const SCROLL_AMOUNT = 0.8;
 
 /**
  *
- * Wraps content which may overflow its horizontal boundaries, optionally providing left/right scroll buttons.
+ * Wraps content which may overflow its horizontal boundaries, providing left/right scroll buttons.
  *
  * @slot - Content to wrap
  */
@@ -19,10 +19,10 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Whether to show left/right scroll buttons
+			 * Whether to hide left/right scroll buttons
 			 */
-			showActions: {
-				attribute: 'show-actions',
+			hideActions: {
+				attribute: 'hide-actions',
 				type: Boolean
 			},
 			_hScrollbar: {
@@ -58,16 +58,20 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 				outline: none;
 				overflow-x: auto;
 			}
-			:host([h-scrollbar][show-actions]) .d2l-scroll-wrapper-container {
+			:host([h-scrollbar]) .d2l-scroll-wrapper-container {
 				border-left: 1px dashed var(--d2l-color-mica);
 				border-right: 1px dashed var(--d2l-color-mica);
 			}
-			:host([dir="rtl"][scrollbar-right][show-actions]) .d2l-scroll-wrapper-container,
-			:host(:not([dir="rtl"])[scrollbar-left][show-actions]) .d2l-scroll-wrapper-container {
+			:host([h-scrollbar][hide-actions]) .d2l-scroll-wrapper-container {
+				border-left: none;
+				border-right: none;
+			}
+			:host([dir="rtl"][scrollbar-right]) .d2l-scroll-wrapper-container,
+			:host(:not([dir="rtl"])[scrollbar-left]) .d2l-scroll-wrapper-container {
 				border-left: none;
 			}
-			:host([dir="rtl"][scrollbar-left][show-actions]) .d2l-scroll-wrapper-container,
-			:host(:not([dir="rtl"])[scrollbar-right][show-actions]) .d2l-scroll-wrapper-container {
+			:host([dir="rtl"][scrollbar-left]) .d2l-scroll-wrapper-container,
+			:host(:not([dir="rtl"])[scrollbar-right]) .d2l-scroll-wrapper-container {
 				border-right: none;
 			}
 
@@ -132,7 +136,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 				.d2l-scroll-wrapper-actions {
 					display: none;
 				}
-				:host([h-scrollbar][show-actions]) .d2l-scroll-wrapper-container {
+				:host([h-scrollbar]) .d2l-scroll-wrapper-container {
 					border-left: none;
 					border-right: none;
 				}
@@ -142,7 +146,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 
 	constructor() {
 		super();
-		this.showActions = false;
+		this.hideActions = false;
 		this._container = null;
 		this._hScrollbar = true;
 		this._scrollbarLeft = false;
@@ -156,7 +160,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		const actions = this.showActions ? html`
+		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
 				<button class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}" aria-hidden="true">
 					<d2l-icon icon="tier1:chevron-left"></d2l-icon>
