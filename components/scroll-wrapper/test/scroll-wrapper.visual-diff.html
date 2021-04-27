@@ -8,7 +8,7 @@
 		</script>
 		<script type="module">
 			import '../../typography/typography.js';
-			import '../demo/d2l-scroll-wrapper-test.js';
+			import '../demo/scroll-wrapper-test.js';
 		</script>
 		<title>d2l-scroll-wrapper</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,34 +23,34 @@
 	</head>
 	<body class="d2l-typography">
 		<div class="visual-diff" id="show-actions-smaller">
-			<d2l-test-scroll-wrapper show-actions width="200"></d2l-test-scroll-wrapper>
-		</div>
-		<div class="visual-diff" id="show-actions-same">
-			<d2l-test-scroll-wrapper show-actions width="300"></d2l-test-scroll-wrapper>
-		</div>
-		<div class="visual-diff" id="show-actions-overflow-right">
-			<d2l-test-scroll-wrapper show-actions width="400"></d2l-test-scroll-wrapper>
-		</div>
-		<div class="visual-diff" id="show-actions-overflow-both">
-			<d2l-test-scroll-wrapper show-actions width="400" scroll="50"></d2l-test-scroll-wrapper>
-		</div>
-		<div class="visual-diff" id="show-actions-overflow-left">
-			<d2l-test-scroll-wrapper show-actions width="400" scroll="100"></d2l-test-scroll-wrapper>
-		</div>
-		<div class="visual-diff" id="no-actions-smaller">
 			<d2l-test-scroll-wrapper width="200"></d2l-test-scroll-wrapper>
 		</div>
-		<div class="visual-diff" id="no-actions-same">
+		<div class="visual-diff" id="show-actions-same">
 			<d2l-test-scroll-wrapper width="300"></d2l-test-scroll-wrapper>
 		</div>
-		<div class="visual-diff" id="no-actions-overflow-right">
+		<div class="visual-diff" id="show-actions-overflow-right">
 			<d2l-test-scroll-wrapper width="400"></d2l-test-scroll-wrapper>
 		</div>
-		<div class="visual-diff" id="no-actions-overflow-both">
+		<div class="visual-diff" id="show-actions-overflow-both">
 			<d2l-test-scroll-wrapper width="400" scroll="50"></d2l-test-scroll-wrapper>
 		</div>
-		<div class="visual-diff" id="no-actions-overflow-left">
+		<div class="visual-diff" id="show-actions-overflow-left">
 			<d2l-test-scroll-wrapper width="400" scroll="100"></d2l-test-scroll-wrapper>
+		</div>
+		<div class="visual-diff" id="hide-actions-smaller">
+			<d2l-test-scroll-wrapper hide-actions width="200"></d2l-test-scroll-wrapper>
+		</div>
+		<div class="visual-diff" id="hide-actions-same">
+			<d2l-test-scroll-wrapper hide-actions width="300"></d2l-test-scroll-wrapper>
+		</div>
+		<div class="visual-diff" id="hide-actions-overflow-right">
+			<d2l-test-scroll-wrapper hide-actions width="400"></d2l-test-scroll-wrapper>
+		</div>
+		<div class="visual-diff" id="hide-actions-overflow-both">
+			<d2l-test-scroll-wrapper hide-actions width="400" scroll="50"></d2l-test-scroll-wrapper>
+		</div>
+		<div class="visual-diff" id="hide-actions-overflow-left">
+			<d2l-test-scroll-wrapper hide-actions width="400" scroll="100"></d2l-test-scroll-wrapper>
 		</div>
 	</body>
 </html>

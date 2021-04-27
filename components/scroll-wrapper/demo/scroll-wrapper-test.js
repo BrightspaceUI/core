@@ -1,4 +1,4 @@
-import '../../../node_modules/d2l-table/d2l-scroll-wrapper.js';
+import '../scroll-wrapper.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -7,7 +7,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
-			showActions: { attribute: 'show-actions', type: Boolean },
+			hideActions: { attribute: 'hide-actions', type: Boolean },
 			scroll: { attribute: 'scroll', type: Number },
 			width: { type: Number }
 		};
@@ -27,16 +27,17 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.hideActions = false;
 		this.scroll = 0;
-		this.showActions = false;
 		this.width = 300;
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (this.scroll === 0) return;
-		const amount = (this.getAttribute('dir') === 'rtl') ? this.scroll * -1 : this.scroll;
-		this.shadowRoot.querySelector('d2l-scroll-wrapper').scroll(amount, false);
+		requestAnimationFrame(() => {
+			this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false);
+		});
 	}
 
 	render() {
@@ -44,7 +45,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 			width: `${this.width}px`
 		};
 		return html`
-			<d2l-scroll-wrapper ?show-actions="${this.showActions}">
+			<d2l-scroll-wrapper ?hide-actions="${this.hideActions}">
 				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
 			</d2l-scroll-wrapper>
 		`;
@@ -52,8 +53,7 @@ class TestScrollWrapper extends RtlMixin(LitElement) {
 
 	focusRightScrollButton() {
 		this.shadowRoot.querySelector('d2l-scroll-wrapper')
-			.shadowRoot.querySelector('d2l-sticky-element > d2l-table-circle-button.right.action')
-			.shadowRoot.querySelector('button').focus();
+			.shadowRoot.querySelector('.d2l-scroll-wrapper-button-right').focus();
 	}
 
 }
