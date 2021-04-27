@@ -1,6 +1,25 @@
 # Date & Time Inputs
 
-[[toc]]
+```html
+<!-- docs: demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/button/input-date-time-range.js';
+  import '@brightspace-ui/core/components/button/input-date.js';
+  import '@brightspace-ui/core/components/button/input-time.js';
+</script>
+<style>
+	div { display: block; }
+</style>
+<div>
+	<d2l-input-date-time-range label="Assignment Dates"></d2l-input-date-time-range>
+</div>
+<div>
+	<d2l-input-date label="Birth Date"></d2l-input-date>
+</div>
+<div>
+	<d2l-input-time label="Start Time"></d2l-input-time>
+</div>
+```
 
 ## Date Input
 
