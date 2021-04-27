@@ -7,6 +7,7 @@ class DemoSnippet extends LitElement {
 
 	static get properties() {
 		return {
+			allowOverflow: { type: Boolean, reflect: true, attribute: 'allow-overflow' },
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			_code: { type: String },
@@ -37,6 +38,9 @@ class DemoSnippet extends LitElement {
 				overflow: hidden;
 				position: relative;
 			}
+			:host([allow-overflow]) .d2l-demo-snippet-demo {
+				overflow: visible;
+			}
 			.d2l-demo-snippet-demo-padding {
 				padding: 18px;
 			}
@@ -62,6 +66,7 @@ class DemoSnippet extends LitElement {
 
 	constructor() {
 		super();
+		this.allowOverflow = false;
 		this._dir = document.documentElement.dir;
 		this._hasSkeleton = false;
 		this._skeletonOn = false;
