@@ -3,22 +3,13 @@
 ```html
 <!-- docs: demo -->
 <script type="module">
-  import '@brightspace-ui/core/components/button/input-date-time-range.js';
-  import '@brightspace-ui/core/components/button/input-date.js';
-  import '@brightspace-ui/core/components/button/input-time.js';
+  import '@brightspace-ui/core/components/inputs/input-date.js';
+  import '@brightspace-ui/core/components/inputs/input-time.js';
+  import '@brightspace-ui/core/components/inputs/input-date-time.js';
 </script>
-<style>
-	div { display: block; }
-</style>
-<div>
-	<d2l-input-date-time-range label="Assignment Dates"></d2l-input-date-time-range>
-</div>
-<div>
-	<d2l-input-date label="Birth Date"></d2l-input-date>
-</div>
-<div>
-	<d2l-input-time label="Start Time"></d2l-input-time>
-</div>
+<d2l-input-date label="Date Input"></d2l-input-date>
+<d2l-input-time label="Time Input"></d2l-input-time>
+<d2l-input-date-time label="Date-Time Input"></d2l-input-date-time>
 ```
 
 ## Date Input
