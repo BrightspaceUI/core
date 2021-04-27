@@ -31,7 +31,7 @@ A button is used to communicate and perform an action.
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-## Button <d2l-button>
+## Button
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
 
@@ -53,7 +53,7 @@ To make your `d2l-button` accessible, use the following properties when applicab
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
 
-## Subtle Button <d2l-button-subtle>
+## Subtle Button
 
 The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
 
@@ -77,7 +77,7 @@ To make your `d2l-button-subtle` accessible, use the following properties when a
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
 
-## Icon Button <d2l-button-icon>
+## Icon Button
 
 The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
 
