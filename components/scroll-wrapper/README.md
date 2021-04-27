@@ -9,7 +9,7 @@ The `d2l-scroll-wrapper` element can be used to wrap content which may overflow 
   import '@brightspace-ui/core/components/scroll-wrapper/scroll-wrapper.js';
 </script>
 <d2l-scroll-wrapper show-actions>
-	<!-- content which may overflow horizontall -->
+	<!-- content which may overflow horizontally -->
 </d2l-scroll-wrapper>
 ```
 
