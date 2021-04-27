@@ -152,12 +152,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this._container = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
-		new ResizeObserver(
-			() => requestAnimationFrame(
-				() => this.checkScrollbar()
-			)
-		).observe(this._container);
-		requestAnimationFrame(() => this.checkScrollbar());
+		new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar())).observe(this._container);
 	}
 
 	render() {
@@ -184,14 +179,13 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	}
 
 	scrollDistance(distance, smooth) {
-		if (this._container) {
-			if (this._dir === 'rtl') distance = distance * RTL_MULTIPLIER;
-			if (this._container.scrollBy) {
-				this._container.scrollBy({ left: distance, behavior: smooth ? 'smooth' : 'auto' });
-			} else {
-				// legacy-Edge doesn't support scrollBy
-				this._container.scrollLeft = distance;
-			}
+		if (!this._container) return;
+		if (this._dir === 'rtl') distance = distance * RTL_MULTIPLIER;
+		if (this._container.scrollBy) {
+			this._container.scrollBy({ left: distance, behavior: smooth ? 'smooth' : 'auto' });
+		} else {
+			// legacy-Edge doesn't support scrollBy
+			this._container.scrollLeft = distance;
 		}
 	}
 
@@ -204,17 +198,15 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	}
 
 	_scrollLeft() {
-		if (this._container) {
-			const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT * -1;
-			this.scrollDistance(scrollDistance, true);
-		}
+		if (!this._container) return;
+		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT * -1;
+		this.scrollDistance(scrollDistance, true);
 	}
 
 	_scrollRight() {
-		if (this._container) {
-			const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT;
-			this.scrollDistance(scrollDistance, true);
-		}
+		if (!this._container) return;
+		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT;
+		this.scrollDistance(scrollDistance, true);
 	}
 
 }
