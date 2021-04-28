@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "날짜는 {minDate}와 {maxDate} 사이여야 합니다.",
 	"components.input-date.openInstructions": "{format} 날짜 형식을 사용하십시오. 미니 달력에 접근하려면 아래쪽 화살표를 누르거나 Enter 키를 누르십시오.",
 	"components.input-date.setToToday": "오늘로 설정",
+	"components.input-number.hintInteger": "이 필드는 정수 값만 허용합니다(소수점 없음)",
+	"components.input-number.hintDecimalDuplicate": "이 숫자에 이미 소수점이 있습니다",
+	"components.input-number.hintDecimalIncorrectComma": "소수점을 추가하려면 쉼표 \",\" 문자를 사용합니다",
+	"components.input-number.hintDecimalIncorrectPeriod": "소수점을 추가하려면 마침표 \".\" 문자를 사용합니다",
 	"components.input-search.clear": "검색 지우기",
 	"components.input-search.search": "검색",
 	"components.input-time-range.endTime": "종료 시각",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "조정 가능한 분할 보기",
+	"templates.primary-secondary.keyboardHorizontal": "왼쪽 또는 오른쪽 화살표로 보기 패널의 크기 조정",
+	"templates.primary-secondary.keyboardVertical": "위 또는 아래 화살표로 보기 패널의 크기 조정"
 };

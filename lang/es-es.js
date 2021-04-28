@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "La fecha debe estar entre el {minDate} y el {maxDate}",
 	"components.input-date.openInstructions": "Usar formato de fecha {format}. Use la fecha hacia abajo o pulse Intro para acceder al minicalendario.",
 	"components.input-date.setToToday": "Establezca la fecha en Hoy",
+	"components.input-number.hintInteger": "Este campo sólo acepta valores enteros (sin decimales)",
+	"components.input-number.hintDecimalDuplicate": "Ya hay un decimal en este número",
+	"components.input-number.hintDecimalIncorrectComma": "Para agregar un decimal, utilice la coma \",\"",
+	"components.input-number.hintDecimalIncorrectPeriod": "Para agregar un decimal, utilice el punto \".\"",
 	"components.input-search.clear": "Borrar búsqueda",
 	"components.input-search.search": "Buscar",
 	"components.input-time-range.endTime": "Hora de finalización",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Visibilidad",
 	"components.tabs.next": "Desplazarse hacia delante",
 	"components.tabs.previous": "Desplazarse hacia atrás",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Vista dividida ajustable",
+	"templates.primary-secondary.keyboardHorizontal": "Flecha hacia la izquierda o la derecha para ajustar el tamaño de los paneles de visualización",
+	"templates.primary-secondary.keyboardVertical": "Flecha hacia arriba o abajo para ajustar el tamaño de los paneles de visualización"
 };

@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "Datumet ska vara mellan {minDate} och {maxDate}",
 	"components.input-date.openInstructions": "Använd datumformatet {format}. Om du vill visa minikalendern trycker du på nedåtpil eller Enter.",
 	"components.input-date.setToToday": "Ange till i dag",
+	"components.input-number.hintInteger": "I det här fältet accepteras endast heltalsvärden (inga decimaler)",
+	"components.input-number.hintDecimalDuplicate": "Det finns redan en decimal i det här talet",
+	"components.input-number.hintDecimalIncorrectComma": "Om du vill lägga till en decimal använder du kommatecknet \",\"",
+	"components.input-number.hintDecimalIncorrectPeriod": "Om du vill lägga till en decimal använder du punkttecknet \".\"",
 	"components.input-search.clear": "Rensa sökning",
 	"components.input-search.search": "Sökning",
 	"components.input-time-range.endTime": "Sluttid",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Synlighet",
 	"components.tabs.next": "Bläddra framåt",
 	"components.tabs.previous": "Bläddra bakåt",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Justerbar delad vy",
+	"templates.primary-secondary.keyboardHorizontal": "Pil vänster eller höger för att justera storleken på vypaneler",
+	"templates.primary-secondary.keyboardVertical": "Pil upp eller ned för att justera storleken på vypaneler"
 };

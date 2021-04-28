@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "Datum moet tussen {minDate} en {maxDate} liggen",
 	"components.input-date.openInstructions": "Gebruik datumnotatie {format}. Gebruik Pijl omlaag of druk op Enter om de mini-agenda te openen.",
 	"components.input-date.setToToday": "Instellen op Vandaag",
+	"components.input-number.hintInteger": "Dit veld accepteert alleen gehele getallen (geen decimalen)",
+	"components.input-number.hintDecimalDuplicate": "Dit getal bevat al een decimaal",
+	"components.input-number.hintDecimalIncorrectComma": "Als u een decimaal wilt toevoegen, gebruikt u het teken ','",
+	"components.input-number.hintDecimalIncorrectPeriod": "Als u een decimaal wilt toevoegen, gebruikt u de punt '.'",
 	"components.input-search.clear": "Zoekopdracht wissen",
 	"components.input-search.search": "Zoeken",
 	"components.input-time-range.endTime": "Eindtijd",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Zichtbaarheid",
 	"components.tabs.next": "Naar voren scrollen",
 	"components.tabs.previous": "Naar achteren scrollen",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Instelbare gesplitste weergave",
+	"templates.primary-secondary.keyboardHorizontal": "Pijl naar links of rechts om de grootte van de weergavevensters aan te passen",
+	"templates.primary-secondary.keyboardVertical": "Pijl omhoog of omlaag om de grootte van de weergavevensters aan te passen"
 };

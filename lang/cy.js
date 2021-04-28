@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "Rhaid i'r dyddiad fod rhwng {minDate} a {maxDate}",
 	"components.input-date.openInstructions": "Defnyddio fformat dyddiad {format}. Pwyswch saeth i lawr neu Enter i gael mynediad at galendr bach.",
 	"components.input-date.setToToday": "Gosod i Heddiw",
+	"components.input-number.hintInteger": "Mae'r maes hwn yn derbyn gwerthoedd cyfanrif yn unig (dim degolion)",
+	"components.input-number.hintDecimalDuplicate": "Mae degol eisoes yn y nifer hwn",
+	"components.input-number.hintDecimalIncorrectComma": "I ychwanegu degol defnyddiwch y nod coma \",”",
+	"components.input-number.hintDecimalIncorrectPeriod": "I ychwanegu degol defnyddiwch y nod atalnod llawn \".\"",
 	"components.input-search.clear": "Clirio'r Chwilio",
 	"components.input-search.search": "Chwilio",
 	"components.input-time-range.endTime": "Amser Gorffen",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Gwelededd",
 	"components.tabs.next": "Sgrolio Ymlaen",
 	"components.tabs.previous": "Sgrolio Yn Ôl",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Gwedd Hollt Addasadwy",
+	"templates.primary-secondary.keyboardHorizontal": "Saeth i'r chwith neu'r dde i addasu maint y paneli gweld",
+	"templates.primary-secondary.keyboardVertical": "Saeth i fyny neu i lawr i addasu maint y paneli gweld"
 };

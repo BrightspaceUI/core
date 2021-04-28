@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "Datoen skal være mellem {minDate} og {maxDate}",
 	"components.input-date.openInstructions": "Brug datoformatet {format}. Tryk på Pil ned eller Enter for at få adgang til minikalender.",
 	"components.input-date.setToToday": "Indstil til i dag",
+	"components.input-number.hintInteger": "Dette felt accepterer kun heltalsværdier (ingen decimaler)",
+	"components.input-number.hintDecimalDuplicate": "Der er allerede en decimal i dette tal",
+	"components.input-number.hintDecimalIncorrectComma": "Hvis du vil tilføje en decimal, skal du bruge komma-tegnet \",\"",
+	"components.input-number.hintDecimalIncorrectPeriod": "Hvis du vil tilføje en decimal, skal du bruge tegnet \".\"",
 	"components.input-search.clear": "Ryd søgning",
 	"components.input-search.search": "Søg",
 	"components.input-time-range.endTime": "Sluttidspunkt",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Justerbar delt visning",
+	"templates.primary-secondary.keyboardHorizontal": "Pil til venstre eller højre for at justere størrelsen på visningspaneler",
+	"templates.primary-secondary.keyboardVertical": "Pil op eller ned for at justere størrelsen på visningspaneler"
 };

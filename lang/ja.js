@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "日付は {minDate} から {maxDate} の間にする必要があります",
 	"components.input-date.openInstructions": "日付形式 {format} を使用します。ミニカレンダーにアクセスするには下矢印を使うか Enter を押します。",
 	"components.input-date.setToToday": "今日に設定",
+	"components.input-number.hintInteger": "このフィールドには整数値のみ入力できます（小数不可）。",
+	"components.input-number.hintDecimalDuplicate": "この数値にはすでに小数があります",
+	"components.input-number.hintDecimalIncorrectComma": "小数を追加するには、カンマ「,」文字を使用します",
+	"components.input-number.hintDecimalIncorrectPeriod": "小数を追加するには、ピリオド「.」文字を使用します",
 	"components.input-search.clear": "検索のクリア",
 	"components.input-search.search": "検索",
 	"components.input-time-range.endTime": "終了時刻",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "表示",
 	"components.tabs.next": "前方にスクロール",
 	"components.tabs.previous": "後方にスクロール",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "調整可能な分割ビュー",
+	"templates.primary-secondary.keyboardHorizontal": "左矢印または右矢印を使用して、ビューパネルのサイズを調整します",
+	"templates.primary-secondary.keyboardVertical": "上矢印または下矢印を使用して、ビューパネルのサイズを調整します"
 };
