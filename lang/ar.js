@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
 	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
 	"components.input-date.setToToday": "تعيين إلى اليوم",
+	"components.input-number.hintInteger": "يقبل هذا الحقل قيم الأعداد الصحيحة فقط (بدون أعداد عشرية)",
+	"components.input-number.hintDecimalDuplicate": "يوجد عدد عشري في هذا الرقم",
+	"components.input-number.hintDecimalIncorrectComma": "لإضافة عدد عشري، استخدم حرف الفاصلة \",\"",
+	"components.input-number.hintDecimalIncorrectPeriod": "لإضافة عدد عشري، استخدم حرف النقطة \".\"",
 	"components.input-search.clear": "مسح البحث",
 	"components.input-search.search": "بحث",
 	"components.input-time-range.endTime": "وقت النهاية",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "إمكانية الرؤية",
 	"components.tabs.next": "التمرير إلى الأمام",
 	"components.tabs.previous": "التمرير إلى الخلف",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "تقسيم العرض القابل للضبط",
+	"templates.primary-secondary.keyboardHorizontal": "السهم المتّجه إلى اليسار أو إلى اليمين لضبط حجم لوحات العرض",
+	"templates.primary-secondary.keyboardVertical": "السهم المتّجه إلى الأعلى أو إلى الأسفل لضبط حجم لوحات العرض"
 };

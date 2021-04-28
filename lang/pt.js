@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "A data precisa estar entre {minDate} e {maxDate}",
 	"components.input-date.openInstructions": "Adote o formato de data {format}. Use a tecla de seta para baixo ou pressione Enter para acessar o minicalendário.",
 	"components.input-date.setToToday": "Definir como Hoje",
+	"components.input-number.hintInteger": "Este campo aceita apenas valores inteiros (não decimais)",
+	"components.input-number.hintDecimalDuplicate": "Já existe um decimal neste número",
+	"components.input-number.hintDecimalIncorrectComma": "Para adicionar um decimal, use o caractere vírgula “,”",
+	"components.input-number.hintDecimalIncorrectPeriod": "Para adicionar um decimal, use o caractere ponto “.”",
 	"components.input-search.clear": "Limpar pesquisa",
 	"components.input-search.search": "Pesquisar",
 	"components.input-time-range.endTime": "Hora final",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Visibilidade",
 	"components.tabs.next": "Ir para frente",
 	"components.tabs.previous": "Ir para trás",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Exibição dividida ajustável",
+	"templates.primary-secondary.keyboardHorizontal": "Use a seta para a esquerda ou para a direita para ajustar o tamanho dos painéis de exibição",
+	"templates.primary-secondary.keyboardVertical": "Use a seta para cima ou para baixo para ajustar o tamanho dos painéis de exibição"
 };

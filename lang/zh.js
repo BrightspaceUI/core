@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "日期必须介于 {minDate} 和 {maxDate} 之间",
 	"components.input-date.openInstructions": "使用日期格式 {format}。利用向下箭头键或按 Enter 键访问迷你日历。",
 	"components.input-date.setToToday": "设置为“今天”",
+	"components.input-number.hintInteger": "此字段只接受整数值（无小数）",
+	"components.input-number.hintDecimalDuplicate": "此数中已有一个小数",
+	"components.input-number.hintDecimalIncorrectComma": "要添加小数，请使用逗号“,”字符",
+	"components.input-number.hintDecimalIncorrectPeriod": "要添加小数，请使用句号“.”字符",
 	"components.input-search.clear": "清除搜索",
 	"components.input-search.search": "搜索",
 	"components.input-time-range.endTime": "结束时间",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "可见性",
 	"components.tabs.next": "向前滚动",
 	"components.tabs.previous": "向后滚动",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "可调分屏视图",
+	"templates.primary-secondary.keyboardHorizontal": "向左或向右箭头可调整视图面板的大小",
+	"templates.primary-secondary.keyboardVertical": "向上或向下箭头可调整视图面板的大小"
 };

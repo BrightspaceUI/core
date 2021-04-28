@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "Tarih, {minDate} ile {maxDate} arasında olmalıdır",
 	"components.input-date.openInstructions": "{format} tarih formatını kullanın. Küçük takvime erişmek için aşağı okunu kullanın veya enter tuşuna basın.",
 	"components.input-date.setToToday": "Bugün olarak ayarlayın",
+	"components.input-number.hintInteger": "Bu alanda yalnızca tam sayı değerleri kabul edilir (ondalık sayı kabul edilmez)",
+	"components.input-number.hintDecimalDuplicate": "Bu sayıda zaten bir ondalık var",
+	"components.input-number.hintDecimalIncorrectComma": "Ondalık sayı eklemek için virgül \",\" karakterini kullanın",
+	"components.input-number.hintDecimalIncorrectPeriod": "Ondalık sayı eklemek için nokta \".\" karakterini kullanın",
 	"components.input-search.clear": "Aramayı Temizle",
 	"components.input-search.search": "Arama",
 	"components.input-time-range.endTime": "Bitiş Saati",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Görünürlük",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Ayarlanabilir Bölünmüş Görüntü",
+	"templates.primary-secondary.keyboardHorizontal": "Görüntü panellerinin boyutunu ayarlamak için sol veya sağ okları kullanın",
+	"templates.primary-secondary.keyboardVertical": "Görüntü panellerinin boyutunu ayarlamak için yukarı veya aşağı okları kullanın"
 };

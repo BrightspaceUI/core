@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "Datum muss zwischen {minDate} und {maxDate} liegen",
 	"components.input-date.openInstructions": "Das Datumsformat {format} verwenden. Minikalender durch Abwärtspfeil oder durch Drücken der Eingabetaste aufrufen.",
 	"components.input-date.setToToday": "Auf den heutigen Tag einstellen",
+	"components.input-number.hintInteger": "Dieses Feld akzeptiert nur Ganzzahlen (keine Dezimalstellen)",
+	"components.input-number.hintDecimalDuplicate": "Diese Zahl enthält bereits eine Dezimale",
+	"components.input-number.hintDecimalIncorrectComma": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Komma \",“",
+	"components.input-number.hintDecimalIncorrectPeriod": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Zeichen \".“",
 	"components.input-search.clear": "Suche löschen",
 	"components.input-search.search": "Suchen",
 	"components.input-time-range.endTime": "Endzeit",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "Sichtbarkeit",
 	"components.tabs.next": "Weiterblättern",
 	"components.tabs.previous": "Zurückblättern",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "Anpassbare geteilte Ansicht",
+	"templates.primary-secondary.keyboardHorizontal": "Pfeil nach links oder rechts, um die Größe der Ansichtsbereiche anzupassen",
+	"templates.primary-secondary.keyboardVertical": "Pfeil nach oben oder unten, um die Größe der Ansichtsbereiche anzupassen"
 };

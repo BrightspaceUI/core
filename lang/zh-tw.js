@@ -35,6 +35,10 @@ export default {
 	"components.input-date.errorOutsideRange": "日期必須介於 {minDate} 與 {maxDate} 之間",
 	"components.input-date.openInstructions": "使用日期格式 {format}。按向下箭頭，或按下「Enter」以存取迷你行事曆。",
 	"components.input-date.setToToday": "設為今天",
+	"components.input-number.hintInteger": "此欄位僅接受整數值 (無小數位數)",
+	"components.input-number.hintDecimalDuplicate": "這個數字已經有一個小數位數",
+	"components.input-number.hintDecimalIncorrectComma": "若要新增小數位數，請使用逗號「,」字元",
+	"components.input-number.hintDecimalIncorrectPeriod": "若要新增小數位數，請使用句號「.」字元",
 	"components.input-search.clear": "清除搜尋",
 	"components.input-search.search": "搜尋",
 	"components.input-time-range.endTime": "結束時間",
@@ -53,7 +57,7 @@ export default {
 	"components.switch.visibility": "能見度",
 	"components.tabs.next": "向前捲動",
 	"components.tabs.previous": "向後捲動",
-	"templates.primary-secondary.adjustableSplitView": "Adjustable Split View",
-	"templates.primary-secondary.keyboardHorizontal": "Arrow left or right to adjust the size of the view panels",
-	"templates.primary-secondary.keyboardVertical": "Arrow up or down to adjust the size of the view panels"
+	"templates.primary-secondary.adjustableSplitView": "可調整的分割檢視",
+	"templates.primary-secondary.keyboardHorizontal": "向左或向右箭頭可調整檢視面板的大小",
+	"templates.primary-secondary.keyboardVertical": "向上或向下箭頭可調整檢視面板的大小"
 };
