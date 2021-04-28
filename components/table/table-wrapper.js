@@ -1,0 +1,366 @@
+import '../colors/colors.js';
+import '../scroll-wrapper/scroll-wrapper.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
+export const tableStyles = css`
+	.d2l-table {
+		border-spacing: 0;
+		font-size: 0.8rem;
+		font-weight: 400;
+		width: 100%;
+	}
+
+	.d2l-table > tbody,
+	.d2l-table > tfoot {
+		background-color: #ffffff;
+	}
+
+	/* all cells */
+	.d2l-table > * > tr > td,
+	.d2l-table > * > tr > th {
+		border-bottom: var(--d2l-table-border);
+		font-weight: inherit;
+		height: var(--d2l-table-cell-height);
+		padding: var(--d2l-table-cell-padding);
+		text-align: left;
+		vertical-align: middle;
+	}
+	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > td,
+	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > th {
+		text-align: right;
+	}
+
+	/* default cells */
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > td,
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > th,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > td.d2l-table-cell-first,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > th.d2l-table-cell-first {
+		border-right: var(--d2l-table-border);
+	}
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > td,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > th,
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > td.d2l-table-cell-first,
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > th.d2l-table-cell-first {
+		border-left: var(--d2l-table-border);
+	}
+	d2l-table-wrapper[type="default"] .d2l-table-row-first > * {
+		border-top: var(--d2l-table-border); /* add top border to default first row */
+	}
+
+	/* header cells */
+	.d2l-table > thead > tr > th,
+	.d2l-table > * > tr[header] > th {
+		background-color: var(--d2l-table-header-background-color);
+		font-size: 0.7rem;
+		line-height: 0.9rem;
+	}
+	d2l-table-wrapper[type="default"] .d2l-table > thead > tr > th,
+	d2l-table-wrapper[type="default"] .d2l-table > * > tr[header] > th {
+		height: 27px; /* min-height to be 48px including border */
+	}
+
+	/* border radiuses */
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-last {
+		border-top-left-radius: var(--d2l-table-border-radius);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-last,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-first {
+		border-top-right-radius: var(--d2l-table-border-radius);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-first,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-last {
+		border-bottom-left-radius: var(--d2l-table-border-radius);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-last,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-first {
+		border-bottom-right-radius: var(--d2l-table-border-radius);
+	}
+
+	/* selected rows */
+	.d2l-table > tbody > tr[selected] {
+		background-color: var(--d2l-table-row-background-color-selected);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[selected] > .d2l-table-cell-last,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-first {
+		border-right-color: var(--d2l-table-row-border-color-selected);
+	}
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[selected] > .d2l-table-cell-first,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-last {
+		border-left-color: var(--d2l-table-row-border-color-selected);
+	}
+	.d2l-table > tbody > tr[selected] > td,
+	.d2l-table > tbody > tr[selected] > th,
+	.d2l-table > * > tr.d2l-table-selected-previous td,
+	.d2l-table > * > tr.d2l-table-selected-previous th {
+		border-bottom-color: var(--d2l-table-row-border-color-selected);
+	}
+	.d2l-table > * > tr.d2l-table-selected-first td,
+	.d2l-table > * > tr.d2l-table-selected-first th {
+		border-top: 1px solid var(--d2l-table-row-border-color-selected);
+	}
+
+	/* no-column-border */
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > td:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > th:not(.d2l-table-cell-last) {
+		border-right: none;
+	}
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > td:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > th:not(.d2l-table-cell-last) {
+		border-left: none;
+	}
+
+	/* sticky-headers */
+
+	d2l-table-wrapper[dir="rtl"][sticky-headers] table {
+		padding-left: 20px; /* TODO: what is this for? */
+	}
+
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr:not([selected]) {
+		background-color: inherit; /* TODO: what is this for? */
+	}
+
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] th,
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr th {
+		position: -webkit-sticky;
+		position: sticky;
+		top: 0;
+	}
+
+	/* sticky first column: offset by size of border-radius so top/bottom border doesn't show through */
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > th[sticky].d2l-table-cell-first/*,
+	d2l-table-wrapper[sticky-headers] td[sticky]:first-child,
+	d2l-table-wrapper[sticky-headers] th[sticky]:first-child*/ {
+		left: -5px;
+	}
+	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
+	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > th[sticky].d2l-table-cell-first/*,
+	d2l-table-wrapper[dir="rtl"][sticky-headers] td[sticky]:first-child,
+	d2l-table-wrapper[dir="rtl"][sticky-headers] th[sticky]:first-child*/ {
+		right: -5px;
+	}
+
+	d2l-table-wrapper[sticky-headers]:not([dir="rtl"]) tr[header] + tr[header] [sticky].d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers]:not([dir="rtl"]) thead tr + tr [sticky]:first-child {
+		left: 0;
+	}
+	d2l-table-wrapper[sticky-headers][dir="rtl"] tr[header] + tr[header] [sticky].d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers][dir="rtl"] thead tr + tr [sticky]:first-child {
+		right: 0;
+	}
+
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header]:not(.d2l-table-row-first) > th,
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header]:not(.d2l-table-row-first) > td,
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr:not(:first-child) > th {
+		position: -webkit-sticky;
+		position: sticky;
+		top: -5px;
+	}
+
+	d2l-table-wrapper[type="default"][sticky-headers] .d2l-table > * > tr[header] > th,
+	d2l-table-wrapper[type="default"][sticky-headers] .d2l-table > * > tr[header] > td,
+	d2l-table-wrapper[type="default"][sticky-headers] .d2l-table > thead > tr > th {
+		position: -webkit-sticky;
+		position: sticky;
+		top: -5px;
+	}
+
+	d2l-table-wrapper[type="light"][sticky-headers] .d2l-table > * > tr[header] > th,
+	d2l-table-wrapper[type="light"][sticky-headers] .d2l-table > * > tr[header] > td,
+	d2l-table-wrapper[type="light"][sticky-headers] .d2l-table > thead > tr > th {
+		position: -webkit-sticky;
+		position: sticky;
+		top: -3.5px;
+	}
+
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > th[sticky],
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > td[sticky],
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th[sticky] {
+		left: 0;
+		z-index: 3;
+	}
+
+	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > th[sticky],
+	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > td[sticky] {
+		right: 0;
+	}
+
+	d2l-table-wrapper[sticky-headers] .d2l-table > tbody > tr:not([header]) > [sticky] {
+		background-color: inherit;
+		position: -webkit-sticky;
+		position: sticky;
+		left: 0;
+		z-index: 1;
+	}
+`;
+
+/**
+ *
+ * Wraps a native <table> element, providing styling and scroll buttons for overflow.
+ *
+ * @slot - Content to wrap
+ */
+export class TableWrapper extends RtlMixin(LitElement) {
+
+	static get properties() {
+		return {
+			/**
+			 * Whether header row is sticky
+			 */
+			stickyHeaders: {
+				attribute: 'sticky-headers',
+				reflect: true,
+				type: Boolean
+			},
+			/**
+			 * Type of table style to apply
+			 * @type {'default'|'light'}
+			 */
+			type: {
+				reflect: true,
+				type: String
+			}
+		};
+	}
+
+	static get styles() {
+		return css`
+			:host {
+				display: block;
+				width: 100%;
+				--d2l-table-border: 1px solid var(--d2l-table-border-color);
+				--d2l-table-border-color: var(--d2l-color-mica);
+				--d2l-table-border-radius: 0.3rem;
+				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
+				--d2l-table-cell-padding: 0.5rem 1rem;
+				--d2l-table-header-background-color: var(--d2l-color-regolith);
+				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
+				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			:host([type="light"]) {
+				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
+				--d2l-table-cell-padding: 0.6rem;
+				--d2l-table-border-color: var(--d2l-color-gypsum);
+				--d2l-table-header-background-color: #ffffff;
+			}
+		`;
+	}
+
+	constructor() {
+		super();
+		this.stickyHeaders = false;
+		this.type = 'default';
+		this._tableObserver = null;
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._tableObserver) this._tableObserver.disconnect();
+	}
+
+	render() {
+		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		if (this.stickyHeaders) {
+			return slot;
+		} else {
+			return html`<d2l-scroll-wrapper>${slot}</d2l-scroll-wrapper>`;
+		}
+	}
+
+	updated(changedProperties) {
+		// hack: grades/groups/outcomes in the LE use this CSS class on the
+		// body to apply special CSS to the page when tables are sticky
+		// Ideally they should be adding this class to the body.
+		if (changedProperties.has('stickyHeaders')) {
+			if (this.stickyHeaders) {
+				document.body.classList.add('d2l-table-sticky-headers');
+			}
+		}
+	}
+
+	async _applyClassNames(table) {
+
+		await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+
+		// offsetParent causes reflow/paint so do them all at once
+		const rows = Array.from(table.rows);
+		let firstRow = null;
+		let lastRow = null;
+		rows.forEach((r) => {
+			if (r.offsetParent !== null) {
+				if (firstRow === null) {
+					firstRow = r;
+				}
+				lastRow = r;
+			}
+		});
+
+		const topHeader = table.querySelector('tr[header]:first-child th:not([rowspan]), thead tr:first-child th:not([rowspan])');
+		const topHeaderHeight = topHeader ? topHeader.clientHeight : -1;
+
+		let prevRow = null;
+		let skipFirst = 0;
+		rows.forEach((r) => {
+
+			const isHeader = r.parentNode.tagName === 'THEAD' || r.hasAttribute('header');
+
+			let firstNonHeaderRow = !isHeader;
+			if (prevRow) {
+				const isPrevRowHeader = prevRow.parentNode.tagName === 'THEAD' || prevRow.hasAttribute('header');
+				firstNonHeaderRow = firstNonHeaderRow && isPrevRowHeader;
+				prevRow.classList.toggle('d2l-table-selected-previous', r.hasAttribute('selected') && !isPrevRowHeader);
+			}
+
+			r.classList.toggle('d2l-table-row-first', r === firstRow);
+			r.classList.toggle('d2l-table-row-last', r === lastRow);
+			r.classList.toggle('d2l-table-selected-first', firstNonHeaderRow && r.hasAttribute('selected'));
+
+			Array.from(r.cells).forEach((c, index) => {
+				c.classList.toggle('d2l-table-cell-first', index === 0 && skipFirst === 0);
+				if (index === 0 && skipFirst === 0 && c.hasAttribute('rowspan')) {
+					skipFirst = parseInt(c.getAttribute('rowspan'));
+				}
+				c.classList.toggle('d2l-table-cell-last', index === r.cells.length - 1);
+			});
+
+			prevRow = r;
+			skipFirst = Math.max(0, --skipFirst);
+
+		});
+
+		if (this.stickyHeaders && topHeaderHeight > -1) {
+			const ths = Array.from(table.querySelectorAll('tr[header]:not(:first-child) th, thead tr:not(:first-child) th'));
+			ths.forEach((th) => {
+				th.style.top = `${topHeader.clientHeight - 3}px`;
+			});
+		}
+
+	}
+
+	_handleSlotChange(e) {
+
+		const table = e.target.assignedNodes({ flatten: true }).find(
+			node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TABLE' && node.classList.contains('d2l-table'))
+		);
+		if (!table) return;
+
+		// observes mutations to <table>'s direct children and also
+		// its subtree (rows or cells added/removed to any descendant)
+		this._tableObserver = new MutationObserver(() => this._applyClassNames(table));
+		this._tableObserver.observe(table, {
+			attributeFilter: ['selected'],
+			childList: true,
+			subtree: true
+		});
+		this._applyClassNames(table);
+
+	}
+
+}
+
+customElements.define('d2l-table-wrapper', TableWrapper);
