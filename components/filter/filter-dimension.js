@@ -22,7 +22,11 @@ class FilterDimension extends LitElement {
 	}
 
 	render() {
-		return html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		return html`
+		<slot
+			@d2l-filter-dimension-value-data-change="${this._handleDimensionValueDataChange}"
+			@slotchange="${this._handleSlotChange}">
+		</slot>`;
 	}
 
 	updated(changedProperties) {
@@ -38,8 +42,17 @@ class FilterDimension extends LitElement {
 		});
 
 		if (changes.size > 0) {
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-data-change', { detail: { changes: changes }, bubbles: true, composed: false }));
+			this._dispatchDataChangeEvent({ dimensionKey: this.key, changes: changes });
 		}
+	}
+
+	_dispatchDataChangeEvent(eventDetail) {
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-data-change', { detail: eventDetail, bubbles: true, composed: false }));
+	}
+
+	_handleDimensionValueDataChange(e) {
+		e.stopPropagation();
+		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
 	}
 
 	_handleSlotChange() {

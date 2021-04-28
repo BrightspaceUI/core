@@ -28,7 +28,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			disabled: { type: String, reflect: true },
 			_activeDimensionKey: { type: String },
-			_dimensions : { type: Map }
+			_dimensions : { type: Array }
 		};
 	}
 
@@ -63,7 +63,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.disabled = false;
-		this._dimensions = new Map();
+		this._dimensions = [];
 	}
 
 	firstUpdated(changedProperties) {
@@ -80,21 +80,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		let header = null;
-		if (this._activeDimensionKey) {
-			const dimensionText = this._dimensions.get(this._activeDimensionKey).text;
-			header = html`
-				<div class="d2l-filter-dimension-header">
-					<d2l-button-icon
-						@click="${this._handleDimensionHide}"
-						icon="tier1:chevron-left"
-						text="${this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', dimensionText)}">
-					</d2l-button-icon>
-					<div class="d2l-filter-dimension-header-text d2l-body-standard">${dimensionText}</div>
-				</div>
-			`;
-		}
-
+		const header = this._buildHeader();
 		const dimensions = this._buildDimensions();
 
 		return html`
@@ -105,11 +91,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				text="${this.localize('components.filter.filters')}"
 				?disabled="${this.disabled}">
 				<d2l-dropdown-menu min-width="285" max-width="420" no-padding-header>
-					<div slot="header">${header}</div>
+					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
 						<slot
-							@d2l-filter-dimension-data-change="${this._handleDataChangeListDimension}"
-							@d2l-filter-dimension-value-data-change="${this._handleDataChangeListDimensionValue}"
+							@d2l-filter-dimension-data-change="${this._handleDimensionDataChange}"
 							@d2l-filter-dimension-slot-change="${this._handleSlotChange}"
 							@slotchange="${this._handleSlotChange}"
 						></slot>
@@ -122,7 +107,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_buildDimension(dimension) {
 		let dimensionHTML;
-		switch (dimension.tagName.toLowerCase()) {
+		switch (dimension.type) {
 			case 'd2l-filter-dimension':
 				dimensionHTML = this._createListDimension(dimension);
 				break;
@@ -139,7 +124,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_buildDimensions() {
-		return Array.from(this._dimensions.values(), (dimension) => {
+		return this._dimensions.map((dimension) => {
 			const builtDimension = this._buildDimension(dimension);
 			return html`<d2l-menu-item text="${dimension.text}">
 				${builtDimension}
@@ -147,15 +132,31 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 	}
 
+	_buildHeader() {
+		if (!this._activeDimensionKey) return null;
+
+		const dimensionText = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey).text;
+		return html`
+			<div slot="header">
+				<div class="d2l-filter-dimension-header">
+					<d2l-button-icon
+						@click="${this._handleDimensionHide}"
+						icon="tier1:chevron-left"
+						text="${this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', dimensionText)}">
+					</d2l-button-icon>
+					<div class="d2l-filter-dimension-header-text d2l-body-standard">${dimensionText}</div>
+				</div>
+			</div>
+		`;
+	}
+
 	_createListDimension(dimension) {
-		const slot = dimension.shadowRoot.querySelector('slot');
-		const items = slot.assignedNodes().filter(node => node.nodeType ===  Node.ELEMENT_NODE);
 		return html`
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeListDimension}"
 				extend-separators>
 
-				${items.map(item => html`
+				${dimension.values.map(item => html`
 					<d2l-list-item
 						key="${item.key}"
 						selectable
@@ -179,43 +180,27 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const selected = e.detail.selected;
 
 		// Update the corresponding d2l-filter-dimension-value to keep them in sync
-		const dimension = this._dimensions.get(dimensionKey);
+		const dimension = this.querySelector(`d2l-filter-dimension[key="${dimensionKey}"`);
 		const slot = dimension.shadowRoot.querySelector('slot');
-		const items = slot.assignedNodes().filter(node => node.nodeType ===  Node.ELEMENT_NODE);
+		const items = slot.assignedNodes().filter(node => node.nodeType === Node.ELEMENT_NODE);
 		const item = items.find(item => item.key === valueKey);
 		item.selected = selected;
 
 		this._dispatchChangeEvent({ dimension: dimensionKey, value: { key: valueKey, selected: selected } });
 	}
 
-	_handleDataChangeListDimension(e) {
-		const dimension = this.shadowRoot.getElementById(e.target.key);
+	_handleDimensionDataChange(e) {
+		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
+		const value = e.detail.valueKey && dimension.values.find(value => value.key === e.detail.valueKey);
+		const toUpdate = value ? value : dimension;
 		const changes = e.detail.changes;
-		if (changes.has('text')) {
-			const menuItem = dimension.parentNode;
-			if (menuItem.text !== changes.get('text')) {
+
+		changes.forEach((newValue, prop) => {
+			if (toUpdate[prop] !== newValue) {
+				toUpdate[prop] = newValue;
 				this.requestUpdate();
-				return;
 			}
-		}
-	}
-
-	_handleDataChangeListDimensionValue(e) {
-		const dimension = this.shadowRoot.getElementById(e.target.parentNode.key);
-		const value = dimension.querySelector(`[key="${e.target.key}"]`);
-		const changes = e.detail.changes;
-
-		if (changes.has('text')) {
-			const text = value.querySelector('.d2l-filter-dimension-value-text');
-			if (text.innerText !== changes.get('text')) {
-				text.innerText = changes.get('text');
-			}
-		}
-		if (changes.has('selected')) {
-			if (value.selected !== changes.get('selected')) {
-				value.selected = changes.get('selected');
-			}
-		}
+		});
 	}
 
 	_handleDimensionHide() {
@@ -247,7 +232,32 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			return isNode;
 		});
 
-		this._dimensions = new Map(filteredNodes.map(node => [node.key, node]));
+		this._dimensions = filteredNodes.map(node => {
+			const type = node.tagName.toLowerCase();
+			const info = {
+				key: node.key,
+				text: node.text,
+				type: type
+			};
+
+			switch (type) {
+				case 'd2l-filter-dimension': {
+					const slot = node.shadowRoot.querySelector('slot');
+					const valueNodes = slot.assignedNodes().filter(node => node.nodeType ===  Node.ELEMENT_NODE);
+					const values = valueNodes.map(value => {
+						return {
+							key: value.key,
+							selected: value.selected,
+							text: value.text
+						};
+					});
+					info.values = values;
+					break;
+				}
+			}
+
+			return info;
+		});
 	}
 
 	_stopPropagation(e) {
