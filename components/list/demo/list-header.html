@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../button/button-subtle.js';
+			import '../../demo/demo-page.js';
+			import '../list-item-content.js';
+			import '../list-item.js';
+			import '../list-header.js';
+			import '../list.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list-header">
+
+			<h2>Select-All, Actions</h2>
+
+			<d2l-demo-snippet id="selection-link-demo">
+				<template>
+					<d2l-list-header list-id="subjects-actions">
+						<d2l-button-subtle icon="tier1:bookmark-hollow" text="Bookmark" data-list-action></d2l-button-subtle>
+						<d2l-button-subtle icon="tier1:gear" text="Settings"></d2l-button-subtle>
+					</d2l-list-header>
+					<d2l-list id="subjects-actions">
+						<d2l-list-item href="http://www.d2l.com" selectable key="1">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>Teaching Practicum</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="3">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>Renaissance Art</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Select-All, No Actions</h2>
+
+			<d2l-demo-snippet id="selection-link-demo">
+				<template>
+					<d2l-list-header list-id="subjects-actions"></d2l-list-header>
+					<d2l-list id="subjects-actions">
+						<d2l-list-item href="http://www.d2l.com" selectable key="1">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>Teaching Practicum</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com" selectable key="3">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>Renaissance Art</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Select-All, Slim, Actions</h2>
+
+			<d2l-demo-snippet id="selection-link-demo">
+				<template>
+					<d2l-list-header slim list-id="subjects-slim-actions">
+						<d2l-button-subtle icon="tier1:bookmark-hollow" text="Bookmark" data-list-action></d2l-button-subtle>
+						<d2l-button-subtle icon="tier1:gear" text="Settings"></d2l-button-subtle>
+					</d2l-list-header>
+					<d2l-list id="subjects-slim-actions">
+						<d2l-list-item slim href="http://www.d2l.com" selectable key="1">
+							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item slim href="http://www.d2l.com" selectable key="2" selected>
+							<d2l-list-item-content>Teaching Practicum</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item slim href="http://www.d2l.com" selectable key="3">
+							<d2l-list-item-content>Renaissance Art</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Select-All, Slim, No Actions</h2>
+
+			<d2l-demo-snippet id="selection-link-demo">
+				<template>
+					<d2l-list-header slim list-id="subjects-slim-no-actions"></d2l-list-header>
+					<d2l-list id="subjects-slim-no-actions">
+						<d2l-list-item slim href="http://www.d2l.com" selectable key="1">
+							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item slim href="http://www.d2l.com" selectable key="2" selected>
+							<d2l-list-item-content>Teaching Practicum</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item slim href="http://www.d2l.com" selectable key="3">
+							<d2l-list-item-content>Renaissance Art</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>

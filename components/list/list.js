@@ -91,6 +91,11 @@ class List extends LitElement {
 		};
 	}
 
+	selectAll(suppressEvent = false) {
+		const items = this._getItems();
+		items.forEach(item => item.setSelected(true, suppressEvent));
+	}
+
 	toggleSelectAll() {
 		const items = this._getItems();
 		const notSelectedItems = items.filter(item => !item.selected);
@@ -101,7 +106,14 @@ class List extends LitElement {
 		}
 	}
 
+	unselectAll(suppressEvent = false) {
+		const items = this._getItems();
+		items.forEach(item => item.setSelected(false, suppressEvent));
+	}
+
 	_getItems() {
+		const slot = this.shadowRoot.querySelector('slot');
+		if (!slot) return [];
 		return this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true }).filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
