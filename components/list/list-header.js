@@ -49,7 +49,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				flex: none;
 			}
 			.d2l-list-header-summary {
-				flex: auto;
+				flex: none;
 				margin-left: 0.9rem;
 			}
 			:host([dir="rtl"]) .d2l-list-header-summary {
@@ -57,7 +57,11 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				margin-right: 0.9rem;
 			}
 			.d2l-list-header-actions {
-				flex: none;
+				flex: auto;
+				text-align: right;
+			}
+			:host([dir="rtl"]) .d2l-list-header-actions {
+				text-align: left;
 			}
 		`];
 	}
