@@ -44,6 +44,8 @@ export default {
 	"components.input-time-range.endTime": "End Time",
 	"components.input-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
 	"components.input-time-range.startTime": "Start Time",
+	"components.list-header.select-all": "Select All",
+	"components.list-header.selected": "{count} selected",
 	"components.list-item-drag-handle.default": "Reorder item action for {name}",
 	"components.list-item-drag-handle.keyboard": "Reorder item, current position {currentPosition} out of {size}. To move this item, press up or down arrows.",
 	"components.menu-item-return.return": "Returns to previous menu.",

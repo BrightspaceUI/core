@@ -2,13 +2,16 @@ import '../colors/colors.js';
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { listSelectionStates } from './list.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * A header for list components containing select-all, etc.
  */
-class ListHeader extends RtlMixin(LitElement) {
+class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -20,7 +23,7 @@ class ListHeader extends RtlMixin(LitElement) {
 			 * Whether to render a header with reduced whitespace.
 			 */
 			slim: { type: Boolean },
-			_selectionState: { type: String }
+			_selectionInfo: { type: Object }
 		};
 	}
 
@@ -61,7 +64,8 @@ class ListHeader extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this._selectionState = listSelectionStates.none;
+		this._summaryId = getUniqueId();
+		this._selectionInfo = { keys: [], state: listSelectionStates.none };
 		this._handleListSelectionChange = this._handleListSelectionChange.bind(this);
 	}
 
@@ -90,16 +94,22 @@ class ListHeader extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const summary = (this._selectionInfo.state === listSelectionStates.none ? this.localize('components.list-header.select-all')
+			: this.localize('components.list-header.selected', 'count', this._selectionInfo.keys.length));
 		return html`
 			<div class="d2l-list-header-container">
 				<d2l-input-checkbox
-					aria-label="Select All"
+					aria-label="${this.localize('components.list-header.select-all')}"
 					@change="${this._handleSelectAllChange}"
-					?checked="${this._selectionState === listSelectionStates.all}"
-					?indeterminate="${this._selectionState === listSelectionStates.some}">
+					?checked="${this._selectionInfo.state === listSelectionStates.all}"
+					description="${ifDefined(this._selectionInfo.state !== listSelectionStates.none ? summary : undefined)}"
+					?indeterminate="${this._selectionInfo.state === listSelectionStates.some}">
 				</d2l-input-checkbox>
-				<div class="d2l-list-header-summary d2l-body-compact">
-					Select All
+				<div
+					aria-hidden="true"
+					class="d2l-list-header-summary d2l-body-compact"
+					id="${this._summaryId}">
+					${summary}
 				</div>
 				<div class="d2l-list-header-actions">
 					<slot></slot>
@@ -115,10 +125,10 @@ class ListHeader extends RtlMixin(LitElement) {
 
 	_handleSelectAllChange(e) {
 		const checked = e.target.checked;
-		this._selectionState = (checked ? listSelectionStates.all : listSelectionStates.none);
 		if (!this._list) return;
 		if (checked) this._list.selectAll(false);
 		else this._list.unselectAll(false);
+		this._selectionInfo = this._list.getSelectionInfo();
 	}
 
 	_updateActionsState() {
@@ -134,8 +144,7 @@ class ListHeader extends RtlMixin(LitElement) {
 
 	_updateSelectionState() {
 		if (!this._list) return;
-		const info = this._list.getSelectionInfo();
-		this._selectionState = info.state;
+		this._selectionInfo = this._list.getSelectionInfo();
 	}
 
 }
