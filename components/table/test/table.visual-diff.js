@@ -41,7 +41,8 @@ describe('d2l-table', () => {
 							'selected-one-row',
 							'selected-top-bottom',
 							'selected-all',
-							'overflow'
+							'overflow',
+							'no-column-border'
 						].forEach((id) => {
 							it(id, async function() {
 								const rect = await visualDiff.getRect(page, `#${id}`);
