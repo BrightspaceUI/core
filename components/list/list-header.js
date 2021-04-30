@@ -57,6 +57,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				margin-right: 0.9rem;
 			}
 			.d2l-list-header-actions {
+				--d2l-overflow-group-justify-content: flex-end;
 				flex: auto;
 				text-align: right;
 			}
@@ -123,27 +124,51 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_handleListSelectionChange() {
-		this._updateSelectionState();
-		this._updateActionsState();
+
+		// debounce the updates for select-all case
+		if (this._updateSelectionRequested) return;
+
+		this._updateSelectionRequested = true;
+		setTimeout(() => {
+			this._updateSelectionState();
+			this._updateActionsState();
+			this._updateSelectionRequested = false;
+		}, 0);
+
 	}
 
 	_handleSelectAllChange(e) {
-		const checked = e.target.checked;
 		if (!this._list) return;
+
+		const checked = e.target.checked;
 		if (checked) this._list.selectAll(false);
 		else this._list.unselectAll(false);
+
 		this._selectionInfo = this._list.getSelectionInfo();
 	}
 
 	_updateActionsState() {
+
 		if (!this._list) return;
-		const actions = this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true })
-			.filter(node => node.nodeType === Node.ELEMENT_NODE && node.hasAttribute('data-list-action'));
-		if (actions.length === 0) return;
-		const info = this._list.getSelectionInfo();
-		actions.forEach(action => {
-			action.disabled = (info.state === listSelectionStates.none);
+
+		const elems = this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true })
+			.filter(node => node.nodeType === Node.ELEMENT_NODE);
+
+		if (elems.length === 0) return;
+
+		elems.forEach(elem => {
+			if (elem.hasAttribute('data-list-action')) {
+				elem.disabled = (this._selectionInfo.state === listSelectionStates.none);
+			} else if (elem.tagName === 'D2L-OVERFLOW-GROUP') {
+				const items = elem.children;
+				for (let i = 0; i < items.length; i++) {
+					if (items[i].hasAttribute('data-list-action')) {
+						items[i].disabled = (this._selectionInfo.state === listSelectionStates.none);
+					}
+				}
+			}
 		});
+
 	}
 
 	_updateSelectionState() {
