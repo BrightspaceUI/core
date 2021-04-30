@@ -185,6 +185,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			.d2l-overflow-group-container {
 				display: flex;
 				flex-wrap: wrap;
+				justify-content: var(--d2l-overflow-group-justify-content, normal);
 			}
 			.d2l-overflow-group-container ::slotted(d2l-button),
 			.d2l-overflow-group-container ::slotted(d2l-button-icon),
