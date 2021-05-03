@@ -48,7 +48,7 @@ function createMenuItemLink(node) {
 	const href =  node.href;
 	const target = node.target;
 
-	return html`<d2l-menu-item-link 
+	return html`<d2l-menu-item-link
 		text="${text}"
 		href="${href}"
 		target="${target}">
@@ -247,8 +247,6 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
 
-		this._getItems();
-
 		const resizeObserver = new ResizeObserver(this._throttledResize);
 		resizeObserver.observe(this._container);
 	}
@@ -272,6 +270,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 	update(changedProperties) {
 		super.update(changedProperties);
+
 		if (changedProperties.get('autoShow')) {
 			this._getItemLayouts(this._slotItems);
 			this._autoDetectBoundaries(this._itemLayouts);
@@ -309,7 +308,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			this.maxToShow = maxToShow;
 		}
 	}
-	_chomp(items = this._itemLayouts) {
+	_chomp() {
+		if (!this._itemLayouts) return;
 
 		this._overflowMenu = this.shadowRoot.querySelector('.d2l-overflow-dropdown');
 		this._overflowMenuMini = this.shadowRoot.querySelector('.d2l-overflow-dropdown-mini');
@@ -361,7 +361,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		}
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		this._overflowMenuHidden = items.length === showing.count;
+		this._overflowMenuHidden = this._itemLayouts.length === showing.count;
 		if (!this._overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
 			for (let j = this._itemLayouts.length; j--;) {
 				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
@@ -455,14 +455,15 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		this._chomp();
 	}
 	_handleSlotChange() {
+		requestAnimationFrame(() => {
+			this._getItems();
 
-		this._getItems();
+			if (this.autoShow) {
+				this._autoDetectBoundaries(this._slotItems);
+			}
 
-		if (this.autoShow) {
-			this._autoDetectBoundaries(this._slotItems);
-		}
-
-		this._chomp();
+			this._chomp();
+		});
 	}
 }
 
