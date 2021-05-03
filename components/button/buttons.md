@@ -15,8 +15,7 @@ A button is used to communicate and perform an action.
 <d2l-button-icon text="Icon Button" icon="tier1:gear"></d2l-button-icon>
 ```
 
-<!-- docs: design best practices -->
-
+<!-- docs: design -->
 ## Button
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
