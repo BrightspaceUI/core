@@ -24,6 +24,7 @@
   "files": [
     "custom-elements.json",
     "/components",
+    "/design",
     "/directives",
     "/generated",
     "/helpers",
