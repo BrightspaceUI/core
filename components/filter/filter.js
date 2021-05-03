@@ -174,6 +174,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: false, composed: false, detail: eventDetail }));
 	}
 
+	_getSlottedNodes(slot) {
+		const nodes = slot.assignedNodes();
+		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template');
+	}
+
 	_handleChangeSetDimension(e) {
 		const dimensionKey = e.composedPath()[0].parentNode.id;
 		const valueKey = e.detail.key;
@@ -182,7 +187,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		// Update the corresponding d2l-filter-dimension-set-value to keep them in sync
 		const dimension = this.querySelector(`d2l-filter-dimension-set[key="${dimensionKey}"`);
 		const slot = dimension.shadowRoot.querySelector('slot');
-		const items = slot.assignedNodes().filter(node => node.nodeType === Node.ELEMENT_NODE);
+		const items = this._getSlottedNodes(slot);
 		const item = items.find(item => item.key === valueKey);
 		item.selected = selected;
 
@@ -226,24 +231,20 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleSlotChange() {
-		const nodes = this._dimensionsSlot.assignedNodes();
-		const filteredNodes = nodes.filter((node) => {
-			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
-			return isNode;
-		});
+		const dimensionNodes = this._getSlottedNodes(this._dimensionsSlot);
 
-		this._dimensions = filteredNodes.map(node => {
-			const type = node.tagName.toLowerCase();
+		this._dimensions = dimensionNodes.map(dimension => {
+			const type = dimension.tagName.toLowerCase();
 			const info = {
-				key: node.key,
-				text: node.text,
+				key: dimension.key,
+				text: dimension.text,
 				type: type
 			};
 
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
-					const slot = node.shadowRoot.querySelector('slot');
-					const valueNodes = slot.assignedNodes().filter(node => node.nodeType ===  Node.ELEMENT_NODE);
+					const slot = dimension.shadowRoot.querySelector('slot');
+					const valueNodes = this._getSlottedNodes(slot);
 					const values = valueNodes.map(value => {
 						return {
 							key: value.key,
