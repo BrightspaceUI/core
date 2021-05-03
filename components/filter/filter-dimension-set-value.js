@@ -1,11 +1,11 @@
 import { LitElement } from 'lit-element/lit-element.js';
 
 /**
- * A component to represent the values for the main filter dimension type (list items).
+ * A component to represent a possible value that can be selected for a dimension set (the main filter dimension type).
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
- * @fires d2l-filter-dimension-value-data-change - @ignore
+ * @fires d2l-filter-dimension-set-value-data-change - @ignore
  */
-class FilterDimensionValue extends LitElement {
+class FilterDimensionSetValue extends LitElement {
 
 	static get properties() {
 		return {
@@ -34,10 +34,10 @@ class FilterDimensionValue extends LitElement {
 		});
 
 		if (changes.size > 0) {
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-value-data-change', { detail: { valueKey: this.key, changes: changes }, bubbles: true, composed: false }));
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-set-value-data-change', { detail: { valueKey: this.key, changes: changes }, bubbles: true, composed: false }));
 		}
 	}
 
 }
 
-customElements.define('d2l-filter-dimension-value', FilterDimensionValue);
+customElements.define('d2l-filter-dimension-set-value', FilterDimensionSetValue);

@@ -30,29 +30,29 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 
 ## Filter Dimension Types
 
-### d2l-filter-dimension and d2l-filter-dimension-value
+### d2l-filter-dimension-set and d2l-filter-dimension-set-value
 
-The `d2l-filter-dimension` component is the main dimension type that will work for most use cases.  Used alongside the `d2l-filter-dimension-value`, this will give you a selectable list of filter values.
+The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the `d2l-filter-dimension-set-value`, this will give you a selectable list of filter values.
 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
-  import '@brightspace-ui/core/components/filter/filter-dimension.js';
-  import '@brightspace-ui/core/components/filter/filter-dimension-value.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set.js';
+  import '@brightspace-ui/core/components/filter/filter-dimension-set-value.js';
 </script>
 
 <d2l-filter>
-  <d2l-filter-dimension key="course" text="Course" >
-    <d2l-filter-dimension-value key="art" text="Art" selected><d2l-filter-dimension-value>
-    <d2l-filter-dimension-value key="biology" text="Biology"><d2l-filter-dimension-value>
-  </d2l-filter-dimension>
-  <d2l-filter-dimension key="role" text="Role" >
-    <d2l-filter-dimension-value key="admin" text="Admin" selected><d2l-filter-dimension-value>
-  </d2l-filter-dimension>
+  <d2l-filter-dimension-set key="course" text="Course" >
+    <d2l-filter-dimension-set-value key="art" text="Art" selected><d2l-filter-dimension-set-value>
+    <d2l-filter-dimension-set-value key="biology" text="Biology"><d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
+  <d2l-filter-dimension-set key="role" text="Role" >
+    <d2l-filter-dimension-set-value key="admin" text="Admin" selected><d2l-filter-dimension-set-value>
+  </d2l-filter-dimension-set>
 </d2l-filter>
 ```
 
-#### d2l-filter-dimension
+#### d2l-filter-dimension-set
 
 **Properties:**
 
@@ -61,7 +61,7 @@ The `d2l-filter-dimension` component is the main dimension type that will work f
 | `key` | String, required | Unique identifier for the dimension |
 | `text` | String, required | Text for the dimension in the menu |
 
-#### d2l-filter-dimension-value
+#### d2l-filter-dimension-set-value
 
 **Properties:**
 

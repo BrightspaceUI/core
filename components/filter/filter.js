@@ -52,7 +52,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				padding-right: 0;
 			}
 
-			.d2l-filter-dimension-value-text {
+			.d2l-filter-dimension-set-value-text {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
@@ -108,8 +108,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_buildDimension(dimension) {
 		let dimensionHTML;
 		switch (dimension.type) {
-			case 'd2l-filter-dimension':
-				dimensionHTML = this._createListDimension(dimension);
+			case 'd2l-filter-dimension-set':
+				dimensionHTML = this._createSetDimension(dimension);
 				break;
 		}
 		return html`
@@ -150,10 +150,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
-	_createListDimension(dimension) {
+	_createSetDimension(dimension) {
 		return html`
 			<d2l-list
-				@d2l-list-selection-change="${this._handleChangeListDimension}"
+				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators>
 
 				${dimension.values.map(item => html`
@@ -163,7 +163,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						?selected="${item.selected}"
 						slim>
 
-						<div class="d2l-filter-dimension-value-text">${item.text}</div>
+						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
 					</d2l-list-item>
 				`)}
 			</d2l-list>
@@ -174,13 +174,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: false, composed: false, detail: eventDetail }));
 	}
 
-	_handleChangeListDimension(e) {
+	_handleChangeSetDimension(e) {
 		const dimensionKey = e.composedPath()[0].parentNode.id;
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 
-		// Update the corresponding d2l-filter-dimension-value to keep them in sync
-		const dimension = this.querySelector(`d2l-filter-dimension[key="${dimensionKey}"`);
+		// Update the corresponding d2l-filter-dimension-set-value to keep them in sync
+		const dimension = this.querySelector(`d2l-filter-dimension-set[key="${dimensionKey}"`);
 		const slot = dimension.shadowRoot.querySelector('slot');
 		const items = slot.assignedNodes().filter(node => node.nodeType === Node.ELEMENT_NODE);
 		const item = items.find(item => item.key === valueKey);
@@ -241,7 +241,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			};
 
 			switch (type) {
-				case 'd2l-filter-dimension': {
+				case 'd2l-filter-dimension-set': {
 					const slot = node.shadowRoot.querySelector('slot');
 					const valueNodes = slot.assignedNodes().filter(node => node.nodeType ===  Node.ELEMENT_NODE);
 					const values = valueNodes.map(value => {

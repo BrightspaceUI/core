@@ -1,13 +1,13 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
 
 /**
- * A component to represent the main filter dimension type (a list with list items).
+ * A component to represent the main filter dimension type - a set of possible values that can be selected.
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
- * @slot - For d2l-filter-dimension-value components
+ * @slot - For d2l-filter-dimension-set-value components
  * @fires d2l-filter-dimension-data-change - @ignore
  * @fires d2l-filter-dimension-slot-change - @ignore
  */
-class FilterDimension extends LitElement {
+class FilterDimensionSet extends LitElement {
 
 	static get properties() {
 		return {
@@ -24,7 +24,7 @@ class FilterDimension extends LitElement {
 	render() {
 		return html`
 		<slot
-			@d2l-filter-dimension-value-data-change="${this._handleDimensionValueDataChange}"
+			@d2l-filter-dimension-set-value-data-change="${this._handleDimensionSetValueDataChange}"
 			@slotchange="${this._handleSlotChange}">
 		</slot>`;
 	}
@@ -50,7 +50,7 @@ class FilterDimension extends LitElement {
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-data-change', { detail: eventDetail, bubbles: true, composed: false }));
 	}
 
-	_handleDimensionValueDataChange(e) {
+	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
 		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
 	}
@@ -61,4 +61,4 @@ class FilterDimension extends LitElement {
 
 }
 
-customElements.define('d2l-filter-dimension', FilterDimension);
+customElements.define('d2l-filter-dimension-set', FilterDimensionSet);
