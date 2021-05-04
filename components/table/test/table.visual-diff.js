@@ -34,6 +34,8 @@ describe('d2l-table', () => {
 							'standard-no-thead',
 							'vertical-align',
 							'empty',
+							'one-column',
+							'one-cell',
 							'no-header-tbody',
 							'no-header-no-tbody',
 							'rowspan',
@@ -72,7 +74,11 @@ describe('d2l-table', () => {
 							'one-row-no-thead',
 							'multi-row-thead',
 							'multi-row-no-thead',
-							'fixed-column'
+							'selected-one-row',
+							'selected-top-bottom',
+							'selected-all',
+							'fixed-column',
+							'one-column',
 						].forEach((id) => {
 							['top', 'down', 'over'].forEach((position) => {
 								it(`${id}-${position}`, async function() {

@@ -91,7 +91,6 @@
 				<table class="d2l-table">
 					<thead>
 						<tr>
-							<th rowspan="2" style="width: 1%" class="top"><input type="checkbox"></th>
 							<th rowspan="2">Country</th>
 							<th colspan="5">Fruit Production (tons)</th>
 						</tr>
@@ -105,16 +104,14 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="down"><input type="checkbox"></td>
-							<th>Canada</th>
+							<th class="down">Canada</th>
 							<td>356,863</td>
 							<td>0</td>
 							<th>0</th>
 							<td>23,239</td>
 							<td class="over">90,911</td>
 						</tr>
-						<tr selected>
-							<td><input type="checkbox" checked></td>
+						<tr>
 							<th>Australia</th>
 							<td>308,298</td>
 							<td>398,610</td>
@@ -123,7 +120,6 @@
 							<td>1,772,911</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox"></td>
 							<th>Mexico</th>
 							<td>716,931</td>
 							<td>4,603,253</td>
@@ -137,6 +133,47 @@
 		</div>
 		<div class="visual-diff">
 			<d2l-table-wrapper sticky-headers id="multi-row-no-thead">
+				<table class="d2l-table">
+					<tr header>
+						<th rowspan="2">Country</th>
+						<th colspan="5">Fruit Production (tons)</th>
+					</tr>
+					<tr header>
+						<th>Apples</th>
+						<th>Oranges</th>
+						<th>Bananas</th>
+						<th>Peaches</th>
+						<th>Grapes</th>
+					</tr>
+					<tr>
+						<th class="down">Canada</th>
+						<td>356,863</td>
+						<td>0</td>
+						<th>0</th>
+						<td>23,239</td>
+						<td class="over">90,911</td>
+					</tr>
+					<tr>
+						<th>Australia</th>
+						<td>308,298</td>
+						<td>398,610</td>
+						<td><d2l-input-number label="label" label-hidden value="354241"></d2l-input-number></td>
+						<td>80,807</td>
+						<td>1,772,911</td>
+					</tr>
+					<tr>
+						<th>Mexico</th>
+						<td>716,931</td>
+						<td>4,603,253</td>
+						<td>2,384,778</td>
+						<td>176,909</td>
+						<td>351,310</td>
+					</tr>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+		<div class="visual-diff">
+			<d2l-table-wrapper sticky-headers id="selected-one-row">
 				<table class="d2l-table">
 					<tr header>
 						<th rowspan="2" style="width: 1%" class="top"><input type="checkbox"></th>
@@ -170,6 +207,96 @@
 					</tr>
 					<tr>
 						<td><input type="checkbox"></td>
+						<th>Mexico</th>
+						<td>716,931</td>
+						<td>4,603,253</td>
+						<td>2,384,778</td>
+						<td>176,909</td>
+						<td>351,310</td>
+					</tr>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+		<div class="visual-diff">
+			<d2l-table-wrapper sticky-headers id="selected-top-bottom">
+				<table class="d2l-table">
+					<tr header>
+						<th rowspan="2" style="width: 1%" class="top"><input type="checkbox"></th>
+						<th rowspan="2">Country</th>
+						<th colspan="5">Fruit Production (tons)</th>
+					</tr>
+					<tr header>
+						<th>Apples</th>
+						<th>Oranges</th>
+						<th>Bananas</th>
+						<th>Peaches</th>
+						<th>Grapes</th>
+					</tr>
+					<tr selected>
+						<td class="down"><input type="checkbox" checked></td>
+						<th>Canada</th>
+						<td>356,863</td>
+						<td>0</td>
+						<th>0</th>
+						<td>23,239</td>
+						<td class="over">90,911</td>
+					</tr>
+					<tr>
+						<td><input type="checkbox"></td>
+						<th>Australia</th>
+						<td>308,298</td>
+						<td>398,610</td>
+						<td><d2l-input-number label="label" label-hidden value="354241"></d2l-input-number></td>
+						<td>80,807</td>
+						<td>1,772,911</td>
+					</tr>
+					<tr selected>
+						<td><input type="checkbox" checked></td>
+						<th>Mexico</th>
+						<td>716,931</td>
+						<td>4,603,253</td>
+						<td>2,384,778</td>
+						<td>176,909</td>
+						<td>351,310</td>
+					</tr>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+		<div class="visual-diff">
+			<d2l-table-wrapper sticky-headers id="selected-all">
+				<table class="d2l-table">
+					<tr header>
+						<th rowspan="2" style="width: 1%" class="top"><input type="checkbox"></th>
+						<th rowspan="2">Country</th>
+						<th colspan="5">Fruit Production (tons)</th>
+					</tr>
+					<tr header>
+						<th>Apples</th>
+						<th>Oranges</th>
+						<th>Bananas</th>
+						<th>Peaches</th>
+						<th>Grapes</th>
+					</tr>
+					<tr selected>
+						<td class="down"><input type="checkbox" checked></td>
+						<th>Canada</th>
+						<td>356,863</td>
+						<td>0</td>
+						<th>0</th>
+						<td>23,239</td>
+						<td class="over">90,911</td>
+					</tr>
+					<tr selected>
+						<td><input type="checkbox" checked></td>
+						<th>Australia</th>
+						<td>308,298</td>
+						<td>398,610</td>
+						<td><d2l-input-number label="label" label-hidden value="354241"></d2l-input-number></td>
+						<td>80,807</td>
+						<td>1,772,911</td>
+					</tr>
+					<tr selected>
+						<td><input type="checkbox" checked></td>
 						<th>Mexico</th>
 						<td>716,931</td>
 						<td>4,603,253</td>
@@ -229,6 +356,23 @@
 				</table>
 			</d2l-table-wrapper>
 		</div>
+		<div class="visual-diff">
+			<d2l-table-wrapper sticky-headers id="one-column">
+				<table class="d2l-table">
+					<thead>
+						<tr>
+							<th>Header A</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Cell 1-A</td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+		</div>
+		<div style="margin-bottom:1500px;"></div>
 		<script>
 			const url = new URL(window.location.href);
 			const type = url.searchParams.get('type') ?? 'default';
