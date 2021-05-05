@@ -113,10 +113,6 @@ export const tableStyles = css`
 
 	/* sticky-headers */
 
-	d2l-table-wrapper[dir="rtl"][sticky-headers] table {
-		padding-left: 20px; /* TODO: what is this for? */
-	}
-
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr:not([selected]) {
 		background-color: inherit; /* TODO: what is this for? */
 	}
