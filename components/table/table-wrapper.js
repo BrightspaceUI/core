@@ -121,58 +121,38 @@ export const tableStyles = css`
 		background-color: inherit; /* TODO: what is this for? */
 	}
 
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] th,
-	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr th {
+	/* sticky header cells */
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > th,
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > td,
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th {
 		position: -webkit-sticky;
 		position: sticky;
 		top: 0;
 	}
 
-	/* sticky first column: offset by size of border-radius so top/bottom border doesn't show through */
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > th[sticky].d2l-table-cell-first/*,
-	d2l-table-wrapper[sticky-headers] td[sticky]:first-child,
-	d2l-table-wrapper[sticky-headers] th[sticky]:first-child*/ {
+	/* sticky first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
+	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr[header] > th,
+	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr[header] > td,
+	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > thead > tr > th {
+		top: -5px;
+	}
+
+	/* sticky first column: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
+	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers]:not([dir="rtl"]) .d2l-table > * > tr > th[sticky].d2l-table-cell-first {
 		left: -5px;
 	}
-	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
-	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > th[sticky].d2l-table-cell-first/*,
-	d2l-table-wrapper[dir="rtl"][sticky-headers] td[sticky]:first-child,
-	d2l-table-wrapper[dir="rtl"][sticky-headers] th[sticky]:first-child*/ {
+	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > th[sticky].d2l-table-cell-first {
 		right: -5px;
 	}
-
-	d2l-table-wrapper[sticky-headers]:not([dir="rtl"]) tr[header] + tr[header] [sticky].d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers]:not([dir="rtl"]) thead tr + tr [sticky]:first-child {
+	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) tr[header] + tr[header] [sticky].d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) thead tr + tr [sticky]:first-child {
 		left: 0;
 	}
-	d2l-table-wrapper[sticky-headers][dir="rtl"] tr[header] + tr[header] [sticky].d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers][dir="rtl"] thead tr + tr [sticky]:first-child {
+	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] tr[header] + tr[header] [sticky].d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] thead tr + tr [sticky]:first-child {
 		right: 0;
-	}
-
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header]:not(.d2l-table-row-first) > th,
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header]:not(.d2l-table-row-first) > td,
-	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr:not(:first-child) > th {
-		position: -webkit-sticky;
-		position: sticky;
-		top: -5px;
-	}
-
-	d2l-table-wrapper[type="default"][sticky-headers] .d2l-table > * > tr[header] > th,
-	d2l-table-wrapper[type="default"][sticky-headers] .d2l-table > * > tr[header] > td,
-	d2l-table-wrapper[type="default"][sticky-headers] .d2l-table > thead > tr > th {
-		position: -webkit-sticky;
-		position: sticky;
-		top: -5px;
-	}
-
-	d2l-table-wrapper[type="light"][sticky-headers] .d2l-table > * > tr[header] > th,
-	d2l-table-wrapper[type="light"][sticky-headers] .d2l-table > * > tr[header] > td,
-	d2l-table-wrapper[type="light"][sticky-headers] .d2l-table > thead > tr > th {
-		position: -webkit-sticky;
-		position: sticky;
-		top: -3.5px;
 	}
 
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > th[sticky],
@@ -334,9 +314,10 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		});
 
 		if (this.stickyHeaders && topHeaderHeight > -1) {
+			const offset = this.type === 'default' ? -3 : 1; // default: -5px top + 2px border, light: 0 top + 1px border
 			const ths = Array.from(table.querySelectorAll('tr[header]:not(:first-child) th, thead tr:not(:first-child) th'));
 			ths.forEach((th) => {
-				th.style.top = `${topHeader.clientHeight - 3}px`;
+				th.style.top = `${topHeader.clientHeight + offset}px`;
 			});
 		}
 
