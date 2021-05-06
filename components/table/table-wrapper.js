@@ -140,9 +140,9 @@ export const tableStyles = css`
 	}
 	d2l-table-wrapper[sticky-headers] .d2l-table > tbody > tr:not([header]) > [sticky] {
 		background-color: inherit;
+		left: 0;
 		position: -webkit-sticky;
 		position: sticky;
-		left: 0;
 		z-index: 1;
 	}
 `;
@@ -179,8 +179,6 @@ export class TableWrapper extends RtlMixin(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				display: block;
-				width: 100%;
 				--d2l-table-border: 1px solid var(--d2l-table-border-color);
 				--d2l-table-border-color: var(--d2l-color-mica);
 				--d2l-table-border-radius: 0.3rem;
@@ -189,6 +187,8 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
+				display: block;
+				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;

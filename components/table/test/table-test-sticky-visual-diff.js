@@ -10,7 +10,7 @@ class TestTableStickyVisualDiff extends LitElement {
 
 	static get styles() {
 		return [tableStyles, css`
-			.visual-diff {
+			.d2l-visual-diff {
 				margin-bottom: 300px;
 				max-width: 600px;
 			}
@@ -19,7 +19,7 @@ class TestTableStickyVisualDiff extends LitElement {
 
 	render() {
 		return html`
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-thead">
 					<table class="d2l-table">
 						<thead>
@@ -49,7 +49,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-no-thead">
 					<table class="d2l-table">
 						<tr header class="top">
@@ -75,7 +75,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-thead">
 					<table class="d2l-table">
 						<thead>
@@ -120,7 +120,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-no-thead">
 					<table class="d2l-table">
 						<tr header>
@@ -161,7 +161,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="selected-one-row">
 					<table class="d2l-table">
 						<tr header>
@@ -206,7 +206,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="selected-top-bottom">
 					<table class="d2l-table">
 						<tr header>
@@ -251,7 +251,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="selected-all">
 					<table class="d2l-table">
 						<tr header>
@@ -296,7 +296,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="fixed-column">
 					<table class="d2l-table">
 						<thead>
@@ -345,7 +345,7 @@ class TestTableStickyVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-			<div class="visual-diff">
+			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="one-column">
 					<table class="d2l-table">
 						<thead>
