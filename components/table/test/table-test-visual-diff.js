@@ -1,3 +1,4 @@
+import '../table-col-sort-button.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { tableStyles } from '../table-wrapper.js';
 
@@ -409,6 +410,27 @@ class TestTableVisualDiff extends LitElement {
 								<td>2,384,778</td>
 								<td>176,909</td>
 								<td>351,310</td>
+							</tr>
+						</tbody>
+					</table>
+				</d2l-table-wrapper>
+			</div>
+
+			<div class="visual-diff">
+				<d2l-table-wrapper type="${type}" id="col-sort-button">
+					<table class="d2l-table">
+						<thead>
+							<tr>
+								<th><d2l-table-col-sort-button>Ascending</d2l-table-col-sort-button></th>
+								<th><d2l-table-col-sort-button desc>Descending</d2l-table-col-sort-button></th>
+								<th><d2l-table-col-sort-button nosort>No Sort</d2l-table-col-sort-button></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Cell 1-A</td>
+								<td>Cell 1-B</td>
+								<td>Cell 1-C</td>
 							</tr>
 						</tbody>
 					</table>

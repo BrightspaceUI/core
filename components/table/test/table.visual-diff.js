@@ -58,7 +58,8 @@ describe('d2l-table', () => {
 							'selected-top-bottom',
 							'selected-all',
 							'overflow',
-							'no-column-border'
+							'no-column-border',
+							'col-sort-button'
 						].forEach((id) => {
 							it(id, async function() {
 								const rect = await getRect(page, id);
@@ -72,6 +73,14 @@ describe('d2l-table', () => {
 									.scrollIntoView();
 							});
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						});
+
+						it('col-sort-button-focus', async function() {
+							await page.$eval('d2l-test-table-visual-diff', (wrapper) => {
+								wrapper.shadowRoot.querySelector('d2l-table-col-sort-button').focus();
+							});
+							const rect = await getRect(page, 'col-sort-button');
+							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 
 					});
