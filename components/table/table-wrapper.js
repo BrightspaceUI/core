@@ -17,8 +17,7 @@ export const tableStyles = css`
 	}
 
 	/* all cells */
-	.d2l-table > * > tr > td,
-	.d2l-table > * > tr > th {
+	.d2l-table > * > tr > * {
 		border-bottom: var(--d2l-table-border);
 		font-weight: inherit;
 		height: var(--d2l-table-cell-height);
@@ -26,22 +25,17 @@ export const tableStyles = css`
 		text-align: left;
 		vertical-align: middle;
 	}
-	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > td,
-	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > th {
+	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
 		text-align: right;
 	}
 
 	/* default cells */
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > td,
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > th,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > td.d2l-table-cell-first,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > th.d2l-table-cell-first {
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > *,
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > .d2l-table-cell-first {
 		border-right: var(--d2l-table-border);
 	}
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > td,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > th,
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > td.d2l-table-cell-first,
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > th.d2l-table-cell-first {
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > *,
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > .d2l-table-cell-first {
 		border-left: var(--d2l-table-border);
 	}
 	d2l-table-wrapper[type="default"] .d2l-table-row-first > * {
@@ -90,79 +84,60 @@ export const tableStyles = css`
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-last {
 		border-left-color: var(--d2l-table-row-border-color-selected);
 	}
-	.d2l-table > tbody > tr[selected] > td,
-	.d2l-table > tbody > tr[selected] > th,
-	.d2l-table > * > tr.d2l-table-selected-previous td,
-	.d2l-table > * > tr.d2l-table-selected-previous th {
+	.d2l-table > tbody > tr[selected] > *,
+	.d2l-table > * > tr.d2l-table-selected-previous > * {
 		border-bottom-color: var(--d2l-table-row-border-color-selected);
 	}
-	.d2l-table > * > tr.d2l-table-selected-first td,
-	.d2l-table > * > tr.d2l-table-selected-first th {
+	.d2l-table > * > tr.d2l-table-selected-first > * {
 		border-top: 1px solid var(--d2l-table-row-border-color-selected);
 	}
 
 	/* no-column-border */
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > td:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > th:not(.d2l-table-cell-last) {
+	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last) {
 		border-right: none;
 	}
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > td:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > th:not(.d2l-table-cell-last) {
+	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last) {
 		border-left: none;
 	}
 
 	/* sticky-headers */
 
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr:not([selected]) {
-		background-color: inherit; /* TODO: what is this for? */
-	}
-
-	/* sticky header cells */
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > th,
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > td,
+	/* all header cells */
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > *,
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th {
 		position: -webkit-sticky;
 		position: sticky;
 		top: 0;
 	}
 
-	/* sticky first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr[header] > th,
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr[header] > td,
-	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > thead > tr > th {
-		top: -5px;
-	}
-
-	/* sticky first column: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
-	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers]:not([dir="rtl"]) .d2l-table > * > tr > th[sticky].d2l-table-cell-first {
-		left: -5px;
-	}
-	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > td[sticky].d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > th[sticky].d2l-table-cell-first {
-		right: -5px;
-	}
-	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) tr[header] + tr[header] [sticky].d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) thead tr + tr [sticky]:first-child {
-		left: 0;
-	}
-	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] tr[header] + tr[header] [sticky].d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] thead tr + tr [sticky]:first-child {
-		right: 0;
-	}
-
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > th[sticky],
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > td[sticky],
+	/* header cells that are also sticky */
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > [sticky],
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th[sticky] {
 		left: 0;
 		z-index: 3;
 	}
-
-	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > th[sticky],
-	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > td[sticky] {
+	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > [sticky] {
 		right: 0;
 	}
 
+	/* first row: offset by size of border-radius so left/right border doesn't show through (default style only) */
+	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr[header] > *,
+	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > thead > tr > th {
+		top: -5px;
+	}
+
+	/* first column that's sticky: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
+	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > [sticky].d2l-table-cell-first {
+		left: -5px;
+	}
+	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > [sticky].d2l-table-cell-first {
+		right: -5px;
+	}
+
+	/* non-header sticky cells */
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr:not([selected]) {
+		background-color: inherit; /* white background so sticky cells layer on top of non-sticky cells */
+	}
 	d2l-table-wrapper[sticky-headers] .d2l-table > tbody > tr:not([header]) > [sticky] {
 		background-color: inherit;
 		position: -webkit-sticky;
