@@ -1,6 +1,6 @@
 # Buttons
 
-A button is used to communicate and perform an action.
+A Button is used to communicate and perform an action.
 
 ```html
 <!-- docs: demo -->
@@ -16,6 +16,7 @@ A button is used to communicate and perform an action.
 ```
 
 <!-- docs: design -->
+
 ## Button
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
