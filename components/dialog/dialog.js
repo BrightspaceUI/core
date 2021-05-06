@@ -99,6 +99,10 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		this.width = 600;
 	}
 
+	get asyncContainerCustom() {
+		return true;
+	}
+
 	render() {
 
 		let loading = null;
@@ -131,7 +135,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
-				<div class="d2l-dialog-content">${content}</div>
+				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
@@ -149,10 +153,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		if (this.asyncState === asyncStates.complete) {
 			this.resize();
 		}
-	}
-
-	asyncContainer() {
-		return this.shadowRoot.querySelector('.d2l-dialog-content');
 	}
 
 	_abort() {
