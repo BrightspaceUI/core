@@ -113,7 +113,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			<d2l-hierarchical-view
 				@d2l-hierarchical-view-show-complete="${this._handleDimensionShowComplete}"
 				@d2l-hierarchical-view-show-start="${this._handleDimensionShowStart}"
-				id="${dimension.key}">
+				data-key="${dimension.key}">
 
 				${dimensionHTML}
 			</d2l-hierarchical-view>
@@ -178,7 +178,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleChangeSetDimension(e) {
-		const dimensionKey = e.composedPath()[0].parentNode.id;
+		const dimensionKey = e.composedPath()[0].parentNode.getAttribute('data-key');
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 
@@ -207,12 +207,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionHide() {
-		this.shadowRoot.querySelector(`#${this._activeDimensionKey}`).hide();
+		this.shadowRoot.querySelector(`[data-key="${this._activeDimensionKey}"]`).hide();
 		this._activeDimensionKey = null;
 	}
 
 	_handleDimensionShowComplete() {
-		const dimension = this.shadowRoot.querySelector(`#${this._activeDimensionKey}`);
+		const dimension = this.shadowRoot.querySelector(`[data-key="${this._activeDimensionKey}"]`);
 		const focusable = getFirstFocusableDescendant(dimension);
 		if (focusable) {
 			focusable.focus();
@@ -220,7 +220,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionShowStart(e) {
-		this._activeDimensionKey = e.detail.sourceView.id;
+		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
 	}
 
 	_handleDropdownClose(e) {
