@@ -5,7 +5,6 @@ import { html, LitElement } from 'lit-element/lit-element.js';
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
  * @slot - For d2l-filter-dimension-set-value components
  * @fires d2l-filter-dimension-data-change - @ignore
- * @fires d2l-filter-dimension-slot-change - @ignore
  */
 class FilterDimensionSet extends LitElement {
 
@@ -19,6 +18,7 @@ class FilterDimensionSet extends LitElement {
 	constructor() {
 		super();
 		this.text = '';
+		this._slot = null;
 	}
 
 	render() {
@@ -50,13 +50,33 @@ class FilterDimensionSet extends LitElement {
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-data-change', { detail: eventDetail, bubbles: true, composed: false }));
 	}
 
+	_getSlottedNodes() {
+		if (!this._slot) return [];
+		const nodes = this._slot.assignedNodes({ flatten: true });
+		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'd2l-filter-dimension-set-value');
+	}
+
+	_getValues() {
+		const valueNodes = this._getSlottedNodes();
+		const values = valueNodes.map(value => {
+			return {
+				key: value.key,
+				selected: value.selected,
+				text: value.text
+			};
+		});
+		return values;
+	}
+
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
 		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
 	}
 
-	_handleSlotChange() {
-		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-slot-change', { bubbles: true, composed: false }));
+	_handleSlotChange(e) {
+		if (!this._slot) this._slot = e.target;
+		const values = this._getValues();
+		this._dispatchDataChangeEvent({ dimensionKey: this.key, changes: new Map([['values', values]]) });
 	}
 
 }

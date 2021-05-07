@@ -69,8 +69,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this._dimensionsSlot = this.shadowRoot.querySelector('slot');
-
 		// Prevent these events from bubbling out of the filter
 		this.addEventListener('d2l-hierarchical-view-hide-complete', this._stopPropagation);
 		this.addEventListener('d2l-hierarchical-view-hide-start', this._stopPropagation);
@@ -95,7 +93,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					<d2l-menu label="${this.localize('components.filter.filters')}">
 						<slot
 							@d2l-filter-dimension-data-change="${this._handleDimensionDataChange}"
-							@d2l-filter-dimension-slot-change="${this._handleSlotChange}"
 							@slotchange="${this._handleSlotChange}"
 						></slot>
 						${dimensions}
@@ -175,8 +172,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_getSlottedNodes(slot) {
-		const nodes = slot.assignedNodes();
-		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template');
+		const dimensionTypes = ['d2l-filter-dimension-set'];
+		const nodes = slot.assignedNodes({ flatten: true });
+		return nodes.filter((node) => node.nodeType === Node.ELEMENT_NODE && dimensionTypes.includes(node.tagName.toLowerCase()));
 	}
 
 	_handleChangeSetDimension(e) {
@@ -230,8 +228,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._stopPropagation(e);
 	}
 
-	_handleSlotChange() {
-		const dimensionNodes = this._getSlottedNodes(this._dimensionsSlot);
+	_handleSlotChange(e) {
+		const dimensionNodes = this._getSlottedNodes(e.target);
 
 		this._dimensions = dimensionNodes.map(dimension => {
 			const type = dimension.tagName.toLowerCase();
@@ -243,15 +241,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
-					const slot = dimension.shadowRoot.querySelector('slot');
-					const valueNodes = this._getSlottedNodes(slot);
-					const values = valueNodes.map(value => {
-						return {
-							key: value.key,
-							selected: value.selected,
-							text: value.text
-						};
-					});
+					const values = dimension._getValues();
 					info.values = values;
 					break;
 				}
