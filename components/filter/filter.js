@@ -171,7 +171,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_dispatchChangeEvent(eventDetail) {
-		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: false, composed: false, detail: eventDetail }));
+		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: true, composed: false, detail: eventDetail }));
 	}
 
 	_getSlottedNodes(slot) {

@@ -67,11 +67,8 @@
 	</d2l-demo-page>
 
 	<script type="module">
-		const filters = document.querySelectorAll('d2l-filter');
-		filters.forEach(filter => {
-			filter.addEventListener('d2l-filter-change', (e) => {
-				console.log(`Filter selection changed for dimension "${e.detail.dimension}":`, e.detail.value);
-			});
+		document.addEventListener('d2l-filter-change', e => {
+			console.log(`Filter selection changed for dimension "${e.detail.dimension}":`, e.detail.value);
 		});
 	</script>
 
