@@ -182,13 +182,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 
-		// Update the corresponding d2l-filter-dimension-set-value to keep them in sync
-		const dimension = this.querySelector(`d2l-filter-dimension-set[key="${dimensionKey}"`);
-		const slot = dimension.shadowRoot.querySelector('slot');
-		const items = this._getSlottedNodes(slot);
-		const item = items.find(item => item.key === valueKey);
-		item.selected = selected;
-
 		this._dispatchChangeEvent({ dimension: dimensionKey, value: { key: valueKey, selected: selected } });
 	}
 
