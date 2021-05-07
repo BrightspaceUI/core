@@ -188,12 +188,15 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const toUpdate = value ? value : dimension;
 		const changes = e.detail.changes;
 
+		let shouldUpdate = false;
 		changes.forEach((newValue, prop) => {
 			if (toUpdate[prop] !== newValue) {
 				toUpdate[prop] = newValue;
-				this.requestUpdate();
+				shouldUpdate = true;
 			}
 		});
+
+		if (shouldUpdate) this.requestUpdate();
 	}
 
 	_handleDimensionHide() {
