@@ -236,19 +236,16 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 	async _applyClassNames(table) {
 
-		await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+		await new Promise((resolve) => requestAnimationFrame(resolve));
 
 		// offsetParent causes reflow/paint so do them all at once
 		const rows = Array.from(table.rows);
 		let firstRow = null;
 		let lastRow = null;
 		rows.forEach((r) => {
-			if (r.offsetParent !== null) {
-				if (firstRow === null) {
-					firstRow = r;
-				}
-				lastRow = r;
-			}
+			if (r.offsetParent === null) return;
+			firstRow = firstRow || r;
+			lastRow = r;
 		});
 
 		const topHeader = table.querySelector('tr[header]:first-child th:not([rowspan]), thead tr:first-child th:not([rowspan])');
