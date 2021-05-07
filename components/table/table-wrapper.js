@@ -302,6 +302,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		// its subtree (rows or cells added/removed to any descendant)
 		this._tableObserver = new MutationObserver(() => this._applyClassNames(table));
 		this._tableObserver.observe(table, {
+			attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 			attributeFilter: ['selected'],
 			childList: true,
 			subtree: true
