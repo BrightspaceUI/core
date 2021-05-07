@@ -91,14 +91,14 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				<d2l-dropdown-menu min-width="285" max-width="420" no-padding-header>
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
-						<slot
-							@d2l-filter-dimension-data-change="${this._handleDimensionDataChange}"
-							@slotchange="${this._handleSlotChange}"
-						></slot>
 						${dimensions}
 					</d2l-menu>
 				</d2l-dropdown-menu>
 			</d2l-dropdown-button-subtle>
+			<slot
+				@d2l-filter-dimension-data-change="${this._handleDimensionDataChange}"
+				@slotchange="${this._handleSlotChange}">
+			</slot>
 		`;
 	}
 
@@ -114,7 +114,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				@d2l-hierarchical-view-show-complete="${this._handleDimensionShowComplete}"
 				@d2l-hierarchical-view-show-start="${this._handleDimensionShowStart}"
 				data-key="${dimension.key}">
-
 				${dimensionHTML}
 			</d2l-hierarchical-view>
 		`;
@@ -152,14 +151,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators>
-
 				${dimension.values.map(item => html`
 					<d2l-list-item
 						key="${item.key}"
 						selectable
 						?selected="${item.selected}"
 						slim>
-
 						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
 					</d2l-list-item>
 				`)}
