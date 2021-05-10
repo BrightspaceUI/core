@@ -50,6 +50,7 @@ npm install @brightspace-ui/core
   * [Skeleton](components/skeleton/): apply low-fidelity skeletons to your application as it loads
   * [Status Indicator](components/status-indicator/): status-indicator components
   * [Switch](components/switch/): switch component with on/off semantics
+  * [Table](components/table/): table styles, column sorting and overflow handling
   * [Tabs](components/tabs/): tab and tab-panel components
   * [Tooltip](components/tooltip/): tooltip components
   * [Typography](components/typography/): typography styles and components
