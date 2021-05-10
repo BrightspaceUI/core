@@ -1,6 +1,20 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
+async function getRect(page, id) {
+	return await page.$eval('d2l-test-table-visual-diff', (wrapper, id) => {
+		const elem = wrapper.shadowRoot.querySelector(`#${id}`);
+		const leftMargin = (elem.offsetLeft < 10 ? 0 : 10);
+		const topMargin = (elem.offsetTop < 10 ? 0 : 10);
+		return {
+			x: elem.offsetLeft - leftMargin,
+			y: elem.offsetTop - topMargin,
+			width: elem.offsetWidth + (leftMargin * 2),
+			height: elem.offsetHeight + (topMargin * 2)
+		};
+	}, id);
+}
+
 describe('d2l-table', () => {
 
 	const visualDiff = new VisualDiff('table', __dirname);
@@ -19,15 +33,15 @@ describe('d2l-table', () => {
 			['default', 'light'].forEach((type) => {
 				describe(type, () => {
 
-					describe('nonstick', () => {
+					before(async() => {
+						await page.goto(
+							`${visualDiff.getBaseUrl()}/components/table/test/table.visual-diff.html?dir=${dir}&type=${type}`,
+							{ waitUntil: ['networkidle0', 'load'] }
+						);
+						await page.bringToFront();
+					});
 
-						before(async() => {
-							await page.goto(
-								`${visualDiff.getBaseUrl()}/components/table/test/table.visual-diff.html?dir=${dir}&type=${type}`,
-								{ waitUntil: ['networkidle0', 'load'] }
-							);
-							await page.bringToFront();
-						});
+					describe('nonstick', () => {
 
 						[
 							'standard-thead',
@@ -44,30 +58,34 @@ describe('d2l-table', () => {
 							'selected-top-bottom',
 							'selected-all',
 							'overflow',
-							'no-column-border'
+							'no-column-border',
+							'col-sort-button'
 						].forEach((id) => {
 							it(id, async function() {
-								const rect = await visualDiff.getRect(page, `#${id}`);
+								const rect = await getRect(page, id);
 								await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 							});
 						});
 
 						it('overflow-scrolled', async function() {
-							await page.$eval('#overflow > table > tbody > tr.d2l-table-row-last > th', (elem) => elem.scrollIntoView());
+							await page.$eval('d2l-test-table-visual-diff', (wrapper) => {
+								wrapper.shadowRoot.querySelector('#overflow > table > tbody > tr.d2l-table-row-last > th')
+									.scrollIntoView();
+							});
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+						});
+
+						it('col-sort-button-focus', async function() {
+							await page.$eval('d2l-test-table-visual-diff', (wrapper) => {
+								wrapper.shadowRoot.querySelector('d2l-table-col-sort-button').focus();
+							});
+							const rect = await getRect(page, 'col-sort-button');
+							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 
 					});
 
 					describe('sticky', () => {
-
-						before(async() => {
-							await page.goto(
-								`${visualDiff.getBaseUrl()}/components/table/test/table.sticky.visual-diff.html?dir=${dir}&type=${type}`,
-								{ waitUntil: ['networkidle0', 'load'] }
-							);
-							await page.bringToFront();
-						});
 
 						[
 							'one-row-thead',
@@ -82,7 +100,9 @@ describe('d2l-table', () => {
 						].forEach((id) => {
 							['top', 'down', 'over'].forEach((position) => {
 								it(`${id}-${position}`, async function() {
-									await page.$eval(`#${id} .${position}`, (elem) => elem.scrollIntoView());
+									await page.$eval('d2l-test-table-sticky-visual-diff', (wrapper, id, position) => {
+										wrapper.shadowRoot.querySelector(`#${id} .${position}`).scrollIntoView();
+									}, id, position);
 									await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 								});
 							});
