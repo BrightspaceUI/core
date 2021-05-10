@@ -97,6 +97,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._hasFooterContent = false;
 	}
 
+	get asyncContainerCustom() {
+		return true;
+	}
+
 	render() {
 
 		let loading = null;
@@ -129,7 +133,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
-				<div class="d2l-dialog-content">${content}</div>
+				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
@@ -148,10 +152,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			// while the dialog itself will not change size, we need to update overflow
 			this.resize();
 		}
-	}
-
-	asyncContainer() {
-		return this.shadowRoot.querySelector('.d2l-dialog-content');
 	}
 
 	_abort() {

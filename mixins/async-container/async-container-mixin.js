@@ -24,17 +24,14 @@ export const AsyncContainerMixin = superclass => class extends superclass {
 		super();
 		this._initializeAsyncState();
 		this.asyncPendingDelay = 0;
-		if (!this.asyncContainer) {
-			this.addEventListener('pending-state', this._handleAsyncItemState.bind(this));
+		this._handleAsyncItemState = this._handleAsyncItemState.bind(this);
+		if (!this.asyncContainerCustom) {
+			this.addEventListener('pending-state', this._handleAsyncItemState);
 		}
 	}
 
-	firstUpdated() {
-		if (!this.asyncContainer) return;
-		const container = this.asyncContainer();
-		if (container) {
-			container.addEventListener('pending-state', this._handleAsyncItemState.bind(this));
-		}
+	get asyncContainerCustom() {
+		return false;
 	}
 
 	resetAsyncState() {
