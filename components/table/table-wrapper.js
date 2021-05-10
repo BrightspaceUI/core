@@ -90,6 +90,7 @@ export const tableStyles = css`
 	}
 	.d2l-table > * > tr.d2l-table-selected-first > * {
 		border-top: 1px solid var(--d2l-table-row-border-color-selected);
+		padding: var(--d2l-table-cell-padding-alt);
 	}
 
 	/* no-column-border */
@@ -184,6 +185,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				--d2l-table-border-radius: 0.3rem;
 				--d2l-table-cell-height: 41px; /* min-height to be 62px including border */
 				--d2l-table-cell-padding: 0.5rem 1rem;
+				--d2l-table-cell-padding-alt: calc(0.5rem - 1px) 1rem 0.5rem 1rem;
 				--d2l-table-header-background-color: var(--d2l-color-regolith);
 				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
 				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
@@ -196,6 +198,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			:host([type="light"]) {
 				--d2l-table-cell-height: 1.15rem; /* min-height to be 48px including border */
 				--d2l-table-cell-padding: 0.6rem;
+				--d2l-table-cell-padding-alt: calc(0.6rem - 1px) 0.6rem 0.6rem 0.6rem;
 				--d2l-table-border-color: var(--d2l-color-gypsum);
 				--d2l-table-header-background-color: #ffffff;
 			}
