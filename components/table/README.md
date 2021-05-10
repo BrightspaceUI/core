@@ -40,6 +40,7 @@ class MyElem extends LitElement {
 
 | Property | Type | Description |
 |--|--|--|
+| `no-column-border` | Boolean, default: `false` | Hides the column borders on "default" table type |
 | `sticky-headers` | Boolean, default: `false` | Whether to make the header row sticky |
 | `type` | String, default: `'default'` | Type of the table style. Can be one of  `default`, `light`. |
 

@@ -94,9 +94,11 @@ export const tableStyles = css`
 	}
 
 	/* no-column-border */
+	d2l-table-wrapper[type="default"][no-column-border]:not([dir="rtl"]) .d2l-table > tbody > tr > *:not(.d2l-table-cell-last),
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last) {
 		border-right: none;
 	}
+	d2l-table-wrapper[type="default"][no-column-border][dir="rtl"] .d2l-table > tbody > tr > *:not(.d2l-table-cell-last),
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last) {
 		border-left: none;
 	}
@@ -159,6 +161,14 @@ export class TableWrapper extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Hides the column borders on "default" table type
+			 */
+			noColumnBorder: {
+				attribute: 'no-column-border',
+				reflect: true,
+				type: Boolean
+			},
+			/**
 			 * Whether header row is sticky
 			 */
 			stickyHeaders: {
@@ -207,6 +217,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.noColumnBorder = false;
 		this.stickyHeaders = false;
 		this.type = 'default';
 		this._tableObserver = null;
