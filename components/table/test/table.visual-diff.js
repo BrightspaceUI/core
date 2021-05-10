@@ -46,6 +46,7 @@ describe('d2l-table', () => {
 						[
 							'standard-thead',
 							'standard-no-thead',
+							'standard-legacy',
 							'vertical-align',
 							'empty',
 							'one-column',
@@ -60,6 +61,7 @@ describe('d2l-table', () => {
 							'selected-legacy',
 							'overflow',
 							'no-column-border',
+							'no-column-border-legacy',
 							'col-sort-button'
 						].forEach((id) => {
 							it(id, async function() {
@@ -91,8 +93,10 @@ describe('d2l-table', () => {
 						[
 							'one-row-thead',
 							'one-row-no-thead',
+							'one-row-legacy',
 							'multi-row-thead',
 							'multi-row-no-thead',
+							'multi-row-legacy',
 							'selected-one-row',
 							'selected-top-bottom',
 							'selected-all',

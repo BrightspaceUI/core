@@ -52,6 +52,32 @@ class TestTableStickyVisualDiff extends LitElement {
 			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-no-thead">
 					<table class="d2l-table">
+						<tr class="d2l-table-header top">
+							<th>Header A</th>
+							<th>Header B</th>
+							<th>Header C</th>
+						</tr>
+						<tr>
+							<td>Cell 1-A</td>
+							<td>Cell 1-B</td>
+							<td>Cell 1-C</td>
+						</tr>
+						<tr class="down">
+							<td>Cell 2-A</td>
+							<td><d2l-input-text label="label" label-hidden value="Cell 2-B" input-width="100px"></d2l-input-text></td>
+							<td class="over">Cell 2-C</td>
+						</tr>
+						<tr>
+							<td>Cell 3-A</td>
+							<td>Cell 3-B</td>
+							<td>Cell 3-C</td>
+						</tr>
+					</table>
+				</d2l-table-wrapper>
+			</div>
+			<div class="d2l-visual-diff">
+				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-legacy">
+					<table class="d2l-table">
 						<tr header class="top">
 							<th>Header A</th>
 							<th>Header B</th>
@@ -122,6 +148,47 @@ class TestTableStickyVisualDiff extends LitElement {
 			</div>
 			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-no-thead">
+					<table class="d2l-table">
+						<tr class="d2l-table-header">
+							<th rowspan="2" class="top">Country</th>
+							<th colspan="5">Fruit Production (tons)</th>
+						</tr>
+						<tr class="d2l-table-header">
+							<th>Apples</th>
+							<th>Oranges</th>
+							<th>Bananas</th>
+							<th>Peaches</th>
+							<th>Grapes</th>
+						</tr>
+						<tr>
+							<th class="down">Canada</th>
+							<td>356,863</td>
+							<td>0</td>
+							<th>0</th>
+							<td>23,239</td>
+							<td class="over">90,911</td>
+						</tr>
+						<tr>
+							<th>Australia</th>
+							<td>308,298</td>
+							<td>398,610</td>
+							<td><d2l-input-number label="label" label-hidden value="354241"></d2l-input-number></td>
+							<td>80,807</td>
+							<td>1,772,911</td>
+						</tr>
+						<tr>
+							<th>Mexico</th>
+							<td>716,931</td>
+							<td>4,603,253</td>
+							<td>2,384,778</td>
+							<td>176,909</td>
+							<td>351,310</td>
+						</tr>
+					</table>
+				</d2l-table-wrapper>
+			</div>
+			<div class="d2l-visual-diff">
+				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-legacy">
 					<table class="d2l-table">
 						<tr header>
 							<th rowspan="2" class="top">Country</th>
