@@ -58,12 +58,12 @@ For a table style with fewer borders and tighter padding, there's the `light` ty
 
 ## Selection
 
-If your table supports row selection, apply the `selected` attribute to rows which are actively selected.
+If your table supports row selection, apply the `data-selected` attribute to `<tr>` row elements which are actively selected.
 
 ![table with selection](./screenshots/selection.gif?raw=true)
 
 ```html
-<tr selected>
+<tr data-selected>
   <td><input type="checkbox"></td>
   <td>this row is selected</td>
 </tr>

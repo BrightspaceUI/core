@@ -58,7 +58,7 @@ class TestTable extends RtlMixin(LitElement) {
 					</thead>
 					<tbody>
 						${sorted.map((row) => html`
-							<tr ?selected="${row.selected}">
+							<tr ?data-selected="${row.selected}">
 								<th><input type="checkbox" .checked="${row.selected}" @click="${this._selectRow}"></th>
 								<th>${row.name}</th>
 								${fruits.map((fruit) => html`<td>${formatter.format(row.fruit[fruit.toLowerCase()])}</td>`)}

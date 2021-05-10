@@ -57,6 +57,7 @@ describe('d2l-table', () => {
 							'selected-one-row',
 							'selected-top-bottom',
 							'selected-all',
+							'selected-legacy',
 							'overflow',
 							'no-column-border',
 							'col-sort-button'

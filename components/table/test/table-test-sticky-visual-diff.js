@@ -185,7 +185,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>23,239</td>
 							<td class="over">90,911</td>
 						</tr>
-						<tr selected>
+						<tr data-selected>
 							<td><input type="checkbox" checked></td>
 							<th>Australia</th>
 							<td>308,298</td>
@@ -221,7 +221,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<th>Peaches</th>
 							<th>Grapes</th>
 						</tr>
-						<tr selected>
+						<tr data-selected>
 							<td class="down"><input type="checkbox" checked></td>
 							<th>Canada</th>
 							<td>356,863</td>
@@ -239,7 +239,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>80,807</td>
 							<td>1,772,911</td>
 						</tr>
-						<tr selected>
+						<tr data-selected>
 							<td><input type="checkbox" checked></td>
 							<th>Mexico</th>
 							<td>716,931</td>
@@ -266,7 +266,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<th>Peaches</th>
 							<th>Grapes</th>
 						</tr>
-						<tr selected>
+						<tr data-selected>
 							<td class="down"><input type="checkbox" checked></td>
 							<th>Canada</th>
 							<td>356,863</td>
@@ -275,7 +275,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>23,239</td>
 							<td class="over">90,911</td>
 						</tr>
-						<tr selected>
+						<tr data-selected>
 							<td><input type="checkbox" checked></td>
 							<th>Australia</th>
 							<td>308,298</td>
@@ -284,7 +284,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>80,807</td>
 							<td>1,772,911</td>
 						</tr>
-						<tr selected>
+						<tr data-selected>
 							<td><input type="checkbox" checked></td>
 							<th>Mexico</th>
 							<td>716,931</td>
@@ -323,7 +323,7 @@ class TestTableStickyVisualDiff extends LitElement {
 								<td>23,239</td>
 								<td class="over">90,911</td>
 							</tr>
-							<tr selected>
+							<tr data-selected>
 								<td><input type="checkbox" checked></td>
 								<th sticky>Australia</th>
 								<td><d2l-input-number label="label" label-hidden value="308298"></d2l-input-number></td>
