@@ -49,7 +49,7 @@ class TestTableVisualDiff extends LitElement {
 			</div>
 
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" id="standard-no-thead">
+				<d2l-table-wrapper type="${type}" id="standard-no-thead-class">
 					<table class="d2l-table">
 						<tr class="d2l-table-header">
 							<th>Header A</th>
@@ -76,7 +76,7 @@ class TestTableVisualDiff extends LitElement {
 			</div>
 
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" id="standard-legacy">
+				<d2l-table-wrapper type="${type}" id="standard-no-thead-attr">
 					<table class="d2l-table">
 						<tr header>
 							<th>Header A</th>
@@ -285,7 +285,7 @@ class TestTableVisualDiff extends LitElement {
 								<td>Cell 1-B</td>
 								<td>Cell 1-C</td>
 							</tr>
-							<tr data-selected>
+							<tr selected>
 								<td>Cell 2-A</td>
 								<td>Cell 2-B</td>
 								<td>Cell 2-C</td>
@@ -311,7 +311,7 @@ class TestTableVisualDiff extends LitElement {
 							</tr>
 						</thead>
 						<tbody>
-							<tr data-selected>
+							<tr selected>
 								<td>Cell 1-A</td>
 								<td>Cell 1-B</td>
 								<td>Cell 1-C</td>
@@ -321,7 +321,7 @@ class TestTableVisualDiff extends LitElement {
 								<td>Cell 2-B</td>
 								<td>Cell 2-C</td>
 							</tr>
-							<tr data-selected>
+							<tr selected>
 								<td>Cell 3-A</td>
 								<td>Cell 3-B</td>
 								<td>Cell 3-C</td>
@@ -333,37 +333,6 @@ class TestTableVisualDiff extends LitElement {
 
 			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" id="selected-all">
-					<table class="d2l-table">
-						<thead>
-							<tr>
-								<th>Header A</th>
-								<th>Header B</th>
-								<th>Header C</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr data-selected>
-								<td>Cell 1-A</td>
-								<td>Cell 1-B</td>
-								<td>Cell 1-C</td>
-							</tr>
-							<tr data-selected>
-								<td>Cell 2-A</td>
-								<td>Cell 2-B</td>
-								<td>Cell 2-C</td>
-							</tr>
-							<tr data-selected>
-								<td>Cell 3-A</td>
-								<td>Cell 3-B</td>
-								<td>Cell 3-C</td>
-							</tr>
-						</tbody>
-					</table>
-				</d2l-table-wrapper>
-			</div>
-
-			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" id="selected-legacy">
 					<table class="d2l-table">
 						<thead>
 							<tr>
@@ -482,7 +451,7 @@ class TestTableVisualDiff extends LitElement {
 								<td>23,239</td>
 								<td class="over">90,911</td>
 							</tr>
-							<tr data-selected>
+							<tr selected>
 								<td><input type="checkbox" checked></td>
 								<th>Australia</th>
 								<td>308,298</td>

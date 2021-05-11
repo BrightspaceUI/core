@@ -50,7 +50,7 @@ class TestTableStickyVisualDiff extends LitElement {
 				</d2l-table-wrapper>
 			</div>
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-no-thead">
+				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-no-thead-class">
 					<table class="d2l-table">
 						<tr class="d2l-table-header top">
 							<th>Header A</th>
@@ -76,7 +76,7 @@ class TestTableStickyVisualDiff extends LitElement {
 				</d2l-table-wrapper>
 			</div>
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-legacy">
+				<d2l-table-wrapper type="${type}" sticky-headers id="one-row-no-thead-attr">
 					<table class="d2l-table">
 						<tr header class="top">
 							<th>Header A</th>
@@ -147,7 +147,7 @@ class TestTableStickyVisualDiff extends LitElement {
 				</d2l-table-wrapper>
 			</div>
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-no-thead">
+				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-no-thead-class">
 					<table class="d2l-table">
 						<tr class="d2l-table-header">
 							<th rowspan="2" class="top">Country</th>
@@ -188,7 +188,7 @@ class TestTableStickyVisualDiff extends LitElement {
 				</d2l-table-wrapper>
 			</div>
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-legacy">
+				<d2l-table-wrapper type="${type}" sticky-headers id="multi-row-no-thead-attr">
 					<table class="d2l-table">
 						<tr header>
 							<th rowspan="2" class="top">Country</th>
@@ -252,7 +252,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>23,239</td>
 							<td class="over">90,911</td>
 						</tr>
-						<tr data-selected>
+						<tr selected>
 							<td><input type="checkbox" checked></td>
 							<th>Australia</th>
 							<td>308,298</td>
@@ -288,7 +288,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<th>Peaches</th>
 							<th>Grapes</th>
 						</tr>
-						<tr data-selected>
+						<tr selected>
 							<td class="down"><input type="checkbox" checked></td>
 							<th>Canada</th>
 							<td>356,863</td>
@@ -306,7 +306,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>80,807</td>
 							<td>1,772,911</td>
 						</tr>
-						<tr data-selected>
+						<tr selected>
 							<td><input type="checkbox" checked></td>
 							<th>Mexico</th>
 							<td>716,931</td>
@@ -333,7 +333,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<th>Peaches</th>
 							<th>Grapes</th>
 						</tr>
-						<tr data-selected>
+						<tr selected>
 							<td class="down"><input type="checkbox" checked></td>
 							<th>Canada</th>
 							<td>356,863</td>
@@ -342,7 +342,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>23,239</td>
 							<td class="over">90,911</td>
 						</tr>
-						<tr data-selected>
+						<tr selected>
 							<td><input type="checkbox" checked></td>
 							<th>Australia</th>
 							<td>308,298</td>
@@ -351,7 +351,7 @@ class TestTableStickyVisualDiff extends LitElement {
 							<td>80,807</td>
 							<td>1,772,911</td>
 						</tr>
-						<tr data-selected>
+						<tr selected>
 							<td><input type="checkbox" checked></td>
 							<th>Mexico</th>
 							<td>716,931</td>
@@ -390,7 +390,7 @@ class TestTableStickyVisualDiff extends LitElement {
 								<td>23,239</td>
 								<td class="over">90,911</td>
 							</tr>
-							<tr data-selected>
+							<tr selected>
 								<td><input type="checkbox" checked></td>
 								<th sticky>Australia</th>
 								<td><d2l-input-number label="label" label-hidden value="308298"></d2l-input-number></td>

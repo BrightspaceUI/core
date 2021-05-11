@@ -75,23 +75,17 @@ export const tableStyles = css`
 	}
 
 	/* selected rows */
-	.d2l-table > tbody > tr[data-selected],
 	.d2l-table > tbody > tr[selected] {
 		background-color: var(--d2l-table-row-background-color-selected);
 	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[data-selected] > .d2l-table-cell-last,
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[selected] > .d2l-table-cell-last,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[data-selected] > .d2l-table-cell-first,
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-first {
 		border-right-color: var(--d2l-table-row-border-color-selected);
 	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[data-selected] > .d2l-table-cell-first,
 	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[selected] > .d2l-table-cell-first,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[data-selected] > .d2l-table-cell-last,
 	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-last {
 		border-left-color: var(--d2l-table-row-border-color-selected);
 	}
-	.d2l-table > tbody > tr[data-selected] > *,
 	.d2l-table > tbody > tr[selected] > *,
 	.d2l-table > * > tr.d2l-table-selected-previous > * {
 		border-bottom-color: var(--d2l-table-row-border-color-selected);
@@ -149,7 +143,7 @@ export const tableStyles = css`
 	}
 
 	/* non-header sticky cells */
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr:not([data-selected]):not([selected]) {
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr:not([selected]) {
 		background-color: inherit; /* white background so sticky cells layer on top of non-sticky cells */
 	}
 	d2l-table-wrapper[sticky-headers] .d2l-table > tbody > tr:not([header]):not(.d2l-table-header) > [sticky] {
@@ -281,7 +275,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		rows.forEach((r) => {
 
 			const isHeader = r.parentNode.tagName === 'THEAD' || r.classList.contains('d2l-table-header') || r.hasAttribute('header');
-			const isSelected = r.hasAttribute('data-selected') || r.hasAttribute('selected');
+			const isSelected = r.hasAttribute('selected');
 
 			let firstNonHeaderRow = !isHeader;
 			if (prevRow) {
@@ -329,7 +323,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		this._tableObserver = new MutationObserver(() => this._applyClassNames(table));
 		this._tableObserver.observe(table, {
 			attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
-			attributeFilter: ['data-selected', 'selected'],
+			attributeFilter: ['selected'],
 			childList: true,
 			subtree: true
 		});
