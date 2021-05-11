@@ -7,15 +7,19 @@ describe('d2l-input-checkbox', () => {
 		const elem = await fixture(html`<d2l-input-checkbox aria-label="basic"></d2l-input-checkbox>`);
 		await expect(elem).to.be.accessible();
 	});
-	// failing
+
 	it('checked', async() => {
-		const elem = await fixture(html`<d2l-input-checkbox checked></d2l-input-checkbox>`);
+		const elem = await fixture(html`<d2l-input-checkbox aria-label="basic" checked></d2l-input-checkbox>`);
 		await expect(elem).to.be.accessible();
 	});
 
-	// failing
+	it('is accessible when provided a label', async() => {
+		const elem = await fixture(html`<d2l-input-checkbox>Label</d2l-input-checkbox>`);
+		await expect(elem).to.be.accessible();
+	});
+
 	it('disabled', async() => {
-		const elem = await fixture(html`<d2l-input-checkbox disabled></d2l-input-checkbox>`);
+		const elem = await fixture(html`<d2l-input-checkbox aria-label="basic" disabled></d2l-input-checkbox>`);
 		await expect(elem).to.be.accessible();
 	});
 

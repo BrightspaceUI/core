@@ -8,9 +8,8 @@ describe('d2l-input-search', () => {
 		await expect(elem).to.be.accessible();
 	});
 
-	// failing
 	it('with value', async() => {
-		const elem = await fixture(html`<d2l-input-search value="foo"></d2l-input-search>`);
+		const elem = await fixture(html`<d2l-input-search label="search" value="foo"></d2l-input-search>`);
 		await expect(elem).to.be.accessible();
 	});
 
