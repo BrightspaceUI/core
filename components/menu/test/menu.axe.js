@@ -11,7 +11,7 @@ describe('d2l-menu', () => {
 				<d2l-menu-item></d2l-menu-item>
 			</d2l-menu>
 		`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 });
