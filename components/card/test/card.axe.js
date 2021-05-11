@@ -4,9 +4,8 @@ import { expect, fixture, html } from '@open-wc/testing';
 describe('d2l-card', () => {
 
 	it.only('Test for axe tests', async() => {
-		const test111 = await fixture(html`<img src="./card.png">`);
-		const elem = await fixture(test111);
-		await expect(elem).to.be.accessible;
+		const testcomp = await fixture(html`<img src="./card.png">`);
+		await expect(testcomp).to.be.accessible;
 	});
 
 	it('default', async() => {
