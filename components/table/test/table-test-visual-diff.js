@@ -473,7 +473,6 @@ class TestTableVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-
 			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" id="col-sort-button">
 					<table class="d2l-table">

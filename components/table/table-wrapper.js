@@ -121,7 +121,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th[sticky],
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr.d2l-table-header > .d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr.d2l-table-header > [sticky],
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > .d2l-table-sticky-cell
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > .d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > [sticky] {
 		left: 0;
 		z-index: 3;
