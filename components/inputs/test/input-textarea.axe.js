@@ -5,22 +5,22 @@ describe('d2l-input-textarea', () => {
 
 	it('normal', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label"></d2l-input-textarea>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 	it('with value', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label" value="hello"></d2l-input-textarea>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 	it('disabled', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label" disabled></d2l-input-textarea>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 	it('invalid', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label" aria-invalid="true"></d2l-input-textarea>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 	it('focused', async() => {
@@ -31,12 +31,12 @@ describe('d2l-input-textarea', () => {
 
 	it('hidden label', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label" label-hidden></d2l-input-textarea>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 	it('no border', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label" no-border></d2l-input-textarea>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 });

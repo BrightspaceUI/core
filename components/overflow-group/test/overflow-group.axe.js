@@ -12,7 +12,7 @@ describe('d2l-overflow-group', () => {
 			<d2l-button>2</d2l-button>
 			<d2l-button>3</d2l-button>
 		</d2l-overflow-group>`);
-		await expect(normal).to.be.accessible;
+		await expect(normal).to.be.accessible();
 	});
 	it('overflowing', async() => {
 		const overflow = await fixture(html`<d2l-overflow-group max-to-show="2">
@@ -20,7 +20,7 @@ describe('d2l-overflow-group', () => {
 			<d2l-button>2</d2l-button>
 			<d2l-button>3</d2l-button>
 		</d2l-overflow-group>`);
-		await expect(overflow).to.be.accessible;
+		await expect(overflow).to.be.accessible();
 	});
 	it('subtle', async() => {
 		const subtle = await fixture(html`<d2l-overflow-group opener-style="subtle">
@@ -28,7 +28,7 @@ describe('d2l-overflow-group', () => {
 			<d2l-button-subtle>2</d2l-button-subtle>
 			<d2l-button-subtle>3</d2l-button-subtle>
 		</d2l-overflow-group>`);
-		await expect(subtle).to.be.accessible;
+		await expect(subtle).to.be.accessible();
 	});
 	it('subtle-overflow', async() => {
 		const subtleOverflow = await fixture(html`<d2l-overflow-group opener-style="subtle" max-to-show="2">
@@ -36,6 +36,6 @@ describe('d2l-overflow-group', () => {
 			<d2l-button-subtle>2</d2l-button-subtle>
 			<d2l-button-subtle>3</d2l-button-subtle>
 		</d2l-overflow-group>`);
-		await expect(subtleOverflow).to.be.accessible;
+		await expect(subtleOverflow).to.be.accessible();
 	});
 });
