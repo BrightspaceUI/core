@@ -109,7 +109,8 @@ describe('d2l-table', () => {
 							'selected-one-row',
 							'selected-top-bottom',
 							'selected-all',
-							'fixed-column',
+							'fixed-column-class',
+							'fixed-column-attr',
 							'one-column',
 						].forEach((id) => {
 							['top', 'down', 'over'].forEach((position) => {

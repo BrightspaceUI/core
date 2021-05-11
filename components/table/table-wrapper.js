@@ -117,12 +117,16 @@ export const tableStyles = css`
 	}
 
 	/* header cells that are also sticky */
+	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th.d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > thead > tr > th[sticky],
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr.d2l-table-header > .d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr.d2l-table-header > [sticky],
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > .d2l-table-sticky-cell
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr[header] > [sticky] {
 		left: 0;
 		z-index: 3;
 	}
+	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > .d2l-table-sticky-cell,
 	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > [sticky] {
 		right: 0;
 	}
@@ -135,9 +139,11 @@ export const tableStyles = css`
 	}
 
 	/* first column that's sticky: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
+	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
 	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > [sticky].d2l-table-cell-first {
 		left: -5px;
 	}
+	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
 	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > [sticky].d2l-table-cell-first {
 		right: -5px;
 	}
@@ -146,6 +152,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr:not([selected]) {
 		background-color: inherit; /* white background so sticky cells layer on top of non-sticky cells */
 	}
+	d2l-table-wrapper[sticky-headers] .d2l-table > tbody > tr:not([header]):not(.d2l-table-header) > .d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > tbody > tr:not([header]):not(.d2l-table-header) > [sticky] {
 		background-color: inherit;
 		left: 0;
