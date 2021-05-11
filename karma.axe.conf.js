@@ -16,9 +16,6 @@ module.exports = config => {
 				'tools/resize-observer-test-error-handler.js',
 				{ pattern: config.grep ? config.grep : defaultPattern, type: 'module' },
 			],
-			proxies: {
-				'/card.png': './card.png'
-			},
 			// see the karma-esm docs for all options
 			esm: {
 				// if you are using 'bare module imports' you will need this option
