@@ -3,6 +3,12 @@ import { expect, fixture, html } from '@open-wc/testing';
 
 describe('d2l-card', () => {
 
+	it.only('Test for axe tests', async() => {
+		const test111 = await fixture(html`<img src="./card.png">`);
+		const elem = await fixture(test111);
+		await expect(elem).to.be.accessible;
+	});
+
 	it('default', async() => {
 		const elem = await fixture(html`<d2l-card><div slot="content">Content</div></d2l-card>`);
 		await expect(elem).to.be.accessible;
