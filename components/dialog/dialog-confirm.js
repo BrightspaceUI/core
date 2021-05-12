@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
+import { forceFocusVisible } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 
@@ -81,7 +82,17 @@ class DialogConfirm extends DialogMixin(LitElement) {
 	}
 
 	_focusInitial() {
-		/* override mixin autofocus (use e.g. <d2l-button autofocus>) */
+		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer-slot');
+		const nodes = footer.assignedNodes();
+		for (let i = 0; i < nodes.length; i++) {
+			const node = nodes[i];
+			if (node.nodeType !== Node.ELEMENT_NODE) continue;
+			if (!node.hasAttribute('primary')) {
+				forceFocusVisible(node);
+				return;
+			}
+		}
+		this._focusFirst();
 	}
 
 	_getWidth() {
