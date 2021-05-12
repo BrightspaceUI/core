@@ -43,9 +43,15 @@ describe('d2l-table', () => {
 
 					describe('nonstick', () => {
 
+						before(async() => {
+							await page.$eval('d2l-test-table-visual-diff', elem => elem.removeAttribute('hidden'));
+							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+						});
+
 						[
 							'standard-thead',
-							'standard-no-thead',
+							'standard-no-thead-class',
+							'standard-no-thead-attr',
 							'vertical-align',
 							'empty',
 							'one-column',
@@ -59,6 +65,7 @@ describe('d2l-table', () => {
 							'selected-all',
 							'overflow',
 							'no-column-border',
+							'no-column-border-legacy',
 							'col-sort-button'
 						].forEach((id) => {
 							it(id, async function() {
@@ -87,15 +94,23 @@ describe('d2l-table', () => {
 
 					describe('sticky', () => {
 
+						before(async() => {
+							await page.$eval('d2l-test-table-visual-diff', elem => elem.setAttribute('hidden', 'hidden'));
+							await page.$eval('d2l-test-table-sticky-visual-diff', elem => elem.removeAttribute('hidden'));
+						});
+
 						[
 							'one-row-thead',
-							'one-row-no-thead',
+							'one-row-no-thead-class',
+							'one-row-no-thead-attr',
 							'multi-row-thead',
-							'multi-row-no-thead',
+							'multi-row-no-thead-class',
+							'multi-row-no-thead-attr',
 							'selected-one-row',
 							'selected-top-bottom',
 							'selected-all',
-							'fixed-column',
+							'fixed-column-class',
+							'fixed-column-attr',
 							'one-column',
 						].forEach((id) => {
 							['top', 'down', 'over'].forEach((position) => {

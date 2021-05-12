@@ -49,7 +49,34 @@ class TestTableVisualDiff extends LitElement {
 			</div>
 
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" id="standard-no-thead">
+				<d2l-table-wrapper type="${type}" id="standard-no-thead-class">
+					<table class="d2l-table">
+						<tr class="d2l-table-header">
+							<th>Header A</th>
+							<th>Header B</th>
+							<th>Header C</th>
+						</tr>
+						<tr>
+							<td>Cell 1-A</td>
+							<td>Cell 1-B</td>
+							<td>Cell 1-C</td>
+						</tr>
+						<tr>
+							<td>Cell 2-A</td>
+							<td>Cell 2-B</td>
+							<td>Cell 2-C</td>
+						</tr>
+						<tr>
+							<td>Cell 3-A</td>
+							<td>Cell 3-B</td>
+							<td>Cell 3-C</td>
+						</tr>
+					</table>
+				</d2l-table-wrapper>
+			</div>
+
+			<div class="d2l-visual-diff">
+				<d2l-table-wrapper type="${type}" id="standard-no-thead-attr">
 					<table class="d2l-table">
 						<tr header>
 							<th>Header A</th>
@@ -336,7 +363,38 @@ class TestTableVisualDiff extends LitElement {
 			</div>
 
 			<div class="d2l-visual-diff">
-				<d2l-table-wrapper type="${type}" id="no-column-border">
+				<d2l-table-wrapper type="${type}" no-column-border id="no-column-border">
+					<table class="d2l-table">
+						<thead>
+							<tr>
+								<th>Header A</th>
+								<th>Header B</th>
+								<th>Header C</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Cell 1-A</td>
+								<td>Cell 1-B</td>
+								<td>Cell 1-C</td>
+							</tr>
+							<tr>
+								<td>Cell 2-A</td>
+								<td>Cell 2-B</td>
+								<td>Cell 2-C</td>
+							</tr>
+							<tr>
+								<td>Cell 3-A</td>
+								<td>Cell 3-B</td>
+								<td>Cell 3-C</td>
+							</tr>
+						</tbody>
+					</table>
+				</d2l-table-wrapper>
+			</div>
+
+			<div class="d2l-visual-diff">
+				<d2l-table-wrapper type="${type}" id="no-column-border-legacy">
 					<table class="d2l-table" no-column-border>
 						<thead>
 							<tr>
@@ -415,7 +473,6 @@ class TestTableVisualDiff extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 			</div>
-
 			<div class="d2l-visual-diff">
 				<d2l-table-wrapper type="${type}" id="col-sort-button">
 					<table class="d2l-table">
