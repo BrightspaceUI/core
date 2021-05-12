@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
-import { forceFocusVisible } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { heading3Styles } from '../typography/styles.js';
 
