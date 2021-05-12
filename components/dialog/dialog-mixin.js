@@ -295,6 +295,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._addHandlers();
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
+		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer-slot');
 
 		const animPromise = new Promise((resolve) => {
 			const transitionEnd = () => {
@@ -315,10 +316,15 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialog backdrop does not prevent body scrolling
 		this._bodyScrollKey = preventBodyScroll();
 
-		// focus first focusable slot child prior to auto resize (fixes screen reader hiccups)
+		// focus first focusable child prior to auto resize (fixes screen reader hiccups)
 		this._focusInitial();
 
 		requestAnimationFrame(async() => {
+			// edge case: no children were selected, try again after one redraw
+			if (!dialog.contains(document.activeElement)
+			&& !(footer && footer.assignedNodes().includes(document.activeElement))) {
+				this._focusInitial();
+			}
 			await this._updateSize();
 			this._state = 'showing';
 			if (!reduceMotion) await animPromise;
