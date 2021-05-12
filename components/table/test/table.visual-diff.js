@@ -102,10 +102,10 @@ describe('d2l-table', () => {
 						[
 							'one-row-thead',
 							'one-row-no-thead-class',
-							'one-row-legacy-attr',
+							'one-row-no-thead-attr',
 							'multi-row-thead',
 							'multi-row-no-thead-class',
-							'multi-row-legacy-attr',
+							'multi-row-no-thead-attr',
 							'selected-one-row',
 							'selected-top-bottom',
 							'selected-all',
