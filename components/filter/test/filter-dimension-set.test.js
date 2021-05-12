@@ -34,7 +34,7 @@ describe('d2l-filter-dimension-set', () => {
 			const elem = await fixture(dimensionfixture);
 			const eventSpy = spy(elem, 'dispatchEvent');
 			const value = elem.querySelector('d2l-filter-dimension-set-value[key="2"]');
-			value.selected = true;
+			setTimeout(() => value.selected = true);
 
 			const e = await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			expect(e.detail.dimensionKey).to.equal('dim');
