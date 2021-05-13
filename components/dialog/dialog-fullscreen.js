@@ -32,7 +32,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	static get styles() {
 		/* for small screens, the full-screen dialog should be identical to the default dialog */
 		return [ dialogStyles, heading3Styles, css`
-
+			
 			@media (min-width: 616px) {
 				.d2l-dialog-header {
 					border-bottom: 1px solid var(--d2l-color-mica);
@@ -56,7 +56,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 				.d2l-dialog-content-loading {
 					text-align: center;
-					width: 100%;
 				}
 				
 				dialog.d2l-dialog-outer,
@@ -91,6 +90,43 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					border-top: 1px solid var(--d2l-color-mica);
 					padding-bottom: 0; /* 18px margin below footer children */
 					padding-top: 0.9rem;
+				}
+			}
+
+
+			@media (max-width: 616px) {
+
+				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
+					margin-left: -13px;
+					margin-right: 15px;
+				}
+
+				.d2l-dialog-content > div {
+					/* required to properly calculate preferred height when there are bottom
+					margins at the end of the slotted content */
+					border-bottom: 1px solid transparent;
+					box-sizing: border-box;
+					height: 100%;
+				}
+				.d2l-dialog-content-loading {
+					text-align: center;
+				}
+				
+				dialog.d2l-dialog-outer,
+				div.d2l-dialog-outer {
+					height: calc(100% - 2.7rem);
+					max-height: initial; /* required to override Chrome native positioning */
+					max-width: initial;
+					top: 0;
+					width: calc(100% - 2.7rem);
+					margin: 0 !important;
+					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					min-width: calc(var(--d2l-vw, 1vw) * 100);
+					top: 42px;
+				}
+
+				.d2l-dialog-footer.d2l-footer-no-content {
+					display: none;
 				}
 			}
 		`];
