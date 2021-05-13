@@ -33,9 +33,9 @@ class DialogExtended extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin
 		return [ dialogStyles, heading3Styles, css`
 
 			.d2l-dialog-header {
+				border-bottom: 1px solid var(--d2l-color-mica);
 				padding-bottom: 1.15rem;
 				padding-top: 1.15rem;
-				border-bottom: 1px solid var(--d2l-color-mica);
 			}
 
 			.d2l-dialog-header > div > d2l-button-icon {
@@ -66,15 +66,15 @@ class DialogExtended extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin
 				border: none;
 				border-radius: 8px;
 				box-shadow: none;
-				height: calc(100% - 2.7rem ) ;
-				max-height: initial; /* required to override Chrome native positioning */
-				max-width: initial; 
-				top: 0;
-				width: calc(100% - 1.5 rem);
-				opacity: 0;
+				height: calc(100% - 2.7rem);
 				margin: 1.5rem;
+				max-height: initial; /* required to override Chrome native positioning */
+				max-width: initial;
+				opacity: 0;
+				top: 0;
 				transform: translateY(-50px) scale(0.97);
 				transition: transform 200ms ease-out, opacity 200ms ease-out;
+				width: calc(100% - 2.7rem);
 			}
 
 			:host([_state="showing"]) dialog.d2l-dialog-outer {
@@ -95,9 +95,9 @@ class DialogExtended extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin
 			}
 
 			.d2l-dialog-footer {
-				padding-top: 0.9rem; 
-				padding-bottom: 0; /* 18px margin below footer children */
 				border-top: 1px solid var(--d2l-color-mica);
+				padding-bottom: 0; /* 18px margin below footer children */
+				padding-top: 0.9rem;
 			}
 
 			@media (max-width: 615px) {
