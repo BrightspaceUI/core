@@ -1,10 +1,6 @@
-import '../colors/colors.js';
-import '../inputs/input-checkbox.js';
+import '../selection/selection-select-all.js';
+import '../selection/selection-summary.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyCompactStyles } from '../typography/styles.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
-import { listSelectionStates } from './list.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -16,19 +12,14 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * Id of the list associated with the header.
-			 */
-			listId: { type: String, attribute: 'list-id', reflect: true },
-			/**
 			 * Whether to render a header with reduced whitespace.
 			 */
-			slim: { type: Boolean },
-			_selectionInfo: { type: Object }
+			slim: { type: Boolean }
 		};
 	}
 
 	static get styles() {
-		return [ bodyCompactStyles, css`
+		return css`
 			:host {
 				display: block;
 			}
@@ -45,14 +36,14 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			:host([slim]) .d2l-list-header-container {
 				min-height: 36px;
 			}
-			d2l-input-checkbox {
+			d2l-selection-select-all {
 				flex: none;
 			}
-			.d2l-list-header-summary {
+			d2l-selection-summary {
 				flex: none;
 				margin-left: 0.9rem;
 			}
-			:host([dir="rtl"]) .d2l-list-header-summary {
+			:host([dir="rtl"]) d2l-selection-summary {
 				margin-left: 0;
 				margin-right: 0.9rem;
 			}
@@ -64,116 +55,23 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			:host([dir="rtl"]) .d2l-list-header-actions {
 				text-align: left;
 			}
-		`];
-	}
-
-	constructor() {
-		super();
-		this._summaryId = getUniqueId();
-		this._selectionInfo = { keys: [], state: listSelectionStates.none };
-		this._handleListSelectionChange = this._handleListSelectionChange.bind(this);
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		// assumption: d2l-list and d2l-list-header are in same DOM context
-		if (this.listId) {
-			this._list = this.getRootNode({ composed: false }).querySelector(`#${this.listId}`);
-			this._list.addEventListener('d2l-list-selection-change', this._handleListSelectionChange);
-		}
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		if (this._list) {
-			this._list.removeEventListener('d2l-list-selection-change', this._handleListSelectionChange);
-			this._list = null;
-		}
-	}
-
-	async firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		await this.updateComplete;
-		this._updateSelectionState();
-		this._updateActionsState();
+		`;
 	}
 
 	render() {
-		const summary = (this._selectionInfo.state === listSelectionStates.none ? this.localize('components.list-header.select-all')
-			: this.localize('components.list-header.selected', 'count', this._selectionInfo.keys.length));
 		return html`
 			<div class="d2l-list-header-container">
-				<d2l-input-checkbox
-					aria-label="${this.localize('components.list-header.select-all')}"
-					@change="${this._handleSelectAllChange}"
-					?checked="${this._selectionInfo.state === listSelectionStates.all}"
-					description="${ifDefined(this._selectionInfo.state !== listSelectionStates.none ? summary : undefined)}"
-					?indeterminate="${this._selectionInfo.state === listSelectionStates.some}">
-				</d2l-input-checkbox>
-				<div
+				<d2l-selection-select-all></d2l-selection-select-all>
+				<d2l-selection-summary
 					aria-hidden="true"
-					class="d2l-list-header-summary d2l-body-compact"
-					id="${this._summaryId}">
-					${summary}
-				</div>
+					class="d2l-list-header-summary"
+					no-selection-text="${this.localize('components.selection.select-all')}">
+				</d2l-selection-summary>
 				<div class="d2l-list-header-actions">
 					<slot></slot>
 				</div>
 			</div>
 		`;
-	}
-
-	_handleListSelectionChange() {
-
-		// debounce the updates for select-all case
-		if (this._updateSelectionRequested) return;
-
-		this._updateSelectionRequested = true;
-		setTimeout(() => {
-			this._updateSelectionState();
-			this._updateActionsState();
-			this._updateSelectionRequested = false;
-		}, 0);
-
-	}
-
-	_handleSelectAllChange(e) {
-		if (!this._list) return;
-
-		const checked = e.target.checked;
-		if (checked) this._list.selectAll(false);
-		else this._list.unselectAll(false);
-
-		this._selectionInfo = this._list.getSelectionInfo();
-	}
-
-	_updateActionsState() {
-
-		if (!this._list) return;
-
-		const elems = this.shadowRoot.querySelector('slot').assignedNodes({ flatten: true })
-			.filter(node => node.nodeType === Node.ELEMENT_NODE);
-
-		if (elems.length === 0) return;
-
-		elems.forEach(elem => {
-			if (elem.hasAttribute('data-list-action')) {
-				elem.disabled = (this._selectionInfo.state === listSelectionStates.none);
-			} else if (elem.tagName === 'D2L-OVERFLOW-GROUP') {
-				const items = elem.children;
-				for (let i = 0; i < items.length; i++) {
-					if (items[i].hasAttribute('data-list-action')) {
-						items[i].disabled = (this._selectionInfo.state === listSelectionStates.none);
-					}
-				}
-			}
-		});
-
-	}
-
-	_updateSelectionState() {
-		if (!this._list) return;
-		this._selectionInfo = this._list.getSelectionInfo();
 	}
 
 }

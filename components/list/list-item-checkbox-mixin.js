@@ -1,8 +1,8 @@
+import '../selection/selection-checkbox.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { nothing } from 'lit-html';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -18,6 +18,10 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 * Value to identify item if selectable
 			 */
 			key: { type: String, reflect: true },
+			/**
+			 * Label for the checkbox if selectable
+			 */
+			label: { type: String },
 			/**
 			 * Indicates a checkbox should be rendered for selecting the item
 			 */
@@ -85,33 +89,29 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_renderCheckbox() {
-		const disabled = this.disabled || this.skeleton;
 		return this.selectable ? html`
-			<input
+			<d2l-selection-checkbox
+				@d2l-selection-change="${this._onCheckboxChange}"
+				?checked="${this.selected}"
+				?disabled="${this.disabled}"
 				id="${this._checkboxId}"
-				class="d2l-input-checkbox d2l-skeletize"
-				@change="${this._onCheckboxChange}"
-				type="checkbox"
-				.checked="${this.selected}"
-				?disabled="${disabled}">
-			` : nothing;
+				key="${this.key}"
+				label="${this.label}"
+				?skeleton="${this.skeleton}">
+			</d2l-selection-checkbox>
+		` : nothing;
 	}
 
-	_renderCheckboxAction(inner, labelledBy) {
-		if (!inner && !labelledBy) {
-			console.warn('Label for list-item checkbox may not be accessible. Pass inner text to the label or pass labelledby.');
-		}
-		const labelClasses = {
+	_renderCheckboxAction(inner) {
+		const classes = {
 			'd2l-checkbox-action': true,
 			'd2l-checkbox-action-disabled': this.disabled
 		};
 		return this.selectable ? html`
-			<label @click="${this._onCheckboxActionClick}"
-				class="${classMap(labelClasses)}"
-				for="${this._checkboxId}"
-				aria-labelledby="${ifDefined(labelledBy)}">
+			<div @click="${this._onCheckboxActionClick}"
+				class="${classMap(classes)}">
 				${inner}
-			</label>
+			</div>
 			` : nothing;
 	}
 };
