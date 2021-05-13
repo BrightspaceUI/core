@@ -30,63 +30,69 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	static get styles() {
+		/* for small screens, the full-screen dialog should be identical to the default dialog */
 		return [ dialogStyles, heading3Styles, css`
 
-			.d2l-dialog-header {
-				padding-bottom: 15px;
-			}
-
-			.d2l-dialog-header > div > d2l-button-icon {
-				flex: none;
-				margin: -4px -15px 0 15px;
-			}
-
-			:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-				margin-left: -15px;
-				margin-right: 15px;
-			}
-
-			.d2l-dialog-content > div {
-				/* required to properly calculate preferred height when there are bottom
-				margins at the end of the slotted content */
-				border-bottom: 1px solid transparent;
-				box-sizing: border-box;
-				height: 100%;
-			}
-
-			.d2l-dialog-content-loading {
-				text-align: center;
-			}
-
-			dialog.d2l-dialog-outer,
-			div.d2l-dialog-outer {
-				border: none;
-				border-radius: 0;
-				box-shadow: none;
-				height: 100%;
-				max-height: initial; /* required to override Chrome native positioning */
-				max-width: initial; /* required to override Chrome native positioning */
-				top: 0;
-				width: 100%;
-			}
-
-			.d2l-dialog-footer.d2l-footer-no-content {
-				display: none;
-			}
-
-			@media (max-width: 615px) {
-
-				.d2l-dialog-header > div > d2l-button-icon {
-					margin: -8px -13px 0 15px;
+			@media (min-width: 616px) {
+				.d2l-dialog-header {
+					border-bottom: 1px solid var(--d2l-color-mica);
+					padding-bottom: 1.15rem;
+					padding-top: 1.15rem;
 				}
-
+				.d2l-dialog-header > div > d2l-button-icon {
+					flex: none;
+					margin: -4px -15px 0 15px;
+				}
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-					margin-left: -13px;
+					margin-left: -15px;
 					margin-right: 15px;
 				}
-
+				.d2l-dialog-content > div {
+					/* required to properly calculate preferred height when there are bottom
+					margins at the end of the slotted content */
+					border-bottom: 1px solid transparent;
+					box-sizing: border-box;
+					height: 100%;
+				}
+				.d2l-dialog-content-loading {
+					text-align: center;
+					width: 100%;
+				}
+				
+				dialog.d2l-dialog-outer,
+				div.d2l-dialog-outer {
+					border: none;
+					border-radius: 8px;
+					box-shadow: none;
+					height: calc(100% - 2.7rem);
+					margin: 1.5rem;
+					max-height: initial; /* required to override Chrome native positioning */
+					max-width: initial;
+					opacity: 0;
+					top: 0;
+					transform: translateY(-50px) scale(0.97);
+					transition: transform 200ms ease-out, opacity 200ms ease-out;
+					width: calc(100% - 2.7rem);
+				}
+				:host([_state="showing"]) dialog.d2l-dialog-outer {
+					opacity: 1;
+					transition-duration: 400ms;
+				}
+				dialog::backdrop {
+					transition: opacity 200ms ease-out;
+				}
+				:host([_state="showing"]) dialog::backdrop {
+					transition-duration: 400ms;
+				}
+				.d2l-dialog-footer.d2l-footer-no-content {
+					display: none;
+				}
+				.d2l-dialog-footer {
+					border-top: 1px solid var(--d2l-color-mica);
+					padding-bottom: 0; /* 18px margin below footer children */
+					padding-top: 0.9rem;
+				}
 			}
-
 		`];
 	}
 
@@ -129,8 +135,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			<div class="d2l-dialog-inner">
 				<div class="d2l-dialog-header">
 					<div>
-						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
-						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						<h3 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h3>
+						<d2l-button-icon icon="tier1:close-large-thick" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
