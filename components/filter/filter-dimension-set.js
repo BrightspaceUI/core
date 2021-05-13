@@ -21,12 +21,13 @@ class FilterDimensionSet extends LitElement {
 		this._slot = null;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this.addEventListener('d2l-filter-dimension-set-value-data-change', this._handleDimensionSetValueDataChange);
+	}
+
 	render() {
-		return html`
-		<slot
-			@d2l-filter-dimension-set-value-data-change="${this._handleDimensionSetValueDataChange}"
-			@slotchange="${this._handleSlotChange}">
-		</slot>`;
+		return html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 	}
 
 	updated(changedProperties) {

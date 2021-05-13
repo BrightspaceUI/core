@@ -16,6 +16,24 @@ describe('d2l-filter-dimension-set', () => {
 		runConstructor('d2l-filter-dimension-set');
 	});
 
+	describe('slot change', () => {
+		it('values added after initial render are handled', async() => {
+			const elem = await fixture(dimensionfixture);
+			expect(elem.querySelectorAll('d2l-filter-dimension-set-value').length).to.equal(2);
+
+			const newValue = document.createElement('d2l-filter-dimension-set-value');
+			newValue.key = 'newValue';
+			elem.appendChild(newValue);
+			await elem.updateComplete;
+
+			const values = elem.querySelectorAll('d2l-filter-dimension-set-value');
+			expect(values.length).to.equal(3);
+			expect(values[0].key).to.equal('1');
+			expect(values[1].key).to.equal('2');
+			expect(values[2].key).to.equal('newValue');
+		});
+	});
+
 	describe('data change', () => {
 		it('fires data change event when its data changes', async() => {
 			const elem = await fixture(dimensionfixture);
@@ -42,24 +60,6 @@ describe('d2l-filter-dimension-set', () => {
 			expect(e.detail.changes.size).to.equal(1);
 			expect(e.detail.changes.get('selected')).to.be.true;
 			expect(eventSpy).to.be.calledOnce;
-		});
-	});
-
-	describe('slot change', () => {
-		it('values added after initial render are handled', async() => {
-			const elem = await fixture(dimensionfixture);
-			expect(elem.querySelectorAll('d2l-filter-dimension-set-value').length).to.equal(2);
-
-			const newValue = document.createElement('d2l-filter-dimension-set-value');
-			newValue.key = 'newValue';
-			elem.appendChild(newValue);
-			await elem.updateComplete;
-
-			const values = elem.querySelectorAll('d2l-filter-dimension-set-value');
-			expect(values.length).to.equal(3);
-			expect(values[0].key).to.equal('1');
-			expect(values[1].key).to.equal('2');
-			expect(values[2].key).to.equal('newValue');
 		});
 	});
 });

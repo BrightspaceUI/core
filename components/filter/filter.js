@@ -68,6 +68,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
 
 		// Prevent these events from bubbling out of the filter
 		this.addEventListener('d2l-hierarchical-view-hide-complete', this._stopPropagation);
@@ -95,10 +96,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					</d2l-menu>
 				</d2l-dropdown-menu>
 			</d2l-dropdown-button-subtle>
-			<slot
-				@d2l-filter-dimension-data-change="${this._handleDimensionDataChange}"
-				@slotchange="${this._handleSlotChange}">
-			</slot>
+			<slot @slotchange="${this._handleSlotChange}"></slot>
 		`;
 	}
 
@@ -183,10 +181,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionDataChange(e) {
+		const changes = e.detail.changes;
 		const dimension = this._dimensions.find(dimension => dimension.key === e.detail.dimensionKey);
 		const value = e.detail.valueKey && dimension.values.find(value => value.key === e.detail.valueKey);
 		const toUpdate = value ? value : dimension;
-		const changes = e.detail.changes;
+
+		if (!toUpdate) return;
 
 		let shouldUpdate = false;
 		changes.forEach((newValue, prop) => {

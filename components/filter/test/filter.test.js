@@ -27,7 +27,7 @@ describe('d2l-filter', () => {
 		runConstructor('d2l-filter');
 	});
 
-	describe('events', () => {
+	describe('change event', () => {
 		it('single set dimension fires change events', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
 			const value = elem.shadowRoot.querySelector('d2l-list-item[key="value"]');
@@ -84,18 +84,28 @@ describe('d2l-filter', () => {
 		it('dimension data changes are handled', async() => {
 			const elem = await fixture(multiDimensionFixture);
 			const updateStub = stub(elem, 'requestUpdate');
-			expect(elem._dimensions[1].text).to.equal('Dim 2');
-			elem._handleDimensionDataChange({
-				detail: {
-					dimensionKey: '2',
-					changes: new Map([['text', 'Test']])
-				}
-			});
+			const dimension = elem.querySelector('d2l-filter-dimension-set[key="2"]');
+			expect(dimension.text).to.equal('Dim 2');
+			dimension.text = 'Test';
+
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			expect(elem._dimensions[1].text).to.equal('Test');
 			expect(updateStub).to.be.calledOnce;
 		});
 
 		it('dimension value data changes are handled', async() => {
+			const elem = await fixture(multiDimensionFixture);
+			const updateStub = stub(elem, 'requestUpdate');
+			const value = elem.querySelector('d2l-filter-dimension-set[key="2"] d2l-filter-dimension-set-value');
+			expect(value.text).to.equal('Value 1');
+			value.text = 'Test';
+
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
+			expect(elem._dimensions[1].values[0].text).to.equal('Test');
+			expect(updateStub).to.be.calledOnce;
+		});
+
+		it('multiple data changes are handled', async() => {
 			const elem = await fixture(multiDimensionFixture);
 			const updateStub = stub(elem, 'requestUpdate');
 			expect(elem._dimensions[1].values[0].text).to.equal('Value 1');
