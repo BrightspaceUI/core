@@ -11,6 +11,7 @@ describe('d2l-switch', () => {
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
+		page.on('console', msg => console.log(msg.text()));
 	});
 
 	beforeEach(async() => await visualDiff.resetFocus(page));
@@ -35,34 +36,17 @@ describe('d2l-switch', () => {
 		});
 
 		[
-			{ name: 'off', selector: '#off' },
-			{ name: 'off-focus', selector: '#off', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
-			{ name: 'off-disabled', selector: '#off-disabled' },
-			{ name: 'off-hover', selector: '#off',
-				action: async(selector) => {
-					const d2lSwitch = await getSwitch(selector);
-					await d2lSwitch.hover();
-				}
-			},
-			{ name: 'on', selector: '#on' },
-			{ name: 'on-focus', selector: '#on', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
-			{ name: 'on-hover', selector: '#on',
-				action: async(selector) => {
-					const d2lSwitch = await getSwitch(selector);
-					await d2lSwitch.hover();
-				}
-			},
-			{ name: 'on-disabled', selector: '#on-disabled' },
-			{ name: 'text-hidden', selector: '#text-hidden' },
-			{ name: 'text-start', selector: '#text-start' },
-			{ name: 'text-end', selector: '#text-end' },
-			{ name: 'toggle on', selector: '#off', action: (selector) => page.$eval(selector, (elem) => elem.on = true) },
-			{ name: 'toggle off', selector: '#on', action: (selector) => page.$eval(selector, (elem) => elem.on = false) },
-			{ name: 'tooltip', selector: '#tooltip' },
-			{ name: 'tooltip-focus', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) }
+			{ name: 'tooltip-focus1', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) },
+			{ name: 'tooltip-focus2', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) },
+			{ name: 'tooltip-focus3', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) },
+			{ name: 'tooltip-focus4', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) },
+			{ name: 'tooltip-focus5', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) },
+			{ name: 'tooltip-focus6', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) },
+			{ name: 'tooltip-focus7', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) },
+			{ name: 'tooltip-focus8', selector: '#tooltip', action: () => page.$eval('#tooltip > d2l-switch', (elem) => forceFocusVisible(elem)) }
 		].forEach((info) => {
 
-			it(info.name, async function() {
+			it.only(info.name, async function() {
 				const rect = await visualDiff.getRect(page, info.selector);
 				if (info.action) await info.action(info.selector);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
