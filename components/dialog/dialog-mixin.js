@@ -295,7 +295,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._addHandlers();
 
 		const dialog = this.shadowRoot.querySelector('.d2l-dialog-outer');
-		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer-slot');
 
 		const animPromise = new Promise((resolve) => {
 			const transitionEnd = () => {
@@ -323,9 +322,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			await this._updateSize();
 			this._state = 'showing';
 
-			// edge case: no children were selected, try again after one redraw
-			if (!dialog.contains(document.activeElement)
-			&& !(footer && footer.assignedNodes().includes(document.activeElement))) {
+			// edge case: no children in footer slot were selected, try again after one redraw
+			const activeElement = getComposedActiveElement();
+			if (!activeElement || !isComposedAncestor(dialog, activeElement)) {
 				this._focusInitial();
 			}
 
