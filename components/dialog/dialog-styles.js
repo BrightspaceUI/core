@@ -88,7 +88,8 @@ export const dialogStyles = css`
 		display: flex;
 	}
 
-	.d2l-dialog-header > div > h2 {
+	.d2l-dialog-header > div > h2,
+	.d2l-dialog-header > div > h3 {
 		flex: 1 0 0;
 		margin: 0;
 	}
