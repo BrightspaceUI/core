@@ -30,32 +30,40 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	static get styles() {
-		/* for small screens, the full-screen dialog should be identical to the default dialog */
 		return [ dialogStyles, heading3Styles, css`
 			
+			.d2l-dialog-footer.d2l-footer-no-content {
+				display: none;
+			}
+
+			.d2l-dialog-content > div {
+				/* required to properly calculate preferred height when there are bottom
+				margins at the end of the slotted content */
+				border-bottom: 1px solid transparent;
+				box-sizing: border-box;
+				height: 100%;
+			}
+
+			.d2l-dialog-content-loading {
+				text-align: center;
+			}
+
 			@media (min-width: 616px) {
+				
 				.d2l-dialog-header {
 					border-bottom: 1px solid var(--d2l-color-mica);
 					padding-bottom: 1.15rem;
 					padding-top: 1.15rem;
 				}
+
 				.d2l-dialog-header > div > d2l-button-icon {
 					flex: none;
 					margin: -4px -15px 0 15px;
 				}
+
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 					margin-left: -15px;
 					margin-right: 15px;
-				}
-				.d2l-dialog-content > div {
-					/* required to properly calculate preferred height when there are bottom
-					margins at the end of the slotted content */
-					border-bottom: 1px solid transparent;
-					box-sizing: border-box;
-					height: 100%;
-				}
-				.d2l-dialog-content-loading {
-					text-align: center;
 				}
 				
 				dialog.d2l-dialog-outer,
@@ -73,19 +81,20 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					transition: transform 200ms ease-out, opacity 200ms ease-out;
 					width: calc(100% - 2.7rem);
 				}
+
 				:host([_state="showing"]) dialog.d2l-dialog-outer {
 					opacity: 1;
 					transition-duration: 400ms;
 				}
+
 				dialog::backdrop {
 					transition: opacity 200ms ease-out;
 				}
+
 				:host([_state="showing"]) dialog::backdrop {
 					transition-duration: 400ms;
 				}
-				.d2l-dialog-footer.d2l-footer-no-content {
-					display: none;
-				}
+
 				.d2l-dialog-footer {
 					border-top: 1px solid var(--d2l-color-mica);
 					padding-bottom: 0; /* 18px margin below footer children */
@@ -93,23 +102,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 			}
 
-
-			@media (max-width: 616px) {
+			@media (max-width: 615px) {
 
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 					margin-left: -13px;
 					margin-right: 15px;
-				}
-
-				.d2l-dialog-content > div {
-					/* required to properly calculate preferred height when there are bottom
-					margins at the end of the slotted content */
-					border-bottom: 1px solid transparent;
-					box-sizing: border-box;
-					height: 100%;
-				}
-				.d2l-dialog-content-loading {
-					text-align: center;
 				}
 				
 				dialog.d2l-dialog-outer,
@@ -123,10 +120,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
-				}
-
-				.d2l-dialog-footer.d2l-footer-no-content {
-					display: none;
 				}
 			}
 		`];
