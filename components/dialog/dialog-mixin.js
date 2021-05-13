@@ -320,13 +320,15 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusInitial();
 
 		requestAnimationFrame(async() => {
+			await this._updateSize();
+			this._state = 'showing';
+
 			// edge case: no children were selected, try again after one redraw
 			if (!dialog.contains(document.activeElement)
 			&& !(footer && footer.assignedNodes().includes(document.activeElement))) {
 				this._focusInitial();
 			}
-			await this._updateSize();
-			this._state = 'showing';
+
 			if (!reduceMotion) await animPromise;
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
