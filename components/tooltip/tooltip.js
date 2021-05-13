@@ -542,10 +542,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.style.width = `${positionRect.width}px`;
 		this.style.height = `${positionRect.height}px`;
 		console.log('tooltipShift', this._tooltipShift);
-		console.log('left', positionRect.left);
-		console.log('top', positionRect.top);
-		console.log('width', positionRect.width);
-		console.log('height', positionRect.height);
 	}
 
 	_addListeners() {
