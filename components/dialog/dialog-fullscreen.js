@@ -112,14 +112,13 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
 					height: calc(100% - 2.7rem);
+					margin: 0 !important;
 					max-height: initial; /* required to override Chrome native positioning */
 					max-width: initial;
-					top: 0;
-					width: calc(100% - 2.7rem);
-					margin: 0 !important;
 					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
+					width: calc(100% - 2.7rem);
 				}
 			}
 		`];
