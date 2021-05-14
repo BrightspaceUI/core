@@ -15,12 +15,8 @@
 			import '../list.js';
 			import '../../overflow-group/overflow-group.js';
 			import '../../selection/selection-select-all.js';
+			import '../../selection/selection-action.js';
 		</script>
-		<style>
-			#selectionInfo {
-				margin-top: 18px;
-			}
-		</style>
 	</head>
 	<body unresolved>
 
@@ -28,12 +24,12 @@
 
 			<h2>Select-All, Actions</h2>
 
-			<d2l-demo-snippet id="selection-link-demo">
+			<d2l-demo-snippet>
 				<template>
-					<d2l-list id="subjects-actions">
+					<d2l-list>
 						<d2l-list-header slot="header">
-							<d2l-button-subtle icon="tier1:bookmark-hollow" text="Bookmark" data-list-action></d2l-button-subtle>
-							<d2l-button-subtle icon="tier1:gear" text="Settings"></d2l-button-subtle>
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 						</d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -47,22 +43,16 @@
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>Renaissance Art</d2l-list-item-content>
 						</d2l-list-item>
-						<button id="selectionInfo">getSelectionInfo</button>
 					</d2l-list>
-					<script>
-						document.querySelector('#selectionInfo').addEventListener('click', () => {
-							console.log(document.querySelector('#subjects-actions').getSelectionInfo());
-						});
-					</script>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Select-All, No Actions</h2>
 
-			<d2l-demo-snippet id="selection-link-demo">
+			<d2l-demo-snippet>
 				<template>
-					<d2l-list-header list-id="subjects-actions"></d2l-list-header>
-					<d2l-list id="subjects-actions">
+					<d2l-list>
+						<d2l-list-header slot="header"></d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
@@ -81,13 +71,13 @@
 
 			<h2>Select-All, Slim, Actions</h2>
 
-			<d2l-demo-snippet id="selection-link-demo">
+			<d2l-demo-snippet>
 				<template>
-					<d2l-list-header slim list-id="subjects-slim-actions">
-						<d2l-button-subtle icon="tier1:bookmark-hollow" text="Bookmark" data-list-action></d2l-button-subtle>
-						<d2l-button-subtle icon="tier1:gear" text="Settings"></d2l-button-subtle>
-					</d2l-list-header>
-					<d2l-list id="subjects-slim-actions">
+					<d2l-list>
+						<d2l-list-header slot="header" slim>
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-header>
 						<d2l-list-item slim href="http://www.d2l.com" selectable key="1">
 							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
 						</d2l-list-item>
@@ -103,10 +93,10 @@
 
 			<h2>Select-All, Slim, No Actions</h2>
 
-			<d2l-demo-snippet id="selection-link-demo">
+			<d2l-demo-snippet>
 				<template>
-					<d2l-list-header slim list-id="subjects-slim-no-actions"></d2l-list-header>
-					<d2l-list id="subjects-slim-no-actions">
+					<d2l-list>
+						<d2l-list-header slot="header" slim></d2l-list-header>
 						<d2l-list-item slim href="http://www.d2l.com" selectable key="1">
 							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
 						</d2l-list-item>
@@ -122,18 +112,18 @@
 
 			<h2>Select-All, Actions, Overflow</h2>
 
-			<d2l-demo-snippet id="selection-link-demo">
+			<d2l-demo-snippet>
 				<template>
-					<d2l-list-header list-id="subjects-actions-overflow">
-						<d2l-overflow-group opener-type="icon">
-							<d2l-button-subtle icon="tier1:tag-hollow" text="Tag" data-list-action></d2l-button-subtle>
-							<d2l-button-subtle icon="tier1:share" text="Share" data-list-action></d2l-button-subtle>
-							<d2l-button-subtle icon="tier1:bookmark-hollow" text="Bookmark" data-list-action></d2l-button-subtle>
-							<d2l-button-subtle icon="tier1:delete" text="Delete" data-list-action></d2l-button-subtle>
-							<d2l-button-subtle icon="tier1:gear" text="Settings"></d2l-button-subtle>
-						</d2l-overflow-group>
-					</d2l-list-header>
-					<d2l-list id="subjects-actions-overflow">
+					<d2l-list>
+						<d2l-list-header slot="header">
+							<d2l-overflow-group opener-type="icon">
+								<d2l-selection-action icon="tier1:tag-hollow" text="Tag" requires-selection></d2l-selection-action>
+								<d2l-selection-action icon="tier1:share" text="Share" requires-selection></d2l-selection-action>
+								<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+								<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+								<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+							</d2l-overflow-group>
+						</d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
 							<d2l-list-item-content>Earth Sciences</d2l-list-item-content>
@@ -151,6 +141,10 @@
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('d2l-selection-action-click', e => console.log(e.detail));
+		</script>
 
 	</body>
 </html>

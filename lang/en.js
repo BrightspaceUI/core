@@ -54,6 +54,7 @@ export default {
 	"components.more-less.less": "less",
 	"components.more-less.more": "more",
 	"components.overflow-group.moreActions": "More Actions",
+	"components.selection.action-hint": "Select an item to perform this action.",
 	"components.selection.select-all": "Select All",
 	"components.selection.selected": "{count} selected",
 	"components.switch.visibility": "Visibility",
