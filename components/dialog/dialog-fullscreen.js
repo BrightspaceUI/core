@@ -78,6 +78,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					top: 0;
 					transform: translateY(-50px) scale(0.97);
 					transition: transform 200ms ease-out, opacity 200ms ease-out;
+					width: auto;
 				}
 
 				:host([_state="showing"]) dialog.d2l-dialog-outer {
@@ -108,7 +109,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 				.d2l-dialog-header > div > d2l-button-icon {
 					flex: none;
-					margin: -8px -15px 0 15px;
+					margin: -8px -13px 0 15px;
 				}
 
 				.d2l-dialog-footer.d2l-footer-no-content {
@@ -125,9 +126,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					top: 0;
 				}
 
-				.d2l-dialog-header > div > d2l-button-icon {
-					margin: -8px -13px 0 15px;
-				}
 
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 					margin-left: -13px;
@@ -136,14 +134,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
-					height: calc(100% - 2.7rem);
+					height: auto;
 					margin: 0 !important;
-					max-height: initial; /* required to override Chrome native positioning */
-					max-width: initial;
 					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
-					width: calc(100% - 2.7rem);
 				}
 			}
 		`];
