@@ -14,9 +14,9 @@ describe('d2l-switch', () => {
 				elem.id = 'vd-focus';
 				elem.innerHTML = 'reset focus';
 				elem.style.opacity = 0;
-				document.body.appendChild(elem);
+				document.body.insertBefore(elem, document.body.firstChild);
 			}
-			elem.click();
+			elem.focus();
 		});
 		//await page.click('body');
 	};
