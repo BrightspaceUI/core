@@ -103,7 +103,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 					dialog.d2l-dialog-outer,
 					div.d2l-dialog-outer {
-						transition: none
+						transition: none;
 					}
 
 					dialog::backdrop {
