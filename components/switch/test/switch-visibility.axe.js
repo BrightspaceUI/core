@@ -5,7 +5,7 @@ describe('d2l-switch-visibility', () => {
 
 	it('default', async() => {
 		const elem = await fixture(html`<d2l-switch-visibility></d2l-switch-visibility>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 });
