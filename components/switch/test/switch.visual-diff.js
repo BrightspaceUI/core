@@ -6,7 +6,7 @@ describe('d2l-switch', () => {
 
 	const visualDiff = new VisualDiff('switch', __dirname);
 	const resetFocus = async(page) => {
-		await page.evaluate(() => {
+		const shouldFocus = await page.evaluate(async() => {
 			let elem = document.querySelector('#vd-focus');
 			if (!elem) {
 				console.log('creating');
@@ -17,8 +17,12 @@ describe('d2l-switch', () => {
 				document.body.insertBefore(elem, document.body.firstChild);
 			}
 			//elem.focus();
+			return document.activeElement !== elem;
 		});
-		await page.focus('#vd-focus');
+		if (shouldFocus) {
+			setTimeout(() => page.focus('#vd-focus'));
+			await visualDiff.oneEvent(page, '#vd-focus', 'focus');
+		}
 	};
 
 	let browser, page;
