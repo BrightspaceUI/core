@@ -45,6 +45,9 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 				margin-left: 0;
 				margin-right: 0.6rem;
 			}
+			d2l-button {
+				width: 100%;
+			}
 		`];
 	}
 
