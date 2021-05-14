@@ -36,13 +36,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				display: none;
 			}
 
-			.d2l-dialog-content > div {
-				/* required to properly calculate preferred height when there are bottom
-				margins at the end of the slotted content */
-				border-bottom: 1px solid transparent;
-				box-sizing: border-box;
-				height: 100%;
-			}
 
 			.d2l-dialog-content-loading {
 				text-align: center;
@@ -54,6 +47,14 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					border-bottom: 1px solid var(--d2l-color-mica);
 					padding-bottom: 1.15rem;
 					padding-top: 1.15rem;
+				}
+
+				.d2l-dialog-content > div {
+					/* required to properly calculate preferred height when there are bottom
+					margins at the end of the slotted content */
+					border-bottom: 1px solid transparent;
+					box-sizing: border-box;
+					height: 100%;
 				}
 
 				.d2l-dialog-header > div > d2l-button-icon {
@@ -103,6 +104,33 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			}
 
 			@media (max-width: 615px) {
+
+				.d2l-dialog-header {
+					padding-bottom: 15px;
+				}
+
+				.d2l-dialog-header > div > d2l-button-icon {
+					flex: none;
+					margin: -8px -15px 0 15px;
+				}
+
+				.d2l-dialog-footer.d2l-footer-no-content {
+					padding: 0 0 5px 0;
+				}
+
+				.d2l-dialog-content > div {
+					/* required to properly calculate preferred height when there are bottom
+					margins at the end of the slotted content */
+					border-bottom: 1px solid transparent;
+				}
+
+				div[nested].d2l-dialog-outer {
+					top: 0;
+				}
+
+				.d2l-dialog-header > div > d2l-button-icon {
+					margin: -8px -13px 0 15px;
+				}
 
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 					margin-left: -13px;
