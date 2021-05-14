@@ -36,7 +36,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				display: none;
 			}
 
-
 			.d2l-dialog-content-loading {
 				text-align: center;
 			}
@@ -44,7 +43,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			@media (min-width: 616px) {
 				
 				.d2l-dialog-header {
-					border-bottom: 1px solid var(--d2l-color-mica);
+					border-bottom: 1px solid var(--d2l-color-galena);
 					padding-bottom: 1.15rem;
 					padding-top: 1.15rem;
 				}
@@ -95,9 +94,21 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 
 				.d2l-dialog-footer {
-					border-top: 1px solid var(--d2l-color-mica);
+					border-top: 1px solid var(--d2l-color-galena);
 					padding-bottom: 0; /* 0.9rem padding included on button */
 					padding-top: 0.9rem;
+				}
+
+				@media (prefers-reduced-motion: reduce) {
+
+					dialog.d2l-dialog-outer,
+					div.d2l-dialog-outer {
+						transition: none
+					}
+
+					dialog::backdrop {
+						transition: none;
+					}
 				}
 			}
 
@@ -125,7 +136,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				div[nested].d2l-dialog-outer {
 					top: 0;
 				}
-
 
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 					margin-left: -13px;
