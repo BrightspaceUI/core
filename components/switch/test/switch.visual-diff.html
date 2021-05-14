@@ -12,6 +12,9 @@
 		import '../switch.js';
 		import { forceFocusVisible } from '../../../helpers/focus.js';
 		window.forceFocusVisible = forceFocusVisible;
+		window.addEventListener('resize', () => {
+			console.log('resize', document.documentElement.clientWidth);
+		});
 	</script>
 	<title>d2l-switch</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">

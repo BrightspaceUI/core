@@ -5,6 +5,21 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 describe('d2l-switch', () => {
 
 	const visualDiff = new VisualDiff('switch', __dirname);
+	const resetFocus = async(page) => {
+		await page.evaluate(() => {
+			let elem = document.querySelector('#vd-focus');
+			if (!elem) {
+				console.log('creating');
+				elem = document.createElement('button');
+				elem.id = 'vd-focus';
+				elem.innerHTML = 'reset focus';
+				elem.style.opacity = 0;
+				document.body.appendChild(elem);
+			}
+			elem.click();
+		});
+		//await page.click('body');
+	};
 
 	let browser, page;
 
@@ -14,7 +29,9 @@ describe('d2l-switch', () => {
 		page.on('console', msg => console.log(msg.text()));
 	});
 
-	beforeEach(async() => await visualDiff.resetFocus(page));
+	beforeEach(async() => {
+		await resetFocus(page);
+	});
 
 	after(async() => await browser.close());
 
