@@ -72,15 +72,12 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					border: none;
 					border-radius: 8px;
 					box-shadow: none;
-					height: calc(100% - 2.7rem);
+					height: auto;
 					margin: 1.5rem;
-					max-height: initial; /* required to override Chrome native positioning */
-					max-width: initial;
 					opacity: 0;
 					top: 0;
 					transform: translateY(-50px) scale(0.97);
 					transition: transform 200ms ease-out, opacity 200ms ease-out;
-					width: calc(100% - 2.7rem);
 				}
 
 				:host([_state="showing"]) dialog.d2l-dialog-outer {
@@ -98,7 +95,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 				.d2l-dialog-footer {
 					border-top: 1px solid var(--d2l-color-mica);
-					padding-bottom: 0; /* 18px margin below footer children */
+					padding-bottom: 0; /* 0.9rem padding included on button */
 					padding-top: 0.9rem;
 				}
 			}
