@@ -16,9 +16,9 @@ describe('d2l-switch', () => {
 				elem.style.opacity = 0;
 				document.body.insertBefore(elem, document.body.firstChild);
 			}
-			elem.focus();
+			//elem.focus();
 		});
-		//await page.click('body');
+		await page.focus('#vd-focus');
 	};
 
 	let browser, page;
