@@ -140,7 +140,7 @@ class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(Rt
 		};
 
 		const tooltip = (this.requiresSelection && this.selectionInfo.state === selectionStates.none)
-			? html`<d2l-tooltip for="action" delay="800">${this.localize('components.selection.action-hint')}</d2l-tooltip>` : '';
+			? html`<d2l-tooltip for="action" delay="600">${this.localize('components.selection.action-hint')}</d2l-tooltip>` : '';
 
 		return html`
 			<button
