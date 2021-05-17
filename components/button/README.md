@@ -1,27 +1,35 @@
 # Buttons
 
-## d2l-button
+A Button is used to communicate and perform an action.
+
+```html
+<!-- docs: demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
+  import '@brightspace-ui/core/components/button/button-subtle.js';
+  import '@brightspace-ui/core/components/button/button-icon.js';
+</script>
+<d2l-button>Button</d2l-button>
+<d2l-button primary>Primary Button</d2l-button>
+<d2l-button-subtle text="Subtle Button" icon="tier1:gear"></d2l-button-subtle>
+<d2l-button-icon text="Icon Button" icon="tier1:gear"></d2l-button-icon>
+```
+
+<!-- docs: design -->
+
+## Button
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
 
-![Button](./screenshots/button.png?raw=true)
-
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
 </script>
 <d2l-button>My Button</d2l-button>
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `description` | String | A description to be added to the `button` for accessibility |
-| `disabled` | Boolean | Disables the button |
-| `primary` | Boolean | Styles the button as a primary button |
-
-**Accessibility:**
+### Accessibility
 
 To make your `d2l-button` accessible, use the following properties when applicable:
 
@@ -31,33 +39,21 @@ To make your `d2l-button` accessible, use the following properties when applicab
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
 
-## d2l-button-subtle
+## Subtle Button
 
 The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
 
-![Subtle Button](./screenshots/button-subtle.png?raw=true)
+*Note:* It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/button/button-subtle.js';
 </script>
 <d2l-button-subtle text="My Button" icon="tier1:gear"></d2l-button-subtle>
 ```
 
-*Note:* It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text for the button |
-| `description` | String | A description to be added to the `button` for accessibility for additional context |
-| `disabled` | Boolean | Disables the button |
-| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
-| `icon` | String | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
-| `icon-right` | Boolean | Render the icon on the right of the button |
-
-**Accessibility:**
+### Accessibility
 
 To make your `d2l-button-subtle` accessible, use the following properties when applicable:
 
@@ -67,30 +63,19 @@ To make your `d2l-button-subtle` accessible, use the following properties when a
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
 
-## d2l-button-icon
+## Icon Button
 
 The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
 
-![Icon Button](./screenshots/button-icon.png?raw=true)
-
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
 </script>
 <d2l-button-icon text="My Button" icon="tier1:gear"></d2l-button-icon>
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
-| `text` | String, required | Accessible text for the buton |
-| `disabled` | Boolean | Disables the button |
-| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
-| `translucent` | Boolean | Indicates to display translucent (ex. on rich backgrounds) |
-
-**Accessibility:**
+### Accessibility
 
 To make your `d2l-button-icon` accessible, use the following properties when applicable:
 
@@ -100,34 +85,3 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `text` | Acts as a primary label and tooltip and is **REQUIRED**. |
 | `aria-label` | Acts as a primary label. If `text` AND `aria-label` are provided, `aria-label` is used as the primary label, `text` is used as the tooltip. |
-
-## d2l-floating-buttons
-
-Floating workflow buttons behavior can be added by using the `<d2l-floating-buttons>` custom element. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
-
-![Floating Buttons](./screenshots/floating-buttons.png?raw=true)
-
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/button/floating-buttons.js';
-  import '@brightspace-ui/core/components/button/button.js';
-</script>
-<p>Some content</p>
-<d2l-floating-buttons>
-	<d2l-button primary>Save</d2l-button>
-	<d2l-button>Cancel</d2l-button>
-</d2l-floating-buttons>
-```
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `always-float` | Boolean | Indicates to display buttons as always floating |
-| `min-height` | String, default: `'500px'` | The minimum height of the viewport to display floating buttons at (where applicable). If viewport is less than `min-height`, buttons will never appear floating (unless `always-float` is used). If viewport is greater than `min-height` then buttons will float when applicable. |
-
-## Future Enhancements
-
-- `<d2l-button-preset type="save">` for common button types that will have built-in language support
-
-Looking for an enhancement not listed here? Create a GitHub issue!

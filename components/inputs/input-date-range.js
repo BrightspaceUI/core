@@ -28,14 +28,14 @@ export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusiv
 
 /**
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
- * @fires change - Dispatched when a start or end date is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar date format ("YYYY-MM-DD").
+ * @fires change - Dispatched when there is a change in selected start date or selected end date. "start-value" and "end-value" contain the selected values and are formatted in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
 class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Automatically shift end date when start date changes to keep same range
+			 * Automatically shifts end date when start date changes to keep same range
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
@@ -47,7 +47,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Label for the end date input
+			 * Accessible label for the end date input
 			 * @default "End Date"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
@@ -56,15 +56,15 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
-			 * Validate on inclusive range
+			 * Validates on inclusive range (i.e., it is valid for start and end dates to be equal)
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the range
+			 * REQUIRED: Accessible label for the input fieldset that wraps the date inputs
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * Hides the label visually
+			 * Hides the fieldset label visually
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
@@ -76,11 +76,11 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Indicates that a value is required
+			 * Indicates that values are required
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Label for the start date input
+			 * Accessible label for the start date input
 			 * @default "Start Date"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
