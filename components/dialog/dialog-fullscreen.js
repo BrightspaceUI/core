@@ -25,13 +25,14 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
 			async: { type: Boolean },
-			_hasFooterContent: { type: Boolean, attribute: false }
+			_hasFooterContent: { type: Boolean, attribute: false },
+			_iconType: { type: String, attribute: false }
 		};
 	}
 
 	static get styles() {
 		return [dialogStyles, heading3Styles, css`
-			
+
 			.d2l-dialog-footer.d2l-footer-no-content {
 				display: none;
 			}
@@ -40,11 +41,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				text-align: center;
 			}
 
-			@media (min-width: 616px) {
+			@media (min-width: 617px) {
 				
 				.d2l-dialog-header {
 					border-bottom: 1px solid var(--d2l-color-galena);
-					padding-bottom: 1.15rem;
+					padding-bottom: 0.65rem;
 					padding-top: 1.15rem;
 				}
 
@@ -80,7 +81,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					width: auto;
 				}
 
-				:host([_state="showing"]) dialog.d2l-dialog-outer, 
+				:host([_state="showing"]) dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
 					opacity: 1;
 					transition-duration: 400ms;
@@ -113,7 +114,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 			}
 
-			@media (max-width: 615px) {
+			@media (max-width: 616px) {
 
 				.d2l-dialog-header {
 					padding-bottom: 15px;
@@ -160,7 +161,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this.async = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
+		this._iconType = 'tier1:close-large-thick';
 		this._handleResize = this._handleResize.bind(this);
+		this._mediaQueryList = window.matchMedia('(max-width: 616px)');
+		this._handleResize();
 	}
 
 	get asyncContainerCustom() {
@@ -169,11 +173,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('resize', this._handleResize);
+		this._mediaQueryList.addEventListener('change', this._handleResize);
 	}
 
 	disconnectedCallback() {
-		window.removeEventListener('resize', this._handleResize);
+		this._mediaQueryList.removeEventListener('change', this._handleResize);
 		super.disconnectedCallback();
 	}
 
@@ -200,16 +204,13 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			<div style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
-		let iconType = 'tier1:close-large-thick';
-		if (window.innerWidth < 616) iconType = 'tier1:close-small';
-
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner">
 				<div class="d2l-dialog-header">
 					<div>
 						<h3 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h3>
-						<d2l-button-icon icon="${iconType}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						<d2l-button-icon icon="${this._iconType}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
@@ -243,7 +244,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	_handleResize() {
-		this.requestUpdate();
+		this._iconType =  this._mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
 	}
 
 }
