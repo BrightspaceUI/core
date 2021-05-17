@@ -6,23 +6,20 @@ describe('d2l-switch', () => {
 
 	const visualDiff = new VisualDiff('switch', __dirname);
 	const resetFocus = async(page) => {
-		const shouldFocus = await page.evaluate(async() => {
+		await page.evaluate(() => {
 			let elem = document.querySelector('#vd-focus');
 			if (!elem) {
-				console.log('creating');
 				elem = document.createElement('button');
 				elem.id = 'vd-focus';
 				elem.innerHTML = 'reset focus';
 				elem.style.opacity = 0;
 				document.body.insertBefore(elem, document.body.firstChild);
 			}
-			//elem.focus();
-			return document.activeElement !== elem;
+			return new Promise(resolve => {
+				elem.focus();
+				requestAnimationFrame(resolve);
+			});
 		});
-		if (shouldFocus) {
-			setTimeout(() => page.focus('#vd-focus'));
-			await visualDiff.oneEvent(page, '#vd-focus', 'focus');
-		}
 	};
 
 	let browser, page;
