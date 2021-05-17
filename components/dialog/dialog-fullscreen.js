@@ -10,6 +10,8 @@ import { heading3Styles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+const mediaQueryList = window.matchMedia('(max-width: 616px)');
+
 /**
  * A generic fullscreen dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
  * @slot - Default slot for content inside dialog
@@ -26,12 +28,12 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 */
 			async: { type: Boolean },
 			_hasFooterContent: { type: Boolean, attribute: false },
-			_iconType: { type: String, attribute: false }
+			_icon: { type: String, attribute: false }
 		};
 	}
 
 	static get styles() {
-		return [dialogStyles, heading3Styles, css`
+		return [ dialogStyles, heading3Styles, css`
 
 			.d2l-dialog-footer.d2l-footer-no-content {
 				display: none;
@@ -41,7 +43,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				text-align: center;
 			}
 
-			@media (min-width: 617px) {
+			@media (min-width: 616px) {
 				
 				.d2l-dialog-header {
 					border-bottom: 1px solid var(--d2l-color-galena);
@@ -69,9 +71,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
-					border: none;
 					border-radius: 8px;
-					box-shadow: none;
 					height: calc(100% - 3rem);
 					margin: 1.5rem;
 					opacity: 0;
@@ -114,7 +114,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 			}
 
-			@media (max-width: 616px) {
+			@media (max-width: 615px) {
 
 				.d2l-dialog-header {
 					padding-bottom: 15px;
@@ -161,9 +161,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this.async = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
-		this._iconType = 'tier1:close-large-thick';
+		this._icon = 'tier1:close-large-thick';
 		this._handleResize = this._handleResize.bind(this);
-		this._mediaQueryList = window.matchMedia('(max-width: 616px)');
 		this._handleResize();
 	}
 
@@ -173,11 +172,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._mediaQueryList.addEventListener('change', this._handleResize);
+		mediaQueryList.addEventListener('change', this._handleResize);
 	}
 
 	disconnectedCallback() {
-		this._mediaQueryList.removeEventListener('change', this._handleResize);
+		mediaQueryList.removeEventListener('change', this._handleResize);
 		super.disconnectedCallback();
 	}
 
@@ -210,7 +209,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				<div class="d2l-dialog-header">
 					<div>
 						<h3 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h3>
-						<d2l-button-icon icon="${this._iconType}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						<d2l-button-icon icon="${this._icon}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
@@ -244,7 +243,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	_handleResize() {
-		this._iconType =  this._mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
+		this._icon =  mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
 	}
 
 }
