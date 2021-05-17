@@ -43,7 +43,7 @@ To make your `d2l-button` accessible, use the following properties when applicab
 
 The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
 
-*Note:* It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
+**Note:** It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
 
 ```html
 <!-- docs: live demo -->
@@ -85,3 +85,20 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 | `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `text` | Acts as a primary label and tooltip and is **REQUIRED**. |
 | `aria-label` | Acts as a primary label. If `text` AND `aria-label` are provided, `aria-label` is used as the primary label, `text` is used as the tooltip. |
+
+## Floating Buttons
+
+Floating workflow buttons behavior can be added by using the `<d2l-floating-buttons>` custom element. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
+
+```html
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/button/floating-buttons.js';
+  import '@brightspace-ui/core/components/button/button.js';
+</script>
+<p>Some content</p>
+<d2l-floating-buttons>
+	<d2l-button primary>Save</d2l-button>
+	<d2l-button>Cancel</d2l-button>
+</d2l-floating-buttons>
+```
