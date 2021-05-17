@@ -30,7 +30,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	static get styles() {
-		return [ dialogStyles, heading3Styles, css`
+		return [dialogStyles, heading3Styles, css`
 			
 			.d2l-dialog-footer.d2l-footer-no-content {
 				display: none;
@@ -160,10 +160,21 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this.async = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
+		this._handleResize = this._handleResize.bind(this);
 	}
 
 	get asyncContainerCustom() {
 		return true;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('resize', this._handleResize);
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('resize', this._handleResize);
+		super.disconnectedCallback();
 	}
 
 	render() {
@@ -189,13 +200,16 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			<div style=${styleMap(slotStyles)}><slot></slot></div>
 		`;
 
+		let iconType = 'tier1:close-large-thick';
+		if (window.innerWidth < 616) iconType = 'tier1:close-small';
+
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
 			<div class="d2l-dialog-inner">
 				<div class="d2l-dialog-header">
 					<div>
 						<h3 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h3>
-						<d2l-button-icon icon="tier1:close-large-thick" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						<d2l-button-icon icon="${iconType}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
@@ -226,6 +240,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	_handleFooterSlotChange(e) {
 		const footerContent = e.target.assignedNodes({ flatten: true });
 		this._hasFooterContent = (footerContent && footerContent.length > 0);
+	}
+
+	_handleResize() {
+		this.requestUpdate();
 	}
 
 }
