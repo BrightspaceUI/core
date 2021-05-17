@@ -4,6 +4,13 @@ import VisualDiff from '@brightspace-ui/visual-diff';
 describe('d2l-switch', () => {
 
 	const visualDiff = new VisualDiff('switch', __dirname);
+	const delay = async(page) => {
+		await page.evaluate(() => {
+			return new Promise(resolve => {
+				setTimeout(resolve, 100);
+			});
+		});
+	};
 
 	let browser, page;
 
@@ -17,7 +24,11 @@ describe('d2l-switch', () => {
 		page.on('console', msg => console.log(msg.text()));
 	});
 
-	//after(async() => await browser.close());
+	beforeEach(async() => {
+		await delay(page);
+	});
+
+	after(async() => await browser.close());
 
 	describe('ltr', () => {
 		before(async() => {
