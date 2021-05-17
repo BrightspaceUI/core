@@ -8,7 +8,7 @@ describe('d2l-switch', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch({ headless:false });
+		browser = await puppeteer.launch();
 		page = await browser.newPage();
 		await page.emulateMediaFeatures([{
 			name: 'prefers-reduced-motion', value: 'reduce'
