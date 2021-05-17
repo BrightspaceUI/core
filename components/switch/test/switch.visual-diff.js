@@ -7,7 +7,7 @@ describe('d2l-switch', () => {
 	const delay = async(page) => {
 		await page.evaluate(() => {
 			return new Promise(resolve => {
-				setTimeout(resolve, 100);
+				setTimeout(resolve, 1000);
 			});
 		});
 	};
