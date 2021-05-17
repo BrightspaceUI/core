@@ -71,7 +71,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					border: none;
 					border-radius: 8px;
 					box-shadow: none;
-					height: auto;
+					height: calc(100% - 3rem);
 					margin: 1.5rem;
 					opacity: 0;
 					top: 0;
@@ -80,7 +80,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					width: auto;
 				}
 
-				:host([_state="showing"]) dialog.d2l-dialog-outer {
+				:host([_state="showing"]) dialog.d2l-dialog-outer, 
+				div.d2l-dialog-outer {
 					opacity: 1;
 					transition-duration: 400ms;
 				}
@@ -144,7 +145,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
-					height: auto;
+					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					margin: 0 !important;
 					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
