@@ -82,7 +82,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 
 				:host([_state="showing"]) dialog.d2l-dialog-outer,
-				div.d2l-dialog-outer {
+				:host([_state="showing"]) div.d2l-dialog-outer {
 					opacity: 1;
 					transition-duration: 400ms;
 				}
@@ -99,6 +99,10 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					border-top: 1px solid var(--d2l-color-galena);
 					padding-bottom: 0; /* 0.9rem padding included on button */
 					padding-top: 0.9rem;
+				}
+
+				.d2l-dialog-content {
+					padding-top: 1rem;
 				}
 
 				@media (prefers-reduced-motion: reduce) {
