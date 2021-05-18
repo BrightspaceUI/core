@@ -1,12 +1,31 @@
 # Card
 
-## d2l-card
+Cards provide concise information and actions as they relate to a single object. They contain content such as images, text, lists, data, rich media, actions, and more.
+
+Used to surface pertinent information, cards make it easy for users to browse information.
+
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Roll up and emphasize important information to make it easy for users to find.
+* Use cards when the user will benefit from a visual representation of the associated item.
+* Use cards when the content doesn’t rely heavily on the sort order.
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don't force the user to click in and out of cards to find information that’s important to the work flow.
+* Don't use cards when the user needs to easily compare data from one card to another.
+* Don't use cards when the sort order needs to be emphasized – consider a list or table.
+* Don't use cards for user generated content.
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+## Card
 
 The `d2l-card` element is a container that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
 
-![Card](./screenshots/card.png?raw=true)
-
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
 </script>
@@ -18,41 +37,19 @@ The `d2l-card` element is a container that provides specific layout using severa
     <div>Hydrology</div>
     <d2l-card-content-meta>Some extra content meta data.</d2l-card-content-meta>
   </div>
-  <div slot="footer">
-    <d2l-card-footer-link icon="..." text="..." secondary-text="..." href="..."></d2l-card-footer-link>
-  </div>
 </d2l-card>
 ```
 
-**Slots:**
-
-| Slot | Type | Description |
-|--|--|--|
-| `content` | required | Primary content such as title and supplementary info (no actionable elements) |
-| `actions` | optional | Buttons and dropdown openers to be placed in top right corner of header |
-| `badge` | optional | Badge content, such as a profile image or status indicator |
-| `footer` | optional | Footer content, such secondary actions |
-| `header` | optional | Header content, such as course image (no actionable elements) |
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `align-center` | Boolean | Style the card's content and footer as centered horizontally |
-| `download` | Boolean | Download a URL instead of navigating to it |
-| `href` | String | Location for the primary action/navigation |
-| `rel` | String | Relationship of the target object to the link object |
-| `subtle` | Boolean | Subtle aesthetic on non-white backgrounds |
-| `target` | String | Where to display the linked URL |
-| `text` | String | Accessible text for the card (will be announced when AT user focuses) |
-
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 
-## d2l-card-footer-link
+## Card Footer Link
 
 The `d2l-card-footer-link` element is an icon link that can be placed in the `footer` slot.
 
+**Note:** See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
+
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
@@ -68,26 +65,12 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 </d2l-card>
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `icon` | String, required | Preset icon key (ex. "tier1:gear") |
-| `text` | String, required | Accessible text for the link (not visible, gets announced when user focuses) |
-| `download` | Boolean | Download a URL instead of navigating to it |
-| `href` | String | Location for the primary action/navigation |
-| `rel` | String | Relationship of the target object to the link object |
-| `secondary-text` | String | Text to display as a superscript on the icon |
-| `secondary-text-type` | String | Controls the style of the secondary text bubble; options are `notification` and `count` |
-| `target` | String | Where to display the linked URL |
-
-See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
-
-## d2l-card-content-title
+## Card Content Title
 
 The `d2l-card-content-title` element is a helper for providing layout/style for a title within the `content` slot.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-content-title.js';
@@ -100,11 +83,12 @@ The `d2l-card-content-title` element is a helper for providing layout/style for 
 </d2l-card>
 ```
 
-## d2l-card-content-meta
+## Card Meta Content
 
 The `d2l-card-content-meta` element is a helper for providing layout/style for a meta data within the `content` slot.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/card/card-content-meta.js';
@@ -117,9 +101,3 @@ The `d2l-card-content-meta` element is a helper for providing layout/style for a
   </div>
 </d2l-card>
 ```
-
-## Future Enhancements
-
-* scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
-
-Looking for an enhancement not listed here? Create a GitHub issue!
