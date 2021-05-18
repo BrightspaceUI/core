@@ -4,7 +4,7 @@ An Alert is used to communicate important information relating to the state of t
 
 ## Best Practices
 
-### Inline Alert
+### Inline
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Use to let the user know when the system is in a state that will prevent them from completing their action
@@ -22,7 +22,7 @@ An Alert is used to communicate important information relating to the state of t
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-### Toast Alert
+### Toast
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Toasts are required be dismissible via the close icon – if they’re obscuring content, the user doesn’t want to have to wait for it to go way on it’s own

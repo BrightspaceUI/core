@@ -1,4 +1,4 @@
-# Card
+# Cards
 
 Cards provide concise information and actions as they relate to a single object. They contain content such as images, text, lists, data, rich media, actions, and more.
 
