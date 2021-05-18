@@ -35,7 +35,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get styles() {
 		return [bodyStandardStyles, css`
 			div[slot="header"] {
-				padding: 18px 6px;
+				padding: 0.9rem 0.3rem;
 			}
 			.d2l-filter-dimension-header {
 				align-items: center;
