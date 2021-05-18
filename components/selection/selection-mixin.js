@@ -50,7 +50,7 @@ export const SelectionMixin = superclass => class extends superclass {
 	getSelectionInfo() {
 		const keys = [];
 		this._selectionSelectables.forEach(selectable => {
-			if (selectable.checked) keys.push(selectable.key);
+			if (selectable.selected) keys.push(selectable.key);
 		});
 
 		let state = selectionStates.none;
@@ -84,7 +84,7 @@ export const SelectionMixin = superclass => class extends superclass {
 
 	_handleSelectionSelectAllChange(e) {
 		const checked = e.detail.checked;
-		this._selectionSelectables.forEach(selectable => selectable.checked = checked);
+		this._selectionSelectables.forEach(selectable => selectable.selected = checked);
 		this._updateSelectionSubscribers();
 	}
 

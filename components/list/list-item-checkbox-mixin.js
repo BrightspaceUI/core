@@ -86,14 +86,14 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_onCheckboxChange(event) {
-		this.setSelected(event.target.checked);
+		this.setSelected(event.target.selected);
 	}
 
 	_renderCheckbox() {
 		return this.selectable ? html`
 			<d2l-selection-checkbox
 				@d2l-selection-change="${this._onCheckboxChange}"
-				?checked="${this.selected}"
+				?selected="${this.selected}"
 				?disabled="${this.disabled}"
 				id="${this._checkboxId}"
 				key="${this.key}"

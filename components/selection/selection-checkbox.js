@@ -4,7 +4,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A checkbox for use in selection components such as lists and tables.
- * @fires d2l-selection-change - Dispatched when the checked state changes
+ * @fires d2l-selection-change - Dispatched when the selected state changes
  */
 class Checkbox extends SkeletonMixin(LitElement) {
 
@@ -13,7 +13,7 @@ class Checkbox extends SkeletonMixin(LitElement) {
 			/**
 			 * State of the checkbox
 			 */
-			checked: { type: Boolean },
+			selected: { type: Boolean },
 			/**
 			 * Disables the checkbox
 			 */
@@ -40,21 +40,21 @@ class Checkbox extends SkeletonMixin(LitElement) {
 		`;
 	}
 
-	get checked() {
-		return this._checked;
+	get selected() {
+		return this._selected;
 	}
 
-	set checked(val) {
-		const oldVal = this._checked;
+	set selected(val) {
+		const oldVal = this._selected;
 		if (oldVal !== val) {
-			this._checked = val;
-			this.requestUpdate('checked', oldVal);
+			this._selected = val;
+			this.requestUpdate('selected', oldVal);
 
-			// dispatch the event for all checked changes (not just when the user interacts directly with the checkbox)
+			// dispatch the event for all selected changes (not just when the user interacts directly with the checkbox)
 			this.dispatchEvent(new CustomEvent('d2l-selection-change', {
 				bubbles: true,
 				composed: true,
-				detail: { key: this.key, selected: this._checked }
+				detail: { key: this.key, selected: this._selected }
 			}));
 
 		}
@@ -87,7 +87,7 @@ class Checkbox extends SkeletonMixin(LitElement) {
 			<d2l-input-checkbox
 				aria-label="${this.label}"
 				@change="${this._handleChange}"
-				?checked="${this.checked}"
+				?checked="${this.selected}"
 				?disabled="${this.disabled}"
 				?skeleton="${this.skeleton}">
 			</d2l-input-checkbox>
@@ -101,7 +101,7 @@ class Checkbox extends SkeletonMixin(LitElement) {
 
 	_handleChange(e) {
 		e.stopPropagation();
-		this.checked = e.target.checked;
+		this.selected = e.target.checked;
 	}
 
 }
