@@ -14,7 +14,7 @@ describe('d2l-dialog-confirm', () => {
 
 	});
 
-	describe('focus management', () => {
+	describe.skip('focus management', () => {
 
 		it('should focus on first non-primary button', async() => {
 			const el = await fixture(html`
