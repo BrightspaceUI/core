@@ -5,7 +5,7 @@ describe('test', () => {
 	const delay = async(page) => {
 		await page.evaluate(() => {
 			return new Promise(resolve => {
-				setTimeout(resolve, 1000);
+				setTimeout(resolve, 2000);
 			});
 		});
 	};
