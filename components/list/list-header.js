@@ -14,7 +14,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Whether to render a header with reduced whitespace.
 			 */
-			slim: { type: Boolean }
+			slim: { reflect: true, type: Boolean }
 		};
 	}
 
