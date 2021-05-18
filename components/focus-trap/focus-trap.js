@@ -48,7 +48,8 @@ class FocusTrap extends LitElement {
 	}
 
 	focus() {
-		this.shadowRoot.querySelector('.d2l-focus-trap-start').focus();
+		const focusable = this.shadowRoot.querySelector('.d2l-focus-trap-start');
+		if (focusable) focusable.focus();
 	}
 
 	_focusFirst() {
