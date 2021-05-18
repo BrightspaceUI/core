@@ -1,4 +1,4 @@
-import { getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling } from './dom.js';
+import { getComposedChildren, getComposedParent, getNextAncestorSibling, getOffsetParent, getPreviousAncestorSibling } from './dom.js';
 
 const focusableElements = {
 	a: true,
@@ -173,7 +173,7 @@ export function isFocusable(node, includeHidden, includeTabbablesOnly, includeDi
 
 	if (_isFocusable && !includeHidden) {
 		// only perform visibility check if absolutely necessary
-		if (nodeName !== 'body' && node.offsetParent === null) return false;
+		if (nodeName !== 'body' && getOffsetParent(node) === null) return false;
 	}
 
 	return _isFocusable;
