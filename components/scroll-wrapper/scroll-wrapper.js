@@ -182,6 +182,11 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 		this._checkScrollThresholds();
 	}
 
+	notifyResize() {
+		// legacy holdover from when this used IronResizableBehavior
+		this.checkScrollbar();
+	}
+
 	scrollDistance(distance, smooth) {
 		if (!this._container) return;
 		if (this._dir === 'rtl') distance = distance * RTL_MULTIPLIER;
