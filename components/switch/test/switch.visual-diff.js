@@ -1,9 +1,7 @@
+import { createConfig, startServer } from 'es-dev-server';
 import puppeteer from 'puppeteer';
-import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-switch', () => {
-
-	const visualDiff = new VisualDiff('switch', __dirname);
+describe('test', () => {
 	const delay = async(page) => {
 		await page.evaluate(() => {
 			return new Promise(resolve => {
@@ -12,47 +10,43 @@ describe('d2l-switch', () => {
 		});
 	};
 
-	let browser, page;
+	let _server, baseUrl, browser, page;
 
 	before(async() => {
+		const { server } = await startServer(createConfig({ babel: true, nodeResolve: true, dedupe: true }));
+		_server = server;
+		baseUrl = `http://localhost:${_server.address().port}`;
 		browser = await puppeteer.launch();
 		page = await browser.newPage();
-		await page.emulateMediaFeatures([{
-			name: 'prefers-reduced-motion', value: 'reduce'
-		}]);
 		await page.setViewport({ width: 1200, height: 1200, deviceScaleFactor: 2 });
 		page.on('console', msg => console.log(msg.text()));
+		await page.goto(`${baseUrl}/components/switch/test/switch.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 	});
 
 	beforeEach(async() => {
 		await delay(page);
 	});
 
-	after(async() => await browser.close());
+	after(async() => {
+		await browser.close();
+		await _server.close();
+	});
 
-	describe('ltr', () => {
-		before(async() => {
-			await page.goto(`${visualDiff.getBaseUrl()}/components/switch/test/switch.visual-diff.html?dir=ltr`, { waitUntil: ['networkidle0', 'load'] });
-			await page.bringToFront();
+	[
+		{ name: 'test', selector: '#test' },
+		{ name: 'test2', selector: '#test' },
+		{ name: 'test3', selector: '#test' },
+		{ name: 'test4', selector: '#test' },
+		{ name: 'test5', selector: '#test' },
+		{ name: 'test6', selector: '#test' },
+		{ name: 'test7', selector: '#test' },
+		{ name: 'test8', selector: '#test' },
+		{ name: 'test9', selector: '#test' },
+		{ name: 'test10', selector: '#test' }
+	].forEach((info) => {
+		it.only(info.name, async function() {
+			await page.screenshot({ path: `${this.test.fullTitle()}.png` });
 		});
-
-		[
-			{ name: 'test', selector: '#test' },
-			{ name: 'test2', selector: '#test' },
-			{ name: 'test3', selector: '#test' },
-			{ name: 'test4', selector: '#test' },
-			{ name: 'test5', selector: '#test' },
-			{ name: 'test6', selector: '#test' },
-			{ name: 'test7', selector: '#test' },
-			{ name: 'test8', selector: '#test' },
-			{ name: 'test9', selector: '#test' },
-			{ name: 'test10', selector: '#test' }
-		].forEach((info) => {
-			it.only(info.name, async function() {
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
-			});
-		});
-
 	});
 
 });
