@@ -2,7 +2,7 @@ import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import { selectionStates } from './selection-mixin.js';
+import { SelectionInfo } from './selection-mixin.js';
 import { SelectionSubscriberMixin } from './selection-subscriber-mixin.js';
 
 /**
@@ -23,16 +23,16 @@ class SelectAll extends LocalizeCoreElement(SelectionSubscriberMixin(LitElement)
 	}
 
 	render() {
-		const summary = (this.selectionInfo.state === selectionStates.none ? this.localize('components.selection.select-all')
+		const summary = (this.selectionInfo.state === SelectionInfo.states.none ? this.localize('components.selection.select-all')
 			: this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
 
 		return html`
 			<d2l-input-checkbox
 				aria-label="${this.localize('components.selection.select-all')}"
 				@change="${this._handleCheckboxChange}"
-				?checked="${this.selectionInfo.state === selectionStates.all}"
-				description="${ifDefined(this.selectionInfo.state !== selectionStates.none ? summary : undefined)}"
-				?indeterminate="${this.selectionInfo.state === selectionStates.some}">
+				?checked="${this.selectionInfo.state === SelectionInfo.states.all}"
+				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
+				?indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}">
 			</d2l-input-checkbox>
 		`;
 	}

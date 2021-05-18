@@ -1,4 +1,4 @@
-import { selectionStates } from './selection-mixin.js';
+import { SelectionInfo } from './selection-mixin.js';
 
 export const SelectionSubscriberMixin = superclass => class extends superclass {
 
@@ -13,7 +13,7 @@ export const SelectionSubscriberMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
-		this.selectionInfo = { keys: [], state: selectionStates.none };
+		this.selectionInfo = new SelectionInfo();
 		this._selectionSubscriber = true;
 	}
 

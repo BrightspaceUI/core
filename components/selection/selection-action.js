@@ -7,7 +7,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { labelStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { selectionStates } from './selection-mixin.js';
+import { SelectionInfo } from './selection-mixin.js';
 import { SelectionSubscriberMixin } from './selection-subscriber-mixin.js';
 
 /**
@@ -136,10 +136,10 @@ class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(Rt
 	render() {
 		const classes = {
 			'd2l-label-text': true,
-			'd2l-selection-action-non-interactive': (this.requiresSelection && this.selectionInfo.state === selectionStates.none)
+			'd2l-selection-action-non-interactive': (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none)
 		};
 
-		const tooltip = (this.requiresSelection && this.selectionInfo.state === selectionStates.none)
+		const tooltip = (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none)
 			? html`<d2l-tooltip for="action" delay="600">${this.localize('components.selection.action-hint')}</d2l-tooltip>` : '';
 
 		return html`
@@ -158,7 +158,7 @@ class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(Rt
 	_handleActionClick(e) {
 		e.stopPropagation();
 
-		if (this.requiresSelection && this.selectionInfo.state === selectionStates.none) return;
+		if (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none) return;
 
 		this.dispatchEvent(new CustomEvent('d2l-selection-action-click', {
 			bubbles: true,

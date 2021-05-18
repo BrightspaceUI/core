@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
-import { selectionStates } from './selection-mixin.js';
+import { SelectionInfo } from './selection-mixin.js';
 import { SelectionSubscriberMixin } from './selection-subscriber-mixin.js';
 
 /**
@@ -30,7 +30,7 @@ class Summary extends LocalizeCoreElement(SelectionSubscriberMixin(LitElement)) 
 	}
 
 	render() {
-		const summary = (this.selectionInfo.state === selectionStates.none && this.noSelectionText ?
+		const summary = (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText ?
 			this.noSelectionText : this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
 		return html`
 			<div class="d2l-body-compact">${summary}</div>

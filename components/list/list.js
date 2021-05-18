@@ -1,7 +1,7 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { SelectionMixin, selectionStates } from '../selection/selection-mixin.js';
+import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 
-export const listSelectionStates = selectionStates;
+export const listSelectionStates = SelectionInfo.states;
 
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.

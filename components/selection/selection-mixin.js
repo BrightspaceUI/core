@@ -6,11 +6,32 @@ export const selectionTypes = {
 }
 */
 
-export const selectionStates = {
-	none: 'none',
-	some: 'some',
-	all: 'all'
-};
+export class SelectionInfo {
+
+	constructor(keys, state) {
+		if (!keys) keys = [];
+		if (!state) state = SelectionInfo.states.none;
+		this._keys = keys;
+		this._state = state;
+	}
+
+	get keys() {
+		return this._keys;
+	}
+
+	get state() {
+		return this._state;
+	}
+
+	static get states() {
+		return {
+			none: 'none',
+			some: 'some',
+			all: 'all'
+		};
+	}
+
+}
 
 export const SelectionMixin = superclass => class extends superclass {
 
@@ -53,16 +74,13 @@ export const SelectionMixin = superclass => class extends superclass {
 			if (selectable.selected) keys.push(selectable.key);
 		});
 
-		let state = selectionStates.none;
+		let state = SelectionInfo.states.none;
 		if (keys.length > 0) {
-			if (keys.length === this._selectionSelectables.size) state = selectionStates.all;
-			else state = selectionStates.some;
+			if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
+			else state = SelectionInfo.states.some;
 		}
 
-		return {
-			keys: keys,
-			state: state
-		};
+		return new SelectionInfo(keys, state);
 	}
 
 	_handleSelectionChange() {
