@@ -5,7 +5,7 @@ export const SelectionSubscriberMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
-			 * The selection info (set by the selection component.
+			 * The selection info (set by the selection component).
 			 */
 			selectionInfo: { type: Object }
 		};
