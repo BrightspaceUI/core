@@ -48,7 +48,11 @@ class FilterDimensionSet extends LitElement {
 	}
 
 	_dispatchDataChangeEvent(eventDetail) {
-		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-data-change', { detail: eventDetail, bubbles: true, composed: false }));
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-data-change', {
+			detail: eventDetail,
+			bubbles: true,
+			composed: false
+		}));
 	}
 
 	_getSlottedNodes() {
@@ -71,7 +75,8 @@ class FilterDimensionSet extends LitElement {
 
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
-		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
+		this._dispatchDataChangeEvent({
+			dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
 	}
 
 	_handleSlotChange(e) {

@@ -26,9 +26,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			/**
 			 * Disables the dropdown opener for the filter
 			 */
-			disabled: { type: String, reflect: true },
-			_activeDimensionKey: { type: String },
-			_dimensions : { type: Array }
+			disabled: { type: Boolean, reflect: true },
+			_activeDimensionKey: { type: String, attribute: false },
+			_dimensions : { type: Array, attribute: false }
 		};
 	}
 
@@ -40,12 +40,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			.d2l-filter-dimension-header {
 				align-items: center;
 				display: flex;
-				width: 100%;
 			}
 			.d2l-filter-dimension-header-text {
+				flex-grow: 1;
 				padding-right: calc(2rem + 2px);
 				text-align: center;
-				width: 100%;
 			}
 			:host([dir="rtl"]) .d2l-filter-dimension-header-text {
 				padding-left: calc(2rem + 2px);

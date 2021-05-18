@@ -34,7 +34,11 @@ class FilterDimensionSetValue extends LitElement {
 		});
 
 		if (changes.size > 0) {
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-set-value-data-change', { detail: { valueKey: this.key, changes: changes }, bubbles: true, composed: false }));
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-set-value-data-change', {
+				detail: { valueKey: this.key, changes: changes },
+				bubbles: true,
+				composed: false
+			}));
 		}
 	}
 
