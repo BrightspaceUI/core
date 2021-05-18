@@ -30,10 +30,10 @@ class Summary extends LocalizeCoreElement(SelectionSubscriberMixin(LitElement)) 
 	}
 
 	render() {
+		const summary = (this.selectionInfo.state === selectionStates.none && this.noSelectionText ?
+			this.noSelectionText : this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
 		return html`
-			<div class="d2l-body-compact">
-				${this.selectionInfo.state === selectionStates.none ? this.noSelectionText : this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length)}
-			</div>
+			<div class="d2l-body-compact">${summary}</div>
 		`;
 	}
 
