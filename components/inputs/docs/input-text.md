@@ -24,13 +24,15 @@ Text inputs allow users to input, edit, and select text.
 The `<d2l-input-text>` element is a simple wrapper around the native `<input type="text">` tag. It's intended primarily for inputting generic text, email addresses and URLs.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
 </script>
 <d2l-input-text
   label="Label"
   placeholder="Enter some text"
-  value="hello"></d2l-input-text>
+  value="hello">
+</d2l-input-text>
 ```
 
 ### Accessibility
