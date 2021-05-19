@@ -24,6 +24,7 @@ npm install @brightspace-ui/core
   * [Dialogs](components/dialog/): generic and confirmation dialogs
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
   * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible content
+  * [Filter](components/filter/): single or multi-dimensional filter component
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Forms](components/form/): aggregate data for submission and validation
   * [Hierarchical View](components/hierarchical-view/): nested container component that shows the active container
@@ -46,9 +47,11 @@ npm install @brightspace-ui/core
   * [Meter](components/meter/): linear, radial, circle meter web components
   * [More/less](components/more-less/): constrain long bits of content
   * [Off-screen](components/offscreen/): component and styles for positioning content off-screen
+  * [Scroll Wrapper](components/scroll-wrapper/): arrows to scroll content horizontally
   * [Skeleton](components/skeleton/): apply low-fidelity skeletons to your application as it loads
   * [Status Indicator](components/status-indicator/): status-indicator components
   * [Switch](components/switch/): switch component with on/off semantics
+  * [Table](components/table/): table styles, column sorting and overflow handling
   * [Tabs](components/tabs/): tab and tab-panel components
   * [Tooltip](components/tooltip/): tooltip components
   * [Typography](components/typography/): typography styles and components
