@@ -11,6 +11,9 @@ A Dropdown is a component which is used to open a content overlay.
   import '@brightspace-ui/core/components/dropdown/dropdown-context-menu.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-tabs.js';
+  import '@brightspace-ui/core/components/tabs/tabs.js';
+  import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 
 <d2l-dropdown-button text="Open!">
@@ -20,9 +23,12 @@ A Dropdown is a component which is used to open a content overlay.
 </d2l-dropdown-button>
 
 <d2l-dropdown-button-subtle text="Open!">
-  <d2l-dropdown-content>
-    Some content...
-  </d2l-dropdown-content>
+  <d2l-dropdown-tabs min-width="175" max-width="300">
+    <d2l-tabs>
+      <d2l-tab-panel text="first">first content</d2l-tab-panel>
+      <d2l-tab-panel text="second">second content</d2l-tab-panel>
+    </d2l-tabs>
+  </d2l-dropdown-tabs>
 </d2l-dropdown-button-subtle>
 
 <d2l-dropdown-context-menu text="Open!">
@@ -274,6 +280,10 @@ the component containing the `d2l-dropdown-content` can catch and call this meth
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-tabs.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/tabs/tabs.js';
+  import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 
 <d2l-dropdown-button text="Open!" primary>
