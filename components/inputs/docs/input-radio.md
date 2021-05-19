@@ -1,10 +1,28 @@
 # Radio Buttons
 
+Radio Buttons are used by forms to offer a single choice among mutually exclusive options.
+
 Unlike checkboxes, individual radio buttons cannot be placed in a custom element. Items belonging to a radio group cannot span across different shadow roots -- all radios in the same group must be in the same shadow root.
 
 As a result, we have to apply styles to native radio inputs.
 
 Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
+
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use as an input for traditional forms
+* Use when there are 3 or more mutually exclusive options
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use 2 radios if a 1 checkbox works better
+* Don’t use for triggering an immediate action
+	* Notable exceptions:
+		* Forms that autosave with clear indication to users
+		* As a trigger for progressive disclosure on traditional forms, so long as users are made aware both visually and non-visually that new options have been made available
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 ## Radio Inputs With Labels
 
