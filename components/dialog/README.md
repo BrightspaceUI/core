@@ -32,10 +32,15 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/dialog/dialog.js';
 </script>
+<script>
+	document.querySelector('#open').addEventListener('click', () => {
+		document.querySelector('#dialog').opened = true;
+	});
+</script>
 
 <d2l-button id="open">Show Dialog</d2l-button>
 
-<d2l-dialog title-text="Dialog Title">
+<d2l-dialog id="dialog" title-text="Dialog Title">
   <div>Some dialog content</div>
   <d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
   <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
@@ -116,10 +121,15 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 <script type="module">
   import '@brightspace-ui/core/components/dialog/dialog-confirm.js';
 </script>
+<script>
+	document.querySelector('#open-confirm').addEventListener('click', () => {
+		document.querySelector('#dialog-confirm').opened = true;
+	});
+</script>
 
-<d2l-button id="open">Show Confirm</d2l-button>
+<d2l-button id="open-confirm">Show Confirm</d2l-button>
 
-<d2l-dialog-confirm title-text="Confirm Title" text="Are you sure?">
+<d2l-dialog-confirm id="dialog-confirm" title-text="Confirm Title" text="Are you sure?">
   <d2l-button slot="footer" primary data-dialog-action="yes">Yes</d2l-button>
   <d2l-button slot="footer" data-dialog-action>No</d2l-button>
 </d2l-dialog-confirm>
@@ -148,10 +158,15 @@ The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-
 <script type="module">
   import '@brightspace-ui/core/components/dialog/dialog-fullscreen.js';
 </script>
+<script>
+	document.querySelector('#open-fullscreen').addEventListener('click', () => {
+		document.querySelector('#dialog-fullscreen').opened = true;
+	});
+</script>
 
-<d2l-button id="open">Show Dialog</d2l-button>
+<d2l-button id="open-fullscreen">Show Dialog</d2l-button>
 
-<d2l-dialog-fullscreen title-text="Fullscreen Dialog Title">
+<d2l-dialog-fullscreen id="dialog-fullscreen" title-text="Fullscreen Dialog Title">
   <div>Some dialog content</div>
   <d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
   <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
