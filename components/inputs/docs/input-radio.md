@@ -17,18 +17,13 @@ Note: in order for RTL to function correctly, make sure your component uses the 
 
 <!-- docs: start donts -->
 * Don’t use 2 radios if a 1 checkbox works better
-* Don’t use for triggering an immediate action
-	* Notable exceptions:
-		* Forms that autosave with clear indication to users
-		* As a trigger for progressive disclosure on traditional forms, so long as users are made aware both visually and non-visually that new options have been made available
+* Don’t use for triggering an immediate action. Notable exceptions are forms that autosave with clear indication and as a trigger for progressive disclosure on traditional forms, so long as users are made aware that new options have been made available
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
 ## Radio Inputs With Labels
 
 The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS class on a `<label>` element that wraps the input.
-
-![example screenshot of radio inputs](../screenshots/radio.gif?raw=true)
 
 For disabled items, add the `d2l-input-radio-label-disabled` class on the label and the `disabled` attribute on the input itself.
 
