@@ -41,7 +41,7 @@ function createMenuItem(node) {
 		?disabled=${disabled}
 		@d2l-menu-item-select=${handleItemSelect}
 		text="${childText}"
-		aria-label="${ifDefined(node.description || node.ariaLabel)}">
+		aria-label="${ifDefined(node.description || node.ariaLabel || childText)}">
 	</d2l-menu-item>`;
 }
 
