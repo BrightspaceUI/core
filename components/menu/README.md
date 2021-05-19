@@ -13,11 +13,10 @@ A menu displays a list of choices or actions. They generally appear when the use
 </script>
 
 <d2l-menu label="Astronomy">
-  <d2l-menu-item text="MenuItem"></d2l-menu-item>
+  <d2l-menu-item text="Menu Item"></d2l-menu-item>
   <d2l-menu-item-separator></d2l-menu-item-separator>
   <d2l-menu-item-checkbox text="Checkbox Menu Item"></d2l-menu-item-checkbox>
   <d2l-menu-item-radio text="Radio Menu Item 1"></d2l-menu-item-radio>
-  <d2l-menu-item-radio text="Radio Menu Item 2"></d2l-menu-item-radio>
 </d2l-menu>
 ```
 
@@ -87,6 +86,7 @@ This is used with JS handlers and can be wired-up to the `d2l-menu-item-select` 
 
 <d2l-menu label="Astronomy" id="menu">
 	<d2l-menu-item text="Introduction"></d2l-menu-item>
+	<d2l-menu-item text="Content"></d2l-menu-item>
 </d2l-menu>
 ```
 
@@ -103,6 +103,7 @@ The link menu item is used for navigating.
 
 <d2l-menu label="Astronomy">
   <d2l-menu-item-link text="The Universe" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
+  <d2l-menu-item-link text="The Sun" href="https://en.wikipedia.org/wiki/Sun"></d2l-menu-item-link>
 </d2l-menu>
 ```
 
@@ -128,7 +129,7 @@ The checkbox menu item is used for selection. This can be wired-up to the `d2l-m
 </d2l-menu>
 ```
 
-### d2l-menu-item-radio
+### Radio Menu Item
 
 The radio menu item, `d2l-menu-item-radio`, is used for selection. This can be wired-up to the `d2l-menu-item-change` event. Only one radio item in a given `<d2l-menu>` may be selected at once (i.e., selecting one option will deselect the other selected `d2l-menu-item-radio` item).
 
@@ -153,8 +154,6 @@ The radio menu item, `d2l-menu-item-radio`, is used for selection. This can be w
 ## Nested Menus
 
 Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  For nested menus, a `label` attribute is automatically applied using the text attribute of the `d2l-menu-item` that contains it - no need to duplicate this value.  A "return" menu item will be added to the top of the nested menu by default.
-
-![Nested Menu](./screenshots/nested-menu.png?raw=true)
 
 ```html
 <d2l-menu label="Astronomy">
