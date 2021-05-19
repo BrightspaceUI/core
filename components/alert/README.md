@@ -2,9 +2,11 @@
 
 An Alert is used to communicate important information relating to the state of the system and the user's work flow.
 
-## Best Practices
+## Inline Alert
 
-### Inline
+An Inline Alert is used if there is important information a user needs to know before performing a task, or if the alert should remain on the screen until the user manually dismisses it or takes action.
+
+### Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Use to let the user know when the system is in a state that will prevent them from completing their action
@@ -22,24 +24,7 @@ An Alert is used to communicate important information relating to the state of t
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-### Toast
-<!-- docs: start best practices -->
-<!-- docs: start dos -->
-* Toasts are required be dismissible via the close icon – if they’re obscuring content, the user doesn’t want to have to wait for it to go way on it’s own
-* Keep text brief – toasts shouldn’t spill onto more than one line at any screen size
-* Use specific language – “Assignment saved” is more informative than “Successfully saved”
-<!-- docs: end dos -->
-
-<!-- docs: start donts -->
-* Don't display more than one at a time
-* Don’t use toasts to provide instructions. Change blindness and transience make them ineffective for these use cases
-* Don’t use the thumbnails or two-line variety of inline alert as a toast. Toasts should be super brief!
-<!-- docs: end donts -->
-<!-- docs: end best practices -->
-
-## Inline Alert
-
-An Inline Alert is used if there is important information a user needs to know before performing a task, or if the alert should remain on the screen until the user manually dismisses it or takes action.
+### Demo
 
 ```html
 <!-- docs: live demo -->
@@ -56,13 +41,37 @@ An Inline Alert is used if there is important information a user needs to know b
 
 The Toast Alert serves the same purpose as the inline alert; however, it is displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
 
+### Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Toasts are required be dismissible via the close icon – if they’re obscuring content, the user doesn’t want to have to wait for it to go way on it’s own
+* Keep text brief – toasts shouldn’t spill onto more than one line at any screen size
+* Use specific language – “Assignment saved” is more informative than “Successfully saved”
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don't display more than one at a time
+* Don’t use toasts to provide instructions. Change blindness and transience make them ineffective for these use cases
+* Don’t use the thumbnails or two-line variety of inline alert as a toast. Toasts should be super brief!
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+### Demo
+
 ```html
 <!-- docs: live demo -->
 <script type="module">
 	import '@brightspace-ui/core/components/alert/alert-toast.js';
+	import '@brightspace-ui/core/components/button/button.js';
+</script>
+<script>
+	document.querySelector('#open').addEventListener('click', () => {
+		document.getElementById('toast').setAttribute('open', '');
+	});
 </script>
 
-<d2l-alert-toast type="default">
+<d2l-alert-toast type="default" id="toast">
 	A default toast alert.
 </d2l-alert-toast>
+<d2l-button primary id="open">Open alert</d2l-button>
 ```
