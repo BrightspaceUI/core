@@ -24,6 +24,7 @@ npm install @brightspace-ui/core
   * [Dialogs](components/dialog/): generic and confirmation dialogs
   * [Dropdowns](components/dropdown/): dropdown openers and content containers
   * [Expand Collapse](components/expand-collapse): component to create expandable and collapsible content
+  * [Filter](components/filter/): single or multi-dimensional filter component
   * [Focus Trap](components/focus-trap/): generic container that traps focus
   * [Forms](components/form/): aggregate data for submission and validation
   * [Hierarchical View](components/hierarchical-view/): nested container component that shows the active container
