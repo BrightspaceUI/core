@@ -24,9 +24,12 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
+### Demo
+
 ```html
 <!-- docs: live demo -->
 <script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/dialog/dialog.js';
 </script>
 
@@ -38,6 +41,9 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
   <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 </d2l-dialog>
 ```
+
+### How to Use
+
 Open the dialog declaratively using a boolean attribute `opened`:
 
 ```html
@@ -78,7 +84,7 @@ document.querySelector('d2l-dialog').addEventListener('d2l-dialog-close', (e) =>
 });
 ```
 
-**Methods:**
+### Methods
 
 - `resize`: resizes the dialog based on specified `width` and measured content height
 
@@ -103,6 +109,8 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
+### Demo
+
 ```html
 <!-- docs: live demo -->
 <script type="module">
@@ -116,6 +124,8 @@ The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting t
   <d2l-button slot="footer" data-dialog-action>No</d2l-button>
 </d2l-dialog-confirm>
 ```
+
+### How to Use
 
 Open the confirm dialog as described for generic dialogs, either by setting the `opened` property/attribute, or by calling the `open` method to get a promise for the result.
 
@@ -147,6 +157,8 @@ The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-
   <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 </d2l-dialog-fullscreen>
 ```
+
+### How to Use
 
 Open the fullscreen dialog as described for generic dialogs, either by setting the `opened` property/attribute, or by calling the `open` method to get a promise for the result.
 
