@@ -1,14 +1,38 @@
-# Menu
+# Menus
 
-## d2l-menu
+A menu displays a list of choices or actions. They generally appear when the user interacts with a dropdown or button.
+
+```html
+<!-- docs: demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/menu/menu-item-checkbox.js';
+  import '@brightspace-ui/core/components/menu/menu-item-radio.js';
+  import '@brightspace-ui/core/components/menu/menu-item-separator.js';
+</script>
+
+<d2l-menu label="Astronomy">
+  <d2l-menu-item text="MenuItem"></d2l-menu-item>
+  <d2l-menu-item-separator></d2l-menu-item-separator>
+  <d2l-menu-item-checkbox text="Checkbox Menu Item"></d2l-menu-item-checkbox>
+  <d2l-menu-item-radio text="Radio Menu Item 1"></d2l-menu-item-radio>
+  <d2l-menu-item-radio text="Radio Menu Item 2"></d2l-menu-item-radio>
+</d2l-menu>
+```
+
+## Menu
 
 A basic menu can be defined using `d2l-menu` and a combination of menu items (e.g., `d2l-menu-item`, `d2l-menu-item-separator`).  **Important**: specify a label on your `d2l-menu` for screen-readers.
 
-![Menu](./screenshots/menu.png?raw=true)
+**Note:** `d2l-menu` renders without an outer border since it's typically used in a context where a containing element defines a border (ex. `d2l-dropdown-menu` or side nav).
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/menu/menu-item-separator.js';
 </script>
 
 <d2l-menu label="Astronomy">
@@ -22,13 +46,7 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 </d2l-menu>
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `label` | String, required for root menu | Text to be applied to menu `aria-label` for use with screen readers; for nested menus, the label is automatically applied based on its parent menu-item |
-
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-menu` accessible, use the following property:
 
@@ -36,19 +54,11 @@ To make your usage of `d2l-menu` accessible, use the following property:
 |--|--|
 | `label` | **REQUIRED** Acts as a primary label for the menu |
 
-**Events:**
-
-* `d2l-menu-resize`: dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
-
-**Note:** `d2l-menu` renders without an outer border since it's typically used in a context where a containing element defines a border (ex. `d2l-dropdown-menu` or side nav).
-
 ## Menu Items
 
 By default, there are several menu item types provided. These include `d2l-menu-item` (for JS handlers), `d2l-menu-item-link` (for navigating), and `d2l-menu-item-checkbox`/`d2l-menu-item-radio` (for selection).
 
 While navigation can be done in JS too, `d2l-menu-item-link` gives users the ability to right-click and open in a new tab.  If providing a JS handler, wire-up to the `d2l-menu-item-select` event.  In addition, a `d2l-menu-item-separator` can be used to semantically separate menu items.
-
-![Menu Items](./screenshots/menu-items.png?raw=true)
 
 ```html
 <d2l-menu label="Astronomy">
@@ -59,122 +69,86 @@ While navigation can be done in JS too, `d2l-menu-item-link` gives users the abi
 </d2l-menu>
 ```
 
-### d2l-menu-item
+### Menu Item
 
-This is used with JS handlers and can be wired-up to the `d2l-menu-item-select` event. For example:
+This is used with JS handlers and can be wired-up to the `d2l-menu-item-select` event.
 
 ```html
-<d2l-menu label="Astronomy">
-  <d2l-menu-item text="Introduction"></d2l-menu-item>
-  <d2l-menu-item text="The Planets" disabled></d2l-menu-item>
-</d2l-menu>
-
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+</script>
 <script>
-  menu.addEventListener('d2l-menu-item-select', (e) => {
+  document.querySelector('#menu').addEventListener('d2l-menu-item-select', (e) => {
     console.log('item selected:', e.target);
   });
 </script>
+
+<d2l-menu label="Astronomy" id="menu">
+	<d2l-menu-item text="Introduction"></d2l-menu-item>
+</d2l-menu>
 ```
 
-**Properties:**
+### Link Menu Item
 
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text displayed by the menu item |
-| `disabled` | Boolean | Disables the menu item |
-
-**Events:**
-
-* `d2l-menu-item-select`: dispatched when a menu item is selected
-
-**Slots:**
-
-* `supporting`: Allows supporting information to be displayed on the right-most side of the menu item
-
-### d2l-menu-item-link
-
-The link menu item, `d2l-menu-item-link`, is used for navigating.
+The link menu item is used for navigating.
 
 ```html
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item-link.js';
+</script>
+
 <d2l-menu label="Astronomy">
   <d2l-menu-item-link text="The Universe" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
 </d2l-menu>
 ```
 
-**Properties:**
+### Checkbox Menu Item
 
-| Property | Type | Description |
-|--|--|--|
-| `download` | String | If the attribute is provided, it will prompt the user to download the resource instead of navigating to it. Additionally, if the attribute is provided with a value, that value will be used for the filename. |
-| `href` | String, required | The URL the menu item link navigates to |
-| `text` | String, required | Text displayed by the menu item |
-| `disabled` | Boolean | Disables the menu item |
-
-### d2l-menu-item-checkbox
-
-The checkbox menu item, `d2l-menu-item-checkbox`, is used for selection. This can be wired-up to the `d2l-menu-item-change` event. Multiple checkboxes can be selected at once.
-
-![Checkbox Menu](./screenshots/checkbox-menu.png?raw=true)
+The checkbox menu item is used for selection. This can be wired-up to the `d2l-menu-item-change` event. Multiple checkboxes can be selected at once.
 
 ```html
-<d2l-menu label="Some Options">
-  <d2l-menu-item-checkbox text="Option 1" value="1"></d2l-menu-item-checkbox>
-  <d2l-menu-item-checkbox text="Option 2" value="2"></d2l-menu-item-checkbox>
-  <d2l-menu-item-checkbox text="Option 3" value="3"></d2l-menu-item-checkbox>
-</d2l-menu>
-
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item-checkbox.js';
+</script>
 <script>
-  menu.addEventListener('d2l-menu-item-change', (e) => {
+  document.querySelector('#menu-checkbox').addEventListener('d2l-menu-item-change', (e) => {
     console.log('item selection changed:', e.target);
   });
 </script>
+
+<d2l-menu label="Some Options" id="menu-checkbox">
+  <d2l-menu-item-checkbox text="Option 1" value="1"></d2l-menu-item-checkbox>
+  <d2l-menu-item-checkbox text="Option 2" value="2"></d2l-menu-item-checkbox>
+</d2l-menu>
 ```
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text displayed by the menu item |
-| `value` | String, required | |
-| `disabled` | Boolean | Disables the menu item |
-| `selected` | Boolean | Thie will set the item to be selected by default |
-
-**Events:**
-
-* `d2l-menu-item-change`: dispatched when the selected menu item changes
 
 ### d2l-menu-item-radio
 
 The radio menu item, `d2l-menu-item-radio`, is used for selection. This can be wired-up to the `d2l-menu-item-change` event. Only one radio item in a given `<d2l-menu>` may be selected at once (i.e., selecting one option will deselect the other selected `d2l-menu-item-radio` item).
 
-![Radio Menu](./screenshots/radio-menu.png?raw=true)
-
 ```html
-<d2l-menu label="Some Options">
-  <d2l-menu-item-radio text="Option 1" value="1" selected></d2l-menu-item-radio>
-  <d2l-menu-item-radio text="Option 2" value="2"></d2l-menu-item-radio>
-  <d2l-menu-item-radio text="Option 3" value="3"></d2l-menu-item-radio>
-</d2l-menu>
-
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item-radio.js';
+</script>
 <script>
-  menu.addEventListener('d2l-menu-item-change', (e) => {
+  document.querySelector('#menu-radio').addEventListener('d2l-menu-item-change', (e) => {
     console.log('item selection changed:', e.target);
   });
 </script>
+
+<d2l-menu label="Some Options" id="menu-radio">
+  <d2l-menu-item-radio text="Option 1" value="1" selected></d2l-menu-item-radio>
+  <d2l-menu-item-radio text="Option 2" value="2"></d2l-menu-item-radio>
+</d2l-menu>
 ```
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | Text displayed by the menu item |
-| `value` | String, required | |
-| `disabled` | Boolean | Disables the menu item |
-| `selected` | Boolean | This will set the item to be seelcted by default |
-
-**Events:**
-
-* `d2l-menu-item-change`: dispatched when the selected menu item changes
 
 ## Nested Menus
 
@@ -218,7 +192,3 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
   <d2l-menu-item text="The Night Sky"></d2l-menu-item>
 </d2l-menu>
 ```
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
