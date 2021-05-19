@@ -51,12 +51,16 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					padding-top: 1.15rem;
 				}
 
+				.d2l-dialog-content {
+					display: grid;
+				}
+
 				.d2l-dialog-content > div {
 					/* required to properly calculate preferred height when there are bottom
 					margins at the end of the slotted content */
 					border-bottom: 1px solid transparent;
 					box-sizing: border-box;
-					height: inherit;
+					height: 100%;
 					padding-bottom: 1rem;
 					padding-top: 1rem;
 				}
@@ -147,7 +151,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					margins at the end of the slotted content */
 					border-bottom: 1px solid transparent;
 					/* required to render full height in an i-Frame */
-					height: 100%;
+					height: calc(100% - 1px);
 				}
 
 				div[nested].d2l-dialog-outer {
