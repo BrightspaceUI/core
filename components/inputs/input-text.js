@@ -19,6 +19,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
+ * @fires input - Dispatched immediately after changes by the user
  */
 class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 

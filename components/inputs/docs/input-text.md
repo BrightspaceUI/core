@@ -1,8 +1,27 @@
 # Text Inputs
 
-The `<d2l-input-text>` element is a simple wrapper around the native `<input type="text">` tag. It's intended primarily for inputting generic text, email addresses and URLs.
+Text inputs allow users to input, edit, and select text.
 
-![example screenshot of text input](../screenshots/text.gif?raw=true)
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Make sure you include an obvious indication of what the field is for. Usually this means a label.
+* Design the length of the text input to give the user a scent of how long the expected data should be.
+* Ensure the label remains visible when a user focuses on the input using their mobile device. Often this means using a top-aligned label, but a left-aligned label with a very short text input can work also.
+* Placeholder text is inaccessible so only use it for decorative or supporting text.
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use placeholder text as the label.
+* Don’t use placeholder text if it is redundant (ie: “Click to start typing”)
+* Don’t use placeholder text to communicate the required format of the input (ie: “YY/MM/DD”). Use help or label text for this.
+* Don’t use different font sizes. Text should always be Compact.
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+## Text Input
+
+The `<d2l-input-text>` element is a simple wrapper around the native `<input type="text">` tag. It's intended primarily for inputting generic text, email addresses and URLs.
 
 ```html
 <script type="module">
@@ -14,38 +33,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
   value="hello"></d2l-input-text>
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `label` | String, required | Label for the input |
-| `aria-haspopup` | String | Indicates that the input has a popup menu |
-| `aria-invalid` | String | Indicates that the input value is invalid |
-| `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser |
-| `autofocus` | Boolean | When set, will automatically place focus on the input |
-| `description` | String | A description to be added to the `input` for accessibility |
-| `disabled` | Boolean | Disables the input |
-| `input-width` | String, default: `100%` | Restricts the maximum width of the input box without impacting the width of the label |
-| `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
-| `max` | String | For number inputs, maximum value |
-| `maxlength` | Number | Imposes an upper character limit |
-| `min` | String | For number inputs, minimum value |
-| `minlength` | Number | Imposes a lower character limit |
-| `name` | String | Name of the input |
-| `novalidate` | Boolean | Disables the built-in validation |
-| `pattern` | String | Regular expression pattern to validate the value |
-| `placeholder` | String | Placeholder text |
-| `prevent-submit` | Boolean | Prevents pressing ENTER from submitting forms |
-| `readonly` | Boolean | Makes the input read-only |
-| `required` | Boolean | Indicates that a value is required |
-| `size` | Number | Size of the input |
-| `step` | String | For number inputs, sets the step size |
-| `title` | String | Text for additional screenreader and mouseover context |
-| `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url`. Type `number` is deprecated, use [d2l-input-number](./input-number.md) instead. |
-| `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
-| `value` | String, default: `''` | Value of the input |
-
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-input-text` accessible, use the following properties when applicable:
 
@@ -59,27 +47,6 @@ To make your usage of `d2l-input-text` accessible, use the following properties 
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
 | `unit` | Use to render the unit (offscreen) as part of the label. |
 | `title` | Text for additional screen reader and mouseover context |
-
-**Events:**
-
-The `d2l-input-text` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
-
-**Slots:**
-* `left`: Slot within the input on the left side. Useful for an `icon` or `button-icon`.
-* `right`: Slot within the input on the right side. Useful for an `icon` or `button-icon`.
-
-
-```javascript
-// fired when value changes are committed
-input.addEventListener('change', (e) => {
-  console.log(input.value);
-});
-
-// fired whenever value changes occur
-input.addEventListener('input', (e) => {
-  console.log(input.value);
-});
-```
 
 ## Applying styles to native input
 
