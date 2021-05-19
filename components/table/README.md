@@ -1,5 +1,7 @@
 # Table
 
+> **NOTE:** This component is a work-in-progress and not ready for consumer use yet.
+
 The `d2l-table-wrapper` element can be combined with table styles to apply default/light styling, row selection styles, overflow scrolling and sticky headers to native `<table>` elements within your Lit components.
 
 ![table with default style](./screenshots/default.png?raw=true)

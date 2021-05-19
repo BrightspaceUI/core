@@ -1,5 +1,7 @@
 # Scroll Wrapper
 
+> **NOTE:** This component is a work-in-progress and not ready for consumer use yet.
+
 The `d2l-scroll-wrapper` element can be used to wrap content which may overflow its horizontal boundaries, providing left/right scroll buttons.
 
 ![scroll wrapper](./screenshots/scroll-wrapper.gif?raw=true)
