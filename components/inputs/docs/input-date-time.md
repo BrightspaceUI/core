@@ -27,7 +27,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 </d2l-input-date>
 ```
 
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-input-date` accessible, use the following properties when applicable:
 
@@ -51,7 +51,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 </d2l-input-date-range>
 ```
 
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-input-date-range` accessible, use the following properties when applicable:
 
@@ -77,7 +77,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 </d2l-input-time>
 ```
 
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-input-time` accessible, use the following properties when applicable:
 
@@ -101,7 +101,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 </d2l-input-time-range>
 ```
 
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-input-time-range` accessible, use the following properties when applicable:
 
@@ -127,7 +127,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 </d2l-input-date-time>
 ```
 
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-input-date-time` accessible, use the following property:
 
@@ -150,7 +150,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 </d2l-input-date-time-range>
 ```
 
-**Accessibility:**
+### Accessibility
 
 To make your usage of `d2l-input-date-time-range` accessible, use the following properties when applicable:
 
