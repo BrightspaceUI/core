@@ -47,9 +47,11 @@ npm install @brightspace-ui/core
   * [Meter](components/meter/): linear, radial, circle meter web components
   * [More/less](components/more-less/): constrain long bits of content
   * [Off-screen](components/offscreen/): component and styles for positioning content off-screen
+  * [Scroll Wrapper](components/scroll-wrapper/): arrows to scroll content horizontally
   * [Skeleton](components/skeleton/): apply low-fidelity skeletons to your application as it loads
   * [Status Indicator](components/status-indicator/): status-indicator components
   * [Switch](components/switch/): switch component with on/off semantics
+  * [Table](components/table/): table styles, column sorting and overflow handling
   * [Tabs](components/tabs/): tab and tab-panel components
   * [Tooltip](components/tooltip/): tooltip components
   * [Typography](components/typography/): typography styles and components
