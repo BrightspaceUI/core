@@ -2,6 +2,46 @@
 
 A Dropdown is a component which is used to open a content overlay.
 
+```html
+<!-- docs: demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-button-subtle.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-context-menu.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
+</script>
+
+<d2l-dropdown-button text="Open!">
+  <d2l-dropdown-content>
+    Some content...
+  </d2l-dropdown-content>
+</d2l-dropdown-button>
+
+<d2l-dropdown-button-subtle text="Open!">
+  <d2l-dropdown-content>
+    Some content...
+  </d2l-dropdown-content>
+</d2l-dropdown-button-subtle>
+
+<d2l-dropdown-context-menu text="Open!">
+  <d2l-dropdown-menu id="dropdown">
+    <d2l-menu label="Astronomy">
+      <d2l-menu-item text="Introduction"></d2l-menu-item>
+      <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+      <d2l-menu-item text="The Solar System">
+    </d2l-menu>
+  </d2l-dropdown-menu>
+</d2l-dropdown-context-menu>
+
+<d2l-dropdown-more text="Open!">
+  <d2l-dropdown-content>
+    Some content...
+  </d2l-dropdown-content>
+</d2l-dropdown-more>
+```
+
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
@@ -254,5 +294,5 @@ the component containing the `d2l-dropdown-content` can catch and call this meth
       <d2l-tab-panel text="sixth">sixth content</d2l-tab-panel>
     </d2l-tabs>
   </d2l-dropdown-tabs>
-</d2l-dropdown>
+</d2l-dropdown-button>
 ```
