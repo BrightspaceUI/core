@@ -27,15 +27,15 @@ The `d2l-card` element is a container that provides specific layout using severa
 ```html
 <!-- docs: live demo -->
 <script type="module">
+  import '@brightspace-ui/core/components/button/button-icon.js';
   import '@brightspace-ui/core/components/card/card.js';
 </script>
 
-<d2l-card align-center text="..." href="...">
-  <img slot="header" alt="" src="...">
-  <d2l-button-icon slot="actions" text="..." icon="..."></d2l-button-icon>
+<d2l-card subtle align-center text="Hydrology" href="https://en.wikipedia.org/wiki/Hydrology" style="width: 245px; height: 300px;">
+  <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+  <d2l-button-icon slot="actions" translucent text="unpin" icon="tier1:pin-filled"></d2l-button-icon>
   <div slot="content">
     <div>Hydrology</div>
-    <d2l-card-content-meta>Some extra content meta data.</d2l-card-content-meta>
   </div>
 </d2l-card>
 ```
@@ -60,7 +60,7 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
     <div>Hydrology</div>
   </div>
   <div slot="footer">
-    <d2l-card-footer-link icon="..." text="..." secondary-text="..." href="..."></d2l-card-footer-link>
+    <d2l-card-footer-link id="outcomesLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="5"></d2l-card-footer-link>
   </div>
 </d2l-card>
 ```
