@@ -1,12 +1,31 @@
 # Dialogs
 
-## d2l-dialog
+Dialogs interrupt the user to complete a set of tasks, confirm an action, or offer important options.
+
+## General Dialog
 
 The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
 
-![Dialog](./screenshots/dialog.png?raw=true)
+### Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Keep dialogs small and easy to understand
+* Limit workflow buttons to 2
+* Label primary actions with clear and predictable language. Use verbs like, “Add” or “Save” that indicate the outcome of a dialog rather than, “OK” or “Close”
+* Keep dialog titles concise. Avoid a title length that could easily wrap to two lines.
+* Maintain a language relationship between the action that triggered the dialog, dialog title, and dialog primary button.
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use a dialog when you could reasonably use an alternative that preserves user context, like expanding options inline
+* Don’t use a dialog to show error, success, or warning messages. Use an inline or toast alert instead.
+* Avoid creating large, complex dialogs
+* Avoid invoking a dialog from another dialog (nested dialogs)
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/dialog/dialog.js';
 </script>
@@ -59,31 +78,33 @@ document.querySelector('d2l-dialog').addEventListener('d2l-dialog-close', (e) =>
 });
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `title-text` | String, required | Text displayed in the header of the dialog |
-| `async` | Boolean | Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container) |
-| `opened` | Boolean | Whether or not the dialog is open |
-| `width` | Number, default: `600` | The preferred width (unit-less) for the dialog |
-
 **Methods:**
 
 - `resize`: resizes the dialog based on specified `width` and measured content height
 
-**Events:**
-
-- `d2l-dialog-open`: dispatched when the dialog is opened
-- `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
-
-## d2l-dialog-confirm
+## Confirmation Dialog
 
 The `d2l-dialog-confirm` element is a simple confirmation dialog for prompting the user. It provides properties for specifying the required `text` and optional `title-text`, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the confirm dialog with the action value.
 
-![Confirmation Dialog](./screenshots/dialog-confirm.png?raw=true)
+### Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Label the primary button with a verb that indicates the outcome of the action. Use “Delete” over “Yes” or “No”
+* Keep the confirmation statement or question concise. Starting with, “Are you sure you want to…” is wordy.
+* Use “Cancel” for the secondary button
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t present users with unclear choices
+* Don’t label the primary button with a potentially ambiguous word like, “OK”
+* Don’t use a confirmation dialog if the action is not critical in nature (avoid interrupting the user)
+* Don’t use a confirmation dialog if you can introduce an undo option instead
+* Don’t use a confirmation dialog to show error, success, or warning messages. Use an inline or toast alert instead
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/dialog/dialog-confirm.js';
 </script>
@@ -108,26 +129,12 @@ document.querySelector('#open').addEventListener('click', () => {
 });
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | The required text content for the confirmation dialog |
-| `opened` | Boolean | Whether or not the dialog is open |
-| `title-text` | String | The optional title for the confirmation dialog |
-
-**Events:**
-
-- `d2l-dialog-open`: dispatched when the dialog is opened
-- `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
-
-## d2l-dialog-fullscreen
+## Fullscreen Dialog
 
 The `d2l-dialog-fullscreen` element is a fullscreen variant of the generic `d2l-dialog`. It provides a slot for arbitrary content, and a `footer` slot for workflow buttons. Apply the `data-dialog-action` attribute to workflow buttons to automatically close the dialog with the action value.
 
-![Fullscreen Dialog](./screenshots/dialog-fullscreen.png?raw=true)
-
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/dialog/dialog-fullscreen.js';
 </script>
@@ -152,22 +159,3 @@ document.querySelector('#open').addEventListener('click', () => {
   });
 });
 ```
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `title-text` | String, required | Text displayed in the header of the dialog |
-| `async` | Boolean | Whether to render a loading-spinner and wait for state changes via [AsyncContainerMixin](../../mixins/async-container) |
-| `opened` | Boolean | Whether or not the dialog is open |
-
-**Events:**
-
-- `d2l-dialog-open`: dispatched when the dialog is opened
-- `d2l-dialog-close`: dispatched with the action value when the dialog is closed for any reason
-
-## Future Enhancements
-
-* scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
-
-Looking for an enhancement not listed here? Create a GitHub issue!
