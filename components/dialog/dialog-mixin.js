@@ -315,10 +315,21 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialog backdrop does not prevent body scrolling
 		this._bodyScrollKey = preventBodyScroll();
 
+		// focus first focusable child prior to auto resize (fixes screen reader hiccups)
+		this._focusInitial();
+
 		requestAnimationFrame(async() => {
 			await this._updateSize();
 			this._state = 'showing';
-			this._focusInitial();
+
+			// edge case: no children were focused, try again after one redraw
+			const activeElement = getComposedActiveElement();
+			if (!activeElement
+			|| !isComposedAncestor(dialog, activeElement)
+			|| !activeElement.classList.contains('focus-visible')) {
+				this._focusInitial();
+			}
+
 			if (!reduceMotion) await animPromise;
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }

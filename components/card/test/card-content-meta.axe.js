@@ -5,7 +5,7 @@ describe('d2l-card-content-meta', () => {
 
 	it('default', async() => {
 		const elem = await fixture(html`<d2l-card-content-meta>Meta</d2l-card-content-meta>`);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 });

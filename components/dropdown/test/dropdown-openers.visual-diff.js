@@ -19,6 +19,7 @@ describe('d2l-dropdown-openers', () => {
 
 	[
 		'button-primary',
+		'button-full-width',
 		'button-rtl',
 	].forEach((testName) => {
 		it(testName, async function() {

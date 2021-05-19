@@ -18,7 +18,7 @@ describe('d2l-tooltip', () => {
 	});
 
 	it('should pass all aXe tests (hide)', async() => {
-		await expect(tooltip).to.be.accessible;
+		await expect(tooltip).to.be.accessible();
 	});
 
 	[
@@ -29,7 +29,7 @@ describe('d2l-tooltip', () => {
 			tooltip.setAttribute('state', state);
 			tooltip.setAttribute('showing', 'showing');
 			await tooltip.updateComplete;
-			await expect(tooltip).to.be.accessible;
+			await expect(tooltip).to.be.accessible();
 		});
 	});
 

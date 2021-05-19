@@ -24,7 +24,7 @@ describe('d2l-list', () => {
 
 	it('should pass all aXe tests', async() => {
 		const elem = await fixture(normalFixture);
-		await expect(elem).to.be.accessible;
+		await expect(elem).to.be.accessible();
 	});
 
 });
