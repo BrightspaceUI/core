@@ -10,7 +10,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-const mediaQueryList = window.matchMedia('(max-width: 616px)');
+const mediaQueryList = window.matchMedia('(max-width: 615px)');
 
 /**
  * A generic fullscreen dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
@@ -44,7 +44,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				text-align: center;
 			}
 
-			@media (min-width: 617px) {
+			@media (min-width: 616px) {
 				
 				.d2l-dialog-header {
 					border-bottom: 1px solid var(--d2l-color-gypsum);
@@ -131,7 +131,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 			}
 
-			@media (max-width: 616px) {
+			@media (max-width: 615px) {
 
 				.d2l-dialog-header {
 					padding-bottom: 15px;
