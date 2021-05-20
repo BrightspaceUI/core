@@ -49,7 +49,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				.d2l-dialog-header {
 					border-bottom: 1px solid var(--d2l-color-gypsum);
 					padding-bottom: 0.6rem;
-					padding-top: 1rem;
+					padding-top: 0.9rem;
 				}
 
 				.d2l-dialog-content {
@@ -68,11 +68,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 				.d2l-dialog-header > div > d2l-button-icon {
 					flex: none;
-					margin: -2px -12px 0 0;
+					margin: 0 -12px 0 0;
 				}
 
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-					margin: -2px  0  0 -12px;
+					margin: 0 0 0 -12px;
 				}
 				
 				dialog.d2l-dialog-outer,
