@@ -4,6 +4,16 @@ Search inputs allow users to input text, execute a search, and clear results.
 
 A search input may be used in conjunction with filters, sort, and/or auto-complete.
 
+```html
+<!-- docs: demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-search.js';
+</script>
+<d2l-input-search
+  label="Search">
+</d2l-input-search>
+```
+
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->

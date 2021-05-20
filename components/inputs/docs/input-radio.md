@@ -2,6 +2,8 @@
 
 Radio Buttons are used by forms to offer a single choice among mutually exclusive options.
 
+![example screenshot of radio inputs](../screenshots/radio.gif?raw=true)
+
 Unlike checkboxes, individual radio buttons cannot be placed in a custom element. Items belonging to a radio group cannot span across different shadow roots -- all radios in the same group must be in the same shadow root.
 
 As a result, we have to apply styles to native radio inputs.
