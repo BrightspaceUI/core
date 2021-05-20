@@ -11,6 +11,11 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * A wrapper around the native `<textarea>` element that provides auto-grow and validation behaviours intended for inputting unformatted multi-line text.
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
+ * @fires input - Dispatched immediately after changes by the user
+ */
 class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	static get properties() {

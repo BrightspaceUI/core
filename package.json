@@ -32,7 +32,6 @@
     "/templates",
     "/tools",
     "!demo",
-    "!screenshots",
     "!test",
     "/components/demo",
     "!/components/demo/demo"

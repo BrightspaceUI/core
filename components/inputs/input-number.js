@@ -60,29 +60,93 @@ function roundPrecisely(val, maxFractionDigits) {
 	return parseFloat(strValue);
 }
 
+/**
+ * An input for numeric input only
+ * @fires change - Dispatched when the value is changed. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
+ */
 class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser.
+			 */
 			autocomplete: { type: String },
+			/**
+			 * When set, will automatically place focus on the input
+			 */
 			autofocus: { type: Boolean },
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Hide the alert icon when input is invalid
+			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
+			/**
+			 * Restricts the maximum width of the input box without impacting the width of the label
+			 */
 			inputWidth: { attribute: 'input-width', type: String },
+			/**
+			 * REQUIRED: Label for the input
+			 */
 			label: { type: String },
+			/**
+			 * Hides the label visually (moves it to the input's `aria-label` attribute)
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * Maximum value allowed
+			 */
 			max: { type: Number },
+			/**
+			 * Indicates whether the max value is exclusive
+			 */
 			maxExclusive: { type: Boolean, attribute: 'max-exclusive' },
+			/**
+			 * Maximum number of digits allowed after the decimal place. Must be between 0 and 20 and greater than or equal to `minFractionDigits`
+			 */
 			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
+			/**
+			 * Minimum value allowed
+			 */
 			min: { type: Number },
+			/**
+			 * Indicates whether the min value is exclusive
+			 */
 			minExclusive: { type: Boolean, attribute: 'min-exclusive' },
+			/**
+			 * Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits`
+			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
+			/**
+			 * Placeholder text
+			 */
 			placeholder: { type: String },
+			/**
+			 * Indicates that a value is required
+			 */
 			required: { type: Boolean },
+			/**
+			 * Text for additional screen reader and mouseover context
+			 */
 			title: { type: String },
+			/**
+			 * @ignore
+			 */
 			trailingZeroes: { type: Boolean, attribute: 'trailing-zeroes' },
+			/**
+			 * Unit associated with the input value, displayed next to input and announced as part of the label
+			 */
 			unit: { type: String },
+			/**
+			 * Value of the input
+			 */
 			value: { type: Number },
+			/**
+			 * @ignore
+			 */
 			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
 			_hintType: { type: Number },
 			_formattedValue: { type: String }
