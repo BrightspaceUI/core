@@ -11,6 +11,7 @@ import '../menu/menu-item.js';
 import '../menu/menu-item-separator.js';
 import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -39,7 +40,8 @@ function createMenuItem(node) {
 	return html`<d2l-menu-item
 		?disabled=${disabled}
 		@d2l-menu-item-select=${handleItemSelect}
-		text="${childText}">
+		text="${childText}"
+		description="${ifDefined(node.description || node.ariaLabel)}">
 	</d2l-menu-item>`;
 }
 
