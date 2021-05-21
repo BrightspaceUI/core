@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../../filter/filter.js';
+		import '../../filter/filter-dimension-set.js';
+		import '../../filter/filter-dimension-set-value.js';
+	</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-filter">
+
+		<h2>Single Set Dimension</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-filter>
+					<d2l-filter-dimension-set key="course" text="Course">
+						<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="drama" text="Drama"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="math" text="Math"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="physics" text="Physics"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="stats" text="Statistics"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Multiple Set Dimensions</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-filter>
+					<d2l-filter-dimension-set key="course" text="Course">
+						<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="drama" text="Drama"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="how-to" text="How To Write a How To Article With a Flashy Title"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="math" text="Math"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="physics" text="Physics"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="stats" text="Statistics"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="writerscraft" text="Writer's Craft"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="role" text="Role">
+						<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</template>
+		</d2l-demo-snippet>
+	</d2l-demo-page>
+
+	<script type="module">
+		document.addEventListener('d2l-filter-change', e => {
+			console.log(`Filter selection changed for dimension "${e.detail.dimension}":`, e.detail.value);
+		});
+	</script>
+
+</body>
+</html>
