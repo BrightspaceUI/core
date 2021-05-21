@@ -7,6 +7,7 @@ Positioning content off-screen is a valuable accessibility technique when you wi
 Import and use the `<d2l-offscreen>` web component, the contents of which will be positioned off-screen.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/offscreen/offscreen.js';
 </script>
@@ -34,7 +35,3 @@ class MyElement extends LitElement {
 
 }
 ```
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!

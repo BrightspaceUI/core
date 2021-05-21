@@ -1,13 +1,17 @@
 # Overflow Groups
 
-## d2l-overflow-group
 The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. Items added to this container element will no longer wrap onto a second line when the container becomes to small but will be added too a dropdown menu with configurable styling.
 
-![Overflow Group](./screenshots/overflow-group.png?raw=true)
-
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
+  import '@brightspace-ui/core/components/button/button.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
 </script>
 <d2l-overflow-group max-to-show="3">
 	<d2l-button>New</d2l-button>
@@ -30,15 +34,3 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 	<d2l-link href="http://www.desire2learn.com">D2L</d2l-link>
 </d2l-overflow-group>
 ```
-
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `auto-show` | Boolean | Automatically determine the min and maximum number of items to show based on which elements have classes `d2l-button-group-show` and `d2l-button-group-no-show`. Please consult the design team when using this attribute. |
-| `min-to-show` | Number | The minimum number of elements to always show. Please consult the design team when using this attribute. |
-| `max-to-show` | Number | The maximum number of elements to show |
-| `opener-style` | String | Set the style of the oferflow menu `default` renders a `d2l-button` while `subtle` will render a `d2l-button-subtle`|
-| `opener-type` | String | Set the opener type to `default` or `icon`, which will permanently render the dropdown menu symbol as `...` |
-
-Looking for an enhancement not listed here? Create a GitHub issue!
