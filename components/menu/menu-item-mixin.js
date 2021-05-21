@@ -81,8 +81,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 				this._onHidden();
 			} else if (propName === 'disabled') {
 				this._ariaDisabled = this.disabled ? 'true' : 'false';
-			} else if (propName === 'description') {
-				this._ariaLabel = this.description;
+			} else if (propName === 'text' || propName === 'description') {
+				this._ariaLabel = this.description || this.text;
 			}
 		});
 	}

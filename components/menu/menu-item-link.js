@@ -70,14 +70,6 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('text')) {
-			// Voiceover + iOS can't find label inside <a>
-			this.setAttribute('aria-label', this.text);
-		}
-	}
-
 	_getTarget() {
 		if (this.target && this.target !== '') {
 			return this.target;
