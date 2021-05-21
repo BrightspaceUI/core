@@ -31,6 +31,15 @@ describe('MenuItemMixin', () => {
 			expect(disabledElem.getAttribute('aria-disabled')).to.equal('true');
 		});
 
+		it('adds aria-label to menu items', async() => {
+			const elem = await fixture(`<${tag} id="my-menu-item" text="menu-item"></${tag}>`);
+			expect(elem.getAttribute('aria-label')).to.equal('menu-item');
+		});
+
+		it('overrides aria-label with description text', async() => {
+			const elem = await fixture(`<${tag} id="my-menu-item" text="menu-item" description="description-text"></${tag}>`);
+			expect(elem.getAttribute('aria-label')).to.equal('description-text');
+		});
 	});
 
 	describe('events', () => {
