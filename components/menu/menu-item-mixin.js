@@ -34,7 +34,12 @@ export const MenuItemMixin = superclass => class extends superclass {
 			 * REQUIRED: Text displayed by the menu item
 			 */
 			text: { type: String },
-			_ariaDisabled: { type: String, attribute: 'aria-disabled', reflect: true }
+			/**
+			 * Provide a description for the menu item that will be used by screen readers
+			 */
+			description: { type: String },
+			_ariaDisabled: { type: String, attribute: 'aria-disabled', reflect: true },
+			_ariaLabel: { type: String, attribute: 'aria-label', reflect: true }
 		};
 	}
 
@@ -76,6 +81,8 @@ export const MenuItemMixin = superclass => class extends superclass {
 				this._onHidden();
 			} else if (propName === 'disabled') {
 				this._ariaDisabled = this.disabled ? 'true' : 'false';
+			} else if (propName === 'description') {
+				this._ariaLabel = this.description;
 			}
 		});
 	}
