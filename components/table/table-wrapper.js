@@ -5,6 +5,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 export const tableStyles = css`
 	.d2l-table {
+		border-collapse: separate; /* needed to override reset stylesheets */
 		border-spacing: 0;
 		font-size: 0.8rem;
 		font-weight: 400;
