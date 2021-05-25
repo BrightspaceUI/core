@@ -7,12 +7,18 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
 <script type="module">
   import '@brightspace-ui/core/components/backdrop/backdrop.js';
 </script>
+<script>
+  const backdrop = document.querySelector('d2l-backdrop');
+  document.querySelector('#target > button').addEventListener('click', () => {
+    backdrop.shown = !backdrop.shown;
+  });
+</script>
 <style>
   #target { position: relative; z-index: 1000; }
 </style>
 
 <div id="target"><button>toggle backdrop</button></div>
-<d2l-backdrop for-target="target" shown></d2l-backdrop>
+<d2l-backdrop for-target="target"></d2l-backdrop>
 ```
 
 ## How to Use
