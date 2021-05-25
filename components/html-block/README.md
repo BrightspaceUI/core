@@ -15,8 +15,8 @@ Place the user-authored HTML within a `template` and the `d2l-html-block` will s
 <d2l-html-block>
   <template>
     <h1>heading 1</h1>
-	<h2>heading 2</h2>
-	<div><strong>strong</strong></div>
+    <h2>heading 2</h2>
+    <div><strong>strong</strong></div>
   </template>
 </d2l-html-block>
 ```

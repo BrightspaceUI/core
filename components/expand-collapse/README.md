@@ -7,8 +7,17 @@ The `d2l-expand-collapse-content` element can be used to used to create expandab
 <script type="module">
   import '@brightspace-ui/core/components/expand-collapse/expand-collapse-content.js';
 </script>
+<script type="module">
+  const button = document.querySelector('button');
+  button.addEventListener('click', () => {
+    const section = document.querySelector('d2l-expand-collapse-content');
+    section.expanded = !section.expanded;
+    button.setAttribute('aria-expanded', section.expanded ? 'true' : 'false');
+  });
+</script>
 
-<d2l-expand-collapse-content expanded>
+<button>Toggle</button>
+<d2l-expand-collapse-content>
   <p>My expand collapse content.</p>
 </d2l-expand-collapse-content>
 ```
