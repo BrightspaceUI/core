@@ -12,10 +12,19 @@ const states = {
 	EXPANDED: 'expanded', // fully expanded
 };
 
+/**
+ * Provides the logic to expand and collapse content
+ * @fires d2l-expand-collapse-content-expand - Dispatched when the content starts to expand. The `detail` contains an `expandComplete` promise that can be waited on to determine when the content has finished expanding.
+ * @fires d2l-expand-collapse-content-collapse - Dispatched when the content starts to collapse. The `detail` contains a `collapseComplete` promise that can be waited on to determine when the content has finished collapsing.
+ * @slot - Content to be expanded/collapsed
+ */
 class ExpandCollapseContent extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Specifies the expanded/collapsed state of the content
+			 */
 			expanded: { type: Boolean, reflect: true },
 			_height: { type: String },
 			_state: { type: String }

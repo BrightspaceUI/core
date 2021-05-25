@@ -7,16 +7,21 @@ Place the user-authored HTML within a `template` and the `d2l-html-block` will s
 **Important**: user-authored HTML must be trusted or properly sanitized!
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/html-block/html-block.js';
 </script>
 
 <d2l-html-block>
   <template>
-    <!-- some html -->
+    <h1>heading 1</h1>
+	<h2>heading 2</h2>
+	<div><strong>strong</strong></div>
   </template>
 </d2l-html-block>
 ```
+
+## How to Use
 
 To use `d2l-html-block` within another Lit component, use the `unsafeHTML` directive to avoid escaping the HTML.
 
@@ -38,7 +43,3 @@ class SomeComponent extends LitElement {
 
 customElements.define('d2l-some-component', SomeComponent);
 ```
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
