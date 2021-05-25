@@ -1,12 +1,43 @@
 # Tooltips
-## d2l-tooltip
+
+Tooltips display additional information when users focus or hover on a point of interest.
+
+```html
+<!-- docs: demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-text.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';
+</script>
+
+<d2l-button id="tooltip-button">Hover here</d2l-button>
+<d2l-tooltip for="tooltip-button" align="start" offset="10">
+	Tooltip message example
+</d2l-tooltip>
+```
+
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use to show error messages during form validation
+* Use to provide extra information in an infographic
+* Use to provide the “full text” for a truncated value in a tight datagrid or list
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use tooltips for long paragraphs of text
+* Don’t use tooltips to repeat text that is already shown
+* Don’t allow a tooltip to cover something important (the “hover and cover” anti-pattern)
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+## Tooltip
 
 The `d2l-tooltip` component is used to display additional information when users focus or hover on a point of interest.
 
-![screenshot of an error tooltip](./screenshots/tooltip-error.png)
-
 ```html
+<!-- docs: live demo -->
 <script type="module">
+  import '@brightspace-ui/core/components/inputs/input-text.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
@@ -15,20 +46,6 @@ The `d2l-tooltip` component is used to display additional information when users
 	Your error message will display here
 </d2l-tooltip>
 ```
-
-**Basic Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `for` | String, required | Provide the `id` of the tooltip's target element. If this attribute is not provided, the tooltip's parent element will be used as its target. Both the tooltip and its target element must be within the same shadow root. |
-| `align` | String | Optionally align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered. Valid values are: `start` and `end`. |
-| `delay` | Number, default: `0` | Provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus. |
-| `offset` | Number, default: `16.5` | Adjust the size of the gap between the tooltip and its target |
-| `state` | String, default: `info` | The style of the tooltip based on the type of information it displays. Valid values are: `info` and `error`. If you find yourself needing a style that isn't supported by the `state` attribute please create a Github issue. |
-
-**Events:**
-* `d2l-tooltip-show`: dispatched when the tooltip is opened
-* `d2l-tooltip-hide`: dispatched when the tooltip is closed
 
 ### Accessibility
 
@@ -78,19 +95,3 @@ In the following example to constrain the tooltip to the dashed boundary we can 
 	</d2l-tooltip>
 </div>
 ```
-
-**Advanced Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `announced` | Boolean, default: `false` | Announce the tooltip inner text to screen reader users when the tooltip is shown. Use with custom elements. |
-| `boundary` | Object | Optionally provide boundaries to constrain where the tooltip will appear. Valid properties are `"top"`, `"bottom"`, `"left"` and `"right"`. The boundary is relative to the tooltip's [offset parent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent). |
-| `close-on-click` | Boolean, default: `false` | Causes the tooltip to close when its target is clicked |
-| `disable-focus-lock` | Boolean, default: `false` | Disables focus lock so that the tooltip will automatically close when no longer hovered even if it still has focus |
-| `force-show` | Boolean, default: `false` | Force the tooltip to stay open as long as it remains `true` |
-| `for-type` | String, default: `descriptor` | Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor. Valid values are: `label` and `descriptor`. |
-| `position` | String | Optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left. |
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
