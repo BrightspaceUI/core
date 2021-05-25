@@ -12,7 +12,7 @@ The `<d2l-link>` element can be used just like the native anchor tag. Additional
 <d2l-link href="https://www.mylink.com" main>Main</d2l-link>
 ```
 
-## Web Component
+## Link
 
 Import and use the `<d2l-link>` web component instead of the native `<a>` element:
 
@@ -32,7 +32,7 @@ To make your usage of `d2l-link` accessible, use the following property when app
 |--|--|
 | `aria-label` | Use when text in link does not provide enough context. |
 
-## Applying link styles to native `<a>` elements
+## Applying link styles to native anchor elements
 
 Alternately, you can apply link styles to a native `<a>` element by importing the styles and placing the `d2l-link` CSS class on the element.
 

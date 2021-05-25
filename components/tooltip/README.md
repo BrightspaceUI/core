@@ -5,7 +5,7 @@ Tooltips display additional information when users focus or hover on a point of 
 ```html
 <!-- docs: demo -->
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/input-text.js';
+  import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
