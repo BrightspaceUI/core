@@ -10,10 +10,26 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the switch
+			 */
 			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Whether the switch is "on" or "off"
+			 */
 			on: { type: Boolean, reflect: true },
+			/**
+			 * REQUIRED: Accessible text for the switch
+			 */
 			text: { type: String, reflect: true },
+			/**
+			 * Position of the text relative to the switch
+			 * @type {'start'|'end'|'hidden'}
+			 */
 			textPosition: { type: String, attribute: 'text-position', reflect: true },
+			/**
+			 * Text to display in a tooltip for the switch
+			 */
 			tooltip: { type: String, reflect: true }
 		};
 	}

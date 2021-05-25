@@ -4,6 +4,10 @@ import '../icons/icon-custom.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { SwitchMixin } from './switch-mixin.js';
 
+/**
+ * The `d2l-switch` element is a generic switch with on/off semantics.
+ * @fires change - Dispatched when the `on` property is updated
+ */
 class Switch extends SwitchMixin(LitElement) {
 
 	get offIcon() {
