@@ -2,6 +2,8 @@
 
 A Select List allows the user to select a single option out of a relatively large number of items, or to reduce the visual prominence of an option selection.
 
+![example screenshot of select inputs](../screenshots/select.gif?raw=true)
+
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
@@ -12,7 +14,7 @@ A Select List allows the user to select a single option out of a relatively larg
 
 <!-- docs: start donts -->
 * Don't use if your options are more than 1-2 words. The cognitive load of comparing options in a Select List is relatively high
-* Select Lists show the available options offscreen – be careful if the selections you are asking the user to make are on the critical path – see Dropdowns should be the UI of last resort and be careful about your selection.
+* Select Lists show the available options offscreen – be careful if the selections you are asking the user to make are on the critical path – see [Dropdowns should be the UI of last resort](https://www.lukew.com/ff/entry.asp?1950) and be careful about your selection.
 * Select Lists are form controls, and should not submit data or have instant actions on page occur without an explicit submit action.
 Toggling progressive disclosure is OK
 * Don't use prompt text in place of a Select List field label – it’s harder to scan and negatively impacts accessibility.
