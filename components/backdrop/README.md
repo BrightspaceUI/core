@@ -1,7 +1,5 @@
 # Backdrop
 
-## d2l-backdrop
-
 The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying `role="presentation"` and `aria-hidden="true"`.
 
 ```html
@@ -16,6 +14,8 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
 <d2l-backdrop for-target="target" shown></d2l-backdrop>
 ```
 
+## How to Use
+
 Set the visible state of the backdrop by using the `shown` attribute/property.
 
 ```javascript
@@ -24,15 +24,4 @@ button.addEventListener('click', () => {
 });
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `for-target` | String, required | id of the target element to display backdrop behind |
-| `no-animate-hide` | Boolean | Disables the fade-out transition while the backdrop is being hidden |
-| `shown` | Boolean | Used to control whether the backdrop is shown |
-| `slow-transition` | Boolean | Increases the fade transition time to 1200ms (default is 200ms) |
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
+`slow-transition` can be used on the `d2l-backdrop` element in order to increase the fade transition time to 1200ms (default is 200ms).
