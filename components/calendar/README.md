@@ -3,6 +3,7 @@
 The `d2l-calendar` component can be used to display a responsively sized calendar that allows for date selection. It indicates the currently selected date if `selected-value` is specified, or if the user selects a date.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/calendar/calendar.js';
 </script>

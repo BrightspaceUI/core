@@ -18,9 +18,9 @@ The `d2l-breadcrumbs` element can be used to help users understand where they ar
 
 ## Best Practices
 <!-- docs: start best practices -->
+<!-- docs: start dos -->
 * Breadcrumbs should be used to show the information architecture of a page, not the history
 * Breadcrumbs are page level controls – only one should appear on a page a time. If a page that normally has breadcrumbs is embedded in another page, remove the breadcrumbs from the embedded page.
-<!-- docs: start dos -->
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->

@@ -3,6 +3,7 @@
 The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying `role="presentation"` and `aria-hidden="true"`.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
   import '@brightspace-ui/core/components/backdrop/backdrop.js';
 </script>
@@ -16,7 +17,7 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
 
 ## How to Use
 
-Set the visible state of the backdrop by using the `shown` attribute/property.
+Set the visible state of the backdrop by using the `shown` attribute/property:
 
 ```javascript
 button.addEventListener('click', () => {
