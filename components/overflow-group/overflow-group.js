@@ -440,7 +440,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_getSlotItems() {
-		const nodes = this._buttonSlot.assignedNodes();
+		const nodes = this._buttonSlot.assignedNodes({flatten: true});
 		const filteredNodes = nodes.filter((node) => {
 			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
 			return isNode;
