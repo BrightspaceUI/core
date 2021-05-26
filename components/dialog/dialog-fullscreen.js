@@ -2,13 +2,15 @@ import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { AsyncContainerMixin, asyncStates } from '../../mixins/async-container/async-container-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { heading2Styles, heading3Styles } from '../typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { heading3Styles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+
+const mediaQueryList = window.matchMedia('(max-width: 615px)');
 
 /**
  * A generic fullscreen dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
@@ -25,68 +27,151 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 */
 			async: { type: Boolean },
-			_hasFooterContent: { type: Boolean, attribute: false }
+			_hasFooterContent: { type: Boolean, attribute: false },
+			_icon: { type: String, attribute: false },
+			_headerStyle: { type: String, attribute: false }
 		};
 	}
 
 	static get styles() {
-		return [ dialogStyles, heading3Styles, css`
+		return [ dialogStyles, heading2Styles, heading3Styles, css`
 
-			.d2l-dialog-header {
-				padding-bottom: 15px;
-			}
-
-			.d2l-dialog-header > div > d2l-button-icon {
-				flex: none;
-				margin: -4px -15px 0 15px;
-			}
-
-			:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-				margin-left: -15px;
-				margin-right: 15px;
-			}
-
-			.d2l-dialog-content > div {
-				/* required to properly calculate preferred height when there are bottom
-				margins at the end of the slotted content */
-				border-bottom: 1px solid transparent;
-				box-sizing: border-box;
-				height: 100%;
+			.d2l-dialog-footer.d2l-footer-no-content {
+				display: none;
 			}
 
 			.d2l-dialog-content-loading {
 				text-align: center;
 			}
 
-			dialog.d2l-dialog-outer,
-			div.d2l-dialog-outer {
-				border: none;
-				border-radius: 0;
-				box-shadow: none;
-				height: 100%;
-				max-height: initial; /* required to override Chrome native positioning */
-				max-width: initial; /* required to override Chrome native positioning */
-				top: 0;
-				width: 100%;
-			}
+			@media (min-width: 616px) {
+				
+				.d2l-dialog-header {
+					border-bottom: 1px solid var(--d2l-color-gypsum);
+					padding-bottom: 0.9rem;
+					padding-top: 1rem;
+				}
 
-			.d2l-dialog-footer.d2l-footer-no-content {
-				display: none;
+				.d2l-dialog-content {
+					display: grid;
+				}
+
+				.d2l-dialog-content > div {
+					/* required to properly calculate preferred height when there are bottom
+					margins at the end of the slotted content */
+					border-bottom: 1px solid transparent;
+					box-sizing: border-box;
+					height: 100%;
+					padding-bottom: 1rem;
+					padding-top: 1rem;
+				}
+
+				.d2l-dialog-header > div > d2l-button-icon {
+					flex: none;
+					margin: -2px -12px 0 0;
+				}
+
+				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
+					margin: -2px 0 0 -12px;
+				}
+				
+				dialog.d2l-dialog-outer,
+				div.d2l-dialog-outer {
+					border-radius: 8px;
+					height: calc(100% - 3rem);
+					margin: 1.5rem;
+					max-width: 1170px;
+					opacity: 0;
+					top: 0;
+					transform: translateY(-50px) scale(0.97);
+					transition: transform 200ms ease-out, opacity 200ms ease-out;
+					width: auto;
+				}
+
+				/* for screens wider than 1170px + 60px margins */
+				@media (min-width: 1230px) {
+					dialog.d2l-dialog-outer,
+					div.d2l-dialog-outer {
+						/* center the dialog */
+						margin-left: auto;
+						margin-right: auto;
+					}
+				}
+
+				:host([_state="showing"]) dialog.d2l-dialog-outer,
+				:host([_state="showing"]) div.d2l-dialog-outer {
+					opacity: 1;
+					transition-duration: 400ms;
+				}
+
+				dialog::backdrop {
+					transition: opacity 200ms ease-out;
+				}
+
+				:host([_state="showing"]) dialog::backdrop {
+					transition-duration: 400ms;
+				}
+
+				.d2l-dialog-footer {
+					border-top: 1px solid var(--d2l-color-gypsum);
+					padding-bottom: 0; /* 0.9rem padding included on button */
+					padding-top: 0.9rem;
+				}
+
+				@media (prefers-reduced-motion: reduce) {
+
+					dialog.d2l-dialog-outer,
+					div.d2l-dialog-outer {
+						transition: none;
+					}
+
+					dialog::backdrop {
+						transition: none;
+					}
+				}
 			}
 
 			@media (max-width: 615px) {
 
+				.d2l-dialog-header {
+					padding-bottom: 15px;
+				}
+
 				.d2l-dialog-header > div > d2l-button-icon {
+					flex: none;
 					margin: -8px -13px 0 15px;
+				}
+
+				.d2l-dialog-footer.d2l-footer-no-content {
+					padding: 0 0 5px 0;
+				}
+
+				.d2l-dialog-content > div {
+					/* required to properly calculate preferred height when there are bottom
+					margins at the end of the slotted content */
+					border-bottom: 1px solid transparent;
+					/* required to render full height in an i-Frame */
+					height: calc(100% - 1px);
+				}
+
+				div[nested].d2l-dialog-outer {
+					top: 0;
 				}
 
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 					margin-left: -13px;
 					margin-right: 15px;
 				}
-
+				
+				dialog.d2l-dialog-outer,
+				div.d2l-dialog-outer {
+					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					margin: 0 !important;
+					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					min-width: calc(var(--d2l-vw, 1vw) * 100);
+					top: 42px;
+				}
 			}
-
 		`];
 	}
 
@@ -95,10 +180,24 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this.async = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
+		this._icon = 'tier1:close-large-thick';
+		this._headerStyle = 'd2l-heading-2';
+		this._handleResize = this._handleResize.bind(this);
+		this._handleResize();
 	}
 
 	get asyncContainerCustom() {
 		return true;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		mediaQueryList.addEventListener('change', this._handleResize);
+	}
+
+	disconnectedCallback() {
+		mediaQueryList.removeEventListener('change', this._handleResize);
+		super.disconnectedCallback();
 	}
 
 	render() {
@@ -129,8 +228,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			<div class="d2l-dialog-inner">
 				<div class="d2l-dialog-header">
 					<div>
-						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
-						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						<h2 id="${this._titleId}" class="${this._headerStyle}">${this.titleText}</h2>
+						<d2l-button-icon icon="${this._icon}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}">${content}</div>
@@ -161,6 +260,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	_handleFooterSlotChange(e) {
 		const footerContent = e.target.assignedNodes({ flatten: true });
 		this._hasFooterContent = (footerContent && footerContent.length > 0);
+	}
+
+	_handleResize() {
+		this._icon =  mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
+		this._headerStyle =  mediaQueryList.matches ? 'd2l-heading-3' : 'd2l-heading-2';
 	}
 
 }

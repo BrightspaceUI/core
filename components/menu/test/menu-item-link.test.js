@@ -16,6 +16,10 @@ describe('d2l-menu-item-link', () => {
 			expect(elem.getAttribute('aria-label')).to.equal('link text');
 		});
 
+		it('should sprout "aria-label" with description text', async() => {
+			const elem = await fixture(html`<d2l-menu-item-link text="link text" description="no this text"></d2l-menu-item-link>`);
+			expect(elem.getAttribute('aria-label')).to.equal('no this text');
+		});
 	});
 
 });

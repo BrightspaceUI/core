@@ -35,6 +35,7 @@ To make your usage of `d2l-menu` accessible, use the following property:
 | Attribute | Description |
 |--|--|
 | `label` | **REQUIRED** Acts as a primary label for the menu |
+| `description` | Overrides aria-label to provide extra information to screen reader users |
 
 **Events:**
 
