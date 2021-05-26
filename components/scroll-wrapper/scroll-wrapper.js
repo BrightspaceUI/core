@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
-import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -15,7 +14,7 @@ const SCROLL_AMOUNT = 0.8;
  *
  * @slot - Content to wrap
  */
-class ScrollWrapper extends FocusVisiblePolyfillMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
+class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -59,6 +58,9 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(LocalizeCoreElement(RtlMix
 				outline: none;
 				overflow-x: auto;
 			}
+			.d2l-scroll-wrapper-container.focus-visible {
+				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+			}
 			:host([h-scrollbar]) .d2l-scroll-wrapper-container {
 				border-left: 1px dashed var(--d2l-color-mica);
 				border-right: 1px dashed var(--d2l-color-mica);
@@ -100,30 +102,17 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(LocalizeCoreElement(RtlMix
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 50%;
 				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
-				box-sizing: content-box;
 				cursor: pointer;
 				display: inline-block;
-				font-family: inherit;
-				font-size: inherit;
 				height: 18px;
 				line-height: 0;
-				margin: 0;
 				padding: 10px;
 				position: absolute;
-				text-decoration: none;
 				top: 4px;
 				width: 18px;
 			}
-			.d2l-scroll-wrapper-button::-moz-focus-inner {
-				border: 0;
-			}
-			.d2l-scroll-wrapper-button:hover,
-			.d2l-scroll-wrapper-button:focus {
+			.d2l-scroll-wrapper-button:hover {
 				background-color: var(--d2l-color-sylvite);
-				outline-style: none;
-			}
-			.d2l-scroll-wrapper-button.focus-visible {
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 			}
 			:host([scrollbar-right]) .d2l-scroll-wrapper-button-right {
 				display: none;
@@ -163,16 +152,16 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(LocalizeCoreElement(RtlMix
 	render() {
 		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
-				<button class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}" aria-label="${this.localize('components.scroll-wrapper.scrollBack')}">
+				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}">
 					<d2l-icon icon="tier1:chevron-left"></d2l-icon>
-				</button>
-				<button class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right" @click="${this._scrollRight}" aria-label="${this.localize('components.scroll-wrapper.scrollForward')}">
+				</div>
+				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right" @click="${this._scrollRight}">
 					<d2l-icon icon="tier1:chevron-right"></d2l-icon>
-				</button>
+				</div>
 			</div>` : null;
 		return html`
 			${actions}
-			<div class="d2l-scroll-wrapper-container" @scroll="${this._checkScrollThresholds}"><slot></slot></div>
+			<div class="d2l-scroll-wrapper-container" @scroll="${this._checkScrollThresholds}" tabindex="0"><slot></slot></div>
 		`;
 	}
 

@@ -54,8 +54,6 @@ export default {
 	"components.more-less.less": "færre",
 	"components.more-less.more": "flere",
 	"components.overflow-group.moreActions": "Flere handlinger",
-	"components.scroll-wrapper.scrollBack": "scroll back",
-	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "Synlighed",
 	"components.tabs.next": "Rul frem",
 	"components.tabs.previous": "Rul tilbage",

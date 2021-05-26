@@ -54,8 +54,6 @@ export default {
 	"components.more-less.less": "減らす",
 	"components.more-less.more": "増やす",
 	"components.overflow-group.moreActions": "その他のアクション",
-	"components.scroll-wrapper.scrollBack": "scroll back",
-	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "表示",
 	"components.tabs.next": "前方にスクロール",
 	"components.tabs.previous": "後方にスクロール",
