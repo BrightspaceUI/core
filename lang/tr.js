@@ -54,6 +54,8 @@ export default {
 	"components.more-less.less": "daha az",
 	"components.more-less.more": "daha fazla",
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
+	"components.scroll-wrapper.scrollBack": "scroll back",
+	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "Görünürlük",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır",

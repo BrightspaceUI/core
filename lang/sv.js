@@ -54,6 +54,8 @@ export default {
 	"components.more-less.less": "mindre",
 	"components.more-less.more": "mer",
 	"components.overflow-group.moreActions": "Fler åtgärder",
+	"components.scroll-wrapper.scrollBack": "scroll back",
+	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "Synlighet",
 	"components.tabs.next": "Bläddra framåt",
 	"components.tabs.previous": "Bläddra bakåt",

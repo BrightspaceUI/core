@@ -54,6 +54,8 @@ export default {
 	"components.more-less.less": "Weniger",
 	"components.more-less.more": "mehr",
 	"components.overflow-group.moreActions": "Weitere Aktionen",
+	"components.scroll-wrapper.scrollBack": "scroll back",
+	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "Sichtbarkeit",
 	"components.tabs.next": "Weiterblättern",
 	"components.tabs.previous": "Zurückblättern",

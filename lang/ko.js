@@ -54,6 +54,8 @@ export default {
 	"components.more-less.less": "축소",
 	"components.more-less.more": "더 보기",
 	"components.overflow-group.moreActions": "추가 작업",
+	"components.scroll-wrapper.scrollBack": "scroll back",
+	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "표시여부",
 	"components.tabs.next": "앞으로 스크롤",
 	"components.tabs.previous": "뒤로 스크롤",

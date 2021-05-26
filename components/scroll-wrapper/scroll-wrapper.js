@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -14,7 +15,7 @@ const SCROLL_AMOUNT = 0.8;
  *
  * @slot - Content to wrap
  */
-class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
+class ScrollWrapper extends FocusVisiblePolyfillMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -162,10 +163,10 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	render() {
 		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
-				<button class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}" aria-hidden="true">
+				<button class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}" aria-label="${this.localize('components.scroll-wrapper.scrollBack')}">
 					<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 				</button>
-				<button class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right" @click="${this._scrollRight}" aria-hidden="true">
+				<button class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right" @click="${this._scrollRight}" aria-label="${this.localize('components.scroll-wrapper.scrollForward')}">
 					<d2l-icon icon="tier1:chevron-right"></d2l-icon>
 				</button>
 			</div>` : null;

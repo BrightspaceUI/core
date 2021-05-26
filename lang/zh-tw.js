@@ -54,6 +54,8 @@ export default {
 	"components.more-less.less": "較少",
 	"components.more-less.more": "較多",
 	"components.overflow-group.moreActions": "其他動作",
+	"components.scroll-wrapper.scrollBack": "scroll back",
+	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "能見度",
 	"components.tabs.next": "向前捲動",
 	"components.tabs.previous": "向後捲動",

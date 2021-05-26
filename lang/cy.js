@@ -54,6 +54,8 @@ export default {
 	"components.more-less.less": "llai",
 	"components.more-less.more": "mwy",
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
+	"components.scroll-wrapper.scrollBack": "scroll back",
+	"components.scroll-wrapper.scrollForward": "scroll forward",
 	"components.switch.visibility": "Gwelededd",
 	"components.tabs.next": "Sgrolio Ymlaen",
 	"components.tabs.previous": "Sgrolio Yn Ôl",
