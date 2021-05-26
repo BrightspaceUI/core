@@ -32,7 +32,7 @@ The meter components are used to visually communicate the progress of an object 
 
 ### text Property
 
-- `{%}` in the string will be replaced with percentage value. For example, `text="Visited: {%}"` can become "Visited: 50%"
+- `{ % }` (remove spaces) in the string will be replaced with percentage value. For example, `text="Visited: { % }"` can become "Visited: 50%"
 - `{x/y}` in the string will be replaced with fraction with the proper language support. For example, `text="Visited: {x/y}"` can become "Visited: 3/6"
 
 ### Light Foreground

@@ -1,31 +1,103 @@
 # Lists
 
-## d2l-list
-
-The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
-
-![List](./screenshots/list.png?raw=true)
+A list displays a collection of objects of the same type. A list is primarily used in order to help users navigate to a full-page representation of a single object, or to select several items and execute an action on them.
 
 ```html
+<!-- docs: live demo -->
 <script type="module">
+  import '@brightspace-ui/core/components/dropdown/drropdown-more.js';
+  import '@brightspace-ui/core/components/dropdown/drropdown-menu.js';
   import '@brightspace-ui/core/components/list/list.js';
   import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
 </script>
 
 <d2l-list>
-  <d2l-list-item>...</d2l-list-item>
-  <d2l-list-item>...</d2l-list-item>
-  ...
+  <d2l-list-item>
+    <d2l-list-item-content>
+      <div>Regular list item</div>
+      <div slot="secondary">Secondary information</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+  <d2l-list-item href="http://www.d2l.com" selectable key="1">
+    <img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg" />
+    <d2l-list-item-content>
+      <div>More exciting list item</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+    <div slot="actions">
+      <d2l-dropdown-more text="Open">
+        <d2l-dropdown-menu>
+          <d2l-menu label="Menu">
+            <d2l-menu-item text="Action 1"></d2l-menu-item>
+            <d2l-menu-item text="Action 2"></d2l-menu-item>
+          </d2l-menu>
+        </d2l-dropdown-menu>
+      </d2l-dropdown-more>
+    </div>
+  </d2l-list-item>
+</d2l-list>
+
+<d2l-list grid>
+  <d2l-list-item href="http://www.d2l.com" selectable key="1">
+    <d2l-list-item-content>
+      <div>Selectable list item 1</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+  <d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+    <d2l-list-item-content>
+      <div>Selectable list item 2 (selected)</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
 </d2l-list>
 ```
 
-**Properties:**
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Lists are good when items may have different attributes, and if presented in a table would have many empty cells in the columns
+* Tables take up a lot of horizontal space, and don’t really have responsive behaviour other than offscreen scroll
+* Tables have fixed width columns – every column’s size is driven by the largest element. If the contents of a certain “column” are highly variable, consider a list
+* Generally, the larger touch target of the list is easier to use than needing to target a link in the first column of a table, if the primary use case is navigation & selection rather than analysis, consider a list
+<!-- docs: end dos -->
 
-| Property | Type | Description |
-|--|--|--|
-| `grid` | Boolean | Enables keyboard grid for supported list items |
-| `separators` | String | Display separators (`all` (default), `between`, `none`) |
-| `extend-separators` | Boolean | Whether to extend the separators beyond the content's edge |
+<!-- docs: start donts -->
+* If your data is highly numerical, or a complex dataset, and making comparisons across column is essential to the user’s workflow, consider a table
+* If the user is expected to frequently change the sorting order, the sortable column headers of tables speed up this process
+* Lists don’t have headings, so for views where additional information would otherwise be repeated in every individual item, consider a table
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+## List
+
+The `d2l-list` is the container to create a styled list of items using `d2l-list-item` or `d2l-list-item-button`. It provides the appropriate `list` semantics as well as options for displaying separators, etc.
+
+```html
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+</script>
+
+<d2l-list>
+  <d2l-list-item>
+    <d2l-list-item-content>
+      <div>Regular list item</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+  <d2l-list-item>
+    <d2l-list-item-content>
+      <div>Regular list item 2</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+</d2l-list>
+```
+
+### How to Use
 
 **Methods:**
 
@@ -33,10 +105,6 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 - `getListItemIndex` (Object): gets the index of the given element within the list
 - `getSelectionInfo` (Object): gets the `state` (`listSelectionStates`) and `keys` (Array) for the selected items
 - `toggleSelectAll`: toggles the selection state of all items
-
-**Events:**
-
-- `d2l-list-selection-change`: dispatched when the selection state changes
 
 ### Accessibility Grid
 
@@ -56,63 +124,77 @@ The `grid` attribute will enable a table-like keyboard grid that allows a user t
 
 **Note about actions:** Actions must be placed in the `actions` slot. The grid does not support actions/focusable items that are placed in the content area. The list item currently only supports navigation with `href` as the content action.
 
-## d2l-list-item
+## List Item
 
 The `d2l-list-item` provides the appropriate `listitem` semantics for children within a list. It also provides some basic layout, breakpoints for responsiveness, a navigation link for the primary action, and selection. It extends `ListItemLinkMixin` and `ListItemMixin` and has all the same use cases as the mixin.
 
-![List](./screenshots/list-item.png?raw=true)
-
 ```html
-<d2l-list-item breakpoints="array"
-  href="http://www.d2l.com"
-  key="item1"
-  selectable
-  selected
-  disabled>
-  <img src="..." slot="illustration">
-  <div>...</div>
-  <div slot="actions">
-    <d2l-button-icon ...></d2l-button-icon>
-    <d2l-button-icon ...></d2l-button-icon>
-  </div>
-</d2l-list-item>
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+</script>
+
+<d2l-list>
+  <d2l-list-item href="http://www.d2l.com" selectable key="3">
+    <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg" />
+    <d2l-list-item-content>
+      <div>Geomorphology and GIS </div>
+      <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+    </d2l-list-item-content>
+    <div slot="actions">
+      <d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+      <d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+      <d2l-dropdown-more text="Open!">
+        <d2l-dropdown-menu>
+          <d2l-menu label="Astronomy">
+            <d2l-menu-item text="Introduction"></d2l-menu-item>
+            <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+          </d2l-menu>
+        </d2l-dropdown-menu>
+      </d2l-dropdown-more>
+    </div>
+  </d2l-list-item>
+</d2l-list>
 ```
 
-**Properties:**
-
-| Property | Type | Description |
-|--|--|--|
-| `href` | String | Address of item link if navigable |
-
-**Events**
-
-- `d2l-list-item-link-click`: dispatched when the item's primary link action is clicked
-
-## d2l-list-item-button
+## Button List Item
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action. It extends `ListItemButtonMixin` and `ListItemMixin` and has all the same use cases as the mixin.
 
 ![List](./screenshots/list-item.png?raw=true)
 
 ```html
-<d2l-list-item-button breakpoints="array"
-  @d2l-list-item-button-click="..."
-  key="item1"
-  selectable
-  selected
-  disabled>
-  <img src="..." slot="illustration">
-  <div>...</div>
-  <div slot="actions">
-    <d2l-button-icon ...></d2l-button-icon>
-    <d2l-button-icon ...></d2l-button-icon>
-  </div>
-</d2l-list-item-button>
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-item-button.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+</script>
+
+<d2l-list>
+  <d2l-list-item href="http://www.d2l.com" selectable key="3">
+    <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg" />
+    <d2l-list-item-content>
+      <div>Geomorphology and GIS </div>
+      <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
+    </d2l-list-item-content>
+    <div slot="actions">
+      <d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+      <d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+      <d2l-dropdown-more text="Open!">
+        <d2l-dropdown-menu>
+          <d2l-menu label="Astronomy">
+            <d2l-menu-item text="Introduction"></d2l-menu-item>
+            <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+          </d2l-menu>
+        </d2l-dropdown-menu>
+      </d2l-dropdown-more>
+    </div>
+  </d2l-list-item>
+</d2l-list>
 ```
-
-**Events**
-
-- `d2l-list-item-button-click`: dispatched when the item's primary button action is clicked
 
 ## ListItemMixin
 
@@ -150,50 +232,51 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 - content (TemplateResult): Core content of the list item, such as a d2l-list-item-content element.
 - actions (TemplateResult): Secondary actions for the list item.
 
-**Properties:**
+**Breakpoints**
 
-- `breakpoints` (Array): Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
-  - Breakpoint 0
-    - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
-    - default break: `x < 580px` where `x` is the width of the component.
-  - Breakpoint 1
-    - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
-    - default break: `581px < x < 636px` where `x` is the width of the component.
-  - Breakpoint 2
-    - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
-    - default break: `637px < x < 842px`  where `x` is the width of the component.
-  - Breakpoint 3
-    - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
-    - default break: `843px < x`  where `x` is the width of the component.
-- `disabled` (Boolean): Whether or not the checkbox is disabled
-- `draggable` (Boolean): Whether or not the item is draggable
-- `key` (String): Value to identify item if selectable
-- `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
-- `selected` (Boolean): Whether the item is selected
-- `slim` (Boolean): Whether to render the item with reduced whitespace
-
-**Events**
-
-- `d2l-list-item-position-change`: dispatched when a draggable list item's position changes in the list
+Breakpoints are a property on `ListItemMixin`. Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
+- Breakpoint 0
+  - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
+  - default break: `x < 580px` where `x` is the width of the component.
+- Breakpoint 1
+  - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
+  - default break: `581px < x < 636px` where `x` is the width of the component.
+- Breakpoint 2
+  - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
+  - default break: `637px < x < 842px`  where `x` is the width of the component.
+- Breakpoint 3
+  - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
+  - default break: `843px < x`  where `x` is the width of the component.
 
 **Accessibility**
 
-- `drag-handle-text`: The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
+To make your `ListItemMixin` accessible, use the following properties when applicable:
 
-## d2l-list-item-content
+| Attribute | Description |
+|--|--|
+| `drag-handle-text` | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
+
+## List Item Content
 
 The `d2l-list-item-content` provides additional consistent layout for primary and secondary text in item content. It may be used with or without the `illustration` and `action` slots mentioned above.
 
-![List](./screenshots/list-item-content.png?raw=true)
-
 ```html
-<d2l-list-item>
-  <d2l-list-item-content>
-    <div>Item 1</div>
-    <div slot="secondary">Secondary Info for item 1</div>
-    <div slot="supporting-info">Supporting info for item 1</div>
-  </d2l-list-item-content>
-</d2l-list-item>
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+</script>
+
+<d2l-list>
+  <d2l-list-item>
+    <d2l-list-item-content>
+      <div>Item 1</div>
+      <div slot="secondary">Secondary Info for item 1</div>
+      <div slot="supporting-info">Supporting info for item 1</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+</d2l-list>
 ```
 
 ## Drag & Drop Lists
@@ -277,11 +360,3 @@ This event includes a detail object with helper methods attached to it.
   - `list`: The array of items
   - `announceFn(any, Number) (optional)`: A callback function that takes a given item in the array and its index, and returns the text to announce
   - `keyFn(any)`: A callback function that takes a given item in the array and returns its key
-
-
-## Future Enhancements
-
-- Paging: integration with "load more", "scroll" and "numeric" paging mechanisms
-- Header with support for search, selected count, select-all
-
-Looking for an enhancement not listed here? Create a GitHub issue!
