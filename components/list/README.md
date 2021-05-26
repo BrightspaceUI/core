@@ -5,8 +5,8 @@ A list displays a collection of objects of the same type. A list is primarily us
 ```html
 <!-- docs: live demo -->
 <script type="module">
-  import '@brightspace-ui/core/components/dropdown/drropdown-more.js';
-  import '@brightspace-ui/core/components/dropdown/drropdown-menu.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
   import '@brightspace-ui/core/components/list/list.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
@@ -131,9 +131,15 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ```html
 <!-- docs: live demo -->
 <script type="module">
+  import '@brightspace-ui/core/components/button/button-icon.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
+  import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
   import '@brightspace-ui/core/components/list/list.js';
   import '@brightspace-ui/core/components/list/list-item.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
 <d2l-list>
@@ -174,25 +180,13 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 </script>
 
 <d2l-list>
-  <d2l-list-item href="http://www.d2l.com" selectable key="3">
+  <d2l-list-item-button href="http://www.d2l.com" selectable key="3">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg" />
     <d2l-list-item-content>
       <div>Geomorphology and GIS </div>
       <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
     </d2l-list-item-content>
-    <div slot="actions">
-      <d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
-      <d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
-      <d2l-dropdown-more text="Open!">
-        <d2l-dropdown-menu>
-          <d2l-menu label="Astronomy">
-            <d2l-menu-item text="Introduction"></d2l-menu-item>
-            <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-          </d2l-menu>
-        </d2l-dropdown-menu>
-      </d2l-dropdown-more>
-    </div>
-  </d2l-list-item>
+  </d2l-list-item-button>
 </d2l-list>
 ```
 
