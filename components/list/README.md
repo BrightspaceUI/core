@@ -65,6 +65,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 <d2l-list-item breakpoints="array"
   href="http://www.d2l.com"
   key="item1"
+  label="some label"
   selectable
   selected
   disabled>
@@ -97,6 +98,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 <d2l-list-item-button breakpoints="array"
   @d2l-list-item-button-click="..."
   key="item1"
+  label="some label"
   selectable
   selected
   disabled>
@@ -167,6 +169,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 - `disabled` (Boolean): Whether or not the checkbox is disabled
 - `draggable` (Boolean): Whether or not the item is draggable
 - `key` (String): Value to identify item if selectable
+- `label` (String): The hidden label for the checkbox if selectable
 - `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
 - `selected` (Boolean): Whether the item is selected
 - `slim` (Boolean): Whether to render the item with reduced whitespace

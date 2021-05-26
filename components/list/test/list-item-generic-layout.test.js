@@ -43,21 +43,21 @@ const nonGridFixture = html`
 
 const longFixture = html`
 	<d2l-list grid>
-		<d2l-list-item selectable href="http://d2l.com" key="item1">
+		<d2l-list-item label="Test Label" selectable href="http://d2l.com" key="item1">
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
 		</d2l-list-item>
-		<d2l-list-item selectable href="http://d2l.com" key="item2">
+		<d2l-list-item label="Test Label" selectable href="http://d2l.com" key="item2">
 			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
 		</d2l-list-item>
-		<d2l-list-item selectable href="http://d2l.com" key="item3">
+		<d2l-list-item label="Test Label" selectable href="http://d2l.com" key="item3">
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
 			<div slot="actions">
@@ -65,7 +65,7 @@ const longFixture = html`
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
 		</d2l-list-item>
-		<d2l-list-item selectable key="item4">
+		<d2l-list-item label="Test Label" selectable key="item4">
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
 			<div slot="actions">
@@ -75,7 +75,7 @@ const longFixture = html`
 				<d2l-button-icon text="My Button" icon="tier1:preview"></d2l-button-icon>
 			</div>
 		</d2l-list-item>
-		<d2l-list-item selectable href="http://d2l.com" key="item5">
+		<d2l-list-item label="Test Label" selectable href="http://d2l.com" key="item5">
 			<div class="d2l-list-item-text d2l-body-compact">Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.1</div>
 			<div slot="actions">
@@ -83,14 +83,14 @@ const longFixture = html`
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
 		</d2l-list-item>
-		<d2l-list-item selectable key="item6">
+		<d2l-list-item label="Test Label" selectable key="item6">
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
 			<div slot="actions">
 				<d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon>
 			</div>
 		</d2l-list-item>
-		<d2l-list-item selectable key="item7">
+		<d2l-list-item label="Test Label" selectable key="item7">
 			<div class="d2l-list-item-text d2l-body-compact">Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation B2.2</div>
 			<div slot="actions">

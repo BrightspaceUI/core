@@ -13,7 +13,7 @@ const tag = defineCE(
 	}
 );
 
-describe('ListItemCheckboxMixin', () => {
+describe.only('ListItemCheckboxMixin', () => {
 	describe('Sets selected status to undefined when no key is given', () => {
 		const cases = [
 			'disabled selected',
@@ -23,7 +23,7 @@ describe('ListItemCheckboxMixin', () => {
 		];
 		for (const test of cases) {
 			it(test, async() => {
-				const element = await fixture(`<${tag} ${test}></${tag}>`);
+				const element = await fixture(`<${tag} ${test} label="some label"></${tag}>`);
 				expect(element.selected).to.be.undefined;
 			});
 		}
@@ -47,7 +47,7 @@ describe('ListItemCheckboxMixin', () => {
 			it(test.input || 'empty', async() => {
 				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
 				const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
-				const checkbox = element.shadowRoot.querySelector('.d2l-input-checkbox');
+				const checkbox = element.shadowRoot.querySelector('d2l-selection-checkbox');
 				expect(actionArea).to.be.null;
 				expect(checkbox).to.be.null;
 
@@ -69,13 +69,13 @@ describe('ListItemCheckboxMixin', () => {
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
+				const element = await fixture(`<${tag} key="1234" ${test.input} label="some label"></${tag}>`);
 				Object.keys(test.initial).forEach(prop =>
 					expect(element[prop]).to.be.equal(test.initial[prop]));
 				// simulate a checkbox click
 				setTimeout(() => {
-					const checkbox = element.shadowRoot.querySelector('.d2l-input-checkbox');
-					checkbox.checked = test.expected.selected;
+					const checkbox = element.shadowRoot.querySelector('d2l-selection-checkbox');
+					checkbox.selected = test.expected.selected;
 					checkbox.dispatchEvent(new Event('change'));
 				});
 				const { detail } = await oneEvent(element, 'd2l-list-item-selected');
@@ -98,7 +98,7 @@ describe('ListItemCheckboxMixin', () => {
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
+				const element = await fixture(`<${tag} key="1234" ${test.input} label="some label"></${tag}>`);
 				Object.keys(test.initial).forEach(prop =>
 					expect(element[prop]).to.be.equal(test.initial[prop]));
 				// simulate an action area click
@@ -128,7 +128,7 @@ describe('ListItemCheckboxMixin', () => {
 		}];
 		for (const test of cases) {
 			it(test.input, async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
+				const element = await fixture(`<${tag} key="1234" ${test.input} label="some label"></${tag}>`);
 				let dispatched = false;
 				const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
 				element.addEventListener('d2l-list-item-selected', () => dispatched = true);
