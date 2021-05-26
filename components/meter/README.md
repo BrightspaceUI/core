@@ -1,84 +1,41 @@
-# Meter Components
+# Meters
 
-**Note:** these are referred to as "progress meters" on [design.d2l](http://design.d2l/components/progress-meters/).
-
-## d2l-meter-linear
-
-Linear meters show a horizontal progress bar.
-
-![Linear meter with no progress](./screenshots/d2l-meter-linear-no-progress.png?raw=true)
-![Linear meter with some progress](./screenshots/d2l-meter-linear-has-progress.png?raw=true)
-![Linear meter completed](./screenshots/d2l-meter-linear-completed.png?raw=true)
+The meter components are used to visually communicate the progress of an object or operation.
 
 ```html
+<!-- docs: demo -->
 <script type="module">
+  import '@brightspace-ui/core/components/meter/meter-circle.js';
   import '@brightspace-ui/core/components/meter/meter-linear.js';
-</script>
-<d2l-meter-linear value="3" max="10"></d2l-meter-linear>
-```
-
-**Properties:**
-
-- `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-- `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
-- `percent` (Boolean): Shows a percentage instead of `value/max`.
-- `text-inline` (Boolean): Keeps the meter to a single line.
-- `text` (String): Context information about what the meter is about.
-	- `{%}` in the string will be replaced with percentage value
-	- `{x/y}` in the string will be replaced with fraction with the proper language support
-	- **DEPRECATED** `{x}` in the string will be replaced with `value`
-	- **DEPRECATED** `{y}` in the string will be replaced with `max`
-
-## d2l-meter-radial
-
-Radial meters will show the progress bar as a half circle.
-
-![Radial meter with no progress](./screenshots/d2l-meter-radial-no-progress.png?raw=true)
-![Radial meter with some progress](./screenshots/d2l-meter-radial-has-progress.png?raw=true)
-![Radial meter completed](./screenshots/d2l-meter-radial-completed.png?raw=true)
-![Radial meter with text](./screenshots/d2l-meter-radial-with-text.png?raw=true)
-
-```html
-<script type="module">
   import '@brightspace-ui/core/components/meter/meter-radial.js';
 </script>
+<d2l-meter-circle value="30" max="100"></d2l-meter-circle>
+<d2l-meter-linear value="3" max="10"></d2l-meter-linear>
 <d2l-meter-radial value="30" max="100"></d2l-meter-radial>
 ```
 
-**Properties:**
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use to show the completion or progress of an object.
+* Use to highlight important or critical progress data.
+* Use to provide feedback when a user completes an action that results in a change in data.
+<!-- docs: end dos -->
 
-- `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-- `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
-- `percent` (Boolean): Shows a percentage instead of `value/max`.
-- `text` (String): Context information about what the meter is about.
-	- `{%}` in the string will be replaced with percentage value
-	- `{x/y}` in the string will be replaced with fraction with the proper language support
+<!-- docs: start donts -->
+* Don't use a lot of progress indicators on a single screen because they can overwhelm the user.
+* Don't use motion unless the data is the primary content on the screen.
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
-## d2l-meter-circle
+## How to Use
 
-Circle meters will show the progress as a full circle.
+### text Property
 
-![Circle meter with no progress](./screenshots/d2l-meter-circle-no-progress.png?raw=true)
-![Circle meter with no progress](./screenshots/d2l-meter-circle-has-progress.png?raw=true)
-![Circle meter with no progress](./screenshots/d2l-meter-circle-completed.png?raw=true)
+- `{%}` in the string will be replaced with percentage value. For example, `text="Visited: {%}"` can become "Visited: 50%"
+- `{x/y}` in the string will be replaced with fraction with the proper language support. For example, `text="Visited: {x/y}"` can become "Visited: 3/6"
 
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/meter/meter-circle.js';
-</script>
-<d2l-meter-circle value="30" max="100"></d2l-meter-circle>
-```
-
-**Properties:**
-
-- `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-- `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
-- `percent` (Boolean): Shows a percentage instead of `value/max`.
-- `text` (String): Context information about what the meter is about.
-	- `{%}` in the string will be replaced with percentage value
-	- `{x/y}` in the string will be replaced with fraction with the proper language support
-
-## Light Foreground
+### Light Foreground
 
 All `meter` components have a `foreground-light` style for displaying against a dark background. To use this style, just add this attribute:
 
@@ -86,6 +43,38 @@ All `meter` components have a `foreground-light` style for displaying against a 
 <d2l-meter-circle value="30" max="100" foreground-light></d2l-meter-circle>
 ```
 
-## Future Enhancements
+## Linear Meter
 
-Looking for an enhancement not listed here? Create a GitHub issue!
+Linear meters show a horizontal progress bar.
+
+```html
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/meter/meter-linear.js';
+</script>
+<d2l-meter-linear value="3" max="10"></d2l-meter-linear>
+```
+
+## Radial Meter
+
+Radial meters will show the progress bar as a half circle.
+
+```html
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/meter/meter-radial.js';
+</script>
+<d2l-meter-radial value="30" max="100"></d2l-meter-radial>
+```
+
+## Circle Meter
+
+Circle meters will show the progress as a full circle.
+
+```html
+<!-- docs: live demo -->
+<script type="module">
+  import '@brightspace-ui/core/components/meter/meter-circle.js';
+</script>
+<d2l-meter-circle value="30" max="100"></d2l-meter-circle>
+```
