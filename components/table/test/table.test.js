@@ -2,7 +2,7 @@ import '../table-wrapper.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
-describe.only('d2l-table-wrapper', () => {
+describe('d2l-table-wrapper', () => {
 
 	describe('constructor', () => {
 		it('should construct', () => {
