@@ -13,7 +13,6 @@
 			import '../list-item.js';
 			import '../list-header.js';
 			import '../list.js';
-			import '../../overflow-group/overflow-group.js';
 			import '../../selection/selection-select-all.js';
 			import '../../selection/selection-action.js';
 		</script>
@@ -116,13 +115,11 @@
 				<template>
 					<d2l-list>
 						<d2l-list-header slot="header">
-							<d2l-overflow-group opener-type="icon">
-								<d2l-selection-action icon="tier1:tag-hollow" text="Tag" requires-selection></d2l-selection-action>
-								<d2l-selection-action icon="tier1:share" text="Share" requires-selection></d2l-selection-action>
-								<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
-								<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
-								<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-							</d2l-overflow-group>
+							<d2l-selection-action icon="tier1:tag-hollow" text="Tag" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:share" text="Share" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 						</d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Earth Sciences">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>

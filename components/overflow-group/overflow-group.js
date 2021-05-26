@@ -32,7 +32,7 @@ const OPENER_STYLE = {
 
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
-	const disabled = node.disabled;
+	const disabled = node.disabled || node.nonInteractive;
 	const handleItemSelect = () => {
 		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
 		node.click();
@@ -85,6 +85,7 @@ function convertToDropdownItem(node) {
 		case 'd2l-button-subtle':
 		case 'button':
 		case 'd2l-button-icon':
+		case 'd2l-selection-action':
 			return createMenuItem(node);
 		case 'a':
 		case 'd2l-link':
@@ -224,6 +225,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			}`
 		];
 	}
+
 	constructor() {
 		super();
 		this._handleResize = this._handleResize.bind(this);
@@ -252,6 +254,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		const resizeObserver = new ResizeObserver(this._throttledResize);
 		resizeObserver.observe(this._container);
 	}
+
 	render() {
 		const overflowMenu = this._getOverflowMenu();
 
@@ -264,12 +267,13 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		});
 
 		return html`
-			<div class="d2l-overflow-group-container">
+			<div class="d2l-overflow-group-container" @d2l-non-interactive-change="${this._handleNonInteractiveChange}">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowMenu}
 			</div>
 		`;
 	}
+
 	update(changedProperties) {
 		super.update(changedProperties);
 
@@ -291,6 +295,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			});
 		}
 	}
+
 	_autoDetectBoundaries(items) {
 
 		let minToShow, maxToShow;
@@ -310,6 +315,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			this.maxToShow = maxToShow;
 		}
 	}
+
 	_chomp() {
 		if (!this._itemLayouts) return;
 
@@ -388,6 +394,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { composed: false, bubbles: true }));
 	}
+
 	_getItemLayouts(filteredNodes) {
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
@@ -402,8 +409,10 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				node: node
 			};
 		});
+
 		return items.filter(({ isHidden }) => !isHidden);
 	}
+
 	_getItems() {
 		// get the items from the button slot
 		this._slotItems = this._getSlotItems();
@@ -412,6 +421,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		// convert to dropdown items (for overflow menu)
 		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
 	}
+
 	_getOverflowMenu() {
 		if (this._overflowMenuHidden) {
 			return;
@@ -442,7 +452,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_getSlotItems() {
-		const nodes = this._buttonSlot.assignedNodes({flatten: true});
+		const nodes = this._buttonSlot.assignedNodes({ flatten: true });
 		const filteredNodes = nodes.filter((node) => {
 			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
 			return isNode;
@@ -450,12 +460,23 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		return filteredNodes;
 	}
+
+	_handleNonInteractiveChange() {
+		if (this._updateDropdownItemsRequested) return;
+
+		this._updateDropdownItemsRequested = true;
+		setTimeout(() => {
+			this._dropdownItems = this._slotItems.map(node => convertToDropdownItem(node));
+			this._updateDropdownItemsRequested = false;
+			this.requestUpdate();
+		}, 0);
+	}
+
 	_handleResize(entries) {
-
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
-
 		this._chomp();
 	}
+
 	_handleSlotChange() {
 		requestAnimationFrame(() => {
 			this._getItems();

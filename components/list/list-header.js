@@ -1,3 +1,4 @@
+import '../overflow-group/overflow-group.js';
 import '../selection/selection-select-all.js';
 import '../selection/selection-summary.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -68,7 +69,7 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 					no-selection-text="${this.localize('components.selection.select-all')}">
 				</d2l-selection-summary>
 				<div class="d2l-list-header-actions">
-					<slot></slot>
+					<d2l-overflow-group opener-type="icon"><slot></slot></d2l-overflow-group>
 				</div>
 			</div>
 		`;
