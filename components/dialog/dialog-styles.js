@@ -96,8 +96,12 @@ export const dialogStyles = css`
 	.d2l-dialog-content {
 		box-sizing: border-box;
 		flex: 1 0 0;
-		overflow: auto;
+		overflow: hidden; /* scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash */
 		padding: 0 30px;
+	}
+
+	.d2l-dialog-outer-scroll .d2l-dialog-content {
+		overflow: auto;
 	}
 
 	.d2l-dialog-footer {
