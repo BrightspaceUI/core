@@ -3,7 +3,7 @@
 A list displays a collection of objects of the same type. A list is primarily used in order to help users navigate to a full-page representation of a single object, or to select several items and execute an action on them.
 
 ```html
-<!-- docs: live demo -->
+<!-- docs: demo -->
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
@@ -14,15 +14,8 @@ A list displays a collection of objects of the same type. A list is primarily us
   import '@brightspace-ui/core/components/menu/menu-item.js';
 </script>
 
-<d2l-list>
-  <d2l-list-item>
-    <d2l-list-item-content>
-      <div>Regular list item</div>
-      <div slot="secondary">Secondary information</div>
-      <div slot="supporting-info">Supporting information</div>
-    </d2l-list-item-content>
-  </d2l-list-item>
-  <d2l-list-item href="http://www.d2l.com" selectable key="1">
+<d2l-list style="width: 100%">
+  <d2l-list-item href="http://www.d2l.com" key="1">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg" />
     <d2l-list-item-content>
       <div>More exciting list item</div>
@@ -39,17 +32,23 @@ A list displays a collection of objects of the same type. A list is primarily us
       </d2l-dropdown-more>
     </div>
   </d2l-list-item>
-</d2l-list>
-
-<d2l-list grid>
+  <d2l-list-item>
+    <d2l-list-item-content>
+      <div>Regular list item</div>
+      <div slot="secondary">Secondary information</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
   <d2l-list-item href="http://www.d2l.com" selectable key="1">
     <d2l-list-item-content>
       <div>Selectable list item 1</div>
+      <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
   <d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
     <d2l-list-item-content>
       <div>Selectable list item 2 (selected)</div>
+      <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
 </d2l-list>
@@ -169,8 +168,6 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 The `d2l-list-item-button` provides the same functionality as `d2l-list-item` except with button semantics for its primary action. It extends `ListItemButtonMixin` and `ListItemMixin` and has all the same use cases as the mixin.
 
-![List](./screenshots/list-item.png?raw=true)
-
 ```html
 <!-- docs: live demo -->
 <script type="module">
@@ -180,8 +177,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 </script>
 
 <d2l-list>
-  <d2l-list-item-button href="http://www.d2l.com" selectable key="3">
-    <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg" />
+  <d2l-list-item-button href="http://www.d2l.com" selectable key="1">
     <d2l-list-item-content>
       <div>Geomorphology and GIS </div>
       <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
