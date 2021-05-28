@@ -44,6 +44,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_overflowBottom: { type: Boolean },
 			_overflowTop: { type: Boolean },
 			_parentDialog: { type: Object },
+			_scroll: { type: Boolean },
 			_state: { type: String, reflect: true },
 			_top: { type: Number },
 			_width: { type: Number },
@@ -66,6 +67,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._left = 0;
 		this._overflowBottom = false;
 		this._overflowTop = false;
+		this._scroll = false;
 		this._top = 0;
 		this._width = 0;
 		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
@@ -142,6 +144,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			else this._handleClose();
 		};
 
+		this._scroll = false;
 		if (!reduceMotion) {
 			const transitionEnd = () => {
 				dialog.removeEventListener('transitionend', transitionEnd);
@@ -319,6 +322,13 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._focusInitial();
 
 		requestAnimationFrame(async() => {
+
+			this.shadowRoot.querySelector('.d2l-dialog-content').scrollTop = 0;
+			// scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash
+			setTimeout(() => {
+				this._scroll = true;
+			}, 0);
+
 			await this._updateSize();
 			this._state = 'showing';
 
@@ -361,6 +371,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			'd2l-dialog-outer-overflow-top': this._overflowTop,
 			'd2l-dialog-outer-nested': !this._useNative && this._parentDialog,
 			'd2l-dialog-outer-nested-showing': !this._useNative && this._nestedShowing,
+			'd2l-dialog-outer-scroll': this._scroll,
 			'd2l-dialog-fullscreen-within': this._fullscreenWithin !== 0
 		};
 

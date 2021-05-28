@@ -37,10 +37,8 @@ describe('d2l-scroll-wrapper', () => {
 				});
 			});
 
-			it('action-button-focus', async function() {
-				await page.$eval('#show-actions-overflow-right > d2l-test-scroll-wrapper', (elem) => {
-					elem.focusRightScrollButton();
-				});
+			it('focus', async function() {
+				await page.$eval('#show-actions-overflow-right > d2l-test-scroll-wrapper', (elem) => elem.focus());
 				const rect = await visualDiff.getRect(page, '#show-actions-overflow-right');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
