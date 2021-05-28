@@ -261,7 +261,9 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		}
 	}
 
-	async _applyClassNames(table) {
+	async _applyClassNames(table, count) {
+
+		if (count === 10) return;
 
 		await new Promise((resolve) => requestAnimationFrame(resolve));
 
@@ -274,6 +276,10 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			firstRow = firstRow || r;
 			lastRow = r;
 		});
+		if (rows.length > 0 && firstRow === null) {
+			setTimeout(() => this._applyClassNames(table, ++count), 300);
+			return;
+		}
 
 		const topHeader = table.querySelector('tr.d2l-table-header:first-child th:not([rowspan]), tr[header]:first-child th:not([rowspan]), thead tr:first-child th:not([rowspan])');
 		const topHeaderHeight = topHeader ? topHeader.clientHeight : -1;
@@ -328,14 +334,14 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
-		this._tableObserver = new MutationObserver(() => this._applyClassNames(table));
+		this._tableObserver = new MutationObserver(() => this._applyClassNames(table, 0));
 		this._tableObserver.observe(table, {
 			attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 			attributeFilter: ['selected'],
 			childList: true,
 			subtree: true
 		});
-		this._applyClassNames(table);
+		this._applyClassNames(table, 0);
 
 	}
 
