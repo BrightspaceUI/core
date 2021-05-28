@@ -183,7 +183,7 @@ export function isFocusable(node, includeHidden, includeTabbablesOnly, includeDi
 export function tryApplyFocus(elem) {
 	const focusable = findComposedAncestor(elem, (node) => (isFocusable(node) || getFirstFocusableDescendant(node) !== null));
 	if (focusable) {
-		forceFocusVisible(getComposedParent(focusable));
+		forceFocusVisible(focusable);
 		return true;
 	}
 	return false;
