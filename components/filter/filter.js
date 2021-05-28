@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import '../button/button-icon.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
@@ -8,8 +9,8 @@ import '../list/list-item.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
 
+import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyStandardStyles } from '../typography/styles.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -34,7 +35,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodyStandardStyles, css`
+		return [bodyCompactStyles, bodyStandardStyles, css`
 			div[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
@@ -52,10 +53,16 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				padding-right: 0;
 			}
 
+			.d2l-filter-dimension-header-text,
 			.d2l-filter-dimension-set-value-text {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
+			}
+
+			/* Needed to "undo" the menu hover styles */
+			:host(:hover) .d2l-filter-dimension-set-value-text {
+				color: var(--d2l-color-ferrite);
 			}
 		`];
 	}
@@ -183,7 +190,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						selectable
 						?selected="${item.selected}"
 						slim>
-						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+						<div class="d2l-filter-dimension-set-value-text d2l-body-compact">${item.text}</div>
 					</d2l-list-item>
 				`)}
 			</d2l-list>
