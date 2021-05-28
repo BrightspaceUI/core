@@ -353,9 +353,8 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				this._tableIntersectionObserver.disconnect();
 			}
 			this._tableIntersectionObserver.observe(table);
-		} else {
-			requestAnimationFrame(() => this._applyClassNames(table));
 		}
+		requestAnimationFrame(() => this._applyClassNames(table));
 
 	}
 
