@@ -10,8 +10,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-const mediaQueryList = window.matchMedia('(max-width: 615px)');
-
 /**
  * A generic fullscreen dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
  * @slot - Default slot for content inside dialog
@@ -183,6 +181,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._icon = 'tier1:close-large-thick';
 		this._headerStyle = 'd2l-heading-2';
 		this._handleResize = this._handleResize.bind(this);
+		this._mediaQueryList = window.matchMedia('(max-width: 615px)');
+
 		this._handleResize();
 	}
 
@@ -192,11 +192,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	connectedCallback() {
 		super.connectedCallback();
-		mediaQueryList.addEventListener('change', this._handleResize);
+		this._mediaQueryList.addEventListener('change', this._handleResize);
 	}
 
 	disconnectedCallback() {
-		mediaQueryList.removeEventListener('change', this._handleResize);
+		this._mediaQueryList.removeEventListener('change', this._handleResize);
 		super.disconnectedCallback();
 	}
 
@@ -263,8 +263,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	}
 
 	_handleResize() {
-		this._icon =  mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
-		this._headerStyle =  mediaQueryList.matches ? 'd2l-heading-3' : 'd2l-heading-2';
+		this._icon =  this._mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
+		this._headerStyle =  this._mediaQueryList.matches ? 'd2l-heading-3' : 'd2l-heading-2';
 	}
 
 }
