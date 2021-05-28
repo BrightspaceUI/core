@@ -233,12 +233,14 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		this.noColumnBorder = false;
 		this.stickyHeaders = false;
 		this.type = 'default';
-		this._tableObserver = null;
+		this._tableIntersectionObserver = null;
+		this._tableMutationObserver = null;
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._tableObserver) this._tableObserver.disconnect();
+		if (this._tableIntersectionObserver) this._tableIntersectionObserver.disconnect();
+		if (this._tableMutationObserver) this._tableMutationObserver.disconnect();
 	}
 
 	render() {
@@ -261,11 +263,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		}
 	}
 
-	async _applyClassNames(table, count) {
-
-		if (count === 10) return;
-
-		await new Promise((resolve) => requestAnimationFrame(resolve));
+	async _applyClassNames(table) {
 
 		// offsetParent causes reflow/paint so do them all at once
 		const rows = Array.from(table.rows);
@@ -276,10 +274,6 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			firstRow = firstRow || r;
 			lastRow = r;
 		});
-		if (rows.length > 0 && firstRow === null) {
-			setTimeout(() => this._applyClassNames(table, ++count), 300);
-			return;
-		}
 
 		const topHeader = table.querySelector('tr.d2l-table-header:first-child th:not([rowspan]), tr[header]:first-child th:not([rowspan]), thead tr:first-child th:not([rowspan])');
 		const topHeaderHeight = topHeader ? topHeader.clientHeight : -1;
@@ -334,14 +328,34 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
-		this._tableObserver = new MutationObserver(() => this._applyClassNames(table, 0));
-		this._tableObserver.observe(table, {
+		this._tableMutationObserver = new MutationObserver(() => this._applyClassNames(table, 0));
+		this._tableMutationObserver.observe(table, {
 			attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 			attributeFilter: ['selected'],
 			childList: true,
 			subtree: true
 		});
-		this._applyClassNames(table, 0);
+
+		// observes when visibility of <table> changes to catch cases
+		// where table is initially hidden (which would cause first/last
+		// row classes to be unset) but then becomes shown
+		if (typeof(IntersectionObserver) === 'function') {
+			if (this._tableIntersectionObserver === null) {
+				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							this._tableIntersectionObserver.unobserve(table);
+							requestIdleCallback(() => this._applyClassNames(table));
+						}
+					});
+				});
+			} else {
+				this._tableIntersectionObserver.disconnect();
+			}
+			this._tableIntersectionObserver.observe(table);
+		} else {
+			requestAnimationFrame(() => this._applyClassNames(table));
+		}
 
 	}
 
