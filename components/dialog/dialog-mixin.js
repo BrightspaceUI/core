@@ -2,7 +2,7 @@ import '../focus-trap/focus-trap.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { forceFocusVisible, getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
+import { forceFocusVisible, getComposedActiveElement, getLastFocusableDescendant, getNextFocusable, tryApplyFocus } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit-element/lit-element.js';
@@ -78,7 +78,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._useNative) {
 			window.addEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
 		}
-
 		if (!window.ifrauclient) return;
 		const ifrauClient = await window.ifrauclient().connect();
 		this._ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
@@ -175,7 +174,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._opener && this._opener.focus) {
 			// wait for inactive focus trap
 			requestAnimationFrame(() => {
-				forceFocusVisible(this._opener);
+				tryApplyFocus(this._opener);
 				this._opener = null;
 			});
 		}
@@ -436,5 +435,4 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			});
 		});
 	}
-
 };
