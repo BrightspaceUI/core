@@ -19,6 +19,7 @@ export const checkboxStyles = css`
 		display: inline-block;
 		height: 1.2rem;
 		margin: 0;
+		outline: none;
 		padding: 0;
 		vertical-align: middle;
 		width: 1.2rem;
