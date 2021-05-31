@@ -57,7 +57,7 @@
     "lit-analyzer": "^1",
     "mocha": "^8",
     "node-sass": "^6",
-    "sinon": "^10",
+    "sinon": "^11",
     "stylelint": "^13",
     "web-component-analyzer": "^1"
   },
