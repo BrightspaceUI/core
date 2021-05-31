@@ -237,12 +237,6 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		this._tableMutationObserver = null;
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		if (this._tableIntersectionObserver) this._tableIntersectionObserver.disconnect();
-		if (this._tableMutationObserver) this._tableMutationObserver.disconnect();
-	}
-
 	render() {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 		if (this.stickyHeaders) {
