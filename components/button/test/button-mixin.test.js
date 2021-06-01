@@ -43,6 +43,11 @@ describe('ButtonMixin', () => {
 			expect(() => el.click()).to.not.throw();
 		});
 
+		it('should stop propagation of click events if button is disabled with disabled-tooltip', async() => {
+			const el = await fixture(`<${tagName} disabled disabled-tooltip="tooltip text"></${tagName}`);
+			expect(() => el.click()).to.not.throw();
+		});
+
 	});
 
 	describe('focus management', () => {
