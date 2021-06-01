@@ -39,6 +39,15 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Button (Disabled with Tooltip)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button disabled disabled-tooltip="Optional disabled tooltip">Normal Button</d2l-button>
+				</template>
+			</d2l-demo-snippet>
+
+
 			<h2>Button (Primary and Disabled)</h2>
 
 			<d2l-demo-snippet>
@@ -47,7 +56,22 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Button (Tooltip)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button tooltip="Optional tooltip text">Normal Button</d2l-button>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('click', e => {
+				if (e.target.tagName !== 'D2L-BUTTON') return;
+				console.log('button clicked', e.target);
+			});
+		</script>
 
 	</body>
 </html>

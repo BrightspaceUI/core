@@ -1,7 +1,9 @@
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -135,7 +137,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 					right: auto;
 				}
 
-				button[disabled] {
+				:host([disabled]) button {
 					cursor: default;
 					opacity: 0.5;
 				}
@@ -145,8 +147,8 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 
 	constructor() {
 		super();
-
 		this.iconRight = false;
+		this._buttonId = getUniqueId();
 	}
 
 	render() {
@@ -159,19 +161,21 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				aria-label="${ifDefined(this.description || this.ariaLabel)}"
 				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
-				?disabled="${this.disabled}"
+				?disabled="${this.disabled && !this.disabledTooltip}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
 				formenctype="${ifDefined(this.formenctype)}"
 				formmethod="${ifDefined(this.formmethod)}"
 				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
+				id="${this._buttonId}"
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
 				${icon}
 				<span class="d2l-button-subtle-content">${this.text}</span>
 				<slot></slot>
-		</button>
+			</button>
+			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}" delay="200">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
 

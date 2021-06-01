@@ -31,6 +31,14 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Subtle Button Disabled with Tooltip</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-subtle id="disabled" text="Subtle Button" disabled disabled-tooltip="Optional disabled tooltip"></d2l-button-subtle>
+				</template>
+			</d2l-demo-snippet>
+
 			<h2>Subtle Button with Text and Icon</h2>
 
 			<d2l-demo-snippet>
@@ -58,5 +66,13 @@
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('click', e => {
+				if (e.target.tagName !== 'D2L-BUTTON-SUBTLE') return;
+				console.log('button clicked', e.target);
+			});
+		</script>
+
 	</body>
 </html>

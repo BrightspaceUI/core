@@ -1,9 +1,11 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { ThemeMixin } from '../../mixins/theme-mixin.js';
@@ -121,7 +123,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 					transition-duration: 0.4s, 0.4s;
 				}
 
-				button[disabled] {
+				:host([disabled]) button {
 					cursor: default;
 					opacity: 0.5;
 				}
@@ -138,6 +140,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	constructor() {
 		super();
 		this.translucent = false;
+		this._buttonId = getUniqueId();
 	}
 
 	render() {
@@ -148,18 +151,20 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
 				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
-				?disabled="${this.disabled}"
+				?disabled="${this.disabled && !this.disabledTooltip}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
 				formenctype="${ifDefined(this.formenctype)}"
 				formmethod="${ifDefined(this.formmethod)}"
 				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
+				id="${this._buttonId}"
 				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
 				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>
 		</button>
+		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}" delay="500">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
 
