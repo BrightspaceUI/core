@@ -6,7 +6,8 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 	getPreviousFocusableAncestor,
-	isFocusable
+	isFocusable,
+	tryApplyFocus
 } from '../focus.js';
 import { LitElement } from 'lit-element/lit-element.js';
 
@@ -70,6 +71,23 @@ const focusableFixture = html`
 			<button></button>
 			some text node
 			<!-- some comment node -->
+		</div>
+	</div>
+`;
+const focusableAncestorFixture = html`
+	<a>
+		<div>
+			<button disabled></button>
+		</div>
+	</a>
+`;
+const parentSiblingFocusableAncestorFixture = html`
+	<div>
+		<div>
+			<iframe></iframe>
+			<div>
+				<button disabled></button>
+			</div>
 		</div>
 	</div>
 `;
@@ -356,6 +374,34 @@ describe('focus', () => {
 			expect(isFocusable(commentNode)).to.be.false;
 		});
 
+	});
+
+	describe('tryApplyFocus', () => {
+
+		it('returns true on single focusable element', async() => {
+			const elem = await fixture(focusableFixture);
+			expect(tryApplyFocus(elem.querySelector('button'))).to.be.true;
+		});
+
+		it('returns false on non-existent element', async() => {
+			const elem = await fixture(focusableFixture);
+			expect(tryApplyFocus(elem.querySelector('#nonExistentDiv'))).to.be.false;
+		});
+
+		it('returns true on element with focusable parent', async() => {
+			const elem = await fixture(focusableAncestorFixture);
+			expect(tryApplyFocus(elem.querySelector('div'))).to.be.true;
+		});
+
+		it('returns true on element with focusable grandparent', async() => {
+			const elem = await fixture(focusableAncestorFixture);
+			expect(tryApplyFocus(elem.querySelector('button'))).to.be.true;
+		});
+
+		it('returns true on element with focusable sibling of parent', async() => {
+			const elem = await fixture(parentSiblingFocusableAncestorFixture);
+			expect(tryApplyFocus(elem.querySelector('button'))).to.be.true;
+		});
 	});
 
 });
