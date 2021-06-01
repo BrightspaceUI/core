@@ -366,7 +366,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		this.announced = false;
 		this.closeOnClick = false;
-		this.delay = 0;
+		this.delay = 300;
 		this.disableFocusLock = false;
 		this.forceShow = false;
 		this.forType = 'descriptor';

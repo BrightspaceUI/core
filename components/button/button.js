@@ -102,7 +102,7 @@ class Button extends ButtonMixin(LitElement) {
 				type="${this._getType()}">
 				<slot></slot>
 			</button>
-			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}" delay="200">${this.disabledTooltip}</d2l-tooltip>` : ''}
+			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
 }

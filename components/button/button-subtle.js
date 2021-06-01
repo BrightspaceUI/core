@@ -175,7 +175,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 				<span class="d2l-button-subtle-content">${this.text}</span>
 				<slot></slot>
 			</button>
-			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}" delay="200">${this.disabledTooltip}</d2l-tooltip>` : ''}
+			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
 

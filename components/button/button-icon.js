@@ -164,7 +164,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 				type="${this._getType()}">
 				<d2l-icon icon="${ifDefined(this.icon)}" class="d2l-button-icon"></d2l-icon>
 		</button>
-		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}" delay="500">${this.disabledTooltip}</d2l-tooltip>` : ''}
+		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
 
