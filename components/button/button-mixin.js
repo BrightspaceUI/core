@@ -16,11 +16,15 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 			 * Acts as a primary label
 			 */
 			ariaLabel: { type: String, reflect: true, attribute: 'aria-label' },
+			autofocus: { type: Boolean, reflect: true },
 			/**
 			 * Disables the button
 			 */
 			disabled: { type: Boolean, reflect: true },
-			autofocus: { type: Boolean, reflect: true },
+			/**
+			 * Tooltip text when disabled (optional)
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 			form: { type: String, reflect: true },
 			formaction: { type: String, reflect: true },
 			formenctype: { type: String, reflect: true },

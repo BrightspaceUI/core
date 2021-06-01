@@ -1,8 +1,8 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
-import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -23,6 +23,17 @@ const defaultViewportMargin = 18;
 const contentBorderRadius = 6;
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
+
+/* once a user shows a tooltip, ignore delay if they hover adjacent target within this timeout */
+let delayTimeoutId;
+const resetDelayTimeout = () => {
+	if (delayTimeoutId) clearTimeout(delayTimeoutId);
+	delayTimeoutId = setTimeout(() => delayTimeoutId = null, 1000);
+};
+const getDelay = delay => {
+	if (delayTimeoutId) return 0;
+	else return delay;
+};
 
 const interactiveElements = {
 	// 'a' only if an href is present
@@ -366,7 +377,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		this.announced = false;
 		this.closeOnClick = false;
-		this.delay = 0;
+		this.delay = 300;
 		this.disableFocusLock = false;
 		this.forceShow = false;
 		this.forType = 'descriptor';
@@ -464,6 +475,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this._target) {
 			return;
 		}
+
 		const offsetParent = getOffsetParent(this);
 		const targetRect = this._target.getBoundingClientRect();
 		const spaceAround = this._computeSpaceAround(offsetParent, targetRect);
@@ -578,12 +590,23 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_computeSpaceAround(offsetParent, targetRect) {
-		const spaceAround = {
+
+		const boundingContainer = getBoundingAncestor(this);
+		const bounded = (boundingContainer !== document.documentElement);
+		const boundingContainerRect = boundingContainer.getBoundingClientRect();
+
+		const spaceAround = (bounded ? {
+			above: targetRect.top - boundingContainerRect.top - this._viewportMargin,
+			below: boundingContainerRect.bottom - targetRect.bottom - this._viewportMargin,
+			left: targetRect.left - boundingContainerRect.left - this._viewportMargin,
+			right: boundingContainerRect.right - targetRect.right - this._viewportMargin
+		} : {
 			above: targetRect.top - this._viewportMargin,
-			below: window.innerHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
+			below: window.innerHeight - targetRect.bottom - this._viewportMargin,
 			left: targetRect.left - this._viewportMargin,
-			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
-		};
+			right: document.documentElement.clientWidth - targetRect.right - this._viewportMargin
+		});
+
 		if (this.boundary && offsetParent) {
 			const parentRect = offsetParent.getBoundingClientRect();
 			if (!isNaN(this.boundary.left)) {
@@ -727,9 +750,10 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_onTargetMouseEnter() {
 		this._hoverTimeout = setTimeout(() => {
+			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();
-		}, this.delay);
+		}, getDelay(this.delay));
 	}
 
 	_onTargetMouseLeave() {

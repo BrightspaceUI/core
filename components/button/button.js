@@ -1,7 +1,9 @@
 import '../colors/colors.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
 
@@ -55,7 +57,7 @@ class Button extends ButtonMixin(LitElement) {
 					background-color: var(--d2l-color-mica);
 				}
 
-				button[disabled] {
+				:host([disabled]) button {
 					cursor: default;
 					opacity: 0.5;
 				}
@@ -75,25 +77,33 @@ class Button extends ButtonMixin(LitElement) {
 		];
 	}
 
+	constructor() {
+		super();
+		this._buttonId = getUniqueId();
+	}
+
 	render() {
 		return html`
 			<button
+				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.description || this.ariaLabel)}"
 				?autofocus="${this.autofocus}"
 				class="d2l-label-text"
-				?disabled="${this.disabled}"
+				?disabled="${this.disabled && !this.disabledTooltip}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
 				formenctype="${ifDefined(this.formenctype)}"
 				formmethod="${ifDefined(this.formmethod)}"
 				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
+				id="${this._buttonId}"
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
 				<slot></slot>
 			</button>
+			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
 }

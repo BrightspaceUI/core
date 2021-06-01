@@ -192,11 +192,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	connectedCallback() {
 		super.connectedCallback();
-		mediaQueryList.addEventListener('change', this._handleResize);
+		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handleResize);
 	}
 
 	disconnectedCallback() {
-		mediaQueryList.removeEventListener('change', this._handleResize);
+		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handleResize);
 		super.disconnectedCallback();
 	}
 

@@ -14,6 +14,11 @@
 			import '../../button/button.js';
 			import '../dialog-fullscreen.js';
 			import './dialog-async-content.js';
+			import '../../dropdown/dropdown.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
 		</script>
 		<style>
 			.d2l-typography p:first-child { margin-top: 0; }
@@ -29,6 +34,13 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-button id="open">Show Dialog</d2l-button>
+					<d2l-dropdown-more text="Open!">
+						<d2l-dropdown-menu>
+							<d2l-menu label="Dialog">
+								<d2l-menu-item id="dropdown" text="See dialog"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown-more>
 					<d2l-dialog-fullscreen id="dialogFullscreen" title-text="Fullscreen Title">
 						<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
 						<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
@@ -47,6 +59,9 @@
 					</d2l-dialog-fullscreen>
 					<script>
 						document.querySelector('#open').addEventListener('click', () => {
+							document.querySelector('#dialogFullscreen').opened = true;
+						});
+						document.querySelector('#dropdown').addEventListener('click', () => {
 							document.querySelector('#dialogFullscreen').opened = true;
 						});
 						document.querySelector('#dialogFullscreen').addEventListener('d2l-dialog-close', (e) => {

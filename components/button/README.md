@@ -19,6 +19,7 @@ The `d2l-button` element can be used just like the native button element, but al
 |--|--|--|
 | `description` | String | A description to be added to the `button` for accessibility |
 | `disabled` | Boolean | Disables the button |
+| `disabledTooltip` | String | Tooltip text when disabled |
 | `primary` | Boolean | Styles the button as a primary button |
 
 **Accessibility:**
@@ -53,6 +54,7 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 | `text` | String, required | Text for the button |
 | `description` | String | A description to be added to the `button` for accessibility for additional context |
 | `disabled` | Boolean | Disables the button |
+| `disabledTooltip` | String | Tooltip text when disabled |
 | `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
 | `icon` | String | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
 | `icon-right` | Boolean | Render the icon on the right of the button |
@@ -87,6 +89,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 | `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
 | `text` | String, required | Accessible text for the buton |
 | `disabled` | Boolean | Disables the button |
+| `disabledTooltip` | String | Tooltip text when disabled |
 | `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
 | `translucent` | Boolean | Indicates to display translucent (ex. on rich backgrounds) |
 

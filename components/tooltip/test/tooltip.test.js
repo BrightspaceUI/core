@@ -231,7 +231,6 @@ describe('d2l-tooltip', () => {
 		it('should show if hover is maintained for the tooltip delay', async() => {
 			const target = tooltipFixture.querySelector('#explicit-target');
 			target.dispatchEvent(new Event('mouseenter'));
-			await aTimeout(tooltip.delay * 0.9);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			expect(tooltip.showing).to.be.true;
 		});

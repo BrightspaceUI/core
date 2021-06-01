@@ -68,7 +68,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-icon id="normal" icon="tier1:gear" text="Icon Button"></d2l-button-icon>
+					<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>
 				</template>
 			</d2l-demo-snippet>
 
@@ -76,7 +76,15 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-icon id="disabled" icon="tier1:gear" text="Icon Button" disabled></d2l-button-icon>
+					<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled></d2l-button-icon>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Icon Button Disabled with Tooltip</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled disabled-tooltip="Optional disabled tooltip"></d2l-button-icon>
 				</template>
 			</d2l-demo-snippet>
 
@@ -86,7 +94,7 @@
 				<template>
 					<div class="translucent-container">
 						<img alt="" src="https://s.brightspace.com/course-images/images/e4fbb461-4cd9-4512-8304-44f2c2b741f1/tile-low-density-max-size.jpg">
-						<d2l-button-icon id="translucent" icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon>
+						<d2l-button-icon icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon>
 					</div>
 				</template>
 			</d2l-demo-snippet>
@@ -132,5 +140,13 @@
 				</template>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('click', e => {
+				if (e.target.tagName !== 'D2L-BUTTON-ICON') return;
+				console.log('button clicked', e.target);
+			});
+		</script>
+
 	</body>
 </html>
