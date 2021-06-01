@@ -1,9 +1,9 @@
+import '../button/button-subtle.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ButtonMixin } from '../button/button-mixin.js';
-import { buttonStyles } from '../button/button-styles.js';
-import { labelStyles } from '../typography/styles.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
@@ -37,103 +37,14 @@ class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(Rt
 	}
 
 	static get styles() {
-		return [labelStyles, buttonStyles, css`
+		return css`
 			:host {
 				display: inline-block;
 			}
 			:host([hidden]) {
 				display: none;
 			}
-
-			button {
-				background-color: transparent;
-				border-color: transparent;
-				font-family: inherit;
-				padding: 0.55rem 0.6rem;
-				position: relative;
-			}
-
-			:host([h-align="text"]) button {
-				left: -0.6rem;
-			}
-			:host([dir="rtl"][h-align="text"]) button {
-				left: 0;
-				right: -0.6rem;
-			}
-
-			/* Firefox includes a hidden border which messes up button dimensions */
-			button::-moz-focus-inner {
-				border: 0;
-			}
-			button[disabled]:hover,
-			button[disabled]:focus,
-			:host([active]) button[disabled] {
-				background-color: transparent;
-			}
-			button:hover,
-			button:focus,
-			:host([active]) button {
-				background-color: var(--d2l-color-gypsum);
-			}
-
-			.d2l-selection-action-content {
-				color: var(--d2l-color-celestine);
-				vertical-align: middle;
-			}
-			button:hover:not([disabled]) .d2l-selection-action-content,
-			button:focus:not([disabled]) .d2l-selection-action-content,
-			:host([active]:not([disabled])) button .d2l-selection-action-content {
-				color: var(--d2l-color-celestine-minus-1);
-			}
-			:host([icon]) .d2l-selection-action-content {
-				padding-left: 1.2rem;
-			}
-			:host([icon][icon-right]) .d2l-selection-action-content {
-				padding-left: 0;
-				padding-right: 1.2rem;
-			}
-
-			:host([dir="rtl"][icon]) .d2l-selection-action-content {
-				padding-left: 0;
-				padding-right: 1.2rem;
-			}
-
-			:host([dir="rtl"][icon][icon-right]) .d2l-selection-action-content {
-				padding-left: 1.2rem;
-				padding-right: 0;
-			}
-
-			d2l-icon.d2l-selection-action-icon {
-				color: var(--d2l-color-celestine);
-				display: none;
-				height: 0.9rem;
-				position: absolute;
-				top: 50%;
-				transform: translateY(-50%);
-				width: 0.9rem;
-			}
-			button:hover:not([disabled]) d2l-icon.d2l-selection-action-icon,
-			button:focus:not([disabled]) d2l-icon.d2l-selection-action-icon,
-			:host([active]:not([disabled])) button d2l-icon.d2l-selection-action-icon {
-				color: var(--d2l-color-celestine-minus-1);
-			}
-			:host([icon]) d2l-icon.d2l-selection-action-icon {
-				display: inline-block;
-			}
-			:host([icon][icon-right]) d2l-icon.d2l-selection-action-icon {
-				right: 0.6rem;
-			}
-			:host([dir="rtl"][icon][icon-right]) d2l-icon.d2l-selection-action-icon {
-				left: 0.6rem;
-				right: auto;
-			}
-
-			:host([non-interactive]) button,
-			button[disabled] {
-				cursor: default;
-				opacity: 0.5;
-			}
-		`];
+		`;
 	}
 
 	get selectionInfo() {
@@ -157,15 +68,13 @@ class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(Rt
 
 	render() {
 		return html`
-			<button
-				class="d2l-label-text"
+			<d2l-button-subtle
 				@click="${this._handleActionClick}"
-				?disabled="${this.disabled}"
-				id="action">
-				${this.icon ? html`<d2l-icon icon="${this.icon}" class="d2l-selection-action-icon"></d2l-icon>` : ''}
-				<span class="d2l-selection-action-content">${this.text}</span>
-			</button>
-			${this.nonInteractive ? html`<d2l-tooltip for="action" delay="600">${this.localize('components.selection.action-hint')}</d2l-tooltip>` : ''}
+				?disabled="${this.disabled || this.nonInteractive}"
+				disabled-tooltip="${ifDefined(this.nonInteractive ? this.localize('components.selection.action-hint') : undefined)}"
+				icon="${ifDefined(this.icon)}"
+				text="${this.text}">
+			</d2l-button-subtle>
 		`;
 	}
 
