@@ -1,8 +1,8 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
-import { getOffsetParent } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isFocusable } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -464,6 +464,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (!this._target) {
 			return;
 		}
+
 		const offsetParent = getOffsetParent(this);
 		const targetRect = this._target.getBoundingClientRect();
 		const spaceAround = this._computeSpaceAround(offsetParent, targetRect);
@@ -578,12 +579,23 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_computeSpaceAround(offsetParent, targetRect) {
-		const spaceAround = {
+
+		const boundingContainer = getBoundingAncestor(this);
+		const bounded = (boundingContainer !== document.documentElement);
+		const boundingContainerRect = boundingContainer.getBoundingClientRect();
+
+		const spaceAround = (bounded ? {
+			above: targetRect.top - boundingContainerRect.top - this._viewportMargin,
+			below: boundingContainerRect.bottom - targetRect.bottom - this._viewportMargin,
+			left: targetRect.left - boundingContainerRect.left - this._viewportMargin,
+			right: boundingContainerRect.right - targetRect.right - this._viewportMargin
+		} : {
 			above: targetRect.top - this._viewportMargin,
-			below: window.innerHeight - (targetRect.top + targetRect.height) - this._viewportMargin,
+			below: window.innerHeight - targetRect.bottom - this._viewportMargin,
 			left: targetRect.left - this._viewportMargin,
-			right: document.documentElement.clientWidth - (targetRect.left + targetRect.width) - this._viewportMargin
-		};
+			right: document.documentElement.clientWidth - targetRect.right - this._viewportMargin
+		});
+
 		if (this.boundary && offsetParent) {
 			const parentRect = offsetParent.getBoundingClientRect();
 			if (!isNaN(this.boundary.left)) {
