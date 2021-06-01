@@ -85,6 +85,7 @@ class Button extends ButtonMixin(LitElement) {
 	render() {
 		return html`
 			<button
+				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
 				aria-expanded="${ifDefined(this.ariaExpanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.description || this.ariaLabel)}"
