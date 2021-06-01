@@ -24,6 +24,17 @@ const contentBorderRadius = 6;
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
 
+/* once a user shows a tooltip, ignore delay if they hover adjacent target within this timeout */
+let delayTimeoutId;
+const resetDelayTimeout = () => {
+	if (delayTimeoutId) clearTimeout(delayTimeoutId);
+	delayTimeoutId = setTimeout(() => delayTimeoutId = null, 1000);
+};
+const getDelay = delay => {
+	if (delayTimeoutId) return 0;
+	else return delay;
+};
+
 const interactiveElements = {
 	// 'a' only if an href is present
 	'button': true,
@@ -739,9 +750,10 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_onTargetMouseEnter() {
 		this._hoverTimeout = setTimeout(() => {
+			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();
-		}, this.delay);
+		}, getDelay(this.delay));
 	}
 
 	_onTargetMouseLeave() {
