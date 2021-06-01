@@ -16,6 +16,11 @@ describe('d2l-button', () => {
 		await expect(el).to.be.accessible();
 	});
 
+	it('normal + disabled + disabled-tooltip', async() => {
+		const el = await fixture(html`<d2l-button disabled disabled-tooltip="tooltip text">Disabled Button</d2l-button>`);
+		await expect(el).to.be.accessible();
+	});
+
 	it('normal + focused', async() => {
 		const el = await fixture(normalFixture);
 		setTimeout(() => el.shadowRoot.querySelector('button').focus());

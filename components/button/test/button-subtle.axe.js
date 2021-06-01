@@ -13,6 +13,11 @@ describe('d2l-button-subtle', () => {
 		await expect(el).to.be.accessible();
 	});
 
+	it('normal + disabled + disabled-tooltip', async() => {
+		const el = await fixture(html`<d2l-button-subtle disabled disabled-tooltip="tooltip text" text="Disabled Subtle Button"></d2l-button-subtle>`);
+		await expect(el).to.be.accessible();
+	});
+
 	it('normal + focused', async() => {
 		const el = await fixture(html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>`);
 		setTimeout(() => el.shadowRoot.querySelector('button').focus());
