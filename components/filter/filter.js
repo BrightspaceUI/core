@@ -91,7 +91,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dimensions = this._buildDimensions(singleDimension);
 
 		const buttonText = singleDimension ? this._dimensions[0].text : this.localize('components.filter.filters');
-		const description = singleDimension ? this.localize('components.filter.singleDimensionDescription', 'filterName', this._dimensions[0].text) : this.localize('components.filter.filters');
+		const description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
 
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content min-width="285" max-width="420" no-padding-header no-padding>
@@ -208,7 +208,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleChangeSetDimension(e) {
-		const dimensionKey = e.composedPath()[0].parentNode.getAttribute('data-key');
+		const dimensionKey = this._dimensions.length === 1 ? this._dimensions[0].key : e.composedPath()[0].parentNode.getAttribute('data-key');
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 
