@@ -126,6 +126,9 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 				.d2l-scroll-wrapper-actions {
 					display: none;
 				}
+				.d2l-scroll-wrapper-container {
+					overflow-x: visible;
+				}
 				:host([h-scrollbar]) .d2l-scroll-wrapper-container {
 					border-left: none;
 					border-right: none;
