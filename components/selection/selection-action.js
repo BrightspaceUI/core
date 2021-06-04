@@ -7,13 +7,13 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
-import { SelectionSubscriberMixin } from './selection-subscriber-mixin.js';
+import { SelectionInfoController } from './selection-info-controller.js';
 
 /**
  * An action associated with a selection component.
  * @fires d2l-selection-action-click - Dispatched when the user clicks the action; provides the selection info
  */
-class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(RtlMixin(LitElement)))) {
+class Action extends LocalizeCoreElement(ButtonMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -21,10 +21,6 @@ class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(Rt
 			 * Preset icon key (e.g. "tier1:gear")
 			 */
 			icon: { type: String, reflect: true },
-			/**
-			 * Indicates whether the action is only focusable
-			 */
-			nonInteractive: { type: Boolean, attribute: 'non-interactive', reflect: true },
 			/**
 			 * Whether the action requires one or more selected items
 			 */
@@ -47,55 +43,47 @@ class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(Rt
 		`;
 	}
 
-	get selectionInfo() {
-		return super.selectionInfo;
-	}
-
-	set selectionInfo(value) {
-		super.selectionInfo = value;
-		this.nonInteractive = (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none);
+	constructor() {
+		super();
+		this._selectionInfo = new SelectionInfoController(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-button-ghost-click', this._handleActionClick);
+		this._selectionInfo.hostConnected(); // remove with Lit 2
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('d2l-button-ghost-click', this._handleActionClick);
+		this._selectionInfo.hostDisconnected(); // remove with Lit 2
 	}
 
 	render() {
+		const nonInteractive = (this.requiresSelection && this._selectionInfo.state === SelectionInfo.states.none);
 		return html`
 			<d2l-button-subtle
 				@click="${this._handleActionClick}"
-				?disabled="${this.disabled || this.nonInteractive}"
-				disabled-tooltip="${ifDefined(this.nonInteractive ? this.localize('components.selection.action-hint') : undefined)}"
+				?disabled="${this.disabled || nonInteractive}"
+				disabled-tooltip="${ifDefined(nonInteractive ? this.localize('components.selection.action-hint') : undefined)}"
 				icon="${ifDefined(this.icon)}"
 				text="${this.text}">
 			</d2l-button-subtle>
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (!changedProperties.has('nonInteractive')) return;
-
-		this.dispatchEvent(new CustomEvent('d2l-non-interactive-change', {
-			composed: true,
-			bubbles: true
-		}));
-	}
-
 	_handleActionClick(e) {
 		e.stopPropagation();
 
-		if (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none) return;
+		if (this.requiresSelection && this._selectionInfo.state === SelectionInfo.states.none) return;
 
 		this.dispatchEvent(new CustomEvent('d2l-selection-action-click', {
 			bubbles: true,
-			detail: this.selectionInfo
+			detail: {
+				keys: this._selectionInfo.keys,
+				state: this._selectionInfo.state
+			}
 		}));
 	}
 

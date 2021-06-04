@@ -32,7 +32,7 @@ const OPENER_STYLE = {
 
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
-	const disabled = node.disabled || node.nonInteractive;
+	const disabled = node.disabled;
 	const handleItemSelect = () => {
 		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
 		node.click();
@@ -267,7 +267,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		});
 
 		return html`
-			<div class="d2l-overflow-group-container" @d2l-non-interactive-change="${this._handleNonInteractiveChange}">
+			<div class="d2l-overflow-group-container">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowMenu}
 			</div>
@@ -459,17 +459,6 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		});
 
 		return filteredNodes;
-	}
-
-	_handleNonInteractiveChange() {
-		if (this._updateDropdownItemsRequested) return;
-
-		this._updateDropdownItemsRequested = true;
-		setTimeout(() => {
-			this._dropdownItems = this._slotItems.map(node => convertToDropdownItem(node));
-			this._updateDropdownItemsRequested = false;
-			this.requestUpdate();
-		}, 0);
 	}
 
 	_handleResize(entries) {
