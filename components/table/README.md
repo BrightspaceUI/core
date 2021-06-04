@@ -21,12 +21,16 @@ class MyElem extends LitElement {
       <d2l-table-wrapper>
         <table class="d2l-table">
           <thead>
-            <th>Column A</th>
+		    <tr>
+              <th>Column A</th>
               <th>Column B</th>
+			</tr>
           </tead>
           <tbody>
+		    <tr>
               <td>Cell 1-A</td>
               <td>Cell 1-B</td>
+			</tr>
           </tbody>
         </table>
       </d2l-table-wrapper>
