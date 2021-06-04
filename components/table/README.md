@@ -25,7 +25,7 @@ class MyElem extends LitElement {
               <th>Column A</th>
               <th>Column B</th>
             </tr>
-          </tead>
+          </thead>
           <tbody>
             <tr>
               <td>Cell 1-A</td>
