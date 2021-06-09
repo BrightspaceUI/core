@@ -1,10 +1,40 @@
 
+const getCommonAncestor = (elem1, elem2) => {
+
+	const labelledPath = new WeakMap();
+	let elem = elem1;
+	while (elem) {
+		labelledPath.set(elem, elem);
+		elem = elem.parentNode;
+	}
+
+	let ancestorElem = elem2.parentNode;
+	while (ancestorElem) {
+		if (labelledPath.has(ancestorElem)) return ancestorElem;
+		ancestorElem = ancestorElem.parentNode;
+	}
+
+};
+
+const isCustomElement = elem => {
+	return elem.tagName.includes('-');
+};
+
+const getLabel = labelElem => {
+	if (isCustomElement(labelElem)) return labelElem._label;
+	else return labelElem.textContent;
+};
+
 export const LabelMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
 			_label: { type: String, reflect: true }
 		};
+	}
+
+	updateLabel(text) {
+		this._label = text;
 	}
 
 };
@@ -25,62 +55,53 @@ export const LabelledMixin = superclass => class extends superclass {
 
 		if (this._labelObserver) this._labelObserver.disconnect();
 
-		if (this.labelledBy) {
+		if (!this.labelledBy) return;
 
-			let labelElem = this.getRootNode().querySelector(`#${this.labelledBy}`);
-			const ancestor = this._getCommonAncestor(labelElem);
+		let labelElem = this.getRootNode().querySelector(`#${this.labelledBy}`);
+		const ancestor = getCommonAncestor(this, labelElem);
 
-			const getLabel = () => {
-				if (labelElem.tagName.includes('-')) return labelElem._label;
-				else return labelElem.textContent;
-			};
+		this._labelObserver = new MutationObserver(mutations => {
 
-			this._labelObserver = new MutationObserver((mutations) => {
-				for (let i = 0; i < mutations.length; i++) {
+			mutations.forEach(mutation => {
 
-					for (let j = 0; j < mutations[i].removedNodes.length; j++) {
-						if (mutations[i].removedNodes[j] === labelElem) {
-							labelElem = null;
-							break;
-						}
-					}
-
-					if (!labelElem && mutations[i].addedNodes.length > 0) {
-						labelElem = this.getRootNode().querySelector(`#${this.labelledBy}`);
-						break;
-					}
-
+				if (mutation.removedNodes.length > 0 && Array.from(mutation.removedNodes).indexOf(labelElem) !== -1) {
+					labelElem = null;
 				}
 
-				if (labelElem) {
-					this.label = getLabel();
-				} else {
-					console.warn('LabelledMixin with specified labelledBy but no such element exists.');
-					this.label = undefined;
+				if (!labelElem && mutation.addedNodes.length > 0) {
+					labelElem = this.getRootNode().querySelector(`#${this.labelledBy}`);
+					return;
 				}
 
 			});
-			this._labelObserver.observe(ancestor, { attributes: true, characterData: true, childList: true, subtree: true });
 
-			this.label = getLabel();
+			if (labelElem) {
+				this.label = getLabel(labelElem);
+			} else {
+				console.warn('LabelledMixin with specified labelledBy but no such element exists.');
+				this.label = undefined;
+			}
+
+		});
+
+		/* assumption: the labelling element will not change from a native to a custom element
+		or vice versa, which allows the use of a more optimal observer configuration */
+		if (isCustomElement(labelElem)) {
+			this._labelObserver.observe(ancestor, {
+				attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
+				attributeFilter: ['_label'],
+				childList: true,
+				subtree: true
+			});
+		} else {
+			this._labelObserver.observe(ancestor, {
+				characterData: true,
+				childList: true,
+				subtree: true
+			});
 		}
 
-	}
-
-	_getCommonAncestor(labelledByElem) {
-
-		const labelledPath = new WeakMap();
-		let elem = this;
-		while (elem) {
-			labelledPath.set(elem, elem);
-			elem = elem.parentNode;
-		}
-
-		let ancestorElem = labelledByElem.parentNode;
-		while (ancestorElem) {
-			if (labelledPath.has(ancestorElem)) return ancestorElem;
-			ancestorElem = ancestorElem.parentNode;
-		}
+		this.label = getLabel(labelElem);
 
 	}
 

@@ -53,7 +53,7 @@
 				}
 				updated(changedProperties) {
 					super.updated(changedProperties);
-					this._label = this.text;
+					this.updateLabel(this.text);
 				}
 			}
 			customElements.define('d2l-demo-text', DemoText);
