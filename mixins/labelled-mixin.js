@@ -78,7 +78,7 @@ export const LabelledMixin = superclass => class extends superclass {
 			if (labelElem) {
 				this.label = getLabel(labelElem);
 			} else {
-				console.warn('LabelledMixin with specified labelledBy but no such element exists.');
+				console.warn(`LabelledMixin: element with labelled-by="${this.labelledBy}", but no such element exists.`);
 				this.label = undefined;
 			}
 
