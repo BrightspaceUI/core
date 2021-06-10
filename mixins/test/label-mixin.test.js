@@ -1,13 +1,14 @@
 
 import { defineCE, expect, fixture, html, nextFrame } from '@open-wc/testing';
 import { LabelledMixin, LabelMixin } from '../labelled-mixin.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LitElement } from 'lit-element/lit-element.js';
 
 const labelledTag = defineCE(
 	class extends LabelledMixin(LitElement) {
 		render() {
 			return html`
-				<input type="text" aria-label="${this.label}">
+				<input type="text" aria-label="${ifDefined(this.label)}">
 			`;
 		}
 	}
@@ -28,6 +29,21 @@ const labelTag = defineCE(
 		updated(changedProperties) {
 			super.updated(changedProperties);
 			this.updateLabel(this.text);
+		}
+	}
+);
+
+const nonLabelTag = defineCE(
+	class extends LitElement {
+		static get properties() {
+			return {
+				text: { type: String }
+			};
+		}
+		render() {
+			return html`
+				<span>${this.text}</span>
+			`;
 		}
 	}
 );
@@ -67,12 +83,20 @@ describe('LabelledMixin', () => {
 						<td><span id="label1">native element</span></td>
 					</tr>
 					<tr>
+						<td><${labelledTag} labelled-by="label2"></${labelledTag}></td>
+						<td><${labelTag} id="label2" text="custom elemnt"></${labelTag}></td>
+					</tr>
+					<tr>
+						<td><${labelledTag} labelled-by="invalidlabel"></${labelledTag}></td>
+						<td><${nonLabelTag} id="invalidlabel" text="custom elemnt"></${nonLabelTag}></td>
+					</tr>
+					<tr>
 						<td><${labelledTag} label="explicit label"></${labelledTag}></td>
 						<td></td>
 					</tr>
 					<tr>
-						<td><${labelledTag} labelled-by="label2"></${labelledTag}></td>
-						<td><${labelTag} id="label2" text="custom elemnt"></${labelTag}></td>
+						<td><${labelledTag} labelled-by="nolabel"></${labelledTag}></td>
+						<td></td>
 					</tr>
 				</table>
 				<span id="label3">other element</span>
@@ -113,9 +137,14 @@ describe('LabelledMixin', () => {
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('other element');
 		});
 
+		it('does not explode if invalid id reference provided', async() => {
+			const labelledElem = elem.querySelector('[labelled-by="nolabel"]');
+			expect(labelledElem.shadowRoot.querySelector('input').hasAttribute('aria-label')).to.equal(false);
+		});
+
 	});
 
-	describe('labelling with custom element', () => {
+	describe.only('labelling with custom element', () => {
 
 		it('initially applies label', async() => {
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
@@ -139,6 +168,11 @@ describe('LabelledMixin', () => {
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
 			await nextFrame();
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+		});
+
+		it('does not explode if invalid id reference provided', async() => {
+			const labelledElem = elem.querySelector('[labelled-by="invalidlabel"]');
+			expect(labelledElem.shadowRoot.querySelector('input').hasAttribute('aria-label')).to.equal(false);
 		});
 
 	});
