@@ -54,7 +54,7 @@ describe('LabelMixin', () => {
 
 });
 
-describe.only('LabelledMixin', () => {
+describe('LabelledMixin', () => {
 
 	let elem;
 
