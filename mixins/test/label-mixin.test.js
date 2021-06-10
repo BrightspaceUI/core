@@ -32,7 +32,7 @@ const labelTag = defineCE(
 	}
 );
 
-describe.only('LabelMixin', () => {
+describe('LabelMixin', () => {
 
 	let elem;
 
