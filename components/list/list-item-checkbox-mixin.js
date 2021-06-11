@@ -3,10 +3,11 @@ import { css, html } from 'lit-element/lit-element.js';
 import { checkboxStyles } from '../inputs/input-checkbox.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { nothing } from 'lit-html';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(superclass) {
+export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(LabelledMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -18,10 +19,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 * Value to identify item if selectable
 			 */
 			key: { type: String, reflect: true },
-			/**
-			 * Label for the checkbox if selectable
-			 */
-			label: { type: String },
 			/**
 			 * Indicates a checkbox should be rendered for selecting the item
 			 */
