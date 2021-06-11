@@ -126,9 +126,11 @@ describe('LabelledMixin', () => {
 			newLabelElem.id = 'label1';
 			newLabelElem.textContent = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
-			await nextFrame();
-			await nextFrame();
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+			await new Promise(resolve => {
+				setTimeout(() => {
+					expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+				}, 100);
+			});
 		});
 
 		it('updates label when labelledBy changes', async() => {
