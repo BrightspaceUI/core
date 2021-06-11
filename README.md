@@ -65,6 +65,7 @@ npm install @brightspace-ui/core
   * [AsyncContainerMixin](mixins/async-container/): manage collective async state
   * [FocusVisiblePolyfillMixin](mixins/focus-visible-polyfill-mixin.md): components can use the `:focus-visible` pseudo-class polyfill
   * [FormElementMixin](components/form/docs/form-element-mixin.md): allow components to participate in forms and validation
+  * [LabelledMixin](mixins/labelled-mixin.md): label custom elements by referencing elements across DOM scopes
   * [LocalizeMixin](mixins/localize-mixin.md): localize text in your components
   * [ProviderMixin](mixins/provider-mixin.md): provide and consume data across elements in a DI-like fashion
   * [RtlMixin](mixins/rtl-mixin.md): enable components to define RTL styles
