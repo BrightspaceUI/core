@@ -1,5 +1,7 @@
+import '../colors/colors.js';
 import '../button/button-icon.js';
 import '../dropdown/dropdown-button-subtle.js';
+import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../list/list.js';
@@ -7,8 +9,8 @@ import '../list/list-item.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
 
+import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { bodyStandardStyles } from '../typography/styles.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -33,7 +35,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodyStandardStyles, css`
+		return [bodyCompactStyles, bodyStandardStyles, css`
 			div[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
@@ -51,10 +53,16 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				padding-right: 0;
 			}
 
+			.d2l-filter-dimension-header-text,
 			.d2l-filter-dimension-set-value-text {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
+			}
+
+			/* Needed to "undo" the menu hover styles */
+			:host(:hover) .d2l-filter-dimension-set-value-text {
+				color: var(--d2l-color-ferrite);
 			}
 		`];
 	}
@@ -78,33 +86,51 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		const header = this._buildHeader();
-		const dimensions = this._buildDimensions();
+		const singleDimension = this._dimensions.length === 1;
+		const header = this._buildHeader(singleDimension);
+		const dimensions = this._buildDimensions(singleDimension);
 
-		return html`
-			<d2l-dropdown-button-subtle
-				@d2l-dropdown-close="${this._handleDropdownClose}"
-				@d2l-dropdown-open="${this._stopPropagation}"
-				@d2l-dropdown-position="${this._stopPropagation}"
-				text="${this.localize('components.filter.filters')}"
-				?disabled="${this.disabled}">
+		const buttonText = singleDimension ? this._dimensions[0].text : this.localize('components.filter.filters');
+		const description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
+
+		const dropdownContent = singleDimension ? html`
+				<d2l-dropdown-content min-width="285" max-width="420" no-padding-header no-padding>
+					${header}
+					${dimensions}
+				</d2l-dropdown-content>`
+			: html`
 				<d2l-dropdown-menu min-width="285" max-width="420" no-padding-header>
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
 						${dimensions}
 					</d2l-menu>
 				</d2l-dropdown-menu>
+			`;
+
+		return html`
+			<d2l-dropdown-button-subtle
+				@d2l-dropdown-close="${this._handleDropdownClose}"
+				@d2l-dropdown-open="${this._stopPropagation}"
+				@d2l-dropdown-position="${this._stopPropagation}"
+				text="${buttonText}"
+				description="${description}"
+				?disabled="${this.disabled}">
+				${dropdownContent}
 			</d2l-dropdown-button-subtle>
 			<slot @slotchange="${this._handleSlotChange}"></slot>
 		`;
 	}
 
-	_buildDimension(dimension) {
+	_buildDimension(dimension, singleDimension) {
 		let dimensionHTML;
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimensionHTML = this._createSetDimension(dimension);
 				break;
+		}
+
+		if (singleDimension) {
+			return dimensionHTML;
 		}
 		return html`
 			<d2l-hierarchical-view
@@ -116,7 +142,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
-	_buildDimensions() {
+	_buildDimensions(singleDimension) {
+		if (singleDimension) {
+			return this._buildDimension(this._dimensions[0], true);
+		}
 		return this._dimensions.map((dimension) => {
 			const builtDimension = this._buildDimension(dimension);
 			return html`<d2l-menu-item text="${dimension.text}">
@@ -125,12 +154,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 	}
 
-	_buildHeader() {
-		if (!this._activeDimensionKey) return null;
+	_buildHeader(singleDimension) {
+		if (!this._activeDimensionKey && !singleDimension) return null;
 
-		const dimensionText = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey).text;
-		return html`
-			<div slot="header">
+		let header = null;
+		if (!singleDimension) {
+			const dimensionText = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey).text;
+			header = html`
 				<div class="d2l-filter-dimension-header">
 					<d2l-button-icon
 						@click="${this._handleDimensionHide}"
@@ -139,6 +169,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					</d2l-button-icon>
 					<div class="d2l-filter-dimension-header-text d2l-body-standard">${dimensionText}</div>
 				</div>
+			`;
+		}
+
+		return html`
+			<div slot="header">
+				${header}
 			</div>
 		`;
 	}
@@ -155,7 +191,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 						selectable
 						?selected="${item.selected}"
 						slim>
-						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
+						<div class="d2l-filter-dimension-set-value-text d2l-body-compact">${item.text}</div>
 					</d2l-list-item>
 				`)}
 			</d2l-list>
@@ -173,7 +209,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleChangeSetDimension(e) {
-		const dimensionKey = e.composedPath()[0].parentNode.getAttribute('data-key');
+		const dimensionKey = this._dimensions.length === 1 ? this._dimensions[0].key : e.composedPath()[0].parentNode.getAttribute('data-key');
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 

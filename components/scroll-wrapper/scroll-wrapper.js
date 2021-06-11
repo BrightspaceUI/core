@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -126,6 +127,9 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 				.d2l-scroll-wrapper-actions {
 					display: none;
 				}
+				.d2l-scroll-wrapper-container {
+					overflow-x: visible;
+				}
 				:host([h-scrollbar]) .d2l-scroll-wrapper-container {
 					border-left: none;
 					border-right: none;
@@ -150,6 +154,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
+		const tabindex = this._hScrollbar ? '0' : undefined;
 		const actions = !this.hideActions ? html`
 			<div class="d2l-scroll-wrapper-actions">
 				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left" @click="${this._scrollLeft}">
@@ -161,7 +166,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 			</div>` : null;
 		return html`
 			${actions}
-			<div class="d2l-scroll-wrapper-container" @scroll="${this._checkScrollThresholds}" tabindex="0"><slot></slot></div>
+			<div class="d2l-scroll-wrapper-container" @scroll="${this._checkScrollThresholds}" tabindex="${ifDefined(tabindex)}"><slot></slot></div>
 		`;
 	}
 

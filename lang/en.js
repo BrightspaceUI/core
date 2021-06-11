@@ -8,6 +8,7 @@ export default {
 	"components.calendar.show": "Show {month}",
 	"components.dialog.close": "Close this dialog",
 	"components.filter.filters": "Filters",
+	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
 	"components.form-element.defaultError": "{label} is invalid.",
 	"components.form-element.defaultFieldLabel": "Field",
 	"components.form-element.input.email.typeMismatch": "Email is not valid",
