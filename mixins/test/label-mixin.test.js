@@ -129,6 +129,7 @@ describe('LabelledMixin', () => {
 			await new Promise(resolve => {
 				setTimeout(() => {
 					expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+					resolve();
 				}, 100);
 			});
 		});
