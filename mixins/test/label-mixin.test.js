@@ -104,7 +104,7 @@ describe('LabelledMixin', () => {
 		`);
 	});
 
-	describe('labelling with element', () => {
+	describe('labelling with natve element', () => {
 
 		it('initially applies label', async() => {
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
@@ -124,7 +124,7 @@ describe('LabelledMixin', () => {
 			const labelElem = elem.querySelector('#label1');
 			const newLabelElem = document.createElement('span');
 			newLabelElem.id = 'label1';
-			newLabelElem.textContent = 'new label value';
+			newLabelElem.innerText = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
 			await nextFrame();
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
