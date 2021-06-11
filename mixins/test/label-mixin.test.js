@@ -144,7 +144,7 @@ describe('LabelledMixin', () => {
 
 	});
 
-	describe.only('labelling with custom element', () => {
+	describe('labelling with custom element', () => {
 
 		it('initially applies label', async() => {
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
