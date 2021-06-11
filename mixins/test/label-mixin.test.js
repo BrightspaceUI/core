@@ -124,8 +124,9 @@ describe('LabelledMixin', () => {
 			const labelElem = elem.querySelector('#label1');
 			const newLabelElem = document.createElement('span');
 			newLabelElem.id = 'label1';
-			newLabelElem.innerText = 'new label value';
+			newLabelElem.textContent = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
+			await nextFrame();
 			await nextFrame();
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
 		});
