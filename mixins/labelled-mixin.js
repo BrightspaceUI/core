@@ -68,7 +68,7 @@ export const LabelledMixin = superclass => class extends superclass {
 					labelElem = null;
 				}
 
-				if (!labelElem && mutation.addedNodes.length > 0) {
+				if (mutation.addedNodes.length > 0) {
 					labelElem = this.getRootNode().querySelector(`#${this.labelledBy}`);
 					return;
 				}
