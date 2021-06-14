@@ -20,7 +20,7 @@ class CustomInput extends LabelledMixin(LitElement) {
 }
 ```
 
-Optionally, to enable custom elements to act as labels, extend the `LabelMixin` and call `updateLabel()` to reflect the label value change when needed:
+Optionally, to enable custom elements to act as labels, extend the `LabelMixin` and call `updateLabel()` to reflect the label value change when needed. Alternatively, a custom element within a labelling element's shadowDOM may dispatch the `d2l-label-change` event to update the label value.
 
 ```js
 import { LabelMixin } from '@brightspace-ui/core/mixins/labelled-mixin.js';
