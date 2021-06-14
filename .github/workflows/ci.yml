@@ -8,6 +8,8 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '12'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
@@ -31,6 +33,8 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '12'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
@@ -50,6 +54,8 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '12'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
@@ -75,6 +81,8 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '12'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
