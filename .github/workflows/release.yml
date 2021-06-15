@@ -16,6 +16,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
