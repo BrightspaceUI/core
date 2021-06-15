@@ -14,23 +14,25 @@ export const SelectionSubscriberMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this.selectionInfo = new SelectionInfo();
+		this._provider = null;
 		this._selectionSubscriber = true;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.dispatchEvent(new CustomEvent('d2l-selection-subscriber-subscribe', {
+		const evt = new CustomEvent('d2l-selection-subscriber-subscribe', {
 			bubbles: true,
-			composed: true
-		}));
+			composed: true,
+			detail: {}
+		});
+		this.dispatchEvent(evt);
+		this._provider = evt.detail.provider;
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.dispatchEvent(new CustomEvent('d2l-selection-subscriber-unsubscribe', {
-			bubbles: true,
-			composed: true
-		}));
+		if (!this._provider) return;
+		this._provider.unsubscribeObserver(this);
 	}
 
 };

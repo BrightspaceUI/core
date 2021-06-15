@@ -53,9 +53,7 @@ export const SelectionMixin = superclass => class extends superclass {
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.addEventListener('d2l-selection-subscriber-subscribe', this._handleSelectionSubscriberSubscribe);
-		this.addEventListener('d2l-selection-subscriber-unsubscribe', this._handleSelectionSubscriberUnsubscribe);
 		this.addEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
-		this.addEventListener('d2l-selection-checkbox-unsubscribe', this._handleSelectionCheckboxUnsubscribe);
 	}
 
 	disconnectedCallback() {
@@ -63,9 +61,7 @@ export const SelectionMixin = superclass => class extends superclass {
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.removeEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.removeEventListener('d2l-selection-subscriber-subscribe', this._handleSelectionSubscriberSubscribe);
-		this.removeEventListener('d2l-selection-subscriber-unsubscribe', this._handleSelectionSubscriberUnsubscribe);
 		this.removeEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
-		this.removeEventListener('d2l-selection-checkbox-unsubscribe', this._handleSelectionCheckboxUnsubscribe);
 	}
 
 	getSelectionInfo() {
@@ -83,21 +79,25 @@ export const SelectionMixin = superclass => class extends superclass {
 		return new SelectionInfo(keys, state);
 	}
 
+	unsubscribeObserver(target) {
+		this._selectionSubscribers.delete(target);
+	}
+
+	unsubscribeSelectable(target) {
+		this._selectionSelectables.delete(target);
+		this._updateSelectionSubscribers();
+	}
+
 	_handleSelectionChange() {
 		this._updateSelectionSubscribers();
 	}
 
 	_handleSelectionCheckboxSubscribe(e) {
 		e.stopPropagation();
+		e.detail.provider = this;
 		const target = e.composedPath()[0];
 		if (this._selectionSelectables.has(target)) return;
 		this._selectionSelectables.set(target, target);
-	}
-
-	_handleSelectionCheckboxUnsubscribe(e) {
-		e.stopPropagation();
-		const target = e.composedPath()[0];
-		this._selectionSelectables.delete(target);
 	}
 
 	_handleSelectionSelectAllChange(e) {
@@ -108,16 +108,11 @@ export const SelectionMixin = superclass => class extends superclass {
 
 	_handleSelectionSubscriberSubscribe(e) {
 		e.stopPropagation();
+		e.detail.provider = this;
 		const target = e.composedPath()[0];
 		if (this._selectionSubscribers.has(target)) return;
 		this._selectionSubscribers.set(target, target);
 		this._updateSelectionSubscribers();
-	}
-
-	_handleSelectionSubscriberUnsubscribe(e) {
-		e.stopPropagation();
-		const target = e.composedPath()[0];
-		this._selectionSubscribers.delete(target);
 	}
 
 	_updateSelectionSubscribers() {
