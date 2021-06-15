@@ -44,7 +44,7 @@ export const SelectionMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		//this.selectionType = selectionTypes.none;
-		this._selectionSubscribers = new Map();
+		this._selectionObservers = new Map();
 		this._selectionSelectables = new Map();
 	}
 
@@ -52,7 +52,7 @@ export const SelectionMixin = superclass => class extends superclass {
 		super.connectedCallback();
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
-		this.addEventListener('d2l-selection-subscriber-subscribe', this._handleSelectionSubscriberSubscribe);
+		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.addEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
 	}
 
@@ -60,7 +60,7 @@ export const SelectionMixin = superclass => class extends superclass {
 		super.disconnectedCallback();
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.removeEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
-		this.removeEventListener('d2l-selection-subscriber-subscribe', this._handleSelectionSubscriberSubscribe);
+		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.removeEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
 	}
 
@@ -80,16 +80,16 @@ export const SelectionMixin = superclass => class extends superclass {
 	}
 
 	unsubscribeObserver(target) {
-		this._selectionSubscribers.delete(target);
+		this._selectionObservers.delete(target);
 	}
 
 	unsubscribeSelectable(target) {
 		this._selectionSelectables.delete(target);
-		this._updateSelectionSubscribers();
+		this._updateSelectionObservers();
 	}
 
 	_handleSelectionChange() {
-		this._updateSelectionSubscribers();
+		this._updateSelectionObservers();
 	}
 
 	_handleSelectionCheckboxSubscribe(e) {
@@ -100,32 +100,32 @@ export const SelectionMixin = superclass => class extends superclass {
 		this._selectionSelectables.set(target, target);
 	}
 
-	_handleSelectionSelectAllChange(e) {
-		const checked = e.detail.checked;
-		this._selectionSelectables.forEach(selectable => selectable.selected = checked);
-		this._updateSelectionSubscribers();
-	}
-
-	_handleSelectionSubscriberSubscribe(e) {
+	_handleSelectionObserverSubscribe(e) {
 		e.stopPropagation();
 		e.detail.provider = this;
 		const target = e.composedPath()[0];
-		if (this._selectionSubscribers.has(target)) return;
-		this._selectionSubscribers.set(target, target);
-		this._updateSelectionSubscribers();
+		if (this._selectionObservers.has(target)) return;
+		this._selectionObservers.set(target, target);
+		this._updateSelectionObservers();
 	}
 
-	_updateSelectionSubscribers() {
-		if (!this._selectionSubscribers || this._selectionSubscribers.size === 0) return;
+	_handleSelectionSelectAllChange(e) {
+		const checked = e.detail.checked;
+		this._selectionSelectables.forEach(selectable => selectable.selected = checked);
+		this._updateSelectionObservers();
+	}
+
+	_updateSelectionObservers() {
+		if (!this._selectionObservers || this._selectionObservers.size === 0) return;
 
 		// debounce the updates for select-all case
-		if (this._updateSubscribersRequested) return;
+		if (this._updateObserversRequested) return;
 
-		this._updateSubscribersRequested = true;
+		this._updateObserversRequested = true;
 		setTimeout(() => {
 			const info = this.getSelectionInfo();
-			this._selectionSubscribers.forEach(subscriber => subscriber.selectionInfo = info);
-			this._updateSubscribersRequested = false;
+			this._selectionObservers.forEach(observer => observer.selectionInfo = info);
+			this._updateObserversRequested = false;
 		}, 0);
 	}
 

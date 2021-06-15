@@ -3,13 +3,13 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
-import { SelectionSubscriberMixin } from './selection-subscriber-mixin.js';
+import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A checkbox that provides select-all behavior for selection components such as tables and lists.
  * @fires d2l-selection-select-all-change - Dispatched when the user toggles the checkox
  */
-class SelectAll extends LocalizeCoreElement(SelectionSubscriberMixin(LitElement)) {
+class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
 	static get styles() {
 		return css`

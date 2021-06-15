@@ -7,13 +7,13 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SelectionInfo } from './selection-mixin.js';
-import { SelectionSubscriberMixin } from './selection-subscriber-mixin.js';
+import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * An action associated with a selection component.
  * @fires d2l-selection-action-click - Dispatched when the user clicks the action; provides the selection info
  */
-class Action extends LocalizeCoreElement(SelectionSubscriberMixin(ButtonMixin(RtlMixin(LitElement)))) {
+class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {

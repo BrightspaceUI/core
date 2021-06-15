@@ -1,6 +1,6 @@
 import { SelectionInfo } from './selection-mixin.js';
 
-export const SelectionSubscriberMixin = superclass => class extends superclass {
+export const SelectionObserverMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
@@ -15,12 +15,11 @@ export const SelectionSubscriberMixin = superclass => class extends superclass {
 		super();
 		this.selectionInfo = new SelectionInfo();
 		this._provider = null;
-		this._selectionSubscriber = true;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		const evt = new CustomEvent('d2l-selection-subscriber-subscribe', {
+		const evt = new CustomEvent('d2l-selection-observer-subscribe', {
 			bubbles: true,
 			composed: true,
 			detail: {}

@@ -2,12 +2,12 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
-import { SelectionSubscriberMixin } from './selection-subscriber-mixin.js';
+import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A summary showing the current selected count.
  */
-class Summary extends LocalizeCoreElement(SelectionSubscriberMixin(LitElement)) {
+class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
 	static get properties() {
 		return {
