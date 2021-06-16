@@ -8,7 +8,6 @@ import '../list/list.js';
 import '../list/list-item.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
-import '../offscreen/offscreen.js';
 
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -161,11 +160,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 		return this._dimensions.map((dimension) => {
 			const builtDimension = this._buildDimension(dimension);
-			return html`<d2l-menu-item text="${dimension.text}">
+			const dimensionDescription = `${dimension.text}. ${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
+			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
 				${builtDimension}
 				<div slot="supporting">
 					<span>${this._formatFilterCount(dimension.appliedCount, dimension.maxCount)}</span>
-					<d2l-offscreen>${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}</d2l-offscreen>
 				</div>
 			</d2l-menu-item>`;
 		});

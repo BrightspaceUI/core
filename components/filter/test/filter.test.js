@@ -221,12 +221,12 @@ describe('d2l-filter', () => {
 
 		describe('Menu Item Format', () => {
 			[
-				{ name: 'No Values', dimensions: [{ key: 1, text: 'Role', appliedCount: 0, maxCount: 0 }, { key: 2 }], text: '', description: '0 filters applied.' },
-				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0, maxCount: 200 }, { key: 2 }], text: '', description: '0 filters applied.' },
-				{ name: '1 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 1, maxCount: 200 }, { key: 2 }], text: '1', description: '1 filter applied.' },
-				{ name: '5 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 5, maxCount: 200 }, { key: 2 }], text: '5', description: '5 filters applied.' },
-				{ name: '100 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 100, maxCount: 200 }, { key: 2 }], text: '99+', description: '100 filters applied.' },
-				{ name: 'All Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 200, maxCount: 200 }, { key: 2 }], text: 'All', description: '200 filters applied.' },
+				{ name: 'No Values', dimensions: [{ key: 1, text: 'Role', appliedCount: 0, maxCount: 0 }, { key: 2 }], text: '', description: 'Role. 0 filters applied.' },
+				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0, maxCount: 200 }, { key: 2 }], text: '', description: 'Role. 0 filters applied.' },
+				{ name: '1 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 1, maxCount: 200 }, { key: 2 }], text: '1', description: 'Role. 1 filter applied.' },
+				{ name: '5 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 5, maxCount: 200 }, { key: 2 }], text: '5', description: 'Role. 5 filters applied.' },
+				{ name: '100 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 100, maxCount: 200 }, { key: 2 }], text: '99+', description: 'Role. 100 filters applied.' },
+				{ name: 'All Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 200, maxCount: 200 }, { key: 2 }], text: 'All', description: 'Role. 200 filters applied.' },
 			].forEach((testCase) => {
 				it(`${testCase.name}`, async() => {
 					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
@@ -234,10 +234,10 @@ describe('d2l-filter', () => {
 					await elem.updateComplete;
 
 					const menuItemCount = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"] span');
-					const offscreen = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"] d2l-offscreen');
+					const offscreen = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"]');
 
 					expect(menuItemCount.textContent).to.equal(testCase.text);
-					expect(offscreen.textContent).to.equal(testCase.description);
+					expect(offscreen.description).to.equal(testCase.description);
 				});
 			});
 		});
