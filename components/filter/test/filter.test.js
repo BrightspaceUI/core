@@ -255,8 +255,9 @@ describe('d2l-filter', () => {
 			const newValue = document.createElement('d2l-filter-dimension-set-value');
 			newValue.key = 'newValue';
 			newDim.appendChild(newValue);
-			elem.appendChild(newDim);
-			await elem.updateComplete;
+			setTimeout(() => elem.appendChild(newDim));
+			await oneEvent(elem.shadowRoot.querySelector('slot'), 'slotchange');
+			await elem.requestUpdate();
 
 			expect(elem._dimensions.length).to.equal(2);
 			expect(elem._dimensions[0].key).to.equal('dim');
