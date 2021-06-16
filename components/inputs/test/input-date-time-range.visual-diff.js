@@ -43,7 +43,12 @@ describe('d2l-input-date-time-range', () => {
 	});
 
 	it('basic-focus', async function() {
-		await page.$eval('#basic', (elem) => elem.focus());
+		await page.$eval('#basic', (elem) => {
+			return new Promise((resolve) => {
+				elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
+				elem.focus();
+			});
+		});
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
