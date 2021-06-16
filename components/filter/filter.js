@@ -101,7 +101,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		const filterCount = this._formatFilterCount(this._totalAppliedCount, this._totalMaxCount);
 		let buttonText = singleDimension ? this._dimensions[0].text : this.localize('components.filter.filters');
-		buttonText += filterCount ? ` (${filterCount})` : '';
+		if (filterCount) buttonText = `${buttonText} (${filterCount})`;
 
 		let description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
 		description += `. ${this.localize('components.filter.filterCountDescription', { number: this._totalAppliedCount })}`;
