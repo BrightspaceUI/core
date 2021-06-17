@@ -30,7 +30,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			_activeDimensionKey: { type: String, attribute: false },
-			_dimensions : { type: Array, attribute: false }
+			_dimensions: { type: Array, attribute: false },
+			_totalAppliedCount: { type: Number, attribute: false },
+			_totalMaxCount: { type: Number, attribute: false }
 		};
 	}
 
@@ -60,6 +62,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				white-space: nowrap;
 			}
 
+			.d2l-filter-dimension-set-value-text {
+				line-height: unset;
+			}
+
 			/* Needed to "undo" the menu hover styles */
 			:host(:hover) .d2l-filter-dimension-set-value-text {
 				color: var(--d2l-color-ferrite);
@@ -71,6 +77,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		super();
 		this.disabled = false;
 		this._dimensions = [];
+		this._totalAppliedCount = 0;
+		this._totalMaxCount = 0;
 	}
 
 	firstUpdated(changedProperties) {
@@ -90,8 +98,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const header = this._buildHeader(singleDimension);
 		const dimensions = this._buildDimensions(singleDimension);
 
-		const buttonText = singleDimension ? this._dimensions[0].text : this.localize('components.filter.filters');
-		const description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
+		const filterCount = this._formatFilterCount(this._totalAppliedCount, this._totalMaxCount);
+		let buttonText = singleDimension ? this._dimensions[0].text : this.localize('components.filter.filters');
+		if (filterCount) buttonText = `${buttonText} (${filterCount})`;
+
+		let description = singleDimension ? this.localize('components.filter.singleDimensionDescription', { filterName: this._dimensions[0].text }) : this.localize('components.filter.filters');
+		description += `. ${this.localize('components.filter.filterCountDescription', { number: this._totalAppliedCount })}`;
 
 		const dropdownContent = singleDimension ? html`
 				<d2l-dropdown-content min-width="285" max-width="420" no-padding-header no-padding>
@@ -148,8 +160,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 		return this._dimensions.map((dimension) => {
 			const builtDimension = this._buildDimension(dimension);
-			return html`<d2l-menu-item text="${dimension.text}">
+			const dimensionDescription = `${dimension.text}. ${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
+			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
 				${builtDimension}
+				<div slot="supporting">
+					<span>${this._formatFilterCount(dimension.appliedCount, dimension.maxCount)}</span>
+				</div>
 			</d2l-menu-item>`;
 		});
 	}
@@ -201,6 +217,18 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: true, composed: false, detail: eventDetail }));
 	}
 
+	_formatFilterCount(count, max) {
+		if (count === 0) return;
+
+		let number = count;
+		if (count === max) {
+			number = 'all';
+		} else if (count >= 100) {
+			number = 'max';
+		}
+		return this.localize('components.filter.filterCount', { number: number });
+	}
+
 	_getSlottedNodes(slot) {
 		const dimensionTypes = ['d2l-filter-dimension-set'];
 		const nodes = slot.assignedNodes({ flatten: true });
@@ -208,9 +236,19 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleChangeSetDimension(e) {
-		const dimensionKey = this._dimensions.length === 1 ? this._dimensions[0].key : e.composedPath()[0].parentNode.getAttribute('data-key');
+		const singleDimension = this._dimensions.length === 1;
+		const dimensionKey = singleDimension ? this._dimensions[0].key : e.composedPath()[0].parentNode.getAttribute('data-key');
+		const dimension = singleDimension ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
+
+		if (selected) {
+			dimension.appliedCount++;
+			this._totalAppliedCount++;
+		} else {
+			dimension.appliedCount--;
+			this._totalAppliedCount--;
+		}
 
 		this._dispatchChangeEvent({ dimension: dimensionKey, value: { key: valueKey, selected: selected } });
 	}
@@ -224,13 +262,27 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		if (!toUpdate) return;
 
 		let shouldUpdate = false;
+		let shouldRecount = false;
 		changes.forEach((newValue, prop) => {
-			if (toUpdate[prop] !== newValue) {
-				toUpdate[prop] = newValue;
-				shouldUpdate = true;
+			if (toUpdate[prop] === newValue) return;
+
+			toUpdate[prop] = newValue;
+			shouldUpdate = true;
+
+			if (prop === 'selected') {
+				if (newValue) {
+					dimension.appliedCount++;
+					this._totalAppliedCount++;
+				} else {
+					dimension.appliedCount--;
+					this._totalAppliedCount--;
+				}
+			} else if (prop === 'values') {
+				shouldRecount = true;
 			}
 		});
 
+		if (shouldRecount) this._setFilterCounts();
 		if (shouldUpdate) this.requestUpdate();
 	}
 
@@ -276,6 +328,26 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			return info;
+		});
+
+		this._setFilterCounts();
+	}
+
+	_setFilterCounts() {
+		this._totalAppliedCount = 0;
+		this._totalMaxCount = 0;
+
+		this._dimensions.forEach(dimension => {
+			switch (dimension.type) {
+				case 'd2l-filter-dimension-set': {
+					dimension.appliedCount = dimension.values.reduce((total, value) => { return value.selected ? total + 1 : total; }, 0);
+					dimension.maxCount = dimension.values.length;
+					break;
+				}
+			}
+
+			this._totalAppliedCount += dimension.appliedCount;
+			this._totalMaxCount += dimension.maxCount;
 		});
 	}
 
