@@ -851,7 +851,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					height: 100%;
 					position: absolute;
 					width: 100%;
-					z-index: -1;
 				}
 			}
 		`;
@@ -957,11 +956,11 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 						</div>
 					</div>
 					<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
-						<div class="d2l-template-primary-secondary-divider-shadow">
-						</div>
 						<aside class="${classMap(scrollClasses)}">
 							<slot name="secondary"></slot>
 						</aside>
+						<div class="d2l-template-primary-secondary-divider-shadow">
+						</div>
 					</div>
 				</div>
 				<footer ?hidden="${!this._hasFooter}">
