@@ -53,10 +53,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			/**
 			 * Override default mobile dropdown style. Specify one of 'tray' or 'dialog'.
 			 */
-			mobileFormat: {
+			mobileTray: {
 				type: String,
 				reflect: true,
-				attribute: 'mobile-format'
+				attribute: 'mobile-tray'
 			},
 			/**
 			 * Opt out of automatically closing on focus or click outside of the dropdown content
@@ -175,7 +175,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.noAutoClose = false;
 		this.noAutoFit = false;
 		this.noAutoFocus = false;
-		this.mobileFormat = null;
+		this.mobileTray = 'none';
 		this.noPadding = false;
 		this.noPaddingFooter = false;
 		this.noPaddingHeader = false;
@@ -674,13 +674,13 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			}
 		}
 
-		const showBackdrop = mediaQueryList.matches && this.mobileFormat === 'tray';
+		const specialMobileStyle = mediaQueryList.matches && this.mobileTray !== 'none';
 
 		const widthStyle = {
-			maxWidth: this.maxWidth && this.mobileFormat === null ? `${this.maxWidth}px` : undefined,
+			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
 			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
 			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : ''
+			width: this._width && !(mediaQueryList.matches && this.mobileTray !== 'none') ? `${this._width + 20}px` : ''
 		};
 
 		const contentWidthStyle = {
@@ -691,7 +691,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: this._contentHeight && this.mobileFormat === null ? `${this._contentHeight}px` : 'none',
+			maxHeight: this._contentHeight && !specialMobileStyle ? `${this._contentHeight}px` : 'none',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
@@ -708,7 +708,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		return html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${!specialMobileStyle ? styleMap(widthStyle) : ''}>
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
@@ -720,7 +720,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					</div>
 				</div>
 			</div>
-			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${showBackdrop}"></d2l-backdrop>
+			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${specialMobileStyle}"></d2l-backdrop>
 		`;
 	}
 

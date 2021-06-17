@@ -236,32 +236,27 @@ export const dropdownContentStyles = css`
 
 	@media (max-width: 615px) {
 
-		:host([mobile-format="tray"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
 			height: 100vh;
 			max-width: min(calc(100vw - 30px), 420px);
 			min-width: 285px;
 			position: fixed;
 			top: 0;
-			/*opacity: 0;
-			right: calc(-100vw - 420px);
-			transition: 4000ms ease-out; */
 			-webkit-animation: var(--d2l-dropdown-mobile-tray-name) 3000ms ease-out;
 			animation: var(--d2l-dropdown-mobile-tray-name) 3000ms ease-out;
 		}
 
-		:host([mobile-format="tray"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			/*opacity: 1;
-			transition: 4000ms ease-out; */
+		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
 			right: 0;
 		}
 
-		:host([mobile-format="tray"]) > .d2l-dropdown-content-pointer {
+		:host([mobile-tray="right"]) > .d2l-dropdown-content-pointer {
 			display: none;
 		}
 	
 
-		/* dialog-style */
-		d2l-dropdown-content[mobile-format="dialog"] {
+		/* TODO: dialog-style */
+		d2l-dropdown-content[mobile-tray="bottom"] {
 			/* content */
 		}
 	}
