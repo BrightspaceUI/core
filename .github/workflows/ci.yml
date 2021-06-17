@@ -8,11 +8,13 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
           path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          key: npm-14-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
@@ -31,11 +33,13 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
           path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          key: npm-14-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
@@ -50,11 +54,13 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
           path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          key: npm-14-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
@@ -75,11 +81,13 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14'
       - uses: Brightspace/third-party-actions@actions/cache
         id: cache
         with:
           path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          key: npm-14-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
