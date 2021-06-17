@@ -6,6 +6,7 @@ export const dropdownContentStyles = css`
 	:host {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation;
+		--d2l-dropdown-mobile-tray-name: d2l-dropdown-mobile-tray;
 		--d2l-dropdown-background-color: #ffffff;
 		--d2l-dropdown-border-color: var(--d2l-color-mica);
 		--d2l-dropdown-foreground-color: var(--d2l-color-ferrite);
@@ -31,17 +32,40 @@ export const dropdownContentStyles = css`
 		opacity: 0.9;
 	}
 
-	:host([opened]) {
-		-webkit-animation: var(--d2l-dropdown-animation-name) 300ms ease;
-		animation: var(--d2l-dropdown-animation-name) 300ms ease;
-		display: inline-block;
+	@media (min-width: 616px) {
+		:host([opened]) {
+			-webkit-animation: var(--d2l-dropdown-animation-name) 300ms ease;
+			animation: var(--d2l-dropdown-animation-name) 300ms ease;
+			display: inline-block;
+		}
+
+		:host([opened-above]) {
+			-webkit-animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+			bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+			top: auto;
+		}
 	}
 
-	:host([opened-above]) {
-		-webkit-animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
-		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
-		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
-		top: auto;
+	@media (max-width: 615px) {
+		:host([opened]) {
+			display: inline-block;
+		}
+	
+		:host([opened-above]) {
+			bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+			top: auto;
+		}
+
+		:host([opened][mobile-tray="none"]) {
+			-webkit-animation: var(--d2l-dropdown-animation-name) 300ms ease;
+			animation: var(--d2l-dropdown-animation-name) 300ms ease;
+		}
+	
+		:host([opened-above][mobile-tray="none"]) {
+			-webkit-animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+		}
 	}
 
 	.d2l-dropdown-content-pointer {
@@ -199,16 +223,35 @@ export const dropdownContentStyles = css`
 		100% { opacity: 0.9; -webkit-transform: translate(0, 0); }
 	}
 
+	@keyframes d2l-dropdown-mobile-tray {
+		0% { opacity: 0; transform: translateX(420px); }
+		100% { opacity: 1; transform: translate(0, 0); }
+	}
+	@-webkit-keyframes d2l-dropdown-mobile-tray {
+		0% { opacity: 0; -webkit-transform: translateX(420px); }
+		100% { opacity: 1; -webkit-transform: translate(0, 0); }
+	}
+
 	#d2l-dropdown-wrapper { z-index: 1000; }
 
 	@media (max-width: 615px) {
 
 		:host([mobile-format="tray"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			max-width: 420px;
+			height: 100vh;
+			max-width: min(calc(100vw - 30px), 420px);
 			min-width: 285px;
 			position: fixed;
-			height: 100vh;
 			top: 0;
+			/*opacity: 0;
+			right: calc(-100vw - 420px);
+			transition: 4000ms ease-out; */
+			-webkit-animation: var(--d2l-dropdown-mobile-tray-name) 3000ms ease-out;
+			animation: var(--d2l-dropdown-mobile-tray-name) 3000ms ease-out;
+		}
+
+		:host([mobile-format="tray"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+			/*opacity: 1;
+			transition: 4000ms ease-out; */
 			right: 0;
 		}
 

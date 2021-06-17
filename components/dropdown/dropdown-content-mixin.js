@@ -283,12 +283,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		if (!this.opened) {
 			return;
 		}
-		const backdrop = this.shadowRoot.querySelector('d2l-backdrop');
-		if (mediaQueryList.matches && this.mobileFormat === 'tray') {
-			backdrop.shown = true;
-		} else {
-			backdrop.shown = false;
-		}
 		await this.__position();
 	}
 
@@ -680,6 +674,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			}
 		}
 
+		const showBackdrop = mediaQueryList.matches && this.mobileFormat === 'tray';
+
 		const widthStyle = {
 			maxWidth: this.maxWidth && this.mobileFormat === null ? `${this.maxWidth}px` : undefined,
 			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
@@ -724,7 +720,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					</div>
 				</div>
 			</div>
-			<d2l-backdrop for-target="d2l-dropdown-wrapper"></d2l-backdrop>
+			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${showBackdrop}"></d2l-backdrop>
 		`;
 	}
 
