@@ -851,7 +851,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 					height: 1px;
 					position: absolute;
 					width: 100%;
-					z-index: -1;
 				}
 			}
 		`;
