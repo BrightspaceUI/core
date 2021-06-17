@@ -571,7 +571,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				-webkit-overflow-scrolling: touch;
 				overflow-x: hidden;
 				overflow-y: scroll;
-				z-index: 1
 			}
 
 			/* prevent margin colapse on slotted children */
