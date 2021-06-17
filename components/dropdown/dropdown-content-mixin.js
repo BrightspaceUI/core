@@ -1,3 +1,4 @@
+import '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
@@ -5,6 +6,8 @@ import { classMap } from 'lit-html/directives/class-map';
 import { html } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+
+const mediaQueryList = window.matchMedia('(max-width: 615px)');
 
 export const DropdownContentMixin = superclass => class extends RtlMixin(superclass) {
 
@@ -46,6 +49,14 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			maxHeight: {
 				type: Number,
 				attribute: 'max-height'
+			},
+			/**
+			 * Override default mobile dropdown style. Specify one of 'tray' or 'dialog'.
+			 */
+			mobileFormat: {
+				type: String,
+				reflect: true,
+				attribute: 'mobile-format'
 			},
 			/**
 			 * Opt out of automatically closing on focus or click outside of the dropdown content
@@ -164,6 +175,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.noAutoClose = false;
 		this.noAutoFit = false;
 		this.noAutoFocus = false;
+		this.mobileFormat = null;
 		this.noPadding = false;
 		this.noPaddingFooter = false;
 		this.noPaddingHeader = false;
@@ -270,6 +282,12 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	async resize() {
 		if (!this.opened) {
 			return;
+		}
+		const backdrop = this.shadowRoot.querySelector('d2l-backdrop');
+		if (mediaQueryList.matches && this.mobileFormat === 'tray') {
+			backdrop.shown = true;
+		} else {
+			backdrop.shown = false;
 		}
 		await this.__position();
 	}
@@ -663,7 +681,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 
 		const widthStyle = {
-			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
+			maxWidth: this.maxWidth && this.mobileFormat === null ? `${this.maxWidth}px` : undefined,
 			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
 			/* add 2 to content width since scrollWidth does not include border */
 			width: this._width ? `${this._width + 20}px` : ''
@@ -677,7 +695,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: this._contentHeight ? `${this._contentHeight}px` : 'none',
+			maxHeight: this._contentHeight && this.mobileFormat === null ? `${this._contentHeight}px` : 'none',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
@@ -694,7 +712,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		return html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
@@ -706,6 +724,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					</div>
 				</div>
 			</div>
+			<d2l-backdrop for-target="d2l-dropdown-wrapper"></d2l-backdrop>
 		`;
 	}
 

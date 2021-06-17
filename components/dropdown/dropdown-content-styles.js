@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css } from 'lit-element/lit-element.js';
 
 export const dropdownContentStyles = css`
+
 	:host {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation;
@@ -196,5 +197,29 @@ export const dropdownContentStyles = css`
 	@-webkit-keyframes d2l-dropdown-above-animation-dark {
 		0% { opacity: 0; -webkit-transform: translate(0, 10px); }
 		100% { opacity: 0.9; -webkit-transform: translate(0, 0); }
+	}
+
+	#d2l-dropdown-wrapper { z-index: 1000; }
+
+	@media (max-width: 615px) {
+
+		:host([mobile-format="tray"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+			max-width: 420px;
+			min-width: 285px;
+			position: fixed;
+			height: 100vh;
+			top: 0;
+			right: 0;
+		}
+
+		:host([mobile-format="tray"]) > .d2l-dropdown-content-pointer {
+			display: none;
+		}
+	
+
+		/* dialog-style */
+		d2l-dropdown-content[mobile-format="dialog"] {
+			/* content */
+		}
 	}
 `;

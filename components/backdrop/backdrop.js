@@ -85,6 +85,7 @@ class Backdrop extends LitElement {
 		if (!changedProperties.has('shown')) return;
 
 		if (this.shown) {
+			console.log("target");
 
 			if (this._state === null) {
 				this._bodyScrollKey = preventBodyScroll();
@@ -128,7 +129,7 @@ export function allowBodyScroll(key) {
 }
 
 function hideAccessible(target) {
-
+	console.log("target");
 	const hiddenElements = [];
 	const path = [target];
 
