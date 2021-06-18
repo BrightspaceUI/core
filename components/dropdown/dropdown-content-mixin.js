@@ -360,7 +360,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			return;
 		}
 
-		this.opened = false;
+		this.close();
 	}
 
 	__onAutoCloseFocus() {
@@ -382,7 +382,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				return;
 			}
 
-			this.opened = false;
+			this.close();
 		}, 0);
 	}
 
@@ -723,7 +723,6 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		const contentStyle = {
 			...contentWidthStyle,
 			maxHeight: this._contentHeight && !specialMobileStyle ? `${this._contentHeight}px` : 'none',
-			height: specialMobileStyle ? '100vh' : undefined,
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
@@ -752,7 +751,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					</div>
 				</div>
 			</div>
-			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${specialMobileStyle}"></d2l-backdrop>
+			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${specialMobileStyle && this.opened}" ></d2l-backdrop>
 		`;
 	}
 
