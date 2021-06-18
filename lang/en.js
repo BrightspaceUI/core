@@ -7,6 +7,8 @@ export default {
 	"components.calendar.selected": "Selected.",
 	"components.calendar.show": "Show {month}",
 	"components.dialog.close": "Close this dialog",
+	"components.filter.filterCount": "{number, select, max {99+} all {All} other {{number}}}",
+	"components.filter.filterCountDescription": "{number, plural, zero {No filters applied.} one {1 filter applied.} other {{number} filters applied.}}",
 	"components.filter.filters": "Filters",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
 	"components.form-element.defaultError": "{label} is invalid.",

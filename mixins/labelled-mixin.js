@@ -33,8 +33,23 @@ export const LabelMixin = superclass => class extends superclass {
 		};
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('d2l-label-change', this._handleLabelChange);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('d2l-label-change', this._handleLabelChange);
+	}
+
 	updateLabel(text) {
 		this._label = text;
+	}
+
+	_handleLabelChange(e) {
+		e.stopPropagation();
+		this.updateLabel(e.detail);
 	}
 
 };

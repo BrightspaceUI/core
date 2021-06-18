@@ -28,6 +28,7 @@ const labelTag = defineCE(
 		}
 		updated(changedProperties) {
 			super.updated(changedProperties);
+			if (!changedProperties.has('text')) return;
 			this.updateLabel(this.text);
 		}
 	}
@@ -56,6 +57,7 @@ describe('LabelMixin', () => {
 		elem = await fixture(`
 			<${labelTag} text="the label value"></${labelTag}>
 		`);
+		await elem.updateComplete;
 	});
 
 	it('reflects label value', async() => {
@@ -64,6 +66,16 @@ describe('LabelMixin', () => {
 
 	it('reflects label value change', async() => {
 		elem.text = 'new label value';
+		await nextFrame();
+		expect(elem.getAttribute('_label')).to.equal('new label value');
+	});
+
+	it('reflects label value from bubbling event', async() => {
+		elem.shadowRoot.querySelector('span').dispatchEvent(new CustomEvent('d2l-label-change', {
+			bubbles: true,
+			composed: true,
+			detail: 'new label value'
+		}));
 		await nextFrame();
 		expect(elem.getAttribute('_label')).to.equal('new label value');
 	});
