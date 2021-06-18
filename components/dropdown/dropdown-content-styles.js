@@ -265,6 +265,12 @@ export const dropdownContentStyles = css`
 			left: 0;
 		}
 
+
+		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
+		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container {
+			height: 100vh;
+		}
+
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-pointer,
 		:host([mobile-tray="right"]) > .d2l-dropdown-content-pointer {
 			display: none;
