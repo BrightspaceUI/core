@@ -238,6 +238,13 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		this._tableMutationObserver = null;
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+
+		if (this._tableMutationObserver) this._tableMutationObserver.disconnect();
+		if (this._tableIntersectionObserver) this._tableIntersectionObserver.disconnect();
+	}
+
 	render() {
 		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
 		if (this.stickyHeaders) {
@@ -323,7 +330,11 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
-		this._tableMutationObserver = new MutationObserver(() => this._applyClassNames(table, 0));
+		if (this._tableMutationObserver === null) {
+			this._tableMutationObserver = new MutationObserver(() => this._applyClassNames(table, 0));
+		} else {
+			this._tableMutationObserver.disconnect();
+		}
 		this._tableMutationObserver.observe(table, {
 			attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
 			attributeFilter: ['selected'],
@@ -339,7 +350,6 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (entry.isIntersecting) {
-							this._tableIntersectionObserver.unobserve(table);
 							requestIdleCallback(() => this._applyClassNames(table));
 						}
 					});
@@ -349,10 +359,9 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			}
 			this._tableIntersectionObserver.observe(table);
 		}
+
 		requestAnimationFrame(() => this._applyClassNames(table));
-
 	}
-
 }
 
 customElements.define('d2l-table-wrapper', TableWrapper);
