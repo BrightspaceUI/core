@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "Hvis du vil tilføje en decimal, skal du bruge komma-tegnet \",\"",
 	"components.input-number.hintDecimalIncorrectPeriod": "Hvis du vil tilføje en decimal, skal du bruge tegnet \".\"",
 	"components.input-search.clear": "Ryd søgning",
+	"components.input-search.defaultPlaceholder": "Søg ...",
 	"components.input-search.search": "Søg",
 	"components.input-time-range.endTime": "Sluttidspunkt",
 	"components.input-time-range.errorBadInput": "{startLabel} skal være før {endLabel}",

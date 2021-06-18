@@ -23,7 +23,7 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 | `disabled` | Boolean | Disables the input |
 | `maxlength` | Number | Imposes an upper character limit |
 | `no-clear` | Boolean | Prevents the "clear" button from appearing |
-| `placeholder` | String | Placeholder text |
+| `placeholder` | String, default:`'Search...'` | Placeholder text |
 | `value` | String, default: `''` | Value of the input |
 
 **Accessibility:**

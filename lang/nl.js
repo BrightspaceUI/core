@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "Als u een decimaal wilt toevoegen, gebruikt u het teken ','",
 	"components.input-number.hintDecimalIncorrectPeriod": "Als u een decimaal wilt toevoegen, gebruikt u de punt '.'",
 	"components.input-search.clear": "Zoekopdracht wissen",
+	"components.input-search.defaultPlaceholder": "Zoeken...",
 	"components.input-search.search": "Zoeken",
 	"components.input-time-range.endTime": "Eindtijd",
 	"components.input-time-range.errorBadInput": "{startLabel} moet voor {endLabel} liggen",

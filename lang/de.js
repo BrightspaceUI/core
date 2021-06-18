@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Komma \",“",
 	"components.input-number.hintDecimalIncorrectPeriod": "Verwenden Sie zum Hinzufügen einer Dezimalstelle das Zeichen \".“",
 	"components.input-search.clear": "Suche löschen",
+	"components.input-search.defaultPlaceholder": "Suchen...",
 	"components.input-search.search": "Suchen",
 	"components.input-time-range.endTime": "Endzeit",
 	"components.input-time-range.errorBadInput": "{startLabel} muss vor {endLabel} liegen",

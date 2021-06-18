@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "소수점을 추가하려면 쉼표 \",\" 문자를 사용합니다",
 	"components.input-number.hintDecimalIncorrectPeriod": "소수점을 추가하려면 마침표 \".\" 문자를 사용합니다",
 	"components.input-search.clear": "검색 지우기",
+	"components.input-search.defaultPlaceholder": "검색...",
 	"components.input-search.search": "검색",
 	"components.input-time-range.endTime": "종료 시각",
 	"components.input-time-range.errorBadInput": "{startLabel}은(는) {endLabel} 앞에 있어야 합니다",

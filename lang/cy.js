@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "I ychwanegu degol defnyddiwch y nod coma \",”",
 	"components.input-number.hintDecimalIncorrectPeriod": "I ychwanegu degol defnyddiwch y nod atalnod llawn \".\"",
 	"components.input-search.clear": "Clirio'r Chwilio",
+	"components.input-search.defaultPlaceholder": "Chwilio...",
 	"components.input-search.search": "Chwilio",
 	"components.input-time-range.endTime": "Amser Gorffen",
 	"components.input-time-range.errorBadInput": "Rhaid i {startLabel} fod cyn {endLabel}",

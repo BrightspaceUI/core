@@ -44,6 +44,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "To add a decimal use the comma \",\" character",
 	"components.input-number.hintDecimalIncorrectPeriod": "To add a decimal use the period \".\" character",
 	"components.input-search.clear": "Clear Search",
+	"components.input-search.defaultPlaceholder": "Search...",
 	"components.input-search.search": "Search",
 	"components.input-time-range.endTime": "End Time",
 	"components.input-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
