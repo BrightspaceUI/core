@@ -675,23 +675,55 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		}
 
 		const specialMobileStyle = mediaQueryList.matches && this.mobileTray !== 'none';
+		const mobileTrayRightLeft = mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
+
+		let maxWidthOverride = this.maxWidth;
+		if (mobileTrayRightLeft) {
+			// default maximum width for tray (30px margin)
+			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - 30, 420);
+			if (maxWidthOverride) {
+				// if maxWidth provided is smaller, use the maxWidth
+				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
+			} else {
+				maxWidthOverride = mobileTrayMaxWidthDefault;
+			}
+		}
+
+		let minWidthOverride = this.minWidth;
+		if (mobileTrayRightLeft) {
+			// minimum size - 285px
+			const mobileTrayMinWidthDefault = 285;
+			if (minWidthOverride) {
+				// if minWidth provided is smaller, use the minumum width for tray
+				minWidthOverride = Math.max(mobileTrayMinWidthDefault, minWidthOverride);
+			} else {
+				minWidthOverride = mobileTrayMinWidthDefault;
+			}
+		}
+
+		// set to max width 
+		let widthOverride = this.width ? this.width : maxWidthOverride;
+
+		if (widthOverride && maxWidthOverride && widthOverride > maxWidthOverride) widthOverride = maxWidthOverride;
+		if (widthOverride && minWidthOverride && widthOverride < minWidthOverride) widthOverride = minWidthOverride;
 
 		const widthStyle = {
-			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			maxWidth: maxWidthOverride ? `${maxWidthOverride}px` : undefined,
+			minWidth: minWidthOverride ? `${minWidthOverride}px` : undefined,
 			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width && !(mediaQueryList.matches && this.mobileTray !== 'none') ? `${this._width + 20}px` : ''
+			width: widthOverride ? `${widthOverride + 20}px` : ''
 		};
 
 		const contentWidthStyle = {
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			minWidth: minWidthOverride ? `${minWidthOverride}px` : undefined,
 			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: this._width ? `${this._width + 18}px` : '',
+			width: widthOverride ? `${widthOverride + 18}px` : '',
 		};
 
 		const contentStyle = {
 			...contentWidthStyle,
 			maxHeight: this._contentHeight && !specialMobileStyle ? `${this._contentHeight}px` : 'none',
+			height: specialMobileStyle ? '100vh' : undefined,
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
@@ -708,7 +740,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		return html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${!specialMobileStyle ? styleMap(widthStyle) : ''}>
+				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
