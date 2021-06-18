@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "要添加小数，请使用逗号“,”字符",
 	"components.input-number.hintDecimalIncorrectPeriod": "要添加小数，请使用句号“.”字符",
 	"components.input-search.clear": "清除搜索",
+	"components.input-search.defaultPlaceholder": "搜索...",
 	"components.input-search.search": "搜索",
 	"components.input-time-range.endTime": "结束时间",
 	"components.input-time-range.errorBadInput": "{startLabel} 必须早于 {endLabel}",
