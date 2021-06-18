@@ -32,7 +32,7 @@ const OPENER_STYLE = {
 
 function createMenuItem(node) {
 	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
-	const disabled = node.disabled || node.nonInteractive;
+	const disabled = node.disabled;
 	const handleItemSelect = () => {
 		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
 		node.click();
@@ -228,6 +228,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	constructor() {
 		super();
+		this._handleItemMutation = this._handleItemMutation.bind(this);
 		this._handleResize = this._handleResize.bind(this);
 
 		this._throttledResize = (entries) => requestAnimationFrame(() => this._handleResize(entries));
@@ -267,7 +268,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		});
 
 		return html`
-			<div class="d2l-overflow-group-container" @d2l-non-interactive-change="${this._handleNonInteractiveChange}">
+			<div class="d2l-overflow-group-container">
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 				${overflowMenu}
 			</div>
@@ -461,7 +462,8 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return filteredNodes;
 	}
 
-	_handleNonInteractiveChange() {
+	_handleItemMutation(mutations) {
+		if (!mutations || mutations.length === 0) return;
 		if (this._updateDropdownItemsRequested) return;
 
 		this._updateDropdownItemsRequested = true;
@@ -480,6 +482,16 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	_handleSlotChange() {
 		requestAnimationFrame(() => {
 			this._getItems();
+
+			this._slotItems.forEach(item => {
+				const observer = new MutationObserver(this._handleItemMutation);
+				observer.observe(item, {
+					attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
+					attributeFilter: ['disabled', 'text'],
+					childList: false,
+					subtree: false
+				});
+			});
 
 			if (this.autoShow) {
 				this._autoDetectBoundaries(this._slotItems);

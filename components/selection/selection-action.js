@@ -22,10 +22,6 @@ class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlM
 			 */
 			icon: { type: String, reflect: true },
 			/**
-			 * Indicates whether the action is only focusable
-			 */
-			nonInteractive: { type: Boolean, attribute: 'non-interactive', reflect: true },
-			/**
 			 * Whether the action requires one or more selected items
 			 */
 			requiresSelection: { type: Boolean, attribute: 'requires-selection', reflect: true },
@@ -53,7 +49,7 @@ class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlM
 
 	set selectionInfo(value) {
 		super.selectionInfo = value;
-		this.nonInteractive = (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none);
+		this.disabled = (this.requiresSelection && this.selectionInfo.state === SelectionInfo.states.none);
 	}
 
 	connectedCallback() {
@@ -70,22 +66,12 @@ class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlM
 		return html`
 			<d2l-button-subtle
 				@click="${this._handleActionClick}"
-				?disabled="${this.disabled || this.nonInteractive}"
-				disabled-tooltip="${ifDefined(this.nonInteractive ? this.localize('components.selection.action-hint') : undefined)}"
+				?disabled="${this.disabled}"
+				disabled-tooltip="${ifDefined(this.disabled ? this.localize('components.selection.action-hint') : undefined)}"
 				icon="${ifDefined(this.icon)}"
 				text="${this.text}">
 			</d2l-button-subtle>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (!changedProperties.has('nonInteractive')) return;
-
-		this.dispatchEvent(new CustomEvent('d2l-non-interactive-change', {
-			composed: true,
-			bubbles: true
-		}));
 	}
 
 	_handleActionClick(e) {
