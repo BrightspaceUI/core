@@ -1,6 +1,6 @@
 import '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, getBoundingAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map';
 import { html } from 'lit-element/lit-element.js';
@@ -8,6 +8,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const DropdownContentMixin = superclass => class extends RtlMixin(superclass) {
 
@@ -140,6 +141,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			_bottomOverflow: {
 				type: Boolean
 			},
+			_closing: {
+				type: Boolean,
+				attribute: 'closing'
+			},
 			_contentOverflow: {
 				type: Boolean
 			},
@@ -190,6 +195,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._dropdownContent = true;
 		this._bottomOverflow = false;
 		this._topOverflow = false;
+		this._closing = false;
 		this._contentOverflow = false;
 		this._hasHeader = false;
 		this._hasFooter = false;
@@ -256,7 +262,18 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	close() {
-		this.opened = false;
+		const hide = () => {
+			this._closing = false;
+			this.shadowRoot.querySelector('.d2l-dropdown-content-width').removeEventListener('animationend', hide);
+			this.opened = false;
+		};
+
+		if (!reduceMotion && mediaQueryList.matches && this.mobileTray !== 'none' && isVisible(this)) {
+			this.shadowRoot.querySelector('.d2l-dropdown-content-width').addEventListener('animationend', hide);
+			this._closing = true;
+		} else {
+			hide();
+		}
 	}
 
 	/**
@@ -739,7 +756,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 
 		return html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)} ?closing="${this._closing}">
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
@@ -751,7 +768,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					</div>
 				</div>
 			</div>
-			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${specialMobileStyle && this.opened}" ></d2l-backdrop>
+			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${specialMobileStyle && this.opened && !this._closing}" ></d2l-backdrop>
 		`;
 	}
 
