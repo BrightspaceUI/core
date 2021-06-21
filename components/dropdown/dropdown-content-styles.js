@@ -247,8 +247,6 @@ export const dropdownContentStyles = css`
 	}
 
 
-	#d2l-dropdown-wrapper { z-index: 1000; }
-
 	@media (max-width: 615px) {
 
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
@@ -256,6 +254,7 @@ export const dropdownContentStyles = css`
 			height: 100vh;
 			position: fixed;
 			top: 0;
+			z-index: 1000;
 		}
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
