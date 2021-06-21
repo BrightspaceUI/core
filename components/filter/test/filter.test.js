@@ -28,40 +28,89 @@ describe('d2l-filter', () => {
 		runConstructor('d2l-filter');
 	});
 
-	describe('change event', () => {
-		it('single set dimension fires change events', async() => {
+	describe('loading', () => {
+		it('single set dimension - loading spinner', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
-			const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+			const dim = elem.querySelector('d2l-filter-dimension-set');
+			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.be.null;
 
-			setTimeout(() => value.setSelected(true));
-			let e = await oneEvent(elem, 'd2l-filter-change');
-			expect(e.detail.dimension).to.equal('dim');
-			expect(e.detail.value.key).to.equal('2');
-			expect(e.detail.value.selected).to.be.true;
+			dim.loading = true;
+			await elem.updateComplete;
 
-			setTimeout(() => value.setSelected(false));
-			e = await oneEvent(elem, 'd2l-filter-change');
-			expect(e.detail.dimension).to.equal('dim');
-			expect(e.detail.value.key).to.equal('2');
-			expect(e.detail.value.selected).to.be.false;
+			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.not.be.null;
+		});
+	});
+
+	describe('events', () => {
+		describe('d2l-filter-change', () => {
+			it('single set dimension fires change events', async() => {
+				const elem = await fixture(singleSetDimensionFixture);
+				const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+
+				setTimeout(() => value.setSelected(true));
+				let e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.dimension).to.equal('dim');
+				expect(e.detail.value.key).to.equal('2');
+				expect(e.detail.value.selected).to.be.true;
+
+				setTimeout(() => value.setSelected(false));
+				e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.dimension).to.equal('dim');
+				expect(e.detail.value.key).to.equal('2');
+				expect(e.detail.value.selected).to.be.false;
+			});
+
+			it('multiple dimensions fire change events', async() => {
+				const elem = await fixture(multiDimensionFixture);
+				const value1 = elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]');
+				const value2 = elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]');
+
+				setTimeout(() => value1.setSelected(false));
+				let e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.dimension).to.equal('1');
+				expect(e.detail.value.key).to.equal('1');
+				expect(e.detail.value.selected).to.be.false;
+
+				setTimeout(() => value2.setSelected(true));
+				e = await oneEvent(elem, 'd2l-filter-change');
+				expect(e.detail.dimension).to.equal('2');
+				expect(e.detail.value.key).to.equal('1');
+				expect(e.detail.value.selected).to.be.true;
+			});
 		});
 
-		it('multiple dimensions fire change events', async() => {
-			const elem = await fixture(multiDimensionFixture);
-			const value1 = elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]');
-			const value2 = elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]');
+		describe('d2l-filter-dimension-open', () => {
+			it('single set dimension fires dimension open event', async() => {
+				const elem = await fixture(singleSetDimensionFixture);
+				const eventSpy = spy(elem, 'dispatchEvent');
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				dropdown.toggleOpen();
 
-			setTimeout(() => value1.setSelected(false));
-			let e = await oneEvent(elem, 'd2l-filter-change');
-			expect(e.detail.dimension).to.equal('1');
-			expect(e.detail.value.key).to.equal('1');
-			expect(e.detail.value.selected).to.be.false;
+				const e = await oneEvent(elem, 'd2l-filter-dimension-open');
+				expect(e.detail.key).to.equal('dim');
+				expect(eventSpy).to.be.calledOnce;
+			});
 
-			setTimeout(() => value2.setSelected(true));
-			e = await oneEvent(elem, 'd2l-filter-change');
-			expect(e.detail.dimension).to.equal('2');
-			expect(e.detail.value.key).to.equal('1');
-			expect(e.detail.value.selected).to.be.true;
+			it('multiple dimensions fire dimension open events', async() => {
+				const elem = await fixture(multiDimensionFixture);
+				const eventSpy = spy(elem, 'dispatchEvent');
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
+
+				dropdown.toggleOpen();
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+				expect(eventSpy).to.be.not.be.called;
+
+				setTimeout(() => dimensions[0].click());
+				let e = await oneEvent(elem, 'd2l-filter-dimension-open');
+				expect(e.detail.key).to.equal('1');
+				expect(eventSpy).to.be.calledOnce;
+
+				setTimeout(() => dimensions[1].click());
+				e = await oneEvent(elem, 'd2l-filter-dimension-open');
+				expect(e.detail.key).to.equal('2');
+				expect(eventSpy).to.be.calledTwice;
+			});
 		});
 	});
 
