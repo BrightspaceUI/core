@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "لإضافة عدد عشري، استخدم حرف الفاصلة \",\"",
 	"components.input-number.hintDecimalIncorrectPeriod": "لإضافة عدد عشري، استخدم حرف النقطة \".\"",
 	"components.input-search.clear": "مسح البحث",
+	"components.input-search.defaultPlaceholder": "البحث...",
 	"components.input-search.search": "بحث",
 	"components.input-time-range.endTime": "وقت النهاية",
 	"components.input-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",

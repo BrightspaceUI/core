@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "Para adicionar um decimal, use o caractere vírgula “,”",
 	"components.input-number.hintDecimalIncorrectPeriod": "Para adicionar um decimal, use o caractere ponto “.”",
 	"components.input-search.clear": "Limpar pesquisa",
+	"components.input-search.defaultPlaceholder": "Pesquisar…",
 	"components.input-search.search": "Pesquisar",
 	"components.input-time-range.endTime": "Hora final",
 	"components.input-time-range.errorBadInput": "{startLabel} precisa ser anterior a {endLabel}",

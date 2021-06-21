@@ -80,8 +80,10 @@ describe('d2l-input-date-range', () => {
 
 	it('basic-focus', async function() {
 		await page.$eval('#basic', (elem) => {
-			elem.focus();
-			elem.shadowRoot.querySelector('d2l-input-date')._inputTextFocusShowTooltip = true;
+			return new Promise((resolve) => {
+				elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
+				elem.focus();
+			});
 		});
 		const rect = await getRectInnerTooltip(page, '#basic', 'd2l-input-date.d2l-input-date-range-start');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
