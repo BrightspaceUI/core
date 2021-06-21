@@ -1,16 +1,18 @@
 import '../backdrop/backdrop.js';
+import '../button/button.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map';
 import { html } from 'lit-element/lit-element.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export const DropdownContentMixin = superclass => class extends RtlMixin(superclass) {
+export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -52,7 +54,15 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				attribute: 'max-height'
 			},
 			/**
-			 * Override default mobile dropdown style. Specify one of 'tray' or 'dialog'.
+			 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
+			 */
+			noMobileCloseButton: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'no-mobile-close-button'
+			},
+			/**
+			 * Override default mobile dropdown style. Specify one of 'left' or 'right'.
 			 */
 			mobileTray: {
 				type: String,
@@ -180,6 +190,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.noAutoClose = false;
 		this.noAutoFit = false;
 		this.noAutoFocus = false;
+		this.noMobileCloseButton = false;
 		this.mobileTray = 'none';
 		this.noPadding = false;
 		this.noPaddingFooter = false;
@@ -192,13 +203,15 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.__applyFocus = true;
 		this.__dismissibleId = null;
 
+		const specialMobileStyle = mediaQueryList.matches && this.mobileTray !== 'none';
+
 		this._dropdownContent = true;
 		this._bottomOverflow = false;
 		this._topOverflow = false;
 		this._closing = false;
 		this._contentOverflow = false;
 		this._hasHeader = false;
-		this._hasFooter = false;
+		this._hasFooter = specialMobileStyle && !this.noMobileCloseButton;
 
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
@@ -354,7 +367,8 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	__handleFooterSlotChange(e) {
-		this._hasFooter = e.target.assignedNodes().length !== 0;
+		const specialMobileStyle = mediaQueryList.matches && this.mobileTray !== 'none';
+		this._hasFooter = e.target.assignedNodes().length !== 0 && !specialMobileStyle;
 	}
 
 	__handleHeaderSlotChange(e) {
@@ -718,7 +732,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			}
 		}
 
-		// set to max width 
+		// set to max width
 		let widthOverride = this.width ? this.width : maxWidthOverride;
 
 		if (widthOverride && maxWidthOverride && widthOverride > maxWidthOverride) widthOverride = maxWidthOverride;
@@ -743,6 +757,12 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
+		const closeButtonVisibility = {
+			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
+			width: 'calc(100% - 24px)',
+			padding: '12px'
+		};
+
 		const topClasses = {
 			'd2l-dropdown-content-top': true,
 			'd2l-dropdown-content-top-scroll': this._topOverflow,
@@ -764,7 +784,12 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 						<slot class="d2l-dropdown-content-slot"></slot>
 					</div>
 					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}">
+						</slot>
+						<d2l-button
+						style=${styleMap(closeButtonVisibility)} 
+						@click=${this.close}>
+						${this.localize('components.dropdown.close')}</d2l-button>
 					</div>
 				</div>
 			</div>

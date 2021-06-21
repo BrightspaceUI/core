@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "Selected.",
 	"components.calendar.show": "Show {month}",
 	"components.dialog.close": "Close this dialog",
+	"components.dropdown.close": "Close",
 	"components.filter.filters": "Filters",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
 	"components.form-element.defaultError": "{label} is invalid.",

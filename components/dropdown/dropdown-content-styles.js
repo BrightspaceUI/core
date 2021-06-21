@@ -287,12 +287,12 @@ export const dropdownContentStyles = css`
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
 			-webkit-animation: var(--d2l-dropdown-mobile-tray-right-close-name) 300ms ease-out;
-			animation: var(--d2l-dropdown-mobile-tray-right-close-name) 300ms ease-out; 
+			animation: var(--d2l-dropdown-mobile-tray-right-close-name) 300ms ease-out;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
 			-webkit-animation: var(--d2l-dropdown-mobile-tray-left-close-name) 300ms ease-out;
-			animation: var(--d2l-dropdown-mobile-tray-left-close-name) 300ms ease-out; 
+			animation: var(--d2l-dropdown-mobile-tray-left-close-name) 300ms ease-out;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
@@ -303,6 +303,13 @@ export const dropdownContentStyles = css`
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-pointer,
 		:host([mobile-tray="right"]) > .d2l-dropdown-content-pointer {
 			display: none;
+		}
+
+		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
+		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
+		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
+		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
+			min-height: auto;
 		}
 
 		/* TODO: dialog-style */
