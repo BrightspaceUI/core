@@ -35,6 +35,7 @@ describe('d2l-filter', () => {
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.be.null;
 
 			dim.loading = true;
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			await elem.updateComplete;
 
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.not.be.null;
@@ -84,8 +85,8 @@ describe('d2l-filter', () => {
 				const elem = await fixture(singleSetDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-				dropdown.toggleOpen();
 
+				setTimeout(() => dropdown.toggleOpen());
 				const e = await oneEvent(elem, 'd2l-filter-dimension-open');
 				expect(e.detail.key).to.equal('dim');
 				expect(eventSpy).to.be.calledOnce;
@@ -97,7 +98,7 @@ describe('d2l-filter', () => {
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
-				dropdown.toggleOpen();
+				setTimeout(() => dropdown.toggleOpen());
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 				expect(eventSpy).to.be.not.be.called;
 
