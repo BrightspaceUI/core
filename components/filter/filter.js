@@ -11,7 +11,6 @@ import '../menu/menu-item.js';
 
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -180,6 +179,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				<div class="d2l-filter-dimension-header">
 					<d2l-button-icon
 						@click="${this._handleDimensionHide}"
+						id="d2l-filter-dimension-header-return"
 						icon="tier1:chevron-left"
 						text="${this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', dimensionText)}">
 					</d2l-button-icon>
@@ -292,11 +292,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionShowComplete() {
-		const dimension = this.shadowRoot.querySelector(`[data-key="${this._activeDimensionKey}"]`);
-		const focusable = getFirstFocusableDescendant(dimension);
-		if (focusable) {
-			focusable.focus();
-		}
+		const returnButton = this.shadowRoot.getElementById('d2l-filter-dimension-header-return');
+		returnButton.focus();
 	}
 
 	_handleDimensionShowStart(e) {
