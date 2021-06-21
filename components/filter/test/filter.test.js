@@ -278,9 +278,11 @@ describe('d2l-filter', () => {
 			const dimension = elem.querySelector('d2l-filter-dimension-set[key="2"]');
 			expect(dimension.text).to.equal('Dim 2');
 			dimension.text = 'Test';
+			dimension.loading = true;
 
 			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			expect(elem._dimensions[1].text).to.equal('Test');
+			expect(elem._dimensions[1].loading).to.be.true;
 			expect(updateStub).to.be.calledOnce;
 			expect(recountSpy).to.be.not.be.called;
 		});

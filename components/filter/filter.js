@@ -6,6 +6,7 @@ import '../dropdown/dropdown-menu.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../list/list.js';
 import '../list/list-item.js';
+import '../loading-spinner/loading-spinner.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
 
@@ -68,6 +69,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			/* Needed to "undo" the menu hover styles */
 			:host(:hover) .d2l-filter-dimension-set-value-text {
 				color: var(--d2l-color-ferrite);
+			}
+
+			d2l-loading-spinner {
+				padding-top: 0.6rem;
+				width: 100%;
 			}
 		`];
 	}
@@ -196,7 +202,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_createSetDimension(dimension) {
-		return html`
+		return dimension.loading ? html`<d2l-loading-spinner></d2l-loading-spinner>` : html`
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators>
@@ -312,6 +318,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			const type = dimension.tagName.toLowerCase();
 			const info = {
 				key: dimension.key,
+				loading: dimension.loading,
 				text: dimension.text,
 				type: type
 			};
