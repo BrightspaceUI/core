@@ -17,6 +17,20 @@ describe('d2l-dropdown-openers', () => {
 
 	after(async() => await browser.close());
 
+	// test for https://github.com/BrightspaceUI/core/issues/1398
+	it('autoclose', async function() {
+		await page.$eval('#autoclose', (elem) => {
+			const button = elem.shadowRoot.querySelector('d2l-button');
+			button.focus();
+		});
+		await page.keyboard.press('Enter');
+		await page.keyboard.press('Tab');
+		await page.keyboard.press('Tab');
+		const rect = await visualDiff.getRect(page, '#autoclose');
+		rect.height += 50;
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	[
 		'button-primary',
 		'button-full-width',
