@@ -230,15 +230,7 @@ export const dropdownContentStyles = css`
 		0% { opacity: 0; transform: translateX(100%); }
 		100% { opacity: 1; transform: translate(0, 0); }
 	}
-	@-webkit-keyframes d2l-dropdown-mobile-tray-right {
-		0% { opacity: 0; -webkit-transform: translateX(100%); }
-		100% { opacity: 1; -webkit-transform: translate(0, 0); }
-	}
 
-	@keyframes d2l-dropdown-mobile-tray-right-close {
-		0% { opacity: 1; transform: translate(0, 0); }
-		100% { opacity: 0; transform: translateX(100%); }
-	}
 	@keyframes d2l-dropdown-mobile-tray-right-close {
 		0% { opacity: 1; transform: translate(0, 0); }
 		100% { opacity: 0; transform: translateX(100%); }
@@ -248,19 +240,12 @@ export const dropdownContentStyles = css`
 		0% { opacity: 0; transform: translateX(-100%); }
 		100% { opacity: 1; transform: translate(0, 0); }
 	}
-	@-webkit-keyframes d2l-dropdown-mobile-tray-left {
-		0% { opacity: 0; -webkit-transform: translateX(-100%); }
-		100% { opacity: 1; -webkit-transform: translate(0, 0); }
-	}
 
 	@keyframes d2l-dropdown-mobile-tray-left-close {
 		0% { opacity: 1; transform: translate(0, 0); }
 		100% { opacity: 0; transform: translateX(-100%); }
 	}
-	@keyframes d2l-dropdown-mobile-tray-left-close {
-		0% { opacity: 1; transform: translate(0, 0); }
-		100% { opacity: 0; transform: translateX(-100%); }
-	}
+
 
 	#d2l-dropdown-wrapper { z-index: 1000; }
 
@@ -274,24 +259,20 @@ export const dropdownContentStyles = css`
 		}
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			-webkit-animation: var(--d2l-dropdown-mobile-tray-right-name) 300ms ease-out;
 			animation: var(--d2l-dropdown-mobile-tray-right-name) 300ms ease-out;
 			right: 0;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			-webkit-animation: var(--d2l-dropdown-mobile-tray-left-name) 300ms ease-out;
 			animation: var(--d2l-dropdown-mobile-tray-left-name) 300ms ease-out;
 			left: 0;
 		}
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
-			-webkit-animation: var(--d2l-dropdown-mobile-tray-right-close-name) 300ms ease-out;
 			animation: var(--d2l-dropdown-mobile-tray-right-close-name) 300ms ease-out;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
-			-webkit-animation: var(--d2l-dropdown-mobile-tray-left-close-name) 300ms ease-out;
 			animation: var(--d2l-dropdown-mobile-tray-left-close-name) 300ms ease-out;
 		}
 
@@ -320,7 +301,6 @@ export const dropdownContentStyles = css`
 		@media (prefers-reduced-motion: reduce) {
 			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
 			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-				-webkit-animation: none;
 				animation: none;
 			}
 		}

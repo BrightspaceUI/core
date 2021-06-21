@@ -191,7 +191,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noAutoFit = false;
 		this.noAutoFocus = false;
 		this.noMobileCloseButton = false;
-		this.mobileTray = 'none';
 		this.noPadding = false;
 		this.noPaddingFooter = false;
 		this.noPaddingHeader = false;
@@ -203,7 +202,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__applyFocus = true;
 		this.__dismissibleId = null;
 
-		const specialMobileStyle = mediaQueryList.matches && this.mobileTray !== 'none';
+		const specialMobileStyle = mediaQueryList.matches && this.mobileTray;
 
 		this._dropdownContent = true;
 		this._bottomOverflow = false;
@@ -277,12 +276,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	close() {
 		const hide = () => {
 			this._closing = false;
-			this.shadowRoot.querySelector('.d2l-dropdown-content-width').removeEventListener('animationend', hide);
 			this.opened = false;
 		};
 
-		if (!reduceMotion && mediaQueryList.matches && this.mobileTray !== 'none' && isVisible(this)) {
-			this.shadowRoot.querySelector('.d2l-dropdown-content-width').addEventListener('animationend', hide);
+		if (!reduceMotion && mediaQueryList.matches && this.mobileTray && isVisible(this)) {
+			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
+				.addEventListener('animationend', hide, { once: true });
 			this._closing = true;
 		} else {
 			hide();
@@ -367,7 +366,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__handleFooterSlotChange(e) {
-		const specialMobileStyle = mediaQueryList.matches && this.mobileTray !== 'none';
+		const specialMobileStyle = mediaQueryList.matches && this.mobileTray;
 		this._hasFooter = e.target.assignedNodes().length !== 0 && !specialMobileStyle;
 	}
 
@@ -705,7 +704,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 
-		const specialMobileStyle = mediaQueryList.matches && this.mobileTray !== 'none';
+		const specialMobileStyle = mediaQueryList.matches && this.mobileTray;
 		const mobileTrayRightLeft = mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
 
 		let maxWidthOverride = this.maxWidth;
@@ -757,7 +756,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
-		const closeButtonVisibility = {
+		const closeButtonStyles = {
 			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
 			width: 'calc(100% - 24px)',
 			padding: '12px'
@@ -774,7 +773,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			'd2l-dropdown-content-footer': this._hasFooter
 		};
 
-		return html`
+		const dropdown =  html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
 				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)} ?closing="${this._closing}">
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
@@ -784,17 +783,23 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 						<slot class="d2l-dropdown-content-slot"></slot>
 					</div>
 					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}">
-						</slot>
+						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
 						<d2l-button
-						style=${styleMap(closeButtonVisibility)} 
-						@click=${this.close}>
-						${this.localize('components.dropdown.close')}</d2l-button>
+							style=${styleMap(closeButtonStyles)} 
+							@click=${this.close}>
+							${this.localize('components.dropdown.close')}
+						</d2l-button>
 					</div>
 				</div>
 			</div>
-			<d2l-backdrop for-target="d2l-dropdown-wrapper" ?shown="${specialMobileStyle && this.opened && !this._closing}" ></d2l-backdrop>
 		`;
+		if (specialMobileStyle) return html`
+			${dropdown} 
+			<d2l-backdrop 
+				for-target="d2l-dropdown-wrapper" 
+				?shown="${specialMobileStyle && this.opened && !this._closing}" >
+			</d2l-backdrop>`;
+		else return html`${dropdown}`;
 	}
 
 };
