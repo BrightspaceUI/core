@@ -37,13 +37,11 @@ export const dropdownContentStyles = css`
 
 	@media (min-width: 616px) {
 		:host([opened]) {
-			-webkit-animation: var(--d2l-dropdown-animation-name) 300ms ease;
 			animation: var(--d2l-dropdown-animation-name) 300ms ease;
 			display: inline-block;
 		}
 
 		:host([opened-above]) {
-			-webkit-animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 			bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
 			top: auto;
@@ -60,13 +58,11 @@ export const dropdownContentStyles = css`
 			top: auto;
 		}
 
-		:host([opened][mobile-tray="none"]) {
-			-webkit-animation: var(--d2l-dropdown-animation-name) 300ms ease;
+		:host([opened]) {
 			animation: var(--d2l-dropdown-animation-name) 300ms ease;
 		}
 	
-		:host([opened-above][mobile-tray="none"]) {
-			-webkit-animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+		:host([opened-above]) {
 			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 		}
 	}
@@ -285,6 +281,10 @@ export const dropdownContentStyles = css`
 			display: none;
 		}
 
+		:host([mobile-tray="right"][opened]), :host([mobile-tray="left"][opened]) {
+			animation: none;
+		}
+
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
 		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
@@ -300,6 +300,11 @@ export const dropdownContentStyles = css`
 		@media (prefers-reduced-motion: reduce) {
 			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
 			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+				animation: none;
+			}
+
+			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing],
+			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
 				animation: none;
 			}
 		}
