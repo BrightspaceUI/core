@@ -36,7 +36,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			noClear: { type: Boolean, attribute: 'no-clear' },
 			/**
-			 * Placeholder text
+			 * Placeholder text (default: "Search...")
 			 */
 			placeholder: { type: String },
 			/**
@@ -142,7 +142,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					@input="${this._handleInput}"
 					@keypress="${this._handleInputKeyPress}"
 					maxlength="${ifDefined(this.maxlength)}"
-					placeholder="${ifDefined(this.placeholder)}"
+					placeholder="${this.placeholder || this.localize('components.input-search.defaultPlaceholder')}"
 					type="search"
 					.value="${this.value}">${showSearch ? html`
 					<d2l-button-icon

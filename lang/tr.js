@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "Ondalık sayı eklemek için virgül \",\" karakterini kullanın",
 	"components.input-number.hintDecimalIncorrectPeriod": "Ondalık sayı eklemek için nokta \".\" karakterini kullanın",
 	"components.input-search.clear": "Aramayı Temizle",
+	"components.input-search.defaultPlaceholder": "Ara...",
 	"components.input-search.search": "Arama",
 	"components.input-time-range.endTime": "Bitiş Saati",
 	"components.input-time-range.errorBadInput": "{startLabel}, {endLabel} tarihinden önce olmalıdır",

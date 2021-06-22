@@ -40,6 +40,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "小数を追加するには、カンマ「,」文字を使用します",
 	"components.input-number.hintDecimalIncorrectPeriod": "小数を追加するには、ピリオド「.」文字を使用します",
 	"components.input-search.clear": "検索のクリア",
+	"components.input-search.defaultPlaceholder": "検索...",
 	"components.input-search.search": "検索",
 	"components.input-time-range.endTime": "終了時刻",
 	"components.input-time-range.errorBadInput": "{startLabel} は {endLabel} より前にする必要があります",
