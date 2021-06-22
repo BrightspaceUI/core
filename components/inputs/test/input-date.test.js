@@ -51,7 +51,7 @@ describe('d2l-input-date', () => {
 			elem._dropdownFirstOpened = true;
 			await elem.updateComplete;
 			const dropdown = getChildElem(elem, 'd2l-dropdown');
-			dropdown.toggleOpen();
+			setTimeout(() => dropdown.toggleOpen());
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
 			await focusTrap.updateComplete;
@@ -63,9 +63,9 @@ describe('d2l-input-date', () => {
 			elem._dropdownFirstOpened = true;
 			await elem.updateComplete;
 			const dropdown = getChildElem(elem, 'd2l-dropdown');
-			dropdown.toggleOpen();
+			setTimeout(() => dropdown.toggleOpen());
 			await oneEvent(dropdown, 'd2l-dropdown-open');
-			dropdown.toggleOpen();
+			setTimeout(() => dropdown.toggleOpen());
 			await oneEvent(dropdown, 'd2l-dropdown-close');
 			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
 			await focusTrap.updateComplete;

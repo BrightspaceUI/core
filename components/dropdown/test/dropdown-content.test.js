@@ -248,7 +248,7 @@ describe('d2l-dropdown', () => {
 					</d2l-dropdown>`);
 				content = dropdown.querySelector('d2l-dropdown-content');
 
-				content.setAttribute('opened', true);
+				setTimeout(() => content.setAttribute('opened', true));
 				await oneEvent(content, 'd2l-dropdown-open');
 
 				dropdown.querySelector(`#non_focusable_${name}`).click();
