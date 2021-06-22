@@ -26,6 +26,10 @@ class DropdownComponent extends LitElement {
 		`;
 	}
 
+	toggleOpen() {
+		this.shadowRoot.querySelector('d2l-dropdown-content').toggleOpen();
+	}
+
 }
 
 customElements.define('dropdown-component', DropdownComponent);
