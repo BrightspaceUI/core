@@ -84,8 +84,8 @@
 			console.log(`Filter selection changed for dimension "${e.detail.dimension}":`, e.detail.value);
 		});
 
-		document.addEventListener('d2l-filter-dimension-open', e => {
-			console.log(`Filter dimension opened: ${e.detail.key}`);
+		document.addEventListener('d2l-filter-dimension-first-open', e => {
+			console.log(`Filter dimension opened for the first time: ${e.detail.key}`);
 		});
 	</script>
 

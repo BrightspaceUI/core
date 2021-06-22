@@ -20,7 +20,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * This component is in charge of all rendering.
  * @slot - Dimension components used by the filter to construct the different dimensions locally
  * @fires d2l-filter-change - Dispatched when a dimension's value(s) have changed
- * @fires d2l-filter-dimension-open - Dispatched when a dimension is opened
+ * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  */
 class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -83,6 +83,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		super();
 		this.disabled = false;
 		this._dimensions = [];
+		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
 		this._totalMaxCount = 0;
 	}
@@ -224,8 +225,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: true, composed: false, detail: eventDetail }));
 	}
 
-	_dispatchDimensionOpenEvent(key) {
-		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-open', { bubbles: true, composed: false, detail: { key: key } }));
+	_dispatchDimensionFirstOpenEvent(key) {
+		if (!this._openedDimensions.includes(key)) {
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: key } }));
+			this._openedDimensions.push(key);
+		}
 	}
 
 	_formatFilterCount(count, max) {
@@ -309,7 +313,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_handleDimensionShowStart(e) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
-		this._dispatchDimensionOpenEvent(this._activeDimensionKey);
+		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
 	}
 
 	_handleDropdownClose(e) {
@@ -319,7 +323,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_handleDropdownOpen(e) {
 		if (this._dimensions.length === 1) {
-			this._dispatchDimensionOpenEvent(this._dimensions[0].key);
+			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
 		}
 		this._stopPropagation(e);
 	}

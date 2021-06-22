@@ -80,19 +80,27 @@ describe('d2l-filter', () => {
 			});
 		});
 
-		describe('d2l-filter-dimension-open', () => {
-			it('single set dimension fires dimension open event', async() => {
+		describe('d2l-filter-dimension-first-open', () => {
+			it('single set dimension fires dimension first open event', async() => {
 				const elem = await fixture(singleSetDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 
 				setTimeout(() => dropdown.toggleOpen());
-				const e = await oneEvent(elem, 'd2l-filter-dimension-open');
+				const e = await oneEvent(elem, 'd2l-filter-dimension-first-open');
 				expect(e.detail.key).to.equal('dim');
+				expect(elem._openedDimensions[0]).to.equal('dim');
+
+				setTimeout(() => dropdown.toggleOpen());
+				await oneEvent(dropdown, 'd2l-dropdown-close');
+
+				setTimeout(() => dropdown.toggleOpen());
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+
 				expect(eventSpy).to.be.calledOnce;
 			});
 
-			it('multiple dimensions fire dimension open events', async() => {
+			it('multiple dimensions fire dimension first open events', async() => {
 				const elem = await fixture(multiDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
@@ -103,13 +111,17 @@ describe('d2l-filter', () => {
 				expect(eventSpy).to.be.not.be.called;
 
 				setTimeout(() => dimensions[0].click());
-				let e = await oneEvent(elem, 'd2l-filter-dimension-open');
+				let e = await oneEvent(elem, 'd2l-filter-dimension-first-open');
 				expect(e.detail.key).to.equal('1');
 				expect(eventSpy).to.be.calledOnce;
 
 				setTimeout(() => dimensions[1].click());
-				e = await oneEvent(elem, 'd2l-filter-dimension-open');
+				e = await oneEvent(elem, 'd2l-filter-dimension-first-open');
 				expect(e.detail.key).to.equal('2');
+				expect(eventSpy).to.be.calledTwice;
+
+				setTimeout(() => dimensions[0].click());
+				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 				expect(eventSpy).to.be.calledTwice;
 			});
 		});
