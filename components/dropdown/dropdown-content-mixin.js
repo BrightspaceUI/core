@@ -787,7 +787,7 @@ export const DropdownContentMixin = superclass => class extends (RtlMixin(superc
 						<d2l-button
 							style=${styleMap(closeButtonStyles)} 
 							@click=${this.close}>
-							${this.localize('components.dropdown.close')}
+							close
 						</d2l-button>
 					</div>
 				</div>
