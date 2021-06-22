@@ -26,6 +26,7 @@ describe('d2l-dropdown', () => {
 	beforeEach(async() => {
 		dropdown = await fixture(normalFixture);
 		content = dropdown.querySelector('d2l-dropdown-content');
+		await content.updateComplete;
 	});
 
 	describe('constructor', () => {
@@ -247,8 +248,9 @@ describe('d2l-dropdown', () => {
 						</d2l-dropdown-content>
 					</d2l-dropdown>`);
 				content = dropdown.querySelector('d2l-dropdown-content');
+				await content.updateComplete;
 
-				setTimeout(() => content.setAttribute('opened', true));
+				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
 
 				dropdown.querySelector(`#non_focusable_${name}`).click();

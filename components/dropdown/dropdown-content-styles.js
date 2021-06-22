@@ -50,20 +50,14 @@ export const dropdownContentStyles = css`
 
 	@media (max-width: 615px) {
 		:host([opened]) {
+			animation: var(--d2l-dropdown-animation-name) 300ms ease;
 			display: inline-block;
 		}
 	
 		:host([opened-above]) {
+			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 			bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
 			top: auto;
-		}
-
-		:host([opened]) {
-			animation: var(--d2l-dropdown-animation-name) 300ms ease;
-		}
-	
-		:host([opened-above]) {
-			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 		}
 	}
 

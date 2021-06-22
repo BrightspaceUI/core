@@ -12,7 +12,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export const DropdownContentMixin = superclass => class extends (RtlMixin(superclass)) {
+export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -787,7 +787,7 @@ export const DropdownContentMixin = superclass => class extends (RtlMixin(superc
 						<d2l-button
 							style=${styleMap(closeButtonStyles)} 
 							@click=${this.close}>
-							close
+							${this.localize('components.dropdown.close')}
 						</d2l-button>
 					</div>
 				</div>
