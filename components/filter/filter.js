@@ -13,6 +13,7 @@ import '../menu/menu-item.js';
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
@@ -38,7 +39,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, bodyStandardStyles, css`
+		return [bodyCompactStyles, bodyStandardStyles, offscreenStyles, css`
 			div[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
@@ -187,7 +188,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				<div class="d2l-filter-dimension-header">
 					<d2l-button-icon
 						@click="${this._handleDimensionHide}"
-						id="d2l-filter-dimension-header-return"
 						icon="tier1:chevron-left"
 						text="${this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', dimensionText)}">
 					</d2l-button-icon>
@@ -204,7 +204,14 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_createSetDimension(dimension) {
-		return dimension.loading ? html`<d2l-loading-spinner></d2l-loading-spinner>` : html`
+		if (dimension.loading) {
+			return html`
+				<d2l-loading-spinner></d2l-loading-spinner>
+				<div class="d2l-offscreen">${this.localize('components.filter.loading')}</div>
+			`;
+		}
+
+		return html`
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators>
@@ -307,7 +314,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionShowComplete() {
-		const returnButton = this.shadowRoot.getElementById('d2l-filter-dimension-header-return');
+		const returnButton = this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
 		returnButton.focus();
 	}
 
