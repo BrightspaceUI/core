@@ -10,7 +10,7 @@ import '../loading-spinner/loading-spinner.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
 
-import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
+import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -39,7 +39,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, bodyStandardStyles, offscreenStyles, css`
+		return [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, offscreenStyles, css`
 			div[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
@@ -68,10 +68,17 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				line-height: unset;
 			}
 
-			/* Needed to "undo" the menu hover styles */
-			:host(:hover) .d2l-filter-dimension-set-value-text {
-				color: var(--d2l-color-ferrite);
-			}
+            .d2l-filter-dimension-info-message {
+                padding: 0.9rem 0;
+                text-align: center;
+            }
+
+            /* Needed to "undo" the menu hover styles */
+            :host(:hover) .d2l-filter-dimension-info-message,
+            :host(:hover) .d2l-filter-dimension-set-value-text {
+                color: var(--d2l-color-ferrite);
+                cursor: default;
+            }
 
 			d2l-loading-spinner {
 				padding-top: 0.6rem;
@@ -209,6 +216,14 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				<d2l-loading-spinner></d2l-loading-spinner>
 				<div class="d2l-offscreen" aria-busy="true" role="alert">${this.localize('components.filter.loading')}</div>
 			`;
+		}
+
+		if (this._isDimensionEmpty(dimension)) {
+			return html`
+                <div class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
+                    ${this.localize('components.filter.noFilters')}
+                </div>
+            `;
 		}
 
 		return html`
@@ -359,6 +374,15 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 
 		this._setFilterCounts();
+	}
+
+	_isDimensionEmpty(dimension) {
+		switch (dimension.type) {
+			case 'd2l-filter-dimension-set':
+				return dimension.values.length === 0;
+		}
+
+		return false;
 	}
 
 	_setFilterCounts() {

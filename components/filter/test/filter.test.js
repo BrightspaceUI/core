@@ -42,6 +42,13 @@ describe('d2l-filter', () => {
 		});
 	});
 
+	describe('info messages', () => {
+		it('empty state', async() => {
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim"></d2l-filter-dimension-set></d2l-filter>');
+			expect(elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message').textContent).to.include('No available filters');
+		});
+	});
+
 	describe('events', () => {
 		describe('d2l-filter-change', () => {
 			it('single set dimension fires change events', async() => {
