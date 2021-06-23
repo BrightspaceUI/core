@@ -13,7 +13,7 @@ const tag = defineCE(
 	}
 );
 
-describe.only('ListItemCheckboxMixin', () => {
+describe('ListItemCheckboxMixin', () => {
 	describe('Sets selected status to undefined when no key is given', () => {
 		const cases = [
 			'disabled selected',
