@@ -145,7 +145,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		let dimensionHTML;
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				dimensionHTML = this._createSetDimension(dimension);
+				dimensionHTML = html`<div aria-live="polite">${this._createSetDimension(dimension)}</div>`;
 				break;
 		}
 
@@ -207,13 +207,14 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		if (dimension.loading) {
 			return html`
 				<d2l-loading-spinner></d2l-loading-spinner>
-				<div class="d2l-offscreen">${this.localize('components.filter.loading')}</div>
+				<div class="d2l-offscreen" aria-busy="true" role="alert">${this.localize('components.filter.loading')}</div>
 			`;
 		}
 
 		return html`
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
+				data-key="${dimension.key}"
 				extend-separators>
 				${dimension.values.map(item => html`
 					<d2l-list-item
@@ -258,9 +259,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleChangeSetDimension(e) {
-		const singleDimension = this._dimensions.length === 1;
-		const dimensionKey = singleDimension ? this._dimensions[0].key : e.composedPath()[0].parentNode.getAttribute('data-key');
-		const dimension = singleDimension ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === dimensionKey);
+		const dimensionKey = e.target.getAttribute('data-key');
+		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 
@@ -309,7 +309,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionHide() {
-		this.shadowRoot.querySelector(`[data-key="${this._activeDimensionKey}"]`).hide();
+		this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
 		this._activeDimensionKey = null;
 	}
 
