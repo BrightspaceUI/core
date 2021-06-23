@@ -10,7 +10,7 @@ import '../loading-spinner/loading-spinner.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
 
-import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
+import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -39,7 +39,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, bodyStandardStyles, offscreenStyles, css`
+		return [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, offscreenStyles, css`
 			div[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
@@ -68,9 +68,16 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				line-height: unset;
 			}
 
+			.d2l-filter-dimension-info-message {
+				padding: 0.9rem 0;
+				text-align: center;
+			}
+
 			/* Needed to "undo" the menu hover styles */
+			:host(:hover) .d2l-filter-dimension-info-message,
 			:host(:hover) .d2l-filter-dimension-set-value-text {
 				color: var(--d2l-color-ferrite);
+				cursor: default;
 			}
 
 			d2l-loading-spinner {
@@ -145,7 +152,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		let dimensionHTML;
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				dimensionHTML = this._createSetDimension(dimension);
+				dimensionHTML = html`<div aria-live="polite">${this._createSetDimension(dimension)}</div>`;
 				break;
 		}
 
@@ -207,13 +214,22 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		if (dimension.loading) {
 			return html`
 				<d2l-loading-spinner></d2l-loading-spinner>
-				<div class="d2l-offscreen">${this.localize('components.filter.loading')}</div>
+				<p class="d2l-offscreen" aria-busy="true" role="alert">${this.localize('components.filter.loading')}</p>
 			`;
+		}
+
+		if (this._isDimensionEmpty(dimension)) {
+			return html`
+                <p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
+                    ${this.localize('components.filter.noFilters')}
+                </p>
+            `;
 		}
 
 		return html`
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
+				data-key="${dimension.key}"
 				extend-separators>
 				${dimension.values.map(item => html`
 					<d2l-list-item
@@ -258,9 +274,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleChangeSetDimension(e) {
-		const singleDimension = this._dimensions.length === 1;
-		const dimensionKey = singleDimension ? this._dimensions[0].key : e.composedPath()[0].parentNode.getAttribute('data-key');
-		const dimension = singleDimension ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === dimensionKey);
+		const dimensionKey = e.target.getAttribute('data-key');
+		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
 		const selected = e.detail.selected;
 
@@ -309,7 +324,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionHide() {
-		this.shadowRoot.querySelector(`[data-key="${this._activeDimensionKey}"]`).hide();
+		this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
 		this._activeDimensionKey = null;
 	}
 
@@ -359,6 +374,15 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		});
 
 		this._setFilterCounts();
+	}
+
+	_isDimensionEmpty(dimension) {
+		switch (dimension.type) {
+			case 'd2l-filter-dimension-set':
+				return dimension.values.length === 0;
+		}
+
+		return false;
 	}
 
 	_setFilterCounts() {
