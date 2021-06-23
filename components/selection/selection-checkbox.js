@@ -30,6 +30,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 		return css`
 			:host {
 				display: inline-block;
+				line-height: normal;
 			}
 			:host([hidden]) {
 				display: none;

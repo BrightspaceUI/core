@@ -15,6 +15,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 		return css`
 			:host {
 				display: inline-block;
+				line-height: normal;
 			}
 			:host([hidden]) {
 				display: none;
