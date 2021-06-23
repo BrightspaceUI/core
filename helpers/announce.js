@@ -17,7 +17,7 @@ export function announce(message) {
 		container.setAttribute('aria-live', 'polite');
 		container.style.display = 'inline-block';
 		container.style.position = 'fixed';
-		container.style.height = '0px';
+		container.style.height = '0';
 		container.style.clip = 'rect(0px,0px,0px,0px)';
 		document.body.appendChild(container);
 	}
