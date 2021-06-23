@@ -10,13 +10,24 @@ class FilterDimensionSet extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * REQUIRED: Unique key to represent this dimension in the filter
+			 */
 			key: { type: String },
+			/**
+			 * Whether the values for this dimension are still loading and a loading spinner should be displayed
+			 */
+			loading: { type: Boolean },
+			/**
+			 * REQUIRED: The text that is displayed for the dimension title
+			 */
 			text: { type: String }
 		};
 	}
 
 	constructor() {
 		super();
+		this.loading = false;
 		this.text = '';
 		this._slot = null;
 	}
@@ -37,7 +48,7 @@ class FilterDimensionSet extends LitElement {
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
 
-			if (prop === 'text') {
+			if (prop === 'text' || prop === 'loading') {
 				changes.set(prop, this[prop]);
 			}
 		});
