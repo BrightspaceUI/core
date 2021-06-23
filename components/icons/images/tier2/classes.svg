@@ -1,3 +1,181 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
-  <path fill="#494c4e" d="M2.668 21A1.665 1.665 0 001 22.668v4.664A1.665 1.665 0 002.668 29h4.664A1.665 1.665 0 009 27.332v-4.664A1.665 1.665 0 007.332 21H2.668zM3 23h4v4H3v-4zM2.668 1A1.665 1.665 0 001 2.668v4.664A1.665 1.665 0 002.668 9h4.664A1.665 1.665 0 009 7.332V2.668A1.665 1.665 0 007.332 1H2.668zM3 3h4v4H3V3zm-.332 8A1.665 1.665 0 001 12.668v4.664A1.665 1.665 0 002.668 19h4.664A1.665 1.665 0 009 17.332v-4.664A1.665 1.665 0 007.332 11H2.668zM3 13h4v4H3v-4zm9.668 8A1.665 1.665 0 0011 22.668v4.664A1.665 1.665 0 0012.668 29h4.664A1.665 1.665 0 0019 27.332v-4.664A1.665 1.665 0 0017.332 21h-4.664zM13 23h4v4h-4v-4zm-.332-22A1.665 1.665 0 0011 2.668v4.664A1.665 1.665 0 0012.668 9h4.664A1.665 1.665 0 0019 7.332V2.668A1.665 1.665 0 0017.332 1h-4.664zM13 3h4v4h-4V3zm-.332 8A1.665 1.665 0 0011 12.668v4.664A1.665 1.665 0 0012.668 19h4.664A1.665 1.665 0 0019 17.332v-4.664A1.665 1.665 0 0017.332 11h-4.664zM13 13h4v4h-4v-4zm9.668 8A1.665 1.665 0 0021 22.668v4.664A1.665 1.665 0 0022.668 29h4.664A1.665 1.665 0 0029 27.332v-4.664A1.665 1.665 0 0027.332 21h-4.664zM23 23h4v4h-4v-4zm-.332-22A1.665 1.665 0 0021 2.668v4.664A1.665 1.665 0 0022.668 9h4.664A1.665 1.665 0 0029 7.332V2.668A1.665 1.665 0 0027.332 1h-4.664zM23 3h4v4h-4V3zm-.332 8A1.665 1.665 0 0021 12.668v4.664A1.665 1.665 0 0022.668 19h4.664A1.665 1.665 0 0029 17.332v-4.664A1.665 1.665 0 0027.332 11h-4.664zM23 13h4v4h-4v-4z"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_478" data-name="Rectangle 478" width="6.545" height="6.545" rx="1.091" transform="translate(149.199 166.553)" fill="#494c4e"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="Rectangle_480" data-name="Rectangle 480" width="6.545" height="6.545" rx="1.091" transform="translate(157.927 166.553)" fill="#494c4e"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <rect id="Rectangle_482" data-name="Rectangle 482" width="6.545" height="6.545" rx="1.091" transform="translate(166.654 166.553)" fill="none" stroke="#494c4e" stroke-width="1"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <rect id="Rectangle_484" data-name="Rectangle 484" width="6.545" height="6.545" rx="1.091" transform="translate(149.199 175.28)" fill="#494c4e"/>
+    </clipPath>
+    <clipPath id="clip-path-5">
+      <rect id="Rectangle_486" data-name="Rectangle 486" width="6.545" height="6.545" rx="1.091" transform="translate(157.927 175.28)" fill="#494c4e"/>
+    </clipPath>
+    <clipPath id="clip-path-6">
+      <rect id="Rectangle_488" data-name="Rectangle 488" width="6.545" height="6.545" rx="1.091" transform="translate(166.654 175.28)" fill="#494c4e"/>
+    </clipPath>
+    <clipPath id="clip-path-7">
+      <rect id="Rectangle_490" data-name="Rectangle 490" width="6.545" height="6.545" rx="1.091" transform="translate(149.199 184.007)" fill="#494c4e"/>
+    </clipPath>
+    <clipPath id="clip-path-8">
+      <rect id="Rectangle_492" data-name="Rectangle 492" width="6.545" height="6.545" rx="1.091" transform="translate(157.927 184.007)" fill="#494c4e"/>
+    </clipPath>
+    <clipPath id="clip-path-9">
+      <rect id="Rectangle_494" data-name="Rectangle 494" width="6.545" height="6.545" rx="1.091" transform="translate(166.654 184.007)" fill="#494c4e"/>
+    </clipPath>
+  </defs>
+  <g id="icon_class_24-2" data-name="icon class 24-2" transform="translate(-149.199 -166.553)">
+    <g id="Page-1">
+      <g id="icon_class_24-3" data-name="icon class 24-3">
+        <g id="Rectangle_Clipped" data-name="Rectangle Clipped">
+          <g id="path-1-2">
+            <rect id="Rectangle_477" data-name="Rectangle 477" width="6.545" height="6.545" rx="1.091" transform="translate(149.199 166.553)" fill="none"/>
+          </g>
+          <g id="Group_887" data-name="Group 887">
+            <g id="Group_886" data-name="Group 886" clip-path="url(#clip-path)">
+              <g id="Rectangle_Clipped-2" data-name="Rectangle Clipped-2">
+                <g id="Rectangle">
+                  <g id="path-1-3">
+                    <path id="Path_323" data-name="Path 323" d="M154.654,175.28H150.29a3.276,3.276,0,0,1-3.273-3.273v-4.363a3.276,3.276,0,0,1,3.273-3.273h4.364a3.276,3.276,0,0,1,3.272,3.273v4.363A3.276,3.276,0,0,1,154.654,175.28Zm-3.273-4.364h2.182v-2.181h-2.182Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-3" data-name="Rectangle Clipped-3">
+          <g id="path-3-2">
+            <rect id="Rectangle_479" data-name="Rectangle 479" width="6.545" height="6.545" rx="1.091" transform="translate(157.927 166.553)" fill="none"/>
+          </g>
+          <g id="Group_889" data-name="Group 889">
+            <g id="Group_888" data-name="Group 888" clip-path="url(#clip-path-2)">
+              <g id="Rectangle_Clipped-4" data-name="Rectangle Clipped-4">
+                <g id="Rectangle-2">
+                  <g id="path-3-3">
+                    <path id="Path_324" data-name="Path 324" d="M163.381,175.28h-4.364a3.276,3.276,0,0,1-3.272-3.273v-4.363a3.276,3.276,0,0,1,3.272-3.273h4.364a3.276,3.276,0,0,1,3.273,3.273v4.363A3.276,3.276,0,0,1,163.381,175.28Zm-3.273-4.364h2.182v-2.181h-2.182Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-5" data-name="Rectangle Clipped-5">
+          <g id="path-5-2">
+            <rect id="Rectangle_481" data-name="Rectangle 481" width="6.545" height="6.545" rx="1.091" transform="translate(166.654 166.553)" fill="none"/>
+          </g>
+          <g id="Group_891" data-name="Group 891">
+            <g id="Group_890" data-name="Group 890" clip-path="url(#clip-path-3)">
+              <g id="Rectangle_Clipped-6" data-name="Rectangle Clipped-6">
+                <g id="Rectangle-3">
+                  <g id="path-5-3">
+                    <path id="Path_325" data-name="Path 325" d="M172.108,175.28h-4.363a3.276,3.276,0,0,1-3.273-3.273v-4.363a3.276,3.276,0,0,1,3.273-3.273h4.363a3.276,3.276,0,0,1,3.273,3.273v4.363A3.276,3.276,0,0,1,172.108,175.28Zm-3.272-4.364h2.181v-2.181h-2.181Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-7" data-name="Rectangle Clipped-7">
+          <g id="path-7-2">
+            <rect id="Rectangle_483" data-name="Rectangle 483" width="6.545" height="6.545" rx="1.091" transform="translate(149.199 175.28)" fill="none"/>
+          </g>
+          <g id="Group_893" data-name="Group 893">
+            <g id="Group_892" data-name="Group 892" clip-path="url(#clip-path-4)">
+              <g id="Rectangle_Clipped-8" data-name="Rectangle Clipped-8">
+                <g id="Rectangle-4">
+                  <g id="path-7-3">
+                    <path id="Path_326" data-name="Path 326" d="M154.654,184.007H150.29a3.276,3.276,0,0,1-3.273-3.272v-4.364a3.276,3.276,0,0,1,3.273-3.273h4.364a3.276,3.276,0,0,1,3.272,3.273v4.364A3.276,3.276,0,0,1,154.654,184.007Zm-3.273-4.363h2.182v-2.182h-2.182Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-9" data-name="Rectangle Clipped-9">
+          <g id="path-9-2">
+            <rect id="Rectangle_485" data-name="Rectangle 485" width="6.545" height="6.545" rx="1.091" transform="translate(157.927 175.28)" fill="none"/>
+          </g>
+          <g id="Group_895" data-name="Group 895">
+            <g id="Group_894" data-name="Group 894" clip-path="url(#clip-path-5)">
+              <g id="Rectangle_Clipped-10" data-name="Rectangle Clipped-10">
+                <g id="Rectangle-5">
+                  <g id="path-9-3">
+                    <path id="Path_327" data-name="Path 327" d="M163.381,184.007h-4.364a3.276,3.276,0,0,1-3.272-3.272v-4.364a3.276,3.276,0,0,1,3.272-3.273h4.364a3.276,3.276,0,0,1,3.273,3.273v4.364A3.276,3.276,0,0,1,163.381,184.007Zm-3.273-4.363h2.182v-2.182h-2.182Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-11" data-name="Rectangle Clipped-11">
+          <g id="path-11-2">
+            <rect id="Rectangle_487" data-name="Rectangle 487" width="6.545" height="6.545" rx="1.091" transform="translate(166.654 175.28)" fill="none"/>
+          </g>
+          <g id="Group_897" data-name="Group 897">
+            <g id="Group_896" data-name="Group 896" clip-path="url(#clip-path-6)">
+              <g id="Rectangle_Clipped-12" data-name="Rectangle Clipped-12">
+                <g id="Rectangle-6">
+                  <g id="path-11-3">
+                    <path id="Path_328" data-name="Path 328" d="M172.108,184.007h-4.363a3.276,3.276,0,0,1-3.273-3.272v-4.364a3.276,3.276,0,0,1,3.273-3.273h4.363a3.276,3.276,0,0,1,3.273,3.273v4.364A3.276,3.276,0,0,1,172.108,184.007Zm-3.272-4.363h2.181v-2.182h-2.181Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-13" data-name="Rectangle Clipped-13">
+          <g id="path-13-2">
+            <rect id="Rectangle_489" data-name="Rectangle 489" width="6.545" height="6.545" rx="1.091" transform="translate(149.199 184.007)" fill="none"/>
+          </g>
+          <g id="Group_899" data-name="Group 899">
+            <g id="Group_898" data-name="Group 898" clip-path="url(#clip-path-7)">
+              <g id="Rectangle_Clipped-14" data-name="Rectangle Clipped-14">
+                <g id="Rectangle-7">
+                  <g id="path-13-3">
+                    <path id="Path_329" data-name="Path 329" d="M154.654,192.735H150.29a3.276,3.276,0,0,1-3.273-3.273V185.1a3.276,3.276,0,0,1,3.273-3.273h4.364a3.276,3.276,0,0,1,3.272,3.273v4.364A3.276,3.276,0,0,1,154.654,192.735Zm-3.273-4.364h2.182v-2.182h-2.182Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-15" data-name="Rectangle Clipped-15">
+          <g id="path-15-2">
+            <rect id="Rectangle_491" data-name="Rectangle 491" width="6.545" height="6.545" rx="1.091" transform="translate(157.927 184.007)" fill="none"/>
+          </g>
+          <g id="Group_901" data-name="Group 901">
+            <g id="Group_900" data-name="Group 900" clip-path="url(#clip-path-8)">
+              <g id="Rectangle_Clipped-16" data-name="Rectangle Clipped-16">
+                <g id="Rectangle-8">
+                  <g id="path-15-3">
+                    <path id="Path_330" data-name="Path 330" d="M163.381,192.735h-4.364a3.276,3.276,0,0,1-3.272-3.273V185.1a3.276,3.276,0,0,1,3.272-3.273h4.364a3.276,3.276,0,0,1,3.273,3.273v4.364A3.276,3.276,0,0,1,163.381,192.735Zm-3.273-4.364h2.182v-2.182h-2.182Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Rectangle_Clipped-17" data-name="Rectangle Clipped-17">
+          <g id="path-17-2">
+            <rect id="Rectangle_493" data-name="Rectangle 493" width="6.545" height="6.545" rx="1.091" transform="translate(166.654 184.007)" fill="none"/>
+          </g>
+          <g id="Group_903" data-name="Group 903">
+            <g id="Group_902" data-name="Group 902" clip-path="url(#clip-path-9)">
+              <g id="Rectangle_Clipped-18" data-name="Rectangle Clipped-18">
+                <g id="Rectangle-9">
+                  <g id="path-17-3">
+                    <path id="Path_331" data-name="Path 331" d="M172.108,192.735h-4.363a3.276,3.276,0,0,1-3.273-3.273V185.1a3.276,3.276,0,0,1,3.273-3.273h4.363a3.276,3.276,0,0,1,3.273,3.273v4.364A3.276,3.276,0,0,1,172.108,192.735Zm-3.272-4.364h2.181v-2.182h-2.181Z" fill="#494c4e"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
 </svg>
