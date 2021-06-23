@@ -49,6 +49,11 @@ describe('d2l-dropdown-content', () => {
 		'align-start-edge',
 		'align-start-edge-rtl'
 	].forEach((testName) => {
+
+		before(async() => {
+			await page.setViewport({ width: 800, height: 400 });
+		});
+
 		it(testName, async function() {
 			const selector = `#${testName}`;
 			await open(page, selector);
@@ -67,7 +72,7 @@ describe('d2l-dropdown-content', () => {
 	].forEach((testName) => {
 
 		before(async() => {
-			await page.setViewport({ width: 600, height: 500, deviceScaleFactor: 2 });
+			await page.setViewport({ width: 600, height: 500 });
 		});
 
 		it(testName, async function() {

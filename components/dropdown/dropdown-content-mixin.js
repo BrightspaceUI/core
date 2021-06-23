@@ -793,7 +793,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				</div>
 			</div>
 		`;
-		if (specialMobileStyle) return html`
+		if (this.mobileTray) return html`
 			${dropdown} 
 			<d2l-backdrop 
 				for-target="d2l-dropdown-wrapper" 
