@@ -6,13 +6,14 @@ import '../dropdown/dropdown-menu.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../list/list.js';
 import '../list/list-item.js';
+import '../loading-spinner/loading-spinner.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
 
 import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
@@ -20,6 +21,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * This component is in charge of all rendering.
  * @slot - Dimension components used by the filter to construct the different dimensions locally
  * @fires d2l-filter-change - Dispatched when a dimension's value(s) have changed
+ * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
  */
 class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -37,7 +39,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [bodyCompactStyles, bodyStandardStyles, css`
+		return [bodyCompactStyles, bodyStandardStyles, offscreenStyles, css`
 			div[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
@@ -70,6 +72,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			:host(:hover) .d2l-filter-dimension-set-value-text {
 				color: var(--d2l-color-ferrite);
 			}
+
+			d2l-loading-spinner {
+				padding-top: 0.6rem;
+				width: 100%;
+			}
 		`];
 	}
 
@@ -77,6 +84,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		super();
 		this.disabled = false;
 		this._dimensions = [];
+		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
 		this._totalMaxCount = 0;
 	}
@@ -122,7 +130,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return html`
 			<d2l-dropdown-button-subtle
 				@d2l-dropdown-close="${this._handleDropdownClose}"
-				@d2l-dropdown-open="${this._stopPropagation}"
+				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-position="${this._stopPropagation}"
 				text="${buttonText}"
 				description="${description}"
@@ -196,6 +204,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_createSetDimension(dimension) {
+		if (dimension.loading) {
+			return html`
+				<d2l-loading-spinner></d2l-loading-spinner>
+				<div class="d2l-offscreen">${this.localize('components.filter.loading')}</div>
+			`;
+		}
+
 		return html`
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
@@ -216,6 +231,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_dispatchChangeEvent(eventDetail) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: true, composed: false, detail: eventDetail }));
+	}
+
+	_dispatchDimensionFirstOpenEvent(key) {
+		if (!this._openedDimensions.includes(key)) {
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: key } }));
+			this._openedDimensions.push(key);
+		}
 	}
 
 	_formatFilterCount(count, max) {
@@ -293,19 +315,24 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDimensionShowComplete() {
-		const dimension = this.shadowRoot.querySelector(`[data-key="${this._activeDimensionKey}"]`);
-		const focusable = getFirstFocusableDescendant(dimension);
-		if (focusable) {
-			focusable.focus();
-		}
+		const returnButton = this.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
+		returnButton.focus();
 	}
 
 	_handleDimensionShowStart(e) {
 		this._activeDimensionKey = e.detail.sourceView.getAttribute('data-key');
+		this._dispatchDimensionFirstOpenEvent(this._activeDimensionKey);
 	}
 
 	_handleDropdownClose(e) {
 		this._activeDimensionKey = null;
+		this._stopPropagation(e);
+	}
+
+	_handleDropdownOpen(e) {
+		if (this._dimensions.length === 1) {
+			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
+		}
 		this._stopPropagation(e);
 	}
 
@@ -316,6 +343,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			const type = dimension.tagName.toLowerCase();
 			const info = {
 				key: dimension.key,
+				loading: dimension.loading,
 				text: dimension.text,
 				type: type
 			};
