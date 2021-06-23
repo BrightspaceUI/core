@@ -1,5 +1,6 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -19,6 +20,10 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * Disables the checkbox
 			 */
 			disabled: { type: Boolean },
+			/**
+			 * Private. Force hovering state of checkbox
+			 */
+			hovering: { type: Boolean },
 			/**
 			 * Key for the selectable
 			 */
@@ -95,6 +100,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 				aria-label="${this.label}"
 				@change="${this._handleChange}"
 				?checked="${this.selected}"
+				class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
 				?disabled="${this.disabled}"
 				?skeleton="${this.skeleton}">
 			</d2l-input-checkbox>

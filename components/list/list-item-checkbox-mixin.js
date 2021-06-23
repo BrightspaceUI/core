@@ -30,7 +30,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	}
 
 	static get styles() {
-		const styles = css`
+		const styles = [ css`
 			.d2l-checkbox-action {
 				cursor: pointer;
 				display: block;
@@ -39,7 +39,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			.d2l-checkbox-action.d2l-checkbox-action-disabled {
 				cursor: default;
 			}
-		`;
+		` ];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;
@@ -93,7 +93,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 				id="${this._checkboxId}"
 				key="${this.key}"
 				label="${this.label}"
-				?skeleton="${this.skeleton}">
+				?skeleton="${this.skeleton}"
+				.hovering="${this._hovering}">
 			</d2l-selection-checkbox>
 		` : nothing;
 	}

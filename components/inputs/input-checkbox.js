@@ -40,7 +40,8 @@ export const checkboxStyles = css`
 	}
 	input[type="checkbox"].d2l-input-checkbox:hover,
 	input[type="checkbox"].d2l-input-checkbox:focus,
-	input[type="checkbox"].d2l-input-checkbox.d2l-input-checkbox-focus {
+	input[type="checkbox"].d2l-input-checkbox.d2l-input-checkbox-focus,
+	:host(.d2l-hovering) input[type="checkbox"].d2l-input-checkbox {
 		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
 		outline-width: 0;
