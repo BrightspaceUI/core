@@ -1,6 +1,5 @@
 import '../selection/selection-checkbox.js';
 import { css, html } from 'lit-element/lit-element.js';
-import { checkboxStyles } from '../inputs/input-checkbox.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
@@ -31,8 +30,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	}
 
 	static get styles() {
-
-		const styles = [ checkboxStyles, css`
+		const styles = css`
 			.d2l-checkbox-action {
 				cursor: pointer;
 				display: block;
@@ -41,7 +39,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			.d2l-checkbox-action.d2l-checkbox-action-disabled {
 				cursor: default;
 			}
-		` ];
+		`;
 
 		super.styles && styles.unshift(super.styles);
 		return styles;
