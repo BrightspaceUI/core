@@ -19,13 +19,16 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 
 	connectedCallback() {
 		super.connectedCallback();
-		const evt = new CustomEvent('d2l-selection-observer-subscribe', {
-			bubbles: true,
-			composed: true,
-			detail: {}
+		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
+		requestAnimationFrame(() => {
+			const evt = new CustomEvent('d2l-selection-observer-subscribe', {
+				bubbles: true,
+				composed: true,
+				detail: {}
+			});
+			this.dispatchEvent(evt);
+			this._provider = evt.detail.provider;
 		});
-		this.dispatchEvent(evt);
-		this._provider = evt.detail.provider;
 	}
 
 	disconnectedCallback() {
