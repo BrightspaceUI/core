@@ -68,17 +68,17 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				line-height: unset;
 			}
 
-            .d2l-filter-dimension-info-message {
-                padding: 0.9rem 0;
-                text-align: center;
-            }
+			.d2l-filter-dimension-info-message {
+				padding: 0.9rem 0;
+				text-align: center;
+			}
 
-            /* Needed to "undo" the menu hover styles */
-            :host(:hover) .d2l-filter-dimension-info-message,
-            :host(:hover) .d2l-filter-dimension-set-value-text {
-                color: var(--d2l-color-ferrite);
-                cursor: default;
-            }
+			/* Needed to "undo" the menu hover styles */
+			:host(:hover) .d2l-filter-dimension-info-message,
+			:host(:hover) .d2l-filter-dimension-set-value-text {
+				color: var(--d2l-color-ferrite);
+				cursor: default;
+			}
 
 			d2l-loading-spinner {
 				padding-top: 0.6rem;
