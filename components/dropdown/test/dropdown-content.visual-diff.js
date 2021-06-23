@@ -50,10 +50,6 @@ describe('d2l-dropdown-content', () => {
 		'align-start-edge-rtl'
 	].forEach((testName) => {
 
-		before(async() => {
-			await page.setViewport({ width: 800, height: 400 });
-		});
-
 		it(testName, async function() {
 			const selector = `#${testName}`;
 			await open(page, selector);
@@ -71,11 +67,8 @@ describe('d2l-dropdown-content', () => {
 		'mobile-left-tray-max-width'
 	].forEach((testName) => {
 
-		before(async() => {
-			await page.setViewport({ width: 600, height: 500 });
-		});
-
 		it(testName, async function() {
+			await page.setViewport({ width: 600, height: 500 });
 			const selector = `#${testName}`;
 			await open(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());

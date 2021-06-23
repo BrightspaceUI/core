@@ -734,8 +734,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		// set to max width
 		let widthOverride = this._width ? this._width : maxWidthOverride;
 
-		if (widthOverride && maxWidthOverride && widthOverride > maxWidthOverride) widthOverride = maxWidthOverride;
-		if (widthOverride && minWidthOverride && widthOverride < minWidthOverride) widthOverride = minWidthOverride;
+		if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride -20)) widthOverride = maxWidthOverride - 20;
+		if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
 
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}px` : undefined,
