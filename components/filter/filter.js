@@ -214,15 +214,15 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		if (dimension.loading) {
 			return html`
 				<d2l-loading-spinner></d2l-loading-spinner>
-				<div class="d2l-offscreen" aria-busy="true" role="alert">${this.localize('components.filter.loading')}</div>
+				<p class="d2l-offscreen" aria-busy="true" role="alert">${this.localize('components.filter.loading')}</p>
 			`;
 		}
 
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
-                <div class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
+                <p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
                     ${this.localize('components.filter.noFilters')}
-                </div>
+                </p>
             `;
 		}
 
