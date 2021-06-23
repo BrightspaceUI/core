@@ -1,12 +1,13 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A checkbox for use in selection components such as lists and tables.
  * @fires d2l-selection-change - Dispatched when the selected state changes
  */
-class Checkbox extends SkeletonMixin(LitElement) {
+class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -21,11 +22,7 @@ class Checkbox extends SkeletonMixin(LitElement) {
 			/**
 			 * Key for the selectable
 			 */
-			key: { type: String },
-			/**
-			 * Non-visible label associated with checkbox
-			 */
-			label: { type: String }
+			key: { type: String }
 		};
 	}
 
