@@ -447,25 +447,4 @@ describe('d2l-list-item-generic-layout', () => {
 		});
 	});
 
-	describe('events', () => {
-		let actionable, layout;
-		beforeEach(async() => {
-			layout = (await fixture(normalFixture)).querySelector('[selectable]')
-				.shadowRoot.querySelector('d2l-list-item-generic-layout');
-			actionable = layout.querySelector('d2l-selection-checkbox');
-			actionable.focus();
-		});
-
-		const tests = [
-			{ desc: 'performs a click action when space pressed', key: keyCodes.SPACE },
-			{ desc: 'performs a click action when enter pressed', key: keyCodes.ENTER }
-		];
-
-		for (const test of tests) {
-			it(test.desc, async() => {
-				setTimeout(() => dispatchKeyEvent(layout, { code: test.key }));
-				await oneEvent(actionable, 'click');
-			});
-		}
-	});
 });
