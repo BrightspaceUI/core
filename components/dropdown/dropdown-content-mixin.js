@@ -284,7 +284,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		if (!reduceMotion && mediaQueryList.matches && this.mobileTray && isVisible(this)) {
 			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
-				.addEventListener('animationend', hide, { once: true } );
+				.addEventListener('animationend', hide, { once: true });
 			this._closing = true;
 			this._showBackdrop = false;
 		} else {
@@ -311,14 +311,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this.opened = true;
 		await this.updateComplete;
-		this._showBackdrop = mediaQueryList.matches && this.mobileTray != null;
+		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
 	}
 
 	async resize() {
 		if (!this.opened) {
 			return;
 		}
-		this._showBackdrop = mediaQueryList.matches && this.mobileTray != null;
+		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
 		await this.__position();
 	}
 
