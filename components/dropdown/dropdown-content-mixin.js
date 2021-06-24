@@ -172,8 +172,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			_contentHeight: {
 				type: Number
 			},
+			_opening: {
+				type: Boolean,
+				attribute: 'opening'
+			},
 			_position: {
 				type: Number
+			},
+			_showBackdrop: {
+				type: Boolean
 			},
 			_topOverflow: {
 				type: Boolean
@@ -211,6 +218,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this._contentOverflow = false;
 		this._hasHeader = false;
 		this._hasFooter = specialMobileStyle && !this.noMobileCloseButton;
+		this._showBackdrop = false;
 
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
@@ -274,16 +282,25 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	close() {
+		let animationEndTriggered = false;
+		let transitionEndTriggered = false;
 		const hide = () => {
+			if (!(animationEndTriggered && transitionEndTriggered)) return;
 			this._closing = false;
+			this._showBackdrop = false;
 			this.opened = false;
 		};
 
 		if (!reduceMotion && mediaQueryList.matches && this.mobileTray && isVisible(this)) {
 			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
-				.addEventListener('animationend', hide, { once: true });
+				.addEventListener('animationend', () => { animationEndTriggered = true; hide();}, { once: true } );
+			this.shadowRoot.querySelector('d2l-backdrop')
+				.addEventListener('transitionend', () => { transitionEndTriggered = true; hide();}, { once: true } );
 			this._closing = true;
+			this._showBackdrop = false;
 		} else {
+			animationEndTriggered = true;
+			transitionEndTriggered = true;
 			hide();
 		}
 	}
@@ -303,9 +320,19 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return this.__content && this.__content.offsetHeight;
 	}
 
-	open(applyFocus) {
+	async open(applyFocus) {
 		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
+		if(this._showBackdrop !== mediaQueryList.matches && this.mobileTray != null) console.log("OPEN ");
+		const hide1 = () => console.log("END BACKDROP");
+		const hide = () => console.log("END ANIM");
+		this.shadowRoot.querySelector('.d2l-dropdown-content-width')
+				.addEventListener('animationend', hide, { once: true } );
+		this.shadowRoot.querySelector('d2l-backdrop')
+				.addEventListener('transitionend', hide1, { once: true } );
 		this.opened = true;
+		await this.updateComplete;
+		this._showBackdrop = mediaQueryList.matches && this.mobileTray != null;
+		this.requestUpdate;
 	}
 
 	async resize() {
@@ -797,7 +824,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			${dropdown} 
 			<d2l-backdrop 
 				for-target="d2l-dropdown-wrapper" 
-				?shown="${specialMobileStyle && this.opened && !this._closing}" >
+				?shown="${this._showBackdrop}" >
 			</d2l-backdrop>`;
 		else return html`${dropdown}`;
 	}
