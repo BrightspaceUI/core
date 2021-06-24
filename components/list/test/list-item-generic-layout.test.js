@@ -178,7 +178,7 @@ describe('d2l-list-item-generic-layout', () => {
 				initial: () => layout.querySelector('[slot="content-action"] a'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(layout, 'focusin'),
-				expected: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox')
+				expected: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
 			{
 				key: { name: 'ArrowLeft', code: keyCodes.LEFT },
@@ -252,7 +252,7 @@ describe('d2l-list-item-generic-layout', () => {
 				initial: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(2)'),
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(layout, 'focusin'),
-				expected: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox')
+				expected: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
 			{
 				key: { name: 'Home+CTRL', code: keyCodes.HOME, ctrl: true },
@@ -262,7 +262,7 @@ describe('d2l-list-item-generic-layout', () => {
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
 				expected: () => el.querySelector('[key="item1"]')
-					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
 			{
 				key: { name: 'End', code: keyCodes.END },
@@ -290,7 +290,7 @@ describe('d2l-list-item-generic-layout', () => {
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
 				expected: () => el.querySelector('[key="item2"]')
-					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
 			{
 				key: { name: 'PageUp', code: keyCodes.PAGEUP },
@@ -300,7 +300,7 @@ describe('d2l-list-item-generic-layout', () => {
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
 				expected: () => el.querySelector('[key="item1"]')
-					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
 			{
 				key: { name: 'PageDown', code: keyCodes.PAGEDOWN },
@@ -310,7 +310,7 @@ describe('d2l-list-item-generic-layout', () => {
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
 				expected: () => el.querySelector('[key="item6"]')
-					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
 			{
 				key: { name: 'PageDown', code: keyCodes.PAGEDOWN },
@@ -320,7 +320,7 @@ describe('d2l-list-item-generic-layout', () => {
 				activeElement: getComposedActiveElement,
 				event: () => oneEvent(el, 'focusin'),
 				expected: () => el.querySelector('[key="item7"]')
-					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox')
+					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			}
 		];
 
@@ -359,14 +359,14 @@ describe('d2l-list-item-generic-layout', () => {
 					key: { name: 'ArrowLeft', code: keyCodes.LEFT },
 					desc: 'does not move focus when leftmove area reached',
 					itemKey: 'item1',
-					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox'),
+					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
 					activeElement: getComposedActiveElement
 				},
 				{
 					key: { name: 'ArrowUp', code: keyCodes.UP },
 					desc: 'does not move focus when first row already focused',
 					itemKey: 'item1',
-					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox'),
+					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
 					activeElement: getComposedActiveElement
 				},
 				{
@@ -380,7 +380,7 @@ describe('d2l-list-item-generic-layout', () => {
 					key: { name: 'ArrowDown', code: keyCodes.DOWN },
 					desc: 'does not move focus when last row already focused',
 					itemKey: 'item7',
-					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox'),
+					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
 					activeElement: getComposedActiveElement
 				},
 				{
@@ -394,14 +394,14 @@ describe('d2l-list-item-generic-layout', () => {
 					key: { name: 'Home', code: keyCodes.HOME },
 					desc: 'does not move focus when first area in row already focused',
 					itemKey: 'item3',
-					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox'),
+					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
 					activeElement: getComposedActiveElement
 				},
 				{
 					key: { name: 'Home+CTRL', code: keyCodes.HOME, ctrl: true },
 					desc: 'does not move focus when first area in first row already focused',
 					itemKey: 'item1',
-					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox'),
+					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
 					activeElement: getComposedActiveElement
 				},
 				{
@@ -422,14 +422,14 @@ describe('d2l-list-item-generic-layout', () => {
 					key: { name: 'PageUp', code: keyCodes.PAGEUP },
 					desc: 'does not move focus when first row already focused',
 					itemKey: 'item1',
-					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox'),
+					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
 					activeElement: getComposedActiveElement
 				},
 				{
 					key: { name: 'PageDown', code: keyCodes.PAGEDOWN },
 					desc: 'does not move focus when last row already focused',
 					itemKey: 'item7',
-					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('.d2l-input-checkbox'),
+					initial: () => layout.querySelector('d2l-selection-checkbox').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
 					activeElement: getComposedActiveElement
 				},
 			];
