@@ -12,6 +12,7 @@ export default {
 	"components.filter.filterCount": "{number, select, max {99+} all {All} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {No filters applied.} one {1 filter applied.} other {{number} filters applied.}}",
 	"components.filter.filters": "Filters",
+	"components.filter.noFilters": "No available filters",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
 	"components.form-element.defaultError": "{label} is invalid.",
 	"components.form-element.defaultFieldLabel": "Field",
