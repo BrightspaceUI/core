@@ -92,7 +92,8 @@ describe('d2l-filter', () => {
 				const elem = await fixture(singleSetDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-
+				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content');
+				await dropdownContent.updateComplete;
 				setTimeout(() => dropdown.toggleOpen());
 				const e = await oneEvent(elem, 'd2l-filter-dimension-first-open');
 				expect(e.detail.key).to.equal('dim');
