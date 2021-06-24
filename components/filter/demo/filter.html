@@ -6,6 +6,7 @@
 	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script type="module">
 		import '../../demo/demo-page.js';
+		import '../../button/button.js';
 		import '../../filter/filter.js';
 		import '../../filter/filter-dimension-set.js';
 		import '../../filter/filter-dimension-set-value.js';
@@ -65,7 +66,7 @@
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Loading</h2>
+		<h2>Loading and Empty State</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-filter>
@@ -75,6 +76,7 @@
 					<d2l-filter-dimension-set key="course" text="Course" loading></d2l-filter-dimension-set>
 					<d2l-filter-dimension-set key="role" text="Role" loading></d2l-filter-dimension-set>
 				</d2l-filter>
+				<d2l-button id="finish-loading">Finish loading (in 5 seconds)</d2l-button>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>
@@ -86,6 +88,17 @@
 
 		document.addEventListener('d2l-filter-dimension-first-open', e => {
 			console.log(`Filter dimension opened for the first time: ${e.detail.key}`);
+		});
+
+		document.getElementById('finish-loading').addEventListener('click', e => {
+			e.target.disabled = true;
+			setTimeout(() => {
+				const loadingFilters = document.querySelectorAll('d2l-filter-dimension-set[loading]');
+				loadingFilters.forEach(filter => {
+					filter.loading = false;
+				});
+				e.target.textContent = 'Done Loading';
+			}, 5000);
 		});
 	</script>
 
