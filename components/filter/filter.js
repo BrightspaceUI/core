@@ -4,6 +4,7 @@ import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
 import '../hierarchical-view/hierarchical-view.js';
+import '../inputs/input-search.js';
 import '../list/list.js';
 import '../list/list-item.js';
 import '../loading-spinner/loading-spinner.js';
@@ -12,6 +13,8 @@ import '../menu/menu-item.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -22,6 +25,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * @slot - Dimension components used by the filter to construct the different dimensions locally
  * @fires d2l-filter-change - Dispatched when a dimension's value(s) have changed
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
+ * @fires d2l-filter-dimension-search - Dispatched when a dimension is searched and has the "event" search-type
  */
 class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -43,10 +47,28 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			div[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
+
 			.d2l-filter-dimension-header {
+				padding-bottom: 0.9rem;
+			}
+
+			.d2l-filter-dimension-header,
+			.d2l-filter-dimension-header-actions {
 				align-items: center;
 				display: flex;
 			}
+
+			d2l-input-search {
+				flex-grow: 1;
+				padding-left: 0.3rem;
+				padding-right: 0.6rem;
+			}
+
+			:host([dir="rtl"]) d2l-input-search {
+				padding-left: 0.6rem;
+				padding-right: 0.3rem;
+			}
+
 			.d2l-filter-dimension-header-text {
 				flex-grow: 1;
 				padding-right: calc(2rem + 2px);
@@ -90,6 +112,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.disabled = false;
+		this._dimensionNodes = [];
 		this._dimensions = [];
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
@@ -188,24 +211,38 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_buildHeader(singleDimension) {
 		if (!this._activeDimensionKey && !singleDimension) return null;
 
-		let header = null;
-		if (!singleDimension) {
-			const dimensionText = this._dimensions.find(dimension => dimension.key === this._activeDimensionKey).text;
-			header = html`
-				<div class="d2l-filter-dimension-header">
-					<d2l-button-icon
-						@click="${this._handleDimensionHide}"
-						icon="tier1:chevron-left"
-						text="${this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', dimensionText)}">
-					</d2l-button-icon>
-					<div class="d2l-filter-dimension-header-text d2l-body-standard">${dimensionText}</div>
-				</div>
-			`;
-		}
+		const dimension = singleDimension ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+
+		const search = !dimension.searchType ? null : html`
+			<d2l-input-search
+				@d2l-input-search-searched="${this._handleSearch}"
+				?disabled="${this._isDimensionEmpty(dimension)}"
+				label="${this.localize('components.input-search.search')}"
+				value="${ifDefined(dimension.searchValue)}">
+			</d2l-input-search>
+		`;
+
+		const actions = html`
+			<div class="d2l-filter-dimension-header-actions">
+				${search}
+			</div>
+		`;
+
+		const header = singleDimension ? null : html`
+			<div class="d2l-filter-dimension-header">
+				<d2l-button-icon
+					@click="${this._handleDimensionHide}"
+					icon="tier1:chevron-left"
+					text="${this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', dimension.text)}">
+				</d2l-button-icon>
+				<div class="d2l-filter-dimension-header-text d2l-body-standard">${dimension.text}</div>
+			</div>
+		`;
 
 		return html`
 			<div slot="header">
 				${header}
+				${actions}
 			</div>
 		`;
 	}
@@ -226,13 +263,33 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
             `;
 		}
 
+		let searchResults = null;
+		if (dimension.searchValue && dimension.searchValue !== '') {
+			const count = dimension.values.reduce((total, value) => { return !value.hidden ? total + 1 : total; }, 0);
+			const classes = {
+				'd2l-filter-dimension-info-message': true,
+				'd2l-body-small': true,
+				'd2l-offscreen': count !== 0
+			};
+
+			searchResults = html`
+				<p class="${classMap(classes)}" role="alert">
+					${this.localize('components.filter.searchResults', { number: count })}
+				</p>
+			`;
+
+			if (count === 0) return searchResults;
+		}
+
 		return html`
+			${searchResults}
 			<d2l-list
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				data-key="${dimension.key}"
 				extend-separators>
 				${dimension.values.map(item => html`
 					<d2l-list-item
+						?hidden="${item.hidden}"
 						key="${item.key}"
 						selectable
 						?selected="${item.selected}"
@@ -277,7 +334,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dimensionKey = e.target.getAttribute('data-key');
 		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
+		const value = dimension.values.find(value => value.key === valueKey);
 		const selected = e.detail.selected;
+
+		value.selected = selected;
 
 		if (selected) {
 			dimension.appliedCount++;
@@ -350,14 +410,44 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._stopPropagation(e);
 	}
 
-	_handleSlotChange(e) {
-		const dimensionNodes = this._getSlottedNodes(e.target);
+	_handleSearch(e) {
+		e.stopPropagation();
+		const dimension = !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+		const dimensionNode = !this._activeDimensionKey ? this._dimensionNodes[0] : this._dimensionNodes.find(node => node.key === this._activeDimensionKey);
+		dimension.searchValue = e.detail.value;
+		dimensionNode.searchValue = e.detail.value;
 
-		this._dimensions = dimensionNodes.map(dimension => {
+		if (dimension.searchType === 'event') {
+			dimension.loading = true;
+			this.requestUpdate();
+
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
+				bubbles: true,
+				composed: false,
+				detail: {
+					key: dimension.key,
+					value: e.detail.value,
+					searchCompleteCallback: function() {
+						requestAnimationFrame(() => {
+							dimension.loading = false;
+							this.requestUpdate();
+						});
+					}.bind(this)
+				}
+			}));
+		}
+	}
+
+	_handleSlotChange(e) {
+		this._dimensionNodes = this._getSlottedNodes(e.target);
+
+		this._dimensions = this._dimensionNodes.map(dimension => {
 			const type = dimension.tagName.toLowerCase();
 			const info = {
 				key: dimension.key,
 				loading: dimension.loading,
+				searchType: dimension._getSearchType(),
+				searchValue: dimension.searchValue,
 				text: dimension.text,
 				type: type
 			};
@@ -379,7 +469,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_isDimensionEmpty(dimension) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				return dimension.values.length === 0;
+				return dimension.values.length === 0 && !dimension.searchValue;
 		}
 
 		return false;

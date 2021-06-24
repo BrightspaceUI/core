@@ -19,6 +19,15 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
+			 * Whether to hide the search input, fire an event on search, or perform a simple text search
+			 * @type {'none'|'event'|'simple'}
+			 */
+			searchType: { type: String, attribute: 'search-type' },
+			/**
+			 * Value for the search input
+			 */
+			searchValue: { type: String, attribute: 'search-value' },
+			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 */
 			text: { type: String }
@@ -28,6 +37,7 @@ class FilterDimensionSet extends LitElement {
 	constructor() {
 		super();
 		this.loading = false;
+		this.searchType = 'simple';
 		this.text = '';
 		this._slot = null;
 	}
@@ -46,9 +56,17 @@ class FilterDimensionSet extends LitElement {
 
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
+			if (prop === 'searchValue') {
+				if (this.searchType === 'simple') {
+					requestAnimationFrame(() => {
+						this._performSearch();
+					});
+				}
+			}
+
 			if (oldValue === undefined) return;
 
-			if (prop === 'text' || prop === 'loading') {
+			if (prop === 'searchValue' || prop === 'text' || prop === 'loading') {
 				changes.set(prop, this[prop]);
 			}
 		});
@@ -66,6 +84,17 @@ class FilterDimensionSet extends LitElement {
 		}));
 	}
 
+	_getSearchType() {
+		switch (this.searchType) {
+			case 'none':
+				return;
+			case 'event':
+				return 'event';
+			case 'simple':
+				return 'on';
+		}
+	}
+
 	_getSlottedNodes() {
 		if (!this._slot) return [];
 		const nodes = this._slot.assignedNodes({ flatten: true });
@@ -76,6 +105,7 @@ class FilterDimensionSet extends LitElement {
 		const valueNodes = this._getSlottedNodes();
 		const values = valueNodes.map(value => {
 			return {
+				hidden: value.hidden,
 				key: value.key,
 				selected: value.selected,
 				text: value.text
@@ -94,6 +124,22 @@ class FilterDimensionSet extends LitElement {
 		if (!this._slot) this._slot = e.target;
 		const values = this._getValues();
 		this._dispatchDataChangeEvent({ dimensionKey: this.key, changes: new Map([['values', values]]) });
+	}
+
+	_performSearch() {
+		const valueNodes = this._getSlottedNodes();
+
+		valueNodes.forEach(value => {
+			if (this.searchValue === '') {
+				value.hidden = false;
+			} else {
+				if (value.text.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1) {
+					value.hidden = false;
+				} else {
+					value.hidden = true;
+				}
+			}
+		});
 	}
 
 }
