@@ -725,8 +725,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				maxWidthOverride = mobileTrayMaxWidthDefault;
 			}
 		}
-		
-		if(mobileTrayBottom) {
+
+		if (mobileTrayBottom) {
 			maxWidthOverride = '100vw';
 		}
 
@@ -741,14 +741,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				minWidthOverride = mobileTrayMinWidthDefault;
 			}
 		}
-		if(mobileTrayBottom) {
+		if (mobileTrayBottom) {
 			minWidthOverride = 'calc(100vw - 2px)';
 		}
 
 		// set to max width
 		let widthOverride = this._width ? this._width : maxWidthOverride;
 
-		if( !mobileTrayBottom) {
+		if (!mobileTrayBottom) {
 			if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
 			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
 			maxWidthOverride = `${maxWidthOverride}px`;
@@ -758,8 +758,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 
 		let maxHeightOverride = this._contentHeight;
-		if(mobileTrayRightLeft) maxHeightOverride = null;
-		if(mobileTrayBottom) maxHeightOverride = window.innerHeight - 42;
+		if (mobileTrayRightLeft) maxHeightOverride = null;
+		if (mobileTrayBottom) maxHeightOverride = window.innerHeight - 42;
 
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : undefined,
