@@ -6,10 +6,6 @@ export const dropdownContentStyles = css`
 	:host {
 		--d2l-dropdown-above-animation-name: d2l-dropdown-above-animation;
 		--d2l-dropdown-animation-name: d2l-dropdown-animation;
-		--d2l-dropdown-mobile-tray-right-name: d2l-dropdown-mobile-tray-right;
-		--d2l-dropdown-mobile-tray-right-close-name: d2l-dropdown-mobile-tray-right-close;
-		--d2l-dropdown-mobile-tray-left-close-name: d2l-dropdown-mobile-tray-left-close;
-		--d2l-dropdown-mobile-tray-left-name: d2l-dropdown-mobile-tray-left;
 		--d2l-dropdown-background-color: #ffffff;
 		--d2l-dropdown-border-color: var(--d2l-color-mica);
 		--d2l-dropdown-foreground-color: var(--d2l-color-ferrite);
@@ -178,7 +174,6 @@ export const dropdownContentStyles = css`
 
 	@media (prefers-reduced-motion: reduce) {
 		:host([opened]), :host([opened-above]) {
-			-webkit-animation: none;
 			animation: none;
 		}
 	}
@@ -198,22 +193,6 @@ export const dropdownContentStyles = css`
 	@keyframes d2l-dropdown-above-animation-dark {
 		0% { opacity: 0; transform: translate(0, 10px); }
 		100% { opacity: 0.9; transform: translate(0, 0); }
-	}
-	@-webkit-keyframes d2l-dropdown-animation {
-		0% { opacity: 0; -webkit-transform: translate(0, -10px); }
-		100% { opacity: 1; -webkit-transform: translate(0, 0); }
-	}
-	@-webkit-keyframes d2l-dropdown-animation-dark {
-		0% { opacity: 0; -webkit-transform: translate(0, -10px); }
-		100% { opacity: 0.9; -webkit-transform: translate(0, 0); }
-	}
-	@-webkit-keyframes d2l-dropdown-above-animation {
-		0% { opacity: 0; -webkit-transform: translate(0, 10px); }
-		100% { opacity: 1; -webkit-transform: translate(0, 0); }
-	}
-	@-webkit-keyframes d2l-dropdown-above-animation-dark {
-		0% { opacity: 0; -webkit-transform: translate(0, 10px); }
-		100% { opacity: 0.9; -webkit-transform: translate(0, 0); }
 	}
 
 	@keyframes d2l-dropdown-mobile-tray-right {
@@ -248,21 +227,21 @@ export const dropdownContentStyles = css`
 		}
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			animation: var(--d2l-dropdown-mobile-tray-right-name) 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-right 300ms ease-out;
 			right: 0;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			animation: var(--d2l-dropdown-mobile-tray-left-name) 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-left 300ms ease-out;
 			left: 0;
 		}
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
-			animation: var(--d2l-dropdown-mobile-tray-right-close-name) 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
-			animation: var(--d2l-dropdown-mobile-tray-left-close-name) 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-left-close 300ms ease-out;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
