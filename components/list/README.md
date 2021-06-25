@@ -29,9 +29,9 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 **Methods:**
 
-- `getListItemCount`: gets the length of the items within the list
-- `getListItemIndex` (Object): gets the index of the given element within the list
-- `getSelectionInfo` (Object): gets the `state` (`listSelectionStates`) and `keys` (Array) for the selected items
+- `getListItemCount`: returns the length of the items within the list
+- `getListItemIndex` (Object): returns the index of the given element within the list
+- `getSelectionInfo` (Object): returns a `SelectionInfo` object containing the `state` (`none`, `some`, `all`), and the `keys` (Array) for the selected items
 
 **Events:**
 
@@ -54,6 +54,37 @@ The `grid` attribute will enable a table-like keyboard grid that allows a user t
 * **Space** and **Enter** simulate a click on the focused item
 
 **Note about actions:** Actions must be placed in the `actions` slot. The grid does not support actions/focusable items that are placed in the content area. The list item currently only supports navigation with `href` as the content action.
+
+## d2l-list-header
+
+The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
+
+![List](./screenshots/list-selection.png?raw=true)
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-header.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+</script>
+
+<d2l-list>
+  <d2l-list-header slot="header">
+    <d2l-selection-action requires-selection ...></d2l-selection-action>
+    <d2l-selection-action ...></d2l-selection-action>
+  </d2l-list-header>
+  <d2l-list-item selectable key="eth" label="Earth Sciences">...</d2l-list-item>
+  <d2l-list-item selectable key="tch" label="Teaching Practicum">...</d2l-list-item>
+  ...
+</d2l-list>
+```
+
+**Properties:**
+
+| Property | Type | Description |
+|--|--|--|
+| `slim` | Boolean | Whether to render a header with reduced whitespace |
 
 ## d2l-list-item
 
@@ -284,6 +315,5 @@ This event includes a detail object with helper methods attached to it.
 ## Future Enhancements
 
 - Paging: integration with "load more", "scroll" and "numeric" paging mechanisms
-- Header with support for search, selected count, select-all
 
 Looking for an enhancement not listed here? Create a GitHub issue!

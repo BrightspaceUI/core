@@ -26,6 +26,9 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
+			p {
+				margin: 0;
+			}
 		`];
 	}
 
@@ -33,7 +36,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText ?
 			this.noSelectionText : this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
 		return html`
-			<div class="d2l-body-compact">${summary}</div>
+			<p class="d2l-body-compact">${summary}</p>
 		`;
 	}
 

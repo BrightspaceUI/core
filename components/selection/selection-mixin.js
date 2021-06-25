@@ -1,10 +1,3 @@
-/*
-export const selectionTypes = {
-	none: 'none',
-	single: 'single',
-	multiple: 'multiple'
-}
-*/
 
 export class SelectionInfo {
 
@@ -35,15 +28,8 @@ export class SelectionInfo {
 
 export const SelectionMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			//selectionType: { type: String, attribute: 'selection-type' }
-		};
-	}
-
 	constructor() {
 		super();
-		//this.selectionType = selectionTypes.none;
 		this._selectionObservers = new Map();
 		this._selectionSelectables = new Map();
 	}

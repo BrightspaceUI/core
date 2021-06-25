@@ -59,6 +59,11 @@ class ListHeader extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		`;
 	}
 
+	constructor() {
+		super();
+		this.slim = false;
+	}
+
 	render() {
 		return html`
 			<div class="d2l-list-header-container">

@@ -13,7 +13,9 @@
 			import '../../dropdown/dropdown-more.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
+			import '../../selection/selection-action.js';
 			import '../../tooltip/tooltip.js';
+			import '../list-header.js';
 			import '../list-item-button.js';
 			import '../list-item-content.js';
 			import '../list-item.js';
@@ -149,6 +151,54 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list>
+						<d2l-list-header slot="header">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-header>
+						<d2l-list-item selectable key="1" label="Introductory Earth Sciences">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="2" selected label="Engineering Materials for Energy Systems">
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="3" label="Geomorphology and GIS">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Selection (overflow)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-header slot="header">
+							<d2l-selection-action icon="tier1:tag-hollow" text="Tag" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:share" text="Share" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-header>
+						<d2l-list-item selectable key="1" label="Introductory Earth Sciences">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="2" selected label="Engineering Materials for Energy Systems">
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="3" label="Geomorphology and GIS">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Selection (no actions)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-header slot="header"></d2l-list-header>
 						<d2l-list-item selectable key="1" label="Introductory Earth Sciences">
 							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
 						</d2l-list-item>
@@ -167,6 +217,10 @@
 			<d2l-demo-snippet id="selection-link-demo">
 				<template>
 					<d2l-list>
+						<d2l-list-header slot="header">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
 						</d2l-list-item>
@@ -190,6 +244,10 @@
 			<d2l-demo-snippet id="selection-button-demo">
 				<template>
 					<d2l-list>
+						<d2l-list-header slot="header">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-header>
 						<d2l-list-item-button selectable key="1" label="Introductory Earth Sciences">
 							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
 						</d2l-list-item-button>
@@ -213,6 +271,10 @@
 			<d2l-demo-snippet id="grid-link-demo">
 				<template>
 					<d2l-list grid>
+						<d2l-list-header slot="header">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-header>
 						<d2l-list-item href="http://www.d2l.com" selectable key="1" label="Introductory Earth Sciences">
 							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
 							<div slot="actions">
@@ -244,6 +306,10 @@
 
 			<d2l-demo-snippet id="grid-button-demo">
 				<template>
+					<d2l-list-header slot="header">
+						<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+						<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+					</d2l-list-header>
 					<d2l-list grid>
 						<d2l-list-item-button selectable key="1" label="Introductory Earth Sciences">
 							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
