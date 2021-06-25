@@ -792,8 +792,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const closeButtonStyles = {
 			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
-			width: this._hasFooter ? 'calc(100%)' : 'calc(100% + 16px)',
-			padding: this._hasFooter ? '12px 0 0 0' : '12px',
+			width: this.noPaddingFooter ? 'calc(100% - 24px)' : this._hasFooter ? 'calc(100%)' : 'calc(100% + 16px)',
+			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
 			margin: this._hasFooter ? '0' : '-20px 0 -20px -20px'
 		};
 
