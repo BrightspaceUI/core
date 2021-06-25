@@ -759,7 +759,16 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		let maxHeightOverride = this._contentHeight;
 		if (mobileTrayRightLeft) maxHeightOverride = null;
-		if (mobileTrayBottom) maxHeightOverride = window.innerHeight - 42;
+		if (mobileTrayBottom) {
+			// default maximum height for tray (42px margin)
+			const mobileTrayMaxHeightDefault = window.innerHeight - 42;
+			if (this.maxHeight) {
+				// if maxWidth provided is smaller, use the maxWidth
+				maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
+			} else {
+				maxHeightOverride = mobileTrayMaxHeightDefault;
+			}
+		}
 
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : undefined,
