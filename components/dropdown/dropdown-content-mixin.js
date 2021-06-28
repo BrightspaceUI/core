@@ -62,7 +62,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'no-mobile-close-button'
 			},
 			/**
+<<<<<<< HEAD
 			 * Override default mobile dropdown style. Specify one of 'left','right', or 'bottom'.
+=======
+			 * Override default mobile dropdown style. Specify one of 'left' or 'right'.
+>>>>>>> master
 			 */
 			mobileTray: {
 				type: String,
@@ -237,12 +241,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		super.connectedCallback();
 
 		window.addEventListener('resize', this.__onResize);
+		this.addEventListener('blur', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('focus', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('click', this.__onAutoCloseClick, true);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		this.removeEventListener('blur', this.__onAutoCloseFocus);
 		window.removeEventListener('resize', this.__onResize);
 		if (document.body) {
 			// DE41322: document.body can be null in some scenarios

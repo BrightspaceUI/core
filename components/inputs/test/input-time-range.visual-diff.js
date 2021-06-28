@@ -128,26 +128,17 @@ describe('d2l-input-time-range', () => {
 
 				it('open start', async function() {
 					await page.$eval('#basic', (elem) => {
-						const input = elem.shadowRoot.querySelector('d2l-input-time');
-						const input2 = input.shadowRoot.querySelector('input');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 13;
-						input2.dispatchEvent(eventObj);
+						elem.focus();
 					});
+					await page.keyboard.press('Enter');
 					const rect = await getRect(page, 0);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
 				it('open end', async function() {
-					await page.$eval('#basic', (elem) => {
-						const input = elem.shadowRoot.querySelectorAll('d2l-input-time')[1];
-						const input2 = input.shadowRoot.querySelector('input');
-						const eventObj = document.createEvent('Events');
-						eventObj.initEvent('keydown', true, true);
-						eventObj.keyCode = 13;
-						input2.dispatchEvent(eventObj);
-					});
+					await page.keyboard.press('Tab');
+					await page.keyboard.press('Tab');
+					await page.keyboard.press('Enter');
 					const rect = await getRect(page, 1);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
