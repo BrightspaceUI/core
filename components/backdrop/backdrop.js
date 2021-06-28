@@ -76,11 +76,16 @@ class Backdrop extends LitElement {
 	}
 
 	disconnectedCallback() {
-		// allow body scrolling if backdrop is removed from the DOM
+		// allow body scrolling, show hidden elements, if backdrop is removed from the DOM
 		if (this._bodyScrollKey) {
 			allowBodyScroll(this._bodyScrollKey);
 			this._bodyScrollKey = null;
 		}
+		if (this._hiddenElements) {
+			showAccessible(this._hiddenElements);
+			this._hiddenElements = null;
+		}
+		this._state = null;
 		super.disconnectedCallback();
 	}
 
