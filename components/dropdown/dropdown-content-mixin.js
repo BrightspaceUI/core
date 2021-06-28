@@ -1,12 +1,18 @@
+import '../backdrop/backdrop.js';
+import '../button/button.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, getBoundingAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map';
 import { html } from 'lit-element/lit-element.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-export const DropdownContentMixin = superclass => class extends RtlMixin(superclass) {
+const mediaQueryList = window.matchMedia('(max-width: 615px)');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -46,6 +52,22 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			maxHeight: {
 				type: Number,
 				attribute: 'max-height'
+			},
+			/**
+			 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
+			 */
+			noMobileCloseButton: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'no-mobile-close-button'
+			},
+			/**
+			 * Override default mobile dropdown style. Specify one of 'left' or 'right'.
+			 */
+			mobileTray: {
+				type: String,
+				reflect: true,
+				attribute: 'mobile-tray'
 			},
 			/**
 			 * Opt out of automatically closing on focus or click outside of the dropdown content
@@ -129,6 +151,10 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			_bottomOverflow: {
 				type: Boolean
 			},
+			_closing: {
+				type: Boolean,
+				attribute: 'closing'
+			},
 			_contentOverflow: {
 				type: Boolean
 			},
@@ -149,6 +175,9 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			_position: {
 				type: Number
 			},
+			_showBackdrop: {
+				type: Boolean
+			},
 			_topOverflow: {
 				type: Boolean
 			},
@@ -164,6 +193,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this.noAutoClose = false;
 		this.noAutoFit = false;
 		this.noAutoFocus = false;
+		this.noMobileCloseButton = false;
 		this.noPadding = false;
 		this.noPaddingFooter = false;
 		this.noPaddingHeader = false;
@@ -178,9 +208,11 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		this._dropdownContent = true;
 		this._bottomOverflow = false;
 		this._topOverflow = false;
+		this._closing = false;
 		this._contentOverflow = false;
 		this._hasHeader = false;
 		this._hasFooter = false;
+		this._showBackdrop = false;
 
 		this.__onResize = this.__onResize.bind(this);
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
@@ -246,7 +278,20 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 	}
 
 	close() {
-		this.opened = false;
+		const hide = () => {
+			this._closing = false;
+			this._showBackdrop = false;
+			this.opened = false;
+		};
+
+		if (!reduceMotion && mediaQueryList.matches && this.mobileTray && isVisible(this)) {
+			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
+				.addEventListener('animationend', hide, { once: true });
+			this._closing = true;
+			this._showBackdrop = false;
+		} else {
+			hide();
+		}
 	}
 
 	/**
@@ -264,15 +309,18 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 		return this.__content && this.__content.offsetHeight;
 	}
 
-	open(applyFocus) {
+	async open(applyFocus) {
 		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this.opened = true;
+		await this.updateComplete;
+		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
 	}
 
 	async resize() {
 		if (!this.opened) {
 			return;
 		}
+		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
 		await this.__position();
 	}
 
@@ -350,7 +398,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			return;
 		}
 
-		this.opened = false;
+		this.close();
 	}
 
 	__onAutoCloseFocus() {
@@ -372,7 +420,7 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 				return;
 			}
 
-			this.opened = false;
+			this.close();
 		}, 0);
 	}
 
@@ -664,23 +712,62 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			}
 		}
 
+		const specialMobileStyle = mediaQueryList.matches && this.mobileTray;
+		const mobileTrayRightLeft = mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
+
+		let maxWidthOverride = this.maxWidth;
+		if (mobileTrayRightLeft) {
+			// default maximum width for tray (30px margin)
+			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - 30, 420);
+			if (maxWidthOverride) {
+				// if maxWidth provided is smaller, use the maxWidth
+				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
+			} else {
+				maxWidthOverride = mobileTrayMaxWidthDefault;
+			}
+		}
+
+		let minWidthOverride = this.minWidth;
+		if (mobileTrayRightLeft) {
+			// minimum size - 285px
+			const mobileTrayMinWidthDefault = 285;
+			if (minWidthOverride) {
+				// if minWidth provided is smaller, use the minumum width for tray
+				minWidthOverride = Math.max(mobileTrayMinWidthDefault, minWidthOverride);
+			} else {
+				minWidthOverride = mobileTrayMinWidthDefault;
+			}
+		}
+
+		// set to max width
+		let widthOverride = this._width ? this._width : maxWidthOverride;
+
+		if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
+		if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
+
 		const widthStyle = {
-			maxWidth: this.maxWidth ? `${this.maxWidth}px` : undefined,
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			maxWidth: maxWidthOverride ? `${maxWidthOverride}px` : undefined,
+			minWidth: minWidthOverride ? `${minWidthOverride}px` : undefined,
 			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : ''
+			width: widthOverride ? `${widthOverride + 20}px` : ''
 		};
 
 		const contentWidthStyle = {
-			minWidth: this.minWidth ? `${this.minWidth}px` : undefined,
+			minWidth: minWidthOverride ? `${minWidthOverride}px` : undefined,
 			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: this._width ? `${this._width + 18}px` : '',
+			width: widthOverride ? `${widthOverride + 18}px` : '',
 		};
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: this._contentHeight ? `${this._contentHeight}px` : 'none',
+			maxHeight: this._contentHeight && !specialMobileStyle ? `${this._contentHeight}px` : 'none',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
+		};
+
+		const closeButtonStyles = {
+			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
+			width: 'calc(100% - 24px)',
+			padding: '12px'
 		};
 
 		const topClasses = {
@@ -694,9 +781,9 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 			'd2l-dropdown-content-footer': this._hasFooter
 		};
 
-		return html`
+		const dropdown =  html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div class="d2l-dropdown-content-width" style=${styleMap(widthStyle)}>
+				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)} ?closing="${this._closing}">
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
@@ -705,10 +792,22 @@ export const DropdownContentMixin = superclass => class extends RtlMixin(supercl
 					</div>
 					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+						<d2l-button
+							style=${styleMap(closeButtonStyles)} 
+							@click=${this.close}>
+							${this.localize('components.dropdown.close')}
+						</d2l-button>
 					</div>
 				</div>
 			</div>
 		`;
+		if (this.mobileTray) return html`
+			${dropdown} 
+			<d2l-backdrop 
+				for-target="d2l-dropdown-wrapper" 
+				?shown="${this._showBackdrop}" >
+			</d2l-backdrop>`;
+		else return html`${dropdown}`;
 	}
 
 };

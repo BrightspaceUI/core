@@ -32,6 +32,8 @@ describe('d2l-filter', () => {
 		it(`${test.name} opened`, async() => {
 			const elem = await fixture(test.fixture);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content') || elem.shadowRoot.querySelector('d2l-dropdown-menu');
+			await dropdownContent.updateComplete;
 			dropdown.toggleOpen();
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			await expect(elem).to.be.accessible();

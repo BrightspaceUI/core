@@ -49,7 +49,26 @@ describe('d2l-dropdown-content', () => {
 		'align-start-edge',
 		'align-start-edge-rtl'
 	].forEach((testName) => {
+
 		it(testName, async function() {
+			const selector = `#${testName}`;
+			await open(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		});
+	});
+
+	[
+		'mobile-right-tray',
+		'mobile-left-tray',
+		'mobile-no-tray',
+		'mobile-right-tray-no-close',
+		'mobile-left-tray-no-close',
+		'mobile-right-tray-max-width',
+		'mobile-left-tray-max-width'
+	].forEach((testName) => {
+
+		it(testName, async function() {
+			await page.setViewport({ width: 600, height: 500 });
 			const selector = `#${testName}`;
 			await open(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
