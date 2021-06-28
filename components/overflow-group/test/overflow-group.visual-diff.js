@@ -102,6 +102,9 @@ describe('d2l-overflow-group', () => {
 		it(test.name, async function() {
 			const selector = `#${test.name}`;
 			const containerSelector = `#${test.name}-container`;
+			await page.evaluate(() => {
+				return new Promise(resolve => setTimeout(resolve, 0));
+			});
 			const rect = await visualDiff.getRect(page, containerSelector || selector);
 			if (test.action) {
 				await test.action(selector);

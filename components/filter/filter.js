@@ -234,6 +234,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				${dimension.values.map(item => html`
 					<d2l-list-item
 						key="${item.key}"
+						label="${item.text}"
 						selectable
 						?selected="${item.selected}"
 						slim>

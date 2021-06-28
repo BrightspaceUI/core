@@ -40,7 +40,7 @@ describe('d2l-filter', () => {
 		});
 	});
 
-	it.skip('Multiple dimensions drilling in', async() => {
+	it('Multiple dimensions drilling in', async() => {
 		const elem = await fixture(multiDimensionFixture);
 		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 		const menuItem = elem.shadowRoot.querySelector('d2l-menu-item');
