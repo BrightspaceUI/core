@@ -77,7 +77,10 @@ class Backdrop extends LitElement {
 
 	disconnectedCallback() {
 		// allow body scrolling if backdrop is removed from the DOM
-		if (this._bodyScrollKey) allowBodyScroll(this._bodyScrollKey);
+		if (this._bodyScrollKey) {
+			allowBodyScroll(this._bodyScrollKey);
+			this._bodyScrollKey = null;
+		}
 		super.disconnectedCallback();
 	}
 
