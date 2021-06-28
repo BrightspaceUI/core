@@ -1,7 +1,9 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -38,7 +40,8 @@ export const checkboxStyles = css`
 	}
 	input[type="checkbox"].d2l-input-checkbox:hover,
 	input[type="checkbox"].d2l-input-checkbox:focus,
-	input[type="checkbox"].d2l-input-checkbox.d2l-input-checkbox-focus {
+	input[type="checkbox"].d2l-input-checkbox.d2l-input-checkbox-focus,
+	:host(.d2l-hovering) input[type="checkbox"].d2l-input-checkbox {
 		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
 		outline-width: 0;
@@ -66,6 +69,10 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 			 */
 			checked: { type: Boolean },
 			/**
+			 * Additional information communicated in the aria-describedby on the input
+			 */
+			description: { type: String },
+			/**
 			 * Disables the input
 			 */
 			disabled: { type: Boolean },
@@ -89,7 +96,7 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ super.styles, checkboxStyles,
+		return [ super.styles, checkboxStyles, offscreenStyles,
 			css`
 				:host {
 					display: block;
@@ -156,6 +163,7 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 		this.name = '';
 		this.notTabbable = false;
 		this.value = 'on';
+		this._descriptionId = getUniqueId();
 	}
 
 	render() {
@@ -167,10 +175,12 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
 		const disabled = this.disabled || this.skeleton;
+		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
 		return html`
 			<label>
 				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
 					aria-checked="${ifDefined(ariaChecked)}"
+					aria-describedby="${ifDefined(this.description ? this._descriptionId : undefined)}"
 					aria-label="${ifDefined(this.ariaLabel)}"
 					@change="${this._handleChange}"
 					class="d2l-input-checkbox"
@@ -181,7 +191,7 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 					name="${ifDefined(this.name)}"
 					tabindex="${ifDefined(tabindex)}"
 					type="checkbox"
-					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
+					.value="${this.value}"></span><span class="${classMap(textClasses)}">${offscreenContainer}<slot></slot></span>
 			</label>
 		`;
 	}

@@ -50,7 +50,7 @@ function createMenuItemLink(node) {
 	const href =  node.href;
 	const target = node.target;
 
-	return html`<d2l-menu-item-link 
+	return html`<d2l-menu-item-link
 		text="${text}"
 		href="${href}"
 		target="${target}">
@@ -85,6 +85,7 @@ function convertToDropdownItem(node) {
 		case 'd2l-button-subtle':
 		case 'button':
 		case 'd2l-button-icon':
+		case 'd2l-selection-action':
 			return createMenuItem(node);
 		case 'a':
 		case 'd2l-link':
@@ -187,6 +188,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			.d2l-overflow-group-container {
 				display: flex;
 				flex-wrap: wrap;
+				justify-content: var(--d2l-overflow-group-justify-content, normal);
 			}
 			.d2l-overflow-group-container ::slotted(d2l-button),
 			.d2l-overflow-group-container ::slotted(d2l-button-icon),
@@ -223,8 +225,10 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			}`
 		];
 	}
+
 	constructor() {
 		super();
+		this._handleItemMutation = this._handleItemMutation.bind(this);
 		this._handleResize = this._handleResize.bind(this);
 
 		this._throttledResize = (entries) => requestAnimationFrame(() => this._handleResize(entries));
@@ -248,11 +252,10 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this._container = this.shadowRoot.querySelector('.d2l-overflow-group-container');
 
-		this._getItems();
-
 		const resizeObserver = new ResizeObserver(this._throttledResize);
 		resizeObserver.observe(this._container);
 	}
+
 	render() {
 		const overflowMenu = this._getOverflowMenu();
 
@@ -271,8 +274,10 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			</div>
 		`;
 	}
+
 	update(changedProperties) {
 		super.update(changedProperties);
+
 		if (changedProperties.get('autoShow')) {
 			this._getItemLayouts(this._slotItems);
 			this._autoDetectBoundaries(this._itemLayouts);
@@ -291,6 +296,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			});
 		}
 	}
+
 	_autoDetectBoundaries(items) {
 
 		let minToShow, maxToShow;
@@ -310,7 +316,9 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			this.maxToShow = maxToShow;
 		}
 	}
-	_chomp(items = this._itemLayouts) {
+
+	_chomp() {
+		if (!this._itemLayouts) return;
 
 		this._overflowMenu = this.shadowRoot.querySelector('.d2l-overflow-dropdown');
 		this._overflowMenuMini = this.shadowRoot.querySelector('.d2l-overflow-dropdown-mini');
@@ -362,7 +370,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		}
 		// if there is at least one showing and no more to be hidden, enable collapsing more button to [...]
-		this._overflowMenuHidden = items.length === showing.count;
+		this._overflowMenuHidden = this._itemLayouts.length === showing.count;
 		if (!this._overflowMenuHidden && (isSoftOverflowing || isForcedOverflowing)) {
 			for (let j = this._itemLayouts.length; j--;) {
 				if (showing.width + this._overflowMenuWidth < this._availableWidth) {
@@ -387,6 +395,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		this.dispatchEvent(new CustomEvent('d2l-overflow-group-updated', { composed: false, bubbles: true }));
 	}
+
 	_getItemLayouts(filteredNodes) {
 		const items = filteredNodes.map((node) => {
 			const computedStyles = window.getComputedStyle(node);
@@ -401,8 +410,10 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 				node: node
 			};
 		});
+
 		return items.filter(({ isHidden }) => !isHidden);
 	}
+
 	_getItems() {
 		// get the items from the button slot
 		this._slotItems = this._getSlotItems();
@@ -411,6 +422,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		// convert to dropdown items (for overflow menu)
 		this._dropdownItems = this._slotItems.map((node) => convertToDropdownItem(node));
 	}
+
 	_getOverflowMenu() {
 		if (this._overflowMenuHidden) {
 			return;
@@ -441,7 +453,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	_getSlotItems() {
-		const nodes = this._buttonSlot.assignedNodes();
+		const nodes = this._buttonSlot.assignedNodes({ flatten: true });
 		const filteredNodes = nodes.filter((node) => {
 			const isNode = node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() !== 'template';
 			return isNode;
@@ -449,21 +461,44 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 		return filteredNodes;
 	}
+
+	_handleItemMutation(mutations) {
+		if (!mutations || mutations.length === 0) return;
+		if (this._updateDropdownItemsRequested) return;
+
+		this._updateDropdownItemsRequested = true;
+		setTimeout(() => {
+			this._dropdownItems = this._slotItems.map(node => convertToDropdownItem(node));
+			this._updateDropdownItemsRequested = false;
+			this.requestUpdate();
+		}, 0);
+	}
+
 	_handleResize(entries) {
-
 		this._availableWidth = Math.ceil(entries[0].contentRect.width);
-
 		this._chomp();
 	}
+
 	_handleSlotChange() {
+		requestAnimationFrame(() => {
+			this._getItems();
 
-		this._getItems();
+			this._slotItems.forEach(item => {
+				const observer = new MutationObserver(this._handleItemMutation);
+				observer.observe(item, {
+					attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
+					attributeFilter: ['disabled', 'text'],
+					childList: false,
+					subtree: false
+				});
+			});
 
-		if (this.autoShow) {
-			this._autoDetectBoundaries(this._slotItems);
-		}
+			if (this.autoShow) {
+				this._autoDetectBoundaries(this._slotItems);
+			}
 
-		this._chomp();
+			this._chomp();
+		});
 	}
 }
 

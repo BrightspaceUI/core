@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../selection-action.js';
+			import '../selection-checkbox.js';
+			import '../selection-select-all.js';
+			import '../selection-summary.js';
+			import { css, html, LitElement } from 'lit-element/lit-element.js';
+			import { SelectionMixin } from '../selection-mixin.js';
+
+			class DemoSelection extends SelectionMixin(LitElement) {
+				static get styles() {
+					return css`
+						:host {
+							display: block;
+						}
+					`;
+				}
+				render() {
+					return html`
+						<slot></slot>
+					`;
+				}
+			}
+			customElements.define('d2l-demo-selection', DemoSelection);
+
+		</script>
+		<style>
+			ul {
+				padding: 0;
+			}
+			li {
+				list-style-type: none;
+			}
+			d2l-selection-checkbox {
+				margin-right: 10px;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="Selection Components">
+
+			<h2>Actions, Checkbox, Select-All, Summary</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-selection>
+						<div style="display: flex; align-items: center;">
+							<div style="flex: auto;">
+								<d2l-selection-select-all></d2l-selection-select-all>
+								<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+								<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
+							</div>
+							<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
+						</div>
+						<ul>
+							<li><d2l-selection-checkbox key="geo" label="Geography" selected></d2l-selection-checkbox>Geography</li>
+							<li><d2l-selection-checkbox key="sci" label="Science"></d2l-selection-checkbox>Science</li>
+							<li><d2l-selection-checkbox key="mth" label="Math"></d2l-selection-checkbox>Math</li>
+						</ul>
+					</d2l-demo-selection>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
