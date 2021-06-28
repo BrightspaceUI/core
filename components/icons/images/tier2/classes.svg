@@ -1,75 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <defs>
-    <clipPath id="a">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(149.199 166.553)" fill="#494c4e"/>
-    </clipPath>
-    <clipPath id="b">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(157.927 166.553)" fill="#494c4e"/>
-    </clipPath>
-    <clipPath id="c">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(166.654 166.553)" fill="none" stroke="#494c4e"/>
-    </clipPath>
-    <clipPath id="d">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(149.199 175.28)" fill="#494c4e"/>
-    </clipPath>
-    <clipPath id="e">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(157.927 175.28)" fill="#494c4e"/>
-    </clipPath>
-    <clipPath id="f">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(166.654 175.28)" fill="#494c4e"/>
-    </clipPath>
-    <clipPath id="g">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(149.199 184.007)" fill="#494c4e"/>
-    </clipPath>
-    <clipPath id="h">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(157.927 184.007)" fill="#494c4e"/>
-    </clipPath>
-    <clipPath id="i">
-      <rect width="6.545" height="6.545" rx="1.091" transform="translate(166.654 184.007)" fill="#494c4e"/>
-    </clipPath>
-  </defs>
-  <rect width="6.545" height="6.545" rx="1.091" fill="none"/>
-  <g clip-path="url(#a)" transform="translate(-149.199 -166.553)">
-    <path d="M154.654 175.28h-4.364a3.276 3.276 0 01-3.273-3.273v-4.363a3.276 3.276 0 013.273-3.273h4.364a3.276 3.276 0 013.272 3.273v4.363a3.276 3.276 0 01-3.272 3.273zm-3.273-4.364h2.182v-2.181h-2.182z" fill="#494c4e"/>
-  </g>
-  <rect width="6.545" height="6.545" rx="1.091" transform="translate(8.728)" fill="none"/>
-  <g clip-path="url(#b)" transform="translate(-149.199 -166.553)">
-    <path d="M163.381 175.28h-4.364a3.276 3.276 0 01-3.272-3.273v-4.363a3.276 3.276 0 013.272-3.273h4.364a3.276 3.276 0 013.273 3.273v4.363a3.276 3.276 0 01-3.273 3.273zm-3.273-4.364h2.182v-2.181h-2.182z" fill="#494c4e"/>
-  </g>
-  <rect width="6.545" height="6.545" rx="1.091" transform="translate(17.455)" fill="none"/>
-  <g clip-path="url(#c)" transform="translate(-149.199 -166.553)">
-    <path d="M172.108 175.28h-4.363a3.276 3.276 0 01-3.273-3.273v-4.363a3.276 3.276 0 013.273-3.273h4.363a3.276 3.276 0 013.273 3.273v4.363a3.276 3.276 0 01-3.273 3.273zm-3.272-4.364h2.181v-2.181h-2.181z" fill="#494c4e"/>
-  </g>
-  <rect width="6.545" height="6.545" rx="1.091" transform="translate(0 8.727)" fill="none"/>
-  <g clip-path="url(#d)" transform="translate(-149.199 -166.553)">
-    <path d="M154.654 184.007h-4.364a3.276 3.276 0 01-3.273-3.272v-4.364a3.276 3.276 0 013.273-3.273h4.364a3.276 3.276 0 013.272 3.273v4.364a3.276 3.276 0 01-3.272 3.272zm-3.273-4.363h2.182v-2.182h-2.182z" fill="#494c4e"/>
-  </g>
-  <rect width="6.545" height="6.545" rx="1.091" transform="translate(8.728 8.727)" fill="none"/>
-  <g clip-path="url(#e)" transform="translate(-149.199 -166.553)">
-    <path d="M163.381 184.007h-4.364a3.276 3.276 0 01-3.272-3.272v-4.364a3.276 3.276 0 013.272-3.273h4.364a3.276 3.276 0 013.273 3.273v4.364a3.276 3.276 0 01-3.273 3.272zm-3.273-4.363h2.182v-2.182h-2.182z" fill="#494c4e"/>
-  </g>
-  <g>
-    <rect width="6.545" height="6.545" rx="1.091" transform="translate(17.455 8.727)" fill="none"/>
-    <g clip-path="url(#f)" transform="translate(-149.199 -166.553)">
-      <path d="M172.108 184.007h-4.363a3.276 3.276 0 01-3.273-3.272v-4.364a3.276 3.276 0 013.273-3.273h4.363a3.276 3.276 0 013.273 3.273v4.364a3.276 3.276 0 01-3.273 3.272zm-3.272-4.363h2.181v-2.182h-2.181z" fill="#494c4e"/>
-    </g>
-  </g>
-  <g>
-    <rect width="6.545" height="6.545" rx="1.091" transform="translate(0 17.454)" fill="none"/>
-    <g clip-path="url(#g)" transform="translate(-149.199 -166.553)">
-      <path d="M154.654 192.735h-4.364a3.276 3.276 0 01-3.273-3.273V185.1a3.276 3.276 0 013.273-3.273h4.364a3.276 3.276 0 013.272 3.273v4.364a3.276 3.276 0 01-3.272 3.271zm-3.273-4.364h2.182v-2.182h-2.182z" fill="#494c4e"/>
-    </g>
-  </g>
-  <g>
-    <rect width="6.545" height="6.545" rx="1.091" transform="translate(8.728 17.454)" fill="none"/>
-    <g clip-path="url(#h)" transform="translate(-149.199 -166.553)">
-      <path d="M163.381 192.735h-4.364a3.276 3.276 0 01-3.272-3.273V185.1a3.276 3.276 0 013.272-3.273h4.364a3.276 3.276 0 013.273 3.273v4.364a3.276 3.276 0 01-3.273 3.271zm-3.273-4.364h2.182v-2.182h-2.182z" fill="#494c4e"/>
-    </g>
-  </g>
-  <g>
-    <rect width="6.545" height="6.545" rx="1.091" transform="translate(17.455 17.454)" fill="none"/>
-    <g clip-path="url(#i)" transform="translate(-149.199 -166.553)">
-      <path d="M172.108 192.735h-4.363a3.276 3.276 0 01-3.273-3.273V185.1a3.276 3.276 0 013.273-3.273h4.363a3.276 3.276 0 013.273 3.273v4.364a3.276 3.276 0 01-3.273 3.271zm-3.272-4.364h2.181v-2.182h-2.181z" fill="#494c4e"/>
-    </g>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd" stroke="#494C4E" stroke-width="2">
+    <rect x="2" y="2" width="4" height="4" rx="1"/>
+    <rect x="2" y="10" width="4" height="4" rx="1"/>
+    <rect x="2" y="18" width="4" height="4" rx="1"/>
+    <rect x="10" y="2" width="4" height="4" rx="1"/>
+    <rect x="10" y="10" width="4" height="4" rx="1"/>
+    <rect x="10" y="18" width="4" height="4" rx="1"/>
+    <rect x="18" y="2" width="4" height="4" rx="1"/>
+    <rect x="18" y="10" width="4" height="4" rx="1"/>
+    <rect x="18" y="18" width="4" height="4" rx="1"/>
   </g>
 </svg>
