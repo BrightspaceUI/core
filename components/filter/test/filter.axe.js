@@ -44,6 +44,8 @@ describe('d2l-filter', () => {
 		const elem = await fixture(multiDimensionFixture);
 		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 		const menuItem = elem.shadowRoot.querySelector('d2l-menu-item');
+		const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+		await dropdownContent.updateComplete;
 		dropdown.toggleOpen();
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		menuItem.click();
