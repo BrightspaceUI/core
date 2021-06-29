@@ -704,8 +704,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	_renderContent() {
 
 		const positionStyle = {};
+		const isRTL = this.getAttribute('dir') === 'rtl';
 		if (this._position) {
-			const isRTL = this.getAttribute('dir') === 'rtl';
 			if (!isRTL) {
 				positionStyle.left = `${this._position}px`;
 			} else {
@@ -797,7 +797,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
 			width: this.noPaddingFooter ? 'calc(100% - 24px)' : this._hasFooter ? 'calc(100%)' : 'calc(100% + 16px)',
 			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
-			margin: this._hasFooter ? '0' : '-20px 0 -20px -20px'
+			margin: this._hasFooter ? '0' : isRTL ? '-20px -20px -20px 0px' : '-20px 0 -20px -20px'
 		};
 
 		const topClasses = {
