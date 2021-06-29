@@ -243,30 +243,30 @@ export const dropdownContentStyles = css`
 		}
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			animation: d2l-dropdown-mobile-tray-right-name 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-right 300ms ease-out;
 			right: 0;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			animation: d2l-dropdown-mobile-tray-left-name 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-left 300ms ease-out;
 			left: 0;
 		}
 
 		:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			animation: d2l-dropdown-mobile-tray-bottom-name 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-bottom 300ms ease-out;
 			bottom: 0;
 		}
 
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
-			animation: d2l-dropdown-mobile-tray-right-close-name 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
-			animation: d2l-dropdown-mobile-tray-left-close-name 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-left-close 300ms ease-out;
 		}
 
 		:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
-			animation: d2l-dropdown-mobile-tray-bottom-close-name 300ms ease-out;
+			animation: d2l-dropdown-mobile-tray-bottom-close 300ms ease-out;
 		}
 
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
