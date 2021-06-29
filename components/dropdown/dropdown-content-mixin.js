@@ -760,8 +760,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			widthOverride = undefined;
 		}
 
-		let maxHeightOverride = this._contentHeight;
-		if (mobileTrayRightLeft) maxHeightOverride = null;
+		let maxHeightOverride;
+		if (!specialMobileStyle) {
+			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
+		}
+		if (mobileTrayRightLeft) maxHeightOverride = '';
 		if (mobileTrayBottom) {
 			// default maximum height for tray (42px margin)
 			const mobileTrayMaxHeightDefault = window.innerHeight - 42;
@@ -771,33 +774,65 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			} else {
 				maxHeightOverride = mobileTrayMaxHeightDefault;
 			}
+			maxHeightOverride = `${maxHeightOverride}px`;
+		}
+
+		let contentWidth;
+		let containerWidth;
+		if (!this.mobileTray && !this._width) {
+			contentWidth = '';
+			containerWidth = '';
+		} else if (mobileTrayBottom) {
+			contentWidth = 'calc(100vw - 2px)';
+			containerWidth = '100vw';
+		} else {
+			contentWidth = `${widthOverride + 18}px`;
+			containerWidth = `${widthOverride + 20}px`;
 		}
 
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
 			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			/* add 2 to content width since scrollWidth does not include border */
-			width: !this.mobileTray && !this._width ? '' : widthOverride ? `${widthOverride + 20}px` : '100vw',
-			maxHeight: mobileTrayBottom ? `${maxHeightOverride}px` : '',
+			width: containerWidth,
+			maxHeight: mobileTrayBottom ? maxHeightOverride : '',
 		};
 
 		const contentWidthStyle = {
 			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: !this.mobileTray && !this._width ? '' : mobileTrayBottom ?  'calc(100vw - 2px)' : `${widthOverride + 18}px`,
+			width: contentWidth,
 		};
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: maxHeightOverride ? `${maxHeightOverride}px` : '',
+			maxHeight: maxHeightOverride,
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
+		let footerWidth;
+		if (this.noPaddingFooter) {
+			footerWidth = 'calc(100% - 24px)';
+		} else if (this._hasFooter) {
+			footerWidth = '100%';
+		} else {
+			footerWidth = 'calc(100% + 16px)';
+		}
+
+		let footerMargin;
+		if (this._hasFooter) {
+			footerMargin = '0';
+		} else if (isRTL) {
+			footerMargin = '-20px -20px -20px 0px';
+		} else {
+			footerMargin = '-20px 0 -20px -20px';
+		}
+
 		const closeButtonStyles = {
 			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
-			width: this.noPaddingFooter ? 'calc(100% - 24px)' : this._hasFooter ? 'calc(100%)' : 'calc(100% + 16px)',
+			width: footerWidth,
 			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
-			margin: this._hasFooter ? '0' : isRTL ? '-20px -20px -20px 0px' : '-20px 0 -20px -20px'
+			margin: footerMargin
 		};
 
 		const topClasses = {
