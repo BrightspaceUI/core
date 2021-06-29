@@ -60,13 +60,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			d2l-input-search {
 				flex-grow: 1;
-				padding-left: 0.3rem;
-				padding-right: 0.6rem;
+				margin-left: 0.3rem;
+				margin-right: 0.6rem;
 			}
 
 			:host([dir="rtl"]) d2l-input-search {
-				padding-left: 0.6rem;
-				padding-right: 0.3rem;
+				margin-left: 0.6rem;
+				margin-right: 0.3rem;
 			}
 
 			.d2l-filter-dimension-header-text {

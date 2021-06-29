@@ -19,8 +19,8 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
-			 * Whether to hide the search input, fire an event on search, or perform a simple text search
-			 * @type {'none'|'event'|'simple'}
+			 * Whether to hide the search input, perform a simple text search, or fire an event on search
+			 * @type {'none'|'automatic'|'manual'}
 			 */
 			searchType: { type: String, attribute: 'search-type' },
 			/**
@@ -37,7 +37,7 @@ class FilterDimensionSet extends LitElement {
 	constructor() {
 		super();
 		this.loading = false;
-		this.searchType = 'simple';
+		this.searchType = 'automatic';
 		this.text = '';
 		this._slot = null;
 	}
@@ -57,7 +57,7 @@ class FilterDimensionSet extends LitElement {
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
 			if (prop === 'searchValue') {
-				if (this.searchType === 'simple') {
+				if (this.searchType === 'automatic') {
 					requestAnimationFrame(() => {
 						this._performSearch();
 					});
@@ -88,9 +88,9 @@ class FilterDimensionSet extends LitElement {
 		switch (this.searchType) {
 			case 'none':
 				return;
-			case 'event':
+			case 'manual':
 				return 'event';
-			case 'simple':
+			case 'automatic':
 				return 'on';
 		}
 	}
