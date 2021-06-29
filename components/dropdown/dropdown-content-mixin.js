@@ -754,8 +754,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		if (!mobileTrayBottom) {
 			if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
 			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
-			maxWidthOverride = `${maxWidthOverride}px`;
-			minWidthOverride = `${minWidthOverride}px`;
+			maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
+			minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
 		} else {
 			widthOverride = undefined;
 		}
@@ -774,22 +774,22 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 
 		const widthStyle = {
-			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : undefined,
-			minWidth: minWidthOverride ? `${minWidthOverride}` : undefined,
+			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
+			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			/* add 2 to content width since scrollWidth does not include border */
-			width: widthOverride ? `${widthOverride + 20}px` : '100vw',
-			maxHeight: mobileTrayBottom ? `${maxHeightOverride}px` : undefined,
+			width: !this.mobileTray && !this._width ? '' : widthOverride ? `${widthOverride + 20}px` : '100vw',
+			maxHeight: mobileTrayBottom ? `${maxHeightOverride}px` : '',
 		};
 
 		const contentWidthStyle = {
-			minWidth: minWidthOverride ? `${minWidthOverride}` : undefined,
+			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: widthOverride ? `${widthOverride + 18}px` : 'calc(100vw - 2px)',
+			width: !this.mobileTray && !this._width ? '' : mobileTrayBottom ?  'calc(100vw - 2px)' : `${widthOverride + 18}px`,
 		};
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: maxHeightOverride ? `${maxHeightOverride}px` : 'none',
+			maxHeight: maxHeightOverride ? `${maxHeightOverride}px` : '',
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
