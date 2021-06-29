@@ -62,11 +62,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'no-mobile-close-button'
 			},
 			/**
-<<<<<<< HEAD
 			 * Override default mobile dropdown style. Specify one of 'left','right', or 'bottom'.
-=======
-			 * Override default mobile dropdown style. Specify one of 'left' or 'right'.
->>>>>>> master
 			 */
 			mobileTray: {
 				type: String,

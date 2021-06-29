@@ -351,15 +351,15 @@ export const dropdownContentStyles = css`
 			bottom: 0;
 		}
 
-		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
+		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 			animation: var(--d2l-dropdown-mobile-tray-right-close-name) 300ms ease-out;
 		}
 
-		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
+		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 			animation: var(--d2l-dropdown-mobile-tray-left-close-name) 300ms ease-out;
 		}
 
-		:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
+		:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 			animation: var(--d2l-dropdown-mobile-tray-bottom-close-name) 300ms ease-out;
 		}
 
@@ -382,8 +382,8 @@ export const dropdownContentStyles = css`
 		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
 		:host([mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
-		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top ,
-		:host([mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top{
+		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
+		:host([mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
 			min-height: auto;
 		}
 
@@ -395,9 +395,9 @@ export const dropdownContentStyles = css`
 				animation: none;
 			}
 
-			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing],
-			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing],
-			:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[closing] {
+			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
+			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
+			:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 				animation: none;
 			}
 		}
