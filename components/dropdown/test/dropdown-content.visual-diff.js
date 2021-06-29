@@ -74,6 +74,7 @@ describe('d2l-dropdown-content', () => {
 			await page.setViewport({ width: 600, height: 500 });
 			const selector = `#${testName}`;
 			await open(page, selector);
+			await page.waitForTimeout(50);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 	});

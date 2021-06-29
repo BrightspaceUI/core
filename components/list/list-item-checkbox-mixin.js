@@ -1,12 +1,12 @@
+import '../selection/selection-checkbox.js';
 import { css, html } from 'lit-element/lit-element.js';
-import { checkboxStyles } from '../inputs/input-checkbox.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { nothing } from 'lit-html';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(superclass) {
+export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(LabelledMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -30,8 +30,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	static get styles() {
-
-		const styles = [ checkboxStyles, css`
+		const styles = [ css`
 			.d2l-checkbox-action {
 				cursor: pointer;
 				display: block;
@@ -53,13 +52,15 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (!this.key) {
-			if (this.selectable) console.warn('"key" property has not been set on selectable item');
-			this.setSelected(undefined, true);
+		if (this.selectable) {
+			if (!this.key) console.warn('ListItemCheckboxMixin requires a key.');
+			if (!this.label || this.label.length === 0) console.warn('ListItemCheckboxMixin requires a label.');
 		}
+		if (!this.key) this.setSelected(undefined, true);
 	}
 
 	setSelected(selected, suppressEvent = false) {
+		if (this.selected === selected) return;
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
@@ -80,37 +81,34 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_onCheckboxChange(event) {
-		this.setSelected(event.target.checked);
+		this.setSelected(event.target.selected);
 	}
 
 	_renderCheckbox() {
-		const disabled = this.disabled || this.skeleton;
 		return this.selectable ? html`
-			<input
+			<d2l-selection-checkbox
+				@d2l-selection-change="${this._onCheckboxChange}"
+				?selected="${this.selected}"
+				?disabled="${this.disabled}"
 				id="${this._checkboxId}"
-				class="d2l-input-checkbox d2l-skeletize"
-				@change="${this._onCheckboxChange}"
-				type="checkbox"
-				.checked="${this.selected}"
-				?disabled="${disabled}">
-			` : nothing;
+				key="${this.key}"
+				label="${this.label}"
+				?skeleton="${this.skeleton}"
+				.hovering="${this._hovering}">
+			</d2l-selection-checkbox>
+		` : nothing;
 	}
 
-	_renderCheckboxAction(inner, labelledBy) {
-		if (!inner && !labelledBy) {
-			console.warn('Label for list-item checkbox may not be accessible. Pass inner text to the label or pass labelledby.');
-		}
-		const labelClasses = {
+	_renderCheckboxAction(inner) {
+		const classes = {
 			'd2l-checkbox-action': true,
 			'd2l-checkbox-action-disabled': this.disabled
 		};
 		return this.selectable ? html`
-			<label @click="${this._onCheckboxActionClick}"
-				class="${classMap(labelClasses)}"
-				for="${this._checkboxId}"
-				aria-labelledby="${ifDefined(labelledBy)}">
+			<div @click="${this._onCheckboxActionClick}"
+				class="${classMap(classes)}">
 				${inner}
-			</label>
+			</div>
 			` : nothing;
 	}
 };

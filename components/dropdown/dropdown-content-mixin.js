@@ -156,8 +156,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				type: Boolean
 			},
 			_closing: {
-				type: Boolean,
-				attribute: 'closing'
+				type: Boolean
 			},
 			_contentOverflow: {
 				type: Boolean
@@ -465,6 +464,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 
 			await this.__position();
+			this._showBackdrop = mediaQueryList.matches && this.mobileTray;
 
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
@@ -496,6 +496,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
 			}
+			this._showBackdrop = false;
 			await this.updateComplete;
 
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
@@ -816,7 +817,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const dropdown =  html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)} ?closing="${this._closing}">
+				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)} ?data-closing="${this._closing}">
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
@@ -834,13 +835,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				</div>
 			</div>
 		`;
-		if (this.mobileTray) return html`
+		return (this.mobileTray) ? html`
 			${dropdown} 
 			<d2l-backdrop 
 				for-target="d2l-dropdown-wrapper" 
 				?shown="${this._showBackdrop}" >
-			</d2l-backdrop>`;
-		else return html`${dropdown}`;
+			</d2l-backdrop>`
+			: html`${dropdown}`;
 	}
 
 };
