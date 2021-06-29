@@ -24,13 +24,10 @@ class FilterDimensionSet extends LitElement {
 			 */
 			searchType: { type: String, attribute: 'search-type' },
 			/**
-			 * Value for the search input
-			 */
-			searchValue: { type: String, attribute: 'search-value' },
-			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 */
-			text: { type: String }
+			text: { type: String },
+			_searchValue: { type: String, attribute: null }
 		};
 	}
 
@@ -39,6 +36,7 @@ class FilterDimensionSet extends LitElement {
 		this.loading = false;
 		this.searchType = 'automatic';
 		this.text = '';
+		this._searchValue = '';
 		this._slot = null;
 	}
 
@@ -56,18 +54,18 @@ class FilterDimensionSet extends LitElement {
 
 		const changes = new Map();
 		changedProperties.forEach((oldValue, prop) => {
-			if (prop === 'searchValue') {
+			if (oldValue === undefined) return;
+
+			if (prop === 'text' || prop === 'loading') {
+				changes.set(prop, this[prop]);
+			}
+
+			if (prop === '_searchValue') {
 				if (this.searchType === 'automatic') {
 					requestAnimationFrame(() => {
 						this._performSearch();
 					});
 				}
-			}
-
-			if (oldValue === undefined) return;
-
-			if (prop === 'searchValue' || prop === 'text' || prop === 'loading') {
-				changes.set(prop, this[prop]);
 			}
 		});
 
@@ -130,10 +128,10 @@ class FilterDimensionSet extends LitElement {
 		const valueNodes = this._getSlottedNodes();
 
 		valueNodes.forEach(value => {
-			if (this.searchValue === '') {
+			if (this._searchValue === '') {
 				value.hidden = false;
 			} else {
-				if (value.text.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1) {
+				if (value.text.toLowerCase().indexOf(this._searchValue.toLowerCase()) > -1) {
 					value.hidden = false;
 				} else {
 					value.hidden = true;

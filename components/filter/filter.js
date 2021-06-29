@@ -415,7 +415,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dimension = !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 		const dimensionNode = !this._activeDimensionKey ? this._dimensionNodes[0] : this._dimensionNodes.find(node => node.key === this._activeDimensionKey);
 		dimension.searchValue = e.detail.value;
-		dimensionNode.searchValue = e.detail.value;
+		dimensionNode._searchValue = e.detail.value;
 
 		if (dimension.searchType === 'event') {
 			dimension.loading = true;
@@ -447,7 +447,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				key: dimension.key,
 				loading: dimension.loading,
 				searchType: dimension._getSearchType(),
-				searchValue: dimension.searchValue,
 				text: dimension.text,
 				type: type
 			};
