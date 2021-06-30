@@ -57,10 +57,6 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 			 */
 			name: { type: String, reflect: true },
 			/**
-			 * Styles the button as a primary button
-			 */
-			primary: { type: Boolean, reflect: true },
-			/**
 			 * @ignore
 			 */
 			type: { type: String, reflect: true }
