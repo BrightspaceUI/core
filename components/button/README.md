@@ -109,29 +109,4 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 
 ## Floating Buttons [d2l-floating-buttons]
 
-Floating workflow buttons behavior can be added by using the `<d2l-floating-buttons>` custom element. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
-
-```html
-<!-- docs: live demo
-name: d2l-floating-buttons
-size: medium
--->
-<script type="module">
-  import '@brightspace-ui/core/components/button/floating-buttons.js';
-  import '@brightspace-ui/core/components/button/button.js';
-</script>
-<style>
-  .demo-content {
-    display: block;
-  }
-</style>
-<div class="demo-content">
-  <div>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </div>
-  <d2l-floating-buttons $attributes>
-    <d2l-button primary>Save</d2l-button>
-    <d2l-button>Cancel</d2l-button>
-  </d2l-floating-buttons>
-</div>
-```
+See [floating buttons](./floating-buttons.md).
