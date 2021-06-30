@@ -10,10 +10,6 @@ class FilterDimensionSetValue extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Whether the value is hidden or not (used when applying search results)
-			 */
-			hidden: { type: Boolean, reflect: true },
-			/**
 			 * REQUIRED: Unique key to represent this value in the dimension
 			 */
 			key: { type: String },
@@ -30,7 +26,6 @@ class FilterDimensionSetValue extends LitElement {
 
 	constructor() {
 		super();
-		this.hidden = false;
 		this.selected = false;
 		this.text = '';
 	}
@@ -42,7 +37,7 @@ class FilterDimensionSetValue extends LitElement {
 		changedProperties.forEach((oldValue, prop) => {
 			if (oldValue === undefined) return;
 
-			if (prop === 'hidden' || prop === 'selected' || prop === 'text') {
+			if (prop === 'selected' || prop === 'text') {
 				changes.set(prop, this[prop]);
 			}
 		});

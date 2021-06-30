@@ -10,6 +10,7 @@
 		import '../../filter/filter.js';
 		import '../../filter/filter-dimension-set.js';
 		import '../../filter/filter-dimension-set-value.js';
+		import './filter-search-demo.js';
 	</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -83,23 +84,7 @@
 		<h2>Search</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-filter>
-					<d2l-filter-dimension-set key="none" text="No Search" search-type="none">
-						<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
-					</d2l-filter-dimension-set>
-					<d2l-filter-dimension-set key="event" text="Event on Search" search-type="manual">
-						<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
-					</d2l-filter-dimension-set>
-					<d2l-filter-dimension-set key="auto" text="Automatic Search" search-type="automatic">
-						<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
-						<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
-					</d2l-filter-dimension-set>
-				</d2l-filter>
+				<d2l-filter-search-demo></d2l-filter-search-demo>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>
@@ -111,27 +96,6 @@
 
 		document.addEventListener('d2l-filter-dimension-first-open', e => {
 			console.log(`Filter dimension opened for the first time: ${e.detail.key}`);
-		});
-
-		document.addEventListener('d2l-filter-dimension-search', e => {
-			const dimension = e.target.querySelector(`d2l-filter-dimension-set[key="${e.detail.key}"]`);
-			const values = dimension.querySelectorAll('d2l-filter-dimension-set-value');
-
-			values.forEach(value => {
-				if (e.detail.value === '') {
-					value.hidden = false;
-				} else {
-					if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
-						value.hidden = false;
-					} else {
-						value.hidden = true;
-					}
-				}
-			});
-			setTimeout(() => {
-				e.detail.searchCompleteCallback();
-				console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
-			}, 2000);
 		});
 
 		document.getElementById('finish-loading').addEventListener('click', e => {

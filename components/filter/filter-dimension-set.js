@@ -26,8 +26,7 @@ class FilterDimensionSet extends LitElement {
 			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 */
-			text: { type: String },
-			_searchValue: { type: String, attribute: null }
+			text: { type: String }
 		};
 	}
 
@@ -36,7 +35,6 @@ class FilterDimensionSet extends LitElement {
 		this.loading = false;
 		this.searchType = 'automatic';
 		this.text = '';
-		this._searchValue = '';
 		this._slot = null;
 	}
 
@@ -59,14 +57,6 @@ class FilterDimensionSet extends LitElement {
 			if (prop === 'text' || prop === 'loading') {
 				changes.set(prop, this[prop]);
 			}
-
-			if (prop === '_searchValue') {
-				if (this.searchType === 'automatic') {
-					requestAnimationFrame(() => {
-						this._performSearch();
-					});
-				}
-			}
 		});
 
 		if (changes.size > 0) {
@@ -82,17 +72,6 @@ class FilterDimensionSet extends LitElement {
 		}));
 	}
 
-	_getSearchType() {
-		switch (this.searchType) {
-			case 'none':
-				return;
-			case 'manual':
-				return 'event';
-			case 'automatic':
-				return 'on';
-		}
-	}
-
 	_getSlottedNodes() {
 		if (!this._slot) return [];
 		const nodes = this._slot.assignedNodes({ flatten: true });
@@ -103,7 +82,6 @@ class FilterDimensionSet extends LitElement {
 		const valueNodes = this._getSlottedNodes();
 		const values = valueNodes.map(value => {
 			return {
-				hidden: value.hidden,
 				key: value.key,
 				selected: value.selected,
 				text: value.text
@@ -114,30 +92,13 @@ class FilterDimensionSet extends LitElement {
 
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
-		this._dispatchDataChangeEvent({
-			dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
+		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
 	}
 
 	_handleSlotChange(e) {
 		if (!this._slot) this._slot = e.target;
 		const values = this._getValues();
 		this._dispatchDataChangeEvent({ dimensionKey: this.key, changes: new Map([['values', values]]) });
-	}
-
-	_performSearch() {
-		const valueNodes = this._getSlottedNodes();
-
-		valueNodes.forEach(value => {
-			if (this._searchValue === '') {
-				value.hidden = false;
-			} else {
-				if (value.text.toLowerCase().indexOf(this._searchValue.toLowerCase()) > -1) {
-					value.hidden = false;
-				} else {
-					value.hidden = true;
-				}
-			}
-		});
 	}
 
 }

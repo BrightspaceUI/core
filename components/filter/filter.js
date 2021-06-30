@@ -112,7 +112,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.disabled = false;
-		this._dimensionNodes = [];
 		this._dimensions = [];
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
@@ -213,7 +212,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		const dimension = singleDimension ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
 
-		const search = !dimension.searchType ? null : html`
+		const search = dimension.searchType === 'none' ? null : html`
 			<d2l-input-search
 				@d2l-input-search-searched="${this._handleSearch}"
 				?disabled="${this._isDimensionEmpty(dimension)}"
@@ -411,13 +410,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleSearch(e) {
-		e.stopPropagation();
 		const dimension = !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
-		const dimensionNode = !this._activeDimensionKey ? this._dimensionNodes[0] : this._dimensionNodes.find(node => node.key === this._activeDimensionKey);
 		dimension.searchValue = e.detail.value;
-		dimensionNode._searchValue = e.detail.value;
 
-		if (dimension.searchType === 'event') {
+		if (dimension.searchType === 'automatic') {
+			this._searchDimension(dimension);
+		} else if (dimension.searchType === 'manual') {
 			dimension.loading = true;
 			this.requestUpdate();
 
@@ -439,20 +437,20 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleSlotChange(e) {
-		this._dimensionNodes = this._getSlottedNodes(e.target);
+		const dimensionNodes = this._getSlottedNodes(e.target);
 
-		this._dimensions = this._dimensionNodes.map(dimension => {
+		this._dimensions = dimensionNodes.map(dimension => {
 			const type = dimension.tagName.toLowerCase();
 			const info = {
 				key: dimension.key,
 				loading: dimension.loading,
-				searchType: dimension._getSearchType(),
 				text: dimension.text,
 				type: type
 			};
 
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
+					info.searchType = dimension.searchType;
 					const values = dimension._getValues();
 					info.values = values;
 					break;
@@ -472,6 +470,26 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 
 		return false;
+	}
+
+	_searchDimension(dimension) {
+		switch (dimension.type) {
+			case 'd2l-filter-dimension-set':
+				dimension.values.forEach(value => {
+					if (dimension.searchValue === '') {
+						value.hidden = false;
+					} else {
+						if (value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1) {
+							value.hidden = false;
+						} else {
+							value.hidden = true;
+						}
+					}
+				});
+				break;
+		}
+
+		this.requestUpdate();
 	}
 
 	_setFilterCounts() {
