@@ -2,8 +2,12 @@
 
 A Button is used to communicate and perform an action.
 
-```html
+<!-- docs: start hidden content -->
+**Note:** In the demo code throughout this file `$attributes` is sometimes used. This is to facilitate some functionality within our component catalog and is not needed in regular usage.
+<!-- docs: end hidden content -->
+
 <!-- docs: demo -->
+```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/button/button-subtle.js';
@@ -25,8 +29,8 @@ A Button is used to communicate and perform an action.
 <!-- docs: start donts -->
 * Don't use multiple Primary buttons - the primary action should always be clear and obvious
 * Avoid icon-only buttons with unfamiliar icons, only use these for familiar concepts
-* Don't use buttons for navigation, use a link instead
-* Don't open menus with buttons - use a dropdown instead
+* Don't use buttons for navigation, use a [link](https://github.com/BrightspaceUI/core/tree/master/components/link) instead
+* Don't open menus with buttons - use a [dropdown](https://github.com/BrightspaceUI/core/tree/master/components/dropdown) instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -34,15 +38,30 @@ A Button is used to communicate and perform an action.
 
 The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
 
-```html
+<!-- docs: start hidden content -->
+![Button](./screenshots/button.png?raw=true)
+<!-- docs: end hidden content -->
+
 <!-- docs: live demo
 name: d2l-button
 -->
+```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
 </script>
 <d2l-button $attributes>My Button</d2l-button>
 ```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `description` | String | A description to be added to the `button` for accessibility |
+| `disabled` | Boolean | Disables the button |
+| `disabledTooltip` | String | Tooltip text when disabled |
+| `primary` | Boolean | Styles the button as a primary button |
+<!-- docs: end hidden content -->
 
 ### Accessibility Properties
 
@@ -60,16 +79,34 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 
 **Note:** It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
 
-```html
+<!-- docs: start hidden content -->
+![Subtle Button](./screenshots/button-subtle.png?raw=true)
+<!-- docs: end hidden content -->
+
 <!-- docs: live demo
 name: d2l-button-subtle
 defaults: { "text": "My Button", "icon": "tier1:gear" }
 -->
+```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-subtle.js';
 </script>
 <d2l-button-subtle $attributes></d2l-button-subtle>
 ```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Text for the button |
+| `description` | String | A description to be added to the `button` for accessibility for additional context |
+| `disabled` | Boolean | Disables the button |
+| `disabledTooltip` | String | Tooltip text when disabled |
+| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
+| `icon` | String | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
+| `icon-right` | Boolean | Render the icon on the right of the button |
+<!-- docs: end hidden content -->
 
 ### Accessibility Properties
 
@@ -85,16 +122,33 @@ To make your `d2l-button-subtle` accessible, use the following properties when a
 
 The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
 
-```html
+<!-- docs: start hidden content -->
+![Icon Button](./screenshots/button-icon.png?raw=true)
+<!-- docs: end hidden content -->
+
 <!-- docs: live demo
 name: d2l-button-icon
 defaults: { "text": "My Button", "icon": "tier1:gear" }
 -->
+```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
 </script>
 <d2l-button-icon $attributes></d2l-button-icon>
 ```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
+| `text` | String, required | Accessible text for the buton |
+| `disabled` | Boolean | Disables the button |
+| `disabledTooltip` | String | Tooltip text when disabled |
+| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
+| `translucent` | Boolean | Indicates to display translucent (ex. on rich backgrounds) |
+<!-- docs: end hidden content -->
 
 ### Accessibility Properties
 
@@ -110,3 +164,11 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 ## Floating Buttons [d2l-floating-buttons]
 
 See [floating buttons](./floating-buttons.md).
+
+<!-- docs: start hidden content -->
+## Future Enhancements
+
+- `<d2l-button-preset type="save">` for common button types that will have built-in language support
+
+Looking for an enhancement not listed here? Create a GitHub issue!
+<!-- docs: end hidden content -->
