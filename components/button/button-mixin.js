@@ -5,37 +5,64 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 	static get properties() {
 		return {
 			/**
-			 * Indicate expansion state of a collapsible element
+			 * @ignore
 			 */
 			ariaExpanded: { type: String, reflect: true, attribute: 'aria-expanded' },
 			/**
-			 * Indicate clicking the button opens a menu
+			 * @ignore
 			 */
 			ariaHaspopup: { type: String, reflect: true, attribute: 'aria-haspopup' },
 			/**
-			 * Acts as a primary label
+			 * @ignore
 			 */
 			ariaLabel: { type: String, reflect: true, attribute: 'aria-label' },
+			/**
+			 * @ignore
+			 */
 			autofocus: { type: Boolean, reflect: true },
 			/**
 			 * Disables the button
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Tooltip text when disabled (optional)
+			 * Tooltip text when disabled
 			 */
 			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+			/**
+			 * @ignore
+			 */
 			form: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			formaction: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			formenctype: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			formmethod: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			formnovalidate: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			formtarget: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			name: { type: String, reflect: true },
 			/**
 			 * Styles the button as a primary button
 			 */
 			primary: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 */
 			type: { type: String, reflect: true }
 		};
 	}

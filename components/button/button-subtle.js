@@ -24,6 +24,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 			/**
 			 * Aligns the leading edge of text if value is set to "text"
 			 * @type {'text'|''}
+			 * @default ""
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
