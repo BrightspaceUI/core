@@ -163,7 +163,7 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 
 ## Floating Buttons [d2l-floating-buttons]
 
-See [floating buttons](./floating-buttons.md).
+See [floating buttons](https://github.com/BrightspaceUI/core/tree/master/components/button/floating-buttons.md).
 
 <!-- docs: start hidden content -->
 ## Future Enhancements
