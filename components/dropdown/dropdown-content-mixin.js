@@ -11,6 +11,8 @@ import { styleMap } from 'lit-html/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const minBackdropHeightMobile = 42;
+const minBackdropWidthMobile = 30;
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
@@ -62,7 +64,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'no-mobile-close-button'
 			},
 			/**
-			 * Override default mobile dropdown style. Specify one of 'left','right', or 'bottom'.
+			 * Mobile dropdown style.
+			 * @type {'left'|'right'|'bottom'}
 			 */
 			mobileTray: {
 				type: String,
@@ -720,7 +723,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
 			// default maximum width for tray (30px margin)
-			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - 30, 420);
+			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - minBackdropWidthMobile, 420);
 			if (maxWidthOverride) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
@@ -767,7 +770,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		if (mobileTrayRightLeft) maxHeightOverride = '';
 		if (mobileTrayBottom) {
 			// default maximum height for tray (42px margin)
-			const mobileTrayMaxHeightDefault = window.innerHeight - 42;
+			const mobileTrayMaxHeightDefault = window.innerHeight - minBackdropHeightMobile;
 			if (this.maxHeight) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
