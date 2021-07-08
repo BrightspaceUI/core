@@ -76,7 +76,7 @@ describe('d2l-dropdown-content', () => {
 		});
 	});
 
-	it('scroll-top-shadow', async function() {
+	it.skip('scroll-top-shadow', async function() {
 		const selector = '#scroll-top-shadow';
 		await open(page, selector);
 		await page.$eval('#scroll-top-shadow d2l-dropdown-content', (content) => {
