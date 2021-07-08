@@ -66,6 +66,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 * Value of the input
 			 */
 			value: { type: String },
+			_hiddenCalendarHeight: { type: Number },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownFirstOpened: { type: Boolean },
@@ -98,7 +99,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
 			}
-			.d2l-input-date-hidden-content {
+			.d2l-input-date-hidden-text,
+			.d2l-input-date-hidden-calendar {
 				font-family: inherit;
 				font-size: 0.8rem;
 				font-weight: 400;
@@ -134,6 +136,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._dropdownOpened = false;
 		this._dropdownFirstOpened = false;
 		this._formattedValue = '';
+		this._hiddenCalendarHeight = 800; // height of 6 date row calendar when 1rem = 20px
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
 		this._inputTextFocusMouseup = false;
@@ -173,7 +176,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate().then(() => {
-				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
+				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-text')).getPropertyValue('width')));
 				this._hiddenContentWidth = `${width}px`;
 			});
 		});
@@ -182,12 +185,19 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
-		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-content');
+		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-text');
 		this._hiddenContentResizeObserver = new ResizeObserver(() => {
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 			this._hiddenContentWidth = `${width}px`;
 		});
 		this._hiddenContentResizeObserver.observe(hiddenContent);
+
+		const hiddenCalendar = this.shadowRoot.querySelector('.d2l-input-date-hidden-calendar');
+		this._hiddenCalendarResizeObserver = new ResizeObserver(() => {
+			this._hiddenCalendarHeight = Math.ceil(parseFloat(getComputedStyle(hiddenCalendar).getPropertyValue('height')));
+			this._hiddenCalendarResizeObserver.disconnect();
+		});
+		this._hiddenCalendarResizeObserver.observe(hiddenCalendar);
 	}
 
 	render() {
@@ -208,6 +218,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				@d2l-dropdown-close="${this._handleDropdownClose}"
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				max-width="335"
+				min-height="${this._hiddenCalendarHeight}"
 				no-auto-fit
 				no-auto-focus
 				no-padding>
@@ -226,7 +237,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				</d2l-focus-trap>
 			</d2l-dropdown-content>` : null;
 		return html`
-			<div aria-hidden="true" class="d2l-input-date-hidden-content">
+			<div aria-hidden="true" class="d2l-input-date-hidden-text">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
@@ -260,6 +271,13 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				</d2l-input-text>
 				${dropdownContent}
 			</d2l-dropdown>
+			${!this._dropdownFirstOpened ? html`<div aria-hidden="true" class="d2l-input-date-hidden-calendar">
+				<d2l-calendar selected-value="2018-09-08">
+					<div class="d2l-calendar-slot-buttons">
+						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}"></d2l-button-subtle>
+					</div>
+				</d2l-calendar>
+			</div>` : null}
 		`;
 	}
 
