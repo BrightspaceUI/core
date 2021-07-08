@@ -123,7 +123,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			title: { type: String },
 			/**
 			 * The type of the text input
-			 * @type {'text'|'email'|'number'|'password'|'tel'|'url'}
+			 * @type {'text'|'email'|'number'|'password'|'search'|'tel'|'url'}
 			 */
 			type: { type: String },
 			/**
@@ -221,20 +221,26 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this.readonly = false;
 		this.required = false;
 		this.type = 'text';
-		this.value = '';
+		this._value = '';
 
+		this._descriptionId = getUniqueId();
+		this._firstSlotWidth = 0;
 		this._focused = false;
 		this._hasAfterContent = false;
 		this._hovered = false;
 		this._inputId = getUniqueId();
-		this._firstSlotWidth = 0;
 		this._lastSlotWidth = 0;
-		this._descriptionId = getUniqueId();
+		this._prevValue = '';
 
 		this._handleBlur = this._handleBlur.bind(this);
 		this._handleFocus = this._handleFocus.bind(this);
 		this._handleMouseEnter = this._handleMouseEnter.bind(this);
 		this._handleMouseLeave = this._handleMouseLeave.bind(this);
+	}
+
+	get value() { return this._value; }
+	set value(val) {
+		this._setValue(val, true);
 	}
 
 	get selectionStart() {
@@ -279,6 +285,8 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		this._setValue(this.value, true);
 
 		const container = this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
@@ -367,8 +375,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 						style="${styleMap(inputStyles)}"
 						tabindex="${ifDefined(this.tabindex)}"
 						title="${ifDefined(this.title)}"
-						type="${this._getType()}"
-						.value="${this.value}">
+						type="${this._getType()}">
 					<div class="d2l-input-inside-before">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					<div class="d2l-input-inside-after">${this.dir !== 'rtl' ? unit : ''}<slot name="${lastSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}" @click="${this._handleInvalidIconClick}"></div>` : null}
@@ -389,12 +396,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'value') {
-				this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
-				this.requestValidate(false);
-				this.setFormValue(this.value);
-				this._prevValue = (oldVal === undefined) ? '' : oldVal;
-			} else if (prop === 'unit') {
+			if (prop === 'unit') {
 				if (this.unit && this.unit !== '%') {
 					throw new Error('Invalid unit value for d2l-input-text.');
 				}
@@ -467,7 +469,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	}
 
 	_handleInput(e) {
-		this.value = e.target.value;
+		this._setValue(e.target.value, false);
 		return true;
 	}
 
@@ -506,6 +508,28 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	_handleUnitClick() {
 		this.focus();
+	}
+
+	_setValue(val, updateInput) {
+
+		const oldVal = this.value;
+		this._prevValue = (oldVal === undefined) ? '' : oldVal;
+		this._value = val;
+
+		const input = this.shadowRoot.querySelector('.d2l-input');
+		if (!input) return;
+
+		this.setValidity({ tooShort: this.minlength && this.value.length > 0 && this.value.length < this.minlength });
+		this.requestValidate(false);
+		this.setFormValue(this.value);
+
+		// Can't bind to input's value as Safari moves the cursor each time an
+		// input's value gets set from render(). So we manually reach in
+		// and update it when source of the change isn't the input itself.
+		if (updateInput) {
+			input.value = this.value;
+		}
+
 	}
 
 	_updateInputLayout(container) {
