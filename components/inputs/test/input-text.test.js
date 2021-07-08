@@ -324,6 +324,14 @@ describe('d2l-input-text', () => {
 			expect(errors).to.be.empty;
 		});
 
+		it('should validate when input value changes', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" minlength="5" value="123456"></d2l-input-text>`);
+			getInput(elem).value = '123';
+			dispatchEvent(elem, 'input', true);
+			const errors = await elem.validate();
+			expect(errors).to.contain('label must be at least 5 characters');
+		});
+
 	});
 
 	describe('value', () => {
