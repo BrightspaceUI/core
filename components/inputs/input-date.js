@@ -136,7 +136,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._dropdownOpened = false;
 		this._dropdownFirstOpened = false;
 		this._formattedValue = '';
-		this._hiddenCalendarHeight = 800; // height of 6 date row calendar when 1rem = 20px
+		this._hiddenCalendarHeight = 415; // height of 6 date row calendar when 1rem = 20px
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
 		this._inputTextFocusMouseup = false;
