@@ -18,7 +18,12 @@ class Button extends ButtonMixin(LitElement) {
 			/**
 			 * A description to be added to the button for accessibility when text on button does not provide enough context
 			 */
-			description: { type: String }
+			description: { type: String },
+
+			/**
+			 * Styles the button as a primary button
+			 */
+			primary: { type: Boolean, reflect: true }
 		};
 	}
 
