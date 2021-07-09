@@ -33,7 +33,8 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			/**
 			 * Key for the selectable
 			 */
-			key: { type: String }
+			key: { type: String },
+			_provider: { type: Object }
 		};
 	}
 
@@ -47,11 +48,6 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 				display: none;
 			}
 		`];
-	}
-
-	constructor() {
-		super();
-		this._provider = null;
 	}
 
 	get selected() {
@@ -86,7 +82,6 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			});
 			this.dispatchEvent(evt);
 			this._provider = evt.detail.provider;
-			this.requestUpdate();
 		});
 	}
 
