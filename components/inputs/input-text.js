@@ -376,8 +376,8 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 						tabindex="${ifDefined(this.tabindex)}"
 						title="${ifDefined(this.title)}"
 						type="${this._getType()}">
-					<div class="d2l-input-inside-before">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
-					<div class="d2l-input-inside-after">${this.dir !== 'rtl' ? unit : ''}<slot name="${lastSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
+					<div class="d2l-input-inside-before" @keypress="${this._suppressEvent}">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
+					<div class="d2l-input-inside-after" @keypress="${this._suppressEvent}">${this.dir !== 'rtl' ? unit : ''}<slot name="${lastSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
 					${ (!isValid && !this.hideInvalidIcon && !this._focused) ? html`<div class="d2l-input-text-invalid-icon" style="${styleMap(invalidIconStyles)}" @click="${this._handleInvalidIconClick}"></div>` : null}
 					${ this.validationError ? html`<d2l-tooltip for=${this._inputId} state="error" align="start">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>` : null }
 				</div><div id="after-slot" class="d2l-skeletize" ?hidden="${!this._hasAfterContent}"><slot name="after" @slotchange="${this._handleAfterSlotChange}"></slot></div>
@@ -530,6 +530,10 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			input.value = this.value;
 		}
 
+	}
+
+	_suppressEvent(e) {
+		e.stopPropagation();
 	}
 
 	_updateInputLayout(container) {
