@@ -24,6 +24,8 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 	}
 
 	render() {
+		if (this._provider && this._provider.singleSelect) return;
+
 		const summary = (this.selectionInfo.state === SelectionInfo.states.none ? this.localize('components.selection.select-all')
 			: this.localize('components.selection.selected', 'count', this.selectionInfo.keys.length));
 

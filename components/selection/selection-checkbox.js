@@ -1,8 +1,14 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
+import { radioStyles } from '../inputs/input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+
+const keyCodes = {
+	SPACE: 32
+};
 
 /**
  * A checkbox for use in selection components such as lists and tables.
@@ -32,7 +38,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return css`
+		return [ radioStyles, css`
 			:host {
 				display: inline-block;
 				line-height: normal;
@@ -40,7 +46,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -59,12 +65,13 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			this.requestUpdate('selected', oldVal);
 
 			// dispatch the event for all selected changes (not just when the user interacts directly with the checkbox)
-			this.dispatchEvent(new CustomEvent('d2l-selection-change', {
-				bubbles: true,
-				composed: true,
-				detail: { key: this.key, selected: this._selected }
-			}));
-
+			requestAnimationFrame(() => {
+				this.dispatchEvent(new CustomEvent('d2l-selection-change', {
+					bubbles: true,
+					composed: true,
+					detail: { key: this.key, selected: this._selected }
+				}));
+			});
 		}
 	}
 
@@ -79,6 +86,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			});
 			this.dispatchEvent(evt);
 			this._provider = evt.detail.provider;
+			this.requestUpdate();
 		});
 	}
 
@@ -95,26 +103,58 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	render() {
-		return html`
-			<d2l-input-checkbox
-				aria-label="${this.label}"
-				@change="${this._handleChange}"
-				?checked="${this.selected}"
-				class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
-				?disabled="${this.disabled}"
-				?skeleton="${this.skeleton}">
-			</d2l-input-checkbox>
-		`;
+		if (this._provider && this._provider.singleSelect) {
+			const radioClasses = {
+				'd2l-input-radio': true,
+				'd2l-selection-input-radio': true,
+				'd2l-hovering': this.hovering
+			};
+			return html`
+				<div
+					aria-label="${this.label}"
+					aria-checked="${this.selected ? 'true' : 'false'}"
+					class="${classMap(radioClasses)}"
+					@click="${this._handleRadioClick}"
+					@keydown="${this._handleRadioKeyDown}"
+					@keyup="${this._handleRadioKeyUp}"
+					role="radio"
+					tabindex="0"></div>
+			`;
+		} else {
+			return html`
+				<d2l-input-checkbox
+					aria-label="${this.label}"
+					@change="${this._handleCheckboxChange}"
+					?checked="${this.selected}"
+					class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
+					?disabled="${this.disabled}"
+					?skeleton="${this.skeleton}">
+				</d2l-input-checkbox>
+			`;
+		}
 	}
 
 	focus() {
-		const elem = this.shadowRoot.querySelector('d2l-input-checkbox');
+		const elem = this.shadowRoot.firstElementChild;
 		if (elem) elem.focus();
 	}
 
-	_handleChange(e) {
+	_handleCheckboxChange(e) {
 		e.stopPropagation();
 		this.selected = e.target.checked;
+	}
+
+	_handleRadioClick(e) {
+		e.stopPropagation();
+		this.selected = true;
+	}
+
+	_handleRadioKeyDown(e) {
+		if (e.keyCode === keyCodes.SPACE) e.preventDefault();
+	}
+
+	_handleRadioKeyUp(e) {
+		if (e.keyCode === keyCodes.SPACE) this.selected = true;
 	}
 
 }

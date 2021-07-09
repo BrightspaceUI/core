@@ -48,7 +48,7 @@
 
 		<d2l-demo-page page-title="Selection Components">
 
-			<h2>Actions, Checkbox, Select-All, Summary</h2>
+			<h2>Multiple Selection</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -63,6 +63,27 @@
 						</div>
 						<ul>
 							<li><d2l-selection-checkbox key="geo" label="Geography" selected></d2l-selection-checkbox>Geography</li>
+							<li><d2l-selection-checkbox key="sci" label="Science"></d2l-selection-checkbox>Science</li>
+							<li><d2l-selection-checkbox key="mth" label="Math"></d2l-selection-checkbox>Math</li>
+						</ul>
+					</d2l-demo-selection>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Single Selection</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-selection single-select>
+						<div style="display: flex; align-items: center;">
+							<div style="flex: auto;">
+								<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+								<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
+							</div>
+							<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
+						</div>
+						<ul>
+							<li><d2l-selection-checkbox key="geo" label="Geography"></d2l-selection-checkbox>Geography</li>
 							<li><d2l-selection-checkbox key="sci" label="Science"></d2l-selection-checkbox>Science</li>
 							<li><d2l-selection-checkbox key="mth" label="Math"></d2l-selection-checkbox>Math</li>
 						</ul>
