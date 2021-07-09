@@ -37,6 +37,9 @@ export const SelectionMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether the selection control limited to single selection.
+			 */
 			singleSelect: { type: Boolean, attribute: 'single-select' }
 		};
 	}
