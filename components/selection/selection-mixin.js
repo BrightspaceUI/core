@@ -98,7 +98,10 @@ export const SelectionMixin = superclass => class extends superclass {
 	_handleRadioKeyDown(e) {
 		// check composed path for radio (e.target could be d2l-list-item or other element due to retargeting)
 		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
-		if (e.keyCode >= keyCodes.LEFT && e.keyCode <= keyCodes.DOWN) e.preventDefault();
+		if (e.keyCode >= keyCodes.LEFT && e.keyCode <= keyCodes.DOWN) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 	}
 
 	_handleRadioKeyUp(e) {
