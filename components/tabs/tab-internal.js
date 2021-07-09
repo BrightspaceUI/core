@@ -61,9 +61,12 @@ class Tab extends RtlMixin(LitElement) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			:host(:focus) {
-				color: var(--d2l-color-celestine);
-				text-decoration: underline;
+			/* focus on a non selected item 
+				todo: change this to outline the text
+			 */
+			:host(.focus-visible) > .d2l-tab-text {
+				border-radius: 6px;
+				box-shadow: -1px 1px 0 2px var(--d2l-color-celestine);
 			}
 			:host([aria-selected="true"]:focus) {
 				text-decoration: none;
@@ -79,10 +82,12 @@ class Tab extends RtlMixin(LitElement) {
 			:host([aria-selected="true"]) .d2l-tab-selected-indicator {
 				display: block;
 			}
-			:host([aria-selected="true"]:focus) .d2l-tab-selected-indicator {
+
+			/* this is the selected/current tab focus styles that outlines the little thing at the bottom */
+			/* :host([aria-selected="true"].focus-visible) .d2l-tab-selected-indicator {
 				border-top-color: var(--d2l-color-celestine);
 				box-shadow: 0 0 0 1px #ffffff, 0 0 0 2px var(--d2l-color-celestine);
-			}
+			} */
 
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-tab-selected-indicator {
