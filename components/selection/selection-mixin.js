@@ -38,23 +38,23 @@ export const SelectionMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
-			 * Whether the selection control limited to single selection.
+			 * Whether the selection control is limited to single selection.
 			 */
-			singleSelect: { type: Boolean, attribute: 'single-select' }
+			selectionSingle: { type: Boolean, attribute: 'selection-single' }
 		};
 	}
 
 	constructor() {
 		super();
-		this.singleSelect = false;
+		this.selectionSingle = false;
 		this._selectionObservers = new Map();
 		this._selectionSelectables = new Map();
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (this.singleSelect) this.addEventListener('keydown', this._handleRadioKeyDown);
-		if (this.singleSelect) this.addEventListener('keyup', this._handleRadioKeyUp);
+		if (this.selectionSingle) this.addEventListener('keydown', this._handleRadioKeyDown);
+		if (this.selectionSingle) this.addEventListener('keyup', this._handleRadioKeyUp);
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
@@ -63,8 +63,8 @@ export const SelectionMixin = superclass => class extends superclass {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this.singleSelect) this.removeEventListener('keydown', this._handleRadioKeyDown);
-		if (this.singleSelect) this.removeEventListener('keyup', this._handleRadioKeyUp);
+		if (this.selectionSingle) this.removeEventListener('keydown', this._handleRadioKeyDown);
+		if (this.selectionSingle) this.removeEventListener('keyup', this._handleRadioKeyUp);
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.removeEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
@@ -123,7 +123,7 @@ export const SelectionMixin = superclass => class extends superclass {
 	}
 
 	_handleSelectionChange(e) {
-		if (this.singleSelect && e.detail.selected) {
+		if (this.selectionSingle && e.detail.selected) {
 			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-CHECKBOX');
 			this._selectionSelectables.forEach(selectable => {
 				if (selectable.selected && selectable !== target) selectable.selected = false;
