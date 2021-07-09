@@ -98,7 +98,8 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	render() {
-		if (this._provider && this._provider.singleSelect) {
+		if (!this._provider) return;
+		if (this._provider.singleSelect) {
 			const radioClasses = {
 				'd2l-input-radio': true,
 				'd2l-selection-input-radio': true,
