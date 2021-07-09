@@ -98,6 +98,7 @@ describe('d2l-dialog', () => {
 						.then(async(elem) => {
 							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
 						});
+
 					await open(page, '#dialogLong');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
