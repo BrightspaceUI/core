@@ -39,7 +39,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ radioStyles, css`
+		return [ super.styles, radioStyles, css`
 			:host {
 				display: inline-block;
 				line-height: normal;
@@ -102,6 +102,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			const radioClasses = {
 				'd2l-input-radio': true,
 				'd2l-selection-input-radio': true,
+				'd2l-skeletize': true,
 				'd2l-hovering': this.hovering
 			};
 			return html`
