@@ -59,7 +59,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
-		this.addEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
+		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
 
 	disconnectedCallback() {
@@ -69,7 +69,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.removeEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
-		this.removeEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
+		this.removeEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
 
 	getSelectionInfo() {
@@ -132,7 +132,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 
 	_handleSelectionChange(e) {
 		if (this.selectionSingle && e.detail.selected) {
-			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-CHECKBOX');
+			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
 			this._selectionSelectables.forEach(selectable => {
 				if (selectable.selected && selectable !== target) selectable.selected = false;
 			});
@@ -140,7 +140,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		this._updateSelectionObservers();
 	}
 
-	_handleSelectionCheckboxSubscribe(e) {
+	_handleSelectionInputSubscribe(e) {
 		e.stopPropagation();
 		e.detail.provider = this;
 		const target = e.composedPath()[0];

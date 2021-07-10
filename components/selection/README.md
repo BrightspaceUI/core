@@ -1,6 +1,6 @@
 # Selection
 
-The selection components (`d2l-selection-action`, `d2l-selection-checkbox`, `d2l-selection-select-all`, `d2l-selection-summary`, `d2l-selection-action`) are low-level components that provide the ability to create selection interfaces with select-all and bulk-action behaviours.
+The selection components (`d2l-selection-action`, `d2l-selection-input`, `d2l-selection-select-all`, `d2l-selection-summary`, `d2l-selection-action`) are low-level components that provide the ability to create selection interfaces with select-all and bulk-action behaviours.
 
 ![Selection](./screenshots/selection.png?raw=true)
 
@@ -29,7 +29,7 @@ The selection components can then be used within the custom selection component 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/selection-action.js';
-  import '@brightspace-ui/core/components/selection-checkbox.js';
+  import '@brightspace-ui/core/components/selection-input.js';
   import '@brightspace-ui/core/components/selection-select-all.js';
   import '@brightspace-ui/core/components/selection-summary.js';
 </script>
@@ -41,9 +41,9 @@ The selection components can then be used within the custom selection component 
     <d2l-selection-summary></d2l-selection-summary>
   </div>
   <ul>
-    <li><d2l-selection-checkbox key="geo" label="Geography" selected></d2l-selection-checkbox>Geography</li>
-    <li><d2l-selection-checkbox key="sci" label="Science"></d2l-selection-checkbox>Science</li>
-    <li><d2l-selection-checkbox key="mth" label="Math"></d2l-selection-checkbox>Math</li>
+    <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
+    <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+    <li><d2l-selection-input key="mth" label="Math"></d2l-selection-input>Math</li>
   </ul>
 </d2l-custom-selection>
 ```
@@ -66,18 +66,18 @@ The `d2l-selection-action` is an optional component that provides a button for a
 |--|--|
 | `d2l-selection-action-click` | Dispatched when the user clicks the action button. The `SelectionInfo` is provided as the event `detail`. If `requires-selection` was specified then the event will only be dispatched if items are selected. |
 
-## d2l-selection-checkbox
+## d2l-selection-input
 
-The `d2l-selection-checkbox` is a required component in selection controls - without it, there wouldn't be anything for the user to select! Note: `d2l-list-item` already provides a selection checkbox for selectable list items.
+The `d2l-selection-input` is a required component in selection controls - without it, there wouldn't be anything for the user to select! Note: `d2l-list-item` already provides a selection input for selectable list items.
 
 **Properties:**
 
 | Property | Type | Description |
 |--|--|--|
 | `key` | String, required | Key to identify the the selectable. |
-| `label` | String | Accessible hidden label for the checkbox. |
-| `labelled-by` | String | Id reference to the accessible label for the checkbox. **Note:** if specified, it must reference an element in the same DOM context. |
-| `selected` | Boolean | State of the checkbox. |
+| `label` | String | Accessible hidden label for the input. |
+| `labelled-by` | String | Id reference to the accessible label for the input. **Note:** if specified, it must reference an element in the same DOM context. |
+| `selected` | Boolean | State of the input. |
 
 **Accessibility:** either `label` or `labelled-by` is required.
 
@@ -85,7 +85,7 @@ The `d2l-selection-checkbox` is a required component in selection controls - wit
 
 | Event | Description |
 |--|--|
-| `d2l-selection-change` | Dispatched when the state of the checkbox changes. |
+| `d2l-selection-change` | Dispatched when the state of the input changes. |
 
 ## d2l-selection-select-all
 

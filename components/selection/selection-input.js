@@ -11,23 +11,23 @@ const keyCodes = {
 };
 
 /**
- * A checkbox for use in selection components such as lists and tables.
+ * An input (radio or checkbox) for use in selection components such as lists and tables.
  * @fires d2l-selection-change - Dispatched when the selected state changes
  */
-class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
+class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			/**
-			 * State of the checkbox
+			 * State of the input
 			 */
 			selected: { type: Boolean },
 			/**
-			 * Disables the checkbox
+			 * Disables the input
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Private. Force hovering state of checkbox
+			 * Private. Force hovering state of input
 			 */
 			hovering: { type: Boolean },
 			/**
@@ -60,7 +60,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 			this._selected = val;
 			this.requestUpdate('selected', oldVal);
 
-			// dispatch the event for all selected changes (not just when the user interacts directly with the checkbox)
+			// dispatch the event for all selected changes (not just when the user interacts directly with the input)
 			requestAnimationFrame(() => {
 				this.dispatchEvent(new CustomEvent('d2l-selection-change', {
 					bubbles: true,
@@ -75,7 +75,7 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 		super.connectedCallback();
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
 		requestAnimationFrame(() => {
-			const evt = new CustomEvent('d2l-selection-checkbox-subscribe', {
+			const evt = new CustomEvent('d2l-selection-input-subscribe', {
 				bubbles: true,
 				composed: true,
 				detail: {}
@@ -93,8 +93,8 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (!this.key || this.key.length === 0) console.warn('d2l-selection-checkbox component requires a key.');
-		if (!this.label || this.label.length === 0) console.warn('d2l-selection-checkbox component requires label text.');
+		if (!this.key || this.key.length === 0) console.warn('d2l-selection-input component requires a key.');
+		if (!this.label || this.label.length === 0) console.warn('d2l-selection-input component requires label text.');
 	}
 
 	render() {
@@ -156,4 +156,4 @@ class Checkbox extends SkeletonMixin(LabelledMixin(LitElement)) {
 
 }
 
-customElements.define('d2l-selection-checkbox', Checkbox);
+customElements.define('d2l-selection-input', Input);

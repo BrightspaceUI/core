@@ -21,7 +21,7 @@ describe('d2l-list', () => {
 
 	const focusInput = (selector) => {
 		return page.$eval(selector, (item) => {
-			item.shadowRoot.querySelector('d2l-selection-checkbox').focus();
+			item.shadowRoot.querySelector('d2l-selection-input').focus();
 		});
 	};
 
