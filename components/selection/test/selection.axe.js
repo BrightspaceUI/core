@@ -1,4 +1,5 @@
 import '../selection-action.js';
+import './selection-component.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-summary.js';
@@ -23,21 +24,35 @@ describe('d2l-selection-action', () => {
 
 });
 
-describe('d2l-selection-input', () => {
+describe('d2l-selection-input checkbox', () => {
 
 	it('not selected', async() => {
-		const elem = await fixture(html`<d2l-selection-input label="Input" key="key1"></d2l-selection-input>`);
-		await expect(elem).to.be.accessible();
+		const elem = await fixture(html`<d2l-test-selection><d2l-selection-input label="Input" key="key1"></d2l-selection-input></d2l-test-selection>`);
+		await expect(elem.querySelector('d2l-selection-input')).to.be.accessible();
 	});
 
 	it('selected', async() => {
-		const elem = await fixture(html`<d2l-selection-input label="Input" key="key1" selected></d2l-selection-input>`);
-		await expect(elem).to.be.accessible();
+		const elem = await fixture(html`<d2l-test-selection><d2l-selection-input label="Input" key="key1" selected></d2l-selection-input></d2l-test-selection>`);
+		await expect(elem.querySelector('d2l-selection-input')).to.be.accessible();
 	});
 
 	it('disabled', async() => {
-		const elem = await fixture(html`<d2l-selection-input label="Input" key="key1" disabled></d2l-selection-input>`);
-		await expect(elem).to.be.accessible();
+		const elem = await fixture(html`<d2l-test-selection><d2l-selection-input label="Input" key="key1" disabled></d2l-selection-input></d2l-test-selection>`);
+		await expect(elem.querySelector('d2l-selection-input')).to.be.accessible();
+	});
+
+});
+
+describe('d2l-selection-input radio', () => {
+
+	it('not selected', async() => {
+		const elem = await fixture(html`<d2l-test-selection selection-single><d2l-selection-input label="Input" key="key1"></d2l-selection-input></d2l-test-selection>`);
+		await expect(elem.querySelector('d2l-selection-input')).to.be.accessible();
+	});
+
+	it('selected', async() => {
+		const elem = await fixture(html`<d2l-test-selection selection-single><d2l-selection-input label="Input" key="key1" selected></d2l-selection-input></d2l-test-selection>`);
+		await expect(elem.querySelector('d2l-selection-input')).to.be.accessible();
 	});
 
 });

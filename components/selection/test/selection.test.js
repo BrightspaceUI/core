@@ -1,21 +1,10 @@
 import '../selection-action.js';
+import './selection-component.js';
 import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-summary.js';
-import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
-import { LitElement } from 'lit-element/lit-element.js';
+import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-import { SelectionMixin } from '../selection-mixin.js';
-
-const selectionWrapperTag = defineCE(
-	class extends SelectionMixin(LitElement) {
-		render() {
-			return html`
-				<slot></slot>
-			`;
-		}
-	}
-);
 
 describe('d2l-selection-action', () => {
 
@@ -62,9 +51,9 @@ describe('d2l-selection-input', () => {
 
 	beforeEach(async() => {
 		el = await fixture(`
-			<${selectionWrapperTag}>
+			<d2l-test-selection>
 				<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
-			</${selectionWrapperTag}>
+			</d2l-test-selection>
 		`);
 		await el.updateComplete;
 		await nextFrame();
@@ -116,13 +105,13 @@ describe('SelectionMixin', () => {
 
 	beforeEach(async() => {
 		el = await fixture(`
-			<${selectionWrapperTag}>
+			<d2l-test-selection>
 				<d2l-selection-select-all></d2l-selection-select-all>
 				<d2l-selection-summary></d2l-selection-summary>
 				<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
 				<d2l-selection-input key="key2" label="label2"></d2l-selection-input>
 				<d2l-selection-input key="key3" label="label3"></d2l-selection-input>
-			</${selectionWrapperTag}>
+			</d2l-test-selection>
 		`);
 		await el.updateComplete;
 		await nextFrame();
