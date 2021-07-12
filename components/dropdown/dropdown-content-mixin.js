@@ -4,12 +4,12 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map';
+import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { html } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-const mediaQueryList = window.matchMedia('(max-width: 615px)');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
@@ -52,6 +52,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			maxHeight: {
 				type: Number,
 				attribute: 'max-height'
+			},
+			/**
+			 * Override the breakpoint at which mobile styling is used. Defaults to 616px.
+			 */
+			mobileBreakpointOverride: {
+				type: Number,
+				attribute: 'mobile-breakpoint'
 			},
 			/**
 			 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
@@ -197,6 +204,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPaddingFooter = false;
 		this.noPaddingHeader = false;
 		this.noPointer = false;
+		this.mobileBreakpointOverride = 616;
+		this.mediaQueryList = window.matchMedia('(max-width: 615px)');
 
 		this.__opened = false;
 		this.__content = null;
@@ -258,6 +267,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		super.firstUpdated(changedProperties);
 
 		this.__content = this.__getContentContainer();
+		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
@@ -283,7 +293,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this.opened = false;
 		};
 
-		if (!reduceMotion && mediaQueryList.matches && this.mobileTray && isVisible(this)) {
+		if (!reduceMotion && this.mediaQueryList.matches && this.mobileTray && isVisible(this)) {
 			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
 				.addEventListener('animationend', hide, { once: true });
 			this._closing = true;
@@ -312,14 +322,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this.opened = true;
 		await this.updateComplete;
-		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
 	}
 
 	async resize() {
 		if (!this.opened) {
 			return;
 		}
-		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
 		await this.__position();
 	}
 
@@ -460,7 +470,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 
 			await this.__position();
-			this._showBackdrop = mediaQueryList.matches && this.mobileTray;
+			this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
 
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
@@ -713,8 +723,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 
-		const specialMobileStyle = mediaQueryList.matches && this.mobileTray;
-		const mobileTrayRightLeft = mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
+		const specialMobileStyle = this.mediaQueryList.matches && this.mobileTray;
+		const mobileTrayRightLeft = this.mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
 
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
@@ -801,6 +811,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					</div>
 				</div>
 			</div>
+			<style>
+				${dropdownContentStyles(this.mobileBreakpointOverride)}
+			</style>
 		`;
 		return (this.mobileTray) ? html`
 			${dropdown} 

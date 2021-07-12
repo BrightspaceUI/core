@@ -1,6 +1,5 @@
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
-import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme-mixin.js';
 
 /**
@@ -13,10 +12,6 @@ import { ThemeMixin } from '../../mixins/theme-mixin.js';
  * @fires d2l-dropdown-position - Dispatched when the dropdown position finishes adjusting
  */
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
-
-	static get styles() {
-		return dropdownContentStyles;
-	}
 
 	constructor() {
 		super();
