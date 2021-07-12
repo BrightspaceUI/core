@@ -188,7 +188,6 @@ class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			}
 			:host(.focus-visible) {
 				border-color: transparent;
-
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
 			:host(:hover.focus-visible) {
