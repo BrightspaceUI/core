@@ -21,6 +21,7 @@ describe('d2l-dropdown-content', () => {
 		'default-width',
 		'min-width',
 		'max-width',
+		'min-height',
 		'max-height',
 		'max-height-invalid',
 		'wide-opener',
