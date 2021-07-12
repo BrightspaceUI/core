@@ -713,6 +713,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	_renderContent() {
 
+		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		const positionStyle = {};
 		if (this._position) {
 			const isRTL = this.getAttribute('dir') === 'rtl';
