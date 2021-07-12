@@ -186,12 +186,12 @@ class Card extends RtlMixin(LitElement) {
 			:host([subtle]:hover) {
 				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
 			}
-			:host([_active]) {
+			:host(.focus-visible) {
 				border-color: transparent;
+
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
-			:host([_active]:hover),
-			:host([subtle][_active]:hover) {
+			:host(:hover.focus-visible) {
 				border-color: transparent;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				transform: translateY(-4px);
@@ -199,7 +199,7 @@ class Card extends RtlMixin(LitElement) {
 			/* .d2l-card-link-container-hover is used to only color/underline when
 			hovering the anchor; these styles are not applied when hovering actions */
 			:host([href]) .d2l-card-link-container-hover,
-			:host([href][_active]) .d2l-card-content {
+			:host([href].focus-visible) .d2l-card-content {
 				color: var(--d2l-color-celestine);
 				text-decoration: underline;
 			}
@@ -229,7 +229,6 @@ class Card extends RtlMixin(LitElement) {
 		this.alignCenter = false;
 		this.download = false;
 		this.subtle = false;
-		this._active = false;
 		this._dropdownActionOpen = false;
 		this._footerHidden = true;
 		this._hover = false;
@@ -273,9 +272,7 @@ class Card extends RtlMixin(LitElement) {
 				@d2l-dropdown-close="${this._onDropdownClose}"
 				@d2l-tooltip-show="${this._onTooltipShow}"
 				@d2l-tooltip-hide="${this._onTooltipHide}">
-				<a @blur="${this._onLinkBlur}"
-					?download="${this.download}"
-					@focus="${this._onLinkFocus}"
+				<a ?download="${this.download}"
 					href="${ifDefined(this.href ? this.href : undefined)}"
 					hreflang="${ifDefined(this.hreflang)}"
 					@mouseenter="${this._onLinkMouseEnter}"
@@ -322,14 +319,6 @@ class Card extends RtlMixin(LitElement) {
 		// firefox has a rounding error when calculating the height of the contentRect
 		// with `box-sizing: border-box;` so check for numbers which are close to 0 as well
 		this._footerHidden = (entry.contentRect.height < 1);
-	}
-
-	_onLinkBlur() {
-		this._active = false;
-	}
-
-	_onLinkFocus() {
-		this._active = true;
 	}
 
 	_onLinkMouseEnter() {
