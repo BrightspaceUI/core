@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -15,7 +16,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot footer - Slot for footer content, such secondary actions
  * @slot header - Slot for header content, such as course image (no actionable elements)
  */
-class Card extends RtlMixin(LitElement) {
+class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -55,7 +56,6 @@ class Card extends RtlMixin(LitElement) {
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
 			 */
 			type: { type: String, reflect: true },
-			_active: { type: Boolean, reflect: true },
 			_dropdownActionOpen: { type: Boolean, attribute: '_dropdown-action-open', reflect: true },
 			_hover: { type: Boolean },
 			_badgeMarginTop: { type: String },
