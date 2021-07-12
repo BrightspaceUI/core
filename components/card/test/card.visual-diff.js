@@ -33,7 +33,13 @@ describe('d2l-card', () => {
 		{ name: 'no-link-focus', selector: '#header-content', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
 		{ name: 'subtle', selector: '#subtle' },
 		{ name: 'link', selector: '#link' },
-		{ name: 'link-focus', selector: '#link', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
+		{ name: 'link-focus', selector: '#link', action: (selector) => page.$eval(selector, (elem) => {
+			elem.addEventListener('blur', () => {
+				elem.classList.remove('focus-visible');
+			}, { once: true });
+			elem.classList.add('focus-visible');
+			elem.focus();
+		}) },
 		{ name: 'link-actions-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button-icon`, (elem) => forceFocusVisible(elem)) },
 		{ name: 'link-footer-focus', selector: '#link', action: (selector) => page.$eval(`${selector} > d2l-button`, (elem) => forceFocusVisible(elem)) },
 		{ name: 'with-dropdown', selector: '#with-dropdown', margin: 20 },
