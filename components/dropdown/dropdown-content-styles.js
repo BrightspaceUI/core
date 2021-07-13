@@ -215,6 +215,16 @@ export const dropdownContentStyles = css`
 		100% { opacity: 0; transform: translateX(-100%); }
 	}
 
+	@keyframes d2l-dropdown-mobile-tray-bottom {
+		0% { opacity: 0; transform: translateY(100%); }
+		100% { opacity: 1; transform: translate(0, 0); }
+	}
+
+	@keyframes d2l-dropdown-mobile-tray-bottom-close {
+		0% { opacity: 1; transform: translate(0, 0); }
+		100% { opacity: 0; transform: translateY(100%); }
+	}
+
 
 	@media (max-width: 615px) {
 
@@ -223,6 +233,12 @@ export const dropdownContentStyles = css`
 			height: 100vh;
 			position: fixed;
 			top: 0;
+			z-index: 1000;
+		}
+
+		:host([mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+			left: 0;
+			position: fixed;
 			z-index: 1000;
 		}
 
@@ -236,6 +252,11 @@ export const dropdownContentStyles = css`
 			left: 0;
 		}
 
+		:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+			animation: d2l-dropdown-mobile-tray-bottom 300ms ease-out;
+			bottom: 0;
+		}
+
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 			animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
 		}
@@ -244,40 +265,45 @@ export const dropdownContentStyles = css`
 			animation: d2l-dropdown-mobile-tray-left-close 300ms ease-out;
 		}
 
+		:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+			animation: d2l-dropdown-mobile-tray-bottom-close 300ms ease-out;
+		}
+
 		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
 		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container {
 			height: 100vh;
 		}
 
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-pointer,
-		:host([mobile-tray="right"]) > .d2l-dropdown-content-pointer {
+		:host([mobile-tray="right"]) > .d2l-dropdown-content-pointer,
+		:host([mobile-tray="bottom"]) > .d2l-dropdown-content-pointer {
 			display: none;
 		}
 
-		:host([mobile-tray="right"][opened]), :host([mobile-tray="left"][opened]) {
+		:host([mobile-tray="right"][opened]), :host([mobile-tray="left"][opened]), :host([mobile-tray="bottom"][opened]) {
 			animation: none;
 		}
 
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
 		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
+		:host([mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
 		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
-		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
+		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
+		:host([mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
 			min-height: auto;
 		}
 
-		/* TODO: dialog-style */
-		d2l-dropdown-content[mobile-tray="bottom"] {
-			/* content */
-		}
 
 		@media (prefers-reduced-motion: reduce) {
 			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
-			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
+			:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
 				animation: none;
 			}
 
 			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
-			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
+			:host([mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 				animation: none;
 			}
 		}

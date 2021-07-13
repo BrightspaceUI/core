@@ -11,6 +11,8 @@ import { styleMap } from 'lit-html/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px)');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const minBackdropHeightMobile = 42;
+const minBackdropWidthMobile = 30;
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
@@ -70,7 +72,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'no-mobile-close-button'
 			},
 			/**
-			 * Override default mobile dropdown style. Specify one of 'left' or 'right'.
+			 * Mobile dropdown style.
+			 * @type {'left'|'right'|'bottom'}
 			 */
 			mobileTray: {
 				type: String,
@@ -713,8 +716,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	_renderContent() {
 
 		const positionStyle = {};
+		const isRTL = this.getAttribute('dir') === 'rtl';
 		if (this._position) {
-			const isRTL = this.getAttribute('dir') === 'rtl';
 			if (!isRTL) {
 				positionStyle.left = `${this._position}px`;
 			} else {
@@ -724,17 +727,22 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const specialMobileStyle = mediaQueryList.matches && this.mobileTray;
 		const mobileTrayRightLeft = mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
+		const mobileTrayBottom = mediaQueryList.matches && (this.mobileTray === 'bottom');
 
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
 			// default maximum width for tray (30px margin)
-			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - 30, 420);
+			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - minBackdropWidthMobile, 420);
 			if (maxWidthOverride) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
 			} else {
 				maxWidthOverride = mobileTrayMaxWidthDefault;
 			}
+		}
+
+		if (mobileTrayBottom) {
+			maxWidthOverride = '100vw';
 		}
 
 		let minWidthOverride = this.minWidth;
@@ -748,36 +756,95 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				minWidthOverride = mobileTrayMinWidthDefault;
 			}
 		}
+		if (mobileTrayBottom) {
+			minWidthOverride = 'calc(100vw - 2px)';
+		}
 
 		// set to max width
 		let widthOverride = this._width ? this._width : maxWidthOverride;
 
-		if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
-		if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
+		if (!mobileTrayBottom) {
+			if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
+			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
+			maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
+			minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
+		} else {
+			widthOverride = undefined;
+		}
+
+		let maxHeightOverride;
+		if (!specialMobileStyle) {
+			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
+		}
+		if (mobileTrayRightLeft) maxHeightOverride = '';
+		if (mobileTrayBottom) {
+			// default maximum height for tray (42px margin)
+			const mobileTrayMaxHeightDefault = window.innerHeight - minBackdropHeightMobile;
+			if (this.maxHeight) {
+				// if maxWidth provided is smaller, use the maxWidth
+				maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
+			} else {
+				maxHeightOverride = mobileTrayMaxHeightDefault;
+			}
+			maxHeightOverride = `${maxHeightOverride}px`;
+		}
+
+		let contentWidth;
+		let containerWidth;
+		if (!this.mobileTray && !this._width) {
+			contentWidth = '';
+			containerWidth = '';
+		} else if (mobileTrayBottom) {
+			contentWidth = 'calc(100vw - 2px)';
+			containerWidth = '100vw';
+		} else {
+			contentWidth = `${widthOverride + 18}px`;
+			containerWidth = `${widthOverride + 20}px`;
+		}
 
 		const widthStyle = {
-			maxWidth: maxWidthOverride ? `${maxWidthOverride}px` : undefined,
-			minWidth: minWidthOverride ? `${minWidthOverride}px` : undefined,
+			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
+			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			/* add 2 to content width since scrollWidth does not include border */
-			width: widthOverride ? `${widthOverride + 20}px` : ''
+			width: containerWidth,
+			maxHeight: mobileTrayBottom ? maxHeightOverride : '',
 		};
 
 		const contentWidthStyle = {
-			minWidth: minWidthOverride ? `${minWidthOverride}px` : undefined,
+			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: widthOverride ? `${widthOverride + 18}px` : '',
+			width: contentWidth,
 		};
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: this._contentHeight && !specialMobileStyle ? `${this._contentHeight}px` : 'none',
+			maxHeight: maxHeightOverride,
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
+		let footerWidth;
+		if (this.noPaddingFooter) {
+			footerWidth = 'calc(100% - 24px)';
+		} else if (this._hasFooter) {
+			footerWidth = '100%';
+		} else {
+			footerWidth = 'calc(100% + 16px)';
+		}
+
+		let footerMargin;
+		if (this._hasFooter) {
+			footerMargin = '0';
+		} else if (isRTL) {
+			footerMargin = '-20px -20px -20px 0px';
+		} else {
+			footerMargin = '-20px 0 -20px -20px';
+		}
+
 		const closeButtonStyles = {
 			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
-			width: 'calc(100% - 24px)',
-			padding: '12px'
+			width: footerWidth,
+			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
+			margin: footerMargin
 		};
 
 		const topClasses = {
@@ -788,7 +855,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const bottomClasses = {
 			'd2l-dropdown-content-bottom': true,
 			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
-			'd2l-dropdown-content-footer': this._hasFooter
+			'd2l-dropdown-content-footer': this._hasFooter || (specialMobileStyle && !this.noMobileCloseButton)
 		};
 
 		const dropdown =  html`
