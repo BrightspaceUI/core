@@ -25,8 +25,8 @@ A Button is used to communicate and perform an action.
 <!-- docs: start donts -->
 * Don't use multiple Primary buttons - the primary action should always be clear and obvious
 * Avoid icon-only buttons with unfamiliar icons, only use these for familiar concepts
-* Don't use buttons for navigation, use a [link](https://github.com/BrightspaceUI/core/tree/master/components/link) instead
-* Don't open menus with buttons - use a [dropdown](https://github.com/BrightspaceUI/core/tree/master/components/dropdown) instead
+* Don't use buttons for navigation, use a [link](./components/link/README.md) instead
+* Don't open menus with buttons - use a [dropdown](./components/dropdown) [dropdown2](./components/dropdown/) instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
