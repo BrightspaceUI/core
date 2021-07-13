@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -7,7 +8,7 @@ const keyCodes = {
 	SPACE: 32
 };
 
-class Tab extends RtlMixin(LitElement) {
+class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -29,9 +30,9 @@ class Tab extends RtlMixin(LitElement) {
 				vertical-align: middle;
 			}
 			.d2l-tab-text {
-				margin: 0.6rem;
+				margin: 0.5rem;
 				overflow: hidden;
-				padding: 1px;
+				padding: 0.1rem;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
@@ -65,6 +66,7 @@ class Tab extends RtlMixin(LitElement) {
 			:host(.focus-visible) > .d2l-tab-text {
 				border-radius: 0.3rem;
 				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
+				color: var(--d2l-color-celestine);
 			}
 			:host([aria-selected="true"]:focus) {
 				text-decoration: none;
@@ -80,12 +82,6 @@ class Tab extends RtlMixin(LitElement) {
 			:host([aria-selected="true"]) .d2l-tab-selected-indicator {
 				display: block;
 			}
-
-			/* this is the selected/current tab focus styles that outlines the little thing at the bottom */
-			/* :host([aria-selected="true"].focus-visible) .d2l-tab-selected-indicator {
-				border-top-color: var(--d2l-color-celestine);
-				box-shadow: 0 0 0 1px #ffffff, 0 0 0 2px var(--d2l-color-celestine);
-			} */
 
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-tab-selected-indicator {
