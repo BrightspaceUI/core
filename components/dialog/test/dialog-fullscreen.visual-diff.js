@@ -73,13 +73,11 @@ describe('d2l-dialog-fullscreen', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
-				it.skip('scroll top shadow', async function() {
-					page.waitForSelector('#dialogLong', { visible: true })
-						.then(async(elem) => {
-							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
-						});
-
+				it('scroll top shadow', async function() {
 					await open(page, '#dialogLong');
+					await page.$eval('#dialogLong #bottom', (bottom) => {
+						bottom.scrollIntoView();
+					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
