@@ -31,6 +31,7 @@ class Tab extends RtlMixin(LitElement) {
 			.d2l-tab-text {
 				margin: 0.6rem;
 				overflow: hidden;
+				padding: 1px;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
@@ -61,12 +62,9 @@ class Tab extends RtlMixin(LitElement) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			/* focus on a non selected item 
-				todo: change this to outline the text
-			 */
 			:host(.focus-visible) > .d2l-tab-text {
-				border-radius: 6px;
-				box-shadow: -1px 1px 0 2px var(--d2l-color-celestine);
+				border-radius: 0.3rem;
+				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 			}
 			:host([aria-selected="true"]:focus) {
 				text-decoration: none;
