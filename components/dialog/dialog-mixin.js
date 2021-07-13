@@ -21,10 +21,11 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 let ifrauDialogService;
 
 async function getIfrauDialogService() {
-	if (!ifrauDialogService && window.ifrauclient) {
-		const ifrauClient = await window.ifrauclient().connect();
-		ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
-	}
+	if (!window.ifrauclient) return;
+	if (ifrauDialogService) return ifrauDialogService;
+	
+	const ifrauClient = await window.ifrauclient().connect();
+	ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
 
 	return ifrauDialogService;
 }
@@ -102,9 +103,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('opened')) return;
 
-		let dialogService;
-		if (window.ifrauclient) dialogService = await getIfrauDialogService();
-
+		const dialogService = await getIfrauDialogService();
 		if (this.opened) {
 			if (dialogService) {
 				this._ifrauContextInfo = await dialogService.showBackdrop();
