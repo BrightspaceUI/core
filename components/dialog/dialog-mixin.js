@@ -73,6 +73,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
 		this._updateSize = this._updateSize.bind(this);
 		this._updateOverflow = this._updateOverflow.bind(this);
+		this._isIframed = false;
+		this._instanceId = Symbol('Instance ID');
 	}
 
 	async connectedCallback() {
@@ -80,30 +82,38 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._useNative) {
 			window.addEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
 		}
+
 		if (!window.ifrauclient) return;
-		const ifrauClient = await window.ifrauclient().connect();
-		this._ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
+		this._isIframed = true;
+		this._ifrauDialogServicePromise = this._getIfrauDialogService();
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
+
+		if (this._isIframed) {
+			// Make sure to unregister dialog from opened iframe dialogs registry
+			delete this.constructor._openedIframeDialogsRegistry[this._instanceId];
+		}
 	}
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('opened')) return;
+
 		if (this.opened) {
-			if (this._ifrauDialogService) {
-				this._ifrauContextInfo = await this._ifrauDialogService.showBackdrop();
+			if (this._isIframed) {
+				this._iframedOpen();
+			} else {
+				this._open();
 			}
-			this._open();
 		} else {
-			if (this._ifrauDialogService) {
-				this._ifrauDialogService.hideBackdrop();
-				this._ifrauContextInfo = null;
+			if (this._isIframed) {
+				this._iframedClose();
+			} else {
+				this._close();
 			}
-			this._close();
 		}
 	}
 
@@ -123,6 +133,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	resize() {
 		return this._updateSize();
 	}
+
+	// Static registry for keeping track of opened dialogs within an iframe
+	static _openedIframeDialogsRegistry = {};
 
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
@@ -210,6 +223,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		return height;
 	}
 
+	async _getIfrauDialogService() {
+		const ifrauClient = await window.ifrauclient().connect();
+		return await ifrauClient.getService('dialogWC', '0.1');
+	}
+
 	_getLeft() {
 		if (this._useNative || !this._parentDialog) return 0;
 		const parentRect = this._parentDialog.getBoundingClientRect();
@@ -282,6 +300,39 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
 		// so we need to opt out of native dialogs if a non-native nested dialog is launched
 		this._useNative = false;
+	}
+
+	async _iframedClose() {
+		// Remove this dialog from the registry of open dialogs that are within the iframe
+		delete this.constructor._openedIframeDialogsRegistry[this._instanceId];
+
+		const openedInstanceCount = Object.getOwnPropertySymbols(this.constructor._openedIframeDialogsRegistry).length;
+
+		// If no other iframed dialogs were open before closing this one,
+		// hide the iframe host backdrop
+		if (openedInstanceCount === 0) {
+			const ifrauDialogService = await this._ifrauDialogServicePromise;
+			await ifrauDialogService.hideBackdrop();
+			this._ifrauContextInfo = null;
+		}
+
+		this._close();
+	}
+
+	async _iframedOpen() {
+		// Add this dialog to the registry of open dialogs that are within the iframe
+		this.constructor._openedIframeDialogsRegistry[this._instanceId] = true;
+
+		const openedInstanceCount = Object.getOwnPropertySymbols(this.constructor._openedIframeDialogsRegistry).length;
+
+		// If no other iframed dialogs were open before opening this one,
+		// show the iframe host backdrop
+		if (openedInstanceCount === 1) {
+			const ifrauDialogService = await this._ifrauDialogServicePromise;
+			this._ifrauContextInfo = await ifrauDialogService.showBackdrop();
+		}
+
+		this._open();
 	}
 
 	_open() {
