@@ -21,7 +21,7 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 let ifrauDialogService;
 
 async function getIfrauDialogService() {
-	if (ifrauDialogService === undefined && window.ifrauclient) {
+	if (!ifrauDialogService && window.ifrauclient) {
 		const ifrauClient = await window.ifrauclient().connect();
 		ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
 	}
