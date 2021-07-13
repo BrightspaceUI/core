@@ -1,6 +1,5 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 const keyCodes = {
@@ -8,7 +7,7 @@ const keyCodes = {
 	SPACE: 32
 };
 
-class Tab extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
+class Tab extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
