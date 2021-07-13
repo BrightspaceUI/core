@@ -53,7 +53,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 
 				.d2l-dialog-content {
-					display: grid;
+					padding-top: 1rem;
 				}
 
 				.d2l-dialog-content > div {
@@ -61,9 +61,9 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					margins at the end of the slotted content */
 					border-bottom: 1px solid transparent;
 					box-sizing: border-box;
+					display: contents;
 					height: 100%;
 					padding-bottom: 1rem;
-					padding-top: 1rem;
 				}
 
 				.d2l-dialog-header > div > d2l-button-icon {
