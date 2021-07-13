@@ -24,6 +24,20 @@ describe('d2l-selection', () => {
 		});
 	};
 
+	const radioKeyUp = (page, selector, keyCode) => {
+		return page.$eval(selector, (elem, keyCode) => {
+			const event = new CustomEvent('keyup', {
+				bubbles: true,
+				cancelable: true,
+				composed: true
+			});
+			event.keyCode = keyCode;
+			event.code = keyCode;
+			elem.focus();
+			elem.shadowRoot.querySelector('[role="radio"]').dispatchEvent(event);
+		}, keyCode);
+	};
+
 	describe('action', () => {
 		[
 			{ name: 'text', selector: '#action-text' },
@@ -42,8 +56,24 @@ describe('d2l-selection', () => {
 		[
 			{ name: 'default', selector: '#checkbox' },
 			{ name: 'focus', selector: '#checkbox', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'click', selector: '#checkbox', action: selector => page.$eval(selector, elem => elem.shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
 			{ name: 'selected', selector: '#checkbox-selected' },
-			{ name: 'selected-focus', selector: '#checkbox-selected', action: selector => page.$eval(selector, elem => elem.focus()) }
+			{ name: 'skeleton', selector: '#checkbox-skeleton' },
+			{ name: 'selected-focus', selector: '#checkbox-selected', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'selected-click', selector: '#checkbox-selected', action: selector => page.$eval(selector, elem => elem.shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
+		].forEach(runTest);
+	});
+
+	describe('radio', () => {
+		[
+			{ name: 'default', selector: '#radio' },
+			{ name: 'focus', selector: '#radio', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'click', selector: '#radio', action: selector => page.$eval(selector, elem => elem.shadowRoot.querySelector('[role="radio"]').click()) },
+			{ name: 'space', selector: '#radio-space', action: selector => radioKeyUp(page, selector, 32) },
+			{ name: 'selected', selector: '#radio-selected' },
+			{ name: 'skeleton', selector: '#radio-skeleton' },
+			{ name: 'selected-focus', selector: '#radio-selected', action: selector => page.$eval(selector, elem => elem.focus()) },
+			{ name: 'selected-click', selector: '#radio-selected', action: selector => page.$eval(selector, elem => elem.shadowRoot.querySelector('[role="radio"]').click()) }
 		].forEach(runTest);
 	});
 
@@ -67,14 +97,30 @@ describe('d2l-selection', () => {
 		].forEach(runTest);
 	});
 
-	describe('mixin', () => {
+	describe('mixin-multiple', () => {
 		[
-			{ name: 'none-selected', selector: '#mixin-none-selected' },
-			{ name: 'some-selected', selector: '#mixin-some-selected' },
-			{ name: 'all-selected', selector: '#mixin-all-selected' },
-			{ name: 'select-all', selector: '#mixin-none-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
-			{ name: 'select-none', selector: '#mixin-all-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
-			{ name: 'select-all-from-some', selector: '#mixin-some-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) }
+			{ name: 'none-selected', selector: '#mixin-multiple-none-selected' },
+			{ name: 'some-selected', selector: '#mixin-multiple-some-selected' },
+			{ name: 'all-selected', selector: '#mixin-multiple-all-selected' },
+			{ name: 'select-all', selector: '#mixin-multiple-none-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
+			{ name: 'select-none', selector: '#mixin-multiple-all-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
+			{ name: 'select-all-from-some', selector: '#mixin-multiple-some-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) }
+		].forEach(runTest);
+	});
+
+	describe('mixin-single', () => {
+		[
+			{ name: 'none-selected', selector: '#mixin-single-none-selected' },
+			{ name: 'one-selected', selector: '#mixin-single-one-selected' },
+			{ name: 'select', selector: '#mixin-single-none-selected', action: selector => page.$eval(selector, elem => elem.querySelector('[key="key1"]').selected = true) },
+			{ name: 'right-arrow', selector: '#mixin-single-right-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 39) },
+			{ name: 'left-arrow', selector: '#mixin-single-left-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 37) },
+			{ name: 'right-arrow-rtl', selector: '#mixin-single-right-arrow-rtl', action: selector => radioKeyUp(page, `${selector} [selected]`, 39) },
+			{ name: 'left-arrow-rtl', selector: '#mixin-single-left-arrow-rtl', action: selector => radioKeyUp(page, `${selector} [selected]`, 37) },
+			{ name: 'down-arrow', selector: '#mixin-single-down-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 40) },
+			{ name: 'up-arrow', selector: '#mixin-single-up-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 38) },
+			{ name: 'wrap-first', selector: '#mixin-single-wrap-first', action: selector => radioKeyUp(page, `${selector} [selected]`, 40) },
+			{ name: 'wrap-last', selector: '#mixin-single-wrap-last', action: selector => radioKeyUp(page, `${selector} [selected]`, 38) }
 		].forEach(runTest);
 	});
 

@@ -187,24 +187,24 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				margin-left: 1rem;
 				margin-right: 0;
 			}
-			d2l-selection-checkbox {
+			d2l-selection-input {
 				margin: 1.15rem 0.9rem 1.15rem 0;
 			}
-			.d2l-list-item-content-extend-separators d2l-selection-checkbox {
+			.d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-left: 0.9rem;
 			}
-			:host([slim]) d2l-selection-checkbox {
+			:host([slim]) d2l-selection-input {
 				margin-bottom: 0.55rem;
 				margin-top: 0.55rem;
 			}
 			d2l-list-item-drag-handle {
 				margin: 0.8rem 0 0.8rem 0.4rem;
 			}
-			:host([dir="rtl"]) d2l-selection-checkbox {
+			:host([dir="rtl"]) d2l-selection-input {
 				margin-left: 0.9rem;
 				margin-right: 0;
 			}
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators d2l-selection-checkbox {
+			:host([dir="rtl"]) .d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-right: 0.9rem;
 			}
 			:host([selectable]:not([disabled]):not([skeleton])) d2l-list-item-generic-layout.d2l-focusing,

@@ -1,3 +1,11 @@
+import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
+const keyCodes = {
+	DOWN: 40,
+	LEFT: 37,
+	RIGHT: 39,
+	UP: 38
+};
 
 export class SelectionInfo {
 
@@ -26,28 +34,42 @@ export class SelectionInfo {
 
 }
 
-export const SelectionMixin = superclass => class extends superclass {
+export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
+
+	static get properties() {
+		return {
+			/**
+			 * Whether the selection control is limited to single selection.
+			 */
+			selectionSingle: { type: Boolean, attribute: 'selection-single' }
+		};
+	}
 
 	constructor() {
 		super();
+		this.selectionSingle = false;
 		this._selectionObservers = new Map();
 		this._selectionSelectables = new Map();
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
+		if (this.selectionSingle) this.addEventListener('keydown', this._handleRadioKeyDown);
+		if (this.selectionSingle) this.addEventListener('keyup', this._handleRadioKeyUp);
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
-		this.addEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
+		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (this.selectionSingle) this.removeEventListener('keydown', this._handleRadioKeyDown);
+		if (this.selectionSingle) this.removeEventListener('keyup', this._handleRadioKeyUp);
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.removeEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
-		this.removeEventListener('d2l-selection-checkbox-subscribe', this._handleSelectionCheckboxSubscribe);
+		this.removeEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
 
 	getSelectionInfo() {
@@ -74,11 +96,51 @@ export const SelectionMixin = superclass => class extends superclass {
 		this._updateSelectionObservers();
 	}
 
-	_handleSelectionChange() {
+	_handleRadioKeyDown(e) {
+		// check composed path for radio (e.target could be d2l-list-item or other element due to retargeting)
+		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
+		if (e.keyCode >= keyCodes.LEFT && e.keyCode <= keyCodes.DOWN) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
+	}
+
+	_handleRadioKeyUp(e) {
+		// check composed path for radio (e.target could be d2l-list-item or other element due to retargeting)
+		if (!e.composedPath()[0].classList.contains('d2l-selection-input-radio')) return;
+		if (e.keyCode < keyCodes.LEFT || e.keyCode > keyCodes.DOWN) return;
+
+		const selectables = Array.from(this._selectionSelectables.values());
+		let currentIndex = selectables.findIndex(selectable => selectable.selected);
+		if (currentIndex === -1) currentIndex = 0;
+		let newIndex;
+
+		if ((this._dir !== 'rtl' && e.keyCode === keyCodes.RIGHT)
+			|| (this._dir === 'rtl' && e.keyCode === keyCodes.LEFT)
+			|| e.keyCode === keyCodes.DOWN) {
+			if (currentIndex === selectables.length - 1) newIndex = 0;
+			else newIndex = currentIndex + 1;
+		} else if ((this._dir !== 'rtl' && e.keyCode === keyCodes.LEFT)
+			|| (this._dir === 'rtl' && e.keyCode === keyCodes.RIGHT)
+			|| e.keyCode === keyCodes.UP) {
+			if (currentIndex === 0) newIndex = selectables.length - 1;
+			else newIndex = currentIndex - 1;
+		}
+		selectables[newIndex].selected = true;
+		selectables[newIndex].focus();
+	}
+
+	_handleSelectionChange(e) {
+		if (this.selectionSingle && e.detail.selected) {
+			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
+			this._selectionSelectables.forEach(selectable => {
+				if (selectable.selected && selectable !== target) selectable.selected = false;
+			});
+		}
 		this._updateSelectionObservers();
 	}
 
-	_handleSelectionCheckboxSubscribe(e) {
+	_handleSelectionInputSubscribe(e) {
 		e.stopPropagation();
 		e.detail.provider = this;
 		const target = e.composedPath()[0];
