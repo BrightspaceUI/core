@@ -11,6 +11,7 @@ Note: in order for RTL to function correctly, make sure your component uses the 
 The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS class on a `<label>` element that wraps the input.
 
 ![example screenshot of radio inputs](../screenshots/radio.gif?raw=true)
+[other link](./input-percent)
 
 For disabled items, add the `d2l-input-radio-label-disabled` class on the label and the `disabled` attribute on the input itself.
 
