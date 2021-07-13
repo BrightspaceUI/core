@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
+import { dropdownContentStyles } from './dropdown-content-styles.js';
 
 /**
  * A container for a "d2l-tabs" component. It provides additional support on top of "d2l-dropdown-content" for automatic resizing when the tab changes.
@@ -13,11 +14,11 @@ import { DropdownContentMixin } from './dropdown-content-mixin.js';
 class DropdownTabs extends DropdownContentMixin(LitElement) {
 
 	static get styles() {
-		return css`
+		return [ dropdownContentStyles, css`
 			::slotted(d2l-tabs) {
 				margin-bottom: 0;
 			}
-		`;
+		`];
 	}
 
 	firstUpdated(changedProperties) {

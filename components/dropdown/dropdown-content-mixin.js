@@ -4,7 +4,6 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map';
-import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { html } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -213,7 +212,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPaddingHeader = false;
 		this.noPointer = false;
 		this.mobileBreakpointOverride = 616;
-		this.mediaQueryList = window.matchMedia('(max-width: 615px)');
+		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
+		this._useMobileStyling = false;
 
 		this.__opened = false;
 		this.__content = null;
@@ -234,6 +234,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
 		this.__toggleScrollStyles = this.__toggleScrollStyles.bind(this);
+		this._handleMobileResize = this._handleMobileResize.bind(this);
 	}
 
 	get opened() {
@@ -256,10 +257,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.addEventListener('blur', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('focus', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('click', this.__onAutoCloseClick, true);
+		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
+		this._useMobileStyling = this.mediaQueryList.matches;
+		if (this.mediaQueryList.addEventListener) this.mediaQueryList.addEventListener('change', this._handleMobileResize);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (this.mediaQueryList.removeEventListener) this.mediaQueryList.removeEventListener('change', this._handleMobileResize);
 		this.removeEventListener('blur', this.__onAutoCloseFocus);
 		window.removeEventListener('resize', this.__onResize);
 		if (document.body) {
@@ -275,7 +280,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		super.firstUpdated(changedProperties);
 
 		this.__content = this.__getContentContainer();
-		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
@@ -720,9 +724,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return null;
 	}
 
+	_handleMobileResize() {
+		this._useMobileStyling =  this.mediaQueryList.matches;
+	}
+
 	_renderContent() {
 
-		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		const positionStyle = {};
 		if (this._position) {
 			const isRTL = this.getAttribute('dir') === 'rtl';
@@ -804,7 +811,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const dropdown =  html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)} ?data-closing="${this._closing}">
+				<div  
+				id="d2l-dropdown-wrapper" 
+				class="d2l-dropdown-content-width" 
+				style=${styleMap(widthStyle)}
+				 ?data-closing="${this._closing}"
+				 ?data-mobile="${this._useMobileStyling}">
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
@@ -821,9 +833,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					</div>
 				</div>
 			</div>
-			<style>
-				${dropdownContentStyles(this.mobileBreakpointOverride)}
-			</style>
 		`;
 		return (this.mobileTray) ? html`
 			${dropdown}
