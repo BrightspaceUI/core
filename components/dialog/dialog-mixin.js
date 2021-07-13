@@ -23,7 +23,7 @@ let ifrauDialogService;
 async function getIfrauDialogService() {
 	if (!window.ifrauclient) return;
 	if (ifrauDialogService) return ifrauDialogService;
-	
+
 	const ifrauClient = await window.ifrauclient().connect();
 	ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
 
