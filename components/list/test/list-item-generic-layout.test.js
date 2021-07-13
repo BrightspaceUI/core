@@ -344,6 +344,10 @@ describe('d2l-list-item-generic-layout', () => {
 		it('does not preventDefault when Tab is pressed', async() => {
 			el = el.querySelector('[key="item4"]');
 			layout = el.shadowRoot.querySelector('d2l-list-item-generic-layout');
+			await new Promise(resolve => {
+				// wait a frame for d2l-selection-input to fully initialize
+				requestAnimationFrame(resolve);
+			});
 			layout.querySelector('d2l-selection-input').focus();
 			setTimeout(() => dispatchKeyEvent(layout, { code: keyCodes.TAB }));
 			const event = await oneEvent(layout, 'keyup');
@@ -442,6 +446,10 @@ describe('d2l-list-item-generic-layout', () => {
 				it(`${test.desc} when ${test.key.name} pressed`, async() => {
 					layout = el.querySelector(`[key="${test.itemKey}"]`)
 						.shadowRoot.querySelector('d2l-list-item-generic-layout');
+					await new Promise(resolve => {
+						// wait a frame for d2l-selection-input to fully initialize
+						requestAnimationFrame(resolve);
+					});
 					test.initial().focus();
 					setTimeout(() => dispatchKeyEvent(layout, test.key));
 					await aTimeout(1);
