@@ -61,7 +61,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					margins at the end of the slotted content */
 					border-bottom: 1px solid transparent;
 					box-sizing: border-box;
-					height: calc(100% - 2rem);
+					height: calc(100% - 1rem);
 				}
 
 				.d2l-dialog-header > div > d2l-button-icon {
