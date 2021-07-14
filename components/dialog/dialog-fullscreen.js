@@ -53,8 +53,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				}
 
 				.d2l-dialog-content {
-					/* 1 rem padding plus 1px transparent border */
-					padding-bottom: 21px;
 					padding-top: 1rem;
 				}
 
