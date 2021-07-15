@@ -77,10 +77,10 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 	/**
 	 * @attr disabled - Disables the button
 	 */
-	get disabled() { return this.__disabled; }
+	get disabled() { return this._disabled; }
 	set disabled(value) {
-		const oldValue = this.__disabled;
-		this.__disabled = value;
+		const oldValue = this._disabled;
+		this._disabled = value;
 		this.requestUpdate('disabled', oldValue);
 	}
 
@@ -88,10 +88,10 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 	 * @attr disabled-tooltip - Tooltip text when disabled
 	 * @type {string}
 	 */
-	get disabledTooltip() { return this.__disabledTooltip; }
+	get disabledTooltip() { return this._disabledTooltip; }
 	set disabledTooltip(value) {
-		const oldValue = this.__disabledTooltip;
-		this.__disabledTooltip = value;
+		const oldValue = this._disabledTooltip;
+		this._disabledTooltip = value;
 		this.requestUpdate('disabledTooltip', oldValue);
 	}
 
