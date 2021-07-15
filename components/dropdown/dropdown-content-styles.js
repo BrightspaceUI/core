@@ -258,11 +258,6 @@ export const dropdownContentStyles = css`
 		min-height: auto;
 	}
 
-	/* TODO: dialog-style */
-	d2l-dropdown-content([data-mobile][mobile-tray="bottom"]) {
-		/* content */
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
 		:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
