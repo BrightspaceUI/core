@@ -176,6 +176,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'dropdown-content',
 				reflect: true
 			},
+			_useMobileStyling: {
+				type: Boolean,
+				attribute: 'data-mobile',
+				reflect: true
+			},
 			_hasHeader: {
 				type: Boolean
 			},
@@ -815,8 +820,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				id="d2l-dropdown-wrapper" 
 				class="d2l-dropdown-content-width" 
 				style=${styleMap(widthStyle)}
-				 ?data-closing="${this._closing}"
-				 ?data-mobile="${this._useMobileStyling}">
+				 ?data-closing="${this._closing}">
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
