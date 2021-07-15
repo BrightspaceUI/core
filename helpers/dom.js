@@ -1,3 +1,4 @@
+// needed for legacy-Edge, after it's removed use CSS.escape directly
 export function cssEscape(val) {
 	if (window.CSS && window.CSS.escape) {
 		return window.CSS.escape(val);
