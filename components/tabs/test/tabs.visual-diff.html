@@ -12,6 +12,8 @@
 		import '../../button/button.js';
 		import '../tabs.js';
 		import '../tab-panel.js';
+		import { forceFocusVisible } from '../../../helpers/focus.js';
+		window.forceFocusVisible = forceFocusVisible;
 	</script>
 	<title>d2l-tabs</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,6 +78,24 @@
 
 	<div class="visual-diff">
 		<d2l-tabs id="scroll-previous">
+			<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
+			<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
+			<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+			<d2l-tab-panel text="Geology" selected>Tab content for Geology</d2l-tab-panel>
+		</d2l-tabs>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-tabs id="focus-next">
+			<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
+			<d2l-tab-panel text="Biology" selected>Tab content for Biology</d2l-tab-panel>
+			<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+			<d2l-tab-panel text="Geology">Tab content for Geology</d2l-tab-panel>
+		</d2l-tabs>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-tabs id="focus-previous">
 			<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
 			<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
 			<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
