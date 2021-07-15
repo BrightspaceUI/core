@@ -32,22 +32,15 @@ export const dropdownContentStyles = css`
 	}
 
 	:host([opened]) {
+		animation: var(--d2l-dropdown-animation-name) 300ms ease;
 		display: inline-block;
 	}
 
 	:host([opened-above]) {
+		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
 		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
 		top: auto;
 	}
-
-	:host(not:([data-mobile])[opened]) {
-		animation: var(--d2l-dropdown-animation-name) 300ms ease;
-	}
-
-	:host(not:([data-mobile])[opened-above]) {
-		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
-	}
-
 
 	:host([data-mobile][opened]:not([mobile-tray])) {
 		animation: var(--d2l-dropdown-animation-name) 300ms ease;
@@ -177,7 +170,7 @@ export const dropdownContentStyles = css`
 
 	@media (prefers-reduced-motion: reduce) {
 		:host([opened]), :host([opened-above]) {
-			animation: none;
+			animation: none !important;
 		}
 	}
 
@@ -254,7 +247,7 @@ export const dropdownContentStyles = css`
 		display: none;
 	}
 
-	:host([data-mobile]mobile-tray="right"][opened]), :host([data-mobile][mobile-tray="left"][opened]) {
+	:host([data-mobile][mobile-tray="right"][opened]), :host([data-mobile][mobile-tray="left"][opened]) {
 		animation: none;
 	}
 
