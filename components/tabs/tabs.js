@@ -3,11 +3,11 @@ import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { repeat } from 'lit-html/directives/repeat';
@@ -377,7 +377,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_animateTabAddition(tabInfo) {
-		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${tabInfo.id}"]`);
+		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
@@ -391,7 +391,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 	}
 
 	_animateTabRemoval(tabInfo) {
-		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${tabInfo.id}"]`);
+		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;

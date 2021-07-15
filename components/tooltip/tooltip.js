@@ -1,6 +1,6 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
+import { cssEscape, getBoundingAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -636,7 +636,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		let target;
 		if (this.for) {
-			const targetSelector = `#${this.for}`;
+			const targetSelector = `#${cssEscape(this.for)}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
 		} else {
