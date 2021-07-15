@@ -1,14 +1,15 @@
 import '../colors/colors.js';
+import { codeSampleStyles, htmlBlockCodeSampleRenderer } from '../../helpers/prism.js';
 import { css, LitElement } from 'lit-element/lit-element.js';
 import { htmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
-let renderers;
+let renderers = [ htmlBlockCodeSampleRenderer, htmlBlockMathRenderer ];
 
 const getRenderers = () => {
 	if (renderers) return renderers;
 	const tempRenderers = requestInstance(document, 'html-block-renderers');
-	renderers = (tempRenderers ? [ htmlBlockMathRenderer, ...tempRenderers ] : [ htmlBlockMathRenderer ]);
+	renderers = (tempRenderers ? [ ...renderers, ...tempRenderers ] : renderers);
 	return renderers;
 };
 
@@ -18,7 +19,7 @@ const getRenderers = () => {
 class HtmlBlock extends LitElement {
 
 	static get styles() {
-		return css`
+		return [codeSampleStyles, css`
 			:host {
 				display: block;
 				overflow-wrap: break-word;
@@ -120,7 +121,7 @@ class HtmlBlock extends LitElement {
 				padding-left: 0;
 				padding-right: 3em;
 			}
-		`;
+		`];
 	}
 
 	disconnectedCallback() {

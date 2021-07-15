@@ -58,9 +58,9 @@
 
 		<d2l-demo-page page-title="d2l-html-block">
 
-			<h2>HTML Block</h2>
+			<h2>Typography</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet code-view-hidden>
 				<template>
 					<d2l-html-block>
 						<template>
@@ -89,9 +89,55 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>HTML Block (math)</h2>
+			<h2>Code Sample</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet code-view-hidden>
+				<template>
+					<d2l-html-block>
+						<template>
+							<div>
+<pre class="language-javascript"><code>function helloGrumpy(name) {
+   console.log(`Hi there ${name}.`);
+}
+helloGrumpy('Wizard');</code></pre>
+<br>
+<pre class="language-bash"><code>#!/bin/bash
+if [ -d $directory ]; then
+   echo "Directory exists"
+else
+   echo "Directory does not exists"
+fi</code></pre>
+<br>
+<pre class="language-css"><code>.grumpy > img {
+   height: 100%;
+   width: 100%;
+}</code></pre>
+<br>
+<pre class="language-json"><code>{
+   "jinxed": "gnomes",
+   "grumpy": [ "wizards" ]
+}
+</code></pre>
+<br>
+<pre class="language-sql"><code>SELECT * FROM courses
+INNEE JOIN enrollments ON courses.id = enrollments.courseId
+ORDER BY enrollments.lastUpdated ASC
+
+SET ROWCOUNT 4;
+SELECT * enrollments
+WHERE Quantity < 300;
+GO
+
+</code></pre>
+							</div>
+						</template>
+					</d2l-html-block>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>MathML (block)</h2>
+
+			<d2l-demo-snippet code-view-hidden>
 				<template>
 					<d2l-html-block>
 						<template>
@@ -129,7 +175,7 @@
 										<mo>(</mo>
 										<mrow>
 											<munderover>
-												<mo>∑<!-- ∑ --></mo>
+												<mo>∑</mo>
 												<mrow class="MJX-TeXAtom-ORD">
 													<mi>k</mi>
 													<mo>=</mo>
@@ -154,12 +200,12 @@
 										<mn>2</mn>
 									</mrow>
 								</msup>
-								<mo>≤<!-- ≤ --></mo>
+								<mo>≤</mo>
 								<mrow>
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -179,7 +225,7 @@
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -201,9 +247,9 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>HTML Block (inline math)</h2>
+			<h2>MathML (inline)</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet code-view-hidden>
 				<template>
 					<d2l-html-block>
 						<template>
@@ -231,7 +277,7 @@
 											<mo>(</mo>
 											<mrow>
 												<munderover>
-													<mo>∑<!-- ∑ --></mo>
+													<mo>∑</mo>
 													<mrow class="MJX-TeXAtom-ORD">
 														<mi>k</mi>
 														<mo>=</mo>
@@ -256,12 +302,12 @@
 											<mn>2</mn>
 										</mrow>
 									</msup>
-									<mo>≤<!-- ≤ --></mo>
+									<mo>≤</mo>
 									<mrow>
 										<mo>(</mo>
 										<mrow>
 											<munderover>
-												<mo>∑<!-- ∑ --></mo>
+												<mo>∑</mo>
 												<mrow class="MJX-TeXAtom-ORD">
 													<mi>k</mi>
 													<mo>=</mo>
@@ -281,7 +327,7 @@
 										<mo>(</mo>
 										<mrow>
 											<munderover>
-												<mo>∑<!-- ∑ --></mo>
+												<mo>∑</mo>
 												<mrow class="MJX-TeXAtom-ORD">
 													<mi>k</mi>
 													<mo>=</mo>
@@ -304,9 +350,9 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>HTML Block (LaTeX math)</h2>
+			<h2>LaTeX (block)</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet code-view-hidden>
 				<template>
 					<d2l-html-block>
 						<template>
@@ -316,9 +362,9 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>HTML Block (LaTeX inline math)</h2>
+			<h2>LaTeX (inline)</h2>
 
-			<d2l-demo-snippet>
+			<d2l-demo-snippet code-view-hidden>
 				<template>
 					<d2l-html-block>
 						<template>
@@ -331,6 +377,7 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<!--
 			<h2>HTML Block (wrapped)</h2>
 
 			<d2l-demo-snippet>
@@ -357,6 +404,7 @@
 
 				customElements.define('d2l-some-component', SomeComponent);
 			</d2l-code-view>
+			-->
 
 		</d2l-demo-page>
 
@@ -400,7 +448,7 @@
 										<mo>(</mo>
 										<mrow>
 											<munderover>
-												<mo>∑<!-- ∑ --></mo>
+												<mo>∑</mo>
 												<mrow class="MJX-TeXAtom-ORD">
 													<mi>k</mi>
 													<mo>=</mo>
@@ -425,12 +473,12 @@
 										<mn>2</mn>
 									</mrow>
 								</msup>
-								<mo>≤<!-- ≤ --></mo>
+								<mo>≤</mo>
 								<mrow>
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
@@ -450,7 +498,7 @@
 									<mo>(</mo>
 									<mrow>
 										<munderover>
-											<mo>∑<!-- ∑ --></mo>
+											<mo>∑</mo>
 											<mrow class="MJX-TeXAtom-ORD">
 												<mi>k</mi>
 												<mo>=</mo>
