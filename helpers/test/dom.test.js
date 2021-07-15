@@ -1,6 +1,6 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { defineCE, expect, fixture } from '@open-wc/testing';
 import {
+	cssEscape,
 	findComposedAncestor,
 	getBoundingAncestor,
 	getComposedChildren,
@@ -10,6 +10,7 @@ import {
 	isComposedAncestor,
 	isVisible
 } from '../dom.js';
+import { defineCE, expect, fixture } from '@open-wc/testing';
 
 const testElemTag = defineCE(
 	class extends LitElement {
@@ -102,6 +103,24 @@ const visibilityFixture = html`
 `;
 
 describe('dom', () => {
+
+	describe('cssEscape', () => {
+
+		let oldCss;
+		beforeEach(() => {
+			oldCss = window.CSS;
+			window.CSS = undefined;
+		});
+		afterEach(() => {
+			window.CSS = oldCss;
+		});
+
+		it('should escape $ using polyfill', () => {
+			const val = cssEscape('foo$bar$blah');
+			expect(val).to.equal('foo\\$bar\\$blah');
+		});
+
+	});
 
 	describe('isVisible', () => {
 
