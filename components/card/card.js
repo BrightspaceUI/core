@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -16,7 +15,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot footer - Slot for footer content, such secondary actions
  * @slot header - Slot for header content, such as course image (no actionable elements)
  */
-class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
+class Card extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -56,6 +55,7 @@ class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
 			 */
 			type: { type: String, reflect: true },
+			_active: { type: Boolean, reflect: true },
 			_dropdownActionOpen: { type: Boolean, attribute: '_dropdown-action-open', reflect: true },
 			_hover: { type: Boolean },
 			_badgeMarginTop: { type: String },
@@ -186,11 +186,12 @@ class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			:host([subtle]:hover) {
 				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
 			}
-			:host(.focus-visible) {
+			:host([_active]) {
 				border-color: transparent;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 			}
-			:host(:hover.focus-visible) {
+			:host([_active]:hover),
+			:host([subtle][_active]:hover) {
 				border-color: transparent;
 				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 				transform: translateY(-4px);
@@ -198,7 +199,7 @@ class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 			/* .d2l-card-link-container-hover is used to only color/underline when
 			hovering the anchor; these styles are not applied when hovering actions */
 			:host([href]) .d2l-card-link-container-hover,
-			:host([href].focus-visible) .d2l-card-content {
+			:host([href][_active]) .d2l-card-content {
 				color: var(--d2l-color-celestine);
 				text-decoration: underline;
 			}
@@ -228,6 +229,7 @@ class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		this.alignCenter = false;
 		this.download = false;
 		this.subtle = false;
+		this._active = false;
 		this._dropdownActionOpen = false;
 		this._footerHidden = true;
 		this._hover = false;
@@ -271,7 +273,9 @@ class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 				@d2l-dropdown-close="${this._onDropdownClose}"
 				@d2l-tooltip-show="${this._onTooltipShow}"
 				@d2l-tooltip-hide="${this._onTooltipHide}">
-				<a ?download="${this.download}"
+				<a @blur="${this._onLinkBlur}"
+					?download="${this.download}"
+					@focus="${this._onLinkFocus}"
 					href="${ifDefined(this.href ? this.href : undefined)}"
 					hreflang="${ifDefined(this.hreflang)}"
 					@mouseenter="${this._onLinkMouseEnter}"
@@ -318,6 +322,14 @@ class Card extends RtlMixin(FocusVisiblePolyfillMixin(LitElement)) {
 		// firefox has a rounding error when calculating the height of the contentRect
 		// with `box-sizing: border-box;` so check for numbers which are close to 0 as well
 		this._footerHidden = (entry.contentRect.height < 1);
+	}
+
+	_onLinkBlur() {
+		this._active = false;
+	}
+
+	_onLinkFocus() {
+		this._active = true;
 	}
 
 	_onLinkMouseEnter() {
