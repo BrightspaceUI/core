@@ -18,18 +18,19 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * A description to be added to the button for accessibility when text on button does not provide enough context
+			 * @type {string}
 			 */
 			description: { type: String },
 
 			/**
 			 * Aligns the leading edge of text if value is set to "text"
 			 * @type {'text'|''}
-			 * @default ""
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
 			 * Preset icon key (e.g. "tier1:gear")
+			 * @type {string}
 			 */
 			icon: { type: String, reflect: true },
 
@@ -40,6 +41,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 
 			/**
 			 * REQUIRED: Text for the button
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true }
 		};
@@ -149,6 +151,8 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.iconRight = false;
+
+		/** @internal */
 		this._buttonId = getUniqueId();
 	}
 

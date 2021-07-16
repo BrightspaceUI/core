@@ -17,6 +17,7 @@ class Button extends ButtonMixin(LitElement) {
 		return {
 			/**
 			 * A description to be added to the button for accessibility when text on button does not provide enough context
+			 * @type {string}
 			 */
 			description: { type: String },
 
@@ -84,6 +85,9 @@ class Button extends ButtonMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.primary = false;
+
+		/** @internal */
 		this._buttonId = getUniqueId();
 	}
 

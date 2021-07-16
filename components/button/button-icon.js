@@ -20,17 +20,18 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 			/**
 			 * Aligns the leading edge of text if value is set to "text"
 			 * @type {'text'|''}
-			 * @default ""
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
 			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
+			 * @type {string}
 			 */
 			icon: { type: String, reflect: true },
 
 			/**
 			 * REQUIRED: Accessible text for the button
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
 
@@ -141,6 +142,8 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 	constructor() {
 		super();
 		this.translucent = false;
+
+		/** @internal */
 		this._buttonId = getUniqueId();
 	}
 

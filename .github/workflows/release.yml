@@ -26,6 +26,8 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+      - name: Install analyzer
+        run: npm i web-component-analyzer --no-save
       - name: Build
         run: npm run build
       - name: Create custom-elements.json
