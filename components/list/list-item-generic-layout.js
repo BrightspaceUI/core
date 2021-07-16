@@ -58,6 +58,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[content-end actions-start] minmax(0, max-content)
 					[end actions-end];
 				position: relative;
+				z-index: 0;
 			}
 
 			::slotted([slot="outside-control"]),
