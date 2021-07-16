@@ -25,8 +25,8 @@ A Button is used to communicate and perform an action.
 <!-- docs: start donts -->
 * Don't use multiple Primary buttons - the primary action should always be clear and obvious
 * Avoid icon-only buttons with unfamiliar icons, only use these for familiar concepts
-* Don't use buttons for navigation, use a [link](https://github.com/BrightspaceUI/core/tree/master/components/link) instead
-* Don't open menus with buttons - use a [dropdown](https://github.com/BrightspaceUI/core/tree/master/components/dropdown) instead
+* Don't use buttons for navigation, use a [link](https://github.com/BrightspaceUI/core/tree/main/components/link) instead
+* Don't open menus with buttons - use a [dropdown](https://github.com/BrightspaceUI/core/tree/main/components/dropdown) instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -66,7 +66,7 @@ To make your `d2l-button` accessible, use the following properties when applicab
 | Attribute | Description |
 |--|--|
 | `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
-| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
+| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
 
 ## Subtle Button [d2l-button-subtle]
@@ -111,7 +111,7 @@ To make your `d2l-button-subtle` accessible, use the following properties when a
 | Attribute | Description |
 |--|--|
 | `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
-| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
+| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `description` | Use when text on button does not provide enough context. |
 
 ## Icon Button [d2l-button-icon]
@@ -154,12 +154,12 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 |--|--|
 | `text` | **REQUIRED**. Acts as a primary label and tooltip. |
 | `aria-expanded` | [Indicate expansion state of a collapsible element](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-expanded). Example: [d2l-more-less](https://github.com/BrightspaceUI/core/blob/f9f30d0975ee5a8479263a84541fc3b781e8830f/components/more-less/more-less.js#L158). |
-| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/master/components/dropdown/dropdown-opener-mixin.js#L46). |
+| `aria-haspopup` | [Indicate clicking the button opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). Example: [d2l-dropdown](https://github.com/BrightspaceUI/core/blob/main/components/dropdown/dropdown-opener-mixin.js#L46). |
 | `aria-label` | Acts as a primary label. If `text` AND `aria-label` are provided, `aria-label` is used as the primary label, `text` is used as the tooltip. |
 
 ## Floating Buttons [d2l-floating-buttons]
 
-See [floating buttons](https://github.com/BrightspaceUI/core/tree/master/components/button/floating-buttons.md).
+See [floating buttons](https://github.com/BrightspaceUI/core/tree/main/components/button/floating-buttons.md).
 
 <!-- docs: start hidden content -->
 ## Future Enhancements
