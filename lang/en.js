@@ -13,6 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {No filters applied.} one {1 filter applied.} other {{number} filters applied.}}",
 	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "No available filters",
+	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
 	"components.form-element.defaultError": "{label} is invalid.",
 	"components.form-element.defaultFieldLabel": "Field",
