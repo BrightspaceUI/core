@@ -27,11 +27,11 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Install analyzer
-        run: npm i @custom-elements-manifest/analyzer --no-save
+        run: npm i web-component-analyzer --no-save
       - name: Build
         run: npm run build
       - name: Create custom-elements.json
-        run: npx custom-elements-manifest analyze --globs \"{components,templates}/**/*.js\" --exclude \"**/{demo,test}/*\" --litelement
+        run: npx wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json
       - name: Prepare Translations for NPM
         uses: BrightspaceUI/actions/prepare-translations-for-npm@master
       - name: Semantic Release

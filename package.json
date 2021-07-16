@@ -58,8 +58,7 @@
     "mocha": "^8",
     "node-sass": "^6",
     "sinon": "^11",
-    "stylelint": "^13",
-    "web-component-analyzer": "^1"
+    "stylelint": "^13"
   },
   "dependencies": {
     "@brightspace-ui/intl": "^3",
