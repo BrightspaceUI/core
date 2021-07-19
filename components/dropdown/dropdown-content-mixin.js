@@ -217,7 +217,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPaddingHeader = false;
 		this.noPointer = false;
 		this.mobileBreakpointOverride = 616;
-		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
 		this._useMobileStyling = false;
 
 		this.__opened = false;
