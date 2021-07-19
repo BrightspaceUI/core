@@ -9,7 +9,6 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-const mediaQueryList = window.matchMedia('(max-width: 615px)');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
@@ -54,6 +53,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			maxHeight: {
 				type: Number,
 				attribute: 'max-height'
+			},
+			/**
+			 * Override the breakpoint at which mobile styling is used. Defaults to 616px.
+			 */
+			mobileBreakpointOverride: {
+				type: Number,
+				attribute: 'mobile-breakpoint'
 			},
 			/**
 			 * Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
@@ -173,6 +179,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'dropdown-content',
 				reflect: true
 			},
+			_useMobileStyling: {
+				type: Boolean,
+				attribute: 'data-mobile',
+				reflect: true
+			},
 			_hasHeader: {
 				type: Boolean
 			},
@@ -208,6 +219,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPaddingFooter = false;
 		this.noPaddingHeader = false;
 		this.noPointer = false;
+		this.mobileBreakpointOverride = 616;
+		this._useMobileStyling = false;
 
 		this.__opened = false;
 		this.__content = null;
@@ -228,6 +241,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__onAutoCloseFocus = this.__onAutoCloseFocus.bind(this);
 		this.__onAutoCloseClick = this.__onAutoCloseClick.bind(this);
 		this.__toggleScrollStyles = this.__toggleScrollStyles.bind(this);
+		this._handleMobileResize = this._handleMobileResize.bind(this);
 	}
 
 	get opened() {
@@ -250,10 +264,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.addEventListener('blur', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('focus', this.__onAutoCloseFocus, true);
 		document.body.addEventListener('click', this.__onAutoCloseClick, true);
+		this.mediaQueryList = window.matchMedia(`(max-width: ${this.mobileBreakpointOverride - 1}px)`);
+		this._useMobileStyling = this.mediaQueryList.matches;
+		if (this.mediaQueryList.addEventListener) this.mediaQueryList.addEventListener('change', this._handleMobileResize);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (this.mediaQueryList.removeEventListener) this.mediaQueryList.removeEventListener('change', this._handleMobileResize);
 		this.removeEventListener('blur', this.__onAutoCloseFocus);
 		window.removeEventListener('resize', this.__onResize);
 		if (document.body) {
@@ -294,7 +312,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this.opened = false;
 		};
 
-		if (!reduceMotion && mediaQueryList.matches && this.mobileTray && isVisible(this)) {
+		if (!reduceMotion && this.mediaQueryList.matches && this.mobileTray && isVisible(this)) {
 			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
 				.addEventListener('animationend', hide, { once: true });
 			this._closing = true;
@@ -323,14 +341,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this.opened = true;
 		await this.updateComplete;
-		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
 	}
 
 	async resize() {
 		if (!this.opened) {
 			return;
 		}
-		this._showBackdrop = mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
 		await this.__position();
 	}
 
@@ -471,7 +489,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 
 			await this.__position();
-			this._showBackdrop = mediaQueryList.matches && this.mobileTray;
+			this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
 
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
@@ -713,6 +731,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return null;
 	}
 
+	_handleMobileResize() {
+		this._useMobileStyling =  this.mediaQueryList.matches;
+	}
+
 	_renderContent() {
 
 		const positionStyle = {};
@@ -725,9 +747,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 
-		const specialMobileStyle = mediaQueryList.matches && this.mobileTray;
-		const mobileTrayRightLeft = mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
-		const mobileTrayBottom = mediaQueryList.matches && (this.mobileTray === 'bottom');
+		const specialMobileStyle = this.mediaQueryList.matches && this.mobileTray;
+		const mobileTrayRightLeft = this.mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
+		const mobileTrayBottom = this.mediaQueryList.matches && (this.mobileTray === 'bottom');
 
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
@@ -862,7 +884,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const dropdown =  html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  id="d2l-dropdown-wrapper" class="d2l-dropdown-content-width" style=${styleMap(widthStyle)} ?data-closing="${this._closing}">
+				<div  
+				id="d2l-dropdown-wrapper" 
+				class="d2l-dropdown-content-width" 
+				style=${styleMap(widthStyle)}
+				 ?data-closing="${this._closing}">
 					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
