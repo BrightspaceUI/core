@@ -3,11 +3,12 @@ import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
+import { FocusVisiblePolyfillMixin } from '../../mixins/focus-visible-polyfill-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { repeat } from 'lit-html/directives/repeat';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -52,7 +53,7 @@ if (!Array.prototype.findIndex) {
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
+class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyfillMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -187,14 +188,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 				border: 0;
 			}
 			.d2l-tabs-scroll-button[disabled]:hover,
-			.d2l-tabs-scroll-button[disabled]:focus {
+			.d2l-tabs-scroll-button[disabled].focus-visible {
 				background-color: transparent;
 			}
 			.d2l-tabs-scroll-button:hover,
-			.d2l-tabs-scroll-button:focus {
+			.d2l-tabs-scroll-button.focus-visible {
 				background-color: var(--d2l-color-gypsum);
 			}
-			.d2l-tabs-scroll-button:focus {
+			.d2l-tabs-scroll-button.focus-visible {
 				border-color: var(--d2l-color-celestine);
 			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {
@@ -376,7 +377,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	_animateTabAddition(tabInfo) {
-		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${tabInfo.id}"]`);
+		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
@@ -390,7 +391,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(LitElement))) {
 	}
 
 	_animateTabRemoval(tabInfo) {
-		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${tabInfo.id}"]`);
+		const tab = this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;

@@ -194,8 +194,11 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 		const hiddenCalendar = this.shadowRoot.querySelector('.d2l-input-date-hidden-calendar');
 		this._hiddenCalendarResizeObserver = new ResizeObserver(() => {
-			this._hiddenCalendarHeight = Math.ceil(parseFloat(getComputedStyle(hiddenCalendar).getPropertyValue('height')));
-			this._hiddenCalendarResizeObserver.disconnect();
+			const hiddenCalendarHeight = Math.ceil(parseFloat(getComputedStyle(hiddenCalendar).getPropertyValue('height')));
+			if (hiddenCalendarHeight > 0) {
+				this._hiddenCalendarHeight = hiddenCalendarHeight;
+				this._hiddenCalendarResizeObserver.disconnect();
+			}
 		});
 		this._hiddenCalendarResizeObserver.observe(hiddenCalendar);
 	}

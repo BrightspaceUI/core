@@ -18,6 +18,18 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
 
+let ifrauDialogService;
+
+async function getIfrauDialogService() {
+	if (!window.ifrauclient) return;
+	if (ifrauDialogService) return ifrauDialogService;
+
+	const ifrauClient = await window.ifrauclient().connect();
+	ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
+
+	return ifrauDialogService;
+}
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
@@ -80,9 +92,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._useNative) {
 			window.addEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
 		}
-		if (!window.ifrauclient) return;
-		const ifrauClient = await window.ifrauclient().connect();
-		this._ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
 	}
 
 	disconnectedCallback() {
@@ -93,14 +102,16 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	async updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('opened')) return;
+
+		const dialogService = await getIfrauDialogService();
 		if (this.opened) {
-			if (this._ifrauDialogService) {
-				this._ifrauContextInfo = await this._ifrauDialogService.showBackdrop();
+			if (dialogService) {
+				this._ifrauContextInfo = await dialogService.showBackdrop();
 			}
 			this._open();
 		} else {
-			if (this._ifrauDialogService) {
-				this._ifrauDialogService.hideBackdrop();
+			if (dialogService) {
+				dialogService.hideBackdrop();
 				this._ifrauContextInfo = null;
 			}
 			this._close();

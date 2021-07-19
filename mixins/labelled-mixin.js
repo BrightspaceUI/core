@@ -1,4 +1,6 @@
 
+import { cssEscape } from '../helpers/dom.js';
+
 const getCommonAncestor = (elem1, elem2) => {
 
 	const labelledPath = new WeakMap();
@@ -72,7 +74,7 @@ export const LabelledMixin = superclass => class extends superclass {
 
 		if (!this.labelledBy) return;
 
-		let labelElem = this.getRootNode().querySelector(`#${this.labelledBy}`);
+		let labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
 		const ancestor = getCommonAncestor(this, labelElem);
 
 		this._labelObserver = new MutationObserver(mutations => {
@@ -84,7 +86,7 @@ export const LabelledMixin = superclass => class extends superclass {
 				}
 
 				if (mutation.addedNodes.length > 0) {
-					labelElem = this.getRootNode().querySelector(`#${this.labelledBy}`);
+					labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
 					return;
 				}
 

@@ -1,4 +1,4 @@
-import '../selection/selection-checkbox.js';
+import '../selection/selection-input.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -11,7 +11,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	static get properties() {
 		return {
 			/**
-			 * Disables the checkbox
+			 * Disables the input
 			 */
 			disabled: { type: Boolean },
 			/**
@@ -19,7 +19,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			 */
 			key: { type: String, reflect: true },
 			/**
-			 * Indicates a checkbox should be rendered for selecting the item
+			 * Indicates a input should be rendered for selecting the item
 			 */
 			selectable: { type: Boolean },
 			/**
@@ -86,7 +86,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 
 	_renderCheckbox() {
 		return this.selectable ? html`
-			<d2l-selection-checkbox
+			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
 				?selected="${this.selected}"
 				?disabled="${this.disabled}"
@@ -95,7 +95,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 				label="${this.label}"
 				?skeleton="${this.skeleton}"
 				.hovering="${this._hovering}">
-			</d2l-selection-checkbox>
+			</d2l-selection-input>
 		` : nothing;
 	}
 
