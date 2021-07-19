@@ -22,7 +22,7 @@ const multiDimensionFixture = html`
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
 
-describe('d2l-filter', () => {
+describe.only('d2l-filter', () => {
 
 	it('should construct', () => {
 		runConstructor('d2l-filter');
@@ -43,9 +43,85 @@ describe('d2l-filter', () => {
 	});
 
 	describe('info messages', () => {
-		it('empty state', async() => {
+		it('set dimension - empty state', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim"></d2l-filter-dimension-set></d2l-filter>');
 			expect(elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message').textContent).to.include('No available filters');
+		});
+
+		it('set dimension - empty and search applied (usecase for manual search)', async() => {
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim"></d2l-filter-dimension-set></d2l-filter>');
+			elem._handleSearch({ detail: { value: 'no results' } });
+			await elem.requestUpdate();
+
+			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
+			expect(infoMessage.textContent).to.include('0 search results');
+			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.false;
+		});
+
+		it('set dimension - no search results', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			elem._handleSearch({ detail: { value: 'no results' } });
+			await elem.requestUpdate();
+
+			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
+			expect(infoMessage.textContent).to.include('0 search results');
+			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.false;
+		});
+
+		it('set dimension - search results (offscreen)', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			elem._handleSearch({ detail: { value: '1' } });
+			await elem.requestUpdate();
+
+			const infoMessage = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
+			expect(infoMessage.textContent).to.include('1 search result');
+			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.true;
+
+			elem._handleSearch({ detail: { value: 'value' } });
+			await elem.requestUpdate();
+
+			expect(infoMessage.textContent).to.include('2 search results');
+			expect(infoMessage.classList.contains('d2l-offscreen')).to.be.true;
+		});
+	});
+
+	describe('searching', () => {
+		it('set dimension - no search', async() => {
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="none"></d2l-filter-dimension-set></d2l-filter>');
+			expect(elem.shadowRoot.querySelector('d2l-input-search')).to.be.null;
+		});
+
+		it('set dimension - manual search sets loading state to true and then back to false when callback is run', async() => {
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
+			expect(elem._dimensions[0].loading).to.be.false;
+
+			setTimeout(() => elem._handleSearch({ detail: { value: 'manual search' } }));
+			const e = await oneEvent(elem, 'd2l-filter-dimension-search');
+
+			expect(elem._dimensions[0].loading).to.be.true;
+			expect(e.detail.key).to.equal('dim');
+			expect(e.detail.value).to.equal('manual search');
+
+			e.detail.searchCompleteCallback();
+			await new Promise(resolve => { requestAnimationFrame(resolve); });
+			expect(elem._dimensions[0].loading).to.be.false;
+		});
+
+		[
+			{ name: 'is case insensitive', value: 'VaLuE', results: [false, false] },
+			{ name: 'trims input', value: '      val      ', results: [false, false] },
+			{ name: 'works with numbers', value: '1', results: [false, true] },
+			{ name: 'works with spaces', value: 'e 2', results: [true, false] },
+			{ name: 'hides as expected', value: 'values', results: [true, true] }
+		].forEach(testCase => {
+			it(`set dimension - automatic search ${testCase.name}`, async() => {
+				const elem = await fixture(singleSetDimensionFixture);
+				elem._handleSearch({ detail: { value: testCase.value } });
+				await elem.requestUpdate();
+
+				expect(elem._dimensions[0].values[0].hidden).to.equal(testCase.results[0]);
+				expect(elem._dimensions[0].values[1].hidden).to.equal(testCase.results[1]);
+			});
 		});
 	});
 
@@ -54,36 +130,43 @@ describe('d2l-filter', () => {
 			it('single set dimension fires change events', async() => {
 				const elem = await fixture(singleSetDimensionFixture);
 				const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
 
 				setTimeout(() => value.setSelected(true));
 				let e = await oneEvent(elem, 'd2l-filter-change');
 				expect(e.detail.dimension).to.equal('dim');
 				expect(e.detail.value.key).to.equal('2');
 				expect(e.detail.value.selected).to.be.true;
+				expect(elem._dimensions[0].values[1].selected).to.be.true;
 
 				setTimeout(() => value.setSelected(false));
 				e = await oneEvent(elem, 'd2l-filter-change');
 				expect(e.detail.dimension).to.equal('dim');
 				expect(e.detail.value.key).to.equal('2');
 				expect(e.detail.value.selected).to.be.false;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
 			});
 
 			it('multiple dimensions fire change events', async() => {
 				const elem = await fixture(multiDimensionFixture);
 				const value1 = elem.shadowRoot.querySelector('[data-key="1"] d2l-list-item[key="1"]');
 				const value2 = elem.shadowRoot.querySelector('[data-key="2"] d2l-list-item[key="1"]');
+				expect(elem._dimensions[0].values[0].selected).to.be.true;
+				expect(elem._dimensions[1].values[0].selected).to.be.false;
 
 				setTimeout(() => value1.setSelected(false));
 				let e = await oneEvent(elem, 'd2l-filter-change');
 				expect(e.detail.dimension).to.equal('1');
 				expect(e.detail.value.key).to.equal('1');
 				expect(e.detail.value.selected).to.be.false;
+				expect(elem._dimensions[0].values[0].selected).to.be.false;
 
 				setTimeout(() => value2.setSelected(true));
 				e = await oneEvent(elem, 'd2l-filter-change');
 				expect(e.detail.dimension).to.equal('2');
 				expect(e.detail.value.key).to.equal('1');
 				expect(e.detail.value.selected).to.be.true;
+				expect(elem._dimensions[1].values[0].selected).to.be.true;
 			});
 		});
 
@@ -131,6 +214,34 @@ describe('d2l-filter', () => {
 				setTimeout(() => dimensions[0].click());
 				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
 				expect(eventSpy).to.be.calledTwice;
+			});
+		});
+
+		describe('d2l-filter-dimension-search', () => {
+			it('single set dimension fires search event for manual search-type', async() => {
+				const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
+				const eventSpy = spy(elem, 'dispatchEvent');
+				const search = elem.shadowRoot.querySelector('d2l-input-search');
+				search.value = 'searching';
+
+				setTimeout(() => search.search());
+				const e = await oneEvent(elem, 'd2l-filter-dimension-search');
+
+				expect(elem._dimensions[0].searchValue).to.equal('searching');
+				expect(e.detail.value).to.equal('searching');
+				expect(eventSpy).to.be.calledOnce;
+			});
+
+			it('single set dimension does not fire search event for automatic search-type', async() => {
+				const elem = await fixture(singleSetDimensionFixture);
+				const eventSpy = spy(elem, 'dispatchEvent');
+				const search = elem.shadowRoot.querySelector('d2l-input-search');
+				search.value = 'searching';
+				search.search();
+				await elem.requestUpdate();
+
+				expect(elem._dimensions[0].searchValue).to.equal('searching');
+				expect(eventSpy).to.not.have.been.called;
 			});
 		});
 	});
