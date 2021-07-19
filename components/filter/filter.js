@@ -25,7 +25,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
  * @slot - Dimension components used by the filter to construct the different dimensions locally
  * @fires d2l-filter-change - Dispatched when a dimension's value(s) have changed
  * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
- * @fires d2l-filter-dimension-search - Dispatched when a dimension is searched and has the "event" search-type
+ * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  */
 class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
