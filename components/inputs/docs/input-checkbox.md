@@ -17,6 +17,7 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 |--|--|--|
 | `aria-label` | String | Set instead of placing label inside to hide the visible label |
 | `checked` | Boolean | Checked state |
+| `description` | String | A description to be added to the `input` for accessibility |
 | `disabled` | Boolean | Disables the input |
 | `indeterminate` | Boolean | Sets checkbox to an indeterminate state |
 | `name` | String | Name of the input |
@@ -30,6 +31,7 @@ To make your usage of `d2l-input-checkbox` accessible, use the following propert
 | Attribute | Description |
 |--|--|
 | `aria-label` | Use when text on checkbox does not provide enough context |
+| `description` | Use when label on input does not provide enough context. |
 
 **Methods:**
 

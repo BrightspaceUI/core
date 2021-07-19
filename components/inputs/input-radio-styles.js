@@ -20,6 +20,7 @@ export const radioStyles = css`
 		vertical-align: middle;
 		width: 1.2rem;
 	}
+	.d2l-input-radio[aria-checked="true"],
 	.d2l-input-radio:checked,
 	.d2l-input-radio-label > input[type="radio"]:checked {
 		background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%09%3Ccircle%20cx%3D%225%22%20cy%3D%225%22%20r%3D%225%22%20fill%3D%22%23494c4e%22%3E%3C/circle%3E%0A%3C/svg%3E");
@@ -32,6 +33,7 @@ export const radioStyles = css`
 		border-color: var(--d2l-color-galena);
 		border-width: 1px;
 	}
+	.d2l-hovering.d2l-input-radio,
 	.d2l-input-radio:hover,
 	.d2l-input-radio:focus,
 	.d2l-input-radio-label > input[type="radio"]:hover,

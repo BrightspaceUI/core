@@ -73,7 +73,8 @@ class ListDemoDragAndDropUsage extends LitElement {
 						draggable
 						?selectable="${this.selectable}"
 						drag-handle-text="${item.name}"
-						href="${ifDefined(this.hrefs ? item.href : undefined)}">
+						href="${ifDefined(this.hrefs ? item.href : undefined)}"
+						label="${item.name}">
 						<img slot="illustration" src="${item.img}">
 						<d2l-list-item-content>
 							<div>${item.name}</div>

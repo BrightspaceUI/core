@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
+import { cssEscape, getComposedChildren, getComposedParent, isVisible } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -75,6 +75,20 @@ class Backdrop extends LitElement {
 		this._state = null;
 	}
 
+	disconnectedCallback() {
+		// allow body scrolling, show hidden elements, if backdrop is removed from the DOM
+		if (this._bodyScrollKey) {
+			allowBodyScroll(this._bodyScrollKey);
+			this._bodyScrollKey = null;
+		}
+		if (this._hiddenElements) {
+			showAccessible(this._hiddenElements);
+			this._hiddenElements = null;
+		}
+		this._state = null;
+		super.disconnectedCallback();
+	}
+
 	render() {
 		return html`<div></div>`;
 	}
@@ -88,7 +102,7 @@ class Backdrop extends LitElement {
 
 			if (this._state === null) {
 				this._bodyScrollKey = preventBodyScroll();
-				this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${this.forTarget}`));
+				this._hiddenElements = hideAccessible(this.parentNode.querySelector(`#${cssEscape(this.forTarget)}`));
 			}
 			this._state = 'showing';
 

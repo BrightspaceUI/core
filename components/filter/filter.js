@@ -143,12 +143,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		description += `. ${this.localize('components.filter.filterCountDescription', { number: this._totalAppliedCount })}`;
 
 		const dropdownContent = singleDimension ? html`
-				<d2l-dropdown-content min-width="285" max-width="420" no-padding-header no-padding>
+				<d2l-dropdown-content min-width="285" max-width="420" mobile-tray="right" mobile-breakpoint="768" no-padding-header no-padding>
 					${header}
 					${dimensions}
 				</d2l-dropdown-content>`
 			: html`
-				<d2l-dropdown-menu min-width="285" max-width="420" no-padding-header>
+				<d2l-dropdown-menu min-width="285" max-width="420" mobile-tray="right" mobile-breakpoint="768" no-padding-header>
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
 						${dimensions}
@@ -290,6 +290,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					<d2l-list-item
 						?hidden="${item.hidden}"
 						key="${item.key}"
+						label="${item.text}"
 						selectable
 						?selected="${item.selected}"
 						slim>

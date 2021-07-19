@@ -20,5 +20,5 @@ jobs:
         run: npm ci
       - name: Check License
         run: |
-          npm install d2l-license-checker@3 --no-save
-          npx license-checker-ci
+          npm install d2l-license-checker@4 --no-save
+          npx d2l-license-checker -p

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../selection-action.js';
+		import './selection-component.js';
+		import '../selection-input.js';
+		import '../selection-select-all.js';
+		import '../selection-summary.js';
+	</script>
+	<title>d2l-selection</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+		}
+		ul {
+			padding: 0;
+		}
+		li {
+			list-style-type: none;
+		}
+		d2l-selection-input {
+			margin-right: 10px;
+		}
+		.visual-diff {
+			width: 400px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+
+	<div class="visual-diff">
+		<d2l-selection-action id="action-text" text="action"></d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-action id="action-text-icon" text="action" icon="tier1:gear"></d2l-test-selection>
+	</div>
+
+	<div class="visual-diff" id="action-disabled-container" style="height: 100px;">
+		<d2l-selection-action id="action-disabled" text="action" disabled></d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-action id="action-requires-selection" text="action" requires-selection></d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection>
+			<d2l-selection-input id="checkbox" label="item 1" key="key1"></d2l-selection-input>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection>
+			<d2l-selection-input id="checkbox-selected" label="item 1" key="key1" selected></d2l-selection-input>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection>
+			<d2l-selection-input id="checkbox-skeleton" label="item 1" key="key1" skeleton></d2l-selection-input>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection selection-single>
+			<d2l-selection-input id="radio" label="item 1" key="key1"></d2l-selection-input>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection selection-single>
+			<d2l-selection-input id="radio-space" label="item 1" key="key1"></d2l-selection-input>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection selection-single>
+			<d2l-selection-input id="radio-selected" label="item 1" key="key1" selected></d2l-selection-input>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection selection-single>
+			<d2l-selection-input id="radio-skeleton" label="item 1" key="key1" skeleton></d2l-selection-input>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-select-all id="select-all"></d2l-selection-select-all>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-select-all id="select-all-selection"></d2l-selection-select-all>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-summary id="summary"></d2l-selection-summary>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-selection-summary id="summary-no-selection-text" no-selection-text="custom no selection text"></d2l-selection-summary>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-multiple-none-selected">
+			<div style="display: flex; align-items: center;">
+				<div style="flex: auto;">
+					<d2l-selection-select-all></d2l-selection-select-all>
+					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+				</div>
+				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
+			</div>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-multiple-some-selected">
+			<div style="display: flex; align-items: center;">
+				<div style="flex: auto;">
+					<d2l-selection-select-all></d2l-selection-select-all>
+					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+				</div>
+				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
+			</div>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-multiple-all-selected">
+			<div style="display: flex; align-items: center;">
+				<div style="flex: auto;">
+					<d2l-selection-select-all></d2l-selection-select-all>
+					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+				</div>
+				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
+			</div>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1" selected></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3" selected></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-none-selected" selection-single>
+			<div style="display: flex; align-items: center;">
+				<div style="flex: auto;">
+					<d2l-selection-select-all></d2l-selection-select-all>
+					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+				</div>
+				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
+			</div>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-one-selected" selection-single>
+			<div style="display: flex; align-items: center;">
+				<div style="flex: auto;">
+					<d2l-selection-select-all></d2l-selection-select-all>
+					<d2l-selection-action text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+					<d2l-selection-action text="Action 2" icon="tier1:gear"></d2l-selection-action>
+				</div>
+				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
+			</div>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-right-arrow" selection-single>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-left-arrow" selection-single>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-right-arrow-rtl" selection-single dir="rtl">
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-left-arrow-rtl" selection-single dir="rtl">
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-down-arrow" selection-single>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-up-arrow" selection-single>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-wrap-first" selection-single>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3" selected></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff">
+		<d2l-test-selection id="mixin-single-wrap-last" selection-single>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1" selected></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+</body>
+</html>
