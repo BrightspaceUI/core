@@ -30,6 +30,7 @@ describe('d2l-dialog-fullscreen', () => {
 				await reset(page, '#dialogLong');
 				await reset(page, '#dialogRtl');
 				await reset(page, '#dialogNoFooterContent');
+				await reset(page, '#dialogHorizontalOverflow');
 			});
 
 			[
@@ -68,18 +69,21 @@ describe('d2l-dialog-fullscreen', () => {
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
+				it('horizontal overflow', async function() {
+					await open(page, '#dialogHorizontalOverflow');
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+				});
+
 				it('scroll bottom shadow', async function() {
 					await open(page, '#dialogLong');
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 
-				it.skip('scroll top shadow', async function() {
-					page.waitForSelector('#dialogLong', { visible: true })
-						.then(async(elem) => {
-							await elem.$eval('#bottom', (bottom) => bottom.scrollIntoView());
-						});
-
+				it('scroll top shadow', async function() {
 					await open(page, '#dialogLong');
+					await page.$eval('#dialogLong #bottom', (bottom) => {
+						bottom.scrollIntoView();
+					});
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				});
 

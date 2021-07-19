@@ -1,11 +1,10 @@
 import '../selection-action.js';
-import '../selection-checkbox.js';
+import './selection-component.js';
+import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-summary.js';
-import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
-import { LitElement } from 'lit-element/lit-element.js';
+import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-import { SelectionMixin } from '../selection-mixin.js';
 
 describe('d2l-selection-action', () => {
 
@@ -42,26 +41,36 @@ describe('d2l-selection-action', () => {
 
 });
 
-describe('d2l-selection-checkbox', () => {
+describe('d2l-selection-input', () => {
 
 	it('should construct', () => {
-		runConstructor('d2l-selection-checkbox');
+		runConstructor('d2l-selection-input');
+	});
+
+	let el;
+
+	beforeEach(async() => {
+		el = await fixture(`
+			<d2l-test-selection>
+				<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
+			</d2l-test-selection>
+		`);
+		await el.updateComplete;
+		await nextFrame();
+		el = el.querySelector('d2l-selection-input');
 	});
 
 	it('dispatches d2l-selection-change event when checkbox changes', async() => {
-		const el = await fixture(html`<d2l-selection-checkbox key="key1" label="label1"></d2l-selection-checkbox>`);
 		setTimeout(() => el.shadowRoot.querySelector('d2l-input-checkbox').dispatchEvent(new CustomEvent('change')));
 		await oneEvent(el, 'd2l-selection-change');
 	});
 
 	it('dispatches d2l-selection-change event when selected changes to true', async() => {
-		const el = await fixture(html`<d2l-selection-checkbox key="key1" label="label1"></d2l-selection-checkbox>`);
 		setTimeout(() => el.selected = true);
 		await oneEvent(el, 'd2l-selection-change');
 	});
 
 	it('dispatches d2l-selection-change event when selected changes to false', async() => {
-		const el = await fixture(html`<d2l-selection-checkbox key="key1" label="label1" selected></d2l-selection-checkbox>`);
 		setTimeout(() => el.selected = false);
 		await oneEvent(el, 'd2l-selection-change');
 	});
@@ -90,29 +99,19 @@ describe('d2l-selection-summary', () => {
 
 });
 
-const selectionWrapperTag = defineCE(
-	class extends SelectionMixin(LitElement) {
-		render() {
-			return html`
-				<slot></slot>
-			`;
-		}
-	}
-);
-
 describe('SelectionMixin', () => {
 
 	let el;
 
 	beforeEach(async() => {
 		el = await fixture(`
-			<${selectionWrapperTag}>
+			<d2l-test-selection>
 				<d2l-selection-select-all></d2l-selection-select-all>
 				<d2l-selection-summary></d2l-selection-summary>
-				<d2l-selection-checkbox key="key1" label="label1"></d2l-selection-checkbox>
-				<d2l-selection-checkbox key="key2" label="label2"></d2l-selection-checkbox>
-				<d2l-selection-checkbox key="key3" label="label3"></d2l-selection-checkbox>
-			</${selectionWrapperTag}>
+				<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
+				<d2l-selection-input key="key2" label="label2"></d2l-selection-input>
+				<d2l-selection-input key="key3" label="label3"></d2l-selection-input>
+			</d2l-test-selection>
 		`);
 		await el.updateComplete;
 		await nextFrame();

@@ -3,7 +3,7 @@ let mathJaxLoaded;
 export async function htmlBlockMathRenderer(elem) {
 	const isLatexSupported = window.D2L && window.D2L.LP && window.D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true);
 
-	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(/.test(elem.innerHTML))) return elem;
+	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
 	const mathJaxConfig = { renderLatex: isLatexSupported };
 	await loadMathJax(mathJaxConfig);

@@ -1,3 +1,12 @@
+// needed for legacy-Edge, after it's removed use CSS.escape directly
+export function cssEscape(val) {
+	if (window.CSS && window.CSS.escape) {
+		return window.CSS.escape(val);
+	}
+	val = val.replace(/\$/g, '\\$');
+	return val;
+}
+
 export function findComposedAncestor(node, predicate) {
 	while (node) {
 		if (predicate(node) === true) {

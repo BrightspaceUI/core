@@ -56,6 +56,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'max-height'
 			},
 			/**
+			 * Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+			 */
+			minHeight: {
+				type: Number,
+				reflect: true,
+				attribute: 'min-height'
+			},
+			/**
 			 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
 			 */
 			noMobileCloseButton: {
@@ -541,8 +549,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			contentRect = contentRect ? contentRect : content.getBoundingClientRect();
 			const headerFooterHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height;
 
+			const height = this.minHeight ? this.minHeight : Math.min(this.maxHeight ? this.maxHeight : Number.MAX_VALUE, contentRect.height + headerFooterHeight);
 			const spaceRequired = {
-				height: Math.min(this.maxHeight ? this.maxHeight : Number.MAX_VALUE, contentRect.height + headerFooterHeight) + 10,
+				height: height + 10,
 				width: contentRect.width
 			};
 			let spaceAround;
@@ -759,6 +768,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
 			maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
 			minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
+		} else if (!specialMobileStyle) {
+			widthOverride = this._width;
 		} else {
 			widthOverride = undefined;
 		}
@@ -861,7 +872,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
 						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
 						<d2l-button
-							style=${styleMap(closeButtonStyles)} 
+							style=${styleMap(closeButtonStyles)}
 							@click=${this.close}>
 							${this.localize('components.dropdown.close')}
 						</d2l-button>
@@ -870,9 +881,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			</div>
 		`;
 		return (this.mobileTray) ? html`
-			${dropdown} 
-			<d2l-backdrop 
-				for-target="d2l-dropdown-wrapper" 
+			${dropdown}
+			<d2l-backdrop
+				for-target="d2l-dropdown-wrapper"
 				?shown="${this._showBackdrop}" >
 			</d2l-backdrop>`
 			: html`${dropdown}`;
