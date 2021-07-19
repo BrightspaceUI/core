@@ -31,30 +31,26 @@ export const dropdownContentStyles = css`
 		opacity: 0.9;
 	}
 
-	@media (min-width: 616px) {
-		:host([opened]) {
-			animation: var(--d2l-dropdown-animation-name) 300ms ease;
-			display: inline-block;
-		}
-
-		:host([opened-above]) {
-			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
-			bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
-			top: auto;
-		}
+	:host([opened]) {
+		animation: var(--d2l-dropdown-animation-name) 300ms ease;
+		display: inline-block;
 	}
 
-	@media (max-width: 615px) {
-		:host([opened]) {
-			animation: var(--d2l-dropdown-animation-name) 300ms ease;
-			display: inline-block;
-		}
-	
-		:host([opened-above]) {
-			animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
-			bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
-			top: auto;
-		}
+	:host([opened-above]) {
+		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+		top: auto;
+	}
+
+	:host([data-mobile][opened]:not([mobile-tray])) {
+		animation: var(--d2l-dropdown-animation-name) 300ms ease;
+		display: inline-block;
+	}
+
+	:host([data-mobile][opened-above]:not([mobile-tray])) {
+		animation: var(--d2l-dropdown-above-animation-name) 300ms ease;
+		bottom: calc(100% + var(--d2l-dropdown-verticaloffset, 20px));
+		top: auto;
 	}
 
 	.d2l-dropdown-content-pointer {
@@ -174,7 +170,7 @@ export const dropdownContentStyles = css`
 
 	@media (prefers-reduced-motion: reduce) {
 		:host([opened]), :host([opened-above]) {
-			animation: none;
+			animation: none !important;
 		}
 	}
 
@@ -215,71 +211,63 @@ export const dropdownContentStyles = css`
 		100% { opacity: 0; transform: translateX(-100%); }
 	}
 
+	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
+	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		height: 100vh;
+		position: fixed;
+		top: 0;
+		z-index: 1000;
+	}
 
-	@media (max-width: 615px) {
+	:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		animation: d2l-dropdown-mobile-tray-right 300ms ease-out;
+		right: 0;
+	}
 
-		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
-		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			height: 100vh;
-			position: fixed;
-			top: 0;
-			z-index: 1000;
-		}
+	:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		animation: d2l-dropdown-mobile-tray-left 300ms ease-out;
+		left: 0;
+	}
 
-		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			animation: d2l-dropdown-mobile-tray-right 300ms ease-out;
-			right: 0;
-		}
+	:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+		animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
+	}
 
-		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-			animation: d2l-dropdown-mobile-tray-left 300ms ease-out;
-			left: 0;
-		}
+	:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+		animation: d2l-dropdown-mobile-tray-left-close 300ms ease-out;
+	}
 
-		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
-			animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
-		}
+	:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
+	:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container {
+		height: 100vh;
+	}
 
-		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
-			animation: d2l-dropdown-mobile-tray-left-close 300ms ease-out;
-		}
+	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-pointer,
+	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-pointer {
+		display: none;
+	}
 
-		:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
-		:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container {
-			height: 100vh;
-		}
+	:host([data-mobile][mobile-tray="right"][opened]), :host([data-mobile][mobile-tray="left"][opened]) {
+		animation: none;
+	}
 
-		:host([mobile-tray="left"]) > .d2l-dropdown-content-pointer,
-		:host([mobile-tray="right"]) > .d2l-dropdown-content-pointer {
-			display: none;
-		}
+	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
+	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
+	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
+	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
+		min-height: auto;
+	}
 
-		:host([mobile-tray="right"][opened]), :host([mobile-tray="left"][opened]) {
+	@media (prefers-reduced-motion: reduce) {
+		:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
+		:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
 			animation: none;
 		}
 
-		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
-		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
-		:host([mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
-		:host([mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
-			min-height: auto;
-		}
-
-		/* TODO: dialog-style */
-		d2l-dropdown-content[mobile-tray="bottom"] {
-			/* content */
-		}
-
-		@media (prefers-reduced-motion: reduce) {
-			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
-			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
-				animation: none;
-			}
-
-			:host([mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
-			:host([mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
-				animation: none;
-			}
+		:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
+		:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+			animation: none;
 		}
 	}
+
 `;
