@@ -10,20 +10,14 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Install ko
         run: |
+          npm ci
           sudo apt-get install language-pack-ko
           sudo apt-get install korean*
+      - name: Build
+        run: npm run build
       - name: Visual Diff Tests
         uses: BrightspaceUI/actions/visual-diff@master
         with:

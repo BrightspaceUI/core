@@ -18,16 +18,11 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Install analyzer
-        run: npm i web-component-analyzer --no-save
+        run: |
+          npm ci
+          npm install web-component-analyzer --no-save
       - name: Build
         run: npm run build
       - name: Create custom-elements.json
