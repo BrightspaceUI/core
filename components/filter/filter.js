@@ -412,7 +412,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_handleSearch(e) {
 		const dimension = !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
-		dimension.searchValue = e.detail.value;
+		const searchValue = e.detail.value.trim();
+		dimension.searchValue = searchValue;
 
 		if (dimension.searchType === 'automatic') {
 			this._searchDimension(dimension);
@@ -421,11 +422,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this.requestUpdate();
 
 			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
-				bubbles: true,
+				bubbles: false,
 				composed: false,
 				detail: {
 					key: dimension.key,
-					value: e.detail.value,
+					value: searchValue,
 					searchCompleteCallback: function() {
 						requestAnimationFrame(() => {
 							dimension.loading = false;
@@ -477,15 +478,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
-					if (dimension.searchValue === '') {
-						value.hidden = false;
-					} else {
-						if (value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1) {
-							value.hidden = false;
-						} else {
-							value.hidden = true;
-						}
-					}
+					value.hidden = !(value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1);
 				});
 				break;
 		}
