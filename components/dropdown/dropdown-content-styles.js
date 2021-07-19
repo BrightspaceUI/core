@@ -285,7 +285,7 @@ export const dropdownContentStyles = css`
 	:host([data-mobile][mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
 	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
 	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
-	:host([data-mobile][mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top, {
+	:host([data-mobile][mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
 		min-height: auto;
 	}
 
