@@ -22,7 +22,7 @@ const multiDimensionFixture = html`
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
 
-describe.only('d2l-filter', () => {
+describe('d2l-filter', () => {
 
 	it('should construct', () => {
 		runConstructor('d2l-filter');
