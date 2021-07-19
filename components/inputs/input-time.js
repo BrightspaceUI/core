@@ -108,14 +108,14 @@ function initIntervals(size, enforceTimeIntervals) {
 
 /**
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
- * @fires change - Dispatched when a time is selected or typed. "value" reflects the selected value and is in ISO 8601 time format ("hh:mm:ss").
+ * @fires change - Dispatched when there is a change in selected time. "value" contains the selected value and is formatted in ISO 8601 time format ("hh:mm:ss").
  */
 class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			/**
-			 * Set default value of input. Valid values are times in ISO 8601 time format ("hh:mm:ss"), "startOfDay", "endOfDay".
+			 * Default value of input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
 			 * @type {'startOfDay'|'endOfDay'|string}
 			 */
 			defaultValue: { type: String, attribute: 'default-value' },
@@ -124,7 +124,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Rounds up to nearest valid interval time (specified with "time-interval") when user types a time
+			 * Rounds typed input up to nearest valid interval time (specified with "time-interval")
 			 */
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
 			/**
@@ -136,7 +136,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * Override max-height on the time dropdown menu
+			 * Overrides max-height of the time dropdown menu
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
@@ -144,12 +144,12 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Number of minutes between times shown in dropdown
+			 * Number of minutes between times shown in dropdown menu
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
 			timeInterval: { type: String, attribute: 'time-interval' },
 			/**
-			 * Value of the input. This should be in ISO 8601 time format ("hh:mm:ss") and should be localized to the user's timezone if applicable.
+			 * Value of the input
 			 */
 			value: { type: String },
 			_dropdownFirstOpened: { type: Boolean },

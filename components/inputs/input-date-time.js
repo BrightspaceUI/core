@@ -36,7 +36,7 @@ function _getFormattedDefaultTime(defaultValue) {
 
 /**
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
- * @fires change - Dispatched when there is a change in selected date or selected time. "value" reflects the selected value and is in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
+ * @fires change - Dispatched when there is a change in selected date or selected time. "value" contains the selected value and is formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
  */
 class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
 
@@ -47,23 +47,23 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the input
+			 * REQUIRED: Accessible label for the input fieldset that wraps the date and time inputs
 			 */
 			label: { type: String },
 			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * Hides the fieldset label visually
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
-			 * Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC
+			 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
 			 */
 			localized: { reflect: true, type: Boolean },
 			/**
-			 * Maximum valid date/time that could be selected by a user.
+			 * Maximum valid date/time that could be selected by a user
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
-			 * Minimum valid date/time that could be selected by a user.
+			 * Minimum valid date/time that could be selected by a user
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
@@ -71,12 +71,12 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Set default value of time portion of the input. Valid values are times in ISO 8601 time format ("hh:mm:ss"), "startOfDay", "endOfDay".
+			 * Default value of time input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
 			 * @type {'startOfDay'|'endOfDay'|string}
 			 */
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
-			 * Value of the input. This should be in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ") and in UTC time (i.e., do NOT localize to the user's timezone).
+			 * Value of the input
 			 */
 			value: { type: String },
 			_dropdownOpened: { type: Boolean },

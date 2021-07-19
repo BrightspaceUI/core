@@ -35,7 +35,7 @@ function getValidISOTimeAtInterval(val, timeInterval) {
 
 /**
  * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
- * @fires change - Dispatched when a start or end time is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar time format ("hh:mm:ss").
+ * @fires change - Dispatched when there is a change in selected start time or selected end time. "start-value" and "end-value" contain the selected values and are formatted in ISO 8601 calendar time format ("hh:mm:ss").
  */
 
 class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
@@ -43,7 +43,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	static get properties() {
 		return {
 			/**
-			 * Automatically shift end time when start time changes to keep same range
+			 * Automatically shifts end time when start time changes to keep same range
 			 */
 			autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
 			/**
@@ -55,7 +55,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Label for the end time input
+			 * Accessible label for the end time input
 			 * @default "End Time"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
@@ -64,27 +64,27 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
-			 * Rounds up to nearest valid interval time (specified with "time-interval") when user types a time
+			 * Rounds typed input up to nearest valid interval time (specified with "time-interval")
 			 */
 			enforceTimeIntervals: { attribute: 'enforce-time-intervals', reflect: true, type: Boolean },
 			/**
-			 * Validate on inclusive range
+			 * Validates on inclusive range (i.e., it is valid for start and end times to be equal)
 			 */
 			inclusiveTimeRange: { attribute: 'inclusive-time-range', reflect: true, type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the range
+			 * REQUIRED: Accessible label for the input fieldset that wraps the time inputs
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * Hides the label visually
+			 * Hides the fieldset label visually
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
-			 * Indicates that a value is required
+			 * Indicates that values are required
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Label for the start time input
+			 * Accessible label for the start time input
 			 * @default "Start Time"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
@@ -93,7 +93,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			/**
-			 * Number of minutes between times shown in dropdown
+			 * Number of minutes between times shown in dropdown menu
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
 			timeInterval: { attribute: 'time-interval', reflect: true, type: String },

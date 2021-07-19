@@ -59,16 +59,16 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
 
 /**
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.
- * @fires change - Dispatched when a start or end date or time is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
- * @slot start - Optional content that would appear below the first input-date-time
- * @slot end - Optional content that would appear below the second input-date-time
+ * @fires change - Dispatched when there is a change in selected start date-time or selected end date-time. "start-value" and "end-value" contain the selected values and are formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
+ * @slot start - Optional content that would appear below the start input-date-time
+ * @slot end - Optional content that would appear below the end input-date-time
  */
 class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Automatically shift end date when start date changes to keep same range
+			 * Automatically shifts end date when start date changes to keep same range. If start and end date are equal, automatically shifts end time when start time changes.
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
@@ -80,49 +80,49 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Label for the end input
+			 * Accessible label for the end date-time input
 			 * @default "End Date"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
-			 * Value of the end input
+			 * Value of the end date-time input
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
-			 * Validate on inclusive range
+			 * Validates on inclusive range (i.e., it is valid for start and end date-times to be equal)
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the range
+			 * REQUIRED: Accessible label for the input fieldset that wraps the date-time inputs
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * Hides the label visually
+			 * Hides the fieldset label visually
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
-			 * Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC
+			 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
 			 */
 			localized: { reflect: true, type: Boolean },
 			/**
-			 * Maximum valid date/time that could be selected by a user.
+			 * Maximum valid date/time that could be selected by a user
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
-			 * Minimum valid date/time that could be selected by a user.
+			 * Minimum valid date/time that could be selected by a user
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Indicates that a value is required
+			 * Indicates that values are required
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Label for the start input
+			 * Accessible label for the start date-time input
 			 * @default "Start Date"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
-			 * Value of the start input
+			 * Value of the start date-time input
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			_endDropdownOpened: { type: Boolean },
