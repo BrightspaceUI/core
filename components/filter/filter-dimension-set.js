@@ -19,6 +19,11 @@ class FilterDimensionSet extends LitElement {
 			 */
 			loading: { type: Boolean },
 			/**
+			 * Whether to hide the search input, perform a simple text search, or fire an event on search
+			 * @type {'none'|'automatic'|'manual'}
+			 */
+			searchType: { type: String, attribute: 'search-type' },
+			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 */
 			text: { type: String }
@@ -28,6 +33,7 @@ class FilterDimensionSet extends LitElement {
 	constructor() {
 		super();
 		this.loading = false;
+		this.searchType = 'automatic';
 		this.text = '';
 		this._slot = null;
 	}
@@ -86,8 +92,7 @@ class FilterDimensionSet extends LitElement {
 
 	_handleDimensionSetValueDataChange(e) {
 		e.stopPropagation();
-		this._dispatchDataChangeEvent({
-			dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
+		this._dispatchDataChangeEvent({ dimensionKey: this.key, valueKey: e.detail.valueKey, changes: e.detail.changes });
 	}
 
 	_handleSlotChange(e) {
