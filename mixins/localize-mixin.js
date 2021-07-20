@@ -183,6 +183,7 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 	}
 
 	_languageChange() {
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-localize-behavior-language-changed', { bubbles: true, composed: true }
 		));

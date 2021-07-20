@@ -159,12 +159,14 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 				errors = [...childErrors, ...errors];
 			}
 			const options = { bubbles: true, composed: true, detail: { errors } };
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-form-element-errors-change', options));
 		}
 		if (changedProperties.has('noValidate') || changedProperties.has('forceInvalid') || changedProperties.has('validationError')) {
 			const oldValue = this.invalid;
 			this.invalid = (this.forceInvalid || this.validationError !== null) && !this.noValidate;
 			if (this.invalid !== oldValue) {
+				/** @ignore */
 				this.dispatchEvent(new CustomEvent('invalid-change'));
 			}
 		}

@@ -313,6 +313,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			await this.updateComplete;
 			this._handleInputTimeFocus();
 		}
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-time-dropdown-toggle',
 			{ bubbles: false, composed: false, detail: { opened: e.detail.opened } }

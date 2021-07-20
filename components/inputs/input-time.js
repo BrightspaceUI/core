@@ -375,6 +375,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	_handleDropdownClose() {
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: false } }
@@ -384,6 +385,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	async _handleDropdownOpen() {
 		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: true } }
@@ -408,6 +410,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 		this._hiddenContentWidth = `${width}px`;
 
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-hidden-content-width-change',
 			{ bubbles: true, composed: false }
