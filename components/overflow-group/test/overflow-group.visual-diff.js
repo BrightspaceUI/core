@@ -27,9 +27,9 @@ describe('d2l-overflow-group', () => {
 	after(async() => await browser.close());
 
 	const minMaxTests = [
-		// {
-		// 	name: 'more-than-max-to-show'
-		// },
+		{
+			name: 'more-than-max-to-show'
+		},
 		{
 			name: 'less-than-min-to-show'
 		},
@@ -47,15 +47,15 @@ describe('d2l-overflow-group', () => {
 		}
 	];
 	const autoShow = [
-		// {
-		// 	name: 'auto-show-small',
-		// 	selector: '#auto-show-small',
-		// 	containerSelector: '#auto-show-small-container',
-		// 	action: async(selector) => {
-		// 		const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
-		// 		await overflowMenu.click();
-		// 	}
-		// },
+		{
+			name: 'auto-show-small',
+			selector: '#auto-show-small',
+			containerSelector: '#auto-show-small-container',
+			action: async(selector) => {
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown-mini');
+				await overflowMenu.click();
+			}
+		},
 		{
 			name: 'auto-show',
 			selector: '#auto-show',
@@ -69,6 +69,9 @@ describe('d2l-overflow-group', () => {
 	const iconType = [
 		{
 			name: 'opener-type-mini-menu',
+			action: async() => {
+				await page.mouse.move(0, 0);
+			}
 		},
 		{
 			name: 'opener-type-overflow-open-menu',
@@ -84,17 +87,17 @@ describe('d2l-overflow-group', () => {
 			name: 'opener-type-subtle-icon'
 		}
 	];
-	// const itemTypeConversion = [
-	// 	{
-	// 		name: 'all-item-types',
-	// 		action: async(selector) => {
-	// 			const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
-	// 			await overflowMenu.click();
-	// 		}
-	// 	}];
+	const itemTypeConversion = [
+		{
+			name: 'all-item-types',
+			action: async(selector) => {
+				const overflowMenu = await getShadowElem(selector, '.d2l-overflow-dropdown');
+				await overflowMenu.click();
+			}
+		}];
 	[
 		...hiddenButtonTests,
-		// ...itemTypeConversion,
+		...itemTypeConversion,
 		...minMaxTests,
 		...autoShow,
 		...iconType,
@@ -102,14 +105,12 @@ describe('d2l-overflow-group', () => {
 		it(test.name, async function() {
 			const selector = `#${test.name}`;
 			const containerSelector = `#${test.name}-container`;
-			await page.evaluate(() => {
-				return new Promise(resolve => setTimeout(resolve, 0));
-			});
+			await page.$eval(containerSelector || selector, (elem) => elem.scrollIntoView());
 			const rect = await visualDiff.getRect(page, containerSelector || selector);
 			if (test.action) {
 				await test.action(selector);
 			}
-			await visualDiff.screenshotAndCompare(page, `${this.test.fullTitle()}`, { clip: rect });
+			await visualDiff.screenshotAndCompare(page, `${this.test.fullTitle()}`, { captureBeyondViewport: false, clip: rect });
 		});
 	});
 });

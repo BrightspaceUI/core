@@ -10,15 +10,10 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Check License
         run: |
+          npm ci
           npm install d2l-license-checker@4 --no-save
-          npx d2l-license-checker -p
+      - name: Check License
+        run: npx d2l-license-checker -p

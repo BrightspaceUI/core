@@ -176,6 +176,7 @@ async function fetchWithCaching(resource) {
 
 	debug && console.log(`[Oslo] cache hit: ${resource}`);
 	if (!cacheValue.ok) {
+		fetchWithQueuing(resource).then(url => URL.revokeObjectURL(url));
 		throw SingleFailedReason;
 	}
 

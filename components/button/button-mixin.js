@@ -65,10 +65,34 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 
 	constructor() {
 		super();
-		this.autofocus = false;
 		this.disabled = false;
-		this.primary = false;
+
+		/** @ignore */
+		this.autofocus = false;
+
+		/** @ignore */
 		this.type = 'button';
+	}
+
+	/**
+	 * @attr disabled - Disables the button
+	 */
+	get disabled() { return this._disabled; }
+	set disabled(value) {
+		const oldValue = this._disabled;
+		this._disabled = value;
+		this.requestUpdate('disabled', oldValue);
+	}
+
+	/**
+	 * @attr disabled-tooltip - Tooltip text when disabled
+	 * @type {string}
+	 */
+	get disabledTooltip() { return this._disabledTooltip; }
+	set disabledTooltip(value) {
+		const oldValue = this._disabledTooltip;
+		this._disabledTooltip = value;
+		this.requestUpdate('disabledTooltip', oldValue);
 	}
 
 	connectedCallback() {
@@ -86,6 +110,7 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 		if (button) button.focus();
 	}
 
+	/** @internal */
 	_getType() {
 		if (this.type === 'submit' || this.type === 'reset') {
 			return this.type;
@@ -93,6 +118,7 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 		return 'button';
 	}
 
+	/** @internal */
 	_handleClick(e) {
 		if (this.disabled) {
 			e.stopPropagation();

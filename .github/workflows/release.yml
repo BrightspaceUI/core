@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
       - '[0-9]+.x'
       - '[0-9]+.[0-9]+.x'
 jobs:
@@ -18,14 +18,11 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: |
+          npm ci
+          npm install web-component-analyzer --no-save
       - name: Build
         run: npm run build
       - name: Create custom-elements.json
@@ -35,6 +32,7 @@ jobs:
       - name: Semantic Release
         uses: BrightspaceUI/actions/semantic-release@master
         with:
+          DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.D2L_GITHUB_TOKEN }}
           NPM: true
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
