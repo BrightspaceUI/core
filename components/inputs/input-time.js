@@ -108,7 +108,7 @@ function initIntervals(size, enforceTimeIntervals) {
 
 /**
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
- * @fires change - Dispatched when there is a change in selected time. "value" contains the selected value and is formatted in ISO 8601 time format ("hh:mm:ss").
+ * @fires change - Dispatched when there is a change to selected time. "value" corresponds to the selected value and is formatted in ISO 8601 time format ("hh:mm:ss").
  */
 class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 

@@ -59,7 +59,7 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
 
 /**
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.
- * @fires change - Dispatched when there is a change in selected start date-time or selected end date-time. "start-value" and "end-value" contain the selected values and are formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
+ * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. "start-value" and "end-value" correspond to the selected values and are formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
  * @slot start - Optional content that would appear below the start input-date-time
  * @slot end - Optional content that would appear below the end input-date-time
  */
@@ -124,12 +124,12 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			/**
 			 * Accessible label for the start date-time input. Defaults to localized "Start Date".
 			 * @type {string}
+			 * @default "Start Date"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Value of the start date-time input
 			 * @type {string}
-			 * @default "Start Date"
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			_endDropdownOpened: { type: Boolean },

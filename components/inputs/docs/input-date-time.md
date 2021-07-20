@@ -9,7 +9,6 @@ size:xlarge
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date.js';
   import '@brightspace-ui/core/components/inputs/input-time.js';
-  import '@brightspace-ui/core/components/inputs/input-date-time.js';
 </script>
 <d2l-input-date label="Date Input"></d2l-input-date>
 <d2l-input-time label="Time Input"></d2l-input-time>
@@ -29,8 +28,8 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 name:d2l-input-date
 align:flex-start
 autoSize:false
-size:xlarge
 defaults:{ "label": "Birthdate" }
+size:xlarge
 -->
 ```html
 <script type="module">
@@ -82,8 +81,8 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 name:d2l-input-date-range
 align:flex-start
 autoSize:false
-size:xlarge
 defaults:{ "label": "Availability Range" }
+size:xlarge
 -->
 ```html
 <script type="module">
@@ -142,8 +141,8 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 name:d2l-input-time
 align:flex-start
 autoSize:false
-size:large
 defaults:{ "label": "Time" }
+size:large
 -->
 ```html
 <script type="module">
@@ -195,8 +194,8 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 name:d2l-input-time-range
 align:flex-start
 autoSize:false
-size:large
 defaults:{ "label": "Availability Range" }
+size:large
 -->
 ```html
 <script type="module">
@@ -251,8 +250,8 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 name:d2l-input-date-time
 align:flex-start
 autoSize:false
-size:xlarge
 defaults:{ "label": "Due Date" }
+size:xlarge
 -->
 ```html
 <script type="module">
@@ -303,8 +302,8 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 name:d2l-input-date-time-range
 align:flex-start
 autoSize:false
-size:xlarge
 defaults:{ "label": "Availability Range" }
+size:xlarge
 -->
 ```html
 <script type="module">
@@ -349,7 +348,7 @@ To make your usage of `d2l-input-date-time-range` accessible, use the following 
 
 ## Timezone
 
-The `input-date-time` and `input-date-time-range` components expect an input in UTC (`YYYY-MM-DDTHH:mm:ss.sssZ`). These components will convert a value automatically to the user's timezone to display the date/time to them, and then will provide the value back in UTC. No timezone conversions are needed.
+The `input-date-time` and `input-date-time-range` components expect input in UTC (`YYYY-MM-DDTHH:mm:ss.sssZ`). These components will convert values automatically to the user's timezone to display the date/time to them, and then will provide the value back in UTC. No timezone conversions are needed.
 
 The `input-date`, `input-date-range`, `input-time`, and `input-time-range` components do not handle timezone and so require the input to be in the user's timezone (if applicable), which corresponds to the user's timezone as specified in their account settings. The consumer of the component will need to handle any necessary UTC to local to UTC conversions. The following methods can be used for these conversions:
 * `getLocalDateTimeFromUTCDateTime(utcDateTime)` (where `utcDateTime` is the date/time in the format `YYYY-MM-DDTHH:mm:ss.sssZ`) returns the date/time in the format `YYYY-MM-DDTHH:mm:ss.sss` in the user's local timezone
