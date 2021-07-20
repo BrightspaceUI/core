@@ -79,14 +79,30 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
 			forceInvalid: { type: Boolean, attribute: false },
+			/**
+			 * @ignore
+			 */
 			invalid: { type: Boolean, reflect: true },
 			/**
+			 * @ignore
 			 * Name of the form control. Submitted with the form as part of a name/value pair.
 			 */
 			name: { type: String },
+			/**
+			 * @ignore
+			 */
 			noValidate: { type: Boolean, attribute: 'novalidate' },
+			/**
+			 * @ignore
+			 */
 			validationError: { type: String, attribute: false },
+			/**
+			 * @ignore
+			 */
 			childErrors: { type: Object, attribute: false },
 			_errors: { type: Array, attribute: false }
 		};
@@ -99,11 +115,17 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 		this._validationCustoms = new Set();
 		this._validity = new FormElementValidityState({});
+		/** @ignore */
 		this.forceInvalid = false;
+		/** @ignore */
 		this.formValue = null;
+		/** @ignore */
 		this.invalid = false;
+		/** @ignore */
 		this.noValidate = false;
+		/** @ignore */
 		this.validationError = null;
+		/** @ignore */
 		this.childErrors = new Map();
 		this._errors = [];
 
@@ -111,10 +133,12 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
 	}
 
+	/** @ignore */
 	get formAssociated() {
 		return true;
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		const label = this.label || this.localize('components.form-element.defaultFieldLabel');
 		if (this.validity.valueMissing) {
@@ -123,6 +147,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		return this.localize('components.form-element.defaultError', { label });
 	}
 
+	/** @ignore */
 	get validity() {
 		return this._validity;
 	}

@@ -39,6 +39,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			emptyText: { type: String, attribute: 'empty-text' },
 			/**
 			 * REQUIRED: Accessible label for the input
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
@@ -47,13 +48,16 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
 			 * Maximum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
 			 * Minimum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
+			 * @ignore
 			 * Disables validation of max and min value. The min and max value will still be enforced but the component will not be put into an error state or show an error tooltip.
 			 */
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
@@ -128,6 +132,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
+		/** @ignore */
 		this.noValidateMinMax = false;
 		this.required = false;
 		this.value = '';
@@ -147,6 +152,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;

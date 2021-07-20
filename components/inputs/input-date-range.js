@@ -47,12 +47,14 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the end date input
+			 * Accessible label for the end date input. Defaults to localized "End Date".
+			 * @type {string}
 			 * @default "End Date"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
 			 * Value of the end date input
+			 * @type {string}
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
@@ -61,6 +63,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
 			 * REQUIRED: Accessible label for the input fieldset that wraps the date inputs
+			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
@@ -69,10 +72,12 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
 			 * Maximum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
 			 * Minimum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
@@ -80,12 +85,14 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the start date input
+			 * Accessible label for the start date input. Defaults to localized "Start Date".
+			 * @type {string}
 			 * @default "Start Date"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Value of the start date input
+			 * @type {string}
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			_endCalendarOpened: { attribute: false, type: Boolean },
@@ -123,6 +130,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this._endInputId = getUniqueId();
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.badInput) {
 			return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });

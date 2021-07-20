@@ -48,6 +48,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			disabled: { type: Boolean },
 			/**
 			 * REQUIRED: Accessible label for the input fieldset that wraps the date and time inputs
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
@@ -60,10 +61,12 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			localized: { reflect: true, type: Boolean },
 			/**
 			 * Maximum valid date/time that could be selected by a user
+			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
 			 * Minimum valid date/time that could be selected by a user
+			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
@@ -72,7 +75,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			required: { type: Boolean, reflect: true },
 			/**
 			 * Default value of time input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
-			 * @type {'startOfDay'|'endOfDay'|string}
+			 * @type {string}
 			 */
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
@@ -165,6 +168,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		this.requestUpdate('value', oldValue);
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minDate = this.minValue ? formatDateTime(this.localized ? getDateNoConversion(this.minValue) : getDateFromISODateTime(this.minValue), { format: 'medium' }) : null;

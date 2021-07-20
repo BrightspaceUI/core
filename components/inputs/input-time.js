@@ -116,7 +116,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		return {
 			/**
 			 * Default value of input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
-			 * @type {'startOfDay'|'endOfDay'|string}
+			 * @type {string}
 			 */
 			defaultValue: { type: String, attribute: 'default-value' },
 			/**
@@ -129,6 +129,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
 			/**
 			 * REQUIRED: Accessible label for the input
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
@@ -137,6 +138,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
 			 * Overrides max-height of the time dropdown menu
+			 * @type {number}
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
@@ -150,6 +152,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			timeInterval: { type: String, attribute: 'time-interval' },
 			/**
 			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String },
 			_dropdownFirstOpened: { type: Boolean },

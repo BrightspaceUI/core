@@ -55,12 +55,14 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the end time input
+			 * Accessible label for the end time input. Defaults to localized "End Time".
+			 * @type {string}
 			 * @default "End Time"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
 			 * Value of the end time input
+			 * @type {string}
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
@@ -73,6 +75,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			inclusiveTimeRange: { attribute: 'inclusive-time-range', reflect: true, type: Boolean },
 			/**
 			 * REQUIRED: Accessible label for the input fieldset that wraps the time inputs
+			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
@@ -84,12 +87,14 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the start time input
+			 * Accessible label for the start time input. Defaults to localized "Start Time".
+			 * @type {string}
 			 * @default "Start Time"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Value of the start time input
+			 * @type {string}
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			/**
@@ -155,6 +160,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this.requestUpdate('startValue', oldValue);
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.badInput) {
 			return this.localize('components.input-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });

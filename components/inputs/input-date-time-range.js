@@ -80,12 +80,14 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the end date-time input
+			 * Accessible label for the end date-time input. Defaults to localized "End Date".
+			 * @type {string}
 			 * @default "End Date"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
 			 * Value of the end date-time input
+			 * @type {string}
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
@@ -94,6 +96,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
 			 * REQUIRED: Accessible label for the input fieldset that wraps the date-time inputs
+			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
@@ -106,10 +109,12 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			localized: { reflect: true, type: Boolean },
 			/**
 			 * Maximum valid date/time that could be selected by a user
+			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
 			 * Minimum valid date/time that could be selected by a user
+			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
@@ -117,12 +122,14 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Accessible label for the start date-time input
-			 * @default "Start Date"
+			 * Accessible label for the start date-time input. Defaults to localized "Start Date".
+			 * @type {string}
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Value of the start date-time input
+			 * @type {string}
+			 * @default "Start Date"
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			_endDropdownOpened: { type: Boolean },
@@ -168,6 +175,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this._slotOccupied = false;
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.badInput) {
 			return this.localize('components.input-date-time-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });
