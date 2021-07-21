@@ -192,6 +192,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 
 	_handleResize() {
 		this._autoSize = !mediaQueryList.matches;
+		this.resize();
 	}
 
 }
