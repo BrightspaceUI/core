@@ -24,4 +24,9 @@
 		line-height: 1.05rem;
 		letter-spacing: 0.01rem;
 	}
+	@media print {
+		&, &:visited, &:link, &:active {
+			color: $d2l-color-ferrite;
+		}
+	}
 }

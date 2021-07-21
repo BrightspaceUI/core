@@ -30,6 +30,11 @@ export const linkStyles = css`
 		bottom: 0.15rem;
 		top: 0.15rem;
 	}
+	@media print {
+		.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
+			color: var(--d2l-color-ferrite);
+		}
+	}
 `;
 
 /**
