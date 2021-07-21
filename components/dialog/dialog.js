@@ -33,7 +33,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 * The preferred width (unit-less) for the dialog
 			 */
 			width: { type: Number },
-			_hasFooterContent: { type: Boolean, attribute: false }
+			_hasFooterContent: { type: Boolean, attribute: false },
+			_inIframe: { type: Boolean, attribute: 'in-iframe' },
 		};
 	}
 
@@ -89,6 +90,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 					margin-right: 15px;
 				}
 
+				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
+				:host(:not([in-iframe])) div.d2l-dialog-outer {
+					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+				}
 			}
 
 		`];
@@ -98,6 +104,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		super();
 		this.async = false;
 		this.width = 600;
+		this._inIframe = false;
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
 	}
@@ -116,7 +123,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		super.disconnectedCallback();
 	}
 
-
 	render() {
 
 		let loading = null;
@@ -133,10 +139,9 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		const heightOverride = {} ;
 		if (mediaQueryList.matches) {
 			if (this._ifrauContextInfo) {
+				this._inIframe = true;
 				// in iframes, use calculated available height from dialog mixin minus padding
 				heightOverride.minHeight = `${this._ifrauContextInfo.availableHeight - 42}px`;
-			} else {
-				heightOverride.minHeight = 'calc(var(--d2l-vh, 1vh) * 100 - 42px)';
 			}
 		}
 

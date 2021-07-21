@@ -217,10 +217,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			heightOverride.height = mediaQueryList.matches
 				? `${this._ifrauContextInfo.availableHeight - 42}px`
 				: `${this._ifrauContextInfo.availableHeight - 60}px`;
-		} else {
-			heightOverride.height = mediaQueryList.matches
-				? 'calc(var(--d2l-vh, 1vh) * 100 - 42px)'
-				: 'calc(100% - 3rem)';
 		}
 		heightOverride.minHeight = heightOverride.height;
 
