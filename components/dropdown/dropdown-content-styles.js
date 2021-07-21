@@ -268,37 +268,26 @@ export const dropdownContentStyles = css`
 		height: 100vh;
 	}
 
-	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-pointer,
-	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-pointer,
-	:host([data-mobile][mobile-tray="bottom"]) > .d2l-dropdown-content-pointer {
+	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-pointer {
 		display: none;
 	}
 
-	:host([data-mobile][mobile-tray="right"][opened]),
-	:host([data-mobile][mobile-tray="left"][opened]),
-	:host([data-mobile][mobile-tray="bottom"][opened]) {
+
+	:host([data-mobile][mobile-tray][opened]) {
 		animation: none;
 	}
 
-	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
-	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
-	:host([data-mobile][mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
-	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
-	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
-	:host([data-mobile][mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
+	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
+	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
 		min-height: auto;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
-		:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
-		:host([data-mobile][mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		:host([data-mobile][mobile-tray][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
 			animation: none;
 		}
 
-		:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
-		:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
-		:host([data-mobile][mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+		:host([data-mobile][mobile-tray][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 			animation: none;
 		}
 	}
