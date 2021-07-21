@@ -2,7 +2,7 @@
 
 Switch components are similar to button toggles and checkboxes, except that they have on/off semantics that reflect their appearance more closely. In contrast to checkboxes, changes are generally expected to be immediate as opposed to submitted as part of a form.
 
-<!-- docs: demo -->
+<!-- docs: demo name:d2l-switch -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch.js';
@@ -12,12 +12,10 @@ Switch components are similar to button toggles and checkboxes, except that they
 <d2l-switch-visibility text="Visibility Switch" tooltip="Click to toggle!" on></d2l-switch-visibility>
 ```
 
-## Switch [d2l-switch]
+## Switch [d2l-switch]	
 The `d2l-switch` element is a generic switch with on/off semantics.
 
-<!-- docs: demo live
-name:d2l-switch
--->
+<!-- docs: demo live name:d2l-switch -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch.js';

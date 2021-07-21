@@ -12,24 +12,28 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 		return {
 			/**
 			 * Disables the switch from being toggled.
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
 			 * Active state.
+			 * @type {boolean}
 			 */
 			on: { type: Boolean, reflect: true },
 			/**
 			 * REQUIRED: The text that is displayed for the switch label.
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
 			/**
 			 * Determines where text should be positioned relative to the switch.
 			 * @type {'start'|'end'}
-			 * @default "end"
+			 * @default end
 			 */
 			textPosition: { type: String, attribute: 'text-position', reflect: true },
 			/**
-			 * The text that is displayed in a tooltip when hovering the switch.
+			 * The text that is displayed in a tooltip when the switch is hovered over.
+			 * @type {string}
 			 */
 			tooltip: { type: String, reflect: true }
 		};
@@ -211,6 +215,9 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('on') || changedProperties.get('on') === undefined) return;
+		/**
+		 *  Dispatched when there is a change to the switch value. "on" corresponds to the current state of the switch.
+		 */
 		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 	}
 
