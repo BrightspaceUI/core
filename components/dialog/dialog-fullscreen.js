@@ -76,7 +76,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
 					border-radius: 8px;
-					height: calc(100% - 3rem);
 					margin: 1.5rem;
 					max-width: 1170px;
 					opacity: 0;
@@ -163,9 +162,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
-					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					margin: 0 !important;
-					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
 				}
@@ -200,6 +197,19 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	render() {
 
+		const heightOverride = {} ;
+		if (this._ifrauContextInfo) {
+			// in iframes, use calculated available height from dialog mixin minus padding
+			heightOverride.height = mediaQueryList.matches
+				? `${this._ifrauContextInfo.availableHeight - 42}px`
+				: `${this._ifrauContextInfo.availableHeight - 60}px`;
+		} else {
+			heightOverride.height = mediaQueryList.matches
+				? 'calc(var(--d2l-vh, 1vh) * 100 - 42px)'
+				: 'calc(100% - 3rem)';
+		}
+		heightOverride.minHeight = heightOverride.height;
+
 		let loading = null;
 		const slotStyles = {};
 		if (this.async && this.asyncState !== asyncStates.complete) {
@@ -223,7 +233,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
-			<div class="d2l-dialog-inner">
+			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="${this._headerStyle}">${this.titleText}</h2>
