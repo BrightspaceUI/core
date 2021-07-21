@@ -27,7 +27,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			text: { type: String, reflect: true },
 			/**
 			 * Determines where text should be positioned relative to the switch.
-			 * @type {'start'|'end'}
+			 * @type {'start'|'end'|'hidden'}
 			 * @default end
 			 */
 			textPosition: { type: String, attribute: 'text-position', reflect: true },
