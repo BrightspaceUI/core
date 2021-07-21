@@ -29,7 +29,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			async: { type: Boolean },
 			_hasFooterContent: { type: Boolean, attribute: false },
 			_icon: { type: String, attribute: false },
-			_headerStyle: { type: String, attribute: false }
+			_headerStyle: { type: String, attribute: false },
+			_inIframe: { type: Boolean, attribute: 'in-iframe' },
 		};
 	}
 
@@ -83,6 +84,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					transform: translateY(-50px) scale(0.97);
 					transition: transform 200ms ease-out, opacity 200ms ease-out;
 					width: auto;
+				}
+
+				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
+				:host(:not([in-iframe])) div.d2l-dialog-outer {
+					height: calc(100% - 3rem);
 				}
 
 				/* for screens wider than 1170px + 60px margins */
@@ -166,6 +172,12 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
 				}
+
+				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
+				:host(:not([in-iframe])) div.d2l-dialog-outer {
+					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+				}
 			}
 		`];
 	}
@@ -179,6 +191,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		this._headerStyle = 'd2l-heading-2';
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
+		this._inIframe = false;
 	}
 
 	get asyncContainerCustom() {
@@ -199,6 +212,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 		const heightOverride = {} ;
 		if (this._ifrauContextInfo) {
+			this._inIframe = true;
 			// in iframes, use calculated available height from dialog mixin minus padding
 			heightOverride.height = mediaQueryList.matches
 				? `${this._ifrauContextInfo.availableHeight - 42}px`
