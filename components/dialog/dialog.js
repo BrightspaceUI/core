@@ -34,7 +34,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 */
 			width: { type: Number },
 			_hasFooterContent: { type: Boolean, attribute: false },
-			_inIframe: { type: Boolean, attribute: 'in-iframe' },
+			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
 		};
 	}
 

@@ -30,7 +30,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			_hasFooterContent: { type: Boolean, attribute: false },
 			_icon: { type: String, attribute: false },
 			_headerStyle: { type: String, attribute: false },
-			_inIframe: { type: Boolean, attribute: 'in-iframe' },
+			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
 		};
 	}
 
@@ -217,8 +217,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			heightOverride.height = mediaQueryList.matches
 				? `${this._ifrauContextInfo.availableHeight - 42}px`
 				: `${this._ifrauContextInfo.availableHeight - 60}px`;
+			heightOverride.minHeight = heightOverride.height;
 		}
-		heightOverride.minHeight = heightOverride.height;
 
 		let loading = null;
 		const slotStyles = {};
