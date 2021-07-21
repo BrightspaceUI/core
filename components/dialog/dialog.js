@@ -11,7 +11,7 @@ import { heading3Styles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
-const mediaQueryList = window.matchMedia('(max-width: 615px)');
+const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
 
 /**
  * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
@@ -34,7 +34,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 */
 			width: { type: Number },
 			_hasFooterContent: { type: Boolean, attribute: false },
-			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
 		};
 	}
 
@@ -104,7 +103,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		super();
 		this.async = false;
 		this.width = 600;
-		this._inIframe = false;
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
 	}
@@ -139,7 +137,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		const heightOverride = {} ;
 		if (mediaQueryList.matches) {
 			if (this._ifrauContextInfo) {
-				this._inIframe = true;
 				// in iframes, use calculated available height from dialog mixin minus padding
 				heightOverride.minHeight = `${this._ifrauContextInfo.availableHeight - 42}px`;
 			}
