@@ -761,9 +761,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			} else {
 				maxWidthOverride = mobileTrayMaxWidthDefault;
 			}
-		}
-
-		if (mobileTrayBottom) {
+		} else if (mobileTrayBottom) {
 			maxWidthOverride = '100vw';
 		}
 
@@ -777,31 +775,32 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			} else {
 				minWidthOverride = mobileTrayMinWidthDefault;
 			}
-		}
-		if (mobileTrayBottom) {
+		} else if (mobileTrayBottom) {
 			minWidthOverride = 'calc(100vw - 2px)';
 		}
 
 		// set to max width
-		let widthOverride = this._width ? this._width : maxWidthOverride;
-
-		if (!mobileTrayBottom) {
+		let widthOverride;
+		if (!specialMobileStyle) {
+			widthOverride = this._width;
 			if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
 			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
 			maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
 			minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
-		} else if (!specialMobileStyle) {
-			widthOverride = this._width;
+		} else if (mobileTrayRightLeft) {
+			widthOverride = this._width ? this._width : maxWidthOverride;
+			if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
+			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
+			maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
+			minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
 		} else {
 			widthOverride = undefined;
 		}
 
 		let maxHeightOverride;
-		if (!specialMobileStyle) {
-			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
-		}
-		if (mobileTrayRightLeft) maxHeightOverride = '';
-		if (mobileTrayBottom) {
+		if (mobileTrayRightLeft) {
+			maxHeightOverride = '';
+		} else if (mobileTrayBottom) {
 			// default maximum height for tray (42px margin)
 			const mobileTrayMaxHeightDefault = window.innerHeight - minBackdropHeightMobile;
 			if (this.maxHeight) {
@@ -811,25 +810,27 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				maxHeightOverride = mobileTrayMaxHeightDefault;
 			}
 			maxHeightOverride = `${maxHeightOverride}px`;
+		} else {
+			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
 		}
 
 		let contentWidth;
 		let containerWidth;
-		if (!this.mobileTray && !this._width) {
-			contentWidth = '';
-			containerWidth = '';
-		} else if (mobileTrayBottom) {
+		if (mobileTrayBottom) {
 			contentWidth = 'calc(100vw - 2px)';
 			containerWidth = '100vw';
+		} else if (!specialMobileStyle && !this._width) {
+			contentWidth = '';
+			containerWidth = '';
 		} else {
 			contentWidth = `${widthOverride + 18}px`;
+			/* add 2 to content width since scrollWidth does not include border */
 			containerWidth = `${widthOverride + 20}px`;
 		}
 
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
 			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
-			/* add 2 to content width since scrollWidth does not include border */
 			width: containerWidth,
 			maxHeight: mobileTrayBottom ? maxHeightOverride : '',
 		};
