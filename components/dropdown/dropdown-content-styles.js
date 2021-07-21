@@ -211,11 +211,27 @@ export const dropdownContentStyles = css`
 		100% { opacity: 0; transform: translateX(-100%); }
 	}
 
+	@keyframes d2l-dropdown-mobile-tray-bottom {
+		0% { opacity: 0; transform: translateY(100%); }
+		100% { opacity: 1; transform: translate(0, 0); }
+	}
+
+	@keyframes d2l-dropdown-mobile-tray-bottom-close {
+		0% { opacity: 1; transform: translate(0, 0); }
+		100% { opacity: 0; transform: translateY(100%); }
+	}
+
 	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
 	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
 		height: 100vh;
 		position: fixed;
 		top: 0;
+		z-index: 1000;
+	}
+
+	:host([data-mobile][mobile-tray="bottom"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		left: 0;
+		position: fixed;
 		z-index: 1000;
 	}
 
@@ -229,6 +245,11 @@ export const dropdownContentStyles = css`
 		left: 0;
 	}
 
+	:host([data-mobile][mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		animation: d2l-dropdown-mobile-tray-bottom 300ms ease-out;
+		bottom: 0;
+	}
+	
 	:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 		animation: d2l-dropdown-mobile-tray-right-close 300ms ease-out;
 	}
@@ -237,35 +258,36 @@ export const dropdownContentStyles = css`
 		animation: d2l-dropdown-mobile-tray-left-close 300ms ease-out;
 	}
 
+	:host([data-mobile][mobile-tray="bottom"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+		animation: d2l-dropdown-mobile-tray-bottom-close 300ms ease-out;
+	}
+
+
 	:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container,
 	:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-container {
 		height: 100vh;
 	}
 
-	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-pointer,
-	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-pointer {
+	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-pointer {
 		display: none;
 	}
 
-	:host([data-mobile][mobile-tray="right"][opened]), :host([data-mobile][mobile-tray="left"][opened]) {
+
+	:host([data-mobile][mobile-tray][opened]) {
 		animation: none;
 	}
 
-	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
-	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
-	:host([data-mobile][mobile-tray="left"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top,
-	:host([data-mobile][mobile-tray="right"]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
+	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-bottom,
+	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width > .d2l-dropdown-content-top {
 		min-height: auto;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width,
-		:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
+		:host([data-mobile][mobile-tray][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width {
 			animation: none;
 		}
 
-		:host([data-mobile][mobile-tray="left"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing],
-		:host([data-mobile][mobile-tray="right"][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
+		:host([data-mobile][mobile-tray][opened]) > .d2l-dropdown-content-position > .d2l-dropdown-content-width[data-closing] {
 			animation: none;
 		}
 	}
