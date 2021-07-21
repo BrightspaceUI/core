@@ -21,7 +21,7 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 			 */
 			download: { type: String },
 			/**
-			 * The url the menu item link navigates to
+			 * REQUIRED: The url the menu item link navigates to
 			 * @type {string}
 			 */
 			href: { type: String },
