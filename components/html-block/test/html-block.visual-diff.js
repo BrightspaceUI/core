@@ -14,7 +14,10 @@ describe('d2l-html-block', () => {
 		await page.bringToFront();
 	});
 
-	beforeEach(async() => await visualDiff.resetFocus(page));
+	beforeEach(async() => {
+		await visualDiff.resetFocus(page);
+		await page.emulateMediaType('screen');
+	});
 
 	after(async() => await browser.close());
 
@@ -22,7 +25,8 @@ describe('d2l-html-block', () => {
 		{ name: 'empty', selector: '#empty' },
 		{ name: 'empty-template', selector: '#empty-template' },
 		{ name: 'no-template', selector: '#no-template' },
-		{ name: 'typography', selector: '#typography' },
+		{ name: 'typography-print', selector: '#typography', action: () => page.emulateMediaType('print') },
+		{ name: 'typography-screen', selector: '#typography' },
 		{ name: 'update-template', selector: '#update-template', action: selector => page.$eval(selector, elem => elem.innerHTML = '<template>after update</template>') },
 		{ name: 'update-content', selector: '#update-content', action: selector => page.$eval(selector, elem => elem.querySelector('template').content.textContent = 'after update') },
 		//{ name: 'math (block)', selector: '#math-block' },
