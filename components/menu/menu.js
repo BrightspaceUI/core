@@ -19,7 +19,6 @@ const keyCodes = {
  * A wrapper component for a menu containing menu items.
  * @slot - Menu items
  * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
- * @fires d2l-hierarchical-view-hide-start - @ignore
  */
 class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
@@ -31,6 +30,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 			active: { type: Boolean, reflect: true },
 			/**
 			 * Text to be applied to menu "aria-label" for use with screen readers (REQUIRED for root menu)
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
@@ -79,6 +79,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	constructor() {
 		super();
+		/** @ignore */
 		this.role = 'menu';
 		this._items = [];
 	}
@@ -86,6 +87,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 	connectedCallback() {
 		super.connectedCallback();
 
+		/** @ignore */
 		this.active = this.getActiveView() === this;
 	}
 
