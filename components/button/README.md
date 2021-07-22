@@ -2,7 +2,7 @@
 
 A Button is used to communicate and perform an action.
 
-<!-- docs: demo name:d2l-button -->
+<!-- docs: demo -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';

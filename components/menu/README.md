@@ -2,7 +2,7 @@
 
 A menu displays a list of choices or actions. They generally appear when the user interacts with a dropdown or button.
 
-<!-- docs: demo name:d2l-menu -->
+<!-- docs: demo -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -31,17 +31,14 @@ A basic menu can be defined using `d2l-menu` and a combination of menu items (e.
 ![Menu](./screenshots/menu.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name:d2l-menu
-defaults:{ "label": "Example Menu" }
--->
+<!-- docs: demo live name:d2l-menu -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
   import '@brightspace-ui/core/components/menu/menu-item.js';
 </script>
 
-<d2l-menu>
+<d2l-menu label="Example Menu">
   <d2l-menu-item text="Menu Item 1"></d2l-menu-item>
   <d2l-menu-item text="Menu Item 2"></d2l-menu-item>
 </d2l-menu>
@@ -75,12 +72,7 @@ The `d2l-menu item` component is used with JS handlers and can be wired-up to th
 ![Menu Items](./screenshots/menu-items.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name:d2l-menu-item
-autoSize:false
-allInstancesInteractive:true
-defaults:{ "text": "Example Menu Item" }
--->
+<!-- docs: demo live name:d2l-menu-item -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -95,8 +87,8 @@ defaults:{ "text": "Example Menu Item" }
 </script>
 
 <d2l-menu label="Example Menu" id="menu">
-  <d2l-menu-item></d2l-menu-item>
-  <d2l-menu-item>
+  <d2l-menu-item text="Example Menu Item 1"></d2l-menu-item>
+  <d2l-menu-item text="Example Menu Item 2">
 	<d2l-menu label="Nested Menu">
 		<d2l-menu-item></d2l-menu-item>
 	</d2l-menu>
@@ -133,11 +125,7 @@ To make your usage of `d2l-menu-item` accessible, use the following property:
 
 This `d2l-menu-item-link` is used for navigating. It gives users the ability to right-click and open in a new tab.
 
-<!-- docs: demo live
-name:d2l-menu-item-link
-autoSize:false
-defaults:{ "text": "Link Menu Item", "href": "https://en.wikipedia.org/wiki/Universe" }
--->
+<!-- docs: demo live name:d2l-menu-item-link -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -145,7 +133,7 @@ defaults:{ "text": "Link Menu Item", "href": "https://en.wikipedia.org/wiki/Univ
 </script>
 
 <d2l-menu label="Menu with Link Menu Items">
-  <d2l-menu-item-link></d2l-menu-item-link>
+  <d2l-menu-item-link text="Link Menu Item" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
   <d2l-menu-item-link text="Second Link Menu Item" href="https://www.google.ca"></d2l-menu-item-link>
 </d2l-menu>
 ```
@@ -177,11 +165,7 @@ The `d2l-menu-item-checkbox` component is used for selection. It can be wired-up
 ![Checkbox Menu](./screenshots/checkbox-menu.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name:d2l-menu-item-checkbox
-autoSize:false
-defaults:{ "text": "Checkbox Option 1", "value": "1" }
--->
+<!-- docs: demo live name:d2l-menu-item-checkbox -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -196,7 +180,7 @@ defaults:{ "text": "Checkbox Option 1", "value": "1" }
 </script>
 
 <d2l-menu label="Menu with Checkbox Menu Items" id="menu-checkbox">
-  <d2l-menu-item-checkbox></d2l-menu-item-checkbox>
+  <d2l-menu-item-checkbox text="Checkbox Option 1" value="1"></d2l-menu-item-checkbox>
   <d2l-menu-item-checkbox text="Checkbox Option 2" value="2"></d2l-menu-item-checkbox>
 </d2l-menu>
 ```
@@ -232,11 +216,7 @@ The `d2l-menu-item-radio` component is used for selection. It can be wired-up to
 ![Radio Menu](./screenshots/radio-menu.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name: d2l-menu-item-radio
-autoSize:false
-defaults:{ "text": "Radio Option 1", "value": "1" }
--->
+<!-- docs: demo live name: d2l-menu-item-radio -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
@@ -251,7 +231,7 @@ defaults:{ "text": "Radio Option 1", "value": "1" }
 </script>
 
 <d2l-menu label="Menu with Radio Menu Items" id="menu-radio">
-  <d2l-menu-item-radio></d2l-menu-item-radio>
+  <d2l-menu-item-radio text="Radio Option 1" value="1"></d2l-menu-item-radio>
   <d2l-menu-item-radio text="Radio Option 2" value="2"></d2l-menu-item-radio>
 </d2l-menu>
 ```
@@ -283,10 +263,7 @@ To make your usage of `d2l-menu-item-radio` accessible, use the following proper
 
 The `d2l-menu-item-separator` component can be used to semantically separate menu items.
 
-<!-- docs: demo live
-name: d2l-menu-item-separator
-autoSize:false
--->
+<!-- docs: demo live name:d2l-menu-item-separator -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
