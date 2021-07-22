@@ -124,6 +124,9 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 	_generatePossibleLanguages() {
 		const langs = new Set();
 
+		langs.add('en');
+		langs.add('en-us');
+
 		let docLang = this.__documentLocaleSettings.language;
 		if (docLang) {
 			docLang = docLang.toLowerCase();
@@ -145,9 +148,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 				langs.add(baseDocFallbackLang);
 			}
 		}
-
-		langs.add('en-us');
-		langs.add('en');
 
 		return Array.from(langs);
 	}
