@@ -124,7 +124,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 
 	get maxFractionDigits() {
 		// emulate Intl's default maxFractionDigits behaviour
-		return this._maxFractionDigits ?? Math.max(this.minFractionDigits, 3);
+		if (this._maxFractionDigits === null || this._maxFractionDigits === undefined) {
+			return Math.max(this.minFractionDigits, 3);
+		}
+
+		return this._maxFractionDigits;
 	}
 	set maxFractionDigits(val) {
 		if (isNaN(val) || val < 0 || val > 20 || val < this.minFractionDigits) {
@@ -135,7 +139,11 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 
 	get minFractionDigits() {
-		return this._minFractionDigits ?? 0;
+		if (this._minFractionDigits === null || this._minFractionDigits === undefined) {
+			return 0;
+		}
+
+		return this._minFractionDigits;
 	}
 	set minFractionDigits(val) {
 		if (isNaN(val) || val < 0 || val > 20 || val < this.minFractionDigits) {
