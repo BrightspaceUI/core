@@ -243,6 +243,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._setValue(val, true);
 	}
 
+	get selectionEnd() {
+		const elem = this.shadowRoot.querySelector('.d2l-input');
+		return elem ? elem.selectionEnd : 0;
+	}
+
 	get selectionStart() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		return elem ? elem.selectionStart : 0;
