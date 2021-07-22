@@ -124,7 +124,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 
 	get maxFractionDigits() {
 		// emulate Intl's default maxFractionDigits behaviour
-		if (!this._maxFractionDigits) {
+		if (this._maxFractionDigits === null || this._maxFractionDigits === undefined) {
 			return Math.max(this.minFractionDigits, 3);
 		}
 
@@ -139,7 +139,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 	}
 
 	get minFractionDigits() {
-		if (!this._minFractionDigits) {
+		if (this._minFractionDigits === null || this._minFractionDigits === undefined) {
 			return 0;
 		}
 
