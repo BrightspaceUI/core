@@ -8,8 +8,8 @@ Switch components are similar to button toggles and checkboxes, except that they
   import '@brightspace-ui/core/components/switch/switch.js';
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
-<d2l-switch text="Switcheroo" tooltip="Click to toggle!"></d2l-switch>
-<d2l-switch-visibility text="Visibility Switch" tooltip="Click to toggle!" on></d2l-switch-visibility>
+<d2l-switch text="My Switch" tooltip="Click to toggle!"></d2l-switch>
+<d2l-switch-visibility tooltip="Click to toggle!" on></d2l-switch-visibility>
 ```
 
 ## Switch [d2l-switch]	
@@ -24,11 +24,10 @@ The `d2l-switch` element is a generic switch with on/off semantics.
   import '@brightspace-ui/core/components/switch/switch.js';
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
-<d2l-switch></d2l-switch>
+<d2l-switch text="My Switch"></d2l-switch>
 ```
 
 <!-- docs: start hidden content -->
-
 ### Properties
 
 | Property | Type | Description |
@@ -65,7 +64,7 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
 
-<d2l-switch-visibility text="My Switch"></d2l-switch-visibility>
+<d2l-switch-visibility></d2l-switch-visibility>
 ```
 
 <!-- docs: start hidden content -->
