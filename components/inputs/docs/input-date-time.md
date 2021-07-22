@@ -28,14 +28,13 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 name:d2l-input-date
 align:flex-start
 autoSize:false
-defaults:{ "label": "Birthdate" }
 size:xlarge
 -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date.js';
 </script>
-<d2l-input-date>
+<d2l-input-date label="Birthdate">
 </d2l-input-date>
 ```
 
@@ -81,14 +80,13 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 name:d2l-input-date-range
 align:flex-start
 autoSize:false
-defaults:{ "label": "Availability Range" }
 size:xlarge
 -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-range.js';
 </script>
-<d2l-input-date-range>
+<d2l-input-date-range label="Availability Range">
 </d2l-input-date-range>
 ```
 
@@ -141,14 +139,13 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 name:d2l-input-time
 align:flex-start
 autoSize:false
-defaults:{ "label": "Time" }
 size:large
 -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time.js';
 </script>
-<d2l-input-time>
+<d2l-input-time label="Time">
 </d2l-input-time>
 ```
 
@@ -194,14 +191,13 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 name:d2l-input-time-range
 align:flex-start
 autoSize:false
-defaults:{ "label": "Availability Range" }
 size:large
 -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time-range.js';
 </script>
-<d2l-input-time-range>
+<d2l-input-time-range label="Availability Range">
 </d2l-input-time-range>
 ```
 
@@ -250,14 +246,13 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 name:d2l-input-date-time
 align:flex-start
 autoSize:false
-defaults:{ "label": "Due Date" }
 size:xlarge
 -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time.js';
 </script>
-<d2l-input-date-time>
+<d2l-input-date-time label="Due Date">
 </d2l-input-date-time>
 ```
 
@@ -302,14 +297,13 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 name:d2l-input-date-time-range
 align:flex-start
 autoSize:false
-defaults:{ "label": "Availability Range" }
 size:xlarge
 -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time-range.js';
 </script>
-<d2l-input-date-time-range>
+<d2l-input-date-time-range label="Availability Range">
 </d2l-input-date-time-range>
 ```
 
