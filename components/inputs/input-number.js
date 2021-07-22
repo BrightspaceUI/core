@@ -374,7 +374,9 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		const key = e.key;
 		let prevent = false;
 		let hintType = HINT_TYPES.NONE;
-		const hasDecimal = e.target.value.indexOf(this._descriptor.symbols.decimal) > -1;
+		const decimalIndex = e.target.value.indexOf(this._descriptor.symbols.decimal);
+		const hasDecimal = decimalIndex > -1 &&
+			(decimalIndex >= e.target.selectionEnd || decimalIndex < e.target.selectionStart);
 		if (key === this._descriptor.symbols.negative) {
 			// negative symbol must be at the end
 			if (this._descriptor.patterns.decimal.negativePattern === '{number}-') {

@@ -61,6 +61,12 @@ function setCursorPosition(elem, pos) {
 		.setSelectionRange(pos, pos);
 }
 
+function setSelectionRange(elem, start, end) {
+	elem.shadowRoot.querySelector('d2l-input-text')
+		.shadowRoot.querySelector('.d2l-input')
+		.setSelectionRange(start, end);
+}
+
 describe('d2l-input-number', () => {
 
 	const documentLocaleSettings = getDocumentLocaleSettings();
@@ -407,6 +413,28 @@ describe('d2l-input-number', () => {
 			const event = dispatchKeypressEvent(elem, '.');
 			expect(event.defaultPrevented).to.be.true;
 			expect(elem._hintType).to.equal(1);
+		});
+
+		it('should suppress decimal symbol if selection range does not cover it', async() => {
+			const elem = await fixtureInit(html`<d2l-input-number label="label" value="10.25"></d2l-input-number>`);
+			setSelectionRange(elem, 0, 2);
+			const event = dispatchKeypressEvent(elem, '.');
+			expect(event.defaultPrevented).to.be.true;
+			expect(elem._hintType).to.equal(1);
+		});
+
+		it('should not suppress decimal symbol if selection range covers it from the left', async() => {
+			const elem = await fixtureInit(html`<d2l-input-number label="label" value="10.25"></d2l-input-number>`);
+			setSelectionRange(elem, 0, 3);
+			const event = dispatchKeypressEvent(elem, '.');
+			expect(event.defaultPrevented).to.be.false;
+		});
+
+		it('should not suppress decimal symbol if selection range covers it from the right', async() => {
+			const elem = await fixtureInit(html`<d2l-input-number label="label" value="10.25"></d2l-input-number>`);
+			setSelectionRange(elem, 2, 5);
+			const event = dispatchKeypressEvent(elem, '.');
+			expect(event.defaultPrevented).to.be.false;
 		});
 
 		it('should suppress decimal symbol only integers are allowed', async() => {
