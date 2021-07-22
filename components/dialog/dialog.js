@@ -135,10 +135,16 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		}
 
 		const heightOverride = {} ;
+		let topOverride = null;
 		if (mediaQueryList.matches) {
 			if (this._ifrauContextInfo) {
 				// in iframes, use calculated available height from dialog mixin minus padding
 				heightOverride.minHeight = `${this._ifrauContextInfo.availableHeight - 42}px`;
+				heightOverride.top = `${this._top + this._margin.top + 42}px`;
+				const iframeTop = this._ifrauContextInfo.top < 0
+					? -this._ifrauContextInfo.top
+					: 0;
+				topOverride = iframeTop + 42;
 			}
 		}
 
@@ -169,7 +175,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		`;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, role: 'dialog' }
+			{ labelId: this._titleId, role: 'dialog' },
+			topOverride
 		);
 	}
 

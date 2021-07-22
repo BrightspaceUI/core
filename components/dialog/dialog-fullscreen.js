@@ -209,12 +209,18 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 	render() {
 
 		const heightOverride = {} ;
+		let topOverride = null;
 		if (this._ifrauContextInfo) {
 			// in iframes, use calculated available height from dialog mixin minus padding
 			heightOverride.height = mediaQueryList.matches
 				? `${this._ifrauContextInfo.availableHeight - 42}px`
 				: `${this._ifrauContextInfo.availableHeight - 60}px`;
 			heightOverride.minHeight = heightOverride.height;
+			const iframeTop = this._ifrauContextInfo.top < 0
+				? -this._ifrauContextInfo.top
+				: 0;
+			const startTop = mediaQueryList.matches ? 42 : 0;
+			topOverride = iframeTop + startTop;
 		}
 
 		let loading = null;
@@ -255,7 +261,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		`;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, role: 'dialog' }
+			{ labelId: this._titleId, role: 'dialog' },
+			topOverride
 		);
 	}
 
