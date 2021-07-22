@@ -79,15 +79,12 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 ![Subtle Button](./screenshots/button-subtle.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name: d2l-button-subtle
-defaults: { "text": "My Button", "icon": "tier1:gear" }
--->
+<!-- docs: demo live name:d2l-button-subtle -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-subtle.js';
 </script>
-<d2l-button-subtle></d2l-button-subtle>
+<d2l-button-subtle text="My Button" icon="tier1:gear"></d2l-button-subtle>
 ```
 
 <!-- docs: start hidden content -->
@@ -122,15 +119,12 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 ![Icon Button](./screenshots/button-icon.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name: d2l-button-icon
-defaults: { "text": "My Button", "icon": "tier1:gear" }
--->
+<!-- docs: demo live name:d2l-button-icon -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
 </script>
-<d2l-button-icon></d2l-button-icon>
+<d2l-button-icon text="My Button" icon="tier1:gear"></d2l-button-icon>
 ```
 
 <!-- docs: start hidden content -->
