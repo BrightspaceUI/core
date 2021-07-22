@@ -14,6 +14,9 @@ Switch components are similar to button toggles and checkboxes, except that they
 
 ## Switch [d2l-switch]	
 The `d2l-switch` element is a generic switch with on/off semantics.
+<!-- docs: start hidden content -->
+![Switch](./screenshots/switch.png?raw=true)
+<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-switch -->
 ```html
@@ -23,8 +26,8 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 </script>
 <d2l-switch></d2l-switch>
 ```
+
 <!-- docs: start hidden content -->
-![Switch](./screenshots/switch.png?raw=true)
 
 ### Properties
 
@@ -35,7 +38,7 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 | `on` | Boolean | Whether the switch is "on" or "off" |
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
 | `tooltip` | String | Text to display in a tooltip for the switch |
-## Events
+### Events
 
 - `change`: dispatched when the `on` property is updated
 <!-- docs: end hidden content -->
@@ -48,7 +51,7 @@ To make your usage of `d2l-switch` accessible, use the following property:
 |--|--|
 | text | **REQUIRED** [Acts as a primary label on the switch](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless text-position is `hidden`. |
 
-## Switch Visibility [d2l-switch-visibility]
+## Visibility Switch [d2l-switch-visibility]
 
 The `d2l-switch-visibility` element is a variant of the generic switch configured with special icons and default text for toggling "visibility".
 
@@ -56,20 +59,17 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 ![Visibility Switch](./screenshots/switch-visibility.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name:d2l-switch-visibility
-defaults: {"text": "My Switch"}
--->
+<!-- docs: demo live name:d2l-switch-visibility -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
 
-<d2l-switch-visibility></d2l-switch-visibility>
+<d2l-switch-visibility text="My Switch"></d2l-switch-visibility>
 ```
 
 <!-- docs: start hidden content -->
-**Properties:**
+### Properties:
 
 | Property | Type | Description |
 |--|--|--|
@@ -79,7 +79,7 @@ defaults: {"text": "My Switch"}
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
 | `tooltip` | String | Text to display in a tooltip for the switch |
 
-**Events:**
+### Events:
 
 - `change`: dispatched when the `on` property is updated
 
