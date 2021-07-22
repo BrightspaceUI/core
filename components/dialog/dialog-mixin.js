@@ -366,7 +366,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
-	_render(inner, info) {
+	_render(inner, info, iframeTopOverride) {
 
 		const styles = {};
 		if (this._autoSize) {
@@ -376,6 +376,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (this._height) styles.height = `${this._height}px`;
 			if (this._width) styles.width = `${this._width}px`;
 			else styles.width = 'auto';
+		} else if (iframeTopOverride && this._ifrauContextInfo) {
+			styles.top = `${iframeTopOverride}px`;
 		}
 
 		const dialogOuterClasses = {
