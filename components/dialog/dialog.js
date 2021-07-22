@@ -33,7 +33,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			 * The preferred width (unit-less) for the dialog
 			 */
 			width: { type: Number },
-			_hasFooterContent: { type: Boolean, attribute: false },
+			_hasFooterContent: { type: Boolean, attribute: false }
 		};
 	}
 

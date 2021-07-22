@@ -29,7 +29,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			async: { type: Boolean },
 			_hasFooterContent: { type: Boolean, attribute: false },
 			_icon: { type: String, attribute: false },
-			_headerStyle: { type: String, attribute: false },
+			_headerStyle: { type: String, attribute: false }
 		};
 	}
 
