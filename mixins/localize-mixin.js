@@ -124,13 +124,15 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 	_generatePossibleLanguages() {
 		const langs = new Set();
 
-		langs.add('en');
-		langs.add('en-us');
+		const enVariants = ['en-us', 'en-ca', 'en-gb'];
 
 		let docLang = this.__documentLocaleSettings.language;
 		if (docLang) {
 			docLang = docLang.toLowerCase();
-			langs.add(docLang);
+
+			if (!enVariants.includes(docLang)) {
+				langs.add(docLang);
+			}
 
 			if (docLang.indexOf('-') !== -1) {
 				const baseDocLang = docLang.split('-')[0];
@@ -141,6 +143,11 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 		let docFallbackLang = this.__documentLocaleSettings.fallbackLanguage;
 		if (docFallbackLang) {
 			docFallbackLang = docFallbackLang.toLowerCase();
+
+			if (!enVariants.includes(docFallbackLang)) {
+				langs.add(docLang);
+			}
+
 			langs.add(docFallbackLang);
 
 			if (docFallbackLang.indexOf('-') !== -1) {
@@ -148,6 +155,8 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 				langs.add(baseDocFallbackLang);
 			}
 		}
+
+		langs.add('en');
 
 		return Array.from(langs);
 	}
