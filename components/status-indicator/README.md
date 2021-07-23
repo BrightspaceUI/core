@@ -44,16 +44,14 @@ Status Indicators are used to communicate the status of an item. They are non-in
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Render as a link. If the user requires a call to action, use a button.
-* Compose the element such that the user will think that that indicator is interactive.
+* Don't render as a link. If the user requires a call to action, use a button.
+* Don't compose the element such that the user will think that that indicator is interactive.
 * Avoid using verbs.
-* Include additional text in the status badge.
+* Don't include additional text in the status badge.
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-
 ## Status Indicator [d2l-status-indicator]
-
 
 <!-- docs: demo live name:d2l-status-indicator -->
 ```html
