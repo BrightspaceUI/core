@@ -25,8 +25,8 @@ A Button is used to communicate and perform an action.
 <!-- docs: start donts -->
 * Don't use multiple Primary buttons - the primary action should always be clear and obvious
 * Avoid icon-only buttons with unfamiliar icons, only use these for familiar concepts
-* Don't use buttons for navigation, use a [link](https://github.com/BrightspaceUI/core/tree/main/components/link) instead
-* Don't open menus with buttons - use a [dropdown](https://github.com/BrightspaceUI/core/tree/main/components/dropdown) instead
+* Don't use buttons for navigation, use a [link](../../components/link) instead
+* Don't open menus with buttons - use a [dropdown](../../components/dropdown) instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
@@ -79,15 +79,12 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 ![Subtle Button](./screenshots/button-subtle.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name: d2l-button-subtle
-defaults: { "text": "My Button", "icon": "tier1:gear" }
--->
+<!-- docs: demo live name:d2l-button-subtle -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-subtle.js';
 </script>
-<d2l-button-subtle></d2l-button-subtle>
+<d2l-button-subtle text="My Button" icon="tier1:gear"></d2l-button-subtle>
 ```
 
 <!-- docs: start hidden content -->
@@ -100,7 +97,7 @@ defaults: { "text": "My Button", "icon": "tier1:gear" }
 | `disabled` | Boolean | Disables the button |
 | `disabledTooltip` | String | Tooltip text when disabled |
 | `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
-| `icon` | String | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
+| `icon` | String | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
 | `icon-right` | Boolean | Render the icon on the right of the button |
 <!-- docs: end hidden content -->
 
@@ -122,15 +119,12 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 ![Icon Button](./screenshots/button-icon.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live
-name: d2l-button-icon
-defaults: { "text": "My Button", "icon": "tier1:gear" }
--->
+<!-- docs: demo live name:d2l-button-icon -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
 </script>
-<d2l-button-icon></d2l-button-icon>
+<d2l-button-icon text="My Button" icon="tier1:gear"></d2l-button-icon>
 ```
 
 <!-- docs: start hidden content -->
@@ -138,7 +132,7 @@ defaults: { "text": "My Button", "icon": "tier1:gear" }
 
 | Property | Type | Description |
 |--|--|--|
-| `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
+| `icon` | String, required | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
 | `text` | String, required | Accessible text for the buton |
 | `disabled` | Boolean | Disables the button |
 | `disabledTooltip` | String | Tooltip text when disabled |
