@@ -9,7 +9,8 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
-			 * The selectable item's value
+			 * REQUIRED: The selectable item's value
+			 * @type {string}
 			 */
 			value: { type: String }
 		};

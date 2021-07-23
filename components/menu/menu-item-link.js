@@ -17,14 +17,17 @@ class MenuItemLink extends MenuItemMixin(LitElement) {
 			 * Prompts the user to save the linked URL instead of navigating to it.
 			 * Must be to a resource on the same origin.
 			 * Can be used with or without a value, when set the value becomes the filename.
+			 * @type {string}
 			 */
 			download: { type: String },
 			/**
-			 * The url the menu item link navigates to
+			 * REQUIRED: The url the menu item link navigates to
+			 * @type {string}
 			 */
 			href: { type: String },
 			/**
 			 * Where to display the linked URL
+			 * @type {string}
 			 */
 			target: { type: String }
 		};

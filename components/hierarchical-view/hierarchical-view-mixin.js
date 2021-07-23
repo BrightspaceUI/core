@@ -97,6 +97,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 
+		/** @ignore */
 		this.hierarchicalView = true;
 		this.__focusPrevious = false;
 		this.__resizeObserver = null;
@@ -194,6 +195,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				sourceView: sourceView
 			}
 		};
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-hide-start', eventDetails));
 	}
 
@@ -223,6 +225,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 					sourceView: sourceView
 				}
 			};
+			/** @ignore */
 			view.dispatchEvent(new CustomEvent('d2l-hierarchical-view-show-start', eventDetails));
 		};
 
@@ -276,6 +279,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			composed: true,
 			detail: { activeView: this.getActiveView(), data: data }
 		};
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-hide-complete', eventDetails));
 	}
 
@@ -285,6 +289,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			composed: true,
 			detail: { activeView: this.getActiveView(), data: data }
 		};
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-show-complete', eventDetails));
 	}
 
@@ -302,6 +307,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			composed: true,
 			detail: contentRect
 		};
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
 	}
 
@@ -435,6 +441,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				composed: true,
 				detail: content.getBoundingClientRect()
 			};
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
 		}
 
