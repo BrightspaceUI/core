@@ -9,7 +9,6 @@ The `d2l-breadcrumbs` element can be used to help users understand where they ar
 <!-- docs: demo -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb.js';
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
@@ -39,25 +38,41 @@ There are various options to truncate the breadcrumb when in horizontally constr
 
 ### Limited Width
 
+<!-- docs: start hidden content -->
 ![screenshot of d2l-breadcrumbs component limited width](./screenshots/limited-width.png)
+<!-- docs: end hidden content -->
 
 Set a `max-width` to constrain breadcrumbs to a particular width:
 
+<!-- docs: demo code -->
 ```html
+<script type="module">
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
+</script>
 <d2l-breadcrumbs style="max-width: 250px">
-  ...
+  <d2l-breadcrumb text="Trucate Basic Item 1" href="page1.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Truncate Basic Item 2" href="page2.html"></d2l-breadcrumb>
 </d2l-breadcrumbs>
 ```
 
 ### Compact Mode
 
+<!-- docs: start hidden content -->
 ![screenshot of d2l-breadcrumbs component in compact mode](./screenshots/compact.png)
+<!-- docs: end hidden content -->
 
 Alternately, add the `compact` attribute to only display the last breadcrumb. The `d2l-breadcrumb-current-page` will be hidden:
 
+<!-- docs: demo code -->
 ```html
+<script type="module">
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
+</script>
 <d2l-breadcrumbs compact>
-  ...
+  <d2l-breadcrumb text="Item 1" href="page1.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 2" href="page2.html"></d2l-breadcrumb>
+  <d2l-breadcrumb-current-page text="Current Page"></d2l-breadcrumb-current-page>
 </d2l-breadcrumbs>
 ```
 
@@ -66,7 +81,6 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
 <!-- docs: demo live name:d2l-breadcrumbs -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb.js';
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
@@ -89,7 +103,6 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
 <!-- docs: demo live name:d2l-breadcrumb -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb.js';
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
@@ -125,7 +138,6 @@ Use the `d2l-breadcrumb-current-page` element for this:
 <!-- docs: demo live name:d2l-breadcrumb-current-page -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb.js';
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
