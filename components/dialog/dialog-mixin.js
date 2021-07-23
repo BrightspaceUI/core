@@ -50,6 +50,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_autoSize: { type: Boolean, attribute: false },
 			_fullscreenWithin: { type: Number },
 			_height: { type: Number },
+			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
 			_left: { type: Number },
 			_margin: { type: Object },
 			_nestedShowing: { type: Boolean },
@@ -71,6 +72,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
+		this._inIframe = false;
 		this._height = 0;
 		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
 		this._parentDialog = null;
@@ -107,6 +109,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this.opened) {
 			if (dialogService) {
 				this._ifrauContextInfo = await dialogService.showBackdrop();
+				this._inIframe = true;
 			}
 			this._open();
 		} else {
@@ -363,7 +366,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
-	_render(inner, info) {
+	_render(inner, info, iframeTopOverride) {
 
 		const styles = {};
 		if (this._autoSize) {
@@ -373,6 +376,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (this._height) styles.height = `${this._height}px`;
 			if (this._width) styles.width = `${this._width}px`;
 			else styles.width = 'auto';
+		} else if (iframeTopOverride && this._ifrauContextInfo) {
+			styles.top = `${iframeTopOverride}px`;
 		}
 
 		const dialogOuterClasses = {

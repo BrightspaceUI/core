@@ -76,7 +76,6 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
 					border-radius: 8px;
-					height: calc(100% - 3rem);
 					margin: 1.5rem;
 					max-width: 1170px;
 					opacity: 0;
@@ -84,6 +83,11 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					transform: translateY(-50px) scale(0.97);
 					transition: transform 200ms ease-out, opacity 200ms ease-out;
 					width: auto;
+				}
+
+				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
+				:host(:not([in-iframe])) div.d2l-dialog-outer {
+					height: calc(100% - 3rem);
 				}
 
 				/* for screens wider than 1170px + 60px margins */
@@ -163,11 +167,15 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
-					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					margin: 0 !important;
-					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
+				}
+
+				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
+				:host(:not([in-iframe])) div.d2l-dialog-outer {
+					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 				}
 			}
 		`];
@@ -200,6 +208,21 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 	render() {
 
+		const heightOverride = {} ;
+		let topOverride = null;
+		if (this._ifrauContextInfo) {
+			// in iframes, use calculated available height from dialog mixin minus padding
+			heightOverride.height = mediaQueryList.matches
+				? `${this._ifrauContextInfo.availableHeight - 42}px`
+				: `${this._ifrauContextInfo.availableHeight - 60}px`;
+			heightOverride.minHeight = heightOverride.height;
+			const iframeTop = this._ifrauContextInfo.top < 0
+				? -this._ifrauContextInfo.top
+				: 0;
+			const startTop = mediaQueryList.matches ? 42 : 0;
+			topOverride = iframeTop + startTop;
+		}
+
 		let loading = null;
 		const slotStyles = {};
 		if (this.async && this.asyncState !== asyncStates.complete) {
@@ -223,7 +246,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
-			<div class="d2l-dialog-inner">
+			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="${this._headerStyle}">${this.titleText}</h2>
@@ -238,7 +261,8 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		`;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, role: 'dialog' }
+			{ labelId: this._titleId, role: 'dialog' },
+			topOverride
 		);
 	}
 

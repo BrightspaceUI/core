@@ -11,6 +11,8 @@ import { heading3Styles } from '../typography/styles.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
+
 /**
  * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
  * @slot - Default slot for content inside dialog
@@ -70,7 +72,6 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 
 				.d2l-dialog-outer {
 					margin: 0 !important;
-					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
 					min-width: calc(var(--d2l-vw, 1vw) * 100);
 					top: 42px;
 				}
@@ -88,6 +89,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 					margin-right: 15px;
 				}
 
+				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
+				:host(:not([in-iframe])) div.d2l-dialog-outer {
+					height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+					min-height: calc(var(--d2l-vh, 1vh) * 100 - 42px);
+				}
 			}
 
 		`];
@@ -97,10 +103,22 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		super();
 		this.async = false;
 		this.width = 600;
+		this._handleResize = this._handleResize.bind(this);
+		this._handleResize();
 	}
 
 	get asyncContainerCustom() {
 		return true;
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handleResize);
+	}
+
+	disconnectedCallback() {
+		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handleResize);
+		super.disconnectedCallback();
 	}
 
 	render() {
@@ -116,6 +134,20 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 			`;
 		}
 
+		const heightOverride = {} ;
+		let topOverride = null;
+		if (mediaQueryList.matches) {
+			if (this._ifrauContextInfo) {
+				// in iframes, use calculated available height from dialog mixin minus padding
+				heightOverride.minHeight = `${this._ifrauContextInfo.availableHeight - 42}px`;
+				heightOverride.top = `${this._top + this._margin.top + 42}px`;
+				const iframeTop = this._ifrauContextInfo.top < 0
+					? -this._ifrauContextInfo.top
+					: 0;
+				topOverride = iframeTop + 42;
+			}
+		}
+
 		const footerClasses = {
 			'd2l-dialog-footer': true,
 			'd2l-footer-no-content': !this._hasFooterContent
@@ -128,7 +160,7 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 
 		if (!this._titleId) this._titleId = getUniqueId();
 		const inner = html`
-			<div class="d2l-dialog-inner">
+			<div class="d2l-dialog-inner"  style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
 						<h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2>
@@ -143,7 +175,8 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 		`;
 		return this._render(
 			inner,
-			{ labelId: this._titleId, role: 'dialog' }
+			{ labelId: this._titleId, role: 'dialog' },
+			topOverride
 		);
 	}
 
@@ -162,6 +195,11 @@ class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElem
 	_handleFooterSlotChange(e) {
 		const footerContent = e.target.assignedNodes({ flatten: true });
 		this._hasFooterContent = (footerContent && footerContent.length > 0);
+	}
+
+	_handleResize() {
+		this._autoSize = !mediaQueryList.matches;
+		this.resize();
 	}
 
 }
