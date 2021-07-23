@@ -90,7 +90,7 @@ The `d2l-menu item` component is used with JS handlers and can be wired-up to th
   <d2l-menu-item text="Example Menu Item 1"></d2l-menu-item>
   <d2l-menu-item text="Example Menu Item 2">
 	<d2l-menu label="Nested Menu">
-		<d2l-menu-item></d2l-menu-item>
+		<d2l-menu-item text="Nested Menu Item"></d2l-menu-item>
 	</d2l-menu>
   </d2l-menu-item>
 </d2l-menu>
@@ -134,7 +134,7 @@ This `d2l-menu-item-link` is used for navigating. It gives users the ability to 
 
 <d2l-menu label="Menu with Link Menu Items">
   <d2l-menu-item-link text="Link Menu Item" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
-  <d2l-menu-item-link text="Second Link Menu Item" href="https://www.google.ca"></d2l-menu-item-link>
+  <d2l-menu-item-link text="Second Link Menu Item" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
 </d2l-menu>
 ```
 
@@ -286,7 +286,7 @@ Nested menus can be defined by placing a `d2l-menu` inside a `d2l-menu-item`.  F
 ![Nested Menu](./screenshots/nested-menu.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo name:d2l-menu -->
+<!-- docs: demo -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
