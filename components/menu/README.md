@@ -216,7 +216,7 @@ The `d2l-menu-item-radio` component is used for selection. It can be wired-up to
 ![Radio Menu](./screenshots/radio-menu.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name: d2l-menu-item-radio -->
+<!-- docs: demo live name:d2l-menu-item-radio -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/menu/menu.js';
