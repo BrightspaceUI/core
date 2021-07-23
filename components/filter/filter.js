@@ -375,11 +375,11 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					this._totalAppliedCount--;
 				}
 			} else if (prop === 'values') {
-				shouldRecount = true;
+				if (dimension.searchType !== 'manual' || !dimension.searchValue) shouldRecount = true;
 			}
 		});
 
-		if (shouldRecount) this._setFilterCounts();
+		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate) this.requestUpdate();
 	}
 
@@ -486,16 +486,18 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.requestUpdate();
 	}
 
-	_setFilterCounts() {
+	_setFilterCounts(dimensionToRecount) {
 		this._totalAppliedCount = 0;
 		this._totalMaxCount = 0;
 
 		this._dimensions.forEach(dimension => {
-			switch (dimension.type) {
-				case 'd2l-filter-dimension-set': {
-					dimension.appliedCount = dimension.values.reduce((total, value) => { return value.selected ? total + 1 : total; }, 0);
-					dimension.maxCount = dimension.values.length;
-					break;
+			if (!dimensionToRecount || dimensionToRecount.key === dimension.key) {
+				switch (dimension.type) {
+					case 'd2l-filter-dimension-set': {
+						dimension.appliedCount = dimension.values.reduce((total, value) => { return value.selected ? total + 1 : total; }, 0);
+						dimension.maxCount = dimension.values.length;
+						break;
+					}
 				}
 			}
 

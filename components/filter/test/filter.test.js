@@ -433,8 +433,10 @@ describe('d2l-filter', () => {
 
 			const newDim = document.createElement('d2l-filter-dimension-set');
 			newDim.key = 'newDim';
+			newDim.text = 'New Dim';
 			const newValue = document.createElement('d2l-filter-dimension-set-value');
 			newValue.key = 'newValue';
+			newValue.text = 'New Value';
 			newDim.appendChild(newValue);
 			setTimeout(() => elem.appendChild(newDim));
 			await oneEvent(elem.shadowRoot.querySelector('slot'), 'slotchange');
@@ -537,6 +539,7 @@ describe('d2l-filter', () => {
 
 			const newValue = document.createElement('d2l-filter-dimension-set-value');
 			newValue.key = 'newValue';
+			newValue.text = 'New Value';
 			newValue.selected = true;
 			dimension.appendChild(newValue);
 
@@ -549,6 +552,55 @@ describe('d2l-filter', () => {
 			expect(elem._totalMaxCount).to.equal(3);
 			expect(updateStub).to.be.calledOnce;
 			expect(recountSpy).to.be.calledOnce;
+			expect(recountSpy).to.have.been.calledWith(elem._dimensions[1]);
+		});
+
+		it('value changes update the filter count for the manual search type when no search is applied', async() => {
+			const dimension = elem.querySelector('d2l-filter-dimension-set[key="1"]');
+			elem._dimensions[0].searchType = 'manual';
+			elem._dimensions[0].searchValue = '';
+			expect(elem._dimensions[0].appliedCount).to.equal(1);
+			expect(elem._dimensions[0].maxCount).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(1);
+			expect(elem._totalMaxCount).to.equal(2);
+
+			const newValue = document.createElement('d2l-filter-dimension-set-value');
+			newValue.key = 'newValue';
+			newValue.text = 'New Value';
+			newValue.selected = true;
+			dimension.appendChild(newValue);
+
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
+			expect(elem._dimensions[0].values.length).to.equal(2);
+			expect(elem._dimensions[0].appliedCount).to.equal(2);
+			expect(elem._dimensions[0].maxCount).to.equal(2);
+			expect(elem._totalAppliedCount).to.equal(2);
+			expect(elem._totalMaxCount).to.equal(3);
+			expect(updateStub).to.be.calledOnce;
+			expect(recountSpy).to.be.calledOnce;
+			expect(recountSpy).to.be.calledWith(elem._dimensions[0]);
+		});
+
+		it('value changes do not update the filter count for the manual search type when a search is applied', async() => {
+			const dimension = elem.querySelector('d2l-filter-dimension-set[key="1"]');
+			elem._dimensions[0].searchType = 'manual';
+			elem._dimensions[0].searchValue = 'whatever';
+			expect(elem._dimensions[0].appliedCount).to.equal(1);
+			expect(elem._dimensions[0].maxCount).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(1);
+			expect(elem._totalMaxCount).to.equal(2);
+
+			const valueToRemove = dimension.querySelector('d2l-filter-dimension-set-value');
+			dimension.removeChild(valueToRemove);
+
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
+			expect(elem._dimensions[0].values.length).to.equal(0);
+			expect(elem._dimensions[0].appliedCount).to.equal(1);
+			expect(elem._dimensions[0].maxCount).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(1);
+			expect(elem._totalMaxCount).to.equal(2);
+			expect(updateStub).to.be.calledOnce;
+			expect(recountSpy).to.not.be.called;
 		});
 	});
 });
