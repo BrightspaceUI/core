@@ -475,6 +475,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	async __openedChanged(newValue) {
 
+		await this.updateComplete;
+
 		this.__previousFocusableAncestor =
 			newValue === true
 				? getPreviousFocusableAncestor(this, false, false)
