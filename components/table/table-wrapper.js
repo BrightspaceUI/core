@@ -176,6 +176,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 		return {
 			/**
 			 * Hides the column borders on "default" table type
+			 * @type {boolean}
 			 */
 			noColumnBorder: {
 				attribute: 'no-column-border',
@@ -184,6 +185,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			},
 			/**
 			 * Whether header row is sticky
+			 * @type {boolean}
 			 */
 			stickyHeaders: {
 				attribute: 'sticky-headers',

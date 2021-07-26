@@ -1,8 +1,32 @@
-# Table
+# Tables
+
+Tables are used to display tabular data in rows and columns of cells. They can allow users to select rows and sort by columns.
+
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Do use tables to display complex data sets.
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use tables to display a simple list of objects or entities; consider using the list component for this instead.
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+## Responsive Behavior
+If the browser window is too narrow to accommodate the table’s contents, a scroll button is shown. This button alerts users to the fact that there’s more content to see, and provides a straightforward way for users to scroll horizontally through the table regardless of whether a horizontal scrollbar is visible.
+
+The scroll button sticks to the top of the table, like a sticky header, so that it never falls out of view while the table is on the page.
+
+Note: If the browser window is very narrow — for example, on a mobile device — it may be preferable to replace a wide table with a list, a set of cards, or some other alternate component. However, the responsive table component provides a consistent fallback that will work reasonably well for any table on any page.
+
+## Table Wrapper [d2l-table-wrapper]
 
 The `d2l-table-wrapper` element can be combined with table styles to apply default/light styling, row selection styles, overflow scrolling and sticky headers to native `<table>` elements within your Lit components.
 
+<!-- docs: start hidden content -->
 ![table with default style](./screenshots/default.png?raw=true)
+<!-- docs: end hidden content -->
 
 Because the `<table>` element is part of `d2l-table-wrapper`'s slotted content, your element is responsible for importing and applying `tableStyles`.
 
@@ -40,7 +64,32 @@ class MyElem extends LitElement {
 }
 ```
 
-**Properties:**
+<!-- docs: demo live name:d2l-table-wrapper -->
+```html
+<d2l-table-wrapper>
+  <table class="d2l-table">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+  <tbody>
+    <tr>
+      <td>Prop</td>
+      <td>Prop</td>
+      <td>Prop</td>
+      <td>Prop</td>
+    </tr>
+  </tbody>
+  </table>
+</d2l-table-wrapper>
+```
+
+<!-- docs: start hidden content -->
+### Properties
 
 | Property | Type | Description |
 |--|--|--|
@@ -59,6 +108,7 @@ For a table style with fewer borders and tighter padding, there's the `light` ty
   <table class="d2l-table">...</table>
 </d2l-table-wrapper>
 ```
+<!-- docs: end hidden content -->
 
 ## Selection
 
@@ -73,12 +123,15 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 </tr>
 ```
 
-## Sortable Column Buttons
+## Sortable Column Buttons [d2l-table-col-sort-button]
 
 When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used to provide an interactive sort button as well as arrows to indicate the ascending/descending sort direction.
 
+<!-- docs: start hidden content -->
 ![table with sorting](./screenshots/sorting.gif?raw=true)
+<!-- docs: end hidden content -->
 
+<!-- docs: demo live name:d2l-table-col-sort-button -->
 ```html
 <table class="d2l-table">
   <thead>
@@ -98,6 +151,7 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
 | `desc` | Boolean, default: `false` | Whether sort direction is descending |
 | `nosort` | Booealn, default: `false` | Column is not currently sorted |
 
+<!-- docs: start hidden content -->
 ## Sticky Headers
 
 For long tables, the header row can be made to "stick" in place as the user scrolls.
@@ -109,5 +163,4 @@ For long tables, the header row can be made to "stick" in place as the user scro
   <table class="d2l-table">...</table>
 </d2l-table-wrapper>
 ```
-
-Looking for an enhancement not listed here? Create a GitHub issue!
+<!-- docs: end hidden content -->
