@@ -34,11 +34,20 @@ Progress meters are used to visually communicate the progress of an object or op
 
 ## Light Foreground
 
-All `meter` components have a `foreground-light` style for displaying against a dark background. To use this style, just add this attribute:
+All `meter` components have a `foreground-light` style for displaying against a dark background.
 
+<!-- docs: demo code darkMode:true -->
 ```html
+<script type="module">
+  import '@brightspace-ui/core/components/meter/meter-linear.js';
+  import '@brightspace-ui/core/components/meter/meter-radial.js';
+  import '@brightspace-ui/core/components/meter/meter-circle.js';
+</script>
+<d2l-meter-linear value="30" max="100" foreground-light></d2l-meter-linear>
+<d2l-meter-radial value="30" max="100" foreground-light></d2l-meter-radial>
 <d2l-meter-circle value="30" max="100" foreground-light></d2l-meter-circle>
 ```
+
 
 ## Linear Meter [d2l-meter-linear]
 
