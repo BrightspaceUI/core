@@ -62,8 +62,6 @@ Linear meters show a horizontal progress bar.
 ### Properties:
 
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-* `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-* `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
 * `percent` Boolean: Shows a percentage instead of `value/max`.
 * `text-inline` Boolean: Keeps the meter to a single line.
