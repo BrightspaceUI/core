@@ -22,18 +22,22 @@ class Breadcrumb extends RtlMixin(LitElement) {
 			_role: { type: 'string', attribute: 'role', reflect: true },
 			/**
 			 * The Url that breadcrumb is pointing to
+			 * @type {string}
 			 */
 			href: { type: String, reflect: true },
 			/**
 			 * The target of breadcrumb link
+			 * @type {string}
 			 */
 			target: { type: String, reflect: true },
 			/**
 			 * REQUIRED: text of the breadcrumb link
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
 			/**
 			 * ARIA label of the breadcrumb
+			 * @type {string}
 			 */
 			ariaLabel: { attribute: 'aria-label', type: String, reflect: true }
 		};
@@ -76,9 +80,12 @@ class Breadcrumb extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
+		/** @ignore */
 		this._compact = false;
-		this.text = '';
+		/** @ignore */
 		this._role = 'listitem';
+
+		this.text = '';
 	}
 
 	connectedCallback() {
