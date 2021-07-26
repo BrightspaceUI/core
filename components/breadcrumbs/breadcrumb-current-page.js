@@ -13,6 +13,7 @@ class BreadcrumbCurrentPage extends LitElement {
 			_role: { type: 'string', attribute: 'role', reflect: true },
 			/**
 			 * REQUIRED: The title of the current page
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true }
 		};
@@ -31,6 +32,7 @@ class BreadcrumbCurrentPage extends LitElement {
 
 	constructor() {
 		super();
+		/** @ignore */
 		this._role = 'listitem';
 	}
 

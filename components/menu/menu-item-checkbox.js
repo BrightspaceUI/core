@@ -19,6 +19,7 @@ class MenuItemCheckbox extends RtlMixin(MenuItemSelectableMixin(LitElement)) {
 
 	constructor() {
 		super();
+		/** @ignore */
 		this.role = 'menuitemcheckbox';
 	}
 

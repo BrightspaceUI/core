@@ -21,6 +21,7 @@ describe('d2l-dropdown-content', () => {
 		'default-width',
 		'min-width',
 		'max-width',
+		'min-height',
 		'max-height',
 		'max-height-invalid',
 		'wide-opener',
@@ -60,11 +61,14 @@ describe('d2l-dropdown-content', () => {
 	[
 		'mobile-right-tray',
 		'mobile-left-tray',
+		'mobile-bottom-tray',
 		'mobile-no-tray',
 		'mobile-right-tray-no-close',
 		'mobile-left-tray-no-close',
+		'mobile-bottom-tray-no-close',
 		'mobile-right-tray-max-width',
-		'mobile-left-tray-max-width'
+		'mobile-left-tray-max-width',
+		'mobile-bottom-tray-max-height'
 	].forEach((testName) => {
 
 		it(testName, async function() {

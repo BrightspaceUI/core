@@ -184,6 +184,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 `d2l-dropdown-content` is a generic container for dropdown content.  It provides behavior such as sizing,  positioning, and managing focus gain/loss.
 
 ![screenshot the basic dropdown-content](./screenshots/dropdown-content.png)
+![screenshot the dropdown-content with mobile-tray="right"](./screenshots/dropdown-content-mobile-tray.png)
 
 ```html
 <script type="module">
@@ -207,8 +208,12 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | `align` | String | Optionally align dropdown to either `start` or `end`. If not set, the dropdown will attempt be centred |
 | `boundary` | Object | Optionally provide boundaries to where the dropdown will appear. Valid properties are `"above"`, `"below"`, `"left"` and `"right"`. |
 | `max-height` | Number | Override default `max-height`. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed_ |
+| `min-height` | Number | Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed._ |
 | `max-width` | Number | Override default `max-width` |
 | `min-width` | Number | Override default `min-width` |
+| `mobile-breakpoint` | Number, default: `616` | Override default breakpoint for mobile styling (616px) |
+| `mobile-tray` | String, default: `no tray`| On small screens, optionally use a "tray" style dropdown. Valid options are `"left"`, `"right"`, and `"bottom"`. |
+| `no-mobile-close-button` | Boolean, default: `false` | Opt out of automatically adding a 'close' button to the footer when using a mobile tray |
 | `no-auto-close` | Boolean, default: `false` | Opt out of automatically closing on focus or click outside of the dropdown content |
 | `no-auto-fit` | Boolean, default: `false` | Opt out of auto-sizing |
 | `no-auto-focus` | Boolean, default: `false` | Opt out of focus being automatically moved to the first focusable element in the dropdown when opened |

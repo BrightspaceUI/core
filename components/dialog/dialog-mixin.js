@@ -18,6 +18,18 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
 
+let ifrauDialogService;
+
+async function getIfrauDialogService() {
+	if (!window.ifrauclient) return;
+	if (ifrauDialogService) return ifrauDialogService;
+
+	const ifrauClient = await window.ifrauclient().connect();
+	ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
+
+	return ifrauDialogService;
+}
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 100, right: 30, bottom: 30, left: 30 };
@@ -38,6 +50,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			_autoSize: { type: Boolean, attribute: false },
 			_fullscreenWithin: { type: Number },
 			_height: { type: Number },
+			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
 			_left: { type: Number },
 			_margin: { type: Object },
 			_nestedShowing: { type: Boolean },
@@ -59,6 +72,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
 		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
+		this._inIframe = false;
 		this._height = 0;
 		this._margin = { top: defaultMargin.top, right: defaultMargin.right, bottom: defaultMargin.bottom, left: defaultMargin.left };
 		this._parentDialog = null;
@@ -80,9 +94,6 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this._useNative) {
 			window.addEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
 		}
-		if (!window.ifrauclient) return;
-		const ifrauClient = await window.ifrauclient().connect();
-		this._ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
 	}
 
 	disconnectedCallback() {
@@ -93,14 +104,17 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	async updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('opened')) return;
+
+		const dialogService = await getIfrauDialogService();
 		if (this.opened) {
-			if (this._ifrauDialogService) {
-				this._ifrauContextInfo = await this._ifrauDialogService.showBackdrop();
+			if (dialogService) {
+				this._ifrauContextInfo = await dialogService.showBackdrop();
+				this._inIframe = true;
 			}
 			this._open();
 		} else {
-			if (this._ifrauDialogService) {
-				this._ifrauDialogService.hideBackdrop();
+			if (dialogService) {
+				dialogService.hideBackdrop();
 				this._ifrauContextInfo = null;
 			}
 			this._close();
@@ -352,7 +366,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
 	}
 
-	_render(inner, info) {
+	_render(inner, info, iframeTopOverride) {
 
 		const styles = {};
 		if (this._autoSize) {
@@ -362,6 +376,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (this._height) styles.height = `${this._height}px`;
 			if (this._width) styles.width = `${this._width}px`;
 			else styles.width = 'auto';
+		} else if (iframeTopOverride && this._ifrauContextInfo) {
+			styles.top = `${iframeTopOverride}px`;
 		}
 
 		const dialogOuterClasses = {

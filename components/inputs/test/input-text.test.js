@@ -324,6 +324,14 @@ describe('d2l-input-text', () => {
 			expect(errors).to.be.empty;
 		});
 
+		it('should validate when input value changes', async() => {
+			const elem = await fixture(html`<d2l-input-text label="label" minlength="5" value="123456"></d2l-input-text>`);
+			getInput(elem).value = '123';
+			dispatchEvent(elem, 'input', true);
+			const errors = await elem.validate();
+			expect(errors).to.contain('label must be at least 5 characters');
+		});
+
 	});
 
 	describe('value', () => {
@@ -395,6 +403,35 @@ describe('d2l-input-text', () => {
 			});
 			await aTimeout(1);
 			expect(fired).to.be.false;
+		});
+
+	});
+
+	describe('events', () => {
+
+		it('should suppress keypress events from slots', async() => {
+
+			const elem = await fixture(html`<d2l-input-text label="label"><div slot="left"></div><div slot="right"></div></d2l-input-text>`);
+			const left = elem.querySelector('div[slot="left"]');
+			const right = elem.querySelector('div[slot="right"]');
+
+			let fired = false;
+			elem.addEventListener('keypress', () => {
+				fired = true;
+			});
+
+			setTimeout(() => {
+				const e = new Event(
+					'keypress',
+					{ bubbles: true, cancelable: true, composed: true }
+				);
+				left.dispatchEvent(e);
+				right.dispatchEvent(e);
+			});
+			await aTimeout(1);
+
+			expect(fired).to.be.false;
+
 		});
 
 	});

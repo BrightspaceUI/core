@@ -14,21 +14,41 @@ describe('d2l-link', () => {
 		await page.bringToFront();
 	});
 
+	beforeEach(async() => {
+		await visualDiff.resetFocus(page);
+	});
+
 	after(async() => await browser.close());
 
-	[
-		'wc-standard',
-		'wc-main',
-		'wc-small',
-		'wc-inline',
-		'sass-standard',
-		'sass-main',
-		'sass-small'
-	].forEach((name) => {
-		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	['print', 'screen'].forEach((mediaType) => {
+
+		describe(mediaType, () => {
+
+			before(async() => {
+				await page.emulateMediaType(mediaType);
+			});
+
+			after(async() => {
+				await page.emulateMediaType('screen');
+			});
+
+			[
+				'wc-standard',
+				'wc-main',
+				'wc-small',
+				'wc-inline',
+				'sass-standard',
+				'sass-main',
+				'sass-small'
+			].forEach((name) => {
+				it(`${name}`, async function() {
+					const rect = await visualDiff.getRect(page, `#${name}`);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+			});
+
 		});
+
 	});
 
 	[

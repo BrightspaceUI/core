@@ -109,6 +109,14 @@ class HtmlBlock extends LitElement {
 				outline-width: 0;
 				text-decoration: underline;
 			}
+			@media print {
+				a,
+				a:visited,
+				a:link,
+				a:active {
+					color: var(--d2l-color-ferrite);
+				}
+			}
 			mjx-assistive-mml math {
 				position: absolute;
 			}

@@ -4,6 +4,7 @@ export const MenuItemRadioMixin = superclass => class extends MenuItemSelectable
 
 	constructor() {
 		super();
+		/** @ignore */
 		this.role = 'menuitemradio';
 	}
 

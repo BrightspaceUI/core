@@ -32,7 +32,7 @@ function pressEnter(elem) {
 	});
 	event.keyCode = 13;
 	event.code = 13;
-	elem.shadowRoot.querySelector('.d2l-input').dispatchEvent(event);
+	elem.shadowRoot.querySelector('d2l-input-text').dispatchEvent(event);
 }
 
 describe('d2l-input-search', () => {

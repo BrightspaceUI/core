@@ -9,8 +9,17 @@ class FilterDimensionSetValue extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * REQUIRED: Unique key to represent this value in the dimension
+			 */
 			key: { type: String },
+			/**
+			 * Whether this value in the filter is selected or not
+			 */
 			selected: { type: Boolean, reflect: true },
+			/**
+			 * REQUIRED: The text that is displayed for the value
+			 */
 			text: { type: String }
 		};
 	}

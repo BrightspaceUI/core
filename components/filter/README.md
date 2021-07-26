@@ -28,6 +28,7 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 **Events:**
 * `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple changes)
 * `d2l-filter-dimension-first-open`: dispatched when a dimension is opened for the first time (if there is only one dimension, this will be dispatched when the dropdown is first opened)
+* `d2l-filter-dimension-search`: dispatched when a dimension that supports searching and has the "manual" search-type is searched
 
 ## Filter Dimension Types
 
@@ -61,6 +62,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 |--|--|--|
 | `key` | String, required | Unique identifier for the dimension |
 | `loading` | Boolean | Whether the values for this dimension are still loading and a loading spinner should be displayed |
+| `search-type` | String, default: `automatic` | `automatic` provides basic case-insensitive text comparison searching, `none` disables the search input, and `manual` fires an event for the consumer to handle the search and removal of the values as needed  |
 | `text` | String, required | Text for the dimension in the menu |
 
 #### d2l-filter-dimension-set-value

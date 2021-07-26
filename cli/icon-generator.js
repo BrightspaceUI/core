@@ -131,7 +131,7 @@ function createCatalogue(categories) {
 					output += '| &nbsp; | &nbsp; |';
 				} else {
 					const iconName = category.svgs[index];
-					output += `| ![](https://raw.githubusercontent.com/BrightspaceUI/core/master/components/icons/images/${category.name}/${iconName}.svg?sanitize=true) | ${iconName} |`;
+					output += `| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/icons/images/${category.name}/${iconName}.svg?sanitize=true) | ${iconName} |`;
 				}
 
 				if (j === numCols - 1) {

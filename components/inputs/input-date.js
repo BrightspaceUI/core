@@ -23,7 +23,7 @@ export function formatISODateInUserCalDescriptor(val) {
 
 /**
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
- * @fires change - Dispatched when a date is selected or typed. "value" reflects the selected value and is in ISO 8601 calendar date format ("YYYY-MM-DD").
+ * @fires change - Dispatched when there is a change to selected date. "value" corresponds to the selected value and is formatted in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
 class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
 
@@ -34,11 +34,12 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Text to reassure users that they can choose not to provide a value in this field (usually not necessary)
+			 * Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },
 			/**
 			 * REQUIRED: Accessible label for the input
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
@@ -46,16 +47,18 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * Maximum valid date that could be selected by a user.
+			 * Maximum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
-			 * Minimum valid date that could be selected by a user.
+			 * Minimum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Disables validation of max and min value. The min and max value will still be enforced
-			 * but the component will not be put into an error state or show an error tooltip.
+			 * @ignore
+			 * Disables validation of max and min value. The min and max value will still be enforced but the component will not be put into an error state or show an error tooltip.
 			 */
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
 			/**
@@ -66,6 +69,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 * Value of the input
 			 */
 			value: { type: String },
+			_hiddenCalendarHeight: { type: Number },
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownFirstOpened: { type: Boolean },
@@ -98,7 +102,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			:host([disabled]) d2l-icon {
 				opacity: 0.5;
 			}
-			.d2l-input-date-hidden-content {
+			.d2l-input-date-hidden-text,
+			.d2l-input-date-hidden-calendar {
 				font-family: inherit;
 				font-size: 0.8rem;
 				font-weight: 400;
@@ -127,6 +132,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this.disabled = false;
 		this.emptyText = '';
 		this.labelHidden = false;
+		/** @ignore */
 		this.noValidateMinMax = false;
 		this.required = false;
 		this.value = '';
@@ -134,6 +140,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._dropdownOpened = false;
 		this._dropdownFirstOpened = false;
 		this._formattedValue = '';
+		this._hiddenCalendarHeight = 415; // height of 6 date row calendar when 1rem = 20px
 		this._hiddenContentWidth = '8rem';
 		this._inputId = getUniqueId();
 		this._inputTextFocusMouseup = false;
@@ -145,6 +152,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._dateTimeDescriptor = getDateTimeDescriptorShared();
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minDate = this.minValue ? formatDate(getDateFromISODate(this.minValue), { format: 'medium' }) : null;
@@ -173,7 +181,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
 			this.requestUpdate().then(() => {
-				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-content')).getPropertyValue('width')));
+				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-text')).getPropertyValue('width')));
 				this._hiddenContentWidth = `${width}px`;
 			});
 		});
@@ -182,12 +190,22 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());
 
-		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-content');
+		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-date-hidden-text');
 		this._hiddenContentResizeObserver = new ResizeObserver(() => {
 			const width = Math.ceil(parseFloat(getComputedStyle(hiddenContent).getPropertyValue('width')));
 			this._hiddenContentWidth = `${width}px`;
 		});
 		this._hiddenContentResizeObserver.observe(hiddenContent);
+
+		const hiddenCalendar = this.shadowRoot.querySelector('.d2l-input-date-hidden-calendar');
+		this._hiddenCalendarResizeObserver = new ResizeObserver(() => {
+			const hiddenCalendarHeight = Math.ceil(parseFloat(getComputedStyle(hiddenCalendar).getPropertyValue('height')));
+			if (hiddenCalendarHeight > 0) {
+				this._hiddenCalendarHeight = hiddenCalendarHeight;
+				this._hiddenCalendarResizeObserver.disconnect();
+			}
+		});
+		this._hiddenCalendarResizeObserver.observe(hiddenCalendar);
 	}
 
 	render() {
@@ -208,6 +226,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				@d2l-dropdown-close="${this._handleDropdownClose}"
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				max-width="335"
+				min-height="${this._hiddenCalendarHeight}"
 				no-auto-fit
 				no-auto-focus
 				no-padding>
@@ -226,7 +245,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				</d2l-focus-trap>
 			</d2l-dropdown-content>` : null;
 		return html`
-			<div aria-hidden="true" class="d2l-input-date-hidden-content">
+			<div aria-hidden="true" class="d2l-input-date-hidden-text">
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${formattedWideDate}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${shortDateFormat}</div>
 				<div><d2l-icon icon="tier1:calendar"></d2l-icon>${this.emptyText}</div>
@@ -260,6 +279,13 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				</d2l-input-text>
 				${dropdownContent}
 			</d2l-dropdown>
+			${!this._dropdownFirstOpened ? html`<div aria-hidden="true" class="d2l-input-date-hidden-calendar">
+				<d2l-calendar selected-value="2018-09-08">
+					<div class="d2l-calendar-slot-buttons">
+						<d2l-button-subtle text="${this.localize(`${this._namespace}.setToToday`)}"></d2l-button-subtle>
+					</div>
+				</d2l-calendar>
+			</div>` : null}
 		`;
 	}
 
@@ -341,6 +367,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		if (this._calendar) this._calendar.reset();
 		this._dropdownOpened = false;
 		this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: false } }
@@ -354,6 +381,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		}, 150);
 		this._dropdownOpened = true;
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: true } }

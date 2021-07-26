@@ -28,14 +28,14 @@ export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusiv
 
 /**
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
- * @fires change - Dispatched when a start or end date is selected or typed. "start-value" and "end-value" reflect the selected values and are in ISO 8601 calendar date format ("YYYY-MM-DD").
+ * @fires change - Dispatched when there is a change to selected start date or selected end date. "start-value" and "end-value" correspond to the selected values and are formatted in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
 class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Automatically shift end date when start date changes to keep same range
+			 * Automatically shifts end date when start date changes to keep same range
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
@@ -47,45 +47,52 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Label for the end date input
+			 * Accessible label for the end date input. Defaults to localized "End Date".
+			 * @type {string}
 			 * @default "End Date"
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
 			 * Value of the end date input
+			 * @type {string}
 			 */
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
-			 * Validate on inclusive range
+			 * Validates on inclusive range (i.e., it is valid for start and end dates to be equal)
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
-			 * REQUIRED: Accessible label for the range
+			 * REQUIRED: Accessible label for the input fieldset that wraps the date inputs
+			 * @type {string}
 			 */
 			label: { type: String, reflect: true },
 			/**
-			 * Hides the label visually
+			 * Hides the fieldset label visually
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
 			 * Maximum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 			/**
 			 * Minimum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Indicates that a value is required
+			 * Indicates that values are required
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Label for the start date input
+			 * Accessible label for the start date input. Defaults to localized "Start Date".
+			 * @type {string}
 			 * @default "Start Date"
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Value of the start date input
+			 * @type {string}
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			_endCalendarOpened: { attribute: false, type: Boolean },
@@ -123,6 +130,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this._endInputId = getUniqueId();
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.badInput) {
 			return this.localize('components.input-date-range.errorBadInput', { startLabel: this._computedStartLabel, endLabel: this._computedEndLabel });

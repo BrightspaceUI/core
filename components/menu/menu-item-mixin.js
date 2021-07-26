@@ -32,10 +32,12 @@ export const MenuItemMixin = superclass => class extends superclass {
 			tabindex: { type: String, reflect: true },
 			/**
 			 * REQUIRED: Text displayed by the menu item
+			 * @type {string}
 			 */
 			text: { type: String },
 			/**
 			 * Provide a description for the menu item that will be used by screen readers
+			 * @type {string}
 			 */
 			description: { type: String },
 			_ariaDisabled: { type: String, attribute: 'aria-disabled', reflect: true },
@@ -54,7 +56,9 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.__children = null;
 
 		this.disabled = false;
+		/** @ignore */
 		this.role = 'menuitem';
+		/** @ignore */
 		this.tabindex = -1;
 	}
 

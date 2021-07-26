@@ -29,8 +29,9 @@ class Tab extends RtlMixin(LitElement) {
 				vertical-align: middle;
 			}
 			.d2l-tab-text {
-				margin: 0.6rem;
+				margin: 0.5rem;
 				overflow: hidden;
+				padding: 0.1rem;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
@@ -61,9 +62,10 @@ class Tab extends RtlMixin(LitElement) {
 				margin-left: 0.6rem;
 				margin-right: 0;
 			}
-			:host(:focus) {
+			:host(.focus-visible) > .d2l-tab-text {
+				border-radius: 0.3rem;
+				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 				color: var(--d2l-color-celestine);
-				text-decoration: underline;
 			}
 			:host([aria-selected="true"]:focus) {
 				text-decoration: none;
@@ -78,10 +80,6 @@ class Tab extends RtlMixin(LitElement) {
 			}
 			:host([aria-selected="true"]) .d2l-tab-selected-indicator {
 				display: block;
-			}
-			:host([aria-selected="true"]:focus) .d2l-tab-selected-indicator {
-				border-top-color: var(--d2l-color-celestine);
-				box-shadow: 0 0 0 1px #ffffff, 0 0 0 2px var(--d2l-color-celestine);
 			}
 
 			@media (prefers-reduced-motion: reduce) {

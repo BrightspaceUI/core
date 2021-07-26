@@ -10,13 +10,8 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build
         run: npm run build
@@ -35,13 +30,8 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build
         run: npm run build
@@ -56,23 +46,18 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: |
+          npm ci
+          npm install karma-browserstack-launcher@1 --no-save
       - name: Build
         run: npm run build
       - name: BrowserStack
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        run: |
-          npm install karma-browserstack-launcher@1 --no-save
-          npx karma start karma.bs.conf.js
+        run: npx karma start karma.bs.conf.js
   sauce:
     name: Unit Tests (SauceLabs)
     timeout-minutes: 10
@@ -83,20 +68,15 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
         with:
           node-version: '14'
-      - uses: Brightspace/third-party-actions@actions/cache
-        id: cache
-        with:
-          path: '**/node_modules'
-          key: npm-${{ hashFiles('**/package-lock.json') }}
+          cache: 'npm'
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: |
+          npm ci
+          npm install karma-sauce-launcher@2 --no-save
       - name: Build
         run: npm run build
       - name: SauceLabs
         env:
           SAUCE_USERNAME: Gaudi1
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
-        run: |
-          npm install karma-sauce-launcher@2 --no-save
-          npx karma start karma.sauce.conf.js
+        run: npx karma start karma.sauce.conf.js
