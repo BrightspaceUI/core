@@ -47,26 +47,32 @@ class Link extends LitElement {
 		return {
 			/**
 			 * Sets an accessible label
+			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
 			/**
 			 * Download a URL instead of navigating to it
+			 * @type {boolean}
 			 */
 			download: { type: Boolean },
 			/**
 			 * REQUIRED: URL or URL fragment of the link
+			 * @type {string}
 			 */
 			href: { type: String },
 			/**
 			 * Whether to apply the "main" link style
+			 * @type {boolean}
 			 */
 			main: { type: Boolean, reflect: true },
 			/**
 			 * Whether to apply the "small" link style
+			 * @type {boolean}
 			 */
 			small: { type: Boolean, reflect: true },
 			/**
 			 * Where to display the linked URL
+			 * @type {string}
 			 */
 			target: { type: String }
 		};
