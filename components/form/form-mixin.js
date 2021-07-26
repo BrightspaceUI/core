@@ -132,6 +132,7 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 			this._errors.set(ele, errors);
 		}
 		const detail = { bubbles: true, composed: true, detail: { errors: this._errors } };
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
 		this.requestUpdate('_errors');
 		return true;
