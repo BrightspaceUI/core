@@ -9,13 +9,11 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 * Max number of units that are being measured by this meter.
 			 * Valid values: A number > 0
 			 * @type {number}
-			 * @default 0
 			 */
 			max: { type: Number },
 			/**
 			 * Shows a percentage instead of "value/max"
 			 * @type {boolean}
-			 * @default false
 			 */
 			percent: { type: Boolean },
 			/**
@@ -27,7 +25,6 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 * REQUIRED: Current number of completed units.
 			 * Valid values: A number between 0 and max
 			 * @type {number}
-			 * @default 0
 			 */
 			value: { type: Number }
 		};

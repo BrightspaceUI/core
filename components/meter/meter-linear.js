@@ -13,7 +13,6 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 			/**
 			 * Keeps the meter to a single line
 			 * @type {boolean}
-			 * @default false
 			 */
 			textInline: { type: Boolean, attribute: 'text-inline', reflect: true }
 		};
