@@ -12,6 +12,30 @@ The `<d2l-link>` element can be used just like the native anchor tag. Additional
 <d2l-link href="https://www.d2l.com/" main target="_blank">Main</d2l-link>
 ```
 
+<!-- docs: start hidden content -->
+## Link Styles
+
+The following link styles are available:
+
+### Standard
+
+This is the standard link style, used in most cases.
+
+![example screenshot of standard link](./screenshots/standard.png?raw=true)
+
+### Small
+
+Similarly styled to the standard link, but slightly smaller and more compact.
+
+![example screenshot of small link](./screenshots/small.png?raw=true)
+
+### Main
+
+Same size as the standard link, but bolder.
+
+![example screenshot of main link](./screenshots/main.png?raw=true)
+<!-- docs: end hidden content -->
+
 ## Link [d2l-link]
 
 Import and use the `<d2l-link>` web component instead of the native `<a>` element:
@@ -44,30 +68,6 @@ To make your usage of `d2l-link` accessible, use the following property when app
 | Attribute | Description |
 |--|--|
 | `aria-label` | Use when text in link does not provide enough context. |
-
-<!-- docs: start hidden content -->
-## Link Styles
-
-The following link styles are available:
-
-### Standard
-
-This is the standard link style, used in most cases.
-
-![example screenshot of standard link](./screenshots/standard.png?raw=true)
-
-### Small
-
-Similarly styled to the standard link, but slightly smaller and more compact.
-
-![example screenshot of small link](./screenshots/small.png?raw=true)
-
-### Main
-
-Same size as the standard link, but bolder.
-
-![example screenshot of main link](./screenshots/main.png?raw=true)
-<!-- docs: end hidden content -->
 
 ## Applying link styles to native `<a>` elements
 
