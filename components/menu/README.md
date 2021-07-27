@@ -133,8 +133,8 @@ This `d2l-menu-item-link` is used for navigating. It gives users the ability to 
 </script>
 
 <d2l-menu label="Menu with Link Menu Items">
-  <d2l-menu-item-link text="Link Menu Item" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
-  <d2l-menu-item-link text="Second Link Menu Item" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
+  <d2l-menu-item-link text="Link Menu Item" href="https://www.d2l.com/" target="_blank"></d2l-menu-item-link>
+  <d2l-menu-item-link text="Second Link Menu Item" href="https://www.d2l.com/" target="_blank"></d2l-menu-item-link>
 </d2l-menu>
 ```
 
