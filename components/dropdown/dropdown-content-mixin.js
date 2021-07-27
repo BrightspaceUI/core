@@ -475,6 +475,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	async __openedChanged(newValue) {
 
+		// DE44538: wait for dropdown content to fully render,
+		// otherwise this.__getContentContainer() can return null.
 		await this.updateComplete;
 
 		this.__previousFocusableAncestor =
