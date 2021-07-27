@@ -140,25 +140,30 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Unique label text for calendar (necessary if multiple calendars on page)
+			 * @type {string}
 			 */
 			label: { attribute: 'label', reflect: true, type: String },
 			/**
 			 * Maximum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			maxValue: { attribute: 'max-value', reflect: true, type: String },
 
 			/**
 			 * Minimum valid date that could be selected by a user
+			 * @type {string}
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 
 			/**
 			 * Currently selected date
+			 * @type {string}
 			 */
 			selectedValue: { type: String, attribute: 'selected-value' },
 
 			/**
 			 * Summary of the calendar for accessibility
+			 * @type {string}
 			 */
 			summary: { type: String },
 			_dialog: { type: Boolean },

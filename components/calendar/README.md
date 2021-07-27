@@ -1,21 +1,26 @@
-# Calendar
+# Calendars
 
 The `d2l-calendar` component can be used to display a responsively sized calendar that allows for date selection. It indicates the currently selected date if `selected-value` is specified, or if the user selects a date.
 
+<!-- docs: start hidden content -->
 ![Calendar](./screenshots/calendar.png?raw=true)
+<!-- docs: end hidden content -->
 
+## Calendar [d2l-calendar]
+
+<!-- docs: demo live name:d2l-calendar -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/calendar/calendar.js';
 </script>
-<!-- Today is February 21, 2020 -->
 <d2l-calendar
 	selected-value="2020-02-09"
 	summary="Click on a day to select it as the assignment due date.">
 </d2l-calendar>
 ```
 
-**Properties:**
+<!-- docs: start hidden content -->
+### Properties
 
 Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
 
@@ -26,14 +31,15 @@ Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY
 | `selected-value` | String | Currently selected date. |
 | `summary` | String | Summary of the calendar for accessibility. |
 
-**Accessibility:**
+### Events
+
+* `d2l-calendar-selected`: dispatched when a date is selected through click, space, or enter. `e.detail.date` is in ISO 8601 calendar date format (`YYYY-MM-DD`).
+<!-- docs: end hidden content -->
+
+### Accessibility Properties
 
 To make your usage of `d2l-calendar` accessible, use the following property when applicable:
 
 | Attribute | Description |
 |--|--|
 | `summary` | Use to provide more context on the calendar usage. |
-
-**Events:**
-
-* `d2l-calendar-selected`: dispatched when a date is selected through click, space, or enter. `e.detail.date` is in ISO 8601 calendar date format (`YYYY-MM-DD`).
