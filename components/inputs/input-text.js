@@ -506,7 +506,8 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		const container = e.target.parentNode;
 
 		// requestUpdate needed for legacy Edge
-		this.requestUpdate().then(() => {
+		this.requestUpdate();
+		this.updateComplete.then(() => {
 			this._updateInputLayout(container);
 		});
 	}
