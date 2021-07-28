@@ -109,8 +109,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			 */
 			announced: { type: Boolean },
 			/**
-			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
-			 * @type {object}
+			 * @ignore
 			 */
 			boundary: { type: Object },
 			/**
