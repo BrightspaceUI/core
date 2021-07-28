@@ -20,7 +20,7 @@ Tabs are used to present related information in mutually exclusive panels, allow
 </d2l-tabs>
 ```
 
-### Best Practices
+## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Use tabs to separate related content
