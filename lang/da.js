@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "Valgt.",
 	"components.calendar.show": "Vis {month}",
 	"components.dialog.close": "Luk denne dialogboks",
+	"components.filter.filters": "Filtre",
 	"components.form-element.defaultError": "{label} er ugyldigt.",
 	"components.form-element.defaultFieldLabel": "Felt",
 	"components.form-element.input.email.typeMismatch": "E-mail er ikke gyldig",

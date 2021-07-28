@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "Markerad.",
 	"components.calendar.show": "Visa {month}",
 	"components.dialog.close": "Stäng dialogrutan",
+	"components.filter.filters": "Filter",
 	"components.form-element.defaultError": "{label} är ogiltig.",
 	"components.form-element.defaultFieldLabel": "Fält",
 	"components.form-element.input.email.typeMismatch": "E-postadressen är ogiltig",

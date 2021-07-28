@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "Geselecteerd.",
 	"components.calendar.show": "{month} weergeven",
 	"components.dialog.close": "Dit dialoogvenster sluiten",
+	"components.filter.filters": "Filters",
 	"components.form-element.defaultError": "{label} is ongeldig.",
 	"components.form-element.defaultFieldLabel": "Veld",
 	"components.form-element.input.email.typeMismatch": "E-mailadres is ongeldig",

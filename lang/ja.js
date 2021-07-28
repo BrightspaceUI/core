@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "選択されています。",
 	"components.calendar.show": "{month} を表示",
 	"components.dialog.close": "このダイアログを閉じる",
+	"components.filter.filters": "フィルタ",
 	"components.form-element.defaultError": "{label} は無効です。",
 	"components.form-element.defaultFieldLabel": "フィールド",
 	"components.form-element.input.email.typeMismatch": "電子メールが無効です",

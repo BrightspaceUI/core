@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "تم التحديد.",
 	"components.calendar.show": "إظهار {month}",
 	"components.dialog.close": "إغلاق مربع الحوار هذا",
+	"components.filter.filters": "عوامل التصفية",
 	"components.form-element.defaultError": "{label} غير صالحة.",
 	"components.form-element.defaultFieldLabel": "الحقل",
 	"components.form-element.input.email.typeMismatch": "البريد الإلكتروني غير صالح",

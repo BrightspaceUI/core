@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "Sélectionné(e).",
 	"components.calendar.show": "Afficher {month}",
 	"components.dialog.close": "Fermer cette boîte de dialogue",
+	"components.filter.filters": "Filtres",
 	"components.form-element.defaultError": "{label} n'est pas valide.",
 	"components.form-element.defaultFieldLabel": "Champ",
 	"components.form-element.input.email.typeMismatch": "L'adresse courriel n'est pas valide",

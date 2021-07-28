@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "已选择。",
 	"components.calendar.show": "显示 {month}",
 	"components.dialog.close": "关闭此对话框",
+	"components.filter.filters": "个筛选条件",
 	"components.form-element.defaultError": "{label} 无效。",
 	"components.form-element.defaultFieldLabel": "字段",
 	"components.form-element.input.email.typeMismatch": "电子邮件无效",

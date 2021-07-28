@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "Seçili.",
 	"components.calendar.show": "{month} Göster",
 	"components.dialog.close": "Bu iletişim kutusunu kapat",
+	"components.filter.filters": "Filtre",
 	"components.form-element.defaultError": "{label} geçersiz.",
 	"components.form-element.defaultFieldLabel": "Alan",
 	"components.form-element.input.email.typeMismatch": "E-posta geçerli değil",

@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "已選取。",
 	"components.calendar.show": "顯示{month}",
 	"components.dialog.close": "關閉此對話方塊",
+	"components.filter.filters": "篩選器",
 	"components.form-element.defaultError": "{label} 無效。",
 	"components.form-element.defaultFieldLabel": "欄位",
 	"components.form-element.input.email.typeMismatch": "電子郵件無效",

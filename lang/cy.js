@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "Wedi'i Ddewis.",
 	"components.calendar.show": "Dangos {month}",
 	"components.dialog.close": "Cau'r dialog hwn",
+	"components.filter.filters": "Hidlyddion",
 	"components.form-element.defaultError": "Mae {label} yn annilys.",
 	"components.form-element.defaultFieldLabel": "Maes",
 	"components.form-element.input.email.typeMismatch": "Nid yw'r e-bost yn ddilys",

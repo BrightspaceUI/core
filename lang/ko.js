@@ -7,6 +7,7 @@ export default {
 	"components.calendar.selected": "선택됨.",
 	"components.calendar.show": "{month} 표시",
 	"components.dialog.close": "이 대화 상자 닫기",
+	"components.filter.filters": "개 필터",
 	"components.form-element.defaultError": "{label}이(가) 잘못되었습니다.",
 	"components.form-element.defaultFieldLabel": "필드",
 	"components.form-element.input.email.typeMismatch": "이메일이 유효하지 않습니다.",
