@@ -13,9 +13,7 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 <script type="module">
   import '@brightspace-ui/core/components/calendar/calendar.js';
 </script>
-<d2l-calendar
-	selected-value="2020-05-09"
-	summary="Click on a day to select it as the assignment due date.">
+<d2l-calendar selected-value="2020-05-09" summary="Click on a day to select it.">
 </d2l-calendar>
 ```
 
