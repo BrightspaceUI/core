@@ -59,6 +59,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(RtlMixin(FocusVisiblePolyf
 		return {
 			/**
 			 * Limit the number of tabs to initially display
+			 * @type {Number}
 			 */
 			maxToShow: { type: Number, attribute: 'max-to-show' },
 			_allowScrollNext: { type: Boolean },
