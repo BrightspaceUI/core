@@ -105,30 +105,37 @@ class Tooltip extends RtlMixin(LitElement) {
 			align: { type: String, reflect: true },
 			/**
 			 * Announce the tooltip innerText when applicable (for use with custom elements)
+			 * @type {boolean}
 			 */
 			announced: { type: Boolean },
 			/**
 			 * Provide boundaries to constrain where the tooltip will appear. The boundary is relative to the tooltip's offset parent. Valid properties include a combination of "top", "bottom", "left", and "right".
+			 * @type {object}
 			 */
 			boundary: { type: Object },
 			/**
 			 * Causes the tooltip to close when its target is clicked
+			 * @type {boolean}
 			 */
 			closeOnClick: { type: Boolean, attribute: 'close-on-click' },
 			/**
 			 * Provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus.
+			 * @type {number}
 			 */
 			delay: { type: Number },
 			/**
 			 * Disables focus lock so the tooltip will automatically close when no longer hovered even if it still has focus
+			 * @type {boolean}
 			 */
 			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
 			/**
 			 * REQUIRED: The "id" of the tooltip's target element. Both elements must be within the same shadow root. If not provided, the tooltip's parent element will be used as its target.
+			 * @type {string}
 			 */
 			for: { type: String },
 			/**
 			 * Force the tooltip to stay open as long as it remains "true"
+			 * @type {boolean}
 			 */
 			forceShow: { type: Boolean, attribute: 'force-show' },
 			/**
@@ -138,6 +145,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			forType: { type: String, attribute: 'for-type' },
 			/**
 			 * Adjust the size of the gap between the tooltip and its target
+			 * @type {number}
 			 */
 			offset: { type: Number }, /* tooltipOffset */
 			/**
@@ -390,6 +398,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._viewportMargin = defaultViewportMargin;
 	}
 
+	/** @ignore */
 	get showing() {
 		return this._showing;
 	}
