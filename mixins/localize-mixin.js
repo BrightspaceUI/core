@@ -87,6 +87,16 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 
 	}
 
+	async getUpdateComplete() {
+		await super.getUpdateComplete();
+		const hasResources = this._hasResources();
+		const resourcesLoaded = this.__resources !== undefined;
+		if (!hasResources || resourcesLoaded) {
+			return;
+		}
+		await this.__resourcesLoadedPromise;
+	}
+
 	localize(key) {
 
 		if (!key || !this.__resources) {
@@ -166,16 +176,6 @@ export const LocalizeMixin = dedupeMixin(superclass => class extends superclass 
 			resourcesLoadedPromises.push(res);
 		}
 		return resourcesLoadedPromises;
-	}
-
-	async _getUpdateComplete() {
-		await super._getUpdateComplete();
-		const hasResources = this._hasResources();
-		const resourcesLoaded = this.__resources !== undefined;
-		if (!hasResources || resourcesLoaded) {
-			return;
-		}
-		await this.__resourcesLoadedPromise;
 	}
 
 	_hasResources() {
