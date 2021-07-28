@@ -2,7 +2,7 @@
 # Tabs
 Tabs are used to present related information in mutually exclusive panels, allowing users to view just one panel at a time.
 
-<!-- docs: demo -->
+<!-- docs: demo display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tabs/tabs.js';
@@ -43,7 +43,7 @@ The `d2l-tabs` element is a web component for tabbed content. It provides the `d
 ![Tabs](./screenshots/tabs.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-tabs -->
+<!-- docs: demo live name:d2l-tabs display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tabs/tabs.js';
@@ -90,7 +90,7 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 ![Tabs](./screenshots/tabs.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-tab-panel -->
+<!-- docs: demo live name:d2l-tab-panel display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/tabs/tabs.js';
