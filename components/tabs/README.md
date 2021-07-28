@@ -61,7 +61,6 @@ The `d2l-tabs` element is a web component for tabbed content. It provides the `d
 </d2l-tabs>
 ```
 
-
 <!-- docs: start hidden content -->
 ### Tabs Properties:
 
@@ -98,7 +97,6 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 
 <!-- docs: start hidden content -->
 ### Tab Panel Properties:
-
 | Property | Type | Description |
 |--|--|--|
 | `text` | String, required | The text used for the tab, as well as labelling the panel |
@@ -106,7 +104,6 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 | `selected` | Boolean | Used to select the tab |
 
 ### Events:
-
 - `d2l-tab-panel-selected`: dispatched when a tab is selected
 ## Future Enhancements
 

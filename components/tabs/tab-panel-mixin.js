@@ -7,7 +7,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 		return {
 			/**
 			 * Opt out of default padding/whitespace around the panel
-			 * @type {Boolean}
+			 * @type {boolean}
 			 */
 			noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
 			/**
@@ -16,12 +16,12 @@ export const TabPanelMixin = superclass => class extends superclass {
 			role: { type: String, reflect: true },
 			/**
 			 * Use to select the tab
-			 * @type {Boolean}
+			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
 			 * REQUIRED: The text used for the tab, as well as labelling the panel
-			 * @type {String}
+			 * @type {string}
 			 */
 			text: { type: String }
 		};
