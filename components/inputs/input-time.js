@@ -248,7 +248,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
-			this.requestUpdate().then(() => this._onResize(hiddenContent));
+			this.requestUpdate();
+			this.updateComplete.then(() => this._onResize(hiddenContent));
 		});
 
 		await (document.fonts ? document.fonts.ready : Promise.resolve());

@@ -180,7 +180,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this.addEventListener('blur', this._handleBlur);
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._dateTimeDescriptor = getDateTimeDescriptorShared(true);
-			this.requestUpdate().then(() => {
+			this.requestUpdate();
+			this.updateComplete.then(() => {
 				const width = Math.ceil(parseFloat(getComputedStyle(this.shadowRoot.querySelector('.d2l-input-date-hidden-text')).getPropertyValue('width')));
 				this._hiddenContentWidth = `${width}px`;
 			});
