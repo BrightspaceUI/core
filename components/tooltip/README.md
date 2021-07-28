@@ -2,6 +2,10 @@
 
 Tooltips display additional information when users focus or hover on a point of interest.
 
+<!-- docs: start hidden content -->
+![screenshot of an error tooltip](./screenshots/tooltip-error.png)
+<!-- docs: end hidden content -->
+
 <!-- docs: demo autoSize:false size:small -->
 ```html
 <script type="module">
@@ -56,10 +60,6 @@ If you are unable to add a semantically aligned ARIA role or attach the tooltip 
 ## Tooltip [d2l-tooltip]
 
 The `d2l-tooltip` component is used to display additional information when users focus or hover on a point of interest.
-
-<!-- docs: start hidden content -->
-![screenshot of an error tooltip](./screenshots/tooltip-error.png)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-tooltip autoSize:false size:small -->
 ```html
