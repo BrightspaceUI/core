@@ -460,6 +460,15 @@ class Tooltip extends RtlMixin(LitElement) {
 		});
 	}
 
+	async getUpdateComplete() {
+		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
+		await super.getUpdateComplete();
+		/* wait for the fonts to load because browsers have a font block period
+		where they will render an invisible fallback font face that may result in
+		improper width calculations before the real font is loaded */
+		await fontsPromise;
+	}
+
 	hide() {
 		this._isHovering = false;
 		this._isFocusing = false;
@@ -697,15 +706,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_getContent() {
 		return this.shadowRoot.querySelector('.d2l-tooltip-content');
-	}
-
-	async _getUpdateComplete() {
-		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
-		await super._getUpdateComplete();
-		/* wait for the fonts to load because browsers have a font block period
-		where they will render an invisible fallback font face that may result in
-		improper width calculations before the real font is loaded */
-		await fontsPromise;
 	}
 
 	_isAboveOrBelow() {
