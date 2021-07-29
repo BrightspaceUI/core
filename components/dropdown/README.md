@@ -221,6 +221,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | `no-padding-header` | Boolean: default: `false` | Render the header with no padding (if it has content) |
 | `no-padding-footer` | Boolean, default: `false` | Render the footer with no padding (if it has content) |
 | `no-pointer` | Boolean, default: `false` | Render without a pointer |
+| `trap-focus` | Boolean, default: `false` | Optionally render a d2l-focus-trap around the dropdown content |
 | `vertical-offset` | Number or String | Provide custom offset, positive or negative |
 
 **Events:**
