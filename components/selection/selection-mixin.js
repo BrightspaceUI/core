@@ -60,6 +60,10 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
+
+		const externalSubscribers = this.getRootNode().querySelectorAll(`[subscribed-to="${this.id}"]`);
+		externalSubscribers.forEach(subscriber => subscriber._provider = this);
+		this._subscribeObservers(externalSubscribers);
 	}
 
 	disconnectedCallback() {
@@ -85,6 +89,19 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		}
 
 		return new SelectionInfo(keys, state);
+	}
+
+	setSelectionForAll(selected) {
+		this._selectionSelectables.forEach(selectable => {
+			if (!!selectable.selected !== selected) {
+				selectable.selected = selected;
+			}
+		});
+		this._updateSelectionObservers();
+	}
+
+	subscribeObserver(target) {
+		this._subscribeObservers([target]);
 	}
 
 	unsubscribeObserver(target) {
@@ -152,14 +169,20 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		e.stopPropagation();
 		e.detail.provider = this;
 		const target = e.composedPath()[0];
-		if (this._selectionObservers.has(target)) return;
-		this._selectionObservers.set(target, target);
-		this._updateSelectionObservers();
+		this._subscribeObservers([target]);
 	}
 
 	_handleSelectionSelectAllChange(e) {
 		const checked = e.detail.checked;
-		this._selectionSelectables.forEach(selectable => selectable.selected = checked);
+		this.setSelectionForAll(checked);
+	}
+
+	_subscribeObservers(targets) {
+		if (targets.length === 0) return;
+		targets.forEach(target => {
+			if (this._selectionObservers.has(target)) return;
+			this._selectionObservers.set(target, target);
+		});
 		this._updateSelectionObservers();
 	}
 

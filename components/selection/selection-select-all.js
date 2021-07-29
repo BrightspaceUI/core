@@ -46,11 +46,15 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 	}
 
 	_handleCheckboxChange(e) {
-		this.dispatchEvent(new CustomEvent('d2l-selection-select-all-change', {
-			bubbles: true,
-			composed: true,
-			detail: { checked: e.target.checked }
-		}));
+		if (!this.subscribedTo) {
+			this.dispatchEvent(new CustomEvent('d2l-selection-select-all-change', {
+				bubbles: true,
+				composed: true,
+				detail: { checked: e.target.checked }
+			}));
+		} else {
+			if (this._provider) this._provider.setSelectionForAll(e.target.checked);
+		}
 	}
 
 }
