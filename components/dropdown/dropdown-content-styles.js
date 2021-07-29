@@ -108,6 +108,12 @@ export const dropdownContentStyles = css`
 		width: 100vw;
 	}
 
+	d2l-focus-trap {
+		max-width: 370px;
+		min-width: 70px;
+		width: 100vw;
+	}
+
 	:host([opened-above]) .d2l-dropdown-content-width {
 		bottom: 100%;
 	}
@@ -279,6 +285,7 @@ export const dropdownContentStyles = css`
 	:host([data-mobile][mobile-tray="right"][opened]) .d2l-dropdown-content-container {
 		height: 100vh;
 	}
+
 
 	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-pointer {
 		display: none;
