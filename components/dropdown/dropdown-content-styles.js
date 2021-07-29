@@ -109,10 +109,7 @@ export const dropdownContentStyles = css`
 	}
 
 	d2l-focus-trap {
-		max-width: 370px;
-		min-width: 70px;
 		position: absolute;
-		width: 100vw;
 	}
 
 	:host([opened-above]) .d2l-dropdown-content-width {

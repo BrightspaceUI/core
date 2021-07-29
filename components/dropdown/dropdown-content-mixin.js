@@ -757,7 +757,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				content.focus();
 			}
 		}
-		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter', { bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
 	}
 
 	_handleMobileResize() {

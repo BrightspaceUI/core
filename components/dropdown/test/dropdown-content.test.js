@@ -341,7 +341,6 @@ describe('d2l-dropdown', () => {
 	describe('trap-focus option', () => {
 
 		it('no focus trap when trap-focus is false', async() => {
-			//content.setAttribute('trap-focus', false);
 			content.setAttribute('opened', true);
 			await oneEvent(content, 'd2l-dropdown-open');
 			const focusTrap = content.shadowRoot.querySelector('d2l-focus-trap');
