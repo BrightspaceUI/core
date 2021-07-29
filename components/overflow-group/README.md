@@ -1,10 +1,40 @@
 # Overflow Groups
+The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. 
 
-## d2l-overflow-group
-The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. Items added to this container element will no longer wrap onto a second line when the container becomes to small but will be added too a dropdown menu with configurable styling.
+<!-- docs: demo size:medium autoSize:false display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
+</script>
+<d2l-overflow-group>
+	<d2l-button>New</d2l-button>
+	<d2l-dropdown>
+		<d2l-dropdown-button text="Explore Topics" class="d2l-dropdown-opener"></button>
+		<d2l-dropdown-menu id="dropdown" >
+			<d2l-menu label="Astronomy">
+				<d2l-menu-item text="Introduction"></d2l-menu-item>
+				<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
+				<d2l-menu-item text="The Solar System"></d2l-menu-item>
+				<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
+				<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+				<d2l-menu-item text="The Universe"></d2l-menu-item>
+			</d2l-menu>
+		</d2l-dropdown-menu>
+	</d2l-dropdown>
+	<d2l-button>Copy</d2l-button>
+	<d2l-button>Import</d2l-button>
+	<d2l-button>Delete</d2l-button>
+</d2l-overflow-group>
+```
 
+## Overflow Group [d2l-overflow-group]
+Items added to this container element will no longer wrap onto a second line when the container becomes to small but will be added too a dropdown menu with configurable styling.
+
+<!-- docs: start hidden content -->
 ![Overflow Group](./screenshots/overflow-group.png?raw=true)
+<!-- docs: end hidden content -->
 
+<!-- docs: demo live name:d2l-overflow-group size:medium autoSize:false display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
@@ -31,7 +61,8 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 </d2l-overflow-group>
 ```
 
-**Properties:**
+<!-- docs: start hidden content -->
+### Properties:
 
 | Property | Type | Description |
 |--|--|--|
@@ -42,3 +73,4 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 | `opener-type` | String | Set the opener type to `default` or `icon`, which will permanently render the dropdown menu symbol as `...` |
 
 Looking for an enhancement not listed here? Create a GitHub issue!
+<!-- docs: end hidden content -->

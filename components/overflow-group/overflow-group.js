@@ -114,7 +114,8 @@ function convertToDropdownItem(node) {
  * dropdown menu when they no longer fit on the first line of their container
  *
  * @slot - Buttons, dropdown buttons, links or other items to be added to the container
- */
+ * @fires d2l-overflow-group-updated - Dispatched when there is an update performed to the overflow group
+*/
 class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
@@ -145,7 +146,6 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
 			 * @type {'default'|'icon'}
-			 * @default "default"
 			 */
 			openerType: {
 				type: String,
@@ -154,7 +154,6 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			/**
 			 * Setting this property will change the style of the overflow menu opener
 			 * @type {'default'|'subtle'}
-			 * @default "default"
 			 */
 			openerStyle: {
 				type: String,
