@@ -745,6 +745,21 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return null;
 	}
 
+	_handleFocusTrapEnter() {
+		if (this.__applyFocus && !this.noAutoFocus) {
+			const content = this.__getContentContainer();
+			const focusable = getFirstFocusableDescendant(content);
+			if (focusable) {
+				// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+				requestAnimationFrame(() => focusable.focus());
+			} else {
+				content.setAttribute('tabindex', '-1');
+				content.focus();
+			}
+		}
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter', { bubbles: true, composed: true }));
+	}
+
 	_handleMobileResize() {
 		this._useMobileStyling =  this.mediaQueryList.matches;
 	}
@@ -925,9 +940,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		`;
 
 		// trap-focus option is overridden by the no-auto-focus option
-		if (this.trapFocus && !this.noAutoFocus) {
+		if (this.trapFocus) {
 			dropdownContentSlots = html`
 			<d2l-focus-trap
+			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
 			?trap="${this.opened}">
 			${dropdownContentSlots}
 			</d2l-focus-trap>`;

@@ -225,10 +225,12 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			<d2l-dropdown-content
 				@d2l-dropdown-close="${this._handleDropdownClose}"
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
+				@d2l-dropdown-focus-enter="${this._handleFocusTrapEnter}"
 				max-width="335"
 				min-height="${this._hiddenCalendarHeight}"
 				no-auto-fit
 				trap-focus
+				no-auto-focus
 				mobile-tray="bottom"
 				no-padding>
 				<d2l-calendar
@@ -374,6 +376,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleDropdownOpen() {
+		if (this._dropdown && !this._dropdown.openedAbove) {
+			this._dropdown.shadowRoot.querySelector('d2l-focus-trap')
+				.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+		}
 		// use setTimeout to wait for keyboard to open on mobile devices
 		setTimeout(() => {
 			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
@@ -385,7 +391,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			{ bubbles: true, composed: false, detail: { opened: true } }
 		));
 		this._showInfoTooltip = false; // tooltip should not reappear after user has opened dropdown and closed unless focus leaves input-date and returns
-		if (this._calendar) this._calendar.focus();
 	}
 
 	async _handleFirstDropdownOpen() {
@@ -394,6 +399,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		await this._calendar.updateComplete;
+	}
+
+	async _handleFocusTrapEnter() {
+		if (this._calendar) this._calendar.focus();
 	}
 
 	_handleInputTextBlur() {
