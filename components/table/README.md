@@ -100,14 +100,6 @@ For a table style with fewer borders and tighter padding, there's the `light` ty
 
 ![table with light style](./screenshots/light.png?raw=true)
 
-<!-- docs: demo -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/table/demo/table-test.js';
-</script>
-<d2l-test-table type="light"></d2l-test-table>
-```
-
 ```html
 <d2l-table-wrapper type="light">
   <table class="d2l-table">...</table>
@@ -118,17 +110,8 @@ For a table style with fewer borders and tighter padding, there's the `light` ty
 
 For long tables, the header row can be made to "stick" in place as the user scrolls.
 
-<!-- docs: start hidden content -->
 ![table with sticky headers](./screenshots/sticky.gif?raw=true)
-<!-- docs: end hidden content -->
 
-<!-- docs: demo autoSize:false size:xsmall -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/table/demo/table-test.js';
-</script>
-<d2l-test-table sticky-headers></d2l-test-table>
-```
 ```html
 <d2l-table-wrapper sticky-headers>
   <table class="d2l-table">...</table>
