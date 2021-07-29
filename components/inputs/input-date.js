@@ -2,7 +2,6 @@ import '../button/button-subtle.js';
 import '../calendar/calendar.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
-import '../focus-trap/focus-trap.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import './input-text.js';
@@ -113,7 +112,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				visibility: hidden;
 				width: auto;
 			}
-			d2l-focus-trap {
+			d2l-calendar {
 				padding: 0.25rem 0.6rem;
 			}
 			.d2l-calendar-slot-buttons {
