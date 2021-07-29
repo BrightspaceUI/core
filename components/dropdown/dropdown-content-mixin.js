@@ -897,21 +897,30 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			'd2l-dropdown-content-footer': this._hasFooter || (specialMobileStyle && !this.noMobileCloseButton)
 		};
 
-		let dropdownContentSlots = html`					
-			<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
-				<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
-			</div>
-			<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
-				<slot class="d2l-dropdown-content-slot"></slot>
-			</div>
-			<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
-				<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
-				<d2l-button
-					class="dropdown-close-btn"
-					style=${styleMap(closeButtonStyles)}
-					@click=${this.close}>
-					${this.localize('components.dropdown.close')}
-				</d2l-button>
+		let dropdownContentSlots = html`	
+			<div  
+			id="d2l-dropdown-wrapper" 
+			class="d2l-dropdown-content-width" 
+			style=${styleMap(widthStyle)}
+			?data-closing="${this._closing}">				
+				<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
+					<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
+				</div>
+				<div 
+				class="d2l-dropdown-content-container"
+				style=${styleMap(contentStyle)}
+				@scroll=${this.__toggleScrollStyles}>
+					<slot class="d2l-dropdown-content-slot"></slot>
+				</div>
+				<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
+					<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+					<d2l-button
+						class="dropdown-close-btn"
+						style=${styleMap(closeButtonStyles)}
+						@click=${this.close}>
+						${this.localize('components.dropdown.close')}
+					</d2l-button>
+				</div>
 			</div>
 		`;
 
@@ -926,13 +935,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const dropdown =  html`
 			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  
-				id="d2l-dropdown-wrapper" 
-				class="d2l-dropdown-content-width" 
-				style=${styleMap(widthStyle)}
-				 ?data-closing="${this._closing}">
 					 ${dropdownContentSlots}
-				</div>
 			</div>
 		`;
 
