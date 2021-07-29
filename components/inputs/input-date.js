@@ -377,8 +377,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 	_handleDropdownOpen() {
 		if (this._dropdown && !this._dropdown.openedAbove) {
-			this._dropdown.shadowRoot.querySelector('d2l-focus-trap')
-				.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+			this.shadowRoot.querySelector('d2l-calendar').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		}
 		// use setTimeout to wait for keyboard to open on mobile devices
 		setTimeout(() => {
