@@ -44,7 +44,14 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-search.js';
 </script>
-<d2l-input-search label="Search">
+<script>
+  window.addEventListener('load', function () {
+    document.querySelector('#search').addEventListener('d2l-input-search-searched', (e) => {
+      console.log('searched term:', e.detail.value);
+    });
+  });
+</script>
+<d2l-input-search id="search" label="Search">
 </d2l-input-search>
 ```
 
@@ -62,10 +69,7 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 
 ### Events
 
-* `d2l-input-search-searched`: dispatched when a search is performed or the input is cleared. `e.detail.value` contains the new (or empty) search value.
-<!-- docs: end hidden content -->
-
-### Event Usage
+The `d2l-input-search` component dispatches the `d2l-input-search-searched` event when a search is performed:
 
 ```javascript
 search.addEventListener('d2l-input-search-searched', (e) => {
@@ -73,6 +77,9 @@ search.addEventListener('d2l-input-search-searched', (e) => {
   console.log(e.detail.value);
 });
 ```
+
+When the input is cleared, the same event will be fired with an empty value.
+<!-- docs: end hidden content -->
 
 ### Accessibility
 
