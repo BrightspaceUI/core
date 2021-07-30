@@ -9,7 +9,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 /**
  * This component wraps the "<d2l-input-number>" tag and is intended for inputting percent values.
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
- * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
 class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
 
@@ -17,46 +17,57 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 		return {
 			/**
 			 * When set, will automatically place focus on the input
+			 * @type {boolean}
 			 */
 			autofocus: { type: Boolean },
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
 			/**
 			 * REQUIRED: Label for the input
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
 			 * Maximum number of decimal values to show (rounds value up or down).
+			 * @type {number}
 			 */
 			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
 			/**
 			 * Minimum number of decimal values to show.
+			 * @type {number}
 			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
 			/**
 			 * Placeholder text
+			 * @type {string}
 			 */
 			placeholder: { type: String },
 			/**
 			 * Indicates that a value is required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean },
 			/**
 			 * Text for additional screenreader and mouseover context
+			 * @type {string}
 			 */
 			title: { type: String },
 			/**
 			 * Value of the input
+			 * @type {number}
 			 */
 			value: { type: Number }
 		};
