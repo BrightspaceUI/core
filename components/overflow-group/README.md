@@ -28,7 +28,7 @@ The `d2l-overflow-group` element can be used to add responsiveness to a set of b
 ```
 
 ## Overflow Group [d2l-overflow-group]
-Items added to this container element will no longer wrap onto a second line when the container becomes to small but will be added too a dropdown menu with configurable styling.
+Items added to this container element will no longer wrap onto a second line when the container becomes too small, but will be added to a dropdown menu with configurable styling.
 
 <!-- docs: start hidden content -->
 ![Overflow Group](./screenshots/overflow-group.png?raw=true)
