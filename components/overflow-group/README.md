@@ -1,7 +1,7 @@
 # Overflow Groups
 The `d2l-overflow-group` element can be used to add responsiveness to a set of buttons, links or menus. 
 
-<!-- docs: demo size:medium autoSize:false display:block -->
+<!-- docs: demo autoSize:false display:block size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
@@ -34,7 +34,7 @@ Items added to this container element will no longer wrap onto a second line whe
 ![Overflow Group](./screenshots/overflow-group.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-overflow-group size:medium autoSize:false display:block -->
+<!-- docs: demo live name:d2l-overflow-group autoSize:false display:block size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/overflow-group/overflow-group.js';
