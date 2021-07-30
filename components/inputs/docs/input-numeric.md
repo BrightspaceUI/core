@@ -5,14 +5,19 @@ Numeric inputs allow users to input numbers. These include the more generic `d2l
 <!-- docs: demo -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/input-number.js';
   import '@brightspace-ui/core/components/inputs/input-percent.js';
 </script>
+<style>
+  d2l-input-number,
+  d2l-input-percent {
+    width: unset;
+  }
+</style>
 <d2l-input-number label="Number Input"></d2l-input-number>
 <d2l-input-percent label="Percent Input"></d2l-input-percent>
 ```
 
-### Number Input [d2l-input-number]
+## Number Input [d2l-input-number]
 
 The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's intended for inputting numbers only.
 
