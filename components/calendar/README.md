@@ -8,7 +8,7 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 
 ## Calendar [d2l-calendar]
 
-<!-- docs: demo live name:d2l-calendar -->
+<!-- docs: demo live name:d2l-calendar display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/calendar/calendar.js';

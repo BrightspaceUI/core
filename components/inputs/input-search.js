@@ -9,7 +9,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
- * @fires d2l-input-search-searched - Dispatched when a search is performed
+ * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
  */
 class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -17,10 +17,12 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * REQUIRED: Accessible label for the input
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
@@ -29,18 +31,22 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			lastSearchValue: { type: String, attribute: false },
 			/**
 			 * Imposes an upper character limit
+			 * @type {number}
 			 */
 			maxlength: { type: Number },
 			/**
 			 * Prevents the "clear" button from appearing
+			 * @type {boolean}
 			 */
 			noClear: { type: Boolean, attribute: 'no-clear' },
 			/**
 			 * Placeholder text (default: "Search...")
+			 * @type {string}
 			 */
 			placeholder: { type: String },
 			/**
 			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String }
 		};
@@ -75,6 +81,7 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.value = '';
 	}
 
+	/** @ignore */
 	get lastSearchValue() { return this._lastSearchValue; }
 	set lastSearchValue(val) {}
 
