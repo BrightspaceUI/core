@@ -376,8 +376,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_handleDropdownOpen() {
-		if (this._dropdown && !this._dropdown.openedAbove) {
-			this.shadowRoot.querySelector('d2l-calendar').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+		const calendarOffset = this.shadowRoot.querySelector('d2l-calendar').getBoundingClientRect();
+		const fullCalendarVisible = calendarOffset.y + calendarOffset.height < window.innerHeight;
+		if (this._dropdown && !this._dropdown.openedAbove && !fullCalendarVisible) {
+			this._dropdown.querySelector('d2l-calendar').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		}
 		// use setTimeout to wait for keyboard to open on mobile devices
 		setTimeout(() => {
