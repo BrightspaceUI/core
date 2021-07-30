@@ -59,7 +59,7 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `label` | String, required | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
 | `maxlength` | Number | Imposes an upper character limit |
@@ -86,5 +86,5 @@ When the input is cleared, the same event will be fired with an empty value.
 To make your usage of `d2l-input-search` accessible, use the following property when applicable:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | label | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Not visible. |
