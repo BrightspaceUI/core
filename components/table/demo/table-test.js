@@ -8,7 +8,11 @@ const fruits = ['Apples', 'Oranges', 'Bananas'];
 const data = [
 	{ name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: false },
 	{ name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: false },
-	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false }
+	{ name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
+	{ name: 'Brazil', fruit: { 'apples': 1300000, 'oranges': 50000, 'bananas': 6429875 }, selected: false },
+	{ name: 'England', fruit: { 'apples': 345782, 'oranges': 4, 'bananas': 1249875 }, selected: false },
+	{ name: 'Hawaii', fruit: { 'apples': 129875, 'oranges': 856765, 'bananas': 123 }, selected: false },
+	{ name: 'Japan', fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false }
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
@@ -17,7 +21,20 @@ class TestTable extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Hides the column borders on "default" table type
+			 * @type {boolean}
+			 */
+			noColumnBorder: { attribute: 'no-column-border', type: Boolean },
+			/**
+			 * Type of table style to apply
+			 * @type {'default'|'light'}
+			 */
 			type: { type: String },
+			/**
+			 * Whether header row is sticky
+			 * @type {boolean}
+			 */
 			stickyHeaders: { attribute: 'sticky-headers', type: Boolean },
 			_sortField: { attribute: false, type: String },
 			_sortDesc: { attribute: false, type: Boolean }
@@ -34,6 +51,7 @@ class TestTable extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.noColumnBorder = false;
 		this.sortDesc = false;
 		this.stickyHeaders = false;
 		this.type = 'default';
@@ -48,7 +66,7 @@ class TestTable extends RtlMixin(LitElement) {
 			return a.fruit[this._sortField] - b.fruit[this._sortField];
 		});
 		return html`
-			<d2l-table-wrapper ?sticky-headers="${this.stickyHeaders}" type="${type}">
+			<d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
 				<table class="d2l-table">
 					<thead>
 						<tr>
