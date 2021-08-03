@@ -1,4 +1,8 @@
-# Radio Buttons
+# Radio Inputs
+
+Radio Buttons are used forms to offer a single choice among mutually exclusive options.
+
+![example screenshot of radio inputs](../screenshots/radio.gif?raw=true)
 
 Unlike checkboxes, individual radio buttons cannot be placed in a custom element. Items belonging to a radio group cannot span across different shadow roots -- all radios in the same group must be in the same shadow root.
 
@@ -6,11 +10,22 @@ As a result, we have to apply styles to native radio inputs.
 
 Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
 
-## Radio Inputs With Labels
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use as an input for traditional forms
+* Use when there are 3 or more mutually exclusive options
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use 2 radios if a 1 checkbox works better
+* Don’t use for triggering an immediate action. Notable exceptions are forms that autosave with clear indication and as a trigger for progressive disclosure on traditional forms, so long as users are made aware that new options have been made available
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
+## Radio Inputs With Labels [d2l-input-radio-label]
 
 The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS class on a `<label>` element that wraps the input.
-
-![example screenshot of radio inputs](../screenshots/radio.gif?raw=true)
 
 For disabled items, add the `d2l-input-radio-label-disabled` class on the label and the `disabled` attribute on the input itself.
 
@@ -66,7 +81,7 @@ class MyElem extends LitElement {
 }
 ```
 
-## Radio Spacer
+## Radio Spacer [d2l-input-radio-spacer]
 
 To align related content below radio buttons, the `d2l-input-radio-spacer` element can be used:
 
