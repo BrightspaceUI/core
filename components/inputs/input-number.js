@@ -60,29 +60,114 @@ function roundPrecisely(val, maxFractionDigits) {
 	return parseFloat(strValue);
 }
 
+/**
+ * The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's intended for inputting numbers only.
+ * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
+ * @slot left - Slot within the input on the left side. Useful for an "icon" or "button-icon".
+ * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
+ */
 class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
+			/**
+			 * Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser.
+			 * @type {string}
+			 */
 			autocomplete: { type: String },
+			/**
+			 * When set, will automatically place focus on the input
+			 * @type {boolean}
+			 */
 			autofocus: { type: Boolean },
+			/**
+			 * Disables the input
+			 * @type {boolean}
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Hide the alert icon when input is invalid
+			 * @type {boolean}
+			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
+			/**
+			 * Restricts the maximum width of the input box without impacting the width of the label
+			 * @type {string}
+			 */
 			inputWidth: { attribute: 'input-width', type: String },
+			/**
+			 * Label for the input
+			 * @type {string}
+			 */
 			label: { type: String },
+			/**
+			 * Hides the label visually (moves it to the input's `aria-label` attribute)
+			 * @type {boolean}
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * Maximum value allowed
+			 * @type {number}
+			 */
 			max: { type: Number },
+			/**
+			 * Indicates whether the max value is exclusive
+			 * @type {boolean}
+			 */
 			maxExclusive: { type: Boolean, attribute: 'max-exclusive' },
+			/**
+			 * Maximum number of digits allowed after the decimal place. Must be between 0 and 20 and greater than or equal to `minFractionDigits`. Default is Greater of `minFractionDigits` or `3`.
+			 * @type {number}
+			 */
 			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
+			/**
+			 * Minimum value allowed
+			 * @type {number}
+			 */
 			min: { type: Number },
+			/**
+			 * Indicates whether the min value is exclusive
+			 * @type {boolean}
+			 */
 			minExclusive: { type: Boolean, attribute: 'min-exclusive' },
+			/**
+			 * Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits`. Default is `0`.
+			 * @type {number}
+			 */
 			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
+			/**
+			 * Placeholder text
+			 * @type {string}
+			 */
 			placeholder: { type: String },
+			/**
+			 * Indicates that a value is required
+			 * @type {boolean}
+			 */
 			required: { type: Boolean },
+			/**
+			 * Text for additional screen reader and mouseover context
+			 * @type {string}
+			 */
 			title: { type: String },
+			/**
+			 * @ignore
+			 */
 			trailingZeroes: { type: Boolean, attribute: 'trailing-zeroes' },
+			/**
+			 * Unit associated with the input value, displayed next to input and announced as part of the label
+			 * @type {string}
+			 */
 			unit: { type: String },
+			/**
+			 * Value of the input
+			 * @type {number}
+			 */
 			value: { type: Number },
+			/**
+			 * @ignore
+			 */
 			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
 			_hintType: { type: Number },
 			_formattedValue: { type: String }
@@ -153,6 +238,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this._updateFormattedValue();
 	}
 
+	/** @ignore */
 	get trailingZeroes() { return this._trailingZeroes; }
 	set trailingZeroes(val) {
 		this._trailingZeroes = val;
@@ -173,6 +259,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this.requestUpdate('value', oldValue);
 	}
 
+	/** @ignore */
 	get valueTrailingZeroes() {
 		if (this._valueTrailingZeroes === '') {
 			return '';
@@ -197,6 +284,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		this._updateFormattedValue();
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.rangeOverflow || this.validity.rangeUnderflow) {
 			const minNumber = typeof(this.min) === 'number' ? formatValue(this.min, { minimumFractionDigits: this.minFractionDigits, maximumFractionDigits: this.maxFractionDigits }) : null;
