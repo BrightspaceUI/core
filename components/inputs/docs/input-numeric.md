@@ -45,7 +45,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `label` | String, required | Label for the input. |
 | `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser. |
 | `autofocus` | Boolean, default: `false` | When set, will automatically place focus on the input. |
@@ -81,7 +81,7 @@ numberInput.addEventListener('change', (e) => {
 To make your usage of `d2l-input-number` accessible, use the following properties when applicable:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | `label` | **REQUIRED.** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
 | `unit` | Use to render the unit (offscreen) as part of the label. |
@@ -126,7 +126,7 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `label` | String, required | Label for the input. |
 | `autofocus` | Boolean, default: `false` | When set, will automatically place focus on the input. |
 | `disabled` | Boolean, default: `false` | Disables the input. |
@@ -156,7 +156,7 @@ numberInput.addEventListener('change', (e) => {
 To make your usage of `d2l-input-percent` accessible, use the following properties when applicable:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | `label` | **REQUIRED.** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users. |
 | `title` | Use for additional screen reader and mouseover context. |
