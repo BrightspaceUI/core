@@ -5,7 +5,7 @@ import { iconStyles } from './icon-styles.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { runAsync } from '../../directives/run-async.js';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
 class Icon extends RtlMixin(LitElement) {
 
@@ -47,13 +47,13 @@ class Icon extends RtlMixin(LitElement) {
 			return undefined;
 		}
 
-		const elem = document.createElement('div');
-		elem.innerHTML = svgStr;
+		const template = document.createElement('template');
+		template.innerHTML = svgStr;
 
-		const svg = elem.firstChild;
+		const svg = template.content.firstChild;
 		fixSvg(svg);
 
-		return html`${unsafeHTML(elem.innerHTML)}`;
+		return html`${unsafeSVG(template.innerHTML)}`;
 
 	}
 
