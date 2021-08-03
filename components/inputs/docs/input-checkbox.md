@@ -1,4 +1,4 @@
-# Checkbox Inputs
+# Checkboxes
 
 Checkboxes are used in forms to toggle an option or preference.
 
@@ -39,7 +39,7 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 ![example screenshot of checkbox input](../screenshots/checkbox.gif?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-input-checkbox -->
+<!-- docs: demo live name:d2l-input-checkbox display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';
@@ -52,8 +52,10 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
     });
   });
 </script>
-<d2l-input-checkbox id="checkbox">Label for checkbox</d2l-input-checkbox>
-<d2l-input-checkbox>Label for second checkbox</d2l-input-checkbox>
+<div>
+  <d2l-input-checkbox id="checkbox">Label for checkbox</d2l-input-checkbox>
+  <d2l-input-checkbox>Label for second checkbox</d2l-input-checkbox>
+</div>
 ```
 
 <!-- docs: start hidden content -->
@@ -100,17 +102,19 @@ To make your usage of `d2l-input-checkbox` accessible, use the following propert
 
 To align related content below checkboxes, the `d2l-input-checkbox-spacer` element can be used:
 
-<!-- docs: demo live name:d2l-input-checkbox-space -->
+<!-- docs: demo code display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';
   import '@brightspace-ui/core/components/inputs/input-checkbox-spacer.js';
 </script>
-<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
-<d2l-input-checkbox-spacer>
-  Additional content can go here and will
-  line up nicely with the edge of the checkbox.
-</d2l-input-checkbox-spacer>
+<div>
+  <d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
+  <d2l-input-checkbox-spacer>
+    Additional content can go here and will
+    line up nicely with the edge of the checkbox.
+  </d2l-input-checkbox-spacer>
+</div>
 ```
 
 ## Applying styles to native checkboxes

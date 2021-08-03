@@ -1,8 +1,18 @@
-# Radio Inputs
+# Radio Buttons
 
 Radio Buttons are used forms to offer a single choice among mutually exclusive options.
 
+<!-- docs: demo display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/demo/input-radio-label-test.js';
+</script>
+<d2l-test-input-radio-label></d2l-test-input-radio-label>
+```
+
+<!-- docs: start hidden content -->
 ![example screenshot of radio inputs](../screenshots/radio.gif?raw=true)
+<!-- docs: end hidden content -->
 
 Unlike checkboxes, individual radio buttons cannot be placed in a custom element. Items belonging to a radio group cannot span across different shadow roots -- all radios in the same group must be in the same shadow root.
 
@@ -23,7 +33,7 @@ Note: in order for RTL to function correctly, make sure your component uses the 
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-## Radio Inputs With Labels [d2l-input-radio-label]
+## Radio Inputs With Labels
 
 The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS class on a `<label>` element that wraps the input.
 
