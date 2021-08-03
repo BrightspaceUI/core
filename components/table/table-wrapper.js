@@ -184,7 +184,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				type: Boolean
 			},
 			/**
-			 * Whether header row is sticky
+			 * Whether the header row is sticky. Useful for long tables to "stick" the header row in place as the user scrolls.
 			 * @type {boolean}
 			 */
 			stickyHeaders: {
@@ -193,7 +193,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				type: Boolean
 			},
 			/**
-			 * Type of table style to apply
+			 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
 			 * @type {'default'|'light'}
 			 */
 			type: {

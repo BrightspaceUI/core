@@ -12,7 +12,7 @@ export class TableColSortButton extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Whether the direction is descending
+			 * Whether sort direction is descending
 			 * @type {boolean}
 			 */
 			desc: {
@@ -20,7 +20,7 @@ export class TableColSortButton extends LitElement {
 				type: Boolean
 			},
 			/**
-			 * When present, hides the asc/desc sort icon
+			 * Column is not currently sorted. Hides the ascending/descending sort icon.
 			 * @type {boolean}
 			 */
 			nosort: {

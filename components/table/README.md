@@ -89,7 +89,7 @@ customElements.define('d2l-test-table', TestTable);
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `no-column-border` | Boolean, default: `false` | Hides the column borders on "default" table type |
 | `sticky-headers` | Boolean, default: `false` | Whether to make the header row sticky |
 | `type` | String, default: `'default'` | Type of the table style. Can be one of  `default`, `light`. |
@@ -140,9 +140,9 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `desc` | Boolean, default: `false` | Whether sort direction is descending |
-| `nosort` | Booealn, default: `false` | Column is not currently sorted |
+| `nosort` | Booealn, default: `false` | Column is not currently sorted. Hides the ascending/descending sort icon. |
 
 ## Selection
 
