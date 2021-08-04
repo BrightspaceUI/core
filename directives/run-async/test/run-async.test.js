@@ -70,7 +70,7 @@ describe('run-async directive', () => {
 			expect(elem.innerText).to.equal('failure');
 		});
 
-		it.only('should render pending template while task is executing', async() => {
+		it('should render pending template while task is executing', async() => {
 			const elem = await createFixture();
 			expect(elem.innerText).to.equal('pending');
 		});

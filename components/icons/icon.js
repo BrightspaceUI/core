@@ -4,7 +4,7 @@ import { fixSvg } from './fix-svg.js';
 import { iconStyles } from './icon-styles.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { runAsync } from '../../directives/run-async.js';
+import { runAsync } from '../../directives/run-async/run-async.js';
 import { unsafeSVG } from 'lit-html/directives/unsafe-svg.js';
 
 class Icon extends RtlMixin(LitElement) {
