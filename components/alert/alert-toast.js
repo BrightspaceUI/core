@@ -23,33 +23,37 @@ class AlertToast extends LitElement {
 		return {
 			/**
 			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+			 * @type {string}
 			 */
 			buttonText: { type: String, attribute: 'button-text' },
 
 			/**
 			 * Hide the close button to prevent users from manually closing the alert
+			 * @type {boolean}
 			 */
 			hideCloseButton: { type: Boolean, attribute: 'hide-close-button' },
 
 			/**
 			 * Prevents the alert from automatically closing 4 seconds after opening
+			 * @type {boolean}
 			 */
 			noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
 
 			/**
 			 * Open or close the toast alert
+			 * @type {boolean}
 			 */
 			open: { type: Boolean, reflect: true },
 
 			/**
 			 * The text that is displayed below the main alert message
+			 * @type {string}
 			 */
 			subtext: { type: String },
 
 			/**
 			 * Type of the alert being displayed
 			 * @type {'default'|'critical'|'success'|'warning'}
-			 * @default "default"
 			 */
 			type: { type: String, reflect: true },
 			_state: { type: String }
@@ -113,11 +117,14 @@ class AlertToast extends LitElement {
 
 	constructor() {
 		super();
-		this._hasFocus = false;
-		this._hasMouse = false;
 		this.hideCloseButton = false;
 		this.noAutoClose = false;
 		this.open = false;
+		/** @ignore */ 
+		this.type = 'default';
+
+		this._hasFocus = false;
+		this._hasMouse = false;
 		this._state = states.CLOSED;
 	}
 
@@ -140,6 +147,7 @@ class AlertToast extends LitElement {
 				class="d2l-alert-toast-container"
 				data-state="${this._state}"
 				@transitionend=${this._onTransitionEnd}>
+				<!-- eslint-disable-next-line -->
 				<d2l-alert
 					@blur=${this._onBlur}
 					button-text="${ifDefined(this.buttonText)}"
@@ -164,6 +172,7 @@ class AlertToast extends LitElement {
 		}
 	}
 
+	/** @ignore */
 	get _state() {
 		return this.__state;
 	}
