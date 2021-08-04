@@ -19,6 +19,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
+ * @fires input - Dispatched immediately after changes by the user
  */
 class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
@@ -26,99 +27,123 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		return {
 			/**
 			 * Indicates that the input has a popup menu
+			 * @type {string}
 			 */
 			ariaHaspopup: { type: String, attribute: 'aria-haspopup' },
 			/**
 			 * Indicates that the input value is invalid
+			 * @type {string}
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			/**
 			 * Specifies whether or not the screen reader should always present changes to the live region as a whole.
 			 * This only applies if live is set to polite or assertive.
+			 * @type {string}
 			 */
 			atomic: { type: String },
 			/**
 			 * Specifies which types of values can be autofilled by the browser
+			 * @type {string}
 			 */
 			autocomplete: { type: String },
 			/**
 			 * When set, will automatically place focus on the input
+			 * @type {boolean}
 			 */
 			autofocus: { type: Boolean },
 			/**
 			 * Additional information communicated in the aria-describedby on the input
+			 * @type {string}
 			 */
 			description: { type: String, reflect: true },
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
 			 * Hide the alert icon when input is invalid
+			 * @type {boolean}
 			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
 			/**
 			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
 			/**
 			 * REQUIRED: Label for the input
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
 			 * Set the priority with which screen readers should treat updates to the input's live text region
+			 * @type {string}
 			 */
 			live: { type: String },
 			/**
 			 * For number inputs, maximum value
+			 * @type {string}
 			 */
 			max: { type: String },
 			/**
 			 * Imposes an upper character limit
+			 * @type {number}
 			 */
 			maxlength: { type: Number },
 			/**
 			 * For number inputs, minimum value
+			 * @type {string}
 			 */
 			min: { type: String },
 			/**
 			 * Imposes a lower character limit
+			 * @type {number}
 			 */
 			minlength: { type: Number },
 			/**
 			 * Regular expression pattern to validate the value
+			 * @type {string}
 			 */
 			pattern: { type: String },
 			/**
 			 * Placeholder text
+			 * @type {string}
 			 */
 			placeholder: { type: String },
 			/**
 			 * Prevents pressing ENTER from submitting forms
+			 * @type {boolean}
 			 */
 			preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
 			/**
 			 * Makes the input read-only
+			 * @type {boolean}
 			 */
 			readonly: { type: Boolean },
 			/**
 			 * Indicates that a value is required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
 			 * Size of the input
+			 * @type {number}
 			 */
 			size: { type: Number },
 			/**
 			 * For number inputs, sets the step size
+			 * @type {string}
 			 */
 			step: { type: String },
 			/**
 			 * Text for additional screenreader and mouseover context
+			 * @type {string}
 			 */
 			title: { type: String },
 			/**
@@ -128,10 +153,12 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			type: { type: String },
 			/**
 			 * Unit associated with the input value, displayed next to input and announced as part of the label
+			 * @type {string}
 			 */
 			unit: { type: String },
 			/**
 			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String },
 			_firstSlotWidth: { type: Number },
@@ -243,16 +270,19 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._setValue(val, true);
 	}
 
+	/** @ignore */
 	get selectionEnd() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		return elem ? elem.selectionEnd : 0;
 	}
 
+	/** @ignore */
 	get selectionStart() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		return elem ? elem.selectionStart : 0;
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.rangeOverflow) {
 			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)), maxExclusive: false });
@@ -270,6 +300,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		return super.validationMessage;
 	}
 
+	/** @ignore */
 	get validity() {
 		const elem = this.shadowRoot.querySelector('.d2l-input');
 		if (!elem.validity.valid) {

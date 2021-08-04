@@ -8,8 +8,7 @@ There are various input components available:
 - [Radio Buttons (input-radio-*)](docs/input-radio.md)
 - [Search (input-search)](docs/input-search.md)
 - [Select Lists (input-select-styles)](docs/input-select-styles.md)
-- [Text (input-text, input-styles)](docs/input-text.md)
-- [Text Areas (input-textarea)](docs/input-textarea.md)
+- [Text (input-text, input-styles, input-textarea)](docs/input-text.md)
 
 ## Labelling Inputs
 
