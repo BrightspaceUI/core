@@ -2,7 +2,7 @@ import '../../list/list.js';
 import '../../list/list-item.js';
 import '../../list/list-item-content.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
-import { InitialStateError, runAsync } from '../../../directives/run-async.js';
+import { InitialStateError, runAsync } from '../../../directives/run-async/run-async.js';
 
 class DialogAsyncContent extends LitElement {
 
