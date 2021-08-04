@@ -133,7 +133,7 @@ class MyElem extends LitElement {
 
   render() {
     return html`
-	  <input type="radio" class="d2l-input-radio" aria-label="Option 1"> Option 1
+	  <input type="radio" class="d2l-input-radio" aria-label="Option 1">
 	  <d2l-input-radio-spacer>
 		Additional content can go here and will
 		line up nicely with the edge of the radio.
