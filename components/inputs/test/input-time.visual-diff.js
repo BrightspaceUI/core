@@ -81,20 +81,19 @@ describe('d2l-input-time', () => {
 
 	describe('open behavior', () => {
 
+		beforeEach(async() => {
+			await page.setViewport({ width: 900, height: 800 });
+		});
+
 		afterEach(async() => {
 			await reset(page, '#dropdown');
+			await page.setViewport({ width: 300, height: 800 });
 		});
 
 		it('dropdown open top', async function() {
 			await open(page, '#dropdown');
 			const rect = await getRect(page, '#dropdown');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('dropdown open top mobile', async function() {
-			await page.setViewport({ width: 600, height: 500 });
-			await open(page, '#dropdown');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 
 		it('dropdown open keydown top', async function() {
@@ -117,6 +116,12 @@ describe('d2l-input-time', () => {
 			await reset(page, '#enforce'); // Make sure the dropdown is closed before the next test
 		});
 
+	});
+
+	it('mobile tray', async function() {
+		await open(page, '#dropdown');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		await reset(page, '#dropdown');
 	});
 
 	it('focus', async function() {
