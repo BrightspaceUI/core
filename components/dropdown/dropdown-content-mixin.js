@@ -845,6 +845,16 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			width: contentWidth,
 		};
 
+		const headerStyle = {
+			...contentWidthStyle,
+			minHeight: specialMobileStyle && this._hasHeader ? 'auto' : '5px'
+		};
+
+		const footerStyle = {
+			...contentWidthStyle,
+			minHeight: specialMobileStyle && (this._hasFooter || !this.noMobileCloseButton) ? 'auto' : '5px'
+		};
+
 		const contentStyle = {
 			...contentWidthStyle,
 			maxHeight: maxHeightOverride,
@@ -894,13 +904,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				class="d2l-dropdown-content-width" 
 				style=${styleMap(widthStyle)}
 				 ?data-closing="${this._closing}">
-					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
+					<div class=${classMap(topClasses)} style=${styleMap(headerStyle)}>
 						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 					</div>
 					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
 						<slot class="d2l-dropdown-content-slot"></slot>
 					</div>
-					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
+					<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
 						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
 						<d2l-button
 							style=${styleMap(closeButtonStyles)}

@@ -91,6 +91,12 @@ describe('d2l-input-time', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('dropdown open top mobile', async function() {
+			await page.setViewport({ width: 600, height: 500 });
+			await open(page, '#dropdown');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		});
+
 		it('dropdown open keydown top', async function() {
 			await page.$eval('#dropdown', (elem) => {
 				const input = elem.shadowRoot.querySelector('input');
