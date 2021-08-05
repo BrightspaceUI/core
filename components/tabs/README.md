@@ -62,7 +62,7 @@ The `d2l-tabs` element is a web component for tabbed content. It provides the `d
 ```
 
 <!-- docs: start hidden content -->
-### Tabs Properties:
+### Tabs Properties
 
 | Property | Type | Description |
 |--|--|--|
@@ -96,14 +96,14 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 ```
 
 <!-- docs: start hidden content -->
-### Tab Panel Properties:
+### Tab Panel Properties
 | Property | Type | Description |
 |--|--|--|
 | `text` | String, required | The text used for the tab, as well as labelling the panel |
 | `no-padding` | Boolean | Used to opt out of default padding/whitespace around the panel |
 | `selected` | Boolean | Used to select the tab |
 
-### Events:
+### Events
 - `d2l-tab-panel-selected`: dispatched when a tab is selected
 ## Future Enhancements
 

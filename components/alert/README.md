@@ -1,5 +1,5 @@
 # Alerts
-Alerts communicate critical information relating to the state of the system and the users’ work flow.
+Alerts communicate critical information relating to the state of the system and the user's work flow.
 
 <!-- docs: demo autoSize:false align:start -->
 ```html
@@ -53,7 +53,7 @@ The `d2l-alert` component can be used to communicate important information relat
 </d2l-alert>
 ```
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 | Property | Type | Description |
 |---|---|---|
@@ -63,12 +63,12 @@ The `d2l-alert` component can be used to communicate important information relat
 | `subtext` | String | The text that is displayed below the main alert message |
 | `type` | String, default: `'default'` | Type of the alert being displayed. Can be one of  `default`, `critical`, `success`, `warning`. |
 
-### Events:
+### Events
 * `d2l-alert-close`: dispatched when the alert's close button is clicked
 * `d2l-alert-button-press`: dispatched when the alert's action button is clicked
 <!-- docs: end hidden content -->
 
-## Alert Toast [d2l-alert-toast]
+## Toast Alert [d2l-alert-toast]
 
 The `d2l-alert-toast` component serves the same purpose as `d2l-alert`; however, it is displayed as
 a pop-up at the bottom of the screen that automatically dismisses itself by default.
@@ -100,7 +100,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 | Property | Type | Description |
 |---|---|---|
 |`button-text` | optional, String | text that is displayed within the alert's action button. If no text is provided the button is not displayed.|
@@ -111,7 +111,7 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 |`subtext`| optional, String | The text that is displayed below the main alert message. |
 |`type`| String, default: `'default'` | The type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning` |
 
-### Events:
+### Events
 * `d2l-alert-toast-close`: dispatched when the toast is closed
 
 ## Future Enhancements

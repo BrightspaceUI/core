@@ -90,7 +90,7 @@ Status Indicators are used to communicate the status of an item. They are non-in
 <d2l-status-indicator state="none" text="closed" bold></d2l-status-indicator>
 ```
 
-### Properties:
+### Properties
 
 | Property | Type | Description |
 |--|--|--|

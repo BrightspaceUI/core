@@ -68,7 +68,7 @@ Linear meters show a horizontal progress bar.
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
@@ -101,7 +101,7 @@ Radial meters will show the progress bar as a half circle.
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
@@ -130,7 +130,7 @@ Circle meters will show the progress as a full circle.
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
