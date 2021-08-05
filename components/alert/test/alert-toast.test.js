@@ -28,7 +28,6 @@ describe('d2l-alert-toast', () => {
 			await oneEvent(el, 'd2l-alert-toast-close');
 			expect(el.open).to.be.false;
 		});
-
 	});
 
 });

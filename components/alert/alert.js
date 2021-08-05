@@ -197,10 +197,9 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	close() {
 		// deprecated - event names should be present tense
-		if (
-			/** @ignore */
-			this.dispatchEvent(new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true }))
-		) {
+		/** @ignore */
+		const didDispatch = this.dispatchEvent(new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true }));
+		if (didDispatch) {
 			this.hidden = true;
 		}
 		if (this.dispatchEvent(new CustomEvent('d2l-alert-close', { bubbles: true, composed: true, cancelable: true }))) {

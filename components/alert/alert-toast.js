@@ -54,6 +54,7 @@ class AlertToast extends LitElement {
 			/**
 			 * Type of the alert being displayed
 			 * @type {'default'|'critical'|'success'|'warning'}
+			 * @default "default"
 			 */
 			type: { type: String, reflect: true },
 			_state: { type: String }
@@ -120,8 +121,6 @@ class AlertToast extends LitElement {
 		this.hideCloseButton = false;
 		this.noAutoClose = false;
 		this.open = false;
-		/** @ignore */
-		this.type = 'default';
 
 		this._hasFocus = false;
 		this._hasMouse = false;
