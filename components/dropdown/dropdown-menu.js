@@ -22,6 +22,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		super();
 		this.noAutoFocus = true;
 		this.noPadding = true;
+		this._menuFocused = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -69,6 +70,13 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 	}
 
 	_onFocus() {
+		if (this._useMobileStyling && !this.noMobileCloseButton && this._menuFocused) {
+			// if menu is focused and tab is clicked, move focus to the close button
+			this._menuFocused = false;
+			this.shadowRoot.querySelector('d2l-button').focus();
+			return;
+		}
+		this._menuFocused = true;
 		this.__getMenuElement().focus();
 	}
 
@@ -98,6 +106,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		if (this.__applyFocus) {
 			menu.focus();
+			this._menuFocused = true;
 		}
 	}
 
