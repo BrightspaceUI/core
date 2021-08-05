@@ -2,6 +2,26 @@
 
 Text inputs allow users to input, edit, and select text.
 
+<!-- docs: demo -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-text.js';
+  import '@brightspace-ui/core/components/inputs/input-textarea.js';
+</script>
+<style>
+  div {
+    width: 100%;
+  }
+  d2l-input-text {
+    padding-bottom: 1rem;
+  }
+</style>
+<div>
+  <d2l-input-text label="Name"></d2l-input-text>
+  <d2l-input-textarea label="Description" max-rows="4" rows="4"></d2l-input-textarea>
+</div>
+```
+
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
@@ -165,6 +185,11 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
     });
   });
 </script>
+<style>
+  d2l-input-textarea {
+    width: 100%;
+  }
+</style>
 <d2l-input-textarea id="textarea" label="Description"></d2l-input-textarea>
 ```
 
@@ -229,7 +254,9 @@ To make your usage of `d2l-input-textarea` accessible, use the following propert
 
 Native `<textarea>` elements can be styled by importing `input-styles.js` into your LitElement and applying the `d2l-input` CSS class.
 
+<!-- docs: start hidden content -->
 ![example screenshot of textarea inputs](../screenshots/textarea-styles.gif?raw=true)
+<!-- docs: end hidden content -->
 
 ```javascript
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';

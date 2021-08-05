@@ -11,8 +11,10 @@ Status Indicators are used to communicate the status of an item. They are non-in
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 </script>
 <style>
-  .status-format {
+  div {
     width: 100%;
+  }
+  .status-format {
     display: flex;
     justify-content: space-between;
   }
@@ -20,18 +22,20 @@ Status Indicators are used to communicate the status of an item. They are non-in
     margin: 5px;
   }
 </style>
-<div class="status-format">
-  <d2l-status-indicator state="default" text="due today"></d2l-status-indicator>
-  <d2l-status-indicator state="success" text="complete"></d2l-status-indicator>
-  <d2l-status-indicator state="alert" text="overdue"></d2l-status-indicator>
-  <d2l-status-indicator state="none" text="closed"></d2l-status-indicator>
-</div>
+<div>
+  <div class="status-format">
+    <d2l-status-indicator state="default" text="due today"></d2l-status-indicator>
+    <d2l-status-indicator state="success" text="complete"></d2l-status-indicator>
+    <d2l-status-indicator state="alert" text="overdue"></d2l-status-indicator>
+    <d2l-status-indicator state="none" text="closed"></d2l-status-indicator>
+  </div>
 
-<div class="status-format">
-  <d2l-status-indicator state="default" text="due today" bold></d2l-status-indicator>
-  <d2l-status-indicator state="success" text="complete" bold></d2l-status-indicator>
-  <d2l-status-indicator state="alert" text="overdue" bold></d2l-status-indicator>
-  <d2l-status-indicator state="none" text="closed" bold></d2l-status-indicator>
+  <div class="status-format">
+    <d2l-status-indicator state="default" text="due today" bold></d2l-status-indicator>
+    <d2l-status-indicator state="success" text="complete" bold></d2l-status-indicator>
+    <d2l-status-indicator state="alert" text="overdue" bold></d2l-status-indicator>
+    <d2l-status-indicator state="none" text="closed" bold></d2l-status-indicator>
+  </div>
 </div>
 ```
 
