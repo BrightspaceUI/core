@@ -28,7 +28,7 @@ Note: in order for RTL to function correctly, make sure your component uses the 
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don’t use 2 radios if a 1 checkbox works better
+* Don’t use two radio buttons if a single checkbox works better
 * Don’t use for triggering an immediate action. Notable exceptions are forms that autosave with clear indication and as a trigger for progressive disclosure on traditional forms, so long as users are made aware that new options have been made available
 <!-- docs: end donts -->
 <!-- docs: end best practices -->

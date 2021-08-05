@@ -85,16 +85,14 @@ checkbox.addEventListener('change', (e) => {
 
 ### Accessibility Properties
 
-To make your usage of `d2l-input-checkbox` accessible, use the following property when applicable:
+To make your usage of `d2l-input-checkbox` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |---|---|
 | `aria-label` | Use when text on checkbox does not provide enough context |
 | `description` | Use when label on input does not provide enough context. |
 
-### Usage
-
-**Methods:**
+### Methods
 
 - `simulateClick()`: useful for testing, it simulates the user clicking on the checkbox, which toggles the state of the checkbox and fires the `change` event
 
