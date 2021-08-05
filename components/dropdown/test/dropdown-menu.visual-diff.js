@@ -42,6 +42,12 @@ describe('d2l-dropdown-menu', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('with-header-footer-mobile', async function() {
+		await page.setViewport({ width: 300, height: 800 });
+		await open(page, '#dropdown-menu-header-footer-mobile');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+	});
+
 	it('with-nopadding-header-footer', async function() {
 		await open(page, '#dropdown-menu-header-footer-nopadding');
 		const rect = await getRect(page, '#dropdown-menu-header-footer-nopadding');
