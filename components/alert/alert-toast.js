@@ -120,7 +120,7 @@ class AlertToast extends LitElement {
 		this.hideCloseButton = false;
 		this.noAutoClose = false;
 		this.open = false;
-		/** @ignore */ 
+		/** @ignore */
 		this.type = 'default';
 
 		this._hasFocus = false;
@@ -147,7 +147,6 @@ class AlertToast extends LitElement {
 				class="d2l-alert-toast-container"
 				data-state="${this._state}"
 				@transitionend=${this._onTransitionEnd}>
-				<!-- eslint-disable-next-line -->
 				<d2l-alert
 					@blur=${this._onBlur}
 					button-text="${ifDefined(this.buttonText)}"
