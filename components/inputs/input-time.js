@@ -429,7 +429,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	_handleMobileResize() {
-		this._useMobileStyling =  mediaQueryList.matches;
+		this._dataMobile =  mediaQueryList.matches;
 	}
 
 	_onResize(hiddenContent) {
