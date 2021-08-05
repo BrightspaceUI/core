@@ -11,64 +11,83 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+/**
+ * A wrapper around the native `<textarea>` element that provides auto-grow and validation behaviours intended for inputting unformatted multi-line text.
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
+ * @fires input - Dispatched immediately after changes by the user
+ */
 class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	static get properties() {
 		return {
 			/**
-			 * Indicates that the input value is invalid.
+			 * Indicates that the input value is invalid
+			 * @type {string}
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			/**
-			 * Additional information communicated in the aria-describedby on the input.
+			 * Additional information communicated in the aria-describedby on the input
+			 * @type {string}
 			 */
 			description: { type: String, reflect: true },
 			/**
-			 * Disables the input.
+			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * REQUIRED: Label for the input.
+			 * REQUIRED: Label for the input
+			 * @type {string}
 			 */
 			label: { type: String },
 			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute).
+			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * Imposes an upper character limit.
+			 * Imposes an upper character limit
+			 * @type {number}
 			 */
 			maxlength: { type: Number },
 			/**
-			 * Maximum number of rows before scrolling.
+			 * Maximum number of rows before scrolling
+			 * @type {number}
 			 */
 			maxRows: { type: Number, attribute: 'max-rows' },
 			/**
-			 * Imposes a lower character limit.
+			 * Imposes a lower character limit
+			 * @type {number}
 			 */
 			minlength: { type: Number },
 			/**
-			 * Hides the border.
+			 * Hides the border
+			 * @type {boolean}
 			 */
 			noBorder: { type: Boolean, attribute: 'no-border' },
 			/**
-			 * Removes default left/right padding.
+			 * Removes default left/right padding
+			 * @type {boolean}
 			 */
 			noPadding: { type: Boolean, attribute: 'no-padding' },
 			/**
-			 * Placeholder text.
+			 * Placeholder text
+			 * @type {string}
 			 */
 			placeholder: { type: String },
 			/**
-			 * Indicates that a value is required.
+			 * Indicates that a value is required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
-			 * Minimum number of rows.
+			 * Minimum number of rows
+			 * @type {number}
 			 */
 			rows: { type: Number },
 			/**
-			 * Value of the input.
+			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String }
 		};
@@ -147,11 +166,13 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		this._textareaId = getUniqueId();
 	}
 
+	/** @ignore */
 	get textarea() {
 		// temporary until consumers are updated
 		return this.shadowRoot.querySelector('textarea');
 	}
 
+	/** @ignore */
 	get validationMessage() {
 		if (this.validity.tooShort) {
 			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
@@ -159,6 +180,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		return super.validationMessage;
 	}
 
+	/** @ignore */
 	get validity() {
 		const elem = this.shadowRoot.querySelector('textarea');
 		if (!elem.validity.valid) {
