@@ -48,7 +48,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectComma": "Pour ajouter une décimale, utilisez la virgule « , »",
 	"components.input-number.hintDecimalIncorrectPeriod": "Pour ajouter une décimale, utilisez le point « . »",
 	"components.input-search.clear": "Effacer la recherche",
-	"components.input-search.defaultPlaceholder": "Recherche en cours…",
+	"components.input-search.defaultPlaceholder": "Rechercher…",
 	"components.input-search.search": "Rechercher",
 	"components.input-time-range.endTime": "Heure de fin",
 	"components.input-time-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
