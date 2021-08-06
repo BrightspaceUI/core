@@ -95,7 +95,9 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	subscribeObserver(target) {
-		this._subscribeObservers([target]);
+		if (this._selectionObservers.has(target)) return;
+		this._selectionObservers.set(target, target);
+		this._updateSelectionObservers();
 	}
 
 	unsubscribeObserver(target) {
@@ -163,16 +165,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		e.stopPropagation();
 		e.detail.provider = this;
 		const target = e.composedPath()[0];
-		this._subscribeObservers([target]);
-	}
-
-	_subscribeObservers(targets) {
-		if (targets.length === 0) return;
-		targets.forEach(target => {
-			if (this._selectionObservers.has(target)) return;
-			this._selectionObservers.set(target, target);
-		});
-		this._updateSelectionObservers();
+		this.subscribeObserver(target);
 	}
 
 	_updateSelectionObservers() {
