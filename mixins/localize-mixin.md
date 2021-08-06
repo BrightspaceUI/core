@@ -83,7 +83,9 @@ class MyComponent extends LocalizeDynamicMixin(LitElement) {
 }
 ```
 
-If your build system does not support variable dynamic imports, you'll need to manually set up imports for each language:
+When using this method, depending on various user settings, it's possible that a language file that does not exist will be requested, resulting in a network error (404). In production, your build system should prevent this by transpiling the variable dynamic import. BSI does this for you.
+
+If your build system does not support variable dynamic imports, you'll need to manually set up imports for each supported language:
 
 ```javascript
 static get localizeConfig() {

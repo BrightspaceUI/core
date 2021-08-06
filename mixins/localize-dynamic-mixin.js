@@ -7,6 +7,12 @@ export const LocalizeDynamicMixin = superclass => class extends LocalizeMixin(su
 
 	static async getLocalizeResources(langs, { importFunc, osloCollection }) {
 
+		// in dev, don't request unsupported langpacks
+		if (!importFunc.toString().includes('switch')) {
+			const supportedLangpacks = ['ar', 'cy', 'da', 'de', 'en', 'es-es', 'es', 'fi', 'fr-fr', 'fr', 'ja', 'ko', 'nl', 'pt', 'sv', 'tr', 'zh-tw', 'zh-cn'];
+			langs = langs.filter(lang => supportedLangpacks.includes(lang));
+		}
+
 		for (const lang of [...langs, fallbackLang]) {
 
 			const resources = await importFunc(lang).catch(() => {});
