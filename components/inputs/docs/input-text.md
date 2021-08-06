@@ -241,14 +241,10 @@ To make your usage of `d2l-input-textarea` accessible, use the following propert
 | `label` | **REQUIRED**  [Acts as a primary label on the `textarea`](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
 
-### Usage
+### Methods
 
-**Methods:**
-
-| Method | Returns | Description |
-|---|---|---|
-| `focus()` | | Places focus in the `textarea` |
-| `select()` | | Selects the contents of the `textarea` |
+* `focus()`: Places focus in the `textarea`
+* `select()`: Selects the contents of the `textarea`
 
 ## Applying styles to native textarea
 
