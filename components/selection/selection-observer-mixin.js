@@ -27,25 +27,45 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		super.connectedCallback();
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
 		requestAnimationFrame(() => {
-			if (!this.selectionFor) {
-				const evt = new CustomEvent('d2l-selection-observer-subscribe', {
-					bubbles: true,
-					composed: true,
-					detail: {}
-				});
-				this.dispatchEvent(evt);
-				this._provider = evt.detail.provider;
-			} else {
-				this._provider = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
-				if (this._provider) this._provider.subscribeObserver(this);
-			}
+			if (this.selectionFor) return;
+
+			const evt = new CustomEvent('d2l-selection-observer-subscribe', {
+				bubbles: true,
+				composed: true,
+				detail: {}
+			});
+			this.dispatchEvent(evt);
+			this._provider = evt.detail.provider;
 		});
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (!this._provider) return;
-		this._provider.unsubscribeObserver(this);
+		if (this._provider) this._provider.unsubscribeObserver(this);
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (!changedProperties.has('selectionFor')) return;
+
+		if (this._selectionForObserver) this._selectionForObserver.disconnect();
+		if (this._provider) this._provider.unsubscribeObserver(this);
+
+		this._provider = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
+		if (this._provider) this._provider.subscribeObserver(this);
+
+		this._selectionForObserver = new MutationObserver(() => {
+			const selectionComponent = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
+			if (this._provider !== selectionComponent) {
+				this._provider = selectionComponent;
+				if (this._provider) this._provider.subscribeObserver(this);
+			}
+		});
+
+		this._selectionForObserver.observe(this.getRootNode(), {
+			childList: true,
+			subtree: true
+		});
+	}
 };
