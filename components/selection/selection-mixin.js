@@ -57,7 +57,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		if (this.selectionSingle) this.addEventListener('keydown', this._handleRadioKeyDown);
 		if (this.selectionSingle) this.addEventListener('keyup', this._handleRadioKeyUp);
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
-		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
@@ -67,7 +66,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		if (this.selectionSingle) this.removeEventListener('keydown', this._handleRadioKeyDown);
 		if (this.selectionSingle) this.removeEventListener('keyup', this._handleRadioKeyUp);
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
-		this.removeEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.removeEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
@@ -166,11 +164,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		e.detail.provider = this;
 		const target = e.composedPath()[0];
 		this._subscribeObservers([target]);
-	}
-
-	_handleSelectionSelectAllChange(e) {
-		const checked = e.detail.checked;
-		this.setSelectionForAll(checked);
 	}
 
 	_subscribeObservers(targets) {
