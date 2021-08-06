@@ -25,7 +25,7 @@ The loading spinner can be used to indicate to a user that the current page/comp
 ```
 <!-- docs: start hidden content -->
 
-### Properties:
+### Properties
 
 | Property | Type | Description |
 |--|--|--|

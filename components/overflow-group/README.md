@@ -62,7 +62,7 @@ Items added to this container element will no longer wrap onto a second line whe
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 | Property | Type | Description |
 |--|--|--|

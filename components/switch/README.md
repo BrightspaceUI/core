@@ -68,7 +68,7 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 | Property | Type | Description |
 |--|--|--|
@@ -78,7 +78,7 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 | `text-position` | String | Valid values are: `start`, `end` (default), and `hidden` |
 | `tooltip` | String | Text to display in a tooltip for the switch |
 
-### Events:
+### Events
 
 - `change`: dispatched when the `on` property is updated
 

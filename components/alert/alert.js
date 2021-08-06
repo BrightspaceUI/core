@@ -19,21 +19,25 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+			 * @type {string}
 			 */
 			buttonText: { type: String, attribute: 'button-text' },
 
 			/**
 			 * Gives the alert a close button that will close the alert when clicked
+			 * @type {boolean}
 			 */
 			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
 
 			/**
 			 * Opt out of default padding/whitespace around the alert
+			 * @type {boolean}
 			 */
 			noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
 
 			/**
 			 * The text that is displayed below the main alert message
+			 * @type {string}
 			 */
 			subtext: { type: String },
 
@@ -193,7 +197,9 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	close() {
 		// deprecated - event names should be present tense
-		if (this.dispatchEvent(new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true }))) {
+		/** @ignore */
+		const didDispatch = this.dispatchEvent(new CustomEvent('d2l-alert-closed', { bubbles: true, composed: true, cancelable: true }));
+		if (didDispatch) {
 			this.hidden = true;
 		}
 		if (this.dispatchEvent(new CustomEvent('d2l-alert-close', { bubbles: true, composed: true, cancelable: true }))) {
@@ -203,6 +209,7 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_onButtonClick() {
 		// deprecated - event names should be present tense
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-button-pressed', { bubbles: true, composed: true }
 		));
