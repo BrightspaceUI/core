@@ -1,5 +1,5 @@
 
-import '../../button/button-icon';
+import '../../button/button-icon.js';
 import '../../colors/colors.js';
 import '../../expand-collapse/expand-collapse-content.js';
 import '../../inputs/input-number.js';
