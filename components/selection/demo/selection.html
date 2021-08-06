@@ -116,11 +116,11 @@
 				<template>
 					<div class="d2l-selection-collections">
 						<div class="d2l-selection-collection">
-							Pick Toppings
+							Pick Your Toppings
 							<div class="d2l-selection-header">
-								<d2l-selection-select-all subscribed-to="collection-1"></d2l-selection-select-all>
-								<d2l-selection-action subscribed-to="collection-1" text="Add Note" icon="tier1:add-message" style="padding: 0 0.5rem; flex: 1;"></d2l-selection-action>
-								<d2l-selection-summary subscribed-to="collection-1"></d2l-selection-summary>
+								<d2l-selection-select-all selection-for="collection-1"></d2l-selection-select-all>
+								<d2l-selection-action selection-for="collection-1" text="Add Note" icon="tier1:add-message" style="padding: 0 0.5rem; flex: 1;"></d2l-selection-action>
+								<d2l-selection-summary selection-for="collection-1"></d2l-selection-summary>
 							</div>
 							<d2l-demo-selection id="collection-1">
 								<ul>
@@ -129,24 +129,24 @@
 									<li><d2l-selection-input key="onion" label="Onion"></d2l-selection-input>Onion</li>
 								</ul>
 							</d2l-demo-selection>
-							<d2l-selection-action subscribed-to="collection-1" text="Save" requires-selection></d2l-selection-action>
+							<d2l-selection-action selection-for="collection-1" text="Save" requires-selection></d2l-selection-action>
 						</div>
 
 						<div class="d2l-selection-collection">
-							Pick One Topping
+							Pick Your Bread 
 							<div class="d2l-selection-header">
-								<d2l-selection-select-all subscribed-to="collection-2"></d2l-selection-select-all>
-								<d2l-selection-action subscribed-to="collection-2" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
-								<d2l-selection-summary subscribed-to="collection-2"></d2l-selection-summary>
+								<d2l-selection-select-all selection-for="collection-2"></d2l-selection-select-all>
+								<d2l-selection-action selection-for="collection-2" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
+								<d2l-selection-summary selection-for="collection-2"></d2l-selection-summary>
 							</div>
 							<d2l-demo-selection id="collection-2" selection-single>
 								<ul>
-									<li><d2l-selection-input key="let" label="Lettuce"></d2l-selection-input>Lettuce</li>
-									<li><d2l-selection-input key="tom" label="Tomato"></d2l-selection-input>Tomato</li>
-									<li><d2l-selection-input key="onion" label="Onion"></d2l-selection-input>Onion</li>
+									<li><d2l-selection-input key="it" label="Italian"></d2l-selection-input>Italian</li>
+									<li><d2l-selection-input key="ww" label="Whole Wheat"></d2l-selection-input>Whole Wheat</li>
+									<li><d2l-selection-input key="herb" label="Herb and Garlic"></d2l-selection-input>Herb and Garlic</li>
 								</ul>
 							</d2l-demo-selection>
-							<d2l-selection-action subscribed-to="collection-2" text="Save" requires-selection></d2l-selection-action>
+							<d2l-selection-action selection-for="collection-2" text="Save" requires-selection></d2l-selection-action>
 						</div>
 					</div>
 				</template>

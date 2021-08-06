@@ -51,7 +51,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 			composed: true,
 			detail: { checked: e.target.checked }
 		}));
-		if (this.subscribedTo && this._provider) this._provider.setSelectionForAll(e.target.checked);
+		if (this.selectionFor && this._provider) this._provider.setSelectionForAll(e.target.checked);
 	}
 
 }

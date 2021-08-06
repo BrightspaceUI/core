@@ -61,7 +61,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 
-		const externalSubscribers = this.getRootNode().querySelectorAll(`[subscribed-to="${this.id}"]`);
+		const externalSubscribers = this.getRootNode().querySelectorAll(`[selection-for="${this.id}"]`);
 		externalSubscribers.forEach(subscriber => subscriber._provider = this);
 		this._subscribeObservers(externalSubscribers);
 	}
