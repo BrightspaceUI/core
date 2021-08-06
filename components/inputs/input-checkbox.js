@@ -62,34 +62,42 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Use when text on checkbox does not provide enough context
+			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
 			/**
 			 * Checked state
+			 * @type {boolean}
 			 */
 			checked: { type: Boolean },
 			/**
 			 * Additional information communicated in the aria-describedby on the input
+			 * @type {string}
 			 */
 			description: { type: String },
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Sets checkbox to an indeterminate state
+			 * @type {boolean}
 			 */
 			indeterminate: { type: Boolean },
 			/**
 			 * Name of the input
+			 * @type {string}
 			 */
 			name: { type: String },
 			/**
 			 * Sets "tabindex="-1"" on the checkbox
+			 * @type {boolean}
 			 */
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
 			/**
 			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String }
 		};

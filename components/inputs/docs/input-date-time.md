@@ -283,7 +283,7 @@ To make your usage of `d2l-input-date-time` accessible, use the following proper
 |--|--|
 | `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/) |
 
-### Date-Time Range Input [d2l-input-date-time-range]
+## Date-Time Range Input [d2l-input-date-time-range]
 
 The `<d2l-input-date-time-range>` component consists of two input-date-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 

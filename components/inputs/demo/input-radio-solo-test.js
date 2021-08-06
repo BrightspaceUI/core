@@ -5,8 +5,17 @@ class TestInputRadioSolo extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Selection state
+			 */
 			checked: { type: Boolean },
+			/**
+			 * Disables the input
+			 */
 			disabled: { type: Boolean },
+			/**
+			 * Marks the input as invalid, which is shown in style and also is reflected in `aria-invalid`
+			 */
 			invalid: { type: Boolean }
 		};
 	}

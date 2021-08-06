@@ -6,7 +6,7 @@ Tables are used to display tabular data in rows and columns of cells. They can a
 ![table with default style](./screenshots/default.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo autoSize:false display:block size:medium -->
+<!-- docs: demo display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/demo/table-test.js';
@@ -38,7 +38,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
 
 See [creation of table component](#creation-of-table-component) for how to create a table component that uses the wrapper and shared styles. The example below uses a component similar to the code in the example in that section.
 
-<!-- docs: demo live name:d2l-test-table autoSize:false display:block size:medium -->
+<!-- docs: demo live name:d2l-test-table autoSize:false display:block size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/demo/table-test.js';
