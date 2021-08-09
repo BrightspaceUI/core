@@ -86,6 +86,8 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	setSelectionForAll(selected) {
+		if (this.selectionSingle && selected) return;
+
 		this._selectionSelectables.forEach(selectable => {
 			if (!!selectable.selected !== selected) {
 				selectable.selected = selected;
