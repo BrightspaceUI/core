@@ -3,7 +3,7 @@ import '../dropdown-menu.js';
 import '../../menu/menu.js';
 import '../../menu/menu-item.js';
 import '../../menu/menu-item-link.js';
-import '../../menu/menu-item-radio';
+import '../../menu/menu-item-radio.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
