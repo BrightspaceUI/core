@@ -177,6 +177,9 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 				:host([hidden]) {
 					display: none;
 				}
+				d2l-dropdown-menu[data-mobile][mobile-tray] .d2l-input-time-menu {
+					text-align: center;
+				}
 				.d2l-input-label {
 					display: inline-block;
 					vertical-align: top;

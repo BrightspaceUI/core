@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme-mixin.js';
@@ -15,14 +15,7 @@ import { ThemeMixin } from '../../mixins/theme-mixin.js';
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get styles() {
-		return [
-			dropdownContentStyles,
-			css`
-				:host([data-mobile][mobile-tray]) {
-					text-align: center;
-				}
-			`
-		];
+		return dropdownContentStyles;
 	}
 
 	constructor() {
@@ -84,14 +77,8 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		menu.show({ preventFocus: true });
 	}
 
-	_onFocus() {
-		if (this._useMobileStyling && !this.noMobileCloseButton && this._menuFocused) {
-			// if menu is focused and tab is clicked, move focus to the close button
-			this._menuFocused = false;
-			this.shadowRoot.querySelector('d2l-button').focus();
-			return;
-		}
-		this._menuFocused = true;
+	_onFocus(e) {
+		if (e.srcElement === this) return;
 		this.__getMenuElement().focus();
 	}
 
