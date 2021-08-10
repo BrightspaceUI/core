@@ -18,7 +18,7 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		return [
 			dropdownContentStyles,
 			css`
-				:host([data-mobile]) {
+				:host([data-mobile][mobile-tray]) {
 					text-align: center;
 				}
 			`
@@ -30,10 +30,18 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		this.noAutoFocus = true;
 		this.noPadding = true;
 		this._menuFocused = false;
+		this._maxHeightNonTray = this.maxHeight;
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		this._maxHeightNonTray = this.maxHeight;
+		if (this._useMobileStyling && this.mobileTray) {
+			this.maxHeight = null;
+		} else {
+			this.maxHeight = this._maxHeightNonTray;
+		}
 
 		this.addEventListener('d2l-dropdown-open', this._onOpen);
 		this.addEventListener('d2l-dropdown-close', this._onClose);
@@ -88,6 +96,13 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 	}
 
 	_onMenuResize(e) {
+
+		if (this._useMobileStyling && this.mobileTray) {
+			this.maxHeight = null;
+		} else {
+			this.maxHeight = this._maxHeightNonTray;
+		}
+
 		this.__position(!this._initializingHeight, e.detail);
 		this._initializingHeight = false;
 
