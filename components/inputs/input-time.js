@@ -21,8 +21,6 @@ const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
 
-const mediaQueryList = window.matchMedia('(max-width: 615px)');
-
 export function getIntervalNumber(size) {
 	switch (size) {
 		case 'five':
@@ -159,8 +157,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			value: { type: String },
 			_dropdownFirstOpened: { type: Boolean },
 			_formattedValue: { type: String },
-			_hiddenContentWidth: { type: String },
-			_dataMobile: { type: Boolean, attribute: 'data-mobile', reflect: true }
+			_hiddenContentWidth: { type: String }
 		};
 	}
 
@@ -179,9 +176,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 				}
 				:host([hidden]) {
 					display: none;
-				}
-				:host([data-mobile]) .d2l-input-time-menu {
-					text-align: center;
 				}
 				.d2l-input-label {
 					display: inline-block;
@@ -218,9 +212,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this._dropdownId = getUniqueId();
 		this._hiddenContentWidth = '6rem';
 		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
-		this._dataMobile = false;
-
-		this._handleMobileResize = this._handleMobileResize.bind(this);
 	}
 
 	get value() { return this._value; }
@@ -239,17 +230,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this._value = formatDateInISOTime(time);
 		this._formattedValue = formatTime(time);
 		this.requestUpdate('value', oldValue);
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-		this._dataMobile = mediaQueryList.matches;
-		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handleMobileResize);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handleMobileResize);
 	}
 
 	async firstUpdated(changedProperties) {
@@ -326,7 +306,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 					@d2l-dropdown-close="${this._handleDropdownClose}"
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					no-padding-footer
-					max-height="${this._dataMobile ? null : ifDefined(this.maxHeight)}"
+					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195"
 					mobile-tray="bottom">
 					<d2l-menu
@@ -426,10 +406,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			this.shadowRoot.querySelector('d2l-menu').focus();
 			e.preventDefault();
 		}
-	}
-
-	_handleMobileResize() {
-		this._dataMobile =  mediaQueryList.matches;
 	}
 
 	_onResize(hiddenContent) {

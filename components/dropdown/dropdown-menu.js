@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit-element/lit-element.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
 import { ThemeMixin } from '../../mixins/theme-mixin.js';
@@ -15,7 +15,14 @@ import { ThemeMixin } from '../../mixins/theme-mixin.js';
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 	static get styles() {
-		return dropdownContentStyles;
+		return [
+			dropdownContentStyles,
+			css`
+				:host([data-mobile]) {
+					text-align: center;
+				}
+			`
+		];
 	}
 
 	constructor() {
