@@ -130,12 +130,6 @@ The `d2l-selection-select-all` is an optional component that provides a checkbox
 |--|--|--|
 | `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 
-**Events:**
-
-| Event | Description |
-|--|--|
-| `d2l-selection-select-all-change` | Dispatched when the state of the select-all checkbox changes. The checked state is passed as the event `detail`. |
-
 ## d2l-selection-summary
 
 The `d2l-selection-summary` is an optional component that shows a simple count of the selected items within the selection control.

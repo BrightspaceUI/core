@@ -84,12 +84,6 @@ describe('d2l-selection-select-all', () => {
 		runConstructor('d2l-selection-select-all');
 	});
 
-	it('dispatches d2l-selection-select-all-change event when checkbox changes', async() => {
-		const el = await fixture(html`<d2l-selection-select-all></d2l-selection-select-all>`);
-		setTimeout(() => el.shadowRoot.querySelector('d2l-input-checkbox').dispatchEvent(new CustomEvent('change')));
-		await oneEvent(el, 'd2l-selection-select-all-change');
-	});
-
 });
 
 describe('d2l-selection-summary', () => {
