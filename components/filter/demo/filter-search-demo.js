@@ -46,13 +46,16 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleFilterChange(e) {
-		// eslint-disable-next-line no-console
-		console.log(`Filter selection changed for dimension "${e.detail.dimension}":`, e.detail.value);
+		(e.detail.changes.length === 1) ?
+			console.log(`Filter selection changed for dimension "${e.detail.changes[0].dimension}":`, e.detail.changes[0].value) : // eslint-disable-line no-console
+			console.log('Batch filter selection changed:', e.detail.changes); // eslint-disable-line no-console
 
-		if (e.detail.dimension !== 'event') return;
+		e.detail.changes.forEach(change => {
+			if (change.dimension !== 'event') return;
 
-		this._fullData.find(value => value.key === e.detail.value.key).selected = e.detail.value.selected;
-		this._displayedData.find(value => value.key === e.detail.value.key).selected = e.detail.value.selected;
+			this._fullData.find(value => value.key === change.value.key).selected = change.value.selected;
+			this._displayedData.find(value => value.key === change.value.key).selected = change.value.selected;
+		});
 	}
 
 	_handleFirstOpen(e) {

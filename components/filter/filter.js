@@ -112,6 +112,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.disabled = false;
+		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
@@ -301,8 +302,20 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
-	_dispatchChangeEvent(eventDetail) {
-		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: true, composed: false, detail: eventDetail }));
+	_dispatchChangeEvent(eventKey, eventDetail) {
+		this._changeEventsToDispatch.set(eventKey, eventDetail);
+
+		if (!this._changeEventTimeout) {
+			this._changeEventTimeout = setTimeout(() => {
+				this.dispatchEvent(new CustomEvent('d2l-filter-change', {
+					bubbles: true,
+					composed: false,
+					detail: { changes: Array.from(this._changeEventsToDispatch.values()) }
+				}));
+				this._changeEventsToDispatch = new Map();
+				this._changeEventTimeout = null;
+			}, 200);
+		}
 	}
 
 	_dispatchDimensionFirstOpenEvent(key) {
@@ -347,7 +360,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this._totalAppliedCount--;
 		}
 
-		this._dispatchChangeEvent({ dimension: dimensionKey, value: { key: valueKey, selected: selected } });
+		this._dispatchChangeEvent(`${dimensionKey}-${valueKey}`, { dimension: dimensionKey, value: { key: valueKey, selected: selected } });
 	}
 
 	_handleDimensionDataChange(e) {
