@@ -1,4 +1,4 @@
-import { oneEvent } from '@brightspace-ui/visual-diff/helpers/index.js';
+import { oneEvent } from '@brightspace-ui/visual-diff/helpers';
 
 export async function hide(page, selector) {
 	const hideEvent = oneEvent(page, selector, 'd2l-tooltip-hide');
