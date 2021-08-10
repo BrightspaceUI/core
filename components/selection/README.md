@@ -90,7 +90,7 @@ The `d2l-selection-action` is an optional component that provides a button for a
 |--|--|--|
 | `icon` | String | Preset icon key (e.g. "tier1:gear"). |
 | `requires-selection` | Boolean | Whether the action requires one or more selected items. If no items are selected, the action button will be focusable and a hint displayed in a tooltip. |
-| `selection-for` | String | Id of the corresponding `selectionMixin` component, if not placed within it. |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 | `text` | String, required | Text to be shown for the action. |
 
 **Events:**
@@ -128,7 +128,7 @@ The `d2l-selection-select-all` is an optional component that provides a checkbox
 
 | Property | Type | Description |
 |--|--|--|
-| `selection-for` | String | Id of the corresponding `selectionMixin` component, if not placed within it. |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 
 **Events:**
 
@@ -145,7 +145,7 @@ The `d2l-selection-summary` is an optional component that shows a simple count o
 | Property | Type | Description |
 |--|--|--|
 | `no-selection-text` | String | Text to display if no items are selected. By default, the "0 selected" message is displayed. |
-| `selection-for` | String | Id of the corresponding `selectionMixin` component, if not placed within it. |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 
 ## Future Enhancements
 
