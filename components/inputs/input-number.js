@@ -371,7 +371,10 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		});
 	}
 
-	focus() {
+	async focus() {
+		await this.updateComplete;
+		const inputTextElem = this.shadowRoot.querySelector('d2l-input-text');
+		await inputTextElem.updateComplete;
 		const elem = this.shadowRoot.querySelector('d2l-input-text');
 		if (elem) elem.focus();
 	}
