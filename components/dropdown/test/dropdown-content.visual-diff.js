@@ -61,6 +61,7 @@ describe('d2l-dropdown-content', () => {
 		'align-start-edge-rtl'
 	].forEach((testName) => {
 
+		// for flaky tests, add a 50ms delay before screenshot
 		it(testName, async function() {
 			const selector = `#${testName}`;
 			await open(page, selector);

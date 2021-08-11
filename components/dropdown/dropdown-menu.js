@@ -77,6 +77,8 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 	}
 
 	_onFocus(e) {
+		// ignore focus events originating from inside dropdown content,
+		// such as the mobile tray close button, as to not move focus
 		if (e.srcElement === this) return;
 		this.__getMenuElement().focus();
 	}
