@@ -939,7 +939,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			</div>
 		`;
 
-		// trap-focus option is overridden by the no-auto-focus option
 		if (this.trapFocus) {
 			dropdownContentSlots = html`
 			<d2l-focus-trap
