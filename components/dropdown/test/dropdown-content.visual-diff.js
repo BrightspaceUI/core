@@ -47,13 +47,24 @@ describe('d2l-dropdown-content', () => {
 		'bottom-right-rtl',
 		'align-start-rtl',
 		'align-end-rtl',
-		'align-start-edge',
+		'align-start-edge'
+	].forEach((testName) => {
+
+		it(testName, async function() {
+			const selector = `#${testName}`;
+			await open(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		});
+	});
+
+	[
 		'align-start-edge-rtl'
 	].forEach((testName) => {
 
 		it(testName, async function() {
 			const selector = `#${testName}`;
 			await open(page, selector);
+			await page.waitForTimeout(50);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 	});
