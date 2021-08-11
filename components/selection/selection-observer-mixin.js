@@ -52,20 +52,27 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		if (this._selectionForObserver) this._selectionForObserver.disconnect();
 		if (this._provider) this._provider.unsubscribeObserver(this);
 
-		this._provider = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
-		if (this._provider) this._provider.subscribeObserver(this);
+		this._updateProvider();
 
 		this._selectionForObserver = new MutationObserver(() => {
-			const selectionComponent = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
-			if (this._provider !== selectionComponent) {
-				this._provider = selectionComponent;
-				if (this._provider) this._provider.subscribeObserver(this);
-			}
+			this._updateProvider();
 		});
 
 		this._selectionForObserver.observe(this.getRootNode(), {
 			childList: true,
 			subtree: true
 		});
+	}
+
+	_updateProvider() {
+		const selectionComponent = this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`);
+		if (this._provider === selectionComponent) return;
+
+		this._provider = selectionComponent;
+		if (this._provider) {
+			this._provider.subscribeObserver(this);
+		} else {
+			this.selectionInfo = new SelectionInfo();
+		}
 	}
 };

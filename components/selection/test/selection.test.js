@@ -5,6 +5,7 @@ import '../selection-select-all.js';
 import '../selection-summary.js';
 import { expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import { SelectionInfo } from '../selection-mixin.js';
 import Sinon from 'sinon';
 
 describe('d2l-selection-action', () => {
@@ -202,7 +203,7 @@ describe('SelectionObserverMixin', () => {
 				<d2l-selection-summary selection-for="some-other-selection"></d2l-selection-summary>
 				<d2l-test-selection id="d2l-test-selection">
 					<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
-					<d2l-selection-input key="key2" label="label2"></d2l-selection-input>
+					<d2l-selection-input key="key2" label="label2" selected></d2l-selection-input>
 					<d2l-selection-input key="key3" label="label3"></d2l-selection-input>
 				</d2l-test-selection>
 			</div>
@@ -213,6 +214,7 @@ describe('SelectionObserverMixin', () => {
 	});
 
 	it('registers observers', async() => {
+		await nextFrame();
 		expect(collection._selectionObservers.size).to.equal(2);
 
 		el.querySelector('d2l-selection-summary').selectionFor = 'd2l-test-selection';
@@ -235,6 +237,25 @@ describe('SelectionObserverMixin', () => {
 		el.querySelector('d2l-selection-select-all').selectionFor = 'some-other-selection"';
 		await collection.updateComplete;
 		expect(collection._selectionObservers.size).to.equal(0);
+	});
+
+	it('unregisters and registers the SelectionMixin component', async() => {
+		const observer = el.querySelector('d2l-selection-action');
+		const provider = el.querySelector('#d2l-test-selection');
+		expect(observer._provider).to.equal(provider);
+		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.some);
+
+		el.removeChild(el.querySelector('#d2l-test-selection'));
+		await observer.updateComplete;
+		expect(observer._provider).to.be.null;
+		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.none);
+
+		const newProvider = document.createElement('d2l-test-selection');
+		newProvider.id = 'd2l-test-selection';
+		el.appendChild(newProvider);
+		await observer.updateComplete;
+		expect(observer._provider).to.equal(newProvider);
+		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.none);
 	});
 
 });
