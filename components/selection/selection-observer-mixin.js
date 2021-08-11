@@ -41,6 +41,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (this._selectionForObserver) this._selectionForObserver.disconnect();
 		if (this._provider) this._provider.unsubscribeObserver(this);
 	}
 
