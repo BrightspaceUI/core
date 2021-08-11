@@ -274,7 +274,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		e.stopPropagation();
 	}
 
-	_handleFocusTrapEnter() {
+	_handleFocusTrapEnter(e) {
+		// ignore focus trap events when the target is another element
+		// to prevent infinite focus loops
+		if (e.target !== this) return;
 		this._focusFirst();
 	}
 
