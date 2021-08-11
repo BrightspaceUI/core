@@ -2,7 +2,7 @@
 
 ## Expand Collapse Content
 
-The `d2l-expand-collapse-content` element can be used to used to create expandable and collapsible content. This component only provides the logic to expand and collapse the content; controlling when and how it expands or collapses is the responsibility of the user.
+The `d2l-expand-collapse-content` element can be used to create expandable and collapsible content. This component only provides the logic to expand and collapse the content; controlling when and how it expands or collapses is the responsibility of the user.
 
 ![Expand Collapse Content](./screenshots/expand-collapse-content.gif?raw=true)
 

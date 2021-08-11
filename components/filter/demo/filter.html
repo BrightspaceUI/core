@@ -91,7 +91,9 @@
 
 	<script type="module">
 		document.addEventListener('d2l-filter-change', e => {
-			console.log(`Filter selection changed for dimension "${e.detail.dimension}":`, e.detail.value);
+			(e.detail.changes.length === 1) ?
+				console.log(`Filter selection changed for dimension "${e.detail.changes[0].dimension}":`, e.detail.changes[0].value) : // eslint-disable-line no-console
+				console.log('Batch filter selection changed:', e.detail.changes); // eslint-disable-line no-console
 		});
 
 		document.addEventListener('d2l-filter-dimension-first-open', e => {
