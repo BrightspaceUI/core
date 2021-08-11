@@ -211,10 +211,10 @@ describe('SelectionObserverMixin', () => {
 		collection = el.querySelector('#d2l-test-selection');
 		await collection.updateComplete;
 		await nextFrame();
+		await nextFrame(); // Limit test flake
 	});
 
 	it('registers observers', async() => {
-		await nextFrame();
 		expect(collection._selectionObservers.size).to.equal(2);
 
 		el.querySelector('d2l-selection-summary').selectionFor = 'd2l-test-selection';
