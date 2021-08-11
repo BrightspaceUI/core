@@ -82,12 +82,11 @@ describe('d2l-input-time', () => {
 	describe('open behavior', () => {
 
 		beforeEach(async() => {
-			await page.setViewport({ width: 900, height: 800 });
+			await page.setViewport({ width: 900, height: 800, scaleFactor: 2 });
 		});
 
 		afterEach(async() => {
 			await reset(page, '#dropdown');
-			await page.setViewport({ width: 300, height: 800 });
 		});
 
 		it('dropdown open top', async function() {

@@ -22,7 +22,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		super();
 		this.noAutoFocus = true;
 		this.noPadding = true;
-		this._menuFocused = false;
 		this._maxHeightNonTray = this.maxHeight;
 	}
 
@@ -115,7 +114,6 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 
 		if (this.__applyFocus) {
 			menu.focus();
-			this._menuFocused = true;
 		}
 	}
 
