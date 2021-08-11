@@ -10,7 +10,7 @@ describe('d2l-input-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 300, height: 800 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 650, height: 800 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -80,10 +80,6 @@ describe('d2l-input-time', () => {
 	});
 
 	describe('open behavior', () => {
-
-		beforeEach(async() => {
-			await page.setViewport({ width: 900, height: 800, scaleFactor: 2 });
-		});
 
 		afterEach(async() => {
 			await reset(page, '#dropdown');
