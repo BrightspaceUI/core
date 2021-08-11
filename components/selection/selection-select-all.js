@@ -7,7 +7,6 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A checkbox that provides select-all behavior for selection components such as tables and lists.
- * @fires d2l-selection-select-all-change - Dispatched when the user toggles the checkox
  */
 class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
@@ -46,11 +45,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 	}
 
 	_handleCheckboxChange(e) {
-		this.dispatchEvent(new CustomEvent('d2l-selection-select-all-change', {
-			bubbles: true,
-			composed: true,
-			detail: { checked: e.target.checked }
-		}));
+		if (this._provider) this._provider.setSelectionForAll(e.target.checked);
 	}
 
 }

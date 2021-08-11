@@ -42,6 +42,25 @@
 			d2l-selection-input {
 				margin-right: 10px;
 			}
+			[dir="rtl"] d2l-selection-input {
+				margin-left: 10px;
+				margin-right: 0;
+			}
+			.d2l-selection-collections {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+			.d2l-selection-collection {
+				display: flex;
+				flex-basis: 45%;
+				flex-direction: column;
+			}
+			.d2l-selection-header {
+				align-items: center;
+				display: flex;
+				flex-wrap: wrap;
+			}
 		</style>
 	</head>
 	<body unresolved>
@@ -53,7 +72,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-demo-selection>
-						<div style="display: flex; align-items: center;">
+						<div class="d2l-selection-header">
 							<div style="flex: auto;">
 								<d2l-selection-select-all></d2l-selection-select-all>
 								<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
@@ -75,7 +94,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-demo-selection selection-single>
-						<div style="display: flex; align-items: center;">
+						<div class="d2l-selection-header">
 							<div style="flex: auto;">
 								<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
 								<d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
@@ -88,6 +107,48 @@
 							<li><d2l-selection-input key="mth" label="Math"></d2l-selection-input>Math</li>
 						</ul>
 					</d2l-demo-selection>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Selection Components Outside of Collection</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<div class="d2l-selection-collections">
+						<div class="d2l-selection-collection">
+							Pick Your Toppings
+							<div class="d2l-selection-header">
+								<d2l-selection-select-all selection-for="collection-1"></d2l-selection-select-all>
+								<d2l-selection-action selection-for="collection-1" text="Add Note" icon="tier1:add-message" style="padding: 0 0.5rem; flex: 1;"></d2l-selection-action>
+								<d2l-selection-summary selection-for="collection-1"></d2l-selection-summary>
+							</div>
+							<d2l-demo-selection id="collection-1">
+								<ul>
+									<li><d2l-selection-input key="let" label="Lettuce" selected></d2l-selection-input>Lettuce</li>
+									<li><d2l-selection-input key="tom" label="Tomato"></d2l-selection-input>Tomato</li>
+									<li><d2l-selection-input key="onion" label="Onion"></d2l-selection-input>Onion</li>
+								</ul>
+							</d2l-demo-selection>
+							<d2l-selection-action selection-for="collection-1" text="Save" requires-selection></d2l-selection-action>
+						</div>
+
+						<div class="d2l-selection-collection">
+							Pick Your Bread 
+							<div class="d2l-selection-header">
+								<d2l-selection-select-all selection-for="collection-2"></d2l-selection-select-all>
+								<d2l-selection-action selection-for="collection-2" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
+								<d2l-selection-summary selection-for="collection-2"></d2l-selection-summary>
+							</div>
+							<d2l-demo-selection id="collection-2" selection-single>
+								<ul>
+									<li><d2l-selection-input key="it" label="Italian"></d2l-selection-input>Italian</li>
+									<li><d2l-selection-input key="ww" label="Whole Wheat"></d2l-selection-input>Whole Wheat</li>
+									<li><d2l-selection-input key="herb" label="Herb and Garlic"></d2l-selection-input>Herb and Garlic</li>
+								</ul>
+							</d2l-demo-selection>
+							<d2l-selection-action selection-for="collection-2" text="Save" requires-selection></d2l-selection-action>
+						</div>
+					</div>
 				</template>
 			</d2l-demo-snippet>
 

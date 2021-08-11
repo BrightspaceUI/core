@@ -43,6 +43,7 @@ export const LabelMixin = superclass => class extends superclass {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('d2l-label-change', this._handleLabelChange);
+		if (this._labelObserver) this._labelObserver.disconnect();
 	}
 
 	updateLabel(text) {
