@@ -80,6 +80,7 @@ describe('d2l-selection', () => {
 	describe('select-all', () => {
 		[
 			{ name: 'default', selector: '#select-all' },
+			{ name: 'disabled', selector: '#select-all-disabled' },
 			{ name: 'focus', selector: '#select-all', action: selector => page.$eval(selector, elem => elem.focus()) },
 			{ name: 'none-selected', selector: '#select-all-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'none', keys: [] }) },
 			{ name: 'some-selected', selector: '#select-all-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'some', keys: [] }) },
