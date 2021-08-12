@@ -10,6 +10,15 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  */
 class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
+	static get properties() {
+		return {
+			/**
+			 * Disables the select all checkbox
+			 */
+			disabled: { type: Boolean }
+		};
+	}
+
 	static get styles() {
 		return css`
 			:host {
@@ -20,6 +29,11 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 				display: none;
 			}
 		`;
+	}
+
+	constructor() {
+		super();
+		this.disabled = false;
 	}
 
 	render() {
@@ -33,6 +47,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 				aria-label="${this.localize('components.selection.select-all')}"
 				@change="${this._handleCheckboxChange}"
 				?checked="${this.selectionInfo.state === SelectionInfo.states.all}"
+				?disabled="${this.disabled}"
 				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
 				?indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}">
 			</d2l-input-checkbox>

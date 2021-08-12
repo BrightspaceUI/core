@@ -128,6 +128,7 @@ The `d2l-selection-select-all` is an optional component that provides a checkbox
 
 | Property | Type | Description |
 |--|--|--|
+| `disabled` | Boolean | Disables the select all checkbox |
 | `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 
 ## d2l-selection-summary
