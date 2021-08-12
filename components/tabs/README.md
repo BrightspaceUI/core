@@ -17,7 +17,6 @@ Tabs are used to present related information in mutually exclusive panels, allow
   <d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
   <d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
   <d2l-tab-panel text="Community">Tab content for Community</d2l-tab-panel>
-  <d2l-button-subtle slot="ext" text="Search" icon="tier1:search"></d2l-button-subtle>
 </d2l-tabs>
 ```
 
