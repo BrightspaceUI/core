@@ -63,8 +63,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-filter-dimension-header-actions {
-                flex-flow: row wrap;
-            }
+				flex-flow: row wrap;
+			}
 
 			d2l-input-search {
 				flex: 1 0;
@@ -84,7 +84,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			d2l-selection-select-all {
 				padding: 0 0.6rem;
-            }
+			}
 
 			.d2l-filter-dimension-header-text {
 				flex-grow: 1;
@@ -288,10 +288,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
-                <p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
-                    ${this.localize('components.filter.noFilters')}
-                </p>
-            `;
+				<p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
+					${this.localize('components.filter.noFilters')}
+				</p>
+			`;
 		}
 
 		let searchResults = null;
