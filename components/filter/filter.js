@@ -104,6 +104,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-filter-dimension-set-value-text {
+				color: var(--d2l-color-ferrite);
 				line-height: unset;
 			}
 
@@ -112,11 +113,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				text-align: center;
 			}
 
-			/* Needed to "undo" the menu hover styles */
-			:host(:hover) .d2l-filter-dimension-info-message,
-			:host(:hover) .d2l-filter-dimension-set-value-text {
-				color: var(--d2l-color-ferrite);
-				cursor: default;
+			/* Needed to "undo" the menu-item style for multiple dimensions */
+			d2l-hierarchical-view {
+				cursor: auto;
 			}
 
 			d2l-loading-spinner {
