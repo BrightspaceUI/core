@@ -7,7 +7,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>
-		<d2l-filter-dimension-set key="dim" text="Dim">
+		<d2l-filter-dimension-set key="dim" text="Dim" select-all>
 			<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
 			<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
@@ -29,16 +29,18 @@ describe('d2l-filter', () => {
 	});
 
 	describe('loading', () => {
-		it('single set dimension - loading spinner', async() => {
+		it('single set dimension - loading spinner and select all disabled', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
 			const dim = elem.querySelector('d2l-filter-dimension-set');
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.be.null;
+			expect(elem.shadowRoot.querySelector('d2l-selection-select-all').disabled).to.be.false;
 
 			dim.loading = true;
 			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			await elem.updateComplete;
 
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.not.be.null;
+			expect(elem.shadowRoot.querySelector('d2l-selection-select-all').disabled).to.be.true;
 		});
 	});
 
