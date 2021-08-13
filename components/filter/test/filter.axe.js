@@ -5,16 +5,16 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>
-		<d2l-filter-dimension-set key="dim" text="Dim">
+		<d2l-filter-dimension-set key="dim" text="Dim" select-all>
 			<d2l-filter-dimension-set-value key="value" text="Value"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
 const multiDimensionFixture = html`
 	<d2l-filter>
-		<d2l-filter-dimension-set key="1" text="Dim 1">
+		<d2l-filter-dimension-set key="1" text="Dim 1" select-all>
 			<d2l-filter-dimension-set-value key="1" text="Value 1"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
-		<d2l-filter-dimension-set key="2" text="Dim 2">
+		<d2l-filter-dimension-set key="2" text="Dim 2" select-all>
 			<d2l-filter-dimension-set-value key="1" text="Value 1"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
