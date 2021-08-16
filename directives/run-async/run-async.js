@@ -102,15 +102,11 @@ class RunAsync extends AsyncDirective {
 	update(part, [key, task, templates, options]) {
 		const renderResult = this.render(key, task, templates);
 		const directiveOptions = Object.assign({ pendingState: true }, options);
-		if (directiveOptions.pendingState) {
-			(async() => {
-				// Wait a microtask for the initial render of the Part to complete
-				await 0;
-				if (this.key === key && this.state === 'pending') {
-					const element = part.parentNode.nodeType === Node.ELEMENT_NODE ? part.parentNode : part.parentNode.host;
-					element.dispatchEvent(new AsyncStateEvent(this.pendingPromise));
-				}
-			})();
+		if (directiveOptions.pendingState && this.key === key && this.state === 'pending') {
+			const element = part.parentNode.nodeType === Node.ELEMENT_NODE ? part.parentNode : part.parentNode.host;
+			if (element) {
+				element.dispatchEvent(new AsyncStateEvent(this.pendingPromise));
+			}
 		}
 		return renderResult;
 	}
