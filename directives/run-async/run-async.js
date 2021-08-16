@@ -11,7 +11,7 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-import { AsyncStateEvent } from '../helpers/asyncStateEvent.js';
+import { AsyncStateEvent } from '../../helpers/asyncStateEvent.js';
 import { directive } from 'lit-html/lit-html.js';
 
 const hasAbortController = typeof AbortController === 'function';

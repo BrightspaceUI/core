@@ -1,6 +1,6 @@
 import '../../../components/colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { InitialStateError, runAsync } from '../../../directives/run-async.js';
+import { InitialStateError, runAsync } from '../../../directives/run-async/run-async.js';
 
 class AsyncItem extends LitElement {
 
