@@ -71,7 +71,6 @@ Status Indicators are used to communicate the status of an item. They are non-in
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
-  import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 </script>
 <d2l-status-indicator state="alert" text="overdue" bold></d2l-status-indicator>
 ```
@@ -89,7 +88,7 @@ Use the bold style if the state is central to the user's task and should have m
   .status-format {
     display: flex;
     justify-content: space-evenly;
-	width: 100%;
+	  width: 100%;
   }
   d2l-status-indicator {
     margin: 5px;
