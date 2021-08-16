@@ -401,6 +401,12 @@ describe('d2l-input-number', () => {
 			expect(event.defaultPrevented).to.be.false;
 		});
 
+		it('should not suppress ENTER key so that input\'s change event can fire', async() => {
+			const elem = await fixtureInit(normalFixture);
+			const event = dispatchKeypressEvent(elem, 'Enter');
+			expect(event.defaultPrevented).to.be.false;
+		});
+
 		it('should suppress negative symbol when cursor is not at beginning', async() => {
 			const elem = await fixtureInit(defaultValueFixture);
 			setCursorPosition(elem, 1);
