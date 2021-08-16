@@ -50,7 +50,6 @@ describe('run-async directive', () => {
 			expect(elem.innerText).to.equal('initial');
 		});
 
-		// TODO: was this actually desired behaviour, or should nothing be rendered?
 		it('should render failure template if InitialStateError occurs but no initial template is provided', async() => {
 
 			const elem = await fixture(html`<p>${runAsync('key', task, {
