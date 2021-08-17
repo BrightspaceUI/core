@@ -71,7 +71,7 @@ The `d2l-tabs` element is a web component for tabbed content. It provides the `d
 <!-- docs: end hidden content -->
 
 ## Tab Panels [d2l-tab-panel]
-Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Tab panels can contain text, form controls, rich media, or just about anything else. There is an optional “slot” available for related controls such as an Options button.
+Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Tab panels can contain text, form controls, rich media, or just about anything else. There is an optional “slot” available for related controls such as a Settings button.
 
 <!-- docs: start hidden content -->
 ![Tabs](./screenshots/tabs.png?raw=true)
@@ -82,6 +82,7 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 <script type="module">
   import '@brightspace-ui/core/components/tabs/tabs.js';
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
+  import '@brightspace-ui/core/components/button/button-icon.js';
 </script>
 
 <d2l-tabs>
@@ -92,6 +93,7 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
   <d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
   <d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
   <d2l-tab-panel text="Community">Tab content for Community</d2l-tab-panel>
+  <d2l-button-icon slot="ext" icon="tier1:gear" text="Settings"></d2l-button-icon>
 </d2l-tabs>
 ```
 
