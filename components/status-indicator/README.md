@@ -1,4 +1,4 @@
-## Status Indicators
+# Status Indicators
 Status Indicators are used to communicate the status of an item. They are non-interactive and assert prominence on state.
 
 <!-- docs: start hidden content -->
@@ -66,6 +66,16 @@ Status Indicators are used to communicate the status of an item. They are non-in
 <d2l-status-indicator state="default" text="Due Today"></d2l-status-indicator>
 ```
 
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | The text that is displayed within the status indicator |
+| `bold` | Boolean | Use when the status is very important and needs to have a lot of prominence |
+| `state` | String, default: `default` | State of status indicator to display. Can be one of  `default`, `success`, `alert` , `none` |
+<!-- docs: end hidden content -->
+
 ### Bold 
 <!-- docs: demo -->
 ```html
@@ -119,7 +129,7 @@ Use the bold style if the state is central to the user's task and should have m
 The state is used to apply a meaningful colour to the status indicator to assist with scannability. The visible label should still have a clear meaning so that users who can't see the colour can still understand the state.
 
 * Default - the state is important but not urgent 
-* Success - the state is considered positive or complete.
+* Success - the state is considered positive or complete
 * Alert - the state requires urgent attention
 * None - the state is not important
 
@@ -199,41 +209,6 @@ The state is used to apply a meaningful colour to the status indicator to assist
 The text label should be kept short; one or two words at most. If more information is needed to explain the state or give extra context, the information should be included after the label and should use the same color to associate the information with the state. When placing additional text on the same line as the status indicator, ensure that the bottom of the text is even across all elements.
 
 <!-- docs: start hidden content -->
-### Variants
-
-#### Subtle
-![screenshot of all subtle status indicator variants](./screenshots/subtle-indicators.png)
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
-</script>
-
-<d2l-status-indicator state="default" text="due today"></d2l-status-indicator>
-<d2l-status-indicator state="success" text="complete"></d2l-status-indicator>
-<d2l-status-indicator state="alert" text="overdue"></d2l-status-indicator>
-<d2l-status-indicator state="none" text="closed"></d2l-status-indicator>
-```
-
-#### Bold
-![screenshot of all bold status indicator variants](./screenshots/bold-indicators.png)
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
-</script>
-
-<d2l-status-indicator state="default" text="due today" bold></d2l-status-indicator>
-<d2l-status-indicator state="success" text="complete" bold></d2l-status-indicator>
-<d2l-status-indicator state="alert" text="overdue" bold></d2l-status-indicator>
-<d2l-status-indicator state="none" text="closed" bold></d2l-status-indicator>
-```
-
-### Properties
-
-| Property | Type | Description |
-|--|--|--|
-| `text` | String, required | The text that is displayed within the status indicator |
-| `bold` | Boolean | Use when the status is very important and needs to have a lot of prominence |
-| `state` | String, default: `default` | State of status indicator to display. Can be one of  `default`, `success`, `alert` , `none` |
 
 ## Future Enhancements
 
