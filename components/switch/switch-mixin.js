@@ -50,7 +50,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 			}
 
 			.d2l-switch-container {
-				background-color: #ffffff;
+				background-color: var(--d2l-switch-container-background-color, '#fff');
 				border: 2px solid transparent;
 				border-radius: 1rem;
 				box-sizing: border-box;
