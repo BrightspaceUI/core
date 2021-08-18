@@ -212,15 +212,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (!changedProperties.has('on') || changedProperties.get('on') === undefined) return;
-		/**
-		 *  Dispatched when there is a change to the switch value. "on" corresponds to the current state of the switch.
-		 */
-		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
-	}
-
 	focus() {
 		const elem = this.shadowRoot.querySelector('.d2l-switch-container');
 		if (elem) elem.focus();
@@ -243,6 +234,6 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 	_toggleState() {
 		if (this.disabled) return;
 		this.on = !this.on;
+		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 	}
-
 };
