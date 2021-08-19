@@ -2,6 +2,14 @@
 
 A Select List allows the user to select a single option out of a relatively large number of items, or to reduce the visual prominence of an option selection.
 
+<!-- docs: demo -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/demo/input-select-test.js';
+</script>
+<d2l-test-input-select></d2l-test-input-select>
+```
+
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
