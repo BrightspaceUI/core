@@ -224,8 +224,22 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		if (this.enforceTimeIntervals) {
 			time = getTimeAtInterval(this.timeInterval, time);
 		}
+
+		const isManualEndOfDay = time.getHours() === 23 && time.getMinutes() === 59 && time.getSeconds() === 0;
+		if (isManualEndOfDay) {
+			time = END_OF_DAY;
+		}
+
 		this._value = formatDateInISOTime(time);
 		this._formattedValue = formatTime(time);
+
+		if (isManualEndOfDay) {
+			this.dispatchEvent(new CustomEvent(
+				'change',
+				{ bubbles: true, composed: false }
+			));
+		}
+
 		this.requestUpdate('value', oldValue);
 	}
 
