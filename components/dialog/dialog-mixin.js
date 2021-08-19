@@ -241,7 +241,14 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 		let abortEvent;
 		if (this._action === abortAction) {
-			abortEvent = new CustomEvent('d2l-dialog-abort', { bubbles: true, composed: true, cancelable: true });
+			abortEvent = new CustomEvent('d2l-dialog-abort', {
+				bubbles: true,
+				composed: true,
+				cancelable: true,
+				detail: {
+					forceCloseDialog: this._close.bind(this, 'force-close')
+				}
+			});
 			this.dispatchEvent(abortEvent);
 		}
 
