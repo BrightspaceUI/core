@@ -237,13 +237,25 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_handleClose() {
 		/* reset state if native dialog closes unexpectedly. ex. user highlights
 		text and then hits escape key - this is not caught by our key handler */
+		if (this._action === undefined) this._action = abortAction;
+
+		let abortEvent;
+		if (this._action === abortAction) {
+			abortEvent = new CustomEvent('d2l-dialog-abort', { bubbles: true, composed: true, cancelable: true });
+			this.dispatchEvent(abortEvent);
+		}
+
+		if (abortEvent && abortEvent.defaultPrevented) {
+			this._state = 'showing';
+			return;
+		}
+
 		this._removeHandlers();
 		this._focusOpener();
 		this._state = null;
 		this.opened = false;
 		allowBodyScroll(this._bodyScrollKey);
 		this._bodyScrollKey = null;
-		if (this._action === undefined) this._action = abortAction;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-dialog-close', {
 				bubbles: true,
