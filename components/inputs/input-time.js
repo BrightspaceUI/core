@@ -224,6 +224,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		if (this.enforceTimeIntervals) {
 			time = getTimeAtInterval(this.timeInterval, time);
 		}
+		// 11:59:00 (manually entered) becomes "end of day" so date/time validation treats them the same
 		const isManualEndOfDay = time.getHours() === 23 && time.getMinutes() === 59 && time.getSeconds() === 0;
 		if (isManualEndOfDay) {
 			time = END_OF_DAY;
