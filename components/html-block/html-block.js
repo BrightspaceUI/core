@@ -3,6 +3,18 @@ import { css, LitElement } from 'lit-element/lit-element.js';
 import { htmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
+let configuredIfrauClient;
+
+const getIfrauClient = async() => {
+	if (configuredIfrauClient === undefined && window.ifrauclient) {
+		configuredIfrauClient = await window.ifrauclient({
+			resizeFrame: false
+		}).connect();
+	}
+
+	return configuredIfrauClient;
+};
+
 let contextPromise;
 
 const getContext = () => {
@@ -18,7 +30,7 @@ const getContext = () => {
 			if (context) {
 				context.host = '';
 				resolve(context);
-			} else { 
+			} else {
 				resolve();
 			}
 		}
@@ -26,19 +38,7 @@ const getContext = () => {
 	});
 
 	return contextPromise;
-}
-
-let configuredIfrauClient;
-
-const getIfrauClient = async() => {
-	if (configuredIfrauClient === undefined && window.ifrauclient) {
-		configuredIfrauClient = await window.ifrauclient({
-			resizeFrame: false
-		}).connect();
-	}
-
-	return configuredIfrauClient;
-}
+};
 
 let renderers;
 
