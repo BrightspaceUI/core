@@ -113,16 +113,6 @@ Circle meters display data in a compact circle format, so they're useful when ho
 <d2l-meter-circle value="1" max="6"></d2l-meter-circle>
 ```
 
-<!-- docs: start hidden content -->
-### Properties
-
-* `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
-* `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
-* `percent` (Boolean): Shows a percentage instead of `value/max`.
-* `text` (String): Context information about what the meter is about.
-	* `\{\%\}` in the string will be replaced with percentage value
-	* `{x/y}` in the string will be replaced with fraction with the proper language support
-
 ## Light Foreground
 All `meter` components have a `foreground-light` style that ensures accessible contrast levels when displayed against a dark background.
 
@@ -137,6 +127,16 @@ All `meter` components have a `foreground-light` style that ensures accessibl
 <d2l-meter-radial value="22" max="24" foreground-light text="On Track"></d2l-meter-radial>
 <d2l-meter-circle value="1" max="6" foreground-light></d2l-meter-circle>
 ```
+
+<!-- docs: start hidden content -->
+### Properties
+
+* `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
+* `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
+* `percent` (Boolean): Shows a percentage instead of `value/max`.
+* `text` (String): Context information about what the meter is about.
+	* `\{\%\}` in the string will be replaced with percentage value
+	* `{x/y}` in the string will be replaced with fraction with the proper language support
 
 ## Future Enhancements
 
