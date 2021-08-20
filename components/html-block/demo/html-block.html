@@ -41,16 +41,7 @@
 		</script>
 		<script>
 			if (window.location.search.indexOf('latex=true') !== -1) {
-				window.D2L = {};
-				D2L.LP = {};
-				D2L.LP.Web = {};
-				D2L.LP.Web.UI = {};
-				D2L.LP.Web.UI.Flags = {
-					Flag: (feature, defaultValue) => {
-						if (feature === 'us125413-mathjax-render-latex') return true;
-						else return defaultValue;
-					}
-				};
+				document.getElementsByTagName('html')[0].dataset.hbContext = JSON.stringify({ renderLaTeX: true });
 			}
 		</script>
 	</head>

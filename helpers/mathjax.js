@@ -1,11 +1,15 @@
 let mathJaxLoaded;
 
-export async function htmlBlockMathRenderer(elem) {
-	const isLatexSupported = window.D2L && window.D2L.LP && window.D2L.LP.Web.UI.Flags.Flag('us125413-mathjax-render-latex', true);
+export async function htmlBlockMathRenderer(elem, context) {
+	const isLatexSupported = context && context.renderLaTeX;
 
 	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
-	const mathJaxConfig = { renderLatex: isLatexSupported };
+	const mathJaxConfig = {
+		renderLatex: isLatexSupported,
+		outputScale: (context && context.outputScale) || 1
+	};
+
 	await loadMathJax(mathJaxConfig);
 
 	const temp = document.createElement('div');
@@ -21,6 +25,9 @@ export function loadMathJax(mathJaxConfig) {
 	if (mathJaxLoaded) return mathJaxLoaded;
 
 	window.MathJax = {
+		chtml: {
+			scale: (mathJaxConfig && mathJaxConfig.outputScale) || 1
+		},
 		options: {
 			menuOptions: {
 				settings: { zoom: 'None' }
