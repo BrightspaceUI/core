@@ -21,7 +21,7 @@ Meters are a visually engaging way to communicate progress or measurements.
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Use to show the completion or progress of an object
-* Use to highlight important or critical measurements"
+* Use to highlight important or critical measurements
 * Use to provide feedback when a user completes an action that results in a change in data
 <!-- docs: end dos -->
 
