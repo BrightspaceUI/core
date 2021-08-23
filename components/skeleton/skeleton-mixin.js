@@ -11,7 +11,7 @@ export const skeletonStyles = css`
 		100% { background-color: var(--d2l-color-sylvite); }
 	}
 	:host([skeleton]) {
-		opacity: .999;
+		opacity: 0.999;
 	}
 	:host([skeleton]) .d2l-skeletize::before {
 		animation: loadingPulse 1.8s linear infinite;
