@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {لم يتم تطبيق عوامل تصفية.} one {تم تطبيق عامل تصفية واحد.} other {{number} من عوامل التصفية التي تم تطبيقها.}}",
 	"components.filter.filters": "عوامل التصفية",
 	"components.filter.noFilters": "ما من عوامل تصفية متوفرة",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {ما من نتائج بحث} one {نتيجة بحث واحدة} other {{number} من نتائج البحث}}",
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",
 	"components.form-element.defaultError": "{label} غير صالحة.",
 	"components.form-element.defaultFieldLabel": "الحقل",

@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {未套用篩選條件。} one {已套用 1 項篩選條件。} other {已套用 {number} 項篩選條件。}}",
 	"components.filter.filters": "篩選器",
 	"components.filter.noFilters": "沒有可用的篩選條件",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {無搜尋結果} one {1 個搜尋結果} other {{number} 個搜尋結果}}",
 	"components.filter.singleDimensionDescription": "按此條件篩選：{filterName}",
 	"components.form-element.defaultError": "{label} 無效。",
 	"components.form-element.defaultFieldLabel": "欄位",

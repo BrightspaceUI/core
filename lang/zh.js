@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {未应用筛选器。} one {已应用 1 个筛选器。} other {已应用 {number} 个筛选器。}}",
 	"components.filter.filters": "个筛选条件",
 	"components.filter.noFilters": "无可用筛选器",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {无搜索结果} one {1 个搜索结果} other {{number} 个搜索结果}}",
 	"components.filter.singleDimensionDescription": "筛选依据：{filterName}",
 	"components.form-element.defaultError": "{label} 无效。",
 	"components.form-element.defaultFieldLabel": "字段",

@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {적용된 필터 없음.} one {1개 필터 적용.} other {{number}개 필터 적용.}}",
 	"components.filter.filters": "개 필터",
 	"components.filter.noFilters": "사용 가능한 필터가 없습니다",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {검색 결과 없음} one {1개 검색 결과} other {{number}개 검색 결과}}",
 	"components.filter.singleDimensionDescription": "필터 기준: {filterName}",
 	"components.form-element.defaultError": "{label}이(가) 잘못되었습니다.",
 	"components.form-element.defaultFieldLabel": "필드",
