@@ -16,7 +16,18 @@
 			import '../demo/skeleton-test-link.js';
 			import '../demo/skeleton-test-paragraph.js';
 			import '../demo/skeleton-test-width.js';
+			import '../demo/skeleton-test-stack.js';
 		</script>
+		<style>
+			#stack-1 {
+				line-height: 1em;
+				margin: -0.5em;
+				position: absolute;
+				top: 0;
+				width: 100%;
+				z-index: 500;
+			}
+		</style>
 		<title>d2l-skeleton</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -103,6 +114,10 @@
 		</div>
 		<div class="visual-diff">
 			<d2l-test-skeleton-width id="width" skeleton></d2l-test-skeleton-width>
+		</div>
+		<div class="visual-diff" id="stack" style="position: relative;">
+			<div id="stack-1">Stack 1: 1</div>
+			<d2l-test-skeleton-stack skeleton></d2l-test-skeleton-stack>
 		</div>
 	</body>
 </html>
