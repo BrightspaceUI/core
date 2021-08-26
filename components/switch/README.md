@@ -1,6 +1,6 @@
 # Switches
 
-Switch components are similar to button toggles and checkboxes, except that they have on/off semantics that reflect their appearance more closely. In contrast to checkboxes, changes are generally expected to be immediate as opposed to submitted as part of a form.
+A switch is used to toggle between two states, on and off, just like a light switch.
 
 <!-- docs: demo name:d2l-switch -->
 ```html
@@ -8,9 +8,23 @@ Switch components are similar to button toggles and checkboxes, except that they
   import '@brightspace-ui/core/components/switch/switch.js';
   import '@brightspace-ui/core/components/switch/switch-visibility.js';
 </script>
-<d2l-switch text="My Switch" tooltip="Click to toggle!"></d2l-switch>
-<d2l-switch-visibility tooltip="Click to toggle!" on></d2l-switch-visibility>
+<d2l-switch text="My Switch" on></d2l-switch>
+<d2l-switch-visibility on></d2l-switch-visibility>
 ```
+
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use a switch to toggle ON/OFF states with immediate effect
+* Use a visible label near the switch to indicate its purpose
+<!-- docs: end dos -->
+<!-- docs: start donts -->
+* Don't toggle the language in the label, it should remain stati
+* Don't use a switch in a form, use a checkbox or radio options in stead
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
 
 ## Switch [d2l-switch]	
 The `d2l-switch` element is a generic switch with on/off semantics.
@@ -48,7 +62,7 @@ To make your usage of `d2l-switch` accessible, use the following property:
 
 | Attribute | Description |
 |--|--|
-| text | **REQUIRED** [Acts as a primary label on the switch](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless text-position is `hidden`. |
+| `text` | **REQUIRED** [Acts as a primary label on the switch](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless text-position is `hidden`. |
 
 ## Visibility Switch [d2l-switch-visibility]
 
