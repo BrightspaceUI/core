@@ -9,6 +9,7 @@ class DemoSnippet extends LitElement {
 		return {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
+			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 			_code: { type: String },
 			_dir: { type: String, attribute: false },
 			_hasSkeleton: { type: Boolean, attribute: false },
@@ -36,6 +37,9 @@ class DemoSnippet extends LitElement {
 				flex: 1 1 auto;
 				position: relative;
 			}
+			:host([overflow-hidden]) .d2l-demo-snippet-demo {
+				overflow: hidden;
+			}
 			.d2l-demo-snippet-demo-padding {
 				padding: 18px;
 			}
@@ -52,6 +56,7 @@ class DemoSnippet extends LitElement {
 				border-top-left-radius: 0;
 				border-top-right-radius: 0;
 				margin: 0;
+				max-width: inherit;
 			}
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
