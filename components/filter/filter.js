@@ -10,6 +10,8 @@ import '../list/list-item.js';
 import '../loading-spinner/loading-spinner.js';
 import '../menu/menu.js';
 import '../menu/menu-item.js';
+import '../selection/selection-select-all.js';
+import '../selection/selection-summary.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
@@ -18,6 +20,8 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
+const SET_DIMENSION_ID_PREFIX = 'list-';
 
 /**
  * A filter component that contains one or more dimensions a user can filter by.
@@ -58,8 +62,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				display: flex;
 			}
 
+			.d2l-filter-dimension-header-actions {
+				flex-flow: row wrap;
+			}
+
 			d2l-input-search {
-				flex-grow: 1;
+				flex: 1 0;
 				margin-left: 0.3rem;
 				margin-right: 0.6rem;
 			}
@@ -67,6 +75,15 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			:host([dir="rtl"]) d2l-input-search {
 				margin-left: 0.6rem;
 				margin-right: 0.3rem;
+			}
+
+			.d2l-filter-dimension-select-all {
+				flex-basis: 100%;
+				margin-top: 0.9rem;
+			}
+
+			d2l-selection-select-all {
+				padding: 0 0.6rem;
 			}
 
 			.d2l-filter-dimension-header-text {
@@ -87,6 +104,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-filter-dimension-set-value-text {
+				color: var(--d2l-color-ferrite);
 				line-height: unset;
 			}
 
@@ -95,11 +113,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				text-align: center;
 			}
 
-			/* Needed to "undo" the menu hover styles */
-			:host(:hover) .d2l-filter-dimension-info-message,
-			:host(:hover) .d2l-filter-dimension-set-value-text {
-				color: var(--d2l-color-ferrite);
-				cursor: default;
+			/* Needed to "undo" the menu-item style for multiple dimensions */
+			d2l-hierarchical-view {
+				cursor: auto;
 			}
 
 			d2l-loading-spinner {
@@ -112,6 +128,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.disabled = false;
+		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
@@ -221,9 +238,23 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			</d2l-input-search>
 		`;
 
+		const selectAll = !dimension.selectAllIdPrefix || dimension.searchValue ? null : html`
+			<div class="d2l-filter-dimension-select-all">
+				<d2l-selection-select-all
+					selection-for="${dimension.selectAllIdPrefix}${dimension.key}"
+					?disabled="${dimension.loading || this._isDimensionEmpty(dimension)}">
+				</d2l-selection-select-all>
+				<d2l-selection-summary
+					selection-for="${dimension.selectAllIdPrefix}${dimension.key}"
+					no-selection-text="${this.localize('components.selection.select-all')}">
+				</d2l-selection-summary>
+			</div>
+		`;
+
 		const actions = html`
 			<div class="d2l-filter-dimension-header-actions">
 				${search}
+				${selectAll}
 			</div>
 		`;
 
@@ -256,10 +287,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		if (this._isDimensionEmpty(dimension)) {
 			return html`
-                <p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
-                    ${this.localize('components.filter.noFilters')}
-                </p>
-            `;
+				<p class="d2l-filter-dimension-info-message d2l-body-small" role="alert">
+					${this.localize('components.filter.noFilters')}
+				</p>
+			`;
 		}
 
 		let searchResults = null;
@@ -283,8 +314,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return html`
 			${searchResults}
 			<d2l-list
+				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
-				data-key="${dimension.key}"
 				extend-separators>
 				${dimension.values.map(item => html`
 					<d2l-list-item
@@ -301,8 +332,20 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
-	_dispatchChangeEvent(eventDetail) {
-		this.dispatchEvent(new CustomEvent('d2l-filter-change', { bubbles: true, composed: false, detail: eventDetail }));
+	_dispatchChangeEvent(eventKey, eventDetail) {
+		this._changeEventsToDispatch.set(eventKey, eventDetail);
+
+		if (!this._changeEventTimeout) {
+			this._changeEventTimeout = setTimeout(() => {
+				this.dispatchEvent(new CustomEvent('d2l-filter-change', {
+					bubbles: true,
+					composed: false,
+					detail: { changes: Array.from(this._changeEventsToDispatch.values()) }
+				}));
+				this._changeEventsToDispatch = new Map();
+				this._changeEventTimeout = null;
+			}, 200);
+		}
 	}
 
 	_dispatchDimensionFirstOpenEvent(key) {
@@ -331,7 +374,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleChangeSetDimension(e) {
-		const dimensionKey = e.target.getAttribute('data-key');
+		const dimensionKey = e.target.id.slice(SET_DIMENSION_ID_PREFIX.length);
 		const dimension = this._dimensions.find(dimension => dimension.key === dimensionKey);
 		const valueKey = e.detail.key;
 		const value = dimension.values.find(value => value.key === valueKey);
@@ -347,7 +390,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this._totalAppliedCount--;
 		}
 
-		this._dispatchChangeEvent({ dimension: dimensionKey, value: { key: valueKey, selected: selected } });
+		this._dispatchChangeEvent(`${dimensionKey}-${valueKey}`, { dimension: dimensionKey, value: { key: valueKey, selected: selected } });
 	}
 
 	_handleDimensionDataChange(e) {
@@ -453,6 +496,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
 					info.searchType = dimension.searchType;
+					if (dimension.selectAll) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
 					const values = dimension._getValues();
 					info.values = values;
 					break;

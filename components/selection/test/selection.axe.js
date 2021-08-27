@@ -64,6 +64,11 @@ describe('d2l-selection-select-all', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('disabled', async() => {
+		const elem = await fixture(html`<d2l-selection-select-all disabled></d2l-selection-select-all>`);
+		await expect(elem).to.be.accessible();
+	});
+
 });
 
 describe('d2l-selection-summary', () => {

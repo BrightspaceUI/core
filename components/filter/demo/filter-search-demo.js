@@ -31,6 +31,11 @@ class FilterSearchDemo extends LitElement {
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="none-select-all" text="No Search and Search All" search-type="none" select-all>
+					<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
+					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
+				</d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="event" text="Event on Search" search-type="manual">
 					${this._displayedData.map(value => html`
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
@@ -46,13 +51,16 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleFilterChange(e) {
-		// eslint-disable-next-line no-console
-		console.log(`Filter selection changed for dimension "${e.detail.dimension}":`, e.detail.value);
+		(e.detail.changes.length === 1) ?
+			console.log(`Filter selection changed for dimension "${e.detail.changes[0].dimension}":`, e.detail.changes[0].value) : // eslint-disable-line no-console
+			console.log('Batch filter selection changed:', e.detail.changes); // eslint-disable-line no-console
 
-		if (e.detail.dimension !== 'event') return;
+		e.detail.changes.forEach(change => {
+			if (change.dimension !== 'event') return;
 
-		this._fullData.find(value => value.key === e.detail.value.key).selected = e.detail.value.selected;
-		this._displayedData.find(value => value.key === e.detail.value.key).selected = e.detail.value.selected;
+			this._fullData.find(value => value.key === change.value.key).selected = change.value.selected;
+			this._displayedData.find(value => value.key === change.value.key).selected = change.value.selected;
+		});
 	}
 
 	_handleFirstOpen(e) {

@@ -371,9 +371,14 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 		});
 	}
 
-	focus() {
+	async focus() {
 		const elem = this.shadowRoot.querySelector('d2l-input-text');
-		if (elem) elem.focus();
+		if (elem) {
+			elem.focus();
+		} else {
+			await this.updateComplete;
+			this.focus();
+		}
 	}
 
 	async validate() {
@@ -491,7 +496,7 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			// incorrect decimal
 			hintType = key === ',' ? HINT_TYPES.DECIMAL_INCORRECT_PERIOD : HINT_TYPES.DECIMAL_INCORRECT_COMMA;
 			prevent = true;
-		} else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].indexOf(key) === -1) {
+		} else if (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Enter'].indexOf(key) === -1) {
 			// not a number
 			prevent = true;
 		}

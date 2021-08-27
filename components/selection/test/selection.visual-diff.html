@@ -98,6 +98,10 @@
 	</div>
 
 	<div class="visual-diff">
+		<d2l-selection-select-all id="select-all-disabled" disabled></d2l-selection-select-all>
+	</div>
+
+	<div class="visual-diff">
 		<d2l-selection-select-all id="select-all-selection"></d2l-selection-select-all>
 	</div>
 
@@ -191,6 +195,96 @@
 				</div>
 				<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 			</div>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff" id="external-to-mixin-multiple-none-selected">
+		<div style="display: flex; align-items: center;">
+			<div style="flex: auto;">
+				<d2l-selection-select-all selection-for="list-external-to-mixin-multiple-none-selected"></d2l-selection-select-all>
+				<d2l-selection-action selection-for="list-external-to-mixin-multiple-none-selected" text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+				<d2l-selection-action selection-for="list-external-to-mixin-multiple-none-selected" text="Action 2" icon="tier1:gear"></d2l-selection-action>
+			</div>
+			<d2l-selection-summary selection-for="list-external-to-mixin-multiple-none-selected" style="flex: none;"></d2l-selection-summary>
+		</div>
+		<d2l-test-selection id="list-external-to-mixin-multiple-none-selected">
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff" id="external-to-mixin-multiple-some-selected">
+		<div style="display: flex; align-items: center;">
+			<div style="flex: auto;">
+				<d2l-selection-select-all selection-for="list-external-to-mixin-multiple-some-selected"></d2l-selection-select-all>
+				<d2l-selection-action selection-for="list-external-to-mixin-multiple-some-selected" text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+				<d2l-selection-action selection-for="list-external-to-mixin-multiple-some-selected" text="Action 2" icon="tier1:gear"></d2l-selection-action>
+			</div>
+			<d2l-selection-summary selection-for="list-external-to-mixin-multiple-some-selected" style="flex: none;"></d2l-selection-summary>
+		</div>
+		<d2l-test-selection id="list-external-to-mixin-multiple-some-selected">
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff" id="external-to-mixin-multiple-all-selected">
+		<div style="display: flex; align-items: center;">
+			<div style="flex: auto;">
+				<d2l-selection-select-all selection-for="list-external-to-mixin-multiple-all-selected"></d2l-selection-select-all>
+				<d2l-selection-action selection-for="list-external-to-mixin-multiple-all-selected" text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+				<d2l-selection-action selection-for="list-external-to-mixin-multiple-all-selected" text="Action 2" icon="tier1:gear"></d2l-selection-action>
+			</div>
+			<d2l-selection-summary selection-for="list-external-to-mixin-multiple-all-selected" style="flex: none;"></d2l-selection-summary>
+		</div>
+		<d2l-test-selection id="list-external-to-mixin-multiple-all-selected">
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1" selected></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3" selected></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff" id="external-to-mixin-single-none-selected">
+		<div style="display: flex; align-items: center;">
+			<div style="flex: auto;">
+				<d2l-selection-select-all selection-for="list-external-to-mixin-single-none-selected"></d2l-selection-select-all>
+				<d2l-selection-action selection-for="list-external-to-mixin-single-none-selected" text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+				<d2l-selection-action selection-for="list-external-to-mixin-single-none-selected" text="Action 2" icon="tier1:gear"></d2l-selection-action>
+			</div>
+			<d2l-selection-summary selection-for="list-external-to-mixin-single-none-selected" style="flex: none;"></d2l-selection-summary>
+		</div>
+		<d2l-test-selection id="list-external-to-mixin-single-none-selected" selection-single>
+			<ul>
+				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
+				<li><d2l-selection-input key="key2" label="Item 2"></d2l-selection-input>Item 2</li>
+				<li><d2l-selection-input key="key3" label="Item 3"></d2l-selection-input>Item 3</li>
+			</ul>
+		</d2l-test-selection>
+	</div>
+
+	<div class="visual-diff" id="external-to-mixin-single-one-selected">
+		<div style="display: flex; align-items: center;">
+			<div style="flex: auto;">
+				<d2l-selection-select-all selection-for="list-external-to-mixin-single-one-selected"></d2l-selection-select-all>
+				<d2l-selection-action selection-for="list-external-to-mixin-single-one-selected" text="Action 1" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+				<d2l-selection-action selection-for="list-external-to-mixin-single-one-selected" text="Action 2" icon="tier1:gear"></d2l-selection-action>
+			</div>
+			<d2l-selection-summary selection-for="list-external-to-mixin-single-one-selected" style="flex: none;"></d2l-selection-summary>
+		</div>
+		<d2l-test-selection id="list-external-to-mixin-single-one-selected" selection-single>
 			<ul>
 				<li><d2l-selection-input key="key1" label="Item 1"></d2l-selection-input>Item 1</li>
 				<li><d2l-selection-input key="key2" label="Item 2" selected></d2l-selection-input>Item 2</li>

@@ -57,7 +57,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		if (this.selectionSingle) this.addEventListener('keydown', this._handleRadioKeyDown);
 		if (this.selectionSingle) this.addEventListener('keyup', this._handleRadioKeyUp);
 		this.addEventListener('d2l-selection-change', this._handleSelectionChange);
-		this.addEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
@@ -67,7 +66,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		if (this.selectionSingle) this.removeEventListener('keydown', this._handleRadioKeyDown);
 		if (this.selectionSingle) this.removeEventListener('keyup', this._handleRadioKeyUp);
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
-		this.removeEventListener('d2l-selection-select-all-change', this._handleSelectionSelectAllChange);
 		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.removeEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 	}
@@ -85,6 +83,23 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		}
 
 		return new SelectionInfo(keys, state);
+	}
+
+	setSelectionForAll(selected) {
+		if (this.selectionSingle && selected) return;
+
+		this._selectionSelectables.forEach(selectable => {
+			if (!!selectable.selected !== selected) {
+				selectable.selected = selected;
+			}
+		});
+		this._updateSelectionObservers();
+	}
+
+	subscribeObserver(target) {
+		if (this._selectionObservers.has(target)) return;
+		this._selectionObservers.set(target, target);
+		this._updateSelectionObservers();
 	}
 
 	unsubscribeObserver(target) {
@@ -152,15 +167,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		e.stopPropagation();
 		e.detail.provider = this;
 		const target = e.composedPath()[0];
-		if (this._selectionObservers.has(target)) return;
-		this._selectionObservers.set(target, target);
-		this._updateSelectionObservers();
-	}
-
-	_handleSelectionSelectAllChange(e) {
-		const checked = e.detail.checked;
-		this._selectionSelectables.forEach(selectable => selectable.selected = checked);
-		this._updateSelectionObservers();
+		this.subscribeObserver(target);
 	}
 
 	_updateSelectionObservers() {

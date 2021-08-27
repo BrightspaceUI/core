@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.156.4",
+  "version": "1.161.4",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -41,17 +41,18 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/eslint-parser": "^7",
-    "@brightspace-ui/stylelint-config": "^0.2.0",
+    "@brightspace-ui/stylelint-config": "^0.2",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4",
     "@webcomponents/webcomponentsjs": "^2",
     "axe-core": "^4",
     "chalk": "^4",
-    "deepmerge": "^4.2.2",
+    "deepmerge": "^4",
     "es-dev-server": "^2",
-    "eslint": "^7.15.0",
-    "eslint-config-brightspace": "^0.14",
+    "eslint": "^7",
+    "eslint-config-brightspace": "^0.16",
     "eslint-plugin-html": "^6",
+    "eslint-plugin-import": "^2",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
     "lit-analyzer": "^1",
@@ -63,11 +64,12 @@
   "dependencies": {
     "@brightspace-ui/intl": "^3",
     "@formatjs/intl-pluralrules": "^1",
-    "@open-wc/dedupe-mixin": "^1.2.17",
+    "@open-wc/dedupe-mixin": "^1",
     "@webcomponents/shadycss": "^1",
     "focus-visible": "^5",
     "intl-messageformat": "^7",
     "lit-element": "^2",
+    "lit-html": "^1.4.1",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
   }

@@ -80,6 +80,7 @@ describe('d2l-selection', () => {
 	describe('select-all', () => {
 		[
 			{ name: 'default', selector: '#select-all' },
+			{ name: 'disabled', selector: '#select-all-disabled' },
 			{ name: 'focus', selector: '#select-all', action: selector => page.$eval(selector, elem => elem.focus()) },
 			{ name: 'none-selected', selector: '#select-all-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'none', keys: [] }) },
 			{ name: 'some-selected', selector: '#select-all-selection', action: selector => page.$eval(selector, elem => elem.selectionInfo = { state: 'some', keys: [] }) },
@@ -97,22 +98,29 @@ describe('d2l-selection', () => {
 		].forEach(runTest);
 	});
 
-	describe('mixin-multiple', () => {
-		[
-			{ name: 'none-selected', selector: '#mixin-multiple-none-selected' },
-			{ name: 'some-selected', selector: '#mixin-multiple-some-selected' },
-			{ name: 'all-selected', selector: '#mixin-multiple-all-selected' },
-			{ name: 'select-all', selector: '#mixin-multiple-none-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
-			{ name: 'select-none', selector: '#mixin-multiple-all-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
-			{ name: 'select-all-from-some', selector: '#mixin-multiple-some-selected', action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) }
-		].forEach(runTest);
+	['mixin', 'external-to-mixin'].forEach(type => {
+		describe(`${type}-multiple`, () => {
+			[
+				{ name: 'none-selected', selector: `#${type}-multiple-none-selected` },
+				{ name: 'some-selected', selector: `#${type}-multiple-some-selected` },
+				{ name: 'all-selected', selector: `#${type}-multiple-all-selected` },
+				{ name: 'select-all', selector: `#${type}-multiple-none-selected`, action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
+				{ name: 'select-none', selector: `#${type}-multiple-all-selected`, action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) },
+				{ name: 'select-all-from-some', selector: `#${type}-multiple-some-selected`, action: selector => page.$eval(selector, elem => elem.querySelector('d2l-selection-select-all').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click()) }
+			].forEach(runTest);
+		});
+
+		describe(`${type}-single`, () => {
+			[
+				{ name: 'none-selected', selector: `#${type}-single-none-selected` },
+				{ name: 'one-selected', selector: `#${type}-single-one-selected` },
+				{ name: 'select', selector: `#${type}-single-none-selected`, action: selector => page.$eval(selector, elem => elem.querySelector('[key="key1"]').selected = true) }
+			].forEach(runTest);
+		});
 	});
 
 	describe('mixin-single', () => {
 		[
-			{ name: 'none-selected', selector: '#mixin-single-none-selected' },
-			{ name: 'one-selected', selector: '#mixin-single-one-selected' },
-			{ name: 'select', selector: '#mixin-single-none-selected', action: selector => page.$eval(selector, elem => elem.querySelector('[key="key1"]').selected = true) },
 			{ name: 'right-arrow', selector: '#mixin-single-right-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 39) },
 			{ name: 'left-arrow', selector: '#mixin-single-left-arrow', action: selector => radioKeyUp(page, `${selector} [selected]`, 37) },
 			{ name: 'right-arrow-rtl', selector: '#mixin-single-right-arrow-rtl', action: selector => radioKeyUp(page, `${selector} [selected]`, 39) },

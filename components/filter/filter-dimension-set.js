@@ -24,6 +24,10 @@ class FilterDimensionSet extends LitElement {
 			 */
 			searchType: { type: String, attribute: 'search-type' },
 			/**
+			 * Adds a select all checkbox and summary for this dimension
+			 */
+			selectAll: { type: Boolean, attribute: 'select-all' },
+			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 */
 			text: { type: String }
@@ -34,6 +38,7 @@ class FilterDimensionSet extends LitElement {
 		super();
 		this.loading = false;
 		this.searchType = 'automatic';
+		this.selectAll = false;
 		this.text = '';
 		this._slot = null;
 	}

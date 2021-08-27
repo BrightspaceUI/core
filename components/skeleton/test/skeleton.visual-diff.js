@@ -53,7 +53,8 @@ describe('d2l-skeleton', () => {
 				'heading-4-multiline',
 				'box',
 				'container',
-				'width'
+				'width',
+				'stack'
 			].forEach((name) => {
 				it(name, async function() {
 					const rect = await visualDiff.getRect(page, `#${name}`);

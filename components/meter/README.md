@@ -1,17 +1,16 @@
-# Progress Meters
+# Meters
+Meters are a visually engaging way to communicate progress or measurements.
 
-Progress meters are used to visually communicate the progress of an object or operation. There are three types of progress meters: Linear, Radial, and Circle. Select the type that best represents your data and fits the visual design.
-
-<!-- docs: demo -->
+<!-- docs: demo  -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-linear.js';
   import '@brightspace-ui/core/components/meter/meter-radial.js';
   import '@brightspace-ui/core/components/meter/meter-circle.js';
 </script>
-<d2l-meter-linear value="30" max="100"></d2l-meter-linear>
-<d2l-meter-radial value="30" max="100"></d2l-meter-radial>
-<d2l-meter-circle value="30" max="100"></d2l-meter-circle>
+<d2l-meter-linear value="1" max="6" text="Activities"></d2l-meter-linear>
+<d2l-meter-radial value="22" max="24" text="On Track"></d2l-meter-radial>
+<d2l-meter-circle value="1" max="6"></d2l-meter-circle>
 ```
 
 <!-- docs: start hidden content -->
@@ -21,32 +20,16 @@ Progress meters are used to visually communicate the progress of an object or op
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use to show the completion or progress of an object.
-* Use to highlight important or critical progress data.
-* Use to provide feedback when a user completes an action that results in a change in data.
+* Use to show the completion or progress of an object
+* Use to highlight important or critical measurements
+* Use to provide feedback when a user completes an action that results in a change in data
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don't use a lot of progress indicators on a single screen because they can overwhelm the user.
-* Don't use motion unless the data is the primary content on the screen.
+* Don't use a lot of progress indicators on a single screen because they can overwhelm the user
+* Don't use motion unless the data is the primary content on the screen
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
-
-## Light Foreground
-
-All `meter` components have a `foreground-light` style for displaying against a dark background.
-
-<!-- docs: demo code darkMode:true -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/meter/meter-linear.js';
-  import '@brightspace-ui/core/components/meter/meter-radial.js';
-  import '@brightspace-ui/core/components/meter/meter-circle.js';
-</script>
-<d2l-meter-linear value="30" max="100" foreground-light></d2l-meter-linear>
-<d2l-meter-radial value="30" max="100" foreground-light></d2l-meter-radial>
-<d2l-meter-circle value="30" max="100" foreground-light></d2l-meter-circle>
-```
 
 
 ## Linear Meter [d2l-meter-linear]
@@ -68,7 +51,7 @@ Linear meters show a horizontal progress bar.
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
@@ -83,7 +66,7 @@ Linear meters show a horizontal progress bar.
 
 ## Radial meter [d2l-meter-radial]
 
-Radial meters will show the progress bar as a half circle.
+Radial meters appear as a half circle. They have more visual weight than a linear meter and should only be used when the data is central to the user's task.
 
 <!-- docs: start hidden content -->
 ![Radial meter with no progress](./screenshots/d2l-meter-radial-no-progress.png?raw=true)
@@ -101,7 +84,7 @@ Radial meters will show the progress bar as a half circle.
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.
@@ -114,7 +97,8 @@ Radial meters will show the progress bar as a half circle.
 
 ## Circular Meter [d2l-meter-circle]
 
-Circle meters will show the progress as a full circle.
+Circle meters display data in a compact circle format, so they're useful when horizontal space is at a premium.
+
 <!-- docs: start hidden content -->
 ![Circle meter with no progress](./screenshots/d2l-meter-circle-no-progress.png?raw=true)
 ![Circle meter with no progress](./screenshots/d2l-meter-circle-has-progress.png?raw=true)
@@ -126,11 +110,26 @@ Circle meters will show the progress as a full circle.
 <script type="module">
   import '@brightspace-ui/core/components/meter/meter-circle.js';
 </script>
-<d2l-meter-circle value="30" max="100"></d2l-meter-circle>
+<d2l-meter-circle value="1" max="6"></d2l-meter-circle>
+```
+
+## Light Foreground
+All `meter` components have a `foreground-light` style that ensures accessible contrast levels when displayed against a dark background.
+
+<!-- docs: demo code darkMode:true -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/meter/meter-linear.js';
+  import '@brightspace-ui/core/components/meter/meter-radial.js';
+  import '@brightspace-ui/core/components/meter/meter-circle.js';
+</script>
+<d2l-meter-linear value="1" max="6" foreground-light text="Activities"></d2l-meter-linear>
+<d2l-meter-radial value="22" max="24" foreground-light text="On Track"></d2l-meter-radial>
+<d2l-meter-circle value="1" max="6" foreground-light></d2l-meter-circle>
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 * `value` (required, Number): Current number of completed units. A positive, non-zero number that is less than or equal to `max`.
 * `max` (Number, default: `100`): Max number of units that are being measured by this meter. A positive, non-zero number.

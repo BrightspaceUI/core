@@ -8,7 +8,7 @@ The selection components (`d2l-selection-action`, `d2l-selection-input`, `d2l-se
 
 ## SelectionMixin
 
-To use the selection components, they must be placed within a component that extends the `SelectionMixin`, which acts like a controller for the checkboxes, radios, actions, etc.
+The selection components above work with a component that extends the `SelectionMixin`, which acts like a controller for the checkboxes, radios, actions, etc. The `d2l-selection-input` component must be placed _within_ the component that extends the `SelectionMixin`.  The other selection components may also be placed inside the `SelectionMixin` component, or in the same DOM scope with the `selection-for` attribute set to the id of that component.
 
 The `d2l-list` already extends `SelectionMixin` and should always be used for lists, however a custom selection control can be easily defined to enable the use of these selection controls in different semantic contexts or radically different layouts. The `SelectionMixin` defines the `selection-single` attribute that consumers can specify for single selection behaviour.
 
@@ -36,10 +36,10 @@ The selection components can then be used within the custom selection component 
 
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/selection-action.js';
-  import '@brightspace-ui/core/components/selection-input.js';
-  import '@brightspace-ui/core/components/selection-select-all.js';
-  import '@brightspace-ui/core/components/selection-summary.js';
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+  import '@brightspace-ui/core/components/selection/selection-input.js';
+  import '@brightspace-ui/core/components/selection/selection-select-all.js';
+  import '@brightspace-ui/core/components/selection/selection-summary.js';
 </script>
 <d2l-custom-selection>
   <div>
@@ -48,6 +48,30 @@ The selection components can then be used within the custom selection component 
     <d2l-selection-action text="Settings" icon="tier1:gear"></d2l-selection-action>
     <d2l-selection-summary></d2l-selection-summary>
   </div>
+  <ul>
+    <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
+    <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
+    <li><d2l-selection-input key="mth" label="Math"></d2l-selection-input>Math</li>
+  </ul>
+</d2l-custom-selection>
+```
+
+Or, the non-`d2l-selection-input` components can be used outside the custom selection component as long as they are in the same DOM scope:
+
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/selection/selection-action.js';
+  import '@brightspace-ui/core/components/selection/selection-input.js';
+  import '@brightspace-ui/core/components/selection/selection-select-all.js';
+  import '@brightspace-ui/core/components/selection/selection-summary.js';
+</script>
+<div>
+  <d2l-selection-select-all selection-for="custom"></d2l-selection-select-all>
+  <d2l-selection-action selection-for="custom" text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
+  <d2l-selection-action selection-for="custom" text="Settings" icon="tier1:gear"></d2l-selection-action>
+  <d2l-selection-summary selection-for="custom"></d2l-selection-summary>
+</div>
+<d2l-custom-selection id="custom">
   <ul>
     <li><d2l-selection-input key="geo" label="Geography" selected></d2l-selection-input>Geography</li>
     <li><d2l-selection-input key="sci" label="Science"></d2l-selection-input>Science</li>
@@ -66,6 +90,7 @@ The `d2l-selection-action` is an optional component that provides a button for a
 |--|--|--|
 | `icon` | String | Preset icon key (e.g. "tier1:gear"). |
 | `requires-selection` | Boolean | Whether the action requires one or more selected items. If no items are selected, the action button will be focusable and a hint displayed in a tooltip. |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 | `text` | String, required | Text to be shown for the action. |
 
 **Events:**
@@ -99,11 +124,12 @@ The `d2l-selection-input` is a required component in selection controls - withou
 
 The `d2l-selection-select-all` is an optional component that provides a checkbox for bulk selecting the selectable elements within the selection control. Its state will also be automatically updated when the state of the selectable elements change.
 
-**Events:**
+**Properties:**
 
-| Event | Description |
-|--|--|
-| `d2l-selection-select-all-change` | Dispatched when the state of the select-all checkbox changes. The checked state of is passed as the event `detail`. |
+| Property | Type | Description |
+|--|--|--|
+| `disabled` | Boolean | Disables the select all checkbox |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 
 ## d2l-selection-summary
 
@@ -114,6 +140,7 @@ The `d2l-selection-summary` is an optional component that shows a simple count o
 | Property | Type | Description |
 |--|--|--|
 | `no-selection-text` | String | Text to display if no items are selected. By default, the "0 selected" message is displayed. |
+| `selection-for` | String | Id of the corresponding `SelectionMixin` component, if not placed within it. |
 
 ## Future Enhancements
 

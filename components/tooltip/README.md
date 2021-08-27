@@ -12,10 +12,17 @@ Tooltips display additional information when users focus or hover on a point of 
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    setTimeout(function() {
+      var tooltip = document.querySelector('#tooltip');
+      tooltip.showing = true;
+    }, 20);
+  });
+</script>
 <d2l-button id="tooltip-button">Hover here</d2l-button>
-<d2l-tooltip for="tooltip-button" align="start" offset="10">
-	Tooltip message example
+<d2l-tooltip id="tooltip" for="tooltip-button">
+  Tooltip message example
 </d2l-tooltip>
 ```
 
@@ -24,7 +31,7 @@ Tooltips display additional information when users focus or hover on a point of 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Use to show error messages during form validation
-* Use to provide extra information in an infographic
+* Use to give the name or purpose of an icon button
 * Use to provide the “full text” for a truncated value in a tight datagrid or list
 <!-- docs: end dos -->
 
@@ -112,20 +119,35 @@ This can be done with the `boundary` attribute that allows any of the tooltip's 
 
 In the following example to constrain the tooltip to the dashed boundary we can set the top boundary to `50`, the bottom boundary to `10`, the left boundary to `100`, and the right boundary to `0`.
 
+<!-- docs: start hidden content -->
 ![screenshot of a tooltip with custom boundaries](./screenshots/tooltip-boundary.png)
+<!-- docs: end hidden content -->
 
-<!-- docs: demo code autoSize:false size:small -->
+<!-- docs: demo code -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
+<style>
+  .boundary {
+    border: 1px dashed #cdd5dc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 175px;
+    padding-left: 150px;
+    padding-top: 60px;
+    position: relative;
+    width: 350px;
+  }
+</style>
 
-<div class="offset-parent">
-	<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
-	<d2l-tooltip for="tooltip-boundary"
-		boundary="{&quot;top&quot;:50, &quot;bottom&quot;:10, &quot;left&quot;:100, &quot;right&quot;:0}">
-		This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
-	</d2l-tooltip>
+<div class="offset-parent boundary">
+  <d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
+  <d2l-tooltip for="tooltip-boundary"
+    boundary="{&quot;top&quot;:0, &quot;bottom&quot;:0, &quot;left&quot;:0, &quot;right&quot;:0}">
+    This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
+  </d2l-tooltip>
 </div>
 ```

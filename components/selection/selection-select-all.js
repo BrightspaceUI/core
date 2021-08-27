@@ -7,9 +7,17 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A checkbox that provides select-all behavior for selection components such as tables and lists.
- * @fires d2l-selection-select-all-change - Dispatched when the user toggles the checkox
  */
 class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
+
+	static get properties() {
+		return {
+			/**
+			 * Disables the select all checkbox
+			 */
+			disabled: { type: Boolean }
+		};
+	}
 
 	static get styles() {
 		return css`
@@ -23,6 +31,11 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 		`;
 	}
 
+	constructor() {
+		super();
+		this.disabled = false;
+	}
+
 	render() {
 		if (this._provider && this._provider.selectionSingle) return;
 
@@ -34,6 +47,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 				aria-label="${this.localize('components.selection.select-all')}"
 				@change="${this._handleCheckboxChange}"
 				?checked="${this.selectionInfo.state === SelectionInfo.states.all}"
+				?disabled="${this.disabled}"
 				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
 				?indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}">
 			</d2l-input-checkbox>
@@ -46,11 +60,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 	}
 
 	_handleCheckboxChange(e) {
-		this.dispatchEvent(new CustomEvent('d2l-selection-select-all-change', {
-			bubbles: true,
-			composed: true,
-			detail: { checked: e.target.checked }
-		}));
+		if (this._provider) this._provider.setSelectionForAll(e.target.checked);
 	}
 
 }
