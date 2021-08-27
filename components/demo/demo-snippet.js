@@ -34,6 +34,7 @@ class DemoSnippet extends LitElement {
 			}
 			.d2l-demo-snippet-demo {
 				flex: 1 1 auto;
+				overflow: hidden;
 				position: relative;
 			}
 			.d2l-demo-snippet-demo-padding {
@@ -52,6 +53,7 @@ class DemoSnippet extends LitElement {
 				border-top-left-radius: 0;
 				border-top-right-radius: 0;
 				margin: 0;
+				max-width: inherit;
 			}
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
