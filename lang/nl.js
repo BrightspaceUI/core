@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {No filters applied.} one {1 filter applied.} other {{number} filters applied.}}",
 	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {Geen zoekresultaten} one {1 zoekresultaat} other {{number} zoekresultaten}}",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",
 	"components.form-element.defaultError": "{label} is ongeldig.",
 	"components.form-element.defaultFieldLabel": "Veld",
