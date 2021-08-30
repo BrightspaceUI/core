@@ -1,5 +1,7 @@
 # Date & Time Inputs
 
+Use date and time inputs to set dates and times in forms. They are available as separate inputs (date or time) or as a combined date & time input, and each of them is also available as a range.
+
 <!-- docs: demo
 align:flex-start
 autoSize:false
@@ -14,9 +16,22 @@ size:xlarge
 <d2l-input-time label="Time Input"></d2l-input-time>
 ```
 
+## Best Practices
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use short but descriptive labels like "Start Date" or "Due Date"
+* Offer reasonable defaults whenever possible
+* Use date and time values relative to the user's [timezone](#timezone)
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don't combine inputs to form a range, use an actual range input instead; this will handle layout and validation automatically
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
 ## Date Input [d2l-input-date]
 
-The `<d2l-input-date>` component consists of a text input field for typing a date and an attached calendar (`<d2l-calendar>`) dropdown. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the `d2l-calendar` or entered in the text input.
+Use the `<d2l-input-date>` component when users need to choose a single date. It consists of a text input field for typing a date and an attached calendar (`<d2l-calendar>`) dropdown. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the `d2l-calendar` or entered in the text input.
 
 Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
@@ -68,7 +83,7 @@ To make your usage of `d2l-input-date` accessible, use the following properties 
 
 ## Date Range Input [d2l-input-date-range]
 
-The `<d2l-input-date-range>` component consists of two input-date components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
+Use the `<d2l-input-date-range>` component when users need to enter two dates in a range, like a course start and end date. The component consists of two input-date components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
 Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
@@ -127,7 +142,7 @@ To make your usage of `d2l-input-date-range` accessible, use the following prope
 
 ## Time Input [d2l-input-time]
 
-The `<d2l-input-time>` component consists of a text input field for typing a time and an attached dropdown for time selection. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
+Use the `<d2l-input-time>` component when users need to enter a time, without a date. The component consists of a text input field for typing a time and an attached dropdown for time selection. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
 
 Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
@@ -179,7 +194,7 @@ To make your usage of `d2l-input-time` accessible, use the following properties 
 
 ### Time Range Input [d2l-input-time-range]
 
-The `<d2l-input-time-range>` component consists of two input-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
+Use the `<d2l-input-time-range>` component when users need to enter two times in a range, and the date is already known. The component consists of two input-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
 Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
 
@@ -234,7 +249,7 @@ To make your usage of `d2l-input-time-range` accessible, use the following prope
 
 ## Date-Time Input [d2l-input-date-time]
 
-The `<d2l-input-date-time>` component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. This component displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
+Use the `<d2l-input-date-time>` component when users need to enter a single date and time, like a due date. The component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. This component displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
 
 Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
 
@@ -263,6 +278,7 @@ size:xlarge
 |--|--|--|
 | `label` | String, **required** | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
+| `label-hidden` | Boolean | Hides the fieldset label visually |
 | `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
@@ -282,10 +298,11 @@ To make your usage of `d2l-input-date-time` accessible, use the following proper
 | Attribute | Description |
 |--|--|
 | `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/) |
+| `label-hidden` | Use if label should be visually hidden but available for screen reader users |
 
 ## Date-Time Range Input [d2l-input-date-time-range]
 
-The `<d2l-input-date-time-range>` component consists of two input-date-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
+Use the `<d2l-input-date-time-range>` component when users need to enter a single date and time, like a due date. The component consists of two input-date-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
 Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
 
