@@ -1,6 +1,6 @@
 # Breadcrumbs
 
-The `d2l-breadcrumbs` element can be used to help users understand where they are within an application, and provide useful clues about how the space is organized. They also provide a convenient navigation mechanism.
+Breadcrumbs are a way-finding tool that helps users understand where they are within an application, while also offering an easy way to navigate "up" to higher level pages.
 
 <!-- docs: start hidden content -->
 ![screenshot of d2l-breadcrumbs component](./screenshots/basic.png)
@@ -9,32 +9,47 @@ The `d2l-breadcrumbs` element can be used to help users understand where they ar
 <!-- docs: demo display:block -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
   <d2l-breadcrumb text="Item 1" href="page1.html"></d2l-breadcrumb>
   <d2l-breadcrumb text="Item 2" href="page2.html"></d2l-breadcrumb>
-  <d2l-breadcrumb-current-page text="Current Page"></d2l-breadcrumb-current-page>
+  <d2l-breadcrumb text="Item 3" href="page3.html"></d2l-breadcrumb>
 </d2l-breadcrumbs>
 ```
 
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Breadcrumbs should be used to show the information architecture of a page, not the history
-* Breadcrumbs are page level controls – only one should appear on a page a time. If a page that normally has breadcrumbs is embedded in another page, remove the breadcrumbs from the embedded page.
+* Structure breadcrumbs around information architecture rather than the user's browsing history
+* Keep breadcrumbs short and sweet; it's okay to simplify language in a breadcrumb
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Do not use breadcrumbs for multi-step processes, use a Stepper (TBD)
-* If your navigation is only one level deep, and never gets deeper than one level, consider other design patterns or components
+* Don't repeat the current page name in the breadcrumb
+* Avoid displaying more than one breadcrumb control on a page
+* Don't use breadcrumbs as a stepper, see [Wizards](https://github.com/BrightspaceUILabs/wizard) instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
 ## Responsive Behavior
 
-There are various options to truncate the breadcrumb when in horizontally constrained spaces in order to keep the breadcrumb on one line.
+Breadcrumbs that overflow their container will appear to fade at the edge, and can be horizontally scrolled.
+
+<!-- docs: demo display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
+</script>
+<d2l-breadcrumbs>
+  <d2l-breadcrumb text="Table of Contents" href="page1.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Unit 1: Shakespeare" href="page2.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Lesson 1: Introduction" href="page3.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="The Comedies, Tragedies, and Histories" href="page4.html"></d2l-breadcrumb>
+</d2l-breadcrumbs>
+```
+
+This works well for mobile or other touch devices but not as well for mouse or keyboard users, so we have two other options for managing width.
 
 ### Limited Width
 
@@ -63,7 +78,7 @@ Set a `max-width` to constrain breadcrumbs to a particular width:
 
 Alternately, add the `compact` attribute to only display the last breadcrumb. The `d2l-breadcrumb-current-page` will be hidden:
 
-<!-- docs: demo code -->
+<!-- docs: demo code display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumb-current-page.js';
@@ -131,9 +146,7 @@ To make your usage of `d2l-breadcrumb` (child) accessible, use the following att
 
 ## Current Page [d2l-breadcrumb-current-page]
 
-Based on guidance from design, sometimes the last breadcrumb represents the current page and is therefore not a link.
-
-Use the `d2l-breadcrumb-current-page` element for this:
+Older pages or tools include the current page name at the end of the breadcrumb, even though this is not best practice going forward. Use the d2l-breadcrumb-current-page if you need to replicate this in a legacy page:
 
 <!-- docs: demo live name:d2l-breadcrumb-current-page display:block -->
 ```html
