@@ -4,6 +4,7 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 import { html } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -13,17 +14,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
 
-let ifrauDialogService;
-
-async function getIfrauDialogService() {
-	if (!window.ifrauclient) return;
-	if (ifrauDialogService) return ifrauDialogService;
-
-	const ifrauClient = await window.ifrauclient().connect();
-	ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
-
-	return ifrauDialogService;
-}
+let ifrauBackdropService;
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
@@ -527,12 +518,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			});
 		};
 
-		const dialogService = await getIfrauDialogService();
+		ifrauBackdropService = await getIfrauBackdropService(ifrauBackdropService);
 
 		if (newValue) {
 
-			if (dialogService && this.mobileTray) {
-				this._ifrauContextInfo = await dialogService.showBackdrop();
+			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+				this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
 			}
 
 			await doOpen();
@@ -543,8 +534,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
 			}
-			if (dialogService && this.mobileTray) {
-				dialogService.hideBackdrop();
+			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+				ifrauBackdropService.hideBackdrop();
 				this._ifrauContextInfo = null;
 			}
 			this._showBackdrop = false;
@@ -857,28 +848,29 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		let topOverride = null;
 		if (mobileTrayRightLeft) {
-			const screenDifference = Math.max(window.innerHeight - window.screen.height, 0);
 			if (this._ifrauContextInfo) {
 				// if inside iframe, use ifrauContext top as top of screen
 				topOverride = `${this._ifrauContextInfo.top < 0 ? -this._ifrauContextInfo.top : 0}px`;
-			} else if (screenDifference > 0) {
+			} else if (window.innerHeight > window.screen.height) {
+				// non-responsive page, manually override top to scroll distance
 				topOverride = window.pageYOffset;
 			}
 		}
 
 		let bottomOverride = null;
 		if (mobileTrayBottom) {
-			let screenHeight = window.innerHeight;
 			if (this._ifrauContextInfo) {
-				// if inside iframe, use ifrauContext top as bottom of screen
-				// NOTE: bottom is measured from the bottom of the screen
-				screenHeight -= this._ifrauContextInfo.availableHeight;
-				screenHeight += Math.min(this._ifrauContextInfo.top, 0);
+				// Bottom override is measured as
+				// the distance from the bottom of the screen
+				const screenHeight =
+					window.innerHeight
+					- this._ifrauContextInfo.availableHeight
+					+ Math.min(this._ifrauContextInfo.top, 0);
 				bottomOverride = `${screenHeight}px`;
 			}
 			let bottomOfScreen = Math.max(window.innerHeight - window.screen.height, 0);
 			if (!this._ifrauContextInfo && bottomOfScreen > 0) {
-				// window is taller than the screen,
+				// Window is taller than the screen,
 				// override bottom to stick to bottom of viewport
 				bottomOfScreen -= window.pageYOffset;
 				bottomOverride = `${Math.max(bottomOfScreen, 0)}px`;
@@ -886,9 +878,18 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 
 		let rightOverride = null;
+		let leftOverride = null;
 		if (mobileTrayRightLeft) {
-			// if window is wider than the screen, use screen width
-			rightOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			if (this.mobileTray === 'right') {
+				// On non-responsive pages, the innerWidth may be wider than the screen,
+				// override right to stick to right of viewport
+				rightOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			}
+			if (this.mobileTray === 'left') {
+				// On non-responsive pages, the innerWidth may be wider than the screen,
+				// override right to stick to right of viewport
+				leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			}
 		}
 
 		const widthStyle = {
@@ -898,7 +899,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			maxHeight: specialMobileStyle ? maxHeightOverride : '',
 			top: topOverride ? topOverride : '',
 			bottom: bottomOverride ? bottomOverride : '',
-			right: rightOverride ? rightOverride : ''
+			right: rightOverride ? rightOverride : '',
+			left: leftOverride ? leftOverride : '',
 		};
 
 		const contentWidthStyle = {

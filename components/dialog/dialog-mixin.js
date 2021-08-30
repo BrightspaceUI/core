@@ -4,6 +4,7 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { forceFocusVisible, getComposedActiveElement, getNextFocusable, tryApplyFocus } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -19,16 +20,6 @@ if (window.D2L.DialogMixin.preferNative === undefined) {
 }
 
 let ifrauDialogService;
-
-async function getIfrauDialogService() {
-	if (!window.ifrauclient) return;
-	if (ifrauDialogService) return ifrauDialogService;
-
-	const ifrauClient = await window.ifrauclient().connect();
-	ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
-
-	return ifrauDialogService;
-}
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
@@ -105,16 +96,16 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('opened')) return;
 
-		const dialogService = await getIfrauDialogService();
+		ifrauDialogService = await getIfrauBackdropService(ifrauDialogService);
 		if (this.opened) {
-			if (dialogService) {
-				this._ifrauContextInfo = await dialogService.showBackdrop();
+			if (ifrauDialogService) {
+				this._ifrauContextInfo = await ifrauDialogService.showBackdrop();
 				this._inIframe = true;
 			}
 			this._open();
 		} else {
-			if (dialogService) {
-				dialogService.hideBackdrop();
+			if (ifrauDialogService) {
+				ifrauDialogService.hideBackdrop();
 				this._ifrauContextInfo = null;
 			}
 			this._close();
