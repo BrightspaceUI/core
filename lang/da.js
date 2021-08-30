@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {Ingen filtre anvendt.} one {1 filter anvendt.} other {{number} filtre anvendt.}}",
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Ingen tilgængelige filtre",
-	"components.filter.searchResults": "{number, plural, zero {No search results} en {1 search result} andre {{number} søgeresultater}}",
+	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
 	"components.filter.singleDimensionDescription": "Filtrer efter: {filterName}",
 	"components.form-element.defaultError": "{label} er ugyldigt.",
 	"components.form-element.defaultFieldLabel": "Felt",
