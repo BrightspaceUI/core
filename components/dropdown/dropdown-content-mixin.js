@@ -887,7 +887,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 			if (this.mobileTray === 'left') {
 				// On non-responsive pages, the innerWidth may be wider than the screen,
-				// override right to stick to right of viewport
+				// override left to stick to left of viewport
 				leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
 			}
 		}
