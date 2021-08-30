@@ -13,6 +13,18 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
 
+let ifrauDialogService;
+
+async function getIfrauDialogService() {
+	if (!window.ifrauclient) return;
+	if (ifrauDialogService) return ifrauDialogService;
+
+	const ifrauClient = await window.ifrauclient().connect();
+	ifrauDialogService = await ifrauClient.getService('dialogWC', '0.1');
+
+	return ifrauDialogService;
+}
+
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -515,7 +527,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			});
 		};
 
+		const dialogService = await getIfrauDialogService();
+
 		if (newValue) {
+
+			if (dialogService && this.mobileTray) {
+				this._ifrauContextInfo = await dialogService.showBackdrop();
+			}
 
 			await doOpen();
 
@@ -524,6 +542,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (this.__dismissibleId) {
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
+			}
+			if (dialogService && this.mobileTray) {
+				dialogService.hideBackdrop();
+				this._ifrauContextInfo = null;
 			}
 			this._showBackdrop = false;
 			await this.updateComplete;
@@ -757,8 +779,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
+			let availableWidth = Math.min(window.innerWidth, window.screen.width);
+			if (this._ifrauContextInfo) availableWidth = this._ifrauContextInfo.availableWidth;
 			// default maximum width for tray (30px margin)
-			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - minBackdropWidthMobile, 420);
+			const mobileTrayMaxWidthDefault = Math.min(availableWidth - minBackdropWidthMobile, 420);
 			if (maxWidthOverride) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
@@ -768,7 +792,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else if (mobileTrayBottom) {
 			maxWidthOverride = '100vw';
 		}
-
 		let minWidthOverride = this.minWidth;
 		if (mobileTrayRightLeft) {
 			// minimum size - 285px
@@ -782,7 +805,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else if (mobileTrayBottom) {
 			minWidthOverride = 'calc(100vw - 2px)';
 		}
-
 		// set to max width
 		let widthOverride;
 		if (!specialMobileStyle) {
@@ -800,13 +822,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else {
 			widthOverride = undefined;
 		}
-
 		let maxHeightOverride;
 		if (mobileTrayRightLeft) {
 			maxHeightOverride = '';
+			if (this._ifrauContextInfo) maxHeightOverride = `${this._ifrauContextInfo.availableHeight}px`;
 		} else if (mobileTrayBottom) {
+			let availableHeight = Math.min(window.innerHeight, window.screen.height);
+			if (this._ifrauContextInfo) availableHeight = this._ifrauContextInfo.availableHeight;
 			// default maximum height for tray (42px margin)
-			const mobileTrayMaxHeightDefault = window.innerHeight - minBackdropHeightMobile;
+			const mobileTrayMaxHeightDefault = availableHeight - minBackdropHeightMobile;
 			if (this.maxHeight) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
@@ -817,7 +841,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else {
 			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
 		}
-
 		let contentWidth;
 		let containerWidth;
 		if (mobileTrayBottom) {
@@ -832,11 +855,50 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			containerWidth = `${widthOverride + 20}px`;
 		}
 
+		let topOverride = null;
+		if (mobileTrayRightLeft) {
+			const screenDifference = Math.max(window.innerHeight - window.screen.height, 0);
+			if (this._ifrauContextInfo) {
+				// if inside iframe, use ifrauContext top as top of screen
+				topOverride = `${this._ifrauContextInfo.top < 0 ? -this._ifrauContextInfo.top : 0}px`;
+			} else if (screenDifference > 0) {
+				topOverride = window.pageYOffset;
+			}
+		}
+
+		let bottomOverride = null;
+		if (mobileTrayBottom) {
+			let screenHeight = window.innerHeight;
+			if (this._ifrauContextInfo) {
+				// if inside iframe, use ifrauContext top as bottom of screen
+				// NOTE: bottom is measured from the bottom of the screen
+				screenHeight -= this._ifrauContextInfo.availableHeight;
+				screenHeight += Math.min(this._ifrauContextInfo.top, 0);
+				bottomOverride = `${screenHeight}px`;
+			}
+			let bottomOfScreen = Math.max(window.innerHeight - window.screen.height, 0);
+			if (!this._ifrauContextInfo && bottomOfScreen > 0) {
+				// window is taller than the screen,
+				// override bottom to stick to bottom of viewport
+				bottomOfScreen -= window.pageYOffset;
+				bottomOverride = `${Math.max(bottomOfScreen, 0)}px`;
+			}
+		}
+
+		let rightOverride = null;
+		if (mobileTrayRightLeft) {
+			// if window is wider than the screen, use screen width
+			rightOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+		}
+
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
 			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			width: containerWidth,
-			maxHeight: mobileTrayBottom ? maxHeightOverride : '',
+			maxHeight: specialMobileStyle ? maxHeightOverride : '',
+			top: topOverride ? topOverride : '',
+			bottom: bottomOverride ? bottomOverride : '',
+			right: rightOverride ? rightOverride : ''
 		};
 
 		const contentWidthStyle = {
