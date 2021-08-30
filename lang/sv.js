@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {Inga filter tillämpade.} one {1 filter tillämpat.} other {{number} filter tillämpade.}}",
 	"components.filter.filters": "Filter",
 	"components.filter.noFilters": "Inga tillgängliga filter",
-	"components.filter.searchResults": "{number, plural, zero {Inga sökresultat} one {1 sökresultat} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
 	"components.filter.singleDimensionDescription": "Filtrera efter: {filterName}",
 	"components.form-element.defaultError": "{label} är ogiltig.",
 	"components.form-element.defaultFieldLabel": "Fält",
