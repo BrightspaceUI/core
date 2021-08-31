@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "إغلاق مربع الحوار هذا",
 	"components.dropdown.close": "إغلاق",
 	"components.filter.loading": "يتم تحميل عوامل التصفية",
-	"components.filter.filterCount": "{number, select, max {99+} all {كل} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {لم يتم تطبيق عوامل تصفية.} one {تم تطبيق عامل تصفية واحد.} other {{number} من عوامل التصفية التي تم تطبيقها.}}",
 	"components.filter.filters": "عوامل التصفية",
 	"components.filter.noFilters": "ما من عوامل تصفية متوفرة",
