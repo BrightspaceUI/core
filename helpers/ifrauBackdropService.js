@@ -1,5 +1,7 @@
-export async function getIfrauBackdropService(ifrauBackdropService) {
-	if (!window.ifrauclient) return;
+let ifrauBackdropService;
+
+export async function tryGetIfrauBackdropService() {
+	if (!window.ifrauclient) return null;
 	if (ifrauBackdropService) return ifrauBackdropService;
 
 	const ifrauClient = await window.ifrauclient().connect();

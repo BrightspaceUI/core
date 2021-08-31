@@ -4,17 +4,15 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { getIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 import { html } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
-
-let ifrauBackdropService;
 
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
@@ -518,7 +516,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			});
 		};
 
-		ifrauBackdropService = await getIfrauBackdropService(ifrauBackdropService);
+		const ifrauBackdropService = await tryGetIfrauBackdropService();
 
 		if (newValue) {
 

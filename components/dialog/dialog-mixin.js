@@ -4,12 +4,12 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { forceFocusVisible, getComposedActiveElement, getNextFocusable, tryApplyFocus } from '../../helpers/focus.js';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { getIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 window.D2L = window.D2L || {};
 window.D2L.DialogMixin = window.D2L.DialogMixin || {};
@@ -18,8 +18,6 @@ window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined);
 if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
-
-let ifrauDialogService;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
@@ -96,7 +94,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('opened')) return;
 
-		ifrauDialogService = await getIfrauBackdropService(ifrauDialogService);
+		const ifrauDialogService = await tryGetIfrauBackdropService();
 		if (this.opened) {
 			if (ifrauDialogService) {
 				this._ifrauContextInfo = await ifrauDialogService.showBackdrop();
