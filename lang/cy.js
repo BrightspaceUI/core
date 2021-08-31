@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "Cau'r dialog hwn",
 	"components.dropdown.close": "Cau",
 	"components.filter.loading": "Wrthi’n llwytho hidlyddion",
-	"components.filter.filterCount": "{number, select, max {99+} all {I gyd} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {Ni chymhwyswyd hidlwyr.} one {1 hidlydd wedi'i gymhwyso.} other {{number} hidlydd wedi'u cymhwyso.}}",
 	"components.filter.filters": "Hidlyddion",
 	"components.filter.noFilters": "Dim hidlyddion ar gael",

@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "Dieses Dialogfeld schließen",
 	"components.dropdown.close": "Schließen",
 	"components.filter.loading": "Filter werden geladen",
-	"components.filter.filterCount": "{number, select, max {99+} all {Alle} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {Keine Filter angewendet.} one {1 Filter angewendet.} other {{number} Filter angewendet.}}",
 	"components.filter.filters": "Filter",
 	"components.filter.noFilters": "Keine verfügbaren Filter",

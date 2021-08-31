@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "关闭此对话框",
 	"components.dropdown.close": "关闭",
 	"components.filter.loading": "正在加载筛选器",
-	"components.filter.filterCount": "{number, select, max {99+} all {所有} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {未应用筛选器。} one {已应用 1 个筛选器。} other {已应用 {number} 个筛选器。}}",
 	"components.filter.filters": "个筛选条件",
 	"components.filter.noFilters": "无可用筛选器",
