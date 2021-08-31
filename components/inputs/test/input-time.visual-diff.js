@@ -112,7 +112,7 @@ describe('d2l-input-time', () => {
 		});
 
 		it('mobile layout', async function() {
-			await page.setViewport({ width: 300, height: 800 });
+			await page.setViewport({ width: 300, height: 600 });
 			await open(page, '#dropdown-mobile');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 			await reset(page, '#dropdown-mobile');
