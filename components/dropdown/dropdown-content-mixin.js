@@ -1,5 +1,6 @@
 import '../backdrop/backdrop.js';
 import '../button/button.js';
+import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
@@ -8,6 +9,7 @@ import { html } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
@@ -159,6 +161,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'opened-above'
 			},
 			/**
+ 			* Optionally render a d2l-focus-trap around the dropdown content
+ 			*/
+			trapFocus: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'trap-focus'
+			},
+			/**
 			 * Provide custom offset, positive or negative
 			 */
 			verticalOffset: {
@@ -220,6 +230,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPaddingHeader = false;
 		this.noPointer = false;
 		this.mobileBreakpointOverride = 616;
+		this.trapFocus = false;
 		this._useMobileStyling = false;
 
 		this.__opened = false;
@@ -515,7 +526,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			});
 		};
 
+		const ifrauBackdropService = await tryGetIfrauBackdropService();
+
 		if (newValue) {
+
+			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+				this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
+			}
 
 			await doOpen();
 
@@ -524,6 +541,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (this.__dismissibleId) {
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
+			}
+			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+				ifrauBackdropService.hideBackdrop();
+				this._ifrauContextInfo = null;
 			}
 			this._showBackdrop = false;
 			await this.updateComplete;
@@ -735,6 +756,21 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return null;
 	}
 
+	_handleFocusTrapEnter() {
+		if (this.__applyFocus && !this.noAutoFocus) {
+			const content = this.__getContentContainer();
+			const focusable = getFirstFocusableDescendant(content);
+			if (focusable) {
+				// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+				requestAnimationFrame(() => focusable.focus());
+			} else {
+				content.setAttribute('tabindex', '-1');
+				content.focus();
+			}
+		}
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
+	}
+
 	_handleMobileResize() {
 		this._useMobileStyling =  this.mediaQueryList.matches;
 	}
@@ -757,8 +793,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
+			let availableWidth = Math.min(window.innerWidth, window.screen.width);
+			if (this._ifrauContextInfo) availableWidth = this._ifrauContextInfo.availableWidth;
 			// default maximum width for tray (30px margin)
-			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - minBackdropWidthMobile, 420);
+			const mobileTrayMaxWidthDefault = Math.min(availableWidth - minBackdropWidthMobile, 420);
 			if (maxWidthOverride) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
@@ -768,7 +806,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else if (mobileTrayBottom) {
 			maxWidthOverride = '100vw';
 		}
-
 		let minWidthOverride = this.minWidth;
 		if (mobileTrayRightLeft) {
 			// minimum size - 285px
@@ -782,7 +819,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else if (mobileTrayBottom) {
 			minWidthOverride = 'calc(100vw - 2px)';
 		}
-
 		// set to max width
 		let widthOverride;
 		if (!specialMobileStyle) {
@@ -800,13 +836,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else {
 			widthOverride = undefined;
 		}
-
 		let maxHeightOverride;
 		if (mobileTrayRightLeft) {
 			maxHeightOverride = '';
+			if (this._ifrauContextInfo) maxHeightOverride = `${this._ifrauContextInfo.availableHeight}px`;
 		} else if (mobileTrayBottom) {
+			let availableHeight = Math.min(window.innerHeight, window.screen.height);
+			if (this._ifrauContextInfo) availableHeight = this._ifrauContextInfo.availableHeight;
 			// default maximum height for tray (42px margin)
-			const mobileTrayMaxHeightDefault = window.innerHeight - minBackdropHeightMobile;
+			const mobileTrayMaxHeightDefault = availableHeight - minBackdropHeightMobile;
 			if (this.maxHeight) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
@@ -817,7 +855,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else {
 			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
 		}
-
 		let contentWidth;
 		let containerWidth;
 		if (mobileTrayBottom) {
@@ -832,11 +869,61 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			containerWidth = `${widthOverride + 20}px`;
 		}
 
+		let topOverride = null;
+		if (mobileTrayRightLeft) {
+			if (this._ifrauContextInfo) {
+				// if inside iframe, use ifrauContext top as top of screen
+				topOverride = `${this._ifrauContextInfo.top < 0 ? -this._ifrauContextInfo.top : 0}px`;
+			} else if (window.innerHeight > window.screen.height) {
+				// non-responsive page, manually override top to scroll distance
+				topOverride = window.pageYOffset;
+			}
+		}
+
+		let bottomOverride = null;
+		if (mobileTrayBottom) {
+			if (this._ifrauContextInfo) {
+				// Bottom override is measured as
+				// the distance from the bottom of the screen
+				const screenHeight =
+					window.innerHeight
+					- this._ifrauContextInfo.availableHeight
+					+ Math.min(this._ifrauContextInfo.top, 0);
+				bottomOverride = `${screenHeight}px`;
+			}
+			let bottomOfScreen = Math.max(window.innerHeight - window.screen.height, 0);
+			if (!this._ifrauContextInfo && bottomOfScreen > 0) {
+				// Window is taller than the screen,
+				// override bottom to stick to bottom of viewport
+				bottomOfScreen -= window.pageYOffset;
+				bottomOverride = `${Math.max(bottomOfScreen, 0)}px`;
+			}
+		}
+
+		let rightOverride = null;
+		let leftOverride = null;
+		if (mobileTrayRightLeft) {
+			if (this.mobileTray === 'right') {
+				// On non-responsive pages, the innerWidth may be wider than the screen,
+				// override right to stick to right of viewport
+				rightOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			}
+			if (this.mobileTray === 'left') {
+				// On non-responsive pages, the innerWidth may be wider than the screen,
+				// override left to stick to left of viewport
+				leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			}
+		}
+
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
 			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			width: containerWidth,
-			maxHeight: mobileTrayBottom ? maxHeightOverride : '',
+			maxHeight: specialMobileStyle ? maxHeightOverride : '',
+			top: topOverride ? topOverride : '',
+			bottom: bottomOverride ? bottomOverride : '',
+			right: rightOverride ? rightOverride : '',
+			left: leftOverride ? leftOverride : '',
 		};
 
 		const contentWidthStyle = {
@@ -897,30 +984,48 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			'd2l-dropdown-content-footer': this._hasFooter || (specialMobileStyle && !this.noMobileCloseButton)
 		};
 
-		const dropdown =  html`
-			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  
-				id="d2l-dropdown-wrapper" 
-				class="d2l-dropdown-content-width" 
-				style=${styleMap(widthStyle)}
-				 ?data-closing="${this._closing}">
-					<div class=${classMap(topClasses)} style=${styleMap(headerStyle)}>
-						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
-					</div>
-					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
-						<slot class="d2l-dropdown-content-slot"></slot>
-					</div>
-					<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
-						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
-						<d2l-button
-							style=${styleMap(closeButtonStyles)}
-							@click=${this.close}>
-							${this.localize('components.dropdown.close')}
-						</d2l-button>
-					</div>
+		let dropdownContentSlots = html`	
+			<div  
+			id="d2l-dropdown-wrapper" 
+			class="d2l-dropdown-content-width" 
+			style=${styleMap(widthStyle)}
+			?data-closing="${this._closing}">				
+				<div class=${classMap(topClasses)} style=${styleMap(headerStyle)}>
+					<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
+				</div>
+				<div 
+				class="d2l-dropdown-content-container"
+				style=${styleMap(contentStyle)}
+				@scroll=${this.__toggleScrollStyles}>
+					<slot class="d2l-dropdown-content-slot"></slot>
+				</div>
+				<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
+					<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+					<d2l-button
+						class="dropdown-close-btn"
+						style=${styleMap(closeButtonStyles)}
+						@click=${this.close}>
+						${this.localize('components.dropdown.close')}
+					</d2l-button>
 				</div>
 			</div>
 		`;
+
+		if (this.trapFocus) {
+			dropdownContentSlots = html`
+			<d2l-focus-trap
+			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
+			?trap="${this.opened}">
+			${dropdownContentSlots}
+			</d2l-focus-trap>`;
+		}
+
+		const dropdown =  html`
+			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+					 ${dropdownContentSlots}
+			</div>
+		`;
+
 		return (this.mobileTray) ? html`
 			${dropdown}
 			<d2l-backdrop

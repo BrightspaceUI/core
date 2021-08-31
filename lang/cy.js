@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {Ni chymhwyswyd hidlwyr.} one {1 hidlydd wedi'i gymhwyso.} other {{number} hidlydd wedi'u cymhwyso.}}",
 	"components.filter.filters": "Hidlyddion",
 	"components.filter.noFilters": "Dim hidlyddion ar gael",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {Dim canlyniadau chwilio} one {1 canlyniad chwilio} other {{number} o ganlyniadau chwilio}}",
 	"components.filter.singleDimensionDescription": "Hidlo yn ôl: {filterName}",
 	"components.form-element.defaultError": "Mae {label} yn annilys.",
 	"components.form-element.defaultFieldLabel": "Maes",

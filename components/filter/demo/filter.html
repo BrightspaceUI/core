@@ -41,7 +41,21 @@
 			</template>
 		</d2l-demo-snippet>
 
-		<h2>Multiple Set Dimensions</h2>
+		<h2>Single Set Dimension - Single Selection</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-filter>
+					<d2l-filter-dimension-set key="semester" text="Semester" selection-single>
+						<d2l-filter-dimension-set-value key="fall" text="Fall"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="winter" text="Winter" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="spring" text="Spring"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="summer" text="Summer"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Multiple Dimensions</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-filter>
@@ -63,6 +77,12 @@
 						<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="semester" text="Semester" selection-single>
+						<d2l-filter-dimension-set-value key="fall" text="Fall"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="winter" text="Winter" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="spring" text="Spring"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="summer" text="Summer"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
 				</d2l-filter>
 			</template>
 		</d2l-demo-snippet>
@@ -76,6 +96,7 @@
 				<d2l-filter>
 					<d2l-filter-dimension-set key="course" text="Course" loading select-all></d2l-filter-dimension-set>
 					<d2l-filter-dimension-set key="role" text="Role" loading></d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="semester" text="Semester" loading selection-single></d2l-filter-dimension-set>
 				</d2l-filter>
 				<d2l-button id="finish-loading">Finish loading (in 5 seconds)</d2l-button>
 			</template>

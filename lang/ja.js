@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {フィルタは適用されていません。} one {1 つのフィルタが適用されています。} other {{number} 個のフィルタが適用されています。}}",
 	"components.filter.filters": "フィルタ",
 	"components.filter.noFilters": "使用可能なフィルタはありません",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {検索結果なし} one {1 件の検索結果} other {{number} 件の検索結果}}",
 	"components.filter.singleDimensionDescription": "フィルタ条件: {filterName}",
 	"components.form-element.defaultError": "{label} は無効です。",
 	"components.form-element.defaultFieldLabel": "フィールド",

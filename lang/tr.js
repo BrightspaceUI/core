@@ -13,7 +13,7 @@ export default {
 	"components.filter.filterCountDescription": "{number, plural, zero {Filtre uygulanmadı.} one {1 filtre uygulandı.} other {{number} filtre uygulandı.}}",
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Uygun filtre yok",
-	"components.filter.searchResults": "{number, plural, zero {No search results} one {1 search result} other {{number} search results}}",
+	"components.filter.searchResults": "{number, plural, zero {Arama sonucu yok} one {1 arama sonucu} other {{number} arama sonucu}}",
 	"components.filter.singleDimensionDescription": "Filtreleme ölçütü: {filterName}",
 	"components.form-element.defaultError": "{label} geçersiz.",
 	"components.form-element.defaultFieldLabel": "Alan",

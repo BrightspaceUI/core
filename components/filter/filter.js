@@ -316,7 +316,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			<d2l-list
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
-				extend-separators>
+				extend-separators
+				?selection-single="${dimension.selectionSingle}">
 				${dimension.values.map(item => html`
 					<d2l-list-item
 						?hidden="${item.hidden}"
@@ -496,7 +497,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
 					info.searchType = dimension.searchType;
-					if (dimension.selectAll) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
+					info.selectionSingle = dimension.selectionSingle;
+					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
 					const values = dimension._getValues();
 					info.values = values;
 					break;

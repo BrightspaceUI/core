@@ -12,6 +12,13 @@ const singleSetDimensionFixture = html`
 			<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
+const singleSetDimensionSingleSelectionFixture = html`
+	<d2l-filter>
+		<d2l-filter-dimension-set key="dim" text="Dim" selection-single>
+			<d2l-filter-dimension-set-value key="1" text="Value 1" selected></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="2" text="Value 2"></d2l-filter-dimension-set-value>
+		</d2l-filter-dimension-set>
+	</d2l-filter>`;
 const multiDimensionFixture = html`
 	<d2l-filter>
 		<d2l-filter-dimension-set key="1" text="Dim 1">
@@ -146,6 +153,35 @@ describe('d2l-filter', () => {
 				expect(changes[0].dimension).to.equal('dim');
 				expect(changes[0].value.key).to.equal('2');
 				expect(changes[0].value.selected).to.be.true;
+				expect(elem._dimensions[0].values[1].selected).to.be.true;
+
+				setTimeout(() => value.setSelected(false));
+				e = await oneEvent(elem, 'd2l-filter-change');
+				changes = e.detail.changes;
+				expect(changes.length).to.equal(1);
+				expect(changes[0].dimension).to.equal('dim');
+				expect(changes[0].value.key).to.equal('2');
+				expect(changes[0].value.selected).to.be.false;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+			});
+
+			it('single set dimension with selection-single on fires change events', async() => {
+				const elem = await fixture(singleSetDimensionSingleSelectionFixture);
+				const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
+				expect(elem._dimensions[0].values[0].selected).to.be.true;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+
+				setTimeout(() => value.setSelected(true));
+				let e = await oneEvent(elem, 'd2l-filter-change');
+				let changes = e.detail.changes;
+				expect(changes.length).to.equal(2);
+				expect(changes[0].dimension).to.equal('dim');
+				expect(changes[0].value.key).to.equal('2');
+				expect(changes[0].value.selected).to.be.true;
+				expect(changes[1].dimension).to.equal('dim');
+				expect(changes[1].value.key).to.equal('1');
+				expect(changes[1].value.selected).to.be.false;
+				expect(elem._dimensions[0].values[0].selected).to.be.false;
 				expect(elem._dimensions[0].values[1].selected).to.be.true;
 
 				setTimeout(() => value.setSelected(false));
