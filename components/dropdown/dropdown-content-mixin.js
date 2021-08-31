@@ -1,5 +1,6 @@
 import '../backdrop/backdrop.js';
 import '../button/button.js';
+import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
@@ -160,6 +161,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'opened-above'
 			},
 			/**
+ 			* Optionally render a d2l-focus-trap around the dropdown content
+ 			*/
+			trapFocus: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'trap-focus'
+			},
+			/**
 			 * Provide custom offset, positive or negative
 			 */
 			verticalOffset: {
@@ -221,6 +230,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPaddingHeader = false;
 		this.noPointer = false;
 		this.mobileBreakpointOverride = 616;
+		this.trapFocus = false;
 		this._useMobileStyling = false;
 
 		this.__opened = false;
@@ -746,6 +756,21 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return null;
 	}
 
+	_handleFocusTrapEnter() {
+		if (this.__applyFocus && !this.noAutoFocus) {
+			const content = this.__getContentContainer();
+			const focusable = getFirstFocusableDescendant(content);
+			if (focusable) {
+				// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+				requestAnimationFrame(() => focusable.focus());
+			} else {
+				content.setAttribute('tabindex', '-1');
+				content.focus();
+			}
+		}
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
+	}
+
 	_handleMobileResize() {
 		this._useMobileStyling =  this.mediaQueryList.matches;
 	}
@@ -949,30 +974,48 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			'd2l-dropdown-content-footer': this._hasFooter || (specialMobileStyle && !this.noMobileCloseButton)
 		};
 
-		const dropdown =  html`
-			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  
-				id="d2l-dropdown-wrapper" 
-				class="d2l-dropdown-content-width" 
-				style=${styleMap(widthStyle)}
-				 ?data-closing="${this._closing}">
-					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
-					</div>
-					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
-						<slot class="d2l-dropdown-content-slot"></slot>
-					</div>
-					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
-						<d2l-button
-							style=${styleMap(closeButtonStyles)}
-							@click=${this.close}>
-							${this.localize('components.dropdown.close')}
-						</d2l-button>
-					</div>
+		let dropdownContentSlots = html`	
+			<div  
+			id="d2l-dropdown-wrapper" 
+			class="d2l-dropdown-content-width" 
+			style=${styleMap(widthStyle)}
+			?data-closing="${this._closing}">				
+				<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
+					<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
+				</div>
+				<div 
+				class="d2l-dropdown-content-container"
+				style=${styleMap(contentStyle)}
+				@scroll=${this.__toggleScrollStyles}>
+					<slot class="d2l-dropdown-content-slot"></slot>
+				</div>
+				<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
+					<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+					<d2l-button
+						class="dropdown-close-btn"
+						style=${styleMap(closeButtonStyles)}
+						@click=${this.close}>
+						${this.localize('components.dropdown.close')}
+					</d2l-button>
 				</div>
 			</div>
 		`;
+
+		if (this.trapFocus) {
+			dropdownContentSlots = html`
+			<d2l-focus-trap
+			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
+			?trap="${this.opened}">
+			${dropdownContentSlots}
+			</d2l-focus-trap>`;
+		}
+
+		const dropdown =  html`
+			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+					 ${dropdownContentSlots}
+			</div>
+		`;
+
 		return (this.mobileTray) ? html`
 			${dropdown}
 			<d2l-backdrop

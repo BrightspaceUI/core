@@ -221,11 +221,13 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | `no-padding-header` | Boolean: default: `false` | Render the header with no padding (if it has content) |
 | `no-padding-footer` | Boolean, default: `false` | Render the footer with no padding (if it has content) |
 | `no-pointer` | Boolean, default: `false` | Render without a pointer |
+| `trap-focus` | Boolean, default: `false` | Optionally render a d2l-focus-trap around the dropdown content |
 | `vertical-offset` | Number or String | Provide custom offset, positive or negative |
 
 **Events:**
 * `d2l-dropdown-open`: dispatched when the dropdown is opened
 * `d2l-dropdown-close`: dispatched when the dropdown is closed
+* `d2l-dropdown-focus-enter`: dispatched when the 'trap-focus' attribute is applied and the focus-trap is entered
 
 **Slots:**
 * `header`: Sticky container at the top of the dropdown

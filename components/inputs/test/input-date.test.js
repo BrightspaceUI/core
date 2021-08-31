@@ -45,38 +45,6 @@ describe('d2l-input-date', () => {
 
 	});
 
-	describe('focus trap', () => {
-		it('should set trap to true when dropdown open', async() => {
-			const elem = await fixture(basicFixture);
-			elem._dropdownFirstOpened = true;
-			await elem.updateComplete;
-			const dropdown = getChildElem(elem, 'd2l-dropdown');
-			const dropdownContent = getChildElem(elem, 'd2l-dropdown-content');
-			await dropdownContent.updateComplete;
-			dropdown.toggleOpen();
-			await oneEvent(dropdown, 'd2l-dropdown-open');
-			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
-			await focusTrap.updateComplete;
-			expect(focusTrap.trap).to.be.true;
-		});
-
-		it('should set trap to false when dropdown closed', async() => {
-			const elem = await fixture(basicFixture);
-			elem._dropdownFirstOpened = true;
-			await elem.updateComplete;
-			const dropdown = getChildElem(elem, 'd2l-dropdown');
-			const dropdownContent = getChildElem(elem, 'd2l-dropdown-content');
-			await dropdownContent.updateComplete;
-			dropdown.toggleOpen();
-			await oneEvent(dropdown, 'd2l-dropdown-open');
-			dropdown.toggleOpen();
-			await oneEvent(dropdown, 'd2l-dropdown-close');
-			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
-			await focusTrap.updateComplete;
-			expect(focusTrap.trap).to.be.false;
-		});
-	});
-
 	describe('utility functions', () => {
 		describe('formatISODateInUserCalDescriptor', () => {
 			it('should return correct date when input is valid', () => {
