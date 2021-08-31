@@ -8,6 +8,7 @@ import { html } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
@@ -515,7 +516,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			});
 		};
 
+		const ifrauBackdropService = await tryGetIfrauBackdropService();
+
 		if (newValue) {
+
+			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+				this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
+			}
 
 			await doOpen();
 
@@ -524,6 +531,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (this.__dismissibleId) {
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
+			}
+			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+				ifrauBackdropService.hideBackdrop();
+				this._ifrauContextInfo = null;
 			}
 			this._showBackdrop = false;
 			await this.updateComplete;
@@ -757,8 +768,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
+			let availableWidth = Math.min(window.innerWidth, window.screen.width);
+			if (this._ifrauContextInfo) availableWidth = this._ifrauContextInfo.availableWidth;
 			// default maximum width for tray (30px margin)
-			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - minBackdropWidthMobile, 420);
+			const mobileTrayMaxWidthDefault = Math.min(availableWidth - minBackdropWidthMobile, 420);
 			if (maxWidthOverride) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
@@ -768,7 +781,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else if (mobileTrayBottom) {
 			maxWidthOverride = '100vw';
 		}
-
 		let minWidthOverride = this.minWidth;
 		if (mobileTrayRightLeft) {
 			// minimum size - 285px
@@ -782,7 +794,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else if (mobileTrayBottom) {
 			minWidthOverride = 'calc(100vw - 2px)';
 		}
-
 		// set to max width
 		let widthOverride;
 		if (!specialMobileStyle) {
@@ -800,13 +811,15 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else {
 			widthOverride = undefined;
 		}
-
 		let maxHeightOverride;
 		if (mobileTrayRightLeft) {
 			maxHeightOverride = '';
+			if (this._ifrauContextInfo) maxHeightOverride = `${this._ifrauContextInfo.availableHeight}px`;
 		} else if (mobileTrayBottom) {
+			let availableHeight = Math.min(window.innerHeight, window.screen.height);
+			if (this._ifrauContextInfo) availableHeight = this._ifrauContextInfo.availableHeight;
 			// default maximum height for tray (42px margin)
-			const mobileTrayMaxHeightDefault = window.innerHeight - minBackdropHeightMobile;
+			const mobileTrayMaxHeightDefault = availableHeight - minBackdropHeightMobile;
 			if (this.maxHeight) {
 				// if maxWidth provided is smaller, use the maxWidth
 				maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
@@ -817,7 +830,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		} else {
 			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
 		}
-
 		let contentWidth;
 		let containerWidth;
 		if (mobileTrayBottom) {
@@ -832,11 +844,61 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			containerWidth = `${widthOverride + 20}px`;
 		}
 
+		let topOverride = null;
+		if (mobileTrayRightLeft) {
+			if (this._ifrauContextInfo) {
+				// if inside iframe, use ifrauContext top as top of screen
+				topOverride = `${this._ifrauContextInfo.top < 0 ? -this._ifrauContextInfo.top : 0}px`;
+			} else if (window.innerHeight > window.screen.height) {
+				// non-responsive page, manually override top to scroll distance
+				topOverride = window.pageYOffset;
+			}
+		}
+
+		let bottomOverride = null;
+		if (mobileTrayBottom) {
+			if (this._ifrauContextInfo) {
+				// Bottom override is measured as
+				// the distance from the bottom of the screen
+				const screenHeight =
+					window.innerHeight
+					- this._ifrauContextInfo.availableHeight
+					+ Math.min(this._ifrauContextInfo.top, 0);
+				bottomOverride = `${screenHeight}px`;
+			}
+			let bottomOfScreen = Math.max(window.innerHeight - window.screen.height, 0);
+			if (!this._ifrauContextInfo && bottomOfScreen > 0) {
+				// Window is taller than the screen,
+				// override bottom to stick to bottom of viewport
+				bottomOfScreen -= window.pageYOffset;
+				bottomOverride = `${Math.max(bottomOfScreen, 0)}px`;
+			}
+		}
+
+		let rightOverride = null;
+		let leftOverride = null;
+		if (mobileTrayRightLeft) {
+			if (this.mobileTray === 'right') {
+				// On non-responsive pages, the innerWidth may be wider than the screen,
+				// override right to stick to right of viewport
+				rightOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			}
+			if (this.mobileTray === 'left') {
+				// On non-responsive pages, the innerWidth may be wider than the screen,
+				// override left to stick to left of viewport
+				leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			}
+		}
+
 		const widthStyle = {
 			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
 			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
 			width: containerWidth,
-			maxHeight: mobileTrayBottom ? maxHeightOverride : '',
+			maxHeight: specialMobileStyle ? maxHeightOverride : '',
+			top: topOverride ? topOverride : '',
+			bottom: bottomOverride ? bottomOverride : '',
+			right: rightOverride ? rightOverride : '',
+			left: leftOverride ? leftOverride : '',
 		};
 
 		const contentWidthStyle = {
