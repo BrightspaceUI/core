@@ -13,7 +13,19 @@
 
 			const elems = document.querySelectorAll('d2l-input-date');
 			elems.forEach(elem => elem._handleFirstDropdownOpen());
+
+			window.addEventListener('load', function () {
+				setTimeout(function() {
+					var dateInput = document.querySelector('#open-by-default');
+					dateInput.open();
+				}, 20);
+			});
 		</script>
+		<style>
+			#open-by-default {
+				padding-bottom: 400px;
+			}
+		</style>
 		<title>d2l-input-date visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -21,6 +33,9 @@
 	</head>
 	<body class="d2l-typography">
 		<div style="width: 300px;">
+			<div class="visual-diff">
+				<d2l-input-date id="open-by-default" value="2019-12-20"></d2l-input-date>
+			</div>
 			<div class="visual-diff">
 				<d2l-input-date id="disabled" disabled value="1990-01-01"></d2l-input-date>
 			</div>

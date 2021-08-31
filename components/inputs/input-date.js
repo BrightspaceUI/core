@@ -313,6 +313,14 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		if (this._textInput) this._textInput.focus();
 	}
 
+	async open() {
+		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
+		this._dropdown.open();
+		await this._handleChange();
+		this._calendar.focus();
+		this._setFormattedValue();
+	}
+
 	async validate() {
 		const textInput = this.shadowRoot.querySelector('d2l-input-text');
 		const errors = await Promise.all([textInput.validate(), super.validate()]);
@@ -420,11 +428,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	async _handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
-			if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
-			this._dropdown.open();
-			await this._handleChange();
-			this._calendar.focus();
-			this._setFormattedValue();
+			this.open();
 			e.preventDefault();
 		}
 	}

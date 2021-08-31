@@ -10,7 +10,7 @@ describe('d2l-input-date', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 900 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -30,6 +30,11 @@ describe('d2l-input-date', () => {
 			const rect = await visualDiff.getRect(page, `#${name}`);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+	});
+
+	it('open-by-default', async function() {
+		const rect = await getRect(page, '#open-by-default');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	it('value-focus', async function() {
