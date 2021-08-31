@@ -62,6 +62,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 */
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
 			/**
+			 * Whether or not the calendar dropdown is open
+			 */
+			opened: { type: Boolean, reflect: true },
+			/**
 			 * Indicates that a value is required
 			 */
 			required: { type: Boolean, reflect: true },
@@ -73,7 +77,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			_hiddenContentWidth: { type: String },
 			_dateTimeDescriptor: { type: Object },
 			_dropdownFirstOpened: { type: Boolean },
-			_dropdownOpened: { type: Boolean },
 			_formattedValue: { type: String },
 			_inputTextFocusShowTooltip: { type: Boolean },
 			_showInfoTooltip: { type: Boolean },
@@ -134,10 +137,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this.labelHidden = false;
 		/** @ignore */
 		this.noValidateMinMax = false;
+		this.opened = false;
 		this.required = false;
 		this.value = '';
 
-		this._dropdownOpened = false;
 		this._dropdownFirstOpened = false;
 		this._formattedValue = '';
 		this._hiddenCalendarHeight = 415; // height of 6 date row calendar when 1rem = 20px
@@ -199,6 +202,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._hiddenContentResizeObserver.observe(hiddenContent);
 
 		const hiddenCalendar = this.shadowRoot.querySelector('.d2l-input-date-hidden-calendar');
+		if (!hiddenCalendar) return;
 		this._hiddenCalendarResizeObserver = new ResizeObserver(() => {
 			const hiddenCalendarHeight = Math.ceil(parseFloat(getComputedStyle(hiddenCalendar).getPropertyValue('height')));
 			if (hiddenCalendarHeight > 0) {
@@ -219,7 +223,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		const icon = (this.invalid || this.childErrors.size > 0)
 			? html`<d2l-icon icon="tier1:alert" slot="left" style="${styleMap({ color: 'var(--d2l-color-cinnabar)' })}"></d2l-icon>`
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
-		const errorTooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && !this.disabled && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
@@ -231,7 +235,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				no-auto-fit
 				no-auto-focus
 				no-padding>
-				<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this._dropdownOpened}">
+				<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this.opened}">
 					<d2l-calendar
 						@d2l-calendar-selected="${this._handleDateSelected}"
 						label="${ifDefined(this.label)}"
@@ -297,14 +301,19 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			if (prop === '_dateTimeDescriptor' || prop === 'value') {
 				this._shownValue = this.value;
 				this._setFormattedValue();
-			}
-			if (prop === 'value') {
-				this.setFormValue(this.value);
-				this.setValidity({
-					rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
-					rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
-				});
-				this.requestValidate(false);
+
+				if (prop === 'value') {
+					this.setFormValue(this.value);
+					this.setValidity({
+						rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
+						rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
+					});
+					this.requestValidate(false);
+				}
+			} else if (prop === 'opened') {
+				if (this.opened) {
+					if (!this._dropdown || (this._dropdown && !this._dropdown.opened)) this._open();
+				} else if (!this.opened && this._dropdown.opened) this._close();
 			}
 		});
 	}
@@ -313,18 +322,14 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		if (this._textInput) this._textInput.focus();
 	}
 
-	async open() {
-		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
-		this._dropdown.open();
-		await this._handleChange();
-		this._calendar.focus();
-		this._setFormattedValue();
-	}
-
 	async validate() {
 		const textInput = this.shadowRoot.querySelector('d2l-input-text');
 		const errors = await Promise.all([textInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1]];
+	}
+
+	_close() {
+		this._dropdown.close();
 	}
 
 	_handleBlur() {
@@ -374,7 +379,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 	_handleDropdownClose() {
 		if (this._calendar) this._calendar.reset();
-		this._dropdownOpened = false;
+		this.opened = false;
 		this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
@@ -389,7 +394,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		setTimeout(() => {
 			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		}, 150);
-		this._dropdownOpened = true;
+		this.opened = true;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-dropdown-toggle',
@@ -428,7 +433,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	async _handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
-			this.open();
+			this.opened = true;
 			e.preventDefault();
 		}
 	}
@@ -437,7 +442,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._inputTextFocusMouseup = true;
 		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
 		if (!this.disabled && !this.skeleton) {
-			if (!this._dropdownOpened) this._handleChange();
+			if (!this.opened) this._handleChange();
 			this._dropdown.toggleOpen(false);
 		}
 	}
@@ -447,6 +452,14 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		await this._updateValueDispatchEvent(formatDateInISO(date));
 		this._dropdown.close();
 		this.focus();
+	}
+
+	async _open() {
+		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
+		this._dropdown.open();
+		await this._handleChange();
+		this._calendar.focus();
+		this._setFormattedValue();
 	}
 
 	_setFormattedValue() {

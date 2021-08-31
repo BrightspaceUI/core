@@ -77,6 +77,59 @@ describe('d2l-input-date', () => {
 		});
 	});
 
+	describe('open and close behaviour', () => {
+		describe('interacting with opened', () => {
+			let dropdown, dropdownContent, elem;
+
+			beforeEach(async() => {
+				elem = await fixture(basicFixture);
+				elem.opened = true;
+				await elem.updateComplete;
+				dropdown = getChildElem(elem, 'd2l-dropdown');
+				dropdownContent = getChildElem(elem, 'd2l-dropdown-content');
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+			});
+
+			it('should open dropdown when true', async() => {
+				await dropdownContent.updateComplete;
+				expect(dropdownContent.opened).to.be.true;
+			});
+
+			it('should close dropdown when false', async() => {
+				expect(dropdownContent.opened).to.be.true;
+				elem.opened = false;
+				await elem.updateComplete;
+				await oneEvent(dropdown, 'd2l-dropdown-close');
+				expect(dropdownContent.opened).to.be.false;
+			});
+		});
+
+		describe('interacting with dropdown', () => {
+			let elem, dropdown;
+
+			beforeEach(async() => {
+				elem = await fixture(basicFixture);
+				elem._dropdownFirstOpened = true;
+				await elem.updateComplete;
+				dropdown = getChildElem(elem, 'd2l-dropdown');
+				const dropdownContent = getChildElem(elem, 'd2l-dropdown-content');
+				await dropdownContent.updateComplete;
+				dropdown.toggleOpen();
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+			});
+
+			it('should set opened to true when dropdown open', async() => {
+				expect(elem.opened).to.be.true;
+			});
+
+			it('should set opened to false when dropdown closed', async() => {
+				dropdown.toggleOpen();
+				await oneEvent(dropdown, 'd2l-dropdown-close');
+				expect(elem.opened).to.be.false;
+			});
+		});
+	});
+
 	describe('utility functions', () => {
 		describe('formatISODateInUserCalDescriptor', () => {
 			it('should return correct date when input is valid', () => {

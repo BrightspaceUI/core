@@ -14,10 +14,10 @@
 			const elems = document.querySelectorAll('d2l-input-date');
 			elems.forEach(elem => elem._handleFirstDropdownOpen());
 
-			window.addEventListener('load', function () {
-				setTimeout(function() {
-					var dateInput = document.querySelector('#open-by-default');
-					dateInput.open();
+			window.addEventListener('load', () => {
+				setTimeout(() => {
+					const dateInput = document.querySelector('#open-by-default');
+					dateInput.opened = true;
 				}, 20);
 			});
 		</script>
