@@ -311,9 +311,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 					this.requestValidate(false);
 				}
 			} else if (prop === 'opened') {
-				if (this.opened) {
-					if (!this._dropdown || (this._dropdown && !this._dropdown.opened)) this._open();
-				} else if (!this.opened && this._dropdown.opened) this._close();
+				if (this.opened) this._open();
+				else if (!this.opened && this._dropdown.opened) this._close();
 			}
 		});
 	}
@@ -394,7 +393,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		setTimeout(() => {
 			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		}, 150);
-		this.opened = true;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-dropdown-toggle',
@@ -430,7 +428,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		}, 150);
 	}
 
-	async _handleKeydown(e) {
+	_handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
 			this.opened = true;
@@ -438,13 +436,9 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		}
 	}
 
-	async _handleMouseup() {
+	_handleMouseup() {
 		this._inputTextFocusMouseup = true;
-		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
-		if (!this.disabled && !this.skeleton) {
-			if (!this.opened) this._handleChange();
-			this._dropdown.toggleOpen(false);
-		}
+		this.opened = !this.opened;
 	}
 
 	async _handleSetToToday() {
@@ -455,11 +449,18 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	async _open() {
+		if (this.disabled || this.skeleton) return;
 		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
-		this._dropdown.open();
+
 		await this._handleChange();
-		this._calendar.focus();
-		this._setFormattedValue();
+
+		if (this._inputTextFocusMouseup) {
+			this._dropdown.open(false);
+		} else {
+			this._dropdown.open();
+			this._calendar.focus();
+			this._setFormattedValue();
+		}
 	}
 
 	_setFormattedValue() {
