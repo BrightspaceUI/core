@@ -31,7 +31,7 @@ class FilterSearchDemo extends LitElement {
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
-				<d2l-filter-dimension-set key="none-select-all" text="No Search and Search All" search-type="none" select-all>
+				<d2l-filter-dimension-set key="none-select-all" text="No Search and Select All" search-type="none" select-all>
 					<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
