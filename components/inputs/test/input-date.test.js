@@ -90,22 +90,14 @@ describe('d2l-input-date', () => {
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 			});
 
-			it('should set opened and focus trap to true when dropdown open', async() => {
+			it('should set opened to true when dropdown open', async() => {
 				expect(elem.opened).to.be.true;
-
-				const focusTrap = getChildElem(elem, 'd2l-focus-trap');
-				await focusTrap.updateComplete;
-				expect(focusTrap.trap).to.be.true;
 			});
 
-			it('should set opened and focus trap to false when dropdown closed', async() => {
+			it('should set opened to false when dropdown closed', async() => {
 				dropdownOpener.dispatchEvent(eventObj);
 				await oneEvent(dropdown, 'd2l-dropdown-close');
 				expect(elem.opened).to.be.false;
-
-				const focusTrap = getChildElem(elem, 'd2l-focus-trap');
-				await focusTrap.updateComplete;
-				expect(focusTrap.trap).to.be.false;
 			});
 		});
 
@@ -122,10 +114,6 @@ describe('d2l-input-date', () => {
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 
 			expect(elem.opened).to.be.true;
-
-			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
-			await focusTrap.updateComplete;
-			expect(focusTrap.trap).to.be.true;
 		});
 	});
 

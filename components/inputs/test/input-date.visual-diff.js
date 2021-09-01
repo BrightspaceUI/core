@@ -553,4 +553,18 @@ describe('d2l-input-date', () => {
 		});
 	});
 
+	describe('mobile', () => {
+		[
+			'min-max',
+			'placeholder',
+			'value'
+		].forEach((name) => {
+			it(name, async function() {
+				await page.setViewport({ width: 600, height: 500 });
+				await open(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+			});
+		});
+	});
+
 });

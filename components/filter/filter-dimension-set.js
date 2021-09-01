@@ -28,6 +28,10 @@ class FilterDimensionSet extends LitElement {
 			 */
 			selectAll: { type: Boolean, attribute: 'select-all' },
 			/**
+			 * Whether only one value can be selected at a time for this dimension
+			 */
+			selectionSingle: { type: Boolean, attribute: 'selection-single' },
+			/**
 			 * REQUIRED: The text that is displayed for the dimension title
 			 */
 			text: { type: String }
@@ -39,6 +43,7 @@ class FilterDimensionSet extends LitElement {
 		this.loading = false;
 		this.searchType = 'automatic';
 		this.selectAll = false;
+		this.selectionSingle = false;
 		this.text = '';
 		this._slot = null;
 	}

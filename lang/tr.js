@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "Bu iletişim kutusunu kapat",
 	"components.dropdown.close": "Kapat",
 	"components.filter.loading": "Filtreler yükleniyor",
-	"components.filter.filterCount": "{number, select, max {99+} all {Tümü} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {Filtre uygulanmadı.} one {1 filtre uygulandı.} other {{number} filtre uygulandı.}}",
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Uygun filtre yok",

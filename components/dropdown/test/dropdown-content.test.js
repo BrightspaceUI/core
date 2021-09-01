@@ -338,4 +338,34 @@ describe('d2l-dropdown', () => {
 
 	});
 
+	describe('trap-focus option', () => {
+
+		it('no focus trap when trap-focus is false', async() => {
+			content.setAttribute('opened', true);
+			await oneEvent(content, 'd2l-dropdown-open');
+			const focusTrap = content.shadowRoot.querySelector('d2l-focus-trap');
+			expect(focusTrap).to.be.null;
+		});
+
+		it('should set trap to true when dropdown open', async() => {
+			content.setAttribute('trap-focus', true);
+			content.setAttribute('opened', true);
+			await oneEvent(content, 'd2l-dropdown-open');
+			const focusTrap = content.shadowRoot.querySelector('d2l-focus-trap');
+			await focusTrap.updateComplete;
+			expect(focusTrap.trap).to.be.true;
+		});
+
+		it('should set trap to false when dropdown closed', async() => {
+			content.setAttribute('trap-focus', true);
+			content.toggleOpen();
+			await oneEvent(content, 'd2l-dropdown-open');
+			setTimeout(() => content.toggleOpen());
+			await oneEvent(content, 'd2l-dropdown-close');
+			const focusTrap = content.shadowRoot.querySelector('d2l-focus-trap');
+			await focusTrap.updateComplete;
+			expect(focusTrap.trap).to.be.false;
+		});
+	});
+
 });
