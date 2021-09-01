@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../count-badge/count-badge.js';
 import '../button/button-icon.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
@@ -218,7 +219,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
 				${builtDimension}
 				<div slot="supporting">
-					<span>${this._formatFilterCount(dimension.appliedCount, dimension.maxCount)}</span>
+					<span><d2l-count-badge number="${this._formatFilterCount(dimension.appliedCount, dimension.maxCount)}"></d2l-count-badge></span>
 				</div>
 			</d2l-menu-item>`;
 		});
@@ -356,16 +357,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
-	_formatFilterCount(count, max) {
-		if (count === 0) return;
-
-		let number = count;
-		if (count === max) {
-			number = 'all';
-		} else if (count >= 100) {
-			number = 'max';
-		}
-		return this.localize('components.filter.filterCount', { number: number });
+	_formatFilterCount(count) {
+		return count;
 	}
 
 	_getSlottedNodes(slot) {

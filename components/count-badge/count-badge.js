@@ -88,7 +88,7 @@ class CountBadge extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.number = null;
-		this.type = 'count';
+		this.badgeType = 'count';
 		this.badgeSize = 'small';
 	}
 
@@ -103,7 +103,7 @@ class CountBadge extends RtlMixin(LitElement) {
         	<div class="d2l-count-badge-number">
 				${numberString}
 			</div>
-		<div>`;
+		</div>`;
 	}
 }
 
