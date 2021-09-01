@@ -111,7 +111,7 @@ class CountBadge extends RtlMixin(LitElement) {
 	render() {
 		let numberString = `${this.number}`;
 		if (this.noRenderZero && this.number === 0) {
-			return html``;
+			numberString = '';
 		}
 		if (this.type === 'notification' && this.number > 99) {
 			// truncate to 2 digits for notification type only
@@ -121,9 +121,7 @@ class CountBadge extends RtlMixin(LitElement) {
 			numberString = `${'9'.repeat(this.digitLimit)}+`;
 		}
 		return html`
-        	<div class="d2l-count-badge-number">
-				${numberString}
-			</div>`;
+        	<div class="d2l-count-badge-number">${numberString}</div>`;
 	}
 }
 
