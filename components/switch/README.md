@@ -12,19 +12,19 @@ A switch is used to toggle between two states, on and off, just like a light swi
 <d2l-switch-visibility on></d2l-switch-visibility>
 ```
 
-### Best Practices
+## Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Use a switch to toggle ON/OFF states with immediate effect
 * Use a visible label near the switch to indicate its purpose
 <!-- docs: end dos -->
+
 <!-- docs: start donts -->
 * Don't toggle the language in the label, it should remain stati
 * Don't use a switch in a form, use a checkbox or radio options in stead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
-
 
 ## Switch [d2l-switch]	
 The `d2l-switch` element is a generic switch with on/off semantics.
@@ -45,7 +45,7 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `text` | String, required | Accessible text for the switch |
 | `disabled` | Boolean | Disables the switch |
 | `on` | Boolean | Whether the switch is "on" or "off" |
@@ -61,7 +61,7 @@ The `d2l-switch` element is a generic switch with on/off semantics.
 To make your usage of `d2l-switch` accessible, use the following property:
 
 | Attribute | Description |
-|--|--|
+|---|---|
 | `text` | **REQUIRED** [Acts as a primary label on the switch](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless text-position is `hidden`. |
 
 ## Visibility Switch [d2l-switch-visibility]
@@ -85,7 +85,7 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `text`| String, required | Accessible text for the switch; defaults to "Visibility" |
 | `disabled` | Boolean | Disabled the switch |
 | `on` | Boolean | Whether the switch is "on" or "off" |
