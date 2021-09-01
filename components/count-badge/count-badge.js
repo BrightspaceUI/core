@@ -17,18 +17,34 @@ class CountBadge extends RtlMixin(LitElement) {
 			/**
 			 * The size of the badge. Valid options are "small" and "large". Defaults to "small".
 			 */
-			badgeSize: {
+			size: {
 				type: String,
 				reflect: true,
-				attribute: 'badge-size'
+				attribute: 'size'
 			},
 			/**
 			 * The type of the badge. Valid options are "notification" and "count". Defaults to "count".
 			 */
-			badgeType: {
+			type: {
 				type: String,
 				reflect: true,
-				attribute: 'badge-type'
+				attribute: 'type'
+			},
+			/**
+			 * For "count" type badge, optionally specify a digit limit, after which numbers are truncated. Defaults to no limit.
+			 */
+			digitLimit: {
+				type: Number,
+				reflect: true,
+				attribute: 'digit-limit'
+			},
+			/**
+			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
+			 */
+			noRenderZero: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'no-render-zero'
 			},
 		};
 	}
@@ -39,71 +55,75 @@ class CountBadge extends RtlMixin(LitElement) {
 			font-weight: bold;
 		}
 
-		:host([badge-type="notification"]) .d2l-count-badge-number {
+		:host([type="notification"]) .d2l-count-badge-number {
 			color: white;
 		}
 
-		:host([badge-type="count"]) .d2l-count-badge-number {
+		:host([type="count"]) .d2l-count-badge-number {
 			color: var(--d2l-color-tungsten);
 		}
 
-		:host([badge-size="small"]) .d2l-count-badge-number {
+		:host([size="small"]) .d2l-count-badge-number {
 			font-size: 0.6rem;
 			line-height: 0.9rem;
 			padding-left: 0.3rem;
 			padding-right: 0.3rem;
 		}
 
-		:host([badge-size="large"]) .d2l-count-badge-number {
+		:host([size="large"]) .d2l-count-badge-number {
 			font-size: 0.8rem;
 			line-height: 1.2rem;
 			padding-left: 0.4rem;
 			padding-right: 0.4rem;
 		}
 
-		.d2l-count-badge-background {
+		:host {
 			border: 2px white;
 			display: inline-block;
 			min-width: 0.9rem;
 		}
 
-		:host([badge-size="small"]) .d2l-count-badge-background {
+		:host([size="small"]) {
 			border-radius: 0.45rem;
 		}
 
-		:host([badge-size="large"]) .d2l-count-badge-background {
+		:host([size="large"]) {
 			border-radius: 0.6rem;
 		}
 
-		:host([badge-type="notification"]) .d2l-count-badge-background {
-			background: var(--d2l-color-carnelian-minus-1);
+		:host([type="notification"]) {
+			background-color: var(--d2l-color-carnelian-minus-1);
 		}
 
-		:host([badge-type="count"]) .d2l-count-badge-background {
-			background: var(--d2l-color-gypsum);
+		:host([type="count"]) {
+			background-color: var(--d2l-color-gypsum);
 		}
 		`];
 	}
 
 	constructor() {
 		super();
-		this.number = null;
-		this.badgeType = 'count';
-		this.badgeSize = 'small';
+		this.type = 'count';
+		this.size = 'small';
+		this.noRenderZero = false;
 	}
 
 	render() {
 		let numberString = `${this.number}`;
-		if (this.badgeType === 'notification' && this.number > 99) {
+		if (this.noRenderZero && this.number === 0) {
+			return html``;
+		}
+		if (this.type === 'notification' && this.number > 99) {
 			// truncate to 2 digits for notification type only
 			numberString = '99+';
+		} else if (this.type === 'count' && this.digitLimit && this.number.toString().length > this.digitLimit) {
+			// truncate to digitLimit if provided for count type only
+			numberString = `${'9'.repeat(this.digitLimit)}+`;
 		}
 		return html`
-		<div class="d2l-count-badge-background">
         	<div class="d2l-count-badge-number">
 				${numberString}
-			</div>
-		</div>`;
+			</div>`;
 	}
 }
 

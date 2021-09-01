@@ -219,7 +219,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
 				${builtDimension}
 				<div slot="supporting">
-					<span><d2l-count-badge number="${this._formatFilterCount(dimension.appliedCount, dimension.maxCount)}"></d2l-count-badge></span>
+					<d2l-count-badge number="${dimension.appliedCount}" digit-limit=2 no-render-zero></d2l-count-badge>
 				</div>
 			</d2l-menu-item>`;
 		});
@@ -357,8 +357,16 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
-	_formatFilterCount(count) {
-		return count;
+	_formatFilterCount(count, max) {
+		if (count === 0) return;
+
+		let number = count;
+		if (count === max) {
+			number = 'all';
+		} else if (count >= 100) {
+			number = 'max';
+		}
+		return this.localize('components.filter.filterCount', { number: number });
 	}
 
 	_getSlottedNodes(slot) {
