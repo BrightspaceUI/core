@@ -17,6 +17,8 @@ describe('d2l-dropdown-menu', () => {
 
 	beforeEach(async() => {
 		await reset(page, '#dropdown-menu');
+		const defaultViewportOptions = { width: 800, height: 800, deviceScaleFactor: 2 };
+		await page.setViewport(defaultViewportOptions);
 	});
 
 	after(async() => await browser.close());
@@ -40,6 +42,13 @@ describe('d2l-dropdown-menu', () => {
 		await open(page, '#dropdown-menu-header-footer');
 		const rect = await getRect(page, '#dropdown-menu-header-footer');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('with-header-footer-mobile', async function() {
+		await page.setViewport({ width: 300, height: 800 });
+		await open(page, '#dropdown-menu-header-footer-mobile');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		await reset(page, '#dropdown-menu-header-footer-mobile');
 	});
 
 	it('with-nopadding-header-footer', async function() {
