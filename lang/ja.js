@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "このダイアログを閉じる",
 	"components.dropdown.close": "閉じる",
 	"components.filter.loading": "フィルタのロード中",
-	"components.filter.filterCount": "{number, select, max {99 以上} all {すべて} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {フィルタは適用されていません。} one {1 つのフィルタが適用されています。} other {{number} 個のフィルタが適用されています。}}",
 	"components.filter.filters": "フィルタ",
 	"components.filter.noFilters": "使用可能なフィルタはありません",

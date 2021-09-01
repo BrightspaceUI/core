@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "이 대화 상자 닫기",
 	"components.dropdown.close": "닫기",
 	"components.filter.loading": "필터 로드 중",
-	"components.filter.filterCount": "{number, select, max {99+} all {전체} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {적용된 필터 없음.} one {1개 필터 적용.} other {{number}개 필터 적용.}}",
 	"components.filter.filters": "개 필터",
 	"components.filter.noFilters": "사용 가능한 필터가 없습니다",

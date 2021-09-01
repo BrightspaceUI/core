@@ -177,6 +177,9 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 				:host([hidden]) {
 					display: none;
 				}
+				d2l-dropdown-menu[data-mobile][mobile-tray] .d2l-input-time-menu {
+					text-align: center;
+				}
 				.d2l-input-label {
 					display: inline-block;
 					vertical-align: top;
@@ -312,7 +315,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
-					min-width="195">
+					min-width="195"
+					mobile-tray="bottom">
 					<d2l-menu
 						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"

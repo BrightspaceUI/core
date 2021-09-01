@@ -47,13 +47,25 @@ describe('d2l-dropdown-content', () => {
 		'bottom-right-rtl',
 		'align-start-rtl',
 		'align-end-rtl',
-		'align-start-edge',
-		'align-start-edge-rtl'
+		'align-start-edge'
 	].forEach((testName) => {
 
 		it(testName, async function() {
 			const selector = `#${testName}`;
 			await open(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
+		});
+	});
+
+	[
+		'align-start-edge-rtl'
+	].forEach((testName) => {
+
+		// for flaky tests, add a 50ms delay before screenshot
+		it(testName, async function() {
+			const selector = `#${testName}`;
+			await open(page, selector);
+			await page.waitForTimeout(50);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 		});
 	});

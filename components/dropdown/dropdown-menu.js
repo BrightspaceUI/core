@@ -22,10 +22,18 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		super();
 		this.noAutoFocus = true;
 		this.noPadding = true;
+		this._maxHeightNonTray = this.maxHeight;
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		this._maxHeightNonTray = this.maxHeight;
+		if (this._useMobileStyling && this.mobileTray) {
+			this.maxHeight = null;
+		} else {
+			this.maxHeight = this._maxHeightNonTray;
+		}
 
 		this.addEventListener('d2l-dropdown-open', this._onOpen);
 		this.addEventListener('d2l-dropdown-close', this._onClose);
@@ -68,11 +76,21 @@ class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 		menu.show({ preventFocus: true });
 	}
 
-	_onFocus() {
+	_onFocus(e) {
+		// ignore focus events originating from inside dropdown content,
+		// such as the mobile tray close button, as to not move focus
+		if (e.srcElement === this) return;
 		this.__getMenuElement().focus();
 	}
 
 	_onMenuResize(e) {
+
+		if (this._useMobileStyling && this.mobileTray) {
+			this.maxHeight = null;
+		} else {
+			this.maxHeight = this._maxHeightNonTray;
+		}
+
 		this.__position(!this._initializingHeight, e.detail);
 		this._initializingHeight = false;
 

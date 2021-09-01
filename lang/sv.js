@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "Stäng dialogrutan",
 	"components.dropdown.close": "Stäng",
 	"components.filter.loading": "Läser in filter",
-	"components.filter.filterCount": "{number, select, max {99+} all {Alla} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {Inga filter tillämpade.} one {1 filter tillämpat.} other {{number} filter tillämpade.}}",
 	"components.filter.filters": "Filter",
 	"components.filter.noFilters": "Inga tillgängliga filter",
