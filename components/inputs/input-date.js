@@ -225,6 +225,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			: html`<d2l-icon icon="tier1:calendar" slot="left"></d2l-icon>`;
 		const errorTooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const infoTooltip = (this._showInfoTooltip && !errorTooltip && !this.invalid && !this.disabled && this.childErrors.size === 0 && !this.skeleton && this._inputTextFocusShowTooltip) ? html`<d2l-tooltip align="start" announced delay="1000" for="${this._inputId}">${this.localize(`${this._namespace}.openInstructions`, { format: shortDateFormat })}</d2l-tooltip>` : null;
+		const trapped = this.opened && !this.disabled && !this.skeleton;
 
 		const dropdownContent = this._dropdownFirstOpened ? html`
 			<d2l-dropdown-content
@@ -235,7 +236,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				no-auto-fit
 				no-auto-focus
 				no-padding>
-				<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${this.opened}">
+				<d2l-focus-trap @d2l-focus-trap-enter="${this._handleFocusTrapEnter}" ?trap="${trapped}">
 					<d2l-calendar
 						@d2l-calendar-selected="${this._handleDateSelected}"
 						label="${ifDefined(this.label)}"
@@ -312,7 +313,9 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				}
 			} else if (prop === 'opened') {
 				if (this.opened) this._open();
-				else if (!this.opened && this._dropdown.opened) this._close();
+				else this._close();
+			} else if (prop === 'disabled' || prop === 'skeleton') {
+				if (this.opened) this._open();
 			}
 		});
 	}
@@ -328,6 +331,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	}
 
 	_close() {
+		if (!this._dropdown || !this._dropdown.opened) return;
 		this._dropdown.close();
 	}
 
