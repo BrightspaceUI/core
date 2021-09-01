@@ -2,7 +2,7 @@
 
 ## d2l-count-badge
 
-The `d2l-count-badge` element is a web component to display a number count, either in a "notification" or "count" style.
+The `d2l-count-badge` element is a web component to display a number count, either in a `"notification"` or `"count"` style.
 
 
 ![Notification Badge](./screenshots/count-badge-notification.png?raw=true)
