@@ -186,6 +186,7 @@ describe('d2l-input-date', () => {
 				// min-value="2018-02-13" max-value="2018-02-27"
 				before(async() => {
 					await page.$eval('#min-max', (elem) => {
+						elem.focus();
 						const input = elem.shadowRoot.querySelector('d2l-input-text');
 						input.value = '10/12/2017';
 						const e = new Event(
@@ -193,10 +194,6 @@ describe('d2l-input-date', () => {
 							{ bubbles: true, composed: false }
 						);
 						input.dispatchEvent(e);
-					});
-					await page.$eval('#min-max', (elem) => {
-						elem.focus();
-						elem.blur();
 					});
 				});
 
