@@ -13,6 +13,10 @@ describe('d2l-input-date', () => {
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
+
+		// #opened being opened causes issues with focus with other date inputs being opened.
+		// Putting this first in case tests are run in isolation.
+		await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 	});
 
 	after(async() => await browser.close());
@@ -34,11 +38,6 @@ describe('d2l-input-date', () => {
 		});
 	});
 
-	it('opened', async function() {
-		const rect = await getRect(page, '#opened');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
 	it('value-focus', async function() {
 		await page.$eval('#value', (elem) => {
 			elem.focus();
@@ -56,9 +55,7 @@ describe('d2l-input-date', () => {
 
 	describe('opened behavior', () => {
 		before(async() => {
-			await page.$eval('#opened', (elem) => {
-				elem.removeAttribute('opened');
-			});
+			await page.reload();
 		});
 
 		after(async() => {
@@ -66,21 +63,21 @@ describe('d2l-input-date', () => {
 			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 		});
 
+		it('intially opened', async function() {
+			const rect = await getRect(page, '#opened');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('opened-disabled remove disabled', async function() {
-			await page.$eval('#opened-disabled', (elem) => {
-				elem.removeAttribute('disabled');
-			});
+			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
+			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('disabled'));
 			const rect = await getRect(page, '#opened-disabled');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
 		it('opened-skeleton remove skeleton', async function() {
-			await page.$eval('#opened-disabled', (elem) => {
-				elem.removeAttribute('opened');
-			});
-			await page.$eval('#opened-skeleton', (elem) => {
-				elem.removeAttribute('skeleton');
-			});
+			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('opened'));
+			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('skeleton'));
 			const rect = await getRect(page, '#opened-skeleton');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
