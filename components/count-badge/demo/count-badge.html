@@ -14,10 +14,22 @@
 	<body unresolved>
 		<d2l-demo-page page-title="d2l-count-badge">
 
-			<h2>Basic Count Badge</h2>
+			<h2>Small Notification Badge</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-count-badge number="7"></d2l-count-badge>
+					<d2l-count-badge badge-size="small" badge-type="notification" number="1"></d2l-count-badge>
+					<d2l-count-badge badge-size="small" badge-type="notification" number="10"></d2l-count-badge>
+					<d2l-count-badge badge-size="small" badge-type="notification" number="100"></d2l-count-badge>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Large Count Badge</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-count-badge badge-size="large" badge-type="count" number="1"></d2l-count-badge>
+					<d2l-count-badge badge-size="large" badge-type="count" number="10"></d2l-count-badge>
+					<d2l-count-badge badge-size="large" badge-type="count" number="100"></d2l-count-badge>
+					<d2l-count-badge badge-size="large" badge-type="count" number="777777"></d2l-count-badge>
 				</template>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
