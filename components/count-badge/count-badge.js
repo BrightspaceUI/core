@@ -6,16 +6,25 @@ class CountBadge extends RtlMixin(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * The number to be displayed on the badge. If badge-type is "notification", the number will be truncated to three digits ("99+").
+			 */
 			number: {
 				type: Number,
 				reflect: true,
 				attribute: 'number'
 			},
+			/**
+			 * The size of the badge. Valid options are "small" and "large". Defaults to "small".
+			 */
 			badgeSize: {
 				type: String,
 				reflect: true,
 				attribute: 'badge-size'
 			},
+			/**
+			 * The type of the badge. Valid options are "notification" and "count". Defaults to "count".
+			 */
 			badgeType: {
 				type: String,
 				reflect: true,
