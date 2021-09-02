@@ -523,6 +523,10 @@ describe('d2l-input-date', () => {
 				await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 			});
 
+			after(async() => {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = false);
+			});
+
 			it(name, async function() {
 				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
 				const rect = await visualDiff.getRect(page, `#${name}`);
