@@ -520,6 +520,7 @@ describe('d2l-input-date', () => {
 		].forEach((name) => {
 			before(async() => {
 				await page.reload();
+				await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 			});
 
 			it(name, async function() {
