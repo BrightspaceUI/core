@@ -23,10 +23,12 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 
 | Property | Type | Description |
 |--|--|--|
+| `clear-all-type` | String, default: `automatic` | Whether to automatically handle clearing all dimensions or to send an event. This should only be set to "manual" for use cases with specific perf enhacements in place for this. |
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener for the filter |
 
 **Events:**
 * `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple changes)
+* `d2l-filter-clear-all`: dispatched if the filter has a clear-all-type of "manual" and the "Clear All" button is pressed
 * `d2l-filter-dimension-clear`: dispatched when a dimension that has the "manual" clear-type (or search-type) is cleared
 * `d2l-filter-dimension-first-open`: dispatched when a dimension is opened for the first time (if there is only one dimension, this will be dispatched when the dropdown is first opened)
 * `d2l-filter-dimension-search`: dispatched when a dimension that supports searching and has the "manual" search-type is searched
