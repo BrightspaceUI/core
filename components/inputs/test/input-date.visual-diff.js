@@ -2,7 +2,7 @@ import { getRect, getRectTooltip, open, reset } from './input-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe.only('d2l-input-date', () => {
+describe('d2l-input-date', () => {
 
 	const visualDiff = new VisualDiff('input-date', __dirname);
 
@@ -10,57 +10,17 @@ describe.only('d2l-input-date', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1200 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1100 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
-
-		// #opened being opened causes issues with focus with other date inputs being opened.
-		// Putting this first in case tests are run in isolation.
-		await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 	});
 
 	after(async() => await browser.close());
 
-	[
-		'disabled',
-		'empty-text',
-		'label',
-		'label-hidden',
-		'opened-disabled',
-		'opened-skeleton',
-		'placeholder',
-		'required',
-		'value'
-	].forEach((name) => {
-		it(name, async function() {
-			const rect = await visualDiff.getRect(page, `#${name}`);
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-	});
-
-	it('value-focus', async function() {
-		await page.$eval('#value', (elem) => {
-			elem.focus();
-			elem._inputTextFocusShowTooltip = true;
-		});
-		const rect = await getRectTooltip(page, '#value');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
-	it('empty-text-focus', async function() {
-		await page.$eval('#empty-text', (elem) => elem.focus());
-		const rect = await visualDiff.getRect(page, '#empty-text');
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
-
 	describe('opened behavior', () => {
-		before(async() => {
-			await page.reload();
-		});
 
 		after(async() => {
-			await page.reload();
-			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
+			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
 		});
 
 		it('intially opened', async function() {
@@ -68,8 +28,18 @@ describe.only('d2l-input-date', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
-		it('opened-disabled remove disabled', async function() {
+		it('opened-disabled', async function() {
 			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
+			const rect = await visualDiff.getRect(page, '#opened-disabled');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opened-skeleton', async function() {
+			const rect = await visualDiff.getRect(page, '#opened-skeleton');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opened-disabled remove disabled', async function() {
 			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('disabled'));
 			const rect = await getRect(page, '#opened-disabled');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -81,6 +51,40 @@ describe.only('d2l-input-date', () => {
 			const rect = await getRect(page, '#opened-skeleton');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
+	});
+
+	describe('basic', () => {
+
+		[
+			'disabled',
+			'empty-text',
+			'label',
+			'label-hidden',
+			'placeholder',
+			'required',
+			'value'
+		].forEach((name) => {
+			it(name, async function() {
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+
+		it('value-focus', async function() {
+			await page.$eval('#value', (elem) => {
+				elem.focus();
+				elem._inputTextFocusShowTooltip = true;
+			});
+			const rect = await getRectTooltip(page, '#value');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('empty-text-focus', async function() {
+			await page.$eval('#empty-text', (elem) => elem.focus());
+			const rect = await visualDiff.getRect(page, '#empty-text');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 	});
 
 	describe('localization', () => {
@@ -297,14 +301,14 @@ describe.only('d2l-input-date', () => {
 			});
 
 			it('open with enter', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus());
+				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openKey(page, '#empty-text');
 				const rect = await getRect(page, '#empty-text');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('open with click', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus());
+				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openClick(page, '#empty-text');
 				const rect = await getRect(page, '#empty-text');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -322,14 +326,14 @@ describe.only('d2l-input-date', () => {
 			});
 
 			it('open with enter', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus());
+				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openKey(page, '#placeholder');
 				const rect = await getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('open with click', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus());
+				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openClick(page, '#placeholder');
 				const rect = await getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
