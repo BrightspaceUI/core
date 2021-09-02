@@ -13,11 +13,47 @@ describe('d2l-input-date', () => {
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1100 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
+
+		// #opened being opened causes issues with focus with other date inputs being opened.
+		// Putting this first in case tests are run in isolation.
+		await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 	});
 
 	after(async() => await browser.close());
 
+	[
+		'disabled',
+		'empty-text',
+		'label',
+		'label-hidden',
+		'placeholder',
+		'required',
+		'value'
+	].forEach((name) => {
+		it(name, async function() {
+			const rect = await visualDiff.getRect(page, `#${name}`);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	it('value-focus', async function() {
+		await page.$eval('#value', (elem) => {
+			elem.focus();
+			elem._inputTextFocusShowTooltip = true;
+		});
+		const rect = await getRectTooltip(page, '#value');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('empty-text-focus', async function() {
+		await page.$eval('#empty-text', (elem) => elem.focus());
+		const rect = await visualDiff.getRect(page, '#empty-text');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	describe('opened behavior', () => {
+
+		before(async() => await page.reload());
 
 		after(async() => {
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
@@ -51,40 +87,6 @@ describe('d2l-input-date', () => {
 			const rect = await getRect(page, '#opened-skeleton');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-	});
-
-	describe('basic', () => {
-
-		[
-			'disabled',
-			'empty-text',
-			'label',
-			'label-hidden',
-			'placeholder',
-			'required',
-			'value'
-		].forEach((name) => {
-			it(name, async function() {
-				const rect = await visualDiff.getRect(page, `#${name}`);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
-		});
-
-		it('value-focus', async function() {
-			await page.$eval('#value', (elem) => {
-				elem.focus();
-				elem._inputTextFocusShowTooltip = true;
-			});
-			const rect = await getRectTooltip(page, '#value');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
-		it('empty-text-focus', async function() {
-			await page.$eval('#empty-text', (elem) => elem.focus());
-			const rect = await visualDiff.getRect(page, '#empty-text');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-
 	});
 
 	describe('localization', () => {
@@ -145,7 +147,6 @@ describe('d2l-input-date', () => {
 		async function openKey(page, selector, keyCode) {
 			keyCode = keyCode || 13;
 			return await page.$eval(selector, (elem, keyCode) => {
-				elem.focus();
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				const eventObj = document.createEvent('Events');
 				eventObj.initEvent('keydown', true, true);
@@ -156,7 +157,6 @@ describe('d2l-input-date', () => {
 
 		async function setValue(page, selector, value) {
 			await page.$eval(selector, async(elem, value) => {
-				elem.focus();
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = value;
 				const e = new Event(
@@ -301,14 +301,12 @@ describe('d2l-input-date', () => {
 			});
 
 			it('open with enter', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openKey(page, '#empty-text');
 				const rect = await getRect(page, '#empty-text');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('open with click', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openClick(page, '#empty-text');
 				const rect = await getRect(page, '#empty-text');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -326,14 +324,12 @@ describe('d2l-input-date', () => {
 			});
 
 			it('open with enter', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openKey(page, '#placeholder');
 				const rect = await getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
 
 			it('open with click', async function() {
-				await page.$eval('#empty-text', (elem) => elem.focus()); // here
 				await openClick(page, '#placeholder');
 				const rect = await getRect(page, '#placeholder');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
