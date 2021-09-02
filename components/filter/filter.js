@@ -217,7 +217,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
 				${builtDimension}
 				<div slot="supporting">
-					<d2l-count-badge number="${dimension.appliedCount}" digit-limit=2 no-render-zero></d2l-count-badge>
+					<d2l-count-badge number="${dimension.appliedCount}" max-digits=2 hide-zero></d2l-count-badge>
 				</div>
 			</d2l-menu-item>`;
 		});

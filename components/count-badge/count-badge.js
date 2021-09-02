@@ -7,7 +7,7 @@ class CountBadge extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * The number to be displayed on the badge. If badge-type is "notification", the number will be truncated to three digits ("99+").
+			 * The number to be displayed on the badge. If badge-type is "notification", the number will be truncated to two digits ("99+").
 			 */
 			number: {
 				type: Number,
@@ -33,18 +33,18 @@ class CountBadge extends RtlMixin(LitElement) {
 			/**
 			 * For "count" type badge, optionally specify a digit limit, after which numbers are truncated. Defaults to no limit.
 			 */
-			digitLimit: {
+			maxDigits: {
 				type: Number,
 				reflect: true,
-				attribute: 'digit-limit'
+				attribute: 'max-digits'
 			},
 			/**
 			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
 			 */
-			noRenderZero: {
+			hideZero: {
 				type: Boolean,
 				reflect: true,
-				attribute: 'no-render-zero'
+				attribute: 'hide-zero'
 			},
 		};
 	}
@@ -105,20 +105,20 @@ class CountBadge extends RtlMixin(LitElement) {
 		super();
 		this.type = 'count';
 		this.size = 'small';
-		this.noRenderZero = false;
+		this.hideZero = false;
 	}
 
 	render() {
 		let numberString = `${this.number}`;
-		if (this.noRenderZero && this.number === 0) {
+		if (this.hideZero && this.number === 0) {
 			numberString = '';
 		}
 		if (this.type === 'notification' && this.number > 99) {
 			// truncate to 2 digits for notification type only
 			numberString = '99+';
-		} else if (this.type === 'count' && this.digitLimit && this.number.toString().length > this.digitLimit) {
-			// truncate to digitLimit if provided for count type only
-			numberString = `${'9'.repeat(this.digitLimit)}+`;
+		} else if (this.type === 'count' && this.maxDigits && this.number.toString().length > this.maxDigits) {
+			// truncate to maxDigits if provided for count type only
+			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
 		return html`
         	<div class="d2l-count-badge-number">${numberString}</div>`;
