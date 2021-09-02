@@ -157,7 +157,6 @@ describe('d2l-input-date', () => {
 
 		async function setValue(page, selector, value) {
 			await page.$eval(selector, async(elem, value) => {
-				elem.focus();
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = value;
 			}, value);
