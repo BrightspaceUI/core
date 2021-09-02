@@ -31,7 +31,7 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'type'
 			},
 			/**
-			 * For "count" type badge, optionally specify a digit limit, after which numbers are truncated. Defaults to no limit.
+			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
 			 */
 			maxDigits: {
 				type: Number,
@@ -51,6 +51,10 @@ class CountBadge extends RtlMixin(LitElement) {
 
 	static get styles() {
 		return [ css`
+		:host([hidden]) {
+			display: none;
+		}
+
 		.d2l-count-badge-number {
 			font-weight: bold;
 		}
@@ -108,16 +112,20 @@ class CountBadge extends RtlMixin(LitElement) {
 		this.hideZero = false;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		if (!this.maxDigits && this.type === 'notification') {
+			// default to two digits for notification type
+			this.maxDigits = 2;
+		}
+	}
+
 	render() {
 		let numberString = `${this.number}`;
 		if (this.hideZero && this.number === 0) {
 			numberString = '';
 		}
-		if (this.type === 'notification' && this.number > 99) {
-			// truncate to 2 digits for notification type only
-			numberString = '99+';
-		} else if (this.type === 'count' && this.maxDigits && this.number.toString().length > this.maxDigits) {
-			// truncate to maxDigits if provided for count type only
+		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
 		return html`

@@ -12,7 +12,7 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge.js';
 </script>
-<d2l-count-badge badge-size="small" badge-type="notification" number="100"></d2l-count-badge>
+<d2l-count-badge size="small" type="notification" number="100"></d2l-count-badge>
 ```
 
 **Properties:**
@@ -21,8 +21,8 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 |--|--|--|
 | `number` | Number, required | The number to display on the badge. |
 | `size`, default: `small` | String | The size of the badge. Valid options are `"small"` and `"large"`. |
-| `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and truncate numbers above 99 to `99+`, while count badges are grey and do not truncate the number. |
-| `max-digits`, default: `no limit` | Number | For `"count"` type badge, optionally specify a maximum number of digits, after which numbers are truncated. |
+| `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
+| `max-digits`, default: `2` when `type="notification"`, `no limit` when `type="count"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
 
 ## Future Enhancements
