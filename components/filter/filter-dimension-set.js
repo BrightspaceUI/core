@@ -11,6 +11,13 @@ class FilterDimensionSet extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * Whether to automatically handle clearing or send an event for this dimension
+			 * This should only be set to "manual" for use cases with specific perf enhacements in place for this
+			 * Note: If you choose "manual" for your `search-type`, your `clear-type` will also be "manual" because we cannot update the values removed by searching
+			 * @type {'automatic'|'manual'}
+			 */
+			clearType: { type: String, attribute: 'clear-type' },
+			/**
 			 * REQUIRED: Unique key to represent this dimension in the filter
 			 */
 			key: { type: String },
@@ -40,6 +47,7 @@ class FilterDimensionSet extends LitElement {
 
 	constructor() {
 		super();
+		this.clearType = 'automatic';
 		this.loading = false;
 		this.searchType = 'automatic';
 		this.selectAll = false;

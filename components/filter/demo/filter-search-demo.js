@@ -25,7 +25,7 @@ class FilterSearchDemo extends LitElement {
 
 	render() {
 		return html`
-			<d2l-filter @d2l-filter-change="${this._handleFilterChange}" @d2l-filter-dimension-first-open="${this._handleFirstOpen}" @d2l-filter-dimension-search="${this._handleSearch}">
+			<d2l-filter @d2l-filter-change="${this._handleFilterChange}" @d2l-filter-dimension-clear="${this._handleClear}" @d2l-filter-dimension-first-open="${this._handleFirstOpen}" @d2l-filter-dimension-search="${this._handleSearch}">
 				<d2l-filter-dimension-set key="none" text="No Search" search-type="none">
 					<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
@@ -48,6 +48,16 @@ class FilterSearchDemo extends LitElement {
 				</d2l-filter-dimension-set>
 			</d2l-filter>
 		`;
+	}
+
+	_handleClear(e) {
+		if (e.detail.key !== 'event') return;
+
+		this._fullData.forEach(value => value.selected = false);
+		this._displayedData.forEach(value => value.selected = false);
+
+		// eslint-disable-next-line no-console
+		console.log(`Filter dimension "${e.detail.key}" cleared`);
 	}
 
 	_handleFilterChange(e) {
