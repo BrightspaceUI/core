@@ -468,16 +468,16 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleClearAll() {
-		const manualClearAll = this.clearAllType !== 'manual';
+		const sendClearAllEvent = this.clearAllType === 'manual';
 
 		this._dimensions.forEach(dimension => {
 			if (dimension.clearType === 'automatic') {
-				this._clearDimensionData(dimension, false, manualClearAll);
+				this._clearDimensionData(dimension, false, !sendClearAllEvent);
 			} else if (dimension.clearType === 'manual') {
-				this._clearDimensionData(dimension, manualClearAll, false);
+				this._clearDimensionData(dimension, !sendClearAllEvent, false);
 			}
 		});
-		if (manualClearAll) {
+		if (sendClearAllEvent) {
 			this.dispatchEvent(new CustomEvent('d2l-filter-clear-all', { bubbles: false, composed: false }));
 		}
 		announce(this.localize('components.filter.clearAllAnnounce'));
