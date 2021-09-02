@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
+	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script type="module">
+		import '../count-badge.js';
+		import '../../typography/typography.js';
+	</script>
+	<title>d2l-count-badge</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+</head>
+<body class="d2l-typography">
+	<div class="visual-diff">
+		<d2l-count-badge id="small-notification" size="small" type="notification" number="1"></d2l-count-badge>
+	</div>
+	<div class="visual-diff">
+		<d2l-count-badge id="small-notification-truncated" size="small" type="notification" number="100"></d2l-count-badge>
+	</div>
+	<div class="visual-diff">
+		<d2l-count-badge id="large-count" size="large" type="count" number="1"></d2l-count-badge>
+	</div>
+	<div class="visual-diff">
+		<d2l-count-badge id="large-count-large-number" size="large" type="count" number="100000"></d2l-count-badge>
+	</div>
+	<div class="visual-diff">
+		<d2l-count-badge id="hide-zero-nonzero-shown" number="10"></d2l-count-badge>
+	</div>
+	<div class="visual-diff">
+		<d2l-count-badge id="hide-zero-hidden" number="0" hide-zero></d2l-count-badge>
+	</div>
+</body>
+</html>
