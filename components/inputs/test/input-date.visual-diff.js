@@ -432,7 +432,6 @@ describe('d2l-input-date', () => {
 			it('open with enter after text input', async function() {
 				await setValue(page, '#value', '11/21/2031');
 				await openKey(page, '#value');
-				await page.waitForTimeout(100);
 				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 			});
@@ -516,10 +515,6 @@ describe('d2l-input-date', () => {
 			before(async() => {
 				await page.reload();
 				await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
-			});
-
-			after(async() => {
-				await page.$eval(`#${name}`, (elem) => elem.skeleton = false);
 			});
 
 			it(name, async function() {
