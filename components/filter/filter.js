@@ -45,7 +45,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * This should only be set to "manual" for use cases with specific perf enhacements in place for this
 			 * @type {'automatic'|'manual'}
 			 */
-			clearAllType: { type: String, attribute: 'clear--all-type' },
+			clearAllType: { type: String, attribute: 'clear-all-type' },
 			/**
 			 * Disables the dropdown opener for the filter
 			 */
