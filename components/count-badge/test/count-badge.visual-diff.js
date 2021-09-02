@@ -20,7 +20,9 @@ describe('d2l-count-badge', () => {
 		'small-notification',
 		'small-notification-truncated',
 		'large-count',
-		'large-count-large-number'
+		'large-count-large-number',
+		'hide-zero-nonzero-shown',
+		'hide-zero-hidden'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;

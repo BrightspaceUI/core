@@ -7,7 +7,8 @@ class CountBadge extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * The number to be displayed on the badge. If badge-type is "notification", the number will be truncated to two digits ("99+").
+			 * The number to be displayed on the badge. Must be a positive integer.
+			 * @type {number}
 			 */
 			number: {
 				type: Number,
@@ -15,7 +16,8 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'number'
 			},
 			/**
-			 * The size of the badge. Valid options are "small" and "large". Defaults to "small".
+			 * The size of the badge. Defaults to "small".
+			 * @type {'small'|'large'}
 			 */
 			size: {
 				type: String,
@@ -23,7 +25,8 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'size'
 			},
 			/**
-			 * The type of the badge. Valid options are "notification" and "count". Defaults to "count".
+			 * The type of the badge. Defaults to "count".
+			 * @type {'count'|'notification'}
 			 */
 			type: {
 				type: String,
@@ -32,6 +35,7 @@ class CountBadge extends RtlMixin(LitElement) {
 			},
 			/**
 			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
+			 * @type {number}
 			 */
 			maxDigits: {
 				type: Number,
@@ -40,6 +44,7 @@ class CountBadge extends RtlMixin(LitElement) {
 			},
 			/**
 			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
+			 * @type {boolean}
 			 */
 			hideZero: {
 				type: Boolean,
