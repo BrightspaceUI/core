@@ -151,10 +151,17 @@ describe('d2l-input-date', () => {
 		}
 
 		async function setValue(page, selector, value) {
-			return await page.$eval(selector, async(elem, value) => {
+			await page.$eval(selector, async(elem, value) => {
+				elem.focus();
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = value;
+				const e = new Event(
+					'change',
+					{ bubbles: true, composed: false }
+				);
+				input.dispatchEvent(e);
 			}, value);
+			await page.$eval(selector, (elem) => elem.blur());
 		}
 
 		it('disabled does not open', async function() {
@@ -165,9 +172,7 @@ describe('d2l-input-date', () => {
 		});
 
 		describe('with min and max', () => {
-			afterEach(async() => {
-				await reset(page, '#min-max');
-			});
+			afterEach(async() => await reset(page, '#min-max'));
 
 			it('open', async function() {
 				await open(page, '#min-max');
@@ -184,30 +189,11 @@ describe('d2l-input-date', () => {
 
 			describe('out of range date typed', () => {
 				// min-value="2018-02-13" max-value="2018-02-27"
-				before(async() => {
-					await page.$eval('#min-max', (elem) => {
-						elem.focus();
-						const input = elem.shadowRoot.querySelector('d2l-input-text');
-						input.value = '10/12/2017';
-						const e = new Event(
-							'change',
-							{ bubbles: true, composed: false }
-						);
-						input.dispatchEvent(e);
-					});
-				});
 
 				describe('behavior', () => {
+					before(async() => await setValue(page, '#min-max', '10/12/2017'));
 
-					beforeEach(async() => {
-						await page.$eval('#min-max', (elem) => {
-							elem.blur();
-						});
-					});
-
-					afterEach(async() => {
-						await reset(page, '#min-max');
-					});
+					afterEach(async() => await reset(page, '#min-max'));
 
 					it('focus', async function() {
 						await page.$eval('#min-max', (elem) => elem.focus());
@@ -239,6 +225,8 @@ describe('d2l-input-date', () => {
 				describe('behavior on key interaction', () => {
 
 					describe('value before min', () => {
+						before(async() => await setValue(page, '#min-max', '10/12/2017'));
+
 						it('left arrow', async function() {
 							await openKey(page, '#min-max');
 							await page.keyboard.press('ArrowLeft');
@@ -255,9 +243,7 @@ describe('d2l-input-date', () => {
 					});
 
 					describe('value before min same year', () => {
-						before(async() => {
-							await setValue(page, '#min-max', '01/02/2018');
-						});
+						before(async() => await setValue(page, '#min-max', '01/02/2018'));
 
 						it('left arrow', async function() {
 							await openKey(page, '#min-max');
@@ -275,15 +261,9 @@ describe('d2l-input-date', () => {
 					});
 
 					describe('value after max', () => {
-						before(async() => {
-							await setValue(page, '#min-max', '01/12/2019');
-						});
+						before(async() => await setValue(page, '#min-max', '01/12/2019'));
 
-						after(async() => {
-							await page.$eval('#min-max', (elem) => {
-								elem.blur();
-							});
-						});
+						after(async() => await page.$eval('#min-max', (elem) => elem.blur()));
 
 						it('left arrow', async function() {
 							await openKey(page, '#min-max');
