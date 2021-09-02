@@ -157,15 +157,10 @@ describe('d2l-input-date', () => {
 
 		async function setValue(page, selector, value) {
 			await page.$eval(selector, async(elem, value) => {
+				elem.focus();
 				const input = elem.shadowRoot.querySelector('d2l-input-text');
 				input.value = value;
-				const e = new Event(
-					'change',
-					{ bubbles: true, composed: false }
-				);
-				input.dispatchEvent(e);
 			}, value);
-			await page.$eval(selector, (elem) => elem.blur());
 		}
 
 		it('disabled does not open', async function() {
@@ -195,8 +190,21 @@ describe('d2l-input-date', () => {
 			describe('out of range date typed', () => {
 				// min-value="2018-02-13" max-value="2018-02-27"
 
+				async function setValueBlur(page, selector, value) {
+					await page.$eval(selector, async(elem, value) => {
+						const input = elem.shadowRoot.querySelector('d2l-input-text');
+						input.value = value;
+						const e = new Event(
+							'change',
+							{ bubbles: true, composed: false }
+						);
+						input.dispatchEvent(e);
+					}, value);
+					await page.$eval(selector, (elem) => elem.blur());
+				}
+
 				describe('behavior', () => {
-					before(async() => await setValue(page, '#min-max', '10/12/2017'));
+					before(async() => await setValueBlur(page, '#min-max', '10/12/2017'));
 
 					afterEach(async() => await reset(page, '#min-max'));
 
@@ -230,7 +238,7 @@ describe('d2l-input-date', () => {
 				describe('behavior on key interaction', () => {
 
 					describe('value before min', () => {
-						before(async() => await setValue(page, '#min-max', '10/12/2017'));
+						before(async() => await setValueBlur(page, '#min-max', '10/12/2017'));
 
 						it('left arrow', async function() {
 							await openKey(page, '#min-max');
@@ -248,7 +256,7 @@ describe('d2l-input-date', () => {
 					});
 
 					describe('value before min same year', () => {
-						before(async() => await setValue(page, '#min-max', '01/02/2018'));
+						before(async() => await setValueBlur(page, '#min-max', '01/02/2018'));
 
 						it('left arrow', async function() {
 							await openKey(page, '#min-max');
@@ -266,7 +274,7 @@ describe('d2l-input-date', () => {
 					});
 
 					describe('value after max', () => {
-						before(async() => await setValue(page, '#min-max', '01/12/2019'));
+						before(async() => await setValueBlur(page, '#min-max', '01/12/2019'));
 
 						after(async() => await page.$eval('#min-max', (elem) => elem.blur()));
 
@@ -338,7 +346,10 @@ describe('d2l-input-date', () => {
 
 		describe('with value', () => {
 
-			afterEach(async() => await reset(page, '#value'));
+			afterEach(async() => {
+				await reset(page, '#value');
+				await page.$eval('#value', (elem) => elem.blur());
+			});
 
 			it('open', async function() {
 				await openClick(page, '#value');
@@ -354,7 +365,7 @@ describe('d2l-input-date', () => {
 			});
 
 			it('click date', async function() {
-				await open(page, '#value');
+				await openClick(page, '#value');
 				await page.$eval('#value', (elem) => {
 					const calendar = elem.shadowRoot.querySelector('d2l-calendar');
 					const date = calendar.shadowRoot.querySelector('td[data-date="8"] button');
@@ -386,7 +397,7 @@ describe('d2l-input-date', () => {
 
 			it('opens then changes month then closes then reopens', async function() {
 				// open
-				await open(page, '#value');
+				await openClick(page, '#value');
 
 				// change month
 				await page.$eval('#value', (elem) => {
@@ -399,7 +410,7 @@ describe('d2l-input-date', () => {
 				await reset(page, '#value');
 
 				// re-open
-				await open(page, '#value');
+				await openClick(page, '#value');
 
 				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -422,7 +433,6 @@ describe('d2l-input-date', () => {
 			it('open with enter after text input', async function() {
 				await setValue(page, '#value', '11/21/2031');
 				await openKey(page, '#value');
-
 				await page.waitForTimeout(100);
 				const rect = await getRect(page, '#value');
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
