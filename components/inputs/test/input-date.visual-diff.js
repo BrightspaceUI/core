@@ -172,6 +172,7 @@ describe('d2l-input-date', () => {
 		});
 
 		describe('with min and max', () => {
+
 			afterEach(async() => await reset(page, '#min-max'));
 
 			it('open', async function() {
@@ -287,10 +288,7 @@ describe('d2l-input-date', () => {
 
 		describe('with empty-text', () => {
 
-			afterEach(async() => {
-				await reset(page, '#empty-text');
-				await page.$eval('#empty-text', (elem) => elem.blur());
-			});
+			afterEach(async() => await reset(page, '#empty-text'));
 
 			it('open', async function() {
 				await open(page, '#empty-text');
@@ -314,10 +312,8 @@ describe('d2l-input-date', () => {
 		});
 
 		describe('with placeholder', () => {
-			afterEach(async() => {
-				await reset(page, '#placeholder');
-				await page.$eval('#placeholder', (elem) => elem.blur());
-			});
+
+			afterEach(async() => await reset(page, '#placeholder'));
 
 			it('open', async function() {
 				await open(page, '#placeholder');
@@ -342,14 +338,7 @@ describe('d2l-input-date', () => {
 
 		describe('with value', () => {
 
-			beforeEach(async() => {
-				await page.$eval('#value', (elem) => elem.focus());
-			});
-
-			afterEach(async() => {
-				await reset(page, '#value');
-				await page.$eval('#value', (elem) => elem.blur());
-			});
+			afterEach(async() => await reset(page, '#value'));
 
 			it('open', async function() {
 				await openClick(page, '#value');
@@ -476,10 +465,7 @@ describe('d2l-input-date', () => {
 
 		describe('required', () => {
 
-			afterEach(async() => {
-				await reset(page, '#required');
-				await page.$eval('#required', (elem) => elem.blur());
-			});
+			afterEach(async() => await reset(page, '#required'));
 
 			it('required focus then blur', async function() {
 				await page.$eval('#required', (elem) => elem.focus());
