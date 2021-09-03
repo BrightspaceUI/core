@@ -481,6 +481,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this.dispatchEvent(new CustomEvent('d2l-filter-clear-all', { bubbles: false, composed: false }));
 		}
 		announce(this.localize('components.filter.clearAllAnnounce'));
+
+		this._dimensions.forEach(dimension => {
+			if (dimension.searchType !== 'none' && dimension.searchValue !== '') {
+				dimension.searchValue = '';
+				this._searchDimension(dimension);
+			}
+		});
 	}
 
 	_handleDimensionDataChange(e) {
@@ -548,27 +555,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
 
-		if (dimension.searchType === 'automatic') {
-			this._searchDimension(dimension);
-		} else if (dimension.searchType === 'manual') {
-			dimension.loading = true;
-			this.requestUpdate();
-
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
-				bubbles: false,
-				composed: false,
-				detail: {
-					key: dimension.key,
-					value: searchValue,
-					searchCompleteCallback: function() {
-						requestAnimationFrame(() => {
-							dimension.loading = false;
-							this.requestUpdate();
-						});
-					}.bind(this)
-				}
-			}));
-		}
+		this._searchDimension(dimension);
 	}
 
 	_handleSlotChange(e) {
@@ -611,15 +598,34 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_searchDimension(dimension) {
-		switch (dimension.type) {
-			case 'd2l-filter-dimension-set':
-				dimension.values.forEach(value => {
-					value.hidden = !(value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1);
-				});
-				break;
-		}
+		if (dimension.searchType === 'automatic') {
+			switch (dimension.type) {
+				case 'd2l-filter-dimension-set':
+					dimension.values.forEach(value => {
+						value.hidden = !(value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1);
+					});
+					break;
+			}
+			this.requestUpdate();
+		} else if (dimension.searchType === 'manual') {
+			dimension.loading = true;
+			this.requestUpdate();
 
-		this.requestUpdate();
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
+				bubbles: false,
+				composed: false,
+				detail: {
+					key: dimension.key,
+					value: dimension.searchValue,
+					searchCompleteCallback: function() {
+						requestAnimationFrame(() => {
+							dimension.loading = false;
+							this.requestUpdate();
+						});
+					}.bind(this)
+				}
+			}));
+		}
 	}
 
 	_setFilterCounts(dimensionToRecount) {
