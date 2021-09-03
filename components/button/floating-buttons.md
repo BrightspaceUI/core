@@ -29,7 +29,7 @@ Floating workflow buttons behavior can be added by using the `<d2l-floating-butt
 ![Floating Buttons](./screenshots/floating-buttons.png?raw=true)
 <!-- docs: end hidden content -->
 
-## Floating button [d2l-floatin-button]
+## Floating Button [d2l-floating-buttons]
 
 <!-- docs: demo live name:d2l-floating-buttons autoSize:false display:block size:medium -->
 ```html
