@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../count-badge/count-badge.js';
 import '../button/button-icon.js';
+import '../button/button-subtle.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
@@ -16,6 +17,7 @@ import '../selection/selection-summary.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
@@ -224,9 +226,29 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_buildHeader(singleDimension) {
-		if (!this._activeDimensionKey && !singleDimension) return null;
+		if (!this._activeDimensionKey && !singleDimension) {
+			return html`
+				<div slot="header">
+					<d2l-button-subtle
+						@click="${this._handleClearAll}"
+						?disabled="${this._totalAppliedCount === 0}"
+						description="${this.localize('components.filter.clearAllDescription')}"
+						text="${this.localize('components.filter.clearAll')}">
+					</d2l-button-subtle>
+				</div>
+			`;
+		}
 
 		const dimension = singleDimension ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+
+		const clear = html`
+			<d2l-button-subtle
+				@click="${this._handleClear}"
+				?disabled="${dimension.loading || dimension.appliedCount === 0}"
+				description="${singleDimension ? this.localize('components.filter.clearDescriptionSingle') : this.localize('components.filter.clearDescription', { filterName: dimension.text })}"
+				text="${this.localize('components.filter.clear')}">
+			</d2l-button-subtle>
+		`;
 
 		const search = dimension.searchType === 'none' ? null : html`
 			<d2l-input-search
@@ -252,6 +274,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		const actions = html`
 			<div class="d2l-filter-dimension-header-actions">
+				${clear}
 				${search}
 				${selectAll}
 			</div>
@@ -274,6 +297,23 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				${actions}
 			</div>
 		`;
+	}
+
+	_clearDimension(dimension) {
+		this._totalAppliedCount = this._totalAppliedCount - dimension.appliedCount;
+		dimension.appliedCount = 0;
+
+		switch (dimension.type) {
+			case 'd2l-filter-dimension-set': {
+				dimension.values.forEach(value => {
+					if (value.selected) {
+						value.selected = false;
+						this._setDimensionChangeEvent(dimension, { valueKey: value.key, selected: false }, true);
+					}
+				});
+				break;
+			}
+		}
 	}
 
 	_createSetDimension(dimension) {
@@ -332,20 +372,29 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
-	_dispatchChangeEvent(eventKey, eventDetail) {
-		this._changeEventsToDispatch.set(eventKey, eventDetail);
+	_dispatchChangeEvent(dimension, change) {
+		this._setDimensionChangeEvent(dimension, change, false);
 
 		if (!this._changeEventTimeout) {
 			this._changeEventTimeout = setTimeout(() => {
-				this.dispatchEvent(new CustomEvent('d2l-filter-change', {
-					bubbles: true,
-					composed: false,
-					detail: { changes: Array.from(this._changeEventsToDispatch.values()) }
-				}));
-				this._changeEventsToDispatch = new Map();
-				this._changeEventTimeout = null;
+				this._dispatchChangeEventNow(false);
 			}, 200);
 		}
+	}
+
+	_dispatchChangeEventNow(allCleared) {
+		const dimensions = Array.from(this._changeEventsToDispatch.values());
+		dimensions.forEach(dimension => {
+			dimension.changes = Array.from(dimension.changes.values());
+		});
+
+		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
+			bubbles: true,
+			composed: false,
+			detail: { allCleared: allCleared, dimensions: dimensions }
+		}));
+		this._changeEventsToDispatch = new Map();
+		this._changeEventTimeout = null;
 	}
 
 	_dispatchDimensionFirstOpenEvent(key) {
@@ -384,7 +433,39 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this._totalAppliedCount--;
 		}
 
-		this._dispatchChangeEvent(`${dimensionKey}-${valueKey}`, { dimension: dimensionKey, value: { key: valueKey, selected: selected } });
+		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected }, false);
+	}
+
+	_handleClear() {
+		const dimension = !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+
+		this._clearDimension(dimension);
+		this._dispatchChangeEventNow(false);
+		this.requestUpdate();
+
+		if (!this._activeDimensionKey) {
+			announce(this.localize('components.filter.clearAnnounceSingle'));
+		} else {
+			announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
+		}
+	}
+
+	_handleClearAll() {
+		this._dimensions.forEach(dimension => {
+			this._clearDimension(dimension);
+		});
+
+		this._dispatchChangeEventNow(true);
+		this.requestUpdate();
+
+		announce(this.localize('components.filter.clearAllAnnounce'));
+
+		this._dimensions.forEach(dimension => {
+			if (dimension.searchType !== 'none' && dimension.searchValue !== '') {
+				dimension.searchValue = '';
+				this._searchDimension(dimension);
+			}
+		});
 	}
 
 	_handleDimensionDataChange(e) {
@@ -452,27 +533,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
 
-		if (dimension.searchType === 'automatic') {
-			this._searchDimension(dimension);
-		} else if (dimension.searchType === 'manual') {
-			dimension.loading = true;
-			this.requestUpdate();
-
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
-				bubbles: false,
-				composed: false,
-				detail: {
-					key: dimension.key,
-					value: searchValue,
-					searchCompleteCallback: function() {
-						requestAnimationFrame(() => {
-							dimension.loading = false;
-							this.requestUpdate();
-						});
-					}.bind(this)
-				}
-			}));
-		}
+		this._searchDimension(dimension);
 	}
 
 	_handleSlotChange(e) {
@@ -514,15 +575,47 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_searchDimension(dimension) {
+		if (dimension.searchType === 'automatic') {
+			switch (dimension.type) {
+				case 'd2l-filter-dimension-set':
+					dimension.values.forEach(value => {
+						value.hidden = !(value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1);
+					});
+					break;
+			}
+			this.requestUpdate();
+		} else if (dimension.searchType === 'manual') {
+			dimension.loading = true;
+			this.requestUpdate();
+
+			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
+				bubbles: false,
+				composed: false,
+				detail: {
+					key: dimension.key,
+					value: dimension.searchValue,
+					searchCompleteCallback: function() {
+						requestAnimationFrame(() => {
+							dimension.loading = false;
+							this.requestUpdate();
+						});
+					}.bind(this)
+				}
+			}));
+		}
+	}
+
+	_setDimensionChangeEvent(dimension, change, cleared) {
+		if (!this._changeEventsToDispatch.has(dimension.key)) {
+			this._changeEventsToDispatch.set(dimension.key, { dimensionKey: dimension.key, cleared: false, changes: new Map() });
+		}
+		const dimensionChanges = this._changeEventsToDispatch.get(dimension.key);
+		dimensionChanges.cleared = cleared;
+
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				dimension.values.forEach(value => {
-					value.hidden = !(value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1);
-				});
-				break;
+				dimensionChanges.changes.set(change.valueKey, change);
 		}
-
-		this.requestUpdate();
 	}
 
 	_setFilterCounts(dimensionToRecount) {
