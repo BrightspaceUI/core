@@ -8,7 +8,6 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -256,6 +255,8 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._hasAfterContent = false;
 		this._hovered = false;
 		this._inputId = getUniqueId();
+		this._intersectionObserver = null;
+		this._isIntersecting = false;
 		this._lastSlotWidth = 0;
 		this._prevValue = '';
 
@@ -311,6 +312,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 		const container = this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
 		container.removeEventListener('blur', this._handleBlur, true);
@@ -331,14 +333,21 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		container.addEventListener('mouseover', this._handleMouseEnter);
 		container.addEventListener('mouseout', this._handleMouseLeave);
 
-		if (!this.offsetParent) {
-			// if initially hidden then update layout when it becomes visible
-			const resizeObserver = new ResizeObserver(() => {
-				resizeObserver.disconnect();
-				this._updateInputLayout();
+		// if initially hidden then update layout when it becomes visible
+		if (typeof(IntersectionObserver) === 'function') {
+			this._intersectionObserver = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						this._isIntersecting = true;
+						this._updateInputLayout();
+					}
+				});
 			});
-			resizeObserver.observe(container);
+			this._intersectionObserver.observe(container);
+		} else {
+			this._isIntersecting = true;
 		}
+
 	}
 
 	render() {
@@ -533,14 +542,16 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._hovered = false;
 	}
 
-	_handleSlotChange(e) {
-		const container = e.target.parentNode;
-
-		// requestUpdate needed for legacy Edge
-		this.requestUpdate();
-		this.updateComplete.then(() => {
-			this._updateInputLayout(container);
-		});
+	_handleSlotChange() {
+		// requestUpdate needed for legacy-Edge
+		if (navigator.userAgent.indexOf('Edge/') > -1) {
+			this.requestUpdate();
+			this.updateComplete.then(() => {
+				this._updateInputLayout();
+			});
+		} else {
+			this._updateInputLayout();
+		}
 	}
 
 	_handleUnitClick() {
@@ -573,15 +584,27 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		e.stopPropagation();
 	}
 
-	_updateInputLayout(container) {
-		if (!container) {
-			this._firstSlotWidth = this.shadowRoot.querySelector('.d2l-input-inside-before').getBoundingClientRect().width;
-			this._lastSlotWidth = this.shadowRoot.querySelector('.d2l-input-inside-after').getBoundingClientRect().width;
-		} else if (container === this.shadowRoot.querySelector('.d2l-input-inside-before')) {
-			this._firstSlotWidth = container.getBoundingClientRect().width;
-		} else if (container === this.shadowRoot.querySelector('.d2l-input-inside-after')) {
-			this._lastSlotWidth = container.getBoundingClientRect().width;
+	_updateInputLayout() {
+
+		// defer until we're visible
+		if (!this._isIntersecting) return;
+
+		const firstContainer = this.shadowRoot.querySelector('.d2l-input-inside-before');
+		const firstSlotHasNodes = firstContainer.firstElementChild.assignedNodes({ flatten: true }).length > 0;
+		const lastContainer = this.shadowRoot.querySelector('.d2l-input-inside-after');
+		const lastSlotHasNodes = lastContainer.firstElementChild.assignedNodes({ flatten: true }).length > 0;
+
+		if (firstSlotHasNodes) {
+			requestAnimationFrame(() => this._firstSlotWidth = firstContainer.getBoundingClientRect().width);
+		} else {
+			this._firstSlotWidth = 0;
 		}
+		if (lastSlotHasNodes) {
+			requestAnimationFrame(() => this._lastSlotWidth = lastContainer.getBoundingClientRect().width);
+		} else {
+			this._lastSlotWidth = 0;
+		}
+
 	}
 
 }
