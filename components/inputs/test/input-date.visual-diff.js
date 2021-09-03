@@ -190,6 +190,7 @@ describe('d2l-input-date', () => {
 
 				async function setValueBlur(page, selector, value) {
 					await page.$eval(selector, async(elem, value) => {
+						elem.focus();
 						const input = elem.shadowRoot.querySelector('d2l-input-text');
 						input.value = value;
 						const e = new Event(
@@ -204,7 +205,10 @@ describe('d2l-input-date', () => {
 				describe('behavior', () => {
 					before(async() => await setValueBlur(page, '#min-max', '10/12/2017'));
 
-					afterEach(async() => await reset(page, '#min-max'));
+					afterEach(async() => {
+						await reset(page, '#min-max');
+						await page.$eval('#min-max', (elem) => elem.blur());
+					});
 
 					it('focus', async function() {
 						await page.$eval('#min-max', (elem) => elem.focus());
@@ -218,16 +222,16 @@ describe('d2l-input-date', () => {
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
-					it('open then tab', async function() {
-						await openClick(page, '#min-max');
-						await page.waitForTimeout(100);
-						await page.keyboard.press('Tab');
+					it('open with enter', async function() {
+						await openKey(page, '#min-max');
 						const rect = await getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
 
-					it('open with enter', async function() {
-						await openKey(page, '#min-max');
+					it('open then tab', async function() {
+						await openClick(page, '#min-max');
+						await page.waitForTimeout(100);
+						await page.keyboard.press('Tab');
 						const rect = await getRect(page, '#min-max');
 						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 					});
