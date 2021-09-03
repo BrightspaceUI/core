@@ -164,8 +164,7 @@ describe('d2l-input-date', () => {
 
 		it('disabled does not open', async function() {
 			await openClick(page, '#disabled');
-			const rect = await visualDiff.getRect(page, '#disabled');
-			rect.height += 50; // ensure no dropdown below
+			const rect = await getRect(page, '#disabled');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
