@@ -8,6 +8,7 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import { PerfMonitor } from '../../helpers/perfMonitor.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -264,6 +265,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		this._handleFocus = this._handleFocus.bind(this);
 		this._handleMouseEnter = this._handleMouseEnter.bind(this);
 		this._handleMouseLeave = this._handleMouseLeave.bind(this);
+		this._perfMonitor = new PerfMonitor(this);
 	}
 
 	get value() { return this._value; }
@@ -310,6 +312,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		return super.validity;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		this._perfMonitor.hostConnected();
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
@@ -351,6 +358,9 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	}
 
 	render() {
+
+		this._perfMonitor.hostUpdated();
+
 		const isFocusedOrHovered = !this.disabled && (this._focused || this._hovered);
 		const inputClasses = {
 			'd2l-input': true,
