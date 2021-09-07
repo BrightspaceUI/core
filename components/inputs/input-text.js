@@ -590,9 +590,11 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		if (!this._isIntersecting) return;
 
 		const firstContainer = this.shadowRoot.querySelector('.d2l-input-inside-before');
-		const firstSlotHasNodes = firstContainer.firstElementChild.assignedNodes({ flatten: true }).length > 0;
+		const firstSlotHasNodes = firstContainer.querySelector('slot').assignedNodes({ flatten: true }).length > 0
+			|| (this.unit && this.dir === 'rtl');
 		const lastContainer = this.shadowRoot.querySelector('.d2l-input-inside-after');
-		const lastSlotHasNodes = lastContainer.firstElementChild.assignedNodes({ flatten: true }).length > 0;
+		const lastSlotHasNodes = lastContainer.querySelector('slot').assignedNodes({ flatten: true }).length > 0
+			|| (this.unit && this.dir !== 'rtl');
 
 		if (firstSlotHasNodes) {
 			requestAnimationFrame(() => this._firstSlotWidth = firstContainer.getBoundingClientRect().width);
