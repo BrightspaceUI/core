@@ -1,6 +1,5 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
-import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
@@ -269,6 +268,11 @@ export class TableWrapper extends RtlMixin(LitElement) {
 
 	async _applyClassNames(table) {
 
+		// wait until start of next frame to read
+		await new Promise(resolve => {
+			requestAnimationFrame(resolve);
+		});
+
 		// offsetParent causes reflow/paint so do them all at once
 		const rows = Array.from(table.rows);
 		let firstRow = null;
@@ -317,7 +321,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			const offset = this.type === 'default' ? -3 : 1; // default: -5px top + 2px border, light: 0 top + 1px border
 			const ths = Array.from(table.querySelectorAll('tr.d2l-table-header:not(:first-child) th, tr[header]:not(:first-child) th, thead tr:not(:first-child) th'));
 			ths.forEach((th) => {
-				th.style.top = `${topHeader.clientHeight + offset}px`;
+				th.style.top = `${topHeaderHeight + offset}px`;
 			});
 		}
 
@@ -352,7 +356,7 @@ export class TableWrapper extends RtlMixin(LitElement) {
 				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (entry.isIntersecting) {
-							requestIdleCallback(() => this._applyClassNames(table));
+							this._applyClassNames(table);
 						}
 					});
 				});
@@ -362,7 +366,8 @@ export class TableWrapper extends RtlMixin(LitElement) {
 			this._tableIntersectionObserver.observe(table);
 		}
 
-		requestAnimationFrame(() => this._applyClassNames(table));
+		this._applyClassNames(table);
+
 	}
 }
 
