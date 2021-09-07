@@ -51,6 +51,24 @@ class CountBadge extends RtlMixin(LitElement) {
 				reflect: true,
 				attribute: 'hide-zero'
 			},
+			/**
+			 * Optionally add a description that will show as an aria-label on the badge.
+			 * @type {string}
+			 */
+			description: {
+				type: String,
+				reflect: true,
+				attribute: 'description'
+			},
+			/**
+			 * Optionally choose to add a tab stop to the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			tabStop: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'tab-stop'
+			},
 		};
 	}
 
@@ -115,6 +133,8 @@ class CountBadge extends RtlMixin(LitElement) {
 		this.type = 'count';
 		this.size = 'small';
 		this.hideZero = false;
+		this.description = '';
+		this.tabStop = false;
 	}
 
 	connectedCallback() {
@@ -134,7 +154,7 @@ class CountBadge extends RtlMixin(LitElement) {
 			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
 		return html`
-        	<div class="d2l-count-badge-number">${numberString}</div>`;
+        	<div class="d2l-count-badge-number" tabindex="${this.tabStop ? '0' : '-1'}"  aria-live="polite" aria-label="${this.description}">${numberString}</div>`;
 	}
 }
 

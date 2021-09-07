@@ -213,11 +213,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 		return this._dimensions.map((dimension) => {
 			const builtDimension = this._buildDimension(dimension);
-			const dimensionDescription = `${dimension.text}. ${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
-			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
+			const dimensionDescription = `${dimension.text}.`;
+			const countBadgeId = `count-badge-${dimension.text.replaceAll(' ', '-')}`;
+			const filtersAppliedDescription = `${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
+			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}" aria-describedby="${countBadgeId}">
 				${builtDimension}
 				<div slot="supporting">
-					<d2l-count-badge number="${dimension.appliedCount}" max-digits="2" hide-zero></d2l-count-badge>
+					<d2l-count-badge id="${countBadgeId}" number="${dimension.appliedCount}" max-digits="2" description="${filtersAppliedDescription}" hide-zero></d2l-count-badge>
 				</div>
 			</d2l-menu-item>`;
 		});
