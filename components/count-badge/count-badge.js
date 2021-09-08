@@ -14,7 +14,6 @@ class CountBadge extends RtlMixin(LitElement) {
 			 */
 			number: {
 				type: Number,
-				reflect: true,
 				attribute: 'number'
 			},
 			/**
@@ -41,7 +40,6 @@ class CountBadge extends RtlMixin(LitElement) {
 			 */
 			maxDigits: {
 				type: Number,
-				reflect: true,
 				attribute: 'max-digits'
 			},
 			/**
@@ -50,7 +48,6 @@ class CountBadge extends RtlMixin(LitElement) {
 			 */
 			hideZero: {
 				type: Boolean,
-				reflect: true,
 				attribute: 'hide-zero'
 			},
 			/**
@@ -59,7 +56,6 @@ class CountBadge extends RtlMixin(LitElement) {
 			 */
 			description: {
 				type: String,
-				reflect: true,
 				attribute: 'description'
 			},
 			/**
@@ -68,7 +64,6 @@ class CountBadge extends RtlMixin(LitElement) {
 			 */
 			tabStop: {
 				type: Boolean,
-				reflect: true,
 				attribute: 'tab-stop'
 			},
 			/**
@@ -77,9 +72,8 @@ class CountBadge extends RtlMixin(LitElement) {
 			 */
 			announceChanges: {
 				type: Boolean,
-				reflect: true,
 				attribute: 'announce-changes'
-			},
+			}
 		};
 	}
 
