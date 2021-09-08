@@ -1,5 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class CountBadge extends RtlMixin(LitElement) {
@@ -52,7 +54,7 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'hide-zero'
 			},
 			/**
-			 * Optionally add a description that will show as an aria-label on the badge.
+			 * The description that will show as an aria-label on the badge.
 			 * @type {string}
 			 */
 			description: {
@@ -82,7 +84,7 @@ class CountBadge extends RtlMixin(LitElement) {
 	}
 
 	static get styles() {
-		return [ css`
+		return [ offscreenStyles, css`
 		:host([hidden]) {
 			display: none;
 		}
@@ -165,10 +167,11 @@ class CountBadge extends RtlMixin(LitElement) {
 		}
 		return html`
         	<div class="d2l-count-badge-number" 
-				tabindex="${this.tabStop ? '0' : '-1'}" 
-				role="${this.announceChanges ? 'status' : 'presentation' }"
+				tabindex="${ifDefined(this.tabStop ? '0' : undefined)}" 
+				role="${ifDefined(this.announceChanges ? 'status' : undefined)}"
 				aria-label="${this.description}"
-			>${numberString}</div>`;
+			>${numberString}<span class="d2l-offscreen">"${this.description}"</span>
+			</div>`;
 	}
 }
 
