@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../count-badge/count-badge.js';
 import '../button/button-icon.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
@@ -216,7 +217,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
 				${builtDimension}
 				<div slot="supporting">
-					<span>${this._formatFilterCount(dimension.appliedCount)}</span>
+					<d2l-count-badge number="${dimension.appliedCount}" max-digits="2" hide-zero></d2l-count-badge>
 				</div>
 			</d2l-menu-item>`;
 		});

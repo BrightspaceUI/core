@@ -295,6 +295,48 @@ describe('d2l-input-date', () => {
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 						});
 					});
+
+					describe('value after max same month as max', () => {
+						before(async() => {
+							await page.$eval('#min-max', (elem) => {
+								const input = elem.shadowRoot.querySelector('d2l-input-text');
+								input.value = '02/12/2019';
+							});
+						});
+
+						after(async() => {
+							await page.$eval('#min-max', (elem) => {
+								elem.blur();
+							});
+						});
+
+						it('left arrow', async function() {
+							await page.$eval('#min-max', (elem) => {
+								const input = elem.shadowRoot.querySelector('d2l-input-text');
+								const eventObj = document.createEvent('Events');
+								eventObj.initEvent('keydown', true, true);
+								eventObj.keyCode = 13;
+								input.dispatchEvent(eventObj);
+							});
+							await page.keyboard.press('ArrowLeft');
+							const rect = await getRect(page, '#min-max');
+							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+
+						});
+
+						it('right arrow', async function() {
+							await page.$eval('#min-max', (elem) => {
+								const input = elem.shadowRoot.querySelector('d2l-input-text');
+								const eventObj = document.createEvent('Events');
+								eventObj.initEvent('keydown', true, true);
+								eventObj.keyCode = 13;
+								input.dispatchEvent(eventObj);
+							});
+							await page.keyboard.press('ArrowRight');
+							const rect = await getRect(page, '#min-max');
+							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+						});
+					});
 				});
 
 			});

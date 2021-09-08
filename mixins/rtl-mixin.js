@@ -11,7 +11,10 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 	constructor() {
 		super();
 		const dir = document.documentElement.getAttribute('dir');
-		if (dir) this._dir = dir;
+		// avoid reflecting "ltr" for better performance
+		if (dir && dir !== 'ltr') {
+			this._dir = dir;
+		}
 	}
 
 });
