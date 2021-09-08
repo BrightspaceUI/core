@@ -168,6 +168,7 @@ class CountBadge extends RtlMixin(LitElement) {
 				tabindex="${this.tabStop ? '0' : '-1'}" 
 				aria-live="${this.announceChanges ? 'polite' : 'off' }"
 				aria-label="${this.description}"
+				role="presentation"
 			>${numberString}</div>`;
 	}
 }
