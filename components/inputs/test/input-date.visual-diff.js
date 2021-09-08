@@ -311,13 +311,7 @@ describe('d2l-input-date', () => {
 						});
 
 						it('left arrow', async function() {
-							await page.$eval('#min-max', (elem) => {
-								const input = elem.shadowRoot.querySelector('d2l-input-text');
-								const eventObj = document.createEvent('Events');
-								eventObj.initEvent('keydown', true, true);
-								eventObj.keyCode = 13;
-								input.dispatchEvent(eventObj);
-							});
+							await openKey(page, '#min-max');
 							await page.keyboard.press('ArrowLeft');
 							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -325,13 +319,7 @@ describe('d2l-input-date', () => {
 						});
 
 						it('right arrow', async function() {
-							await page.$eval('#min-max', (elem) => {
-								const input = elem.shadowRoot.querySelector('d2l-input-text');
-								const eventObj = document.createEvent('Events');
-								eventObj.initEvent('keydown', true, true);
-								eventObj.keyCode = 13;
-								input.dispatchEvent(eventObj);
-							});
+							await openKey(page, '#min-max');
 							await page.keyboard.press('ArrowRight');
 							const rect = await getRect(page, '#min-max');
 							await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
