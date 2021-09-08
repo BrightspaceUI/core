@@ -54,7 +54,7 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'hide-zero'
 			},
 			/**
-			 * The description that will show as an aria-label on the badge.
+			 * The description that will show as an aria-label on the badge. NOTE: Only the description will be read by screen-readers (not the number).
 			 * @type {string}
 			 */
 			description: {
@@ -166,11 +166,12 @@ class CountBadge extends RtlMixin(LitElement) {
 			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
 		return html`
-        	<div class="d2l-count-badge-number" 
-				tabindex="${ifDefined(this.tabStop ? '0' : undefined)}" 
-				role="${ifDefined(this.announceChanges ? 'status' : undefined)}"
-				aria-label="${this.description}"
-			>${numberString}<span class="d2l-offscreen">"${this.description}"</span>
+        	<div
+			tabindex="${ifDefined(this.tabStop ? '0' : undefined)}" 
+			role="${ifDefined(this.announceChanges ? 'status' : undefined)}"
+			aria-label="${this.description}">
+				<div class="d2l-count-badge-number" aria-hidden="true">${numberString}</div>
+				<span class="d2l-offscreen">"${this.description}"</span>
 			</div>`;
 	}
 }

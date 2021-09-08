@@ -31,7 +31,7 @@ To make your `d2l-count-badge` accessible, use the following properties when app
 
 | Attribute | Description |
 |--|--|
-| `description`, required | A description of the badge for screen-readers, to be used as an aria-label. |
+| `description`, required | A description of the badge for screen-readers, to be used as an aria-label. NOTE: Only the description will be read by screen-readers (not the number). |
 | `tab-stop` | Optionally choose to make the badge a tab stop. |
 | `announce-changes` | Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the description will be read by screenreaders. |
 
