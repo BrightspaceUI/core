@@ -24,8 +24,17 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
 | `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
-| `description`, default: `""` | String | Optionally choose to add a description, to be the aria-label on the badge. |
-| `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
+
+### Accessibility Properties
+
+To make your `d2l-count-badge` accessible, use the following properties when applicable:
+
+| Attribute | Description |
+|--|--|
+| `description` | Optionally choose to add a description, to be the aria-label on the badge. |
+| `tab-stop` | Optionally choose to make the badge a tab stop. |
+| `announce-changes` | Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the description will be read by screenreaders. |
+
 
 ## Future Enhancements
 
