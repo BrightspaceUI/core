@@ -677,9 +677,6 @@ class TemplatePrimarySecondary extends FocusVisiblePolyfillMixin(RtlMixin(Locali
 				box-shadow: 0 -2px 4px rgba(73, 76, 78, 0.2); /* ferrite */
 				padding: 0.75rem 1rem;
 			}
-			header, footer {
-				z-index: 2; /* ensures the footer box-shadow is over main areas with background colours set */
-			}
 
 			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
 			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
