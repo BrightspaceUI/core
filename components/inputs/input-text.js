@@ -312,11 +312,6 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		return super.validity;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this._perfMonitor.hostConnected();
-	}
-
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();

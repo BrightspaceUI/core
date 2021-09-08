@@ -5,10 +5,6 @@ export class PerfMonitor {
 		this.host = host;
 	}
 
-	hostConnected() {
-		this.connectedTime = window.performance.now();
-	}
-
 	hostUpdated() {
 		if (!window.d2lPerfTestInProgress || this.renderedTime !== undefined) return;
 		setTimeout(async() => {
