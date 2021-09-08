@@ -166,9 +166,8 @@ class CountBadge extends RtlMixin(LitElement) {
 		return html`
         	<div class="d2l-count-badge-number" 
 				tabindex="${this.tabStop ? '0' : '-1'}" 
-				aria-live="${this.announceChanges ? 'polite' : 'off' }"
+				role="${this.announceChanges ? 'status' : 'presentation' }"
 				aria-label="${this.description}"
-				role="presentation"
 			>${numberString}</div>`;
 	}
 }
