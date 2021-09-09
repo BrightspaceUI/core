@@ -57,6 +57,12 @@ describe('d2l-floating-buttons', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 	});
 
+	it('floats when bounded', async function() {
+		await scroll(page, '#floating-buttons-bounded');
+		const rect = await visualDiff.getRect(page, '#floating-buttons-bounded');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 	describe('window less than min-height (500px)', () => {
 
 		before(async() => {
