@@ -1,0 +1,33 @@
+/* eslint-env node */
+const { createDefaultConfig } = require('@open-wc/testing-karma');
+const merge = require('deepmerge');
+
+const defaultPattern = '+(components|directives|helpers|mixins|templates)/**/*.perf.js';
+
+module.exports = config => {
+	config.set(
+		merge(createDefaultConfig(config), {
+			files: [
+				// runs all files ending with .test in the test folder,
+				// can be overwritten by passing a --grep flag. examples:
+				//
+				// npm run test -- --grep test/foo/bar.test.js
+				// npm run test -- --grep test/bar/*
+				'tools/resize-observer-test-error-handler.js',
+				{ pattern: 'tools/perf-test-helper.js', type: 'module' },
+				{ pattern: config.grep ? config.grep : defaultPattern, type: 'module' },
+			],
+			// see the karma-esm docs for all options
+			esm: {
+				// if you are using 'bare module imports' you will need this option
+				nodeResolve: true,
+			},
+			client: {
+				mocha: {
+					timeout: 10000
+				}
+			}
+		}),
+	);
+	return config;
+};
