@@ -489,7 +489,7 @@ describe('d2l-filter', () => {
 					const offscreen = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"]');
 
 					expect(menuItemCount.textContent).to.equal(testCase.text);
-					expect(countBadge.description).to.equal(testCase.description);
+					expect(countBadge.text).to.equal(testCase.description);
 					expect(offscreen.description).to.equal('Role.');
 				});
 			});

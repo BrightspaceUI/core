@@ -51,12 +51,12 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'hide-zero'
 			},
 			/**
-			 * The description that will show as an aria-label on the badge. NOTE: Only the description will be read by screen-readers (not the number).
+			 * The text that will show as an aria-label on the badge. NOTE: Only the text will be read by screen-readers (not the number).
 			 * @type {string}
 			 */
-			description: {
+			text: {
 				type: String,
-				attribute: 'description'
+				attribute: 'text'
 			},
 			/**
 			 * Optionally choose to add a tab stop to the badge. Defaults to false.
@@ -67,7 +67,7 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'tab-stop'
 			},
 			/**
-			 * Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the description will be read by screenreaders. Defaults to false.
+			 * Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the text will be read by screenreaders. Defaults to false.
 			 * @type {boolean}
 			 */
 			announceChanges: {
@@ -138,7 +138,7 @@ class CountBadge extends RtlMixin(LitElement) {
 		this.type = 'count';
 		this.size = 'small';
 		this.hideZero = false;
-		this.description = '';
+		this.text = '';
 		this.tabStop = false;
 		this.announceChanges = false;
 	}
@@ -163,9 +163,9 @@ class CountBadge extends RtlMixin(LitElement) {
         	<div
 			tabindex="${ifDefined(this.tabStop ? '0' : undefined)}" 
 			role="${ifDefined(this.announceChanges ? 'status' : undefined)}"
-			aria-label="${this.description}">
+			aria-label="${this.text}">
 				<div class="d2l-count-badge-number" aria-hidden="true">${numberString}</div>
-				<span class="d2l-offscreen">"${this.description}"</span>
+				<span class="d2l-offscreen">"${this.text}"</span>
 			</div>`;
 	}
 }
