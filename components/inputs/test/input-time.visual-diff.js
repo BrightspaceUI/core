@@ -146,6 +146,20 @@ describe('d2l-input-time', () => {
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 
+		it('dropdown open click', async function() {
+			await page.$eval('#dropdown', (elem) => {
+				elem.focus();
+				const input = elem.shadowRoot.querySelector('input');
+				const e = new Event(
+					'mouseup',
+					{ bubbles: true, composed: true }
+				);
+				input.dispatchEvent(e);
+			});
+			const rect = await getRect(page, '#dropdown');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
 		it('dropdown open enforce-time-intervals', async function() {
 			await page.$eval('#enforce', (elem) => elem.skeleton = false);
 			await open(page, '#enforce');

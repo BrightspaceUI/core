@@ -12,7 +12,7 @@
 			const newToday = new Date('2018-02-12T19:12Z');
 			sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 
-			const elems = document.querySelectorAll('d2l-input-time');
+			const elems = document.querySelectorAll('d2l-input-time[id*="opened"]');
 			elems.forEach(elem => elem._dropdownFirstOpened = true);
 		</script>
 		<title>d2l-input-time visual-diff tests</title>
