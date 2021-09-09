@@ -182,7 +182,7 @@ The `d2l-card-content-title` element is a helper for providing layout/style for 
 </d2l-card>
 ```
 
-## Card content: Meta  <d2l-card-content-meta>
+## Card Content: Meta  [d2l-card-content-meta]
 
 The `d2l-card-content-meta` element is a helper for providing layout/style for a meta data within the `content` slot.
 
