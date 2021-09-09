@@ -142,6 +142,10 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
+			 * Whether or not the dropdown is open
+			 */
+			opened: { type: Boolean, reflect: true },
+			/**
 			 * Indicates that a value is required
 			 */
 			required: { type: Boolean, reflect: true },
@@ -209,6 +213,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.opened = false;
 		this.required = false;
 		this.timeInterval = 'thirty';
 		this._dropdownFirstOpened = false;
@@ -336,6 +341,12 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') this.setFormValue(this.value);
+			else if (prop === 'opened') {
+				if (this.opened) this._open();
+				else this._close();
+			} else if (prop === 'disabled' || prop === 'skeleton') {
+				if (this.opened) this._open();
+			}
 		});
 	}
 
@@ -351,6 +362,12 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			minutes: time.getMinutes(),
 			seconds: time.getSeconds()
 		};
+	}
+
+	_close() {
+		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
+		if (!dropdown || !dropdown.opened) return;
+		dropdown.close();
 	}
 
 	_getAriaLabel() {
@@ -386,6 +403,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	_handleDropdownClose() {
 		/** @ignore */
+		this.opened = false;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: false } }
@@ -394,7 +412,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	async _handleDropdownOpen() {
-		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
+		this.opened = true;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
@@ -403,15 +421,9 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	async _handleKeydown(e) {
-		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
-			if (!this._dropdownFirstOpened) {
-				this._dropdownFirstOpened = true;
-				await this.updateComplete;
-			}
-			dropdown.open(true);
-			this.shadowRoot.querySelector('d2l-menu').focus();
+			this.opened = true;
 			e.preventDefault();
 		}
 	}
@@ -425,6 +437,19 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			'd2l-input-time-hidden-content-width-change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	async _open() {
+		if (this.disabled || this.skeleton) return;
+		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
+
+		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
+		if (dropdown && dropdown.opened) return;
+
+		await this.updateComplete;
+
+		dropdown.open(true);
+		this.shadowRoot.querySelector('d2l-menu').focus();
 	}
 }
 customElements.define('d2l-input-time', InputTime);

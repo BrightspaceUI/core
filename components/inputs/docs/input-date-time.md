@@ -160,6 +160,7 @@ size:large
 | `disabled` | Boolean | Disables the input |
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
+| `opened` | Boolean | Whether or not the dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
 | `value` | String, default `''` | Value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable). |
