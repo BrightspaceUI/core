@@ -8,8 +8,8 @@ Used to surface pertinent information, cards make it easy for users to browse in
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
-  import '@brightspace-ui/core/components/tooltip/tooltip.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
 <d2l-card align-center text="Biology" align-center style="height: 320px; width: 245px;">
