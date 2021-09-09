@@ -17,6 +17,7 @@ import '../selection/selection-summary.js';
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -214,7 +215,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return this._dimensions.map((dimension) => {
 			const builtDimension = this._buildDimension(dimension);
 			const dimensionDescription = `${dimension.text}.`;
-			const countBadgeId = `count-badge-${dimension.text?.replace(/ /g, '-')}`;
+			const countBadgeId = getUniqueId();
 			const filtersAppliedText = `${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
 			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}" aria-describedby="${countBadgeId}">
 				${builtDimension}

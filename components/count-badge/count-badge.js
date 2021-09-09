@@ -1,5 +1,7 @@
 import '../colors/colors.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -73,12 +75,20 @@ class CountBadge extends RtlMixin(LitElement) {
 			announceChanges: {
 				type: Boolean,
 				attribute: 'announce-changes'
+			},
+			/**
+			 * Optionally add a tooltip on the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			tooltip: {
+				type: Boolean,
+				attribute: 'tooltip'
 			}
 		};
 	}
 
 	static get styles() {
-		return [ offscreenStyles, css`
+		return [offscreenStyles, css`
 		:host([hidden]) {
 			display: none;
 		}
@@ -141,6 +151,8 @@ class CountBadge extends RtlMixin(LitElement) {
 		this.text = '';
 		this.tabStop = false;
 		this.announceChanges = false;
+		this.tooltip = false;
+		this._badgeId = getUniqueId();
 	}
 
 	connectedCallback() {
@@ -161,12 +173,14 @@ class CountBadge extends RtlMixin(LitElement) {
 		}
 		return html`
         	<div
-			tabindex="${ifDefined(this.tabStop ? '0' : undefined)}" 
+			id="${this._badgeId}"
+			tabindex="${ifDefined(this.tabStop || this.tooltip ? '0' : undefined)}" 
 			role="${ifDefined(this.announceChanges ? 'status' : undefined)}"
 			aria-label="${this.text}">
 				<div class="d2l-count-badge-number" aria-hidden="true">${numberString}</div>
-				<span class="d2l-offscreen">"${this.text}"</span>
-			</div>`;
+			${this.tooltip ? html`<d2l-tooltip for="${this._badgeId}">${this.text}</d2l-tooltip>` : html`<span class="d2l-offscreen">"${this.text}"</span>`}
+			</div>
+			`;
 	}
 }
 
