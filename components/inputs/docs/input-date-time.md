@@ -49,6 +49,7 @@ size:xlarge
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
 | `min-value` | String | Minimum valid date that could be selected by a user. |
+| `opened` | Boolean | Whether or not the calendar dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `value` | String, default `''` | Value of the input. |
 
