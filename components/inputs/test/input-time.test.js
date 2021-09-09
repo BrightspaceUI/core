@@ -272,7 +272,6 @@ describe('d2l-input-time', () => {
 			});
 
 			it('should open dropdown when true', async() => {
-				await dropdownContent.updateComplete;
 				expect(dropdownContent.opened).to.be.true;
 			});
 
@@ -286,22 +285,18 @@ describe('d2l-input-time', () => {
 		});
 
 		describe('interacting with dropdown', () => {
-			let dropdown, dropdownOpener, elem, eventObj;
 
-			beforeEach(async() => {
-				elem = await fixture(basicFixture);
+			it('should set opened to true when dropdown opened with enter', async() => {
+				const elem = await fixture(basicFixture);
 
-				dropdown = getChildElem(elem, 'd2l-dropdown');
-				dropdownOpener = getChildElem(elem, '.d2l-dropdown-opener');
+				const dropdown = getChildElem(elem, 'd2l-dropdown');
+				const dropdownOpener = getChildElem(elem, '.d2l-dropdown-opener');
 
-				eventObj = document.createEvent('Events');
+				const eventObj = document.createEvent('Events');
 				eventObj.initEvent('keydown', true, true);
 				eventObj.keyCode = 13;
 				dropdownOpener.dispatchEvent(eventObj);
 				await oneEvent(dropdown, 'd2l-dropdown-open');
-			});
-
-			it('should set opened to true when dropdown open', async() => {
 				expect(elem.opened).to.be.true;
 			});
 		});
