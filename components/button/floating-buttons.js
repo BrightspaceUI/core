@@ -15,12 +15,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			/**
 			 * Indicates to display buttons as always floating
 			 */
-			alwaysFloat: { type: Boolean, attribute: 'always-float' },
-
-			/**
-			 * The minimum height of the viewport to display floating buttons at (where applicable)
-			 */
-			minHeight: { type: String, attribute: 'min-height' },
+			alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
 			_containerMarginLeft: { type: String },
 			_containerMarginRight: { type: String },
 			_floating: { type: Boolean, reflect: true },
@@ -104,8 +99,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.alwaysFloat = false;
-		this.minHeight = '500px';
-
 		this._calcContainerPosition = this._calcContainerPosition.bind(this);
 	}
 
@@ -192,10 +185,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			return true;
 		}
 
-		let _viewportIsLessThanMinHeight;
-		if (this.minHeight) {
-			_viewportIsLessThanMinHeight = window.matchMedia(`(max-height: ${this.minHeight})`).matches;
-		}
+		const _viewportIsLessThanMinHeight = window.matchMedia('(max-height: 500px)').matches;
 
 		const viewBottom = window.innerHeight;
 		const containerRectHeight = this.getBoundingClientRect().height;
