@@ -6,6 +6,8 @@
 	<script type="module">
 		import '../count-badge.js';
 		import '../../typography/typography.js';
+		import { forceFocusVisible } from '../../../helpers/focus.js';
+		window.forceFocusVisible = forceFocusVisible;
 	</script>
 	<title>d2l-count-badge</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +32,9 @@
 	</div>
 	<div class="visual-diff">
 		<d2l-count-badge id="hide-zero-hidden" number="0" hide-zero></d2l-count-badge>
+	</div>
+	<div class="visual-diff">
+		<d2l-count-badge id="tooltip" tooltip number="10" text="10 new notifications"></d2l-count-badge>
 	</div>
 </body>
 </html>
