@@ -287,6 +287,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		const formattedWideTimeAM = formatTime(new Date(2020, 0, 1, 10, 23, 0));
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
+		const opened = this.opened && !this.disabled && !this.skeleton;
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
@@ -321,7 +322,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195"
-					mobile-tray="bottom">
+					mobile-tray="bottom"
+					?opened="${opened}">
 					<d2l-menu
 						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"
@@ -341,12 +343,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'value') this.setFormValue(this.value);
-			else if (prop === 'opened') {
-				if (this.opened) this._open();
-				else this._close();
-			} else if (prop === 'disabled' || prop === 'skeleton') {
-				if (this.opened) this._open();
-			}
 		});
 	}
 
@@ -362,12 +358,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			minutes: time.getMinutes(),
 			seconds: time.getSeconds()
 		};
-	}
-
-	_close() {
-		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
-		if (!dropdown || !dropdown.opened) return;
-		dropdown.close();
 	}
 
 	_getAriaLabel() {
@@ -412,6 +402,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	async _handleDropdownOpen() {
+		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
 		this.opened = true;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
@@ -423,6 +414,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	async _handleKeydown(e) {
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
+			if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
 			this.opened = true;
 			e.preventDefault();
 		}
@@ -437,19 +429,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			'd2l-input-time-hidden-content-width-change',
 			{ bubbles: true, composed: false }
 		));
-	}
-
-	async _open() {
-		if (this.disabled || this.skeleton) return;
-		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
-
-		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
-		if (dropdown && dropdown.opened) return;
-
-		await this.updateComplete;
-
-		dropdown.open(true);
-		this.shadowRoot.querySelector('d2l-menu').focus();
 	}
 }
 customElements.define('d2l-input-time', InputTime);
