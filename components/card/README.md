@@ -99,7 +99,7 @@ Cards are composed of 3 sections. Each card will have a content section but is n
 </div>
 ```
 
-## Card <d2l-card>
+## Card [d2l-card]
 
 The `d2l-card` element is a container that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
 
@@ -156,7 +156,7 @@ The `d2l-card` element is a container that provides specific layout using severa
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 <!-- docs: end hidden content -->
 
-## Card content: Title <d2l-card-content-title>
+## Card content: Title [d2l-card-content-title]
 
 The `d2l-card-content-title` element is a helper for providing layout/style for a title within the `content` slot.
 
@@ -166,6 +166,7 @@ The `d2l-card-content-title` element is a helper for providing layout/style for 
   import '@brightspace-ui/core/components/card/card.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
   import '@brightspace-ui/core/components/card/card-footer-link.js';
+  import '@brightspace-ui/core/components/card/card-content-title.js';
 </script>
 
 <d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
@@ -209,7 +210,7 @@ The `d2l-card-content-meta` element is a helper for providing layout/style for a
 </d2l-card>
 ```
 
-## Card Footer: Link <d2l-card-footer-link>
+## Card Footer: Link [d2l-card-footer-link]
 
 The `d2l-card-footer-link` element is an icon link that can be placed in the `footer` slot.
 
