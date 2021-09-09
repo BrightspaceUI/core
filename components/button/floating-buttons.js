@@ -1,8 +1,10 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+
+const mediaQueryList = window.matchMedia('(max-height: 500px)');
 
 /**
  * A wrapper component to display floating workflow buttons. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
@@ -16,11 +18,11 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			 * Indicates to display buttons as always floating
 			 */
 			alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
-			_containerMarginLeft: { type: String },
-			_containerMarginRight: { type: String },
+			_containerMarginLeft: { attribute: false, type: String },
+			_containerMarginRight: { attribute: false, type: String },
 			_floating: { type: Boolean, reflect: true },
-			_innerContainerLeft: { type: String },
-			_innerContainerRight: { type: String }
+			_innerContainerLeft: { attribute: false, type: String },
+			_innerContainerRight: { attribute: false, type: String }
 		};
 	}
 
@@ -65,7 +67,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				transition: transform 500ms, border-top-color 500ms, background-color 500ms;
 			}
 
-			.d2l-floating-buttons-container > div {
+			.d2l-floating-buttons-inner-container {
 				padding: 0.75rem 0 0 0;
 				position: relative;
 			}
@@ -99,32 +101,48 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.alwaysFloat = false;
-		this._calcContainerPosition = this._calcContainerPosition.bind(this);
+		this._containerMarginLeft = '';
+		this._containerMarginRight = '';
+		this._floating = false;
+		this._innerContainerLeft = '';
+		this._innerContainerRight = '';
+		this._intersectionObserver = null;
+		this._isIntersecting = false;
+		this._recalculateFloating = this._recalculateFloating.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('scroll', this._calcContainerPosition);
-		window.addEventListener('resize', this._calcContainerPosition);
-		window.addEventListener('d2l-dir-update', this._calcContainerPosition);
+		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._recalculateFloating);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('scroll', this._calcContainerPosition);
-		window.removeEventListener('resize', this._calcContainerPosition);
-		window.removeEventListener('d2l-dir-update', this._calcContainerPosition);
-		if (this.__resizeObserver) {
-			this.__resizeObserver.disconnect();
-			this.__resizeObserver = null;
-		}
+		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._recalculateFloating);
+		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 	}
 
 	firstUpdated() {
 		super.firstUpdated();
 
-		this._calcContainerPosition();
-		this._startObserver();
+		const test = document.createElement('div');
+		test.style.height = '1px';
+		test.style.marginTop = '-1px';
+		this.parentNode.insertBefore(test, this.nextSibling);
+
+		if (typeof(IntersectionObserver) === 'function') {
+			this._intersectionObserver = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					this._isIntersecting = entry.isIntersecting;
+					this._recalculateFloating();
+				});
+			});
+			this._intersectionObserver.observe(test);
+		} else {
+			// if browser doesn't support IntersectionObserver, we don't float
+			this._isIntersecting = true;
+		}
+
 	}
 
 	render() {
@@ -147,75 +165,98 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		`;
 	}
 
-	_calcContainerPosition() {
-		this._floating = this._shouldFloat();
-		if (!this._floating || !this.offsetParent) {
+	updated(changedProperties) {
+		if (changedProperties.has('alwaysFloat')) {
+			this._recalculateFloating();
+		}
+	}
+
+	async _calcContainerPosition() {
+		requestAnimationFrame(() => {
+
+			this._containerMarginLeft = '';
+			this._containerMarginRight = '';
+			this._innerContainerLeft = '';
+			this._innerContainerRight = '';
+
+			if (!this._floating) return;
+
+			const boundingAncestor = this._getBoundingAncestor();
+			if (!boundingAncestor) return;
+
+			const offsetParentBoundingRect = boundingAncestor.getBoundingClientRect();
+			const boundingRect = this.getBoundingClientRect();
+
+			const offsetParentLeft = offsetParentBoundingRect.left;
+			const left = boundingRect.left;
+			const containerLeft = left - offsetParentLeft - 1;
+			if (containerLeft !== 0) {
+				// only update this if needed - needed for firefox
+				this._containerMarginLeft = `-${containerLeft}px`;
+			}
+
+			const offsetParentRight = offsetParentBoundingRect.right;
+			const right = boundingRect.right;
+			const containerRight = offsetParentRight - right - 1;
+			if (containerRight !== 0) {
+				this._containerMarginRight = `-${containerRight}px`;
+			}
+
+			if (this.dir !== 'rtl') {
+				if (containerLeft !== 0) {
+					this._innerContainerLeft = `${containerLeft}px`;
+				}
+			} else {
+				this._innerContainerRight = `${containerRight}px`;
+			}
+
+		});
+	}
+
+	_getBoundingAncestor() {
+
+		const boundingAncestor = getBoundingAncestor(this);
+		const offsetParent = this.offsetParent;
+		if (!offsetParent) {
+			return null;
+		}
+
+		if (boundingAncestor === document.documentElement) {
+			return offsetParent;
+		}
+
+		let parent = getComposedParent(this);
+		while (parent !== null) {
+			if (parent === boundingAncestor) return boundingAncestor;
+			if (parent === offsetParent) return offsetParent;
+			parent = getComposedParent(parent);
+		}
+
+		return offsetParent;
+
+	}
+
+	_recalculateFloating() {
+
+		if (this.alwaysFloat) {
+			this._floating = true;
+			this._calcContainerPosition();
 			return;
 		}
 
-		const offsetParentBoundingRect = this.offsetParent.getBoundingClientRect();
-		const boundingRect = this.getBoundingClientRect();
-
-		const offsetParentLeft = offsetParentBoundingRect.left;
-		const left = boundingRect.left;
-		const containerLeft = left - offsetParentLeft - 1;
-		if (containerLeft !== 0) {
-			// only update this if needed - needed for firefox
-			this._containerMarginLeft = `-${containerLeft}px`;
+		const viewportIsLessThanMinHeight = mediaQueryList.matches;
+		if (viewportIsLessThanMinHeight) {
+			this._floating = false;
+			this._calcContainerPosition();
+			return;
 		}
 
-		const offsetParentRight = offsetParentBoundingRect.right;
-		const right = boundingRect.right;
-		const containerRight = offsetParentRight - right - 1;
-		if (containerRight !== 0) {
-			this._containerMarginRight = `-${containerRight}px`;
+		const shouldFloat = !this._isIntersecting;
+		if (shouldFloat !== this._floating) {
+			this._floating = shouldFloat;
+			this._calcContainerPosition();
 		}
 
-		if (this.dir !== 'rtl') {
-			if (containerLeft !== 0) {
-				this._innerContainerLeft = `${containerLeft}px`;
-			}
-		} else {
-			this._innerContainerRight = `${containerRight}px`;
-		}
-	}
-
-	_shouldFloat() {
-		if (this.alwaysFloat) {
-			return true;
-		}
-
-		const _viewportIsLessThanMinHeight = window.matchMedia('(max-height: 500px)').matches;
-
-		const viewBottom = window.innerHeight;
-		const containerRectHeight = this.getBoundingClientRect().height;
-		const containerTop = this.getBoundingClientRect().top;
-
-		let scrollbarHeightEstimate = 0;
-		const hasHorizontalScollbar = document.body.scrollWidth > document.body.clientWidth;
-		if (hasHorizontalScollbar) {
-			scrollbarHeightEstimate = 17; // needed in case of horizontal scrollbar in Windows
-		}
-
-		/* if viewport height is less than minHeight (e.g., mobile device),
-		 * or user has scrolled to bottom of page
-		 * then do not float the buttons
-		 */
-		if (_viewportIsLessThanMinHeight || ((containerTop + containerRectHeight + scrollbarHeightEstimate) <= viewBottom)) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	_startObserver() {
-		this._resizeObserver = this._resizeObserver || new ResizeObserver(entries => {
-			for (let i = 0; i < entries.length; i++) {
-				this._calcContainerPosition();
-			}
-		});
-		const htmlElem = document.documentElement;
-		this._resizeObserver.observe(htmlElem);
 	}
 
 }
