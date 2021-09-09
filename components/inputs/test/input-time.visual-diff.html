@@ -11,6 +11,9 @@
 
 			const newToday = new Date('2018-02-12T19:12Z');
 			sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
+			const elems = document.querySelectorAll('d2l-input-time[id*="opened"]');
+			elems.forEach(elem => elem._dropdownFirstOpened = true);
 		</script>
 		<title>d2l-input-time visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,13 +35,22 @@
 				<d2l-input-time id="disabled" disabled value="4:00:00"></d2l-input-time>
 			</div>
 			<div class="visual-diff">
+				<d2l-input-time id="required" label="End Time" required></d2l-input-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-time id="opened" opened></d2l-input-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-time id="opened-disabled" opened disabled></d2l-input-time>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-time id="opened-skeleton" opened skeleton></d2l-input-time>
+			</div>
+			<div class="visual-diff">
 				<d2l-input-time id="dropdown" label="Start Time" value="00:15:00"></d2l-input-time>
 			</div>
 			<div class="visual-diff">
 				<d2l-input-time id="enforce" label="Start Time" label-hidden enforce-time-intervals value="00:15:00"></d2l-input-time>
-			</div>
-			<div class="visual-diff">
-				<d2l-input-time id="required" label="End Time" required></d2l-input-time>
 			</div>
 			<div class="visual-diff">
 				<d2l-input-time id="localizationAM" value="10:59:00"></d2l-input-time>

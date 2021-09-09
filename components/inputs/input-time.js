@@ -142,6 +142,10 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
+			 * Whether or not the dropdown is open
+			 */
+			opened: { type: Boolean },
+			/**
 			 * Indicates that a value is required
 			 */
 			required: { type: Boolean, reflect: true },
@@ -209,6 +213,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.opened = false;
 		this.required = false;
 		this.timeInterval = 'thirty';
 		this._dropdownFirstOpened = false;
@@ -282,6 +287,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		const formattedWideTimeAM = formatTime(new Date(2020, 0, 1, 10, 23, 0));
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
+		const opened = this.opened && !this.disabled && !this.skeleton;
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
@@ -316,7 +322,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195"
-					mobile-tray="bottom">
+					mobile-tray="bottom"
+					?opened="${opened}">
 					<d2l-menu
 						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"
@@ -386,6 +393,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	_handleDropdownClose() {
 		/** @ignore */
+		this.opened = false;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: false } }
@@ -395,6 +403,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	async _handleDropdownOpen() {
 		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
+		this.opened = true;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
@@ -403,15 +412,10 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	async _handleKeydown(e) {
-		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
-			if (!this._dropdownFirstOpened) {
-				this._dropdownFirstOpened = true;
-				await this.updateComplete;
-			}
-			dropdown.open(true);
-			this.shadowRoot.querySelector('d2l-menu').focus();
+			if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
+			this.opened = true;
 			e.preventDefault();
 		}
 	}
