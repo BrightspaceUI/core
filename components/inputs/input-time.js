@@ -144,7 +144,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			/**
 			 * Whether or not the dropdown is open
 			 */
-			opened: { type: Boolean, reflect: true },
+			opened: { type: Boolean },
 			/**
 			 * Indicates that a value is required
 			 */
