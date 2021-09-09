@@ -156,24 +156,6 @@ The `d2l-card` element is a container that provides specific layout using severa
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 <!-- docs: end hidden content -->
 
-
-<!-- docs: start hidden content -->
-### Properties:
-
-| Property | Type | Description |
-|--|--|--|
-| `icon` | String, required | Preset icon key (ex. "tier1:gear") |
-| `text` | String, required | Accessible text for the link (not visible, gets announced when user focuses) |
-| `download` | Boolean | Download a URL instead of navigating to it |
-| `href` | String | Location for the primary action/navigation |
-| `rel` | String | Relationship of the target object to the link object |
-| `secondary-text` | String | Text to display as a superscript on the icon |
-| `secondary-text-type` | String | Controls the style of the secondary text bubble; options are `notification` and `count` |
-| `target` | String | Where to display the linked URL |
-
-See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
-<!-- docs: end hidden content -->
-
 ## Card content: Title <d2l-card-content-title>
 
 The `d2l-card-content-title` element is a helper for providing layout/style for a title within the `content` slot.
@@ -189,8 +171,7 @@ The `d2l-card-content-title` element is a helper for providing layout/style for 
 <d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
-    <div>Biology</div>
-    <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
+    <d2l-card-content-title>Biology</d2l-card-content-title>
   </div>
   <div slot="footer">
     <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
@@ -256,6 +237,21 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 ```
 
 <!-- docs: start hidden content -->
+### Properties:
+
+| Property | Type | Description |
+|--|--|--|
+| `icon` | String, required | Preset icon key (ex. "tier1:gear") |
+| `text` | String, required | Accessible text for the link (not visible, gets announced when user focuses) |
+| `download` | Boolean | Download a URL instead of navigating to it |
+| `href` | String | Location for the primary action/navigation |
+| `rel` | String | Relationship of the target object to the link object |
+| `secondary-text` | String | Text to display as a superscript on the icon |
+| `secondary-text-type` | String | Controls the style of the secondary text bubble; options are `notification` and `count` |
+| `target` | String | Where to display the linked URL |
+
+See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
+
 ## Future Enhancements
 
 * scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
