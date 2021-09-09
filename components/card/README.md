@@ -1,7 +1,9 @@
 # Cards
+
 Cards provide concise information and actions as they relate to a single object. They contain content such as images, text, lists, data, rich media, actions, and more.
 
 Used to surface pertinent information, cards make it easy for users to browse information.
+
 <!-- docs: demo -->
 ```html
 <script type="module">
@@ -25,7 +27,7 @@ Used to surface pertinent information, cards make it easy for users to browse in
 </d2l-card>
 ```
 
-### Best Practices
+## Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
@@ -35,14 +37,16 @@ Used to surface pertinent information, cards make it easy for users to browse in
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Force the user to click in and out of cards to find information that’s important to the work flow
-* Use cards when the user needs to easily compare data from one card to another
-* Use cards when the sort order needs to be emphasized – consider a list or table
-* Use cards for user generated content
+* Don't force the user to click in and out of cards to find information that’s important to the work flow
+* Don't use cards
+  * when the user needs to easily compare data from one card to another
+  * when the sort order needs to be emphasized – consider a list or table
+  * for user generated content
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-### Composition
+## Composition
+
 Cards are composed of 3 sections. Each card will have a content section but is not required to have a header or footer.
 
 <!-- docs: demo size:large -->
@@ -96,6 +100,7 @@ Cards are composed of 3 sections. Each card will have a content section but is n
 ```
 
 ## Card <d2l-card>
+
 The `d2l-card` element is a container that provides specific layout using several slots such as `content`, `header`, `footer`, `badge`, and `actions`. It can also be configured as a link for navigation.
 
 <!-- docs: start hidden content -->
@@ -151,32 +156,6 @@ The `d2l-card` element is a container that provides specific layout using severa
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 <!-- docs: end hidden content -->
 
-## Card Footer Link <d2l-card-footer-link>
-
-The `d2l-card-footer-link` element is an icon link that can be placed in the `footer` slot.
-
-<!-- docs: demo live name:d2l-card-footer-link size:large -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/card/card.js';
-  import '@brightspace-ui/core/components/tooltip/tooltip.js';
-  import '@brightspace-ui/core/components/card/card-footer-link.js';
-</script>
-
-<d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
-  <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
-  <div slot="content">
-    <div>Biology</div>
-    <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
-  </div>
-  <div slot="footer">
-    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
-    <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
-    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
-    <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
-  </div>
-</d2l-card>
-```
 
 <!-- docs: start hidden content -->
 ### Properties:
@@ -195,11 +174,11 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 <!-- docs: end hidden content -->
 
-## Card content Title <d2l-card-content-title>
+## Card content: Title <d2l-card-content-title>
 
 The `d2l-card-content-title` element is a helper for providing layout/style for a title within the `content` slot.
 
-<!-- docs: demo live name:d2l-card-footer-link size:large -->
+<!-- docs: demo live name:d2l-card-content-title size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/card/card.js';
@@ -222,7 +201,7 @@ The `d2l-card-content-title` element is a helper for providing layout/style for 
 </d2l-card>
 ```
 
-## Card content meta <d2l-card-content-meta>
+## Card content: Meta  <d2l-card-content-meta>
 
 The `d2l-card-content-meta` element is a helper for providing layout/style for a meta data within the `content` slot.
 
@@ -234,6 +213,33 @@ The `d2l-card-content-meta` element is a helper for providing layout/style for a
   import '@brightspace-ui/core/components/card/card-footer-link.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
+<d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
+  <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
+  <div slot="content">
+    <div>Biology</div>
+    <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
+  </div>
+  <div slot="footer">
+    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
+    <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
+    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
+    <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+  </div>
+</d2l-card>
+```
+
+## Card Footer: Link <d2l-card-footer-link>
+
+The `d2l-card-footer-link` element is an icon link that can be placed in the `footer` slot.
+
+<!-- docs: demo live name:d2l-card-footer-link size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/card/card.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip.js';
+  import '@brightspace-ui/core/components/card/card-footer-link.js';
+</script>
+
 <d2l-card align-center text="Biology" align-center href="#" style="height: 320px; width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
