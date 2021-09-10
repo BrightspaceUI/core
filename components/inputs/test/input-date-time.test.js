@@ -20,7 +20,7 @@ function getChildElem(elem, selector) {
 	return elem.shadowRoot.querySelector(selector);
 }
 
-describe.only('d2l-input-date-time', () => {
+describe('d2l-input-date-time', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 

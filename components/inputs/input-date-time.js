@@ -191,8 +191,6 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this._dateInput = this.shadowRoot.querySelector('d2l-input-date');
-
 		if (!this.label) {
 			console.warn('d2l-input-date-time component requires label text');
 		}
@@ -285,12 +283,14 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	}
 
 	focus() {
-		if (this._dateInput) this._dateInput.focus();
+		const elem = this.shadowRoot.querySelector('d2l-input-date');
+		if (elem) elem.focus();
 	}
 
 	async validate() {
+		const dateInput = this.shadowRoot.querySelector('d2l-input-date');
 		const timeInput = this.shadowRoot.querySelector('d2l-input-time');
-		const errors = await Promise.all([this._dateInput.validate(), timeInput.validate(), super.validate()]);
+		const errors = await Promise.all([dateInput.validate(), timeInput.validate(), super.validate()]);
 		return [...errors[0], ...errors[1], ...errors[2]];
 	}
 
