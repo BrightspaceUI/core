@@ -178,9 +178,6 @@ class DemoSnippet extends LitElement {
 	_handleDirChange(e) {
 		this._dir = e.target.on ? 'rtl' : 'ltr';
 		this._applyAttr('dir', this._dir, true);
-		this.dispatchEvent(new CustomEvent(
-			'd2l-dir-update', { bubbles: true, composed: true, detail: { dir: this._dir } }
-		));
 	}
 
 	_handleSkeletonChange(e) {
