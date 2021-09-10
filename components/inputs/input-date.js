@@ -61,7 +61,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 */
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
 			/**
-			 * Whether or not the calendar dropdown is open
+			 * Indicates if the calendar dropdown is open
 			 */
 			opened: { type: Boolean, reflect: true },
 			/**
