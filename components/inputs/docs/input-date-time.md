@@ -49,7 +49,7 @@ size:xlarge
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
 | `min-value` | String | Minimum valid date that could be selected by a user. |
-| `opened` | Boolean | Whether or not the calendar dropdown is open |
+| `opened` | Boolean | Indicates if the calendar dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `value` | String, default `''` | Value of the input. |
 
@@ -101,6 +101,7 @@ size:xlarge
 | `child-labels-hidden` | Boolean | Visually hides the labels for start and end date inputs |
 | `disabled` | Boolean | Disables the inputs |
 | `end-label` | String, default `'End Date'` | Accessible label for the second date input |
+| `end-opened` | Boolean | Indicates if the end calendar dropdown is open |
 | `end-value` | String, default `''` | Value of the second date input |
 | `inclusive-date-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end dates to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
@@ -108,6 +109,7 @@ size:xlarge
 | `min-value` | String |  Minimum valid date that could be selected by a user |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date input |
+| `start-opened` | Boolean | Indicates if the start calendar dropdown is open |
 | `start-value` | String, default `''` | Value of the first date input |
 
 ### Events
