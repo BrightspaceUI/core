@@ -392,8 +392,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	_handleDropdownClose() {
-		/** @ignore */
 		this.opened = false;
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: false } }

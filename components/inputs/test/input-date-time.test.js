@@ -4,6 +4,7 @@ import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const basicFixture = '<d2l-input-date-time label="label text"></d2l-input-date-time>';
+const valueFixture = '<d2l-input-date-time label="label text" value="2019-03-02T05:00:00.000Z"></d2l-input-date-time>';
 const minMaxFixture = '<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>';
 const minMaxLocalizedFixture = '<d2l-input-date-time label="label text" localized min-value="2018-08-27T03:30:00" max-value="2018-09-30T17:30:00"></d2l-input-date-time>';
 
@@ -147,6 +148,57 @@ describe('d2l-input-date-time', () => {
 				expect(elem.value).to.equal('2018-09-30T17:31:00.000Z');
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be before ${expectedEnd}`);
+			});
+		});
+	});
+
+	describe('open and close behaviour', () => {
+		describe('interacting with opened on input-date-time', () => {
+			describe('no time input', () => {
+				let dateInput, elem;
+
+				beforeEach(async() => {
+					elem = await fixture(basicFixture);
+					dateInput = getChildElem(elem, 'd2l-input-date');
+					elem.opened = true;
+					await elem.updateComplete;
+				});
+
+				it('should set opened to true when dropdown open', async() => {
+					expect(dateInput.opened).to.be.true;
+				});
+
+				it('should set opened to false when dropdown closed', async() => {
+					elem.opened = false;
+					await elem.updateComplete;
+					expect(dateInput.opened).to.be.false;
+				});
+
+			});
+
+			describe('time input', () => {
+				let dateInput, elem, timeInput;
+
+				beforeEach(async() => {
+					elem = await fixture(valueFixture);
+					dateInput = getChildElem(elem, 'd2l-input-date');
+					timeInput = getChildElem(elem, 'd2l-input-time');
+					elem.opened = true;
+					await elem.updateComplete;
+				});
+
+				it('should set opened to true when dropdown open', async() => {
+					expect(dateInput.opened).to.be.true;
+					expect(timeInput.opened).to.be.false;
+				});
+
+				it('should set opened to false when dropdown closed', async() => {
+					elem.opened = false;
+					await elem.updateComplete;
+					expect(dateInput.opened).to.be.false;
+					expect(timeInput.opened).to.be.false;
+				});
+
 			});
 		});
 	});

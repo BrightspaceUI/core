@@ -1,6 +1,27 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
+async function getRect(page, selector, tag) {
+	return await page.$eval(selector, (elem, tag) => {
+		const input = elem.shadowRoot.querySelector(tag);
+		const content = input.shadowRoot.querySelector('[dropdown-content]');
+		const opener = content.__getOpener();
+		const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
+		const openerRect = opener.getBoundingClientRect();
+		const contentRect = contentWidth.getBoundingClientRect();
+		const x = Math.min(openerRect.x, contentRect.x);
+		const y = Math.min(openerRect.y, contentRect.y);
+		const width = Math.max(openerRect.right, contentRect.right) - x;
+		const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
+		return {
+			x: x - 10,
+			y: y - 10,
+			width: width + 20,
+			height: height + 20
+		};
+	}, tag);
+}
+
 describe('d2l-input-date-time', () => {
 
 	const visualDiff = new VisualDiff('input-date-time', __dirname);
@@ -9,9 +30,13 @@ describe('d2l-input-date-time', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 900 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 1200 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
+
+		// #opened being opened causes issues with focus with other inputs being opened.
+		// Putting this first in case tests are run in isolation.
+		await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 	});
 
 	after(async() => await browser.close());
@@ -74,6 +99,111 @@ describe('d2l-input-date-time', () => {
 		await changeInnerElem(page, '#required', 'd2l-input-date', '2018-01-20', true);
 		const rect = await visualDiff.getRect(page, '#required');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	describe('opened behavior', () => {
+
+		before(async() => await page.reload());
+
+		after(async() => {
+			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
+		});
+
+		it('intially opened', async function() {
+			const rect = await getRect(page, '#opened', 'd2l-input-date');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opened with time', async function() {
+			await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
+			await page.$eval('#opened-time', (elem) => elem.opened = true);
+			const rect = await getRect(page, '#opened-time', 'd2l-input-date');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opened-disabled', async function() {
+			await page.$eval('#opened-time', (elem) => elem.opened = false);
+			const rect = await visualDiff.getRect(page, '#opened-disabled');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opened-skeleton', async function() {
+			const rect = await visualDiff.getRect(page, '#opened-skeleton');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opened-disabled remove disabled', async function() {
+			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('disabled'));
+			const rect = await getRect(page, '#opened-disabled', 'd2l-input-date');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('opened-skeleton remove skeleton', async function() {
+			await page.$eval('#opened-disabled', (elem) => elem.removeAttribute('opened'));
+			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('skeleton'));
+			const rect = await getRect(page, '#opened-skeleton', 'd2l-input-date');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+	});
+
+	describe('open behavior', () => {
+
+		async function reset(page, selector) {
+			await page.$eval(selector, (elem) => {
+				const inputDate = elem.shadowRoot.querySelector('d2l-input-date');
+				const inputTime = elem.shadowRoot.querySelector('d2l-input-time');
+				const dropdownDate = inputDate.shadowRoot.querySelector('d2l-dropdown');
+				const dropdownTime = inputTime.shadowRoot.querySelector('d2l-dropdown');
+				const dropdown = dropdownDate || dropdownTime;
+				return new Promise((resolve) => {
+					const content = dropdown.querySelector('[dropdown-content]');
+					content.scrollTo(0);
+					if (content.opened) {
+						content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
+						content.opened = false;
+					} else {
+						resolve();
+					}
+				});
+			});
+		}
+
+		afterEach(async() => {
+			await reset(page, '#basic');
+		});
+
+		it('open date', async function() {
+			await page.$eval('#basic', (elem) => {
+				const dateInput = elem.shadowRoot.querySelector('d2l-input-date');
+				const input = dateInput.shadowRoot.querySelector('d2l-input-text');
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				input.dispatchEvent(eventObj);
+			});
+			const rect = await getRect(page, '#basic', 'd2l-input-date');
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('open time', async function() {
+			await page.$eval('#basic', async(elem) => {
+				const timeInput = elem.shadowRoot.querySelector('d2l-input-time');
+				const input = timeInput.shadowRoot.querySelector('input');
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				input.dispatchEvent(eventObj);
+			});
+
+			const rect = await getRect(page, '#basic', 'd2l-input-time');
+			// confirm that date did not also open
+			rect.x -= 100;
+			rect.y -= 30;
+			rect.width += 100;
+			rect.height += 30;
+
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	describe('functionality', () => {

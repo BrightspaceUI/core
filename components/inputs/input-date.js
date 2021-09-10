@@ -458,6 +458,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	async _open() {
 		if (this.disabled || this.skeleton) return;
 		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
+		if (!this._dropdown) return;
 
 		await this._handleChange();
 
