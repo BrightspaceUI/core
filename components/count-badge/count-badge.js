@@ -11,6 +11,38 @@ class CountBadge extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the text will be read by screenreaders. Defaults to false.
+			 * @type {boolean}
+			 */
+			announceChanges: {
+				type: Boolean,
+				attribute: 'announce-changes'
+			},
+			/**
+			 * Optionally add a tooltip on the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			hasTooltip: {
+				type: Boolean,
+				attribute: 'has-tooltip'
+			},
+			/**
+			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
+			 * @type {boolean}
+			 */
+			hideZero: {
+				type: Boolean,
+				attribute: 'hide-zero'
+			},
+			/**
+			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
+			 * @type {number}
+			 */
+			maxDigits: {
+				type: Number,
+				attribute: 'max-digits'
+			},
+			/**
 			 * The number to be displayed on the badge. Must be a positive integer.
 			 * @type {number}
 			 */
@@ -28,39 +60,6 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'size'
 			},
 			/**
-			 * The type of the badge. Defaults to "count".
-			 * @type {'count'|'notification'}
-			 */
-			type: {
-				type: String,
-				reflect: true,
-				attribute: 'type'
-			},
-			/**
-			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
-			 * @type {number}
-			 */
-			maxDigits: {
-				type: Number,
-				attribute: 'max-digits'
-			},
-			/**
-			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
-			 * @type {boolean}
-			 */
-			hideZero: {
-				type: Boolean,
-				attribute: 'hide-zero'
-			},
-			/**
-			 * The text that will show as an aria-label on the badge. NOTE: Only the text will be read by screen-readers (not the number).
-			 * @type {string}
-			 */
-			text: {
-				type: String,
-				attribute: 'text'
-			},
-			/**
 			 * Optionally choose to add a tab stop to the badge. Defaults to false.
 			 * @type {boolean}
 			 */
@@ -69,20 +68,20 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'tab-stop'
 			},
 			/**
-			 * Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the text will be read by screenreaders. Defaults to false.
-			 * @type {boolean}
+			 * * Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled.
+			 * @type {string}
 			 */
-			announceChanges: {
-				type: Boolean,
-				attribute: 'announce-changes'
+			text: {
+				type: String
 			},
 			/**
-			 * Optionally add a tooltip on the badge. Defaults to false.
-			 * @type {boolean}
+			 * The type of the badge. Defaults to "count".
+			 * @type {'count'|'notification'}
 			 */
-			tooltip: {
-				type: Boolean,
-				attribute: 'tooltip'
+			type: {
+				type: String,
+				reflect: true,
+				attribute: 'type'
 			}
 		};
 	}
@@ -145,14 +144,16 @@ class CountBadge extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.type = 'count';
-		this.size = 'small';
-		this.hideZero = false;
-		this.text = '';
-		this.tabStop = false;
 		this.announceChanges = false;
-		this.tooltip = false;
+		this.hasTooltip = false;
+		this.hideZero = false;
+		this.size = 'small';
+		this.tabStop = false;
+		this.text = '';
+		this.type = 'count';
+
 		this._badgeId = getUniqueId();
+		this._textId = getUniqueId();
 	}
 
 	connectedCallback() {
@@ -173,12 +174,12 @@ class CountBadge extends RtlMixin(LitElement) {
 		}
 		return html`
         	<div
+			class="d2l-count-badge-number" 
 			id="${this._badgeId}"
-			tabindex="${ifDefined(this.tabStop || this.tooltip ? '0' : undefined)}" 
-			role="${ifDefined(this.announceChanges ? 'status' : undefined)}"
-			aria-label="${this.text}">
-				<div class="d2l-count-badge-number" aria-hidden="true">${numberString}</div>
-			${this.tooltip ? html`<d2l-tooltip for="${this._badgeId}">${this.text}</d2l-tooltip>` : html`<span class="d2l-offscreen">"${this.text}"</span>`}
+			tabindex="${ifDefined(this.tabStop || this.hasTooltip ? '0' : undefined)}" 
+			role="${ifDefined(this.announceChanges ? 'status' : undefined)}">
+					<div aria-hidden="true">${numberString}</div>
+					${this.hasTooltip ? html`<d2l-tooltip id="${this._textId}" for="${this._badgeId}">${this.text}</d2l-tooltip>` :  html`<span id="${this._textId}" class="d2l-offscreen">"${this.text}"</span>`}
 			</div>
 			`;
 	}

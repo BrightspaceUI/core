@@ -24,10 +24,10 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
 | `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
-| `text`, required | String | A text description of the badge for screen-readers, to be used as an aria-label. NOTE: Only the text will be read by screen-readers (not the number). |
+| `text`, required | String | Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled. |
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
 | `announce-changes`, default: `false` | Boolean | Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the text will be read by screen-readers. |
-| `tooltip`, default: `false` | Boolean | Optionally choose to have a tooltip below the badge. |
+| `has-tooltip`, default: `false` | Boolean | Optionally choose to have a tooltip below the badge. |
 
 ### Accessibility Properties
 
@@ -35,7 +35,7 @@ To make your `d2l-count-badge` accessible, use the following properties when app
 
 | Attribute | Description |
 |--|--|
-| `text`, required | The text is invisible to users, but will be read by screen-readers. |
+| `text`, required | Only the text will be read by screen-readers (not the number), so include the number in the text. |
 | `tab-stop` | A tab stop allows keyboard users to easily tab to the badge. Otherwise, keyboard users will need to arrow through to the badge. |
 | `announce-changes` | Use "announce-changes" if screen-reader users should be notified that the count has been updated, such as a new notification. The "text" property will be read as soon as the screen-reader is idle. |
 | `tooltip` | The tooltip will be visible on hover, and read out by screen-readers. |
