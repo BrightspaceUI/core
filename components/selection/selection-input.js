@@ -34,6 +34,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * Key for the selectable
 			 */
 			key: { type: String },
+			_indeterminate: { type: Boolean },
 			_provider: { type: Object }
 		};
 	}
@@ -125,6 +126,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					?checked="${this.selected}"
 					class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
 					?disabled="${this.disabled}"
+					?indeterminate="${this._indeterminate}"
 					?skeleton="${this.skeleton}">
 				</d2l-input-checkbox>
 			`;

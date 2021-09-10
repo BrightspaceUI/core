@@ -142,6 +142,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				border-radius: 0;
 				color: var(--d2l-list-item-content-text-color);
 			}
+
 			.d2l-list-item-actions-container {
 				padding: 0.55rem 0;
 			}
@@ -275,6 +276,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
 		}
@@ -295,20 +297,24 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		});
 	}
 
-	_onFocusIn() {
+	_onFocusIn(e) {
 		this._focusing = true;
+		e.stopPropagation();
 	}
 
-	_onFocusInPrimaryAction() {
+	_onFocusInPrimaryAction(e) {
 		this._focusingPrimaryAction = true;
+		e.stopPropagation();
 	}
 
-	_onFocusOut() {
+	_onFocusOut(e) {
 		this._focusing = false;
+		e.stopPropagation();
 	}
 
-	_onFocusOutPrimaryAction() {
+	_onFocusOutPrimaryAction(e) {
 		this._focusingPrimaryAction = false;
+		e.stopPropagation();
 	}
 
 	_onMouseEnter() {
@@ -383,6 +389,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 						@mouseleave="${this._onMouseLeave}"
 						class="d2l-list-item-actions-container">
 						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
+					</div>
+					<div slot="nested">
+						<slot name="nested"></slot>
 					</div>
 				</d2l-list-item-generic-layout>
 				<div class="d2l-list-item-active-border"></div>
