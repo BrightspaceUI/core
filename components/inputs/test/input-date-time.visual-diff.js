@@ -148,30 +148,6 @@ describe('d2l-input-date-time', () => {
 
 	describe('open behavior', () => {
 
-		async function reset(page, selector) {
-			await page.$eval(selector, (elem) => {
-				const inputDate = elem.shadowRoot.querySelector('d2l-input-date');
-				const inputTime = elem.shadowRoot.querySelector('d2l-input-time');
-				const dropdownDate = inputDate.shadowRoot.querySelector('d2l-dropdown');
-				const dropdownTime = inputTime.shadowRoot.querySelector('d2l-dropdown');
-				const dropdown = dropdownDate || dropdownTime;
-				return new Promise((resolve) => {
-					const content = dropdown.querySelector('[dropdown-content]');
-					content.scrollTo(0);
-					if (content.opened) {
-						content.addEventListener('d2l-dropdown-close', () => resolve(), { once: true });
-						content.opened = false;
-					} else {
-						resolve();
-					}
-				});
-			});
-		}
-
-		afterEach(async() => {
-			await reset(page, '#basic');
-		});
-
 		it('open date', async function() {
 			await page.$eval('#basic', (elem) => {
 				const dateInput = elem.shadowRoot.querySelector('d2l-input-date');

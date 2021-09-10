@@ -20,7 +20,7 @@ function getChildElem(elem, selector) {
 	return elem.shadowRoot.querySelector(selector);
 }
 
-describe('d2l-input-date-time', () => {
+describe.only('d2l-input-date-time', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 
@@ -197,6 +197,83 @@ describe('d2l-input-date-time', () => {
 					await elem.updateComplete;
 					expect(dateInput.opened).to.be.false;
 					expect(timeInput.opened).to.be.false;
+				});
+
+			});
+		});
+
+		describe('interacting with opened on input-date and input-time', () => {
+			describe('no time input', () => {
+				let dateInput, elem;
+
+				beforeEach(async() => {
+					elem = await fixture(basicFixture);
+					dateInput = getChildElem(elem, 'd2l-input-date');
+					await elem.updateComplete;
+					dateInput.opened = true;
+					await oneEvent(dateInput, 'd2l-input-date-dropdown-toggle');
+					await elem.updateComplete;
+				});
+
+				it('should set opened to true when input-date opened', async() => {
+					expect(elem.opened).to.be.true;
+				});
+
+				it('should set opened to false when input-date closed', async() => {
+					dateInput.opened = false;
+					await oneEvent(dateInput, 'd2l-input-date-dropdown-toggle');
+					await elem.updateComplete;
+					expect(elem.opened).to.be.false;
+				});
+
+			});
+
+			describe('time input', () => {
+				let dateInput, elem, timeInput;
+
+				beforeEach(async() => {
+					elem = await fixture(valueFixture);
+					dateInput = getChildElem(elem, 'd2l-input-date');
+					timeInput = getChildElem(elem, 'd2l-input-time');
+					await elem.updateComplete;
+				});
+
+				it('should set opened to true when input-date opened and not on input-time', async() => {
+					dateInput.opened = true;
+					await oneEvent(dateInput, 'd2l-input-date-dropdown-toggle');
+					await elem.updateComplete;
+					expect(elem.opened).to.be.true;
+					expect(timeInput.opened).to.be.false;
+				});
+
+				it('should set opened to true when input-time opened and not on input-date', async() => {
+					timeInput.opened = true;
+					await oneEvent(timeInput, 'd2l-input-time-dropdown-toggle');
+					await elem.updateComplete;
+					expect(elem.opened).to.be.true;
+					expect(dateInput.opened).to.be.false;
+				});
+
+				it('should set opened to false when input-date closed', async() => {
+					dateInput.opened = true;
+					await oneEvent(dateInput, 'd2l-input-date-dropdown-toggle');
+					await elem.updateComplete;
+					dateInput.opened = false;
+					await oneEvent(dateInput, 'd2l-input-date-dropdown-toggle');
+					await elem.updateComplete;
+					expect(elem.opened).to.be.false;
+					expect(timeInput.opened).to.be.false;
+				});
+
+				it('should set opened to false when input-time closed', async() => {
+					timeInput.opened = true;
+					await oneEvent(timeInput, 'd2l-input-time-dropdown-toggle');
+					await elem.updateComplete;
+					timeInput.opened = false;
+					await oneEvent(timeInput, 'd2l-input-time-dropdown-toggle');
+					await elem.updateComplete;
+					expect(elem.opened).to.be.false;
+					expect(dateInput.opened).to.be.false;
 				});
 
 			});
