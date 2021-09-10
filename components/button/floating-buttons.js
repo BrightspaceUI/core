@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -109,40 +110,48 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
 		this._recalculateFloating = this._recalculateFloating.bind(this);
+		this._testElem = null;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._recalculateFloating);
+
+		// if browser doesn't support IntersectionObserver, we don't float
+		if (typeof(IntersectionObserver) !== 'function') {
+			this._isIntersecting = true;
+			return;
+		}
+		this._intersectionObserver = this._intersectionObserver || new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				this._isIntersecting = entry.isIntersecting;
+				this._recalculateFloating();
+			});
+		});
+
+		// observe intersection of a fake sibling element since host is sticky
+		this._testElem = document.createElement('div');
+		this._testElem.style.height = '1px';
+		this._testElem.style.marginTop = '-1px';
+
+		// defer doing any forced layouts until things calm down
+		requestIdleCallback(() => {
+			if (this._testElem !== null && this.parentNode) {
+				this.parentNode.insertBefore(this._testElem, this.nextSibling);
+				this._intersectionObserver.observe(this._testElem);
+			}
+		}, { timeout: 5000 });
+
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._recalculateFloating);
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
-	}
-
-	firstUpdated() {
-		super.firstUpdated();
-
-		const test = document.createElement('div');
-		test.style.height = '1px';
-		test.style.marginTop = '-1px';
-		this.parentNode.insertBefore(test, this.nextSibling);
-
-		if (typeof(IntersectionObserver) === 'function') {
-			this._intersectionObserver = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					this._isIntersecting = entry.isIntersecting;
-					this._recalculateFloating();
-				});
-			});
-			this._intersectionObserver.observe(test);
-		} else {
-			// if browser doesn't support IntersectionObserver, we don't float
-			this._isIntersecting = true;
+		if (this._testElem && this._testElem.parentNode) {
+			this._testElem.parentNode.removeChild(this._testElem);
+			this._testElem = null;
 		}
-
 	}
 
 	render() {
@@ -172,45 +181,43 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	async _calcContainerPosition() {
-		requestAnimationFrame(() => {
 
-			this._containerMarginLeft = '';
-			this._containerMarginRight = '';
-			this._innerContainerLeft = '';
-			this._innerContainerRight = '';
+		this._containerMarginLeft = '';
+		this._containerMarginRight = '';
+		this._innerContainerLeft = '';
+		this._innerContainerRight = '';
 
-			if (!this._floating) return;
+		if (!this._floating) return;
 
-			const boundingAncestor = this._getBoundingAncestor();
-			if (!boundingAncestor) return;
+		const boundingAncestor = this._getBoundingAncestor();
+		if (!boundingAncestor) return;
 
-			const offsetParentBoundingRect = boundingAncestor.getBoundingClientRect();
-			const boundingRect = this.getBoundingClientRect();
+		const offsetParentBoundingRect = boundingAncestor.getBoundingClientRect();
+		const boundingRect = this.getBoundingClientRect();
 
-			const offsetParentLeft = offsetParentBoundingRect.left;
-			const left = boundingRect.left;
-			const containerLeft = left - offsetParentLeft - 1;
+		const offsetParentLeft = offsetParentBoundingRect.left;
+		const left = boundingRect.left;
+		const containerLeft = left - offsetParentLeft - 1;
+		if (containerLeft !== 0) {
+			// only update this if needed - needed for firefox
+			this._containerMarginLeft = `-${containerLeft}px`;
+		}
+
+		const offsetParentRight = offsetParentBoundingRect.right;
+		const right = boundingRect.right;
+		const containerRight = offsetParentRight - right - 1;
+		if (containerRight !== 0) {
+			this._containerMarginRight = `-${containerRight}px`;
+		}
+
+		if (this.dir !== 'rtl') {
 			if (containerLeft !== 0) {
-				// only update this if needed - needed for firefox
-				this._containerMarginLeft = `-${containerLeft}px`;
+				this._innerContainerLeft = `${containerLeft}px`;
 			}
+		} else {
+			this._innerContainerRight = `${containerRight}px`;
+		}
 
-			const offsetParentRight = offsetParentBoundingRect.right;
-			const right = boundingRect.right;
-			const containerRight = offsetParentRight - right - 1;
-			if (containerRight !== 0) {
-				this._containerMarginRight = `-${containerRight}px`;
-			}
-
-			if (this.dir !== 'rtl') {
-				if (containerLeft !== 0) {
-					this._innerContainerLeft = `${containerLeft}px`;
-				}
-			} else {
-				this._innerContainerRight = `${containerRight}px`;
-			}
-
-		});
 	}
 
 	_getBoundingAncestor() {
@@ -237,26 +244,28 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	}
 
 	_recalculateFloating() {
+		requestAnimationFrame(() => {
 
-		if (this.alwaysFloat) {
-			this._floating = true;
-			this._calcContainerPosition();
-			return;
-		}
+			if (this.alwaysFloat) {
+				this._floating = true;
+				this._calcContainerPosition();
+				return;
+			}
 
-		const viewportIsLessThanMinHeight = mediaQueryList.matches;
-		if (viewportIsLessThanMinHeight) {
-			this._floating = false;
-			this._calcContainerPosition();
-			return;
-		}
+			const viewportIsLessThanMinHeight = mediaQueryList.matches;
+			if (viewportIsLessThanMinHeight) {
+				this._floating = false;
+				this._calcContainerPosition();
+				return;
+			}
 
-		const shouldFloat = !this._isIntersecting;
-		if (shouldFloat !== this._floating) {
-			this._floating = shouldFloat;
-			this._calcContainerPosition();
-		}
+			const shouldFloat = !this._isIntersecting;
+			if (shouldFloat !== this._floating) {
+				this._floating = shouldFloat;
+				this._calcContainerPosition();
+			}
 
+		});
 	}
 
 }
