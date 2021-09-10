@@ -22,6 +22,17 @@ async function getRect(page, selector, tag) {
 	}, tag);
 }
 
+async function focusOnInput(page, selector, inputSelector) {
+	return page.$eval(selector, (elem, inputSelector) => {
+		elem.blur();
+		const input = elem.shadowRoot.querySelector(inputSelector);
+		return new Promise((resolve) => {
+			elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
+			input.focus();
+		});
+	}, inputSelector);
+}
+
 describe('d2l-input-date-time', () => {
 
 	const visualDiff = new VisualDiff('input-date-time', __dirname);
@@ -78,7 +89,7 @@ describe('d2l-input-date-time', () => {
 	});
 
 	it('basic-focus', async function() {
-		await page.$eval('#basic', (elem) => elem.focus());
+		await focusOnInput(page, '#basic', 'd2l-input-date');
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
@@ -274,17 +285,6 @@ describe('d2l-input-date-time', () => {
 
 		const dateSelector = 'd2l-input-date';
 		const timeSelector = 'd2l-input-time';
-
-		async function focusOnInput(page, selector, inputSelector) {
-			return page.$eval(selector, (elem, inputSelector) => {
-				elem.blur();
-				const input = elem.shadowRoot.querySelector(inputSelector);
-				return new Promise((resolve) => {
-					elem.addEventListener('d2l-tooltip-show', resolve, { once: true });
-					input.focus();
-				});
-			}, inputSelector);
-		}
 
 		async function getRectInnerTooltip(page, selector) {
 			return page.$eval(selector, (elem) => {
