@@ -142,7 +142,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
-			 * Whether or not the dropdown is open
+			 * Indicates if the dropdown is open
 			 */
 			opened: { type: Boolean },
 			/**
