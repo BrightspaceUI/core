@@ -391,7 +391,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 					</div>
 					<div slot="nested">
-						<slot name="nested"></slot>
+						<slot name="nested" @slotchange="${this._onNestedSlotChange}"></slot>
 					</div>
 				</d2l-list-item-generic-layout>
 				<div class="d2l-list-item-active-border"></div>

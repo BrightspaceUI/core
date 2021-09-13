@@ -30,7 +30,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			/**
 			 * Private. The selection info (set by the selection component).
 			 */
-			selectionInfo: { type: Object }
+			selectionInfo: { type: Object, attribute: false }
 		};
 	}
 
@@ -65,26 +65,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		if (!this.key) this.setSelected(undefined, true);
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		if (this.selectable) {
-			this.shadowRoot.querySelector('slot[name="nested"]').addEventListener('slotchange', e => {
-				const nestedList = e.target.assignedNodes().find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
-				if (this._selectionProvider === nestedList) return;
-
-				if (this._selectionProvider && this._selectionProvider !== nestedList) {
-					this._selectionProvider.unsubscribeObserver(this);
-					this._selectionProvider = null;
-				}
-
-				if (nestedList) {
-					this._selectionProvider = nestedList;
-					this._selectionProvider.subscribeObserver(this);
-				}
-			});
-		}
-	}
-
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!this._selectionProvider || !changedProperties.has('selectionInfo')) return;
@@ -92,7 +72,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	}
 
 	setSelected(selected, suppressEvent = false) {
-		if (this.selected === selected || (this.selected === undefined && !selected)) return;
+		if (this.selected === selected) return;
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
@@ -118,6 +98,23 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			if (this.selected && this.selectionInfo.state !== SelectionInfo.states.all || !this.selected && this.selectionInfo.state === SelectionInfo.states.all) {
 				this._selectionProvider.setSelectionForAll(this.selected);
 			}
+		}
+	}
+
+	_onNestedSlotChange(e) {
+		if (!this.selectable) return;
+
+		const nestedList = e.target.assignedNodes().find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
+		if (this._selectionProvider === nestedList) return;
+
+		if (this._selectionProvider && this._selectionProvider !== nestedList) {
+			this._selectionProvider.unsubscribeObserver(this);
+			this._selectionProvider = null;
+		}
+
+		if (nestedList) {
+			this._selectionProvider = nestedList;
+			this._selectionProvider.subscribeObserver(this);
 		}
 	}
 
