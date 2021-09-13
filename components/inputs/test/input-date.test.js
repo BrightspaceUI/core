@@ -45,35 +45,75 @@ describe('d2l-input-date', () => {
 
 	});
 
-	describe('focus trap', () => {
-		it('should set trap to true when dropdown open', async() => {
-			const elem = await fixture(basicFixture);
-			elem._dropdownFirstOpened = true;
-			await elem.updateComplete;
-			const dropdown = getChildElem(elem, 'd2l-dropdown');
-			const dropdownContent = getChildElem(elem, 'd2l-dropdown-content');
-			await dropdownContent.updateComplete;
-			dropdown.toggleOpen();
-			await oneEvent(dropdown, 'd2l-dropdown-open');
-			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
-			await focusTrap.updateComplete;
-			expect(focusTrap.trap).to.be.true;
+	describe('open and close behaviour', () => {
+		describe('interacting with opened', () => {
+			let dropdown, dropdownContent, elem;
+
+			beforeEach(async() => {
+				elem = await fixture(basicFixture);
+				elem.opened = true;
+				await elem.updateComplete;
+				dropdown = getChildElem(elem, 'd2l-dropdown');
+				dropdownContent = getChildElem(elem, 'd2l-dropdown-content');
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+			});
+
+			it('should open dropdown when true', async() => {
+				await dropdownContent.updateComplete;
+				expect(dropdownContent.opened).to.be.true;
+			});
+
+			it('should close dropdown when false', async() => {
+				expect(dropdownContent.opened).to.be.true;
+				elem.opened = false;
+				await elem.updateComplete;
+				await oneEvent(dropdown, 'd2l-dropdown-close');
+				expect(dropdownContent.opened).to.be.false;
+			});
 		});
 
-		it('should set trap to false when dropdown closed', async() => {
+		describe('interacting with dropdown', () => {
+			let dropdown, dropdownOpener, elem, eventObj;
+
+			beforeEach(async() => {
+				elem = await fixture(basicFixture);
+
+				dropdown = getChildElem(elem, 'd2l-dropdown');
+				dropdownOpener = getChildElem(elem, '.d2l-dropdown-opener');
+
+				eventObj = new Event(
+					'mouseup',
+					{ bubbles: true, composed: true }
+				);
+
+				dropdownOpener.dispatchEvent(eventObj);
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+			});
+
+			it('should set opened to true when dropdown open', async() => {
+				expect(elem.opened).to.be.true;
+			});
+
+			it('should set opened to false when dropdown closed', async() => {
+				dropdownOpener.dispatchEvent(eventObj);
+				await oneEvent(dropdown, 'd2l-dropdown-close');
+				expect(elem.opened).to.be.false;
+			});
+		});
+
+		it('should open on enter', async() => {
 			const elem = await fixture(basicFixture);
-			elem._dropdownFirstOpened = true;
-			await elem.updateComplete;
+
 			const dropdown = getChildElem(elem, 'd2l-dropdown');
-			const dropdownContent = getChildElem(elem, 'd2l-dropdown-content');
-			await dropdownContent.updateComplete;
-			dropdown.toggleOpen();
+			const dropdownOpener = getChildElem(elem, '.d2l-dropdown-opener');
+
+			const eventObj = document.createEvent('Events');
+			eventObj.initEvent('keydown', true, true);
+			eventObj.keyCode = 13;
+			dropdownOpener.dispatchEvent(eventObj);
 			await oneEvent(dropdown, 'd2l-dropdown-open');
-			dropdown.toggleOpen();
-			await oneEvent(dropdown, 'd2l-dropdown-close');
-			const focusTrap = getChildElem(elem, 'd2l-focus-trap');
-			await focusTrap.updateComplete;
-			expect(focusTrap.trap).to.be.false;
+
+			expect(elem.opened).to.be.true;
 		});
 	});
 

@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../count-badge/count-badge.js';
 import '../button/button-icon.js';
 import '../dropdown/dropdown-button-subtle.js';
 import '../dropdown/dropdown-content.js';
@@ -41,8 +42,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			disabled: { type: Boolean, reflect: true },
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
-			_totalAppliedCount: { type: Number, attribute: false },
-			_totalMaxCount: { type: Number, attribute: false }
+			_totalAppliedCount: { type: Number, attribute: false }
 		};
 	}
 
@@ -132,7 +132,6 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this._dimensions = [];
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
-		this._totalMaxCount = 0;
 	}
 
 	firstUpdated(changedProperties) {
@@ -152,7 +151,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const header = this._buildHeader(singleDimension);
 		const dimensions = this._buildDimensions(singleDimension);
 
-		const filterCount = this._formatFilterCount(this._totalAppliedCount, this._totalMaxCount);
+		const filterCount = this._formatFilterCount(this._totalAppliedCount);
 		let buttonText = singleDimension ? this._dimensions[0].text : this.localize('components.filter.filters');
 		if (filterCount) buttonText = `${buttonText} (${filterCount})`;
 
@@ -218,7 +217,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			return html`<d2l-menu-item text="${dimension.text}" description="${dimensionDescription}">
 				${builtDimension}
 				<div slot="supporting">
-					<span>${this._formatFilterCount(dimension.appliedCount, dimension.maxCount)}</span>
+					<d2l-count-badge number="${dimension.appliedCount}" max-digits="2" hide-zero></d2l-count-badge>
 				</div>
 			</d2l-menu-item>`;
 		});
@@ -316,7 +315,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			<d2l-list
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
-				extend-separators>
+				extend-separators
+				?selection-single="${dimension.selectionSingle}">
 				${dimension.values.map(item => html`
 					<d2l-list-item
 						?hidden="${item.hidden}"
@@ -355,16 +355,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
-	_formatFilterCount(count, max) {
+	_formatFilterCount(count) {
 		if (count === 0) return;
-
-		let number = count;
-		if (count === max) {
-			number = 'all';
-		} else if (count >= 100) {
-			number = 'max';
-		}
-		return this.localize('components.filter.filterCount', { number: number });
+		else if (count >= 100) return '99+';
+		else return `${count}`;
 	}
 
 	_getSlottedNodes(slot) {
@@ -496,7 +490,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			switch (type) {
 				case 'd2l-filter-dimension-set': {
 					info.searchType = dimension.searchType;
-					if (dimension.selectAll) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
+					info.selectionSingle = dimension.selectionSingle;
+					if (dimension.selectAll && !dimension.selectionSingle) info.selectAllIdPrefix = SET_DIMENSION_ID_PREFIX;
 					const values = dimension._getValues();
 					info.values = values;
 					break;
@@ -532,21 +527,18 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_setFilterCounts(dimensionToRecount) {
 		this._totalAppliedCount = 0;
-		this._totalMaxCount = 0;
 
 		this._dimensions.forEach(dimension => {
 			if (!dimensionToRecount || dimensionToRecount.key === dimension.key) {
 				switch (dimension.type) {
 					case 'd2l-filter-dimension-set': {
 						dimension.appliedCount = dimension.values.reduce((total, value) => { return value.selected ? total + 1 : total; }, 0);
-						dimension.maxCount = dimension.values.length;
 						break;
 					}
 				}
 			}
 
 			this._totalAppliedCount += dimension.appliedCount;
-			this._totalMaxCount += dimension.maxCount;
 		});
 	}
 

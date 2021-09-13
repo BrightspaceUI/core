@@ -37,27 +37,6 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test:axe
-  bs:
-    name: Unit Tests (BrowserStack)
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Brightspace/third-party-actions@actions/checkout
-      - uses: Brightspace/third-party-actions@actions/setup-node
-        with:
-          node-version: '14'
-          cache: 'npm'
-      - name: Install dependencies
-        run: |
-          npm ci
-          npm install karma-browserstack-launcher@1 --no-save
-      - name: Build
-        run: npm run build
-      - name: BrowserStack
-        env:
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        run: npx karma start karma.bs.conf.js
   sauce:
     name: Unit Tests (SauceLabs)
     timeout-minutes: 10

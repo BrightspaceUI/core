@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "關閉此對話方塊",
 	"components.dropdown.close": "關閉",
 	"components.filter.loading": "正在載入篩選條件",
-	"components.filter.filterCount": "{number, select, max {99+} all {全部} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {未套用篩選條件。} one {已套用 1 項篩選條件。} other {已套用 {number} 項篩選條件。}}",
 	"components.filter.filters": "篩選器",
 	"components.filter.noFilters": "沒有可用的篩選條件",
