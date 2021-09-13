@@ -137,7 +137,10 @@ describe('d2l-input-date-range', () => {
 
 	describe('opened behavior', () => {
 
-		before(async() => await page.reload());
+		before(async() => {
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+		});
 
 		after(async() => {
 			await page.$eval('#opened', (elem) => elem.endOpened = false);
