@@ -422,13 +422,15 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 	}
 
-	_setFocusInfo(event) {
+	_setFocusInfo(e) {
+		e.stopPropagation();
 		if (!this.gridActive) return;
-		const slot = (event.path || event.composedPath()).find(node =>
+		const slot = (e.path || e.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
-		this._cellFocusedItem = this._getFocusedItemPosition(event.target);
+		this._cellFocusedItem = this._getFocusedItemPosition(e.target);
 	}
+
 }
 
 customElements.define('d2l-list-item-generic-layout', ListItemGenericLayout);

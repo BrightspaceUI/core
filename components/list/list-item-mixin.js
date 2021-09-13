@@ -297,24 +297,20 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		});
 	}
 
-	_onFocusIn(e) {
+	_onFocusIn() {
 		this._focusing = true;
-		e.stopPropagation();
 	}
 
-	_onFocusInPrimaryAction(e) {
+	_onFocusInPrimaryAction() {
 		this._focusingPrimaryAction = true;
-		e.stopPropagation();
 	}
 
-	_onFocusOut(e) {
+	_onFocusOut() {
 		this._focusing = false;
-		e.stopPropagation();
 	}
 
-	_onFocusOutPrimaryAction(e) {
+	_onFocusOutPrimaryAction() {
 		this._focusingPrimaryAction = false;
-		e.stopPropagation();
 	}
 
 	_onMouseEnter() {
