@@ -272,6 +272,7 @@ size:xlarge
 | `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
+| `opened` | Boolean | Whether or not the date or time dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `time-default-value`| String, default:`'00:00:00'` | Set default value of time input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`. |
 | `value` | String, default `''` | Value of the input. |
