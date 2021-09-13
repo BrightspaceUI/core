@@ -1,11 +1,10 @@
-# Off-screen Content
+# Off-screen Content[d2l-offscreen]
 
 Positioning content off-screen is a valuable accessibility technique when you wish to have content which is only visible to screen readers. For more information on this approach, read [WebAIM's article on Invisible Content](http://webaim.org/techniques/css/invisiblecontent/).
 
-## Web Component
-
 Import and use the `<d2l-offscreen>` web component, the contents of which will be positioned off-screen.
 
+<!-- docs: demo live name:d2l-offscreen -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/offscreen/offscreen.js';
@@ -31,10 +30,11 @@ class MyElement extends LitElement {
       <p class="d2l-offscreen">Off-screen content</p>
     `;
   }
-
 }
 ```
 
+<!-- docs: start hidden content -->
 ## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!
+<!-- docs: end hidden content -->
