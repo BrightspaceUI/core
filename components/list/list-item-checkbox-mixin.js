@@ -92,7 +92,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	}
 
 	setSelected(selected, suppressEvent = false) {
-		if (this.selected === selected) return;
+		if (this.selected === selected || (this.selected === undefined && !selected)) return;
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}

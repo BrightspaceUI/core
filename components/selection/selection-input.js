@@ -51,25 +51,10 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		`];
 	}
 
-	get selected() {
-		return this._selected;
-	}
-
-	set selected(val) {
-		const oldVal = this._selected;
-		if (oldVal !== val) {
-			this._selected = val;
-			this.requestUpdate('selected', oldVal);
-
-			// dispatch the event for all selected changes (not just when the user interacts directly with the input)
-			requestAnimationFrame(() => {
-				this.dispatchEvent(new CustomEvent('d2l-selection-change', {
-					bubbles: true,
-					composed: true,
-					detail: { key: this.key, selected: this._selected }
-				}));
-			});
-		}
+	constructor() {
+		super();
+		this.selected = false;
+		this._indeterminate = false;
 	}
 
 	connectedCallback() {
@@ -130,6 +115,24 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					?skeleton="${this.skeleton}">
 				</d2l-input-checkbox>
 			`;
+		}
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if ((changedProperties.has('selected') && !(changedProperties.get('selected') === undefined && this.selected === false))
+			|| (changedProperties.has('_indeterminate') && !(changedProperties.get('_indeterminate') === undefined && this._indeterminate === false))) {
+
+			// dispatch the event for all selected changes (not just when the user interacts directly with the input)
+			requestAnimationFrame(() => {
+				this.dispatchEvent(new CustomEvent('d2l-selection-change', {
+					bubbles: true,
+					composed: true,
+					detail: { key: this.key, indeterminate: this._indeterminate, selected: this.selected }
+				}));
+			});
+
 		}
 	}
 
