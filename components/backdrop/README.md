@@ -1,30 +1,32 @@
-# Backdrop
-
-## d2l-backdrop
+# Backdrop [d2l-backdrop]
 
 The `d2l-backdrop` element is a web component to display a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying `role="presentation"` and `aria-hidden="true"`.
 
+<!-- docs: demo live name:d2l-backdrop size:small -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/backdrop/backdrop.js';
+  import '@brightspace-ui/core/components/switch/switch.js';
 </script>
 <style>
-  #target { position: relative; z-index: 1000; }
+  #target { position: relative; z-index: 1000; margin: 40px; }
 </style>
-
-<div id="target"><button>toggle backdrop</button></div>
-<d2l-backdrop for-target="target" shown></d2l-backdrop>
+<div>
+  <div id="target"><d2l-button primary>Toggle backdrop</d2l-button></div>
+  <d2l-backdrop for-target="target"></d2l-backdrop>
+</div>
+<span>Background content</span>
+<script>
+  const backdrop = document.querySelector('d2l-backdrop');
+  document.querySelector('#target > d2l-button').addEventListener('click', () => {
+    backdrop.shown = !backdrop.shown;
+  });
+</script>
 ```
 
-Set the visible state of the backdrop by using the `shown` attribute/property.
-
-```javascript
-button.addEventListener('click', () => {
-  backdrop.shown = !backdrop.shown;
-});
-```
-
-**Properties:**
+<!-- docs: start hidden content -->
+### Properties:
 
 | Property | Type | Description |
 |--|--|--|
@@ -36,3 +38,4 @@ button.addEventListener('click', () => {
 ## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!
+<!-- docs: end hidden content -->
