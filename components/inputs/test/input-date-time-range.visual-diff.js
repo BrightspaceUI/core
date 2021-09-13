@@ -2,6 +2,28 @@ import { getRectTooltip } from './input-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
+async function getRect(page, selector, inputNum) {
+	return await page.$eval(selector, (elem, inputNum) => {
+		const input = elem.shadowRoot.querySelectorAll('d2l-input-date-time')[inputNum];
+		const dateInput = input.shadowRoot.querySelector('d2l-input-date');
+		const content = dateInput.shadowRoot.querySelector('[dropdown-content]');
+		const opener = content.__getOpener();
+		const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
+		const openerRect = opener.getBoundingClientRect();
+		const contentRect = contentWidth.getBoundingClientRect();
+		const x = Math.min(openerRect.x, contentRect.x);
+		const y = Math.min(openerRect.y, contentRect.y);
+		const width = Math.max(openerRect.right, contentRect.right) - x;
+		const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
+		return {
+			x: x - 10,
+			y: y - 10,
+			width: width + 20,
+			height: height + 20
+		};
+	}, inputNum);
+}
+
 describe('d2l-input-date-time-range', () => {
 
 	const visualDiff = new VisualDiff('input-date-time-range', __dirname);
@@ -10,9 +32,13 @@ describe('d2l-input-date-time-range', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3200 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 3600 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-date-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
+
+		// #opened being opened causes issues with focus with other date-time inputs being opened.
+		// Putting this first in case tests are run in isolation.
+		await page.$eval('#opened', (elem) => elem.removeAttribute('start-opened'));
 	});
 
 	after(async() => await browser.close());
@@ -51,6 +77,32 @@ describe('d2l-input-date-time-range', () => {
 		});
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	describe('opened behavior', () => {
+
+		before(async() => {
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+		});
+
+		after(async() => {
+			await page.$eval('#opened', (elem) => elem.endOpened = false);
+		});
+
+		it('intially start opened', async function() {
+			const rect = await getRect(page, '#opened', 0);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('end opened', async function() {
+			await page.$eval('#opened', (elem) => {
+				elem.removeAttribute('start-opened');
+				elem.endOpened = true;
+			});
+			const rect = await getRect(page, '#opened', 1);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	describe('validation', () => {
@@ -118,10 +170,6 @@ describe('d2l-input-date-time-range', () => {
 			}, inputSelector);
 		}
 
-		before(async() => {
-			await page.reload();
-		});
-
 		it('start equals end when inclusive', async function() {
 			await changeInnerInputTextDate(page, '#inclusive', startDateSelector, dateInRange);
 			await changeInnerInputTextDate(page, '#inclusive', endDateSelector, dateInRange, true);
@@ -183,7 +231,7 @@ describe('d2l-input-date-time-range', () => {
 
 			describe('function', () => {
 				after(async() => {
-					await page.reload();
+					await page.$eval('#min-max', (elem) => elem.startOpened = false);
 				});
 
 				it('open', async function() {
@@ -234,8 +282,8 @@ describe('d2l-input-date-time-range', () => {
 				describe(testCase.name, () => {
 					before(async() => {
 						await page.$eval('#min-max', (elem) => elem.blur());
-						await changeInnerInputDateTime(page, '#min-max', startDateSelector, testCase.startDate, testCase.name === 'start equals end');
-						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate, testCase.name === 'start equals end');
+						await changeInnerInputDateTime(page, '#min-max', startDateSelector, testCase.startDate);
+						await changeInnerInputDateTime(page, '#min-max', endDateSelector, testCase.endDate);
 					});
 
 					it('basic', async function() {
@@ -372,6 +420,26 @@ describe('d2l-input-date-time-range', () => {
 
 	});
 
+	describe('skeleton', () => {
+
+		[
+			'labelled',
+			'label-hidden',
+			'hidden-labels-values',
+			'wide-hidden-labels-values'
+		].forEach((name) => {
+			after(async() => {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = false);
+			});
+
+			it(name, async function() {
+				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
+				const rect = await visualDiff.getRect(page, `#${name}`);
+				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+			});
+		});
+	});
+
 	describe('width change', () => {
 		it('resizes correctly when width increased', async function() {
 			const rect = await page.$eval('#hidden-labels', async(elem) => {
@@ -423,26 +491,6 @@ describe('d2l-input-date-time-range', () => {
 				};
 			});
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-	});
-
-	describe('skeleton', () => {
-
-		before(async() => {
-			await page.reload();
-		});
-
-		[
-			'labelled',
-			'label-hidden',
-			'hidden-labels-values',
-			'wide-hidden-labels-values'
-		].forEach((name) => {
-			it(name, async function() {
-				await page.$eval(`#${name}`, (elem) => elem.skeleton = true);
-				const rect = await visualDiff.getRect(page, `#${name}`);
-				await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-			});
 		});
 	});
 
