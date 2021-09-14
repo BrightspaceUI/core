@@ -113,7 +113,21 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		this.__isChildView();
 
+		if (typeof(IntersectionObserver) === 'function') {
+			this.__intersectionObserver = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						this.__autoSize(this);
+					}
+				});
+			});
+			this.__intersectionObserver.observe(this);
+		}
+
 		requestAnimationFrame(() => {
+			if (typeof(IntersectionObserver) !== 'function') {
+				this.__autoSize(this);
+			}
 			this.__startResizeObserver();
 
 			if (!this.childView) {
@@ -131,7 +145,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.removeEventListener('focus', this.__focusCapture);
 		this.removeEventListener('focusout', this.__focusOutCapture);
 		window.removeEventListener('resize', this.__onWindowResize);
-		if (this.__intersectionObserver) this.__intersectionObserver.disconnect();
+		if (this.__intersectionObserver) {
+			this.__intersectionObserver.disconnect();
+			this.__isAutoSized = false;
+		}
 	}
 
 	firstUpdated(changedProperties) {
@@ -156,19 +173,6 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('keypress', stopPropagation);
 
 		this.__isChildView();
-
-		if (typeof(IntersectionObserver) === 'function') {
-			this.__intersectionObserver = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						this.__autoSize(this);
-					}
-				});
-			});
-			this.__intersectionObserver.observe(this);
-		} else {
-			this.__autoSize(this);
-		}
 
 	}
 
