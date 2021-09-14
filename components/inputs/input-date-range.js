@@ -53,6 +53,10 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
+			 * Indicates if the end calendar dropdown is open
+			 */
+			endOpened: { attribute: 'end-opened', type: Boolean },
+			/**
 			 * Value of the end date input
 			 * @type {string}
 			 */
@@ -91,12 +95,14 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
+			 * Indicates if the start calendar dropdown is open
+			 */
+			startOpened: { attribute: 'start-opened', type: Boolean },
+			/**
 			 * Value of the start date input
 			 * @type {string}
 			 */
-			startValue: { attribute: 'start-value', reflect: true, type: String },
-			_endCalendarOpened: { attribute: false, type: Boolean },
-			_startCalendarOpened: { attribute: false, type: Boolean }
+			startValue: { attribute: 'start-value', reflect: true, type: String }
 		};
 	}
 
@@ -120,13 +126,13 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		this.autoShiftDates = false;
 		this.childLabelsHidden = false;
 		this.disabled = false;
+		this.endOpened = false;
 		this.inclusiveDateRange = false;
 		this.labelHidden = false;
 		this.required = false;
+		this.startOpened = false;
 
-		this._startCalendarOpened = false;
 		this._startInputId = getUniqueId();
-		this._endCalendarOpened = false;
 		this._endInputId = getUniqueId();
 	}
 
@@ -151,8 +157,8 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 	render() {
 		const startDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-start');
 		const endDateInput = this.shadowRoot.querySelector('.d2l-input-date-range-end');
-		const tooltipStart = (this.validationError && !this._startCalendarOpened && !this.childErrors.has(startDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endCalendarOpened && !this.childErrors.has(endDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -177,6 +183,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 						?label-hidden="${this.childLabelsHidden}"
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
+						?opened="${this.startOpened}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						slot="left"
@@ -194,6 +201,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 						?label-hidden="${this.childLabelsHidden}"
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
+						?opened="${this.endOpened}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						slot="right"
@@ -270,9 +278,9 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 
 	_handleDropdownToggle(e) {
 		if (e.target.classList.contains('d2l-input-date-range-start')) {
-			this._startCalendarOpened = e.detail.opened;
+			this.startOpened = e.detail.opened;
 		} else {
-			this._endCalendarOpened = e.detail.opened;
+			this.endOpened = e.detail.opened;
 		}
 	}
 

@@ -70,6 +70,10 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
+			 * Whether or not the date or time dropdown is open
+			 */
+			opened: { type: Boolean },
+			/**
 			 * Indicates that a value is required
 			 */
 			required: { type: Boolean, reflect: true },
@@ -82,7 +86,6 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			 * Value of the input
 			 */
 			value: { type: String },
-			_dropdownOpened: { type: Boolean },
 			_maxValueLocalized: { type: String },
 			_minValueLocalized: { type: String }
 		};
@@ -111,12 +114,13 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 		this.disabled = false;
 		this.labelHidden = false;
 		this.localized = false;
+		this.opened = false;
 		this.required = false;
 		this.timeDefaultValue = 'startOfDay';
-		this._dropdownOpened = false;
 		this._inputId = getUniqueId();
 		this._namespace = 'components.input-date-time';
 		this._preventDefaultValidation = false;
+		this._timeOpened = false;
 	}
 
 	get maxValue() { return this._maxValue; }
@@ -209,8 +213,9 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			dateStyle.paddingRight = '0.3rem';
 		}
 
+		const dateOpened = this.opened && !this._timeOpened && !this.disabled && !this.skeleton;
 		const parsedValue = this.value ? (this.localized ? this.value : getLocalDateTimeFromUTCDateTime(this.value)) : '';
-		const tooltip = (this.validationError && !this._dropdownOpened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltip = (this.validationError && !this.opened && this.childErrors.size === 0) ? html`<d2l-tooltip align="start" announced for="${this._inputId}" state="error">${this.validationError}</d2l-tooltip>` : null;
 		const inputTime = !timeHidden ? html`<d2l-input-time
 				?novalidate="${this.noValidate}"
 				@blur="${this._handleInputTimeBlur}"
@@ -250,6 +255,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 						label-hidden
 						max-value="${ifDefined(this._maxValueLocalized)}"
 						min-value="${ifDefined(this._minValueLocalized)}"
+						?opened="${dateOpened}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						style="${styleMap(dateStyle)}"
@@ -308,10 +314,14 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	}
 
 	async _handleDropdownToggle(e) {
-		this._dropdownOpened = e.detail.opened;
-		if (e.target.tagName === 'D2L-INPUT-TIME' && !this._dropdownOpened) {
-			await this.updateComplete;
-			this._handleInputTimeFocus();
+		this.opened = e.detail.opened;
+		if (e.target.tagName === 'D2L-INPUT-TIME') {
+			if (this.opened) this._timeOpened = true;
+			else {
+				this._timeOpened = false;
+				await this.updateComplete;
+				this._handleInputTimeFocus();
+			}
 		}
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(

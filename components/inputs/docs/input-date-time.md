@@ -49,6 +49,7 @@ size:xlarge
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
 | `min-value` | String | Minimum valid date that could be selected by a user. |
+| `opened` | Boolean | Indicates if the calendar dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `value` | String, default `''` | Value of the input. |
 
@@ -100,6 +101,7 @@ size:xlarge
 | `child-labels-hidden` | Boolean | Visually hides the labels for start and end date inputs |
 | `disabled` | Boolean | Disables the inputs |
 | `end-label` | String, default `'End Date'` | Accessible label for the second date input |
+| `end-opened` | Boolean | Indicates if the end calendar dropdown is open |
 | `end-value` | String, default `''` | Value of the second date input |
 | `inclusive-date-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end dates to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
@@ -107,6 +109,7 @@ size:xlarge
 | `min-value` | String |  Minimum valid date that could be selected by a user |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date input |
+| `start-opened` | Boolean | Indicates if the start calendar dropdown is open |
 | `start-value` | String, default `''` | Value of the first date input |
 
 ### Events
@@ -159,6 +162,7 @@ size:large
 | `disabled` | Boolean | Disables the input |
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
+| `opened` | Boolean | Indicates if the dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
 | `value` | String, default `''` | Value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable). |
@@ -211,12 +215,14 @@ size:large
 | `child-labels-hidden` | Boolean | Visually hides the labels for start and end time inputs |
 | `disabled` | Boolean | Disables the inputs |
 | `end-label` | String, default `'End Time'` | Accessible label for the second time input |
+| `end-opened` | Boolean | Indicates if the end dropdown is open |
 | `end-value` | String, default `''` | Value of the second time input |
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `inclusive-time-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end times to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Time'` | Accessible label for the first time input |
+| `start-opened` | Boolean | Indicates if the start dropdown is open |
 | `start-value` | String, default `''` | Value of the first time input |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
 <!-- docs: end hidden content -->
@@ -266,6 +272,7 @@ size:xlarge
 | `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
+| `opened` | Boolean | Whether or not the date or time dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `time-default-value`| String, default:`'00:00:00'` | Set default value of time input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`. |
 | `value` | String, default `''` | Value of the input. |
