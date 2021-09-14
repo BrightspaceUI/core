@@ -11,7 +11,8 @@ describe('d2l-switch', () => {
 
 	it('dispatches change event', async() => {
 		const elem = await fixture(html`<d2l-switch text="some text"></d2l-switch>`);
-		setTimeout(() => elem.on = true);
+		const clickTarget = elem.shadowRoot.querySelector('.d2l-switch-container');
+		setTimeout(() => clickTarget.click());
 		const { target } = await oneEvent(elem, 'change');
 		expect(target).to.equal(elem);
 	});
