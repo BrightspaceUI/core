@@ -150,6 +150,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._inputTextFocusMouseup = false;
 		this._inputTextFocusShowTooltip = true; // true by default so hover triggers tooltip
 		this._namespace = 'components.input-date';
+		this._openCalendarOnly = false;
+		this._openedOnKeydown = false;
 		this._showInfoTooltip = true;
 		this._shownValue = '';
 
@@ -448,8 +450,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 	_handleMouseup(e) {
 		this._inputTextFocusMouseup = true;
-		const icon = this.shadowRoot.querySelector('d2l-icon');
-		this._openCalendarOnly = e.srcElement.tagName === icon.tagName;
+		this._openCalendarOnly = e.srcElement.tagName.toLowerCase() === 'd2l-icon';
 		this.opened = !this.opened;
 	}
 
