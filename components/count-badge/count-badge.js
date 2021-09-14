@@ -177,9 +177,10 @@ class CountBadge extends RtlMixin(LitElement) {
 			class="d2l-count-badge-number" 
 			id="${this._badgeId}"
 			tabindex="${ifDefined(this.tabStop || this.hasTooltip ? '0' : undefined)}" 
-			role="${ifDefined(this.announceChanges ? 'status' : undefined)}">
+			role="${ifDefined(this.announceChanges ? 'status' : undefined)}"
+			aria-labelledby="${ifDefined(this.hasTooltip ? null : this._textId)}">
 					<div aria-hidden="true">${numberString}</div>
-					${this.hasTooltip ? html`<d2l-tooltip id="${this._textId}" for="${this._badgeId}">${this.text}</d2l-tooltip>` :  html`<span id="${this._textId}" class="d2l-offscreen">"${this.text}"</span>`}
+					${this.hasTooltip ? html`<d2l-tooltip id="${this._textId}" for="${this._badgeId}">${this.text}</d2l-tooltip>` :  html`<span id="${this._textId}" for="${this._badgeId}" class="d2l-offscreen">"${this.text}"</span>`}
 			</div>
 			`;
 	}
