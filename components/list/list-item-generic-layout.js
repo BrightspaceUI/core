@@ -57,8 +57,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[control-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
-				grid-template-rows:
-					[main-start] [main-end nested-start] [nested-end];
+				grid-template-rows: [main-start] [main-end nested-start] [nested-end];
 				position: relative;
 				z-index: 0;
 			}
