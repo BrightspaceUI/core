@@ -14,10 +14,13 @@ size:xlarge
 </script>
 <script>
   window.addEventListener('load', function () {
+    const demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-firstLoad')) return;
+
     setTimeout(function() {
       var input = document.querySelector('d2l-input-date');
       input.opened = true;
-    }, 100);
+    }, 1000);
   });
 </script>
 <d2l-input-date label="Date Input"></d2l-input-date>
@@ -56,6 +59,17 @@ size:xlarge
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date.js';
+</script>
+<script>
+  window.addEventListener('load', function () {
+    const demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-firstLoad')) return;
+
+    setTimeout(function() {
+      var input = document.querySelector('d2l-input-date');
+      input.opened = true;
+    }, 20);
+  });
 </script>
 <d2l-input-date label="Birthdate">
 </d2l-input-date>
@@ -109,6 +123,17 @@ size:xlarge
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-range.js';
+</script>
+<script>
+  window.addEventListener('load', function () {
+    const demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-firstLoad')) return;
+
+    setTimeout(function() {
+      var input = document.querySelector('d2l-input-date-range');
+      input.startOpened = true;
+    }, 20);
+  });
 </script>
 <d2l-input-date-range label="Availability Range">
 </d2l-input-date-range>
@@ -171,6 +196,17 @@ size:large
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time.js';
 </script>
+<script>
+  window.addEventListener('load', function () {
+    const demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-firstLoad')) return;
+
+    setTimeout(function() {
+      var input = document.querySelector('d2l-input-time');
+      input.opened = true;
+    }, 20);
+  });
+</script>
 <d2l-input-time label="Time">
 </d2l-input-time>
 ```
@@ -223,6 +259,17 @@ size:large
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-time-range.js';
+</script>
+<script>
+  window.addEventListener('load', function () {
+    const demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-firstLoad')) return;
+
+    setTimeout(function() {
+      var input = document.querySelector('d2l-input-time-range');
+      input.startOpened = true;
+    }, 20);
+  });
 </script>
 <d2l-input-time-range label="Availability Range">
 </d2l-input-time-range>
@@ -281,6 +328,17 @@ size:xlarge
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time.js';
 </script>
+<script>
+  window.addEventListener('load', function () {
+    const demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-firstLoad')) return;
+
+    setTimeout(function() {
+      var input = document.querySelector('d2l-input-date-time');
+      input.startOpened = true;
+    }, 20);
+  });
+</script>
 <d2l-input-date-time label="Due Date">
 </d2l-input-date-time>
 ```
@@ -334,6 +392,17 @@ size:xlarge
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-date-time-range.js';
+</script>
+<script>
+  window.addEventListener('load', function () {
+    const demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-firstLoad')) return;
+
+    setTimeout(function() {
+      var input = document.querySelector('d2l-input-date-time-range');
+      input.startOpened = true;
+    }, 20);
+  });
 </script>
 <d2l-input-date-time-range label="Availability Range">
 </d2l-input-date-time-range>
