@@ -41,7 +41,10 @@ describe('d2l-input-time', () => {
 
 	describe('opened behavior', () => {
 
-		before(async() => await page.reload());
+		before(async() => {
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+		});
 
 		after(async() => {
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
