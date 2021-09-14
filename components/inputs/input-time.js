@@ -315,8 +315,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
-					min-width="195"
-					mobile-tray="bottom">
+					min-width="195">
 					<d2l-menu
 						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"

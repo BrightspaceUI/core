@@ -16,6 +16,8 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+const mediaQueryList = window.matchMedia('(max-width: 615px)');
+
 export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(getDateFromISODate(val));
 }
@@ -228,7 +230,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				@d2l-dropdown-focus-enter="${this._handleFocusTrapEnter}"
 				max-width="335"
 				min-height="${this._hiddenCalendarHeight}"
-				no-auto-fit
+				?no-auto-fit="${!mediaQueryList.matches}"
 				trap-focus
 				no-auto-focus
 				mobile-tray="bottom"
@@ -433,12 +435,21 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		}
 	}
 
-	async _handleMouseup() {
+	async _handleMouseup(e) {
 		this._inputTextFocusMouseup = true;
 		if (!this._dropdownFirstOpened) await this._handleFirstDropdownOpen();
 		if (!this.disabled && !this.skeleton) {
 			if (!this._dropdownOpened) this._handleChange();
-			this._dropdown.toggleOpen(false);
+			const icon = this.shadowRoot.querySelector('d2l-icon');
+			if (!mediaQueryList.matches) {
+				this._dropdown.toggleOpen(true);
+			}
+			// on small screens, only open calendar if calendar icon is selected,
+			// otherwise open text input
+			else if (e.srcElement.tagName === icon.tagName) {
+				this._dropdown.toggleOpen(true);
+				this._calendar.focus();
+			}
 		}
 	}
 
