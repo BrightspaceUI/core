@@ -165,7 +165,7 @@ describe('d2l-filter', () => {
 				expect(elem._dimensions[0].values[1].selected).to.be.false;
 			});
 
-			it('single set dimension with selection-single on fires change events', async() => {
+			it.skip('single set dimension with selection-single on fires change events', async() => {
 				const elem = await fixture(singleSetDimensionSingleSelectionFixture);
 				const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
 				expect(elem._dimensions[0].values[0].selected).to.be.true;

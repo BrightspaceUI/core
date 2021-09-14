@@ -74,6 +74,20 @@ class List extends SelectionMixin(LitElement) {
 		return this._getItems().indexOf(item);
 	}
 
+	getSelectionInfo(includeNested) {
+		const selectionInfo = super.getSelectionInfo();
+		if (!includeNested) return selectionInfo;
+
+		let keys = selectionInfo.keys;
+		const nestedLists = this.querySelectorAll('d2l-list[slot="nested"]');
+
+		nestedLists.forEach(nestedList => {
+			keys = [...keys, ...nestedList.getSelectionInfo().keys];
+		});
+
+		return new SelectionInfo(keys, selectionInfo.state);
+	}
+
 	_getItems() {
 		const slot = this.shadowRoot.querySelector('slot:not([name])');
 		if (!slot) return [];
