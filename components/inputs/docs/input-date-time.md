@@ -335,7 +335,7 @@ size:xlarge
 
     setTimeout(function() {
       var input = document.querySelector('d2l-input-date-time');
-      input.startOpened = true;
+      input.opened = true;
     }, 20);
   });
 </script>
