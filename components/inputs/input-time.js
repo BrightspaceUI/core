@@ -142,7 +142,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
-			 * Whether or not the dropdown is open
+			 * Indicates if the dropdown is open
 			 */
 			opened: { type: Boolean },
 			/**
@@ -392,8 +392,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	_handleDropdownClose() {
-		/** @ignore */
 		this.opened = false;
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
 			{ bubbles: true, composed: false, detail: { opened: false } }

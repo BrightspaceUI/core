@@ -14,7 +14,7 @@ describe('d2l-input-time', () => {
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 
-		// #opened being opened causes issues with focus with other date inputs being opened.
+		// #opened being opened causes issues with focus with other time inputs being opened.
 		// Putting this first in case tests are run in isolation.
 		await page.$eval('#opened', (elem) => elem.removeAttribute('opened'));
 	});
@@ -41,7 +41,10 @@ describe('d2l-input-time', () => {
 
 	describe('opened behavior', () => {
 
-		before(async() => await page.reload());
+		before(async() => {
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+		});
 
 		after(async() => {
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
