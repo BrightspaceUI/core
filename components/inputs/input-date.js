@@ -470,10 +470,10 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		// otherwise only open text input
 		if (mediaQueryList.matches && this._openCalendarOnly) {
 			this._dropdown.toggleOpen(true);
-			this._calendar.focus();
 		} else if (mediaQueryList.matches && !this._openCalendarOnly && !this._openedOnKeydown) {
 			this._openCalendarOnly = false;
 			this._openedOnKeydown = false;
+			this.opened = false;
 			return;
 		}
 		else if (this._inputTextFocusMouseup) {
@@ -483,6 +483,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			this._calendar.focus();
 			this._setFormattedValue();
 		}
+		if (mediaQueryList.matches) this._calendar.focus();
 		this._openCalendarOnly = false;
 		this._openedOnKeydown = false;
 	}
