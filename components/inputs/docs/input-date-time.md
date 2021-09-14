@@ -12,6 +12,14 @@ size:xlarge
   import '@brightspace-ui/core/components/inputs/input-date.js';
   import '@brightspace-ui/core/components/inputs/input-time.js';
 </script>
+<script>
+  window.addEventListener('load', function () {
+    setTimeout(function() {
+      var input = document.querySelector('d2l-input-date');
+      input.opened = true;
+    }, 100);
+  });
+</script>
 <d2l-input-date label="Date Input"></d2l-input-date>
 <d2l-input-time label="Time Input"></d2l-input-time>
 ```
