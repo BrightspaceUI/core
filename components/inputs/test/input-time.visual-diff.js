@@ -106,7 +106,7 @@ describe('d2l-input-time', () => {
 			it(`${lang} AM`, async function() {
 				await page.evaluate(lang => {
 					const input = document.querySelector('#localizationAM');
-					const timeout = lang === 'da' ? 500 : 100;
+					const timeout = lang === 'da' ? 1000 : 100;
 					return new Promise((resolve) => {
 						input.addEventListener('d2l-localize-behavior-language-changed', () => {
 							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, timeout)));
