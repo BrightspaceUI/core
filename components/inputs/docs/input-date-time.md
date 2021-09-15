@@ -354,7 +354,7 @@ size:xlarge
 | `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
-| `opened` | Boolean | Whether or not the date or time dropdown is open |
+| `opened` | Boolean | Indicates if the date or time dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `time-default-value`| String, default:`'00:00:00'` | Set default value of time input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`. |
 | `value` | String, default `''` | Value of the input. |
@@ -418,11 +418,13 @@ size:xlarge
 | `child-labels-hidden` | Boolean | Visually hides the labels for start and end date-time inputs |
 | `disabled` | Boolean | Disables the inputs |
 | `end-label` | String, default `'End Date'` | Accessible label for the second date-time input |
+| `end-opened` | Boolean | Indicates if the end date or time dropdown is open |
 | `end-value` | String, default `''` | Value of the second date-time input |
 | `inclusive-date-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end date-times to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date-time input |
+| `start-opened` | Boolean | Indicates if the start date or time dropdown is open |
 | `start-value` | String, default `''` | Value of the first date-time input |
 
 ### Events

@@ -41,7 +41,10 @@ describe('d2l-input-time', () => {
 
 	describe('opened behavior', () => {
 
-		before(async() => await page.reload());
+		before(async() => {
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+		});
 
 		after(async() => {
 			await page.$eval('#opened-skeleton', (elem) => elem.removeAttribute('opened'));
@@ -103,9 +106,10 @@ describe('d2l-input-time', () => {
 			it(`${lang} AM`, async function() {
 				await page.evaluate(lang => {
 					const input = document.querySelector('#localizationAM');
+					const timeout = lang === 'da' ? 1000 : 100;
 					return new Promise((resolve) => {
 						input.addEventListener('d2l-localize-behavior-language-changed', () => {
-							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, 200)));
+							input.addEventListener('d2l-input-time-hidden-content-width-change', () => input.updateComplete.then(setTimeout(resolve, timeout)));
 						}, { once: true });
 						document.querySelector('html').setAttribute('lang', lang);
 					});

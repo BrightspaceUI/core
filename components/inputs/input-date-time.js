@@ -70,7 +70,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Whether or not the date or time dropdown is open
+			 * Indicates if the date or time dropdown is open
 			 */
 			opened: { type: Boolean },
 			/**

@@ -87,9 +87,10 @@ describe('d2l-input-time-range', () => {
 		});
 
 		it('end opened', async function() {
-			await page.$eval('#opened', (elem) => {
+			await page.$eval('#opened', async(elem) => {
 				elem.removeAttribute('start-opened');
 				elem.endOpened = true;
+				await elem.updateComplete;
 			});
 			const rect = await getRect(page, '#opened', 1);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

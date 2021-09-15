@@ -124,20 +124,15 @@ describe('d2l-list', () => {
 		] }
 		,
 		{ category: 'dropdown', tests: [
-			{
-				name: 'open down',
-				selector: '#dropdown-tooltips',
-				action: () => openDropdown('#open-down'),
-				after: () => closeDropdown('#open-down')
-			}
+			{ name: 'open down', selector: '#dropdown-tooltips', action: () => openDropdown('#open-down'), after: () => closeDropdown('#open-down') }
 		] },
 		{ category: 'tooltip', tests: [
-			{
-				name: 'open down',
-				selector: '#dropdown-tooltips',
-				action: () => showTooltip('#open-down'),
-				after: () => hideTooltip('#open-down')
-			}
+			{ name: 'open down', selector: '#dropdown-tooltips', action: () => showTooltip('#open-down'), after: () => hideTooltip('#open-down') }
+		] },
+		{ category: 'nested', tests: [
+			{ name: 'none-selected', selector: '#nested-none-selected' },
+			{ name: 'some-selected', selector: '#nested-some-selected' },
+			{ name: 'all-selected', selector: '#nested-all-selected' }
 		] }
 	].forEach((info) => {
 
