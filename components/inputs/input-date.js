@@ -16,6 +16,8 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
+const mediaQueryList = window.matchMedia('(max-width: 615px)');
+
 export function formatISODateInUserCalDescriptor(val) {
 	return formatDate(getDateFromISODate(val));
 }
@@ -148,6 +150,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		this._inputTextFocusMouseup = false;
 		this._inputTextFocusShowTooltip = true; // true by default so hover triggers tooltip
 		this._namespace = 'components.input-date';
+		this._openCalendarOnly = false;
+		this._openedOnKeydown = false;
 		this._showInfoTooltip = true;
 		this._shownValue = '';
 
@@ -232,7 +236,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 				@d2l-dropdown-focus-enter="${this._handleFocusTrapEnter}"
 				max-width="335"
 				min-height="${this._hiddenCalendarHeight}"
-				no-auto-fit
+				?no-auto-fit="${!mediaQueryList.matches}"
 				trap-focus
 				no-auto-focus
 				mobile-tray="bottom"
@@ -438,13 +442,15 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	_handleKeydown(e) {
 		// open dropdown on down arrow or enter and focus on calendar focus date
 		if (e.keyCode === 40 || e.keyCode === 13) {
+			this._openedOnKeydown = true;
 			this.opened = true;
 			e.preventDefault();
 		}
 	}
 
-	_handleMouseup() {
+	_handleMouseup(e) {
 		this._inputTextFocusMouseup = true;
+		this._openCalendarOnly = e.srcElement.tagName.toLowerCase() === 'd2l-icon';
 		this.opened = !this.opened;
 	}
 
@@ -461,13 +467,26 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 		await this._handleChange();
 
-		if (this._inputTextFocusMouseup) {
+		// on small screens, only open calendar if calendar icon is selected,
+		// otherwise only open text input
+		if (mediaQueryList.matches && this._openCalendarOnly) {
+			this._dropdown.toggleOpen(true);
+		} else if (mediaQueryList.matches && !this._openCalendarOnly && !this._openedOnKeydown) {
+			this._openCalendarOnly = false;
+			this._openedOnKeydown = false;
+			this.opened = false;
+			return;
+		}
+		else if (this._inputTextFocusMouseup) {
 			this._dropdown.open(false);
 		} else {
 			this._dropdown.open();
 			this._calendar.focus();
 			this._setFormattedValue();
 		}
+		if (mediaQueryList.matches) this._calendar.focus();
+		this._openCalendarOnly = false;
+		this._openedOnKeydown = false;
 	}
 
 	_setFormattedValue() {
