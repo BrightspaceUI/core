@@ -98,8 +98,12 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		super();
 
 		/** @ignore */
+		this.childView = false;
+		/** @ignore */
 		this.hierarchicalView = true;
 		this.__focusPrevious = false;
+		this.__intersectionObserver = null;
+		this.__isAutoSized = false;
 		this.__resizeObserver = null;
 		this.__hideAnimations = [];
 	}
@@ -109,8 +113,21 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		this.__isChildView();
 
+		if (typeof(IntersectionObserver) === 'function') {
+			this.__intersectionObserver = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						this.__autoSize(this);
+					}
+				});
+			});
+			this.__intersectionObserver.observe(this);
+		}
+
 		requestAnimationFrame(() => {
-			this.__autoSize(this);
+			if (typeof(IntersectionObserver) !== 'function') {
+				this.__autoSize(this);
+			}
 			this.__startResizeObserver();
 
 			if (!this.childView) {
@@ -128,6 +145,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.removeEventListener('focus', this.__focusCapture);
 		this.removeEventListener('focusout', this.__focusOutCapture);
 		window.removeEventListener('resize', this.__onWindowResize);
+		if (this.__intersectionObserver) {
+			this.__intersectionObserver.disconnect();
+			this.__isAutoSized = false;
+		}
 	}
 
 	firstUpdated(changedProperties) {
@@ -152,6 +173,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		this.addEventListener('keypress', stopPropagation);
 
 		this.__isChildView();
+
 	}
 
 	getActiveView() {
@@ -261,16 +283,20 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__autoSize(view) {
-		if (this.childView || view.offsetParent === null) return;
+		if (this.__isAutoSized || this.childView) return;
+		requestAnimationFrame(() => {
 
-		let rect;
-		if (view === this) {
-			rect = this.shadowRoot.querySelector('.d2l-hierarchical-view-content').getBoundingClientRect();
-		} else {
-			rect = view.getBoundingClientRect();
-		}
-		this.style.height = `${rect.height}px`;
+			if (view.offsetParent === null) return;
 
+			this.__isAutoSized = true;
+			let rect;
+			if (view === this) {
+				rect = this.shadowRoot.querySelector('.d2l-hierarchical-view-content').getBoundingClientRect();
+			} else {
+				rect = view.getBoundingClientRect();
+			}
+			this.style.height = `${rect.height}px`;
+		});
 	}
 
 	__dispatchHideComplete(data) {
