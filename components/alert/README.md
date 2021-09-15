@@ -28,8 +28,8 @@ The `d2l-alert` component can be used to communicate important information relat
 * Do provide a clear call to action if it can help resolve the alert
 * Do provide a control to dismiss the alert and prevent the message from displaying again, if applicable 
 * Do use sentence case for alert text, but avoid unnecessary punctuation by not placing periods at the end of single sentences
-
 <!-- docs: end dos -->
+
 <!-- docs: start donts -->
 * Don’t use an inline alert in isolation for form validation errors – highlight fields with errors in red and ensure that the fields have error tooltips on focus & hover
 * Don't display more than one inline alert at a time

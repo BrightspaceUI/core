@@ -6,7 +6,15 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 const singleSetDimensionFixture = html`
 	<d2l-filter>
 		<d2l-filter-dimension-set key="dim" text="Dim" select-all>
-			<d2l-filter-dimension-set-value key="value" text="Value"></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="value-1" text="Value 1"></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="value-2" text="Value 2" selected></d2l-filter-dimension-set-value>
+		</d2l-filter-dimension-set>
+	</d2l-filter>`;
+const singleSetDimensionSingleSelectionOnFixture = html`
+	<d2l-filter>
+		<d2l-filter-dimension-set key="dim" text="Dim" selection-single>
+			<d2l-filter-dimension-set-value key="value-1" text="Value 1"></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="value-2" text="Value 2" selected></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>`;
 const multiDimensionFixture = html`
@@ -22,6 +30,7 @@ const multiDimensionFixture = html`
 describe('d2l-filter', () => {
 	[
 		{ name: 'Single set dimension', fixture: singleSetDimensionFixture },
+		{ name: 'Single set dimension - single selection', fixture: singleSetDimensionSingleSelectionOnFixture },
 		{ name: 'Multiple dimensions', fixture: multiDimensionFixture }
 	].forEach(test => {
 		it(`${test.name}`, async() => {

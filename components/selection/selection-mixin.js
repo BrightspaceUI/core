@@ -71,12 +71,14 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	getSelectionInfo() {
+		let state = SelectionInfo.states.none;
 		const keys = [];
+
 		this._selectionSelectables.forEach(selectable => {
 			if (selectable.selected) keys.push(selectable.key);
+			if (selectable._indeterminate) state = SelectionInfo.states.some;
 		});
 
-		let state = SelectionInfo.states.none;
 		if (keys.length > 0) {
 			if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
 			else state = SelectionInfo.states.some;
@@ -146,6 +148,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_handleSelectionChange(e) {
+		e.stopPropagation();
 		if (this.selectionSingle && e.detail.selected) {
 			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
 			this._selectionSelectables.forEach(selectable => {

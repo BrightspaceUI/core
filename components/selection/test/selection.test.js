@@ -55,25 +55,20 @@ describe('d2l-selection-input', () => {
 		el = await fixture(`
 			<d2l-test-selection>
 				<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
+				<d2l-selection-input key="key2" label="label2" selected></d2l-selection-input>
 			</d2l-test-selection>
 		`);
 		await el.updateComplete;
 		await nextFrame();
-		el = el.querySelector('d2l-selection-input');
-	});
-
-	it('dispatches d2l-selection-change event when checkbox changes', async() => {
-		setTimeout(() => el.shadowRoot.querySelector('d2l-input-checkbox').dispatchEvent(new CustomEvent('change')));
-		await oneEvent(el, 'd2l-selection-change');
 	});
 
 	it('dispatches d2l-selection-change event when selected changes to true', async() => {
-		setTimeout(() => el.selected = true);
+		setTimeout(() => el.querySelector('[key="key1"]').selected = true);
 		await oneEvent(el, 'd2l-selection-change');
 	});
 
 	it('dispatches d2l-selection-change event when selected changes to false', async() => {
-		setTimeout(() => el.selected = false);
+		setTimeout(() => el.querySelector('[key="key2"]').selected = false);
 		await oneEvent(el, 'd2l-selection-change');
 	});
 
@@ -180,8 +175,8 @@ describe('SelectionMixin', () => {
 			expect(spy2.set).to.not.have.been.called;
 			expect(spy3.set).to.not.have.been.called;
 			expect(el.querySelector('[key="key1"]').selected).to.be.true;
-			expect(el.querySelector('[key="key2"]').selected).to.be.undefined;
-			expect(el.querySelector('[key="key3"]').selected).to.be.undefined;
+			expect(el.querySelector('[key="key2"]').selected).to.be.false;
+			expect(el.querySelector('[key="key3"]').selected).to.be.false;
 
 			el.setSelectionForAll(false);
 			expect(spy1.set).to.have.been.calledOnce;

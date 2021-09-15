@@ -14,6 +14,11 @@
 			const elems = document.querySelectorAll('d2l-input-date');
 			elems.forEach(elem => elem._handleFirstDropdownOpen());
 		</script>
+		<style>
+			#opened {
+				margin-top: -10px;
+			}
+		</style>
 		<title>d2l-input-date visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -47,6 +52,15 @@
 			</div>
 			<div class="visual-diff">
 				<d2l-input-date id="value" value="2019-12-20"></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="opened" value="2019-12-20" opened></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="opened-disabled" opened disabled></d2l-input-date>
+			</div>
+			<div class="visual-diff">
+				<d2l-input-date id="opened-skeleton" opened skeleton></d2l-input-date>
 			</div>
 		</div>
 	</body>

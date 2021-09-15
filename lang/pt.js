@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "Fechar esta caixa de diálogo",
 	"components.dropdown.close": "Fechar",
 	"components.filter.loading": "Carregar filtros",
-	"components.filter.filterCount": "{number, select, max {99+} all {Todos} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {Nenhum filtro aplicado.} one {Um filtro aplicado.} other {{number} filtros aplicados.}}",
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "Não há filtros disponíveis",
