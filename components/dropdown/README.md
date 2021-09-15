@@ -186,7 +186,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 |---|---|
 | `text` | Acts as a primary label and tooltip and is **REQUIRED**. |
 
-## Dropdown Contents Container [d2l-dropdown-content]
+## Content: Container [d2l-dropdown-content]
 `d2l-dropdown-content` is a generic container for dropdown content.  It provides behavior such as sizing,  positioning, and managing focus gain/loss.
 
 <!-- docs: start hidden content -->
