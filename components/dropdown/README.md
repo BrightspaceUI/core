@@ -1,3 +1,4 @@
+
 # Dropdowns
 A Dropdown is a button that opens a floating container to offer menu items or other content.
 
@@ -103,11 +104,14 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 |---|---|
 | `description` | Use when text on button does not provide enough context. |
 
-### Opener: Context Menu [d2l-dropdown-context-menu]
+## Opener: Context Menu [d2l-dropdown-context-menu]
 `d2l-dropdown-context-menu` is a simple/minimal opener for dropdown content (`d2l-dropdown-content`, `d2l-dropdown-menu` or `d2l-dropdown-tabs`).
 
+<!-- docs: start hidden content -->
 ![screenshot the basic dropdown-context-menu opener](./screenshots/dropdown-context-menu.png)
+<!-- docs: end hidden content -->
 
+<!-- docs: demo live name:d2l-dropdown-context-menu align:flex-start autoSize:false size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-context-menu.js';
@@ -190,6 +194,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the dropdown-content with mobile-tray="right"](./screenshots/dropdown-content-mobile-tray.png)
 <!-- docs: end hidden content -->
 
+<!-- docs: demo live name:d2l-dropdown-content autoSize:false align:flex-start size:medium -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
@@ -198,9 +203,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-content min-width="150" max-width="400">
-    <a href="https://www.google.com">Google</a>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <a href="http://www.desire2learn.com">D2L</a>
   </d2l-dropdown-content>
 </d2l-dropdown-button>
 ```
