@@ -12,9 +12,9 @@ Breadcrumbs are a way-finding tool that helps users understand where they are w
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
-  <d2l-breadcrumb text="Item 1" href="page1.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Item 2" href="page2.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Item 3" href="page3.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 1" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 2" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 3" href="#"></d2l-breadcrumb>
 </d2l-breadcrumbs>
 ```
 
@@ -42,10 +42,10 @@ Breadcrumbs that overflow their container will appear to fade at the edge.
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
-  <d2l-breadcrumb text="Table of Contents" href="page1.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Unit 1: Shakespeare" href="page2.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Lesson 1: Introduction" href="page3.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="The Comedies, Tragedies, and Histories" href="page4.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Table of Contents" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Unit 1: Shakespeare" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Lesson 1: Introduction" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="The Comedies, Tragedies, and Histories" href="#"></d2l-breadcrumb>
 </d2l-breadcrumbs>
 ```
 
@@ -65,8 +65,8 @@ Set a `max-width` to constrain breadcrumbs to a particular width:
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs style="max-width: 250px">
-  <d2l-breadcrumb text="Trucate Basic Item 1" href="page1.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Truncate Basic Item 2" href="page2.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Trucate Basic Item 1" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Truncate Basic Item 2" href="#"></d2l-breadcrumb>
 </d2l-breadcrumbs>
 ```
 
@@ -85,8 +85,8 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs compact>
-  <d2l-breadcrumb text="Item 1" href="page1.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Item 2" href="page2.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 1" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 2" href="#"></d2l-breadcrumb>
   <d2l-breadcrumb-current-page text="Current Page"></d2l-breadcrumb-current-page>
 </d2l-breadcrumbs>
 ```
@@ -99,9 +99,9 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
-  <d2l-breadcrumb text="Item 1" href="page1.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Item 2" href="page2.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Item 3" href="page3.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 1" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 2" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 3" href="#"></d2l-breadcrumb>
 </d2l-breadcrumbs>
 ```
 
@@ -121,7 +121,7 @@ Alternately, add the `compact` attribute to only display the last breadcrumb. Th
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
-  <d2l-breadcrumb text="Item 1" href="page1.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 1" href="#"></d2l-breadcrumb>
 </d2l-breadcrumbs>
 ```
 
@@ -155,8 +155,9 @@ Older pages or tools include the current page name at the end of the breadcrumb
   import '@brightspace-ui/core/components/breadcrumbs/breadcrumbs.js';
 </script>
 <d2l-breadcrumbs>
-  <d2l-breadcrumb text="Item 1" href="page1.html"></d2l-breadcrumb>
-  <d2l-breadcrumb text="Item 2" href="page2.html"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 1" href="#"></d2l-breadcrumb>
+  <d2l-breadcrumb text="Item 2" href="#"></d2l-breadcrumb>
   <d2l-breadcrumb-current-page text="Current Page"></d2l-breadcrumb-current-page>
 </d2l-breadcrumbs>
 ```
+
