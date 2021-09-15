@@ -5,9 +5,27 @@ A Select List allows the user to select a single option out of a relatively larg
 <!-- docs: demo -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/demo/input-select-test.js';
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+
+  class MySelectElem extends LitElement {
+
+    static get styles() {
+      return selectStyles;
+    }
+    render() {
+      return html`
+        <select class="d2l-input-select">
+          <option>Option 1</option>
+          <option>Option 2</option>
+        </select>
+        `;
+    }
+
+  }
+  customElements.define('d2l-my-select-elem', MySelectElem);
 </script>
-<d2l-test-input-select></d2l-test-input-select>
+<d2l-my-select-elem></d2l-my-select-elem>
 ```
 
 ## Best Practices
@@ -38,30 +56,65 @@ Native `<select>` elements can be styled by importing `input-select-styles.js` i
 
 Note: in order for RTL to function correctly, make sure your component uses the `RtlMixin`.
 
-```javascript
-import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
-import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
-class MyElem extends RtlMixin(LitElement) {
-  static get styles() {
-    return selectStyles;
-  }
-  render() {
-    return html`
-      <select class="d2l-input-select">
-        <option>Option 1</option>
-        <option>Option 2</option>
-      </select>
-      `;
-  }
-}
-```
-
-The example below uses a component similar to that in the code above which allows toggling of properties in order to see what those styles look like.
-
 <!-- docs: demo live name:d2l-test-input-select -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/demo/input-select-test.js';
+  import { css, html, LitElement } from 'lit-element/lit-element.js';
+  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
+  import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
+  import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+
+  class TestInputSelect extends SkeletonMixin(RtlMixin(LitElement)) {
+
+    static get properties() {
+		return {
+			/**
+			 * Disables the input
+			 */
+			disabled: { type: Boolean },
+			/**
+			 * Marks the input as invalid, which is shown in style and also is reflected in `aria-invalid`
+			 */
+			invalid: { type: Boolean },
+			/**
+			 * Sets a max-width on the select element in order to show overflow styles
+			 */
+			overflow: { type: Boolean }
+		};
+	}
+
+	static get styles() {
+		return [super.styles, selectStyles,
+			css`
+				:host {
+					display: inline-block;
+				}
+				:host([overflow]) select {
+					max-width: 130px;
+				}
+			`
+		];
+	}
+
+	render() {
+		const invalid = this.invalid ? 'true' : 'false';
+		return html`
+			<div class="d2l-skeletize">
+				<select
+					aria-label="Choose a dinosaur:"
+					aria-invalid="${invalid}"
+					class="d2l-input-select"
+					?disabled="${this.disabled}">
+					<option>Tyrannosaurus</option>
+					<option>Velociraptor</option>
+					<option>Deinonychus</option>
+				</select>
+			</div>
+		`;
+	}
+
+  }
+  customElements.define('d2l-test-input-select', TestInputSelect);
 </script>
 <d2l-test-input-select></d2l-test-input-select>
 ```

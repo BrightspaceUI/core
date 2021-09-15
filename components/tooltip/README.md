@@ -9,7 +9,6 @@ Tooltips display additional information when users focus or hover on a point of 
 <!-- docs: demo autoSize:false size:small -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 <script>
@@ -20,7 +19,7 @@ Tooltips display additional information when users focus or hover on a point of 
     }, 20);
   });
 </script>
-<d2l-button id="tooltip-button">Hover here</d2l-button>
+<div id="tooltip-button">Hover here</div>
 <d2l-tooltip id="tooltip" for="tooltip-button">
   Tooltip message example
 </d2l-tooltip>
