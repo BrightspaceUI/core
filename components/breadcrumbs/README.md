@@ -34,7 +34,7 @@ Breadcrumbs are a way-finding tool that helps users understand where they are w
 
 ## Responsive Behavior
 
-Breadcrumbs that overflow their container will appear to fade at the edge, and can be horizontally scrolled.
+Breadcrumbs that overflow their container will appear to fade at the edge.
 
 <!-- docs: demo display:block -->
 ```html
