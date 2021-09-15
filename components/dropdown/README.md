@@ -27,7 +27,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ### Properties:
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
 <!-- docs: end hidden content -->
@@ -57,7 +57,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `text` | String, required | Text for the button |
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
@@ -89,7 +89,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ### Properties:
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `text` | String, required | Text for the button |
 | `description` | String | A description to be added to the inner `button` opener for accessibility |
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
@@ -170,7 +170,7 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or key press |
 | `text` | String | Used as `aria-label` for the button |
