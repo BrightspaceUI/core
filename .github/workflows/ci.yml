@@ -58,4 +58,4 @@ jobs:
         env:
           SAUCE_USERNAME: Gaudi1
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
-        run: npx web-test-runner --config web-test-runner.sauce.config.mjs
+        run: npx web-test-runner --config web-test-runner.sauce.config.mjs --group default
