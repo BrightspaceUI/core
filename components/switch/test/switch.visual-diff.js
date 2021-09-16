@@ -59,7 +59,8 @@ describe('d2l-switch', () => {
 				{ name: 'text-start', selector: '#text-start' },
 				{ name: 'text-end', selector: '#text-end' },
 				{ name: 'toggle on', selector: '#off', action: (selector) => page.$eval(selector, (elem) => elem.on = true) },
-				{ name: 'toggle off', selector: '#on', action: (selector) => page.$eval(selector, (elem) => elem.on = false) }
+				{ name: 'toggle off', selector: '#on', action: (selector) => page.$eval(selector, (elem) => elem.on = false) },
+				{ name: 'background-color', selector: '#background-color' }
 			].forEach((info) => {
 
 				it(info.name, async function() {

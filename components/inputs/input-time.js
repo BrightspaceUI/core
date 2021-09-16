@@ -142,6 +142,10 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 */
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
+			 * Indicates if the dropdown is open
+			 */
+			opened: { type: Boolean },
+			/**
 			 * Indicates that a value is required
 			 */
 			required: { type: Boolean, reflect: true },
@@ -177,6 +181,9 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 				:host([hidden]) {
 					display: none;
 				}
+				d2l-dropdown-menu[data-mobile][mobile-tray] .d2l-input-time-menu {
+					text-align: center;
+				}
 				.d2l-input-label {
 					display: inline-block;
 					vertical-align: top;
@@ -206,6 +213,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		this.disabled = false;
 		this.enforceTimeIntervals = false;
 		this.labelHidden = false;
+		this.opened = false;
 		this.required = false;
 		this.timeInterval = 'thirty';
 		this._dropdownFirstOpened = false;
@@ -227,6 +235,11 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		if (this.enforceTimeIntervals) {
 			time = getTimeAtInterval(this.timeInterval, time);
 		}
+		// 11:59:00 (manually entered) becomes "end of day" so date/time validation treats them the same
+		const isManualEndOfDay = time.getHours() === 23 && time.getMinutes() === 59 && time.getSeconds() === 0;
+		if (isManualEndOfDay) {
+			time = END_OF_DAY;
+		}
 		this._value = formatDateInISOTime(time);
 		this._formattedValue = formatTime(time);
 		this.requestUpdate('value', oldValue);
@@ -245,7 +258,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		}
 
 		const hiddenContent = this.shadowRoot.querySelector('.d2l-input-time-hidden-content');
-		this.addEventListener('d2l-localize-behavior-language-changed', () => {
+		this.addEventListener('d2l-localize-behavior-language-changed', async() => {
+			await this.updateComplete;
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 			INTERVALS.clear();
 			this.requestUpdate();
@@ -274,6 +288,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 		const formattedWideTimeAM = formatTime(new Date(2020, 0, 1, 10, 23, 0));
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
 		const inputTextWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
+		const opened = this.opened && !this.disabled && !this.skeleton;
 		this.style.maxWidth = inputTextWidth;
 
 		return html`
@@ -307,7 +322,8 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 					@d2l-dropdown-open="${this._handleDropdownOpen}"
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
-					min-width="195">
+					min-width="195"
+					?opened="${opened}">
 					<d2l-menu
 						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"
@@ -376,6 +392,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	_handleDropdownClose() {
+		this.opened = false;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
@@ -386,6 +403,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	async _handleDropdownOpen() {
 		if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
+		this.opened = true;
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-time-dropdown-toggle',
@@ -394,15 +412,10 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 	}
 
 	async _handleKeydown(e) {
-		const dropdown = this.shadowRoot.querySelector('d2l-dropdown-menu');
 		// open and focus dropdown on down arrow or enter
 		if (e.keyCode === 40 || e.keyCode === 13) {
-			if (!this._dropdownFirstOpened) {
-				this._dropdownFirstOpened = true;
-				await this.updateComplete;
-			}
-			dropdown.open(true);
-			this.shadowRoot.querySelector('d2l-menu').focus();
+			if (!this._dropdownFirstOpened) this._dropdownFirstOpened = true;
+			this.opened = true;
 			e.preventDefault();
 		}
 	}

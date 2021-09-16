@@ -18,6 +18,10 @@ function dispatchEvent(elem, eventType, composed) {
 	getInput(elem).dispatchEvent(e);
 }
 
+function getChildElem(elem, selector) {
+	return elem.shadowRoot.querySelector(selector);
+}
+
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('.d2l-input');
 }
@@ -251,6 +255,50 @@ describe('d2l-input-time', () => {
 			elem.value = '2:01:00';
 			await elem.updateComplete;
 			expect(elem.value).to.equal('03:00:00');
+		});
+	});
+
+	describe('open and close behaviour', () => {
+		describe('interacting with opened', () => {
+			let dropdown, dropdownContent, elem;
+
+			beforeEach(async() => {
+				elem = await fixture(basicFixture);
+				elem.opened = true;
+				await elem.updateComplete;
+				dropdown = getChildElem(elem, 'd2l-dropdown');
+				dropdownContent = getChildElem(elem, 'd2l-dropdown-menu');
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+			});
+
+			it('should open dropdown when true', async() => {
+				expect(dropdownContent.opened).to.be.true;
+			});
+
+			it('should close dropdown when false', async() => {
+				expect(dropdownContent.opened).to.be.true;
+				elem.opened = false;
+				await elem.updateComplete;
+				await oneEvent(dropdown, 'd2l-dropdown-close');
+				expect(dropdownContent.opened).to.be.false;
+			});
+		});
+
+		describe('interacting with dropdown', () => {
+
+			it('should set opened to true when dropdown opened with enter', async() => {
+				const elem = await fixture(basicFixture);
+
+				const dropdown = getChildElem(elem, 'd2l-dropdown');
+				const dropdownOpener = getChildElem(elem, '.d2l-dropdown-opener');
+
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				dropdownOpener.dispatchEvent(eventObj);
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+				expect(elem.opened).to.be.true;
+			});
 		});
 	});
 

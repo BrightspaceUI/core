@@ -1,12 +1,12 @@
 # Tables
 
-Tables are used to display tabular data in rows and columns of cells. They can allow users to select rows and sort by columns.
+Tables are used to display tabular data in rows and columns. They can allow users to select rows and sort by columns.
 
 <!-- docs: start hidden content -->
 ![table with default style](./screenshots/default.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo display:block -->
+<!-- docs: demo display:block size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/demo/table-test.js';
@@ -17,20 +17,32 @@ Tables are used to display tabular data in rows and columns of cells. They can a
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Do use tables to display complex data sets.
+* Use a table if your data has many dimensions
+* Use a table when your data has multiple dimensions and any of the following are true:
+  * There are more than just a few dimensions
+  * The dimensions need to be sortable
+  * The dimensions need to be easily compared across rows (ie- scannable)
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don’t use tables to display a simple list of objects or entities; consider using the list component for this instead.
+* Don't use a table to display data that should appear as cohesive objects or entities - use a list instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
 ## Responsive Behavior
-If the browser window is too narrow to accommodate the table’s contents, a scroll button is shown. This button alerts users to the fact that there’s more content to see, and provides a straightforward way for users to scroll horizontally through the table regardless of whether a horizontal scrollbar is visible.
+If the browser window is too narrow to display the table’s contents, a scroll button appears. This alerts users to overflowing content and provides a way for users to scroll horizontally. The scroll button sticks to the top of the screen so that it's available as long as the table is in the viewport.
 
-The scroll button sticks to the top of the table, like a sticky header, so that it never falls out of view while the table is on the page.
+<!-- docs: demo name:d2l-test-table size:large -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/table/demo/table-test.js';
+</script>
+<div style="width: 400px;">
+  <d2l-test-table wide></d2l-test-table>
+</div>
+```
 
-Note: If the browser window is very narrow — for example, on a mobile device — it may be preferable to replace a wide table with a list, a set of cards, or some other alternate component. However, the responsive table component provides a consistent fallback that will work reasonably well for any table on any page.
+If the viewport is very narrow — for example, on a mobile device — it may be preferable to replace a wide table with a list, a set of cards, or an alternate layout. However, the responsive table component works well as a consistent fallback solution.
 
 ## Table Wrapper [d2l-table-wrapper]
 
@@ -38,7 +50,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
 
 See [creation of table component](#creation-of-table-component) for how to create a table component that uses the wrapper and shared styles. The example below uses a component similar to the code in the example in that section.
 
-<!-- docs: demo live name:d2l-test-table autoSize:false display:block size:small -->
+<!-- docs: demo live name:d2l-test-table autoSize:false display:block size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/demo/table-test.js';

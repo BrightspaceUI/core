@@ -10,6 +10,9 @@ export const skeletonStyles = css`
 		75% { background-color: var(--d2l-color-sylvite); }
 		100% { background-color: var(--d2l-color-sylvite); }
 	}
+	:host([skeleton]) {
+		opacity: 0.999;
+	}
 	:host([skeleton]) .d2l-skeletize::before {
 		animation: loadingPulse 1.8s linear infinite;
 		background-color: var(--d2l-color-sylvite);
@@ -20,7 +23,7 @@ export const skeletonStyles = css`
 		position: absolute;
 		right: 0;
 		top: 0;
-		z-index: 4;
+		z-index: 999;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		:host([skeleton]) .d2l-skeletize::before {

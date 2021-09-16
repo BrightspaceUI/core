@@ -9,7 +9,6 @@ export default {
 	"components.dialog.close": "Luk denne dialogboks",
 	"components.dropdown.close": "Luk",
 	"components.filter.loading": "Indlæser filtre",
-	"components.filter.filterCount": "{number, select, max {99+} all {alle} other {{number}}}",
 	"components.filter.filterCountDescription": "{number, plural, zero {Ingen filtre anvendt.} one {1 filter anvendt.} other {{number} filtre anvendt.}}",
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Ingen tilgængelige filtre",

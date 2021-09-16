@@ -1,8 +1,11 @@
 import '../colors/colors.js';
+import '../../helpers/requestIdleCallback.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
+import { getBoundingAncestor, getComposedParent } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+
+const mediaQueryList = window.matchMedia('(max-height: 500px)');
 
 /**
  * A wrapper component to display floating workflow buttons. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
@@ -15,17 +18,12 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			/**
 			 * Indicates to display buttons as always floating
 			 */
-			alwaysFloat: { type: Boolean, attribute: 'always-float' },
-
-			/**
-			 * The minimum height of the viewport to display floating buttons at (where applicable)
-			 */
-			minHeight: { type: String, attribute: 'min-height' },
-			_containerMarginLeft: { type: String },
-			_containerMarginRight: { type: String },
+			alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
+			_containerMarginLeft: { attribute: false, type: String },
+			_containerMarginRight: { attribute: false, type: String },
 			_floating: { type: Boolean, reflect: true },
-			_innerContainerLeft: { type: String },
-			_innerContainerRight: { type: String }
+			_innerContainerLeft: { attribute: false, type: String },
+			_innerContainerRight: { attribute: false, type: String }
 		};
 	}
 
@@ -70,7 +68,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 				transition: transform 500ms, border-top-color 500ms, background-color 500ms;
 			}
 
-			.d2l-floating-buttons-container > div {
+			.d2l-floating-buttons-inner-container {
 				padding: 0.75rem 0 0 0;
 				position: relative;
 			}
@@ -104,34 +102,56 @@ class FloatingButtons extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.alwaysFloat = false;
-		this.minHeight = '500px';
-
-		this._calcContainerPosition = this._calcContainerPosition.bind(this);
+		this._containerMarginLeft = '';
+		this._containerMarginRight = '';
+		this._floating = false;
+		this._innerContainerLeft = '';
+		this._innerContainerRight = '';
+		this._intersectionObserver = null;
+		this._isIntersecting = false;
+		this._recalculateFloating = this._recalculateFloating.bind(this);
+		this._testElem = null;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('scroll', this._calcContainerPosition);
-		window.addEventListener('resize', this._calcContainerPosition);
-		window.addEventListener('d2l-dir-update', this._calcContainerPosition);
+		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._recalculateFloating);
+
+		// if browser doesn't support IntersectionObserver, we don't float
+		if (typeof(IntersectionObserver) !== 'function') {
+			this._isIntersecting = true;
+			return;
+		}
+		this._intersectionObserver = this._intersectionObserver || new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				this._isIntersecting = entry.isIntersecting;
+				this._recalculateFloating();
+			});
+		});
+
+		// observe intersection of a fake sibling element since host is sticky
+		this._testElem = document.createElement('div');
+		this._testElem.style.height = '1px';
+		this._testElem.style.marginTop = '-1px';
+
+		// defer doing any forced layouts until things calm down
+		requestIdleCallback(() => {
+			if (this._testElem !== null && this.parentNode) {
+				this.parentNode.insertBefore(this._testElem, this.nextSibling);
+				this._intersectionObserver.observe(this._testElem);
+			}
+		}, { timeout: 5000 });
+
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('scroll', this._calcContainerPosition);
-		window.removeEventListener('resize', this._calcContainerPosition);
-		window.removeEventListener('d2l-dir-update', this._calcContainerPosition);
-		if (this.__resizeObserver) {
-			this.__resizeObserver.disconnect();
-			this.__resizeObserver = null;
+		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._recalculateFloating);
+		if (this._intersectionObserver) this._intersectionObserver.disconnect();
+		if (this._testElem && this._testElem.parentNode) {
+			this._testElem.parentNode.removeChild(this._testElem);
+			this._testElem = null;
 		}
-	}
-
-	firstUpdated() {
-		super.firstUpdated();
-
-		this._calcContainerPosition();
-		this._startObserver();
 	}
 
 	render() {
@@ -154,13 +174,25 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		`;
 	}
 
-	_calcContainerPosition() {
-		this._floating = this._shouldFloat();
-		if (!this._floating || !this.offsetParent) {
-			return;
+	updated(changedProperties) {
+		if (changedProperties.has('alwaysFloat')) {
+			this._recalculateFloating();
 		}
+	}
 
-		const offsetParentBoundingRect = this.offsetParent.getBoundingClientRect();
+	async _calcContainerPosition() {
+
+		this._containerMarginLeft = '';
+		this._containerMarginRight = '';
+		this._innerContainerLeft = '';
+		this._innerContainerRight = '';
+
+		if (!this._floating) return;
+
+		const boundingAncestor = this._getBoundingAncestor();
+		if (!boundingAncestor) return;
+
+		const offsetParentBoundingRect = boundingAncestor.getBoundingClientRect();
 		const boundingRect = this.getBoundingClientRect();
 
 		const offsetParentLeft = offsetParentBoundingRect.left;
@@ -185,47 +217,55 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		} else {
 			this._innerContainerRight = `${containerRight}px`;
 		}
+
 	}
 
-	_shouldFloat() {
-		if (this.alwaysFloat) {
-			return true;
+	_getBoundingAncestor() {
+
+		const boundingAncestor = getBoundingAncestor(this);
+		const offsetParent = this.offsetParent;
+		if (!offsetParent) {
+			return null;
 		}
 
-		let _viewportIsLessThanMinHeight;
-		if (this.minHeight) {
-			_viewportIsLessThanMinHeight = window.matchMedia(`(max-height: ${this.minHeight})`).matches;
+		if (boundingAncestor === document.documentElement) {
+			return offsetParent;
 		}
 
-		const viewBottom = window.innerHeight;
-		const containerRectHeight = this.getBoundingClientRect().height;
-		const containerTop = this.getBoundingClientRect().top;
-
-		let scrollbarHeightEstimate = 0;
-		const hasHorizontalScollbar = document.body.scrollWidth > document.body.clientWidth;
-		if (hasHorizontalScollbar) {
-			scrollbarHeightEstimate = 17; // needed in case of horizontal scrollbar in Windows
+		let parent = getComposedParent(this);
+		while (parent !== null) {
+			if (parent === boundingAncestor) return boundingAncestor;
+			if (parent === offsetParent) return offsetParent;
+			parent = getComposedParent(parent);
 		}
 
-		/* if viewport height is less than minHeight (e.g., mobile device),
-		 * or user has scrolled to bottom of page
-		 * then do not float the buttons
-		 */
-		if (_viewportIsLessThanMinHeight || ((containerTop + containerRectHeight + scrollbarHeightEstimate) <= viewBottom)) {
-			return false;
-		} else {
-			return true;
-		}
+		return offsetParent;
+
 	}
 
-	_startObserver() {
-		this._resizeObserver = this._resizeObserver || new ResizeObserver(entries => {
-			for (let i = 0; i < entries.length; i++) {
+	_recalculateFloating() {
+		requestAnimationFrame(() => {
+
+			if (this.alwaysFloat) {
+				this._floating = true;
+				this._calcContainerPosition();
+				return;
+			}
+
+			const viewportIsLessThanMinHeight = mediaQueryList.matches;
+			if (viewportIsLessThanMinHeight) {
+				this._floating = false;
+				this._calcContainerPosition();
+				return;
+			}
+
+			const shouldFloat = !this._isIntersecting;
+			if (shouldFloat !== this._floating) {
+				this._floating = shouldFloat;
 				this._calcContainerPosition();
 			}
+
 		});
-		const htmlElem = document.documentElement;
-		this._resizeObserver.observe(htmlElem);
 	}
 
 }

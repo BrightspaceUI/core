@@ -86,6 +86,10 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
+			 * Indicates if the end date or time dropdown is open
+			 */
+			endOpened: { attribute: 'end-opened', type: Boolean },
+			/**
 			 * Value of the end date-time input
 			 * @type {string}
 			 */
@@ -128,13 +132,15 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			 */
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
+			 * Indicates if the start date or time dropdown is open
+			 */
+			startOpened: { attribute: 'start-opened', type: Boolean },
+			/**
 			 * Value of the start date-time input
 			 * @type {string}
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
-			_endDropdownOpened: { type: Boolean },
-			_slotOccupied: { type: Boolean },
-			_startDropdownOpened: { type: Boolean }
+			_slotOccupied: { type: Boolean }
 		};
 	}
 
@@ -162,14 +168,14 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		this.autoShiftDates = false;
 		this.childLabelsHidden = false;
 		this.disabled = false;
+		this.endOpened = false;
 		this.inclusiveDateRange = false;
 		this.labelHidden = false;
 		this.localized = false;
 		this.required = false;
+		this.startOpened = false;
 
-		this._startDropdownOpened = false;
 		this._startInputId = getUniqueId();
-		this._endDropdownOpened = false;
 		this._endInputId = getUniqueId();
 
 		this._slotOccupied = false;
@@ -197,8 +203,8 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		const startDateTimeInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-start');
 		const endDateTimeInput = this.shadowRoot.querySelector('.d2l-input-date-time-range-end');
 
-		const tooltipStart = (this.validationError && !this._startDropdownOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
-		const tooltipEnd = (this.validationError && !this._endDropdownOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipStart = (this.validationError && !this.startOpened && !this.childErrors.has(startDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._startInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
+		const tooltipEnd = (this.validationError && !this.endOpened && !this.childErrors.has(endDateTimeInput)) ? html`<d2l-tooltip align="start" announced for="${this._endInputId}" position="bottom" state="error">${this.validationError}</d2l-tooltip>` : null;
 		return html`
 			${tooltipStart}
 			${tooltipEnd}
@@ -226,6 +232,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 							?localized="${this.localized}"
 							max-value="${ifDefined(this.maxValue)}"
 							min-value="${ifDefined(this.minValue)}"
+							?opened="${this.startOpened}"
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
 							time-default-value="startOfDay"
@@ -247,6 +254,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 							?localized="${this.localized}"
 							max-value="${ifDefined(this.maxValue)}"
 							min-value="${ifDefined(this.minValue)}"
+							?opened="${this.endOpened}"
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
 							time-default-value="endOfDay"
@@ -325,9 +333,9 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 
 	_handleDropdownToggle(e) {
 		if (e.target.classList.contains('d2l-input-date-time-range-start')) {
-			this._startDropdownOpened = e.detail.opened;
+			this.startOpened = e.detail.opened;
 		} else {
-			this._endDropdownOpened = e.detail.opened;
+			this.endOpened = e.detail.opened;
 		}
 	}
 

@@ -4,6 +4,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { nothing } from 'lit-html';
+import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(LabelledMixin(superclass)) {
@@ -25,7 +26,11 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			/**
 			 * Whether the item is selected
 			 */
-			selected: { type: Boolean, reflect: true }
+			selected: { type: Boolean, reflect: true },
+			/**
+			 * Private. The selection info (set by the selection component).
+			 */
+			selectionInfo: { type: Object, attribute: false }
 		};
 	}
 
@@ -47,6 +52,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 
 	constructor() {
 		super();
+		this.selectionInfo = new SelectionInfo();
 		this._checkboxId = getUniqueId();
 	}
 
@@ -59,8 +65,15 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		if (!this.key) this.setSelected(undefined, true);
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (!this._selectionProvider || !changedProperties.has('selectionInfo')) return;
+		this.selected = (this.selectionInfo.state === SelectionInfo.states.all);
+	}
+
 	setSelected(selected, suppressEvent = false) {
-		if (this.selected === selected) return;
+		//if (this.selected === selected) return;
+		if (this.selected === selected || (this.selected === undefined && !selected)) return;
 		this.selected = selected;
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
@@ -82,6 +95,28 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 
 	_onCheckboxChange(event) {
 		this.setSelected(event.target.selected);
+		if (this._selectionProvider) {
+			if (this.selected && this.selectionInfo.state !== SelectionInfo.states.all || !this.selected && this.selectionInfo.state === SelectionInfo.states.all) {
+				this._selectionProvider.setSelectionForAll(this.selected);
+			}
+		}
+	}
+
+	_onNestedSlotChange(e) {
+		if (!this.selectable) return;
+
+		const nestedList = e.target.assignedNodes().find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
+		if (this._selectionProvider === nestedList) return;
+
+		if (this._selectionProvider && this._selectionProvider !== nestedList) {
+			this._selectionProvider.unsubscribeObserver(this);
+			this._selectionProvider = null;
+		}
+
+		if (nestedList) {
+			this._selectionProvider = nestedList;
+			this._selectionProvider.subscribeObserver(this);
+		}
 	}
 
 	_renderCheckbox() {
@@ -91,6 +126,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 				?selected="${this.selected}"
 				?disabled="${this.disabled}"
 				id="${this._checkboxId}"
+				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
 				key="${this.key}"
 				label="${this.label}"
 				?skeleton="${this.skeleton}"
