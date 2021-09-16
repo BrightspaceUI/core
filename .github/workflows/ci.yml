@@ -51,11 +51,11 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install karma-sauce-launcher@2 --no-save
+          npm install @web/test-runner-saucelabs --no-save
       - name: Build
         run: npm run build
       - name: SauceLabs
         env:
           SAUCE_USERNAME: Gaudi1
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
-        run: npx karma start karma.sauce.conf.js
+        run: npx web-test-runner --config web-test-runner.sauce.config.mjs
