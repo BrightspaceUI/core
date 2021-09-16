@@ -106,7 +106,6 @@ The state is used to apply a meaningful colour to the status indicator to assist
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
-  import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 </script>
 <style>
   .status-format {
