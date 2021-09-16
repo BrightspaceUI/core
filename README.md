@@ -81,7 +81,7 @@ Run `npm run build` once, or any time icon or Sass files are changed.
 
 ### Running the demos
 
-Start an [es-dev-server](https://open-wc.org/developing/es-dev-server.html) that hosts the demo pages:
+Start a [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) that hosts the demo pages:
 
 ```shell
 npm start
