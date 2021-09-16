@@ -395,8 +395,9 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		if (!toUpdate) return;
 
-		let shouldUpdate = false;
-		let shouldRecount = false;
+		let shouldUpdate = false,
+			shouldSearch = false,
+			shouldRecount = false;
 		changes.forEach((newValue, prop) => {
 			if (toUpdate[prop] === newValue) return;
 
@@ -412,10 +413,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					this._totalAppliedCount--;
 				}
 			} else if (prop === 'values') {
-				if (dimension.searchType !== 'manual' || !dimension.searchValue) shouldRecount = true;
+				if (dimension.searchValue) shouldSearch = true;
+				shouldRecount = true;
 			}
 		});
 
+		if (shouldSearch) this._searchDimension(dimension);
 		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate) this.requestUpdate();
 	}
@@ -452,7 +455,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
 
-		if (dimension.searchType === 'automatic') {
+		if (dimension.searchType === 'automatic' || searchValue === '') {
 			this._searchDimension(dimension);
 		} else if (dimension.searchType === 'manual') {
 			dimension.loading = true;
@@ -464,8 +467,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				detail: {
 					key: dimension.key,
 					value: searchValue,
-					searchCompleteCallback: function() {
+					searchCompleteCallback: function(keysToDisplay) {
 						requestAnimationFrame(() => {
+							dimension.searchKeysToDisplay = keysToDisplay;
+							this._searchDimension(dimension);
 							dimension.loading = false;
 							this.requestUpdate();
 						});
@@ -507,7 +512,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_isDimensionEmpty(dimension) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				return dimension.values.length === 0 && !dimension.searchValue;
+				return dimension.values.length === 0;
 		}
 
 		return false;
@@ -517,7 +522,14 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
 				dimension.values.forEach(value => {
-					value.hidden = !(value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1);
+					if (dimension.searchValue === '') {
+						value.hidden = false;
+						return;
+					}
+
+					value.hidden = dimension.searchKeysToDisplay ?
+						!dimension.searchKeysToDisplay.includes(value.key) :
+						!(value.text.toLowerCase().indexOf(dimension.searchValue.toLowerCase()) > -1);
 				});
 				break;
 		}

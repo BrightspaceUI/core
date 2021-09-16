@@ -11,16 +11,10 @@ const initialData = [
 
 class FilterSearchDemo extends LitElement {
 
-	static get properties() {
-		return {
-			_displayedData: { attribute: false, type: Array }
-		};
-	}
-
 	constructor() {
 		super();
-		this._fullData = initialData;
-		this._displayedData = initialData;
+		this._fullData = Array.from(initialData);
+		this._fullDataSingle = Array.from(initialData);
 	}
 
 	render() {
@@ -37,7 +31,12 @@ class FilterSearchDemo extends LitElement {
 					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="event" text="Event on Search" search-type="manual">
-					${this._displayedData.map(value => html`
+					${this._fullData.map(value => html`
+						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
+					`)}
+				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="event-single" text="Event on Search - Single" search-type="manual" selection-single>
+					${this._fullDataSingle.map(value => html`
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
 				</d2l-filter-dimension-set>
@@ -56,10 +55,11 @@ class FilterSearchDemo extends LitElement {
 			console.log('Batch filter selection changed:', e.detail.changes); // eslint-disable-line no-console
 
 		e.detail.changes.forEach(change => {
-			if (change.dimension !== 'event') return;
-
-			this._fullData.find(value => value.key === change.value.key).selected = change.value.selected;
-			this._displayedData.find(value => value.key === change.value.key).selected = change.value.selected;
+			if (change.dimension === 'event') {
+				this._fullData.find(value => value.key === change.value.key).selected = change.value.selected;
+			} else if (change.dimension === 'event-single') {
+				this._fullDataSingle.find(value => value.key === change.value.key).selected = change.value.selected;
+			}
 		});
 	}
 
@@ -69,23 +69,17 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleSearch(e) {
-		if (e.detail.key !== 'event') return;
+		if (!e.detail.key.includes('event')) return;
 
-		const displayedData = [];
+		const keysToDisplay = [];
 		this._fullData.forEach(value => {
-			if (e.detail.value === '') {
-				displayedData.push(value);
-			} else {
-				if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
-					displayedData.push(value);
-				}
+			if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
+				keysToDisplay.push(value.key);
 			}
 		});
 
-		this._displayedData = displayedData;
-
 		setTimeout(() => {
-			e.detail.searchCompleteCallback();
+			e.detail.searchCompleteCallback(keysToDisplay);
 			// eslint-disable-next-line no-console
 			console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
 		}, 2000);
