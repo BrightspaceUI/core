@@ -11,7 +11,7 @@ const sauceLabsOptions = {
 const sauceLabsCapabilities = {
 	name: '@brightspace-ui/core unit tests',
 	// eslint-disable-next-line no-undef
-	build: `${process.env.GITHUB_REF ?? 'local'} build ${process.env.GITHUB_RUN_NUMBER ?? ''}`
+	build: `@brightspace-ui/core ${process.env.GITHUB_REF ?? 'local'} build ${process.env.GITHUB_RUN_NUMBER ?? ''}`
 };
 
 const sauceLabsLauncher = createSauceLabsLauncher(
@@ -19,42 +19,33 @@ const sauceLabsLauncher = createSauceLabsLauncher(
 	sauceLabsCapabilities
 );
 
-const extraOptions = {
-	idleTimeout: 500 // default 90
-};
-
 config.concurrentBrowsers = 4; // concurrent browsers
 config.concurrency = 6; // concurrent tests in a single browser
 config.browsers = [
 	sauceLabsLauncher({
 		browserName: 'chrome',
-		browserVersion: 'latest',
-		platformName: 'macOS 11.00',
-		'sauce:options': extraOptions
+		platform: 'macOS 11.00',
+		version: 'latest',
 	}),
 	sauceLabsLauncher({
 		browserName: 'firefox',
-		browserVersion: 'latest',
-		platformName: 'macOS 11.00',
-		'sauce:options': extraOptions
+		platform: 'macOS 11.00',
+		version: 'latest',
 	}),
 	sauceLabsLauncher({
 		browserName: 'safari',
-		browserVersion: 'latest',
-		platformName: 'macOS 11.00',
-		'sauce:options': extraOptions
+		platform: 'macOS 11.00',
+		version: 'latest'
 	}),
 	sauceLabsLauncher({
 		browserName: 'microsoftedge',
-		browserVersion: 'latest',
-		platformName: 'Windows 10',
-		'sauce:options': extraOptions
+		platform: 'Windows 10',
+		version: 'latest'
 	}),
 	/*sauceLabsLauncher({
 		browserName: 'microsoftedge',
-		browserVersion: '18.17763',
-		platformName: 'Windows 10',
-		'sauce:options': extraOptions
+		platform: 'Windows 10',
+		version: '18.17763'
 	}),*/
 ];
 
