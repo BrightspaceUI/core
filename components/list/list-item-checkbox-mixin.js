@@ -56,6 +56,19 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		this._checkboxId = getUniqueId();
 	}
 
+	get selectionInfo() {
+		return this._selectionInfo;
+	}
+
+	set selectionInfo(val) {
+		const oldVal = this._selectionInfo;
+		if (oldVal !== val) {
+			this._selectionInfo = val;
+			this.selected = (this._selectionInfo.state === SelectionInfo.states.all);
+			this.requestUpdate('selectionInfo', oldVal);
+		}
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		if (this.selectable) {
