@@ -64,6 +64,8 @@ describe('run-async directive', () => {
 
 		it('should render failure template if task is rejected', async() => {
 			const elem = await createFixture();
+			// this causes "An error was thrown in a Promise outside a test. Did you forget to await a function or assertion?"
+			// to be logged -- that's OK.
 			taskReject(new Error('oh no'));
 			await elem.updateComplete;
 			expect(elem.innerText).to.equal('failure');
