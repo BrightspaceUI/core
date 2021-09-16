@@ -9,7 +9,7 @@ import sinon from 'sinon';
 
 const normalFixture = html`
 	<d2l-list grid>
-		<d2l-list-item selectable key="item1">
+		<d2l-list-item selectable key="item1" label="Test Label">
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
 		</d2l-list-item>
