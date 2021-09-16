@@ -68,17 +68,8 @@ Note: in order for RTL to function correctly, make sure your component uses the 
 
     static get properties() {
 		return {
-			/**
-			 * Disables the input
-			 */
 			disabled: { type: Boolean },
-			/**
-			 * Marks the input as invalid, which is shown in style and also is reflected in `aria-invalid`
-			 */
 			invalid: { type: Boolean },
-			/**
-			 * Sets a max-width on the select element in order to show overflow styles
-			 */
 			overflow: { type: Boolean }
 		};
 	}
