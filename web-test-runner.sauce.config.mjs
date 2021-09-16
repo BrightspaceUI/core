@@ -19,34 +19,43 @@ const sauceLabsLauncher = createSauceLabsLauncher(
 	sauceLabsCapabilities
 );
 
+const extraOptions = {
+	idleTimeout: 500 // default 90
+};
+
 config.concurrentBrowsers = 4; // concurrent browsers
 config.concurrency = 6; // concurrent tests in a single browser
 config.browsers = [
 	sauceLabsLauncher({
 		browserName: 'chrome',
-		platform: 'macOS 11.00',
-		version: 'latest',
+		browserVersion: 'latest',
+		platformName: 'macOS 11.00',
+		'sauce:options': extraOptions
 	}),
 	sauceLabsLauncher({
 		browserName: 'firefox',
-		platform: 'macOS 11.00',
-		version: 'latest',
+		browserVersion: 'latest',
+		platformName: 'macOS 11.00',
+		'sauce:options': extraOptions
 	}),
 	sauceLabsLauncher({
 		browserName: 'safari',
-		platform: 'macOS 11.00',
-		version: 'latest'
+		browserVersion: 'latest',
+		platformName: 'macOS 11.00',
+		'sauce:options': extraOptions
 	}),
 	sauceLabsLauncher({
 		browserName: 'microsoftedge',
-		platform: 'Windows 10',
-		version: 'latest'
+		browserVersion: 'latest',
+		platformName: 'Windows 10',
+		'sauce:options': extraOptions
 	}),
-	/*sauceLabsLauncher({
+	sauceLabsLauncher({
 		browserName: 'microsoftedge',
-		platform: 'Windows 10',
-		version: '18.17763'
-	}),*/
+		browserVersion: '18.17763',
+		platformName: 'Windows 10',
+		'sauce:options': extraOptions
+	}),
 ];
 
 export default config;
