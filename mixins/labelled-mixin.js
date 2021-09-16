@@ -75,7 +75,6 @@ export const LabelledMixin = superclass => class extends superclass {
 		if (!this.labelledBy) return;
 
 		let labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
-		const ancestor = getCommonAncestor(this, labelElem);
 
 		this._labelObserver = new MutationObserver(mutations => {
 
@@ -100,6 +99,9 @@ export const LabelledMixin = superclass => class extends superclass {
 			}
 
 		});
+
+		if (!labelElem) return;
+		const ancestor = getCommonAncestor(this, labelElem);
 
 		/* assumption: the labelling element will not change from a native to a custom element
 		or vice versa, which allows the use of a more optimal observer configuration */
