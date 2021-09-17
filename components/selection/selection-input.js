@@ -125,13 +125,11 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			|| (changedProperties.has('_indeterminate') && !(changedProperties.get('_indeterminate') === undefined && this._indeterminate === false))) {
 
 			// dispatch the event for all selected changes (not just when the user interacts directly with the input)
-			requestAnimationFrame(() => {
-				this.dispatchEvent(new CustomEvent('d2l-selection-change', {
-					bubbles: true,
-					composed: true,
-					detail: { key: this.key, indeterminate: this._indeterminate, selected: this.selected }
-				}));
-			});
+			this.dispatchEvent(new CustomEvent('d2l-selection-change', {
+				bubbles: true,
+				composed: true,
+				detail: { key: this.key, indeterminate: this._indeterminate, selected: this.selected }
+			}));
 
 		}
 	}
