@@ -19,11 +19,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		return {
 			/**
 			 * The gradient color of the blurring effect
+			 * @type {string}
 			 */
 			blurColor: { type: String, attribute: 'blur-color' },
 
 			/**
 			 * Indicates whether element is in "more" state
+			 * @type {boolean}
 			 */
 			expanded: { type: Boolean, reflect: true },
 
@@ -35,11 +37,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 			/**
 			 * The maximum height of the content when in "less" state
+			 * @type {string}
 			 */
 			height: { type: String },
 
 			/**
 			 * Whether the component is active or inactive
+			 * @type {boolean}
 			 */
 			inactive: { type: Boolean, reflect: true },
 			__blurBackground: { type: String },
