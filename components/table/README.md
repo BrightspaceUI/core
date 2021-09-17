@@ -6,7 +6,7 @@ Tables are used to display tabular data in rows and columns. They can allow user
 ![table with default style](./screenshots/default.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo display:block size:large -->
+<!-- docs: demo display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/table/demo/table-test.js';
@@ -48,11 +48,23 @@ If the viewport is very narrow — for example, on a mobile device — it may be
 
 The `d2l-table-wrapper` element can be combined with table styles to apply default/light styling, row selection styles, overflow scrolling and sticky headers to native `<table>` elements within your Lit components.
 
-<!-- docs: demo live name:d2l-test-table autoSize:false display:block size:medium -->
+<!-- docs: demo live name:d2l-test-table display:block -->
 ```html
 <script type="module">
   import { html, LitElement } from 'lit-element/lit-element.js';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
+
+  const fruits = ['Apples', 'Oranges', 'Bananas'];
+
+  const data = [
+    { name: 'Canada', fruit: { 'apples': 356863, 'oranges': 0, 'bananas': 0 }, selected: false },
+    { name: 'Australia', fruit: { 'apples': 308298, 'oranges': 398610, 'bananas': 354241 }, selected: false },
+    { name: 'Mexico', fruit: { 'apples': 716931, 'oranges': 4603253, 'bananas': 2384778 }, selected: false },
+    { name: 'Brazil', fruit: { 'apples': 1300000, 'oranges': 50000, 'bananas': 6429875 }, selected: false },
+    { name: 'England', fruit: { 'apples': 345782, 'oranges': 4, 'bananas': 1249875 }, selected: false },
+    { name: 'Hawaii', fruit: { 'apples': 129875, 'oranges': 856765, 'bananas': 123 }, selected: false },
+    { name: 'Japan', fruit: { 'apples': 8534, 'oranges': 1325, 'bananas': 78382756 }, selected: false }
+  ];
 
   class TestTable extends LitElement {
 
@@ -71,25 +83,22 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
     render() {
       const type = this.type === 'light' ? 'light' : 'default';
 
-      const rows = [1, 2, 3, 4, 5, 6, 7].map(i => {
-        return html`<tr>
-            <td>Cell ${i}-A</td>
-            <td>Cell ${i}-B</td>
-          </tr>
-        `;
-      });
-
       return html`
         <d2l-table-wrapper ?no-column-border="${this.noColumnBorder}" ?sticky-headers="${this.stickyHeaders}" type="${type}">
           <table class="d2l-table">
             <thead>
               <tr>
-                <th>Column A</th>
-                <th>Column B</th>
+                <th>Country</th>
+                ${fruits.map((fruit) => html`<th>${fruit}</th>`)}
               </tr>
             </thead>
             <tbody>
-              ${rows}
+              ${data.map((row) => html`
+                <tr>
+                  <th>${row.name}</th>
+                  ${fruits.map((fruit) => html`<td>${row.fruit[fruit.toLowerCase()]}</td>`)}
+                </tr>
+              `)}
             </tbody>
           </table>
         </d2l-table-wrapper>
@@ -151,11 +160,11 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
   import { html, LitElement } from 'lit-element/lit-element.js';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
-  class TestTable extends LitElement {
+  class MySortableTableElem extends LitElement {
 
     static get properties() {
       return {
-			  _sortDesc: { attribute: false, type: Boolean }
+        _sortDesc: { attribute: false, type: Boolean }
       };
     }
 
@@ -213,9 +222,9 @@ When tabular data can be sorted, the `<d2l-table-col-sort-button>` can be used t
     }
 
   }
-  customElements.define('d2l-test-table', TestTable);
+  customElements.define('d2l-my-sortable-table-elem', MySortableTableElem);
 </script>
-<d2l-test-table></d2l-test-table>
+<d2l-my-sortable-table-elem></d2l-my-sortable-table-elem>
 ```
 
 ```html
@@ -251,7 +260,7 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
   import { html, LitElement } from 'lit-element/lit-element.js';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
-  class TestTable extends LitElement {
+  class MySelectableTableElem extends LitElement {
 
     static get properties() {
       return {
@@ -281,7 +290,7 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
             <tbody>
               <tr ?selected="${this._checked}">
                 <td><input type="checkbox" ?checked="${this._checked}" @click="${this._selectRow}"></td>
-                <td>this row is selected</td>
+                <td>this row is ${!this._checked ? 'not' : ''} selected</td>
               </tr>
             </tbody>
           </table>
@@ -294,9 +303,9 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
     }
 
   }
-  customElements.define('d2l-test-table', TestTable);
+  customElements.define('d2l-my-selectable-table-elem', MySelectableTableElem);
 </script>
-<d2l-test-table></d2l-test-table>
+<d2l-my-selectable-table-elem></d2l-my-selectable-table-elem>
 ```
 
 ```html
