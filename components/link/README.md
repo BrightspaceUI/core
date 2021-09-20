@@ -40,7 +40,7 @@ Same size as the standard link, but bolder.
 
 Import and use the `<d2l-link>` web component instead of the native `<a>` element:
 
-<!-- docs: demo live name:d2l-link autoSize:false size:xsmall -->
+<!-- docs: demo live name:d2l-link -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/link/link.js';
@@ -73,20 +73,26 @@ To make your usage of `d2l-link` accessible, use the following property when app
 
 Alternately, you can apply link styles to a native `<a>` element by importing the styles and placing the `d2l-link` CSS class on the element.
 
-```javascript
-import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
+<!-- docs: demo code -->
+```html
+<script type="module">
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 
-class MyElement extends LitElement {
+  class MyLinkElem extends LitElement {
 
-  static get styles() { return [ linkStyles ] }
+    static get styles() { return [ linkStyles ] }
 
-  render() {
-    return html`
-      <a class="d2l-link" href="https://www.mylink.com">My Link</a>
-    `;
+    render() {
+      return html`
+        <a class="d2l-link" href="https://www.mylink.com">My Link</a>
+      `;
+    }
+
   }
-
-}
+  customElements.define('d2l-my-link-elem', MyLinkElem);
+</script>
+<d2l-my-link-elem></d2l-my-link-elem>
 ```
 
 Add the `d2l-link-main` or `d2l-link-small` CSS classes to the `<a>` element to apply those styles.

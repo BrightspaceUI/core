@@ -67,7 +67,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 
 		.d2l-typography:lang(ar),
 		.d2l-typography :lang(ar) {
-			font-family: 'Arabic Transparent', 'Arabic Typesetting', 'Geeza Pro', sans-serif;
+			font-family: 'Segoe UI', 'Geeza Pro', sans-serif;
 		}
 
 		.d2l-typography:lang(zh),

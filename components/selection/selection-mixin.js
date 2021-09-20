@@ -164,6 +164,13 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		const target = e.composedPath()[0];
 		if (this._selectionSelectables.has(target)) return;
 		this._selectionSelectables.set(target, target);
+
+		if (this.selectionSingle && target.selected) {
+			// check invalid usage/state - make sure no others are selected
+			this._selectionSelectables.forEach(selectable => {
+				if (selectable.selected && selectable !== target) selectable.selected = false;
+			});
+		}
 	}
 
 	_handleSelectionObserverSubscribe(e) {

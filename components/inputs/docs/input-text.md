@@ -145,20 +145,26 @@ To make your usage of `d2l-input-text` accessible, use the following properties 
 
 As an alternative to using the `<d2l-input-text>` custom element, you can style a native text input inside your own element. Import `input-styles.js` and apply the `d2l-input` CSS class to the input:
 
-```javascript
-import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
+<!-- docs: demo code -->
+```html
+<script type="module">
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 
-class MyElem extends LitElement {
+  class MyTextInputElem extends LitElement {
 
-  static get styles() {
-    return inputStyles;
+    static get styles() {
+      return inputStyles;
+    }
+
+    render() {
+      return html`<input type="text" class="d2l-input">`;
+    }
+
   }
-
-  render() {
-    return html`<input type="text" class="d2l-input">`;
-  }
-
-}
+  customElements.define('d2l-my-text-input-elem', MyTextInputElem);
+</script>
+<d2l-my-text-input-elem></d2l-my-text-input-elem>
 ```
 
 ## Textarea Input [d2l-input-textarea]
@@ -254,17 +260,24 @@ Native `<textarea>` elements can be styled by importing `input-styles.js` into y
 ![example screenshot of textarea inputs](../screenshots/textarea-styles.gif?raw=true)
 <!-- docs: end hidden content -->
 
-```javascript
-import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
-class MyElem extends LitElement {
-  static get styles() {
-    return inputStyles;
+<!-- docs: demo code -->
+```html
+<script type="module">
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
+
+  class MyTextareaInputElem extends LitElement {
+    static get styles() {
+      return inputStyles;
+    }
+    render() {
+      return html`
+        <textarea class="d2l-input">
+        </textarea>
+        `;
+    }
   }
-  render() {
-    return html`
-      <textarea class="d2l-input">
-      </textarea>
-      `;
-  }
-}
+  customElements.define('d2l-my-textarea-input-elem', MyTextareaInputElem);
+</script>
+<d2l-my-textarea-input-elem></d2l-my-textarea-input-elem>
 ```
