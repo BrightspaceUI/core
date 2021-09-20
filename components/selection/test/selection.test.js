@@ -193,9 +193,9 @@ describe('SelectionObserverMixin', () => {
 	beforeEach(async() => {
 		el = await fixture(`
 			<div>
-				<d2l-selection-action selection-for="d2l-test-selection"></d2l-selection-action>
-				<d2l-selection-select-all selection-for="d2l-test-selection"></d2l-selection-select-all>
-				<d2l-selection-summary selection-for="some-other-selection"></d2l-selection-summary>
+				<d2l-selection-action id="obs1" selection-for="d2l-test-selection"></d2l-selection-action>
+				<d2l-selection-select-all id="obs2" selection-for="d2l-test-selection"></d2l-selection-select-all>
+				<d2l-selection-summary id="obs3" selection-for="some-other-selection"></d2l-selection-summary>
 				<d2l-test-selection id="d2l-test-selection">
 					<d2l-selection-input key="key1" label="label1"></d2l-selection-input>
 					<d2l-selection-input key="key2" label="label2" selected></d2l-selection-input>
@@ -203,8 +203,15 @@ describe('SelectionObserverMixin', () => {
 				</d2l-test-selection>
 			</div>
 		`);
+		await el.querySelector('#obs1').updateComplete;
+		await el.querySelector('#obs2').updateComplete;
+		await el.querySelector('#obs3').updateComplete;
+		await el.querySelector('[key="key1"]').updateComplete;
+		await el.querySelector('[key="key2"]').updateComplete;
+		await el.querySelector('[key="key3"]').updateComplete;
 		collection = el.querySelector('#d2l-test-selection');
 		await collection.updateComplete;
+
 		await nextFrame();
 		await nextFrame(); // Limit test flake
 	});
@@ -237,6 +244,7 @@ describe('SelectionObserverMixin', () => {
 	it('unregisters and registers the SelectionMixin component', async() => {
 		const observer = el.querySelector('d2l-selection-action');
 		const provider = el.querySelector('#d2l-test-selection');
+
 		expect(observer._provider).to.equal(provider);
 		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.some);
 
@@ -251,6 +259,7 @@ describe('SelectionObserverMixin', () => {
 		await observer.updateComplete;
 		expect(observer._provider).to.equal(newProvider);
 		expect(observer.selectionInfo.state).to.equal(SelectionInfo.states.none);
+
 	});
 
 });

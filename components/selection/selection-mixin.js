@@ -171,6 +171,8 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 				if (selectable.selected && selectable !== target) selectable.selected = false;
 			});
 		}
+
+		this._updateSelectionObservers();
 	}
 
 	_handleSelectionObserverSubscribe(e) {
