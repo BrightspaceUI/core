@@ -36,9 +36,9 @@ To make your `d2l-count-badge` accessible, use the following properties when app
 | Attribute | Description |
 |--|--|
 | `text`, required | Only the text will be read by screen-readers (not the number), so include the number in the text. |
-| `tab-stop` | A tab stop allows keyboard users to easily tab to the badge. Otherwise, keyboard users will need to arrow through to the badge. |
+| `tab-stop` | A tab stop allows screen-reader users to easily tab to the badge. Otherwise, screen-reader users will need to arrow through to the badge. |
 | `announce-changes` | Use "announce-changes" if screen-reader users should be notified that the count has been updated, such as a new notification. The "text" property will be read as soon as the screen-reader is idle. |
-| `tooltip` | The tooltip will be visible on hover, and read out by screen-readers. |
+| `has-tooltip` | The tooltip will be visible on hover/tab-stop, and read out by screen-readers. |
 
 ## Future Enhancements
 
