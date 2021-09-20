@@ -251,11 +251,26 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return {
 			/**
 			 * Whether the item is draggable
+			 * @type {boolean}
 			 */
 			draggable: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 */
 			dragging: { type: Boolean, reflect: true },
+			/**
+			 * The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
+			 * @type {string}
+			 */
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
+			/**
+			 *
+			 */
 			dropText: { type: String, attribute: 'drop-text' },
+			/**
+			 * Value to identify item if selectable
+			 * @type {string}
+			 */
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number },

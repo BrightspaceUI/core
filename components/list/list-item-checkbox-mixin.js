@@ -13,22 +13,27 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		return {
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Value to identify item if selectable
+			 * @type {string}
 			 */
 			key: { type: String, reflect: true },
 			/**
 			 * Indicates a input should be rendered for selecting the item
+			 * @type {boolean}
 			 */
 			selectable: { type: Boolean },
 			/**
 			 * Whether the item is selected
+			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
 			 * Private. The selection info (set by the selection component).
+			 * @ignore
 			 */
 			selectionInfo: { type: Object, attribute: false }
 		};
