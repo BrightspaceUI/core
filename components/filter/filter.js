@@ -216,7 +216,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			const builtDimension = this._buildDimension(dimension);
 			const countBadgeId = getUniqueId();
 			const filtersAppliedText = `${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
-			return html`<d2l-menu-item text="${dimension.text}" description="${dimension.text}" aria-describedby="${countBadgeId}">
+			return html`<d2l-menu-item text="${dimension.text}" description="${dimension.text}." aria-describedby="${countBadgeId}">
 				${builtDimension}
 				<div slot="supporting">
 					<d2l-count-badge id="${countBadgeId}" number="${dimension.appliedCount}" max-digits="2" text="${filtersAppliedText}" hide-zero></d2l-count-badge>
