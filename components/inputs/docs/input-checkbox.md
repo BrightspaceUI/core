@@ -119,18 +119,24 @@ To align related content below checkboxes, the `d2l-input-checkbox-spacer` eleme
 
 As an alternative to using the `<d2l-input-checkbox>` custom element, you can style a native checkbox inside your own element. Import `input-checkbox-styles.js` and apply the `d2l-input-checkbox` CSS class to the input:
 
-```javascript
-import { checkboxStyles } from '@brightspace-ui/core/components/inputs/input-checkbox.js';
+<!-- docs: demo code display:block -->
+```html
+<script type="module">
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { checkboxStyles } from '@brightspace-ui/core/components/inputs/input-checkbox.js';
 
-class MyElem extends LitElement {
+  class MyCheckboxElem extends LitElement {
 
-  static get styles() {
-    return checkboxStyles;
+    static get styles() {
+      return checkboxStyles;
+    }
+
+    render() {
+      return html`<input type="checkbox" class="d2l-input-checkbox">`;
+    }
+
   }
-
-  render() {
-    return html`<input type="checkbox" class="d2l-input-checkbox">`;
-  }
-
-}
+  customElements.define('d2l-my-checkbox-elem', MyCheckboxElem);
+</script>
+<d2l-my-checkbox-elem></d2l-my-checkbox-elem>
 ```
