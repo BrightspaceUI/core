@@ -27,7 +27,7 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 </d2l-dropdown>
 ```
 
-If the dropdown is initially empty when it's opened, the dropdown pointer will not be positioned correctly.  In such cases, the `no-auto-open` attribute may be added to the opener, enabling you to take control of when the dropdown is actually opened:
+If the dropdown is initially empty when it's opened, the dropdown pointer will not be positioned correctly.  In such cases, the `no-auto-open` attribute may be added to the opener, enabling you to take control of when the dropdown is opened.
 
 <!-- docs: start hidden content -->
 ### Properties
