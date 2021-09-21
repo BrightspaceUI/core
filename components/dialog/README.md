@@ -33,7 +33,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 * Keep dialogs small and easy to understand
 * Limit workflow buttons to 2
 * Label primary actions with clear and predictable language. Use verbs like, “Add” or “Save” that indicate the outcome of a dialog rather than, “OK” or “Close”
-* Keep dialog titles concise. Avoid a title length that could easily wrap to two lines.
+* Keep dialog titles concise
 * Maintain a language relationship between the action that triggered the dialog, dialog title, and dialog primary button.
 <!-- docs: end dos -->
 
@@ -42,6 +42,7 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 * Don’t use a dialog to show error, success, or warning messages. Use an inline or toast alert instead.
 * Avoid creating large, complex dialogs
 * Avoid invoking a dialog from another dialog (nested dialogs)
+* Avoid a title length that could easily wrap to two lines
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
