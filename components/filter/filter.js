@@ -333,20 +333,29 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 	}
 
-	_dispatchChangeEvent(eventKey, eventDetail) {
-		this._changeEventsToDispatch.set(eventKey, eventDetail);
+	_dispatchChangeEvent(dimension, change) {
+		this._setDimensionChangeEvent(dimension, change);
 
 		if (!this._changeEventTimeout) {
 			this._changeEventTimeout = setTimeout(() => {
-				this.dispatchEvent(new CustomEvent('d2l-filter-change', {
-					bubbles: true,
-					composed: false,
-					detail: { changes: Array.from(this._changeEventsToDispatch.values()) }
-				}));
-				this._changeEventsToDispatch = new Map();
-				this._changeEventTimeout = null;
+				this._dispatchChangeEventNow();
 			}, 200);
 		}
+	}
+
+	_dispatchChangeEventNow() {
+		const dimensions = Array.from(this._changeEventsToDispatch.values());
+		dimensions.forEach(dimension => {
+			dimension.changes = Array.from(dimension.changes.values());
+		});
+
+		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
+			bubbles: true,
+			composed: false,
+			detail: { dimensions: dimensions }
+		}));
+		this._changeEventsToDispatch = new Map();
+		this._changeEventTimeout = null;
 	}
 
 	_dispatchDimensionFirstOpenEvent(key) {
@@ -385,7 +394,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			this._totalAppliedCount--;
 		}
 
-		this._dispatchChangeEvent(`${dimensionKey}-${valueKey}`, { dimension: dimensionKey, value: { key: valueKey, selected: selected } });
+		this._dispatchChangeEvent(dimension, { valueKey: valueKey, selected: selected });
 	}
 
 	_handleDimensionDataChange(e) {
@@ -536,6 +545,19 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 
 		this.requestUpdate();
+	}
+
+	_setDimensionChangeEvent(dimension, change) {
+		if (!this._changeEventsToDispatch.has(dimension.key)) {
+			this._changeEventsToDispatch.set(dimension.key, { dimensionKey: dimension.key, changes: new Map() });
+		}
+		const dimensionChanges = this._changeEventsToDispatch.get(dimension.key);
+
+		switch (dimension.type) {
+			case 'd2l-filter-dimension-set':
+				dimensionChanges.changes.set(change.valueKey, change);
+				break;
+		}
 	}
 
 	_setFilterCounts(dimensionToRecount) {
