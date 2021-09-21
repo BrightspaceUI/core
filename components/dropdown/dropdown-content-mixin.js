@@ -838,17 +838,18 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 
 		// if no width property set, automatically size to maximum width
-		let widthOverride;
-		widthOverride = this._width ? this._width : maxWidthOverride;
+		let widthOverride = this._width ? this._width : maxWidthOverride;
+		// ensure width is between minWidth and maxWidth
 		if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
 		if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
-		maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
-		minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
+
+		maxWidthOverride = `${maxWidthOverride}px`;
+		minWidthOverride = `${minWidthOverride}px`;
 		const  contentWidth = `${widthOverride + 18}px`;
 		/* add 2 to content width since scrollWidth does not include border */
 		const containerWidth = `${widthOverride + 20}px`;
 
-		let maxHeightOverride;
+		let maxHeightOverride = '';
 		if (this._ifrauContextInfo) maxHeightOverride = `${this._ifrauContextInfo.availableHeight}px`;
 
 		let topOverride;
@@ -884,7 +885,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		};
 
 		const contentWidthStyle = {
-			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
+			minWidth: minWidthOverride,
 			/* set width of content in addition to width container so IE will render scroll inside border */
 			width: contentWidth,
 		};
