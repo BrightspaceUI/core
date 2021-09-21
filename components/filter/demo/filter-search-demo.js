@@ -50,19 +50,22 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleFilterChange(e) {
-		(e.detail.dimensions.length === 1) ?
-			console.log(`Filter selection changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes) : // eslint-disable-line no-console
-			console.log('Batch filter selection changed:', e.detail.dimensions); // eslint-disable-line no-console
+		if (e.detail.dimensions.length === 1) {
+			console.log(`Filter selection(s) changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes); // eslint-disable-line no-console
+			if (e.detail.dimensions[0].cleared) console.log(`(Dimension "${e.detail.dimensions[0].dimensionKey}" cleared)`); // eslint-disable-line no-console
+		} else {
+			console.log('Multiple dimension selections changed:', e.detail.dimensions); // eslint-disable-line no-console
+		}
 
 		e.detail.dimensions.forEach(dimension => {
 			if (!dimension.dimensionKey.includes('event')) return;
-			dimension.changes.forEach(change => {
-				if (dimension.dimensionKey === 'event') {
-					this._fullData.find(value => value.key === change.valueKey).selected = change.selected;
-				} else if (change.dimension === 'event-single') {
-					this._fullDataSingle.find(value => value.key === change.valueKey).selected = change.selected;
-				}
-			});
+
+			const dataToUpdate = dimension.dimensionKey === 'event-single' ? this._fullDataSingle : this._fullData;
+			if (dimension.cleared) {
+				dataToUpdate.forEach(value => value.selected = false);
+			} else {
+				dimension.changes.forEach(change => { dataToUpdate.find(value => value.key === change.valueKey).selected = change.selected; });
+			}
 		});
 	}
 
