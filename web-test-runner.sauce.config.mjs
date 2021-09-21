@@ -50,12 +50,6 @@ config.browsers = [
 		platformName: 'Windows 10',
 		'sauce:options': extraOptions
 	}),
-	sauceLabsLauncher({
-		browserName: 'microsoftedge',
-		browserVersion: '18.17763',
-		platformName: 'Windows 10',
-		'sauce:options': extraOptions
-	}),
 ];
 
 export default config;
