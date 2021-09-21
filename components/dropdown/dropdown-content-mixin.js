@@ -744,7 +744,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		};
 
 		const contentWidthStyle = {
-			/* set width of content in addition to width container so IE will render scroll inside border */
+			/* set width of content in addition to width container so header and footer borders are full width */
 			width: widthOverride
 		};
 
@@ -790,7 +790,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const contentWidthStyle = {
 			minWidth: this.minWidth ? `${this.minWidth}px` : '',
-			/* set width of content in addition to width container so IE will render scroll inside border */
+			/* set width of content in addition to width container so header and footer borders are full width */
 			width: this._width ? `${this._width + 18}px` : '',
 		};
 
@@ -886,7 +886,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const contentWidthStyle = {
 			minWidth: minWidthOverride,
-			/* set width of content in addition to width container so IE will render scroll inside border */
+			/* set width of content in addition to width container so header and footer borders are full width */
 			width: contentWidth,
 		};
 
