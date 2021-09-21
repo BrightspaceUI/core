@@ -24,12 +24,6 @@ const customLaunchers = {
 		browserName: 'microsoftedge',
 		platform: 'Windows 10',
 		version: 'latest'
-	},
-	edge_legacy: {
-		base: 'SauceLabs',
-		browserName: 'microsoftedge',
-		platform: 'Windows 10',
-		version: '18.17763'
 	}
 };
 
