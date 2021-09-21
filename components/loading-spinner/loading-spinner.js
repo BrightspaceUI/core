@@ -9,6 +9,7 @@ class LoadingSpinner extends LitElement {
 	static get properties() {
 		return {
 			/**
+			 * @ignore
 			 * Color of the animated bar
 			 * @type {string}
 			 * @default var(--d2l-color-celestine)
