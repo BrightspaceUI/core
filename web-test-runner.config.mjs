@@ -38,7 +38,7 @@ export default {
 								return e(...arguments);
 							}
 						};
-					})()
+					})();
 				</script>
 				<script type="module" src="${testFramework}"></script>
 				<script src="./tools/perf-test-helper.js" type="module"></script>
