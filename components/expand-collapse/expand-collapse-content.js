@@ -12,10 +12,20 @@ const states = {
 	EXPANDED: 'expanded', // fully expanded
 };
 
+/**
+ * A component used to minimize the display of long content, while providing a way to reveal the full content.
+ * @slot - Default content placed inside of the component
+ * @fires d2l-expand-collapse-content-expand - Dispatched when the content starts to expand. The `detail` contains an `expandComplete` promise that can be waited on to determine when the content has finished expanding.
+ * @fires d2l-expand-collapse-content-collapse - Dispatched when the content starts to collapse. The `detail` contains a `collapseComplete` promise that can be waited on to determine when the content has finished collapsing.
+ */
 class ExpandCollapseContent extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Specifies the expanded/collapsed state of the content
+			 * @type {boolean}
+			 */
 			expanded: { type: Boolean, reflect: true },
 			_height: { type: String },
 			_state: { type: String }

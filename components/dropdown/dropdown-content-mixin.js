@@ -1034,9 +1034,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
 	}
 
-	_handleMobileResize() {
+	async _handleMobileResize() {
 		this._useMobileStyling =  this.mediaQueryList.matches;
 		this._showBackdrop = this._useMobileStyling && this.mobileTray;
+		if (this.opened) await this.__position();
 	}
 
 	_renderContent() {
