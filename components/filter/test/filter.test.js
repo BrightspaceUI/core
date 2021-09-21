@@ -493,11 +493,11 @@ describe('d2l-filter', () => {
 
 		describe('Menu Item Format', () => {
 			[
-				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '', description: 'Role. 0 filters applied.' },
-				{ name: '1 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 1 }, { key: 2 }], text: '1', description: 'Role. 1 filter applied.' },
-				{ name: '5 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 5 }, { key: 2 }], text: '5', description: 'Role. 5 filters applied.' },
-				{ name: '99 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 99 }, { key: 2 }], text: '99', description: 'Role. 99 filters applied.' },
-				{ name: '100 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 100 }, { key: 2 }], text: '99+', description: 'Role. 100 filters applied.' },
+				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '', description: '0 filters applied.' },
+				{ name: '1 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 1 }, { key: 2 }], text: '1', description: '1 filter applied.' },
+				{ name: '5 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 5 }, { key: 2 }], text: '5', description: '5 filters applied.' },
+				{ name: '99 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 99 }, { key: 2 }], text: '99', description: '99 filters applied.' },
+				{ name: '100 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 100 }, { key: 2 }], text: '99+', description: '100 filters applied.' },
 			].forEach((testCase) => {
 				it(`${testCase.name}`, async() => {
 					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
@@ -505,11 +505,12 @@ describe('d2l-filter', () => {
 					await elem.updateComplete;
 
 					const countBadge = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"] d2l-count-badge');
-					const menuItemCount = countBadge.shadowRoot.querySelector('.d2l-count-badge-number');
+					const menuItemCount = countBadge.shadowRoot.querySelector('.d2l-count-badge-number div');
 					const offscreen = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"]');
 
 					expect(menuItemCount.textContent).to.equal(testCase.text);
-					expect(offscreen.description).to.equal(testCase.description);
+					expect(countBadge.text).to.equal(testCase.description);
+					expect(offscreen.description).to.equal('Role.');
 				});
 			});
 		});
