@@ -702,10 +702,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	_getBottomTrayStyling() {
-		const maxWidthOverride = '100vw';
-		const minWidthOverride  = 'calc(100vw - 2px)';
-		const contentWidth = 'calc(100vw - 2px)';
-		const containerWidth = '100vw';
 
 		let maxHeightOverride;
 		let availableHeight = Math.min(window.innerHeight, window.screen.height);
@@ -738,18 +734,18 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			bottomOverride = `${Math.max(bottomOfScreen, 0)}px`;
 		}
 
+		const widthOverride = '100vw';
+
 		const widthStyle = {
-			maxWidth: maxWidthOverride,
-			minWidth: minWidthOverride,
-			width: containerWidth,
+			minWidth: widthOverride,
+			width: widthOverride,
 			maxHeight: maxHeightOverride,
-			bottom: bottomOverride,
+			bottom: bottomOverride
 		};
 
 		const contentWidthStyle = {
-			minWidth: minWidthOverride,
 			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: contentWidth,
+			width: widthOverride
 		};
 
 		const headerStyle = {
