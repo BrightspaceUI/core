@@ -104,11 +104,6 @@ class CountBadge extends RtlMixin(LitElement) {
 			_forceTooltipOn: {
 				type: Boolean,
 				attribute: 'tooltip-on'
-			},
-			_iconHighlight: {
-				type: Boolean,
-				attribute: 'icon-highlight',
-				reflect: true
 			}
 		};
 	}
@@ -163,13 +158,16 @@ class CountBadge extends RtlMixin(LitElement) {
 			border-radius: 0.8rem;
 			outline: none;
 		}
-		:host(.focus-visible) .d2l-count-badge-wrapper {
+		:host(.focus-visible) .d2l-count-badge-wrapper,
+		.d2l-count-badge-wrapper.focus-visible {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 		}
-		:host(.focus-visible[icon]) .d2l-count-badge-wrapper {
+		:host(.focus-visible[icon]) .d2l-count-badge-wrapper,
+		:host([icon]) .d2l-count-badge-wrapper.focus-visible {
 			box-shadow: none;
 		}
-		:host(.focus-visible[icon]) d2l-icon {
+		:host(.focus-visible[icon]) d2l-icon,
+		.d2l-count-badge-wrapper.focus-visible d2l-icon {
 			color: var(--d2l-color-celestine);
 		}
 		:host([icon]) .d2l-count-badge-wrapper {
@@ -218,7 +216,6 @@ class CountBadge extends RtlMixin(LitElement) {
 		this.announceChanges = false;
 		this.hasTooltip = false;
 		this.hideZero = false;
-		this._iconHighlight = false;
 		this.size = 'small';
 		this.tabStop = false;
 		this.text = '';
@@ -226,7 +223,6 @@ class CountBadge extends RtlMixin(LitElement) {
 
 		this._badgeId = getUniqueId();
 		this._forceTooltipOn = false;
-		this._iconHighlight = false;
 		this._textId = getUniqueId();
 	}
 
