@@ -87,14 +87,16 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 </script>
 
 <d2l-list>
-  <d2l-list-item>
+  <d2l-list-item selectable>
     <d2l-list-item-content>
       <div>Regular list item</div>
+      <div slot="secondary">Secondary information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item>
+  <d2l-list-item selectable>
     <d2l-list-item-content>
       <div>Regular list item 2</div>
+      <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
 </d2l-list>
@@ -106,7 +108,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 | Property | Type | Description |
 |---|---|---|
 | `grid` | Boolean | Enables keyboard grid for supported list items |
-| `selection-single` | Boolean | Whether to render with single selection behaviour. If selection-single is specified, the list-items will render with radios  instead of checkboxes, and the list component will maintain a single selected item. |
+| `selection-single` | Boolean | Whether to render with single selection behaviour. If `selection-single` is specified, the list-items will render with radios instead of checkboxes, and the list component will maintain a single selected item. |
 | `separators` | String | Display separators (`all` (default), `between`, `none`) |
 | `extend-separators` | Boolean | Whether to extend the separators beyond the content's edge |
 
@@ -147,7 +149,7 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
 ![List](./screenshots/list-selection.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-list-header autoSize:false display:block size:small -->
+<!-- docs: demo live name:d2l-list-header display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -164,7 +166,14 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
   </d2l-list-header>
   <d2l-list-item selectable key="eth" label="Earth Sciences">
     <d2l-list-item-content>
-      <div>Regular list item</div>
+      <div>Earth Sciences</div>
+      <div slot="supporting-info">Supporting information</div>
+    </d2l-list-item-content>
+  </d2l-list-item>
+  <d2l-list-item selectable key="ast" label="Atronomy">
+    <d2l-list-item-content>
+      <div>Astronomy</div>
+      <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
 </d2l-list>
@@ -186,7 +195,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 ![List](./screenshots/list-item.png?raw=true)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-list-item autoSize:false display:block size:medium -->
+<!-- docs: demo live name:d2l-list-item display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
@@ -219,6 +228,13 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
         </d2l-dropdown-menu>
       </d2l-dropdown-more>
     </div>
+  </d2l-list-item>
+  <d2l-list-item href="http://www.d2l.com" selectable key="3">
+    <img slot="illustration" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg" />
+    <d2l-list-item-content>
+      <div>Marine Biology</div>
+      <div slot="supporting-info">This course will journey into the seas</div>
+    </d2l-list-item-content>
   </d2l-list-item>
 </d2l-list>
 ```
