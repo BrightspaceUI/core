@@ -710,7 +710,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		let maxHeightOverride;
 		let availableHeight = Math.min(window.innerHeight, window.screen.height);
 		if (this._ifrauContextInfo) availableHeight = this._ifrauContextInfo.availableHeight;
-		// default maximum height for tray (42px margin)
+		// default maximum height for bottom tray (42px margin)
 		const mobileTrayMaxHeightDefault = availableHeight - minBackdropHeightMobile;
 		if (this.maxHeight) {
 			// if maxWidth provided is smaller, use the maxWidth
@@ -841,7 +841,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			minWidthOverride = mobileTrayMinWidthDefault;
 		}
 
-		// set to max width
+		// if no width property set, automatically size to maximum width
 		let widthOverride;
 		widthOverride = this._width ? this._width : maxWidthOverride;
 		if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
@@ -1036,7 +1036,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 
-		const specialMobileStyle = this._useMobileStyling && this.mobileTray;
 		const mobileTrayRightLeft = this._useMobileStyling && (this.mobileTray === 'right' || this.mobileTray === 'left');
 		const mobileTrayBottom = this._useMobileStyling && (this.mobileTray === 'bottom');
 
@@ -1062,7 +1061,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const bottomClasses = {
 			'd2l-dropdown-content-bottom': true,
 			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
-			'd2l-dropdown-content-footer': this._hasFooter || (specialMobileStyle && !this.noMobileCloseButton)
+			'd2l-dropdown-content-footer': this._hasFooter || (this._useMobileStyling && this.mobileTray && !this.noMobileCloseButton)
 		};
 
 		let dropdownContentSlots = html`	
