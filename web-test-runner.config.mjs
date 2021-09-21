@@ -26,11 +26,9 @@ export default {
 			<body>
 				<script>
 					window.onerror = function(err) {
-						if (err === 'ResizeObserver loop limit exceeded') {
+						console.log('onerror', err, err.includes('ResizeObserver'));
+						if (err.includes('ResizeObserver')) {
 							console.warn('Ignored: ResizeObserver loop limit exceeded');
-							return true;
-						} else if (err === 'ResizeObserver loop completed with undelivered notifications.') {
-							console.warn('Ignored: ResizeObserver loop completed with undelivered notifications');
 							return true;
 						}
 					};
