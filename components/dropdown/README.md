@@ -1,4 +1,3 @@
-
 # Dropdowns
 A Dropdown is a button that opens a floating container to offer menu items or other content.
 
@@ -12,7 +11,14 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
   import '@brightspace-ui/core/components/dropdown/dropdown.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown>
   <button class="d2l-dropdown-opener">Open!</button>
   <d2l-dropdown-content>
@@ -45,7 +51,14 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown-button');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown-button text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -77,7 +90,14 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
   import '@brightspace-ui/core/components/dropdown/dropdown-button-subtle.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown-button-subtle');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown-button-subtle text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -117,7 +137,14 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
   import '@brightspace-ui/core/components/dropdown/dropdown-context-menu.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown-context-menu');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown-context-menu text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -158,7 +185,14 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
   import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown-more');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown-more text="Open!">
   <d2l-dropdown-content>
     Some content...
@@ -200,7 +234,14 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-content.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown-button');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-content min-width="150" max-width="400">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -244,7 +285,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | `header` | Sticky container at the top of the dropdown |
 | `footer` | Sticky container at the bottom of the dropdown |
 | `default` | Anything inside of `d2l-dropdown-content` that isn't in the `header` or `footer` slots appears as regular content |
-<!-- docs: stop hidden content -->
+<!-- docs: end hidden content -->
 
 ### Methods
 * `async resize()`: Call if the size of the content changes due to a change in a nested component. The nested component may choose to fire a custom event, which the component containing the `d2l-dropdown-content` can catch and call this method. |
@@ -262,7 +303,14 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown-button');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-menu id="dropdown">
     <d2l-menu label="Astronomy">
@@ -302,7 +350,14 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-tabs.js';
 </script>
-
+<script>
+  window.addEventListener('load', function () {
+    var dropdown = document.querySelector('d2l-dropdown-button');
+	setTimeout(() => {
+		dropdown.toggleOpen();
+	}, 100);
+  });
+</script>
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-tabs min-width="175" max-width="300">
     <d2l-tabs>
