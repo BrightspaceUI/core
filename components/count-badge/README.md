@@ -7,6 +7,7 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 
 ![Notification Badge](./screenshots/count-badge-notification-small.png?raw=true)
 ![Count Badge](./screenshots/count-badge-count-large.png?raw=true)
+![Count Badge with icon](./screenshots/count-badge-icon.png?raw=true)
 
 ```html
 <script type="module">
@@ -24,6 +25,8 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
 | `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
 | `hide-zero`, default: `false` | Boolean | Optionally choose not to show the count badge when the number is zero. |
+| `icon`, default: no icon | String | Optionally choose an icon to render the badge above. |
+| `icon-size`, default: none | Boolean | Optionally choose a fixed height/width for the icon. Defaults to icon's respective tier size. |
 | `text`, required | String | Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled. |
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
 | `announce-changes`, default: `false` | Boolean | Optionally choose to announce changes to the badge with an aria-live region. If the text property is changed, the text will be read by screen-readers. |
