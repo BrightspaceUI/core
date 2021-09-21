@@ -9,7 +9,7 @@ import { dropdownContentStyles } from './dropdown-content-styles.js';
  * @slot footer - Sticky container at the bottom of the dropdown
  * @fires d2l-dropdown-open - Dispatched when the dropdown is opened
  * @fires d2l-dropdown-close - Dispatched when the dropdown is closed
- * @fires d2l-dropdown-focus-enter - Dispatched when user focus enters the dropdown content
+ * @fires d2l-dropdown-focus-enter - Dispatched when user focus enters the dropdown content (trap-focus option only)
  * @fires d2l-dropdown-position - Dispatched when the dropdown position finishes adjusting
  */
 class DropdownContent extends DropdownContentMixin(LitElement) {

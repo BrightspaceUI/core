@@ -14,9 +14,9 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+    setTimeout(() => {
+      dropdown.toggleOpen();
+    }, 100);
   });
 </script>
 <d2l-dropdown>
@@ -30,10 +30,10 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 If the dropdown is initially empty when it's opened, the dropdown pointer will not be positioned correctly.  In such cases, the `no-auto-open` attribute may be added to the opener, enabling you to take control of when the dropdown is actually opened:
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 | Property | Type | Description |
-|---|---|
+|---|---|--|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
 <!-- docs: end hidden content -->
@@ -54,9 +54,9 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown-button');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+    setTimeout(() => {
+      dropdown.toggleOpen();
+    }, 100);
   });
 </script>
 <d2l-dropdown-button text="Open!">
@@ -93,9 +93,9 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown-button-subtle');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+  setTimeout(() => {
+    dropdown.toggleOpen();
+  }, 100);
   });
 </script>
 <d2l-dropdown-button-subtle text="Open!">
@@ -106,7 +106,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 ```
 
 <!-- docs: start hidden content -->
-### Properties:
+### Properties
 
 | Property | Type | Description |
 |---|---|---|
@@ -116,7 +116,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from automatically on click or on key press |
 <!-- docs: end hidden content -->
 
-### Accessibility
+### Accessibility Properties
 
 To make your `d2l-dropdown-button-subtle` accessible, use the following properties when applicable: 
 
@@ -140,9 +140,9 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown-context-menu');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+    setTimeout(() => {
+      dropdown.toggleOpen();
+    }, 100);
   });
 </script>
 <d2l-dropdown-context-menu text="Open!">
@@ -164,7 +164,7 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 | `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
 <!-- docs: end hidden content -->
 
-### Accessibility
+### Accessibility Properties
 
 To make your usage of `d2l-dropdown-context-menu` accessible, use the following property:
 
@@ -188,9 +188,9 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown-more');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+    setTimeout(() => {
+      dropdown.toggleOpen();
+    }, 100);
   });
 </script>
 <d2l-dropdown-more text="Open!">
@@ -212,7 +212,7 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 | `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
 <!-- docs: end hidden content -->
 
-### Accessibility
+### Accessibility Properties
 
 To make your usage of `d2l-dropdown-more` accessible, use the following property
 
@@ -237,13 +237,13 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown-button');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+    setTimeout(() => {
+      dropdown.toggleOpen();
+    }, 100);
   });
 </script>
 <d2l-dropdown-button text="Open!" primary>
-  <d2l-dropdown-content min-width="150" max-width="400">
+  <d2l-dropdown-content min-width="150" max-width="400" mobile-tray="bottom">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   </d2l-dropdown-content>
 </d2l-dropdown-button>
@@ -277,7 +277,8 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 |---|---|
 | `d2l-dropdown-open` | Dispatched when the dropdown is opened |
 | `d2l-dropdown-close` | dispatched when the dropdown is closed |
-| `d2l-dropdown-focus-enter` | dispatched when the 'trap-focus' attribute is applied and the focus-trap is entered |
+| `d2l-dropdown-position` | Dispatched when the dropdown position finishes adjusting |
+| `d2l-dropdown-focus-enter` | dispatched when the 'trap-focus' attribute is applied and the focus-trap is entered (trap-focus option only) |
 
 ### Slots
 | Name | Description |
@@ -306,9 +307,9 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown-button');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+    setTimeout(() => {
+      dropdown.toggleOpen();
+    }, 100);
   });
 </script>
 <d2l-dropdown-button text="Open!" primary>
@@ -353,9 +354,9 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 <script>
   window.addEventListener('load', function () {
     var dropdown = document.querySelector('d2l-dropdown-button');
-	setTimeout(() => {
-		dropdown.toggleOpen();
-	}, 100);
+    setTimeout(() => {
+      dropdown.toggleOpen();
+    }, 100);
   });
 </script>
 <d2l-dropdown-button text="Open!" primary>
