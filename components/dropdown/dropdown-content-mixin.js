@@ -1037,7 +1037,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	async _handleMobileResize() {
 		this._useMobileStyling =  this.mediaQueryList.matches;
 		if (this.opened) this._showBackdrop = this._useMobileStyling && this.mobileTray;
-		console.log(this._showBackdrop);
 		if (this.opened) await this.__position();
 	}
 
