@@ -323,7 +323,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this.opened = false;
 		};
 
-		if (!reduceMotion && this.mediaQueryList.matches && this.mobileTray && isVisible(this)) {
+		if (!reduceMotion && this._useMobileStyling && this.mobileTray && isVisible(this)) {
 			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
 				.addEventListener('animationend', hide, { once: true });
 			this._closing = true;
@@ -352,14 +352,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this.opened = true;
 		await this.updateComplete;
-		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this._useMobileStyling && this.mobileTray;
 	}
 
 	async resize() {
 		if (!this.opened) {
 			return;
 		}
-		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this._useMobileStyling && this.mobileTray;
 		await this.__position();
 	}
 
@@ -504,7 +504,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 
 			await this.__position();
-			this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
+			this._showBackdrop = this._useMobileStyling && this.mobileTray;
 
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
@@ -530,7 +530,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		if (newValue) {
 
-			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+			if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
 				this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
 			}
 
@@ -542,7 +542,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
 			}
-			if (ifrauBackdropService && this.mobileTray && this.mediaQueryList.matches) {
+			if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
 				ifrauBackdropService.hideBackdrop();
 				this._ifrauContextInfo = null;
 			}
@@ -771,8 +771,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
 	}
 
-	_handleMobileResize() {
+	async _handleMobileResize() {
 		this._useMobileStyling =  this.mediaQueryList.matches;
+		this._showBackdrop = this._useMobileStyling && this.mobileTray;
+		if (this.opened) await this.__position();
 	}
 
 	_renderContent() {
@@ -787,9 +789,9 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 
-		const specialMobileStyle = this.mediaQueryList.matches && this.mobileTray;
-		const mobileTrayRightLeft = this.mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
-		const mobileTrayBottom = this.mediaQueryList.matches && (this.mobileTray === 'bottom');
+		const specialMobileStyle = this._useMobileStyling && this.mobileTray;
+		const mobileTrayRightLeft = this._useMobileStyling && (this.mobileTray === 'right' || this.mobileTray === 'left');
+		const mobileTrayBottom = this._useMobileStyling && (this.mobileTray === 'bottom');
 
 		let maxWidthOverride = this.maxWidth;
 		if (mobileTrayRightLeft) {
