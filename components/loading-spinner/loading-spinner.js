@@ -11,7 +11,7 @@ class LoadingSpinner extends LitElement {
 			/**
 			 * Color of the animated bar
 			 * @type {string}
-			 * @default --d2l-color-celestine
+			 * @default var(--d2l-color-celestine)
 			 */
 			color: { type: String },
 			/**
