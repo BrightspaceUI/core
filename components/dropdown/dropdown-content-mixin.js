@@ -769,29 +769,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
-		let footerWidth;
-		if (this.noPaddingFooter) {
-			footerWidth = 'calc(100% - 24px)';
-		} else if (this._hasFooter) {
-			footerWidth = '100%';
-		} else {
-			footerWidth = 'calc(100% + 16px)';
-		}
-
-		let footerMargin;
-		if (this._hasFooter) {
-			footerMargin = '0';
-		} else if (this.getAttribute('dir') === 'rtl') {
-			footerMargin = '-20px -20px -20px 0px';
-		} else {
-			footerMargin = '-20px 0 -20px -20px';
-		}
-
 		const closeButtonStyles = {
 			display: !this.noMobileCloseButton ? 'inline-block' : 'none',
-			width: footerWidth,
+			width: this._getTrayFooterWidth(),
 			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
-			margin: footerMargin
+			margin: this._getTrayFooterMargin()
 		};
 
 		return {
@@ -930,29 +912,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			overflowY: this._contentOverflow ? 'auto' : 'hidden'
 		};
 
-		let footerWidth;
-		if (this.noPaddingFooter) {
-			footerWidth = 'calc(100% - 24px)';
-		} else if (this._hasFooter) {
-			footerWidth = '100%';
-		} else {
-			footerWidth = 'calc(100% + 16px)';
-		}
-
-		let footerMargin;
-		if (this._hasFooter) {
-			footerMargin = '0';
-		} else if (this.getAttribute('dir') === 'rtl') {
-			footerMargin = '-20px -20px -20px 0px';
-		} else {
-			footerMargin = '-20px 0 -20px -20px';
-		}
-
 		const closeButtonStyles = {
 			display: !this.noMobileCloseButton ? 'inline-block' : 'none',
-			width: footerWidth,
+			width: this._getTrayFooterWidth(),
 			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
-			margin: footerMargin
+			margin: this._getTrayFooterMargin()
 		};
 
 		return {
@@ -1017,6 +981,30 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 		return null;
+	}
+
+	_getTrayFooterMargin() {
+		let footerMargin;
+		if (this._hasFooter) {
+			footerMargin = '0';
+		} else if (this.getAttribute('dir') === 'rtl') {
+			footerMargin = '-20px -20px -20px 0px';
+		} else {
+			footerMargin = '-20px 0 -20px -20px';
+		}
+		return footerMargin;
+	}
+
+	_getTrayFooterWidth() {
+		let footerWidth;
+		if (this.noPaddingFooter) {
+			footerWidth = 'calc(100% - 24px)';
+		} else if (this._hasFooter) {
+			footerWidth = '100%';
+		} else {
+			footerWidth = 'calc(100% + 16px)';
+		}
+		return footerWidth;
 	}
 
 	_handleFocusTrapEnter() {
