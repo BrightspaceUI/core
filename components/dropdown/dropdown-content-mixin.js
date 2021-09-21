@@ -191,8 +191,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			_useMobileStyling: {
 				type: Boolean,
-				reflect: true,
-				attribute: 'data-mobile'
+				attribute: 'data-mobile',
+				reflect: true
 			},
 			_hasHeader: {
 				type: Boolean
@@ -704,6 +704,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	_getBottomTrayStyling() {
 		const maxWidthOverride = '100vw';
 		const minWidthOverride  = 'calc(100vw - 2px)';
+		const contentWidth = 'calc(100vw - 2px)';
+		const containerWidth = '100vw';
 
 		let maxHeightOverride;
 		let availableHeight = Math.min(window.innerHeight, window.screen.height);
@@ -718,10 +720,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 		maxHeightOverride = `${maxHeightOverride}px`;
 
-		const contentWidth = 'calc(100vw - 2px)';
-		const containerWidth = '100vw';
-
-		let bottomOverride = null;
+		let bottomOverride;
 		if (this._ifrauContextInfo) {
 			// Bottom override is measured as
 			// the distance from the bottom of the screen
@@ -849,16 +848,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
 		maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
 		minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
-
-		let maxHeightOverride;
-		maxHeightOverride = '';
-		if (this._ifrauContextInfo) maxHeightOverride = `${this._ifrauContextInfo.availableHeight}px`;
-
 		const  contentWidth = `${widthOverride + 18}px`;
 		/* add 2 to content width since scrollWidth does not include border */
 		const containerWidth = `${widthOverride + 20}px`;
 
-		let topOverride = null;
+		let maxHeightOverride;
+		if (this._ifrauContextInfo) maxHeightOverride = `${this._ifrauContextInfo.availableHeight}px`;
+
+		let topOverride;
 		if (this._ifrauContextInfo) {
 			// if inside iframe, use ifrauContext top as top of screen
 			topOverride = `${this._ifrauContextInfo.top < 0 ? -this._ifrauContextInfo.top : 0}px`;
@@ -867,8 +864,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			topOverride = window.pageYOffset;
 		}
 
-		let rightOverride = undefined;
-		let leftOverride = undefined;
+		let rightOverride;
+		let leftOverride;
 		if (this.mobileTray === 'right') {
 			// On non-responsive pages, the innerWidth may be wider than the screen,
 			// override right to stick to right of viewport
@@ -1055,7 +1052,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const headerStyle = stylesMap['header'];
 		const footerStyle = stylesMap['footer'];
 		const contentStyle = stylesMap['content'];
-		const closeButtonStyle = stylesMap['close'];
+		const closeButtonStyles = stylesMap['close'];
 
 		const topClasses = {
 			'd2l-dropdown-content-top': true,
@@ -1087,7 +1084,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
 					<d2l-button
 						class="dropdown-close-btn"
-						style=${styleMap(closeButtonStyle)}
+						style=${styleMap(closeButtonStyles)}
 						@click=${this.close}>
 						${this.localize('components.dropdown.close')}
 					</d2l-button>
