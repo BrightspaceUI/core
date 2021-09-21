@@ -310,11 +310,16 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the basic dropdown-menu](./screenshots/dropdown-menu.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-menu size:medium autoSize:false -->
+<!-- docs: demo live name:d2l-dropdown-menu size:medium align:flex-start autoSize:false -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-menu.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/tabs/tabs.js';
+  import '@brightspace-ui/core/components/tabs/tab-panel.js';
+
 </script>
 <!-- docs: start hidden content -->
 <script>
@@ -327,7 +332,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 </script>
 <!-- docs: end hidden content -->
 <d2l-dropdown-button text="Open!" primary>
-  <d2l-dropdown-menu id="dropdown">
+  <d2l-dropdown-menu>
     <d2l-menu label="Astronomy">
       <d2l-menu-item text="Introduction"></d2l-menu-item>
       <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
@@ -359,11 +364,15 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 ![screenshot the basic dropdown-tabs](./screenshots/dropdown-tabs.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo live name:d2l-dropdown-tabs size:medium autoSize:false -->
+<!-- docs: demo live name:d2l-dropdown-tabs size:large autoSize:false align:flex-start -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/dropdown/dropdown-button.js';
   import '@brightspace-ui/core/components/dropdown/dropdown-tabs.js';
+  import '@brightspace-ui/core/components/menu/menu.js';
+  import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/tabs/tabs.js';
+  import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 <!-- docs: start hidden content -->
 <script>
