@@ -117,18 +117,22 @@ class CountBadge extends RtlMixin(LitElement) {
 			font-weight: bold;
 		}
 		:host([type="notification"]) .d2l-count-badge-number {
+			background-color: var(--d2l-color-carnelian-minus-1);
 			color: white;
 		}
 		:host([type="count"]) .d2l-count-badge-number {
+			background-color: var(--d2l-color-gypsum);
 			color: var(--d2l-color-tungsten);
 		}
 		:host([size="small"]) .d2l-count-badge-number {
+			border-radius: 0.55rem;
 			font-size: 0.6rem;
 			line-height: 0.9rem;
 			padding-left: 0.3rem;
 			padding-right: 0.3rem;
 		}
 		:host([size="large"]) .d2l-count-badge-number {
+			border-radius: 0.7rem;
 			font-size: 0.8rem;
 			line-height: 1.2rem;
 			padding-left: 0.4rem;
@@ -143,12 +147,6 @@ class CountBadge extends RtlMixin(LitElement) {
 		}
 		:host([icon]) d2l-icon {
 			margin-top: -1.4rem;
-		}
-		:host([size="small"]) .d2l-count-badge-number {
-			border-radius: 0.55rem;
-		}
-		:host([size="large"]) .d2l-count-badge-number {
-			border-radius: 0.7rem;
 		}
 		:host([size="small"]) .d2l-count-badge-wrapper {
 			border-radius: 0.65rem;
@@ -198,12 +196,6 @@ class CountBadge extends RtlMixin(LitElement) {
 		:host([icon]) .d2l-count-badge-number {
 			left: 0.6rem;
 			position: relative;
-		}
-		:host([type="notification"]) .d2l-count-badge-number {
-			background-color: var(--d2l-color-carnelian-minus-1);
-		}
-		:host([type="count"]) .d2l-count-badge-number {
-			background-color: var(--d2l-color-gypsum);
 		}
 		:host([icon-highlight]) d2l-icon {
 			color: var(--d2l-color-celestine);
