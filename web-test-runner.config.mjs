@@ -25,13 +25,11 @@ export default {
 		`<html>
 			<body>
 				<script>
-					window.onerror = function(err) {
-						console.log('onerror', err, err.includes('ResizeObserver'));
-						if (err.includes('ResizeObserver')) {
-							console.warn('Ignored: ResizeObserver loop limit exceeded');
-							return true;
+					window.addEventListener('error', (err) => {
+						if (err.message.includes('ResizeObserver')) {
+							err.stopImmediatePropagation();
 						}
-					};
+					});
 				</script>
 				<script type="module" src="${testFramework}"></script>
 				<script src="./tools/perf-test-helper.js" type="module"></script>
