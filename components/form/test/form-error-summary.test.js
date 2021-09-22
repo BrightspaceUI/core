@@ -1,5 +1,6 @@
 import '../form-errory-summary.js';
-import { expect, fixture } from '@open-wc/testing';
+import { expect, fixture, oneEvent } from '@open-wc/testing';
+import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit-element/lit-element.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
@@ -30,10 +31,12 @@ describe('d2l-form-error-summary', () => {
 			];
 			await errorSummary.updateComplete;
 
-			await errorSummary.focus();
-
 			const firstError = errorSummary.shadowRoot.querySelector('[href="#first-error"]');
-			expect(errorSummary.shadowRoot.activeElement).to.equal(firstError);
+
+			setTimeout(() => errorSummary.focus());
+			await oneEvent(firstError, 'focus');
+
+			expect(getComposedActiveElement()).to.equal(firstError);
 		});
 
 	});
