@@ -358,9 +358,25 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 - `d2l-list-item-link-click`: dispatched when the item's primary link action is clicked
 <!-- docs: end hidden content -->
 
+### Breakpoints Property
+
+- `breakpoints` (Array): Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
+  - Breakpoint 0
+    - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
+    - default break: `x < 580px` where `x` is the width of the component.
+  - Breakpoint 1
+    - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
+    - default break: `581px < x < 636px` where `x` is the width of the component.
+  - Breakpoint 2
+    - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
+    - default break: `637px < x < 842px`  where `x` is the width of the component.
+  - Breakpoint 3
+    - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
+    - default break: `843px < x`  where `x` is the width of the component.
+
 ## ListItemMixin
 
-Want to maintain consistency with `d2l-list-item` but need more modularity? This mixin is for you! This mixin allows you to make a component into a list item without requiring custom styling. All of the properties and functionality from `d2l-list-item` will be added to your new component.
+Want to maintain consistency with `d2l-list-item` but need more modularity? This mixin is for you! This mixin allows you to make a component into a list item without requiring custom styling. All of the properties and functionality from `d2l-list-item` (listed above) will be added to your new component.
 
 ### How to use
 
@@ -393,33 +409,6 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 - illustration (TemplateResult):  Provide an illustration for your list item.
 - content (TemplateResult): Core content of the list item, such as a d2l-list-item-content element.
 - actions (TemplateResult): Secondary actions for the list item.
-
-### Properties
-
-- `breakpoints` (Array): Breakpoints for responsiveness (`[842, 636, 580, 0]`), in pixels. There are four different breakpoints and only the four largest breakpoints will be used. If less breakpoints are used, then skip a middle breakpoint so that the first and last breakpoints will map to the largest and smallest layouts.
-  - Breakpoint 0
-    - Image: max dimensions: `width: 90px` and `height: 52px` and has `18px margin` from the main content;
-    - default break: `x < 580px` where `x` is the width of the component.
-  - Breakpoint 1
-    - Image: max dimensions: `width: 120px` and `height: 71px` and has `20px margin` from the main content;
-    - default break: `581px < x < 636px` where `x` is the width of the component.
-  - Breakpoint 2
-    - Image: max dimensions: `width: 180px` and `height: 102px` and has `20px margin` from the main content;
-    - default break: `637px < x < 842px`  where `x` is the width of the component.
-  - Breakpoint 3
-    - Image: max dimensions: `width: 216px` and `height: 120px` and has `20px margin` from the main content;
-    - default break: `843px < x`  where `x` is the width of the component.
-- `disabled` (Boolean): Whether or not the checkbox is disabled
-- `draggable` (Boolean): Whether or not the item is draggable
-- `key` (String): Value to identify item if selectable
-- `label` (String): The hidden label for the checkbox if selectable
-- `selectable` (Boolean): Indicates a checkbox should be rendered for selecting the item
-- `selected` (Boolean): Whether the item is selected
-- `slim` (Boolean): Whether to render the item with reduced whitespace
-
-### Events
-
-- `d2l-list-item-position-change`: Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change).
 
 ### Accessibility
 
