@@ -12,6 +12,10 @@ Mental Models and Page Structure:
 * The page includes basic settings (primary) and advanced settings (secondary)
 * There is a primary object which users are modifying or supplementing with secondary tools/settings/options
 
+If no nodes are assigned to the `footer` slot, the footer is hidden.
+
+Note: this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
+
 <!-- docs: start hidden content -->
 ![Primary-Secondary](./screenshots/primary-secondary.gif?raw=true)
 <!-- docs: end hidden content -->
@@ -42,10 +46,6 @@ Mental Models and Page Structure:
     <div slot="footer">Footer</div>
 </d2l-template-primary-secondary>
 ```
-
-If no nodes are assigned to the `footer` slot, the footer is hidden.
-
-Note: this template automatically includes `<header>`, `<main>`, `<aside>` and `<footer>` elements, so there's no need to include them inside the various slots.
 
 ### IFrames
 
