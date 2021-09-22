@@ -313,7 +313,7 @@ class CountBadge extends RtlMixin(LitElement) {
 				${this.hasTooltip ?
 		html`<d2l-tooltip id="${this._textId}" ?force-show="${this._forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}">${this.text}</d2l-tooltip>`
 		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
-			<div>
+			</div>
 			`;
 	}
 
