@@ -419,7 +419,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 
 ### Events
 
-- `d2l-list-item-position-change`: dispatched when a draggable list item's position changes in the list
+- `d2l-list-item-position-change`: Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change).
 
 ### Accessibility
 
@@ -484,7 +484,7 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 </d2l-list>
 ```
 
-### d2l-list-item-position-change Event Details
+## Event Details: d2l-list-item-position-change
 
 This event includes a detail object with helper methods attached to it.
 

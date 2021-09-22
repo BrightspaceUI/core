@@ -7,7 +7,7 @@ import { LitElement } from 'lit-element/lit-element.js';
  * @slot illustration - Image associated with the list item located at the left of the item
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @fires d2l-list-item-button-click - Dispatched when the item's primary button action is clicked
- * @fires d2l-list-item-position-change - Dispatched when a draggable list item's position changes in the list
+ * @fires d2l-list-item-position-change - Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change).
  * @fires d2l-list-item-selected - Dispatched when the component item is selected
  */
 class ListItemButton extends ListItemButtonMixin(LitElement) {
