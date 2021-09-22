@@ -1,4 +1,3 @@
-
 # Dropdowns
 A Dropdown is a button that opens a floating container to offer menu items or other content.
 <!-- docs: demo autoSize:false align:flex-start size:medium -->
@@ -38,7 +37,6 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
   window.addEventListener('load', function () {
     const demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return; 
-
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown');
       dropdown.toggleOpen();
@@ -56,6 +54,19 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 
 If the dropdown is initially empty when it's opened, the dropdown pointer will not be positioned correctly.  In such cases, the `no-auto-open` attribute may be added to the opener, enabling you to take control of when the dropdown is opened.
 
+```html
+<script>
+  dropdown.addEventListener('click', function() {
+    // fetch some content
+    ...
+    // take control of when the dropdown is actually opened
+    dropdown.toggleOpen();
+  });
+</script>
+<d2l-dropdown no-auto-open>
+  ...
+</d2l-dropdown>
+```
 <!-- docs: start hidden content -->
 ### Properties
 
@@ -85,7 +96,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-button');
-        dropdown.toggleOpen();
+      dropdown.toggleOpen();
     }, 100);
   });
 </script>
@@ -128,7 +139,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-button-subtle');
-        dropdown.toggleOpen();
+      dropdown.toggleOpen();
     }, 100);
   });
 </script>
@@ -178,8 +189,8 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
     const demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
-        var dropdown = document.querySelector('d2l-dropdown-context-menu');
-        dropdown.toggleOpen();
+      var dropdown = document.querySelector('d2l-dropdown-context-menu');
+      dropdown.toggleOpen();
     }, 100);
   });
 </script>
@@ -231,7 +242,7 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-more');
-        dropdown.toggleOpen();
+      dropdown.toggleOpen();
     }, 100);
   });
 </script>
@@ -363,7 +374,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-button');
-       dropdown.toggleOpen();
+      dropdown.toggleOpen();
     }, 100);
   });
 </script>
@@ -414,12 +425,11 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    var dropdown = document.querySelector('d2l-dropdown-button');
     const demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
        var dropdown = document.querySelector('d2l-dropdown-button');
-      dropdown.toggleOpen();
+        dropdown.toggleOpen();
     }, 100);
   });
 </script>
