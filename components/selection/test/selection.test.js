@@ -241,7 +241,7 @@ describe('SelectionObserverMixin', () => {
 		expect(collection._selectionObservers.size).to.equal(0);
 	});
 
-	it.skip('unregisters and registers the SelectionMixin component', async() => {
+	it('unregisters and registers the SelectionMixin component', async() => {
 		const observer = el.querySelector('d2l-selection-action');
 		const provider = el.querySelector('#d2l-test-selection');
 

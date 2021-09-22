@@ -14,8 +14,8 @@ class FocusTestElem extends LitElement {
 	render() {
 		const animateValue = this.animate ? hide() : undefined;
 		return html`
-			<button id="first" .animate="${animateValue}" @d2l-animate-complete="${this._dispatchEvent}" @focus="${this._handleFocusFirst}">first</button>
-			<button id="second" @focus="${this._handleFocusSecond}">second</button>
+			<button id="first" .animate="${animateValue}" @d2l-animate-complete="${this._dispatchEvent}">first</button>
+			<button id="second">second</button>
 		`;
 	}
 
@@ -29,14 +29,6 @@ class FocusTestElem extends LitElement {
 
 	_dispatchEvent() {
 		this.dispatchEvent(new CustomEvent('d2l-animate-test-focus-animate-complete'));
-	}
-
-	_handleFocusFirst() {
-		this.dispatchEvent(new CustomEvent('d2l-animate-test-focus-first'));
-	}
-
-	_handleFocusSecond() {
-		this.dispatchEvent(new CustomEvent('d2l-animate-test-focus-second'));
 	}
 
 }
@@ -92,11 +84,8 @@ describe('animate directive', () => {
 		it('should move focus when element with visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			setTimeout(() => elem.forceFocusVisible());
-			await oneEvent(elem, 'd2l-animate-test-focus-first');
-
+			elem.forceFocusVisible();
 			elem.animate = true;
-			await oneEvent(elem, 'd2l-animate-test-focus-second');
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
 			expect(getComposedActiveElement()).to.equal(elem.shadowRoot.querySelector('#second'));
@@ -106,9 +95,7 @@ describe('animate directive', () => {
 		it('should not move focus when element with non-visible focus is hidden', async() => {
 
 			const elem = await fixture(html`<d2l-animate-test-focus></d2l-animate-test-focus>`);
-			setTimeout(() => elem.focus());
-			await oneEvent(elem, 'd2l-animate-test-focus-first');
-
+			elem.focus();
 			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 

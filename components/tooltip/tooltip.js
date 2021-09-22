@@ -425,7 +425,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._removeListeners();
 		window.removeEventListener('resize', this._onTargetResize);
 		clearDismissible(this._dismissibleId);
-		delayTimeoutId = null;
 		this._dismissibleId = null;
 	}
 
