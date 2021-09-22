@@ -1,22 +1,35 @@
-# Scroll Wrapper
+# Scroll Wrapper [d2l-scroll-wrapper]
 
 The `d2l-scroll-wrapper` element can be used to wrap content which may overflow its horizontal boundaries, providing left/right scroll buttons.
 
+<!-- docs: start hidden content -->
 ![scroll wrapper](./screenshots/scroll-wrapper.gif?raw=true)
+<!-- docs: end hidden content -->
 
+<!-- docs: demo live name:d2l-scroll-wrapper -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/scroll-wrapper/scroll-wrapper.js';
 </script>
-<d2l-scroll-wrapper>
-	<!-- content which may overflow horizontally -->
-</d2l-scroll-wrapper>
+<!-- docs: start hidden content -->
+<style>
+	div {
+		max-width: 100%;
+	}
+	p {
+		user-select: none;
+		white-space: nowrap;
+	}
+</style>
+<!-- docs: end hidden content -->
+<div>
+	<d2l-scroll-wrapper>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt. Numquam voluptate, velit quisquam ipsa molestias laudantium odit reiciendis nisi corporis voluptatibus, voluptatum sunt natus, accusantium magnam consequatur fugit officiis minima voluptatem consequuntur nam, earum necessitatibus! Cupiditate ullam repellendus, eius iure voluptas at commodi consectetur, quia, adipisci possimus, ex mollitia. Labore harum error consectetur officiis aut optio, temporibus iste nobis ducimus cumque laudantium rem pariatur. Ut repudiandae id, consequuntur quasi quis pariatur autem corporis perferendis facilis eius similique voluptatibus iusto deleniti odio officia numquam tenetur excepturi, aspernatur sunt minima aut fugiat ipsam.</p>
+	</d2l-scroll-wrapper>
+</div>
 ```
 
-**Properties:**
-
+### Properties
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `hide-actions` | Boolean, default: `false` | Whether to hide left/right scroll buttons |
-
-Looking for an enhancement not listed here? Create a GitHub issue!
