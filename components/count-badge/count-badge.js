@@ -45,14 +45,6 @@ class CountBadge extends RtlMixin(LitElement) {
 				reflect: true
 			},
 			/**
-			 * Optionally specify a size for the height/width of the icon.
-			 * @type {number}
-			 */
-			iconSize: {
-				type: Number,
-				attribute: 'icon-size'
-			},
-			/**
 			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
 			 * @type {number}
 			 */
@@ -101,9 +93,13 @@ class CountBadge extends RtlMixin(LitElement) {
 				reflect: true,
 				attribute: 'type'
 			},
-			_forceTooltipOn: {
+			_fixIconSizeTier1: {
 				type: Boolean,
-				attribute: 'tooltip-on'
+				reflect: true,
+				attribute: 'fixed-icon-size'
+			},
+			_forceTooltipOn: {
+				type: Boolean
 			}
 		};
 	}
@@ -202,6 +198,13 @@ class CountBadge extends RtlMixin(LitElement) {
 		:host([size="large"][icon^="tier3"]) .d2l-count-badge-wrapper {
 			max-height: 2.4rem;
 		}
+		:host([size="small"][icon][fixed-icon-size]) .d2l-count-badge-wrapper {
+			max-height: 1.7rem;
+		}
+		:host([size="large"][icon][fixed-icon-size]) .d2l-count-badge-wrapper {
+			max-height: 2.1rem;
+		}
+
 		:host([size="small"][icon^="tier1"]) .d2l-count-badge-number {
 			left: 0.35rem;
 		}
@@ -220,6 +223,13 @@ class CountBadge extends RtlMixin(LitElement) {
 		:host([size="large"][icon^="tier3"]) .d2l-count-badge-number {
 			left: 0.8rem;
 		}
+		:host([size="small"][icon][fixed-icon-size]) .d2l-count-badge-number {
+			left: 0.35rem;
+		}
+		:host([size="large"][icon][fixed-icon-size]) .d2l-count-badge-number {
+			left: 0.2rem;
+		}
+
 		:host([size="small"][icon^="tier1"]) d2l-icon {
 			margin-top: -1.8rem;
 		}
@@ -237,6 +247,12 @@ class CountBadge extends RtlMixin(LitElement) {
 		}
 		:host([size="large"][icon^="tier3"]) d2l-icon {
 			margin-top: -1.6rem;
+		}
+		:host([size="small"][icon][fixed-icon-size]) d2l-icon {
+			margin-top: -1.8rem;
+		}
+		:host([size="large"][icon][fixed-icon-size]) d2l-icon {
+			margin-top: -2.1rem;
 		}
 
 		:host([icon]) d2l-tooltip[_open-dir="top"] {
@@ -256,6 +272,7 @@ class CountBadge extends RtlMixin(LitElement) {
 		this.type = 'count';
 
 		this._badgeId = getUniqueId();
+		this._fixIconSizeTier1 = false;
 		this._forceTooltipOn = false;
 		this._textId = getUniqueId();
 	}
@@ -277,9 +294,9 @@ class CountBadge extends RtlMixin(LitElement) {
 			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
 		const iconSizeStyle = {};
-		if (this.icon && this.iconSize) {
-			iconSizeStyle.height = `${this.iconSize}px`;
-			iconSizeStyle.width = `${this.iconSize}px`;
+		if (this.icon && this._fixIconSizeTier1) {
+			iconSizeStyle.height = '18px';
+			iconSizeStyle.width = '18px';
 		}
 		return html`
 			<div 
