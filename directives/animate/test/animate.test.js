@@ -95,7 +95,7 @@ describe('animate directive', () => {
 			setTimeout(() => elem.forceFocusVisible());
 			await oneEvent(elem, 'd2l-animate-test-focus-first');
 
-			setTimeout(() => elem.animate = true);
+			elem.animate = true;
 			await oneEvent(elem, 'd2l-animate-test-focus-second');
 			await oneEvent(elem, 'd2l-animate-test-focus-animate-complete');
 
