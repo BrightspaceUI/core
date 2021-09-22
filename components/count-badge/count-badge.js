@@ -113,17 +113,27 @@ class CountBadge extends RtlMixin(LitElement) {
 		:host([hidden]) {
 			display: none;
 		}
+
+		:host {
+			display: inline-block;
+			min-width: 0.9rem;
+		}
+
 		.d2l-count-badge-number {
+			border: 2px solid white;
 			font-weight: bold;
 		}
+
 		:host([type="notification"]) .d2l-count-badge-number {
 			background-color: var(--d2l-color-carnelian-minus-1);
 			color: white;
 		}
+
 		:host([type="count"]) .d2l-count-badge-number {
 			background-color: var(--d2l-color-gypsum);
 			color: var(--d2l-color-tungsten);
 		}
+
 		:host([size="small"]) .d2l-count-badge-number {
 			border-radius: 0.55rem;
 			font-size: 0.6rem;
@@ -131,6 +141,7 @@ class CountBadge extends RtlMixin(LitElement) {
 			padding-left: 0.3rem;
 			padding-right: 0.3rem;
 		}
+
 		:host([size="large"]) .d2l-count-badge-number {
 			border-radius: 0.7rem;
 			font-size: 0.8rem;
@@ -138,67 +149,48 @@ class CountBadge extends RtlMixin(LitElement) {
 			padding-left: 0.4rem;
 			padding-right: 0.4rem;
 		}
-		:host .d2l-count-badge-number {
-			border: 2px solid white;
-		}
-		:host {
-			display: inline-block;
-			min-width: 0.9rem;
-		}
-		:host([icon]) d2l-icon {
-			margin-top: -1.4rem;
-		}
+
 		:host([size="small"]) .d2l-count-badge-wrapper {
 			border-radius: 0.65rem;
 			outline: none;
 		}
+
 		:host([size="large"]) .d2l-count-badge-wrapper {
 			border-radius: 0.8rem;
 			outline: none;
 		}
+
 		:host(.focus-visible) .d2l-count-badge-wrapper,
 		.d2l-count-badge-wrapper.focus-visible {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 		}
+
 		:host(.focus-visible[icon]) .d2l-count-badge-wrapper,
 		:host([icon]) .d2l-count-badge-wrapper.focus-visible {
 			box-shadow: none;
 		}
+
 		:host(.focus-visible[icon]) d2l-icon,
 		.d2l-count-badge-wrapper.focus-visible d2l-icon {
 			color: var(--d2l-color-celestine);
 		}
-		:host([icon]) .d2l-count-badge-wrapper {
-			padding-left: 2px;
-			padding-right: 14px;
-		}
-		:host([icon]) d2l-tooltip[_open-dir="top"] {
-			margin-top: -0.6rem;
-		}
-		:host([size="small"][icon^="tier1"]) .d2l-count-badge-wrapper {
-			max-height: 1.7rem;
-		}
-		:host([size="small"][icon^="tier2"]) .d2l-count-badge-wrapper {
-			max-height: 1.8rem;
-		}
-		:host([size="small"][icon^="tier3"]) .d2l-count-badge-wrapper {
-			max-height: 2rem;
-		}
-		:host([size="large"][icon^="tier1"]) .d2l-count-badge-wrapper {
-			max-height: 2.1rem;
-		}
-		:host([size="large"][icon^="tier2"]) .d2l-count-badge-wrapper {
-			max-height: 2.2rem;
-		}
-		:host([size="large"][icon^="tier3"]) .d2l-count-badge-wrapper {
-			max-height: 2.4rem;
-		}
+
 		:host([icon]) .d2l-count-badge-number {
 			left: 0.6rem;
 			position: relative;
 		}
-		:host([icon-highlight]) d2l-icon {
-			color: var(--d2l-color-celestine);
+
+		:host([icon]) .d2l-count-badge-wrapper {
+			padding-left: 2px;
+			padding-right: 14px;
+		}
+
+		:host([icon]) d2l-icon {
+			margin-top: -1.4rem;
+		}
+
+		:host([icon]) d2l-tooltip[_open-dir="top"] {
+			margin-top: -0.6rem;
 		}
 		`];
 	}
