@@ -46,7 +46,7 @@ class CountBadge extends RtlMixin(LitElement) {
 			},
 			/**
 			 * Optionally specify a size for the height/width of the icon.
-			 * @type {string}
+			 * @type {number}
 			 */
 			iconSize: {
 				type: Number,
@@ -242,7 +242,7 @@ class CountBadge extends RtlMixin(LitElement) {
 				<div class="d2l-count-badge-number">
 						<div aria-hidden="true">${numberString}</div>		
 				</div>
-				${this.icon ? html`<d2l-icon role="presentation" id="${this._badgeId}" icon="${ifDefined(this.icon)}" class="d2l-button-icon" style=${styleMap(iconSizeStyle)}></d2l-icon></div>` : null }
+				${this.icon ? html`<d2l-icon role="presentation" id="${this._badgeId}" icon="${ifDefined(this.icon)}" class="d2l-button-icon" style=${styleMap(iconSizeStyle)}></d2l-icon>` : null }
 				${this.hasTooltip ?
 		html`<d2l-tooltip id="${this._textId}" ?force-show="${this._forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}">${this.text}</d2l-tooltip>`
 		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
