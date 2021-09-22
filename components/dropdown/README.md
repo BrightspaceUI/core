@@ -8,7 +8,7 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 </script>
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-button');
@@ -35,7 +35,7 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return; 
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown');
@@ -135,7 +135,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-button-subtle');
@@ -186,7 +186,7 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-context-menu');
@@ -238,7 +238,7 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-more');
@@ -291,7 +291,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-button');
@@ -370,8 +370,8 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
-  if (!demoElem.hasAttribute('data-first-load')) return;
+    var demoElem = document.querySelector('#demo-element');
+    if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown-button');
       dropdown.toggleOpen();
@@ -425,11 +425,11 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
-       var dropdown = document.querySelector('d2l-dropdown-button');
-        dropdown.toggleOpen();
+      var dropdown = document.querySelector('d2l-dropdown-button');
+      dropdown.toggleOpen();
     }, 100);
   });
 </script>
