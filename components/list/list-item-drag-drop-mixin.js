@@ -250,7 +250,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
-			 * Whether the item is draggable
+			 * **Drag & drop:** Whether the item is draggable
 			 * @type {boolean}
 			 */
 			draggable: { type: Boolean, reflect: true },
@@ -259,12 +259,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 */
 			dragging: { type: Boolean, reflect: true },
 			/**
-			 * The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
+			 * **Drag & drop:** The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
 			 * @type {string}
 			 */
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			/**
-			 *
+			 * **Drag & drop:** Text to drag and drop
 			 */
 			dropText: { type: String, attribute: 'drop-text' },
 			/**
@@ -334,6 +334,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._itemDragId = getUniqueId();
+		/** @ignore */
 		this.dragging = false;
 	}
 

@@ -7,27 +7,30 @@ import { nothing } from 'lit-html';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+/**
+ * @property label - The hidden label for the checkbox if selectable
+ */
 export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(LabelledMixin(superclass)) {
 
 	static get properties() {
 		return {
 			/**
-			 * Disables the input
+			 * **Selection:** Disables the input
 			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
-			 * Value to identify item if selectable
+			 * **Selection:** Value to identify item if selectable
 			 * @type {string}
 			 */
 			key: { type: String, reflect: true },
 			/**
-			 * Indicates a input should be rendered for selecting the item
+			 * **Selection:** Indicates a input should be rendered for selecting the item
 			 * @type {boolean}
 			 */
 			selectable: { type: Boolean },
 			/**
-			 * Whether the item is selected
+			 * **Selection:** Whether the item is selected
 			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },

@@ -41,6 +41,7 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 		return {
 			/**
 			 * Disables the handle
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
