@@ -24,7 +24,7 @@ const extraOptions = {
 };
 
 config.concurrentBrowsers = 4; // concurrent browsers
-config.concurrency = 6; // concurrent tests in a single browser
+config.concurrency = 1; // concurrent tests in a single browser
 config.browsers = [
 	sauceLabsLauncher({
 		browserName: 'chrome',
