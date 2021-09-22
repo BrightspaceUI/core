@@ -176,7 +176,6 @@ class CountBadge extends RtlMixin(LitElement) {
 		}
 
 		:host([icon]) .d2l-count-badge-number {
-			left: 0.6rem;
 			position: relative;
 		}
 
@@ -185,8 +184,59 @@ class CountBadge extends RtlMixin(LitElement) {
 			padding-right: 14px;
 		}
 
-		:host([icon]) d2l-icon {
-			margin-top: -1.4rem;
+		:host([size="small"][icon^="tier1"]) .d2l-count-badge-wrapper {
+			max-height: 1.7rem;
+		}
+		:host([size="small"][icon^="tier2"]) .d2l-count-badge-wrapper {
+			max-height: 1.8rem;
+		}
+		:host([size="small"][icon^="tier3"]) .d2l-count-badge-wrapper {
+			max-height: 2rem;
+		}
+		:host([size="large"][icon^="tier1"]) .d2l-count-badge-wrapper {
+			max-height: 2.1rem;
+		}
+		:host([size="large"][icon^="tier2"]) .d2l-count-badge-wrapper {
+			max-height: 2.2rem;
+		}
+		:host([size="large"][icon^="tier3"]) .d2l-count-badge-wrapper {
+			max-height: 2.4rem;
+		}
+		:host([size="small"][icon^="tier1"]) .d2l-count-badge-number {
+			left: 0.35rem;
+		}
+		:host([size="small"][icon^="tier2"]) .d2l-count-badge-number {
+			left: 0.65rem;
+		}
+		:host([size="small"][icon^="tier3"]) .d2l-count-badge-number {
+			left: 0.95rem;
+		}
+		:host([size="large"][icon^="tier1"]) .d2l-count-badge-number {
+			left: 0.2rem;
+		}
+		:host([size="large"][icon^="tier2"]) .d2l-count-badge-number {
+			left: 0.5rem;
+		}
+		:host([size="large"][icon^="tier3"]) .d2l-count-badge-number {
+			left: 0.8rem;
+		}
+		:host([size="small"][icon^="tier1"]) d2l-icon {
+			margin-top: -1.8rem;
+		}
+		:host([size="small"][icon^="tier2"]) d2l-icon {
+			margin-top: -1.5rem;
+		}
+		:host([size="small"][icon^="tier3"]) d2l-icon {
+			margin-top: -1.2rem;
+		}
+		:host([size="large"][icon^="tier1"]) d2l-icon {
+			margin-top: -2.1rem;
+		}
+		:host([size="large"][icon^="tier2"]) d2l-icon {
+			margin-top: -1.9rem;
+		}
+		:host([size="large"][icon^="tier3"]) d2l-icon {
+			margin-top: -1.6rem;
 		}
 
 		:host([icon]) d2l-tooltip[_open-dir="top"] {
