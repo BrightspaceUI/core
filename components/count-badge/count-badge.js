@@ -232,19 +232,21 @@ class CountBadge extends RtlMixin(LitElement) {
 			iconSizeStyle.width = `${this.iconSize}px`;
 		}
 		return html`
-		<div class="d2l-count-badge-wrapper"
-		@blur="${this._onBlur}"
-		@focus="${this._onFocus}"
-		id="${ifDefined(this.icon ? undefined : this._badgeId)}"
-		aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this._textId)}"
-		tabindex="${ifDefined(this.tabStop || this.hasTooltip ? '0' : undefined)}" >
-        	<div class="d2l-count-badge-number">
-					<div aria-hidden="true">${numberString}</div>		
-			</div>
-			${this.icon ? html`<div class="d2l-icon-wrapper"><d2l-icon role="presentation" id="${this._badgeId}" icon="${ifDefined(this.icon)}" class="d2l-button-icon" style=${styleMap(iconSizeStyle)}></d2l-icon></div>` : null }
-			${this.hasTooltip ? html`<d2l-tooltip id="${this._textId}" ?force-show="${this._forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}">${this.text}</d2l-tooltip>` :  html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
-			${this.icon ? html`</div>` : null }
-		<div>
+			<div 
+			class="d2l-count-badge-wrapper"
+			@blur="${this._onBlur}"
+			@focus="${this._onFocus}"
+			id="${ifDefined(this.icon ? undefined : this._badgeId)}"
+			tabindex="${ifDefined(this.tabStop || this.hasTooltip ? '0' : undefined)}" 
+			aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this._textId)}">
+				<div class="d2l-count-badge-number">
+						<div aria-hidden="true">${numberString}</div>		
+				</div>
+				${this.icon ? html`<d2l-icon role="presentation" id="${this._badgeId}" icon="${ifDefined(this.icon)}" class="d2l-button-icon" style=${styleMap(iconSizeStyle)}></d2l-icon></div>` : null }
+				${this.hasTooltip ?
+		html`<d2l-tooltip id="${this._textId}" ?force-show="${this._forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}">${this.text}</d2l-tooltip>`
+		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
+			<div>
 			`;
 	}
 
