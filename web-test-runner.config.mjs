@@ -24,13 +24,7 @@ export default {
 	testRunnerHtml: testFramework =>
 		`<html>
 			<body>
-				<script>
-					window.addEventListener('error', (err) => {
-						if (err.message.includes('ResizeObserver')) {
-							err.stopImmediatePropagation();
-						}
-					});
-				</script>
+				<script src="./tools/resize-observer-test-error-handler.js"></script>
 				<script type="module" src="${testFramework}"></script>
 				<script src="./tools/perf-test-helper.js" type="module"></script>
 			</body>
