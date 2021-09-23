@@ -11,7 +11,7 @@ export async function isFramed() {
 	const handleIsFramedResponse = (evt, resolve) => {
 		if (!evt || !evt.data || !evt.data.isFramed) return;
 		window.removeEventListener('message', evt => handleIsFramedResponse(evt, resolve), false);
-		resolve(evt.data.isFramed);		
+		resolve(evt.data.isFramed);
 	};
 
 	framedPromise = Promise.race([
