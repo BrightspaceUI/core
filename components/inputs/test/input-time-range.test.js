@@ -82,7 +82,6 @@ describe('d2l-input-time-range', () => {
 	describe('values', () => {
 		it('should fire "change" event when start value changes', async() => {
 			const elem = await fixture(basicFixture);
-			await elem.updateComplete; // legacy edge
 			const inputElem = getChildElem(elem, 'd2l-input-time.d2l-input-time-range-start');
 			inputElem.value = '01:30:00';
 			setTimeout(() => dispatchEvent(inputElem, 'change'));
@@ -122,8 +121,7 @@ describe('d2l-input-time-range', () => {
 			clock.restore();
 		});
 
-		// timing out in legacy-Edge via GitHub Actions
-		it.skip('should update startValue as expected when set through property', async() => {
+		it('should update startValue as expected when set through property', async() => {
 			const elem = await fixture('<d2l-input-time-range label="label" time-interval="ten" enforce-time-intervals></d2l-input-time-range>');
 			elem.startValue = '12:05:00';
 			await elem.updateComplete;
@@ -150,8 +148,7 @@ describe('d2l-input-time-range', () => {
 			expect(inputElem.value).to.equal('14:00:00');
 		});
 
-		// timing out in legacy-Edge via GitHub Actions
-		describe.skip('initial values are corrected', () => {
+		describe('initial values are corrected', () => {
 			[
 				{ enforceTimeIntervals: true, validStart: true, validEnd: true },
 				{ enforceTimeIntervals: true, validStart: true, validEnd: false },
@@ -189,7 +186,6 @@ describe('d2l-input-time-range', () => {
 						${testCase.enforceTimeIntervals ? 'enforce-time-intervals' : null}
 					></d2l-input-time-range>`;
 					const elem = await fixture(caseFixture);
-					await elem.updateComplete; // legacy edge
 					expect(elem.startValue).to.equal(expectedStartTime);
 					expect(elem.endValue).to.equal(expectedEndTime);
 				});

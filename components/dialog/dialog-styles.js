@@ -55,7 +55,7 @@ export const dialogStyles = css`
 	}
 
 	:host([_state="showing"]) > .d2l-dialog-outer {
-		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Edge/IE11 */
+		/* must target direct child to avoid ancestor from interfering with closing child dialogs in Legacy-Edge */
 		transform: translateY(0);
 	}
 

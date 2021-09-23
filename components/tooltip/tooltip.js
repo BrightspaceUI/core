@@ -214,7 +214,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([_open-dir="bottom"][align="start"]) .d2l-tooltip-pointer,
 			:host([_open-dir="top"][align="end"][dir="rtl"]) .d2l-tooltip-pointer,
 			:host([_open-dir="bottom"][align="end"][dir="rtl"]) .d2l-tooltip-pointer {
-				left: ${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px; /* needed for browsers that don't support min like IE11 and Edge Legacy */
+				left: ${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px; /* needed for browsers that don't support min like Legacy-Edge */
 				left: min(${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px, calc(50% - ${pointerLength / 2}px));
 				right: auto;
 			}
@@ -224,7 +224,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			:host([_open-dir="top"][align="start"][dir="rtl"]) .d2l-tooltip-pointer,
 			:host([_open-dir="bottom"][align="start"][dir="rtl"]) .d2l-tooltip-pointer {
 				left: auto;
-				right: ${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px; /* needed for browsers that don't support min like IE11 and Edge Legacy */
+				right: ${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px; /* needed for browsers that don't support min like Legacy-Edge */
 				right: min(${contentHorizontalPadding + (pointerRotatedLength - pointerLength) / 2}px, calc(50% - ${pointerLength / 2}px));
 			}
 
@@ -294,7 +294,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				position: absolute;
 			}
 
-			/* increase specificty for Edge Legacy so the d2l-body-small color doesn't override it */
+			/* increase specificty for Legacy-Edge so the d2l-body-small color doesn't override it */
 			.d2l-tooltip-content.d2l-tooltip-content {
 				color: inherit;
 			}
