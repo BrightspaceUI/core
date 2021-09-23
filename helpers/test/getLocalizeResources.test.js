@@ -29,6 +29,23 @@ describe('getLocalizeResources', () => {
 		documentLocaleSettings.oslo = Object.assign({}, OsloDisabled);
 	}
 
+	before(() => {
+		// Chrome/Safari only expose over HTTPS,
+		// therefore window.caches and window.CacheStorage may be undefined
+		if (!('caches' in window)) {
+			Object.defineProperty(window, 'caches', {
+				configurable: true,
+				get: function() { return undefined;}
+			});
+		}
+		if (!('CacheStorage' in window)) {
+			Object.defineProperty(window, 'CacheStorage', {
+				configurable: true,
+				get: function() { return undefined;}
+			});
+		}
+	});
+
 	afterEach(() => {
 
 		sinon.restore();

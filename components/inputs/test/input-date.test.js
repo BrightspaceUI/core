@@ -25,7 +25,7 @@ describe('d2l-input-date', () => {
 	describe('accessibility', () => {
 
 		it('should set description when empty-text', async() => {
-			const elem = await fixture('<d2l-input-date empty-text="text description"></d2l-input-date>');
+			const elem = await fixture('<d2l-input-date empty-text="text description" label="label text"></d2l-input-date>');
 			const input = getChildElem(elem, 'd2l-input-text');
 			expect(input.getAttribute('description')).to.equal('text description');
 		});
