@@ -48,9 +48,9 @@ Place the user-authored HTML within a `template` and the `d2l-html-block` will s
 
 To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https://lit-html.polymer-project.org/guide/template-reference#unsafehtml) directive to avoid escaping the HTML.
 
-<!-- docs: demo live -->
+<!-- docs: demo code -->
 ```html
-<script>
+<script type="module">
 	import { html, LitElement } from 'lit-element/lit-element.js';
 	import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 	import '@brightspace-ui/core/components/icons/icon.js';
