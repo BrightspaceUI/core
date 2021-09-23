@@ -114,7 +114,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 
-<d2l-list  style="width: 100%">
+<d2l-list style="width: 100%">
   <d2l-list-item selectable>
     <d2l-list-item-content>
       <div>Regular list item</div>
@@ -410,7 +410,7 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 - content (TemplateResult): Core content of the list item, such as a d2l-list-item-content element.
 - actions (TemplateResult): Secondary actions for the list item.
 
-### Accessibility
+### Accessibility Properties
 
 - `drag-handle-text`: The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
 
