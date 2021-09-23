@@ -473,7 +473,7 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 </d2l-list>
 ```
 
-## Event Details: d2l-list-item-position-change
+## Event Details: @d2l-list-item-position-change
 
 This event includes a detail object with helper methods attached to it.
 
