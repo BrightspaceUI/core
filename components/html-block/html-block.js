@@ -141,7 +141,7 @@ class HtmlBlock extends LitElement {
 
 		if (this._renderContainer) return;
 
-		this.shadowRoot.innerHTML = '<div class="d2l-html-block-rendered"></div><slot></slot>';
+		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered"></div><slot></slot>';
 
 		const stampHTML = async template => {
 			const fragment = template ? document.importNode(template.content, true) : null;
