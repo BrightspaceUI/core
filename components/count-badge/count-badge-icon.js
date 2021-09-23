@@ -4,6 +4,7 @@ import { CountBadgeMixin, countBadgeStyles } from './count-badge-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map';
 
 class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 
@@ -18,8 +19,7 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 				reflect: true
 			},
 			forceTooltipOn: {
-				type: Boolean,
-				reflect: true
+				type: Boolean
 			},
 		};
 	}
@@ -109,23 +109,22 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._getCountBadgeWrapper().removeEventListener('blur', this._onBlur);
-		this._getCountBadgeWrapper().removeEventListener('focus', this._onFocus);
+		this.removeEventListener('blur', this._onBlur);
+		this.removeEventListener('focus', this._onFocus);
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this._getCountBadgeWrapper().addEventListener('blur', this._onBlur, true);
-		this._getCountBadgeWrapper().addEventListener('focus', this._onFocus, true);
+		this.addEventListener('blur', this._onBlur);
+		this.addEventListener('focus', this._onFocus);
 	}
 
 	render() {
-		const icon = html`<d2l-icon id="${this._badgeId}" icon="${this.icon}" class="d2l-button-icon"></d2l-icon>`;
+		const iconStyle = {
+			visibility: 'visible'
+		};
+		const icon = html`<d2l-icon id="${this._badgeId}" icon="${this.icon}" class="d2l-button-icon" style=${styleMap(iconStyle)}></d2l-icon>`;
 		return this.renderCount(icon, this.forceTooltipOn);
-	}
-
-	_getCountBadgeWrapper() {
-		return this.shadowRoot.querySelector('.d2l-count-badge-wrapper');
 	}
 
 	_onBlur() {

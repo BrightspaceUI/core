@@ -5,6 +5,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map';
 
 export const countBadgeStyles = css`
 :host([hidden]) {
@@ -162,28 +163,36 @@ export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) 
 
 	renderCount(tooltipElement, forceTooltipOn) {
 		let numberString = `${this.number}`;
-		if (this.hideZero && this.number === 0) {
+		const hideNumber = this.hideZero && this.number === 0;
+		if (hideNumber) {
 			numberString = '';
 		}
+		const wrapperVisibility = {
+			visibility: hideNumber && !tooltipElement ? 'hidden' : 'visible'
+		};
+		const numberVisibility = {
+			visibility: hideNumber ? 'hidden' : 'visible'
+		};
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
-		const tooltipShowing = this.hasTooltip && this.shadowRoot.querySelector('d2l-tooltip')?.showing;
+		const tooltipShowing = this.hasTooltip && (this.shadowRoot.querySelector('d2l-tooltip')?.showing || forceTooltipOn);
 		return html`
 			<div 
 			class="d2l-count-badge-wrapper"
+			style=${styleMap(wrapperVisibility)}
 			id="${ifDefined(tooltipElement ? undefined : this._badgeId)}"
 			tabindex="${ifDefined(this.tabStop || this.hasTooltip ? '0' : undefined)}" 
 			aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this._textId)}">
-				<div class="d2l-count-badge-number">
+				<div class="d2l-count-badge-number"
+				style=${styleMap(numberVisibility)}>
 						<div aria-hidden="true">${numberString}</div>		
 				</div>
 				${tooltipElement}
-				${this.hasTooltip  ?
+				${ifDefined(this.hasTooltip  ?
 		html`<d2l-tooltip id="${this._textId}" ?force-show="${forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}">${this.text}</d2l-tooltip>`
-		: null } 
-		${ !tooltipShowing ? html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`
-		: null}
+		: undefined) } 
+		${ ifDefined(!tooltipShowing ? html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>` : undefined)}
 			</div>
 			`;
 	}
