@@ -167,9 +167,6 @@ export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) 
 		if (hideNumber) {
 			numberString = '';
 		}
-		const wrapperVisibility = {
-			visibility: hideNumber && !tooltipElement ? 'hidden' : 'visible'
-		};
 		const numberVisibility = {
 			visibility: hideNumber ? 'hidden' : 'visible'
 		};
@@ -179,9 +176,8 @@ export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) 
 		return html`
 			<div 
 			class="d2l-count-badge-wrapper"
-			style=${styleMap(wrapperVisibility)}
 			id="${ifDefined(tooltipElement ? undefined : this._badgeId)}"
-			tabindex="${ifDefined(this.tabStop || this.hasTooltip ? '0' : undefined)}" 
+			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && (!hideNumber || tooltipElement) ? '0' : undefined)}" 
 			aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this._textId)}">
 				<div class="d2l-count-badge-number"
 				style=${styleMap(numberVisibility)}>
