@@ -385,7 +385,7 @@ To make your usage of `d2l-input-date-time` accessible, use the following proper
 
 ## Date-Time Range Input [d2l-input-date-time-range]
 
-Use the `<d2l-input-date-time-range>` component when users need to enter a single date and time, like a due date. The component consists of two input-date-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
+Use the `<d2l-input-date-time-range>` component when users need to enter two dates and times in a range, like an assignment start and end date/time. The component consists of two input-date-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
 Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
 
