@@ -23,8 +23,6 @@ const extraOptions = {
 	idleTimeout: 500 // default 90
 };
 
-config.concurrentBrowsers = 4; // concurrent browsers
-config.concurrency = 1; // concurrent tests in a single browser
 config.browsers = [
 	sauceLabsLauncher({
 		browserName: 'chrome',
@@ -51,5 +49,17 @@ config.browsers = [
 		'sauce:options': extraOptions
 	}),
 ];
+// how long a browser can take to start up before failing
+// defaults to 30000 (30 sec)
+config.browserStartTimeout = 60000;
+// Concurrent browsers
+// Our SauceLabs account has a max of 4
+config.concurrentBrowsers = 4;
+// Concurrent tests in a single browser
+// Many of our tests don't like being run in parallel so for now this must be 1
+config.concurrency = 1;
+// how long a test file can take to load
+// defaults to 20000 (20 sec)
+config.testsStartTimeout = 60000;
 
 export default config;
