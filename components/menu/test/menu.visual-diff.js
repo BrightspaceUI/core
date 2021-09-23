@@ -110,7 +110,7 @@ describe('d2l-menu', () => {
 			// this scenario also tests height change when going from 1 menu item to 2 within nested menu
 			await page.$eval('#nested-item', item => {
 				return new Promise((resolve) => {
-					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					item.addEventListener('d2l-hierarchical-view-show-complete', () => requestAnimationFrame(resolve), { once: true });
 					item.click();
 				});
 			});
@@ -132,7 +132,7 @@ describe('d2l-menu', () => {
 		it('opens submenu on enter', async function() {
 			await page.$eval('#nested-item', item => {
 				return new Promise((resolve) => {
-					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					item.addEventListener('d2l-hierarchical-view-show-complete', () => requestAnimationFrame(resolve), { once: true });
 					const eventObj = document.createEvent('Events');
 					eventObj.initEvent('keydown', true, true);
 					eventObj.keyCode = 13;
@@ -166,7 +166,7 @@ describe('d2l-menu', () => {
 			// this scenario also tests height change going from 3 menu items to 2 within nested menu
 			await page.$eval('#nested-item-long', item => {
 				return new Promise((resolve) => {
-					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					item.addEventListener('d2l-hierarchical-view-show-complete', () => requestAnimationFrame(resolve), { once: true });
 					item.click();
 				});
 			});
@@ -182,7 +182,7 @@ describe('d2l-menu', () => {
 		it('opens custom submenu on click', async function() {
 			await page.$eval('#custom-view-item', item => {
 				return new Promise((resolve) => {
-					item.addEventListener('d2l-hierarchical-view-show-complete', resolve, { once: true });
+					item.addEventListener('d2l-hierarchical-view-show-complete', () => requestAnimationFrame(resolve), { once: true });
 					item.click();
 				});
 			});
