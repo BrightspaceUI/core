@@ -23,7 +23,8 @@ describe('d2l-form-error-summary', () => {
 
 	describe('focus', () => {
 
-		it('should focus first error', async() => {
+		// flaky on Firefox
+		it.skip('should focus first error', async() => {
 			errorSummary.errors = [
 				{ href: '#first-error', message: 'An error occured' },
 				{ href: '#second-error', message: 'A different error occured' }
