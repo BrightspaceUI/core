@@ -176,7 +176,6 @@ export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) 
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
-		const tooltipShowing = this.hasTooltip && (this.shadowRoot.querySelector('d2l-tooltip')?.showing || forceTooltipOn);
 		return html`
 			<div 
 			class="d2l-count-badge-wrapper"
@@ -189,10 +188,9 @@ export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) 
 						<div aria-hidden="true">${numberString}</div>		
 				</div>
 				${tooltipElement}
-				${ifDefined(this.hasTooltip  ?
+				${this.hasTooltip  ?
 		html`<d2l-tooltip id="${this._textId}" ?force-show="${forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}">${this.text}</d2l-tooltip>`
-		: undefined) } 
-		${ ifDefined(!tooltipShowing ? html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>` : undefined)}
+		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
 			</div>
 			`;
 	}
