@@ -229,7 +229,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_buildHeader(singleDimension) {
 		if (!this._activeDimensionKey && !singleDimension) return null;
 
-		const dimension = singleDimension ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+		const dimension = this._getActiveDimension();
 
 		const clear = html`
 			<d2l-button-subtle
@@ -383,6 +383,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		else return `${count}`;
 	}
 
+	_getActiveDimension() {
+		return !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+	}
+
 	_getSlottedNodes(slot) {
 		const dimensionTypes = ['d2l-filter-dimension-set'];
 		const nodes = slot.assignedNodes({ flatten: true });
@@ -410,7 +414,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleClear() {
-		const dimension = !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+		const dimension = this._getActiveDimension();
 
 		this._performDimensionClear(dimension);
 		this._dispatchChangeEventNow();
@@ -487,7 +491,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleSearch(e) {
-		const dimension = !this._activeDimensionKey ? this._dimensions[0] : this._dimensions.find(dimension => dimension.key === this._activeDimensionKey);
+		const dimension = this._getActiveDimension();
 		const searchValue = e.detail.value.trim();
 		dimension.searchValue = searchValue;
 
