@@ -124,15 +124,17 @@
 			console.log(`Filter dimension opened for the first time: ${e.detail.key}`);
 		});
 
-		document.getElementById('finish-loading').addEventListener('click', e => {
-			e.target.disabled = true;
-			setTimeout(() => {
-				const loadingFilters = document.querySelectorAll('d2l-filter-dimension-set[loading]');
-				loadingFilters.forEach(filter => {
-					filter.loading = false;
-				});
-				e.target.textContent = 'Done Loading';
-			}, 5000);
+		requestAnimationFrame(() => {
+			document.getElementById('finish-loading').addEventListener('click', e => {
+				e.target.disabled = true;
+				setTimeout(() => {
+					const loadingFilters = document.querySelectorAll('d2l-filter-dimension-set[loading]');
+					loadingFilters.forEach(filter => {
+						filter.loading = false;
+					});
+					e.target.textContent = 'Done Loading';
+				}, 5000);
+			});
 		});
 	</script>
 
