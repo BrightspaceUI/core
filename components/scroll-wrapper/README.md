@@ -1,4 +1,4 @@
-# Scroll containers
+# Scroll Containers
 Scroll containers can be used to control how content acts when overflowing its container.
 
 ## Horizontal Scroll Wrapper [d2l-scroll-wrapper]
