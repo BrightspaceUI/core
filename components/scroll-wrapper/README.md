@@ -1,4 +1,7 @@
-# Scroll Wrapper [d2l-scroll-wrapper]
+# Scroll containers
+Scroll containers can be used to control how content acts when overflowing its container.
+
+## Horizontal Scroll Wrapper [d2l-scroll-wrapper]
 
 The `d2l-scroll-wrapper` element can be used to wrap content which may overflow its horizontal boundaries, providing left/right scroll buttons.
 
