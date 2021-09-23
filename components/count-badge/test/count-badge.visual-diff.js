@@ -33,7 +33,6 @@ describe('d2l-count-badge', () => {
 		'small-notification',
 		'small-notification-truncated',
 		'large-count',
-		'large-count-icon',
 		'large-count-large-number',
 		'hide-zero-nonzero-shown',
 		'hide-zero-hidden'
@@ -66,19 +65,6 @@ describe('d2l-count-badge', () => {
 			await page.$eval('#tooltip', (elem) => forceFocusVisible(elem));
 			await page.waitForTimeout(50);
 			const rect = await getRect(page, '#tooltip');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-	});
-
-	describe('icon and tooltip', () => {
-		it('tooltip does not appear by default', async function() {
-			const rect = await visualDiff.getRect(page, '#tooltip-icon');
-			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-		});
-		it('tooltip appears on focus-visible', async function() {
-			await page.$eval('#tooltip-icon', (elem) => forceFocusVisible(elem));
-			await page.waitForTimeout(50);
-			const rect = await getRect(page, '#tooltip-icon');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
