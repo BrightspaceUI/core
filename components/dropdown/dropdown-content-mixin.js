@@ -509,7 +509,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
-					focusable.focus();
+					// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+					requestAnimationFrame(() => focusable.focus());
 				} else {
 					content.setAttribute('tabindex', '-1');
 					content.focus();

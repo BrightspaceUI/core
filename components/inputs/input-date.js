@@ -373,18 +373,14 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 
 	async _handleClear() {
 		await this._updateValueDispatchEvent('');
-		if (this._dropdown) {
-			this._dropdown.close();
-		}
+		this._dropdown.close();
 		this.focus();
 	}
 
 	async _handleDateSelected(e) {
 		const value = e.target.selectedValue;
 		await this._updateValueDispatchEvent(value);
-		if (this._dropdown) {
-			this._dropdown.close();
-		}
+		this._dropdown.close();
 	}
 
 	_handleDropdownClose() {
@@ -461,9 +457,7 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	async _handleSetToToday() {
 		const date = getToday();
 		await this._updateValueDispatchEvent(formatDateInISO(date));
-		if (this._dropdown) {
-			this._dropdown.close();
-		}
+		this._dropdown.close();
 		this.focus();
 	}
 
