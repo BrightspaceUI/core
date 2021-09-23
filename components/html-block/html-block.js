@@ -14,6 +14,7 @@ const getRenderers = () => {
 
 /**
  * A component for displaying user-authored HTML.
+ * @slot - Provide an html template that contains your user-authored HTML
  */
 class HtmlBlock extends LitElement {
 
