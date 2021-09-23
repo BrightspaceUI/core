@@ -21,7 +21,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Whether to hide left/right scroll buttons
-			 * @type {Boolean}
+			 * @type {boolean}
 			 */
 			hideActions: {
 				attribute: 'hide-actions',
