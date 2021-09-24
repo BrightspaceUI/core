@@ -65,7 +65,7 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 
 	customElements.define('d2l-some-component', SomeComponent);
 </script>
-<d2l-html-component></d2l-html-component>
+<d2l-html-component></d2l-some-component>
 ```
 
 ### Rendering MathML and LaTeX
@@ -132,8 +132,8 @@ Examples are provided to display how user-authored math can be embedded within y
 	</template>
 </d2l-html-block>
 ```
-<!-- docs: start content hidden -->
+<!-- docs: start hidden content -->
 ## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!
-<!-- docs: end content hidden -->
+<!-- docs: end hidden content -->
