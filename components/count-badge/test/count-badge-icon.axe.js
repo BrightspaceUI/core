@@ -2,10 +2,10 @@ import '../count-badge-icon.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
 const countBadgeWithAccessibilityProperties = html`
-<d2l-count-badge-icon size="small" icon="tier1:gear" announce-changes has-tooltip tab-stop text="1 new notification." type="notification" number="1"></d2l-count-badge>`;
+<d2l-count-badge-icon size="small" icon="tier1:gear" announce-changes has-tooltip tab-stop text="1 new notification." type="notification" number="1"></d2l-count-badge-icon>`;
 
 const countBadgeWithNoAccessibilityProperties = html`
-<d2l-count-badge-icon size="small" icon="tier1:gear" text="1 new notification." type="notification" number="1"></d2l-count-badge>`;
+<d2l-count-badge-icon size="small" icon="tier1:gear" text="1 new notification." type="notification" number="1"></d2l-count-badge-icon>`;
 
 describe('d2l-count-badge-icon', () => {
 	[
