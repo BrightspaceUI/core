@@ -42,6 +42,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			role: { type: String, reflect: true },
 			/**
 			 * Specifies whether the grid is active or not
+			 * @type {boolean}
 			 */
 			gridActive: { type: Boolean, attribute: 'grid-active' }
 		};
