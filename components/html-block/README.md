@@ -65,7 +65,7 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 
 	customElements.define('d2l-some-component', SomeComponent);
 </script>
-<d2l-html-component></d2l-some-component>
+<d2l-some-component></d2l-some-component>
 ```
 
 ### Rendering MathML and LaTeX
