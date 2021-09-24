@@ -70,7 +70,7 @@ describe('d2l-input-time-range', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
-	describe('opened behavior', () => {
+	describe.skip('opened behavior', () => {
 
 		before(async() => {
 			await page.reload();
