@@ -27,6 +27,6 @@ export async function isFramed() {
 			}, 75);
 		})
 	]);
-	
+
 	return framed;
 }
