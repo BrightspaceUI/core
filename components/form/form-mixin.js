@@ -11,6 +11,10 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 
 	static get properties() {
 		return {
+			/**
+			 * Indicates that the form should interrupt and warn on navigation if the user has unsaved changes on native elements.
+			 * @type {boolean}
+			 */
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
 			_errors: { type: Object }
 		};
