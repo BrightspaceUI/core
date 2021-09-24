@@ -12,18 +12,17 @@ export async function isFramed() {
 		if (!evt || !evt.data || !evt.data.isFramed) return;
 		window.removeEventListener('message', evt => handleIsFramedResponse(evt, resolve), false);
 		framed = evt.data.isFramed;
-		resolve();
+		resolve(framed);
 	};
 
-	await Promise.race([
+	framed = Promise.race([
 		new Promise(resolve => {
 			window.addEventListener('message', evt => handleIsFramedResponse(evt, resolve), false);
 			window.parent.postMessage('isFramedRequest', '*');
 		}),
 		new Promise(resolve => {
 			setTimeout(() => {
-				framed = false;
-				resolve();
+				resolve(false);
 			}, 75);
 		})
 	]);
