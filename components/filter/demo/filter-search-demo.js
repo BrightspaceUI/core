@@ -50,16 +50,19 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleFilterChange(e) {
-		(e.detail.changes.length === 1) ?
-			console.log(`Filter selection changed for dimension "${e.detail.changes[0].dimension}":`, e.detail.changes[0].value) : // eslint-disable-line no-console
-			console.log('Batch filter selection changed:', e.detail.changes); // eslint-disable-line no-console
+		(e.detail.dimensions.length === 1) ?
+			console.log(`Filter selection changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes) : // eslint-disable-line no-console
+			console.log('Batch filter selection changed:', e.detail.dimensions); // eslint-disable-line no-console
 
-		e.detail.changes.forEach(change => {
-			if (change.dimension === 'event') {
-				this._fullData.find(value => value.key === change.value.key).selected = change.value.selected;
-			} else if (change.dimension === 'event-single') {
-				this._fullDataSingle.find(value => value.key === change.value.key).selected = change.value.selected;
-			}
+		e.detail.dimensions.forEach(dimension => {
+			if (!dimension.dimensionKey.includes('event')) return;
+			dimension.changes.forEach(change => {
+				if (dimension.dimensionKey === 'event') {
+					this._fullData.find(value => value.key === change.valueKey).selected = change.selected;
+				} else if (change.dimension === 'event-single') {
+					this._fullDataSingle.find(value => value.key === change.valueKey).selected = change.selected;
+				}
+			});
 		});
 	}
 

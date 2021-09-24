@@ -13,7 +13,7 @@ const SCROLL_AMOUNT = 0.8;
  *
  * Wraps content which may overflow its horizontal boundaries, providing left/right scroll buttons.
  *
- * @slot - Content to wrap
+ * @slot - User provided content to wrap
  */
 class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 
@@ -21,6 +21,7 @@ class ScrollWrapper extends FocusVisiblePolyfillMixin(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Whether to hide left/right scroll buttons
+			 * @type {boolean}
 			 */
 			hideActions: {
 				attribute: 'hide-actions',

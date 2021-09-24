@@ -5,7 +5,7 @@ export const listSelectionStates = SelectionInfo.states;
 
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
- * @slot - List content (e.g., "listitem"s)
+ * @slot - List content (e.g., `listitem`s)
  * @fires d2l-list-selection-change - Dispatched when the selection state changes
  */
 class List extends SelectionMixin(LitElement) {
@@ -17,7 +17,7 @@ class List extends SelectionMixin(LitElement) {
 			 */
 			extendSeparators: { type: Boolean, reflect: true, attribute: 'extend-separators' },
 			/**
-			 * Use grid to manage focus with arrow keys
+			 * Use grid to manage focus with arrow keys. See [Accessibility](#accessibility).
 			 */
 			grid: { type: Boolean },
 			/**

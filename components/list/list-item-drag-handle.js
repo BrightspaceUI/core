@@ -32,12 +32,27 @@ export const dragActions = Object.freeze({
 	up: 'up'
 });
 
+/**
+ * @fires d2l-list-item-drag-handle-action - Dispatched when an action performed on the drag handle
+ */
 class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
+			/**
+			 * Disables the handle
+			 * @type {boolean}
+			 */
 			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Additional context information for accessibility
+			 * @type {object}
+			 */
 			keyboardTextInfo: { type: Object, attribute: 'keyboard-text-info' },
+			/**
+			 * The drag-handle label for assistive technology
+			 * @type {string}
+			 */
 			text: { type: String },
 			_keyboardActive: { type: Boolean }
 		};
@@ -95,8 +110,10 @@ class ListItemDragHandle extends LocalizeCoreElement(LitElement) {
 
 	constructor() {
 		super();
-		this._keyboardActive = false;
+
 		this.disabled = false;
+
+		this._keyboardActive = false;
 		this._movingElement = false;
 	}
 
