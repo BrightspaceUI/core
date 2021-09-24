@@ -42,9 +42,11 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 		}
 
 		:host([size="small"]) .d2l-count-badge-number {
+			left: calc(var(--d2l-count-badge-icon-height) - 0.55rem);
 			top: 0.55rem;
 		}
 		:host([size="large"]) .d2l-count-badge-number {
+			left: calc(var(--d2l-count-badge-icon-height) - 0.7rem);
 			top: 0.7rem;
 		}
 		:host([icon^="tier1:"]) {
@@ -55,12 +57,6 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 		}
 		:host([icon^="tier3:"]) {
 			--d2l-count-badge-icon-height: 30px;
-		}
-		:host([size="small"]) .d2l-count-badge-number {
-			left: calc(var(--d2l-count-badge-icon-height) - 0.55rem);
-		}
-		:host([size="large"]) .d2l-count-badge-number {
-			left: calc(var(--d2l-count-badge-icon-height) - 0.7rem);
 		}
 		`];
 	}
@@ -101,7 +97,7 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 		this.forceTooltipOn = false;
 	}
 
-	async _onFocus() {
+	_onFocus() {
 		this.forceTooltipOn = true;
 	}
 }
