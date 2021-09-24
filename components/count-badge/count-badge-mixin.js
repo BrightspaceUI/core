@@ -185,7 +185,7 @@ export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) 
 				</div>
 				${tooltipElement}
 				${this.hasTooltip  ?
-		html`<d2l-tooltip id="${this._textId}" ?force-show="${forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}">${this.text}</d2l-tooltip>`
+		html`<d2l-tooltip id="${this._textId}" ?force-show="${forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}" for-type="label">${this.text}</d2l-tooltip>`
 		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
 			</div>
 			`;
