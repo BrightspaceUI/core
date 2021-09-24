@@ -4,7 +4,6 @@ import '../filter-dimension-set-value.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { spy, stub } from 'sinon';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
-import { countBadgeStyles } from '../../count-badge/count-badge-mixin.js';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>
