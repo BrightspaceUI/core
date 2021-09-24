@@ -57,6 +57,9 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 		:host([icon^="tier3:"]) {
 			--d2l-count-badge-icon-height: 30px;
 		}
+		:host([icon]) d2l-tooltip[_open-dir="top"] {
+			margin-top: -0.6rem;
+		}
 		`];
 	}
 

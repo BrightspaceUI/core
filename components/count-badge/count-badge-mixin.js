@@ -4,6 +4,7 @@ import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map';
 
@@ -59,7 +60,7 @@ export const countBadgeStyles = css`
 }
 `;
 
-export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) {
+export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -171,7 +172,8 @@ export const CountBadgeMixin = superclass => class extends RtlMixin(superclass) 
 			visibility: hideNumber ? 'hidden' : 'visible'
 		};
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
-			numberString = `${'9'.repeat(this.maxDigits)}+`;
+			numberString = `${'9'.repeat(this.maxDigits)}`;
+			numberString = this.localize('components.count-badge.plus', { number: numberString });
 		}
 		return html`
 			<div 
