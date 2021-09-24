@@ -19,7 +19,7 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 </d2l-filter>
 ```
 
-**Properties:**
+**Properties**
 
 | Property | Type | Description |
 |--|--|--|
@@ -29,6 +29,9 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 * `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple dimensions and multiple changes in each)
 * `d2l-filter-dimension-first-open`: dispatched when a dimension is opened for the first time (if there is only one dimension, this will be dispatched when the dropdown is first opened)
 * `d2l-filter-dimension-search`: dispatched when a dimension that supports searching and has the "manual" search-type is searched
+
+**Accessibility**
+The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propogated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
 
 ## Filter Dimension Types
 
@@ -56,7 +59,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 #### d2l-filter-dimension-set
 
-**Properties:**
+**Properties**
 
 | Property | Type | Description |
 |--|--|--|
@@ -69,7 +72,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 #### d2l-filter-dimension-set-value
 
-**Properties:**
+**Properties**
 
 | Property | Type | Description |
 |--|--|--|
