@@ -60,7 +60,15 @@ export const LabelledMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
+			/**
+			 * The id of element that provides the label for this element
+			 * @type {string}
+			 */
 			labelledBy: { type: String, reflect: true, attribute: 'labelled-by' },
+			/**
+			 * Explicitly defined label used to provide context for accessibility
+			 * @type {string}
+			 */
 			label: { type: String }
 		};
 	}

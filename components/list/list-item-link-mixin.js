@@ -8,6 +8,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		return {
 			/**
 			 * Address of item link if navigable
+			 * @type {string}
 			 */
 			actionHref: { type: String, attribute: 'action-href', reflect: true }
 		};
