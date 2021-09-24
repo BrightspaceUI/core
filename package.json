@@ -46,7 +46,6 @@
     "@open-wc/testing": "^2",
     "@web/dev-server": "^0.1",
     "@web/test-runner": "^0.13",
-    "@webcomponents/webcomponentsjs": "^2",
     "axe-core": "^4",
     "chalk": "^4",
     "eslint": "^7",
