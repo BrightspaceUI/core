@@ -15,7 +15,7 @@ export async function isFramed() {
 		resolve(framed);
 	};
 
-	framed = Promise.race([
+	framed = await Promise.race([
 		new Promise(resolve => {
 			window.addEventListener('message', evt => handleIsFramedResponse(evt, resolve), false);
 			window.parent.postMessage('isFramedRequest', '*');
