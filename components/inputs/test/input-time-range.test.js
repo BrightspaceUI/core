@@ -1,4 +1,6 @@
-import { aTimeout, expect, fixture, oneEvent } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { formatDateInISOTime, getDateFromISOTime } from '../../../helpers/dateTime.js';
+import { getDefaultTime } from '../input-time.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getShiftedEndTime } from '../input-time-range.js';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
@@ -160,31 +162,37 @@ describe('d2l-input-time-range', () => {
 				{ enforceTimeIntervals: false, validStart: false, validEnd: false }
 			].forEach((testCase) => {
 				it(`when enforceTimeIntervals = ${testCase.enforceTimeIntervals}, valid start = ${testCase.validStart} and valid end = ${testCase.validEnd}`, async() => {
+
+					const defaultStartValue = formatDateInISOTime(getDefaultTime(undefined, testCase.enforceTimeIntervals, 'ten'));
+					const defaultEndTime = getDateFromISOTime(defaultStartValue);
+					defaultEndTime.setMinutes(defaultEndTime.getMinutes() + 10);
+					const defaultEndValue = formatDateInISOTime(defaultEndTime);
+
 					const startDate = testCase.validStart ? '12:15:00' : 'invalidStart';
 					const endDate = testCase.validEnd ? '18:42:00' : 'invalidEnd';
 					let expectedStartTime = '',
 						expectedEndTime = '';
 					if (testCase.validStart && testCase.enforceTimeIntervals) expectedStartTime = '12:20:00';
 					else if (testCase.validStart) expectedStartTime = '12:15:00';
-					else if (!testCase.enforceTimeIntervals) expectedStartTime = '00:01:00';
-					else expectedStartTime = '00:10:00';
+					else expectedStartTime = defaultStartValue;
 
 					if (testCase.validEnd && testCase.enforceTimeIntervals) expectedEndTime = '18:50:00';
 					else if (testCase.validEnd) expectedEndTime = '18:42:00';
 					else if (!testCase.validEnd) {
 						if (testCase.validStart && !testCase.enforceTimeIntervals) expectedEndTime = '12:25:00';
 						else if (testCase.validStart && testCase.enforceTimeIntervals) expectedEndTime = '12:30:00';
-						else if (!testCase.enforceTimeIntervals) expectedEndTime = '00:11:00';
-						else expectedEndTime = '00:20:00';
+						else expectedEndTime = defaultEndValue;
 					}
 
-					const caseFixture = `<d2l-input-time-range
+					// Issue #1751: the order of enforce-time-intervals and time-interval matters.
+					// If they're specified after start-value or end-value, their default values will be used
+					// for the calculation
+					const caseFixture = html`<d2l-input-time-range
+						?enforce-time-intervals="${testCase.enforceTimeIntervals}"
 						label="label text"
-						start-value="${startDate}"
-						end-value="${endDate}"
 						time-interval="ten"
-						${testCase.enforceTimeIntervals ? 'enforce-time-intervals' : null}
-					></d2l-input-time-range>`;
+						start-value="${startDate}"
+						end-value="${endDate}"></d2l-input-time-range>`;
 					const elem = await fixture(caseFixture);
 					expect(elem.startValue).to.equal(expectedStartTime);
 					expect(elem.endValue).to.equal(expectedEndTime);
