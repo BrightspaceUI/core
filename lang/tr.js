@@ -6,6 +6,7 @@ export default {
 	"components.calendar.notSelected": "Seçili Değil.",
 	"components.calendar.selected": "Seçili.",
 	"components.calendar.show": "{month} Göster",
+	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Bu iletişim kutusunu kapat",
 	"components.dropdown.close": "Kapat",
 	"components.filter.loading": "Filtreler yükleniyor",

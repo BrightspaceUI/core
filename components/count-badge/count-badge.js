@@ -3,10 +3,11 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
-class CountBadge extends RtlMixin(LitElement) {
+class CountBadge extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -170,7 +171,8 @@ class CountBadge extends RtlMixin(LitElement) {
 			numberString = '';
 		}
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
-			numberString = `${'9'.repeat(this.maxDigits)}+`;
+			numberString = `${'9'.repeat(this.maxDigits)}`;
+			numberString = this.localize('components.count-badge.plus', { number: numberString });
 		}
 		return html`
         	<div
