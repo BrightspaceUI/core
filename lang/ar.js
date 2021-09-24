@@ -6,6 +6,7 @@ export default {
 	"components.calendar.notSelected": "لم يتم التحديد.",
 	"components.calendar.selected": "تم التحديد.",
 	"components.calendar.show": "إظهار {month}",
+	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "إغلاق مربع الحوار هذا",
 	"components.dropdown.close": "إغلاق",
 	"components.filter.clear": "مسح",

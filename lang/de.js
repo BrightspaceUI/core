@@ -6,6 +6,7 @@ export default {
 	"components.calendar.notSelected": "Nicht ausgewählt.",
 	"components.calendar.selected": "Ausgewählt.",
 	"components.calendar.show": "{month} anzeigen",
+	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Dieses Dialogfeld schließen",
 	"components.dropdown.close": "Schließen",
 	"components.filter.clear": "Löschen",

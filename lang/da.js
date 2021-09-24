@@ -6,6 +6,7 @@ export default {
 	"components.calendar.notSelected": "Ikke valgt.",
 	"components.calendar.selected": "Valgt.",
 	"components.calendar.show": "Vis {month}",
+	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Luk denne dialogboks",
 	"components.dropdown.close": "Luk",
 	"components.filter.clear": "Ryd",

@@ -570,6 +570,7 @@ describe('d2l-filter', () => {
 					await elem.updateComplete;
 
 					const countBadge = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"] d2l-count-badge');
+					await countBadge.updateComplete;
 					const menuItemCount = countBadge.shadowRoot.querySelector('.d2l-count-badge-number div');
 					const offscreen = elem.shadowRoot.querySelector('d2l-menu-item[text="Role"]');
 

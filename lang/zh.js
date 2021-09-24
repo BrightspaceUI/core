@@ -6,6 +6,7 @@ export default {
 	"components.calendar.notSelected": "未选择。",
 	"components.calendar.selected": "已选择。",
 	"components.calendar.show": "显示 {month}",
+	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "关闭此对话框",
 	"components.dropdown.close": "关闭",
 	"components.filter.clear": "清除",

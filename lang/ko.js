@@ -6,6 +6,7 @@ export default {
 	"components.calendar.notSelected": "선택되지 않음.",
 	"components.calendar.selected": "선택됨.",
 	"components.calendar.show": "{month} 표시",
+	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "이 대화 상자 닫기",
 	"components.dropdown.close": "닫기",
 	"components.filter.clear": "지우기",

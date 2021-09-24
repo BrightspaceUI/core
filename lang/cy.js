@@ -6,6 +6,7 @@ export default {
 	"components.calendar.notSelected": "Heb ei Ddewis.",
 	"components.calendar.selected": "Wedi'i Ddewis.",
 	"components.calendar.show": "Dangos {month}",
+	"components.count-badge.plus" : "{number}+",
 	"components.dialog.close": "Cau'r dialog hwn",
 	"components.dropdown.close": "Cau",
 	"components.filter.clear": "Clirio",
