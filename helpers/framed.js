@@ -1,26 +1,32 @@
-let framedPromise;
+let framed;
 
 export async function isFramed() {
-	if (framedPromise !== undefined) return framedPromise;
+	if (framed !== undefined) return framed;
 
 	if ((window.D2L && window.D2L.IsNotAnIframedApp) || window === window.parent) {
-		framedPromise = Promise.resolve(false);
-		return framedPromise;
+		framed = false;
+		return framed;
 	}
 
 	const handleIsFramedResponse = (evt, resolve) => {
 		if (!evt || !evt.data || !evt.data.isFramed) return;
 		window.removeEventListener('message', evt => handleIsFramedResponse(evt, resolve), false);
-		resolve(evt.data.isFramed);
+		framed = evt.data.isFramed;
+		resolve();
 	};
 
-	framedPromise = Promise.race([
+	await Promise.race([
 		new Promise(resolve => {
 			window.addEventListener('message', evt => handleIsFramedResponse(evt, resolve), false);
 			window.parent.postMessage('isFramedRequest', '*');
 		}),
-		new Promise(resolve => setTimeout(() => resolve(false), 100))
+		new Promise(resolve => {
+			setTimeout(() => {
+				framed = false;
+				resolve();
+			}, 75);
+		})
 	]);
-
-	return framedPromise;
+	
+	return framed;
 }
