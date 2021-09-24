@@ -1,6 +1,44 @@
-# Forms
+# Form Components
 
-## Form Component [d2l-form]
+<!-- docs: demo -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
+  import '@brightspace-ui/core/components/form/form.js';
+  import '@brightspace-ui/core/components/inputs/input-text.js';
+  import '@brightspace-ui/core/components/inputs/input-textarea.js';
+
+  const button = document.querySelector('d2l-button');
+  const form = document.querySelector('d2l-form#root');
+  button.addEventListener('click', () => {
+    form.submit();
+  });
+</script>
+<style>
+  .d2l-form-demo-container {
+    margin-bottom: 10px;
+  }
+</style>
+<d2l-form id="root" @d2l-form-submit=${this._onRootSubmit} style="width: 100%;">
+  <div class="d2l-form-demo-split-container">
+    <d2l-form class="d2l-form-demo-main" @d2l-form-submit=${this._onMainSubmit}>
+      <div class="d2l-form-demo-container">
+        <d2l-input-text label="Email" name="email" type="email"></d2l-input-text>
+      </div>
+      <div class="d2l-form-demo-container">
+        <d2l-input-textarea label="Description" name="description" rows="2" max-rows="2" required></d2l-input-textarea>
+      </div>
+    </d2l-form>
+  </div>
+	<d2l-button primary>Save</d2l-button>
+</d2l-form>
+```
+
+There are two form components that can be used with Daylight's custom elements - `d2l-form` and `d2l-form-native`.
+- `d2l-form`: useful for submit form data via your own API calls or nest multiple forms within each other
+- `d2l-form-native`: emulates native form element submission
+
+## Form [d2l-form]
 
 The `d2l-form` component can be used to build sections containing interactive controls that are validated and submitted as a group.
 
@@ -10,7 +48,7 @@ It differs from the native HTML `form` element in 4 ways:
 1. `d2l-form` elements can be nested. If a parent form is validated or submitted it will also trigger the corresponding action for descendent `d2l-form`s unless they explicitly opt-out using `no-nesting`. This means that a `d2l-form` will only pass validation if it and all of its nested descendants pass validation.
 1. Submission is not handled directly by `d2l-form`. Instead, all form data will be aggregated and passed back to the caller via an event. The caller is then responsible for submitting the data.
 
-If you're looking to emulate native form element submission, [`d2l-form-native`](./form-native.md) may be more appropriate.
+If you're looking to emulate native form element submission, `d2l-form-native` may be more appropriate.
 
 <!-- docs: demo live name:d2l-form autoSize:false display:block size:large -->
 ```html
@@ -41,21 +79,20 @@ If you're looking to emulate native form element submission, [`d2l-form-native`]
   }
 </style>
 <d2l-form id="root">
-  <d2l-input-text label="Name" type="text" name="name" required minlength="4"></d2l-input-text>
+  <select class="d2l-input-select" name="pets" required>
+    <option value="">--Please choose an option--</option>
+    <option value="porpoise">Porpoise</option>
+    <option value="house hippo">House Hippo</option>
+    <option value="spiker monkey">Spider Monkey</option>
+    <option value="capybara">Capybara</option>
+  </select>
   <d2l-form id="a">
-    <select class="d2l-input-select" name="pets" required>
-      <option value="">--Please choose an option--</option>
-      <option value="porpoise">Porpoise</option>
-      <option value="house hippo">House Hippo</option>
-      <option value="spiker monkey">Spider Monkey</option>
-      <option value="capybara">Capybara</option>
-    </select>
+    <d2l-input-text label="Name" type="text" name="name" required minlength="4"></d2l-input-text>
   </d2l-form>
   <d2l-form id="b" no-nesting>
     <d2l-input-text required label="Email" name="email" type="email"></d2l-input-text>
   </d2l-form>
   <button name="action" value="save" type="submit">Save</button>
-  <a href="https://www.d2l.com">Link</a>
 </d2l-form>
 ```
 
@@ -69,7 +106,7 @@ If you're looking to emulate native form element submission, [`d2l-form-native`]
 ### Events
 - `d2l-form-submit`: Dispatched when the form is submitted. The form data can be obtained from the `detail`'s `formData` property.
 - `d2l-form-invalid`: Dispatched when the form fails validation. The error map can be obtained from the `detail`'s `errors` property.
-<!-- docs: start hidden content -->
+<!-- docs: end hidden content -->
 
 ### Methods
 - `submit()`: Submits the form. This will first perform validation on all elements within the form including nested `d2l-form` elements.
@@ -77,9 +114,7 @@ If you're looking to emulate native form element submission, [`d2l-form-native`]
 - `async validate()`: Validates the form and any nested `d2l-form` elements without submitting even if validation succeeds for all elements. Returns a `Map` mapping from an element to the list of error messages associated with it.
   - **Note:** The return value will include elements and errors from both the root form and any nested descendant forms.
 
-### Advanced Usages
-
-**Nesting:**
+### Advanced Usages: Nesting
 
 `d2l-form` supports nesting by default meaning a `d2l-form` will discover descendant `d2l-form` elements. This includes *both*:
 1. `d2l-form` elements nested directly within the ancestor form's slot
@@ -135,3 +170,71 @@ In the above example, calling `submit` on form `#a` will cause forms `#a` and `#
 - `d2l-form#a` will be submitted because submit was called on it directly.
 - `d2l-form#b` will be submitted because it is nested directly within `#a`'s slot.
 - `d2l-form#root`, `d2l-form#c` and the `d2l-form` within the shadow root of `#d` will _**not**_ be submitted because they are ancestors of `#a` rather than descendants.
+
+## Native Form [d2l-form-native]
+
+The `d2l-form-native` component can be used to build sections containing interactive controls that are validated and submitted as a group.
+
+It differs from the native HTML `form` element in 2 ways:
+1. It supports custom form elements made using the [`FormElementMixin`](./form-element-mixin.md) in addition to native form elements like `input`, `select` and `textarea`.
+1. Upon validation, it will display an error summary that contains error messages for any elements that failed validation.
+
+If you're looking to submit form data via your own API calls or nest multiple forms within each other, `d2l-form` may be more appropriate.
+
+<!-- docs: start hidden content -->
+![screenshot of a form-native with a text input and select input](../screenshots/form-native.gif)
+<!-- docs: end hidden content -->
+
+<!-- docs: demo live name:d2l-form-native autoSize:false display:block size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/form/form-native.js';
+  import '@brightspace-ui/core/components/inputs/input-text.js';
+
+  const button = document.querySelector('button');
+  const form = document.querySelector('d2l-form-native');
+  button.addEventListener('click', () => {
+    form.submit();
+  });
+
+  function handleSubmission(e) {
+    const { formData } = e.detail;
+    const email = formData.get('email');
+    const pets = formData.get('pets');
+    console.log('Form submission data: email = ' + email + ', pets = ' + pets);
+  }
+  form.addEventListener('formdata', (e) => handleSubmission(e));
+</script>
+<d2l-form-native>
+  <d2l-input-text required label="Email" name="email" type="email"></d2l-input-text>
+  <select class="d2l-input-select" name="pets" required>
+    <option value="">--Please choose an option--</option>
+    <option value="porpoise">Porpoise</option>
+    <option value="house hippo">House Hippo</option>
+    <option value="spiker monkey">Spider Monkey</option>
+    <option value="capybara">Capybara</option>
+  </select>
+  <button name="action" value="save" type="submit">Save</button>
+</d2l-form-native>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `action` | String | The URL that processes the form submission. |
+| `enctype` | default: `"application/x-www-form-urlencoded"`<br>`"multipart/form-data"`<br>`"text/plain"` | If the value of the method attribute is post, enctype is the MIME type of the form submission. |
+| `method` | default: `"get"`<br>`"post"` | The URL that processes the form submission. |
+| `target` | default: `"_self"`<br>`"_blank"`<br>`"_parent"`<br>`"_top"` | Indicates where to display the response after submitting the form. |
+| `track-changes` | Boolean, default: `false` | Indicates that the form should interrupt and warn on navigation if the user has unsaved changes. |
+
+### Events
+- `submit`: Dispatched when the form is submitted. Cancelling this event will prevent form submission.
+- `formdata`: Dispatched after the entry list representing the form's data is constructed. This happens when the form is submitted just prior to submission. The form data can be obtained from the `detail`'s `formData` property.
+<!-- docs: end hidden content -->
+
+### Methods
+- `submit()`: Submits the form to the server. This will first perform validation on all elements within the form. Submission will only happen if validation succeeds.
+- `requestSubmit(submitter)`: Requests that the form be submitted using the specified submit button and its corresponding configuration. A `button`'s value is only submitted if that button is both part of the form and the `submitter`.
+- `async validate()`: Validates the form without submitting even if validation succeeds. This returns a `Map` mapping from an element to the list of error messages associated with it.
