@@ -8,12 +8,12 @@ export async function isFramed() {
 		return framed;
 	}
 
-	try{
+	try {
 		if (window === window.parent) {
 			framed = false;
 			return framed;
 		}
-	} catch {
+	} catch (e) {
 		framed = false;
 		return framed;
 	}
@@ -26,7 +26,7 @@ export async function isFramed() {
 				framed = evt.data.isFramed;
 				resolve(framed);
 			};
-			
+
 			window.addEventListener('message', handleIsFramedResponse, false);
 			window.parent.postMessage('isFramedRequest', '*');
 		}),
