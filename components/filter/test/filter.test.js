@@ -87,14 +87,36 @@ describe('d2l-filter', () => {
 		});
 	});
 
+	describe('clearing', () => {
+		it('set dimension', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			expect(elem._dimensions[0].values[0].selected).to.be.true;
+			expect(elem._dimensions[0].values[1].selected).to.be.false;
+			expect(elem._dimensions[0].appliedCount).to.equal(1);
+
+			elem._performDimensionClear(elem._dimensions[0]);
+			expect(elem._dimensions[0].values[0].selected).to.be.false;
+			expect(elem._dimensions[0].values[1].selected).to.be.false;
+			expect(elem._dimensions[0].appliedCount).to.equal(0);
+			expect(elem._changeEventsToDispatch.size).to.equal(1);
+			const changeEventDim = elem._changeEventsToDispatch.get('dim');
+			expect(changeEventDim.dimensionKey).to.equal('dim');
+			expect(changeEventDim.cleared).to.be.true;
+			expect(changeEventDim.changes.size).to.equal(1);
+			const changeEvent = changeEventDim.changes.get('1');
+			expect(changeEvent.valueKey).to.equal('1');
+			expect(changeEvent.selected).to.be.false;
+		});
+	});
+
 	describe('searching', () => {
 		it('set dimension - no search', async() => {
-			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="none"></d2l-filter-dimension-set></d2l-filter>');
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" text="dim" search-type="none"></d2l-filter-dimension-set></d2l-filter>');
 			expect(elem.shadowRoot.querySelector('d2l-input-search')).to.be.null;
 		});
 
 		it('set dimension - manual search sets loading state to true and then back to false when callback is run', async() => {
-			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
+			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" text="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
 			expect(elem._dimensions[0].loading).to.be.false;
 
 			setTimeout(() => elem._handleSearch({ detail: { value: 'manual search' } }));
@@ -110,9 +132,9 @@ describe('d2l-filter', () => {
 		});
 
 		it('set dimension - manual search takes an array of keys to display', async() => {
-			const elem = await fixture(`<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual">
-				<d2l-filter-dimension-set-value key="test"></d2l-filter-dimension-set-value>
-				<d2l-filter-dimension-set-value key="test2"></d2l-filter-dimension-set-value>
+			const elem = await fixture(`<d2l-filter><d2l-filter-dimension-set key="dim" text="dim" search-type="manual">
+				<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
+				<d2l-filter-dimension-set-value key="test2" text="test2"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set></d2l-filter>`);
 			expect(elem._dimensions[0].values[0].hidden).to.be.undefined;
 			expect(elem._dimensions[0].values[1].hidden).to.be.undefined;
@@ -158,6 +180,7 @@ describe('d2l-filter', () => {
 				let dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
 				let changes = dimensions[0].changes;
 				expect(changes.length).to.equal(1);
 				expect(changes[0].valueKey).to.equal('2');
@@ -169,6 +192,7 @@ describe('d2l-filter', () => {
 				dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
 				changes = dimensions[0].changes;
 				expect(changes[0].valueKey).to.equal('2');
 				expect(changes[0].selected).to.be.false;
@@ -186,6 +210,7 @@ describe('d2l-filter', () => {
 				let dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
 				expect(dimensions[0].changes.length).to.equal(2);
 				expect(dimensions[0].changes[0].valueKey).to.equal('2');
 				expect(dimensions[0].changes[0].selected).to.be.true;
@@ -199,6 +224,7 @@ describe('d2l-filter', () => {
 				dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.false;
 				expect(dimensions[0].changes.length).to.equal(1);
 				expect(dimensions[0].changes[0].valueKey).to.equal('2');
 				expect(dimensions[0].changes[0].selected).to.be.false;
@@ -217,6 +243,7 @@ describe('d2l-filter', () => {
 				let dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('1');
+				expect(dimensions[0].cleared).to.be.false;
 				expect(dimensions[0].changes.length).to.equal(1);
 				expect(dimensions[0].changes[0].valueKey).to.equal('1');
 				expect(dimensions[0].changes[0].selected).to.be.false;
@@ -227,6 +254,7 @@ describe('d2l-filter', () => {
 				dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('2');
+				expect(dimensions[0].cleared).to.be.false;
 				expect(dimensions[0].changes.length).to.equal(1);
 				expect(dimensions[0].changes[0].valueKey).to.equal('1');
 				expect(dimensions[0].changes[0].selected).to.be.true;
@@ -248,11 +276,13 @@ describe('d2l-filter', () => {
 				const dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(2);
 				expect(dimensions[0].dimensionKey).to.equal('1');
+				expect(dimensions[0].cleared).to.be.false;
 				expect(dimensions[0].changes.length).to.equal(1);
 				expect(dimensions[0].changes[0].valueKey).to.equal('1');
 				expect(dimensions[0].changes[0].selected).to.be.false;
 				expect(elem._dimensions[0].values[0].selected).to.be.false;
 				expect(dimensions[1].dimensionKey).to.equal('2');
+				expect(dimensions[1].cleared).to.be.false;
 				expect(dimensions[1].changes.length).to.equal(1);
 				expect(dimensions[1].changes[0].valueKey).to.equal('1');
 				expect(dimensions[1].changes[0].selected).to.be.true;
@@ -276,12 +306,38 @@ describe('d2l-filter', () => {
 				const dimensions = e.detail.dimensions;
 				expect(dimensions.length).to.equal(1);
 				expect(dimensions[0].dimensionKey).to.equal('1');
+				expect(dimensions[0].cleared).to.be.false;
 				expect(dimensions[0].changes.length).to.equal(1);
 				expect(dimensions[0].changes[0].valueKey).to.equal('1');
 				expect(dimensions[0].changes[0].selected).to.be.true;
 				expect(elem._dimensions[0].values[0].selected).to.be.true;
 				expect(setupSpy.callCount).to.equal(4);
 				expect(dispatchSpy.callCount).to.equal(1);
+			});
+
+			it('if the clear button is pressed, the change event will be sent immediately and cleared will be true', async() => {
+				const elem = await fixture(singleSetDimensionFixture);
+				const clear = elem.shadowRoot.querySelector('[slot="header"] d2l-button-subtle');
+				expect(elem._dimensions[0].values[0].selected).to.be.true;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+				const setupSpy = spy(elem, '_dispatchChangeEvent');
+				const setupNowSpy = spy(elem, '_dispatchChangeEventNow');
+				const dispatchSpy = spy(elem, 'dispatchEvent');
+
+				setTimeout(() => clear.click());
+				const e = await oneEvent(elem, 'd2l-filter-change');
+				const dimensions = e.detail.dimensions;
+				expect(dimensions.length).to.equal(1);
+				expect(dimensions[0].dimensionKey).to.equal('dim');
+				expect(dimensions[0].cleared).to.be.true;
+				expect(dimensions[0].changes.length).to.equal(1);
+				expect(dimensions[0].changes[0].valueKey).to.equal('1');
+				expect(dimensions[0].changes[0].selected).to.be.false;
+				expect(elem._dimensions[0].values[0].selected).to.be.false;
+				expect(elem._dimensions[0].values[1].selected).to.be.false;
+				expect(setupSpy).to.not.be.called;
+				expect(setupNowSpy).to.be.calledOnce;
+				expect(dispatchSpy).to.be.calledOnce;
 			});
 		});
 
@@ -558,7 +614,7 @@ describe('d2l-filter', () => {
 			elem = await fixture(multiDimensionFixture);
 			updateStub = stub(elem, 'requestUpdate');
 			recountSpy = spy(elem, '_setFilterCounts');
-			searchSpy = spy(elem, '_searchDimension');
+			searchSpy = spy(elem, '_performDimensionSearch');
 		});
 		it('dimension data changes are handled', async() => {
 			const dimension = elem.querySelector('d2l-filter-dimension-set[key="2"]');

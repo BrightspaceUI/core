@@ -3,7 +3,6 @@
 
 <head>
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
-	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script type="module">
 		import '../../demo/demo-page.js';
 		import '../../button/button.js';
@@ -112,24 +111,29 @@
 
 	<script type="module">
 		document.addEventListener('d2l-filter-change', e => {
-			(e.detail.dimensions.length === 1) ?
-				console.log(`Filter selection changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes) : // eslint-disable-line no-console
-				console.log('Batch filter selection changed:', e.detail.dimensions); // eslint-disable-line no-console
+			if (e.detail.dimensions.length === 1) {
+				console.log(`Filter selection(s) changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes); // eslint-disable-line no-console
+				if (e.detail.dimensions[0].cleared) console.log(`(Dimension "${e.detail.dimensions[0].dimensionKey}" cleared)`); // eslint-disable-line no-console
+			} else {
+				console.log('Multiple dimension selections changed:', e.detail.dimensions); // eslint-disable-line no-console
+			}
 		});
 
 		document.addEventListener('d2l-filter-dimension-first-open', e => {
 			console.log(`Filter dimension opened for the first time: ${e.detail.key}`);
 		});
 
-		document.getElementById('finish-loading').addEventListener('click', e => {
-			e.target.disabled = true;
-			setTimeout(() => {
-				const loadingFilters = document.querySelectorAll('d2l-filter-dimension-set[loading]');
-				loadingFilters.forEach(filter => {
-					filter.loading = false;
-				});
-				e.target.textContent = 'Done Loading';
-			}, 5000);
+		requestAnimationFrame(() => {
+			document.getElementById('finish-loading').addEventListener('click', e => {
+				e.target.disabled = true;
+				setTimeout(() => {
+					const loadingFilters = document.querySelectorAll('d2l-filter-dimension-set[loading]');
+					loadingFilters.forEach(filter => {
+						filter.loading = false;
+					});
+					e.target.textContent = 'Done Loading';
+				}, 5000);
+			});
 		});
 	</script>
 
