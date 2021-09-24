@@ -333,8 +333,11 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			composed: true,
 			detail: contentRect
 		};
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
+		// To avoid ResizeObserver undelivered notifications error, wait a frame to send the event
+		requestAnimationFrame(() => {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-hierarchical-view-resize', eventDetails));
+		});
 	}
 
 	__focusCapture(e) {
@@ -521,7 +524,10 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 	}
 
 	__onViewResize(e) {
-		this.style.height = `${e.detail.height}px`;
+		if (this._height !== e.detail.height) {
+			this._height = e.detail.height;
+			this.style.height = `${e.detail.height}px`;
+		}
 	}
 
 	__onWindowResize() {

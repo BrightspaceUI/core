@@ -5,7 +5,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
-const fixtureWithValue = '<d2l-input-time value="11:22:33"></d2l-input-time>';
+const fixtureWithValue = '<d2l-input-time value="11:22:33" label="label text"></d2l-input-time>';
 const hourLongIntervals = '<d2l-input-time label="label text" time-interval="sixty"></d2l-input-time>';
 const hourLongIntervalsEnforced = '<d2l-input-time label="label text" time-interval="sixty" enforce-time-intervals></d2l-input-time>';
 const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden time-interval="sixty"></d2l-input-time>';

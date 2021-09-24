@@ -14,6 +14,7 @@ const tag = defineCE(
 );
 
 describe('ListItemCheckboxMixin', () => {
+	// will log "ListItemCheckboxMixin requires a key."
 	describe('Sets selected status to undefined when no key is given', () => {
 		const cases = [
 			'disabled selected',

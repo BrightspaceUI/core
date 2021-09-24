@@ -26,7 +26,7 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener for the filter |
 
 **Events:**
-* `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple changes)
+* `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple dimensions and multiple changes in each)
 * `d2l-filter-dimension-first-open`: dispatched when a dimension is opened for the first time (if there is only one dimension, this will be dispatched when the dropdown is first opened)
 * `d2l-filter-dimension-search`: dispatched when a dimension that supports searching and has the "manual" search-type is searched
 

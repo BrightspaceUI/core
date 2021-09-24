@@ -1,5 +1,9 @@
 import '../colors/colors.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 class CountBadge extends RtlMixin(LitElement) {
@@ -7,12 +11,43 @@ class CountBadge extends RtlMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Optionally choose to announce changes to the badge with an aria-live region. If the number property is changed, the text will be read by screenreaders. Defaults to false.
+			 * @type {boolean}
+			 */
+			announceChanges: {
+				type: Boolean,
+				attribute: 'announce-changes'
+			},
+			/**
+			 * Optionally add a tooltip on the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			hasTooltip: {
+				type: Boolean,
+				attribute: 'has-tooltip'
+			},
+			/**
+			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
+			 * @type {boolean}
+			 */
+			hideZero: {
+				type: Boolean,
+				attribute: 'hide-zero'
+			},
+			/**
+			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
+			 * @type {number}
+			 */
+			maxDigits: {
+				type: Number,
+				attribute: 'max-digits'
+			},
+			/**
 			 * The number to be displayed on the badge. Must be a positive integer.
 			 * @type {number}
 			 */
 			number: {
 				type: Number,
-				reflect: true,
 				attribute: 'number'
 			},
 			/**
@@ -25,6 +60,21 @@ class CountBadge extends RtlMixin(LitElement) {
 				attribute: 'size'
 			},
 			/**
+			 * Optionally choose to add a tab stop to the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			tabStop: {
+				type: Boolean,
+				attribute: 'tab-stop'
+			},
+			/**
+			 * * Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled.
+			 * @type {string}
+			 */
+			text: {
+				type: String
+			},
+			/**
 			 * The type of the badge. Defaults to "count".
 			 * @type {'count'|'notification'}
 			 */
@@ -32,30 +82,12 @@ class CountBadge extends RtlMixin(LitElement) {
 				type: String,
 				reflect: true,
 				attribute: 'type'
-			},
-			/**
-			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
-			 * @type {number}
-			 */
-			maxDigits: {
-				type: Number,
-				reflect: true,
-				attribute: 'max-digits'
-			},
-			/**
-			 * Optionally choose to not render the count badge when the number is zero. Defaults to false.
-			 * @type {boolean}
-			 */
-			hideZero: {
-				type: Boolean,
-				reflect: true,
-				attribute: 'hide-zero'
-			},
+			}
 		};
 	}
 
 	static get styles() {
-		return [ css`
+		return [offscreenStyles, css`
 		:host([hidden]) {
 			display: none;
 		}
@@ -112,9 +144,16 @@ class CountBadge extends RtlMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.type = 'count';
-		this.size = 'small';
+		this.announceChanges = false;
+		this.hasTooltip = false;
 		this.hideZero = false;
+		this.size = 'small';
+		this.tabStop = false;
+		this.text = '';
+		this.type = 'count';
+
+		this._badgeId = getUniqueId();
+		this._textId = getUniqueId();
 	}
 
 	connectedCallback() {
@@ -134,7 +173,17 @@ class CountBadge extends RtlMixin(LitElement) {
 			numberString = `${'9'.repeat(this.maxDigits)}+`;
 		}
 		return html`
-        	<div class="d2l-count-badge-number">${numberString}</div>`;
+        	<div
+			class="d2l-count-badge-number" 
+			id="${this._badgeId}"
+			tabindex="${ifDefined(this.tabStop || this.hasTooltip ? '0' : undefined)}" 
+			aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this._textId)}">
+					<div aria-hidden="true">${numberString}</div>
+					${this.hasTooltip ?
+		html`<d2l-tooltip id="${this._textId}" for="${this._badgeId}" aria-live="${this.announceChanges ? 'polite' : 'off'}">${this.text}</d2l-tooltip>`
+		: html`<span id="${this._textId}" class="d2l-offscreen" aria-live="${this.announceChanges ? 'polite' : 'off'}">"${this.text}"</span>`}
+			</div>
+			`;
 	}
 }
 

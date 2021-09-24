@@ -194,29 +194,22 @@ describe('d2l-tooltip', () => {
 
 	describe('delay', () => {
 
-		beforeEach(async() => {
-			tooltip.setAttribute('delay', 100);
-			await tooltip.updateComplete;
-		});
-
 		it('should not show if hover is lost before tooltip delay finishes', async() => {
-
-			oneEvent(tooltipFixture, 'd2l-tooltip-show').then(() => {
-				expect.fail('tooltip should not have been shown');
-			});
+			let shown = false;
+			oneEvent(tooltipFixture, 'd2l-tooltip-show').then(() => shown = true);
 			const target = tooltipFixture.querySelector('#explicit-target');
 			target.dispatchEvent(new Event('mouseenter'));
 			await aTimeout(tooltip.delay / 2);
 			target.dispatchEvent(new Event('mouseleave'));
 			await aTimeout(tooltip.delay);
 			expect(tooltip.showing).to.be.false;
+			expect(shown).to.be.false;
+
 		});
 
 		it('should not show if hover is gained and lost multiple times before tooltip delay finishes', async() => {
-
-			oneEvent(tooltipFixture, 'd2l-tooltip-show').then(() => {
-				expect.fail('tooltip should not have been shown');
-			});
+			let shown = false;
+			oneEvent(tooltipFixture, 'd2l-tooltip-show').then(() => shown = true);
 			const target = tooltipFixture.querySelector('#explicit-target');
 			for (let i = 0; i < 5; i++) {
 				target.dispatchEvent(new Event('mouseenter'));
@@ -226,6 +219,7 @@ describe('d2l-tooltip', () => {
 			}
 			await aTimeout(tooltip.delay);
 			expect(tooltip.showing).to.be.false;
+			expect(shown).to.be.false;
 		});
 
 		it('should show if hover is maintained for the tooltip delay', async() => {
