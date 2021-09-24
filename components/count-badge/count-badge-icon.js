@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { CountBadgeMixin, countBadgeStyles } from './count-badge-mixin.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map';
@@ -19,7 +18,7 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 				type: String,
 				reflect: true
 			},
-			forceTooltipOn: {
+			_forceTooltipOn: {
 				type: Boolean
 			},
 		};
@@ -63,7 +62,7 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 
 	constructor() {
 		super();
-		this.forceTooltipOn = false;
+		this._forceTooltipOn = false;
 	}
 
 	disconnectedCallback() {
@@ -87,18 +86,17 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 				id="${this._badgeId}"
 				icon="${this.icon}" 
 				class="d2l-button-icon" 
-				style=${styleMap(iconStyle)}
-				aria-label="${ifDefined(this.hasTooltip ? this.text : undefined)}">
+				style=${styleMap(iconStyle)}>
 			</d2l-icon>`;
-		return this.renderCount(icon, this.forceTooltipOn);
+		return this.renderCount(icon, this._forceTooltipOn);
 	}
 
 	_onBlur() {
-		this.forceTooltipOn = false;
+		this._forceTooltipOn = false;
 	}
 
 	_onFocus() {
-		this.forceTooltipOn = true;
+		this._forceTooltipOn = true;
 	}
 }
 
