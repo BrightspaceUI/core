@@ -48,7 +48,6 @@ Place the user-authored HTML within a `template` and the `d2l-html-block` will s
 
 To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https://lit-html.polymer-project.org/guide/template-reference#unsafehtml) directive to avoid escaping the HTML.
 
-<!-- docs: demo code -->
 ```html
 <script type="module">
 	import { html, LitElement } from 'lit-element/lit-element.js';
@@ -56,22 +55,83 @@ To use `d2l-html-block` within another Lit component, use the [unsafeHTML](https
 	import '@brightspace-ui/core/components/icons/icon.js';
 
 	class SomeComponent extends LitElement {
-
-    this._someHTML = '<h1>Hi Mom!</h1>'
-
 		render() {
 			return html`
-			<d2l-html-block>
-				<template>${unsafeHTML(this._someHTML)}</template>
-			</d2l-html-block>`;
+				<d2l-html-block>
+					<template>${unsafeHTML(this._unsafeHTML)}</template>
+				</d2l-html-block>`;
 		}
 	}
 
-	customElements.define('d2l-html-component', SomeComponent);
+	customElements.define('d2l-some-component', SomeComponent);
 </script>
 <d2l-html-component></d2l-html-component>
 ```
 
+### Rendering MathML and LaTeX
+Examples are provided to display how user-authored math can be embedded within your webpage.
+
+**MathML:**
+<!-- docs: demo code -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/html-block/html-block.js';
+  import '@brightspace-ui/core/components/icons/icon.js';
+</script>
+<d2l-html-block>
+	<template>
+		<div class="mathml-container">
+			<math xmlns="http://www.w3.org/1998/Math/MathML">
+				<msqrt>
+					<mn>3</mn>
+					<mi>x</mi>
+					<mo>&#x2212;</mo>
+					<mn>1</mn>
+				</msqrt>
+				<mo>+</mo>
+				<mo stretchy="false">(</mo>
+				<mn>1</mn>
+				<mo>+</mo>
+				<mi>x</mi>
+				<msup>
+					<mo stretchy="false">)</mo>
+					<mn>2</mn>
+				</msup>
+			</math>
+		</div>
+	</template>
+</d2l-html-block>
+```
+
+**LaTeX:** Rendering LaTeX requires the `us125413-mathjax-render-latex` feature flag to be enabled.
+
+<!-- docs: demo code -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/html-block/html-block.js';
+  import '@brightspace-ui/core/components/icons/icon.js';
+  
+</script>
+<script>
+	window.D2L = {};
+	D2L.LP = {};
+	D2L.LP.Web = {};
+	D2L.LP.Web.UI = {};
+	D2L.LP.Web.UI.Flags = {
+		Flag: (feature, defaultValue) => {
+			if (feature === 'us125413-mathjax-render-latex') return true;
+			else return defaultValue;
+		}
+	};
+</script>
+<d2l-html-block>
+	<template>
+		<div class="latex-container">
+			$$ f(x) = \int \mathrm{e}^{-x}\,\mathrm{d}x $$ $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
+		</div>
+	</template>
+</d2l-html-block>
+```
 <!-- docs: start content hidden -->
 ## Future Enhancements
 
