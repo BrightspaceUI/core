@@ -181,7 +181,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			id="${ifDefined(tooltipElement ? undefined : this._badgeId)}"
 			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && (!hideNumber || tooltipElement) ? '0' : undefined)}" 
 			aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this._textId)}"
-			role="${ifDefined(this.hasTooltip && !tooltipElement ? 'img' : undefined)}">
+			role="${ifDefined((!tooltipElement || !this.hasTooltip) && !this.announceChanges ? 'img' : undefined)}">
 				<div class="d2l-count-badge-number"
 				style=${styleMap(numberVisibility)}>
 						<div aria-hidden="true">${numberString}</div>		
