@@ -7,7 +7,7 @@ There are several components and mixins available to help make working with form
 These two components behave much like a native `<form>` element, grouping nested form elements together and controlling how their data is validated and submitted. Unlike native `<form>`s, they support our custom form elements.
 
 - [d2l-form](docs/form.md#form-d2l-form): supports aggregation of nested forms for validation and submission
-- [d2l-form-native](docs/form-native.md#native-form-d2l-form-native): emulates how a native `<form>` submits, but supports our custom form elements
+- [d2l-form-native](docs/form.md#native-form-d2l-form-native): emulates how a native `<form>` submits, but supports our custom form elements
 
 ## Custom Elements in Forms
 
