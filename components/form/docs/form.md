@@ -1,5 +1,9 @@
 # Form Components
 
+<!-- docs: start hidden content -->
+![screenshot of a form-native with a text input and select input](../screenshots/form-native.gif)
+<!-- docs: end hidden content -->
+
 <!-- docs: demo -->
 ```html
 <script type="module">
@@ -34,9 +38,9 @@
 </d2l-form>
 ```
 
-There are two form components that can be used with Daylight's custom elements - `d2l-form` and `d2l-form-native`.
-- `d2l-form`: useful for submit form data via your own API calls or nest multiple forms within each other
-- `d2l-form-native`: emulates native form element submission
+There are two form components that can be used with our custom elements: `d2l-form` and `d2l-form-native`. These are useful in the following scenarios:
+- `d2l-form`: when submitting form data via your own API calls OR when nesting multiple forms within each other
+- `d2l-form-native`: when emulating native form element submission
 
 ## Form [d2l-form]
 
@@ -100,7 +104,7 @@ If you're looking to emulate native form element submission, `d2l-form-native` m
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `no-nesting` | Boolean, default: `false` | Indicates that the form should opt-out of nesting.<br><br>This means that it will not be submitted or validated if an ancestor form is submitted or validated. However, directly submitting or validating a form with `no-nesting` will still trigger submission and validation for its descendant forms unless they also opt-out using `no-nesting`. |
 
 ### Events
@@ -181,10 +185,6 @@ It differs from the native HTML `form` element in 2 ways:
 
 If you're looking to submit form data via your own API calls or nest multiple forms within each other, `d2l-form` may be more appropriate.
 
-<!-- docs: start hidden content -->
-![screenshot of a form-native with a text input and select input](../screenshots/form-native.gif)
-<!-- docs: end hidden content -->
-
 <!-- docs: demo live name:d2l-form-native autoSize:false display:block size:medium -->
 ```html
 <script type="module">
@@ -222,7 +222,7 @@ If you're looking to submit form data via your own API calls or nest multiple fo
 ### Properties
 
 | Property | Type | Description |
-|--|--|--|
+|---|---|---|
 | `action` | String | The URL that processes the form submission. |
 | `enctype` | default: `"application/x-www-form-urlencoded"`<br>`"multipart/form-data"`<br>`"text/plain"` | If the value of the method attribute is post, enctype is the MIME type of the form submission. |
 | `method` | default: `"get"`<br>`"post"` | The URL that processes the form submission. |
