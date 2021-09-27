@@ -86,37 +86,18 @@ describe('LabelledMixin', () => {
 
 	let elem;
 
-	beforeEach(async() => {
-		elem = await fixture(`
-			<div>
-				<table>
-					<tr>
-						<td><${labelledTag} labelled-by="label1"></${labelledTag}></td>
-						<td><span id="label1">native element</span></td>
-					</tr>
-					<tr>
-						<td><${labelledTag} labelled-by="label2"></${labelledTag}></td>
-						<td><${labelTag} id="label2" text="custom elemnt"></${labelTag}></td>
-					</tr>
-					<tr>
-						<td><${labelledTag} labelled-by="invalidlabel"></${labelledTag}></td>
-						<td><${nonLabelTag} id="invalidlabel" text="custom elemnt"></${nonLabelTag}></td>
-					</tr>
-					<tr>
-						<td><${labelledTag} label="explicit label"></${labelledTag}></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td><${labelledTag} labelled-by="nolabel"></${labelledTag}></td>
-						<td></td>
-					</tr>
-				</table>
-				<span id="label3">other element</span>
-			</div>
-		`);
-	});
-
 	describe('labelling with natve element', () => {
+
+		beforeEach(async() => {
+			elem = await fixture(`
+				<div>
+					<${labelledTag} labelled-by="label1"></${labelledTag}>
+					<span id="label1">native element</span>
+					<${labelledTag} labelled-by="nolabel"></${labelledTag}>
+					<span id="label3">other element</span>
+				</div>
+			`);
+		});
 
 		it('initially applies label', async() => {
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
@@ -158,9 +139,20 @@ describe('LabelledMixin', () => {
 
 	describe('labelling with custom element', () => {
 
+		beforeEach(async() => {
+			elem = await fixture(`
+				<div>
+					<${labelledTag} labelled-by="label2"></${labelledTag}>
+					<${labelTag} id="label2" text="custom element"></${labelTag}>
+					<${labelledTag} labelled-by="invalidlabel"></${labelledTag}>
+					<${nonLabelTag} id="invalidlabel" text="custom element"></${nonLabelTag}>
+				</div>
+			`);
+		});
+
 		it('initially applies label', async() => {
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('custom elemnt');
+			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('custom element');
 		});
 
 		it('updates label when labelling element text changes', async() => {
@@ -191,16 +183,18 @@ describe('LabelledMixin', () => {
 
 	describe('explicit label', () => {
 
+		beforeEach(async() => {
+			elem = await fixture(`<${labelledTag} label="explicit label"></${labelledTag}>`);
+		});
+
 		it('initially applies label', async() => {
-			const labelledElem = elem.querySelector('[label]');
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('explicit label');
+			expect(elem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('explicit label');
 		});
 
 		it('updates label when explicit label changes', async() => {
-			const labelledElem = elem.querySelector('[label]');
-			labelledElem.label = 'new label value';
-			await nextFrame();
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+			elem.label = 'new label value';
+			await elem.updateComplete;
+			expect(elem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
 		});
 
 	});
