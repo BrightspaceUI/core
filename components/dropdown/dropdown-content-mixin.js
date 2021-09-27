@@ -509,7 +509,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
-					// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+					// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
 					requestAnimationFrame(() => focusable.focus());
 				} else {
 					content.setAttribute('tabindex', '-1');
@@ -1006,7 +1006,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			const content = this.__getContentContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
-				// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+				// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
 				requestAnimationFrame(() => focusable.focus());
 			} else {
 				content.setAttribute('tabindex', '-1');

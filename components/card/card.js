@@ -89,7 +89,7 @@ class Card extends RtlMixin(LitElement) {
 				flex-grow: 1;
 				flex-shrink: 1;
 				overflow: hidden;
-				width: 100%; /* required for Edge and FF when align-items: flex-start is specified */
+				width: 100%; /* required for Legacy-Edge and FF when align-items: flex-start is specified */
 			}
 			.d2l-card-link-text {
 				display: inline-block;
