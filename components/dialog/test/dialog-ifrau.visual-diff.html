@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 	<title>d2l-dialog-ifrau</title>
+	<script type="module">
+		import '../../typography/typography.js';
+	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 </head>
-<body>
-	<div id="ifrau-dialog-container"></div>
+<body class="d2l-typography">
+	<div id="ifrau-dialog-container" style="width: 650px"></div>
 
 	<script type="module">
 		import { Host } from 'ifrau/host.js';
@@ -46,7 +50,7 @@
 		const ifrauHost = new Host(
 			getContainer,
 			iframeSrc,
-			{ height: '500px' }
+			{ height: '450px' }
 		);
 
 		await ifrauHost.registerService('dialogWC', '0.1', {

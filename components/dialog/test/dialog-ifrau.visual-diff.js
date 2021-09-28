@@ -59,7 +59,7 @@ describe('d2l-dialog-ifrau', () => {
 				const preferNative = (name === 'native' ? '' : '?preferNative=false');
 				const src = `${visualDiff.getBaseUrl()}/components/dialog/test/dialog-ifrau-contents.visual-diff.html${preferNative}`;
 				await page.goto(`${visualDiff.getBaseUrl()}/components/dialog/test/dialog-ifrau.visual-diff.html?src=${encodeURIComponent(src)}`, { waitUntil: ['networkidle0', 'load'] });
-				await page.setViewport({ width: 650, height: 450, deviceScaleFactor: 2 });
+				await page.setViewport({ width: 726, height: 526, deviceScaleFactor: 2 });
 				await page.bringToFront();
 			});
 
