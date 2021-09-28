@@ -1,4 +1,4 @@
-import { isFramed } from './framed';
+import { isFramed } from './framed.js';
 import { SlimClient } from 'ifrau/client/slim.js';
 
 let ifrauBackdropService;

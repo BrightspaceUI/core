@@ -35,7 +35,7 @@ describe('d2l-dialog-ifrau', () => {
 			page.$eval(selector, dialogContainer => {
 				return new Promise(resolve => {
 					const dialog = getDialog(dialogContainer);
-					
+
 					dialog._fullscreenWithin = 0;
 					dialog.shadowRoot.querySelector('.d2l-dialog-content').scrollTo(0, 0);
 					if (dialog._state) {
