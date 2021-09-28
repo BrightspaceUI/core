@@ -9,21 +9,17 @@ describe('d2l-dialog-ifrau', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch();
+		browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'], });
 		page = await visualDiff.createPage(browser);
 	});
 
 	after(async() => await browser.close());
 
-	const getDialog = dialogContainer => {
-		const iframe = dialogContainer.querySelector('iframe');
-		return iframe.contentWindow.document.body.querySelector('#ifrau-dialog');
-	};
-
 	const open = async(page, selector) => {
 		const openEvent = oneEvent(page, selector, 'ifrau-dialog-open');
 		await page.$eval(selector, dialogContainer => {
-			const dialog = getDialog(dialogContainer);
+			const iframe = dialogContainer.querySelector('iframe');
+			const dialog = iframe.contentWindow.document.body.querySelector('#ifrau-dialog');
 			dialog.opened = true;
 		});
 		return openEvent;
@@ -34,7 +30,8 @@ describe('d2l-dialog-ifrau', () => {
 		await Promise.race([
 			page.$eval(selector, dialogContainer => {
 				return new Promise(resolve => {
-					const dialog = getDialog(dialogContainer);
+					const iframe = dialogContainer.querySelector('iframe');
+					const dialog = iframe.contentWindow.document.body.querySelector('#ifrau-dialog');
 
 					dialog._fullscreenWithin = 0;
 					dialog.shadowRoot.querySelector('.d2l-dialog-content').scrollTo(0, 0);
