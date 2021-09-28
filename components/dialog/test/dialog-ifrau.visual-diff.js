@@ -9,7 +9,7 @@ describe('d2l-dialog-ifrau', () => {
 	let browser, page;
 
 	before(async() => {
-		browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'], });
+		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
 	});
 
