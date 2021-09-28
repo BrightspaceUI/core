@@ -51,14 +51,10 @@ describe('d2l-calendar', () => {
 			'en',
 			'es',
 			'fr',
-			'ja',
-			'ko',
 			'nl',
 			'pt',
 			'sv',
-			'tr',
-			'zh',
-			'zh-tw'
+			'tr'
 		].forEach((lang) => {
 			it(`${lang}`, async function() {
 				await page.evaluate((lang, firstCalendarOfPage) => {
