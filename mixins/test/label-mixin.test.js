@@ -6,8 +6,11 @@ import { LitElement } from 'lit-element/lit-element.js';
 
 const labelledTag = defineCE(
 	class extends LabelledMixin(LitElement) {
+		constructor() {
+			super();
+			this._throwNoLabelExceptionImmediately = true;
+		}
 		render() {
-			if (!this.validateLabel(true)) return;
 			return html`
 				<input type="text" aria-label="${ifDefined(this.label)}">
 			`;
@@ -89,23 +92,22 @@ describe('LabelledMixin', () => {
 
 	describe('labelling with natve element', () => {
 
-		beforeEach(async() => {
-			elem = await fixture(`
-				<div>
-					<${labelledTag} labelled-by="label1"></${labelledTag}>
-					<span id="label1">native element</span>
-					<${labelledTag} labelled-by="nolabel"></${labelledTag}>
-					<span id="label3">other element</span>
-				</div>
-			`);
-		});
+		const nativeElemFixture = `
+			<div>
+				<${labelledTag} labelled-by="label1"></${labelledTag}>
+				<span id="label1">native element</span>
+				<span id="label3">other element</span>
+			</div>
+		`;
 
 		it('initially applies label', async() => {
+			elem = await fixture(nativeElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('native element');
 		});
 
 		it('updates label when labelling element text changes', async() => {
+			elem = await fixture(nativeElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
 			const labelElem = elem.querySelector('#label1');
 			labelElem.textContent = 'new label value';
@@ -114,6 +116,7 @@ describe('LabelledMixin', () => {
 		});
 
 		it('updates label when labelling element is replaced', async() => {
+			elem = await fixture(nativeElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
 			const labelElem = elem.querySelector('#label1');
 			const newLabelElem = document.createElement('span');
@@ -125,6 +128,7 @@ describe('LabelledMixin', () => {
 		});
 
 		it('updates label when labelledBy changes', async() => {
+			elem = await fixture(nativeElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
 			labelledElem.labelledBy = 'label3';
 			await nextFrame();
@@ -132,31 +136,32 @@ describe('LabelledMixin', () => {
 		});
 
 		it('does not explode if invalid id reference provided', async() => {
-			const labelledElem = elem.querySelector('[labelled-by="nolabel"]');
-			expect(labelledElem.shadowRoot.querySelector('input').hasAttribute('aria-label')).to.equal(false);
+			try {
+				elem = await fixture(`<${labelledTag} labelled-by="nolabel"></${labelledTag}>`);
+			} catch (e) {
+				expect(e.message).to.equal(`LabelledMixin: "${labelledTag}" is labelled-by="nolabel", but no such element exists or its label is empty`);
+			}
 		});
 
 	});
 
 	describe('labelling with custom element', () => {
 
-		beforeEach(async() => {
-			elem = await fixture(`
-				<div>
-					<${labelledTag} labelled-by="label2"></${labelledTag}>
-					<${labelTag} id="label2" text="custom element"></${labelTag}>
-					<${labelledTag} labelled-by="invalidlabel"></${labelledTag}>
-					<${nonLabelTag} id="invalidlabel" text="custom element"></${nonLabelTag}>
-				</div>
-			`);
-		});
+		const customElemFixture = `
+			<div>
+				<${labelledTag} labelled-by="label2"></${labelledTag}>
+				<${labelTag} id="label2" text="custom element"></${labelTag}>
+			</div>
+		`;
 
 		it('initially applies label', async() => {
+			elem = await fixture(customElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('custom element');
 		});
 
 		it('updates label when labelling element text changes', async() => {
+			elem = await fixture(customElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
 			const labelElem = elem.querySelector('#label2');
 			labelElem.text = 'new label value';
@@ -165,6 +170,7 @@ describe('LabelledMixin', () => {
 		});
 
 		it('updates label when labelling element is replaced', async() => {
+			elem = await fixture(customElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
 			const labelElem = elem.querySelector('#label2');
 			const newLabelElem = document.createElement(labelTag);
@@ -176,6 +182,13 @@ describe('LabelledMixin', () => {
 		});
 
 		it('does not explode if invalid id reference provided', async() => {
+			elem = await fixture(`
+				<div>
+					<${labelledTag} labelled-by="invalidlabel"></${labelledTag}>
+					<${nonLabelTag} id="invalidlabel" text="custom element"></${nonLabelTag}>
+				</div>
+			`);
+			// TODO: ideally this would throw in the same way the others do, since the label is empty
 			const labelledElem = elem.querySelector('[labelled-by="invalidlabel"]');
 			expect(labelledElem.shadowRoot.querySelector('input').hasAttribute('aria-label')).to.equal(false);
 		});
@@ -200,7 +213,7 @@ describe('LabelledMixin', () => {
 			try {
 				await fixture(`<${labelledTag}></${labelledTag}>`);
 			} catch (e) {
-				expect(e.message).to.equal(`Label missing on element: ${labelledTag}`);
+				expect(e.message).to.equal(`LabelledMixin: "${labelledTag}" is missing a required "label" attribute`);
 			}
 		});
 

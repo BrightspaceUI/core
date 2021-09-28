@@ -1,14 +1,6 @@
 
 import { cssEscape } from '../helpers/dom.js';
 
-class MissingLabelError extends Error {
-	constructor(elementName) {
-		elementName = elementName.toLowerCase();
-		super(`Label missing on element: ${elementName}`);
-		this.elementName = elementName;
-	}
-}
-
 const getCommonAncestor = (elem1, elem2) => {
 
 	const labelledPath = new WeakMap();
@@ -84,10 +76,15 @@ export const LabelledMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._missingLabelErrorHasBeenThrown = false;
+		this._throwNoLabelExceptionImmediately = false;
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
+
+		if (changedProperties.has('label')) {
+			this._validateLabel();
+		}
 
 		if (!changedProperties.has('labelledBy')) return;
 
@@ -114,14 +111,18 @@ export const LabelledMixin = superclass => class extends superclass {
 
 			if (labelElem) {
 				this.label = getLabel(labelElem);
+				// TODO: how to validate empty label?
 			} else {
-				console.warn(`LabelledMixin: element with labelled-by="${this.labelledBy}", but no such element exists.`);
 				this.label = undefined;
+				this._validateLabel();
 			}
 
 		});
 
-		if (!labelElem) return;
+		if (!labelElem) {
+			this._validateLabel();
+			return;
+		}
 		const ancestor = getCommonAncestor(this, labelElem);
 
 		/* assumption: the labelling element will not change from a native to a custom element
@@ -145,18 +146,24 @@ export const LabelledMixin = superclass => class extends superclass {
 
 	}
 
-	validateLabel(throwImmediately = false) {
+	_validateLabel() {
 
-		if (this.labelledBy) return true;
+		if (this._missingLabelErrorHasBeenThrown) return true;
 
 		const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
-		if (hasLabel || this._missingLabelErrorHasBeenThrown) return true;
+		if (hasLabel) return true;
 
 		this._missingLabelErrorHasBeenThrown = true;
-		const err = new MissingLabelError(this.tagName);
+
+		let err = null;
+		if (this.labelledBy) {
+			err = new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but no such element exists or its label is empty`);
+		} else {
+			err = new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is missing a required "label" attribute`);
+		}
 
 		// we don't want to prevent rendering
-		if (!throwImmediately) {
+		if (!this._throwNoLabelExceptionImmediately) {
 			setTimeout(() => { throw err; });
 		// just for testing so we can actually catch it
 		} else {
