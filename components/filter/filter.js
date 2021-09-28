@@ -227,7 +227,18 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_buildHeader(singleDimension) {
-		if (!this._activeDimensionKey && !singleDimension) return null;
+		if (!this._activeDimensionKey && !singleDimension) {
+			return html`
+				<div slot="header">
+					<d2l-button-subtle
+						@click="${this._handleClearAll}"
+						?disabled="${this._totalAppliedCount === 0}"
+						description="${this.localize('components.filter.clearAllDescription')}"
+						text="${this.localize('components.filter.clearAll')}">
+					</d2l-button-subtle>
+				</div>
+			`;
+		}
 
 		const dimension = this._getActiveDimension();
 
@@ -350,12 +361,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		if (!this._changeEventTimeout) {
 			this._changeEventTimeout = setTimeout(() => {
-				this._dispatchChangeEventNow();
+				this._dispatchChangeEventNow(false);
 			}, 200);
 		}
 	}
 
-	_dispatchChangeEventNow() {
+	_dispatchChangeEventNow(allCleared) {
 		const dimensions = Array.from(this._changeEventsToDispatch.values());
 		dimensions.forEach(dimension => {
 			dimension.changes = Array.from(dimension.changes.values());
@@ -364,7 +375,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
 			bubbles: true,
 			composed: false,
-			detail: { dimensions: dimensions }
+			detail: { allCleared: allCleared, dimensions: dimensions }
 		}));
 		this._changeEventsToDispatch = new Map();
 		this._changeEventTimeout = null;
@@ -417,7 +428,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dimension = this._getActiveDimension();
 
 		this._performDimensionClear(dimension);
-		this._dispatchChangeEventNow();
+		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
 
 		if (!this._activeDimensionKey) {
@@ -425,6 +436,21 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		} else {
 			announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
 		}
+	}
+
+	_handleClearAll() {
+		this._dimensions.forEach(dimension => {
+			if (dimension.searchType !== 'none' && dimension.searchValue !== '') {
+				dimension.searchValue = '';
+				this._performDimensionSearch(dimension);
+			}
+			this._performDimensionClear(dimension);
+		});
+
+		this._dispatchChangeEventNow(true);
+		this.requestUpdate();
+
+		announce(this.localize('components.filter.clearAllAnnounce'));
 	}
 
 	_handleDimensionDataChange(e) {
