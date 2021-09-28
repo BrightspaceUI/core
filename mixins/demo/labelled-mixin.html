@@ -21,6 +21,7 @@
 					`;
 				}
 				render() {
+					if (!this.validateLabel()) return;
 					return html`
 						<d2l-input-checkbox aria-label="${ifDefined(this.label)}"></d2l-input-checkbox>
 					`;

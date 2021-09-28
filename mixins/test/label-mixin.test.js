@@ -7,6 +7,7 @@ import { LitElement } from 'lit-element/lit-element.js';
 const labelledTag = defineCE(
 	class extends LabelledMixin(LitElement) {
 		render() {
+			if (!this.validateLabel(true)) return;
 			return html`
 				<input type="text" aria-label="${ifDefined(this.label)}">
 			`;
@@ -183,18 +184,24 @@ describe('LabelledMixin', () => {
 
 	describe('explicit label', () => {
 
-		beforeEach(async() => {
-			elem = await fixture(`<${labelledTag} label="explicit label"></${labelledTag}>`);
-		});
-
 		it('initially applies label', async() => {
+			elem = await fixture(`<${labelledTag} label="explicit label"></${labelledTag}>`);
 			expect(elem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('explicit label');
 		});
 
 		it('updates label when explicit label changes', async() => {
+			elem = await fixture(`<${labelledTag} label="explicit label"></${labelledTag}>`);
 			elem.label = 'new label value';
 			await elem.updateComplete;
 			expect(elem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+		});
+
+		it('throws if label is initially missing', async() => {
+			try {
+				await fixture(`<${labelledTag}></${labelledTag}>`);
+			} catch (e) {
+				expect(e.message).to.equal(`Label missing on element: ${labelledTag}`);
+			}
 		});
 
 	});

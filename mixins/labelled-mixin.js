@@ -1,6 +1,14 @@
 
 import { cssEscape } from '../helpers/dom.js';
 
+class MissingLabelError extends Error {
+	constructor(elementName) {
+		elementName = elementName.toLowerCase();
+		super(`Label missing on element: ${elementName}`);
+		this.elementName = elementName;
+	}
+}
+
 const getCommonAncestor = (elem1, elem2) => {
 
 	const labelledPath = new WeakMap();
@@ -73,6 +81,11 @@ export const LabelledMixin = superclass => class extends superclass {
 		};
 	}
 
+	constructor() {
+		super();
+		this._missingLabelErrorHasBeenThrown = false;
+	}
+
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
@@ -129,6 +142,28 @@ export const LabelledMixin = superclass => class extends superclass {
 		}
 
 		this.label = getLabel(labelElem);
+
+	}
+
+	validateLabel(throwImmediately = false) {
+
+		if (this.labelledBy) return true;
+
+		const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
+		if (hasLabel || this._missingLabelErrorHasBeenThrown) return true;
+
+		this._missingLabelErrorHasBeenThrown = true;
+		const err = new MissingLabelError(this.tagName);
+
+		// we don't want to prevent rendering
+		if (!throwImmediately) {
+			setTimeout(() => { throw err; });
+		// just for testing so we can actually catch it
+		} else {
+			throw err;
+		}
+
+		return false;
 
 	}
 
