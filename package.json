@@ -65,7 +65,7 @@
     "@open-wc/dedupe-mixin": "^1",
     "@webcomponents/shadycss": "^1",
     "focus-visible": "^5",
-    "ifrau": "^0.39.2",
+    "ifrau": "^0.39",
     "intl-messageformat": "^7",
     "lit-element": "^2",
     "lit-html": "^1.4.1",
