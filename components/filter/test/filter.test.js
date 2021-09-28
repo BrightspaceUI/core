@@ -385,7 +385,7 @@ describe('d2l-filter', () => {
 
 			it('if the clear all button is pressed, the change event will be sent immediately and allCleared will be true', async() => {
 				const elem = await fixture(multiDimensionFixture);
-				const clearAll = elem.shadowRoot.querySelector('[slot="header"] d2l-button-subtle');
+				const clearAll = elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]');
 				expect(elem._dimensions[0].values[0].selected).to.be.true;
 				expect(elem._dimensions[1].values[0].selected).to.be.false;
 				expect(elem._dimensions[2].values[0].selected).to.be.false;
@@ -445,6 +445,8 @@ describe('d2l-filter', () => {
 				const elem = await fixture(multiDimensionFixture);
 				const eventSpy = spy(elem, 'dispatchEvent');
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+				await dropdownContent.updateComplete;
 				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
 				setTimeout(() => dropdown.toggleOpen());

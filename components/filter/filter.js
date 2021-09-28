@@ -50,7 +50,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get styles() {
 		return [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, offscreenStyles, css`
-			div[slot="header"] {
+			[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
 
@@ -229,14 +229,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	_buildHeader(singleDimension) {
 		if (!this._activeDimensionKey && !singleDimension) {
 			return html`
-				<div slot="header">
-					<d2l-button-subtle
-						@click="${this._handleClearAll}"
-						?disabled="${this._totalAppliedCount === 0}"
-						description="${this.localize('components.filter.clearAllDescription')}"
-						text="${this.localize('components.filter.clearAll')}">
-					</d2l-button-subtle>
-				</div>
+				<d2l-button-subtle
+					slot="header"
+					@click="${this._handleClearAll}"
+					?disabled="${this._totalAppliedCount === 0}"
+					description="${this.localize('components.filter.clearAllDescription')}"
+					text="${this.localize('components.filter.clearAll')}">
+				</d2l-button-subtle>
 			`;
 		}
 
