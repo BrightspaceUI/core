@@ -12,11 +12,7 @@ jobs:
           node-version: '14'
           cache: 'npm'
       - name: Install dependencies
-        run: |
-          npm ci
-          sudo apt-get update
-          sudo apt-get install language-pack-ko
-          sudo apt-get install korean*
+        run: npm ci
       - name: Build
         run: npm run build
       - name: Visual Diff Tests
