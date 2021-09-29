@@ -726,13 +726,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				+ Math.min(this._ifrauContextInfo.top, 0);
 			bottomOverride = `${screenHeight}px`;
 		}
-		let bottomOfScreen = Math.max(window.innerHeight - window.screen.height, 0);
-		if (!this._ifrauContextInfo && bottomOfScreen > 0) {
-			// Window is taller than the screen,
-			// override bottom to stick to bottom of viewport
-			bottomOfScreen -= window.pageYOffset;
-			bottomOverride = `${Math.max(bottomOfScreen, 0)}px`;
-		}
 
 		const widthOverride = '100vw';
 

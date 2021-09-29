@@ -404,10 +404,15 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 		if (this._dropdown && !this._dropdown.openedAbove && !fullCalendarVisible) {
 			this._dropdown.querySelector('d2l-calendar').scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
 		}
-		// use setTimeout to wait for keyboard to open on mobile devices
-		setTimeout(() => {
-			this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
-		}, 150);
+
+		// if keyboard opens (in all cases except mobile calendar view),
+		// ensure text input is in viewport
+		if (!(mediaQueryList.matches && this._dropdown.opened)) {
+			// use setTimeout to wait for keyboard to open on mobile devices
+			setTimeout(() => {
+				this._textInput.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+			}, 150);
+		}
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-date-dropdown-toggle',
