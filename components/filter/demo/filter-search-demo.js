@@ -67,6 +67,10 @@ class FilterSearchDemo extends LitElement {
 				dimension.changes.forEach(change => { dataToUpdate.find(value => value.key === change.valueKey).selected = change.selected; });
 			}
 		});
+
+		if (e.detail.allCleared) {
+			console.log('(All dimensions cleared)'); // eslint-disable-line no-console
+		}
 	}
 
 	_handleFirstOpen(e) {

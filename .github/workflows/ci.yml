@@ -60,7 +60,7 @@ jobs:
         run: npx web-test-runner --config web-test-runner.sauce.config.mjs --group default
   playwright:
     name: Unit Tests (Playwright)
-    timeout-minutes: 5
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
