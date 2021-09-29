@@ -82,15 +82,11 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 	}
 
 	render() {
-		const iconStyle = {
-			visibility: 'visible'
-		};
 		const icon = html`
 			<d2l-icon 
 				id="${this._badgeId}"
 				icon="${this.icon}" 
-				class="d2l-button-icon" 
-				style=${styleMap(iconStyle)}
+				class="d2l-button-icon"
 				role="${ifDefined(this.hasTooltip ? 'img' : undefined)}">
 			</d2l-icon>`;
 		return this.renderCount(icon, this._forceTooltipOn);
