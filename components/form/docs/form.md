@@ -77,11 +77,13 @@ If you're looking to emulate native form element submission, `d2l-form-native` m
   formA.addEventListener('d2l-form-submit', (e) => handleSubmission(e));
   formB.addEventListener('d2l-form-submit', (e) => handleSubmission(e));
 </script>
+<!-- docs: start hidden content -->
 <style>
   d2l-input-text {
     padding: 0.5rem 0;
   }
 </style>
+<!-- docs: end hidden content -->
 <d2l-form id="root">
   <select class="d2l-input-select" name="pets" required>
     <option value="">--Please choose an option--</option>
