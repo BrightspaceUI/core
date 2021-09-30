@@ -847,7 +847,34 @@ describe('d2l-filter', () => {
 		});
 	});
 
-	describe('esc behaviour in nested dimensions', () => {
+	describe('esc behaviour with multiple dimensions', () => {
+		it('if there is no active dimension, do not change esc behaviour', async() => {
+			const elem = await fixture(multiDimensionFixture);
+			const hideStub = stub(elem, '_handleDimensionHide');
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+			await dropdownContent.updateComplete;
+
+			setTimeout(() => dropdown.toggleOpen());
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+			expect(dropdownContent.opened).to.be.true;
+
+			const event = new CustomEvent('keyup', {
+				detail: 0,
+				bubbles: true,
+				cancelable: true,
+				composed: true
+			});
+			event.key = 'Escape';
+			event.keyCode = 27;
+
+			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
+			setTimeout(() => dimension.dispatchEvent(event));
+			await oneEvent(dropdown, 'd2l-dropdown-close');
+			expect(dropdownContent.opened).to.be.false;
+			expect(hideStub).to.not.be.called;
+		});
+
 		it('clicking esc in the header goes back to the dimension list', async() => {
 			const elem = await fixture(multiDimensionFixture);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
