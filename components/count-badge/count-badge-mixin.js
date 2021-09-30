@@ -135,6 +135,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		this.announceChanges = false;
 		this.hasTooltip = false;
 		this.hideZero = false;
+		this.noFormatNumber = false;
 		this.size = 'small';
 		this.tabStop = false;
 		this.text = '';

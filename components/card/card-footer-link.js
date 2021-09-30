@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../count-badge/count-badge-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -149,15 +150,18 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				hreflang="${ifDefined(this.hreflang)}"
 				rel="${ifDefined(this.rel)}"
 				target="${ifDefined(this.target)}"
-				type="${ifDefined(this.type)}">
-				<span class="d2l-offscreen">${this.text}</span>
+				type="${ifDefined(this.type)}"
+				aria-labelledby="icon-id">
 			</a>
-			<div class="d2l-card-footer-link-content">
-				<d2l-icon icon="${this.icon}"></d2l-icon>
-				<div class="d2l-card-footer-link-secondary-text-container">
-					<div class="d2l-card-footer-link-secondary-text" aria-hidden="true" ?hidden="${this._secondaryTextHidden}">${this.secondaryText}</div>
-				</div>
-			</div>
+			<d2l-count-badge-icon 
+				id="icon-id"
+				aria-hidden="true"
+				icon="${this.icon}" 
+				number="${this.secondaryText}" 
+				?has-tooltip="${this.tooltipText}" 
+				text="${this.text}"
+				type="${this.secondaryTextType}">
+			</d2l-count-badge-icon>
 		`;
 	}
 
