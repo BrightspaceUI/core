@@ -846,4 +846,71 @@ describe('d2l-filter', () => {
 			expect(searchSpy).to.be.calledWith(elem._dimensions[0]);
 		});
 	});
+
+	describe('esc behaviour in nested dimensions', () => {
+		it('clicking esc in the header goes back to the dimension list', async() => {
+			const elem = await fixture(multiDimensionFixture);
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+			await dropdownContent.updateComplete;
+			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
+
+			setTimeout(() => dropdown.toggleOpen());
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+
+			setTimeout(() => dimension.click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			expect(elem._activeDimensionKey).to.not.be.null;
+
+			const event = new CustomEvent('keyup', {
+				detail: 0,
+				bubbles: true,
+				cancelable: true,
+				composed: true
+			});
+			event.key = 'Escape';
+			event.keyCode = 27;
+
+			const returnButton = elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
+			setTimeout(() => returnButton.dispatchEvent(event));
+			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+			expect(elem._activeDimensionKey).to.be.null;
+			expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
+			expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
+			expect(dropdownContent.opened).to.be.true;
+		});
+
+		it('set dimension - clicking esc in the content goes back to the dimension list', async() => {
+			const elem = await fixture(multiDimensionFixture);
+			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+			await dropdownContent.updateComplete;
+			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
+
+			setTimeout(() => dropdown.toggleOpen());
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+
+			setTimeout(() => dimension.click());
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			expect(elem._activeDimensionKey).to.not.be.null;
+
+			const event = new CustomEvent('keyup', {
+				detail: 0,
+				bubbles: true,
+				cancelable: true,
+				composed: true
+			});
+			event.key = 'Escape';
+			event.keyCode = 27;
+
+			const firstListItem = elem.shadowRoot.querySelector('d2l-list-item');
+			firstListItem.focus();
+			setTimeout(() => firstListItem.dispatchEvent(event));
+			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+			expect(elem._activeDimensionKey).to.be.null;
+			expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
+			expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
+			expect(dropdownContent.opened).to.be.true;
+		});
+	});
 });
