@@ -153,7 +153,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		return this.hasTooltip ? undefined : this._textId;
 	}
 
-	renderCount(badgeId, numberStyles) {
+	renderCount(numberStyles) {
 		let numberString = `${this.number}`;
 		const hideNumber = this.hideZero && this.number === 0;
 		if (hideNumber) {
@@ -172,6 +172,11 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			<div class="d2l-count-badge-number" style=${styleMap(numberStyles)}>
 					<div aria-hidden="true">${numberString}</div>		
 			</div>
+		`;
+	}
+
+	renderTooltips(badgeId) {
+		return html`
 			${this.hasTooltip  ?
 		html`<d2l-tooltip aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>`
 		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}

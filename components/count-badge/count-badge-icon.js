@@ -26,7 +26,8 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 
 	static get styles() {
 		return [countBadgeStyles, css`
-		:host(.focus-visible) d2l-icon {
+		:host(.focus-visible) d2l-icon,
+		d2l-icon.focus-visible {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 			outline: none;
 		}
@@ -85,13 +86,14 @@ class CountBadgeIcon extends CountBadgeMixin(RtlMixin(LitElement)) {
 			top: numberPadding
 		};
 		return html`
-			${this.renderCount(this._badgeId, numberStyles)}
+			${this.renderCount(numberStyles)}
+			${this.renderTooltips(this._badgeId)}
 			<d2l-icon 
 				id="${this._badgeId}"
 				icon="${this.icon}" 
 				tabindex="${ifDefined((this.tabStop || this.hasTooltip) ? '0' : undefined)}" 
 				aria-labelledby="${ifDefined(this.getOffscreenId())}"
-				role="${ifDefined(this.hasTooltip ? 'img' : undefined)}">
+				role="img">
 			</d2l-icon>`;
 	}
 }

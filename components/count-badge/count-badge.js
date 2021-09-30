@@ -37,9 +37,10 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 			id="${this._badgeId}"
 			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
 			aria-labelledby="${ifDefined(this.getOffscreenId())}"
-			role="${ifDefined(!this.hasTooltip && !this.announceChanges ? 'img' : undefined)}">
-				${this.renderCount(this._badgeId)}
+			role="img">
+				${this.renderCount()}
 			</div>
+			${this.renderTooltips(this._badgeId)}
 		`;
 	}
 }
