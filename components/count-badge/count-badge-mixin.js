@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -165,7 +166,10 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		};
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}`;
+			numberString = formatNumber(numberString);
 			numberString = this.localize('components.count-badge.plus', { number: numberString });
+		} else if (!hideNumber) {
+			numberString = formatNumber(numberString);
 		}
 
 		return html`
@@ -178,8 +182,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	renderTooltips(badgeId) {
 		return html`
 			${this.hasTooltip  ?
-		html`<d2l-tooltip aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>`
-		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
+		html`<d2l-tooltip aria-atomic="true" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>`
+		: html`<span id="${this._textId}" aria-atomic="true" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
 		`;
 	}
 };

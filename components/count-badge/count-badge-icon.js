@@ -16,10 +16,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			icon: {
 				type: String,
 				reflect: true
-			},
-			_forceTooltipOn: {
-				type: Boolean
-			},
+			}
 		};
 	}
 
