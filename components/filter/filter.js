@@ -259,11 +259,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			</d2l-input-search>
 		`;
 
-		const selectAll = !dimension.selectAllIdPrefix || dimension.searchValue ? null : html`
+		const selectAll = !dimension.selectAllIdPrefix || dimension.searchValue || dimension.loading || this._isDimensionEmpty(dimension) ? null : html`
 			<div class="d2l-filter-dimension-select-all">
 				<d2l-selection-select-all
-					selection-for="${dimension.selectAllIdPrefix}${dimension.key}"
-					?disabled="${dimension.loading || this._isDimensionEmpty(dimension)}">
+					selection-for="${dimension.selectAllIdPrefix}${dimension.key}">
 				</d2l-selection-select-all>
 				<d2l-selection-summary
 					selection-for="${dimension.selectAllIdPrefix}${dimension.key}"

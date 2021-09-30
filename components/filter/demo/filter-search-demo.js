@@ -30,7 +30,7 @@ class FilterSearchDemo extends LitElement {
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
-				<d2l-filter-dimension-set key="event" text="Event on Search" search-type="manual">
+				<d2l-filter-dimension-set key="event" text="Event on Search" select-all search-type="manual">
 					${this._fullData.map(value => html`
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}

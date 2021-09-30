@@ -40,18 +40,18 @@ describe('d2l-filter', () => {
 	});
 
 	describe('loading', () => {
-		it('single set dimension - loading spinner and select all disabled', async() => {
+		it('single set dimension - loading spinner and select all hidden', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
 			const dim = elem.querySelector('d2l-filter-dimension-set');
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.be.null;
-			expect(elem.shadowRoot.querySelector('d2l-selection-select-all').disabled).to.be.false;
+			expect(elem.shadowRoot.querySelector('d2l-selection-select-all')).to.not.be.null;
 
 			dim.loading = true;
 			await oneEvent(elem, 'd2l-filter-dimension-data-change');
 			await elem.updateComplete;
 
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.not.be.null;
-			expect(elem.shadowRoot.querySelector('d2l-selection-select-all').disabled).to.be.true;
+			expect(elem.shadowRoot.querySelector('d2l-selection-select-all')).to.be.null;
 		});
 	});
 
