@@ -1,24 +1,46 @@
 import '../colors/colors.js';
-import '../icons/icon.js';
-import '../tooltip/tooltip.js';
 import { CountBadgeMixin, countBadgeStyles } from './count-badge-mixin.js';
-import { css, LitElement } from 'lit-element/lit-element.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 
-class CountBadge extends CountBadgeMixin(RtlMixin(LitElement)) {
+class CountBadge extends CountBadgeMixin(LitElement) {
 
 	static get styles() {
-		return [offscreenStyles, countBadgeStyles, css`
+		return [countBadgeStyles, css`
 		:host(.focus-visible) .d2l-count-badge-wrapper,
 		.d2l-count-badge-wrapper.focus-visible {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 		}
+
+		:host([size="small"]) .d2l-count-badge-wrapper {
+			border-radius: 0.65rem;
+			outline: none;
+		}
+		
+		:host([size="large"]) .d2l-count-badge-wrapper {
+			border-radius: 0.8rem;
+			outline: none;
+		}
 		`];
 	}
 
+	constructor() {
+		super();
+		this._badgeId = getUniqueId();
+	}
+
 	render() {
-		return this.renderCount();
+		return html`
+			<div 
+			class="d2l-count-badge-wrapper"
+			id="${this._badgeId}"
+			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
+			aria-labelledby="${ifDefined(this.getOffscreenId())}"
+			role="${ifDefined(!this.hasTooltip && !this.announceChanges ? 'img' : undefined)}">
+				${this.renderCount(this._badgeId)}
+			</div>
+		`;
 	}
 }
 

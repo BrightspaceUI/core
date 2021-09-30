@@ -1,14 +1,13 @@
 import '../colors/colors.js';
-import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map';
 
-export const countBadgeStyles = css`
+export const countBadgeStyles = [offscreenStyles, css`
 :host([hidden]) {
 	display: none;
 }
@@ -48,17 +47,7 @@ export const countBadgeStyles = css`
 	padding-left: 0.4rem;
 	padding-right: 0.4rem;
 }
-
-:host([size="small"]) .d2l-count-badge-wrapper {
-	border-radius: 0.65rem;
-	outline: none;
-}
-
-:host([size="large"]) .d2l-count-badge-wrapper {
-	border-radius: 0.8rem;
-	outline: none;
-}
-`;
+`];
 
 export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
@@ -149,8 +138,6 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		this.tabStop = false;
 		this.text = '';
 		this.type = 'count';
-
-		this._badgeId = getUniqueId();
 		this._textId = getUniqueId();
 	}
 
@@ -162,35 +149,32 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		}
 	}
 
-	renderCount(tooltipElement, forceTooltipOn) {
+	getOffscreenId() {
+		return this.hasTooltip ? undefined : this._textId;
+	}
+
+	renderCount(badgeId, numberStyles) {
 		let numberString = `${this.number}`;
 		const hideNumber = this.hideZero && this.number === 0;
 		if (hideNumber) {
 			numberString = '';
 		}
-		const numberVisibility = {
+		numberStyles = {
+			...numberStyles,
 			visibility: hideNumber ? 'hidden' : 'visible'
 		};
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}`;
 			numberString = this.localize('components.count-badge.plus', { number: numberString });
 		}
+
 		return html`
-			<div 
-			class="d2l-count-badge-wrapper"
-			id="${ifDefined(tooltipElement ? undefined : this._badgeId)}"
-			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && (!hideNumber || tooltipElement) ? '0' : undefined)}" 
-			aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this._textId)}"
-			role="${ifDefined((!tooltipElement || !this.hasTooltip) && !this.announceChanges ? 'img' : undefined)}">
-				<div class="d2l-count-badge-number"
-				style=${styleMap(numberVisibility)}>
-						<div aria-hidden="true">${numberString}</div>		
-				</div>
-				${tooltipElement}
-				${this.hasTooltip  ?
-		html`<d2l-tooltip id="${this._textId}" ?force-show="${forceTooltipOn}" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${this._badgeId}" for-type="label">${this.text}</d2l-tooltip>`
-		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
+			<div class="d2l-count-badge-number" style=${styleMap(numberStyles)}>
+					<div aria-hidden="true">${numberString}</div>		
 			</div>
-			`;
+			${this.hasTooltip  ?
+		html`<d2l-tooltip aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>`
+		: html`<span id="${this._textId}" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
+		`;
 	}
 };

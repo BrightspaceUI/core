@@ -52,7 +52,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge-icon.js';
 </script>
-<d2l-count-badge-icon size="small"  icon="tier1:gear" type="notification" text="100 new settings applied." number="100"></d2l-count-badge>
+<d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100"></d2l-count-badge>
 ```
 
 **Properties:**
@@ -60,7 +60,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 | Property | Type | Description |
 |--|--|--|
 | `number` | Number, required | The number to display on the badge.  Must be a positive integer. |
-| `icon` | String, required | The icon string to display with the count. |
+| `icon` | String, required | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
 | `size`, default: `small` | String | The size of the badge. Valid options are `"small"` and `"large"`. |
 | `type`, default: `count` | String | The type of the badge. Valid options are `"notification"` and `"count"`. Notification badges are orange and count badges are grey. |
 | `max-digits`, default: `2` when `type="notification"` | Number | Optionally specify a digit limit, after which numbers are truncated. Defaults to two for `"notification"` type and no limit for `"count"` type.
