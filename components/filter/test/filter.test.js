@@ -849,10 +849,10 @@ describe('d2l-filter', () => {
 
 	describe('esc behaviour with multiple dimensions', () => {
 		it('if there is no active dimension, do not change esc behaviour', async() => {
-			const elem = await fixture(multiDimensionFixture);
+			const elem = await fixture(singleSetDimensionFixture);
 			const hideStub = stub(elem, '_handleDimensionHide');
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content');
 			await dropdownContent.updateComplete;
 
 			setTimeout(() => dropdown.toggleOpen());
@@ -868,11 +868,11 @@ describe('d2l-filter', () => {
 			event.key = 'Escape';
 			event.keyCode = 27;
 
-			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
-			setTimeout(() => dimension.dispatchEvent(event));
+			const clearButton = elem.shadowRoot.querySelector('[slot="header"] d2l-button-subtle');
+			setTimeout(() => clearButton.dispatchEvent(event));
 			await oneEvent(dropdown, 'd2l-dropdown-close');
 			expect(dropdownContent.opened).to.be.false;
-			expect(hideStub).to.not.be.called;
+			expect(hideStub).to.not.have.been.called;
 		});
 
 		it('clicking esc in the header goes back to the dimension list', async() => {
