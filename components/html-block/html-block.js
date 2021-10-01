@@ -3,43 +3,6 @@ import { css, LitElement } from 'lit-element/lit-element.js';
 import { htmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
-let configuredIfrauClient;
-
-const getIfrauClient = async() => {
-	if (configuredIfrauClient === undefined && window.ifrauclient) {
-		configuredIfrauClient = await window.ifrauclient({
-			resizeFrame: false
-		}).connect();
-	}
-
-	return configuredIfrauClient;
-};
-
-let contextPromise;
-
-const getContext = () => {
-	if (contextPromise) return contextPromise;
-
-	contextPromise = new Promise(async resolve => { // eslint-disable-line no-async-promise-executor
-		const context = JSON.parse(document.documentElement.getAttribute('data-hb-context'));
-		if (window.ifrauclient) {
-			const ifrauClient = await getIfrauClient();
-			context.host = await ifrauClient.request('valenceHost');
-			resolve(context);
-		} else {
-			if (context) {
-				context.host = '';
-				resolve(context);
-			} else {
-				resolve();
-			}
-		}
-
-	});
-
-	return contextPromise;
-};
-
 let renderers;
 
 const getRenderers = () => {
@@ -188,9 +151,8 @@ class HtmlBlock extends LitElement {
 				let temp = document.createElement('div');
 				temp.appendChild(fragment);
 
-				const context = await getContext();
 				for (const render of HtmlBlock._renderers) {
-					temp = await render(temp, context);
+					temp = await render(temp);
 				}
 				this._renderContainer.innerHTML = temp.innerHTML;
 

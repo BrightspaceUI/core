@@ -1,13 +1,14 @@
 let mathJaxLoaded;
 
-export async function htmlBlockMathRenderer(elem, context) {
-	const isLatexSupported = context && context.renderLaTeX;
+export async function htmlBlockMathRenderer(elem) {
+	const context = JSON.parse(document.documentElement.getAttribute('data-mathjax-context')) || {};
+	const isLatexSupported = context.renderLaTeX;
 
 	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
 	const mathJaxConfig = {
 		renderLatex: isLatexSupported,
-		outputScale: (context && context.outputScale) || 1
+		outputScale: context.outputScale || 1
 	};
 
 	await loadMathJax(mathJaxConfig);
