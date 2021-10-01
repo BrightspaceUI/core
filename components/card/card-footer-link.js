@@ -8,6 +8,7 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 /**
  * An icon link that can be placed in the `footer` slot.
+ * @slot tooltip - Slot for the tooltip for the link
  */
 class CardFooterLink extends RtlMixin(LitElement) {
 
@@ -89,6 +90,9 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			[hidden] d2l-count-badge-icon {
 				display: none;
 			}
+			::slotted(d2l-tooltip) {
+				left: -4px !important;
+			}
 		`];
 	}
 
@@ -127,6 +131,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 					text="${this.text}"
 					type="${this.secondaryTextType}">
 				</d2l-count-badge-icon>
+				<slot name="tooltip"></slot>
 			</a>
 		`;
 	}

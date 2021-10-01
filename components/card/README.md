@@ -19,10 +19,12 @@ Used to surface pertinent information, cards make it easy for users to browse in
     <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
   </div>
   <div slot="footer">
-    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
-    <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
-    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
-    <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
+      <d2l-tooltip slot="tooltip" for="discussionsLink1">Discussions</d2l-tooltip>
+    </d2l-card-footer-link>
+    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1">
+      <d2l-tooltip slot="tooltip" position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    </d2l-card-footer-link>
   </div>
 </d2l-card>
 ```
@@ -90,10 +92,12 @@ Cards are composed of 3 sections. Each card will have a content section but is n
       <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
     </div>
     <div slot="footer">
-      <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
-      <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
-      <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
-      <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+      <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
+        <d2l-tooltip slot="tooltip" for="discussionsLink1">Discussions</d2l-tooltip>
+      </d2l-card-footer-link>
+      <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1">
+        <d2l-tooltip slot="tooltip" position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+      </d2l-card-footer-link>
     </div>
   </d2l-card>
 </div>
@@ -122,10 +126,12 @@ The `d2l-card` element is a container that provides specific layout using severa
     <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
   </div>
   <div slot="footer">
-    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
-    <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
-    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
-    <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
+      <d2l-tooltip slot="tooltip" for="discussionsLink1">Discussions</d2l-tooltip>
+    </d2l-card-footer-link>
+    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1">
+      <d2l-tooltip slot="tooltip" position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    </d2l-card-footer-link>
   </div>
 </d2l-card>
 ```
@@ -175,10 +181,12 @@ The `d2l-card-content-title` element is a helper for providing layout/style for 
     <d2l-card-content-title>Biology</d2l-card-content-title>
   </div>
   <div slot="footer">
-    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
-    <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
-    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
-    <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
+      <d2l-tooltip slot="tooltip" for="discussionsLink1">Discussions</d2l-tooltip>
+    </d2l-card-footer-link>
+    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1">
+      <d2l-tooltip slot="tooltip" position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    </d2l-card-footer-link>
   </div>
 </d2l-card>
 ```
@@ -202,10 +210,12 @@ The `d2l-card-content-meta` element is a helper for providing layout/style for a
     <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
   </div>
   <div slot="footer">
-    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
-    <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
-    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
-    <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
+      <d2l-tooltip slot="tooltip" for="discussionsLink1">Discussions</d2l-tooltip>
+    </d2l-card-footer-link>
+    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1">
+      <d2l-tooltip slot="tooltip" position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    </d2l-card-footer-link>
   </div>
 </d2l-card>
 ```
@@ -229,15 +239,23 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
     <d2l-card-content-meta>Science • Grade 11</d2l-card-content-meta>
   </div>
   <div slot="footer">
-    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2"></d2l-card-footer-link>
-    <d2l-tooltip for="discussionsLink1">Discussions</d2l-tooltip>
-    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1"></d2l-card-footer-link>
-    <d2l-tooltip position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    <d2l-card-footer-link id="discussionsLink1" icon="tier1:outcomes" text="Outcomes" secondary-text="2">
+      <d2l-tooltip slot="tooltip" for="discussionsLink1">Discussions</d2l-tooltip>
+    </d2l-card-footer-link>
+    <d2l-card-footer-link id="assignmentsLink1" icon="tier1:assignments" text="Assignments" secondary-text="1">
+      <d2l-tooltip slot="tooltip" position="top" style="width: 100%;" for="assignmentsLink1">You have 1 assignments due tomorrow.</d2l-tooltip>
+    </d2l-card-footer-link>
   </div>
 </d2l-card>
 ```
 
 <!-- docs: start hidden content -->
+### Slots
+
+| Slot | Type | Description |
+|--|--|--|
+| `tooltip` | required | The tooltip for the footer link. |
+
 ### Properties:
 
 | Property | Type | Description |
@@ -249,6 +267,7 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 | `rel` | String | Relationship of the target object to the link object |
 | `secondary-text` | String | Text to display as a superscript on the icon |
 | `secondary-text-type` | String | Controls the style of the secondary text bubble; options are `notification` and `count` |
+| `secondary-text-max-digits` | Number | Overrides the default maximum digits of the secondary text bubble (2 for `notification` and no limit for `count` type) |
 | `target` | String | Where to display the linked URL |
 
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
