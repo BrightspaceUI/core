@@ -27,6 +27,24 @@ const getLabel = labelElem => {
 	else return labelElem.textContent;
 };
 
+const waitForElement = async(contextElement, selector, timeout) => {
+	let elem = contextElement.querySelector(selector);
+	if (elem) return elem;
+
+	return new Promise(resolve => {
+		let elapsedTime = 0;
+		const intervalId = setInterval(() => {
+			elem = contextElement.querySelector(selector);
+			if (!elem) elapsedTime += 100;
+			if (elem || elapsedTime > timeout) {
+				clearInterval(intervalId);
+				resolve(elem);
+				return;
+			}
+		}, 100);
+	});
+};
+
 export const LabelMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -79,7 +97,7 @@ export const LabelledMixin = superclass => class extends superclass {
 		this._throwNoLabelExceptionImmediately = false;
 	}
 
-	updated(changedProperties) {
+	async updated(changedProperties) {
 		super.updated(changedProperties);
 
 		if (changedProperties.has('label')) {
@@ -92,7 +110,11 @@ export const LabelledMixin = superclass => class extends superclass {
 
 		if (!this.labelledBy) return;
 
+		// try to get the labelling element syncronously first
 		let labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
+		if (!labelElem) {
+			labelElem = await waitForElement(this.getRootNode(), `#${cssEscape(this.labelledBy)}`, 3000);
+		}
 
 		this._labelObserver = new MutationObserver(mutations => {
 
