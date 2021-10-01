@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
-	<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 	<script>
 		const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
 		if (rtl) document.documentElement.setAttribute('dir', 'rtl');
@@ -15,7 +14,6 @@
 	</script>
 	<title>d2l-switch</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta charset="UTF-8">
 	<style>
 		body {
@@ -23,6 +21,9 @@
 		}
 		.visual-diff {
 			width: 300px;
+		}
+		.d2l-background-color {
+			--d2l-switch-container-background-color: red;
 		}
 	</style>
 </head>
@@ -59,6 +60,8 @@
 	<div class="visual-diff">
 		<d2l-switch id="text-end" text="Test Text" text-position="end"></d2l-switch>
 	</div>
-
+	<div class="d2l-background-color visual-diff">
+		<d2l-switch id="background-color" on></d2l-switch>
+	</div>
 </body>
 </html>

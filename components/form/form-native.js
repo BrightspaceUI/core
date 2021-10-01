@@ -7,8 +7,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
  * These interactive controls are submitted using a native HTML form submission.
  * @slot - The native and custom form elements that participate in validation and submission
- * @fires submit - Dispatched when the form is submitted
- * @fires formdata - Dispatched after the entry list representing the form's data is constructed. This happens when the form is submitted.
+ * @fires submit - Dispatched when the form is submitted. Cancelling this event will prevent form submission.
  */
 class FormNative extends FormMixin(LitElement) {
 
@@ -16,6 +15,7 @@ class FormNative extends FormMixin(LitElement) {
 		return {
 			/**
 			 * The URL that processes the form submission.
+			 * @type {string}
 			 */
 			action: { type: String },
 			/**
@@ -109,6 +109,7 @@ class FormNative extends FormMixin(LitElement) {
 			form.appendChild(input);
 		}
 		const submit = this.dispatchEvent(new CustomEvent('submit', { bubbles: true, cancelable: true }));
+		/** Dispatched after the entry list representing the form's data is constructed. This happens when the form is submitted just prior to submission. The form data can be obtained from the `detail`'s `formData` property. */
 		this.dispatchEvent(new CustomEvent('formdata', { detail: { formData: new FormData(form) } }));
 		if (submit) {
 			form.submit();

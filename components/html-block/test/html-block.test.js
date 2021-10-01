@@ -76,7 +76,6 @@ describe('d2l-html-block', () => {
 
 	it('should not explode if no replacements', async() => {
 		const htmlBlock = await fixture(emptyReplacementFixture);
-		await htmlBlock.updateComplete; // legacy edge
 		expect(htmlBlock.shadowRoot.querySelector('.d2l-html-block-rendered').innerHTML)
 			.to.equal('');
 	});

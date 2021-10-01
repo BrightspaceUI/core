@@ -108,6 +108,10 @@ export const dropdownContentStyles = css`
 		width: 100vw;
 	}
 
+	d2l-focus-trap {
+		position: absolute;
+	}
+
 	:host([opened-above]) .d2l-dropdown-content-width {
 		bottom: 100%;
 	}
@@ -274,7 +278,6 @@ export const dropdownContentStyles = css`
 		animation: d2l-dropdown-mobile-tray-bottom-close 300ms ease-out;
 	}
 
-
 	:host([data-mobile][mobile-tray="left"][opened]) .d2l-dropdown-content-container,
 	:host([data-mobile][mobile-tray="right"][opened]) .d2l-dropdown-content-container {
 		height: 100vh;
@@ -283,7 +286,6 @@ export const dropdownContentStyles = css`
 	:host([data-mobile][mobile-tray]) > .d2l-dropdown-content-pointer {
 		display: none;
 	}
-
 
 	:host([data-mobile][mobile-tray][opened]) {
 		animation: none;

@@ -81,7 +81,7 @@ Run `npm run build` once, or any time icon or Sass files are changed.
 
 ### Running the demos
 
-Start an [es-dev-server](https://open-wc.org/developing/es-dev-server.html) that hosts the demo pages:
+Start a [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) that hosts the demo pages:
 
 ```shell
 npm start
@@ -110,7 +110,6 @@ npm test
 npm run test:headless
 
 # debug or run a subset of local unit tests
-# then navigate to `http://localhost:9876/debug.html`
 npm run test:headless:watch
 ```
 
@@ -127,13 +126,13 @@ If you'd like to run the tests locally to help troubleshoot or develop new tests
 npm install esm mocha puppeteer @brightspace-ui/visual-diff --no-save
 
 # run visual-diff tests
-mocha './**/*.visual-diff.js' -t 10000 --require esm
+npx mocha './**/*.visual-diff.js' -t 10000 --require esm
 
 # subset of visual-diff tests:
-mocha './**/*.visual-diff.js' -t 10000 --require esm -g some-pattern
+npx mocha './**/*.visual-diff.js' -t 10000 --require esm -g some-pattern
 
 # update visual-diff goldens
-mocha './**/*.visual-diff.js' -t 10000 --require esm --golden
+npx mocha './**/*.visual-diff.js' -t 10000 --require esm --golden
 ```
 
 ## Versioning & Releasing

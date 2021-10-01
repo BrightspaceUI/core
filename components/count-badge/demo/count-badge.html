@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../count-badge.js';
+			import '../../button/button.js';
+        </script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-count-badge">
+
+			<h2>Small Notification Badge</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-count-badge size="small" tab-stop text=" 1 new notification." type="notification" number="1"></d2l-count-badge>
+					<d2l-count-badge size="small"  text="10 new notifications."  type="notification" number="10"></d2l-count-badge>
+					<d2l-count-badge size="small"  text="100 new notifications." type="notification" number="100"></d2l-count-badge>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Small Notification Badge with live region</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-count-badge id="badge-announce-changes"size="small" announce-changes tab-stop text=" 1 new notification." type="notification" number="1"></d2l-count-badge>
+					<d2l-button id="increment-count">Increment Count</d2l-button>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Large Count Badge</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-count-badge size="large" text="1 new notification." type="count" number="1"></d2l-count-badge>
+					<d2l-count-badge size="large" text="10 new notifications." type="count" number="10"></d2l-count-badge>
+					<d2l-count-badge size="large" text="100 new notifications." type="count" number="100"></d2l-count-badge>
+					<d2l-count-badge size="large" text="777777 new notifications." type="count" number="777777"></d2l-count-badge>
+					<d2l-count-badge size="large" text="777777 new notifications."type="count" number="777777" max-digits="5"></d2l-count-badge>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Small Notification Badge with Tooltip</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-count-badge size="small" has-tooltip text=" 3 new notification." type="notification" number="1"></d2l-count-badge>
+				</template>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+		<script type="module">
+			document.getElementById('increment-count').addEventListener('click', () => {
+				document.getElementById('badge-announce-changes').number += 1;
+				document.getElementById('badge-announce-changes').text = `${document.getElementById('badge-announce-changes').number} new notifications.`;
+			});
+		</script>
+	</body>
+</html>

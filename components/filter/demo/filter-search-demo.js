@@ -11,16 +11,10 @@ const initialData = [
 
 class FilterSearchDemo extends LitElement {
 
-	static get properties() {
-		return {
-			_displayedData: { attribute: false, type: Array }
-		};
-	}
-
 	constructor() {
 		super();
-		this._fullData = initialData;
-		this._displayedData = initialData;
+		this._fullData = Array.from(initialData);
+		this._fullDataSingle = Array.from(initialData);
 	}
 
 	render() {
@@ -31,13 +25,18 @@ class FilterSearchDemo extends LitElement {
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
-				<d2l-filter-dimension-set key="none-select-all" text="No Search and Search All" search-type="none" select-all>
+				<d2l-filter-dimension-set key="none-select-all" text="No Search and Select All" search-type="none" select-all>
 					<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="instructor" text="Instructor"></d2l-filter-dimension-set-value>
 					<d2l-filter-dimension-set-value key="student" text="Student"></d2l-filter-dimension-set-value>
 				</d2l-filter-dimension-set>
-				<d2l-filter-dimension-set key="event" text="Event on Search" search-type="manual">
-					${this._displayedData.map(value => html`
+				<d2l-filter-dimension-set key="event" text="Event on Search" select-all search-type="manual">
+					${this._fullData.map(value => html`
+						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
+					`)}
+				</d2l-filter-dimension-set>
+				<d2l-filter-dimension-set key="event-single" text="Event on Search - Single" search-type="manual" selection-single>
+					${this._fullDataSingle.map(value => html`
 						<d2l-filter-dimension-set-value key="${value.key}" text="${value.text}" ?selected="${value.selected}"></d2l-filter-dimension-set-value>
 					`)}
 				</d2l-filter-dimension-set>
@@ -51,16 +50,27 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleFilterChange(e) {
-		(e.detail.changes.length === 1) ?
-			console.log(`Filter selection changed for dimension "${e.detail.changes[0].dimension}":`, e.detail.changes[0].value) : // eslint-disable-line no-console
-			console.log('Batch filter selection changed:', e.detail.changes); // eslint-disable-line no-console
+		if (e.detail.dimensions.length === 1) {
+			console.log(`Filter selection(s) changed for dimension "${e.detail.dimensions[0].dimensionKey}":`, e.detail.dimensions[0].changes); // eslint-disable-line no-console
+			if (e.detail.dimensions[0].cleared) console.log(`(Dimension "${e.detail.dimensions[0].dimensionKey}" cleared)`); // eslint-disable-line no-console
+		} else {
+			console.log('Multiple dimension selections changed:', e.detail.dimensions); // eslint-disable-line no-console
+		}
 
-		e.detail.changes.forEach(change => {
-			if (change.dimension !== 'event') return;
+		e.detail.dimensions.forEach(dimension => {
+			if (!dimension.dimensionKey.includes('event')) return;
 
-			this._fullData.find(value => value.key === change.value.key).selected = change.value.selected;
-			this._displayedData.find(value => value.key === change.value.key).selected = change.value.selected;
+			const dataToUpdate = dimension.dimensionKey === 'event-single' ? this._fullDataSingle : this._fullData;
+			if (dimension.cleared) {
+				dataToUpdate.forEach(value => value.selected = false);
+			} else {
+				dimension.changes.forEach(change => { dataToUpdate.find(value => value.key === change.valueKey).selected = change.selected; });
+			}
 		});
+
+		if (e.detail.allCleared) {
+			console.log('(All dimensions cleared)'); // eslint-disable-line no-console
+		}
 	}
 
 	_handleFirstOpen(e) {
@@ -69,23 +79,17 @@ class FilterSearchDemo extends LitElement {
 	}
 
 	_handleSearch(e) {
-		if (e.detail.key !== 'event') return;
+		if (!e.detail.key.includes('event')) return;
 
-		const displayedData = [];
+		const keysToDisplay = [];
 		this._fullData.forEach(value => {
-			if (e.detail.value === '') {
-				displayedData.push(value);
-			} else {
-				if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
-					displayedData.push(value);
-				}
+			if (value.text.toLowerCase().indexOf(e.detail.value.toLowerCase()) > -1) {
+				keysToDisplay.push(value.key);
 			}
 		});
 
-		this._displayedData = displayedData;
-
 		setTimeout(() => {
-			e.detail.searchCompleteCallback();
+			e.detail.searchCompleteCallback(keysToDisplay);
 			// eslint-disable-next-line no-console
 			console.log(`Filter dimension "${e.detail.key}" searched: ${e.detail.value}`);
 		}, 2000);

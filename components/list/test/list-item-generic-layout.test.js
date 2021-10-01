@@ -9,7 +9,7 @@ import sinon from 'sinon';
 
 const normalFixture = html`
 	<d2l-list grid>
-		<d2l-list-item selectable key="item1">
+		<d2l-list-item selectable key="item1" label="Test Label">
 			<div class="d2l-list-item-text d2l-body-compact">Identify categories of physical activities</div>
 			<div class="d2l-list-item-text-secondary d2l-body-small">Specific Expectation A1.2</div>
 		</d2l-list-item>
@@ -195,7 +195,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item2',
 				initial: () => layout.querySelector('[slot="content-action"] a'),
 				activeElement: getComposedActiveElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
 				expected: () => el.querySelector('[key="item1"]')
 					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
 			},
@@ -205,7 +205,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item4',
 				initial: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(2)'),
 				activeElement: () => document.activeElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item3"] d2l-button-icon:nth-child(2)'), 'focusin'),
 				expected: () => el.querySelector('[key="item3"] d2l-button-icon:nth-child(2)')
 			},
 			{
@@ -214,7 +214,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item4',
 				initial: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(4)'),
 				activeElement: () => document.activeElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item3"] d2l-button-icon:last-child'), 'focusin'),
 				expected: () => el.querySelector('[key="item3"] d2l-button-icon:last-child')
 			},
 			{
@@ -223,7 +223,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item1',
 				initial: () => layout.querySelector('[slot="content-action"] a'),
 				activeElement: getComposedActiveElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
 				expected: () => el.querySelector('[key="item2"]')
 					.shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
 			},
@@ -233,7 +233,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item3',
 				initial: () => el.querySelector('[key="item3"] d2l-button-icon:nth-child(2)'),
 				activeElement: () => document.activeElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item4"] d2l-button-icon:nth-child(2)'), 'focusin'),
 				expected: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(2)')
 			},
 			{
@@ -242,7 +242,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item4',
 				initial: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(4)'),
 				activeElement: () => document.activeElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item5"] d2l-button-icon:last-child'), 'focusin'),
 				expected: () => el.querySelector('[key="item5"] d2l-button-icon:last-child')
 			},
 			{
@@ -260,7 +260,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item4',
 				initial: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(2)'),
 				activeElement: getComposedActiveElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item1"]').shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'), 'focusin'),
 				expected: () => el.querySelector('[key="item1"]')
 					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
@@ -279,7 +279,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item4',
 				initial: () => layout.querySelector('d2l-selection-input'),
 				activeElement: () => document.activeElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item7"] d2l-button-icon:last-child'), 'focusin'),
 				expected: () => el.querySelector('[key="item7"] d2l-button-icon:last-child')
 			},
 			{
@@ -288,7 +288,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item7',
 				initial: () => layout.querySelector('d2l-selection-input'),
 				activeElement: getComposedActiveElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item2"]').shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'), 'focusin'),
 				expected: () => el.querySelector('[key="item2"]')
 					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
@@ -298,7 +298,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item4',
 				initial: () => layout.querySelector('d2l-selection-input'),
 				activeElement: getComposedActiveElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item1"]').shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'), 'focusin'),
 				expected: () => el.querySelector('[key="item1"]')
 					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
@@ -308,7 +308,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item1',
 				initial: () => layout.querySelector('d2l-selection-input'),
 				activeElement: getComposedActiveElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item6"]').shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'), 'focusin'),
 				expected: () => el.querySelector('[key="item6"]')
 					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			},
@@ -318,7 +318,7 @@ describe('d2l-list-item-generic-layout', () => {
 				itemKey: 'item4',
 				initial: () => layout.querySelector('d2l-selection-input'),
 				activeElement: getComposedActiveElement,
-				event: () => oneEvent(el, 'focusin'),
+				event: () => oneEvent(el.querySelector('[key="item7"]').shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'), 'focusin'),
 				expected: () => el.querySelector('[key="item7"]')
 					.shadowRoot.querySelector('d2l-list-item-generic-layout d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
 			}

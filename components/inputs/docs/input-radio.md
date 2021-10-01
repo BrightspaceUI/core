@@ -39,72 +39,81 @@ The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS
 
 For disabled items, add the `d2l-input-radio-label-disabled` class on the label and the `disabled` attribute on the input itself.
 
-<!-- docs: demo display:block -->
+<!-- docs: demo code display:block -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/demo/input-radio-label-test.js';
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
+  import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
+
+  class MyRadioElem extends RtlMixin(LitElement) {
+
+    static get styles() {
+      return radioStyles;
+    }
+
+    render() {
+      return html`
+        <label class="d2l-input-radio-label">
+          <input type="radio" name="myGroup" checked>
+          Option 1 (selected)
+        </label>
+        <label class="d2l-input-radio-label d2l-input-radio-label-disabled">
+          <input type="radio" name="myGroup" disabled>
+          Option 2 (disabled)
+        </label>
+        <label class="d2l-input-radio-label">
+          <input type="radio" name="myGroup">
+          Option 3
+        </label>
+      `;
+    }
+
+  }
+  customElements.define('d2l-my-radio-elem', MyRadioElem);
 </script>
-<d2l-test-input-radio-label></d2l-test-input-radio-label>
-```
-
-```javascript
-import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
-import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
-
-class MyElem extends RtlMixin(LitElement) {
-
-  static get styles() {
-    return radioStyles;
-  }
-
-  render() {
-    return html`
-      <label class="d2l-input-radio-label">
-        <input type="radio" name="myGroup" checked>
-        Option 1 (selected)
-      </label>
-      <label class="d2l-input-radio-label d2l-input-radio-label-disabled">
-        <input type="radio" name="myGroup" disabled>
-        Option 2 (disabled)
-      </label>
-      <label class="d2l-input-radio-label">
-        <input type="radio" name="myGroup">
-        Option 3
-      </label>
-    `;
-  }
-
-}
+<d2l-my-radio-elem></d2l-my-radio-elem>
 ```
 
 ## Individual Radio Inputs
 
 If you'd like to manually link the radio input with a label, or use an ARIA label, place the `d2l-radio-input` CSS class on the input itself to style it. For example:
 
-```javascript
-import { radioStyles } from './input-radio-styles.js';
-
-class MyElem extends LitElement {
-
-  static get styles() {
-    return radioStyles;
-  }
-
-  render() {
-    return html`
-      <input type="radio" class="d2l-input-radio" aria-label="Option 1">
-    `;
-  }
-
-}
-```
-
-The example below uses a component similar to that in the code above which allows toggling of properties in order to see what those styles look like.
-
 <!-- docs: demo live name:d2l-test-input-radio-solo display:block -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/demo/input-radio-solo-test.js';
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
+
+  class MyRadioElem extends LitElement {
+
+    static get properties() {
+      return {
+        checked: { type: Boolean },
+        disabled: { type: Boolean },
+        invalid: { type: Boolean }
+      };
+    }
+
+    static get styles() {
+      return radioStyles;
+    }
+
+    render() {
+      const invalid = this.invalid ? 'true' : 'false';
+      return html`
+        <input
+          aria-invalid="${invalid}"
+          aria-label="Option 1"
+          ?checked="${this.checked}"
+          class="d2l-input-radio"
+          ?disabled="${this.disabled}"
+          type="radio">
+      `;
+    }
+
+  }
+  customElements.define('d2l-test-input-radio-solo', MyRadioElem);
 </script>
 <d2l-test-input-radio-solo></d2l-test-input-radio-solo>
 ```
@@ -113,33 +122,31 @@ The example below uses a component similar to that in the code above which allow
 
 To align related content below radio buttons, the `d2l-input-radio-spacer` element can be used:
 
-<!-- docs: demo display:block -->
+<!-- docs: demo code display:block -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/demo/input-radio-spacer-test.js';
+  import '@brightspace-ui/core/components/inputs/input-radio-spacer.js';
+  import { html, LitElement } from 'lit-element/lit-element.js';
+  import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
+
+  class MyRadioElem extends LitElement {
+
+    static get styles() {
+      return radioStyles;
+    }
+
+    render() {
+      return html`
+      <input type="radio" class="d2l-input-radio" aria-label="Option 1"> Option 1
+      <d2l-input-radio-spacer>
+      Additional content can go here and will
+      line up nicely with the edge of the radio.
+      </d2l-input-radio-spacer>
+      `;
+    }
+
+  }
+  customElements.define('d2l-my-radio-spacer-elem', MyRadioElem);
 </script>
-<d2l-test-input-radio-spacer></d2l-test-input-radio-spacer>
-```
-
-```javascript
-import '@brightspace-ui/core/components/inputs/input-radio-spacer.js';
-import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
-
-class MyElem extends LitElement {
-
-  static get styles() {
-    return radioStyles;
-  }
-
-  render() {
-    return html`
-	  <input type="radio" class="d2l-input-radio" aria-label="Option 1">
-	  <d2l-input-radio-spacer>
-		Additional content can go here and will
-		line up nicely with the edge of the radio.
-	  </d2l-input-radio-spacer>
-    `;
-  }
-
-}
+<d2l-my-radio-spacer-elem></d2l-my-radio-spacer-elem>
 ```

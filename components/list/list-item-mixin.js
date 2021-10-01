@@ -30,10 +30,12 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		return {
 			/**
 			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
+			 * @type {array}
 			 */
 			breakpoints: { type: Array },
 			/**
 			 * Whether to render the list-item with reduced whitespace.
+			 * @type {boolean}
 			 */
 			slim: { type: Boolean },
 			_breakpoint: { type: Number },
@@ -142,6 +144,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 				border-radius: 0;
 				color: var(--d2l-list-item-content-text-color);
 			}
+
 			.d2l-list-item-actions-container {
 				padding: 0.55rem 0;
 			}
@@ -275,6 +278,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 	}
 
 	updated(changedProperties) {
+		super.updated(changedProperties);
 		if (changedProperties.has('breakpoints')) {
 			this.resizedCallback(this.offsetWidth);
 		}
@@ -383,6 +387,9 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 						@mouseleave="${this._onMouseLeave}"
 						class="d2l-list-item-actions-container">
 						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
+					</div>
+					<div slot="nested">
+						<slot name="nested" @slotchange="${this._onNestedSlotChange}"></slot>
 					</div>
 				</d2l-list-item-generic-layout>
 				<div class="d2l-list-item-active-border"></div>

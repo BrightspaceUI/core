@@ -5,7 +5,7 @@ import { runConstructor } from '../../../tools/constructor-test-helper.js';
 import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-time label="label text"></d2l-input-time>';
-const fixtureWithValue = '<d2l-input-time value="11:22:33"></d2l-input-time>';
+const fixtureWithValue = '<d2l-input-time value="11:22:33" label="label text"></d2l-input-time>';
 const hourLongIntervals = '<d2l-input-time label="label text" time-interval="sixty"></d2l-input-time>';
 const hourLongIntervalsEnforced = '<d2l-input-time label="label text" time-interval="sixty" enforce-time-intervals></d2l-input-time>';
 const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden time-interval="sixty"></d2l-input-time>';
@@ -16,6 +16,10 @@ function dispatchEvent(elem, eventType, composed) {
 		{ bubbles: true, cancelable: false, composed: composed }
 	);
 	getInput(elem).dispatchEvent(e);
+}
+
+function getChildElem(elem, selector) {
+	return elem.shadowRoot.querySelector(selector);
 }
 
 function getInput(elem) {
@@ -251,6 +255,50 @@ describe('d2l-input-time', () => {
 			elem.value = '2:01:00';
 			await elem.updateComplete;
 			expect(elem.value).to.equal('03:00:00');
+		});
+	});
+
+	describe('open and close behaviour', () => {
+		describe('interacting with opened', () => {
+			let dropdown, dropdownContent, elem;
+
+			beforeEach(async() => {
+				elem = await fixture(basicFixture);
+				elem.opened = true;
+				await elem.updateComplete;
+				dropdown = getChildElem(elem, 'd2l-dropdown');
+				dropdownContent = getChildElem(elem, 'd2l-dropdown-menu');
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+			});
+
+			it('should open dropdown when true', async() => {
+				expect(dropdownContent.opened).to.be.true;
+			});
+
+			it('should close dropdown when false', async() => {
+				expect(dropdownContent.opened).to.be.true;
+				elem.opened = false;
+				await elem.updateComplete;
+				await oneEvent(dropdown, 'd2l-dropdown-close');
+				expect(dropdownContent.opened).to.be.false;
+			});
+		});
+
+		describe('interacting with dropdown', () => {
+
+			it('should set opened to true when dropdown opened with enter', async() => {
+				const elem = await fixture(basicFixture);
+
+				const dropdown = getChildElem(elem, 'd2l-dropdown');
+				const dropdownOpener = getChildElem(elem, '.d2l-dropdown-opener');
+
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keydown', true, true);
+				eventObj.keyCode = 13;
+				dropdownOpener.dispatchEvent(eventObj);
+				await oneEvent(dropdown, 'd2l-dropdown-open');
+				expect(elem.opened).to.be.true;
+			});
 		});
 	});
 

@@ -19,16 +19,19 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 </d2l-filter>
 ```
 
-**Properties:**
+**Properties**
 
 | Property | Type | Description |
 |--|--|--|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener for the filter |
 
 **Events:**
-* `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple changes)
+* `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple dimensions and multiple changes in each)
 * `d2l-filter-dimension-first-open`: dispatched when a dimension is opened for the first time (if there is only one dimension, this will be dispatched when the dropdown is first opened)
 * `d2l-filter-dimension-search`: dispatched when a dimension that supports searching and has the "manual" search-type is searched
+
+**Accessibility**
+The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propogated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
 
 ## Filter Dimension Types
 
@@ -56,19 +59,20 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 #### d2l-filter-dimension-set
 
-**Properties:**
+**Properties**
 
 | Property | Type | Description |
 |--|--|--|
 | `key` | String, required | Unique identifier for the dimension |
 | `loading` | Boolean | Whether the values for this dimension are still loading and a loading spinner should be displayed |
-| `search-type` | String, default: `automatic` | `automatic` provides basic case-insensitive text comparison searching, `none` disables the search input, and `manual` fires an event for the consumer to handle the search and removal of the values as needed  |
+| `search-type` | String, default: `automatic` | `automatic` provides basic case-insensitive text comparison searching, `none` disables the search input, and `manual` fires an event for the consumer to handle the search and pass the keys of the values to be displayed |
 | `select-all` | Boolean | Whether to show a select all checkbox and selection summary for this dimension  |
+| `selection-single` | Boolean | Whether only one value can be selected at a time for this dimension  |
 | `text` | String, required | Text for the dimension in the menu |
 
 #### d2l-filter-dimension-set-value
 
-**Properties:**
+**Properties**
 
 | Property | Type | Description |
 |--|--|--|

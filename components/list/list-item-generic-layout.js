@@ -42,6 +42,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			role: { type: String, reflect: true },
 			/**
 			 * Specifies whether the grid is active or not
+			 * @type {boolean}
 			 */
 			gridActive: { type: Boolean, attribute: 'grid-active' }
 		};
@@ -55,10 +56,16 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 					[start outside-control-start] minmax(0, min-content)
 					[control-start outside-control-end] minmax(0, min-content)
 					[control-end content-start] minmax(0, auto)
-					[content-end actions-start] minmax(0, max-content)
+					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
+				grid-template-rows: [main-start] [main-end nested-start] [nested-end];
 				position: relative;
 				z-index: 0;
+			}
+
+			::slotted([slot="nested"]) {
+				grid-column: content-start / end;
+				grid-row: nested-start / nested-end;
 			}
 
 			::slotted([slot="outside-control"]),
@@ -79,6 +86,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 			::slotted([slot="content"]) {
 				grid-column: content-start / content-end;
+			}
+
+			slot[name="actions"] {
+				white-space: nowrap;
 			}
 
 			::slotted([slot="actions"]) {
@@ -143,8 +154,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 			<slot name="control" class="d2l-cell" data-cell-num="4"></slot>
 			<slot name="actions" class="d2l-cell" data-cell-num="6"></slot>
-
 			<slot name="content" @focus="${this._preventFocus}"></slot>
+			<slot name="nested"></slot>
 		`;
 	}
 
@@ -411,13 +422,15 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 	}
 
-	_setFocusInfo(event) {
+	_setFocusInfo(e) {
+		e.stopPropagation();
 		if (!this.gridActive) return;
-		const slot = (event.path || event.composedPath()).find(node =>
+		const slot = (e.path || e.composedPath()).find(node =>
 			node.nodeName === 'SLOT' && node.classList.contains('d2l-cell'));
 		this._cellNum = parseInt(slot.getAttribute('data-cell-num'));
-		this._cellFocusedItem = this._getFocusedItemPosition(event.target);
+		this._cellFocusedItem = this._getFocusedItemPosition(e.target);
 	}
+
 }
 
 customElements.define('d2l-list-item-generic-layout', ListItemGenericLayout);

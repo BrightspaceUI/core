@@ -1,5 +1,6 @@
 import '../backdrop/backdrop.js';
 import '../button/button.js';
+import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getBoundingAncestor, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
@@ -8,6 +9,7 @@ import { html } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const minBackdropHeightMobile = 42;
@@ -159,6 +161,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'opened-above'
 			},
 			/**
+ 			* Optionally render a d2l-focus-trap around the dropdown content
+ 			*/
+			trapFocus: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'trap-focus'
+			},
+			/**
 			 * Provide custom offset, positive or negative
 			 */
 			verticalOffset: {
@@ -220,6 +230,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.noPaddingHeader = false;
 		this.noPointer = false;
 		this.mobileBreakpointOverride = 616;
+		this.trapFocus = false;
 		this._useMobileStyling = false;
 
 		this.__opened = false;
@@ -312,7 +323,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this.opened = false;
 		};
 
-		if (!reduceMotion && this.mediaQueryList.matches && this.mobileTray && isVisible(this)) {
+		if (!reduceMotion && this._useMobileStyling && this.mobileTray && isVisible(this)) {
 			this.shadowRoot.querySelector('.d2l-dropdown-content-width')
 				.addEventListener('animationend', hide, { once: true });
 			this._closing = true;
@@ -341,14 +352,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		this.__applyFocus = applyFocus !== undefined ? applyFocus : true;
 		this.opened = true;
 		await this.updateComplete;
-		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this._useMobileStyling && this.mobileTray;
 	}
 
 	async resize() {
 		if (!this.opened) {
 			return;
 		}
-		this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
+		this._showBackdrop = this._useMobileStyling && this.mobileTray;
 		await this.__position();
 	}
 
@@ -493,12 +504,12 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 
 			await this.__position();
-			this._showBackdrop = this.mediaQueryList.matches && this.mobileTray;
+			this._showBackdrop = this._useMobileStyling && this.mobileTray;
 
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
-					// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+					// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
 					requestAnimationFrame(() => focusable.focus());
 				} else {
 					content.setAttribute('tabindex', '-1');
@@ -515,7 +526,13 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			});
 		};
 
+		const ifrauBackdropService = await tryGetIfrauBackdropService();
+
 		if (newValue) {
+
+			if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
+				this._ifrauContextInfo = await ifrauBackdropService.showBackdrop();
+			}
 
 			await doOpen();
 
@@ -524,6 +541,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (this.__dismissibleId) {
 				clearDismissible(this.__dismissibleId);
 				this.__dismissibleId = null;
+			}
+			if (ifrauBackdropService && this.mobileTray && this._useMobileStyling) {
+				ifrauBackdropService.hideBackdrop();
+				this._ifrauContextInfo = null;
 			}
 			this._showBackdrop = false;
 			await this.updateComplete;
@@ -680,6 +701,220 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return constrained;
 	}
 
+	_getBottomTrayStyling() {
+
+		let maxHeightOverride;
+		let availableHeight = Math.min(window.innerHeight, window.screen.height);
+		if (this._ifrauContextInfo) availableHeight = this._ifrauContextInfo.availableHeight;
+		// default maximum height for bottom tray (42px margin)
+		const mobileTrayMaxHeightDefault = availableHeight - minBackdropHeightMobile;
+		if (this.maxHeight) {
+			// if maxWidth provided is smaller, use the maxWidth
+			maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
+		} else {
+			maxHeightOverride = mobileTrayMaxHeightDefault;
+		}
+		maxHeightOverride = `${maxHeightOverride}px`;
+
+		let bottomOverride;
+		if (this._ifrauContextInfo) {
+			// Bottom override is measured as
+			// the distance from the bottom of the screen
+			const screenHeight =
+				window.innerHeight
+				- this._ifrauContextInfo.availableHeight
+				+ Math.min(this._ifrauContextInfo.top, 0);
+			bottomOverride = `${screenHeight}px`;
+		}
+
+		const widthOverride = '100vw';
+
+		const widthStyle = {
+			minWidth: widthOverride,
+			width: widthOverride,
+			maxHeight: maxHeightOverride,
+			bottom: bottomOverride
+		};
+
+		const contentWidthStyle = {
+			/* set width of content in addition to width container so header and footer borders are full width */
+			width: widthOverride
+		};
+
+		const headerStyle = {
+			...contentWidthStyle,
+			minHeight: this._hasHeader ? 'auto' : '5px'
+		};
+
+		const footerStyle = {
+			...contentWidthStyle,
+			minHeight: this._hasFooter || !this.noMobileCloseButton ? 'auto' : '5px'
+		};
+
+		const contentStyle = {
+			...contentWidthStyle,
+			maxHeight: maxHeightOverride,
+			overflowY: this._contentOverflow ? 'auto' : 'hidden'
+		};
+
+		const closeButtonStyles = {
+			display: !this.noMobileCloseButton ? 'inline-block' : 'none',
+			width: this._getTrayFooterWidth(),
+			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
+			margin: this._getTrayFooterMargin()
+		};
+
+		return {
+			'width' : widthStyle,
+			'header' : headerStyle,
+			'footer' : footerStyle,
+			'content' : contentStyle,
+			'close' : closeButtonStyles
+		};
+	}
+
+	_getDropdownStyling() {
+		const widthStyle = {
+			maxWidth: this.maxWidth ? `${this.maxWidth}px` : '',
+			minWidth: this.minWidth ? `${this.minWidth}px` : '',
+			/* add 2 to content width since scrollWidth does not include border */
+			width: this._width ? `${this._width + 20}px` : ''
+		};
+
+		const contentWidthStyle = {
+			minWidth: this.minWidth ? `${this.minWidth}px` : '',
+			/* set width of content in addition to width container so header and footer borders are full width */
+			width: this._width ? `${this._width + 18}px` : '',
+		};
+
+		const contentStyle = {
+			...contentWidthStyle,
+			maxHeight: this._contentHeight ? `${this._contentHeight}px` : '',
+			overflowY: this._contentOverflow ? 'auto' : 'hidden'
+		};
+
+		const closeButtonStyle = {
+			display: 'none',
+		};
+
+		return {
+			'width' : widthStyle,
+			'content' : contentStyle,
+			'close' : closeButtonStyle,
+			'header' : contentWidthStyle,
+			'footer' : contentWidthStyle
+		};
+	}
+
+	_getLeftRightTrayStyling() {
+
+		let maxWidthOverride = this.maxWidth;
+		let availableWidth = Math.min(window.innerWidth, window.screen.width);
+		if (this._ifrauContextInfo) availableWidth = this._ifrauContextInfo.availableWidth;
+		// default maximum width for tray (30px margin)
+		const mobileTrayMaxWidthDefault = Math.min(availableWidth - minBackdropWidthMobile, 420);
+		if (maxWidthOverride) {
+			// if maxWidth provided is smaller, use the maxWidth
+			maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
+		} else {
+			maxWidthOverride = mobileTrayMaxWidthDefault;
+		}
+
+		let minWidthOverride = this.minWidth;
+		// minimum size - 285px
+		const mobileTrayMinWidthDefault = 285;
+		if (minWidthOverride) {
+			// if minWidth provided is smaller, use the minumum width for tray
+			minWidthOverride = Math.max(mobileTrayMinWidthDefault, minWidthOverride);
+		} else {
+			minWidthOverride = mobileTrayMinWidthDefault;
+		}
+
+		// if no width property set, automatically size to maximum width
+		let widthOverride = this._width ? this._width : maxWidthOverride;
+		// ensure width is between minWidth and maxWidth
+		if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
+		if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
+
+		maxWidthOverride = `${maxWidthOverride}px`;
+		minWidthOverride = `${minWidthOverride}px`;
+		const  contentWidth = `${widthOverride + 18}px`;
+		/* add 2 to content width since scrollWidth does not include border */
+		const containerWidth = `${widthOverride + 20}px`;
+
+		let maxHeightOverride = '';
+		if (this._ifrauContextInfo) maxHeightOverride = `${this._ifrauContextInfo.availableHeight}px`;
+
+		let topOverride;
+		if (this._ifrauContextInfo) {
+			// if inside iframe, use ifrauContext top as top of screen
+			topOverride = `${this._ifrauContextInfo.top < 0 ? -this._ifrauContextInfo.top : 0}px`;
+		} else if (window.innerHeight > window.screen.height) {
+			// non-responsive page, manually override top to scroll distance
+			topOverride = window.pageYOffset;
+		}
+
+		let rightOverride;
+		let leftOverride;
+		if (this.mobileTray === 'right') {
+			// On non-responsive pages, the innerWidth may be wider than the screen,
+			// override right to stick to right of viewport
+			rightOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+		}
+		if (this.mobileTray === 'left') {
+			// On non-responsive pages, the innerWidth may be wider than the screen,
+			// override left to stick to left of viewport
+			leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+		}
+
+		const widthStyle = {
+			maxWidth: maxWidthOverride,
+			minWidth: minWidthOverride,
+			width: containerWidth,
+			maxHeight: maxHeightOverride,
+			top: topOverride,
+			right: rightOverride,
+			left: leftOverride,
+		};
+
+		const contentWidthStyle = {
+			minWidth: minWidthOverride,
+			/* set width of content in addition to width container so header and footer borders are full width */
+			width: contentWidth,
+		};
+
+		const headerStyle = {
+			...contentWidthStyle,
+			minHeight: this._hasHeader ? 'auto' : '5px'
+		};
+
+		const footerStyle = {
+			...contentWidthStyle,
+			minHeight: this._hasFooter || !this.noMobileCloseButton ? 'auto' : '5px'
+		};
+
+		const contentStyle = {
+			...contentWidthStyle,
+			maxHeight: maxHeightOverride,
+			overflowY: this._contentOverflow ? 'auto' : 'hidden'
+		};
+
+		const closeButtonStyles = {
+			display: !this.noMobileCloseButton ? 'inline-block' : 'none',
+			width: this._getTrayFooterWidth(),
+			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
+			margin: this._getTrayFooterMargin()
+		};
+
+		return {
+			'width' : widthStyle,
+			'header' : headerStyle,
+			'footer' : footerStyle,
+			'content' : contentStyle,
+			'close' : closeButtonStyles
+		};
+	}
+
 	_getOpenedAbove(spaceAround, spaceAroundScroll, spaceRequired) {
 		if (spaceAround.below >= spaceRequired.height) {
 			return false;
@@ -735,12 +970,52 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		return null;
 	}
 
-	_handleMobileResize() {
+	_getTrayFooterMargin() {
+		let footerMargin;
+		if (this._hasFooter) {
+			footerMargin = '0';
+		} else if (this.getAttribute('dir') === 'rtl') {
+			footerMargin = '-20px -20px -20px 0px';
+		} else {
+			footerMargin = '-20px 0 -20px -20px';
+		}
+		return footerMargin;
+	}
+
+	_getTrayFooterWidth() {
+		let footerWidth;
+		if (this.noPaddingFooter) {
+			footerWidth = 'calc(100% - 24px)';
+		} else if (this._hasFooter) {
+			footerWidth = '100%';
+		} else {
+			footerWidth = 'calc(100% + 16px)';
+		}
+		return footerWidth;
+	}
+
+	_handleFocusTrapEnter() {
+		if (this.__applyFocus && !this.noAutoFocus) {
+			const content = this.__getContentContainer();
+			const focusable = getFirstFocusableDescendant(content);
+			if (focusable) {
+				// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
+				requestAnimationFrame(() => focusable.focus());
+			} else {
+				content.setAttribute('tabindex', '-1');
+				content.focus();
+			}
+		}
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
+	}
+
+	async _handleMobileResize() {
 		this._useMobileStyling =  this.mediaQueryList.matches;
+		if (this.opened) this._showBackdrop = this._useMobileStyling && this.mobileTray;
+		if (this.opened) await this.__position();
 	}
 
 	_renderContent() {
-
 		const positionStyle = {};
 		const isRTL = this.getAttribute('dir') === 'rtl';
 		if (this._position) {
@@ -751,130 +1026,22 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 
-		const specialMobileStyle = this.mediaQueryList.matches && this.mobileTray;
-		const mobileTrayRightLeft = this.mediaQueryList.matches && (this.mobileTray === 'right' || this.mobileTray === 'left');
-		const mobileTrayBottom = this.mediaQueryList.matches && (this.mobileTray === 'bottom');
+		const mobileTrayRightLeft = this._useMobileStyling && (this.mobileTray === 'right' || this.mobileTray === 'left');
+		const mobileTrayBottom = this._useMobileStyling && (this.mobileTray === 'bottom');
 
-		let maxWidthOverride = this.maxWidth;
-		if (mobileTrayRightLeft) {
-			// default maximum width for tray (30px margin)
-			const mobileTrayMaxWidthDefault = Math.min(window.innerWidth - minBackdropWidthMobile, 420);
-			if (maxWidthOverride) {
-				// if maxWidth provided is smaller, use the maxWidth
-				maxWidthOverride = Math.min(mobileTrayMaxWidthDefault, maxWidthOverride);
-			} else {
-				maxWidthOverride = mobileTrayMaxWidthDefault;
-			}
-		} else if (mobileTrayBottom) {
-			maxWidthOverride = '100vw';
-		}
-
-		let minWidthOverride = this.minWidth;
-		if (mobileTrayRightLeft) {
-			// minimum size - 285px
-			const mobileTrayMinWidthDefault = 285;
-			if (minWidthOverride) {
-				// if minWidth provided is smaller, use the minumum width for tray
-				minWidthOverride = Math.max(mobileTrayMinWidthDefault, minWidthOverride);
-			} else {
-				minWidthOverride = mobileTrayMinWidthDefault;
-			}
-		} else if (mobileTrayBottom) {
-			minWidthOverride = 'calc(100vw - 2px)';
-		}
-
-		// set to max width
-		let widthOverride;
-		if (!specialMobileStyle) {
-			widthOverride = this._width;
-			if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
-			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
-			maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
-			minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
-		} else if (mobileTrayRightLeft) {
-			widthOverride = this._width ? this._width : maxWidthOverride;
-			if (widthOverride && maxWidthOverride && widthOverride > (maxWidthOverride - 20)) widthOverride = maxWidthOverride - 20;
-			if (widthOverride && minWidthOverride && widthOverride < (minWidthOverride - 20)) widthOverride = minWidthOverride - 20;
-			maxWidthOverride = maxWidthOverride ? `${maxWidthOverride}px` : undefined;
-			minWidthOverride = minWidthOverride ? `${minWidthOverride}px` : undefined;
-		} else {
-			widthOverride = undefined;
-		}
-
-		let maxHeightOverride;
-		if (mobileTrayRightLeft) {
-			maxHeightOverride = '';
-		} else if (mobileTrayBottom) {
-			// default maximum height for tray (42px margin)
-			const mobileTrayMaxHeightDefault = window.innerHeight - minBackdropHeightMobile;
-			if (this.maxHeight) {
-				// if maxWidth provided is smaller, use the maxWidth
-				maxHeightOverride = Math.min(mobileTrayMaxHeightDefault, this.maxHeight);
-			} else {
-				maxHeightOverride = mobileTrayMaxHeightDefault;
-			}
-			maxHeightOverride = `${maxHeightOverride}px`;
-		} else {
-			maxHeightOverride = this._contentHeight ? `${this._contentHeight}px` : 'none';
-		}
-
-		let contentWidth;
-		let containerWidth;
+		let stylesMap;
 		if (mobileTrayBottom) {
-			contentWidth = 'calc(100vw - 2px)';
-			containerWidth = '100vw';
-		} else if (!specialMobileStyle && !this._width) {
-			contentWidth = '';
-			containerWidth = '';
+			stylesMap = this._getBottomTrayStyling();
+		} else if (mobileTrayRightLeft) {
+			stylesMap = this._getLeftRightTrayStyling();
 		} else {
-			contentWidth = `${widthOverride + 18}px`;
-			/* add 2 to content width since scrollWidth does not include border */
-			containerWidth = `${widthOverride + 20}px`;
+			stylesMap = this._getDropdownStyling();
 		}
-
-		const widthStyle = {
-			maxWidth: maxWidthOverride ? `${maxWidthOverride}` : '',
-			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
-			width: containerWidth,
-			maxHeight: mobileTrayBottom ? maxHeightOverride : '',
-		};
-
-		const contentWidthStyle = {
-			minWidth: minWidthOverride ? `${minWidthOverride}` : '',
-			/* set width of content in addition to width container so IE will render scroll inside border */
-			width: contentWidth,
-		};
-
-		const contentStyle = {
-			...contentWidthStyle,
-			maxHeight: maxHeightOverride,
-			overflowY: this._contentOverflow ? 'auto' : 'hidden'
-		};
-
-		let footerWidth;
-		if (this.noPaddingFooter) {
-			footerWidth = 'calc(100% - 24px)';
-		} else if (this._hasFooter) {
-			footerWidth = '100%';
-		} else {
-			footerWidth = 'calc(100% + 16px)';
-		}
-
-		let footerMargin;
-		if (this._hasFooter) {
-			footerMargin = '0';
-		} else if (isRTL) {
-			footerMargin = '-20px -20px -20px 0px';
-		} else {
-			footerMargin = '-20px 0 -20px -20px';
-		}
-
-		const closeButtonStyles = {
-			display: specialMobileStyle && !this.noMobileCloseButton ? 'inline-block' : 'none',
-			width: footerWidth,
-			padding: this._hasFooter && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
-			margin: footerMargin
-		};
+		const widthStyle = stylesMap['width'];
+		const headerStyle = stylesMap['header'];
+		const footerStyle = stylesMap['footer'];
+		const contentStyle = stylesMap['content'];
+		const closeButtonStyles = stylesMap['close'];
 
 		const topClasses = {
 			'd2l-dropdown-content-top': true,
@@ -884,33 +1051,51 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const bottomClasses = {
 			'd2l-dropdown-content-bottom': true,
 			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
-			'd2l-dropdown-content-footer': this._hasFooter || (specialMobileStyle && !this.noMobileCloseButton)
+			'd2l-dropdown-content-footer': this._hasFooter || (this._useMobileStyling && this.mobileTray && !this.noMobileCloseButton)
 		};
 
-		const dropdown =  html`
-			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
-				<div  
-				id="d2l-dropdown-wrapper" 
-				class="d2l-dropdown-content-width" 
-				style=${styleMap(widthStyle)}
-				 ?data-closing="${this._closing}">
-					<div class=${classMap(topClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
-					</div>
-					<div class="d2l-dropdown-content-container" style=${styleMap(contentStyle)} @scroll=${this.__toggleScrollStyles}>
-						<slot class="d2l-dropdown-content-slot"></slot>
-					</div>
-					<div class=${classMap(bottomClasses)} style=${styleMap(contentWidthStyle)}>
-						<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
-						<d2l-button
-							style=${styleMap(closeButtonStyles)}
-							@click=${this.close}>
-							${this.localize('components.dropdown.close')}
-						</d2l-button>
-					</div>
+		let dropdownContentSlots = html`	
+			<div  
+			id="d2l-dropdown-wrapper" 
+			class="d2l-dropdown-content-width" 
+			style=${styleMap(widthStyle)}
+			?data-closing="${this._closing}">				
+				<div class=${classMap(topClasses)} style=${styleMap(headerStyle)}>
+					<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
+				</div>
+				<div 
+				class="d2l-dropdown-content-container"
+				style=${styleMap(contentStyle)}
+				@scroll=${this.__toggleScrollStyles}>
+					<slot class="d2l-dropdown-content-slot"></slot>
+				</div>
+				<div class=${classMap(bottomClasses)} style=${styleMap(footerStyle)}>
+					<slot name="footer" @slotchange="${this.__handleFooterSlotChange}"></slot>
+					<d2l-button
+						class="dropdown-close-btn"
+						style=${styleMap(closeButtonStyles)}
+						@click=${this.close}>
+						${this.localize('components.dropdown.close')}
+					</d2l-button>
 				</div>
 			</div>
 		`;
+
+		if (this.trapFocus) {
+			dropdownContentSlots = html`
+			<d2l-focus-trap
+			@d2l-focus-trap-enter="${this._handleFocusTrapEnter}"
+			?trap="${this.opened}">
+			${dropdownContentSlots}
+			</d2l-focus-trap>`;
+		}
+
+		const dropdown =  html`
+			<div class="d2l-dropdown-content-position" style=${styleMap(positionStyle)}>
+					 ${dropdownContentSlots}
+			</div>
+		`;
+
 		return (this.mobileTray) ? html`
 			${dropdown}
 			<d2l-backdrop

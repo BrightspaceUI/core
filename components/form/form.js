@@ -6,14 +6,16 @@ import { FormMixin } from './form-mixin.js';
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
  * Values of these interactive controls are aggregated but the user is responsible for handling submission via the @d2l-form-submit event.
  * @slot - The native and custom form elements that participate in validation and submission
- * @fires d2l-form-submit - Dispatched when the form is submitted
  */
 class Form extends FormMixin(LitElement) {
 
 	static get properties() {
 		return {
 			/**
-			 * Prevents the form from being validated and submitted when an ancestor form is validated or submitted
+			 * Indicates that the form should opt-out of nesting.
+			 * This means that it will not be submitted or validated if an ancestor form is submitted or validated.
+			 * However, directly submitting or validating a form with `no-nesting` will still trigger submission and validation for its descendant forms unless they also opt-out using `no-nesting`.
+			 * @type {boolean}
 			 */
 			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
 		};
@@ -35,16 +37,19 @@ class Form extends FormMixin(LitElement) {
 		this._isSubForm = false;
 		this._nestedForms = new Map();
 
+		/** @ignore */
 		this.addEventListener('d2l-form-connect', this._onFormConnect);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
+		/** @ignore */
 		this._isSubForm = !this.dispatchEvent(new CustomEvent('d2l-form-connect', { bubbles: true, composed: true, cancelable: true }));
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-form-disconnected'));
 		this._isSubForm = false;
 	}
@@ -99,6 +104,7 @@ class Form extends FormMixin(LitElement) {
 			if (errorSummary) {
 				this.updateComplete.then(() => errorSummary.focus());
 			}
+			/** Dispatched when the form fails validation. The error map can be obtained from the `detail`'s `errors` property. */
 			this.dispatchEvent(new CustomEvent('d2l-form-invalid', { detail: { errors: flattenedErrorMap } }));
 		}
 		return flattenedErrorMap;
@@ -154,6 +160,7 @@ class Form extends FormMixin(LitElement) {
 				}
 			}
 		}
+		/** Dispatched when the form is submitted. The form data can be obtained from the `detail`'s `formData` property. */
 		this.dispatchEvent(new CustomEvent('d2l-form-submit', { detail: { formData } }));
 	}
 

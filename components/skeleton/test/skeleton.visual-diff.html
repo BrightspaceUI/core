@@ -3,7 +3,6 @@
 	<head>
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 		<link rel="stylesheet" href="../../../test/sass.output.css" type="text/css">
-		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script>
 			const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
 			if (rtl) document.documentElement.setAttribute('dir', 'rtl');
@@ -16,10 +15,20 @@
 			import '../demo/skeleton-test-link.js';
 			import '../demo/skeleton-test-paragraph.js';
 			import '../demo/skeleton-test-width.js';
+			import '../demo/skeleton-test-stack.js';
 		</script>
+		<style>
+			#stack-1 {
+				line-height: 1em;
+				margin: -0.5em;
+				position: absolute;
+				top: 0;
+				width: 100%;
+				z-index: 1;
+			}
+		</style>
 		<title>d2l-skeleton</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
 	</head>
 	<body class="d2l-typography">
@@ -103,6 +112,10 @@
 		</div>
 		<div class="visual-diff">
 			<d2l-test-skeleton-width id="width" skeleton></d2l-test-skeleton-width>
+		</div>
+		<div class="visual-diff" id="stack" style="position: relative;">
+			<div id="stack-1">Stack 1: 1</div>
+			<d2l-test-skeleton-stack skeleton></d2l-test-skeleton-stack>
 		</div>
 	</body>
 </html>

@@ -2,7 +2,6 @@
 <html lang="en">
 	<head>
 		<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
-		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '../../colors/colors.js';
 			import '../../button/button-icon.js';
@@ -18,7 +17,6 @@
 		</script>
 		<title>d2l-list</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta charset="UTF-8">
 	</head>
 	<body class="d2l-typography">
@@ -350,6 +348,141 @@
 					<d2l-list-item>Item 2</d2l-list-item>
 					<d2l-list-item>
 						Item 3
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px">
+			<div class="visual-diff" id="nested-none-selected">
+				<d2l-list>
+					<d2l-list-item selectable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
+						</d2l-list-item-content>
+						<div slot="actions">
+							<button>action 1</button>
+							<button>action 2</button>
+						</div>
+						<d2l-list slot="nested" separators="between">
+							<d2l-list-item selectable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item selectable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested" separators="between">
+									<d2l-list-item selectable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+								<d2l-list>
+							</d2l-list-item>
+						<d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px">
+			<div class="visual-diff" id="nested-some-selected">
+				<d2l-list>
+					<d2l-list-item selectable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
+						</d2l-list-item-content>
+						<div slot="actions">
+							<button>action 1</button>
+							<button>action 2</button>
+						</div>
+						<d2l-list slot="nested" separators="between">
+							<d2l-list-item selectable key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item selectable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested" separators="between">
+									<d2l-list-item selectable key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable selected key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+								<d2l-list>
+							</d2l-list-item>
+						<d2l-list>
+					</d2l-list-item>
+				</d2l-list>
+			</div>
+		</div>
+
+		<div style="width: 600px">
+			<div class="visual-diff" id="nested-all-selected">
+				<d2l-list>
+					<d2l-list-item selectable key="L1-1">
+						<d2l-list-item-content>
+							<div>Level 1, Item 1</div>
+							<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
+						</d2l-list-item-content>
+						<div slot="actions">
+							<button>action 1</button>
+							<button>action 2</button>
+						</div>
+						<d2l-list slot="nested" separators="between">
+							<d2l-list-item selectable selected key="L2-1">
+								<d2l-list-item-content>
+									<div>Level 2, Item 1</div>
+									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+								</d2l-list-item-content>
+							</d2l-list-item>
+							<d2l-list-item selectable key="L2-2">
+								<d2l-list-item-content>
+									<div>Level 2, Item 2</div>
+									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested" separators="between">
+									<d2l-list-item selectable selected key="L3-1">
+										<d2l-list-item-content>
+											<div>Level 3, Item 1</div>
+											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable selected key="L3-2">
+										<d2l-list-item-content>
+											<div>Level 3, Item 2</div>
+											<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+										</d2l-list-item-content>
+									</d2l-list-item>
+								<d2l-list>
+							</d2l-list-item>
+						<d2l-list>
 					</d2l-list-item>
 				</d2l-list>
 			</div>

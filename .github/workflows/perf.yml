@@ -1,0 +1,19 @@
+name: Performance
+on: pull_request
+jobs:
+  build:
+    name: Performance
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm run test:perf

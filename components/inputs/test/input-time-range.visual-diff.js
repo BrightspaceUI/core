@@ -2,6 +2,27 @@ import { getRectTooltip } from './input-helper.js';
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
+async function getRect(page, selector, timePickerIndex) {
+	return await page.$eval(selector, (elem, timePickerIndex) => {
+		const input = elem.shadowRoot.querySelectorAll('d2l-input-time')[timePickerIndex];
+		const content = input.shadowRoot.querySelector('[dropdown-content]');
+		const opener = content.__getOpener();
+		const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
+		const openerRect = opener.getBoundingClientRect();
+		const contentRect = contentWidth.getBoundingClientRect();
+		const x = Math.min(openerRect.x, contentRect.x);
+		const y = Math.min(openerRect.y, contentRect.y);
+		const width = Math.max(openerRect.right, contentRect.right) - x;
+		const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
+		return {
+			x: x - 10,
+			y: y - 10,
+			width: width + 20,
+			height: height + 20
+		};
+	}, timePickerIndex);
+}
+
 describe('d2l-input-time-range', () => {
 
 	const visualDiff = new VisualDiff('input-time-range', __dirname);
@@ -13,6 +34,10 @@ describe('d2l-input-time-range', () => {
 		page = await visualDiff.createPage(browser, { viewport: { width: 800, height: 2300 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/components/inputs/test/input-time-range.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
+
+		// #opened being opened causes issues with focus with other time inputs being opened.
+		// Putting this first in case tests are run in isolation.
+		await page.$eval('#opened', (elem) => elem.removeAttribute('start-opened'));
 	});
 
 	after(async() => await browser.close());
@@ -43,6 +68,33 @@ describe('d2l-input-time-range', () => {
 		await page.$eval('#basic', (elem) => elem.focus());
 		const rect = await visualDiff.getRect(page, '#basic');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	describe.skip('opened behavior', () => {
+
+		before(async() => {
+			await page.reload();
+			await page.$eval('#opened', async(elem) => await elem.updateComplete);
+		});
+
+		after(async() => {
+			await page.$eval('#opened', (elem) => elem.endOpened = false);
+		});
+
+		it('intially start opened', async function() {
+			const rect = await getRect(page, '#opened', 0);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
+
+		it('end opened', async function() {
+			await page.$eval('#opened', async(elem) => {
+				elem.removeAttribute('start-opened');
+				elem.endOpened = true;
+				await elem.updateComplete;
+			});
+			const rect = await getRect(page, '#opened', 1);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 	});
 
 	describe('validation', () => {
@@ -102,36 +154,15 @@ describe('d2l-input-time-range', () => {
 				});
 
 				after(async() => {
-					await page.reload();
+					await page.$eval('#basic', (elem) => elem.shadowRoot.querySelectorAll('d2l-input-time')[1].opened = false);
 				});
-
-				async function getRect(page, timePickerIndex) {
-					return await page.$eval('#basic', (elem, timePickerIndex) => {
-						const input = elem.shadowRoot.querySelectorAll('d2l-input-time')[timePickerIndex];
-						const content = input.shadowRoot.querySelector('[dropdown-content]');
-						const opener = content.__getOpener();
-						const contentWidth = content.shadowRoot.querySelector('.d2l-dropdown-content-width');
-						const openerRect = opener.getBoundingClientRect();
-						const contentRect = contentWidth.getBoundingClientRect();
-						const x = Math.min(openerRect.x, contentRect.x);
-						const y = Math.min(openerRect.y, contentRect.y);
-						const width = Math.max(openerRect.right, contentRect.right) - x;
-						const height = Math.max(openerRect.bottom, contentRect.bottom) - y;
-						return {
-							x: x - 10,
-							y: y - 10,
-							width: width + 20,
-							height: height + 20
-						};
-					}, timePickerIndex);
-				}
 
 				it('open start', async function() {
 					await page.$eval('#basic', (elem) => {
 						elem.focus();
 					});
 					await page.keyboard.press('Enter');
-					const rect = await getRect(page, 0);
+					const rect = await getRect(page, '#basic', 0);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 
@@ -155,7 +186,7 @@ describe('d2l-input-time-range', () => {
 					});
 					await page.keyboard.press('Tab');
 					await page.keyboard.press('Enter');
-					const rect = await getRect(page, 1);
+					const rect = await getRect(page, '#basic', 1);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 				});
 			});
