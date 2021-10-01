@@ -2,7 +2,7 @@ let mathJaxLoaded;
 
 export async function htmlBlockMathRenderer(elem) {
 	const context = JSON.parse(document.documentElement.getAttribute('data-mathjax-context')) || {};
-	const isLatexSupported = context.renderLaTeX;
+	const isLatexSupported = context.renderLatex;
 
 	if (!elem.querySelector('math') && !(isLatexSupported && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
