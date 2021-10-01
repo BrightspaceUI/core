@@ -847,8 +847,8 @@ describe('d2l-filter', () => {
 		});
 	});
 
-	describe('esc behaviour with multiple dimensions', () => {
-		it('if there is no active dimension, do not change esc behaviour', async() => {
+	describe('return behaviour with multiple dimensions', () => {
+		it('if there is no active dimension, do not change esc close behaviour', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
 			const hideStub = stub(elem, '_handleDimensionHide');
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
@@ -875,69 +875,71 @@ describe('d2l-filter', () => {
 			expect(hideStub).to.not.have.been.called;
 		});
 
-		it('clicking esc in the header goes back to the dimension list', async() => {
-			const elem = await fixture(multiDimensionFixture);
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-			await dropdownContent.updateComplete;
-			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
+		[{ key: 'Escape', keyCode: 27 }, { key: 'ArrowLeft', keyCode: 37 }].forEach(testCase => {
+			it(`clicking ${testCase.key} in the header goes back to the dimension list`, async() => {
+				const elem = await fixture(multiDimensionFixture);
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+				await dropdownContent.updateComplete;
+				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
-			setTimeout(() => dropdown.toggleOpen());
-			await oneEvent(dropdown, 'd2l-dropdown-open');
+				setTimeout(() => dropdown.toggleOpen());
+				await oneEvent(dropdown, 'd2l-dropdown-open');
 
-			setTimeout(() => dimension.click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			expect(elem._activeDimensionKey).to.not.be.null;
+				setTimeout(() => dimension.click());
+				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+				expect(elem._activeDimensionKey).to.not.be.null;
 
-			const event = new CustomEvent('keyup', {
-				detail: 0,
-				bubbles: true,
-				cancelable: true,
-				composed: true
+				const event = new CustomEvent('keyup', {
+					detail: 0,
+					bubbles: true,
+					cancelable: true,
+					composed: true
+				});
+				event.key = testCase.key;
+				event.keyCode = testCase.keyCode;
+
+				const returnButton = elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
+				setTimeout(() => returnButton.dispatchEvent(event));
+				await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+				expect(elem._activeDimensionKey).to.be.null;
+				expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
+				expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
+				expect(dropdownContent.opened).to.be.true;
 			});
-			event.key = 'Escape';
-			event.keyCode = 27;
 
-			const returnButton = elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]');
-			setTimeout(() => returnButton.dispatchEvent(event));
-			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
-			expect(elem._activeDimensionKey).to.be.null;
-			expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
-			expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
-			expect(dropdownContent.opened).to.be.true;
-		});
+			it(`set dimension - clicking ${testCase.key} in the content goes back to the dimension list`, async() => {
+				const elem = await fixture(multiDimensionFixture);
+				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
+				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
+				await dropdownContent.updateComplete;
+				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
-		it('set dimension - clicking esc in the content goes back to the dimension list', async() => {
-			const elem = await fixture(multiDimensionFixture);
-			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-			await dropdownContent.updateComplete;
-			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
+				setTimeout(() => dropdown.toggleOpen());
+				await oneEvent(dropdown, 'd2l-dropdown-open');
 
-			setTimeout(() => dropdown.toggleOpen());
-			await oneEvent(dropdown, 'd2l-dropdown-open');
+				setTimeout(() => dimension.click());
+				await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+				expect(elem._activeDimensionKey).to.not.be.null;
 
-			setTimeout(() => dimension.click());
-			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
-			expect(elem._activeDimensionKey).to.not.be.null;
+				const event = new CustomEvent('keyup', {
+					detail: 0,
+					bubbles: true,
+					cancelable: true,
+					composed: true
+				});
+				event.key = testCase.key;
+				event.keyCode = testCase.keyCode;
 
-			const event = new CustomEvent('keyup', {
-				detail: 0,
-				bubbles: true,
-				cancelable: true,
-				composed: true
+				const firstListItem = elem.shadowRoot.querySelector('d2l-list-item');
+				firstListItem.focus();
+				setTimeout(() => firstListItem.dispatchEvent(event));
+				await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+				expect(elem._activeDimensionKey).to.be.null;
+				expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
+				expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
+				expect(dropdownContent.opened).to.be.true;
 			});
-			event.key = 'Escape';
-			event.keyCode = 27;
-
-			const firstListItem = elem.shadowRoot.querySelector('d2l-list-item');
-			firstListItem.focus();
-			setTimeout(() => firstListItem.dispatchEvent(event));
-			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
-			expect(elem._activeDimensionKey).to.be.null;
-			expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
-			expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
-			expect(dropdownContent.opened).to.be.true;
 		});
 	});
 });
