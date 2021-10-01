@@ -2,10 +2,10 @@ import '../colors/colors.js';
 import '../count-badge/count-badge-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { forceFocusVisible } from '../../helpers/focus.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-
 /**
  * An icon link that can be placed in the `footer` slot.
  */
@@ -37,6 +37,10 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 * Secondary text to display as a superscript on the icon
 			 */
 			secondaryText: { type: String, attribute: 'secondary-text', reflect: true },
+			/**
+			 * Maximum digits to display in the secondary text. Defaults to no limit
+			 */
+			secondaryTextMaxDigits: { type: String, attribute: 'secondary-text-max-digits' },
 			/**
 			 * Controls the style of the secondary text bubble; options are 'notification' and 'count'
 			 */
@@ -74,63 +78,15 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				margin-right: 0;
 				right: 0.15rem;
 			}
-			.d2l-card-footer-link-content {
-				display: inline-block;
-				line-height: 0;
-				padding: 0.6rem;
-				position: relative;
-				text-align: center;
-			}
 			a {
 				box-sizing: border-box;
 				display: inline-block;
 				height: 100%;
 				outline: none;
-				position: absolute;
 				width: 100%;
 				z-index: 1;
 			}
-			a[href]:focus + .d2l-card-footer-link-content > d2l-icon,
-			a[href]:hover + .d2l-card-footer-link-content > d2l-icon {
-				color: var(--d2l-color-celestine);
-			}
-			d2l-icon {
-				height: 0.9rem;
-				width: 0.9rem;
-			}
-			.d2l-card-footer-link-secondary-text {
-				border-radius: 0.75rem;
-				box-shadow: 0 0 0 1px white;
-				box-sizing: content-box;
-				display: inline-block;
-				font-size: 0.55rem;
-				font-weight: 400;
-				line-height: 100%;
-				min-width: 0.5rem;
-				padding: 2px;
-				position: relative;
-			}
-			.d2l-card-footer-link-secondary-text-container {
-				position: absolute;
-				right: 1rem;
-				top: 0;
-				width: 1px;
-			}
-			:host([dir="rtl"]) .d2l-card-footer-link-secondary-text-container {
-				left: 1rem;
-				right: auto;
-			}
-			:host([secondary-text-type="notification"]) .d2l-card-footer-link-secondary-text {
-				background-color: var(--d2l-color-carnelian-minus-1);
-				border: 2px solid var(--d2l-color-carnelian-minus-1);
-				color: white;
-			}
-			:host([secondary-text-type="count"]) .d2l-card-footer-link-secondary-text {
-				background-color: var(--d2l-color-gypsum);
-				border: 2px solid var(--d2l-color-gypsum);
-				color: var(--d2l-color-ferrite);
-			}
-			[hidden].d2l-card-footer-link-secondary-text {
+			[hidden] d2l-count-badge-icon {
 				display: none;
 			}
 		`];
@@ -143,6 +99,16 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		this._secondaryTextHidden = true;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('focus', this._onFocus);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('focus', this._onFocus);
+	}
+
 	render() {
 		return html`
 			<a ?download="${this.download}"
@@ -150,18 +116,18 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				hreflang="${ifDefined(this.hreflang)}"
 				rel="${ifDefined(this.rel)}"
 				target="${ifDefined(this.target)}"
-				type="${ifDefined(this.type)}"
-				aria-labelledby="icon-id">
+				type="${ifDefined(this.type)}">
+				<d2l-count-badge-icon 
+					id="${this._countBadgeId}"
+					tab-stop
+					icon="${this.icon}"
+					max-digits="${ifDefined(this.secondaryTextMaxDigits ? this.secondaryTextMaxDigits : undefined)}"
+					number="${this._secondaryTextHidden ? 0 : this.secondaryText}" 
+					?hide-zero="${this._secondaryTextHidden}"
+					text="${this.text}"
+					type="${this.secondaryTextType}">
+				</d2l-count-badge-icon>
 			</a>
-			<d2l-count-badge-icon 
-				id="icon-id"
-				aria-hidden="true"
-				icon="${this.icon}" 
-				number="${this.secondaryText}" 
-				?has-tooltip="${this.tooltipText}" 
-				text="${this.text}"
-				type="${this.secondaryTextType}">
-			</d2l-count-badge-icon>
 		`;
 	}
 
@@ -171,10 +137,9 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		this._secondaryTextHidden = !(this.secondaryText && this.secondaryText.length > 0);
 	}
 
-	focus() {
-		const elem = this.shadowRoot.querySelector('a');
-		if (!elem) return;
-		elem.focus();
+	_onFocus() {
+		const icon = this.shadowRoot.querySelector('d2l-count-badge-icon');
+		forceFocusVisible(icon);
 	}
 
 }

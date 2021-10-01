@@ -1,3 +1,4 @@
+/*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
@@ -22,18 +23,19 @@ describe('d2l-card-footer-link', () => {
 
 	[
 		{ name: 'no-secondary', selector: '#no-secondary' },
-		{ name: 'no-secondary-focus', selector: '#no-secondary', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
+		{ name: 'no-secondary-focus', selector: '#no-secondary', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
 		{ name: 'secondary-notification', selector: '#secondary-notification' },
-		{ name: 'secondary-notification-focus', selector: '#secondary-notification', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
+		{ name: 'secondary-notification-focus', selector: '#secondary-notification', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
 		{ name: 'secondary-notification-rtl', selector: '#secondary-notification-rtl' },
 		{ name: 'secondary-count', selector: '#secondary-count' },
-		{ name: 'secondary-count-focus', selector: '#secondary-count', action: (selector) => page.$eval(selector, (elem) => elem.focus()) },
-		{ name: 'secondary-count-focus-rtl', selector: '#secondary-count-rtl', action: (selector) => page.$eval(selector, (elem) => elem.focus()) }
+		{ name: 'secondary-count-focus', selector: '#secondary-count', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
+		{ name: 'secondary-count-focus-rtl', selector: '#secondary-count-rtl', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) }
 	].forEach((info) => {
 
 		it(info.name, async function() {
 			const rect = await visualDiff.getRect(page, info.selector);
 			if (info.action) await info.action(info.selector);
+			await page.waitForTimeout(200);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

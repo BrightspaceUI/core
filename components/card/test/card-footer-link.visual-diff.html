@@ -5,6 +5,8 @@
 	<script type="module">
 		import '../../typography/typography.js';
 		import '../card-footer-link.js';
+		import { forceFocusVisible } from '../../../helpers/focus.js';
+		window.forceFocusVisible = forceFocusVisible;
 	</script>
 	<title>d2l-card-footer-link</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,19 +27,19 @@
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-notification" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="notification"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-notification" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-type="notification"></d2l-card-footer-link>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-count" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="count"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-count" icon="tier1:gear" tooltip-text="text here" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-max-digits="2" secondary-text-type="count"></d2l-card-footer-link>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-notification-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="notification" dir="rtl"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-notification-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-type="notification" dir="rtl"></d2l-card-footer-link>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-count-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="99+" secondary-text-type="count" dir="rtl"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-count-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text-max-digits="2" secondary-text="100" secondary-text-type="count" dir="rtl"></d2l-card-footer-link>
 	</div>
 
 </body>
