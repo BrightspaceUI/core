@@ -93,65 +93,88 @@ export const LabelledMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
+		this._labelElem = null;
 		this._missingLabelErrorHasBeenThrown = false;
 		this._throwNoLabelExceptionImmediately = false;
 	}
 
 	async updated(changedProperties) {
+
 		super.updated(changedProperties);
 
 		if (changedProperties.has('label')) {
-			this._validateLabel();
+			const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
+			if (!hasLabel) {
+				if (this.labelledBy) {
+					if (this._labelElem) {
+						this._throwError(
+							new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but its label is empty`)
+						);
+					}
+				} else {
+					this._throwError(
+						new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is missing a required "label" attribute`)
+					);
+				}
+			}
 		}
 
 		if (!changedProperties.has('labelledBy')) return;
 
-		if (this._labelObserver) this._labelObserver.disconnect();
-
-		if (!this.labelledBy) return;
-
-		// try to get the labelling element syncronously first
-		let labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
-		if (!labelElem) {
-			labelElem = await waitForElement(this.getRootNode(), `#${cssEscape(this.labelledBy)}`, 3000);
+		if (!this.labelledBy) {
+			this._updateLabelElem(null);
+		} else {
+			const labelElem = await waitForElement(this.getRootNode(), `#${cssEscape(this.labelledBy)}`, 3000);
+			if (!labelElem) {
+				this._throwError(
+					new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but no such element exists`)
+				);
+			}
+			this._updateLabelElem(labelElem);
 		}
 
-		this._labelObserver = new MutationObserver(mutations => {
+	}
 
-			mutations.forEach(mutation => {
+	_throwError(err) {
+		if (this._missingLabelErrorHasBeenThrown) return;
+		this._missingLabelErrorHasBeenThrown = true;
+		// we don't want to prevent rendering
+		if (!this._throwNoLabelExceptionImmediately) {
+			setTimeout(() => { throw err; });
+		// just for testing so we can actually catch it
+		} else {
+			throw err;
+		}
+	}
 
-				if (mutation.removedNodes.length > 0 && Array.from(mutation.removedNodes).indexOf(labelElem) !== -1) {
-					labelElem = null;
-				}
+	_updateLabelElem(labelElem) {
 
-				if (mutation.addedNodes.length > 0) {
-					labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
-					return;
-				}
-
-			});
-
-			if (labelElem) {
-				this.label = getLabel(labelElem);
-				// TODO: how to validate empty label?
-			} else {
-				this.label = undefined;
-				this._validateLabel();
-			}
-
-		});
-
-		if (!labelElem) {
-			this._validateLabel();
+		if (labelElem === this._labelElem) {
+			// setting textContent doesn't change labelElem but we do need to refetch the label
+			this.label = getLabel(this._labelElem);
 			return;
 		}
-		const ancestor = getCommonAncestor(this, labelElem);
+		this._labelElem = labelElem;
 
-		/* assumption: the labelling element will not change from a native to a custom element
-		or vice versa, which allows the use of a more optimal observer configuration */
-		if (isCustomElement(labelElem)) {
+		if (this._labelObserver) this._labelObserver.disconnect();
+		if (!this._labelElem) {
+			this.label = undefined;
+			return;
+		}
+
+		this._labelObserver = new MutationObserver(() => {
+			this._updateLabelElem(
+				this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`)
+			);
+		});
+
+		const ancestor = getCommonAncestor(this, this._labelElem);
+
+		// assumption: the labelling element will not change from a native to a custom element
+		// or vice versa, which allows the use of a more optimal observer configuration
+		if (isCustomElement(this._labelElem)) {
 			this._labelObserver.observe(ancestor, {
-				attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
+				attributes: true, // required for legacy-Edge, otherwise attributeFilter throws a syntax error
 				attributeFilter: ['_label'],
 				childList: true,
 				subtree: true
@@ -164,35 +187,7 @@ export const LabelledMixin = superclass => class extends superclass {
 			});
 		}
 
-		this.label = getLabel(labelElem);
-
-	}
-
-	_validateLabel() {
-
-		if (this._missingLabelErrorHasBeenThrown) return true;
-
-		const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
-		if (hasLabel) return true;
-
-		this._missingLabelErrorHasBeenThrown = true;
-
-		let err = null;
-		if (this.labelledBy) {
-			err = new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but no such element exists or its label is empty`);
-		} else {
-			err = new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is missing a required "label" attribute`);
-		}
-
-		// we don't want to prevent rendering
-		if (!this._throwNoLabelExceptionImmediately) {
-			setTimeout(() => { throw err; });
-		// just for testing so we can actually catch it
-		} else {
-			throw err;
-		}
-
-		return false;
+		this.label = getLabel(this._labelElem);
 
 	}
 
