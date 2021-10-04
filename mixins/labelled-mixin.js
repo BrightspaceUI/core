@@ -148,11 +148,12 @@ export const LabelledMixin = superclass => class extends superclass {
 
 	_updateLabelElem(labelElem) {
 
-		if (labelElem === this._labelElem) {
-			// setting textContent doesn't change labelElem but we do need to refetch the label
+		// setting textContent doesn't change labelElem but we do need to refetch the label
+		if (labelElem === this._labelElem && this._labelElem) {
 			this.label = getLabel(this._labelElem);
 			return;
 		}
+
 		this._labelElem = labelElem;
 
 		if (this._labelObserver) this._labelObserver.disconnect();
