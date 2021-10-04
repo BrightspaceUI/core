@@ -108,6 +108,15 @@ describe('SelectionMixin', () => {
 		await nextFrame();
 	});
 
+	it('dispatches d2l-selection-provider-connected event when connected', async() => {
+		setTimeout(() => {
+			const parentNode = el.parentNode;
+			parentNode.removeChild(el);
+			parentNode.appendChild(el);
+		});
+		await oneEvent(el, 'd2l-selection-provider-connected');
+	});
+
 	it('registers observers', async() => {
 		expect(el._selectionObservers.size).to.equal(2);
 	});
