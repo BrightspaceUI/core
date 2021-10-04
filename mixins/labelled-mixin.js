@@ -96,7 +96,6 @@ export const LabelledMixin = superclass => class extends superclass {
 		this._labelElem = null;
 		this._labelRequired = true;
 		this._missingLabelErrorHasBeenThrown = false;
-		this._throwNoLabelExceptionImmediately = false;
 	}
 
 	async updated(changedProperties) {
@@ -138,13 +137,7 @@ export const LabelledMixin = superclass => class extends superclass {
 	_throwError(err) {
 		if (!this._labelRequired || this._missingLabelErrorHasBeenThrown) return;
 		this._missingLabelErrorHasBeenThrown = true;
-		// we don't want to prevent rendering
-		if (!this._throwNoLabelExceptionImmediately) {
-			setTimeout(() => { throw err; });
-		// just for testing so we can actually catch it
-		} else {
-			throw err;
-		}
+		setTimeout(() => { throw err; }); // we don't want to prevent rendering
 	}
 
 	_updateLabelElem(labelElem) {

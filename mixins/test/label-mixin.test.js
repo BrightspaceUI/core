@@ -6,10 +6,6 @@ import { LitElement } from 'lit-element/lit-element.js';
 
 const labelledTag = defineCE(
 	class extends LabelledMixin(LitElement) {
-		constructor() {
-			super();
-			this._throwNoLabelExceptionImmediately = true;
-		}
 		render() {
 			return html`
 				<input type="text" aria-label="${ifDefined(this.label)}">
@@ -34,21 +30,6 @@ const labelTag = defineCE(
 			super.updated(changedProperties);
 			if (!changedProperties.has('text')) return;
 			this.updateLabel(this.text);
-		}
-	}
-);
-
-const nonLabelTag = defineCE(
-	class extends LitElement {
-		static get properties() {
-			return {
-				text: { type: String }
-			};
-		}
-		render() {
-			return html`
-				<span>${this.text}</span>
-			`;
 		}
 	}
 );
