@@ -157,9 +157,6 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	renderCount(numberStyles) {
 		let numberString = `${this.number}`;
 		const hideNumber = this.hideZero && this.number === 0;
-		if (hideNumber) {
-			numberString = '';
-		}
 		numberStyles = {
 			...numberStyles,
 			visibility: hideNumber ? 'hidden' : 'visible'
