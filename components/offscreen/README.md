@@ -4,12 +4,23 @@ Positioning content off-screen is a valuable accessibility technique that allows
 
 Import the `<d2l-offscreen>` web component and place your content within the default slot to position it off-screen. The content will be hidden in the UI but still discoverable by screen reader users.
 
+<!-- docs: demo live name:d2l-offscreen -->
 ```html
+<!-- docs: start hidden content -->
+<style>
+  p {
+    font-size: .8rem;
+    max-width: 12rem;
+    text-align: center;
+    margin: 0 !important;
+  }
+</style>
+<!-- docs: end hidden content -->
 <script type="module">
   import '@brightspace-ui/core/components/offscreen/offscreen.js';
 </script>
-<p>Visible content</p>
-<d2l-offscreen>Off-screen content that is not visible</d2l-offscreen>
+<p>This demo has off-screen content visible only to screen readers</p>
+<d2l-offscreen>Off-screen content for screen readers only</d2l-offscreen>
 ```
 
 ## Applying off-screen styles to arbitrary elements
