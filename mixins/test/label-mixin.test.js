@@ -1,5 +1,5 @@
 
-import { defineCE, expect, fixture, html, nextFrame } from '@open-wc/testing';
+import { defineCE, expect, fixture, html, nextFrame, oneEvent } from '@open-wc/testing';
 import { LabelledMixin, LabelMixin } from '../labelled-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { LitElement } from 'lit-element/lit-element.js';
@@ -123,7 +123,7 @@ describe('LabelledMixin', () => {
 			newLabelElem.id = 'label1';
 			newLabelElem.textContent = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
-			await nextFrame();
+			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-elem-change');
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
 		});
 
@@ -133,15 +133,6 @@ describe('LabelledMixin', () => {
 			labelledElem.labelledBy = 'label3';
 			await nextFrame();
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('other element');
-		});
-
-		it.skip('does not explode if invalid id reference provided', async() => {
-			try {
-				elem = await fixture(`<${labelledTag} labelled-by="nolabel"></${labelledTag}>`);
-				throw new Error('unexpected');
-			} catch (e) {
-				expect(e.message).to.equal(`LabelledMixin: "${labelledTag}" is labelled-by="nolabel", but no such element exists or its label is empty`);
-			}
 		});
 
 	});
@@ -178,20 +169,8 @@ describe('LabelledMixin', () => {
 			newLabelElem.id = 'label2';
 			newLabelElem.text = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
-			await nextFrame();
+			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-elem-change');
 			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
-		});
-
-		it('does not explode if invalid id reference provided', async() => {
-			elem = await fixture(`
-				<div>
-					<${labelledTag} labelled-by="invalidlabel"></${labelledTag}>
-					<${nonLabelTag} id="invalidlabel" text="custom element"></${nonLabelTag}>
-				</div>
-			`);
-			// TODO: ideally this would throw in the same way the others do, since the label is empty
-			const labelledElem = elem.querySelector('[labelled-by="invalidlabel"]');
-			expect(labelledElem.shadowRoot.querySelector('input').hasAttribute('aria-label')).to.equal(false);
 		});
 
 	});
@@ -208,15 +187,6 @@ describe('LabelledMixin', () => {
 			elem.label = 'new label value';
 			await elem.updateComplete;
 			expect(elem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
-		});
-
-		it.skip('throws if label is initially missing', async() => {
-			try {
-				await fixture(`<${labelledTag}></${labelledTag}>`);
-				throw new Error('unexpected');
-			} catch (e) {
-				expect(e.message).to.equal(`LabelledMixin: "${labelledTag}" is missing a required "label" attribute`);
-			}
 		});
 
 	});

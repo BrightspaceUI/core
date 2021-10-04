@@ -164,9 +164,15 @@ export const LabelledMixin = superclass => class extends superclass {
 		}
 
 		this._labelObserver = new MutationObserver(() => {
-			this._updateLabelElem(
-				this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`)
-			);
+			const newElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
+			if (isCustomElement(newElem)) {
+				requestAnimationFrame(() => {
+					// element often sets its label in its own updated(), so we need to wait
+					this._updateLabelElem(newElem);
+				});
+			} else {
+				this._updateLabelElem(newElem);
+			}
 		});
 
 		const ancestor = getCommonAncestor(this, this._labelElem);
@@ -189,6 +195,12 @@ export const LabelledMixin = superclass => class extends superclass {
 		}
 
 		this.label = getLabel(this._labelElem);
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labelled-mixin-label-elem-change', {
+				bubbles: false,
+				composed: false
+			}
+		));
 
 	}
 
