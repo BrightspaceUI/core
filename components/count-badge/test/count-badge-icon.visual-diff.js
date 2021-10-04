@@ -2,16 +2,16 @@
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
 
-describe('d2l-count-badge', () => {
+describe('d2l-count-badge-icon', () => {
 
-	const visualDiff = new VisualDiff('count-badge', __dirname);
+	const visualDiff = new VisualDiff('count-badge-icon', __dirname);
 
 	let browser, page;
 
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
-		await page.goto(`${visualDiff.getBaseUrl()}/components/count-badge/test/count-badge.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
+		await page.goto(`${visualDiff.getBaseUrl()}/components/count-badge/test/count-badge-icon.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
 
@@ -30,12 +30,7 @@ describe('d2l-count-badge', () => {
 	after(async() => await browser.close());
 
 	[
-		'small-notification',
-		'small-notification-truncated',
-		'large-count',
-		'large-count-large-number',
-		'hide-zero-nonzero-shown',
-		'hide-zero-hidden'
+		'large-count-icon',
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
@@ -45,8 +40,7 @@ describe('d2l-count-badge', () => {
 	});
 
 	[
-		'small-notification',
-		'large-count',
+		'small-notification-icon',
 	].forEach((testName) => {
 		it(`${testName} focused`, async function() {
 			const selector = `#${testName}`;
@@ -56,15 +50,15 @@ describe('d2l-count-badge', () => {
 		});
 	});
 
-	describe('tooltip', () => {
-		it('does not appear by default', async function() {
-			const rect = await visualDiff.getRect(page, '#tooltip');
+	describe('icon and tooltip', () => {
+		it('tooltip does not appear by default', async function() {
+			const rect = await visualDiff.getRect(page, '#tooltip-icon');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
-		it('appears on focus-visible', async function() {
-			await page.$eval('#tooltip', (elem) => forceFocusVisible(elem));
+		it('tooltip appears on focus-visible', async function() {
+			await page.$eval('#tooltip-icon', (elem) => forceFocusVisible(elem));
 			await page.waitForTimeout(50);
-			const rect = await getRect(page, '#tooltip');
+			const rect = await getRect(page, '#tooltip-icon');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
