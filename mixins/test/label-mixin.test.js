@@ -71,7 +71,7 @@ describe('LabelledMixin', () => {
 
 	let elem;
 
-	describe('labelling with natve element', () => {
+	describe('labelling with native element', () => {
 
 		const nativeElemFixture = `
 			<div>
@@ -84,7 +84,7 @@ describe('LabelledMixin', () => {
 		it('initially applies label', async() => {
 			elem = await fixture(nativeElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('native element');
+			expect(labelledElem.label).to.equal('native element');
 		});
 
 		it('updates label when labelling element text changes', async() => {
@@ -93,7 +93,7 @@ describe('LabelledMixin', () => {
 			const labelElem = elem.querySelector('#label1');
 			labelElem.textContent = 'new label value';
 			await nextFrame();
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+			expect(labelledElem.label).to.equal('new label value');
 		});
 
 		it('updates label when labelling element is replaced', async() => {
@@ -105,7 +105,7 @@ describe('LabelledMixin', () => {
 			newLabelElem.textContent = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
 			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-elem-change');
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+			expect(labelledElem.label).to.equal('new label value');
 		});
 
 		it('updates label when labelledBy changes', async() => {
@@ -113,7 +113,7 @@ describe('LabelledMixin', () => {
 			const labelledElem = elem.querySelector('[labelled-by="label1"]');
 			labelledElem.labelledBy = 'label3';
 			await nextFrame();
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('other element');
+			expect(labelledElem.label).to.equal('other element');
 		});
 
 	});
@@ -130,7 +130,7 @@ describe('LabelledMixin', () => {
 		it('initially applies label', async() => {
 			elem = await fixture(customElemFixture);
 			const labelledElem = elem.querySelector('[labelled-by="label2"]');
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('custom element');
+			expect(labelledElem.label).to.equal('custom element');
 		});
 
 		it('updates label when labelling element text changes', async() => {
@@ -139,7 +139,7 @@ describe('LabelledMixin', () => {
 			const labelElem = elem.querySelector('#label2');
 			labelElem.text = 'new label value';
 			await nextFrame();
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+			expect(labelledElem.label).to.equal('new label value');
 		});
 
 		it('updates label when labelling element is replaced', async() => {
@@ -151,7 +151,7 @@ describe('LabelledMixin', () => {
 			newLabelElem.text = 'new label value';
 			labelElem.parentNode.replaceChild(newLabelElem, labelElem);
 			await oneEvent(labelledElem, 'd2l-labelled-mixin-label-elem-change');
-			expect(labelledElem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+			expect(labelledElem.label).to.equal('new label value');
 		});
 
 	});
@@ -160,14 +160,14 @@ describe('LabelledMixin', () => {
 
 		it('initially applies label', async() => {
 			elem = await fixture(`<${labelledTag} label="explicit label"></${labelledTag}>`);
-			expect(elem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('explicit label');
+			expect(elem.label).to.equal('explicit label');
 		});
 
 		it('updates label when explicit label changes', async() => {
 			elem = await fixture(`<${labelledTag} label="explicit label"></${labelledTag}>`);
 			elem.label = 'new label value';
 			await elem.updateComplete;
-			expect(elem.shadowRoot.querySelector('input').getAttribute('aria-label')).to.equal('new label value');
+			expect(elem.label).to.equal('new label value');
 		});
 
 	});
