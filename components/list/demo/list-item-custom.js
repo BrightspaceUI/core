@@ -71,6 +71,13 @@ class DemoListItemCustom extends ListItemMixin(LitElement) {
 		return this._renderListItem(itemTemplates);
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('key')) {
+			this.label = `Label for ${this.key}`;
+		}
+	}
+
 }
 
 customElements.define('d2l-demo-list-item-custom', DemoListItemCustom);
