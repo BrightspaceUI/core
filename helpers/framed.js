@@ -21,7 +21,7 @@ export async function isFramed() {
 	framed = await Promise.race([
 		new Promise(resolve => {
 			const handleIsFramedResponse = evt => {
-				if (!evt || !evt.data || !evt.data.isFramed === undefined) return;
+				if (!evt || !evt.data || evt.data.isFramed === undefined) return;
 				window.removeEventListener('message', handleIsFramedResponse, false);
 				framed = evt.data.isFramed;
 				resolve(framed);
