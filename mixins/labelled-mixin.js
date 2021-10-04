@@ -94,6 +94,7 @@ export const LabelledMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this._labelElem = null;
+		this._labelRequired = true;
 		this._missingLabelErrorHasBeenThrown = false;
 		this._throwNoLabelExceptionImmediately = false;
 	}
@@ -135,7 +136,7 @@ export const LabelledMixin = superclass => class extends superclass {
 	}
 
 	_throwError(err) {
-		if (this._missingLabelErrorHasBeenThrown) return;
+		if (!this._labelRequired || this._missingLabelErrorHasBeenThrown) return;
 		this._missingLabelErrorHasBeenThrown = true;
 		// we don't want to prevent rendering
 		if (!this._throwNoLabelExceptionImmediately) {
