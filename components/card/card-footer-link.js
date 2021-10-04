@@ -112,11 +112,13 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('focus', this._onFocus);
+		this.addEventListener('blur', this._onBlur);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('focus', this._onFocus);
+		this.removeEventListener('blur', this._onBlur);
 	}
 
 	render() {
@@ -129,7 +131,6 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				target="${ifDefined(this.target)}"
 				type="${ifDefined(this.type)}">
 				<d2l-count-badge-icon 
-					tab-stop
 					icon="${this.icon}"
 					max-digits="${ifDefined(this.secondaryTextMaxDigits ? this.secondaryTextMaxDigits : undefined)}"
 					number="${noNumber ? 0 : this.secondaryText}" 
@@ -142,9 +143,14 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		`;
 	}
 
+	_onBlur() {
+		const icon = this.shadowRoot.querySelector('d2l-count-badge-icon');
+		icon.classList.remove('focus-visible');
+	}
+
 	_onFocus() {
 		const icon = this.shadowRoot.querySelector('d2l-count-badge-icon');
-		forceFocusVisible(icon);
+		icon.classList.add('focus-visible');
 	}
 
 }
