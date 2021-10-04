@@ -37,7 +37,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			/**
 			 * Secondary text to display as a superscript on the icon
 			 */
-			secondaryText: { type: String, attribute: 'secondary-text', reflect: true },
+			secondaryText: { type: Number, attribute: 'secondary-text', reflect: true },
 			/**
 			 * Maximum digits to display in the secondary text. Defaults to no limit
 			 */
@@ -57,8 +57,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			/**
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
 			 */
-			type: { type: String, reflect: true },
-			_secondaryTextHidden: { type: Boolean }
+			type: { type: String, reflect: true }
 		};
 	}
 
@@ -90,8 +89,16 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			[hidden] d2l-count-badge-icon {
 				display: none;
 			}
+			d2l-count-badge-icon {
+				text-align: initial;
+			}
 			::slotted(d2l-tooltip) {
-				left: -4px !important;
+				left: calc(-50% + 11px) !important;
+				text-align: start;
+			}
+			:host([dir="rtl"]) ::slotted(d2l-tooltip) {
+				left: 0;
+				right: calc(-50% + 11px) !important;
 			}
 		`];
 	}
@@ -100,7 +107,6 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		super();
 		this.download = false;
 		this.secondaryTextType = 'notification';
-		this._secondaryTextHidden = true;
 	}
 
 	connectedCallback() {
@@ -122,24 +128,17 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				target="${ifDefined(this.target)}"
 				type="${ifDefined(this.type)}">
 				<d2l-count-badge-icon 
-					id="${this._countBadgeId}"
 					tab-stop
 					icon="${this.icon}"
 					max-digits="${ifDefined(this.secondaryTextMaxDigits ? this.secondaryTextMaxDigits : undefined)}"
-					number="${this._secondaryTextHidden ? 0 : this.secondaryText}" 
-					?hide-zero="${this._secondaryTextHidden}"
+					number="${!this.secondaryText ? 0 : this.secondaryText}" 
+					?hide-zero="${!this.secondaryText}"
 					text="${this.text}"
 					type="${this.secondaryTextType}">
 				</d2l-count-badge-icon>
-				<slot name="tooltip"></slot>
 			</a>
+			<slot name="tooltip"></slot>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (!changedProperties.has('secondaryText')) return;
-		this._secondaryTextHidden = !(this.secondaryText && this.secondaryText.length > 0);
 	}
 
 	_onFocus() {

@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="../../../test/styles.css" type="text/css">
 	<script type="module">
 		import '../../typography/typography.js';
+		import '../../tooltip/tooltip.js';
 		import '../card-footer-link.js';
 		import { forceFocusVisible } from '../../../helpers/focus.js';
 		window.forceFocusVisible = forceFocusVisible;
@@ -23,23 +24,33 @@
 <body class="d2l-typography">
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="no-secondary" icon="tier1:gear" text="Settings" href="https://www.d2l.com"></d2l-card-footer-link>
+		<d2l-card-footer-link id="no-secondary" icon="tier1:gear" text="Settings" href="https://www.d2l.com">
+			<d2l-tooltip slot="tooltip" for="no-secondary">No new settings</d2l-tooltip>
+		</d2l-card-footer-link>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-notification" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-type="notification"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-notification" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-type="notification">
+			<d2l-tooltip slot="tooltip" for="secondary-notification">100 new settings</d2l-tooltip>
+		</d2l-card-footer-link>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-count" icon="tier1:gear" tooltip-text="text here" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-max-digits="2" secondary-text-type="count"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-count" icon="tier1:gear" tooltip-text="text here" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-max-digits="2" secondary-text-type="count">
+			<d2l-tooltip slot="tooltip" for="secondary-count">100 settings applied</d2l-tooltip>
+		</d2l-card-footer-link>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-notification-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-type="notification" dir="rtl"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-notification-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text="100" secondary-text-type="notification" dir="rtl">
+			<d2l-tooltip slot="tooltip" for="secondary-notification-rtl">100 new settings</d2l-tooltip>
+		</d2l-card-footer-link>
 	</div>
 
 	<div class="visual-diff">
-		<d2l-card-footer-link id="secondary-count-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text-max-digits="2" secondary-text="100" secondary-text-type="count" dir="rtl"></d2l-card-footer-link>
+		<d2l-card-footer-link id="secondary-count-rtl" icon="tier1:gear" text="Settings" href="https://www.d2l.com" secondary-text-max-digits="2" secondary-text="100" secondary-text-type="count" dir="rtl">
+			<d2l-tooltip slot="tooltip" for="secondary-count-rtl">100 settings applied</d2l-tooltip>
+		</d2l-card-footer-link>
 	</div>
 
 </body>
