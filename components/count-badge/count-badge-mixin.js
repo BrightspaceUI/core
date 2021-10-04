@@ -76,7 +76,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			 */
 			hideZero: {
 				type: Boolean,
-				attribute: 'hide-zero'
+				attribute: 'hide-zero',
+				reflect: true
 			},
 			/**
 			 * Optionally specify a digit limit, after which numbers are truncated. Defaults to two for "notification" type and no limit for "count" type.
@@ -92,7 +93,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			 */
 			number: {
 				type: Number,
-				attribute: 'number'
+				attribute: 'number',
+				reflect: true
 			},
 			/**
 			 * The size of the badge. Defaults to "small".

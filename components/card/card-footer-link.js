@@ -120,6 +120,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	}
 
 	render() {
+		const noNumber = !this.secondaryText && this.secondaryText !== 0;
 		return html`
 			<a ?download="${this.download}"
 				href="${ifDefined(this.href)}"
@@ -131,8 +132,8 @@ class CardFooterLink extends RtlMixin(LitElement) {
 					tab-stop
 					icon="${this.icon}"
 					max-digits="${ifDefined(this.secondaryTextMaxDigits ? this.secondaryTextMaxDigits : undefined)}"
-					number="${!this.secondaryText ? 0 : this.secondaryText}" 
-					?hide-zero="${!this.secondaryText}"
+					number="${noNumber ? 0 : this.secondaryText}" 
+					?hide-zero="${noNumber}"
 					text="${this.text}"
 					type="${this.secondaryTextType}">
 				</d2l-count-badge-icon>
