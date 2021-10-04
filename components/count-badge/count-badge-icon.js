@@ -47,14 +47,6 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			margin-top: -0.55rem;
 		}
 
-		:host([size="small"][hide-zero][number="0"]) d2l-icon {
-			margin-top: 1.1rem;
-		}
-
-		:host([size="large"][hide-zero][number="0"]) d2l-icon {
-			margin-top: 1.4rem;
-		}
-
 		:host([icon*="tier1:"]) {
 			--d2l-count-badge-icon-height: 18px;
 		}
