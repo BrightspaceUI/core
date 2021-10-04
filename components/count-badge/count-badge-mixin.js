@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html } from 'lit-element/lit-element.js';
-import { formatNumber, parseNumber } from '@brightspace-ui/intl/lib/number.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -135,7 +135,6 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		this.announceChanges = false;
 		this.hasTooltip = false;
 		this.hideZero = false;
-		this.noFormatNumber = false;
 		this.size = 'small';
 		this.tabStop = false;
 		this.text = '';
@@ -167,10 +166,10 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		};
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}`;
-			numberString = formatNumber(parseNumber(numberString));
+			numberString = formatNumber(parseInt(numberString));
 			numberString = this.localize('components.count-badge.plus', { number: numberString });
 		} else if (!hideNumber) {
-			numberString = formatNumber(parseNumber(numberString));
+			numberString = formatNumber(numberString);
 		}
 
 		return html`

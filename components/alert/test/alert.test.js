@@ -22,7 +22,6 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-close" event when close button is clicked', async() => {
 			const alert = await fixture(alertFixture);
-			await alert.updateComplete; // legacy edge
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => closeButton.click());
 			await oneEvent(alert, 'd2l-alert-close');
@@ -31,7 +30,6 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-close" event when close is called', async() => {
 			const alert = await fixture(alertFixture);
-			await alert.updateComplete; // legacy edge
 			setTimeout(() => alert.close());
 			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.true;
@@ -39,7 +37,6 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-closed" event when close button is clicked', async() => {
 			const alert = await fixture(alertFixture);
-			await alert.updateComplete; // legacy edge
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => closeButton.click());
 			await oneEvent(alert, 'd2l-alert-closed');
@@ -48,7 +45,6 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-closed" event when close is called', async() => {
 			const alert = await fixture(alertFixture);
-			await alert.updateComplete; // legacy edge
 			setTimeout(() => alert.close());
 			await oneEvent(alert, 'd2l-alert-closed');
 			expect(alert.hasAttribute('hidden')).to.be.true;
@@ -56,7 +52,6 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-button-press" event when action button is clicked', async() => {
 			const alert = await fixture(alertFixture);
-			await alert.updateComplete; // legacy edge
 			const actionButton = alert.shadowRoot.querySelector('d2l-button-subtle');
 			setTimeout(() => actionButton.click());
 			await oneEvent(alert, 'd2l-alert-button-press');
@@ -64,7 +59,6 @@ describe('d2l-alert', () => {
 
 		it('calling preventDefault on close action should prevent alert from closing', async() => {
 			const alert = await fixture(alertFixture);
-			await alert.updateComplete; // legacy edge
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			setTimeout(() => closeButton.click());
 			alert.addEventListener('d2l-alert-closed', (e) => {

@@ -90,6 +90,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			/**
 			 * @ignore
 			 * Name of the form control. Submitted with the form as part of a name/value pair.
+			 * @type {string}
 			 */
 			name: { type: String },
 			/**

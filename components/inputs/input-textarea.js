@@ -295,11 +295,11 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 		this.requestValidate(true);
 
 		/**
-		 * This is needed only for legacy Edge since the _handleChange function is NOT
+		 * This is needed only for Legacy-Edge since the _handleChange function is NOT
 		 * triggered, therefore we have to detect the blur and handle it ourselves.
 		 */
 		const browserType = window.navigator.userAgent;
-		if (this._prevValue !== e.target.value && (browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) {
+		if (this._prevValue !== e.target.value && (browserType.indexOf('Edge') > -1)) {
 			this._handleChange();
 		}
 	}

@@ -24,6 +24,8 @@ import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
+const ARROWLEFT_KEY_CODE = 37;
+const ESCAPE_KEY_CODE = 27;
 const SET_DIMENSION_ID_PREFIX = 'list-';
 
 /**
@@ -50,7 +52,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get styles() {
 		return [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, offscreenStyles, css`
-			div[slot="header"] {
+			[slot="header"] {
 				padding: 0.9rem 0.3rem;
 			}
 
@@ -201,8 +203,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 		return html`
 			<d2l-hierarchical-view
+				@d2l-hierarchical-view-hide-start="${this._handleDimensionHideStart}"
 				@d2l-hierarchical-view-show-complete="${this._handleDimensionShowComplete}"
 				@d2l-hierarchical-view-show-start="${this._handleDimensionShowStart}"
+				@keyup="${this._handleDimensionHideKeyPress}"
 				data-key="${dimension.key}">
 				${dimensionHTML}
 			</d2l-hierarchical-view>
@@ -227,7 +231,17 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_buildHeader(singleDimension) {
-		if (!this._activeDimensionKey && !singleDimension) return null;
+		if (!this._activeDimensionKey && !singleDimension) {
+			return html`
+				<d2l-button-subtle
+					slot="header"
+					@click="${this._handleClearAll}"
+					?disabled="${this._totalAppliedCount === 0}"
+					description="${this.localize('components.filter.clearAllDescription')}"
+					text="${this.localize('components.filter.clearAll')}">
+				</d2l-button-subtle>
+			`;
+		}
 
 		const dimension = this._getActiveDimension();
 
@@ -249,11 +263,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			</d2l-input-search>
 		`;
 
-		const selectAll = !dimension.selectAllIdPrefix || dimension.searchValue ? null : html`
+		const selectAll = !dimension.selectAllIdPrefix || dimension.searchValue || dimension.loading || this._isDimensionEmpty(dimension) ? null : html`
 			<div class="d2l-filter-dimension-select-all">
 				<d2l-selection-select-all
-					selection-for="${dimension.selectAllIdPrefix}${dimension.key}"
-					?disabled="${dimension.loading || this._isDimensionEmpty(dimension)}">
+					selection-for="${dimension.selectAllIdPrefix}${dimension.key}">
 				</d2l-selection-select-all>
 				<d2l-selection-summary
 					selection-for="${dimension.selectAllIdPrefix}${dimension.key}"
@@ -282,7 +295,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		`;
 
 		return html`
-			<div slot="header">
+			<div slot="header" @keyup="${this._handleDimensionHideKeyPress}">
 				${header}
 				${actions}
 			</div>
@@ -350,12 +363,12 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		if (!this._changeEventTimeout) {
 			this._changeEventTimeout = setTimeout(() => {
-				this._dispatchChangeEventNow();
+				this._dispatchChangeEventNow(false);
 			}, 200);
 		}
 	}
 
-	_dispatchChangeEventNow() {
+	_dispatchChangeEventNow(allCleared) {
 		const dimensions = Array.from(this._changeEventsToDispatch.values());
 		dimensions.forEach(dimension => {
 			dimension.changes = Array.from(dimension.changes.values());
@@ -364,7 +377,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
 			bubbles: true,
 			composed: false,
-			detail: { dimensions: dimensions }
+			detail: { allCleared: allCleared, dimensions: dimensions }
 		}));
 		this._changeEventsToDispatch = new Map();
 		this._changeEventTimeout = null;
@@ -417,7 +430,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		const dimension = this._getActiveDimension();
 
 		this._performDimensionClear(dimension);
-		this._dispatchChangeEventNow();
+		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
 
 		if (!this._activeDimensionKey) {
@@ -425,6 +438,21 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		} else {
 			announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
 		}
+	}
+
+	_handleClearAll() {
+		this._dimensions.forEach(dimension => {
+			if (dimension.searchType !== 'none' && dimension.searchValue !== '') {
+				dimension.searchValue = '';
+				this._performDimensionSearch(dimension);
+			}
+			this._performDimensionClear(dimension);
+		});
+
+		this._dispatchChangeEventNow(true);
+		this.requestUpdate();
+
+		announce(this.localize('components.filter.clearAllAnnounce'));
 	}
 
 	_handleDimensionDataChange(e) {
@@ -465,6 +493,16 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_handleDimensionHide() {
 		this.shadowRoot.querySelector(`d2l-hierarchical-view[data-key="${this._activeDimensionKey}"]`).hide();
+	}
+
+	_handleDimensionHideKeyPress(e) {
+		if (this._activeDimensionKey && (e.keyCode === ARROWLEFT_KEY_CODE || e.keyCode === ESCAPE_KEY_CODE)) {
+			e.stopPropagation();
+			this._handleDimensionHide();
+		}
+	}
+
+	_handleDimensionHideStart() {
 		this._activeDimensionKey = null;
 	}
 

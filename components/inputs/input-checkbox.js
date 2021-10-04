@@ -228,13 +228,13 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 	}
 
 	/**
-	 * This is needed only for IE11 and Edge AND going from indeterminate to checked/unchecked.
+	 * This is needed only for Legacy-Edge AND going from indeterminate to checked/unchecked.
 	 * When the indeterminate state is set, and the checkbox is clicked, the _handleChange
 	 * function is NOT triggered, therefore we have to detect the click and handle it ourselves.
 	 */
 	_handleClick() {
 		const browserType = window.navigator.userAgent;
-		if (this.indeterminate && (browserType.indexOf('Trident') > -1 || browserType.indexOf('Edge') > -1)) {
+		if (this.indeterminate && (browserType.indexOf('Edge') > -1)) {
 			this.simulateClick();
 		}
 	}

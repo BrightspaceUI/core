@@ -93,14 +93,11 @@ describe('d2l-input-time', () => {
 			'de',
 			'es',
 			'fr',
-			'ja',
-			'ko',
 			'nl',
 			'pt',
 			'sv',
 			'zh',
-			'tr',
-			'zh-tw'
+			'tr'
 		].forEach((lang) => {
 
 			it(`${lang} AM`, async function() {

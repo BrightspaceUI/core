@@ -117,6 +117,10 @@
 			} else {
 				console.log('Multiple dimension selections changed:', e.detail.dimensions); // eslint-disable-line no-console
 			}
+
+			if (e.detail.allCleared) {
+				console.log('(All dimensions cleared)'); // eslint-disable-line no-console
+			}
 		});
 
 		document.addEventListener('d2l-filter-dimension-first-open', e => {

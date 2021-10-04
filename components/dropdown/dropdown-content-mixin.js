@@ -509,7 +509,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			if (!this.noAutoFocus && this.__applyFocus) {
 				const focusable = getFirstFocusableDescendant(this);
 				if (focusable) {
-					// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+					// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
 					requestAnimationFrame(() => focusable.focus());
 				} else {
 					content.setAttribute('tabindex', '-1');
@@ -725,13 +725,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				- this._ifrauContextInfo.availableHeight
 				+ Math.min(this._ifrauContextInfo.top, 0);
 			bottomOverride = `${screenHeight}px`;
-		}
-		let bottomOfScreen = Math.max(window.innerHeight - window.screen.height, 0);
-		if (!this._ifrauContextInfo && bottomOfScreen > 0) {
-			// Window is taller than the screen,
-			// override bottom to stick to bottom of viewport
-			bottomOfScreen -= window.pageYOffset;
-			bottomOverride = `${Math.max(bottomOfScreen, 0)}px`;
 		}
 
 		const widthOverride = '100vw';
@@ -1006,7 +999,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			const content = this.__getContentContainer();
 			const focusable = getFirstFocusableDescendant(content);
 			if (focusable) {
-				// bumping this to the next frame is required to prevent IE/Edge from crazily invoking click on the focused element
+				// bumping this to the next frame is required to prevent Legacy-Edge from crazily invoking click on the focused element
 				requestAnimationFrame(() => focusable.focus());
 			} else {
 				content.setAttribute('tabindex', '-1');

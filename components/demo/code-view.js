@@ -114,7 +114,7 @@ class CodeView extends LitElement {
 			return;
 		}
 
-		// Edge & IE11 there may be more than one node so concat textContent
+		// Legacy-Edge there may be more than one node so concat textContent
 		let code = this._formatCode(nodes.reduce((code, node) => code + node.textContent, ''));
 
 		try {
