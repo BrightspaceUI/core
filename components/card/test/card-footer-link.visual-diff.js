@@ -35,7 +35,7 @@ describe('d2l-card-footer-link', () => {
 		it(info.name, async function() {
 			const rect = await visualDiff.getRect(page, info.selector);
 			if (info.action) await info.action(info.selector);
-			await page.waitForTimeout(500);
+			if (info.action) await page.waitForTimeout(100);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

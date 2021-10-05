@@ -2,13 +2,13 @@ import '../colors/colors.js';
 import '../count-badge/count-badge-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
-import { forceFocusVisible } from '../../helpers/focus.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+
 /**
  * An icon link that can be placed in the `footer` slot.
- * @slot tooltip - Slot for the tooltip for the link
+ * @slot tooltip - Optional slot for the link tooltip
  */
 class CardFooterLink extends RtlMixin(LitElement) {
 
@@ -130,7 +130,9 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				rel="${ifDefined(this.rel)}"
 				target="${ifDefined(this.target)}"
 				type="${ifDefined(this.type)}">
+				<span class="d2l-offscreen">${this.text}</span>
 				<d2l-count-badge-icon 
+					aria-hidden="true"
 					icon="${this.icon}"
 					max-digits="${ifDefined(this.secondaryTextMaxDigits ? this.secondaryTextMaxDigits : undefined)}"
 					number="${noNumber ? 0 : this.secondaryText}" 

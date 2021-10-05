@@ -254,7 +254,7 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 
 | Slot | Type | Description |
 |--|--|--|
-| `tooltip` | required | The tooltip for the footer link. |
+| `tooltip` | optional | The tooltip for the footer link. |
 
 ### Properties:
 
