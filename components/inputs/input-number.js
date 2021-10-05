@@ -4,6 +4,7 @@ import { formatNumber, getNumberDescriptor, parseNumber } from '@brightspace-ui/
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -67,7 +68,7 @@ function roundPrecisely(val, maxFractionDigits) {
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
-class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
+class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -96,11 +97,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
-			/**
-			 * Label for the input
-			 * @type {string}
-			 */
-			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's `aria-label` attribute)
 			 * @type {boolean}
@@ -302,9 +298,6 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (!this.label) {
-			console.warn('d2l-input-number component requires label text');
-		}
 		this.addEventListener('d2l-localize-behavior-language-changed', () => {
 			this._descriptor = getNumberDescriptor();
 			if (this._formattedValue.length > 0) {
@@ -329,7 +322,8 @@ class InputNumber extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Lit
 				id="${this._inputId}"
 				input-width="${this.inputWidth}"
 				label="${ifDefined(this.label)}"
-				?label-hidden="${this.labelHidden}"
+				?label-hidden="${this.labelHidden || this.labelledBy}"
+				.labelRequired="${false}"
 				name="${ifDefined(this.name)}"
 				placeholder="${ifDefined(this.placeholder)}"
 				?required="${this.required}"
