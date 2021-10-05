@@ -254,7 +254,7 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 
 | Slot | Type | Description |
 |--|--|--|
-| `tooltip` | optional | The tooltip for the footer link. |
+| `tooltip` | required | The tooltip for the footer link. |
 
 ### Properties:
 
@@ -265,9 +265,9 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 | `download` | Boolean | Download a URL instead of navigating to it |
 | `href` | String | Location for the primary action/navigation |
 | `rel` | String | Relationship of the target object to the link object |
-| `secondary-text` | String | Text to display as a superscript on the icon |
-| `secondary-text-type` | String | Controls the style of the secondary text bubble; options are `notification` and `count` |
-| `secondary-text-max-digits` | Number | Overrides the default maximum digits of the secondary text bubble (2 for `notification` and no limit for `count` type) |
+| `secondary-count` | Number | Count to display as a superscript on the icon |
+| `secondary-count-type` | String | Controls the style of the secondary count bubble; options are `notification` and `count` |
+| `secondary-count-max-digits` | Number | Overrides the default maximum digits of the secondary count bubble (2 for `notification` and no limit for `count` type) |
 | `target` | String | Where to display the linked URL |
 
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.

@@ -8,7 +8,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * An icon link that can be placed in the `footer` slot.
- * @slot tooltip - Optional slot for the link tooltip
+ * @slot tooltip - slot for the link tooltip
  */
 class CardFooterLink extends RtlMixin(LitElement) {
 
@@ -37,15 +37,15 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			/**
 			 * Secondary text to display as a superscript on the icon
 			 */
-			secondaryText: { type: Number, attribute: 'secondary-text', reflect: true },
+			secondaryCount: { type: Number, attribute: 'secondary-count', reflect: true },
 			/**
 			 * Maximum digits to display in the secondary text. Defaults to no limit
 			 */
-			secondaryTextMaxDigits: { type: String, attribute: 'secondary-text-max-digits' },
+			secondaryCountMaxDigits: { type: String, attribute: 'secondary-count-max-digits' },
 			/**
 			 * Controls the style of the secondary text bubble; options are 'notification' and 'count'
 			 */
-			secondaryTextType: { type: String, attribute: 'secondary-text-type', reflect: true },
+			secondaryCountType: { type: String, attribute: 'secondary-count-type', reflect: true },
 			/**
 			 * Where to display the linked URL
 			 */
@@ -102,7 +102,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.download = false;
-		this.secondaryTextType = 'notification';
+		this.secondaryCountType = 'notification';
 	}
 
 	connectedCallback() {
@@ -118,7 +118,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const noNumber = !this.secondaryText && this.secondaryText !== 0;
+		const noNumber = !this.secondaryCount && this.secondaryCount !== 0;
 		return html`
 			<a ?download="${this.download}"
 				href="${ifDefined(this.href)}"
@@ -127,14 +127,15 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				target="${ifDefined(this.target)}"
 				type="${ifDefined(this.type)}">
 				<span class="d2l-offscreen">${this.text}</span>
-				<d2l-count-badge-icon 
+				<d2l-count-badge-icon
+					dir="${ifDefined(this.getAttribute('dir') === 'rtl' ? 'rtl' : undefined)}"
 					aria-hidden="true"
 					icon="${this.icon}"
-					max-digits="${ifDefined(this.secondaryTextMaxDigits ? this.secondaryTextMaxDigits : undefined)}"
-					number="${noNumber ? 0 : this.secondaryText}" 
+					max-digits="${ifDefined(this.secondaryCountMaxDigits ? this.secondaryCountMaxDigits : undefined)}"
+					number="${noNumber ? 0 : this.secondaryCount}" 
 					?hide-zero="${noNumber}"
 					text="${this.text}"
-					type="${this.secondaryTextType}">
+					type="${this.secondaryCountType}">
 				</d2l-count-badge-icon>
 			</a>
 			<slot name="tooltip"></slot>
@@ -142,13 +143,11 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	}
 
 	_onBlur() {
-		const icon = this.shadowRoot.querySelector('d2l-count-badge-icon');
-		icon.classList.remove('focus-visible');
+		this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = false;
 	}
 
 	_onFocus() {
-		const icon = this.shadowRoot.querySelector('d2l-count-badge-icon');
-		icon.classList.add('focus-visible');
+		this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = true;
 	}
 
 }

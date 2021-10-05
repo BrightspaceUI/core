@@ -63,6 +63,15 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 				attribute: 'announce-changes'
 			},
 			/**
+			 * Optionally choose to force the focus ring around the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			forceFocusRing: {
+				type: Boolean,
+				attribute: 'focus-ring',
+				reflect: true
+			},
+			/**
 			 * Optionally add a tooltip on the badge. Defaults to false.
 			 * @type {boolean}
 			 */
@@ -133,6 +142,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	constructor() {
 		super();
 		this.announceChanges = false;
+		this.forceFocusRing = false;
 		this.hasTooltip = false;
 		this.hideZero = false;
 		this.size = 'small';

@@ -23,6 +23,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	static get styles() {
 		return [countBadgeStyles, css`
 		:host(.focus-visible) d2l-icon,
+		:host([focus-ring]) d2l-icon,
 		d2l-icon.focus-visible {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 			outline: none;
@@ -91,6 +92,16 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 				aria-labelledby="${ifDefined(this.getOffscreenId())}"
 				role="img">
 			</d2l-icon>`;
+	}
+
+	blur() {
+		const icon = this.shadowRoot.querySelector('d2l-icon');
+		icon.classList.remove('d2l-count-badge-icon-focus');
+	}
+
+	focus() {
+		const icon = this.shadowRoot.querySelector('d2l-icon');
+		icon.classList.add('d2l-count-badge-icon-focus');
 	}
 }
 

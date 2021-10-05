@@ -1,6 +1,7 @@
 /*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
+import { forceFocusVisible } from '../../../helpers/focus';
 
 describe('d2l-card-footer-link', () => {
 
@@ -23,19 +24,17 @@ describe('d2l-card-footer-link', () => {
 
 	[
 		{ name: 'no-secondary', selector: '#no-secondary' },
-		{ name: 'no-secondary-focus', selector: '#no-secondary', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
+		{ name: 'no-secondary-focus', selector: '#no-secondary-focus', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
 		{ name: 'secondary-notification', selector: '#secondary-notification' },
-		{ name: 'secondary-notification-focus', selector: '#secondary-notification', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
-		{ name: 'secondary-notification-rtl', selector: '#secondary-notification-rtl' },
+		{ name: 'secondary-notification-focus', selector: '#secondary-notification-focus', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
 		{ name: 'secondary-count', selector: '#secondary-count' },
-		{ name: 'secondary-count-focus', selector: '#secondary-count', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) },
-		{ name: 'secondary-count-focus-rtl', selector: '#secondary-count-rtl', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) }
+		{ name: 'secondary-count-focus', selector: '#secondary-count-focus', action: (selector) => page.$eval(selector, (elem) => forceFocusVisible(elem)) }
 	].forEach((info) => {
 
 		it(info.name, async function() {
-			const rect = await visualDiff.getRect(page, info.selector);
 			if (info.action) await info.action(info.selector);
 			if (info.action) await page.waitForTimeout(100);
+			const rect = await visualDiff.getRect(page, info.selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 

@@ -9,6 +9,7 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 	static get styles() {
 		return [countBadgeStyles, css`
 		:host(.focus-visible) .d2l-count-badge-wrapper,
+		:host([focus-ring]) .d2l-count-badge-wrapper,
 		.d2l-count-badge-wrapper.focus-visible {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 		}
