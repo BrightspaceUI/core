@@ -1,7 +1,7 @@
-import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { emulateMedia } from '@web/test-runner-commands';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>
@@ -28,6 +28,17 @@ const multiDimensionFixture = html`
 	</d2l-filter>`;
 
 describe('d2l-filter', () => {
+	before(async() => {
+		await emulateMedia({ reducedMotion: 'reduce' });
+		expect(matchMedia('(prefers-reduced-motion: reduce)').matches).to.be.true;
+		await import('../filter.js');
+	});
+
+	after(async() => {
+		await emulateMedia({ reducedMotion: 'no-preference' });
+		expect(matchMedia('(prefers-reduced-motion: no-preference)').matches).to.be.true;
+	});
+
 	[
 		{ name: 'Single set dimension', fixture: singleSetDimensionFixture },
 		{ name: 'Single set dimension - single selection', fixture: singleSetDimensionSingleSelectionOnFixture },
@@ -41,10 +52,10 @@ describe('d2l-filter', () => {
 		it(`${test.name} opened`, async() => {
 			const elem = await fixture(test.fixture);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content') || elem.shadowRoot.querySelector('d2l-dropdown-menu');
-			await dropdownContent.updateComplete;
-			dropdown.toggleOpen();
+
+			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
+			await new Promise(requestAnimationFrame);
 			await expect(elem).to.be.accessible();
 		});
 	});
@@ -53,12 +64,13 @@ describe('d2l-filter', () => {
 		const elem = await fixture(multiDimensionFixture);
 		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 		const menuItem = elem.shadowRoot.querySelector('d2l-menu-item');
-		const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-		await dropdownContent.updateComplete;
-		dropdown.toggleOpen();
+
+		elem.opened = true;
 		await oneEvent(dropdown, 'd2l-dropdown-open');
+		await new Promise(requestAnimationFrame);
 		menuItem.click();
 		await oneEvent(dropdown, 'd2l-hierarchical-view-show-complete');
+		await new Promise(requestAnimationFrame);
 		await expect(elem).to.be.accessible();
 	});
 
