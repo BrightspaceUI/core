@@ -1,4 +1,3 @@
-
 # Filtering
 
 **NOTE: This component is a work-in-progress and not ready for consumer use yet.**
@@ -202,7 +201,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 ```
 
 <!-- docs: start hidden content -->
-#### d2l-filter-dimension-set
+### d2l-filter-dimension-set
 
 ### Properties
 
@@ -215,7 +214,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `selection-single` | Boolean | Whether only one value can be selected at a time for this dimension  |
 | `text` | String, required | Text for the dimension in the menu |
 
-#### d2l-filter-dimension-set-value
+### d2l-filter-dimension-set-value
 
 ### Properties
 
