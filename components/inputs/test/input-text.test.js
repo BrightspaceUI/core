@@ -110,6 +110,7 @@ describe('d2l-input-text', () => {
 		it('should focus even if component has not rendered', async() => {
 			const container = await fixture(html`<div></div>`);
 			const newInput = document.createElement('d2l-input-text');
+			newInput.setAttribute('label', 'label');
 			container.appendChild(newInput);
 			await newInput.focus();
 			const activeElement = getComposedActiveElement();
@@ -135,6 +136,15 @@ describe('d2l-input-text', () => {
 			const elem = await fixture(html`<d2l-input-text aria-label="new label"></d2l-input-text>`);
 			expect(getLabel(elem)).to.be.null;
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('new label');
+		});
+
+		it('should put labelled-by label on "aria-label"', async() => {
+			const elem = await fixture(html`
+				<d2l-input-text labelled-by="label"></d2l-input-text>
+				<span id="label">label</span>
+			`);
+			expect(getLabel(elem)).to.be.null;
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('label');
 		});
 
 	});

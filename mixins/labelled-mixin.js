@@ -84,7 +84,7 @@ export const LabelledMixin = superclass => class extends superclass {
 			 */
 			labelledBy: { type: String, reflect: true, attribute: 'labelled-by' },
 			/**
-			 * Explicitly defined label used to provide context for accessibility
+			 * REQUIRED: Explicitly defined label for the element
 			 * @type {string}
 			 */
 			label: { type: String }

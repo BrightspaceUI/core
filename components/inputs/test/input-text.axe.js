@@ -34,4 +34,17 @@ describe('d2l-input-text', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('labelled-by', async() => {
+		const elem = await fixture(html`
+			<d2l-input-text labelled-by="label"></d2l-input-text>
+			<span id="label">label</span>
+		`);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('aria-label', async() => {
+		const elem = await fixture(html`<d2l-input-text aria-label="label"></d2l-input-text>`);
+		await expect(elem).to.be.accessible();
+	});
+
 });

@@ -3,8 +3,8 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
 const normalFixture = html`<d2l-input-search label="search"></d2l-input-search>`;
-const valueSetFixture = html`<d2l-input-search value="foo"></d2l-input-search>`;
-const noClearFixture = html`<d2l-input-search value="foo" no-clear></d2l-input-search>`;
+const valueSetFixture = html`<d2l-input-search label="search" value="foo"></d2l-input-search>`;
+const noClearFixture = html`<d2l-input-search label="search" value="foo" no-clear></d2l-input-search>`;
 
 function assertSearchVisibility(elem, isVisible) {
 	const visibleButton = elem.shadowRoot.querySelector('d2l-button-icon');
