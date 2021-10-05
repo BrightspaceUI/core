@@ -143,6 +143,7 @@ describe('d2l-input-text', () => {
 				<d2l-input-text labelled-by="label"></d2l-input-text>
 				<span id="label">label</span>
 			`);
+			await aTimeout(100); // for Safari
 			expect(getLabel(elem)).to.be.null;
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label');
 		});
