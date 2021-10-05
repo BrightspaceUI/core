@@ -54,6 +54,7 @@ const interactiveRoles = {
 	'checkbox': true,
 	'combobox': true,
 	'heading': true,
+	'img': true,
 	'link': true,
 	'listbox': true,
 	'menuitem': true,
