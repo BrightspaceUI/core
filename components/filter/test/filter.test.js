@@ -642,7 +642,7 @@ describe('d2l-filter', () => {
 
 		describe('Menu Item Format', () => {
 			[
-				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '', description: '0 filters applied.' },
+				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '0', description: '0 filters applied.' },
 				{ name: '1 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 1 }, { key: 2 }], text: '1', description: '1 filter applied.' },
 				{ name: '5 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 5 }, { key: 2 }], text: '5', description: '5 filters applied.' },
 				{ name: '99 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 99 }, { key: 2 }], text: '99', description: '99 filters applied.' },

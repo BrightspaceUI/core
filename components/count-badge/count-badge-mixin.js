@@ -165,7 +165,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			numberString = `${'9'.repeat(this.maxDigits)}`;
 			numberString = formatNumber(parseInt(numberString));
 			numberString = this.localize('components.count-badge.plus', { number: numberString });
-		} else if (!hideNumber) {
+		} else {
 			numberString = formatNumber(numberString);
 		}
 
