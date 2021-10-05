@@ -92,7 +92,7 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 ``` 
 
 ### Single Vs Multi Dimensional 
-A filter can be a single dimension (like picking from a list of departments) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promite filters that are more commonly used. while tucking less-used filters into a multi-dimensional filter
+A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promite filters that are more commonly used. while tucking less-used filters into a multi-dimensional filter
 <!-- docs: demo code name:d2l-filter autoSize:false align:start size:large -->
 ```html
 <script type="module">
@@ -133,17 +133,16 @@ A filter can be a single dimension (like picking from a list of departments) or 
 <div class="flex-div">
 	Multi-Dimensional
 	<d2l-filter>
-		<d2l-filter-dimension-set key="course" text="Course">
-			<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
-			<d2l-filter-dimension-set-value key="astronomy" text="Astronomy" selected></d2l-filter-dimension-set-value>
-			<d2l-filter-dimension-set-value key="biology" text="Biology"></d2l-filter-dimension-set-value>
-			<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set key="role" text="Role">
+			<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="student" text="Student" selected></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="teacher" text="Teacher"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
-		<d2l-filter-dimension-set key="semester" text="Semester" selection-single>
-			<d2l-filter-dimension-set-value key="fall" text="Fall"></d2l-filter-dimension-set-value>
-			<d2l-filter-dimension-set-value key="winter" text="Winter" selected></d2l-filter-dimension-set-value>
-			<d2l-filter-dimension-set-value key="spring" text="Spring"></d2l-filter-dimension-set-value>
-			<d2l-filter-dimension-set-value key="summer" text="Summer"></d2l-filter-dimension-set-value>
+		<d2l-filter-dimension-set key="department" text="Department" selection-single>
+			<d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="history" text="History" selected></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="math" text="Math" selected></d2l-filter-dimension-set-value>
+			<d2l-filter-dimension-set-value key="science" text="Science"></d2l-filter-dimension-set-value>
 		</d2l-filter-dimension-set>
 	</d2l-filter>
 </div>
