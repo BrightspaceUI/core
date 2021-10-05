@@ -82,7 +82,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		if (this.selectable) {
 			if (!this.key) console.warn('ListItemCheckboxMixin requires a key.');
 		} else {
-			this._labelRequired = false;
+			this.labelRequired = false;
 		}
 		if (!this.key) this.setSelected(undefined, true);
 	}

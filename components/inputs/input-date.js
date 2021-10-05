@@ -269,6 +269,7 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden || this.labelledBy}"
+					.labelRequired="${false}"
 					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"

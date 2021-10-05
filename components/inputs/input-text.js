@@ -311,7 +311,7 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 	connectedCallback() {
 		super.connectedCallback();
 		if (this.ariaLabel) {
-			this._labelRequired = false;
+			this.labelRequired = false;
 		}
 	}
 
