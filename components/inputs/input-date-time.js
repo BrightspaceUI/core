@@ -221,6 +221,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 				@mouseover="${this._handleInputTimeFocus}"
 				label="${this.localize('components.input-date-time.time')}"
 				label-hidden
+				.labelRequired="${false}"
 				max-height="430"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
@@ -245,6 +246,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 						id="${this._inputId}"
 						label="${this.localize('components.input-date-time.date')}"
 						label-hidden
+						.labelRequired="${false}"
 						max-value="${ifDefined(this._maxValueLocalized)}"
 						min-value="${ifDefined(this._minValueLocalized)}"
 						?opened="${dateOpened}"
