@@ -27,6 +27,24 @@ const getLabel = labelElem => {
 	else return labelElem.textContent;
 };
 
+const waitForElement = async(contextElement, selector, timeout) => {
+	let elem = contextElement.querySelector(selector);
+	if (elem) return elem;
+
+	return new Promise(resolve => {
+		let elapsedTime = 0;
+		const intervalId = setInterval(() => {
+			elem = contextElement.querySelector(selector);
+			if (!elem) elapsedTime += 100;
+			if (elem || elapsedTime > timeout) {
+				clearInterval(intervalId);
+				resolve(elem);
+				return;
+			}
+		}, 100);
+	});
+};
+
 export const LabelMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -73,49 +91,90 @@ export const LabelledMixin = superclass => class extends superclass {
 		};
 	}
 
-	updated(changedProperties) {
+	constructor() {
+		super();
+		this._labelElem = null;
+		this._labelRequired = true;
+		this._missingLabelErrorHasBeenThrown = false;
+	}
+
+	async updated(changedProperties) {
+
 		super.updated(changedProperties);
+
+		// need to check this even if "label" isn't updated in case it's never set
+		const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
+		if (!hasLabel) {
+			if (this.labelledBy) {
+				if (this._labelElem) {
+					this._throwError(
+						new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but its label is empty`)
+					);
+				}
+			} else {
+				this._throwError(
+					new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is missing a required "label" attribute`)
+				);
+			}
+		}
 
 		if (!changedProperties.has('labelledBy')) return;
 
-		if (this._labelObserver) this._labelObserver.disconnect();
-
-		if (!this.labelledBy) return;
-
-		let labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
-
-		this._labelObserver = new MutationObserver(mutations => {
-
-			mutations.forEach(mutation => {
-
-				if (mutation.removedNodes.length > 0 && Array.from(mutation.removedNodes).indexOf(labelElem) !== -1) {
-					labelElem = null;
-				}
-
-				if (mutation.addedNodes.length > 0) {
-					labelElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
-					return;
-				}
-
-			});
-
-			if (labelElem) {
-				this.label = getLabel(labelElem);
-			} else {
-				console.warn(`LabelledMixin: element with labelled-by="${this.labelledBy}", but no such element exists.`);
-				this.label = undefined;
+		if (!this.labelledBy) {
+			this._updateLabelElem(null);
+		} else {
+			const labelElem = await waitForElement(this.getRootNode(), `#${cssEscape(this.labelledBy)}`, 3000);
+			if (!labelElem) {
+				this._throwError(
+					new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but no such element exists`)
+				);
 			}
+			this._updateLabelElem(labelElem);
+		}
 
+	}
+
+	_throwError(err) {
+		if (!this._labelRequired || this._missingLabelErrorHasBeenThrown) return;
+		this._missingLabelErrorHasBeenThrown = true;
+		setTimeout(() => { throw err; }); // we don't want to prevent rendering
+	}
+
+	_updateLabelElem(labelElem) {
+
+		// setting textContent doesn't change labelElem but we do need to refetch the label
+		if (labelElem === this._labelElem && this._labelElem) {
+			this.label = getLabel(this._labelElem);
+			return;
+		}
+
+		this._labelElem = labelElem;
+
+		if (this._labelObserver) this._labelObserver.disconnect();
+		if (!this._labelElem) {
+			this.label = undefined;
+			return;
+		}
+
+		this._labelObserver = new MutationObserver(() => {
+			const newElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
+			if (isCustomElement(newElem)) {
+				requestAnimationFrame(() => {
+					// element often sets its label in its own updated(), so we need to wait
+					this._updateLabelElem(newElem);
+				});
+			} else {
+				this._updateLabelElem(newElem);
+			}
 		});
 
-		if (!labelElem) return;
-		const ancestor = getCommonAncestor(this, labelElem);
+		const ancestor = getCommonAncestor(this, this._labelElem);
 
-		/* assumption: the labelling element will not change from a native to a custom element
-		or vice versa, which allows the use of a more optimal observer configuration */
-		if (isCustomElement(labelElem)) {
+		// assumption: the labelling element will not change from a native to a custom element
+		// or vice versa, which allows the use of a more optimal observer configuration
+		if (isCustomElement(this._labelElem)) {
 			this._labelObserver.observe(ancestor, {
-				attributes: true, /* required for legacy-Edge, otherwise attributeFilter throws a syntax error */
+				attributes: true, // required for legacy-Edge, otherwise attributeFilter throws a syntax error
 				attributeFilter: ['_label'],
 				childList: true,
 				subtree: true
@@ -128,7 +187,13 @@ export const LabelledMixin = superclass => class extends superclass {
 			});
 		}
 
-		this.label = getLabel(labelElem);
+		this.label = getLabel(this._labelElem);
+		this.dispatchEvent(new CustomEvent(
+			'd2l-labelled-mixin-label-elem-change', {
+				bubbles: false,
+				composed: false
+			}
+		));
 
 	}
 

@@ -80,7 +80,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (!this.key || this.key.length === 0) console.warn('d2l-selection-input component requires a key.');
-		if (!this.label || this.label.length === 0) console.warn('d2l-selection-input component requires label text.');
 	}
 
 	render() {
