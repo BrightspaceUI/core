@@ -128,7 +128,6 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				type="${ifDefined(this.type)}">
 				<span class="d2l-offscreen">${this.text}</span>
 				<d2l-count-badge-icon
-					dir="${ifDefined(this.getAttribute('dir') === 'rtl' ? 'rtl' : undefined)}"
 					aria-hidden="true"
 					icon="${this.icon}"
 					max-digits="${ifDefined(this.secondaryCountMaxDigits ? this.secondaryCountMaxDigits : undefined)}"
