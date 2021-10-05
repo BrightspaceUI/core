@@ -150,7 +150,7 @@ A filter can be a single dimension (like picking from a list of departments) or 
 ``` 
 
 ### Accessibility
-The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propogated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
+The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propagated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
 
 <!-- docs: start hidden content -->
 ### Properties
