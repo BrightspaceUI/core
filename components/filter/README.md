@@ -92,7 +92,7 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 ``` 
 
 ### Single Vs Multi Dimensional 
-A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promite filters that are more commonly used. while tucking less-used filters into a multi-dimensional filter
+A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
 <!-- docs: demo code name:d2l-filter autoSize:false align:start size:large -->
 ```html
 <script type="module">
@@ -149,7 +149,7 @@ A filter can be a single dimension (like picking from a list of courses) or offe
 ``` 
 
 ### Accessibility
-The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propogated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
+The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propagated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
 
 <!-- docs: start hidden content -->
 ### Properties
