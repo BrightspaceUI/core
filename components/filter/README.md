@@ -228,7 +228,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 
 **Coming Soon!**
 
-## Filter dimension: Tags [d2l-filter-dimension-tags]
+## Filter Dimension: Tags [d2l-filter-dimension-tags]
 
 **Coming Soon!**
 
