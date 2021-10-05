@@ -86,15 +86,11 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				width: 100%;
 				z-index: 1;
 			}
-			[hidden] d2l-count-badge-icon {
-				display: none;
-			}
 			d2l-count-badge-icon {
 				text-align: initial;
 			}
 			::slotted(d2l-tooltip) {
 				left: calc(-50% + 11px) !important;
-				text-align: start;
 			}
 			:host([dir="rtl"]) ::slotted(d2l-tooltip) {
 				left: 0;
