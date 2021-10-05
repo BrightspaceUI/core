@@ -224,7 +224,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
 <!-- docs: end hidden content -->
 
-## Filter dimension: Date [d2l-filter-dimension-date]
+## Filter Dimension: Date [d2l-filter-dimension-date]
 
 **Coming Soon!**
 
