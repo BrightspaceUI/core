@@ -1,4 +1,7 @@
+
 # Filtering
+
+**NOTE: This component is a work-in-progress and not ready for consumer use yet.**
 
 Filter components are often used in conjuction with [tables](../components/table) or [lists](../components/list) and allow users to select a subset of the presented data based on a set of parameters. 
 
