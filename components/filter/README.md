@@ -92,7 +92,7 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 ``` 
 
 ### Single Vs Multi Dimensional 
-A filter can be a single dimension (like picking from a list of departments) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promite filters that are more commonly used. while tucking less-used filters into a multi-dimensional filter
+A filter can be a single dimension (like picking from a list of departments) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
 <!-- docs: demo code name:d2l-filter autoSize:false align:start size:large -->
 ```html
 <script type="module">
