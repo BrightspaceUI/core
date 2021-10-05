@@ -2,9 +2,9 @@
 
 **NOTE: This component is a work-in-progress and not ready for consumer use yet.**
 
-Filter components are often used in conjuction with [tables](../components/table) or [lists](../components/list) and allow users to select a subset of the presented data based on a set of parameters. 
+Filter components are often used in conjuction with [tables](../../components/table) and allow users to select a subset of the presented data based on a set of parameters.
 
-<!-- docs: demo autoSize:false align:start size:large -->
+<!-- docs: demo align:start autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -17,6 +17,8 @@ Filter components are often used in conjuction with [tables](../components/table
     var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
+		var filter = document.querySelector('#d2l-filter');
+		filter.opened = true;
     }, 100);
   });
 </script>
@@ -89,11 +91,12 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 		<d2l-filter-dimension-set-value key="summer" text="Summer"></d2l-filter-dimension-set-value>
 	</d2l-filter-dimension-set>
 </d2l-filter>
-``` 
+```
 
 ### Single Vs Multi Dimensional 
 A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
-<!-- docs: demo code name:d2l-filter autoSize:false align:start size:large -->
+
+<!-- docs: demo code autoSize:false align:start size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/filter.js';
@@ -157,6 +160,7 @@ The filter will announce changes to filter selections, search results, and when 
 | Property | Type | Description |
 |---|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener for the filter |
+| `opened` | Boolean, default: `false` | Whether or not the filter is open  |
 
 ### Events
 * `d2l-filter-change`: dispatched when any filter value has changed (may contain info about multiple dimensions and multiple changes in each)
