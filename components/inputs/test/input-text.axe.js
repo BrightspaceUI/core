@@ -35,10 +35,10 @@ describe('d2l-input-text', () => {
 	});
 
 	it('labelled-by', async() => {
-		const elem = await fixture(html`
+		const elem = await fixture(html`<div>
 			<d2l-input-text labelled-by="label"></d2l-input-text>
 			<span id="label">label</span>
-		`);
+		</div>`);
 		await expect(elem).to.be.accessible();
 	});
 

@@ -26,10 +26,10 @@ describe('d2l-input-date-time', () => {
 	});
 
 	it('labelled-by', async() => {
-		const elem = await fixture(html`
+		const elem = await fixture(html`<div>
 			<d2l-input-date-time labelled-by="label"></d2l-input-date-time>
 			<span id="label">label text</span>
-		`);
+		</div>`);
 		await expect(elem).to.be.accessible({ ignoredRules: ['color-contrast'] }); // color-contrast takes a while and should be covered by axe tests in the individual components
 	});
 
