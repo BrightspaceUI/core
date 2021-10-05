@@ -45,7 +45,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Indicates if the dropdown is open
+			 * Indicates if the filter is open
 			 */
 			opened: { type: Boolean, reflect: true },
 			_activeDimensionKey: { type: String, attribute: false },
