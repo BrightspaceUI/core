@@ -34,6 +34,14 @@ describe('d2l-input-textarea', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('labelled-by', async() => {
+		const elem = await fixture(html`<div>
+			<d2l-input-textarea labelled-by="label"></d2l-input-textarea>
+			<span id="label">label</span>
+		</div>`);
+		await expect(elem).to.be.accessible();
+	});
+
 	it('no border', async() => {
 		const elem = await fixture(html`<d2l-input-textarea label="label" no-border></d2l-input-textarea>`);
 		await expect(elem).to.be.accessible();

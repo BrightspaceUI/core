@@ -6,6 +6,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -16,7 +17,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
-class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
+class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -35,11 +36,6 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
-			/**
-			 * REQUIRED: Label for the input
-			 * @type {string}
-			 */
-			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 * @type {boolean}
@@ -232,7 +228,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 			${offscreenContainer}
 		`;
 
-		if (this.label && !this.labelHidden) {
+		if (this.label && !this.labelHidden && !this.labelledBy) {
 			return html`
 				<label class="d2l-input-label d2l-skeletize" for="${this._textareaId}">${this.label}</label>
 				${textarea}`;
@@ -281,7 +277,7 @@ class InputTextArea extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))
 	}
 
 	_getAriaLabel() {
-		if (this.label && this.labelHidden) {
+		if (this.label && (this.labelHidden || this.labelledBy)) {
 			return this.label;
 		}
 		// check aria-label for backwards compatibility in order to replace old Polymer impl
