@@ -44,6 +44,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			 * Disables the dropdown opener for the filter
 			 */
 			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Indicates if the dropdown is open
+			 */
+			opened: { type: Boolean, reflect: true },
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
@@ -132,6 +136,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	constructor() {
 		super();
 		this.disabled = false;
+		this.opened = false;
 		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
 		this._openedDimensions = [];
@@ -163,12 +168,25 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		description += `. ${this.localize('components.filter.filterCountDescription', { number: this._totalAppliedCount })}`;
 
 		const dropdownContent = singleDimension ? html`
-				<d2l-dropdown-content min-width="285" max-width="420" mobile-tray="right" mobile-breakpoint="768" no-padding-header no-padding>
+				<d2l-dropdown-content
+					min-width="285"
+					max-width="420"
+					mobile-tray="right"
+					mobile-breakpoint="768"
+					no-padding-header
+					no-padding
+					?opened="${this.opened}">
 					${header}
 					${dimensions}
 				</d2l-dropdown-content>`
 			: html`
-				<d2l-dropdown-menu min-width="285" max-width="420" mobile-tray="right" mobile-breakpoint="768" no-padding-header>
+				<d2l-dropdown-menu
+					min-width="285"
+					max-width="420"
+					mobile-tray="right"
+					mobile-breakpoint="768"
+					no-padding-header
+					?opened="${this.opened}">
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
 						${dimensions}
@@ -517,11 +535,13 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_handleDropdownClose(e) {
+		this.opened = false;
 		this._activeDimensionKey = null;
 		this._stopPropagation(e);
 	}
 
 	_handleDropdownOpen(e) {
+		this.opened = true;
 		if (this._dimensions.length === 1) {
 			this._dispatchDimensionFirstOpenEvent(this._dimensions[0].key);
 		}
