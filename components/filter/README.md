@@ -2,7 +2,7 @@
 
 **NOTE: This component is a work-in-progress and not ready for consumer use yet.**
 
-Filter components are often used in conjuction with [tables](../../components/table) and allow users to select a subset of the presented data based on a set of parameters.
+Filter components are often used in conjuction with [tables](../../components/table) and allow users to select a subset of the presented data based on a set of parameters. Filter dimensions provide methods for entering parameters for a wide range of data types.
 
 <!-- docs: demo align:start autoSize:false size:large -->
 ```html
@@ -169,12 +169,9 @@ The filter will announce changes to filter selections, search results, and when 
 
 <!-- docs: end hidden content -->
 
-## Filter Dimension Types
-Filter dimensions provide methods for entering filter parameters for a wide range of data types
+## Filter Dimension: Set [d2l-filter-dimension-set]
 
-### Filter Dimension: Set/Value [d2l-filter-dimension-set]
-
-The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the `d2l-filter-dimension-set-value`, this will give you a selectable list of filter values.
+The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#filter-dimension%3A-set-value-%5Bd2l-filter-dimension-set-value%5D), this will give you a selectable list of filter values.
 
 <!-- docs: demo live name:d2l-filter-dimension-set align:start autoSize:false size:large -->
 ```html
@@ -219,8 +216,10 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `select-all` | Boolean | Whether to show a select all checkbox and selection summary for this dimension  |
 | `selection-single` | Boolean | Whether only one value can be selected at a time for this dimension  |
 | `text` | String, required | Text for the dimension in the menu |
+<!-- docs: end hidden content -->
 
-### d2l-filter-dimension-set-value
+## Filter Dimension: Set Value [d2l-filter-dimension-set-value]
+This component is built to be used alongside the [d2l-filter-dimension-set](#filter-dimension%3A-set-%5Bd2l-filter-dimension-set%5D) component, this will give you a selectable list of filter values.
 
 ### Properties
 
@@ -229,7 +228,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
 | `key` | String, required | Unique identifier within a dimension for the value |
 | `text` | String, required | Text for the value in the list |
 | `selected` | Boolean, default: `false` | Whether the value in the filter is selected or not |
-<!-- docs: end hidden content -->
+
 
 ## Filter Dimension: Date [d2l-filter-dimension-date]
 
