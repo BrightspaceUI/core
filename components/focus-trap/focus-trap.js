@@ -3,10 +3,18 @@ import { forceFocusVisible, getNextFocusable, getPreviousFocusable } from '../..
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
+/**
+ * A button component that can be used just like the native button element.
+ * @fires d2l-focus-trap-enter - Default content placed inside of the button
+ */
 class FocusTrap extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether the component should trap user focus.
+			 * @type {boolean}
+			 */
 			trap: { type: Boolean }
 		};
 	}
