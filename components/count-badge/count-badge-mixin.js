@@ -167,9 +167,6 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	renderCount(numberStyles) {
 		let numberString = `${this.number}`;
 		const hideNumber = this.hideZero && this.number === 0;
-		if (hideNumber) {
-			numberString = '';
-		}
 		numberStyles = {
 			...numberStyles,
 			visibility: hideNumber ? 'hidden' : 'visible'
@@ -178,7 +175,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			numberString = `${'9'.repeat(this.maxDigits)}`;
 			numberString = formatNumber(parseInt(numberString));
 			numberString = this.localize('components.count-badge.plus', { number: numberString });
-		} else if (!hideNumber) {
+		} else {
 			numberString = formatNumber(numberString);
 		}
 

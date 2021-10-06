@@ -427,15 +427,16 @@ describe('d2l-filter', () => {
 				const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 				const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content');
 				await dropdownContent.updateComplete;
-				setTimeout(() => dropdown.toggleOpen());
+
+				elem.opened = true;
 				const e = await oneEvent(elem, 'd2l-filter-dimension-first-open');
 				expect(e.detail.key).to.equal('dim');
 				expect(elem._openedDimensions[0]).to.equal('dim');
 
-				setTimeout(() => dropdown.toggleOpen());
+				elem.opened = false;
 				await oneEvent(dropdown, 'd2l-dropdown-close');
 
-				setTimeout(() => dropdown.toggleOpen());
+				elem.opened = true;
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 
 				expect(eventSpy).to.be.calledOnce;
@@ -449,7 +450,7 @@ describe('d2l-filter', () => {
 				await dropdownContent.updateComplete;
 				const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
 
-				setTimeout(() => dropdown.toggleOpen());
+				elem.opened = true;
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 				expect(eventSpy).to.be.not.be.called;
 
@@ -642,7 +643,7 @@ describe('d2l-filter', () => {
 
 		describe('Menu Item Format', () => {
 			[
-				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '', description: '0 filters applied.' },
+				{ name: 'None Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 0 }, { key: 2 }], text: '0', description: '0 filters applied.' },
 				{ name: '1 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 1 }, { key: 2 }], text: '1', description: '1 filter applied.' },
 				{ name: '5 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 5 }, { key: 2 }], text: '5', description: '5 filters applied.' },
 				{ name: '99 Selected', dimensions: [{ key: 1, text: 'Role', appliedCount: 99 }, { key: 2 }], text: '99', description: '99 filters applied.' },
@@ -855,7 +856,7 @@ describe('d2l-filter', () => {
 			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content');
 			await dropdownContent.updateComplete;
 
-			setTimeout(() => dropdown.toggleOpen());
+			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			expect(dropdownContent.opened).to.be.true;
 
@@ -872,6 +873,7 @@ describe('d2l-filter', () => {
 			setTimeout(() => clearButton.dispatchEvent(event));
 			await oneEvent(dropdown, 'd2l-dropdown-close');
 			expect(dropdownContent.opened).to.be.false;
+			expect(elem.opened).to.be.false;
 			expect(hideStub).to.not.have.been.called;
 		});
 
@@ -883,7 +885,7 @@ describe('d2l-filter', () => {
 				await dropdownContent.updateComplete;
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
-				setTimeout(() => dropdown.toggleOpen());
+				elem.opened = true;
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 
 				setTimeout(() => dimension.click());
@@ -906,6 +908,7 @@ describe('d2l-filter', () => {
 				expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
 				expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
 				expect(dropdownContent.opened).to.be.true;
+				expect(elem.opened).to.be.true;
 			});
 
 			it(`set dimension - clicking ${testCase.key} in the content goes back to the dimension list`, async() => {
@@ -915,7 +918,7 @@ describe('d2l-filter', () => {
 				await dropdownContent.updateComplete;
 				const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
 
-				setTimeout(() => dropdown.toggleOpen());
+				elem.opened = true;
 				await oneEvent(dropdown, 'd2l-dropdown-open');
 
 				setTimeout(() => dimension.click());
@@ -939,6 +942,7 @@ describe('d2l-filter', () => {
 				expect(elem.shadowRoot.querySelector('d2l-button-icon[icon="tier1:chevron-left"]')).to.be.null;
 				expect(elem.shadowRoot.querySelector('d2l-button-subtle[slot="header"]')).to.not.be.null;
 				expect(dropdownContent.opened).to.be.true;
+				expect(elem.opened).to.be.true;
 			});
 		});
 	});

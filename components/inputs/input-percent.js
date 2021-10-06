@@ -2,6 +2,7 @@ import './input-number.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -11,7 +12,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
-class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
+class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -30,11 +31,6 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
-			/**
-			 * REQUIRED: Label for the input
-			 * @type {string}
-			 */
-			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 * @type {boolean}
@@ -106,13 +102,6 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 		this.requestUpdate('value', oldValue);
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		if (!this.label) {
-			console.warn('d2l-input-percent component requires label text');
-		}
-	}
-
 	render() {
 		return html`
 			<d2l-input-number
@@ -123,7 +112,8 @@ class InputPercent extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(Rt
 				.forceInvalid="${this.invalid}"
 				input-width="${ifDefined(this.inputWidth)}"
 				label="${ifDefined(this.label)}"
-				?label-hidden="${this.labelHidden}"
+				?label-hidden="${this.labelHidden || this.labelledBy}"
+				.labelRequired="${false}"
 				max="100"
 				max-fraction-digits="${ifDefined(this.maxFractionDigits)}"
 				min="0"

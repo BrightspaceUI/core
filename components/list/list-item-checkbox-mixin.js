@@ -81,7 +81,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		super.connectedCallback();
 		if (this.selectable) {
 			if (!this.key) console.warn('ListItemCheckboxMixin requires a key.');
-			if (!this.label || this.label.length === 0) console.warn('ListItemCheckboxMixin requires a label.');
+		} else {
+			this.labelRequired = false;
 		}
 		if (!this.key) this.setSelected(undefined, true);
 	}
@@ -123,21 +124,9 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		}
 	}
 
-	_onNestedSlotChange(e) {
-		if (!this.selectable) return;
-
-		const nestedList = e.target.assignedNodes().find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
-		if (this._selectionProvider === nestedList) return;
-
-		if (this._selectionProvider && this._selectionProvider !== nestedList) {
-			this._selectionProvider.unsubscribeObserver(this);
-			this._selectionProvider = null;
-		}
-
-		if (nestedList) {
-			this._selectionProvider = nestedList;
-			this._selectionProvider.subscribeObserver(this);
-		}
+	_onSelectionProviderConnected(e) {
+		e.stopPropagation();
+		this._updateNestedSelectionProvider();
 	}
 
 	_renderCheckbox() {
@@ -168,4 +157,29 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 			</div>
 			` : nothing;
 	}
+
+	_updateNestedSelectionProvider() {
+		if (!this.selectable) return;
+
+		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
+		let nestedNodes = nestedSlot.assignedNodes();
+		if (nestedNodes.length === 0) {
+			nestedNodes = [...nestedSlot.childNodes];
+		}
+
+		const nestedList = nestedNodes.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
+
+		if (this._selectionProvider === nestedList) return;
+
+		if (this._selectionProvider && this._selectionProvider !== nestedList) {
+			this._selectionProvider.unsubscribeObserver(this);
+			this._selectionProvider = null;
+		}
+
+		if (nestedList) {
+			this._selectionProvider = nestedList;
+			this._selectionProvider.subscribeObserver(this);
+		}
+	}
+
 };
