@@ -17,7 +17,7 @@ Filter components are often used in conjuction with [tables](../../components/ta
     var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
-        var filter = document.querySelector('#d2l-filter');
+        var filter = document.querySelector('d2l-filter');
         filter.opened = true;
     }, 100);
   });
@@ -169,7 +169,10 @@ The filter will announce changes to filter selections, search results, and when 
 
 <!-- docs: end hidden content -->
 
-## Filter Dimension Types [d2l-filter-dimension-set] 
+## Filter Dimension Types
+Filter dimensions provide methods for entering filter parameters for a wide range of data types
+
+### Filter Dimension: Set/Value [d2l-filter-dimension-set]
 
 The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the `d2l-filter-dimension-set-value`, this will give you a selectable list of filter values.
 
