@@ -4,8 +4,8 @@ import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
 /**
- * A button component that can be used just like the native button element.
- * @fires d2l-focus-trap-enter - Default content placed inside of the button
+ * A generic container component to trap user focus.
+ * @fires d2l-focus-trap-enter - Dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap.
  */
 class FocusTrap extends LitElement {
 
