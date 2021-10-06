@@ -7,6 +7,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { PerfMonitor } from '../../helpers/perfMonitor.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
@@ -21,7 +22,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
-class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
+class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -71,11 +72,6 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
-			/**
-			 * REQUIRED: Label for the input
-			 * @type {string}
-			 */
-			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 * @type {boolean}
@@ -312,6 +308,13 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 		return super.validity;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		if (this.hasAttribute('aria-label')) {
+			this.labelRequired = false;
+		}
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
@@ -434,7 +437,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			</div>
 			${offscreenContainer}
 		`;
-		if (this.label && !this.labelHidden) {
+		if (this.label && !this.labelHidden && !this.labelledBy) {
 			return html`
 				<label class="d2l-input-label d2l-skeletize" for="${this._inputId}">${this.label}${this.unit ? html`<span class="d2l-offscreen"> ${this.unit}</span>` : ''}</label>
 				${input}`;
@@ -471,7 +474,7 @@ class InputText extends FormElementMixin(SkeletonMixin(RtlMixin(LitElement))) {
 	}
 
 	_getAriaLabel() {
-		if (this.label && this.labelHidden) {
+		if (this.label && (this.labelHidden || this.labelledBy)) {
 			return this.label;
 		}
 		if (this.hasAttribute('aria-label')) {

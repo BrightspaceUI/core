@@ -84,7 +84,7 @@ export const LabelledMixin = superclass => class extends superclass {
 			 */
 			labelledBy: { type: String, reflect: true, attribute: 'labelled-by' },
 			/**
-			 * Explicitly defined label used to provide context for accessibility
+			 * REQUIRED: Explicitly defined label for the element
 			 * @type {string}
 			 */
 			label: { type: String }
@@ -93,8 +93,8 @@ export const LabelledMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
+		this.labelRequired = true;
 		this._labelElem = null;
-		this._labelRequired = true;
 		this._missingLabelErrorHasBeenThrown = false;
 	}
 
@@ -135,7 +135,7 @@ export const LabelledMixin = superclass => class extends superclass {
 	}
 
 	_throwError(err) {
-		if (!this._labelRequired || this._missingLabelErrorHasBeenThrown) return;
+		if (!this.labelRequired || this._missingLabelErrorHasBeenThrown) return;
 		this._missingLabelErrorHasBeenThrown = true;
 		setTimeout(() => { throw err; }); // we don't want to prevent rendering
 	}

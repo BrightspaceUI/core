@@ -30,4 +30,12 @@ describe('d2l-input-date', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('labelled-by', async() => {
+		const elem = await fixture(html`<div>
+			<d2l-input-date labelled-by="label"></d2l-input-date>
+			<span id="label">label text</span>
+		</div>`);
+		await expect(elem).to.be.accessible();
+	});
+
 });

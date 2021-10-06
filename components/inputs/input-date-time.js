@@ -17,6 +17,7 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getDefaultTime } from './input-time.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -38,7 +39,7 @@ function _getFormattedDefaultTime(defaultValue) {
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
  * @fires change - Dispatched when there is a change to selected date or selected time. "value" corresponds to the selected value and is formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
  */
-class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))) {
+class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -46,11 +47,6 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			 * Disables the input
 			 */
 			disabled: { type: Boolean },
-			/**
-			 * REQUIRED: Accessible label for the input fieldset that wraps the date and time inputs
-			 * @type {string}
-			 */
-			label: { type: String },
 			/**
 			 * Hides the fieldset label visually
 			 */
@@ -191,10 +187,6 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if (!this.label) {
-			console.warn('d2l-input-date-time component requires label text');
-		}
-
 		if (this.value) this._preventDefaultValidation = true;
 	}
 
@@ -229,6 +221,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 				@mouseover="${this._handleInputTimeFocus}"
 				label="${this.localize('components.input-date-time.time')}"
 				label-hidden
+				.labelRequired="${false}"
 				max-height="430"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
@@ -239,7 +232,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 			${tooltip}
 			<d2l-input-fieldset
 				label="${ifDefined(this.label)}"
-				?label-hidden="${this.labelHidden}"
+				?label-hidden="${this.labelHidden || this.labelledBy}"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}">
 				<div class="d2l-input-date-time-container">
@@ -253,6 +246,7 @@ class InputDateTime extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(R
 						id="${this._inputId}"
 						label="${this.localize('components.input-date-time.date')}"
 						label-hidden
+						.labelRequired="${false}"
 						max-value="${ifDefined(this._maxValueLocalized)}"
 						min-value="${ifDefined(this._minValueLocalized)}"
 						?opened="${dateOpened}"

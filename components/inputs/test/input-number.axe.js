@@ -32,6 +32,14 @@ describe('d2l-input-number', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('labelled-by', async() => {
+		const elem = await fixture(html`<div>
+			<d2l-input-number labelled-by="label"></d2l-input-number>
+			<span id="label">label</span>
+		</div>`);
+		await expect(elem).to.be.accessible();
+	});
+
 	it('focused', async() => {
 		const elem = await fixture(html`<d2l-input-number label="label"></d2l-input-number>`);
 		elem.focus();

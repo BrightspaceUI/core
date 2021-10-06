@@ -12,6 +12,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -110,7 +111,7 @@ function initIntervals(size, enforceTimeIntervals) {
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
  * @fires change - Dispatched when there is a change to selected time. "value" corresponds to the selected value and is formatted in ISO 8601 time format ("hh:mm:ss").
  */
-class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
+class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -127,11 +128,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 			 * Rounds typed input up to nearest valid interval time (specified with "time-interval")
 			 */
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
-			/**
-			 * REQUIRED: Accessible label for the input
-			 * @type {string}
-			 */
-			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 */
@@ -247,9 +243,6 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (!this.label) {
-			console.warn('d2l-input-time component requires label text');
-		}
 
 		if (this.value === undefined) {
 			const time = getDefaultTime(this.defaultValue, this.enforceTimeIntervals, this.timeInterval);
@@ -297,7 +290,7 @@ class InputTime extends SkeletonMixin(FormElementMixin(LitElement)) {
 				<div>${formattedWideTimePM}</div>
 			</div>
 			<label
-				class="${this.label && !this.labelHidden ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
+				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
 				id="${this._dropdownId}-label">${this.label}</label>
 			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}">

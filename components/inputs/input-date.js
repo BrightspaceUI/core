@@ -11,6 +11,7 @@ import { formatDateInISO, getDateFromISODate, getDateTimeDescriptorShared, getTo
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { LabelledMixin } from '../../mixins/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -26,7 +27,7 @@ export function formatISODateInUserCalDescriptor(val) {
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
  * @fires change - Dispatched when there is a change to selected date. "value" corresponds to the selected value and is formatted in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
-class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))) {
+class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -38,11 +39,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 			 * Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },
-			/**
-			 * REQUIRED: Accessible label for the input
-			 * @type {string}
-			 */
-			label: { type: String },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 */
@@ -177,10 +173,6 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		if (!this.label) {
-			console.warn('d2l-input-date component requires label text');
-		}
-
 		this._textInput = this.shadowRoot.querySelector('d2l-input-text');
 
 		this.addEventListener('blur', this._handleBlur);
@@ -276,7 +268,8 @@ class InputDate extends SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitEl
 					hide-invalid-icon
 					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
-					?label-hidden="${this.labelHidden}"
+					?label-hidden="${this.labelHidden || this.labelledBy}"
+					.labelRequired="${false}"
 					live="assertive"
 					@mouseup="${this._handleMouseup}"
 					placeholder="${shortDateFormat}"
