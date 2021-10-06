@@ -5,7 +5,6 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
-import { styleMap } from 'lit-html/directives/style-map';
 
 /**
  * An icon link that can be placed in the `footer` slot.
@@ -120,22 +119,13 @@ class CardFooterLink extends RtlMixin(LitElement) {
 
 	render() {
 		const noNumber = !this.secondaryCount && this.secondaryCount !== 0;
-		let footerStyle = {
-			marginTop: '0',
-		};
-		if (noNumber) {
-			footerStyle = {
-				marginTop: '0.55rem',
-			};
-		}
 		return html`
 			<a ?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				hreflang="${ifDefined(this.hreflang)}"
 				rel="${ifDefined(this.rel)}"
 				target="${ifDefined(this.target)}"
-				type="${ifDefined(this.type)}"
-				style="${styleMap(footerStyle)}">
+				type="${ifDefined(this.type)}">
 				<span class="d2l-offscreen">${this.text}</span>
 				<d2l-count-badge-icon
 					aria-hidden="true"
