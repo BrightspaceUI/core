@@ -79,11 +79,7 @@ class List extends SelectionMixin(LitElement) {
 		if (!includeNested) return selectionInfo;
 
 		let keys = selectionInfo.keys;
-		const nestedLists = this.querySelectorAll('d2l-list[slot="nested"]');
-
-		nestedLists.forEach(nestedList => {
-			keys = [...keys, ...nestedList.getSelectionInfo().keys];
-		});
+		this._getItems().forEach(item => keys = [...keys, ...item.selectionInfo.keys]);
 
 		return new SelectionInfo(keys, selectionInfo.state);
 	}
