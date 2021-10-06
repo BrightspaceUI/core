@@ -43,7 +43,8 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			secondaryCountMaxDigits: { type: String, attribute: 'secondary-count-max-digits' },
 			/**
-			 * Controls the style of the secondary count bubble; options are 'notification' and 'count'
+			 * Controls the style of the secondary count bubble
+			 * @type {'count'|'notification'}
 			 */
 			secondaryCountType: { type: String, attribute: 'secondary-count-type', reflect: true },
 			/**

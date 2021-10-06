@@ -93,16 +93,6 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 				role="img">
 			</d2l-icon>`;
 	}
-
-	blur() {
-		const icon = this.shadowRoot.querySelector('d2l-icon');
-		icon.classList.remove('d2l-count-badge-icon-focus');
-	}
-
-	focus() {
-		const icon = this.shadowRoot.querySelector('d2l-icon');
-		icon.classList.add('d2l-count-badge-icon-focus');
-	}
 }
 
 customElements.define('d2l-count-badge-icon', CountBadgeIcon);
