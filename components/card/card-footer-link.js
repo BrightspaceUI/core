@@ -27,7 +27,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			hreflang: { type: String, reflect: true },
 			/**
-			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
+			 * REQUIRED: Preset icon key (e.g. "tier1:gear"). Must be a tier 1 icon.
 			 */
 			icon: { type: String, reflect: true },
 			/**
