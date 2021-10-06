@@ -75,6 +75,7 @@ class FilterDimensionSet extends LitElement {
 	}
 
 	_dispatchDataChangeEvent(eventDetail) {
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-data-change', {
 			detail: eventDetail,
 			bubbles: true,

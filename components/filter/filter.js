@@ -42,6 +42,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Disables the dropdown opener for the filter
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
