@@ -333,7 +333,7 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 		this._hovering = false;
 	}
 
-	_renderListItem({ illustration, content, actions } = {}) {
+	_renderListItem({ illustration, content, actions, nested } = {}) {
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
@@ -388,8 +388,8 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 						class="d2l-list-item-actions-container">
 						<slot name="actions" class="d2l-list-item-actions">${actions}</slot>
 					</div>
-					<div slot="nested">
-						<slot name="nested" @slotchange="${this._onNestedSlotChange}"></slot>
+					<div slot="nested" @d2l-selection-provider-connected="${this._onSelectionProviderConnected}">
+						<slot name="nested">${nested}</slot>
 					</div>
 				</d2l-list-item-generic-layout>
 				<div class="d2l-list-item-active-border"></div>
