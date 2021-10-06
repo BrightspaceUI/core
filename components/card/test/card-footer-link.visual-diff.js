@@ -1,7 +1,6 @@
 /*global forceFocusVisible */
 import puppeteer from 'puppeteer';
 import VisualDiff from '@brightspace-ui/visual-diff';
-import { forceFocusVisible } from '../../../helpers/focus';
 
 describe('d2l-card-footer-link', () => {
 
