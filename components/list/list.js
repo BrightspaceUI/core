@@ -48,10 +48,13 @@ class List extends SelectionMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this.addEventListener('d2l-list-item-selected', (e) => {
-			this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
-				detail: e.detail
-			}));
+		this.addEventListener('d2l-list-item-selected', e => {
+			setTimeout(() => {
+				this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
+					bubbles: true,
+					detail: e.detail
+				}));
+			}, 0);
 			e.stopPropagation();
 		});
 	}
