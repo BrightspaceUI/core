@@ -135,11 +135,18 @@ class CardFooterLink extends RtlMixin(LitElement) {
 					number="${noNumber ? 0 : this.secondaryCount}" 
 					?hide-zero="${noNumber}"
 					text="${this.text}"
-					type="${this.secondaryCountType}">
+					type="${this._getType()}">
 				</d2l-count-badge-icon>
 			</a>
 			<slot name="tooltip"></slot>
 		`;
+	}
+
+	_getType() {
+		if (this.secondaryCountType === 'count') {
+			return this.secondaryCountType;
+		}
+		return 'notification';
 	}
 
 	_onBlur() {
