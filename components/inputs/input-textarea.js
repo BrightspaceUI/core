@@ -185,6 +185,13 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 		return super.validity;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		if (this.hasAttribute('aria-label')) {
+			this.labelRequired = false;
+		}
+	}
+
 	render() {
 
 		// convert \n to <br> for html mirror
