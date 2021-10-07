@@ -152,7 +152,6 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_handleSelectionChange(e) {
-		e.stopPropagation();
 		if (this.selectionSingle && e.detail.selected) {
 			const target = e.composedPath().find(elem => elem.tagName === 'D2L-SELECTION-INPUT');
 			this._selectionSelectables.forEach(selectable => {
@@ -194,7 +193,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 
 		this._updateObserversRequested = true;
 		setTimeout(() => {
-			const info = this.getSelectionInfo();
+			const info = this.getSelectionInfo(true);
 			this._selectionObservers.forEach(observer => observer.selectionInfo = info);
 			this._updateObserversRequested = false;
 		}, 0);

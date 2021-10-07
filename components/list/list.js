@@ -48,10 +48,14 @@ class List extends SelectionMixin(LitElement) {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this.addEventListener('d2l-list-item-selected', (e) => {
-			this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
-				detail: e.detail
-			}));
+		this.addEventListener('d2l-list-item-selected', e => {
+			setTimeout(() => {
+				this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
+					bubbles: true,
+					composed: true,
+					detail: e.detail
+				}));
+			}, 0);
 			e.stopPropagation();
 		});
 	}
@@ -79,10 +83,11 @@ class List extends SelectionMixin(LitElement) {
 		if (!includeNested) return selectionInfo;
 
 		let keys = selectionInfo.keys;
-		const nestedLists = this.querySelectorAll('d2l-list[slot="nested"]');
 
-		nestedLists.forEach(nestedList => {
-			keys = [...keys, ...nestedList.getSelectionInfo().keys];
+		this._getItems().forEach(item => {
+			if (item._selectionProvider) {
+				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
+			}
 		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
