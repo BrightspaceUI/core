@@ -30,7 +30,7 @@ The `d2l-focus-trap` is a generic container that will trap user focus from leavi
 
 - `d2l-focus-trap-enter`: dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap.
 
-### Future Enhancements
+## Future Enhancements
 
 Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->
