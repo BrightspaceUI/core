@@ -1,6 +1,6 @@
 
 # User Focus
-These components assist with managing user focus within your web application.
+This component assists with managing user focus within your web application.
 
 ## Focus Trap [d2l-focus-trap]
 
