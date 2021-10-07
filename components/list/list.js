@@ -52,6 +52,7 @@ class List extends SelectionMixin(LitElement) {
 			setTimeout(() => {
 				this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
 					bubbles: true,
+					composed: true,
 					detail: e.detail
 				}));
 			}, 0);
@@ -82,7 +83,12 @@ class List extends SelectionMixin(LitElement) {
 		if (!includeNested) return selectionInfo;
 
 		let keys = selectionInfo.keys;
-		this._getItems().forEach(item => keys = [...keys, ...item.selectionInfo.keys]);
+
+		this._getItems().forEach(item => {
+			if (item._selectionProvider) {
+				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
+			}
+		});
 
 		return new SelectionInfo(keys, selectionInfo.state);
 	}
