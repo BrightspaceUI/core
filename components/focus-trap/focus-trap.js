@@ -3,10 +3,18 @@ import { forceFocusVisible, getNextFocusable, getPreviousFocusable } from '../..
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
+/**
+ * A generic container component to trap user focus.
+ * @fires d2l-focus-trap-enter - Dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap.
+ */
 class FocusTrap extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Whether the component should trap user focus.
+			 * @type {boolean}
+			 */
 			trap: { type: Boolean }
 		};
 	}
