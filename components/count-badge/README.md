@@ -1,5 +1,6 @@
-# Badge
+# Count Badge
 Badges can be used to provide additional contextual information to users in regards to a task or action.
+
 <!-- docs: demo autoSize:false size:small -->
 ```html
 <script type="module">
@@ -12,7 +13,7 @@ Badges can be used to provide additional contextual information to users in rega
 <d2l-count-badge-icon size="small" icon="tier1:gear" type="count" text="100 new settings applied." number="100" tab-stop></d2l-count-badge-icon>
 ```
 
-## Count Badge [d2l-count-badge]
+## Count Badge: Basic [d2l-count-badge]
 
 The `d2l-count-badge` element is a web component to display a number count, depending on your use case different styling options are available.
 
@@ -26,7 +27,7 @@ The `d2l-count-badge` element is a web component to display a number count, depe
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge.js';
 </script>
-<d2l-count-badge size="small" type="notification" text="100 new notifications" number="100" tab-stop></d2l-count-badge>
+<d2l-count-badge size="small" type="notification" text="100 new notifications" number="100" has-tooltip tab-stop></d2l-count-badge>
 ```
 
 ### Accessibility Properties
@@ -53,7 +54,7 @@ The `d2l-count-badge` element is a web component to display a number count, depe
 | `has-tooltip`, default: `false` | Boolean | Optionally choose to have a tooltip below the badge. |
 <!-- docs: end hidden content -->
 
-## Count Badge Icon [d2l-count-badge-icon]
+## Count Badge: Icon [d2l-count-badge-icon]
 
 The `d2l-count-badge-icon` element is a web component to display a number count, either in a `"notification"` or `"count"` style with an icon.
 
@@ -66,7 +67,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge-icon.js';
 </script>
-<d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100" tab-stop></d2l-count-badge>
+<d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100" tab-stop has-tooltip></d2l-count-badge>
 ```
 
 ### Accessibility Properties
