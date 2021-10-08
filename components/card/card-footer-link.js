@@ -85,7 +85,6 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				height: 100%;
 				outline: none;
 				width: 100%;
-				z-index: 1;
 			}
 			d2l-count-badge-icon {
 				text-align: initial;
@@ -107,9 +106,9 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		const noNumber = !this.secondaryCount && this.secondaryCount !== 0;
+		const noNumber = this.secondaryCount === undefined;
 		return html`
-			<a  @focus="${this._onFocus}" 
+			<a @focus="${this._onFocus}" 
 				@blur="${this._onBlur}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
