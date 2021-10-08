@@ -84,7 +84,9 @@ class FocusTrap extends LitElement {
 			// user is exiting trap via forward tabbing...
 			const firstFocusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 			if (firstFocusable) {
-				forceFocusVisible(firstFocusable);
+				setTimeout(() => {
+					forceFocusVisible(firstFocusable);
+				}, 50);
 				return;
 			}
 		}
@@ -97,7 +99,9 @@ class FocusTrap extends LitElement {
 			// user is exiting trap via back tabbing...
 			const lastFocusable = getPreviousFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-end'));
 			if (lastFocusable) {
-				forceFocusVisible(lastFocusable);
+				setTimeout(() => {
+					forceFocusVisible(lastFocusable);
+				}, 50);
 				return;
 			}
 		}
