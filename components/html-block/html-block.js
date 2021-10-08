@@ -117,7 +117,7 @@ const getRenderers = () => {
 class HtmlBlock extends LitElement {
 
 	static get styles() {
-		return [ contentStyles, css`
+		return [ htmlBlockContentStyles, css`
 			:host {
 				display: block;
 				overflow-wrap: break-word;
