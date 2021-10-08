@@ -102,21 +102,24 @@ export const LabelledMixin = superclass => class extends superclass {
 
 		super.updated(changedProperties);
 
-		// need to check this even if "label" isn't updated in case it's never set
-		const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
-		if (!hasLabel) {
-			if (this.labelledBy) {
-				if (this._labelElem) {
+		// don't error immediately in case it doesn't get set immediately
+		setTimeout(() => {
+			// need to check this even if "label" isn't updated in case it's never set
+			const hasLabel = (typeof this.label === 'string') && this.label.length > 0;
+			if (!hasLabel) {
+				if (this.labelledBy) {
+					if (this._labelElem) {
+						this._throwError(
+							new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but its label is empty`)
+						);
+					}
+				} else {
 					this._throwError(
-						new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but its label is empty`)
+						new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is missing a required "label" attribute`)
 					);
 				}
-			} else {
-				this._throwError(
-					new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is missing a required "label" attribute`)
-				);
 			}
-		}
+		}, 3000);
 
 		if (!changedProperties.has('labelledBy')) return;
 
