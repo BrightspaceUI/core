@@ -1,23 +1,19 @@
 # Badge
 Badges can be used to provide additional contextual information to users in regards to a task or action.
+
 <!-- docs: demo -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge.js';
   import '@brightspace-ui/core/components/count-badge/count-badge-icon.js';
 </script>
-<d2l-count-badge size="small" type="notification" text="100 new notifications" number="100" tab-stop></d2l-count-badge>
+<d2l-count-badge size="small" type="notification" text="100 new notifications" number="100"></d2l-count-badge>
 <d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100" tab-stop></d2l-count-badge>
 ```
 
 ## Count Badge [d2l-count-badge]
 
 The `d2l-count-badge` element is a web component to display a number count, depending on your use case different styling options are available.
-
-<!-- docs: start hidden content -->
-![Notification Badge](./screenshots/count-badge-notification-small.png?raw=true) -->
-![Count Badge](./screenshots/count-badge-count-large.png?raw=true)
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-count-badge -->
 ```html
@@ -26,11 +22,12 @@ The `d2l-count-badge` element is a web component to display a number count, depe
 </script>
 <d2l-count-badge size="small" type="notification" text="100 new notifications" number="100" tab-stop></d2l-count-badge>
 ```
+<!-- docs: start hidden content -->
+![Notification Badge](./screenshots/count-badge-notification-small.png?raw=true) -->
+![Count Badge](./screenshots/count-badge-count-large.png?raw=true)
+<!-- docs: end hidden content -->
 
 ### Accessibility Properties
-
-To make your `d2l-count-badge` accessible, use the following properties when applicable:
-
 | Attribute | Description |
 |---|---|
 | `text`,  | REQUIRED: Only the text will be read by screen-readers (not the number), so include the number in the text. |
@@ -71,16 +68,12 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 ```
 
 ### Accessibility Properties
-
-To make your `d2l-count-badge-icon` accessible, use the following properties when applicable:
-
 | Attribute | Description |
-|--|--|
+|---|---|
 | `text`, required | Only the text will be read by screen-readers (not the number), so include the number in the text. |
 | `tab-stop` | A tab stop allows screen-reader users to easily tab to the badge. Otherwise, screen-reader users will need to arrow through to the badge. |
 | `announce-changes` | Use "announce-changes" if screen-reader users should be notified that the badge has been updated, such as a new notification. The "text" property will be read as soon as the screen-reader is idle. |
 | `has-tooltip` | The tooltip will be visible on hover/tab-stop, and read out by screen-readers. |
-
 
 <!-- docs: start hidden content -->
 ### Properties
