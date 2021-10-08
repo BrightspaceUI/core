@@ -177,7 +177,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					mobile-breakpoint="768"
 					no-padding-header
 					no-padding
-					?opened="${this.opened}">
+					?opened="${this.opened}"
+					?trap-focus="${!this._isDimensionEmpty(this._dimensions[0])}">
 					${header}
 					${dimensions}
 				</d2l-dropdown-content>`
@@ -188,7 +189,8 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					mobile-tray="right"
 					mobile-breakpoint="768"
 					no-padding-header
-					?opened="${this.opened}">
+					?opened="${this.opened}"
+					trap-focus>
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
 						${dimensions}
