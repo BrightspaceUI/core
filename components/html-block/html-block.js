@@ -3,7 +3,7 @@ import { css, LitElement } from 'lit-element/lit-element.js';
 import { htmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
-export const contentStyles = css`
+export const htmlBlockContentStyles = css`
 	h1, h2, h3, h4, h5, h6, b, strong, b *, strong * {
 		font-weight: bold;
 	}
