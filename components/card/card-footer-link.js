@@ -106,22 +106,12 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		this.secondaryCountType = 'notification';
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.addEventListener('focus', this._onFocus);
-		this.addEventListener('blur', this._onBlur);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('focus', this._onFocus);
-		this.removeEventListener('blur', this._onBlur);
-	}
-
 	render() {
 		const noNumber = !this.secondaryCount && this.secondaryCount !== 0;
 		return html`
-			<a ?download="${this.download}"
+			<a  @focus="${this._onFocus}" 
+				@blur="${this._onBlur}"
+				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				hreflang="${ifDefined(this.hreflang)}"
 				rel="${ifDefined(this.rel)}"
