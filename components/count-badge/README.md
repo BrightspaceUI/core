@@ -1,19 +1,25 @@
 # Badge
 Badges can be used to provide additional contextual information to users in regards to a task or action.
-
-<!-- docs: demo -->
+<!-- docs: demo autoSize:false size:small -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge.js';
   import '@brightspace-ui/core/components/count-badge/count-badge-icon.js';
 </script>
 <d2l-count-badge size="small" type="notification" text="100 new notifications" number="100"></d2l-count-badge>
-<d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100" tab-stop></d2l-count-badge>
+<d2l-count-badge size="small" type="count" text="100 new notifications" number="100"></d2l-count-badge>
+<d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100" tab-stop></d2l-count-badge-icon>
+<d2l-count-badge-icon size="small" icon="tier1:gear" type="count" text="100 new settings applied." number="100" tab-stop></d2l-count-badge-icon>
 ```
 
 ## Count Badge [d2l-count-badge]
 
 The `d2l-count-badge` element is a web component to display a number count, depending on your use case different styling options are available.
+
+<!-- docs: start hidden content -->
+![Notification Badge](./screenshots/count-badge-notification-small.png?raw=true) -->
+![Count Badge](./screenshots/count-badge-count-large.png?raw=true)
+<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-count-badge -->
 ```html
@@ -22,10 +28,6 @@ The `d2l-count-badge` element is a web component to display a number count, depe
 </script>
 <d2l-count-badge size="small" type="notification" text="100 new notifications" number="100" tab-stop></d2l-count-badge>
 ```
-<!-- docs: start hidden content -->
-![Notification Badge](./screenshots/count-badge-notification-small.png?raw=true) -->
-![Count Badge](./screenshots/count-badge-count-large.png?raw=true)
-<!-- docs: end hidden content -->
 
 ### Accessibility Properties
 | Attribute | Description |
