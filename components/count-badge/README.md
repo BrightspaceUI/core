@@ -28,6 +28,7 @@ The `d2l-count-badge` element is a web component to display a number count, eith
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
 | `announce-changes`, default: `false` | Boolean | Optionally choose to announce changes to the badge with an aria-live region. If the text property is changed, the text will be read by screen-readers. |
 | `has-tooltip`, default: `false` | Boolean | Optionally choose to have a tooltip below the badge. |
+| `focus-ring`, default: `false` | Boolean | Optionally force a focus ring around the badge. This property can be used to highlight the badge when the parent element is focused. |
 
 ### Accessibility Properties
 
@@ -69,6 +70,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 | `tab-stop`, default: `false` | Boolean | Optionally choose to make the badge a tab stop. |
 | `announce-changes`, default: `false` | Boolean | Optionally choose to announce changes to the badge with an aria-live region. If the text property is changed, the text will be read by screen-readers. |
 | `has-tooltip`, default: `false` | Boolean | Optionally choose to have a tooltip below the badge. |
+| `focus-ring`, default: `false` | Boolean | Optionally force a focus ring around the badge. This property can be used to highlight the badge when the parent element is focused. |
 
 ### Accessibility Properties
 
