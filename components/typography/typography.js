@@ -1,4 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/custom-style-interface.js';
 import '../colors/colors.js';
 
 export const importUrl = 'https://s.brightspace.com/lib/fonts/0.5.0/assets/';
@@ -144,5 +143,4 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		}
 	`;
 	document.head.appendChild(style);
-	window.ShadyCSS.CustomStyleInterface.addCustomStyle(style);
 }
