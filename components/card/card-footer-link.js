@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../count-badge/count-badge-icon.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
@@ -7,6 +8,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * An icon link that can be placed in the `footer` slot.
+ * @slot tooltip - slot for the link tooltip
  */
 class CardFooterLink extends RtlMixin(LitElement) {
 
@@ -25,7 +27,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			hreflang: { type: String, reflect: true },
 			/**
-			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
+			 * REQUIRED: Preset icon key (e.g. "tier1:gear"). Must be a tier 1 icon.
 			 */
 			icon: { type: String, reflect: true },
 			/**
@@ -33,13 +35,18 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			 */
 			rel: { type: String, reflect: true },
 			/**
-			 * Secondary text to display as a superscript on the icon
+			 * Secondary count to display as a count bubble on the icon
 			 */
-			secondaryText: { type: String, attribute: 'secondary-text', reflect: true },
+			secondaryCount: { type: Number, attribute: 'secondary-count', reflect: true },
 			/**
-			 * Controls the style of the secondary text bubble; options are 'notification' and 'count'
+			 * Maximum digits to display in the secondary count. Defaults to no limit
 			 */
-			secondaryTextType: { type: String, attribute: 'secondary-text-type', reflect: true },
+			secondaryCountMaxDigits: { type: String, attribute: 'secondary-count-max-digits' },
+			/**
+			 * Controls the style of the secondary count bubble
+			 * @type {'count'|'notification'}
+			 */
+			secondaryCountType: { type: String, attribute: 'secondary-count-type', reflect: true },
 			/**
 			 * Where to display the linked URL
 			 */
@@ -51,8 +58,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			/**
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
 			 */
-			type: { type: String, reflect: true },
-			_secondaryTextHidden: { type: Boolean }
+			type: { type: String, reflect: true }
 		};
 	}
 
@@ -73,64 +79,22 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				margin-right: 0;
 				right: 0.15rem;
 			}
-			.d2l-card-footer-link-content {
-				display: inline-block;
-				line-height: 0;
-				padding: 0.6rem;
-				position: relative;
-				text-align: center;
-			}
 			a {
 				box-sizing: border-box;
 				display: inline-block;
 				height: 100%;
 				outline: none;
-				position: absolute;
 				width: 100%;
-				z-index: 1;
 			}
-			a[href]:focus + .d2l-card-footer-link-content > d2l-icon,
-			a[href]:hover + .d2l-card-footer-link-content > d2l-icon {
-				color: var(--d2l-color-celestine);
+			d2l-count-badge-icon {
+				text-align: initial;
 			}
-			d2l-icon {
-				height: 0.9rem;
-				width: 0.9rem;
+			::slotted(d2l-tooltip) {
+				left: calc(-50% + 11px) !important;
 			}
-			.d2l-card-footer-link-secondary-text {
-				border-radius: 0.75rem;
-				box-shadow: 0 0 0 1px white;
-				box-sizing: content-box;
-				display: inline-block;
-				font-size: 0.55rem;
-				font-weight: 400;
-				line-height: 100%;
-				min-width: 0.5rem;
-				padding: 2px;
-				position: relative;
-			}
-			.d2l-card-footer-link-secondary-text-container {
-				position: absolute;
-				right: 1rem;
-				top: 0;
-				width: 1px;
-			}
-			:host([dir="rtl"]) .d2l-card-footer-link-secondary-text-container {
-				left: 1rem;
-				right: auto;
-			}
-			:host([secondary-text-type="notification"]) .d2l-card-footer-link-secondary-text {
-				background-color: var(--d2l-color-carnelian-minus-1);
-				border: 2px solid var(--d2l-color-carnelian-minus-1);
-				color: white;
-			}
-			:host([secondary-text-type="count"]) .d2l-card-footer-link-secondary-text {
-				background-color: var(--d2l-color-gypsum);
-				border: 2px solid var(--d2l-color-gypsum);
-				color: var(--d2l-color-ferrite);
-			}
-			[hidden].d2l-card-footer-link-secondary-text {
-				display: none;
+			:host([dir="rtl"]) ::slotted(d2l-tooltip) {
+				left: 0;
+				right: calc(-50% + 11px) !important;
 			}
 		`];
 	}
@@ -138,39 +102,48 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	constructor() {
 		super();
 		this.download = false;
-		this.secondaryTextType = 'notification';
-		this._secondaryTextHidden = true;
+		this.secondaryCountType = 'notification';
 	}
 
 	render() {
+		const noNumber = this.secondaryCount === undefined;
 		return html`
-			<a ?download="${this.download}"
+			<a @focus="${this._onFocus}" 
+				@blur="${this._onBlur}"
+				?download="${this.download}"
 				href="${ifDefined(this.href)}"
 				hreflang="${ifDefined(this.hreflang)}"
 				rel="${ifDefined(this.rel)}"
 				target="${ifDefined(this.target)}"
 				type="${ifDefined(this.type)}">
 				<span class="d2l-offscreen">${this.text}</span>
+				<d2l-count-badge-icon
+					aria-hidden="true"
+					icon="${this.icon}"
+					max-digits="${ifDefined(this.secondaryCountMaxDigits ? this.secondaryCountMaxDigits : undefined)}"
+					number="${noNumber ? 0 : this.secondaryCount}" 
+					?hide-zero="${noNumber}"
+					text="${this.text}"
+					type="${this._getType()}">
+				</d2l-count-badge-icon>
 			</a>
-			<div class="d2l-card-footer-link-content">
-				<d2l-icon icon="${this.icon}"></d2l-icon>
-				<div class="d2l-card-footer-link-secondary-text-container">
-					<div class="d2l-card-footer-link-secondary-text" aria-hidden="true" ?hidden="${this._secondaryTextHidden}">${this.secondaryText}</div>
-				</div>
-			</div>
+			<slot name="tooltip"></slot>
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (!changedProperties.has('secondaryText')) return;
-		this._secondaryTextHidden = !(this.secondaryText && this.secondaryText.length > 0);
+	_getType() {
+		if (this.secondaryCountType === 'count') {
+			return this.secondaryCountType;
+		}
+		return 'notification';
 	}
 
-	focus() {
-		const elem = this.shadowRoot.querySelector('a');
-		if (!elem) return;
-		elem.focus();
+	_onBlur() {
+		this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = false;
+	}
+
+	_onFocus() {
+		this.shadowRoot.querySelector('d2l-count-badge-icon').forceFocusRing = true;
 	}
 
 }

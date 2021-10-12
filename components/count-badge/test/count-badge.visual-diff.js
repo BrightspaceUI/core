@@ -32,8 +32,10 @@ describe('d2l-count-badge', () => {
 	[
 		'small-notification',
 		'small-notification-truncated',
+		'small-notification-truncated-rtl',
 		'large-count',
 		'large-count-large-number',
+		'large-count-large-number-rtl',
 		'hide-zero-nonzero-shown',
 		'hide-zero-hidden'
 	].forEach((testName) => {

@@ -23,6 +23,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	static get styles() {
 		return [countBadgeStyles, css`
 		:host(.focus-visible) d2l-icon,
+		:host([focus-ring]) d2l-icon,
 		d2l-icon.focus-visible {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 			outline: none;
@@ -47,13 +48,13 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			margin-top: -0.55rem;
 		}
 
-		:host([icon^="tier1:"]) {
+		:host([icon*="tier1:"]) {
 			--d2l-count-badge-icon-height: 18px;
 		}
-		:host([icon^="tier2:"]) {
+		:host([icon*="tier2:"]) {
 			--d2l-count-badge-icon-height: 24px;
 		}
-		:host([icon^="tier3:"]) {
+		:host([icon*="tier3:"]) {
 			--d2l-count-badge-icon-height: 30px;
 		}
 
@@ -76,6 +77,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	render() {
 		const numberPadding = this.size === 'small' ? '0.55rem' : '0.7rem';
 		const numberStyles = {
+			border: '2px solid white',
 			position: 'relative',
 			left: this.dir === 'rtl' ? 0 : 'var(--d2l-count-badge-icon-padding)',
 			right: this.dir === 'rtl' ? 'var(--d2l-count-badge-icon-padding)' : 0,

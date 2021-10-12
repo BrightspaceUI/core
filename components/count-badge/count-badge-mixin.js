@@ -19,7 +19,6 @@ export const countBadgeStyles = [offscreenStyles, css`
 }
 
 .d2l-count-badge-number {
-	border: 2px solid white;
 	font-weight: bold;
 }
 
@@ -61,6 +60,15 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			announceChanges: {
 				type: Boolean,
 				attribute: 'announce-changes'
+			},
+			/**
+			 * Optionally choose to force the focus ring around the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			forceFocusRing: {
+				type: Boolean,
+				attribute: 'focus-ring',
+				reflect: true
 			},
 			/**
 			 * Optionally add a tooltip on the badge. Defaults to false.
@@ -133,6 +141,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	constructor() {
 		super();
 		this.announceChanges = false;
+		this.forceFocusRing = false;
 		this.hasTooltip = false;
 		this.hideZero = false;
 		this.size = 'small';
