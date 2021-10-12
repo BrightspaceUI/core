@@ -13,6 +13,10 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 		}
 
+		.d2l-count-badge-wrapper {
+			border: 2px solid transparent;
+		}
+
 		:host([size="small"]) .d2l-count-badge-wrapper {
 			border-radius: 0.65rem;
 			outline: none;
