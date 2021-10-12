@@ -67,7 +67,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 <script type="module">
   import '@brightspace-ui/core/components/count-badge/count-badge-icon.js';
 </script>
-<d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100" tab-stop has-tooltip></d2l-count-badge>
+<d2l-count-badge-icon size="small" icon="tier1:gear" type="notification" text="100 new settings applied." number="100" tab-stop has-tooltip></d2l-count-badge-icon>
 ```
 
 ### Accessibility Properties
