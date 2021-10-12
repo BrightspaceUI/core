@@ -73,7 +73,7 @@ The `d2l-count-badge-icon` element is a web component to display a number count,
 ### Accessibility Properties
 | Attribute | Description |
 |---|---|
-| `text`, required | Only the text will be read by screen-readers (not the number), so include the number in the text. |
+| `text` | REQUIRED: Only the text will be read by screen-readers (not the number), so include the number in the text. |
 | `tab-stop` | A tab stop allows screen-reader users to easily tab to the badge. Otherwise, screen-reader users will need to arrow through to the badge. |
 | `announce-changes` | Use "announce-changes" if screen-reader users should be notified that the badge has been updated, such as a new notification. The "text" property will be read as soon as the screen-reader is idle. |
 | `has-tooltip` | The tooltip will be visible on hover/tab-stop, and read out by screen-readers. |
