@@ -21,24 +21,6 @@ jobs:
         run: npm run lint:style
       - name: Lint (Lit)
         run: npm run lint:lit
-  a11y:
-    name: Accessibility Tests
-    timeout-minutes: 2
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Brightspace/third-party-actions@actions/checkout
-      - uses: Brightspace/third-party-actions@actions/setup-node
-        with:
-          node-version: '14'
-          cache: 'npm'
-      - name: Install dependencies
-        run: |
-          npm ci
-          npx playwright install-deps chromium
-      - name: Build
-        run: npm run build
-      - name: Test
-        run: npm run test:axe
   sauce:
     name: Unit Tests (SauceLabs)
     timeout-minutes: 10
@@ -61,7 +43,7 @@ jobs:
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_GAUDI }}
         run: npx web-test-runner --config web-test-runner.sauce.config.mjs --group default
   playwright:
-    name: Unit Tests (Playwright)
+    name: Accessibility and Unit Tests (Playwright)
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -76,5 +58,7 @@ jobs:
           npx playwright install-deps
       - name: Build
         run: npm run build
-      - name: Playwright
+      - name: Accessibility Tests
+        run: npm run test:axe
+      - name: Unit Tests
         run: npx web-test-runner --config web-test-runner.config.mjs --group default --playwright --browsers chromium firefox webkit
