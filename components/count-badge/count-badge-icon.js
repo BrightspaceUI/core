@@ -76,6 +76,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	render() {
 		const numberPadding = this.size === 'small' ? '0.55rem' : '0.7rem';
 		const numberStyles = {
+			border: '2px solid white',
 			position: 'relative',
 			left: this.dir === 'rtl' ? 0 : 'var(--d2l-count-badge-icon-padding)',
 			right: this.dir === 'rtl' ? 'var(--d2l-count-badge-icon-padding)' : 0,

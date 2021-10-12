@@ -14,6 +14,7 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 		}
 
 		:host([size="small"]) .d2l-count-badge-wrapper {
+			border: 2px solid transparent;
 			border-radius: 0.65rem;
 			outline: none;
 		}

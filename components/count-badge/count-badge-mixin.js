@@ -19,7 +19,6 @@ export const countBadgeStyles = [offscreenStyles, css`
 }
 
 .d2l-count-badge-number {
-	border: 2px solid white;
 	font-weight: bold;
 }
 
