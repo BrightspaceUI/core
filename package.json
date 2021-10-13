@@ -63,7 +63,6 @@
     "@brightspace-ui/intl": "^3",
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1",
-    "@webcomponents/shadycss": "^1",
     "focus-visible": "^5",
     "ifrau": "^0.39",
     "intl-messageformat": "^7",
