@@ -100,13 +100,19 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		e.stopPropagation();
 		this._updateErrors(e.target, e.detail.errors);
 	}
+
 	async _onFormElementChange(e) {
 		const ele = e.target;
+
+		if ((isNativeFormElement(ele) || isCustomFormElement(ele)) && e.type !== 'focusout') {
+			this._dirty = true;
+			this.dispatchEvent(new CustomEvent('d2l-form-dirty'));
+		}
+
 		if (!isNativeFormElement(ele)) {
 			return;
 		}
 		e.stopPropagation();
-		this._dirty = true;
 		const errors = await this._validateFormElement(ele, e.type === 'focusout');
 		this._updateErrors(ele, errors);
 	}
