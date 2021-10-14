@@ -113,6 +113,8 @@ npm run test:headless
 npm run test:headless:watch
 ```
 
+Note: The axe tests require `prefers-reduced-motion` emulation to be turned on in the dev console if debugging in a local browser.
+
 ### Visual Diff Testing
 
 This repo uses the [@brightspace-ui/visual-diff utility](https://github.com/BrightspaceUI/visual-diff/) to compare current snapshots against a set of golden snapshots stored in source control.

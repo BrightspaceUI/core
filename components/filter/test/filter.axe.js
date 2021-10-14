@@ -41,9 +41,8 @@ describe('d2l-filter', () => {
 		it(`${test.name} opened`, async() => {
 			const elem = await fixture(test.fixture);
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
-			const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-content') || elem.shadowRoot.querySelector('d2l-dropdown-menu');
-			await dropdownContent.updateComplete;
-			dropdown.toggleOpen();
+
+			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			await expect(elem).to.be.accessible();
 		});
@@ -53,9 +52,8 @@ describe('d2l-filter', () => {
 		const elem = await fixture(multiDimensionFixture);
 		const dropdown = elem.shadowRoot.querySelector('d2l-dropdown-button-subtle');
 		const menuItem = elem.shadowRoot.querySelector('d2l-menu-item');
-		const dropdownContent = elem.shadowRoot.querySelector('d2l-dropdown-menu');
-		await dropdownContent.updateComplete;
-		dropdown.toggleOpen();
+
+		elem.opened = true;
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		menuItem.click();
 		await oneEvent(dropdown, 'd2l-hierarchical-view-show-complete');

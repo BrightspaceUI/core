@@ -1,3 +1,5 @@
+import { playwrightLauncher } from '@web/test-runner-playwright';
+
 function getPattern(type) {
 	return `+(components|directives|helpers|mixins|templates)/**/*.${type}.js`;
 }
@@ -9,6 +11,15 @@ export default {
 		{
 			name: 'aXe',
 			files: getPattern('axe'),
+			browsers: [
+				playwrightLauncher({
+					async createPage({ context }) {
+						const page = await context.newPage();
+						await page.emulateMedia({ reducedMotion: 'reduce' });
+						return page;
+					}
+				})
+			]
 		},
 		{
 			name: 'perf',
