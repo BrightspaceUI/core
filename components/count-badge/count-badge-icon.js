@@ -90,6 +90,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		aria-hidden="false"
 		aria-label="${ifDefined(this.hasTooltip ? undefined : this.text)}"
 		aria-atomic="true" 
+		aria-relevant="additions removals"
 		aria-live="${this.announceChanges ? 'polite' : 'off'}">
 		${this.renderCount(numberStyles)}
 		${this.renderTooltips(this._badgeId)}

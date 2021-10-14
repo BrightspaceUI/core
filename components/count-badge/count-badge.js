@@ -43,6 +43,7 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
 			aria-label="${ifDefined(this.hasTooltip ? undefined : this.text)}"
 			aria-atomic="true" 
+			aria-relevant="additions removals"
 			aria-live="${this.announceChanges ? 'polite' : 'off'}"
 			role="img">
 				${this.renderCount()}
