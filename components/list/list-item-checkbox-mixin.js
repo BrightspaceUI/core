@@ -100,11 +100,24 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		if (!suppressEvent) this._dispatchSelected(selected);
 	}
 
-	_dispatchSelected(value) {
+	async _dispatchSelected(value) {
+		/* wait for internal state to be updated in case of action-click case so that a consumer
+		 calling getSelectionInfo will get the correct state */
+		await this.updateComplete;
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: { key: this.key, selected: value },
 			bubbles: true
 		}));
+	}
+
+	_getNestedList() {
+		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
+		let nestedNodes = nestedSlot.assignedNodes();
+		if (nestedNodes.length === 0) {
+			nestedNodes = [...nestedSlot.childNodes];
+		}
+
+		return nestedNodes.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
 	}
 
 	_onCheckboxActionClick(event) {
@@ -161,14 +174,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 	_updateNestedSelectionProvider() {
 		if (!this.selectable) return;
 
-		const nestedSlot = this.shadowRoot.querySelector('slot[name="nested"]');
-		let nestedNodes = nestedSlot.assignedNodes();
-		if (nestedNodes.length === 0) {
-			nestedNodes = [...nestedSlot.childNodes];
-		}
-
-		const nestedList = nestedNodes.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-LIST'));
-
+		const nestedList = this._getNestedList();
 		if (this._selectionProvider === nestedList) return;
 
 		if (this._selectionProvider && this._selectionProvider !== nestedList) {

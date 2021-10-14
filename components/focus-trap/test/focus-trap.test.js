@@ -1,6 +1,7 @@
 import '../focus-trap.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
+import sinon from 'sinon';
 
 const normalFixture = html`
 	<div>
@@ -73,16 +74,30 @@ describe('d2l-focus-trap', () => {
 			await oneEvent(focusTrap, 'd2l-focus-trap-enter');
 		});
 
-		it('wraps to first', () => {
-			focusTrap.querySelector('#last').focus();
-			focusTrap.shadowRoot.querySelector('.d2l-focus-trap-end').focus();
-			expect(document.activeElement).to.equal(elem.querySelector('#first'));
-		});
+		describe('wrapping', () => {
+			let clock;
 
-		it('wraps to last', () => {
-			focusTrap.querySelector('#first').focus();
-			focusTrap.shadowRoot.querySelector('.d2l-focus-trap-start').focus();
-			expect(document.activeElement).to.equal(elem.querySelector('#last'));
+			beforeEach(() => {
+				clock = sinon.useFakeTimers();
+			});
+			afterEach(() => {
+				clock.restore();
+			});
+
+			it('wraps to first', async() => {
+				focusTrap.querySelector('#last').focus();
+				focusTrap.shadowRoot.querySelector('.d2l-focus-trap-end').focus();
+				clock.tick(50);
+				expect(document.activeElement).to.equal(elem.querySelector('#first'));
+			});
+
+			it('wraps to last', () => {
+				focusTrap.querySelector('#first').focus();
+				focusTrap.shadowRoot.querySelector('.d2l-focus-trap-start').focus();
+				clock.tick(50);
+				expect(document.activeElement).to.equal(elem.querySelector('#last'));
+			});
+
 		});
 
 	});

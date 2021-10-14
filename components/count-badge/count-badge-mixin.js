@@ -19,7 +19,6 @@ export const countBadgeStyles = [offscreenStyles, css`
 }
 
 .d2l-count-badge-number {
-	border: 2px solid white;
 	font-weight: bold;
 }
 
@@ -63,6 +62,15 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 				attribute: 'announce-changes'
 			},
 			/**
+			 * Optionally choose to force the focus ring around the badge. Defaults to false.
+			 * @type {boolean}
+			 */
+			forceFocusRing: {
+				type: Boolean,
+				attribute: 'focus-ring',
+				reflect: true
+			},
+			/**
 			 * Optionally add a tooltip on the badge. Defaults to false.
 			 * @type {boolean}
 			 */
@@ -87,7 +95,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 				attribute: 'max-digits'
 			},
 			/**
-			 * The number to be displayed on the badge. Must be a positive integer.
+			 * REQUIRED: The number to be displayed on the badge. Must be a positive integer.
 			 * @type {number}
 			 */
 			number: {
@@ -112,7 +120,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 				attribute: 'tab-stop'
 			},
 			/**
-			 * * Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled.
+			 * REQUIRED: Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled.
 			 * @type {string}
 			 */
 			text: {
@@ -133,6 +141,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	constructor() {
 		super();
 		this.announceChanges = false;
+		this.forceFocusRing = false;
 		this.hasTooltip = false;
 		this.hideZero = false;
 		this.size = 'small';

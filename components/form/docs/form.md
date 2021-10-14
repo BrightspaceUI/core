@@ -112,6 +112,7 @@ If you're looking to emulate native form element submission, `d2l-form-native` m
 ### Events
 - `d2l-form-submit`: Dispatched when the form is submitted. The form data can be obtained from the `detail`'s `formData` property.
 - `d2l-form-invalid`: Dispatched when the form fails validation. The error map can be obtained from the `detail`'s `errors` property.
+- `d2l-form-dirty`: Dispatched whenever any form element fires an `input` or `change` event. Can be used to track whether the form is dirty or not.
 <!-- docs: end hidden content -->
 
 ### Methods
@@ -234,6 +235,7 @@ If you're looking to submit form data via your own API calls or nest multiple fo
 ### Events
 - `submit`: Dispatched when the form is submitted. Cancelling this event will prevent form submission.
 - `formdata`: Dispatched after the entry list representing the form's data is constructed. This happens when the form is submitted just prior to submission. The form data can be obtained from the `detail`'s `formData` property.
+- `d2l-form-dirty`: Dispatched whenever any form element fires an `input` or `change` event. Can be used to track whether the form is dirty or not.
 <!-- docs: end hidden content -->
 
 ### Methods
