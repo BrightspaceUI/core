@@ -72,7 +72,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		const oldVal = this._selectionInfo;
 		if (oldVal !== val) {
 			this._selectionInfo = val;
-			this.selected = (this._selectionInfo.state === SelectionInfo.states.all);
+			this.setSelected(this._selectionInfo.state === SelectionInfo.states.all);
 			this.requestUpdate('selectionInfo', oldVal);
 		}
 	}
@@ -106,6 +106,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		await this.updateComplete;
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: { key: this.key, selected: value },
+			composed: true,
 			bubbles: true
 		}));
 	}

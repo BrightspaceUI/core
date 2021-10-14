@@ -44,11 +44,24 @@ class List extends SelectionMixin(LitElement) {
 		super();
 		this.extendSeparators = false;
 		this.grid = false;
+		this._listItemChanges = [];
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-list-item-selected', e => {
+
+			// batch the changes from select-all and nested lists
+			if (this._listItemChanges.length === 0) {
+				setTimeout(() => {
+					this.dispatchEvent(new CustomEvent('d2l-list-selection-changes', {
+						detail: this._listItemChanges
+					}));
+					this._listItemChanges = [];
+				}, 30);
+			}
+			this._listItemChanges.push(e.detail);
+
 			setTimeout(() => {
 				this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
 					bubbles: true,
@@ -56,7 +69,7 @@ class List extends SelectionMixin(LitElement) {
 					detail: e.detail
 				}));
 			}, 0);
-			e.stopPropagation();
+
 		});
 	}
 
