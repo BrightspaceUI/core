@@ -5,8 +5,25 @@ import '../list-item-content.js';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '../../../tools/constructor-test-helper.js';
 
-const clickItemInput = item => {
-	item.shadowRoot.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input').click();
+const selectionInputRendering = async item => {
+	return new Promise(resolve => {
+		const intervalId = setInterval(() => {
+			const selectionInput = item.shadowRoot.querySelector('d2l-selection-input');
+			const inputCheckbox = selectionInput.shadowRoot.querySelector('d2l-input-checkbox');
+			if (inputCheckbox) {
+				clearInterval(intervalId);
+				resolve();
+			}
+		}, 10);
+	});
+};
+
+const clickItemInput = async item => {
+	await selectionInputRendering(item);
+	const selectionInput = item.shadowRoot.querySelector('d2l-selection-input');
+	const inputCheckbox = selectionInput.shadowRoot.querySelector('d2l-input-checkbox');
+	const input = inputCheckbox.shadowRoot.querySelector('input');
+	input.click();
 };
 
 describe('d2l-list', () => {
