@@ -160,7 +160,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	}
 
 	getAriaLabelId() {
-		return this._labelId;
+		return this.hasTooltip ? undefined : this._labelId;
 	}
 
 	renderCount(numberStyles) {
@@ -180,7 +180,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 
 		return html`
 			<div class="d2l-count-badge-number" style=${styleMap(numberStyles)}>
-					<div aria-live="off" aria-hidden="true">${numberString}</div>		
+					<div aria-hidden="true">${numberString}</div>		
 			</div>
 		`;
 	}

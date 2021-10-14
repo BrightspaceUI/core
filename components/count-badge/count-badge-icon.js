@@ -72,7 +72,6 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	constructor() {
 		super();
 		this._badgeId = getUniqueId();
-		this._labelId = getUniqueId();
 	}
 
 	render() {
@@ -89,7 +88,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			<d2l-icon id="${this._badgeId}"
 				icon="${this.icon}" 
 				tabindex="${ifDefined((this.tabStop || this.hasTooltip) ? '0' : undefined)}" 
-				aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this.getAriaLabelId())}"
+				aria-labelledby="${ifDefined(this.getAriaLabelId())}"
 				role="img">
 			</d2l-icon>
 		`;

@@ -37,11 +37,12 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 
 	render() {
 		const innerHtml =  html`
-			<div class="d2l-count-badge-wrapper"
-				id="${this._badgeId}"
-				tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
-				aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this.getAriaLabelId())}"
-				role="img">
+			<div 
+			class="d2l-count-badge-wrapper"
+			id="${this._badgeId}"
+			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
+			aria-labelledby="${ifDefined(this.getAriaLabelId())}"
+			role="img">
 				${this.renderCount()}
 			</div>
 		`;
