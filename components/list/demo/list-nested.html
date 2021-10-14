@@ -191,8 +191,8 @@
 
 		<script>
 			setTimeout(() => {
-				document.querySelector('d2l-list').addEventListener('d2l-list-selection-change', () => {
-					console.log('si', document.querySelector('d2l-list').getSelectionInfo(true));
+				document.querySelector('d2l-list').addEventListener('d2l-list-selection-changes', (e) => {
+					console.log('d2l-list-selection-changes', e.detail);
 				});
 			}, 1000);
 		</script>

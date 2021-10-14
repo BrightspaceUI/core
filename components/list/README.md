@@ -144,7 +144,8 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 ### Events
 
-- `d2l-list-selection-change`: dispatched when the selection state changes
+- `d2l-list-selection-change`: dispatched when the selection state changes; event detail includes the `key` and `selected` state of the item
+- `d2l-list-selection-changes`: dispatched once for a set of selection state changes (ex. select-all); event detail includes an array of objects where each object contains the `key` and `selected` state for each changed item
 <!-- docs: end hidden content -->
 
 ### Methods
