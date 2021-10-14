@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "1.191.2",
+  "version": "1.192.1",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
@@ -64,7 +64,6 @@
     "@brightspace-ui/intl": "^3",
     "@formatjs/intl-pluralrules": "^1",
     "@open-wc/dedupe-mixin": "^1",
-    "@webcomponents/shadycss": "^1",
     "focus-visible": "^5",
     "ifrau": "^0.39",
     "intl-messageformat": "^7",

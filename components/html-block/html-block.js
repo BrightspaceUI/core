@@ -70,13 +70,13 @@ export const htmlBlockContentStyles = css`
 	a:visited,
 	a:link,
 	a:active {
-		color: var(--d2l-color-celestine);
+		color: var(--d2l-color-celestine, #006fbf);
 		cursor: pointer;
 		text-decoration: none;
 	}
 	a:hover,
 	a:focus {
-		color: var(--d2l-color-celestine-minus-1);
+		color: var(--d2l-color-celestine-minus-1, #004489);
 		outline-width: 0;
 		text-decoration: underline;
 	}
@@ -85,7 +85,7 @@ export const htmlBlockContentStyles = css`
 		a:visited,
 		a:link,
 		a:active {
-			color: var(--d2l-color-ferrite);
+			color: var(--d2l-color-ferrite, #494c4e);
 		}
 	}
 	mjx-assistive-mml math {

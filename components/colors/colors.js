@@ -1,5 +1,3 @@
-import '@webcomponents/shadycss/entrypoints/custom-style-interface.js';
-
 if (!document.head.querySelector('#d2l-colors')) {
 	const style = document.createElement('style');
 	style.id = 'd2l-colors';
@@ -94,5 +92,4 @@ if (!document.head.querySelector('#d2l-colors')) {
 		}
 	`;
 	document.head.appendChild(style);
-	window.ShadyCSS.CustomStyleInterface.addCustomStyle(style);
 }
