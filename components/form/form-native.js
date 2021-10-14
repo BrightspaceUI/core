@@ -8,6 +8,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
  * These interactive controls are submitted using a native HTML form submission.
  * @slot - The native and custom form elements that participate in validation and submission
  * @fires submit - Dispatched when the form is submitted. Cancelling this event will prevent form submission.
+ * @fires d2l-form-dirty - Dispatched whenever any form element fires an `input` or `change` event. Can be used to track whether the form is dirty or not.
  */
 class FormNative extends FormMixin(LitElement) {
 
