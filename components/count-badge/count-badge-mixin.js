@@ -189,8 +189,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		return html`
 		<div id="${this._labelId}"
 			aria-label="${this.text}"
-			aria-atomic="true" 
-			aria-relevant="additions removals"
+			aria-atomic="true"
 			aria-live="${this.announceChanges ? 'polite' : 'off'}">
 			${innerHtml}
 		</div>
