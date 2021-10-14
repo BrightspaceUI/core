@@ -36,19 +36,19 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 	}
 
 	render() {
-		return html`
-			<div 
-			class="d2l-count-badge-wrapper"
-			id="${this._badgeId}"
-			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
-			aria-label="${ifDefined(this.hasTooltip ? undefined : this.text)}"
-			aria-atomic="true" 
-			aria-relevant="additions removals"
-			aria-live="${this.announceChanges ? 'polite' : 'off'}"
-			role="img">
+		const innerHtml =  html`
+			<div class="d2l-count-badge-wrapper"
+				id="${this._badgeId}"
+				tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
+				aria-labelledby="${ifDefined(this.hasTooltip ? undefined : this.getAriaLabelId())}"
+				role="img">
 				${this.renderCount()}
 			</div>
-			${this.renderTooltips(this._badgeId)}
+		`;
+
+		return html`
+			${this.wrapAriaLabel(innerHtml)}
+			${this.renderTooltip(this._badgeId)}
 		`;
 	}
 }
