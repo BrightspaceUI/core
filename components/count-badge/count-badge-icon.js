@@ -83,16 +83,26 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			right: this.dir === 'rtl' ? 'var(--d2l-count-badge-icon-padding)' : 0,
 			top: numberPadding
 		};
+		const ids = getUniqueId();
 		return html`
-			${this.renderCount(numberStyles)}
-			${this.renderTooltips(this._badgeId)}
+		<div
+		id="${ids}"
+		aria-hidden="false"
+		aria-label="${ifDefined(this.hasTooltip ? undefined : this.text)}"
+		aria-atomic="true" 
+		aria-live="${this.announceChanges ? 'polite' : 'off'}">
+		${this.renderCount(numberStyles)}
+		${this.renderTooltips(this._badgeId)}
 			<d2l-icon 
 				id="${this._badgeId}"
+				aria-hidden="false"
 				icon="${this.icon}" 
 				tabindex="${ifDefined((this.tabStop || this.hasTooltip) ? '0' : undefined)}" 
-				aria-labelledby="${ifDefined(this.getOffscreenId())}"
+				aria-labelledby="${ifDefined(this.hasTooltip ? undefined : ids)}"
+				aria-live="off"
 				role="img">
-			</d2l-icon>`;
+			</d2l-icon>
+		</div>`;
 	}
 }
 

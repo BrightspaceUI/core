@@ -41,7 +41,9 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 			class="d2l-count-badge-wrapper"
 			id="${this._badgeId}"
 			tabindex="${ifDefined((this.tabStop || this.hasTooltip) && !(this.hideZero && this.number === 0) ? '0' : undefined)}" 
-			aria-labelledby="${ifDefined(this.getOffscreenId())}"
+			aria-label="${ifDefined(this.hasTooltip ? undefined : this.text)}"
+			aria-atomic="true" 
+			aria-live="${this.announceChanges ? 'polite' : 'off'}"
 			role="img">
 				${this.renderCount()}
 			</div>

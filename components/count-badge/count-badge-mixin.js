@@ -159,10 +159,6 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		}
 	}
 
-	getOffscreenId() {
-		return this.hasTooltip ? undefined : this._textId;
-	}
-
 	renderCount(numberStyles) {
 		let numberString = `${this.number}`;
 		const hideNumber = this.hideZero && this.number === 0;
@@ -180,16 +176,12 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 
 		return html`
 			<div class="d2l-count-badge-number" style=${styleMap(numberStyles)}>
-					<div aria-hidden="true">${numberString}</div>		
+					<div aria-live="off" aria-hidden="true">${numberString}</div>		
 			</div>
 		`;
 	}
 
 	renderTooltips(badgeId) {
-		return html`
-			${this.hasTooltip  ?
-		html`<d2l-tooltip aria-atomic="true" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>`
-		: html`<span id="${this._textId}" aria-atomic="true" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
-		`;
+		return html`${this.hasTooltip ? html`<d2l-tooltip for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}`;
 	}
 };
