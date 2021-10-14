@@ -148,7 +148,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		this.tabStop = false;
 		this.text = '';
 		this.type = 'count';
-		this._textId = getUniqueId();
+		this._labelId = getUniqueId();
 	}
 
 	connectedCallback() {
@@ -159,8 +159,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		}
 	}
 
-	getOffscreenId() {
-		return this.hasTooltip ? undefined : this._textId;
+	getAriaLabelId() {
+		return this.hasTooltip ? undefined : this._labelId;
 	}
 
 	renderCount(numberStyles) {
@@ -185,11 +185,15 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		`;
 	}
 
-	renderTooltips(badgeId) {
+	renderTooltips(innerHtml, badgeId) {
 		return html`
-			${this.hasTooltip  ?
-		html`<d2l-tooltip aria-atomic="true" aria-live="${this.announceChanges ? 'polite' : 'off'}" for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>`
-		: html`<span id="${this._textId}" aria-atomic="true" aria-live="${this.announceChanges ? 'polite' : 'off'}" class="d2l-offscreen">"${this.text}"</span>`}
+		<div id="${this._labelId}"
+			aria-label="${this.text}"
+			aria-atomic="true"
+			aria-live="${this.announceChanges ? 'polite' : 'off'}">
+			${innerHtml}
+		</div>
+		${this.hasTooltip ? html`<d2l-tooltip for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}
 		`;
 	}
 };
