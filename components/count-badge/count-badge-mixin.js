@@ -185,11 +185,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		`;
 	}
 
-	renderTooltip(badgeId) {
-		return html`${this.hasTooltip ? html`<d2l-tooltip for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}`;
-	}
-
-	wrapAriaLabel(innerHtml) {
+	renderTooltips(innerHtml, badgeId) {
 		return html`
 		<div id="${this._labelId}"
 			aria-label="${this.text}"
@@ -198,6 +194,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 			aria-live="${this.announceChanges ? 'polite' : 'off'}">
 			${innerHtml}
 		</div>
+		${this.hasTooltip ? html`<d2l-tooltip for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}
 		`;
 	}
 };

@@ -45,11 +45,7 @@ class CountBadge extends CountBadgeMixin(LitElement) {
 				${this.renderCount()}
 			</div>
 		`;
-
-		return html`
-			${this.wrapAriaLabel(innerHtml)}
-			${this.renderTooltip(this._badgeId)}
-		`;
+		return this.renderTooltips(innerHtml, this._badgeId);
 	}
 }
 

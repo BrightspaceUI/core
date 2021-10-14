@@ -93,11 +93,7 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 				role="img">
 			</d2l-icon>
 		`;
-
-		return html`
-			${this.wrapAriaLabel(innerHtml)}
-			${this.renderTooltip(this._badgeId)}
-		`;
+		return this.renderTooltips(innerHtml, this._badgeId);
 	}
 }
 
