@@ -169,7 +169,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 	renderCount(numberStyles) {
 		let numberString = `${this.number}`;
 		const hideNumber = this.hideZero && this.number === 0;
-		if (numberStyles && numberStyles.visibility !== 'hidden') {
+		if (!numberStyles || numberStyles.visibility !== 'hidden') {
 			numberStyles = {
 				...numberStyles,
 				visibility: hideNumber ? 'hidden' : 'visible'
@@ -199,7 +199,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			aria-live="${this.announceChanges ? 'polite' : 'off'}">
 			${innerHtml}
 		</div>
-		${this.hasTooltip ? html`<d2l-tooltip for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}
+		${this.hasTooltip && !this.skeleton ? html`<d2l-tooltip for="${badgeId}" for-type="label">${this.text}</d2l-tooltip>` : null}
 		`;
 	}
 };
