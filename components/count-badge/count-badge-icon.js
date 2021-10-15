@@ -92,12 +92,12 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 		const innerHtml = html`
 			${this.renderCount(numberStyles)}
 			<div class="d2l-skeletize d2l-count-badge-wrapper">
-			<d2l-icon id="${this._badgeId}"
-				icon="${this.icon}" 
-				tabindex="${ifDefined(tabbable ? '0' : undefined)}" 
-				aria-labelledby="${ifDefined(this.getAriaLabelId())}"
-				role="img">
-			</d2l-icon>
+				<d2l-icon id="${this._badgeId}"
+					icon="${this.icon}" 
+					tabindex="${ifDefined(tabbable ? '0' : undefined)}" 
+					aria-labelledby="${ifDefined(this.getAriaLabelId())}"
+					role="img">
+				</d2l-icon>
 			</div>
 		`;
 		return this.renderTooltips(innerHtml, this._badgeId);

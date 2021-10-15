@@ -193,7 +193,6 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 	renderTooltips(innerHtml, badgeId) {
 		return html`
 		<div id="${this._labelId}"
-			class="d2l-count-badge-label"
 			aria-label="${this.text}"
 			aria-atomic="true"
 			aria-live="${this.announceChanges ? 'polite' : 'off'}">
