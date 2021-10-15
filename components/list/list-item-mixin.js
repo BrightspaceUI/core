@@ -75,11 +75,13 @@ export const ListItemMixin = superclass => class extends ListItemDragDropMixin(L
 			:host([draggable]) .d2l-list-item-drag-image {
 				transform: rotate(-1deg);
 			}
+			:host([dragging]) .d2l-list-item-drag-image {
+				background: white;
+			}
 			:host([draggable]) d2l-list-item-generic-layout {
 				transform: rotate(1deg);
 			}
 			d2l-list-item-generic-layout {
-				background: white;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				border-top: 1px solid var(--d2l-color-mica);
 			}
