@@ -6,50 +6,10 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit-html/directives/style-map';
 
-export const countBadgeStyles = [offscreenStyles, css`
-:host([hidden]) {
-	display: none;
-}
-
-:host {
-	display: inline-block;
-	min-width: 0.9rem;
-}
-
-.d2l-count-badge-number {
-	font-weight: bold;
-}
-
-:host([type="notification"]) .d2l-count-badge-number {
-	background-color: var(--d2l-color-carnelian-minus-1);
-	color: white;
-}
-
-:host([type="count"]) .d2l-count-badge-number {
-	background-color: var(--d2l-color-gypsum);
-	color: var(--d2l-color-tungsten);
-}
-
-:host([size="small"]) .d2l-count-badge-number {
-	border-radius: 0.55rem;
-	font-size: 0.6rem;
-	line-height: 0.9rem;
-	padding-left: 0.3rem;
-	padding-right: 0.3rem;
-}
-
-:host([size="large"]) .d2l-count-badge-number {
-	border-radius: 0.7rem;
-	font-size: 0.8rem;
-	line-height: 1.2rem;
-	padding-left: 0.4rem;
-	padding-right: 0.4rem;
-}
-`];
-
-export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
+export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(SkeletonMixin(RtlMixin(superclass))) {
 
 	static get properties() {
 		return {
@@ -138,6 +98,49 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 		};
 	}
 
+	static get styles()  {
+		return [super.styles, offscreenStyles, css`
+			:host([hidden]) {
+				display: none;
+			}
+			
+			:host {
+				display: inline-block;
+				min-width: 0.9rem;
+			}
+			
+			.d2l-count-badge-number {
+				font-weight: bold;
+			}
+			
+			:host([type="notification"]) .d2l-count-badge-number {
+				background-color: var(--d2l-color-carnelian-minus-1);
+				color: white;
+			}
+			
+			:host([type="count"]) .d2l-count-badge-number {
+				background-color: var(--d2l-color-gypsum);
+				color: var(--d2l-color-tungsten);
+			}
+			
+			:host([size="small"]) .d2l-count-badge-number {
+				border-radius: 0.55rem;
+				font-size: 0.6rem;
+				line-height: 0.9rem;
+				padding-left: 0.3rem;
+				padding-right: 0.3rem;
+			}
+			
+			:host([size="large"]) .d2l-count-badge-number {
+				border-radius: 0.7rem;
+				font-size: 0.8rem;
+				line-height: 1.2rem;
+				padding-left: 0.4rem;
+				padding-right: 0.4rem;
+			}
+		`];
+	}
+
 	constructor() {
 		super();
 		this.announceChanges = false;
@@ -166,10 +169,12 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	renderCount(numberStyles) {
 		let numberString = `${this.number}`;
 		const hideNumber = this.hideZero && this.number === 0;
-		numberStyles = {
-			...numberStyles,
-			visibility: hideNumber ? 'hidden' : 'visible'
-		};
+		if (numberStyles && numberStyles.visibility !== 'hidden') {
+			numberStyles = {
+				...numberStyles,
+				visibility: hideNumber ? 'hidden' : 'visible'
+			};
+		}
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}`;
 			numberString = formatNumber(parseInt(numberString));
@@ -188,6 +193,7 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(R
 	renderTooltips(innerHtml, badgeId) {
 		return html`
 		<div id="${this._labelId}"
+			class="d2l-count-badge-label"
 			aria-label="${this.text}"
 			aria-atomic="true"
 			aria-live="${this.announceChanges ? 'polite' : 'off'}">
