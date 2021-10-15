@@ -86,6 +86,7 @@ size:xlarge
 | `disabled` | Boolean | Disables the input |
 | `empty-text` | String | Text to reassure users that they can choose not to provide a value in this field (usually not necessary) |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
+| `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
 | `min-value` | String | Minimum valid date that could be selected by a user. |
 | `opened` | Boolean | Indicates if the calendar dropdown is open |
@@ -105,6 +106,7 @@ To make your usage of `d2l-input-date` accessible, use the following properties 
 |--|--|
 | `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
+| `labelled-by` | String | Use when another visible element should act as the label |
 
 ## Date Range Input [d2l-input-date-range]
 
@@ -227,6 +229,7 @@ size:large
 | `disabled` | Boolean | Disables the input |
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
+| `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
 | `opened` | Boolean | Indicates if the dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
@@ -245,6 +248,7 @@ To make your usage of `d2l-input-time` accessible, use the following properties 
 |--|--|
 | `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
+| `labelled-by` | String | Use when another visible element should act as the label |
 
 ### Time Range Input [d2l-input-time-range]
 
@@ -361,6 +365,7 @@ size:xlarge
 | `label` | String, **required** | Accessible label for the input |
 | `disabled` | Boolean | Disables the input |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
+| `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
 | `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
@@ -382,6 +387,7 @@ To make your usage of `d2l-input-date-time` accessible, use the following proper
 |--|--|
 | `label` | **REQUIRED** [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/) |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
+| `labelled-by` | String | Use when another visible element should act as the label |
 
 ## Date-Time Range Input [d2l-input-date-time-range]
 
