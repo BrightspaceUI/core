@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install @web/test-runner-saucelabs --no-save
+          npm install @web/test-runner-saucelabs@0.6.3 --no-save
       - name: Build
         run: npm run build
       - name: SauceLabs

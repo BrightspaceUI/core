@@ -12,7 +12,7 @@ There are various input components available:
 
 ## Labelling Inputs
 
-All inputs *must* have a label. Web component-based inputs like `<d2l-input-checkbox>`, `<d2l-input-number>`, `<d2l-input-search>`, `<d2l-input-text>`, and `<d2l-input-textarea>` come with built-in labels. For the rest, labelling is accomplished visually using a `<label>` element or with a hidden label via the `aria-label` attribute.
+All inputs *must* have a label. Web component-based inputs like `<d2l-input-checkbox>`, `<d2l-input-number>`, `<d2l-input-percent>`, `<d2l-input-search>`, `<d2l-input-text>`, and `<d2l-input-textarea>` come with built-in labels. For the rest, labelling is accomplished visually using a `<label>` element or with a hidden label via the `aria-label` attribute.
 
 Groups of inputs (like checkboxes or radios) should be wrapped in a `<fieldset>` which can have label styles applied to it.
 
