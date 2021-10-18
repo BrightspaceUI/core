@@ -1,19 +1,9 @@
 let controllerCallbacks = [];
 
 const contextObserver = new MutationObserver(mutations => {
-	let contextUpdated = false;
-	
 	mutations.forEach(mutation => {
-		controllerCallbacks.forEach(callback => {
-			const success = callback(mutation.attributeName);
-			if (success) contextUpdated = true;
-		});
+		controllerCallbacks.forEach(callback => callback(mutation.attributeName));
 	});
-
-	if (contextUpdated) {
-		controllerCallbacks = [];
-		contextObserver.disconnect();
-	}
 });
 
 export class HtmlAttributeContextController {
@@ -27,8 +17,7 @@ export class HtmlAttributeContextController {
 
 	hostConnected() {
 		if (document.documentElement.getAttribute(this._contextAttribute)) {
-			this._handleContextChange();
-			return;
+			this._handleContextChange(this._contextAttribute);
 		}
 		if (controllerCallbacks.length === 0) contextObserver.observe(document.documentElement, { attributes: true });
 		controllerCallbacks.push(this._handleContextChange.bind(this));
@@ -40,10 +29,9 @@ export class HtmlAttributeContextController {
 	}
 
 	_handleContextChange(attributeName) {
-		if (attributeName !== this._contextAttribute) return false;
+		if (attributeName !== this._contextAttribute) return;
 		this.value = JSON.parse(document.documentElement.getAttribute(this._contextAttribute)) || {};
 		this._host.requestUpdate();
-		return true;
 	}
 
 }
