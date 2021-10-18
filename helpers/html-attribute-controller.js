@@ -6,21 +6,17 @@ const contextObserver = new MutationObserver(mutations => {
 	});
 });
 
-export class HtmlAttributeContextController {
+export class HtmlAttributeController {
 
-	constructor(host, contextAttribute) {
+	constructor(host, attribute) {
 		this._host = host;
-		this._contextAttribute = contextAttribute;
-
-		this.value = {};
+		this._attribute = attribute;
 	}
 
 	hostConnected() {
-		if (document.documentElement.getAttribute(this._contextAttribute)) {
-			this._handleContextChange(this._contextAttribute);
-		}
-		if (controllerCallbacks.length === 0) contextObserver.observe(document.documentElement, { attributes: true });
+		this.value = document.documentElement.getAttribute(this._attribute);
 		controllerCallbacks.push(this._handleContextChange.bind(this));
+		if (controllerCallbacks.length === 0) contextObserver.observe(document.documentElement, { attributes: true });
 	}
 
 	hostDisconnected() {
@@ -29,8 +25,8 @@ export class HtmlAttributeContextController {
 	}
 
 	_handleContextChange(attributeName) {
-		if (attributeName !== this._contextAttribute) return;
-		this.value = JSON.parse(document.documentElement.getAttribute(this._contextAttribute)) || {};
+		if (attributeName !== this._attribute) return;
+		this.value = document.documentElement.getAttribute(this._attribute);
 		this._host.requestUpdate();
 	}
 
