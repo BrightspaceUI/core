@@ -207,6 +207,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_focusNextCell(num, forward = true) {
 		let cell = null;
 		let focusable = null;
+
 		do {
 			cell = this.shadowRoot.querySelector(`[data-cell-num="${num}"]`);
 			if (cell) {
@@ -215,6 +216,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (focusable) focusable.focus();
 			forward ? ++num : --num;
 		} while (cell && !focusable);
+
+		if (!cell) {
+			// wrap to first/last item
+			if (forward) this._focusNextCell(1);
+			else this._focusLastItem();
+		}
+
 		return focusable;
 	}
 
