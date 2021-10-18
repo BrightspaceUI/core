@@ -1,4 +1,4 @@
-let controllerCallbacks = [];
+const controllerCallbacks = [];
 
 const contextObserver = new MutationObserver(mutations => {
 	mutations.forEach(mutation => {
