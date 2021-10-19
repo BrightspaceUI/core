@@ -39,7 +39,7 @@ const testHost = listeningAttribute => defineCE(
 	},
 );
 
-describe('htmlAttributeController', () => {
+describe('htmlAttributeObserverController', () => {
 
 	const setAttribute = () => {
 		document.documentElement.setAttribute(testAttr, testAttrVal);
