@@ -299,7 +299,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		this.__content = this.__getContentContainer();
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
-		/** Dispatched when the dropdown position finishes adjusting */
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
 
