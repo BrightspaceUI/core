@@ -11,10 +11,14 @@ export class HtmlAttributeObserverController {
 	constructor(host, attribute) {
 		this._host = host;
 		this._attribute = attribute;
+
+		this.value = undefined;
 	}
 
 	hostConnected() {
-		this.value = document.documentElement.getAttribute(this._attribute);
+		this.value = document.documentElement.hasAttribute(this._attribute)
+			? document.documentElement.getAttribute(this._attribute)
+			: undefined;
 		if (controllerCallbacks.size === 0) contextObserver.observe(document.documentElement, { attributes: true });
 		controllerCallbacks.set(this, this._handleContextChange.bind(this));
 	}
@@ -25,7 +29,9 @@ export class HtmlAttributeObserverController {
 
 	_handleContextChange(attributeName) {
 		if (attributeName !== this._attribute) return;
-		this.value = document.documentElement.getAttribute(this._attribute);
+		this.value = document.documentElement.hasAttribute(this._attribute)
+			? document.documentElement.getAttribute(this._attribute)
+			: undefined;
 		this._host.requestUpdate();
 	}
 

@@ -62,9 +62,9 @@ describe('htmlAttributeObserverController', () => {
 			expect(elem.getRenderedVal()).to.equal(testAttrVal);
 		});
 
-		it('returns null if attribute not present', async() => {
+		it('returns undefined if attribute not present', async() => {
 			const elem = await fixture(`<${testHost()}></${testHost()}>`);
-			expect(elem.getControllerVal()).to.equal(null);
+			expect(elem.getControllerVal()).to.equal(undefined);
 			expect(elem.getRenderedVal()).to.equal('');
 		});
 
@@ -80,12 +80,12 @@ describe('htmlAttributeObserverController', () => {
 			expect(elem.getRenderedVal()).to.equal(testAttrVal);
 		});
 
-		it('returns null if attribute is removed', async() => {
+		it('returns undefined if attribute is removed', async() => {
 			setAttribute();
 			const elem = await fixture(`<${testHost()}></${testHost()}>`);
 			removeAttribute();
 			await oneEvent(elem, controllerUpdateEvent);
-			expect(elem.getControllerVal()).to.equal(null);
+			expect(elem.getControllerVal()).to.equal(undefined);
 			expect(elem.getRenderedVal()).to.equal('');
 		});
 
@@ -95,7 +95,7 @@ describe('htmlAttributeObserverController', () => {
 			await elem.updateComplete;
 
 			setAttribute();
-			expect(elem.getControllerVal()).to.equal(null);
+			expect(elem.getControllerVal()).to.equal(undefined);
 			expect(elem.getRenderedVal()).to.equal('');
 		});
 
@@ -112,7 +112,7 @@ describe('htmlAttributeObserverController', () => {
 			await oneEvent(elem, controllerUpdateEvent);
 			expect(elem.getControllerVal()).to.equal(testAttrVal);
 			expect(elem.getRenderedVal()).to.equal(testAttrVal);
-			expect(otherElem.getControllerVal()).to.equal(null);
+			expect(otherElem.getControllerVal()).to.equal(undefined);
 			expect(otherElem.getRenderedVal()).to.equal('');
 		});
 
