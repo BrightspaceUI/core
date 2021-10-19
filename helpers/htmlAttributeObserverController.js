@@ -1,4 +1,4 @@
-const controllerCallbacks = [];
+const controllerCallbacks = new Map();
 
 const contextObserver = new MutationObserver(mutations => {
 	mutations.forEach(mutation => {
@@ -6,7 +6,7 @@ const contextObserver = new MutationObserver(mutations => {
 	});
 });
 
-export class HtmlAttributeController {
+export class HtmlAttributeObserverController {
 
 	constructor(host, attribute) {
 		this._host = host;
@@ -15,13 +15,12 @@ export class HtmlAttributeController {
 
 	hostConnected() {
 		this.value = document.documentElement.getAttribute(this._attribute);
-		controllerCallbacks.push(this._handleContextChange.bind(this));
-		if (controllerCallbacks.length === 0) contextObserver.observe(document.documentElement, { attributes: true });
+		if (controllerCallbacks.size === 0) contextObserver.observe(document.documentElement, { attributes: true });
+		controllerCallbacks.set(this, this._handleContextChange.bind(this));
 	}
 
 	hostDisconnected() {
-		const controllerIndex = controllerCallbacks.indexOf(this);
-		if (controllerIndex > -1) controllerCallbacks.splice(controllerIndex, 1);
+		controllerCallbacks.delete(this);
 	}
 
 	_handleContextChange(attributeName) {
