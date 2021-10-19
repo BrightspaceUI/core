@@ -1,6 +1,6 @@
 # HTML Content Display
 
-Components to assist with displaying user-authored HTML within your webpage. 
+Components to assist with displaying user-authored HTML within your webpage.
 
 ## HTML Block [d2l-html-block]
 
@@ -110,7 +110,7 @@ Examples are provided to display how user-authored math can be embedded within y
 <script type="module">
   import '@brightspace-ui/core/components/html-block/html-block.js';
   import '@brightspace-ui/core/components/icons/icon.js';
-  
+
 </script>
 <script>
 	window.D2L = {};
@@ -132,8 +132,3 @@ Examples are provided to display how user-authored math can be embedded within y
 	</template>
 </d2l-html-block>
 ```
-<!-- docs: start hidden content -->
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
-<!-- docs: end hidden content -->

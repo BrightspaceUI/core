@@ -42,9 +42,3 @@ class MyElement extends LitElement {
   }
 }
 ```
-
-<!-- docs: start hidden content -->
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
-<!-- docs: end hidden content -->

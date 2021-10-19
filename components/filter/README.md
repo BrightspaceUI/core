@@ -93,7 +93,7 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 </d2l-filter>
 ```
 
-### Single Vs Multi Dimensional 
+### Single Vs Multi Dimensional
 A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
 
 <!-- docs: demo code autoSize:false align:start size:large -->
@@ -149,7 +149,7 @@ A filter can be a single dimension (like picking from a list of courses) or offe
         </d2l-filter-dimension-set>
     </d2l-filter>
 </div>
-``` 
+```
 
 ### Accessibility
 The filter will announce changes to filter selections, search results, and when filters are being cleared. It is up to the consumer to then announce when these changes have propagated and resulted in new/loaded/updated data on the page. This is very important for screenreader users who are not able to visually see the page changing behind the filter control as selections are made.
@@ -191,7 +191,7 @@ The `d2l-filter-dimension-set` component is the main dimension type that will wo
     }, 100);
   });
 </script>
-<!-- docs: end hidden content --> 
+<!-- docs: end hidden content -->
 <d2l-filter>
   <d2l-filter-dimension-set key="course" text="Course" >
     <d2l-filter-dimension-set-value key="art" text="Art" selected><d2l-filter-dimension-set-value>
@@ -239,7 +239,7 @@ This component is built to be used alongside the [d2l-filter-dimension-set](#fil
 **Coming Soon!**
 
 <!-- docs: start hidden content -->
-## Future Enhancements
+## Future Improvements
 
 * ability to delay change events until the user has pressed an apply button (see [#341](https://github.com/BrightspaceUI/core/issues/341))
 

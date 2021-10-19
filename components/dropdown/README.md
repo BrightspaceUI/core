@@ -36,7 +36,7 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 <script>
   window.addEventListener('load', function () {
     var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return; 
+    if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown');
       dropdown.toggleOpen();
@@ -164,7 +164,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 
 ### Accessibility Properties
 
-To make your `d2l-dropdown-button-subtle` accessible, use the following properties when applicable: 
+To make your `d2l-dropdown-button-subtle` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |---|---|
@@ -454,9 +454,3 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   </d2l-dropdown-tabs>
 </d2l-dropdown>
 ```
-
-<!-- docs: start hidden content -->
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
-<!-- docs: end hidden content -->

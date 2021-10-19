@@ -299,6 +299,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		this.__content = this.__getContentContainer();
 		this.addEventListener('d2l-dropdown-close', this.__onClose);
+		/** Dispatched when the dropdown position finishes adjusting */
 		this.addEventListener('d2l-dropdown-position', this.__toggleScrollStyles);
 	}
 
@@ -1054,16 +1055,16 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			'd2l-dropdown-content-footer': this._hasFooter || (this._useMobileStyling && this.mobileTray && !this.noMobileCloseButton)
 		};
 
-		let dropdownContentSlots = html`	
-			<div  
-			id="d2l-dropdown-wrapper" 
-			class="d2l-dropdown-content-width" 
+		let dropdownContentSlots = html`
+			<div
+			id="d2l-dropdown-wrapper"
+			class="d2l-dropdown-content-width"
 			style=${styleMap(widthStyle)}
-			?data-closing="${this._closing}">				
+			?data-closing="${this._closing}">
 				<div class=${classMap(topClasses)} style=${styleMap(headerStyle)}>
 					<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 				</div>
-				<div 
+				<div
 				class="d2l-dropdown-content-container"
 				style=${styleMap(contentStyle)}
 				@scroll=${this.__toggleScrollStyles}>

@@ -495,7 +495,7 @@ This event includes a detail object with helper methods attached to it.
 
 
 <!-- docs: start hidden content -->
-## Future Enhancements
+## Future Improvements
 
 - Paging: integration with "load more", "scroll" and "numeric" paging mechanisms
 

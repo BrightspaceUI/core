@@ -26,7 +26,7 @@ A switch is used to toggle between two states, on and off, just like a light swi
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-## Switch [d2l-switch]	
+## Switch [d2l-switch]
 The `d2l-switch` element is a generic switch with on/off semantics.
 <!-- docs: start hidden content -->
 ![Switch](./screenshots/switch.png?raw=true)
@@ -95,8 +95,4 @@ The `d2l-switch-visibility` element is a variant of the generic switch configure
 ### Events
 
 - `change`: dispatched when the `on` property is updated
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->
