@@ -272,7 +272,7 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 
-## Future Enhancements
+## Future Improvements
 
 * scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
 

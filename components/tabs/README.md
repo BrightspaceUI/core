@@ -107,7 +107,4 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 
 ### Events
 - `d2l-tab-panel-selected`: dispatched when a tab is selected
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->

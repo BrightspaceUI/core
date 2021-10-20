@@ -264,7 +264,7 @@ document.querySelector('#open').addEventListener('click', () => {
 ```
 
 <!-- docs: start hidden content -->
-## Future Enhancements
+## Future Improvements
 
 * scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
 

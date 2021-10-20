@@ -137,8 +137,4 @@ All `meter` components have a `foreground-light` style that ensures accessibl
 * `text` (String): Context information about what the meter is about.
 	* `\{\%\}` in the string will be replaced with percentage value
 	* `{x/y}` in the string will be replaced with fraction with the proper language support
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->

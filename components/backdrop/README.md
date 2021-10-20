@@ -34,8 +34,4 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
 | `no-animate-hide` | Boolean | Disables the fade-out transition while the backdrop is being hidden |
 | `shown` | Boolean | Used to control whether the backdrop is shown |
 | `slow-transition` | Boolean | Increases the fade transition time to 1200ms (default is 200ms) |
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->

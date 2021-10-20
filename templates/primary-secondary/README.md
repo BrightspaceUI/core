@@ -1,5 +1,5 @@
 # Templates
-Page templates are used to provide generic ways to arrange content on a page 
+Page templates are used to provide generic ways to arrange content on a page
 
 ## Primary-Secondary [d2l-primary-secondary]
 Two Panel (primary and secondary) page template with header and optional footer
@@ -71,8 +71,4 @@ If either of the panels contain an `iframe`, resizing may not work properly. Thi
 * `footer`: page footer content
 * `primary`: main page content
 * `secondary`: supplementary page content
-
-### Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->
