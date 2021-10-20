@@ -17,6 +17,12 @@ describe('d2l-input-date-mobile', () => {
 
 	after(async() => await browser.close());
 
+	beforeEach(async() =>  {
+		await reset(page, '#min-max');
+		await reset(page, '#placeholder');
+		await reset(page, '#value');
+	});
+
 	describe('open', () => {
 		[
 			'min-max',
