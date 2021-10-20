@@ -26,7 +26,6 @@ describe('d2l-input-date-mobile', () => {
 
 			it(name, async function() {
 				await open(page, `#${name}`);
-				await page.waitForTimeout(100);
 				await visualDiff.screenshotAndCompare(page, this.test.fullTitle());
 				await reset(page, `#${name}`);
 			});
