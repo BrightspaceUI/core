@@ -156,7 +156,7 @@ To make your `d2l-button-icon` accessible, use the following properties when app
 See [floating buttons](https://github.com/BrightspaceUI/core/tree/main/components/button/floating-buttons.md).
 
 <!-- docs: start hidden content -->
-## Future Enhancements
+## Future Improvements
 
 - `<d2l-button-preset type="save">` for common button types that will have built-in language support
 
