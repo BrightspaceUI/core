@@ -123,7 +123,7 @@ class List extends SelectionMixin(LitElement) {
 		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
 		e.preventDefault();
 		const focusable = (e.shiftKey ? getPreviousFocusable(this.shadowRoot.querySelector('slot:not([name])'))
-			: getNextFocusable(this, false, true));
+			: getNextFocusable(this, false, true, true));
 		if (focusable) focusable.focus();
 	}
 

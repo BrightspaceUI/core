@@ -231,8 +231,9 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		let listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
 
 		while (num > 0) {
-			if (previous) listItem = this._getPreviousFlattenedListItem(listItem);
-			else listItem = this._getNextFlattenedListItem(listItem);
+			const tempListItem = (previous ? this._getPreviousFlattenedListItem(listItem) : this._getNextFlattenedListItem(listItem));
+			if (tempListItem) listItem = tempListItem;
+			else break;
 			num--;
 		}
 
