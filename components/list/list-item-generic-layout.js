@@ -227,22 +227,19 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	}
 
 	_focusNextRow(previous = false, num = 1) {
-		let listItem = previous ?
-			getPreviousAncestorSibling(this, (node) => node.role === 'rowgroup') :
-			getNextAncestorSibling(this, (node) => node.role === 'rowgroup');
-		if (!listItem || !listItem.shadowRoot) return;
-		while (num > 1) {
-			const nextItem = previous ? listItem.previousElementSibling : listItem.nextElementSibling;
-			if (!nextItem) {
-				break; //we ran out of items
-			}
-			listItem = nextItem;
-			--num;
-		}
-		const row = listItem.shadowRoot.querySelector('[role="gridrow"]');
-		if (!row) return;
 
-		row._focusCellItem(this._cellNum, this._cellFocusedItem);
+		let listItem = findComposedAncestor(this, node => node.role === 'rowgroup');
+
+		while (num > 0) {
+			if (previous) listItem = this._getPreviousFlattenedListItem(listItem);
+			else listItem = this._getNextFlattenedListItem(listItem);
+			num--;
+		}
+
+		if (!listItem) return;
+		const listItemRow = listItem.shadowRoot.querySelector('[role="gridrow"]');
+		listItemRow._focusCellItem(this._cellNum, this._cellFocusedItem);
+
 	}
 
 	_focusNextWithinCell(node, num = 1) {
@@ -288,6 +285,40 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		return position;
 	}
 
+	_getNextFlattenedListItem(listItem) {
+
+		// check for nested list first; this check needs to account for standard list-items as well as custom
+		const nestedList = listItem.querySelector('[slot="nested"]') || listItem.shadowRoot.querySelector('d2l-list');
+		if (nestedList) {
+			const nestedListItems = [...nestedList.children].filter(node => node.role === 'rowgroup');
+			if (nestedListItems && nestedListItems.length > 0) {
+				return nestedListItems[0];
+			}
+		}
+
+		const getNextListItem = listItem => {
+
+			// check for sibling list-item
+			let nextElement = listItem.nextElementSibling;
+			while (nextElement) {
+				if (nextElement.role === 'rowgroup') return nextElement;
+				nextElement = nextElement.nextElementSibling;
+			}
+
+			// no sibling list-item was found so check for sibling of parent list-item if nested, recursively if necessary
+			const list = findComposedAncestor(listItem, node => node.tagName === 'D2L-LIST');
+			if (list.slot !== 'nested' && !(list.parentNode.tagName === 'SLOT' && list.parentNode.name === 'nested')) return;
+
+			const parentListItem = findComposedAncestor(list, node => node.role === 'rowgroup');
+			return getNextListItem(parentListItem);
+
+		};
+
+		// check for sibling list-item or ancestors sibling list-items
+		return getNextListItem(listItem);
+
+	}
+
 	_getNextSiblingInCell(node) {
 		const cell = findComposedAncestor(node, (parent) => parent.classList && parent.classList.contains('d2l-cell'));
 		if (!cell || cell.name === node.slot) return null;
@@ -295,6 +326,39 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		const sibling = getNextAncestorSibling(node);
 		return isComposedAncestor(cell, sibling) ? sibling : null;
+	}
+
+	_getPreviousFlattenedListItem(listItem) {
+
+		let previousElement = listItem.previousElementSibling;
+
+		// try to get the previous list-item in the current list sub-tree including nested
+		while (previousElement) {
+			if (previousElement.role === 'rowgroup') {
+
+				// this check needs to account for standard list-items as well as custom
+				const nestedList = previousElement.querySelector('[slot="nested"]') || previousElement.shadowRoot.querySelector('d2l-list');
+				if (nestedList) {
+					const nestedListItems = [...nestedList.children].filter(node => node.role === 'rowgroup');
+					if (nestedListItems && nestedListItems.length > 0) {
+						return nestedListItems[nestedListItems.length - 1];
+					}
+				}
+				return previousElement;
+
+			}
+			previousElement = previousElement.previousElementSibling;
+		}
+
+		// no previous list-item was found in the current list sub-tree so get the parent list item if currently in nested
+		const list = findComposedAncestor(listItem, node => node.tagName === 'D2L-LIST');
+
+		// this check needs to account for standard list-items as well as custom
+		if (list.slot === 'nested' || (list.parentNode.tagName === 'SLOT' && list.parentNode.name === 'nested')) {
+			const parentListItem = findComposedAncestor(list, node => node.role === 'rowgroup');
+			return parentListItem;
+		}
+
 	}
 
 	_getPrevSiblingInCell(node) {
