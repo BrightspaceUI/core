@@ -1,24 +1,25 @@
 const controllerCallbacks = new Map();
 
 const contextObserver = new MutationObserver(mutations => {
-	mutations.forEach(mutation => {
-		controllerCallbacks.forEach(callback => callback(mutation.attributeName));
-	});
+	controllerCallbacks.forEach(callback => callback(
+		mutations.map(mutation => mutation.attributeName)
+	));
 });
 
 export class HtmlAttributeObserverController {
 
-	constructor(host, attribute) {
-		this._host = host;
-		this._attribute = attribute;
+	constructor(host, ...attributes) {
+		if (attributes.length === 0) throw new Error(
+			`Can't construct controller; must supply at least one observed attribute.`
+		);
 
-		this.value = undefined;
+		this._host = host;
+		this._attributes = attributes;
+		this.values = new Map();
 	}
 
 	hostConnected() {
-		this.value = document.documentElement.hasAttribute(this._attribute)
-			? document.documentElement.getAttribute(this._attribute)
-			: undefined;
+		this._setAttributes(this._attributes);
 		if (controllerCallbacks.size === 0) contextObserver.observe(document.documentElement, { attributes: true });
 		controllerCallbacks.set(this, this._handleContextChange.bind(this));
 	}
@@ -27,12 +28,22 @@ export class HtmlAttributeObserverController {
 		controllerCallbacks.delete(this);
 	}
 
-	_handleContextChange(attributeName) {
-		if (attributeName !== this._attribute) return;
-		this.value = document.documentElement.hasAttribute(this._attribute)
-			? document.documentElement.getAttribute(this._attribute)
-			: undefined;
+	_handleContextChange(attributeNames) {
+		const attributes = attributeNames.filter(attr => this._attributes.includes(attr));
+		if (attributes.length === 0) return;
+		this._setAttributes(attributes);
 		this._host.requestUpdate();
+	}
+
+	_setAttributes(attributes) {
+		attributes.forEach(attribute => {
+			this.values.set(
+				attribute,
+				document.documentElement.hasAttribute(attribute)
+					? document.documentElement.getAttribute(attribute)
+					: undefined
+			);
+		});
 	}
 
 }

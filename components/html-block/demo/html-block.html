@@ -9,10 +9,8 @@
 			import '../html-block.js';
 			import { provideInstance } from '../../../mixins/provider-mixin.js';
 
-			// demo replacement renderer for html-block
-			provideInstance(document, 'html-block-renderers', [
-				async elem => {
-
+			class DemoReplacementRenderer {
+				async render(elem) {
 					const elemsToReplace = elem.querySelectorAll('[data-replace-me-id]');
 					if (elemsToReplace.length === 0) return elem;
 
@@ -32,15 +30,15 @@
 					});
 
 					return elem;
-
 				}
-			]);
+			}
+
+			// demo replacement renderer for html-block
+			provideInstance(document, 'html-block-renderers', [ new DemoReplacementRenderer() ]);
 
 		</script>
 		<script>
-			if (window.location.search.indexOf('latex=true') !== -1) {
-				document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ renderLaTeX: true });
-			}
+			document.getElementsByTagName('html')[0].dataset.mathjaxContext = JSON.stringify({ renderLatex: window.location.search.indexOf('latex=true') !== -1 });
 		</script>
 	</head>
 	<body unresolved>

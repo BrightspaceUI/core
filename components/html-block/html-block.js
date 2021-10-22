@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, LitElement } from 'lit-element/lit-element.js';
-import { htmlBlockMathRenderer } from '../../helpers/mathjax.js';
+import { HtmlAttributeObserverController } from '../../helpers/htmlAttributeObserverController.js';
+import { HtmlBlockMathRenderer } from '../../helpers/mathjax.js';
 import { requestInstance } from '../../mixins/provider-mixin.js';
 
 export const htmlBlockContentStyles = css`
@@ -106,6 +107,7 @@ let renderers;
 const getRenderers = () => {
 	if (renderers) return renderers;
 	const tempRenderers = requestInstance(document, 'html-block-renderers');
+	const htmlBlockMathRenderer = new HtmlBlockMathRenderer();
 	renderers = (tempRenderers ? [ htmlBlockMathRenderer, ...tempRenderers ] : [ htmlBlockMathRenderer ]);
 	return renderers;
 };
@@ -135,9 +137,26 @@ class HtmlBlock extends LitElement {
 		`];
 	}
 
+	constructor() {
+		super();
+		this._contextObserverController = new HtmlAttributeObserverController(
+			this,
+			...HtmlBlock._renderers.reduce((renderers, currentRenderer) => {
+				if (currentRenderer.contextAttribute) renderers.push(currentRenderer.contextAttribute);
+				return renderers;
+			}, [])
+		);
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+		this._contextObserverController.hostConnected();
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._templateObserver) this._templateObserver.disconnect();
+		this._contextObserverController.hostDisconnected();
 	}
 
 	firstUpdated(changedProperties) {
@@ -147,6 +166,40 @@ class HtmlBlock extends LitElement {
 
 		this.shadowRoot.innerHTML += '<div class="d2l-html-block-rendered"></div><slot></slot>';
 
+		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
+
+			const template = e.target.assignedNodes({ flatten: true })
+				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
+
+			this._stamp(template);
+
+		});
+		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
+		this._context = {...this._contextObserverController.values};
+	}
+
+	updated() {
+		super.updated();
+		if (this._contextObjectHasChanged()) {
+			const template = this.querySelector('template');
+			this._stamp(template);
+		}
+	}
+
+	static get _renderers() {
+		return getRenderers();
+	}
+
+	_contextObjectHasChanged() {
+		if (this._context.size !== this._contextObserverController.values.size) return true;
+		for (const [attr, val] of this._context) {
+			if (!this._contextObserverController.values.has(attr)) return true;
+			if (this._contextObserverController.values.get(attr) !== val) return true;
+		}
+		return false;
+	}
+
+	_stamp(template) {
 		const stampHTML = async template => {
 			const fragment = template ? document.importNode(template.content, true) : null;
 			if (fragment) {
@@ -154,8 +207,12 @@ class HtmlBlock extends LitElement {
 				let temp = document.createElement('div');
 				temp.appendChild(fragment);
 
-				for (const render of HtmlBlock._renderers) {
-					temp = await render(temp);
+				for (const renderer of HtmlBlock._renderers) {
+					if (renderer.contextAttribute) {
+						temp = await renderer.render(temp, this._contextObserverController.values.get(renderer.contextAttribute));
+					} else {
+						temp = await renderer.render(temp);
+					}
 				}
 				this._renderContainer.innerHTML = temp.innerHTML;
 
@@ -164,26 +221,13 @@ class HtmlBlock extends LitElement {
 			}
 		};
 
-		this.shadowRoot.querySelector('slot').addEventListener('slotchange', async e => {
+		if (this._templateObserver) this._templateObserver.disconnect();
+		if (template) {
+			this._templateObserver = new MutationObserver(() => stampHTML(template));
+			this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+		}
 
-			const template = e.target.assignedNodes({ flatten: true })
-				.find(node => (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'TEMPLATE'));
-
-			if (this._templateObserver) this._templateObserver.disconnect();
-			if (template) {
-				this._templateObserver = new MutationObserver(() => stampHTML(template));
-				this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
-			}
-
-			stampHTML(template);
-
-		});
-		this._renderContainer = this.shadowRoot.querySelector('.d2l-html-block-rendered');
-
-	}
-
-	static get _renderers() {
-		return getRenderers();
+		stampHTML(template);
 	}
 
 }
