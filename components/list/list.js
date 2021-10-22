@@ -6,7 +6,6 @@ export const listSelectionStates = SelectionInfo.states;
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
  * @slot - List content (e.g., `listitem`s)
- * @fires d2l-list-selection-change - Dispatched when the selection state changes
  */
 class List extends SelectionMixin(LitElement) {
 
@@ -54,6 +53,7 @@ class List extends SelectionMixin(LitElement) {
 			// batch the changes from select-all and nested lists
 			if (this._listItemChanges.length === 0) {
 				setTimeout(() => {
+					/** Dispatched once for a set of selection state changes (ex. select-all); event detail includes an array of objects where each object contains the `key` and `selected` state for each changed item */
 					this.dispatchEvent(new CustomEvent('d2l-list-selection-changes', {
 						detail: this._listItemChanges
 					}));
@@ -63,6 +63,7 @@ class List extends SelectionMixin(LitElement) {
 			this._listItemChanges.push(e.detail);
 
 			setTimeout(() => {
+				/** Dispatched when the selection state changes */
 				this.dispatchEvent(new CustomEvent('d2l-list-selection-change', {
 					bubbles: true,
 					composed: true,

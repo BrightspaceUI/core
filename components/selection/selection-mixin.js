@@ -60,6 +60,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 		this.addEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.addEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
 		requestAnimationFrame(() => {
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-selection-provider-connected', { bubbles: true, composed: true }));
 		});
 

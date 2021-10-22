@@ -234,6 +234,7 @@ export const SwitchMixin = superclass => class extends RtlMixin(FocusVisiblePoly
 	_toggleState() {
 		if (this.disabled) return;
 		this.on = !this.on;
+		/** Dispatched when the `on` property is updated */
 		this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
 	}
 };

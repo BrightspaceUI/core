@@ -29,12 +29,14 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Optionally provide boundaries to where the dropdown will appear. Valid properties are "above", "below", "left", and "right".
+			 * @type {object}
 			 */
 			boundary: {
 				type: Object,
 			},
 			/**
 			 * Override default max-width (undefined). Specify a number that would be the px value.
+			 * @type {number}
 			 */
 			maxWidth: {
 				type: Number,
@@ -43,6 +45,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Override default min-width (undefined). Specify a number that would be the px value.
+			 * @type {number}
 			 */
 			minWidth: {
 				type: Number,
@@ -51,6 +54,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Override max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+			 * @type {number}
 			 */
 			maxHeight: {
 				type: Number,
@@ -58,6 +62,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Override the breakpoint at which mobile styling is used. Defaults to 616px.
+			 * @type {number}
 			 */
 			mobileBreakpointOverride: {
 				type: Number,
@@ -65,6 +70,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+			 * @type {number}
 			 */
 			minHeight: {
 				type: Number,
@@ -73,6 +79,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
+			 * @type {boolean}
 			 */
 			noMobileCloseButton: {
 				type: Boolean,
@@ -90,6 +97,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Opt out of automatically closing on focus or click outside of the dropdown content
+			 * @type {boolean}
 			 */
 			noAutoClose: {
 				type: Boolean,
@@ -98,6 +106,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Opt out of auto-sizing
+			 * @type {boolean}
 			 */
 			noAutoFit: {
 				type: Boolean,
@@ -106,6 +115,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Opt out of focus being automatically moved to the first focusable element in the dropdown when opened
+			 * @type {boolean}
 			 */
 			noAutoFocus: {
 				type: Boolean,
@@ -114,6 +124,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Render with no padding
+			 * @type {boolean}
 			 */
 			noPadding: {
 				type: Boolean,
@@ -122,6 +133,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Render the footer with no padding (if it has content)
+			 * @type {boolean}
 			 */
 			noPaddingFooter: {
 				type: Boolean,
@@ -130,6 +142,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Render the header with no padding (if it has content)
+			 * @type {boolean}
 			 */
 			noPaddingHeader: {
 				type: Boolean,
@@ -138,6 +151,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Render without a pointer
+			 * @type {boolean}
 			 */
 			noPointer: {
 				type: Boolean,
@@ -162,6 +176,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
  			* Optionally render a d2l-focus-trap around the dropdown content
+			 * @type {boolean}
  			*/
 			trapFocus: {
 				type: Boolean,
@@ -170,6 +185,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			},
 			/**
 			 * Provide custom offset, positive or negative
+			 * @type {string}
 			 */
 			verticalOffset: {
 				type: String,
@@ -518,6 +534,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 
 			setTimeout(() =>
+				/** Dispatched when the dropdown is opened */
 				this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true })), 0
 			);
 
@@ -549,6 +566,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this._showBackdrop = false;
 			await this.updateComplete;
 
+			/** Dispatched when the dropdown is closed */
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
 
 		}
@@ -656,6 +674,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				await this.updateComplete;
 			}
 
+			/** Dispatched when the dropdown position finishes adjusting */
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 		};
 
@@ -1006,6 +1025,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				content.focus();
 			}
 		}
+		/** Dispatched when user focus enters the dropdown content (trap-focus option only) */
 		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter'));
 	}
 
