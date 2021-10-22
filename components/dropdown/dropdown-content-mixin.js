@@ -534,7 +534,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 
 			setTimeout(() =>
-				/** Dispatched when the dropdown is opened */
 				this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true })), 0
 			);
 
