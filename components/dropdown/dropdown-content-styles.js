@@ -172,6 +172,11 @@ export const dropdownContentStyles = css`
 		text-align: right;
 	}
 
+	:host(.d2l-dropdown-content-fading) {
+		transition: opacity 0.4s ease-out;
+		opacity: 0;
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		:host([opened]), :host([opened-above]) {
 			animation: none !important;
