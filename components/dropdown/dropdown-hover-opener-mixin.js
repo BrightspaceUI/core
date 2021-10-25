@@ -125,9 +125,6 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		await dropdownContent.updateComplete;
 	}
 
-	// overrides dropdownOpenerMixin to no-op - handle opening logic within this class
-	async toggleOpen() {}
-
 	__onDropdownClosed() {
 		this._isOpen = false;
 		this._isOpenedViaClick = false;
@@ -142,8 +139,8 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 	__onDropdownMouseLeave(e) {
 		// if moving between content elements, do not fade
 		if (e.toElement === this.__getContentElement()) return;
-		this._closeTimerStart();
 		if (!this._isOpenedViaClick) this._isOpen = false;
+		this._closeTimerStart();
 	}
 
 	__onDropdownOpened() {
