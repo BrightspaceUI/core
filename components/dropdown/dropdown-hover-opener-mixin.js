@@ -121,9 +121,8 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		this._isOpen = true;
 		const dropdownContent = this.__getContentElement();
 		if (!dropdownContent) return;
-		await dropdownContent.open();
+		await dropdownContent.open(applyFocus);
 		await dropdownContent.updateComplete;
-		this.dispatchEvent(new CustomEvent('d2l-hover-dropdown-opened', { detail: { 'applyFocus': applyFocus } }));
 	}
 
 	// overrides dropdownOpenerMixin to no-op - handle opening logic within this class
