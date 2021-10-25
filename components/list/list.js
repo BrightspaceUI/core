@@ -1,5 +1,10 @@
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
+
+const keyCodes = {
+	TAB: 9
+};
 
 export const listSelectionStates = SelectionInfo.states;
 
@@ -78,7 +83,7 @@ class List extends SelectionMixin(LitElement) {
 		return html`
 			<div role="${role}" class="d2l-list-container">
 				<slot name="header"></slot>
-				<slot></slot>
+				<slot @keydown="${this._handleKeyDown}"></slot>
 			</div>
 		`;
 	}
@@ -112,6 +117,14 @@ class List extends SelectionMixin(LitElement) {
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
 			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'listitem' || node.tagName.includes('LIST-ITEM'));
 		});
+	}
+
+	_handleKeyDown(e) {
+		if (!this.grid || this.slot === 'nested' || e.keyCode !== keyCodes.TAB) return;
+		e.preventDefault();
+		const focusable = (e.shiftKey ? getPreviousFocusable(this.shadowRoot.querySelector('slot:not([name])'))
+			: getNextFocusable(this, false, true, true));
+		if (focusable) focusable.focus();
 	}
 
 }

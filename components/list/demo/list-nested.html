@@ -23,13 +23,13 @@
 	</head>
 	<body unresolved>
 
-		<d2l-demo-page page-title="d2l-list-item (nested)">
+		<d2l-demo-page page-title="d2l-list (nested)">
 
 			<h2>Nested</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-list>
+					<d2l-list grid>
 						<d2l-list-header slot="header">
 							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
@@ -39,80 +39,24 @@
 								<div>Earth Sciences (L1)</div>
 								<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
 							</d2l-list-item-content>
-							<d2l-list slot="nested" separators="all">
+							<d2l-list slot="nested" grid separators="all">
 								<d2l-list-item selectable key="L2-1" label="Label for L2-1">
 									<d2l-list-item-content>
 										<div>Introductory Earth Sciences (L2)</div>
 										<div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society's current and future demand for sustainable energy and mineral resources.</div>
 									</d2l-list-item-content>
-									<d2l-list slot="nested" separators="all">
+									<d2l-list slot="nested" grid separators="all">
 										<d2l-list-item selectable key="L3-1" label="Label for L3-1">
 											<d2l-list-item-content>
 												<div>Glaciation (L3)</div>
 												<div slot="supporting-info">Supporting Info</div>
 											</d2l-list-item-content>
-											<d2l-list slot="nested" separators="all">
+											<d2l-list slot="nested" grid separators="all">
 												<d2l-list-item selectable key="L4-1" label="Label for L4-1">
 													<d2l-list-item-content>
 														<div>Ice Sheets (L4)</div>
 														<div slot="supporting-info">Supporting Info</div>
 													</d2l-list-item-content>
-													<d2l-list slot="nested" separators="all">
-														<d2l-list-item selectable key="L5-1" label="Label for L5-1">
-															<d2l-list-item-content>
-																<div>Topic 1 (L5)</div>
-																<div slot="supporting-info">Supporting Info</div>
-															</d2l-list-item-content>
-														</d2l-list-item>
-														<d2l-list-item selectable key="L5-2" label="Label for L5-2">
-															<d2l-list-item-content>
-																<div>Topic 2 (L5)</div>
-																<div slot="supporting-info">Supporting Info</div>
-															</d2l-list-item-content>
-															<d2l-list slot="nested" separators="all">
-																<d2l-list-item selectable key="L6-1" label="Label for L6-1">
-																	<d2l-list-item-content>
-																		<div>Sub-Topic 1 (L6)</div>
-																		<div slot="supporting-info">Supporting Info</div>
-																	</d2l-list-item-content>
-																	<d2l-list slot="nested" separators="all">
-																		<d2l-list-item selectable key="L7-1" label="Label for L7-1">
-																			<d2l-list-item-content>
-																				<div>Sub-Topic 1 (L7)</div>
-																				<div slot="supporting-info">Supporting Info</div>
-																			</d2l-list-item-content>
-																			<d2l-list slot="nested" separators="all">
-																				<d2l-list-item selectable selected key="L8-1" label="Label for L8-1">
-																					<d2l-list-item-content>
-																						<div>Sub-Topic 1 (L8)</div>
-																						<div slot="supporting-info">Supporting Info</div>
-																					</d2l-list-item-content>
-																				</d2l-list-item>
-																				<d2l-list-item selectable key="L8-2" label="Label for L8-2">
-																					<d2l-list-item-content>
-																						<div>Sub-Topic 2 (L8)</div>
-																						<div slot="supporting-info">Supporting Info</div>
-																					</d2l-list-item-content>
-																				</d2l-list-item>
-																			</d2l-list>
-																		</d2l-list-item>
-																		<d2l-list-item selectable key="L7-2" label="Label for L7-2">
-																			<d2l-list-item-content>
-																				<div>Sub-Topic 2 (L7)</div>
-																				<div slot="supporting-info">Supporting Info</div>
-																			</d2l-list-item-content>
-																		</d2l-list-item>
-																	</d2l-list>
-																</d2l-list-item>
-																<d2l-list-item selectable key="L6-2" label="Label for L6-2">
-																	<d2l-list-item-content>
-																		<div>Sub-Topic 2 (L6)</div>
-																		<div slot="supporting-info">Supporting Info</div>
-																	</d2l-list-item-content>
-																</d2l-list-item>
-															</d2l-list>
-														</d2l-list-item>
-													</d2l-list>
 												</d2l-list-item>
 												<d2l-list-item selectable key="L4-2" label="Label for L4-2">
 													<d2l-list-item-content>
@@ -175,7 +119,7 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-list>
+					<d2l-list grid>
 						<d2l-list-header slot="header">
 							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
