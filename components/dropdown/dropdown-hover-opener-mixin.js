@@ -43,7 +43,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		this.__onDropdownMouseLeave = this.__onDropdownMouseLeave.bind(this);
 		this._onOutsideClick = this._onOutsideClick.bind(this);
 		this._onKeyDown = this._onKeyDown.bind(this);
-		this._contentElement = null;
+		this._contentRendered = null;
 	}
 
 	connectedCallback() {
@@ -79,29 +79,29 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		opener.removeEventListener('keydown', this.__onOpenerKeyDown);
 		opener.removeEventListener('click', this.__onOpenerClick);
 
-		if (!this._contentElement) return;
-		this._contentElement.removeEventListener('d2l-dropdown-open', this.__onDropdownOpened);
-		this._contentElement.removeEventListener('d2l-dropdown-close', this.__onDropdownClosed);
-		this._contentElement.removeEventListener('mouseenter', this.__onDropdownMouseEnter);
-		this._contentElement.removeEventListener('mouseleave', this.__onDropdownMouseLeave);
+		if (!this._contentRendered) return;
+		this.__getContentElement().removeEventListener('d2l-dropdown-open', this.__onDropdownOpened);
+		this.__getContentElement().removeEventListener('d2l-dropdown-close', this.__onDropdownClosed);
+		this.__getContentElement().removeEventListener('mouseenter', this.__onDropdownMouseEnter);
+		this.__getContentElement().removeEventListener('mouseleave', this.__onDropdownMouseLeave);
 	}
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if (!this._contentElement) {
-			this._contentElement = this.__getContentElement();
-			if (!this._contentElement) return;
-			this._contentElement.addEventListener('d2l-dropdown-open', this.__onDropdownOpened, true);
-			this._contentElement.addEventListener('d2l-dropdown-close', this.__onDropdownClosed, true);
-			this._contentElement.addEventListener('mouseenter', this.__onDropdownMouseEnter, true);
-			this._contentElement.addEventListener('mouseleave', this.__onDropdownMouseLeave, true);
+		if (!this._contentRendered) {
+			this._contentRendered = this.__getContentElement();
+			if (!this._contentRendered) return;
+			this.__getContentElement().addEventListener('d2l-dropdown-open', this.__onDropdownOpened, true);
+			this.__getContentElement().addEventListener('d2l-dropdown-close', this.__onDropdownClosed, true);
+			this.__getContentElement().addEventListener('mouseenter', this.__onDropdownMouseEnter, true);
+			this.__getContentElement().addEventListener('mouseleave', this.__onDropdownMouseLeave, true);
 		}
 		if (!changedProperties.has('_isFading')) return;
 
 		if (this._isFading) {
-			this._contentElement.classList.add('d2l-dropdown-content-fading');
+			this.__getContentElement().classList.add('d2l-dropdown-content-fading');
 		} else {
-			this._contentElement.classList.remove('d2l-dropdown-content-fading');
+			this.__getContentElement().classList.remove('d2l-dropdown-content-fading');
 		}
 	}
 
