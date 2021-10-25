@@ -90,7 +90,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 	async updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!this._contentElement) {
-			this._contentElement = await this.__getContentElement();
+			this._contentElement = this.__getContentElement();
 			if (!this._contentElement) return;
 			this._contentElement.setAttribute('no-auto-focus', true);
 			this._contentElement.setAttribute('no-auto-close', true);
@@ -116,13 +116,13 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 			this._closeTimerStart();
 			return;
 		}
-		const dropdownContent = await this.__getContentElement();
+		const dropdownContent = this.__getContentElement();
 		await dropdownContent.close();
 	}
 
 	async openDropdown(applyFocus) {
 		this._isOpen = true;
-		const dropdownContent = await this.__getContentElement();
+		const dropdownContent = this.__getContentElement();
 		if (!dropdownContent) return;
 		await dropdownContent.open();
 		await dropdownContent.updateComplete;
@@ -131,13 +131,6 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 
 	// overrides dropdownOpenerMixin to no-op - handle opening logic within this class
 	async toggleOpen() {}
-
-	async __getContentElement() {
-		await this.updateComplete;
-		const content =  this.shadowRoot.querySelector('slot:not([name])').assignedNodes()
-			.filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
-		return content;
-	}
 
 	__onDropdownClosed() {
 		this._isOpen = false;
@@ -183,7 +176,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 
 	async __onOpenerMouseEnter() {
 		// do not respond to hover events on mobile screens
-		const dropdownContent = await this.__getContentElement();
+		const dropdownContent = this.__getContentElement();
 		if (dropdownContent._useMobileStyling) return;
 		clearTimeout(this._dismissTimerId);
 		if (!this._isOpen) await this.openDropdown(false);
@@ -193,7 +186,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 
 	async __onOpenerMouseLeave() {
 		// do not respond to hover events on mobile screens
-		const dropdownContent = await this.__getContentElement();
+		const dropdownContent = this.__getContentElement();
 		if (dropdownContent._useMobileStyling) return;
 		this._isHovering = false;
 		if (this._isOpenedViaClick) return;
@@ -234,10 +227,12 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 
 	_onOutsideClick(e) {
 		if (!this._isOpen) return;
-		const isOutsideClick = e.target !== this;
-		const isBackdropClick = (e.path || e.composedPath()).find(node =>
-			node.nodeName === 'D2L-BACKDROP');
-		if (isBackdropClick || (e.target !== this.getOpenerElement() && isOutsideClick && !this.getOpenerElement().contains(e.target) && !this._contentElement.contains(e.target))) {
+		const isOutsideClick = e.target !== this
+			&& e.target !== this.getOpenerElement()
+			&& !this.getOpenerElement().contains(e.target)
+			&& !this._contentElement.contains(e.target);
+		const isBackdropClick = (e.path || e.composedPath()).find(node => node.nodeName === 'D2L-BACKDROP');
+		if (isBackdropClick || isOutsideClick) {
 			this.closeDropdown();
 		}
 	}
