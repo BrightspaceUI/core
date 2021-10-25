@@ -79,12 +79,11 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		opener.removeEventListener('keydown', this.__onOpenerKeyDown);
 		opener.removeEventListener('click', this.__onOpenerClick);
 
-		const content = this._contentElement;
 		if (!this._contentElement) return;
-		content.removeEventListener('d2l-dropdown-open', this.__onDropdownOpened);
-		content.removeEventListener('d2l-dropdown-close', this.__onDropdownClosed);
-		content.removeEventListener('mouseenter', this.__onDropdownMouseEnter);
-		content.removeEventListener('mouseleave', this.__onDropdownMouseLeave);
+		this._contentElement.removeEventListener('d2l-dropdown-open', this.__onDropdownOpened);
+		this._contentElement.removeEventListener('d2l-dropdown-close', this.__onDropdownClosed);
+		this._contentElement.removeEventListener('mouseenter', this.__onDropdownMouseEnter);
+		this._contentElement.removeEventListener('mouseleave', this.__onDropdownMouseLeave);
 	}
 
 	async updated(changedProperties) {
@@ -230,7 +229,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		const isOutsideClick = e.target !== this
 			&& e.target !== this.getOpenerElement()
 			&& !this.getOpenerElement().contains(e.target)
-			&& !this._contentElement.contains(e.target);
+			&& !this.__getContentElement().contains(e.target);
 		const isBackdropClick = (e.path || e.composedPath()).find(node => node.nodeName === 'D2L-BACKDROP');
 		if (isBackdropClick || isOutsideClick) {
 			this.closeDropdown();
