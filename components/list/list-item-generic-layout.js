@@ -291,10 +291,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		// check for nested list first; this check needs to account for standard list-items as well as custom
 		const nestedList = listItem.querySelector('[slot="nested"]') || listItem.shadowRoot.querySelector('d2l-list');
 		if (nestedList) {
-			const nestedListItems = [...nestedList.children].filter(node => node.role === 'rowgroup');
-			if (nestedListItems && nestedListItems.length > 0) {
-				return nestedListItems[0];
-			}
+			const nestedListItem = [...nestedList.children].find(node => node.role === 'rowgroup');
+			if (nestedListItem) return nestedListItem;
 		}
 
 		const getNextListItem = listItem => {
