@@ -91,8 +91,6 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		if (!this._contentElement) {
 			this._contentElement = this.__getContentElement();
 			if (!this._contentElement) return;
-			this._contentElement.setAttribute('no-auto-focus', true);
-			this._contentElement.setAttribute('no-auto-close', true);
 			this._contentElement.addEventListener('d2l-dropdown-open', this.__onDropdownOpened, true);
 			this._contentElement.addEventListener('d2l-dropdown-close', this.__onDropdownClosed, true);
 			this._contentElement.addEventListener('mouseenter', this.__onDropdownMouseEnter, true);
@@ -133,6 +131,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 
 	__onDropdownClosed() {
 		this._isOpen = false;
+		this._isOpenedViaClick = false;
 	}
 
 	__onDropdownMouseEnter() {
@@ -141,7 +140,9 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		this._closeTimerStop();
 	}
 
-	__onDropdownMouseLeave() {
+	__onDropdownMouseLeave(e) {
+		// if moving between content elements, do not fade
+		if (e.toElement === this.__getContentElement()) return;
 		this._closeTimerStart();
 		if (!this._isOpenedViaClick) this._isOpen = false;
 	}
