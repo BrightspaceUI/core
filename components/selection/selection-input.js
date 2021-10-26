@@ -94,7 +94,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			};
 			return html`
 				<div
-					aria-disabled="${this.disabled}"
+					aria-disabled="${ifDefined(this.disabled)}"
 					aria-label="${this.label}"
 					aria-checked="${this.selected ? 'true' : 'false'}"
 					class="${classMap(radioClasses)}"
