@@ -173,8 +173,8 @@ export const dropdownContentStyles = css`
 	}
 
 	:host(.d2l-dropdown-content-fading) {
-		transition: opacity 0.4s ease-out;
 		opacity: 0;
+		transition: opacity 0.4s ease-out;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
