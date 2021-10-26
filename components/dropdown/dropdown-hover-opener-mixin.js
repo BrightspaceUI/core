@@ -151,7 +151,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 
 	__onDropdownMouseLeave(e) {
 		// if moving between content elements, do not fade
-		if (e.toElement === this.__getContentElement()) return;
+		if (isComposedAncestor(this.__getContentElement(), e.toElement)) return;
 		if (!this._isOpenedViaClick) this._isOpen = false;
 		this._closeTimerStart();
 	}
