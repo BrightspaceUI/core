@@ -1,7 +1,6 @@
 
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { isComposedAncestor } from '../../helpers/dom.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -150,8 +149,7 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 	}
 
 	__onDropdownMouseLeave(e) {
-		// if moving between content elements, do not fade
-		if (isComposedAncestor(this.__getContentElement(), e.toElement)) return;
+		if (this.__getContentElement() !== e.target) return;
 		if (!this._isOpenedViaClick) this._isOpen = false;
 		this._closeTimerStart();
 	}
