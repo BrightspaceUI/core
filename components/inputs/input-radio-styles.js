@@ -33,7 +33,7 @@ export const radioStyles = css`
 		border-color: var(--d2l-color-galena);
 		border-width: 1px;
 	}
-	.d2l-hovering.d2l-input-radio,
+	.d2l-input-radio.d2l-hovering,
 	.d2l-input-radio:hover,
 	.d2l-input-radio:focus,
 	.d2l-input-radio-label > input[type="radio"]:hover,
@@ -47,6 +47,7 @@ export const radioStyles = css`
 		border-color: var(--d2l-color-cinnabar);
 	}
 	.d2l-input-radio:disabled,
+	.d2l-input-radio.d2l-disabled,
 	.d2l-input-radio-label > input[type="radio"]:disabled {
 		opacity: 0.5;
 	}
