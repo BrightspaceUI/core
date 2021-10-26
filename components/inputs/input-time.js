@@ -109,7 +109,6 @@ function initIntervals(size, enforceTimeIntervals) {
 
 /**
  * A component that consists of a text input field for typing a time and an attached dropdown for time selection. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
- * @fires change - Dispatched when there is a change to selected time. "value" corresponds to the selected value and is formatted in ISO 8601 time format ("hh:mm:ss").
  */
 class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement))) {
 
@@ -122,14 +121,17 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 			defaultValue: { type: String, attribute: 'default-value' },
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Rounds typed input up to nearest valid interval time (specified with "time-interval")
+			 * @type {boolean}
 			 */
 			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
@@ -139,10 +141,12 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 			maxHeight: { type: Number, attribute: 'max-height' },
 			/**
 			 * Indicates if the dropdown is open
+			 * @type {boolean}
 			 */
 			opened: { type: Boolean },
 			/**
 			 * Indicates that a value is required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
@@ -369,6 +373,7 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 			this._formattedValue = formatTime(getDateFromISOTime(this.value));
 		} else {
 			this.value = formatDateInISOTime(time);
+			/** Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`). */
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{ bubbles: true, composed: false }
@@ -378,6 +383,7 @@ class InputTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LitElement)
 
 	async _handleDropdownChange(e) {
 		this.value = e.target.value;
+		/** Dispatched when there is a change to selected time. `value` corresponds to the selected value and is formatted in ISO 8601 time format (`hh:mm:ss`). */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

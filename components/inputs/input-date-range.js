@@ -28,7 +28,6 @@ export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusiv
 
 /**
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
- * @fires change - Dispatched when there is a change to selected start date or selected end date. "start-value" and "end-value" correspond to the selected values and are formatted in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
 class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
@@ -36,14 +35,17 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		return {
 			/**
 			 * Automatically shifts end date when start date changes to keep same range
+			 * @type {boolean}
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
 			 * Hides the start and end labels visually
+			 * @type {boolean}
 			 */
 			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
 			/**
 			 * Disables the inputs
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
@@ -54,6 +56,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
 			 * Indicates if the end calendar dropdown is open
+			 * @type {boolean}
 			 */
 			endOpened: { attribute: 'end-opened', type: Boolean },
 			/**
@@ -63,6 +66,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
 			 * Validates on inclusive range (i.e., it is valid for start and end dates to be equal)
+			 * @type {boolean}
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
@@ -72,6 +76,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			label: { type: String, reflect: true },
 			/**
 			 * Hides the fieldset label visually
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
@@ -86,6 +91,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
 			 * Indicates that values are required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
@@ -96,6 +102,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Indicates if the start calendar dropdown is open
+			 * @type {boolean}
 			 */
 			startOpened: { attribute: 'start-opened', type: Boolean },
 			/**
@@ -219,6 +226,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			if (prop === 'startValue' || prop === 'endValue') {
 				if (!this.invalid && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
 					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange);
+					/** Dispatched when there is a change to selected start date or selected end date. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar date format (`YYYY-MM-DD`). */
 					this.dispatchEvent(new CustomEvent(
 						'change',
 						{ bubbles: true, composed: false }
@@ -270,6 +278,7 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		} else {
 			this.endValue = elem.value;
 		}
+		/** Dispatched when there is a change to selected start date or selected end date. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar date format (`YYYY-MM-DD`). */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

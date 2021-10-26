@@ -12,14 +12,17 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		return {
 			/**
 			 * Force block (stacked) range display if true
+			 * @type {boolean}
 			 */
 			blockDisplay: { attribute: 'block-display', type: Boolean },
 			/**
 			 * Display localized "to" between the left and right slot contents
+			 * @type {boolean}
 			 */
 			displayTo: { attribute: 'display-to', type: Boolean },
 			/**
 			 * Add margin-top for case where there would be a label above the range
+			 * @type {boolean}
 			 */
 			topMargin: { attribute: 'top-margin', type: Boolean },
 			_blockDisplay: { attribute: false, type: Boolean }

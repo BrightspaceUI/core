@@ -32,9 +32,6 @@ const SET_DIMENSION_ID_PREFIX = 'list-';
  * A filter component that contains one or more dimensions a user can filter by.
  * This component is in charge of all rendering.
  * @slot - Dimension components used by the filter to construct the different dimensions locally
- * @fires d2l-filter-change - Dispatched when a dimension's value(s) have changed
- * @fires d2l-filter-dimension-first-open - Dispatched when a dimension is opened for the first time
- * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  */
 class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -396,6 +393,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			dimension.changes = Array.from(dimension.changes.values());
 		});
 
+		/** Dispatched when a dimension's value(s) have changed */
 		this.dispatchEvent(new CustomEvent('d2l-filter-change', {
 			bubbles: true,
 			composed: false,
@@ -407,6 +405,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_dispatchDimensionFirstOpenEvent(key) {
 		if (!this._openedDimensions.includes(key)) {
+			/** Dispatched when a dimension is opened for the first time */
 			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: key } }));
 			this._openedDimensions.push(key);
 		}
@@ -563,6 +562,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			dimension.loading = true;
 			this.requestUpdate();
 
+			/** Dispatched when a dimension that supports searching and has the "manual" search-type is searched */
 			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
 				bubbles: false,
 				composed: false,

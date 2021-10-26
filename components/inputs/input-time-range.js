@@ -35,7 +35,6 @@ function getValidISOTimeAtInterval(val, timeInterval) {
 
 /**
  * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
- * @fires change - Dispatched when there is a change to selected start time or selected end time. "start-value" and "end-value" correspond to the selected values and are formatted in ISO 8601 calendar time format ("hh:mm:ss").
  */
 
 class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
@@ -44,14 +43,17 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		return {
 			/**
 			 * Automatically shifts end time when start time changes to keep same range
+			 * @type {boolean}
 			 */
 			autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
 			/**
 			 * Hides the start and end labels visually
+			 * @type {boolean}
 			 */
 			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
 			/**
 			 * Disables the inputs
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
@@ -62,6 +64,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
 			 * Indicates if the end dropdown is open
+			 * @type {boolean}
 			 */
 			endOpened: { attribute: 'end-opened', type: Boolean },
 			/**
@@ -71,10 +74,12 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
 			 * Rounds typed input up to nearest valid interval time (specified with "time-interval")
+			 * @type {boolean}
 			 */
 			enforceTimeIntervals: { attribute: 'enforce-time-intervals', reflect: true, type: Boolean },
 			/**
 			 * Validates on inclusive range (i.e., it is valid for start and end times to be equal)
+			 * @type {boolean}
 			 */
 			inclusiveTimeRange: { attribute: 'inclusive-time-range', reflect: true, type: Boolean },
 			/**
@@ -84,10 +89,12 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			label: { type: String, reflect: true },
 			/**
 			 * Hides the fieldset label visually
+			 * @type {boolean}
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Indicates that values are required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
@@ -98,6 +105,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Indicates if the start dropdown is open
+			 * @type {boolean}
 			 */
 			startOpened: { attribute: 'start-opened', type: Boolean },
 			/**
@@ -270,6 +278,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			if (prop === 'startValue' || prop === 'endValue') {
 				if (!this.invalid && this.autoShiftTimes && prop === 'startValue' && this.endValue && oldVal) {
 					this.endValue = getShiftedEndTime(this.startValue, this.endValue, oldVal, this.inclusiveTimeRange);
+					/** Dispatched when there is a change to selected start time or selected end time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar time format (`hh:mm:ss`). */
 					this.dispatchEvent(new CustomEvent(
 						'change',
 						{ bubbles: true, composed: false }
@@ -321,6 +330,7 @@ class InputTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		} else {
 			this.endValue = elem.value;
 		}
+		/** Dispatched when there is a change to selected start time or selected end time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar time format (`hh:mm:ss`). */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
