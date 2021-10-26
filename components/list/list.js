@@ -97,12 +97,12 @@ class List extends SelectionMixin(LitElement) {
 		return this._getItems().indexOf(item);
 	}
 
-	getSelectedItems(includeNested) {
+	getSelectedListItems(includeNested) {
 		let selectedItems = [];
 		this._getItems().forEach(item => {
 			if (item.selected) selectedItems.push(item);
 			if (includeNested && item._selectionProvider) {
-				selectedItems = [...selectedItems, ...item._selectionProvider.getSelectedItems(includeNested)];
+				selectedItems = [...selectedItems, ...item._selectionProvider.getSelectedListItems(includeNested)];
 			}
 		});
 		return selectedItems;

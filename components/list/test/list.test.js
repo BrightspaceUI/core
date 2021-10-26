@@ -66,14 +66,14 @@ describe('d2l-list', () => {
 			expect(e.detail.length).to.equal(2);
 		});
 
-		it('getSelectedItems returns empty array when no items selected', async() => {
-			expect(elem.getSelectedItems().length).to.equal(0);
+		it('getSelectedListItems returns empty array when no items selected', async() => {
+			expect(elem.getSelectedListItems().length).to.equal(0);
 		});
 
-		it('getSelectedItems returns array including selected items', async() => {
+		it('getSelectedListItems returns array including selected items', async() => {
 			setTimeout(() => clickItemInput(elem.querySelector('[key="L1-1"]')));
 			await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(elem.getSelectedItems().length).to.equal(1);
+			expect(elem.getSelectedListItems().length).to.equal(1);
 		});
 
 	});
@@ -120,26 +120,26 @@ describe('d2l-list', () => {
 			expect(e.detail.length).to.equal(3);
 		});
 
-		it('getSelectedItems returns empty array when no items selected', async() => {
-			expect(elem.getSelectedItems().length).to.equal(0);
+		it('getSelectedListItems returns empty array when no items selected', async() => {
+			expect(elem.getSelectedListItems().length).to.equal(0);
 		});
 
-		it('getSelectedItems returns array with root selected items only', async() => {
+		it('getSelectedListItems returns array with root selected items only', async() => {
 			setTimeout(() => clickItemInput(elem.querySelector('[key="L1-1"]')));
 			await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(elem.getSelectedItems().length).to.equal(1);
+			expect(elem.getSelectedListItems().length).to.equal(1);
 		});
 
-		it('getSelectedItems returns array including nested selected items', async() => {
+		it('getSelectedListItems returns array including nested selected items', async() => {
 			setTimeout(() => clickItemInput(elem.querySelector('[key="L1-1"]')));
 			await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(elem.getSelectedItems(true).length).to.equal(3);
+			expect(elem.getSelectedListItems(true).length).to.equal(3);
 		});
 
-		it('getSelectedItems returns array excluding indeterminate items', async() => {
+		it('getSelectedListItems returns array excluding indeterminate items', async() => {
 			setTimeout(() => clickItemInput(elem.querySelector('[key="L2-1"]')));
 			await oneEvent(elem, 'd2l-list-selection-changes');
-			expect(elem.getSelectedItems(true).length).to.equal(1);
+			expect(elem.getSelectedListItems(true).length).to.equal(1);
 		});
 
 	});
