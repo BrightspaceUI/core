@@ -244,10 +244,10 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			const countBadgeId = `filters-applied-count-${dimension.key}`;
 			const filtersAppliedText = `${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
 			return html`<d2l-menu-item text="${dimension.text}" description="${dimension.text}." aria-describedby="${countBadgeId}">
-				${builtDimension}
 				<div slot="supporting">
 					<d2l-count-badge id="${countBadgeId}" number="${dimension.appliedCount}" max-digits="2" text="${filtersAppliedText}" hide-zero></d2l-count-badge>
 				</div>
+				${builtDimension}
 			</d2l-menu-item>`;
 		});
 	}
@@ -364,6 +364,7 @@ class Filter extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
 				@d2l-list-selection-change="${this._handleChangeSetDimension}"
 				extend-separators
+				grid
 				?selection-single="${dimension.selectionSingle}">
 				${dimension.values.map(item => html`
 					<d2l-list-item
