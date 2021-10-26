@@ -66,6 +66,16 @@ describe('d2l-list', () => {
 			expect(e.detail.length).to.equal(2);
 		});
 
+		it('getSelectedItems returns empty array when no items selected', async() => {
+			expect(elem.getSelectedItems().length).to.equal(0);
+		});
+
+		it('getSelectedItems returns array including selected items', async() => {
+			setTimeout(() => clickItemInput(elem.querySelector('[key="L1-1"]')));
+			await oneEvent(elem, 'd2l-list-selection-changes');
+			expect(elem.getSelectedItems().length).to.equal(1);
+		});
+
 	});
 
 	describe('nested', () => {
@@ -108,6 +118,28 @@ describe('d2l-list', () => {
 			setTimeout(() => clickItemInput(elem.querySelector('[key="L1-1"]')));
 			const e = await oneEvent(elem, 'd2l-list-selection-changes');
 			expect(e.detail.length).to.equal(3);
+		});
+
+		it('getSelectedItems returns empty array when no items selected', async() => {
+			expect(elem.getSelectedItems().length).to.equal(0);
+		});
+
+		it('getSelectedItems returns array with root selected items only', async() => {
+			setTimeout(() => clickItemInput(elem.querySelector('[key="L1-1"]')));
+			await oneEvent(elem, 'd2l-list-selection-changes');
+			expect(elem.getSelectedItems().length).to.equal(1);
+		});
+
+		it('getSelectedItems returns array including nested selected items', async() => {
+			setTimeout(() => clickItemInput(elem.querySelector('[key="L1-1"]')));
+			await oneEvent(elem, 'd2l-list-selection-changes');
+			expect(elem.getSelectedItems(true).length).to.equal(3);
+		});
+
+		it('getSelectedItems returns array excluding indeterminate items', async() => {
+			setTimeout(() => clickItemInput(elem.querySelector('[key="L2-1"]')));
+			await oneEvent(elem, 'd2l-list-selection-changes');
+			expect(elem.getSelectedItems(true).length).to.equal(1);
 		});
 
 	});

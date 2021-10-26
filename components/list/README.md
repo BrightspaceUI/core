@@ -152,6 +152,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 
 - `getListItemCount`: returns the length of the items within the list
 - `getListItemIndex` (Object): returns the index of the given element within the list
+- `getSelectedItems` (Array): returns the selected items; pass `true` to include nested lists
 - `getSelectionInfo` (Object): returns a `SelectionInfo` object containing the `state` (`none`, `some`, `all`), and the `keys` (Array) for the selected items
 
 ## Selection Lists
