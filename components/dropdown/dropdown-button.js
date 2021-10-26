@@ -15,6 +15,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 		return {
 			/**
 			 * Optionally render button as primary button
+			 * @type {boolean}
 			 */
 			primary: {
 				type: Boolean,
@@ -23,6 +24,7 @@ class DropdownButton extends DropdownOpenerMixin(RtlMixin(LitElement)) {
 
 			/**
 			 * REQUIRED: Text for the button
+			 * @type {string}
 			 */
 			text: {
 				type: String

@@ -23,6 +23,7 @@ class Button extends ButtonMixin(LitElement) {
 
 			/**
 			 * Styles the button as a primary button
+			 * @type {boolean}
 			 */
 			primary: { type: Boolean, reflect: true }
 		};

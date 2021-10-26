@@ -4,6 +4,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		return {
 			/**
 			 * Disables the dropdown opener
+			 * @type {boolean}
 			 */
 			disabled: {
 				type: Boolean,
@@ -19,6 +20,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 			/**
 			 * Prevents the dropdown from opening automatically on or on key press
+			 * @type {boolean}
 			 */
 			noAutoOpen: {
 				type: Boolean,

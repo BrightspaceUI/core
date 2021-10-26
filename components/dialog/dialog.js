@@ -17,8 +17,6 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
- * @fires d2l-dialog-open - Dispatched when the dialog is opened
- * @fires d2l-dialog-close - Dispatched with the action value when the dialog is closed for any reason
  */
 class Dialog extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement))) {
 

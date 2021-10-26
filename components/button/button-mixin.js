@@ -22,10 +22,12 @@ export const ButtonMixin = superclass => class extends FocusVisiblePolyfillMixin
 			autofocus: { type: Boolean, reflect: true },
 			/**
 			 * Disables the button
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
 			 * Tooltip text when disabled
+			 * @type {string}
 			 */
 			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 			/**
