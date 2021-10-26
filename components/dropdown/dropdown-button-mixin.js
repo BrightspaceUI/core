@@ -5,7 +5,7 @@ import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
 import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
- * A "d2l-button" opener for dropdown content.
+ * A "d2l-button" opener mixin for dropdown content. Extend with a DropdownOpenerMixin or DropdownHoverOpenerMixin.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  */
 export const DropdownButtonMixin = superclass => class extends RtlMixin(superclass) {

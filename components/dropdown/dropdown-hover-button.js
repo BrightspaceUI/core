@@ -5,7 +5,7 @@ import { DropdownHoverOpenerMixin } from './dropdown-hover-opener-mixin.js';
 import { LitElement } from 'lit-element/lit-element.js';
 
 /**
- * A "d2l-button" opener for dropdown content.
+ * A "d2l-button" opener via hover or click for dropdown content.
  * @slot - Dropdown content (e.g., "d2l-dropdown-content", "d2l-dropdown-menu" or "d2l-dropdown-tabs")
  */
 class DropdownHoverButton extends DropdownButtonMixin(DropdownHoverOpenerMixin(LitElement)) {}
