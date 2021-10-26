@@ -17,6 +17,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		return {
 			/**
 			 * Indicates to display buttons as always floating
+			 * @type {boolean}
 			 */
 			alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
 			_containerMarginLeft: { attribute: false, type: String },

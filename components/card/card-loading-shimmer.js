@@ -11,6 +11,7 @@ class CardLoadingShimmer extends LitElement {
 		return {
 			/**
 			 * Whether the header content is being loaded
+			 * @type {boolean}
 			 */
 			loading: { type: Boolean }
 		};

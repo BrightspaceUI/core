@@ -14,6 +14,7 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 		return {
 			/**
 			 * REQUIRED: Label for the more button
+			 * @type {string}
 			 */
 			text: {
 				type: String
@@ -21,6 +22,7 @@ class DropdownMore extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement
 
 			/**
 			 * Attribute for busy/rich backgrounds
+			 * @type {boolean}
 			 */
 			translucent: {
 				type: Boolean

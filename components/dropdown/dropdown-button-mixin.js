@@ -14,6 +14,7 @@ export const DropdownButtonMixin = superclass => class extends RtlMixin(supercla
 		return {
 			/**
 			 * Optionally render button as primary button
+			 * @type {boolean}
 			 */
 			primary: {
 				type: Boolean,
@@ -22,6 +23,7 @@ export const DropdownButtonMixin = superclass => class extends RtlMixin(supercla
 
 			/**
 			 * REQUIRED: Text for the button
+			 * @type {string}
 			 */
 			text: {
 				type: String

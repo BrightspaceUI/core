@@ -32,7 +32,7 @@ const demoData = {
 	'L3-1': {
 		primaryText: 'Glaciation (L3)',
 		supportingText: 'Supporting Info',
-		nested: [ 'L4-1' ]
+		nested: [ 'L4-1', 'L4-2' ]
 	},
 	'L3-2': {
 		primaryText: 'Weathering (L3)',
@@ -45,7 +45,11 @@ const demoData = {
 	'L4-1': {
 		primaryText: 'Ice Sheets',
 		supportingText: 'Supporting Info',
-		nested: [ 'L5-1' /*, 'L5-2', 'L5-3', 'L5-4', 'L5-5'*/ ]
+		nested: [ /*'L5-1', 'L5-2', 'L5-3', 'L5-4', 'L5-5'*/ ]
+	},
+	'L4-2': {
+		primaryText: 'Alpine Glaciers',
+		supportingText: 'Supporting Info'
 	},
 	'L5-1': {
 		primaryText: 'Topic L5-1',
@@ -178,7 +182,7 @@ class DemoListItemCustom extends ListItemMixin(LitElement) {
 
 		if (demoData[this.key].nested && demoData[this.key].nested.length > 0) {
 			itemTemplates.nested = html`
-				<d2l-list separators="all">
+				<d2l-list grid separators="all">
 					${demoData[this.key].nested.map(itemKey => html`<d2l-demo-list-item-custom selectable key="${itemKey}"></d2l-demo-list-item-custom>`)}
 				</d2l-list>
 			`;

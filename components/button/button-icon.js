@@ -37,6 +37,7 @@ class ButtonIcon extends ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(
 
 			/**
 			 * Indicates to display translucent (e.g., on rich backgrounds)
+			 * @type {boolean}
 			 */
 			translucent: { type: Boolean, reflect: true }
 		};
