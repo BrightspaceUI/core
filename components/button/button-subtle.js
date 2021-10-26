@@ -36,6 +36,7 @@ class ButtonSubtle extends ButtonMixin(RtlMixin(LitElement)) {
 
 			/**
 			 * Indicates that the icon should be rendered on right
+			 * @type {boolean}
 			 */
 			iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
 

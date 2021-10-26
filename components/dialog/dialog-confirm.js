@@ -8,8 +8,6 @@ import { heading3Styles } from '../typography/styles.js';
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
  * @slot footer - Slot for footer content such as workflow buttons
- * @fires d2l-dialog-open - Dispatched when the dialog is opened
- * @fires d2l-dialog-close - Dispatched with the action value when the dialog is closed for any reason
  */
 class DialogConfirm extends DialogMixin(LitElement) {
 
@@ -17,6 +15,7 @@ class DialogConfirm extends DialogMixin(LitElement) {
 		return {
 			/**
 			 * REQUIRED: The text content for the confirmation dialog
+			 * @type {string}
 			 */
 			text: { type: String }
 		};

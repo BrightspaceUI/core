@@ -16,30 +16,37 @@ class CardFooterLink extends RtlMixin(LitElement) {
 		return {
 			/**
 			 * Download a URL instead of navigating to it
+			 * @type {boolean}
 			 */
 			download: { type: Boolean, reflect: true },
 			/**
 			 * URL or URL fragment of the link
+			 * @type {string}
 			 */
 			href: { type: String, reflect: true },
 			/**
 			 * Indicates the human language of the linked resource; purely advisory, with no built-in functionality
+			 * @type {string}
 			 */
 			hreflang: { type: String, reflect: true },
 			/**
 			 * REQUIRED: Preset icon key (e.g. "tier1:gear"). Must be a tier 1 icon.
+			 * @type {string}
 			 */
 			icon: { type: String, reflect: true },
 			/**
 			 * Specifies the relationship of the target object to the link object
+			 * @type {string}
 			 */
 			rel: { type: String, reflect: true },
 			/**
 			 * Secondary count to display as a count bubble on the icon
+			 * @type {number}
 			 */
 			secondaryCount: { type: Number, attribute: 'secondary-count', reflect: true },
 			/**
 			 * Maximum digits to display in the secondary count. Defaults to no limit
+			 * @type {string}
 			 */
 			secondaryCountMaxDigits: { type: String, attribute: 'secondary-count-max-digits' },
 			/**
@@ -49,14 +56,17 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			secondaryCountType: { type: String, attribute: 'secondary-count-type', reflect: true },
 			/**
 			 * Where to display the linked URL
+			 * @type {string}
 			 */
 			target: { type: String, reflect: true },
 			/**
 			 * REQUIRED: Accessible text for the link (not visible, gets announced when user focuses)
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
 			/**
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
+			 * @type {string}
 			 */
 			type: { type: String, reflect: true }
 		};
@@ -108,7 +118,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 	render() {
 		const noNumber = this.secondaryCount === undefined;
 		return html`
-			<a @focus="${this._onFocus}" 
+			<a @focus="${this._onFocus}"
 				@blur="${this._onBlur}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
@@ -121,7 +131,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 					aria-hidden="true"
 					icon="${this.icon}"
 					max-digits="${ifDefined(this.secondaryCountMaxDigits ? this.secondaryCountMaxDigits : undefined)}"
-					number="${noNumber ? 0 : this.secondaryCount}" 
+					number="${noNumber ? 0 : this.secondaryCount}"
 					?hide-zero="${noNumber}"
 					text="${this.text}"
 					type="${this._getType()}">

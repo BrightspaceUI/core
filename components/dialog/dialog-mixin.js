@@ -244,6 +244,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		allowBodyScroll(this._bodyScrollKey);
 		this._bodyScrollKey = null;
 		if (this._action === undefined) this._action = abortAction;
+		/** Dispatched with the action value when the dialog is closed for any reason */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-dialog-close', {
 				bubbles: true,
@@ -346,6 +347,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			}
 
 			if (!reduceMotion) await animPromise;
+			/** Dispatched when the dialog is opened */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
 			));

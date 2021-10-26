@@ -21,38 +21,47 @@ class Card extends RtlMixin(LitElement) {
 		return {
 			/**
 			 * Style the card's content and footer as centered horizontally
+			 * @type {boolean}
 			 */
 			alignCenter: { type: Boolean, attribute: 'align-center', reflect: true },
 			/**
 			 * Download a URL instead of navigating to it
+			 * @type {boolean}
 			 */
 			download: { type: Boolean, reflect: true },
 			/**
 			 * Location for the primary action/navigation
+			 * @type {string}
 			 */
 			href: { type: String, reflect: true },
 			/**
 			 * Indicates the human language of the linked resource; purely advisory, with no built-in functionality
+			 * @type {string}
 			 */
 			hreflang: { type: String, reflect: true },
 			/**
 			 * Specifies the relationship of the target object to the link object
+			 * @type {string}
 			 */
 			rel: { type: String, reflect: true },
 			/**
 			 * Subtle aesthetic on non-white backgrounds
+			 * @type {boolean}
 			 */
 			subtle: { type: Boolean, reflect: true },
 			/**
 			 * Where to display the linked URL
+			 * @type {string}
 			 */
 			target: { type: String, reflect: true },
 			/**
 			 * Accessible text for the card (will be announced when AT user focuses)
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
 			/**
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
+			 * @type {string}
 			 */
 			type: { type: String, reflect: true },
 			_active: { type: Boolean, reflect: true },
