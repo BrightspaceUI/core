@@ -89,10 +89,12 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-input-radio': true,
 				'd2l-selection-input-radio': true,
 				'd2l-skeletize': true,
-				'd2l-hovering': this.hovering
+				'd2l-hovering': this.hovering,
+				'd2l-disabled': this.disabled
 			};
 			return html`
 				<div
+					aria-disabled="${ifDefined(this.disabled)}"
 					aria-label="${this.label}"
 					aria-checked="${this.selected ? 'true' : 'false'}"
 					class="${classMap(radioClasses)}"
@@ -100,7 +102,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					@keydown="${this._handleRadioKeyDown}"
 					@keyup="${this._handleRadioKeyUp}"
 					role="radio"
-					tabindex="0"></div>
+					tabindex="${ifDefined(this.disabled ? undefined : 0)}"></div>
 			`;
 		} else {
 			return html`
