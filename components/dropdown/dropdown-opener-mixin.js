@@ -70,6 +70,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.__onDropdownMouseLeave = this.__onDropdownMouseLeave.bind(this);
 		this._onOutsideClick = this._onOutsideClick.bind(this);
 		this._contentRendered = null;
+		this._openerRendered = null;
 	}
 
 	connectedCallback() {
@@ -86,11 +87,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 			opener.addEventListener('keypress', this.__onKeyPress);
 			opener.addEventListener('mouseup', this.__onMouseUp);
-
-			if (!this.openOnHover) return;
-			opener.addEventListener('mouseenter', this.__onOpenerMouseEnter, true);
-			opener.addEventListener('mouseleave', this.__onOpenerMouseLeave, true);
-			opener.addEventListener('touchstart', this.__onOpenerTouch, true);
 		});
 
 		if (!this.openOnHover) return;
@@ -112,6 +108,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			if (!opener) {
 				return;
 			}
+			if (!this._openerRendered) return;
 
 			opener.removeEventListener('mouseenter', this.__onOpenerMouseEnter);
 			opener.removeEventListener('mouseleave', this.__onOpenerMouseLeave);
@@ -138,7 +135,13 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			this.__getContentElement().addEventListener('mouseenter', this.__onDropdownMouseEnter, true);
 			this.__getContentElement().addEventListener('mouseleave', this.__onDropdownMouseLeave, true);
 		}
-
+		if (!this._openerRendered && this.getOpenerElement()) {
+			this._openerRendered = this.getOpenerElement();
+			const opener = this.getOpenerElement();
+			opener.addEventListener('mouseenter', this.__onOpenerMouseEnter, true);
+			opener.addEventListener('mouseleave', this.__onOpenerMouseLeave, true);
+			opener.addEventListener('touchstart', this.__onOpenerTouch, true);
+		}
 		if (!changedProperties.has('_isFading') || !this._contentRendered) return;
 
 		if (this._isFading) {
@@ -244,7 +247,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	__onMouseUp(e) {
 		if (this.noAutoOpen) return;
 		if (this.openOnHover) {
-			//Prevents click from propagating to parent elements and triggering _onOutsideClick
 			e?.stopPropagation();
 			this._closeTimerStop();
 			if (this._isOpen) {
