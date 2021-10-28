@@ -498,7 +498,7 @@ describe('d2l-dropdown', () => {
 
 			it('opens dropdown when opener clicked', async() => {
 				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.click();
+				opener.dispatchEvent(new Event('mouseup'));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 			});
@@ -516,7 +516,7 @@ describe('d2l-dropdown', () => {
 
 			it('hovering outside does not close dropdown', async() => {
 				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.click();
+				opener.dispatchEvent(new Event('mouseup'));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
@@ -527,7 +527,7 @@ describe('d2l-dropdown', () => {
 
 			it('clicking outside closes dropdown', async() => {
 				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.click();
+				opener.dispatchEvent(new Event('mouseup'));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
@@ -538,7 +538,7 @@ describe('d2l-dropdown', () => {
 
 			it('clicking inside does not close dropdown', async() => {
 				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.click();
+				opener.dispatchEvent(new Event('mouseup'));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
