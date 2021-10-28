@@ -6,13 +6,15 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A summary showing the current selected count.
+ * @fires d2l-selection-observer-subscribe - Internal event
  */
 class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			/**
-			 * Text to display if no items are selected.
+			 * Text to display if no items are selected
+			 * @type {string}
 			 */
 			noSelectionText: { type: String, attribute: 'no-selection-text' }
 		};

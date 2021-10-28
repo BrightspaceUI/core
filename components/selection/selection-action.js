@@ -12,6 +12,7 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 /**
  * An action associated with a selection component.
  * @fires d2l-selection-action-click - Dispatched when the user clicks the action; provides the selection info
+ * @fires d2l-selection-observer-subscribe - Internal event
  */
 class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlMixin(LitElement)))) {
 
@@ -19,14 +20,17 @@ class Action extends LocalizeCoreElement(SelectionObserverMixin(ButtonMixin(RtlM
 		return {
 			/**
 			 * Preset icon key (e.g. "tier1:gear")
+			 * @type {string}
 			 */
 			icon: { type: String, reflect: true },
 			/**
 			 * Whether the action requires one or more selected items
+			 * @type {boolean}
 			 */
 			requiresSelection: { type: Boolean, attribute: 'requires-selection', reflect: true },
 			/**
 			 * REQUIRED: The text for the action
+			 * @type {string}
 			 */
 			text: { type: String, reflect: true }
 		};

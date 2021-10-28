@@ -105,6 +105,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(L
 		/* wait for internal state to be updated in case of action-click case so that a consumer
 		 calling getSelectionInfo will get the correct state */
 		await this.updateComplete;
+		/** Dispatched when the component item is selected */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-selected', {
 			detail: { key: this.key, selected: value },
 			composed: true,

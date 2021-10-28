@@ -111,9 +111,7 @@ function convertToDropdownItem(node) {
 }
 /**
  *
- * A component that can be used to display a set of buttons, links or menus that will be put into a
- * dropdown menu when they no longer fit on the first line of their container
- *
+ * A component that can be used to display a set of buttons, links or menus that will be put into a dropdown menu when they no longer fit on the first line of their container
  * @slot - Buttons, dropdown buttons, links or other items to be added to the container
  * @fires d2l-overflow-group-updated - Dispatched when there is an update performed to the overflow group
 */
@@ -123,6 +121,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 		return {
 			/**
 			 * Use predefined classes on slot elements to set min and max buttons to show
+			 * @type {boolean}
 			 */
 			autoShow: {
 				type: Boolean,
@@ -130,6 +129,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			},
 			/**
 			 * minimum amount of buttons to show
+			 * @type {number}
 			 */
 			minToShow: {
 				type: Number,
@@ -138,6 +138,7 @@ class OverflowGroup extends RtlMixin(LocalizeCoreElement(LitElement)) {
 			},
 			/**
 			 * maximum amount of buttons to show
+			 * @type {number}
 			 */
 			maxToShow: {
 				type: Number,

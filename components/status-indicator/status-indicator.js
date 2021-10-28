@@ -18,12 +18,14 @@ class StatusIndicator extends LitElement {
 			},
 			/**
 			 * REQUIRED: The text that is displayed within the status indicator
+			 * @type {string}
 			 */
 			text: {
 				type: String
 			},
 			/**
 			 * Use when the status is very important and needs to have a lot of prominence
+			 * @type {boolean}
 			 */
 			bold: {
 				type: Boolean,

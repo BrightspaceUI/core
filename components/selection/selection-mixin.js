@@ -39,7 +39,8 @@ export const SelectionMixin = superclass => class extends RtlMixin(superclass) {
 	static get properties() {
 		return {
 			/**
-			 * Whether the selection control is limited to single selection.
+			 * Whether the selection control is limited to single selection
+			 * @type {boolean}
 			 */
 			selectionSingle: { type: Boolean, attribute: 'selection-single' }
 		};
