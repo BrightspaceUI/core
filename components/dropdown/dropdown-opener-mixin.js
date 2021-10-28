@@ -71,14 +71,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.__onOpenerMouseEnter = this.__onOpenerMouseEnter.bind(this);
 		this.__onOpenerMouseLeave = this.__onOpenerMouseLeave.bind(this);
 		this.__onOpenerTouch = this.__onOpenerTouch.bind(this);
-		this.__onOpenerKeyDown = this.__onOpenerKeyDown.bind(this);
 		this.__onOpenerClick = this.__onOpenerClick.bind(this);
-		this.__onDropdownOpened = this.__onDropdownOpened.bind(this);
-		this.__onDropdownClosed = this.__onDropdownClosed.bind(this);
 		this.__onDropdownMouseEnter = this.__onDropdownMouseEnter.bind(this);
 		this.__onDropdownMouseLeave = this.__onDropdownMouseLeave.bind(this);
 		this._onOutsideClick = this._onOutsideClick.bind(this);
-		this._onKeyDown = this._onKeyDown.bind(this);
 		this._contentRendered = null;
 		this._openerRendered = null;
 	}
@@ -95,15 +91,14 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			opener.setAttribute('aria-haspopup', 'true');
 			opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
 
+			opener.addEventListener('keypress', this.__onKeyPress);
 			if (!this.openOnHover) {
-				opener.addEventListener('keypress', this.__onKeyPress);
 				opener.addEventListener('mouseup', this.__onMouseUp);
 			}
 		});
 
 		if (!this.openOnHover) return;
 		document.body.addEventListener('click', this._onOutsideClick);
-		this.addEventListener('keydown', this._onKeyDown);
 	}
 
 	disconnectedCallback() {
@@ -112,12 +107,11 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!opener) {
 			return;
 		}
+		opener.removeEventListener('keypress', this.__onKeyPress);
 		if (!this.openOnHover) {
-			opener.removeEventListener('keypress', this.__onKeyPress);
 			opener.removeEventListener('mouseup', this.__onMouseUp);
 		} else {
 			document.body.removeEventListener('click', this._onOutsideClick);
-			this.removeEventListener('keydown', this._onKeyDown);
 
 			const opener = this.getOpenerElement();
 			if (!opener) {
@@ -128,12 +122,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			opener.removeEventListener('mouseenter', this.__onOpenerMouseEnter);
 			opener.removeEventListener('mouseleave', this.__onOpenerMouseLeave);
 			opener.removeEventListener('touchstart', this.__onOpenerTouch);
-			opener.removeEventListener('keydown', this.__onOpenerKeyDown);
 			opener.removeEventListener('click', this.__onOpenerClick);
 
 			if (!this._contentRendered) return;
-			this.__getContentElement().removeEventListener('d2l-dropdown-open', this.__onDropdownOpened);
-			this.__getContentElement().removeEventListener('d2l-dropdown-close', this.__onDropdownClosed);
 			this.__getContentElement().removeEventListener('mouseenter', this.__onDropdownMouseEnter);
 			this.__getContentElement().removeEventListener('mouseleave', this.__onDropdownMouseLeave);
 		}
@@ -151,8 +142,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!this.openOnHover) return;
 		if (!this._contentRendered && this.__getContentElement()) {
 			this._contentRendered = this.__getContentElement();
-			this.__getContentElement().addEventListener('d2l-dropdown-open', this.__onDropdownOpened, true);
-			this.__getContentElement().addEventListener('d2l-dropdown-close', this.__onDropdownClosed, true);
 			this.__getContentElement().addEventListener('mouseenter', this.__onDropdownMouseEnter, true);
 			this.__getContentElement().addEventListener('mouseleave', this.__onDropdownMouseLeave, true);
 		}
@@ -162,7 +151,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			opener.addEventListener('mouseenter', this.__onOpenerMouseEnter, true);
 			opener.addEventListener('mouseleave', this.__onOpenerMouseLeave, true);
 			opener.addEventListener('touchstart', this.__onOpenerTouch, true);
-			opener.addEventListener('keydown', this.__onOpenerKeyDown, true);
 			opener.addEventListener('click', this.__onOpenerClick, true);
 		}
 		if (!changedProperties.has('_isFading') || !this._contentRendered) return;
@@ -236,10 +224,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 		opener.setAttribute('aria-expanded', 'false');
 		opener.removeAttribute('active');
-	}
-
-	/* used by open-on-hover option */
-	__onDropdownClosed() {
 		this._isOpen = false;
 		this._isOpenedViaClick = false;
 	}
@@ -258,15 +242,17 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this._closeTimerStart();
 	}
 
-	/* used by open-on-hover option */
-	__onDropdownOpened() {
-		this._isFading = false;
-	}
-
 	__onKeyPress(e) {
 		if (e.keyCode !== 13 && e.keyCode !== 32) return;
 		if (this.noAutoOpen) return;
-		this.toggleOpen(true);
+		if (!this.openOnHover) {
+			this.toggleOpen(true);
+		} else {
+			this._closeTimerStop();
+			e.preventDefault();
+			this._isOpenedViaClick = true;
+			this.openDropdown(true);
+		}
 	}
 
 	__onMouseUp() {
@@ -281,14 +267,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 		opener.setAttribute('aria-expanded', 'true');
 		opener.setAttribute('active', 'true');
+		this._isFading = false;
 	}
 
-
-	/** Hover option */
-
-
-
-
+	/* used by open-on-hover option */
 	__onOpenerClick(e) {
 		//Prevents click from propagating to parent elements and triggering _onOutsideClick
 		e?.stopPropagation();
@@ -301,14 +283,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 	}
 
-	__onOpenerKeyDown(e) {
-		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
-		this._closeTimerStop();
-		e.preventDefault();
-		this._isOpenedViaClick = true;
-		this.openDropdown(true);
-	}
-
+	/* used by open-on-hover option */
 	async __onOpenerMouseEnter() {
 		// do not respond to hover events on mobile screens
 		const dropdownContent = this.__getContentElement();
@@ -319,6 +294,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this._isHovering = true;
 	}
 
+	/* used by open-on-hover option */
 	async __onOpenerMouseLeave() {
 		// do not respond to hover events on mobile screens
 		const dropdownContent = this.__getContentElement();
@@ -330,6 +306,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		await this.closeDropdown(true);
 	}
 
+	/* used by open-on-hover option */
 	__onOpenerTouch(e) {
 		//Prevents touch from triggering mouseover/hover behavior
 		e.preventDefault();
@@ -339,6 +316,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!this._isOpen) this.openDropdown(true);
 	}
 
+	/* used by open-on-hover option */
 	_closeTimerStart() {
 		if (this._isOpen) return;
 		clearTimeout(this._setTimeoutId);
@@ -349,17 +327,13 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}, 400);
 	}
 
+	/* used by open-on-hover option */
 	_closeTimerStop() {
 		clearTimeout(this._setTimeoutId);
 		this._isFading = false;
 	}
 
-	_onKeyDown(e) {
-		if (e.keyCode === keyCodes.ESCAPE && this._isOpen) {
-			this.closeDropdown();
-		}
-	}
-
+	/* used by open-on-hover option */
 	_onOutsideClick(e) {
 		if (!this._isOpen) return;
 		const isWithinDropdown = isComposedAncestor(this.__getContentElement(), (e.path || e.composedPath())[0]);
