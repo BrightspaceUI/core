@@ -106,6 +106,7 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 
 		if ((isNativeFormElement(ele) || isCustomFormElement(ele)) && e.type !== 'focusout') {
 			this._dirty = true;
+			/** Dispatched whenever any form element fires an `input` or `change` event. Can be used to track whether the form is dirty or not. */
 			this.dispatchEvent(new CustomEvent('d2l-form-dirty'));
 		}
 

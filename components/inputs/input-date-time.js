@@ -37,7 +37,7 @@ function _getFormattedDefaultTime(defaultValue) {
 
 /**
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
- * @fires change - Dispatched when there is a change to selected date or selected time. "value" corresponds to the selected value and is formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
+ * @fires change - Dispatched when there is a change to selected date or selected time. `value` corresponds to the selected value and is formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
 class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
 
@@ -45,14 +45,17 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 		return {
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Hides the fieldset label visually
+			 * @type {boolean}
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
+			 * @type {boolean}
 			 */
 			localized: { reflect: true, type: Boolean },
 			/**
@@ -67,10 +70,12 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
 			 * Indicates if the date or time dropdown is open
+			 * @type {boolean}
 			 */
 			opened: { type: Boolean },
 			/**
 			 * Indicates that a value is required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
@@ -80,6 +85,7 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
 			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String },
 			_maxValueLocalized: { type: String },

@@ -69,7 +69,7 @@ To make your usage of `d2l-link` accessible, use the following property when app
 |--|--|
 | `aria-label` | Use when text in link does not provide enough context. |
 
-## Applying link styles to native `<a>` elements
+## Applying link styles to native anchor elements
 
 Alternately, you can apply link styles to a native `<a>` element by importing the styles and placing the `d2l-link` CSS class on the element.
 

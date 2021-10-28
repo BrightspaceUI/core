@@ -59,9 +59,9 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
 
 /**
  * A component consisting of two input-date-time components - one for start of range and one for end of range. The time input only appears once a date is selected.
- * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. "start-value" and "end-value" correspond to the selected values and are formatted in ISO 8601 combined date and time format ("YYYY-MM-DDTHH:mm:ss.sssZ").
  * @slot start - Optional content that would appear below the start input-date-time
  * @slot end - Optional content that would appear below the end input-date-time
+ * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
 class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
@@ -69,14 +69,17 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 		return {
 			/**
 			 * Automatically shifts end date when start date changes to keep same range. If start and end date are equal, automatically shifts end time when start time changes.
+			 * @type {boolean}
 			 */
 			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
 			/**
 			 * Hides the start and end labels visually
+			 * @type {boolean}
 			 */
 			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
 			/**
 			 * Disables the inputs
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
@@ -87,6 +90,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			endLabel: { attribute: 'end-label', reflect: true, type: String },
 			/**
 			 * Indicates if the end date or time dropdown is open
+			 * @type {boolean}
 			 */
 			endOpened: { attribute: 'end-opened', type: Boolean },
 			/**
@@ -96,6 +100,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			endValue: { attribute: 'end-value', reflect: true, type: String },
 			/**
 			 * Validates on inclusive range (i.e., it is valid for start and end date-times to be equal)
+			 * @type {boolean}
 			 */
 			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
 			/**
@@ -105,10 +110,12 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			label: { type: String, reflect: true },
 			/**
 			 * Hides the fieldset label visually
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
 			 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
+			 * @type {boolean}
 			 */
 			localized: { reflect: true, type: Boolean },
 			/**
@@ -123,6 +130,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
 			 * Indicates that values are required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
@@ -133,6 +141,7 @@ class InputDateTimeRange extends SkeletonMixin(FormElementMixin(RtlMixin(Localiz
 			startLabel: { attribute: 'start-label', reflect: true, type: String },
 			/**
 			 * Indicates if the start date or time dropdown is open
+			 * @type {boolean}
 			 */
 			startOpened: { attribute: 'start-opened', type: Boolean },
 			/**

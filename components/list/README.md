@@ -15,13 +15,13 @@ A list displays a collection of objects of the same type. A list is primarily us
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-item>
+  <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
       <div slot="secondary">Secondary information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item href="http://www.d2l.com" key="1">
+  <d2l-list-item href="http://www.d2l.com" key="1" label="List Item 2">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg" />
     <d2l-list-item-content>
       <div>More exciting list item</div>
@@ -38,7 +38,7 @@ A list displays a collection of objects of the same type. A list is primarily us
       </d2l-dropdown-more>
     </div>
   </d2l-list-item>
-  <d2l-list-item href="http://www.d2l.com" selectable key="2" selected>
+  <d2l-list-item href="http://www.d2l.com" selectable key="2" selected label="List Item 3">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg">
     <d2l-list-item-content>
       <div>Selectable list item (selected)</div>
@@ -115,14 +115,14 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-item selectable>
+  <d2l-list-item selectable label="List Item 1">
     <d2l-list-item-content>
       <div>Regular list item</div>
       <div slot="secondary">Secondary information</div>
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item selectable>
+  <d2l-list-item selectable label="List Item 2">
     <d2l-list-item-content>
       <div>Regular list item 2</div>
       <div slot="secondary">Secondary information</div>
@@ -245,7 +245,7 @@ Here is a simple component example that adds drag 'n' drop to a list:
     render() {
       const listItems = this.list.map((item) => {
         return html`
-          <d2l-list-item draggable key="${item.key}">
+          <d2l-list-item draggable key="${item.key}" label="Draggable List Item">
             <d2l-list-item-content>
               ${item.content}
               <div slot="secondary">Secondary information</div>
@@ -300,7 +300,7 @@ The `d2l-list-header` component can be placed in the `d2l-list`'s `header` slot 
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item selectable key="ast" label="Atronomy">
+  <d2l-list-item selectable key="ast" label="Astronomy">
     <d2l-list-item-content>
       <div>Astronomy</div>
       <div slot="supporting-info">Supporting information</div>
@@ -335,7 +335,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 </script>
 
 <d2l-list>
-  <d2l-list-item href="http://www.d2l.com" selectable key="3">
+  <d2l-list-item href="http://www.d2l.com" selectable key="3" label="Geomorphology and GIS">
     <img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg" />
     <d2l-list-item-content>
       <div>Geomorphology and GIS </div>
@@ -433,7 +433,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-item-button href="http://www.d2l.com" selectable key="1">
+  <d2l-list-item-button href="http://www.d2l.com" selectable key="1" label="Geomorphology and GIS">
     <d2l-list-item-content>
       <div>Geomorphology and GIS </div>
       <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
@@ -465,7 +465,7 @@ The `d2l-list-item-content` provides additional consistent layout for primary an
 </script>
 
 <d2l-list style="width: 100%">
-  <d2l-list-item>
+  <d2l-list-item label="List Item 1">
     <d2l-list-item-content>
       <div>Item 1</div>
       <div slot="secondary">Secondary Info for item 1</div>
