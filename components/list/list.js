@@ -18,10 +18,12 @@ class List extends SelectionMixin(LitElement) {
 		return {
 			/**
 			 * Whether to extend the separators beyond the content's edge
+			 * @type {boolean}
 			 */
 			extendSeparators: { type: Boolean, reflect: true, attribute: 'extend-separators' },
 			/**
 			 * Use grid to manage focus with arrow keys. See [Accessibility](#accessibility).
+			 * @type {boolean}
 			 */
 			grid: { type: Boolean },
 			/**

@@ -2,9 +2,7 @@ import '../icons/icon.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 /**
- *
  * Button for sorting a table column in ascending/descending order.
- *
  * @slot - Text of the sort button
  */
 export class TableColSortButton extends LitElement {

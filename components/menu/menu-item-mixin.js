@@ -4,6 +4,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 		return {
 			/**
 			 * Disables the menu item
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
@@ -100,6 +101,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			// assumption: single, focusable child view
 			this.__children[0].show();
 		} else {
+			/** Dispatched when the menu item is selected */
 			this.dispatchEvent(new CustomEvent('d2l-menu-item-select', { bubbles: true, composed: true }));
 		}
 	}
@@ -162,6 +164,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 	}
 
 	_onHidden() {
+		/** Dispatched when the visibility of the menu item changes */
 		this.dispatchEvent(new CustomEvent('d2l-menu-item-visibility-change', { bubbles: true, composed: true }));
 	}
 

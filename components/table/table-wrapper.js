@@ -164,9 +164,7 @@ export const tableStyles = css`
 `;
 
 /**
- *
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
- *
  * @slot - Content to wrap
  */
 export class TableWrapper extends RtlMixin(LitElement) {

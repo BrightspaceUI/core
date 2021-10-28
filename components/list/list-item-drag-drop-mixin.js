@@ -265,6 +265,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			/**
 			 * **Drag & drop:** Text to drag and drop
+			 * @type {string}
 			 */
 			dropText: { type: String, attribute: 'drop-text' },
 			/**
@@ -351,6 +352,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
+		/** Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change). */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
 			detail: new NewPositionEventDetails({ dragTargetKey, dropTargetKey, dropLocation }),
 			bubbles: true

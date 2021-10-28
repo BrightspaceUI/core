@@ -55,6 +55,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 		super.attributeChangedCallback(name, oldval, newval);
 		if (name === 'text') {
 			this.setAttribute('aria-label', this.text);
+			/** Dispatched when the text attribute is changed */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
 			));
@@ -73,6 +74,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			if (prop === 'selected') {
 				if (this.selected) {
 					requestAnimationFrame(() => {
+						/** Dispatched when a tab is selected */
 						this.dispatchEvent(new CustomEvent(
 							'd2l-tab-panel-selected', { bubbles: true, composed: true }
 						));

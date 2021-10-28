@@ -7,6 +7,7 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
  * A checkbox that provides select-all behavior for selection components such as tables and lists.
+ * @fires d2l-selection-observer-subscribe - Internal event
  */
 class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
@@ -14,6 +15,7 @@ class SelectAll extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) 
 		return {
 			/**
 			 * Disables the select all checkbox
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean }
 		};

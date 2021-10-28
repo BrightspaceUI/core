@@ -7,10 +7,12 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		return {
 			/**
 			 * Id of the SelectionMixin component this component wants to observe (if not located within that component)
+			 * @type {string}
 			 */
 			selectionFor: { type: String, reflect: true, attribute: 'selection-for' },
 			/**
-			 * The selection info (set by the selection component).
+			 * The selection info (set by the selection component)
+			 * @type {object}
 			 */
 			selectionInfo: { type: Object },
 			_provider: { type: Object, attribute: false }

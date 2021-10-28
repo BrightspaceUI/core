@@ -13,6 +13,7 @@ const keyCodes = {
 /**
  * An input (radio or checkbox) for use in selection components such as lists and tables.
  * @fires d2l-selection-change - Dispatched when the selected state changes
+ * @fires d2l-selection-input-subscribe - Internal event
  */
 class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
@@ -20,18 +21,22 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		return {
 			/**
 			 * State of the input
+			 * @type {boolean}
 			 */
 			selected: { type: Boolean },
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Private. Force hovering state of input
+			 * @type {boolean}
 			 */
 			hovering: { type: Boolean },
 			/**
 			 * Key for the selectable
+			 * @type {string}
 			 */
 			key: { type: String },
 			_indeterminate: { type: Boolean },
