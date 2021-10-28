@@ -8,7 +8,6 @@
 	<script type="module">
 		import '../../demo/demo-page.js';
 		import '../dropdown-button.js';
-		import '../dropdown-hover-button.js';
 		import '../dropdown-button-subtle.js';
 		import '../dropdown-content.js';
 	</script>
@@ -69,7 +68,7 @@
 		<h2>Dropdown Hover/Click Button Opener</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-dropdown-hover-button text="Open!">
+				<d2l-dropdown-button text="Open!" open-on-hover>
 					<d2l-dropdown-content mobile-tray="right">
 						<div slot="header">
 							<h3>Scrolling is Fun</h3>
@@ -92,7 +91,7 @@
 							<a href="http://www.desire2learn.com">D2L</a>
 						</div>
 					</d2l-dropdown-content>
-				</d2l-dropdown-hover-button>
+				</d2l-dropdown-button>
 			</template>
 		</d2l-demo-snippet>
 
