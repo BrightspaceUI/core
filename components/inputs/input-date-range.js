@@ -28,6 +28,7 @@ export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusiv
 
 /**
  * A component consisting of two input-date components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 calendar date format ("YYYY-MM-DD").
+ * @fires change - Dispatched when there is a change to selected start date or selected end date. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar date format (`YYYY-MM-DD`).
  */
 class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
 
@@ -226,7 +227,6 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 			if (prop === 'startValue' || prop === 'endValue') {
 				if (!this.invalid && this.autoShiftDates && prop === 'startValue' && this.endValue && oldVal) {
 					this.endValue = getShiftedEndDate(this.startValue, this.endValue, oldVal, this.inclusiveDateRange);
-					/** Dispatched when there is a change to selected start date or selected end date. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar date format (`YYYY-MM-DD`). */
 					this.dispatchEvent(new CustomEvent(
 						'change',
 						{ bubbles: true, composed: false }
@@ -278,7 +278,6 @@ class InputDateRange extends SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCor
 		} else {
 			this.endValue = elem.value;
 		}
-		/** Dispatched when there is a change to selected start date or selected end date. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar date format (`YYYY-MM-DD`). */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

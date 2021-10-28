@@ -9,6 +9,7 @@ import { RtlMixin } from '../../mixins/rtl-mixin.js';
 
 /**
  * This component wraps the native "<input type="search">"" element and is for text searching.
+ * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
  */
 class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -145,7 +146,6 @@ class InputSearch extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	}
 
 	_dispatchEvent() {
-		/** Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value. */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-input-search-searched',
 			{ bubbles: true, composed: false, detail: { value: this.value } }

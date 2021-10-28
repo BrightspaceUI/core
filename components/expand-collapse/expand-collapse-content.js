@@ -15,6 +15,8 @@ const states = {
 /**
  * A component used to minimize the display of long content, while providing a way to reveal the full content.
  * @slot - Default content placed inside of the component
+ * @fires d2l-expand-collapse-content-expand - Dispatched when the content starts to expand. The `detail` contains an `expandComplete` promise that can be waited on to determine when the content has finished expanding.
+ * @fires d2l-expand-collapse-content-collapse - Dispatched when the content starts to collapse. The `detail` contains a `collapseComplete` promise that can be waited on to determine when the content has finished collapsing.
  */
 class ExpandCollapseContent extends LitElement {
 
@@ -100,7 +102,6 @@ class ExpandCollapseContent extends LitElement {
 		const eventPromise = new Promise(resolve => this._eventPromiseResolve = resolve);
 		if (val) {
 			if (!firstUpdate) {
-				/** Dispatched when the content starts to expand. The `detail` contains an `expandComplete` promise that can be waited on to determine when the content has finished expanding. */
 				this.dispatchEvent(new CustomEvent(
 					'd2l-expand-collapse-content-expand',
 					{ bubbles: true, detail: { expandComplete: eventPromise } }
@@ -122,7 +123,6 @@ class ExpandCollapseContent extends LitElement {
 			}
 		} else {
 			if (!firstUpdate) {
-				/** Dispatched when the content starts to collapse. The `detail` contains a `collapseComplete` promise that can be waited on to determine when the content has finished collapsing. */
 				this.dispatchEvent(new CustomEvent(
 					'd2l-expand-collapse-content-collapse',
 					{ bubbles: true, detail: { collapseComplete: eventPromise } }

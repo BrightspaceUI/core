@@ -54,6 +54,7 @@ export const checkboxStyles = css`
 /**
  * A component that can be used to show a checkbox and optional visible label.
  * @slot - Checkbox information (e.g., text)
+ * @fires change - Dispatched when the checkbox's state changes
  */
 class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 
@@ -211,7 +212,6 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 	simulateClick() {
 		this.checked = !this.checked;
 		this.indeterminate = false;
-		/** Dispatched when the checkbox's state changes */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
@@ -221,7 +221,6 @@ class InputCheckbox extends SkeletonMixin(RtlMixin(LitElement)) {
 	_handleChange(e) {
 		this.checked = e.target.checked;
 		this.indeterminate = false;
-		/** Dispatched when the checkbox's state changes */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

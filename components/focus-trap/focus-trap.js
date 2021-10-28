@@ -5,6 +5,7 @@ import { isComposedAncestor } from '../../helpers/dom.js';
 
 /**
  * A generic container component to trap user focus.
+ * @fires d2l-focus-trap-enter - Dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap.
  */
 class FocusTrap extends LitElement {
 
@@ -62,7 +63,6 @@ class FocusTrap extends LitElement {
 	_focusFirst() {
 		const focusable = getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
 		if (focusable) forceFocusVisible(focusable);
-		/** Dispatched when focus enters the trap. May be used to override initial focus placement when focus enters the trap. */
 		this.dispatchEvent(new CustomEvent('d2l-focus-trap-enter', { bubbles: true, composed: true }));
 	}
 

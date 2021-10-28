@@ -10,6 +10,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 /**
  * This component wraps the "<d2l-input-number>" tag and is intended for inputting percent values.
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
 class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
 
@@ -150,7 +151,6 @@ class InputPercent extends LabelledMixin(SkeletonMixin(FormElementMixin(Localize
 		await this.updateComplete;
 
 		if (oldValue !== this.value) {
-			/** Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value. */
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{ bubbles: true, composed: false }

@@ -25,6 +25,7 @@ export function formatISODateInUserCalDescriptor(val) {
 
 /**
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
+ * @fires change - Dispatched when there is a change to selected date. `value` corresponds to the selected value and is formatted in ISO 8601 calendar date format (`YYYY-MM-DD`).
  */
 class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
@@ -506,7 +507,6 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		if (dateInISO === this._shownValue) return; // prevent validation from happening multiple times for same change
 		this._shownValue = dateInISO;
 		this.value = dateInISO;
-		/** Dispatched when there is a change to selected date. `value` corresponds to the selected value and is formatted in ISO 8601 calendar date format (`YYYY-MM-DD`). */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

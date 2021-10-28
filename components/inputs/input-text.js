@@ -19,6 +19,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
  * @slot left - Slot within the input on the left side. Useful for an "icon" or "button-icon".
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
 class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))) {
@@ -510,7 +511,6 @@ class InputText extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(Li
 
 	_handleChange() {
 		// Change events aren't composed, so we need to re-dispatch
-		/** Dispatched when an alteration to the value is committed (typically after focus is lost) by the user */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

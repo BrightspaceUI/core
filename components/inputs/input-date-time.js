@@ -37,6 +37,7 @@ function _getFormattedDefaultTime(defaultValue) {
 
 /**
  * A component that consists of a "<d2l-input-date>" and a "<d2l-input-time>" component. The time input only appears once a date is selected. This component displays the "value" if one is specified, and reflects the selected value when one is selected or entered.
+ * @fires change - Dispatched when there is a change to selected date or selected time. `value` corresponds to the selected value and is formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
 class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement))))) {
 
@@ -294,7 +295,6 @@ class InputDateTime extends LabelledMixin(SkeletonMixin(FormElementMixin(Localiz
 	}
 
 	_dispatchChangeEvent() {
-		/** Dispatched when there is a change to selected date or selected time. `value` corresponds to the selected value and is formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`). */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

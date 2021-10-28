@@ -66,6 +66,7 @@ function roundPrecisely(val, maxFractionDigits) {
  * @slot after - Slot beside the input on the right side. Useful for an "icon" or "button-icon".
  * @slot left - Slot within the input on the left side. Useful for an "icon" or "button-icon".
  * @slot right - Slot within the input on the right side. Useful for an "icon" or "button-icon".
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
 class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
@@ -436,7 +437,6 @@ class InputNumber extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeC
 		}
 
 		if (dispatchEvent) {
-			/** Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value. */
 			this.dispatchEvent(new CustomEvent(
 				'change',
 				{ bubbles: true, composed: false }

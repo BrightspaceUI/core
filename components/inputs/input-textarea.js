@@ -14,6 +14,7 @@ import { styleMap } from 'lit-html/directives/style-map.js';
 
 /**
  * A wrapper around the native `<textarea>` element that provides auto-grow and validation behaviours intended for inputting unformatted multi-line text.
+ * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
 class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))) {
@@ -308,7 +309,6 @@ class InputTextArea extends LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixi
 
 	_handleChange() {
 		// change events aren't composed, so we need to re-dispatch
-		/** Dispatched when an alteration to the value is committed (typically after focus is lost) by the user */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
