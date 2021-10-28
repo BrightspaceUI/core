@@ -13,7 +13,7 @@ export default {
 	"components.filter.clearAll": "Ryd alle",
 	"components.filter.clearAllAnnounce": "Rydder alle filtre",
 	"components.filter.clearAllDescription": "Ryd alle filtre",
-	"components.filter.clearAnnounce": "Rydder filtre for:{filterName}",
+	"components.filter.clearAnnounce": "Rydder filtre for: {filterName}",
 	"components.filter.clearAnnounceSingle": "Rydder filtre",
 	"components.filter.clearDescription": "Ryd filtre for: {filterName}",
 	"components.filter.clearDescriptionSingle": "Ryd filtre",
