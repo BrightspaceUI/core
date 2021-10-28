@@ -1,10 +1,5 @@
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
-const keyCodes = {
-	DOWN: 40,
-	ENTER: 13,
-	ESCAPE: 27
-};
 
 export const DropdownOpenerMixin = superclass => class extends superclass {
 
@@ -71,7 +66,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.__onOpenerMouseEnter = this.__onOpenerMouseEnter.bind(this);
 		this.__onOpenerMouseLeave = this.__onOpenerMouseLeave.bind(this);
 		this.__onOpenerTouch = this.__onOpenerTouch.bind(this);
-		this.__onOpenerClick = this.__onOpenerClick.bind(this);
 		this.__onDropdownMouseEnter = this.__onDropdownMouseEnter.bind(this);
 		this.__onDropdownMouseLeave = this.__onDropdownMouseLeave.bind(this);
 		this._onOutsideClick = this._onOutsideClick.bind(this);
@@ -92,13 +86,11 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
 
 			opener.addEventListener('keypress', this.__onKeyPress);
-			if (!this.openOnHover) {
-				opener.addEventListener('mouseup', this.__onMouseUp);
-			}
+			opener.addEventListener('mouseup', this.__onMouseUp);
 		});
 
 		if (!this.openOnHover) return;
-		document.body.addEventListener('click', this._onOutsideClick);
+		document.body.addEventListener('mouseup', this._onOutsideClick);
 	}
 
 	disconnectedCallback() {
@@ -108,10 +100,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			return;
 		}
 		opener.removeEventListener('keypress', this.__onKeyPress);
-		if (!this.openOnHover) {
-			opener.removeEventListener('mouseup', this.__onMouseUp);
-		} else {
-			document.body.removeEventListener('click', this._onOutsideClick);
+		opener.removeEventListener('mouseup', this.__onMouseUp);
+		if (this.openOnHover) {
+			document.body.removeEventListener('mouseup', this._onOutsideClick);
 
 			const opener = this.getOpenerElement();
 			if (!opener) {
@@ -122,7 +113,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			opener.removeEventListener('mouseenter', this.__onOpenerMouseEnter);
 			opener.removeEventListener('mouseleave', this.__onOpenerMouseLeave);
 			opener.removeEventListener('touchstart', this.__onOpenerTouch);
-			opener.removeEventListener('click', this.__onOpenerClick);
 
 			if (!this._contentRendered) return;
 			this.__getContentElement().removeEventListener('mouseenter', this.__onDropdownMouseEnter);
@@ -151,7 +141,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			opener.addEventListener('mouseenter', this.__onOpenerMouseEnter, true);
 			opener.addEventListener('mouseleave', this.__onOpenerMouseLeave, true);
 			opener.addEventListener('touchstart', this.__onOpenerTouch, true);
-			opener.addEventListener('click', this.__onOpenerClick, true);
 		}
 		if (!changedProperties.has('_isFading') || !this._contentRendered) return;
 
@@ -255,9 +244,18 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 	}
 
-	__onMouseUp() {
+	__onMouseUp(e) {
 		if (this.noAutoOpen) return;
-		this.toggleOpen(false);
+		if (this.openOnHover) {
+			e?.stopPropagation();
+			this._closeTimerStop();
+			if (this._isOpen) {
+				this.closeDropdown();
+			} else {
+				this._isOpenedViaClick = true;
+				this.openDropdown(true);
+			}
+		} else this.toggleOpen(false);
 	}
 
 	__onOpened() {
@@ -268,19 +266,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.setAttribute('aria-expanded', 'true');
 		opener.setAttribute('active', 'true');
 		this._isFading = false;
-	}
-
-	/* used by open-on-hover option */
-	__onOpenerClick(e) {
-		//Prevents click from propagating to parent elements and triggering _onOutsideClick
-		e?.stopPropagation();
-		this._closeTimerStop();
-		if (this._isOpen) {
-			this.closeDropdown();
-		} else {
-			this._isOpenedViaClick = true;
-			this.openDropdown(true);
-		}
 	}
 
 	/* used by open-on-hover option */
