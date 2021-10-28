@@ -174,6 +174,19 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 	}
 
+	/* used by open-on-hover option */
+	async closeDropdown(fadeOut) {
+		this._isOpen = false;
+		this._isHovering = false;
+		this._isOpenedViaClick = false;
+		if (fadeOut) {
+			this._closeTimerStart();
+			return;
+		}
+		const dropdownContent = this.__getContentElement();
+		await dropdownContent.close();
+	}
+
 	focus() {
 		const opener = this.getOpenerElement();
 		if (!opener) {
@@ -188,6 +201,15 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	getOpenerElement() {
 		return this;
+	}
+
+	/* used by open-on-hover option */
+	async openDropdown(applyFocus) {
+		this._isOpen = true;
+		const dropdownContent = this.__getContentElement();
+		if (!dropdownContent) return;
+		await dropdownContent.open(applyFocus);
+		await dropdownContent.updateComplete;
 	}
 
 	toggleOpen(applyFocus) {
@@ -216,6 +238,31 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.removeAttribute('active');
 	}
 
+	/* used by open-on-hover option */
+	__onDropdownClosed() {
+		this._isOpen = false;
+		this._isOpenedViaClick = false;
+	}
+
+	/* used by open-on-hover option */
+	__onDropdownMouseEnter() {
+		this._isOpen = true;
+		this._isFading = false;
+		this._closeTimerStop();
+	}
+
+	/* used by open-on-hover option */
+	__onDropdownMouseLeave(e) {
+		if (this.__getContentElement() !== e.target) return;
+		if (!this._isOpenedViaClick) this._isOpen = false;
+		this._closeTimerStart();
+	}
+
+	/* used by open-on-hover option */
+	__onDropdownOpened() {
+		this._isFading = false;
+	}
+
 	__onKeyPress(e) {
 		if (e.keyCode !== 13 && e.keyCode !== 32) return;
 		if (this.noAutoOpen) return;
@@ -239,46 +286,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	/** Hover option */
 
-	async closeDropdown(fadeOut) {
-		this._isOpen = false;
-		this._isHovering = false;
-		this._isOpenedViaClick = false;
-		if (fadeOut) {
-			this._closeTimerStart();
-			return;
-		}
-		const dropdownContent = this.__getContentElement();
-		await dropdownContent.close();
-	}
 
-	async openDropdown(applyFocus) {
-		this._isOpen = true;
-		const dropdownContent = this.__getContentElement();
-		if (!dropdownContent) return;
-		await dropdownContent.open(applyFocus);
-		await dropdownContent.updateComplete;
-	}
 
-	__onDropdownClosed() {
-		this._isOpen = false;
-		this._isOpenedViaClick = false;
-	}
-
-	__onDropdownMouseEnter() {
-		this._isOpen = true;
-		this._isFading = false;
-		this._closeTimerStop();
-	}
-
-	__onDropdownMouseLeave(e) {
-		if (this.__getContentElement() !== e.target) return;
-		if (!this._isOpenedViaClick) this._isOpen = false;
-		this._closeTimerStart();
-	}
-
-	__onDropdownOpened() {
-		this._isFading = false;
-	}
 
 	__onOpenerClick(e) {
 		//Prevents click from propagating to parent elements and triggering _onOutsideClick
