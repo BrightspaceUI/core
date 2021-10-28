@@ -1,6 +1,9 @@
-import { directive, PropertyPart } from 'lit-html';
+import { directive, Directive } from 'lit/directive.js';
+import { PropertyPart } from 'lit-html';
 import { getComposedActiveElement, getNextFocusable } from '../../helpers/focus.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
+import { noChange } from 'lit-html';
+import { AsyncDirective } from 'lit/async-directive.js';
 
 const stateMap = new WeakMap();
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -302,7 +305,57 @@ async function helper(part, action, opts) {
 		state.hide(opts);
 	}
 }
+export class Hide extends AsyncDirective {
+	state;
+	constructor(propertyPart) {
+		console.log("construct")
+		super(propertyPart);
+		if (!(propertyPart.type === PropertyPart) || propertyPart.committer.name !== 'animate') {
+			throw new Error('animation directives must be used with "animate" property');
+		}
+	}
+	// Do SSR-compatible rendering (arguments are passed from call site)
+	render(part) {
+		console.log("render")
+		// Previous state available on class field
+		if (this.state === undefined) {
+			this.state = new AnimationState(part);
+		}
+		return noChange;
+	}
+	update(part, opts) {
+		console.log("update")
+		/* Any imperative updates to DOM/parts would go here */
+		opts = opts || {};
+		this.state.hide(opts);
+		return this.render(part);
+	}
+}
 
-export const hide = directive((opts) => async(part) => helper(part, 'hide', opts));
-
-export const show = directive((opts) => async(part) => helper(part, 'show', opts));
+export class Show extends AsyncDirective {
+	state;
+	constructor(propertyPart) {
+		super(propertyPart);
+		if (!(propertyPart instanceof PropertyPart) || propertyPart.committer.name !== 'animate') {
+			throw new Error('animation directives must be used with "animate" property');
+		}
+	}
+	// Do SSR-compatible rendering (arguments are passed from call site)
+	render(part) {
+		// Previous state available on class field
+		if (this.state === undefined) {
+			this.state = new AnimationState(part);
+		}
+		return noChange;
+	}
+	update(part, [opts]) {
+		/* Any imperative updates to DOM/parts would go here */
+		opts = opts || {};
+		this.state.show(opts);
+		return this.render(part);
+	}
+}
+// export const hide = directive((opts) => async(part) => helper(part, 'hide', opts));
+export const hide = directive(Hide);
+//export const show = directive((opts) => async(part) => helper(part, 'show', opts));
+export const show = directive(Show);
