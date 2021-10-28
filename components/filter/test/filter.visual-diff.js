@@ -158,7 +158,7 @@ describe('d2l-filter', () => {
 						await open(page, selector);
 						await show(page, selector, i - 1);
 						const rect = await getRect(page, selector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect }, { allowedPixels: 2 });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 					});
 				}
 			});
@@ -166,7 +166,7 @@ describe('d2l-filter', () => {
 
 		describe('mobile', () => {
 			before(async() => {
-				await page.setViewport({ width: 600, height: 500 });
+				await page.setViewport({ width: 600, height: 500, deviceScaleFactor: 2 });
 			});
 
 			afterEach(async function() {
@@ -197,7 +197,7 @@ describe('d2l-filter', () => {
 						const selector = '#multiple-selected';
 						await open(page, selector);
 						await show(page, selector, i - 1);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false }, { allowedPixels: 2 });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 				});
 			}
@@ -208,7 +208,7 @@ describe('d2l-filter', () => {
 	describe('rtl', () => {
 		before(async() => {
 			await page.goto(`${visualDiff.getBaseUrl()}/components/filter/test/filter.visual-diff.html?dir=rtl`, { waitUntil: ['networkidle0', 'load'] });
-			await page.setViewport({ width: 800, height: 1500 });
+			await page.setViewport({ width: 800, height: 1500, deviceScaleFactor: 2 });
 			await page.bringToFront();
 		});
 
@@ -283,7 +283,7 @@ describe('d2l-filter', () => {
 						await open(page, selector);
 						await show(page, selector, i - 1);
 						const rect = await getRect(page, selector);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect }, { allowedPixels: 2 });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false, clip: rect });
 					});
 				}
 			});
@@ -291,7 +291,7 @@ describe('d2l-filter', () => {
 
 		describe('mobile', () => {
 			before(async() => {
-				await page.setViewport({ width: 600, height: 500 });
+				await page.setViewport({ width: 600, height: 500, deviceScaleFactor: 2 });
 			});
 
 			afterEach(async function() {
@@ -319,7 +319,7 @@ describe('d2l-filter', () => {
 						const selector = '#multiple-selected';
 						await open(page, selector);
 						await show(page, selector, i - 1);
-						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false }, { allowedPixels: 2 });
+						await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { captureBeyondViewport: false });
 					});
 				});
 			}
