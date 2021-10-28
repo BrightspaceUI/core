@@ -1,6 +1,7 @@
 
 import { DropdownOpenerMixin } from './dropdown-opener-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -41,12 +42,10 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		this.__onDropdownClosed = this.__onDropdownClosed.bind(this);
 		this.__onDropdownMouseEnter = this.__onDropdownMouseEnter.bind(this);
 		this.__onDropdownMouseLeave = this.__onDropdownMouseLeave.bind(this);
-		this.__onDropdownClick = this.__onDropdownClick.bind(this);
 		this._onOutsideClick = this._onOutsideClick.bind(this);
 		this._onKeyDown = this._onKeyDown.bind(this);
 		this._contentRendered = null;
 		this._openerRendered = null;
-		this._clickInDropdown = null;
 	}
 
 	connectedCallback() {
@@ -76,7 +75,6 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		this.__getContentElement().removeEventListener('d2l-dropdown-close', this.__onDropdownClosed);
 		this.__getContentElement().removeEventListener('mouseenter', this.__onDropdownMouseEnter);
 		this.__getContentElement().removeEventListener('mouseleave', this.__onDropdownMouseLeave);
-		this.__getContentElement().removeEventListener('click', this.__onDropdownClick, true);
 	}
 
 	async updated(changedProperties) {
@@ -87,7 +85,6 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 			this.__getContentElement().addEventListener('d2l-dropdown-close', this.__onDropdownClosed, true);
 			this.__getContentElement().addEventListener('mouseenter', this.__onDropdownMouseEnter, true);
 			this.__getContentElement().addEventListener('mouseleave', this.__onDropdownMouseLeave, true);
-			this.__getContentElement().addEventListener('click', this.__onDropdownClick, true);
 		}
 		if (!this._openerRendered && this.getOpenerElement()) {
 			this._openerRendered = this.getOpenerElement();
@@ -125,16 +122,6 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		if (!dropdownContent) return;
 		await dropdownContent.open(applyFocus);
 		await dropdownContent.updateComplete;
-	}
-
-	__onDropdownClick(e) {
-		const isBackdropClick = (e.path || e.composedPath()).find(node => node.nodeName === 'D2L-BACKDROP');
-		if (isBackdropClick) {
-			this._clickInDropdown = false;
-			this.closeDropdown();
-		} else {
-			this._clickInDropdown = true;
-		}
 	}
 
 	__onDropdownClosed() {
@@ -232,11 +219,12 @@ export const DropdownHoverOpenerMixin = superclass => class extends DropdownOpen
 		}
 	}
 
-	_onOutsideClick() {
+	_onOutsideClick(e) {
 		if (!this._isOpen) return;
-		if (!this._clickInDropdown) {
+		const isWithinDropdown = isComposedAncestor(this.__getContentElement(), (e.path || e.composedPath())[0]);
+		const isBackdropClick = isWithinDropdown && (e.path || e.composedPath()).find(node => node.nodeName === 'D2L-BACKDROP');
+		if (!isWithinDropdown || isBackdropClick) {
 			this.closeDropdown();
 		}
-		this._clickInDropdown = false;
 	}
 };
