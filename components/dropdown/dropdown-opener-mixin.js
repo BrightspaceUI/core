@@ -247,6 +247,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	__onMouseUp(e) {
 		if (this.noAutoOpen) return;
 		if (this.openOnHover) {
+			// prevent propogation to window and triggering _onOutsideClick
 			e?.stopPropagation();
 			this._closeTimerStop();
 			if (this._isOpen) {
@@ -322,7 +323,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	_onOutsideClick(e) {
 		if (!this._isOpen) return;
 		const isWithinDropdown = isComposedAncestor(this.__getContentElement(), (e.path || e.composedPath())[0]);
-		const isBackdropClick = isWithinDropdown && (e.path || e.composedPath()).find(node => node.nodeName === 'D2L-BACKDROP');
+		const isBackdropClick = isWithinDropdown
+			&& this.__getContentElement()._useMobileStyling
+			&& (e.path || e.composedPath()).find(node => node.nodeName === 'D2L-BACKDROP');
 		if (!isWithinDropdown || isBackdropClick) {
 			this.closeDropdown();
 		}
