@@ -32,7 +32,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			},
 
 			/**
-			 * Optionally open dropdown on click or hover
+			 * Optionally open dropdown on click or hover action
 			 * @type {boolean}
 			 */
 			openOnHover: {
