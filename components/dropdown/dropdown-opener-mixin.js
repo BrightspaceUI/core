@@ -250,10 +250,11 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			// prevent propogation to window and triggering _onOutsideClick
 			e?.stopPropagation();
 			this._closeTimerStop();
-			if (this._isOpen) {
+			if (this._isOpen && !this._isHovering) {
 				this.closeDropdown();
 			} else {
 				this._isOpenedViaClick = true;
+				this._isHovering = false;
 				this.openDropdown(true);
 			}
 		} else this.toggleOpen(false);

@@ -525,6 +525,23 @@ describe('d2l-dropdown', () => {
 				expect(content.opened).to.be.true;
 			});
 
+			it('hovering then clicking does not close dropdown, can hover out', async() => {
+				dropdownOpener.setAttribute('open-on-hover', true);
+
+				opener.dispatchEvent(new Event('mouseenter'));
+				await oneEvent(content, 'd2l-dropdown-open');
+				expect(content.opened).to.be.true;
+
+				opener.dispatchEvent(new Event('mouseup'));
+				// wait 100ms to ensure dropdown did not close
+				await aTimeout(100);
+				expect(content.opened).to.be.true;
+
+				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
+				await aTimeout(600);
+				expect(content.opened).to.be.true;
+			});
+
 			it('clicking outside closes dropdown', async() => {
 				dropdownOpener.setAttribute('open-on-hover', true);
 				opener.dispatchEvent(new Event('mouseup'));
