@@ -1,8 +1,11 @@
 # Filtering
 
-**NOTE: This component is a work-in-progress and not ready for consumer use yet.**
-
 Filter components are often used in conjuction with [tables](../../components/table) and allow users to select a subset of the presented data based on a set of parameters. Filter dimensions provide methods for entering parameters for a wide range of data types.
+
+<!-- docs: start hidden content -->
+Filter with multiple dimensions:
+![Filter with multiple dimensions](./screenshots/filter-multi-dim.png?raw=true)
+<!-- docs: end hidden content -->
 
 <!-- docs: demo align:start autoSize:false size:large -->
 ```html
@@ -46,10 +49,6 @@ Filter components are often used in conjuction with [tables](../../components/ta
 ## Filter [d2l-filter]
 
 The `d2l-filter` component allows a user to filter on one or more dimensions of data from a single dropdown.
-
-<!-- docs: start hidden content -->
-<!-- ![Filter](./screenshots/filter.png?raw=true) -->
-<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-filter autoSize:false align:start size:large -->
 ```html
@@ -95,6 +94,11 @@ The `d2l-filter` component allows a user to filter on one or more dimensions of 
 
 ### Single Vs Multi Dimensional
 A filter can be a single dimension (like picking from a list of courses) or offer multiple dimensions (filter by role, or department, or something else). Single-dimension filters can be used side-by-side to promote filters that are more commonly used, while tucking less-used filters into a multi-dimensional filter.
+
+<!-- docs: start hidden content -->
+Filter with a single dimension:
+![Filters with single dimension](./screenshots/filter.png?raw=true)
+<!-- docs: end hidden content -->
 
 <!-- docs: demo code autoSize:false align:start size:large -->
 ```html
@@ -172,6 +176,11 @@ The filter will announce changes to filter selections, search results, and when 
 ## Filter Dimension: Set [d2l-filter-dimension-set]
 
 The `d2l-filter-dimension-set` component is the main dimension type that will work for most use cases.  Used alongside the [d2l-filter-dimension-set-value](#filter-dimension%3A-set-value-%5Bd2l-filter-dimension-set-value%5D), this will give you a selectable list of filter values.
+
+<!-- docs: start hidden content -->
+Set dimension on mobile:
+![Set dimension on mobile](./screenshots/filter-mobile.png?raw=true)
+<!-- docs: end hidden content -->
 
 <!-- docs: demo live name:d2l-filter-dimension-set align:start autoSize:false size:large -->
 ```html
