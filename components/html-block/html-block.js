@@ -135,6 +135,14 @@ class HtmlBlock extends LitElement {
 		`];
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		if (!this._templateObserver) return;
+
+		const template = this.querySelector('template');
+		if (template) this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._templateObserver) this._templateObserver.disconnect();
