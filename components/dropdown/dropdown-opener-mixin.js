@@ -204,6 +204,46 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this._closeTimerStart();
 	}
 
+	__onKeypress(e) {
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerKeyPress(e);
+		}
+	}
+
+	__onMouseEnter(e) {
+		if (!this.openOnHover) return;
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerMouseEnter(e);
+		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
+			this.__onDropdownMouseEnter(e);
+		}
+	}
+
+	__onMouseLeave(e) {
+		if (!this.openOnHover) return;
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerMouseLeave(e);
+		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
+			this.__onDropdownMouseLeave(e);
+		}
+	}
+
+	__onMouseUp(e) {
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerMouseUp(e);
+		}
+	}
+
+	__onOpened() {
+		const opener = this.getOpenerElement();
+		if (!opener) {
+			return;
+		}
+		opener.setAttribute('aria-expanded', 'true');
+		opener.setAttribute('active', 'true');
+		this._isFading = false;
+	}
+
 	__onOpenerKeyPress(e) {
 		if (e.keyCode !== 13 && e.keyCode !== 32) return;
 		if (this.noAutoOpen) return;
@@ -215,32 +255,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			this._isOpenedViaClick = true;
 			this.openDropdown(true);
 		}
-	}
-
-	__onOpenerMouseUp(e) {
-		if (this.noAutoOpen) return;
-		if (this.openOnHover) {
-			// prevent propogation to window and triggering _onOutsideClick
-			e?.stopPropagation();
-			this._closeTimerStop();
-			if (this._isOpen && !this._isHovering) {
-				this.closeDropdown();
-			} else {
-				this._isOpenedViaClick = true;
-				this._isHovering = false;
-				this.openDropdown(true);
-			}
-		} else this.toggleOpen(false);
-	}
-
-	__onOpened() {
-		const opener = this.getOpenerElement();
-		if (!opener) {
-			return;
-		}
-		opener.setAttribute('aria-expanded', 'true');
-		opener.setAttribute('active', 'true');
-		this._isFading = false;
 	}
 
 	/* used by open-on-hover option */
@@ -266,6 +280,22 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		await this.closeDropdown(true);
 	}
 
+	__onOpenerMouseUp(e) {
+		if (this.noAutoOpen) return;
+		if (this.openOnHover) {
+			// prevent propogation to window and triggering _onOutsideClick
+			e?.stopPropagation();
+			this._closeTimerStop();
+			if (this._isOpen && !this._isHovering) {
+				this.closeDropdown();
+			} else {
+				this._isOpenedViaClick = true;
+				this._isHovering = false;
+				this.openDropdown(true);
+			}
+		} else this.toggleOpen(false);
+	}
+
 	/* used by open-on-hover option */
 	__onOpenerTouch(e) {
 		//Prevents touch from triggering mouseover/hover behavior
@@ -274,42 +304,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (this._isOpen) this.closeDropdown();
 		this._isOpenedViaClick = true;
 		if (!this._isOpen) this.openDropdown(true);
-	}
-
-	__onKeypress(e) {
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
-			this.__onOpenerKeyPress(e);
-		}
-	}
-
-	__onMouseEnter(e) {
-		if(!this.openOnHover) return;
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
-			this.__onOpenerMouseEnter(e);
-		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
-			this.__onDropdownMouseEnter(e);
-		}
-	}
-
-	__onMouseLeave(e) {
-		if(!this.openOnHover) return;
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
-			this.__onOpenerMouseLeave(e);
-		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
-			this.__onDropdownMouseLeave(e);
-		}
-	}
-
-	__onMouseUp(e) {
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
-			this.__onOpenerMouseUp(e);
-		}
-	}
-
-	__onOpenerTouch(e) {
-		if (this.openOnHover && isComposedAncestor(e.srcElement, this.getOpenerElement())) {
-			this.__onOpenerTouch(e);
-		}
 	}
 
 	/* used by open-on-hover option */
