@@ -174,7 +174,8 @@ export const dropdownContentStyles = css`
 
 	:host(.d2l-dropdown-content-fading) {
 		opacity: 0;
-		transition: opacity 0.4s ease-out;
+		/* matches DropdownOpenerMixin _closeTimerStart function */
+		transition: opacity 0.4s ease-out 0.3s;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

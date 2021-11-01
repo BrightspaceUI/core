@@ -53,9 +53,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.openOnHover = false;
 		this.disabled = false;
 
-		this.__onKeyPress = this.__onKeyPress.bind(this);
-		this.__onMouseUp = this.__onMouseUp.bind(this);
-
 		// hover option
 		this._dismissTimerId = getUniqueId();
 		this._isOpen = false;
@@ -63,12 +60,11 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this._isHovering = false;
 		this._isFading = false;
 
-		this.__onOpenerMouseEnter = this.__onOpenerMouseEnter.bind(this);
-		this.__onOpenerMouseLeave = this.__onOpenerMouseLeave.bind(this);
+		this.__onWholeKeypress = this.__onKeypress.bind(this);
+		this.__onMouseUp = this.__onMouseUp.bind(this);
+		this.__onMouseEnter = this.__onMouseEnter.bind(this);
+		this.__onMouseLeave = this.__onMouseLeave.bind(this);
 		this.__onOpenerTouch = this.__onOpenerTouch.bind(this);
-		this.__onDropdownMouseEnter = this.__onDropdownMouseEnter.bind(this);
-		this.__onDropdownMouseLeave = this.__onDropdownMouseLeave.bind(this);
-		this._onOutsideClick = this._onOutsideClick.bind(this);
 		this._contentRendered = null;
 		this._openerRendered = null;
 	}
@@ -76,47 +72,29 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	connectedCallback() {
 		super.connectedCallback();
 
-		requestAnimationFrame(() => {
-			const opener = this.getOpenerElement();
-			const content = this.__getContentElement();
-			if (!opener) {
-				return;
-			}
-			opener.setAttribute('aria-haspopup', 'true');
-			opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
+		// listeners
+		this.addEventListener('keypress', this.__onKeypress);
+		this.addEventListener('mouseup', this.__onMouseUp);
+		this.addEventListener('mouseenter', this.__onMouseEnter);
+		this.addEventListener('mouseleave', this.__onMouseLeave);
+		this.addEventListener('touchstart', this.__onOpenerTouch);
 
-			opener.addEventListener('keypress', this.__onKeyPress);
-			opener.addEventListener('mouseup', this.__onMouseUp);
-		});
-
-		if (!this.openOnHover) return;
-		document.body.addEventListener('mouseup', this._onOutsideClick);
+		if (this.openOnHover) {
+			document.body.addEventListener('mouseup', this._onOutsideClick);
+		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		const opener = this.getOpenerElement();
-		if (!opener) {
-			return;
-		}
-		opener.removeEventListener('keypress', this.__onKeyPress);
-		opener.removeEventListener('mouseup', this.__onMouseUp);
+
+		this.removeEventListener('keypress', this.__onKeypress);
+		this.removeEventListener('mouseup', this.__onMouseUp);
+		this.removeEventListener('mouseenter', this.__onMouseEnter);
+		this.removeEventListener('mouseleave', this.__onMouseLeave);
+		this.removeEventListener('touchstart', this.__onOpenerTouch);
+
 		if (this.openOnHover) {
 			document.body.removeEventListener('mouseup', this._onOutsideClick);
-
-			const opener = this.getOpenerElement();
-			if (!opener) {
-				return;
-			}
-			if (!this._openerRendered) return;
-
-			opener.removeEventListener('mouseenter', this.__onOpenerMouseEnter);
-			opener.removeEventListener('mouseleave', this.__onOpenerMouseLeave);
-			opener.removeEventListener('touchstart', this.__onOpenerTouch);
-
-			if (!this._contentRendered) return;
-			this.__getContentElement().removeEventListener('mouseenter', this.__onDropdownMouseEnter);
-			this.__getContentElement().removeEventListener('mouseleave', this.__onDropdownMouseLeave);
 		}
 	}
 
@@ -125,29 +103,24 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 		this.addEventListener('d2l-dropdown-open', this.__onOpened);
 		this.addEventListener('d2l-dropdown-close', this.__onClosed);
+
+		const opener = this.getOpenerElement();
+		const content = this.__getContentElement();
+		if (!opener) {
+			return;
+		}
+		opener.setAttribute('aria-haspopup', 'true');
+		opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (!this.openOnHover) return;
-		if (!this._contentRendered && this.__getContentElement()) {
-			this._contentRendered = this.__getContentElement();
-			this.__getContentElement().addEventListener('mouseenter', this.__onDropdownMouseEnter, true);
-			this.__getContentElement().addEventListener('mouseleave', this.__onDropdownMouseLeave, true);
-		}
-		if (!this._openerRendered && this.getOpenerElement()) {
-			this._openerRendered = this.getOpenerElement();
-			const opener = this.getOpenerElement();
-			opener.addEventListener('mouseenter', this.__onOpenerMouseEnter, true);
-			opener.addEventListener('mouseleave', this.__onOpenerMouseLeave, true);
-			opener.addEventListener('touchstart', this.__onOpenerTouch, true);
-		}
-		if (!changedProperties.has('_isFading') || !this._contentRendered) return;
+		if (!this.openOnHover || !changedProperties.has('_isFading')) return;
 
 		if (this._isFading) {
-			this.__getContentElement().classList.add('d2l-dropdown-content-fading');
+			this.__getContentElement()?.classList.add('d2l-dropdown-content-fading');
 		} else {
-			this.__getContentElement().classList.remove('d2l-dropdown-content-fading');
+			this.__getContentElement()?.classList.remove('d2l-dropdown-content-fading');
 		}
 	}
 
@@ -231,7 +204,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this._closeTimerStart();
 	}
 
-	__onKeyPress(e) {
+	__onOpenerKeyPress(e) {
 		if (e.keyCode !== 13 && e.keyCode !== 32) return;
 		if (this.noAutoOpen) return;
 		if (!this.openOnHover) {
@@ -244,7 +217,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 	}
 
-	__onMouseUp(e) {
+	__onOpenerMouseUp(e) {
 		if (this.noAutoOpen) return;
 		if (this.openOnHover) {
 			// prevent propogation to window and triggering _onOutsideClick
@@ -303,6 +276,42 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!this._isOpen) this.openDropdown(true);
 	}
 
+	__onKeypress(e) {
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerKeyPress(e);
+		}
+	}
+
+	__onMouseEnter(e) {
+		if(!this.openOnHover) return;
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerMouseEnter(e);
+		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
+			this.__onDropdownMouseEnter(e);
+		}
+	}
+
+	__onMouseLeave(e) {
+		if(!this.openOnHover) return;
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerMouseLeave(e);
+		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
+			this.__onDropdownMouseLeave(e);
+		}
+	}
+
+	__onMouseUp(e) {
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerMouseUp(e);
+		}
+	}
+
+	__onOpenerTouch(e) {
+		if (this.openOnHover && isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerTouch(e);
+		}
+	}
+
 	/* used by open-on-hover option */
 	_closeTimerStart() {
 		if (this._isOpen) return;
@@ -311,7 +320,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this._setTimeoutId = setTimeout(() => {
 			this.closeDropdown(false);
 			this._isFading = false;
-		}, 400);
+		// matches dropdownContentStyles CSS
+		}, 700);
 	}
 
 	/* used by open-on-hover option */
@@ -323,10 +333,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	/* used by open-on-hover option */
 	_onOutsideClick(e) {
 		if (!this._isOpen) return;
-		const isWithinDropdown = isComposedAncestor(this.__getContentElement(), (e.path || e.composedPath())[0]);
+		const isWithinDropdown = isComposedAncestor(this.__getContentElement(), e.composedPath()[0]);
 		const isBackdropClick = isWithinDropdown
 			&& this.__getContentElement()._useMobileStyling
-			&& (e.path || e.composedPath()).find(node => node.nodeName === 'D2L-BACKDROP');
+			&& e.composedPath().find(node => node.nodeName === 'D2L-BACKDROP');
 		if (!isWithinDropdown || isBackdropClick) {
 			this.closeDropdown();
 		}

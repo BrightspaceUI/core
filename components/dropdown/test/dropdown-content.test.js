@@ -426,17 +426,16 @@ describe('d2l-dropdown', () => {
 		describe('hover', () => {
 
 			it('opens dropdown when mouse hovers on opener', async() => {
-				opener.dispatchEvent(new Event('mouseenter'));
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 			});
 
 			it('closes dropdown when mouse leaves opener', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseenter'));
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 
-				opener.dispatchEvent(new Event('mouseleave'));
+				opener.dispatchEvent(new Event('mouseleave', { bubbles: true }));
 				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
 				await oneEvent(content, 'd2l-dropdown-close');
 
@@ -444,36 +443,33 @@ describe('d2l-dropdown', () => {
 			});
 
 			it('does not close when hovering to content', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseenter'));
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 
-				opener.dispatchEvent(new Event('mouseleave'));
-				setTimeout(() => content.dispatchEvent(new Event('mouseenter')));
-				await aTimeout(600);
+				opener.dispatchEvent(new Event('mouseleave', { bubbles: true }));
+				setTimeout(() => content.dispatchEvent(new Event('mouseenter', { bubbles: true })));
+				await aTimeout(800);
 
 				expect(content.opened).to.be.true;
 			});
 
 			it('dropdown closes when mouse leaves content', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseenter'));
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
-				opener.dispatchEvent(new Event('mouseleave'));
-				content.dispatchEvent(new Event('mouseenter'));
-				await aTimeout(600);
+				opener.dispatchEvent(new Event('mouseleave', { bubbles: true }));
+				content.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+				await aTimeout(800);
 				expect(content.opened).to.be.true;
 
-				content.dispatchEvent(new Event('mouseleave'));
+				content.dispatchEvent(new Event('mouseleave', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-close');
 				expect(content.opened).to.be.false;
 			});
 
 			it('clicking outside closes dropdown', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseenter'));
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
@@ -483,13 +479,12 @@ describe('d2l-dropdown', () => {
 			});
 
 			it('clicking inside does not close dropdown', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseenter'));
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
 				setTimeout(() => dropdown.querySelector('#non_focusable_inside').click());
-				await aTimeout(600);
+				await aTimeout(800);
 				expect(content.opened).to.be.true;
 			});
 		});
@@ -497,14 +492,12 @@ describe('d2l-dropdown', () => {
 		describe('click', () => {
 
 			it('opens dropdown when opener clicked', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseup'));
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 			});
 
 			it('if open closes dropdown when opener clicked', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
 				content.toggleOpen();
 				await oneEvent(content, 'd2l-dropdown-open');
 
@@ -515,36 +508,32 @@ describe('d2l-dropdown', () => {
 			});
 
 			it('hovering outside does not close dropdown', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseup'));
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
 				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
-				await aTimeout(600);
+				await aTimeout(800);
 				expect(content.opened).to.be.true;
 			});
 
 			it('hovering then clicking does not close dropdown, can hover out', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-
-				opener.dispatchEvent(new Event('mouseenter'));
+				opener.dispatchEvent(new Event('mouseenter', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
-				opener.dispatchEvent(new Event('mouseup'));
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
 				// wait 100ms to ensure dropdown did not close
 				await aTimeout(100);
 				expect(content.opened).to.be.true;
 
 				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
-				await aTimeout(600);
+				await aTimeout(800);
 				expect(content.opened).to.be.true;
 			});
 
 			it('clicking outside closes dropdown', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseup'));
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
@@ -554,13 +543,12 @@ describe('d2l-dropdown', () => {
 			});
 
 			it('clicking inside does not close dropdown', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
-				opener.dispatchEvent(new Event('mouseup'));
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
 				await oneEvent(content, 'd2l-dropdown-open');
 				expect(content.opened).to.be.true;
 
 				setTimeout(() => dropdown.querySelector('#non_focusable_inside').click());
-				await aTimeout(600);
+				await aTimeout(800);
 				expect(content.opened).to.be.true;
 			});
 		});
@@ -568,7 +556,6 @@ describe('d2l-dropdown', () => {
 		describe('auto-close', () => {
 
 			it('should close when focus element outside receives focus', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
 				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
 				await nextFrame();
@@ -578,7 +565,6 @@ describe('d2l-dropdown', () => {
 			});
 
 			it('should close when element outside is clicked', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
 				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
 
@@ -589,7 +575,6 @@ describe('d2l-dropdown', () => {
 			});
 
 			it('should close when ESC key is pressed', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
 
 				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
@@ -610,7 +595,6 @@ describe('d2l-dropdown', () => {
 		describe('aria-expanded', () => {
 
 			it('should set aria-expanded on the opener', async() => {
-				dropdownOpener.setAttribute('open-on-hover', true);
 				content.setAttribute('opened', true);
 				await oneEvent(content, 'd2l-dropdown-open');
 				await dropdownOpener.updateComplete;
