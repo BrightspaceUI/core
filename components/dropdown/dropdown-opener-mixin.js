@@ -64,7 +64,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.__onMouseUp = this.__onMouseUp.bind(this);
 		this.__onMouseEnter = this.__onMouseEnter.bind(this);
 		this.__onMouseLeave = this.__onMouseLeave.bind(this);
-		this.__onOpenerTouch = this.__onOpenerTouch.bind(this);
+		this.__onTouchStart = this.__onTouchStart.bind(this);
 		this._contentRendered = null;
 		this._openerRendered = null;
 	}
@@ -77,7 +77,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('mouseup', this.__onMouseUp);
 		this.addEventListener('mouseenter', this.__onMouseEnter);
 		this.addEventListener('mouseleave', this.__onMouseLeave);
-		this.addEventListener('touchstart', this.__onOpenerTouch);
+		this.addEventListener('touchstart', this.__onTouchStart);
 
 		if (this.openOnHover) {
 			document.body.addEventListener('mouseup', this._onOutsideClick);
@@ -91,7 +91,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.removeEventListener('mouseup', this.__onMouseUp);
 		this.removeEventListener('mouseenter', this.__onMouseEnter);
 		this.removeEventListener('mouseleave', this.__onMouseLeave);
-		this.removeEventListener('touchstart', this.__onOpenerTouch);
+		this.removeEventListener('touchstart', this.__onTouchStart);
 
 		if (this.openOnHover) {
 			document.body.removeEventListener('mouseup', this._onOutsideClick);
@@ -301,9 +301,20 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		//Prevents touch from triggering mouseover/hover behavior
 		e.preventDefault();
 		this._closeTimerStop();
-		if (this._isOpen) this.closeDropdown();
-		this._isOpenedViaClick = true;
-		if (!this._isOpen) this.openDropdown(true);
+		if (this._isOpen) {
+			this.closeDropdown();
+		}
+		else {
+			this._isOpenedViaClick = true;
+			this.openDropdown(true);
+		}
+	}
+
+	__onTouchStart(e) {
+		if (!this.openOnHover) return;
+		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+			this.__onOpenerTouch(e);
+		}
 	}
 
 	/* used by open-on-hover option */
