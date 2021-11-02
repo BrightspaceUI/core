@@ -210,14 +210,14 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onKeypress(e) {
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+		if (e.srcElement === this || isComposedAncestor(this.getOpenerElement(), e.srcElement)) {
 			this.__onOpenerKeyPress(e);
 		}
 	}
 
 	__onMouseEnter(e) {
 		if (!this.openOnHover) return;
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+		if (e.srcElement === this || isComposedAncestor(this.getOpenerElement(), e.srcElement)) {
 			this.__onOpenerMouseEnter(e);
 		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
 			this.__onDropdownMouseEnter(e);
@@ -226,7 +226,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 	__onMouseLeave(e) {
 		if (!this.openOnHover) return;
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+		if (e.srcElement === this || isComposedAncestor(this.getOpenerElement(), e.srcElement)) {
 			this.__onOpenerMouseLeave(e);
 		} else if (isComposedAncestor(this.__getContentElement(), e.srcElement)) {
 			this.__onDropdownMouseLeave(e);
@@ -234,7 +234,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onMouseUp(e) {
-		if (isComposedAncestor(e.srcElement, this.getOpenerElement())) {
+		if (e.srcElement === this || isComposedAncestor(this.getOpenerElement(), e.srcElement)) {
 			this.__onOpenerMouseUp(e);
 		} else if (this.openOnHover && isComposedAncestor(this.__getContentElement(), e.srcElement)) {
 			this.__onDropdownMouseUp();
