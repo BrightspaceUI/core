@@ -172,19 +172,6 @@ export const dropdownContentStyles = css`
 		text-align: right;
 	}
 
-	:host(.d2l-dropdown-content-fading) {
-		opacity: 0;
-		/* matches DropdownOpenerMixin _closeTimerStart function */
-		transition: opacity 0.4s ease-out 0.3s;
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		:host(.d2l-dropdown-content-fading) {
-			opacity: 1;
-			transition: none;
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		:host([opened]), :host([opened-above]) {
 			animation: none !important;
