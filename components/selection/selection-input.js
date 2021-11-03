@@ -31,11 +31,12 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			disabled: { type: Boolean },
 			/**
 			 * Private. Force hovering state of input
+			 * @ignore
 			 * @type {boolean}
 			 */
 			hovering: { type: Boolean },
 			/**
-			 * Key for the selectable
+			 * REQUIRED: Key for the selectable
 			 * @type {string}
 			 */
 			key: { type: String },
