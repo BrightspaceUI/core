@@ -122,6 +122,46 @@ describe('d2l-dropdown', () => {
 
 	});
 
+	describe('keyboard interaction', () => {
+		[
+			13,
+			32
+		].forEach((keycode) => {
+			it('should open when key is pressed', async() => {
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keypress', true, true);
+				eventObj.keyCode = keycode;
+
+				const dropdownContainer = dropdown.querySelector('d2l-dropdown');
+				const opener = dropdownContainer.getOpenerElement();
+				setTimeout(() => opener.dispatchEvent(eventObj));
+				await oneEvent(content, 'd2l-dropdown-open');
+
+				expect(content.opened).to.be.true;
+			});
+		});
+
+		[
+			13,
+			32
+		].forEach((keycode) => {
+			it('should not close when opening keys are pressed inside content', async() => {
+
+				content.setAttribute('opened', true);
+				await oneEvent(content, 'd2l-dropdown-open');
+				await aTimeout(0);
+
+				const eventObj = document.createEvent('Events');
+				eventObj.initEvent('keypress', true, true);
+				eventObj.keyCode = keycode;
+
+				setTimeout(() => content.dispatchEvent(eventObj));
+				await aTimeout(100);
+				expect(content.opened).to.be.true;
+			});
+		});
+	});
+
 	describe('scrollTo', () => {
 		it('sets scrollTop to specified value', async() => {
 
@@ -531,6 +571,10 @@ describe('d2l-dropdown', () => {
 				setTimeout(() => dropdown.querySelector('#non_focusable_outside').dispatchEvent(new Event('mouseenter')));
 				await aTimeout(800);
 				expect(content.opened).to.be.true;
+
+				opener.dispatchEvent(new Event('mouseup', { bubbles: true }));
+				await oneEvent(content, 'd2l-dropdown-close');
+				expect(content.opened).to.be.false;
 			});
 
 			it('hovering then clicking opener does not close dropdown, can hover out', async() => {
