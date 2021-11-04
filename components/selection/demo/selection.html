@@ -10,25 +10,7 @@
 			import '../selection-input.js';
 			import '../selection-select-all.js';
 			import '../selection-summary.js';
-			import { css, html, LitElement } from 'lit-element/lit-element.js';
-			import { SelectionMixin } from '../selection-mixin.js';
-
-			class DemoSelection extends SelectionMixin(LitElement) {
-				static get styles() {
-					return css`
-						:host {
-							display: block;
-						}
-					`;
-				}
-				render() {
-					return html`
-						<slot></slot>
-					`;
-				}
-			}
-			customElements.define('d2l-demo-selection', DemoSelection);
-
+			import './demo-selection.js';
 		</script>
 		<style>
 			ul {
@@ -131,7 +113,7 @@
 						</div>
 
 						<div class="d2l-selection-collection">
-							Pick Your Bread 
+							Pick Your Bread
 							<div class="d2l-selection-header">
 								<d2l-selection-select-all selection-for="collection-2"></d2l-selection-select-all>
 								<d2l-selection-action selection-for="collection-2" text="Add Note" icon="tier1:add-message"></d2l-selection-action>
