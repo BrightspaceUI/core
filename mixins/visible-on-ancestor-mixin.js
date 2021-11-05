@@ -28,13 +28,6 @@ export const visibleOnAncestorStyles = css`
 		}
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		:host([__voa-state="showing"]),
-		:host([__voa-state="hiding"]) {
-			transition: none !important;
-		}
-	}
-
 `;
 
 export const VisibleOnAncestorMixin = superclass => class extends superclass {
