@@ -14,6 +14,7 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 		return {
 			/**
 			 * REQUIRED: Label for the context-menu button
+			 * @type {string}
 			 */
 			text: {
 				type: String
@@ -21,6 +22,7 @@ class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(Lit
 
 			/**
 			 * Attribute for busy/rich backgrounds
+			 * @type {boolean}
 			 */
 			translucent: {
 				type: Boolean

@@ -6,6 +6,14 @@ Alerts communicate critical information relating to the state of the system and 
 <script type="module">
 	import '@brightspace-ui/core/components/alert/alert-toast.js';
 </script>
+<!-- docs: start hidden content -->
+<style>
+  d2l-alert-toast {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+</style>
+<!-- docs: end hidden content -->
 
 <d2l-alert type="default" button-text="Undo" has-close-button>
 	A message.
@@ -26,7 +34,7 @@ The `d2l-alert` component can be used to communicate important information relat
 * Do use to let the user know when the system is in a state that will prevent them from completing their action
 * Do highlight information that requires the user’s attention and/or action.
 * Do provide a clear call to action if it can help resolve the alert
-* Do provide a control to dismiss the alert and prevent the message from displaying again, if applicable 
+* Do provide a control to dismiss the alert and prevent the message from displaying again, if applicable
 * Do use sentence case for alert text, but avoid unnecessary punctuation by not placing periods at the end of single sentences
 <!-- docs: end dos -->
 
@@ -113,8 +121,4 @@ a pop-up at the bottom of the screen that automatically dismisses itself by defa
 
 ### Events
 * `d2l-alert-toast-close`: dispatched when the toast is closed
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->

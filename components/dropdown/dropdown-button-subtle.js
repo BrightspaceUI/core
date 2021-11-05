@@ -14,14 +14,14 @@ class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 		return {
 			/**
 			 * A description to be added to the opener button for accessibility when text on button does not provide enough context
+			 * @type {string}
 			 */
 			description: { type: String },
 			/**
 			 * REQUIRED: Text for the button
+			 * @type {string}
 			 */
-			text: {
-				type: String
-			}
+			text: { type: String }
 		};
 	}
 

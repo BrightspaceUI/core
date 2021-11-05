@@ -48,7 +48,7 @@ A loading spinner indicates that something is happening and we don't know how lo
 | `color` | String | Color of the animated bar (default is `--d2l-color-celestine`) |
 | `size` | Number, default: `50` | Height and width (`px`) of the spinner |
 
-## Future Enhancements
+## Future Improvements
 
 - Ability to "freeze" the spinner at a specified frame to make visual diff testing easier
 

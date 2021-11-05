@@ -132,7 +132,6 @@ export function getPrevMonth(month) {
 /**
  * A component can be used to display a responsively sized calendar that allows for date selection.
  * @slot - Content displayed under the calendar (e.g., buttons)
- * @fires d2l-calendar-selected - Dispatched when a date is selected through click, space, or enter. "e.detail.date" is in ISO 8601 calendar date format ("YYYY-MM-DD").
  */
 class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
@@ -620,6 +619,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			composed: true,
 			detail: { date: this.selectedValue }
 		};
+		/** Dispatched when a date is selected through click, space, or enter. "e.detail.date" is in ISO 8601 calendar date format ("YYYY-MM-DD"). */
 		this.dispatchEvent(new CustomEvent('d2l-calendar-selected', eventDetails));
 	}
 

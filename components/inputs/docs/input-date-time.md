@@ -14,7 +14,7 @@ size:xlarge
 </script>
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
 
     setTimeout(function() {
@@ -63,7 +63,7 @@ size:xlarge
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
 
     setTimeout(function() {
@@ -131,7 +131,7 @@ size:xlarge
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
 
     setTimeout(function() {
@@ -205,7 +205,7 @@ size:large
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
 
     setTimeout(function() {
@@ -273,7 +273,7 @@ size:large
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
 
     setTimeout(function() {
@@ -343,7 +343,7 @@ size:xlarge
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
 
     setTimeout(function() {
@@ -412,7 +412,7 @@ size:xlarge
 <!-- docs: start hidden content -->
 <script>
   window.addEventListener('load', function () {
-    const demoElem = document.querySelector('#demo-element');
+    var demoElem = document.querySelector('#demo-element');
     if (!demoElem.hasAttribute('data-first-load')) return;
 
     setTimeout(function() {

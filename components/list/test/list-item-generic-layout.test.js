@@ -172,6 +172,15 @@ describe('d2l-list-item-generic-layout', () => {
 				expected: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(2)')
 			},
 			{
+				key: { name: 'ArrowRight', code: keyCodes.RIGHT },
+				desc: 'focuses wraps to first item',
+				itemKey: 'item4',
+				initial: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(4)'),
+				activeElement: getComposedActiveElement,
+				event: () => oneEvent(layout, 'focusin'),
+				expected: () => layout.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox')
+			},
+			{
 				key: { name: 'ArrowLeft', code: keyCodes.LEFT },
 				desc: 'focuses the previous item in the previous area',
 				itemKey: 'item1',
@@ -188,6 +197,15 @@ describe('d2l-list-item-generic-layout', () => {
 				activeElement: () => document.activeElement,
 				event: () => oneEvent(layout, 'focusin'),
 				expected: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(1)')
+			},
+			{
+				key: { name: 'ArrowLeft', code: keyCodes.LEFT },
+				desc: 'focuses wraps to last item',
+				itemKey: 'item4',
+				initial: () => layout.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
+				activeElement: () => document.activeElement,
+				event: () => oneEvent(layout, 'focusin'),
+				expected: () => el.querySelector('[key="item4"] d2l-button-icon:nth-child(4)')
 			},
 			{
 				key: { name: 'ArrowUp', code: keyCodes.UP },
@@ -356,20 +374,6 @@ describe('d2l-list-item-generic-layout', () => {
 
 		describe('preventing focus move for end of content', () => {
 			const tests = [
-				{
-					key: { name: 'ArrowRight', code: keyCodes.RIGHT },
-					desc: 'does not move focus when rightmost area reached',
-					itemKey: 'item1',
-					initial: () => el.querySelector('[key="item1"] d2l-button-icon'),
-					activeElement: () => document.activeElement
-				},
-				{
-					key: { name: 'ArrowLeft', code: keyCodes.LEFT },
-					desc: 'does not move focus when leftmove area reached',
-					itemKey: 'item1',
-					initial: () => layout.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input.d2l-input-checkbox'),
-					activeElement: getComposedActiveElement
-				},
 				{
 					key: { name: 'ArrowUp', code: keyCodes.UP },
 					desc: 'does not move focus when first row already focused',

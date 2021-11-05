@@ -16,8 +16,6 @@ const mediaQueryList = window.matchMedia('(max-width: 615px)');
  * A generic fullscreen dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
- * @fires d2l-dialog-open - Dispatched when the dialog is opened
- * @fires d2l-dialog-close - Dispatched with the action value when the dialog is closed for any reason
  */
 class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement))) {
 
@@ -25,6 +23,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 		return {
 			/**
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
+			 * @type {boolean}
 			 */
 			async: { type: Boolean },
 			_hasFooterContent: { type: Boolean, attribute: false },
@@ -45,7 +44,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 			}
 
 			@media (min-width: 616px) {
-				
+
 				.d2l-dialog-header {
 					border-bottom: 1px solid var(--d2l-color-gypsum);
 					padding-bottom: 0.9rem;
@@ -72,7 +71,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
 					margin: -2px 0 0 -12px;
 				}
-				
+
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
 					border-radius: 8px;
@@ -164,7 +163,7 @@ class DialogFullscreen extends LocalizeCoreElement(AsyncContainerMixin(DialogMix
 					margin-left: -13px;
 					margin-right: 15px;
 				}
-				
+
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
 					margin: 0 !important;

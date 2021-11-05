@@ -36,7 +36,7 @@ A Dropdown is a button that opens a floating container to offer menu items or ot
 <script>
   window.addEventListener('load', function () {
     var demoElem = document.querySelector('#demo-element');
-    if (!demoElem.hasAttribute('data-first-load')) return; 
+    if (!demoElem.hasAttribute('data-first-load')) return;
     setTimeout(() => {
       var dropdown = document.querySelector('d2l-dropdown');
       dropdown.toggleOpen();
@@ -117,6 +117,7 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
 | `primary` | Boolean, default: `false` | Optionally render button as primary button |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 <!-- docs: end hidden content -->
 
 ## Opener: Button Subtle [d2l-dropdown-button-subtle]
@@ -160,11 +161,12 @@ If the dropdown is initially empty when it's opened, the dropdown pointer will n
 | `description` | String | A description to be added to the inner `button` opener for accessibility |
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from automatically on click or on key press |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 <!-- docs: end hidden content -->
 
 ### Accessibility Properties
 
-To make your `d2l-dropdown-button-subtle` accessible, use the following properties when applicable: 
+To make your `d2l-dropdown-button-subtle` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |---|---|
@@ -209,6 +211,7 @@ To make your `d2l-dropdown-button-subtle` accessible, use the following properti
 |---|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or on key press |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 | `text` | String | Used as `aria-label` for the button |
 | `translucent` | Boolean, default: `false` | Attribute for busy/rich backgrounds |
 | `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
@@ -261,6 +264,7 @@ To make your usage of `d2l-dropdown-context-menu` accessible, use the following 
 |---|---|---|
 | `disabled` | Boolean, default: `false` | Disables the dropdown opener |
 | `no-auto-open` | Boolean, default: `false` | Prevents the dropdown from opening automatically on click or key press |
+| `open-on-hover` | Boolean, default: `false` | Optionally open dropdown on click or hover action |
 | `text` | String | Used as `aria-label` for the button |
 | `translucent` | Boolean, default: `false` | Attribute for busy/rich backgrounds |
 | `visible-on-ancestor` | Boolean, default: `false` | See [visible-on-ancestor-mixin](../../mixins/visible-on-ancestor-mixin.md) for more details on configuring that behavior |
@@ -454,9 +458,3 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   </d2l-dropdown-tabs>
 </d2l-dropdown>
 ```
-
-<!-- docs: start hidden content -->
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
-<!-- docs: end hidden content -->

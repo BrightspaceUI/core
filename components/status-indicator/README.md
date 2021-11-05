@@ -5,7 +5,7 @@ Status Indicators are used to communicate the status of an item. They are non-in
 ![screenshot of status-indicator component](./screenshots/default-indicator.png)
 <!-- docs: end hidden content -->
 
-<!-- docs: demo -->
+<!-- docs: demo display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
@@ -224,9 +224,3 @@ The text label should be kept short; one or two words at most. If more informati
 
 </div>
 ```
-<!-- docs: start hidden content -->
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
-<!-- docs: end hidden content -->

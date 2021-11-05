@@ -4,6 +4,9 @@ import '../icons/icon-custom.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { SwitchMixin } from './switch-mixin.js';
 
+/**
+ * A generic switch with on/off semantics.
+ */
 class Switch extends SwitchMixin(LitElement) {
 
 	get offIcon() {

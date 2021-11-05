@@ -151,6 +151,11 @@ class HtmlBlock extends LitElement {
 	connectedCallback() {
 		super.connectedCallback();
 		this._contextObserverController.hostConnected();
+		
+		if (!this._templateObserver) return;
+
+		const template = this.querySelector('template');
+		if (template) this._templateObserver.observe(template.content, { attributes: true, childList: true, subtree: true });
 	}
 
 	disconnectedCallback() {

@@ -3,6 +3,9 @@ import { html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeCoreElement } from '../../lang/localize-core-element.js';
 import { SwitchMixin } from './switch-mixin.js';
 
+/**
+ * A variant of the generic switch configured with special icons and default text for toggling "visibility".
+ */
 class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
 	get text() {

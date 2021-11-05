@@ -8,6 +8,11 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
   import '@brightspace-ui/core/components/button/button.js';
   import '@brightspace-ui/core/components/backdrop/backdrop.js';
   import '@brightspace-ui/core/components/switch/switch.js';
+
+  const backdrop = document.querySelector('d2l-backdrop');
+  document.querySelector('#target > d2l-button').addEventListener('click', () => {
+    backdrop.shown = !backdrop.shown;
+  });
 </script>
 <style>
   #target { position: relative; z-index: 1000; margin: 40px; }
@@ -17,12 +22,6 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
   <d2l-backdrop for-target="target"></d2l-backdrop>
 </div>
 <span>Background content</span>
-<script>
-  const backdrop = document.querySelector('d2l-backdrop');
-  document.querySelector('#target > d2l-button').addEventListener('click', () => {
-    backdrop.shown = !backdrop.shown;
-  });
-</script>
 ```
 
 <!-- docs: start hidden content -->
@@ -34,8 +33,4 @@ The `d2l-backdrop` element is a web component to display a semi-transparent back
 | `no-animate-hide` | Boolean | Disables the fade-out transition while the backdrop is being hidden |
 | `shown` | Boolean | Used to control whether the backdrop is shown |
 | `slow-transition` | Boolean | Increases the fade transition time to 1200ms (default is 200ms) |
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->

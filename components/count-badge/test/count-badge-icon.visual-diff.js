@@ -31,7 +31,8 @@ describe('d2l-count-badge-icon', () => {
 
 	[
 		'large-count-icon',
-		'large-count-icon-rtl'
+		'large-count-icon-rtl',
+		'icon-skeleton'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;

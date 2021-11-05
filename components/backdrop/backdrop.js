@@ -17,16 +17,19 @@ class Backdrop extends LitElement {
 		return {
 			/**
 			 * REQUIRED: id of the target element to display backdrop behind
+			 * @type {string}
 			 */
 			forTarget: { type: String, attribute: 'for-target' },
 
 			/**
 			 * Disables the fade-out transition while the backdrop is being hidden
+			 * @type {boolean}
 			 */
 			noAnimateHide: { type: Boolean, attribute: 'no-animate-hide' },
 
 			/**
 			 * Used to control whether the backdrop is shown
+			 * @type {boolean}
 			 */
 			shown: { type: Boolean },
 			_state: { type: String, reflect: true }

@@ -75,7 +75,7 @@ The `d2l-tooltip` component is used to display additional information when users
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
-<d2l-input-text placeholder="Hover for Error" id="tooltip-error" aria-invalid="true" style="max-width:250px;"></d2l-input-text>
+<d2l-input-text placeholder="Hover for Error" id="tooltip-error" aria-invalid="true" label="Text Input" label-hidden style="max-width:250px;"></d2l-input-text>
 <d2l-tooltip for="tooltip-error" state="error">
 	Your error message will display here
 </d2l-tooltip>

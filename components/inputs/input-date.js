@@ -25,7 +25,7 @@ export function formatISODateInUserCalDescriptor(val) {
 
 /**
  * A component that consists of a text input field for typing a date and an attached calendar (d2l-calendar) dropdown. It displays the "value" if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the calendar or entered in the text input.
- * @fires change - Dispatched when there is a change to selected date. "value" corresponds to the selected value and is formatted in ISO 8601 calendar date format ("YYYY-MM-DD").
+ * @fires change - Dispatched when there is a change to selected date. `value` corresponds to the selected value and is formatted in ISO 8601 calendar date format (`YYYY-MM-DD`).
  */
 class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
@@ -33,14 +33,17 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 		return {
 			/**
 			 * Disables the input
+			 * @type {boolean}
 			 */
 			disabled: { type: Boolean },
 			/**
 			 * Text that appears as a placeholder in the input to reassure users that they can choose not to provide a value (usually not necessary)
+			 * @type {string}
 			 */
 			emptyText: { type: String, attribute: 'empty-text' },
 			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
+			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
@@ -60,14 +63,17 @@ class InputDate extends LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCor
 			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
 			/**
 			 * Indicates if the calendar dropdown is open
+			 * @type {boolean}
 			 */
 			opened: { type: Boolean, reflect: true },
 			/**
 			 * Indicates that a value is required
+			 * @type {boolean}
 			 */
 			required: { type: Boolean, reflect: true },
 			/**
 			 * Value of the input
+			 * @type {string}
 			 */
 			value: { type: String },
 			_hiddenCalendarHeight: { type: Number },

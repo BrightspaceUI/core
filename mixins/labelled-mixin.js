@@ -180,6 +180,7 @@ export const LabelledMixin = superclass => class extends superclass {
 		}
 
 		this.label = getLabel(this._labelElem);
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-labelled-mixin-label-elem-change', {
 				bubbles: false,
