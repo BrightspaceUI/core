@@ -229,6 +229,13 @@ class Card extends RtlMixin(LitElement) {
 				:host {
 					transition: none;
 				}
+
+				:host(:hover),
+				:host([subtle]:hover),
+				:host([_active]:hover),
+				:host([subtle][_active]:hover) {
+					transform: none;
+				}
 			}
 		`];
 	}
