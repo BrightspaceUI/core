@@ -8,9 +8,9 @@ class DemoSnippet extends LitElement {
 	static get properties() {
 		return {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
+			fullscreen: { type: Boolean, reflect: true },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
-			fullscreen: { type: Boolean, reflect: true },
 			_code: { type: String },
 			_dir: { type: String, attribute: false },
 			_hasSkeleton: { type: Boolean, attribute: false },
