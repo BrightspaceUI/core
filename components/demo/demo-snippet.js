@@ -10,6 +10,7 @@ class DemoSnippet extends LitElement {
 			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
 			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
 			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
+			fullscreen: { type: Boolean, reflect: true },
 			_code: { type: String },
 			_dir: { type: String, attribute: false },
 			_hasSkeleton: { type: Boolean, attribute: false },
@@ -29,6 +30,9 @@ class DemoSnippet extends LitElement {
 			}
 			:host([hidden]) {
 				display: none;
+			}
+			:host([fullscreen]) {
+				max-width: unset;
 			}
 			.d2l-demo-snippet-demo-wrapper {
 				display: flex;
