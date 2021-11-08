@@ -21,6 +21,25 @@ import { AsyncStateEvent } from '@brightspace-ui/core/helpers/asyncStateEvent.js
 const asyncStateEvent = new AsyncStateEvent(pendingPromise);
 ```
 
+## composeMixins
+
+A helper function for cleanly incorporating a list of mixins into a base class. Designed for use with Lit components with a large amount of reusable functionality.
+
+```js
+// other imports...
+import { composeMixins } from '@brightspace-ui/core/helpers/composeMixins.js';
+
+class ExampleComponent extends composeMixins(
+  LitElement,
+  EntityMixin,
+  LocalizeMixin,
+) {
+  // ...
+}
+```
+
+Read more about mixins on [the `open-wc` docs](https://open-wc.org/docs/development/dedupe-mixin/#what-is-a-mixin).
+
 ## Dismissible
 
 Dismissible components are those that should be dismissible when the user presses
@@ -192,4 +211,3 @@ import '@brightspace-ui/core/helpers/viewport-size.js';
     min-width: calc(var(--d2l-vw, 1vw) * 100);
 }
 ```
-
