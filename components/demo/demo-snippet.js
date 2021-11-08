@@ -70,6 +70,7 @@ class DemoSnippet extends LitElement {
 
 	constructor() {
 		super();
+		this.fullscreen = false;
 		this._dir = document.documentElement.dir;
 		this._hasSkeleton = false;
 		this._skeletonOn = false;
