@@ -4,9 +4,9 @@ Meters are a visually engaging way to communicate progress or measurements.
 <!-- docs: demo  -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/meter/meter-circle.js';
   import '@brightspace-ui/core/components/meter/meter-linear.js';
   import '@brightspace-ui/core/components/meter/meter-radial.js';
-  import '@brightspace-ui/core/components/meter/meter-circle.js';
 </script>
 <d2l-meter-linear value="1" max="6" text="Activities"></d2l-meter-linear>
 <d2l-meter-radial value="22" max="24" text="On Track"></d2l-meter-radial>
