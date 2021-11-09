@@ -19,10 +19,22 @@ describe('d2l-count-badge-icon', () => {
 		return page.$eval(selector, (elem) => {
 			const rect = elem.getBoundingClientRect();
 			return {
+				x: rect.x + 15,
+				y: rect.y + 20,
+				width: rect.width - 30,
+				height: rect.height - 50
+			};
+		});
+	}
+
+	async function getRectWithTooltip(page, selector) {
+		return page.$eval(selector, (elem) => {
+			const rect = elem.getBoundingClientRect();
+			return {
 				x: rect.x - 30,
-				y: rect.y - 10,
-				width: rect.width + 150,
-				height: rect.height + 70
+				y: rect.y - 50,
+				width: rect.width + 60,
+				height: rect.height + 50
 			};
 		});
 	}
@@ -36,7 +48,7 @@ describe('d2l-count-badge-icon', () => {
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
-			const rect = await visualDiff.getRect(page, selector);
+			const rect = await getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
@@ -48,20 +60,20 @@ describe('d2l-count-badge-icon', () => {
 		it(`${testName} focused`, async function() {
 			const selector = `#${testName}`;
 			await page.$eval(selector, (elem) => forceFocusVisible(elem));
-			const rect = await visualDiff.getRect(page, selector);
+			const rect = await getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
 	describe('icon and tooltip', () => {
 		it('tooltip does not appear by default', async function() {
-			const rect = await visualDiff.getRect(page, '#tooltip-icon');
+			const rect = await getRect(page, '#tooltip-icon');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 		it('tooltip appears on focus-visible', async function() {
 			await page.$eval('#tooltip-icon', (elem) => forceFocusVisible(elem));
 			await page.waitForTimeout(50);
-			const rect = await getRect(page, '#tooltip-icon');
+			const rect = await getRectWithTooltip(page, '#tooltip-icon');
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});

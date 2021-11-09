@@ -33,23 +33,35 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			display: inline-block;
 		}
 
+		.d2l-count-badge-number-wrapper {
+			position: absolute;
+			width: max-content;
+		}
+
 		:host {
-			padding-right: var(--d2l-count-badge-icon-padding);
+			display: inline-block;
+			position: relative;
+			padding-left: 0.5rem;
+			padding-right: var(--d2l-count-badge-icon-horizontal-padding);
 		}
 
 		:host([dir="rtl"]) {
-			padding-left: var(--d2l-count-badge-icon-padding);
-			padding-right: 0;
+			padding-left: var(--d2l-count-badge-icon-horizontal-padding);
+			padding-right: 0.5rem;
 		}
 
 		:host([size="large"]) {
 			--d2l-count-badge-icon-padding: calc(var(--d2l-count-badge-icon-height) - 0.7rem);
 			margin-top: -0.7rem;
+			padding-top: 0.7rem;
+			padding-bottom: 0.7rem;
 		}
 
 		:host([size="small"]) {
 			--d2l-count-badge-icon-padding: calc(var(--d2l-count-badge-icon-height) - 0.55rem);
 			margin-top: -0.55rem;
+			padding-top: 0.35rem;
+			padding-bottom: 0.35rem;
 		}
 
 		:host([icon*="tier1:"]) {
@@ -79,18 +91,31 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 	}
 
 	render() {
-		const numberPadding = this.size === 'small' ? '0.55rem' : '0.7rem';
+		const numberPadding = this.size === 'small' ? '-0.65rem' : '-0.7rem';
 		const numberStyles = {
 			border: '2px solid white',
 			position: 'relative',
 			left: this.dir === 'rtl' ? 0 : 'var(--d2l-count-badge-icon-padding)',
 			right: this.dir === 'rtl' ? 'var(--d2l-count-badge-icon-padding)' : 0,
 			top: numberPadding,
-			visibility: this.skeleton ? 'hidden' : undefined
+			visibility: this.skeleton ? 'hidden' : undefined,
+			display: 'inline-block'
 		};
+
+		let horizontalPadding = '0.5rem';
+		const excessDigits = this.getNumberString().length - 4;
+		// large number strings could overflow onto the next badge,
+		// update padding in this case
+		if (excessDigits >= 0) {
+			const extraRem = excessDigits / 2;
+			horizontalPadding = `calc(0.5rem + ${extraRem}rem)`;
+		}
+		this.style.setProperty('--d2l-count-badge-icon-horizontal-padding', `${horizontalPadding}`);
 		const tabbable = (this.tabStop || this.hasTooltip) && !this.skeleton;
 		const innerHtml = html`
-			${this.renderCount(numberStyles)}
+			<div class="d2l-count-badge-number-wrapper">
+				${this.renderCount(numberStyles)}
+			</div>
 			<div class="d2l-skeletize d2l-count-badge-wrapper">
 				<d2l-icon id="${this._badgeId}"
 					icon="${this.icon}" 

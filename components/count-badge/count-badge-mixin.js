@@ -166,15 +166,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		return this.hasTooltip ? undefined : this._labelId;
 	}
 
-	renderCount(numberStyles) {
+	getNumberString() {
 		let numberString = `${this.number}`;
-		const hideNumber = this.hideZero && this.number === 0;
-		if (!numberStyles || numberStyles.visibility !== 'hidden') {
-			numberStyles = {
-				...numberStyles,
-				visibility: hideNumber ? 'hidden' : 'visible'
-			};
-		}
 		if (this.maxDigits && this.number.toString().length > this.maxDigits) {
 			numberString = `${'9'.repeat(this.maxDigits)}`;
 			numberString = formatNumber(parseInt(numberString));
@@ -183,9 +176,20 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			numberString = formatNumber(numberString);
 		}
 
+		return numberString;
+	}
+
+	renderCount(numberStyles) {
+		const hideNumber = this.hideZero && this.number === 0;
+		if (!numberStyles || numberStyles.visibility !== 'hidden') {
+			numberStyles = {
+				...numberStyles,
+				visibility: hideNumber ? 'hidden' : 'visible'
+			};
+		}
 		return html`
 			<div class="d2l-count-badge-number" style=${styleMap(numberStyles)}>
-					<div aria-hidden="true">${numberString}</div>		
+					<div aria-hidden="true">${this.getNumberString()}</div>		
 			</div>
 		`;
 	}
