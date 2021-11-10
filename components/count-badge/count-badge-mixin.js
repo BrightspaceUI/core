@@ -160,6 +160,9 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		if (!this.maxDigits) {
 			// default to two digits for notification type, 5 for count
 			this.maxDigits = this.type === 'notification' ? 2 : 5;
+		} else if (this.maxDigits > 5) {
+			// limit all badges to 5 digits
+			this.maxDigits = 5;
 		}
 	}
 
