@@ -37,6 +37,13 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			position: relative;
 		}
 
+		:host([size="small"]) {
+			padding-top: 0.55rem;
+		}
+		:host([size="small"]) {
+			padding-top: 0.7rem;
+		}
+
 		:host([icon*="tier1:"]) {
 			--d2l-count-badge-icon-height: 18px;
 			--d2l-count-badge-icon-padding: calc(-50% + 11px);

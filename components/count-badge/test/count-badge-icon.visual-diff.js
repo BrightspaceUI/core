@@ -15,25 +15,13 @@ describe('d2l-count-badge-icon', () => {
 		await page.bringToFront();
 	});
 
-	async function getRect(page, selector) {
-		return page.$eval(selector, (elem) => {
-			const rect = elem.getBoundingClientRect();
-			return {
-				x: rect.x + 15,
-				y: rect.y + 20,
-				width: rect.width - 30,
-				height: rect.height - 50
-			};
-		});
-	}
-
 	async function getRectWithTooltip(page, selector) {
 		return page.$eval(selector, (elem) => {
 			const rect = elem.getBoundingClientRect();
 			return {
 				x: rect.x - 30,
-				y: rect.y - 50,
-				width: rect.width + 60,
+				y: rect.y,
+				width: rect.width + 120,
 				height: rect.height + 50
 			};
 		});
@@ -44,11 +32,12 @@ describe('d2l-count-badge-icon', () => {
 	[
 		'large-count-icon',
 		'large-count-icon-rtl',
-		'icon-skeleton'
+		'icon-skeleton',
+		'large-number-centered'
 	].forEach((testName) => {
 		it(testName, async function() {
 			const selector = `#${testName}`;
-			const rect = await getRect(page, selector);
+			const rect = await visualDiff.getRect(page, selector, 15);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
@@ -60,14 +49,14 @@ describe('d2l-count-badge-icon', () => {
 		it(`${testName} focused`, async function() {
 			const selector = `#${testName}`;
 			await page.$eval(selector, (elem) => forceFocusVisible(elem));
-			const rect = await getRect(page, selector);
+			const rect = await visualDiff.getRect(page, selector, 15);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 	});
 
 	describe('icon and tooltip', () => {
 		it('tooltip does not appear by default', async function() {
-			const rect = await getRect(page, '#tooltip-icon');
+			const rect = await visualDiff.getRect(page, '#tooltip-icon', 15);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 		});
 		it('tooltip appears on focus-visible', async function() {
