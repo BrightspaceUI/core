@@ -49,6 +49,16 @@ class CountBadgeIcon extends CountBadgeMixin(LitElement) {
 			--d2l-count-badge-icon-height: 30px;
 			--d2l-count-badge-icon-padding: calc(-50% + 17px);
 		}
+		:host([icon*="tier1:"][dir="rtl"]) {
+			--d2l-count-badge-icon-padding: calc(50% - 11px);
+		}
+		:host([icon*="tier2:"][dir="rtl"]) {
+			--d2l-count-badge-icon-padding: calc(50% - 14px);
+		}
+		:host([icon*="tier3:"][dir="rtl"]) {
+			--d2l-count-badge-icon-height: 30px;
+			--d2l-count-badge-icon-padding: calc(50% - 17px);
+		}
 
 		d2l-tooltip[_open-dir="top"] {
 			margin-top: -0.6rem;

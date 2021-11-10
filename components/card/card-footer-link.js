@@ -94,7 +94,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 				display: inline-block;
 				height: 100%;
 				outline: none;
-				padding-top: 7px;
+				padding-top: 0.4rem;
 				width: 100%;
 			}
 			d2l-count-badge-icon {
@@ -102,15 +102,7 @@ class CardFooterLink extends RtlMixin(LitElement) {
 			}
 
 			::slotted(d2l-tooltip[_open-dir="bottom"]) {
-				margin-top: -0.35rem;
-			}
-
-			::slotted(d2l-tooltip) {
-				left: calc(-50% + 21px) !important;
-			}
-			:host([dir="rtl"]) ::slotted(d2l-tooltip) {
-				left: 0;
-				right: calc(-50% + 21px) !important;
+				margin-top: -0.3rem;
 			}
 		`];
 	}
